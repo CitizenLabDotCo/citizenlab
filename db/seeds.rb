@@ -133,6 +133,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       user_custom_fields: {
         enabled: true,
         allowed: true
+      },
+      widgets: {
+        enabled: true,
+        allowed: true
       }
     }
   })
