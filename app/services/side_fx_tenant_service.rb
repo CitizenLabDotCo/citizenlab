@@ -6,6 +6,9 @@ class SideFxTenantService
   end
 
   def after_create tenant, current_user
+    Apartment::Tenant.switch(tenant.schema_name) do
+      EmailCampaigns::AssureCampaignsService.new.assure_campaigns
+    end
     LogActivityJob.perform_later(tenant, 'created', current_user, tenant.created_at.to_i)
   end
 
