@@ -7,6 +7,7 @@ import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
+  tenantName: string | null;
   orgType: string | null;
   orgName: string | null;
   loaded: boolean;
@@ -20,6 +21,7 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
   constructor(props: Props) {
     super(props);
     this.state = {
+      tenantName: null,
       orgType: null,
       orgName: null,
       loaded: false
@@ -36,9 +38,10 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
         currentTenant$
       ).subscribe(([locale, tenant]) => {
         const tenantLocales = tenant.data.attributes.settings.core.locales;
+        const tenantName = tenant.data.attributes.name;
         const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
         const orgType = tenant.data.attributes.settings.core.organization_type;
-        this.setState({ orgName, orgType, loaded: true });
+        this.setState({ tenantName, orgName, orgType, loaded: true });
       })
     ];
   }
@@ -49,8 +52,12 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
 
   render() {
     if (this.state.loaded) {
-      const { orgType, orgName } = this.state;
+      const { tenantName, orgType, orgName } = this.state;
       const values = this.props.values || {};
+
+      if (tenantName) {
+        values.tenantName = tenantName;
+      }
 
       if (orgType) {
         values.orgType = orgType;
