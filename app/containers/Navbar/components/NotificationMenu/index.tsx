@@ -136,7 +136,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
               threshold={50}
               loader={
                 <LoadingContainer>
-                  <Spinner size="28px" />
+                  <Spinner />
                 </LoadingContainer>
               }
             >

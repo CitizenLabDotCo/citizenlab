@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Formik
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';

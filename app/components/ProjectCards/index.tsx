@@ -176,7 +176,7 @@ class ProjectCards extends PureComponent<Props, State> {
 
         {querying &&
           <Loading id="projects-loading">
-            <Spinner size="32px" />
+            <Spinner />
           </Loading>
         }
 

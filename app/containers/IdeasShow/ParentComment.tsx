@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -31,7 +31,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -46,7 +46,7 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
 `;
 
 const Container = styled.div`
-  margin-top: 35px;
+  margin-top: 38px;
 `;
 
 const CommentsWithReplyBoxContainer = styled.div`
@@ -56,7 +56,7 @@ const CommentsWithReplyBoxContainer = styled.div`
 const CommentsContainer = styled.div`
   border-radius: 5px;
   position: relative;
-  border: solid 1px #ddd;
+  border: solid 1px #d0d0d0;
   background: #fff;
 
   &.hasReplyBox {
@@ -80,6 +80,7 @@ const CommentContainerInner = styled.div`
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
+  margin-right: 60px;
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -148,7 +149,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }

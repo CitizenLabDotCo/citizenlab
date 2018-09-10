@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { isFunction, isBoolean, isString } from 'lodash';
+import { isFunction, isBoolean, isString } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components

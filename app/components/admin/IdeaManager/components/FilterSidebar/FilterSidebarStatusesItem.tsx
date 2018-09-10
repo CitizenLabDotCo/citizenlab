@@ -1,6 +1,6 @@
 import React from 'react';
 import { IIdeaStatusData } from 'services/ideaStatuses';
-import { flow } from 'lodash';
+import { flow } from 'lodash-es';
 import styled from 'styled-components';
 import { Menu } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';

@@ -1,4 +1,4 @@
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { getUrlLocale } from 'services/locale';
 import { LocationDescriptor } from 'history';
 import { Locale } from 'typings';

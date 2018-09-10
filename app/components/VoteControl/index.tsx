@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
-import { isString, has } from 'lodash';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { isString, has } from 'lodash-es';
+import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -139,7 +137,7 @@ const Upvote = Vote.extend`
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clGreen}`)}
+    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
   }
 
   ${VoteCount} {
@@ -170,7 +168,7 @@ const Downvote = Vote.extend`
 
   ${VoteIcon} {
     margin-top: 5px;
-    ${props => props.active && (props.enabled ? `fill: #fff;` : `fill: ${colors.clRed}`)}
+    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
   }
 
   ${VoteCount} {

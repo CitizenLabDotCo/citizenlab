@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNumber } from 'lodash';
+import { isNumber } from 'lodash-es';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -32,7 +32,7 @@ const Container = styled.button`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 24px;
+  height: 26px;
   fill: inherit;
   transition: all 150ms ease;`
 ;

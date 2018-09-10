@@ -1,5 +1,31 @@
 # Changelog
 
+## 2019-09-07
+
+### Fixed
+- Submit idea button is now aligned with idea form
+- An error caused by social sign in on French platforms not longer has an English error message
+- Checkboxes are now keyboard navigable
+- Projects that currently don't accept ideas can no longer be selected when posting an idea
+- Deleting an idea no longer results in a blank page
+- Deleting a comment no longer results in a blank page
+- When sign in fails, the error message no longer says the user doesn't exist
+- `null` is no longer shown as a lastname for migrated cl1 users without last name
+- Clicking on the table headers in the idea managers again swaps the sorting order as expected
+- Typeform Survey now is properly usable on mobile
+### Added
+
+- Email notification control
+  - Every user can opt-out from all recurring types of e-mails sent out by the platform by editing their profile
+  - Emails can be fully disabled per type and per tenant (through S&S ticket)
+- An widget that shows platform ideas can now be embedded on external sites
+  - The style and content of the widget can be configured through admin > settings > widgets
+  - Widget functionality is feature flagged as "widgets", on by default
+
+### Changed
+- Initial loading speed of the platform has drastically improved, particulary noticable on mobile
+- New tenants have custom signup fields and survey feature enabled by default
+
 ## 2018-08-20
 
 ### Fixed

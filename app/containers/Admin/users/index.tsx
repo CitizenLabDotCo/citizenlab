@@ -47,7 +47,7 @@ import messages from './messages';
 import { IGroupData, addGroup } from 'services/groups';
 
 // Typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 export interface Props {}
 
@@ -99,7 +99,7 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
       this.closeGroupCreationModal();
     })
     .catch((errorResponse) => {
-      const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
     });

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
 
 import { IMentionInCommentNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -18,11 +18,11 @@ type State = {
   ideaSlug?: string,
 };
 
-export default class MentionInCommentNotification extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class MentionInCommentNotification extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       ideaSlug: undefined,
     };

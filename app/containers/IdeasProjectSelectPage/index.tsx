@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import { groupBy, isEmpty, isUndefined } from 'lodash';
+import { groupBy, isEmpty, isUndefined } from 'lodash-es';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -246,7 +246,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
     if (isUndefined(projectsList)) {
       return (
         <Loading>
-          <Spinner size="32px" />
+          <Spinner />
         </Loading>
       );
     }

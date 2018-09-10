@@ -1,9 +1,7 @@
 import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import isString from 'lodash/isString';
-import isEmpty from 'lodash/isEmpty';
-import isError from 'lodash/isError';
+import  { isString, isEmpty, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries

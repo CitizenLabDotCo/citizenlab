@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash';
+import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';

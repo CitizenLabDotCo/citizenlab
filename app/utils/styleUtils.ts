@@ -201,7 +201,7 @@ export function quillEditedContent() {
     }
     p, h1, h2, ul, ol {
       margin: 0;
-      margin-bottom: 1rem;
+      margin-bottom: 30px;
     }
     img {
       max-width: 100%;

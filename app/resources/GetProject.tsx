@@ -1,7 +1,6 @@
 import React from 'react';
-import isString from 'lodash/isString';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import shallowCompare from 'utils/shallowCompare';
@@ -29,7 +28,7 @@ export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  static defaultProps = {
     resetOnChange: true
   };
 

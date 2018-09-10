@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isError } from 'lodash';
+import { isError } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import Button from 'components/UI/Button';

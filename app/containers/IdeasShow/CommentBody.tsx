@@ -25,12 +25,11 @@ const CommentWrapper = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 25px;
   font-weight: 300;
-  word-break: break-word;
   white-space: pre-line;
 
   span,
   p {
-    margin-bottom: 30px;
+    margin-bottom: 26px;
 
     &:last-child {
       margin-bottom: 10px;
@@ -41,12 +40,25 @@ const CommentWrapper = styled.div`
     color: ${colors.clBlueDark};
 
     &.mention {
-      background: ${transparentize(0.92, colors.clBlueDark)};
+      background: ${transparentize(0.9, colors.clBlueDark)};
+      padding-left: 4px;
+      padding-right: 4px;
+
+      &:hover {
+        background: ${transparentize(0.8, colors.clBlueDark)};
+      }
+    }
+
+    &:not(.mention){
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
     }
   }
 `;

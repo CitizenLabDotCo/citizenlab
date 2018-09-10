@@ -2,7 +2,7 @@
 import React from 'react';
 import { FieldProps } from 'formik';
 
-import QuillEditor, { Props as VanillaProps } from 'components/QuillEditor';
+import QuillEditor, { Props as VanillaProps } from 'components/UI/QuillEditor';
 
 class FormikEditor extends React.Component<FieldProps & VanillaProps> {
   handleOnChange(html: string) {
