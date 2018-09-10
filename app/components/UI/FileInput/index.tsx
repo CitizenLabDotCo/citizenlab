@@ -26,8 +26,8 @@ const StyledIcon = styled(Icon)`
 `;
 
 const Input = styled.input`
-  display: none;
-`;
+   display: none;
+ `;
 
 const Label = styled.label`
   display: flex;
