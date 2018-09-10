@@ -925,6 +925,7 @@
   "app.errors.email_blank": "",
   "app.errors.email_taken": "",
   "app.errors.emails_duplicate": "",
+  "app.errors.fileUploadLabel": "",
   "app.errors.file_extension_whitelist_error": "",
   "app.errors.first_name_blank": "",
   "app.errors.generics.blank": "",

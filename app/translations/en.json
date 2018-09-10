@@ -925,6 +925,7 @@
   "app.errors.email_blank": "Please enter your email address",
   "app.errors.email_taken": "This email is already taken. Please try another one.",
   "app.errors.emails_duplicate": "One or more duplicate values for the email address {value} were found in the following row(s): {rows}",
+  "app.errors.fileUploadLabel": "Add files",
   "app.errors.file_extension_whitelist_error": "The format of the file you tried to upload is not supported.",
   "app.errors.first_name_blank": "Please enter your first name",
   "app.errors.generics.blank": "This field cannot be empty.",
