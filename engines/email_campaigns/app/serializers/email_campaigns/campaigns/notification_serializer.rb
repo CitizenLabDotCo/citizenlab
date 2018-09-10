@@ -3,6 +3,7 @@ module EmailCampaigns
 
     class CustomUserSerializer < ActiveModel::Serializer
       attributes :id, :slug, :first_name, :last_name, :avatar, :locale
+
       def avatar
         object.avatar && object.avatar.versions.map{|k, v| [k.to_s, v.url]}.to_h
       end
@@ -42,13 +43,15 @@ module EmailCampaigns
     end
 
     class CustomIdeaSerializer < ActiveModel::Serializer
-      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name
+      attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :published_at, :created_at, :author_name
 
-      def created_at
+      def published_at
         object.created_at.iso8601
       end
 
-      has_many :topics
+      def created_at
+        object.published_at.iso8601
+      end
 
       def url
         FrontendService.new.model_to_url object
