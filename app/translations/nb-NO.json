@@ -925,6 +925,7 @@
   "app.errors.email_blank": "Vennligst oppgi e-postadressen din",
   "app.errors.email_taken": "Denne e-postadressen er allerede i bruk. Vennligst prøv en annen.",
   "app.errors.emails_duplicate": "One or more duplicate values for the email address {value} were found in the following row(s): {rows}",
+  "app.errors.fileUploadLabel": "",
   "app.errors.file_extension_whitelist_error": "",
   "app.errors.first_name_blank": "Vennligst oppgi fornavnet ditt",
   "app.errors.generics.blank": "Dette feltet kan ikke være tomt.",
