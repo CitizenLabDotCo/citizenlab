@@ -2,6 +2,7 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import messages from './messages';
@@ -12,9 +13,9 @@ import Icon from 'components/UI/Icon';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // Services & resources
+import { createPage, updatePage, IPage } from 'services/pages';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
-import { createPage, updatePage, IPage } from 'services/pages';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -27,8 +28,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { UploadFile, CLErrorsJSON } from 'typings';
-import FileUploader from './FileUploader';
+import { CLErrorsJSON, UploadFile } from 'typings';
 
 const timeout = 350;
 
@@ -100,15 +100,17 @@ interface DataProps {
   page: GetPageChildProps;
   remotePageFiles: GetResourceFileObjectsChildProps;
 }
+
 interface InputProps {
   className?: string;
   slug: string;
 }
-interface Props extends InputProps, DataProps { }
+
+interface Props extends DataProps, InputProps {}
 
 interface State {
   deployed: boolean;
-  localPageFiles: UploadFile[] | null | Error | undefined;
+  localPageFiles: GetResourceFileObjectsChildProps;
 }
 
 class PageEditor extends React.PureComponent<Props, State>{
@@ -121,13 +123,13 @@ class PageEditor extends React.PureComponent<Props, State>{
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { remotePageFiles } = this.props;
+  // componentDidUpdate(prevProps: Props) {
+  //   const { remotePageFiles } = this.props;
 
-    if (prevProps.remotePageFiles !== remotePageFiles) {
-      this.setState({ localPageFiles: remotePageFiles });
-    }
-  }
+  //   if (prevProps.remotePageFiles !== remotePageFiles) {
+  //     this.setState({ localPageFiles: remotePageFiles });
+  //   }
+  // }
 
   toggleDeploy = () => {
     this.setState({ deployed: !this.state.deployed });
@@ -150,7 +152,7 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 
   handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    this.setState((prevState) => {
+    this.setState((prevState: State) => {
       // If we don't have localPageFiles, we assign an empty array
       // A spread operator works on an empty array, but not on null
       const oldlLocalPageFiles = !isNilOrError(prevState.localPageFiles) ? prevState.localPageFiles : [];
@@ -163,6 +165,88 @@ class PageEditor extends React.PureComponent<Props, State>{
       };
     });
   }
+
+  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
+    this.setState((prevState: State) => {
+      let localPageFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localPageFiles)) {
+        localPageFiles = prevState.localPageFiles.filter(pageFile => pageFile.filename !== fileToRemove.filename);
+      }
+
+      return {
+        localPageFiles
+      };
+    });
+  }
+
+  // getFilesToAddPromises = () => {
+  //   const { localPageFiles } = this.state;
+  //   const { remotePageFiles } = this.props;
+  //   const { id } = this.props.params;
+  //   let filesToAdd = localPageFiles;
+  //   let filesToAddPromises: Promise<any>[] = [];
+
+  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+  //     // localPageFiles = local state of files
+  //     // This means those previously uploaded + files that have been added/removed
+  //     // remotePageFiles = last saved state of files (remote)
+
+  //     filesToAdd = localPageFiles.filter((localPageFile) => {
+  //       return !remotePageFiles.some(remotePageFile => remotePageFile.filename === localPageFile.filename);
+  //     });
+  //   }
+
+  //   if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+  //     filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(id as string, fileToAdd.base64, fileToAdd.name));
+  //   }
+
+  //   return filesToAddPromises;
+  // }
+
+  // getFilesToRemovePromises = () => {
+  //   const { localPageFiles } = this.state;
+  //   const { remotePageFiles } = this.props;
+  //   const { id } = this.props.params;
+  //   let filesToRemove = remotePageFiles;
+  //   let filesToRemovePromises: Promise<any>[] = [];
+
+  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+  //     // localPageFiles = local state of files
+  //     // This means those previously uploaded + files that have been added/removed
+  //     // remotePageFiles = last saved state of files (remote)
+
+  //     filesToRemove = remotePageFiles.filter((remotePageFile) => {
+  //       return !localPageFiles.some(localPageFile => localPageFile.filename === remotePageFile.filename);
+  //     });
+  //   }
+
+  //   if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+  //     filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(id as string, fileToRemove.id));
+  //   }
+
+  //   return filesToRemovePromises;
+  // }
+
+  // handleOnSubmit = async () => {
+  //   const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
+  //   const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
+
+  //   const allPromises = [
+  //     ...filesToAddPromises,
+  //     ...filesToRemovePromises
+  //   ];
+
+  //   if (allPromises.length > 0) {
+  //     this.setState({ saving: true });
+  //     try {
+  //       await Promise.all(allPromises);
+  //       this.setState({ saving: false });
+  //     } catch (errors) {
+  //       this.setState({ saving: false });
+  //     }
+  //   }
+  // }
 
   handleSubmit = (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { page } = this.props;
@@ -190,19 +274,20 @@ class PageEditor extends React.PureComponent<Props, State>{
     });
   }
 
-  renderForm = (props) => (
-    <>
-      <PageForm
-        {...props}
-        mode="simple"
-        hideTitle={this.props.slug !== 'information'}
-      />
-      <FileUploader
-        onFileAdd={this.handlePageFileOnAdd}
-        localPageFiles={this.state.localPageFiles}
-      />
-    </>
-  )
+  renderForm = (props) => {
+    return (
+      <>
+        <PageForm
+          {...props}
+          mode="simple"
+          hideTitle={this.props.slug !== 'information'}
+          onPageFileAdd={this.handlePageFileOnAdd}
+          onPageFileRemove={this.handlePageFileOnRemove}
+          localPageFiles={this.state.localPageFiles}
+        />
+      </>
+    );
+  }
 
   render() {
     const { deployed } = this.state;
@@ -242,13 +327,13 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  page: ({ slug }) => <GetPage slug={slug} />,
-  remotePageFiles: ({ slug }) => <GetResourceFileObjects resourceId={slug} resourceType="page" />
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
+  remotePageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.attributes.slug : null} resourceType="page">{render}</GetResourceFileObjects>
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <PageEditor {...inputProps} {...dataProps} />}
   </Data>
-);
+));
