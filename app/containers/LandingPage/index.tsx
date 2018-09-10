@@ -1,13 +1,11 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { has, get, isString, isEmpty } from 'lodash';
+import { has, get, isString, isEmpty } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -16,6 +14,7 @@ import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
+import Sharing from 'components/Sharing';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -40,7 +39,7 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
-import rocket from './rocket.png';
+const rocket = require('./rocket.png');
 
 const Container: any = styled.div`
   height: 100%;
@@ -130,8 +129,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 52px;
-  line-height: 60px;
+  font-size: 50px;
+  line-height: 58px;
   font-weight: 600;
   text-align: center;
   white-space: normal;
@@ -142,8 +141,8 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 48px;
-    line-height: 60px;
+    font-size: 46px;
+    line-height: 58px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -288,14 +287,14 @@ class LandingPage extends React.PureComponent<Props, State> {
       id: get(query, 'new_idea_id'),
       publish: get(query, 'publish')
     }) : of(null);
-    const idea$ = (urlHasNewIdeaQueryParam ? ideaByIdStream(query.idea_to_publish).observable : of(null));
+    // const idea$ = (urlHasNewIdeaQueryParam ? ideaByIdStream(query.idea_to_publish).observable : of(null));
 
     this.subscriptions = [
       combineLatest(
         authUser$,
         ideaParams$
       ).subscribe(async ([authUser, ideaParams]) => {
-        if (ideaParams && ideaParams.id && isString(ideaParams.id) && !isEmpty(ideaParams.id)) {
+        if (ideaParams && isString(ideaParams.id) && !isEmpty(ideaParams.id)) {
           if (authUser && ideaParams.publish === 'true') {
             await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);

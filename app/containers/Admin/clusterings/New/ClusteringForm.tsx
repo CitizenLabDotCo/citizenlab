@@ -14,7 +14,7 @@ import Label from 'components/UI/Label';
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 // Resources
@@ -44,7 +44,7 @@ export interface FormValues {
   search?: string;
 }
 
-class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocalized & InjectedIntlProps, FormValues>> {
+class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
   levelsOptionList = () => (
     ['project', 'topic', 'area'].map(level => ({

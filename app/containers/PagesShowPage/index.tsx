@@ -88,10 +88,10 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
   font-weight: 300;
-  line-height: 26px;
+  line-height: 25px;
 
   h1 {
     font-size: ${fontSizes.xxxl}px;
@@ -106,11 +106,14 @@ const PageDescription = styled.div`
   }
 
   p {
-    margin-bottom: 35px;
-  }
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
 
-  strong {
-    font-weight: 600;
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {
@@ -119,11 +122,28 @@ const PageDescription = styled.div`
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
     }
   }
 
-  img {
-    max-width: 100%;
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 25px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
   }
 
   ${quillEditedContent()}
@@ -170,7 +190,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -191,7 +211,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
         <Loading>
-          <Spinner size="32px" />
+          <Spinner />
         </Loading>
       );
     } else {
@@ -254,15 +274,17 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
   }
 }
 
-const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
   pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(PagesShowPage);
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <PagesShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
   </Data>
-)));
+));

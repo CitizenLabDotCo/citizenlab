@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
+import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash-es';
 
 // components
 import Title from './title';
@@ -33,17 +33,7 @@ const Container = styled(clickOutside)`
   }
 `;
 
-interface Props {
-  id?: string | undefined;
-  title: string | JSX.Element;
-  name: string;
-  values: {
-    text: string | JSX.Element,
-    value: any
-  }[];
-  onChange?: (value: any) => void;
-  multiple: boolean;
-  selected: string[];
+interface DefaultProps {
   width?: string;
   mobileWidth?: string;
   maxHeight?: string;
@@ -55,6 +45,19 @@ interface Props {
   mobileRight?: string;
 }
 
+interface Props extends DefaultProps {
+  id?: string | undefined;
+  title: string | JSX.Element;
+  name: string;
+  values: {
+    text: string | JSX.Element,
+    value: any
+  }[];
+  onChange?: (value: any) => void;
+  multiple: boolean;
+  selected: string[];
+}
+
 interface State {
   opened: boolean;
 }
@@ -62,7 +65,7 @@ interface State {
 export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
-  static defaultProps: Partial<Props> = {
+  static defaultProps: DefaultProps = {
     width: undefined,
     mobileWidth: undefined,
     maxHeight: undefined,
@@ -74,8 +77,8 @@ export default class FilterSelector extends PureComponent<Props, State> {
     mobileRight:undefined
   };
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       opened: false
     };

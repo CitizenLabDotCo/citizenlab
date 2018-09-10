@@ -1,8 +1,7 @@
 import React from 'react';
-import { isString } from 'lodash';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -31,10 +30,14 @@ const AuthorContainer = styled.div`
   padding: 0;
 `;
 
+const StyledAvatar = styled(Avatar)`
+  margin-top: 3px;
+`;
+
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: .5em;
+  margin-left: 7px;
 `;
 
 const AuthorNameContainer: any = styled.div `
@@ -43,6 +46,8 @@ const AuthorNameContainer: any = styled.div `
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
+  word-break: break-all;
+  hyphens: auto;
 `;
 
 const AuthorNameLink = styled(Link)`
@@ -102,8 +107,8 @@ class Author extends React.PureComponent<Props, State> {
         distinctUntilChanged(),
         switchMap((authorId) => isString(authorId) ? userByIdStream(authorId).observable : of(null))
       ).subscribe((author) => {
-          this.setState({ author });
-        })
+        this.setState({ author });
+      })
     ];
   }
 
@@ -138,7 +143,7 @@ class Author extends React.PureComponent<Props, State> {
 
     return (
       <AuthorContainer className={className}>
-        <Avatar
+        <StyledAvatar
           userId={authorId}
           size={size}
           onClick={notALink ? undefined : this.goToUserProfile}

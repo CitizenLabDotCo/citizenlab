@@ -1,6 +1,4 @@
-import * as React from 'react';
-
-// style
+import React, { PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const rotate = keyframes`
@@ -27,20 +25,26 @@ const StyledSpinner: any = styled.div`
   margin: 0;
 `;
 
-type Props = {
-  size?: string;
-  thickness?: string;
-  color?: string;
-};
+interface DefaultProps {
+  size: string;
+  thickness: string;
+  color: string;
+}
 
-export default class Spinner extends React.PureComponent<Props, {}> {
+interface Props extends DefaultProps {}
+
+interface State {}
+
+export default class Spinner extends PureComponent<Props, State> {
+  static defaultProps: DefaultProps = {
+    size: '32px',
+    thickness: '3px',
+    color: '#666'
+  };
+
   render() {
     const className = this.props['className'];
-    let { size, thickness, color } = this.props;
-
-    size = (size || '28px');
-    thickness = (thickness || '3px');
-    color = (color || '#666');
+    const { size, thickness, color } = this.props;
 
     return (
       <StyledSpinner className={className} size={size} thickness={thickness} color={color} />

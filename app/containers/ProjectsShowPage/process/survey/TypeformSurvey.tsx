@@ -1,10 +1,14 @@
-import React from 'react';
-import { makeWidget } from '@typeform/embed';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import Iframe from 'react-iframe';
 
 const Container = styled.div`
-  width: 100%;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  iframe {
+    border: solid 1px #e0e0e0;
+  }
 `;
 
 type Props = {
@@ -14,43 +18,22 @@ type Props = {
 
 type State = {};
 
-class TypeformSurvey extends React.PureComponent<Props, State> {
-  typeformElement: HTMLElement | null = null;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {};
-  }
-
-  componentDidMount() {
+export default class TypeformSurvey extends PureComponent<Props, State> {
+  render() {
     const { email, typeformUrl } = this.props;
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
-    if (this.typeformElement) {
-      makeWidget(this.typeformElement, surveyUrl, {
-        hideFooter: true,
-        hideScrollbars: false,
-        hideHeaders: true,
-      });
-    }
-  }
-
-  setRef = (element) => {
-    this.typeformElement = element;
-  }
-
-  render() {
-    const style = {
-      height: '500px',
-      border: '1px solid #e4e4e4'
-    };
-
     return (
       <Container className={this.props['className']}>
-        <div ref={this.setRef} style={style} />
+        <Iframe
+          url={surveyUrl}
+          width="100%"
+          height="500px"
+          display="initial"
+          position="relative"
+          allowFullScreen
+        />
       </Container>
     );
   }
 }
-
-export default TypeformSurvey;

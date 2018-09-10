@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, quillEditedContent, fontSizes } from 'utils/styleUtils';
+import { media, quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -62,14 +62,10 @@ const Right = styled.aside`
 `;
 
 const ProjectDescriptionStyled = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
-  line-height: 26px;
   font-weight: 300;
-
-  img {
-    max-width: 100%;
-  }
+  line-height: 25px;
 
   h1 {
     font-size: ${fontSizes.xxxl}px;
@@ -79,7 +75,7 @@ const ProjectDescriptionStyled = styled.div`
 
   h2 {
     font-size: ${fontSizes.xxl}px;
-    line-height: 29px;
+    line-height: 33px;
     font-weight: 600;
   }
 
@@ -96,20 +92,48 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   p {
-    margin-bottom: 35px;
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 25px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  img {
+    max-width: 100%;
   }
 
   strong {
     font-weight: 500;
-  }
-
-  a {
-    color: ${(props) => props.theme.colors.clBlueDark};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlueDark)};
-    }
   }
 
   ${quillEditedContent()}
@@ -121,6 +145,7 @@ const ProjectImages = styled.div`
   flex-wrap: wrap;
   margin-left: -5px;
   margin-top: -5px;
+  margin-bottom: 30px;
   width: calc(100% + 10px);
 
   img {
@@ -136,10 +161,6 @@ const ProjectImages = styled.div`
       width: calc(33% - 9px);
     }
   }
-`;
-
-const StyledSharing = styled(Sharing) `
-  margin-top: 40px;
 `;
 
 interface InputProps {
@@ -194,7 +215,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <T value={project.attributes.title_multiloc} maxLength={50} >
             {(title) => {
               return (
-                <StyledSharing
+                <Sharing
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   userId={userId}
                   sharedContent="project"

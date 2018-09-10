@@ -18,7 +18,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // style
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 //
 import messages from './messages';
@@ -31,12 +31,13 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
 
 const CommentContainer = styled.div`
   padding: 20px;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px #d0d0d0;
   position: relative;
 `;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
+  margin-right: 60px;
 `;
 
 interface InputProps {
@@ -88,7 +89,7 @@ class ChildComment extends React.PureComponent<Props, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }

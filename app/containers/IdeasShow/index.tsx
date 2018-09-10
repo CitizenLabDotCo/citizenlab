@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get } from 'lodash';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { has, isString, get } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 
@@ -43,7 +41,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -60,7 +58,7 @@ const loadingEasing = 'ease-out';
 const loadingDelay = 100;
 
 const contentTimeout = 500;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
@@ -284,6 +282,7 @@ const LocationButton = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 30px;
 
   &:hover {
     ${LocationLabel} {
@@ -389,14 +388,16 @@ const TimeAgo = styled.div`
 `;
 
 const IdeaBody = styled.div`
-  color: #474747;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
   font-weight: 300;
-  line-height: 32px;
-  word-break: break-word;
+  line-height: 25px;
 
   p {
-    margin-bottom: 32px;
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
 
     &:last-child {
       margin-bottom: 0px;
@@ -405,7 +406,7 @@ const IdeaBody = styled.div`
 
   a {
     color: ${colors.clBlueDark};
-    text-decoration: none;
+    text-decoration: underline;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -417,7 +418,7 @@ const IdeaBody = styled.div`
     list-style-type: disc;
     list-style-position: outside;
     padding: 0;
-    padding-left: 30px;
+    padding-left: 25px;
     margin: 0;
     margin-bottom: 25px;
 
@@ -537,9 +538,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing) ``;
-
-const StyledSharingMobile = styled(StyledSharing) `
+const StyledSharingMobile = styled(Sharing) `
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -581,12 +580,12 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     const initialState = {
       authUser: null,
@@ -755,7 +754,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
     if (opened && !loaded) {
       loader = (
-        <StyledSpinner size="32px" />
+        <StyledSpinner />
       );
     }
 
@@ -956,7 +955,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
                       <T value={titleMultiloc} maxLength={50} >
                         {(title) => {
                           return (
-                            <StyledSharing
+                            <Sharing
                               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                               sharedContent="idea"
                               userId={authUser && authUser.data.id}

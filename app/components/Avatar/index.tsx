@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isFunction } from 'lodash';
+import { isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -21,19 +21,24 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
+  flex: 0 0 ${(props: any) => props.pxSize}px;
   width: ${(props: any) => props.pxSize}px;
   height: ${(props: any) => props.pxSize}px;
   cursor: inherit;
   color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.clickable {
     cursor: pointer;
   }
 `;
 
-const AvatarImage = styled.img`
-  width: 100%;
-  height: 100%;
+const AvatarImage: any = styled.img`
+  flex: 0 0 ${(props: any) => props.pxSize}px;
+  width: ${(props: any) => props.pxSize}px;
+  height: ${(props: any) => props.pxSize}px;
   border-radius: 50%;
   border: 1px solid #ccc;
   transition: all 100ms ease-out;
@@ -43,9 +48,10 @@ const AvatarImage = styled.img`
   }
 `;
 
-const AvatarIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
+const AvatarIcon: any = styled(Icon)`
+  flex: 0 0 ${(props: any) => props.pxSize}px;
+  width: ${(props: any) => props.pxSize}px;
+  height: ${(props: any) => props.pxSize}px;
   fill: ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
 
@@ -122,11 +128,11 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     let pxSize = 0;
 
     if (size === 'small') {
-      pxSize = 29;
+      pxSize = 30;
     } else if (size === 'medium') {
-      pxSize = 35;
+      pxSize = 36;
     } else {
-      pxSize = 160;
+      pxSize = 180;
     }
 
     return (
@@ -140,12 +146,14 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             className={`${isClickable ? 'clickable' : ''}`}
             src={avatarSrc}
             alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
+            pxSize={pxSize}
           />
         ) : (
           <AvatarIcon
             className={`${isClickable ? 'clickable' : ''}`}
             name="user"
             title={<FormattedMessage {...messages.noAvatarAltText} />}
+            pxSize={pxSize}
           />
         )}
       </Container>

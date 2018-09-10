@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
@@ -71,10 +71,11 @@ const IdeaTitle: any = styled.h3`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-  margin-bottom: .5em;
+  margin-bottom: 15px;
 `;
 
 const Footer = styled.div`
+  min-height: 50px;
   position: absolute;
   bottom: 18px;
   left: 20px;
@@ -84,12 +85,15 @@ const Footer = styled.div`
   justify-content: space-between;
 `;
 
-const StyledVoteControl = styled(VoteControl)``;
+const Spacer = styled.div`
+  flex: 1;
+`;
 
 const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   height: 21px;
-  margin-right: 7px;
+  margin-right: 5px;
+  margin-top: 2px;
   width: 30px;
 `;
 
@@ -254,7 +258,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <Author
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
-                size="small"
+                size="medium"
                 message={messages.byAuthorNameComponent}
                 notALink
               />
@@ -262,12 +266,13 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                <StyledVoteControl
+                <VoteControl
                   ideaId={idea.id}
                   unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                   disabledVoteClick={this.disabledVoteClick}
                   size="2"
                 />
+                <Spacer />
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>

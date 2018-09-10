@@ -1,5 +1,5 @@
 import React from 'react';
-import { isError } from 'lodash';
+import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -30,7 +30,7 @@ const IdeaNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 export default withRouter<InputProps>((props: InputProps & WithRouterProps) => (
   <GetIdea slug={props.params.slug}>

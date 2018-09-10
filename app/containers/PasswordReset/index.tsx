@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { isString } from 'lodash';
+import React from 'react';
+import { isString } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';

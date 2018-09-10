@@ -1,6 +1,5 @@
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, tap, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IEventData, eventsStream } from 'services/events';
@@ -26,7 +25,7 @@ export default class GetEvents extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  static defaultProps = {
     resetOnChange: true
   };
 

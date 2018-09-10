@@ -3,7 +3,7 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { ICommentData, commentStream } from 'services/comments';
-import { isString } from 'lodash';
+import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {

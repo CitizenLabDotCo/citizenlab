@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 

@@ -1,10 +1,8 @@
 // Libraries
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { take } from 'lodash';
+import { take } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Services
@@ -17,21 +15,15 @@ import Avatar from 'components/Avatar';
 // Style
 import styled, { css } from 'styled-components';
 
-const avatarSize = 74;
-
-const StyledAvatar = styled(Avatar)`
-  width: calc(${avatarSize}%);
-  height: calc(${avatarSize}%);
-  border-radius: 50%;
-  box-sizing: border-box;
-  border-style: solid;
-  border-width: 2px;
-  border-color: #fff;
+const AvatarWrapper = styled.div`
+  padding: 2px;
   background: #fff;
+  border-radius: 50%;
+  display: flex;
 `;
 
 const GroupAvatarWrapper: any = styled.div`
-  width: 3em;
+  width: 65px;
   height: 3em;
   display: flex;
   align-items: center;
@@ -40,25 +32,21 @@ const GroupAvatarWrapper: any = styled.div`
 
   ${(props: any) => props.count > 1 ? css`
 
-    ${StyledAvatar} {
+    ${AvatarWrapper} {
       position: absolute;
 
       &:nth-child(1) {
-        z-index: 3;
-        top: -4px;
-        left: calc(50% - (${avatarSize}%/2));
+        left: 0px;
       }
 
       &:nth-child(2) {
-        z-index: 2;
-        bottom: 0;
-        right: -4px;
+        z-index: 1;
+        left: 15px;
       }
 
       &:nth-child(3) {
-        z-index: 1;
-        bottom: 0;
-        left: -4px;
+        z-index: 2;
+        left: 30px;
       }
     }
   ` : css``};
@@ -127,7 +115,11 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
 
       return (
         <GroupAvatarWrapper className={className} count={count}>
-          {users.map(user => <StyledAvatar key={user.data.id} userId={user.data.id} size="small" />)}
+          {users.map((user) => (
+            <AvatarWrapper>
+              <Avatar key={user.data.id} userId={user.data.id} size="small" />
+            </AvatarWrapper>
+          ))}
         </GroupAvatarWrapper>
       );
     }

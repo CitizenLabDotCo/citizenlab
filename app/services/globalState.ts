@@ -1,5 +1,6 @@
 import { Observer, Observable } from 'rxjs';
-import { isObject, isEmpty, has } from 'lodash';
+import { distinctUntilChanged, filter, map, startWith, scan, refCount, publishReplay, first } from 'rxjs/operators';
+import { isObject, isEmpty, has } from 'lodash-es';
 
 // utils
 import shallowCompare from 'utils/shallowCompare';
@@ -65,34 +66,36 @@ class GlobalState {
 
     this.stream.observable = new Observable<State>((observer) => {
       this.stream.observer = observer;
-    })
-    .startWith({})
-    .scan((oldState: State, stateInput: IStateInput) => {
-      const { propertyName, updatedStateProperties } = stateInput;
+    }).pipe(
+      startWith({}),
+      scan((oldState: State, stateInput: IStateInput) => {
+        const { propertyName, updatedStateProperties } = stateInput;
 
-      const newState =  {
-        ...oldState,
-        [propertyName]: {
-          ...oldState[propertyName],
-          ...updatedStateProperties
-        }
-      };
+        const newState =  {
+          ...oldState,
+          [propertyName]: {
+            ...oldState[propertyName],
+            ...updatedStateProperties
+          }
+        };
 
-      return newState;
-    })
-    .filter(state => isObject(state) && !isEmpty(state))
-    .publishReplay(1)
-    .refCount();
+        return newState;
+      }),
+      filter(state => isObject(state) && !isEmpty(state)),
+      publishReplay(1),
+      refCount()
+    );
 
     // keep stream hot
     this.stream.observable.subscribe();
   }
 
   init<T>(propertyName: keyof State, initialState?: T) {
-    const observable: Observable<T> = this.stream.observable
-      .map(state => state[propertyName])
-      .filter(filteredState => isObject(filteredState) && !isEmpty(filteredState))
-      .distinctUntilChanged((filteredState, newFilteredState) => shallowCompare(filteredState, newFilteredState));
+    const observable: Observable<T> = this.stream.observable.pipe(
+      map(state => state[propertyName]),
+      filter(filteredState => isObject(filteredState) && !isEmpty(filteredState)),
+      distinctUntilChanged((filteredState, newFilteredState) => shallowCompare(filteredState, newFilteredState))
+    );
 
     const set = (newState: Partial<T>) => this.set(propertyName, newState);
 
@@ -121,9 +124,10 @@ class GlobalState {
   }
 
   get<T>(propertyName: keyof State) {
-    return this.stream.observable.map((state) => {
-      return has(state, propertyName) ? state[propertyName] : null;
-    }).first().toPromise() as Promise<T>;
+    return this.stream.observable.pipe(
+      map((state) => has(state, propertyName) ? state[propertyName] : null),
+      first()
+    ).toPromise() as Promise<T>;
   }
 }
 

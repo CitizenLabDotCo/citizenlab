@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { isError, isUndefined } from 'lodash';
+import { isError, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -63,7 +63,7 @@ const ProjectNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-interface InputProps { }
+export interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -103,7 +103,7 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
           ) : (
               loading ? (
                 <Loading>
-                  <Spinner size="32px" />
+                  <Spinner />
                 </Loading>
               ) : (
                 <>

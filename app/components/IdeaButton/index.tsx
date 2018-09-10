@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
+import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 
 // services
 import { IProjectData, projectByIdStream, IProject } from 'services/projects';
@@ -47,8 +45,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    const projectId$ = this.projectId$.distinctUntilChanged();
-    const phaseId$ = this.phaseId$.distinctUntilChanged();
+    const projectId$ = this.projectId$.pipe(distinctUntilChanged());
+    const phaseId$ = this.phaseId$.pipe(distinctUntilChanged());
 
     this.projectId$.next(this.props.projectId);
     this.phaseId$.next(this.props.phaseId);

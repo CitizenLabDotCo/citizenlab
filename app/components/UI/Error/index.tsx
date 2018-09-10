@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { get, isBoolean, isArray, isEmpty } from 'lodash';
+import { get, isArray, isEmpty } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import { darken } from 'polished';
-import { API, Message } from 'typings';
+import { CLError, Message } from 'typings';
 import { IInviteError } from 'services/invites';
 import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -22,17 +22,16 @@ interface IStyledErrorMessage {
 }
 
 const ErrorMessageText = styled.div`
-  flex: 1 0 auto;
-  color: ${(props) => props.theme.colors.clRedError};
+  color: ${colors.clRedError};
   font-weight: 400;
 
   a {
-    color: ${(props) => props.theme.colors.clRedError};
+    color: ${colors.clRedError};
     font-weight: 500;
     text-decoration: underline;
 
     &:hover {
-      color: ${(props) => darken(0.2, props.theme.colors.clRedError)};
+      color: ${darken(0.2, colors.clRedError)};
       text-decoration: underline;
     }
   }
@@ -46,7 +45,7 @@ const IconWrapper = styled.div`
   margin-right: 8px;
 
   svg {
-    fill: ${(props) => props.theme.colors.clRedError};
+    fill: ${colors.clRedError};
   }
 `;
 
@@ -156,6 +155,7 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   &.isList {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
     margin-left: 5px;
     margin-top: 10px;
@@ -170,47 +170,51 @@ const ErrorListItem = styled.li`
   }
 `;
 
-type Props = {
+interface DefaultProps {
+  size: string;
+  marginTop: string;
+  marginBottom: string;
+  showIcon: boolean;
+  showBackground: boolean;
+  className: string;
+  animate: boolean | undefined;
+}
+
+interface Props extends DefaultProps {
   text?: string | JSX.Element | null;
   fieldName?: string | undefined;
   errors?: string[];
-  apiErrors?: (API.Error | IInviteError)[] | null;
-  size?: string;
-  marginTop?: string;
-  marginBottom?: string;
-  showIcon?: boolean;
-  showBackground?: boolean;
-  className?: string;
-  animate?: boolean | undefined;
-};
-
-type State = {};
-
-function findMessage(fieldName: string | undefined, error: string) {
-  if (fieldName && messages[`${fieldName}_${error}`]) {
-    return messages[`${fieldName}_${error}`] as Message;
-  }
-
-  if (messages[error]) {
-    return messages[error] as Message;
-  }
-
-  return null;
+  apiErrors?: (CLError | IInviteError)[] | null;
 }
 
-export default class Error extends PureComponent<Props, State> {
-  render() {
-    const { text, errors, apiErrors, fieldName, } = this.props;
-    const timeout = { enter: 400, exit: 350 };
-    let { size, marginTop, marginBottom, showIcon, showBackground, className, animate } = this.props;
+interface State {}
 
-    size = (size || '1');
-    marginTop = (marginTop || '3px');
-    marginBottom = (marginTop || '0px');
-    showIcon = (isBoolean(showIcon) ? showIcon : true);
-    showBackground = (isBoolean(showBackground) ? showBackground : true);
-    className = (className || '');
-    animate = (animate !== undefined ? animate : true);
+export default class Error extends PureComponent<Props, State> {
+  static defaultProps: DefaultProps = {
+    size: '1',
+    marginTop: '3px',
+    marginBottom: '0px',
+    showIcon: true,
+    showBackground: true,
+    className: '',
+    animate: true
+  };
+
+  findMessage = (fieldName: string | undefined, error: string) => {
+    if (fieldName && messages[`${fieldName}_${error}`]) {
+      return messages[`${fieldName}_${error}`] as Message;
+    }
+
+    if (messages[error]) {
+      return messages[error] as Message;
+    }
+
+    return null;
+  }
+
+  render() {
+    const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate } = this.props;
+    const timeout = { enter: 400, exit: 350 };
 
     const errorElement = (text || errors || apiErrors) && (
       <CSSTransition
@@ -219,7 +223,7 @@ export default class Error extends PureComponent<Props, State> {
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage className="e2e-error-message" size={size} marginTop={marginTop} marginBottom={marginBottom}>
+        <StyledErrorMessage className={`e2e-error-message ${className}`} size={size} marginTop={marginTop} marginBottom={marginBottom}>
           <StyledErrorMessageInner showBackground={showBackground} className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}>
             {showIcon && <IconWrapper><Icon name="error" /></IconWrapper>}
 
@@ -229,7 +233,7 @@ export default class Error extends PureComponent<Props, State> {
               }
 
               {errors && isArray(errors) && !isEmpty(errors) && errors.map((error) => {
-                const errorMessage = findMessage(fieldName, error);
+                const errorMessage = this.findMessage(fieldName, error);
 
                 if (errorMessage) {
                   return (
@@ -245,7 +249,7 @@ export default class Error extends PureComponent<Props, State> {
               {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
                 <ErrorList>
                   {apiErrors.map((error) => {
-                    const errorMessage = findMessage(fieldName, error.error);
+                    const errorMessage = this.findMessage(fieldName, error.error);
 
                     if (errorMessage) {
                       const value = get(error, 'value', null);

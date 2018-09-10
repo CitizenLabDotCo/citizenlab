@@ -1,6 +1,5 @@
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IPhaseData, phasesStream } from 'services/phases';
@@ -27,7 +26,7 @@ export default class GetPhases extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  static defaultProps = {
     resetOnChange: true
   };
 
