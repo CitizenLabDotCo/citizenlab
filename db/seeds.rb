@@ -275,7 +275,7 @@ if Apartment::Tenant.current == 'localhost'
         gender: gender,
         birthyear: rand(2) === 0 ? nil : (1935 + rand(70)),
         education: rand(2) === 0 ? nil : (rand(7)+2).to_s,
-        avatar: (rand(5) == 0) ? generate_avatar(gender) : nil,
+        avatar: (rand(3) == 0) ? generate_avatar(gender) : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
         custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
         registration_completed_at: Time.now
