@@ -6,7 +6,7 @@ import { useScroll } from 'react-router-scroll';
 import 'utils/lazyImagesObserver';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init, configureScope } from '@sentry/browser';
+import { init } from '@sentry/browser';
 
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
@@ -24,10 +24,10 @@ import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
 
 if (process.env.NODE_ENV !== 'development' && process.env.SENTRY_DSN) {
-  configureScope((scope) => {
-    scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
-    scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
-  });
+  // configureScope((scope) => {
+  //   scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
+  //   scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
+  // });
 
   init({
     dsn: process.env.SENTRY_DSN,
