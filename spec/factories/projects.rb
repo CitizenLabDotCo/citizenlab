@@ -88,7 +88,7 @@ FactoryBot.define do
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
 
         end_at = active_phase.start_at
-        phases_before.chars.map(&:to_sym).reverse.each do |sequence_char|
+        phases_before&.chars&.map(&:to_sym)&.reverse&.each do |sequence_char|
           project.phases << create(:phase, 
             end_at: end_at - 1,
             start_at: end_at -= (1 + rand(120)).days,
@@ -97,7 +97,7 @@ FactoryBot.define do
         end
 
         start_at = active_phase.end_at
-        phases_after.chars.map(&:to_sym).each do |sequence_char|
+        phases_after&.chars&.map(&:to_sym)&.each do |sequence_char|
           project.phases << create(:phase, 
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
