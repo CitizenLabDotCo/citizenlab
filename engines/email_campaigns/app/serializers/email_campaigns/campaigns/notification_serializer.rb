@@ -46,11 +46,11 @@ module EmailCampaigns
       attributes :id, :slug, :title_multiloc, :body_multiloc, :upvotes_count, :downvotes_count, :url, :published_at, :created_at, :author_name
 
       def published_at
-        object.created_at.iso8601
+        object.published_at.iso8601
       end
 
       def created_at
-        object.published_at.iso8601
+        object.created_at.iso8601
       end
 
       def url
