@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 
 // Services
@@ -20,15 +20,13 @@ export interface InjectedLocalized {
   tenantLocales: Locale[];
 }
 
-interface Props {}
-
-interface State {
+export interface State {
   locale: Locale;
   tenantLocales: Locale[];
 }
 
-export default function localize<PassedProps>(ComposedComponent) {
-  return class Localized extends React.PureComponent<Props & PassedProps, State>{
+export default function localize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
+  return class Localized extends PureComponent<P, State> {
     subscriptions: Subscription[];
 
     constructor(props) {
@@ -68,10 +66,10 @@ export default function localize<PassedProps>(ComposedComponent) {
 
       if (locale && tenantLocales) {
         return (
-          <ComposedComponent
+          <Component
             localize={this.localize}
-            locale={this.state.locale}
-            tenantLocales={this.state.tenantLocales}
+            locale={locale}
+            tenantLocales={tenantLocales}
             {...this.props}
           />
         );

@@ -25,8 +25,8 @@ type Props = {
 class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       serie: null,
     };
@@ -122,4 +122,4 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(withTheme(AgeChart as any) as any);
+export default injectIntl(withTheme<Props & InjectedIntlProps, State>(AgeChart));
