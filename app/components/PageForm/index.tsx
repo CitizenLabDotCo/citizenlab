@@ -8,10 +8,11 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import ErrorComponent from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Link from 'utils/cl-router/Link';
+import FileUploader from 'components/UI/FileUploader';
 
 // Resources
 // import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -21,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 export interface FormValues {
   slug?: string;
@@ -29,10 +30,13 @@ export interface FormValues {
   body_multiloc: Multiloc;
 }
 
-export interface Props {
+interface Props {
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
   pageId?: string;
+  onPageFileAdd: (fileToAdd: UploadFile) => void;
+  onPageFileRemove: (fileToRemove: UploadFile) => void;
+  localPageFiles: UploadFile[] | null | Error | undefined;
 }
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -72,9 +76,28 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     );
   }
 
+  renderFileUploader = (props: Props) => () => {
+    const { localPageFiles } = props;
+    return (
+      <FileUploader
+        onFileAdd={this.handlePageFileOnAdd}
+        onFileRemove={this.handlePageFileOnRemove}
+        localFiles={localPageFiles}
+      />
+    );
+  }
+
+  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    this.props.onPageFileAdd(fileToAdd);
+  }
+
+  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
+    this.props.onPageFileRemove(fileToRemove);
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
-
+    console.log(touched);
     return (
       <Form>
         <Section>
@@ -86,7 +109,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
                 label={<FormattedMessage {...messages.pageTitle} />}
               />
               {touched.title_multiloc &&
-                <Error
+                <ErrorComponent
                   fieldName="title_multiloc"
                   apiErrors={errors.title_multiloc as any}
                 />
@@ -104,7 +127,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc &&
-              <Error
+              <ErrorComponent
                 fieldName="body_multiloc"
                 apiErrors={errors.body_multiloc as any}
               />
@@ -120,7 +143,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
                 label={<FormattedMessage {...messages.pageSlug} />}
               />
               {touched.slug &&
-                <Error
+                <ErrorComponent
                   fieldName="slug"
                   apiErrors={errors.slug as any}
                 />
@@ -131,6 +154,13 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             </SectionField>
           }
 
+        </Section>
+
+        <Section>
+          <Field
+            name="page_files"
+            render={this.renderFileUploader(this.props)}
+          />
         </Section>
 
         <FormikSubmitWrapper
