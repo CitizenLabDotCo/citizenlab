@@ -11,6 +11,7 @@ import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
+import FileDisplay from 'components/UI/FileDisplay';
 
 // services
 import { PageLink } from 'services/pageLink';
@@ -20,6 +21,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -55,6 +57,8 @@ const Loading = styled.div`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
+
+const PageFilesHeader = styled.h3``;
 
 const StyledContentContainer = styled(ContentContainer) `
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
@@ -176,6 +180,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   page: GetPageChildProps;
+  pageFiles: GetResourceFileObjectsChildProps;
   pageLinks: GetPageLinksChildProps;
 }
 
@@ -186,7 +191,7 @@ interface State { }
 class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageLinks } = this.props;
+    const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
     if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
@@ -218,6 +223,17 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
           </Helmet>
 
           <PageContent>
+            {pageFiles &&
+              <PageFilesHeader>
+                <FormattedMessage {...messages.projectAttachments} />
+              </PageFilesHeader>
+            }
+            {Array.isArray(pageFiles) && pageFiles.map(file => (
+              <FileDisplay
+                key={file.id}
+                file={file}
+              />
+            ))}
             <StyledContentContainer>
               <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
                 <PageTitle>
@@ -258,6 +274,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
+  pageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFileObjects>,
   pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
