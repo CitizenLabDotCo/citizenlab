@@ -270,4 +270,9 @@ export default defineMessages({
     id: 'app.components.IdeasShow.replyToComment',
     defaultMessage: 'Reply to comment',
   },
+  projectAttachments: {
+    id: 'app.components.IdeasShow.projectAttachments',
+    defaultMessage: 'Attachments',
+  },
 });
+
