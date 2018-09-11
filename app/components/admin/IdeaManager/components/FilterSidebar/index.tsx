@@ -34,7 +34,6 @@ interface Props {
 }
 
 class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
-
   handleTabChange = (_event, data) => {
     const newActiveFilterMenu = data.panes[data.activeIndex].id;
     this.props.onChangeActiveFilterMenu(newActiveFilterMenu);

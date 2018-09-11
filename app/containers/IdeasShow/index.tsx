@@ -23,7 +23,7 @@ import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
-import Spinner from 'components/UI/Spinner';
+import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
 
@@ -62,7 +62,7 @@ const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
-const StyledSpinner = styled(Spinner) `
+const StyledSpinner = styled<SpinnerProps>(Spinner) `
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
 `;
 
@@ -749,14 +749,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   render() {
     const { inModal, intl: { formatMessage } } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
-    let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
-
-    if (opened && !loaded) {
-      loader = (
-        <StyledSpinner />
-      );
-    }
 
     if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -769,7 +762,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaAdress = (idea.data.attributes.location_description || null);
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
-
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
 
       content = (
@@ -996,7 +988,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           exit={false}
         >
           <Loading>
-            {loader}
+            <StyledSpinner />
           </Loading>
         </CSSTransition>
 

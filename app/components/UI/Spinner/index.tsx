@@ -31,7 +31,9 @@ interface DefaultProps {
   color: string;
 }
 
-interface Props extends DefaultProps {}
+export interface ExtraProps {}
+
+interface Props extends DefaultProps, ExtraProps {}
 
 interface State {}
 

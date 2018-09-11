@@ -1,13 +1,13 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // Components
-import T from 'components/T';
 import Label from 'components/UI/Label';
 
 // I18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // Styling
 import styled from 'styled-components';
@@ -35,9 +35,7 @@ interface Props {
   className?: string;
 }
 
-interface State {}
-
-export default class MobileTimeline extends React.PureComponent<Props, State> {
+class MobileTimeline extends PureComponent<Props & InjectedLocalized> {
   handleOnChange = (event) => {
     event.preventDefault();
     this.props.onPhaseSelection(event.target.value);
@@ -54,7 +52,7 @@ export default class MobileTimeline extends React.PureComponent<Props, State> {
         <StyledSelect value={selectedPhase || phases[0].id} onChange={this.handleOnChange}>
           {phases.map((phase) => (
             <option key={phase.id} value={phase.id} aria-selected={selectedPhase === phase.id ? true : false}>
-              <T value={phase.attributes.title_multiloc} />
+              {this.props.localize(phase.attributes.title_multiloc)}
             </option>
           ))}
         </StyledSelect>
@@ -62,3 +60,5 @@ export default class MobileTimeline extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export default localize(MobileTimeline);
