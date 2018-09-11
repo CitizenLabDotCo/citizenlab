@@ -16,6 +16,7 @@ import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 
 // services
 import { localeStream } from 'services/locale';
@@ -26,6 +27,7 @@ import { projectsStream, IProjects, IProjectData } from 'services/projects';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -33,11 +35,14 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile, Locale } from 'typings';
+import { IOption, ImageFile, UploadFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+
+// resource components
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const Form = styled.form`
   width: 100%;
@@ -70,7 +75,11 @@ export interface IIdeaFormOutput {
   imageFile: ImageFile[] | null;
 }
 
-interface Props {
+interface DataProps {
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+}
+
+interface InputProps {
   title: string | null;
   description: string | null;
   selectedTopics: IOption[] | null;
@@ -79,6 +88,8 @@ interface Props {
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
 }
+
+interface Props extends DataProps, InputProps {}
 
 interface State {
   topics: IOption[] | null;
@@ -91,6 +102,7 @@ interface State {
   imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
+  localIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -110,7 +122,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       position: '',
       imageFile: null,
       titleError: null,
-      descriptionError: null
+      descriptionError: null,
+      localIdeaFiles: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -118,7 +131,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   componentDidMount() {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, remoteIdeaFiles } = this.props;
 
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
@@ -132,6 +145,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       imageFile,
       title: (title || ''),
       description: description || '',
+      localIdeaFiles: remoteIdeaFiles,
     });
 
     this.subscriptions = [
@@ -176,6 +190,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title'];
     const oldPartialProps = pick(prevProps, partialPropertyNames);
     const newPartialProps = pick(this.props, partialPropertyNames);
+    const { remoteIdeaFiles } = this.props;
 
     if (!isEqual(oldPartialProps, newPartialProps)) {
       const title = (this.props.title || '');
@@ -193,6 +208,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       || prevProps.imageFile && this.props.imageFile && prevProps.imageFile[0].base64 !== this.props.imageFile[0].base64
     ) {
       this.setState({ imageFile: this.props.imageFile });
+    }
+
+    if (prevProps.remoteIdeaFiles !== remoteIdeaFiles) {
+      this.setState({ localIdeaFiles: remoteIdeaFiles });
     }
   }
 
@@ -269,6 +288,35 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     return (!titleError && !descriptionError);
   }
 
+  handleIdeaFileOnAdd = (fileToAdd: UploadFile) => {
+    this.setState((prevState: State) => {
+      // If we don't have localIdeaFiles, we assign an empty array
+      // A spread operator works on an empty array, but not on null
+      const oldlLocalIdeaFiles = !isNilOrError(prevState.localIdeaFiles) ? prevState.localIdeaFiles : [];
+
+      return {
+        localIdeaFiles: [
+          ...oldlLocalIdeaFiles,
+          fileToAdd
+        ]
+      };
+    });
+  }
+
+  handleIdeaFileOnRemove = (fileToRemove: UploadFile) => {
+    this.setState((prevState: State) => {
+      let localIdeaFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localIdeaFiles)) {
+        localIdeaFiles = prevState.localIdeaFiles.filter(ideaFile => ideaFile.filename !== fileToRemove.filename);
+      }
+
+      return {
+        localIdeaFiles
+      };
+    });
+  }
+
   handleOnSubmit = () => {
     const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
 
@@ -290,7 +338,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
     const { topics, title, description, selectedTopics, position, imageFile, titleError, descriptionError } = this.state;
-
+    const { localIdeaFiles } = this.state;
     return (
       <Form id="idea-form" className={className}>
         <FormElement name="titleInput">
@@ -369,9 +417,23 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
             />
           </label>
         </FormElement>
+
+        <FormElement>
+          <FileUploader
+            onFileAdd={this.handleIdeaFileOnAdd}
+            onFileRemove={this.handleIdeaFileOnRemove}
+            localFiles={localIdeaFiles}
+          />
+        </FormElement>
       </Form>
     );
   }
 }
 
-export default withRouter<Props>(injectIntl(IdeaForm));
+const IdeaFormWithHOCs = injectIntl(IdeaForm);
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <GetResourceFileObjects resourceId={inputProps.params.id} resourceType="idea">
+    {remoteIdeaFiles => <IdeaFormWithHOCs {...inputProps} remoteIdeaFiles={remoteIdeaFiles} />}
+  </GetResourceFileObjects>
+));
