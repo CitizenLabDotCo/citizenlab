@@ -386,7 +386,7 @@ const TimeAgo = styled.div`
   `}
 `;
 
-const IdeaBody = styled.div`
+const IdeaDescription = styled.div`
   color: #474747;
   font-size: ${fontSizes.large}px;
   font-weight: 300;
@@ -761,7 +761,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const ideaBody = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
+      const ideaDescription = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -881,9 +881,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
-                  <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
-                  </IdeaBody>
+                  <IdeaDescription className={`${!ideaImageLarge && 'noImage'}`}>
+                    <span dangerouslySetInnerHTML={{ __html: ideaDescription }} />
+                  </IdeaDescription>
                 </Fragment>
 
                 <SeparatorRow />
