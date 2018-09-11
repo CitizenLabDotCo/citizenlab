@@ -7,6 +7,7 @@ import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
 import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
 import { pageFilesStream, IPageFiles } from 'services/pageFiles';
 import { eventFilesStream, IEventFiles } from 'services/eventFiles';
+import { ideaFilesStream, IIdeaFiles } from 'services/ideaFiles';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
@@ -16,7 +17,7 @@ import { UploadFile } from 'typings';
 
 interface InputProps {
   resetOnChange?: boolean;
-  resourceType: 'project' | 'phase' | 'event' | 'page';
+  resourceType: 'project' | 'phase' | 'event' | 'page' | 'idea';
   resourceId: string | null;
 }
 
@@ -63,7 +64,9 @@ export default class GetResourceFileObjects extends React.Component<Props, State
           if (resourceType === 'phase') streamFn = phaseFilesStream;
           if (resourceType === 'event') streamFn = eventFilesStream;
           if (resourceType === 'page') streamFn = pageFilesStream;
-          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | IPageFiles | null>;
+          if (resourceType === 'idea') streamFn = ideaFilesStream;
+
+          return streamFn(resourceId).observable as Observable<IProjectFiles | IPhaseFiles | IEventFiles | IPageFiles | IIdeaFiles | null>;
         }),
         switchMap((files) => {
           if (files && files.data && files.data.length > 0) {
