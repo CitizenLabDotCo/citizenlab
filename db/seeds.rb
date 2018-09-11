@@ -198,14 +198,9 @@ admin_koen = {
 
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.apply_template('base')
-  
+  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
   User.create!(admin_koen)
 end
-
-tenant_template = TenantTemplateService.new.available_templates
-tenant_template = tenant_template.find{|t| t == Apartment::Tenant.current}
-
-TenantTemplateService.new.apply_template('base') if tenant_template
 
 
 
@@ -249,6 +244,7 @@ if Apartment::Tenant.current == 'localhost'
   end
 
   TenantTemplateService.new.apply_template('base')
+  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
   User.create!(admin_koen)
 
   if SEED_SIZE != 'empty'
