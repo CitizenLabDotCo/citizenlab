@@ -28,6 +28,7 @@ export interface FormValues {
   slug?: string;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  page_files: UploadFile[] | undefined;
 }
 
 interface Props {
