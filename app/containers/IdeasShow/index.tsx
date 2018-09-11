@@ -26,6 +26,7 @@ import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
+import FileDisplay from 'components/UI/FileDisplay';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -52,6 +53,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -434,6 +436,8 @@ const IdeaDescription = styled.div`
   ${quillEditedContent()}
 `;
 
+const IdeaFilesHeader = styled.h3``;
+
 const CommentsTitle = styled.h2`
   color: ${colors.text};
   font-size: ${fontSizes.xxl}px;
@@ -560,10 +564,14 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-type Props = {
+interface DataProps {
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+}
+
+interface Props extends DataProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
-};
+}
 
 type State = {
   authUser: IUser | null;
@@ -746,7 +754,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage } } = this.props;
+    const { inModal, intl: { formatMessage }, remoteIdeaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
@@ -886,6 +894,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </IdeaDescription>
                 </Fragment>
 
+                {remoteIdeaFiles &&
+                  <IdeaFilesHeader>
+                    <FormattedMessage {...messages.projectAttachments} />
+                  </IdeaFilesHeader>
+                }
+                {Array.isArray(remoteIdeaFiles) && remoteIdeaFiles.map(file => (
+                  <FileDisplay
+                    key={file.id}
+                    file={file}
+                  />
+                ))}
+
                 <SeparatorRow />
 
                 <T value={titleMultiloc} maxLength={50} >
@@ -1016,4 +1036,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-export default injectIntl(localize(IdeasShow));
+const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
+
+export default (props: Props) => (
+  <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
+    {remoteIdeaFiles => <IdeasShowWithHOCs {...props} remoteIdeaFiles={remoteIdeaFiles} />}
+  </GetResourceFileObjects>
+);
