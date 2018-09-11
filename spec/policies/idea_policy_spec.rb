@@ -282,4 +282,104 @@ describe IdeaPolicy do
       end
     end
   end
+
+  context "on idea for a project in an ideation phase" do 
+    let(:project) { 
+      pj = create(:project_with_current_phase);
+      current_phase = pj.phases.sort_by(&:start_at).last;
+      current_phase.update!(participation_method: 'ideation')
+      pj.reload
+    }
+    let(:author) { create(:user) }
+    let!(:idea) { create(:idea, project: project, author: author, phases: project.phases) }
+
+    context "for a visitor" do
+      let(:user) { nil }
+
+      it { should permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should not index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for a user" do
+      let(:user) { create(:user) }
+
+      it { should permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for an admin" do
+      let(:user) { create(:admin) }
+
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
+
+  context "on idea for a project of which the last phase has ended" do 
+    let(:project) { 
+      pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"});
+      current_phase = pj.phases.sort_by(&:start_at).last;
+      current_phase.destroy!
+      pj.reload
+    }
+    let(:author) { create(:user) }
+    let!(:idea) { create(:idea, project: project, author: author, phases: project.phases) }
+
+    context "for a visitor" do
+      let(:user) { nil }
+
+      it { should permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should not index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for a user" do
+      let(:user) { create(:user) }
+
+      it { should permit(:show)    }
+      it { should_not permit(:create)  }
+      it { should_not permit(:update)  }
+      it { should_not permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+
+    context "for an admin" do
+      let(:user) { create(:admin) }
+
+      it { should permit(:show)    }
+      it { should permit(:create)  }
+      it { should permit(:update)  }
+      it { should permit(:destroy) }
+
+      it "should index the idea" do
+        expect(scope.resolve.size).to eq 1
+      end
+    end
+  end
 end
