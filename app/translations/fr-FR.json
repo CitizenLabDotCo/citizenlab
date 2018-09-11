@@ -22,7 +22,7 @@
   "app.components.IdeaForm.imageUploadPlaceholder": "Choisissez une image qui illustre votre idée",
   "app.components.IdeaForm.locationLabel": "Emplacement",
   "app.components.IdeaForm.locationPlaceholder": "Entrez un emplacement pour votre idée",
-  "app.components.IdeaForm.projectsLabel": "Projet",
+  "app.components.IdeaForm.projectsLabel": "{tenantName, select, frw {Commune} other {Projet}}",
   "app.components.IdeaForm.projectsPlaceholder": "A quel projet appartient votre idée ?",
   "app.components.IdeaForm.titleEmptyError": "Veuillez donner un titre à votre idée",
   "app.components.IdeaForm.titleLabel": "Titre",
