@@ -328,7 +328,7 @@ class PageEditor extends React.PureComponent<Props, State>{
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
+  page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
   remotePageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.attributes.slug : null} resourceType="page">{render}</GetResourceFileObjects>
 });
 
