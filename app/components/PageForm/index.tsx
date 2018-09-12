@@ -28,7 +28,6 @@ export interface FormValues {
   slug?: string;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  page_files: UploadFile[] | undefined;
 }
 
 interface Props {
@@ -98,7 +97,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
   render() {
     const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
-    console.log(touched);
     return (
       <Form>
         <Section>
