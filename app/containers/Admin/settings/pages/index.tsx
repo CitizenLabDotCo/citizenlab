@@ -8,6 +8,7 @@ export default class AdminSettingsPages extends PureComponent {
       <>
         {LEGAL_PAGES.map((slug) => (
           <PageEditor
+            id={slug}
             key={slug}
             slug={slug}
           />

@@ -14,6 +14,8 @@ import PageForm, { FormValues } from 'components/PageForm';
 
 // Services & resources
 import { createPage, updatePage, IPage } from 'services/pages';
+import { addPageFile, deletePageFile } from 'services/pageFiles';
+
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
@@ -104,6 +106,7 @@ interface DataProps {
 interface InputProps {
   className?: string;
   slug: string;
+  id: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -161,53 +164,53 @@ class PageEditor extends React.PureComponent<Props, State>{
     return initialValues;
   }
 
-  // getFilesToAddPromises = () => {
-  //   const { localPageFiles } = this.state;
-  //   const { remotePageFiles } = this.props;
-  //   const { id } = this.props.params;
-  //   let filesToAdd = localPageFiles;
-  //   let filesToAddPromises: Promise<any>[] = [];
+  getFilesToAddPromises = (values: FormValues) => {
+    const { local_page_files } = values;
+    const localPageFiles = [...local_page_files];
+    const { id, remotePageFiles } = this.props;
+    let filesToAdd = localPageFiles;
+    let filesToAddPromises: Promise<any>[] = [];
 
-  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
-  //     // localPageFiles = local state of files
-  //     // This means those previously uploaded + files that have been added/removed
-  //     // remotePageFiles = last saved state of files (remote)
+    if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+      // localPageFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remotePageFiles = last saved state of files (remote)
 
-  //     filesToAdd = localPageFiles.filter((localPageFile) => {
-  //       return !remotePageFiles.some(remotePageFile => remotePageFile.filename === localPageFile.filename);
-  //     });
-  //   }
+      filesToAdd = localPageFiles.filter((localPageFile) => {
+        return !remotePageFiles.some(remotePageFile => remotePageFile.filename === localPageFile.filename);
+      });
+    }
 
-  //   if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-  //     filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(id as string, fileToAdd.base64, fileToAdd.name));
-  //   }
+    if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(id as string, fileToAdd.base64, fileToAdd.name));
+    }
 
-  //   return filesToAddPromises;
-  // }
+    return filesToAddPromises;
+  }
 
-  // getFilesToRemovePromises = () => {
-  //   const { localPageFiles } = this.state;
-  //   const { remotePageFiles } = this.props;
-  //   const { id } = this.props.params;
-  //   let filesToRemove = remotePageFiles;
-  //   let filesToRemovePromises: Promise<any>[] = [];
+  getFilesToRemovePromises = (values: FormValues) => {
+    const { local_page_files } = values;
+    const localPageFiles = [...local_page_files];
+    const { id, remotePageFiles } = this.props;
+    let filesToRemove = remotePageFiles;
+    let filesToRemovePromises: Promise<any>[] = [];
 
-  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
-  //     // localPageFiles = local state of files
-  //     // This means those previously uploaded + files that have been added/removed
-  //     // remotePageFiles = last saved state of files (remote)
+    if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+      // localPageFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remotePageFiles = last saved state of files (remote)
 
-  //     filesToRemove = remotePageFiles.filter((remotePageFile) => {
-  //       return !localPageFiles.some(localPageFile => localPageFile.filename === remotePageFile.filename);
-  //     });
-  //   }
+      filesToRemove = remotePageFiles.filter((remotePageFile) => {
+        return !localPageFiles.some(localPageFile => localPageFile.filename === remotePageFile.filename);
+      });
+    }
 
-  //   if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-  //     filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(id as string, fileToRemove.id));
-  //   }
+    if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(id as string, fileToRemove.id));
+    }
 
-  //   return filesToRemovePromises;
-  // }
+    return filesToRemovePromises;
+  }
 
   // handleOnSubmit = async () => {
   //   const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
@@ -233,6 +236,8 @@ class PageEditor extends React.PureComponent<Props, State>{
     const { page } = this.props;
 
     let savePromise: Promise<IPage> | null = null;
+    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(values);
+    const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(values);
 
     if (page === undefined) {
       return;
