@@ -13,7 +13,8 @@ module EmailCampaigns
     end
 
     def update
-      @consent.assign_attributes(consent_params)
+      @consent.assign_attributes consent_params
+      authorize @consent
       if @consent.save
         render json: @consent, status: :ok
       else
