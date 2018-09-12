@@ -136,13 +136,12 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 
   initialValues = () => {
-    const { page, remotePageFiles } = this.props;
+    const { page } = this.props;
     if (!isNilOrError(page)) {
       return {
         title_multiloc: page.attributes.title_multiloc,
         slug: page.attributes.slug,
         body_multiloc: page.attributes.body_multiloc,
-        page_files: remotePageFiles
       };
     } else {
       return {
