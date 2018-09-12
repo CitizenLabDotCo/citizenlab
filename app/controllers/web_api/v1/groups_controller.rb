@@ -38,8 +38,10 @@ class WebApi::V1::GroupsController < ApplicationController
 
   # patch
   def update
+    @group.assign_attributes group_params
+    authorize @group
     SideFxGroupService.new.before_update(@group, current_user)
-    if @group.update(group_params)
+    if @group.save
       SideFxGroupService.new.after_update(@group, current_user)
       render json: @group.reload, status: :ok
     else

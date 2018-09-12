@@ -31,10 +31,9 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def update
-    @event.assign_attributes(event_params)
-
+    @event.assign_attributes event_params
+    authorize @event
     SideFxEventService.new.before_update(@event, current_user)
-
     if @event.save
       SideFxEventService.new.after_update(@event, current_user)
       render json: @event, status: :ok
