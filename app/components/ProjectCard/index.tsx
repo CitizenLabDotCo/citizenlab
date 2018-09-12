@@ -160,6 +160,7 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
+  width: 100%;
 `;
 
 const ProjectDescription = styled.div`
