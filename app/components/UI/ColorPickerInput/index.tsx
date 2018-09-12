@@ -52,7 +52,7 @@ const Cover = styled.div`
   left: 0px;
 `;
 
-interface Props {
+export interface Props {
   type: 'text';
   value: string;
   onChange: (arg: string) => void;

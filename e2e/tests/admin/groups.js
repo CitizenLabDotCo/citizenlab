@@ -35,23 +35,18 @@ module.exports = {
 
     usersPage
       .navigate()
-      .getText('@firstGroupUserCount', (count) => {
-        browser.expect(count.value).to.equal("0");
-        browser.getText('.e2e-user-table tbody tr:first-child td:nth-child(3)', (nom) => {
-          browser
-            .click('.e2e-user-table tbody tr:first-child td:first-child')
-            .click('.e2e-move-users')
-            .click('.e2e-dropdown-item:first-child')
-            .click('.e2e-dropdown-submit')
-            .waitForElementNotPresent('.e2e-dropdown-submit');
-          usersPage
-            .getText('@firstGroupUserCount', (newCount) => {
-              browser.pause(300);
-              browser.expect(newCount.value).to.equal("1");
-              usersPage.click('@firstGroupUserCount');
-              browser.expect.element('.e2e-user-table').text.to.contain(nom.value);
-            });
-        });
+      .expect.element('@firstGroupUserCount').text.to.equal(0)
+
+      browser.getText('.e2e-user-table tbody tr:first-child td:nth-child(3)', (name) => {
+        browser
+          .click('.e2e-user-table tbody tr:first-child .e2e-checkbox')
+          .click('.e2e-move-users')
+          .click('.e2e-dropdown-item:first-child')
+          .click('.e2e-dropdown-submit')
+          .waitForElementNotPresent('.e2e-dropdown-submit')
+          .click('.e2e-group-user-count');
+        browser.expect.element('.e2e-group-user-count').text.to.equal(1)
+        browser.expect.element('.e2e-user-table').text.to.contain(name.value);
       });
   },
   newRulesGroup: (browser) => {

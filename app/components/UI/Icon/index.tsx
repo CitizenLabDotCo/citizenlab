@@ -511,6 +511,12 @@ const icons = {
       <path d="M8.636 4.545V15A3.635 3.635 0 0 1 5 18.636 3.635 3.635 0 0 1 1.364 15V3.636a2.274 2.274 0 0 1 4.545 0v9.546a.909.909 0 1 1-1.818 0V4.545H2.727v8.637a2.273 2.273 0 0 0 4.546 0V3.636A3.635 3.635 0 0 0 3.636 0 3.635 3.635 0 0 0 0 3.636V15a5 5 0 0 0 10 0V4.545H8.636z" />
     </svg>
   ),
+  code: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {injectTitle(title)}
+      <path d="M6.29 8.83333L2.4225 5L6.3325 1.16667L5.1 0L0 5L5.1 10L6.29 8.83333ZM10.71 8.83333L14.62 5L10.71 1.16667L11.9 0L17 5L11.9 10L10.71 8.83333Z" fill="white" />
+    </svg>
+  )
 };
 
 const clIcons = {
