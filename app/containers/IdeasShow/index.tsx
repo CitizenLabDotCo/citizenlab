@@ -568,10 +568,12 @@ interface DataProps {
   remoteIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
-interface Props extends DataProps {
+interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
 }
+
+interface Props extends DataProps, InputProps {}
 
 type State = {
   authUser: IUser | null;
@@ -1038,8 +1040,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
 const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
 
-export default (props: Props) => (
-  <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
-    {remoteIdeaFiles => <IdeasShowWithHOCs {...props} remoteIdeaFiles={remoteIdeaFiles} />}
+export default (inputProps: InputProps) => (
+  <GetResourceFileObjects resourceId={inputProps.ideaId} resourceType="idea">
+    {remoteIdeaFiles => <IdeasShowWithHOCs {...inputProps} remoteIdeaFiles={remoteIdeaFiles} />}
   </GetResourceFileObjects>
 );
