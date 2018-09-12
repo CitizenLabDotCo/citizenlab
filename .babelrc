@@ -4,8 +4,7 @@
       "@babel/preset-env",
       {
         "useBuiltIns": "usage",
-        "targets": "> 1%, last 1 version, Safari > 8, IE 11",
-        "debug": true
+        "targets": "> 1%, last 1 version, Safari > 8, IE 11"
       }
     ],
     "@babel/preset-react",

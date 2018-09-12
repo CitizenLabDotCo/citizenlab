@@ -11,7 +11,7 @@ const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
 const config = {
-  entry: ['@babel/polyfill', path.join(process.cwd(), 'app/root')],
+  entry: path.join(process.cwd(), 'app/root'),
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
