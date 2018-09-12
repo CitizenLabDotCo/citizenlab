@@ -48,8 +48,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    # create?
-    record.draft? || (user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.project_id)))
+    create?
   end
 
   def destroy?

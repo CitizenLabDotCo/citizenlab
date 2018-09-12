@@ -283,15 +283,10 @@ describe IdeaPolicy do
     end
   end
 
-  context "on idea for a project in an ideation phase" do 
-    let(:project) { 
-      pj = create(:project_with_current_phase);
-      current_phase = pj.phases.sort_by(&:start_at).last;
-      current_phase.update!(participation_method: 'ideation')
-      pj.reload
-    }
+  context "on idea for a survey project" do 
+    let(:project) { create(:continuous_survey_project) }
     let(:author) { create(:user) }
-    let!(:idea) { create(:idea, project: project, author: author, phases: project.phases) }
+    let!(:idea) { create(:idea, project: project, author: author) }
 
     context "for a visitor" do
       let(:user) { nil }
@@ -306,8 +301,8 @@ describe IdeaPolicy do
       end
     end
 
-    context "for a user" do
-      let(:user) { create(:user) }
+    context "for the author" do
+      let(:user) { author }
 
       it { should permit(:show)    }
       it { should_not permit(:create)  }
@@ -335,8 +330,8 @@ describe IdeaPolicy do
 
   context "on idea for a project of which the last phase has ended" do 
     let(:project) { 
-      pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"});
-      current_phase = pj.phases.sort_by(&:start_at).last;
+      pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"})
+      current_phase = pj.phases.sort_by(&:start_at).last
       current_phase.destroy!
       pj.reload
     }
@@ -356,8 +351,8 @@ describe IdeaPolicy do
       end
     end
 
-    context "for a user" do
-      let(:user) { create(:user) }
+    context "for the author" do
+      let(:user) { author }
 
       it { should permit(:show)    }
       it { should_not permit(:create)  }
