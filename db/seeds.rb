@@ -271,7 +271,7 @@ if Apartment::Tenant.current == 'localhost'
         gender: gender,
         birthyear: rand(2) === 0 ? nil : (1935 + rand(70)),
         education: rand(2) === 0 ? nil : (rand(7)+2).to_s,
-        avatar: (rand(5) == 0) ? generate_avatar(gender) : nil,
+        avatar: (rand(3) == 0) ? generate_avatar(gender) : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
         custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
         registration_completed_at: Time.now
@@ -408,7 +408,8 @@ if Apartment::Tenant.current == 'localhost'
         published_at: Faker::Date.between(created_at, Time.now),
         created_at: created_at,
         location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
-        location_description: rand(2) == 0 ? nil : Faker::Address.street_address
+        location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
+        participatory_budget: rand(3) == 0 ? nil : rand(10 ** (rand(3) + 2)) + 50
       })
 
       [0,0,1,1,2][rand(5)].times do |i|

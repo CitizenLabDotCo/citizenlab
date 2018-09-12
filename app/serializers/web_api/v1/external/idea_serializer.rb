@@ -1,5 +1,5 @@
 class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
-  attributes :id, :slug, :url, :title_multiloc, :body_multiloc, :author_name, :upvotes_count, :downvotes_count, :published_at, :latitude, :longitude, :project_id
+  attributes :id, :slug, :url, :title_multiloc, :body_multiloc, :author_name, :upvotes_count, :downvotes_count, :published_at, :latitude, :longitude, :project_id, :participatory_budget
 
   has_many :topics
   has_many :areas
