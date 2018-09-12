@@ -74,6 +74,8 @@ class WebApi::V1::PhasesController < ApplicationController
       :presentation_mode,
       :survey_embed_url,
       :survey_service,
+      :max_budget,
+      :currency,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
     )

@@ -89,6 +89,8 @@ class ProjectPolicy < ApplicationPolicy
       :voting_limited_max,
       :survey_embed_url,
       :survey_service,
+      :max_budget,
+      :currency,
       :presentation_mode,
       :publication_status,
       title_multiloc: CL2_SUPPORTED_LOCALES, 
