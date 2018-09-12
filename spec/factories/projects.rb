@@ -198,5 +198,12 @@ FactoryBot.define do
       voting_limited_max 7
     end
 
+    factory :continuous_survey_project do
+      process_type 'continuous'
+      participation_method 'survey'
+      survey_service 'typeform'
+      survey_embed_url "https://citizenlabco.typeform.com/to/HKGaPV"
+    end
+
   end
 end
