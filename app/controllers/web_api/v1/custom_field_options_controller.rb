@@ -30,7 +30,9 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
 
 
   def update
-    if @option.update(permitted_attributes(@option))
+    @option.assign_attributes permitted_attributes(@option)
+    authorize @option
+    if @option.save
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: @option.reload, status: :ok
     else
