@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { deleteIdea } from 'services/ideas';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -10,6 +11,10 @@ import { Segment, Header, Icon, Button } from 'semantic-ui-react';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+
+const StyledLink = styled.a`
+  cursor: pointer;
+`;
 
 interface InputProps {
   ideaId: string;
@@ -59,10 +64,7 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
 
     return (
       <>
-        <Button.Group attached="top" size="small">
-          <Button onClick={this.handleClickShow}>
-            <Icon name="external" />
-          </Button>
+        {/* <Button.Group attached="top" size="small">
           <Button onClick={this.handleClickEdit}>
             <Icon name="edit" />
             <FormattedMessage {...messages.edit} />
@@ -71,13 +73,15 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
             <Icon name="trash" />
             <FormattedMessage {...messages.delete} />
           </Button>
-        </Button.Group>
+        </Button.Group> */}
         <Segment attached="bottom">
-          <Header as="h5">
-            <T value={idea.attributes.title_multiloc} />
-          </Header>
+          <StyledLink onClick={this.handleClickShow} role="navigation">
+            <Header as="h5">
+              <T value={idea.attributes.title_multiloc} />
+            </Header>
+          </StyledLink>
           <p>
-            <T value={idea.attributes.body_multiloc} />
+            <T value={idea.attributes.body_multiloc} supportHtml={true} />
           </p>
         </Segment>
       </>

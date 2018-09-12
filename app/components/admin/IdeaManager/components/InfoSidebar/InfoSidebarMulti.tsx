@@ -26,12 +26,12 @@ class InfoSidebarMulti extends React.PureComponent<Props & InjectedIntlProps> {
 
     return (
       <>
-        <Button.Group size="small" attached="top">
+        {/* <Button.Group size="small" attached="top">
           <Button negative={true} basic={true} onClick={this.handleClickDelete}>
             <Icon name="trash" />
             <FormattedMessage {...messages.deleteAll} />
           </Button>
-        </Button.Group>
+        </Button.Group> */}
         <Segment attached="bottom">
           <List bulleted={true}>
             {ideaIds.map((ideaId) => (
