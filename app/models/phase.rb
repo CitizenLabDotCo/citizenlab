@@ -15,6 +15,7 @@ class Phase < ApplicationRecord
   validate :validate_start_at_before_end_at
   validate :validate_belongs_to_timeline_project
   validate :validate_no_other_overlapping_phases
+  validate :validate_no_other_participatory_budgeting_phases
 
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
@@ -47,6 +48,15 @@ class Phase < ApplicationRecord
       if ts.overlaps? self, other_phase
         errors.add(:base, :has_other_overlapping_phases, message: 'has other phases which overlap in start and end date')
       end
+    end
+  end
+
+  def validate_no_other_participatory_budgeting_phases
+    if participatory_budgeting? && project.phases.select(&:participatory_budgeting?).present?
+      errors.add(
+        :base, :has_other_participatory_budgeting_phases, 
+        message: 'has other participatory budgeting phases'
+        )
     end
   end
 
