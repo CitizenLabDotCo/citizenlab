@@ -11,7 +11,7 @@ const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 
 const config = {
-  entry: path.join(process.cwd(), 'app/root'),
+  entry: ["@babel/polyfill", path.join(process.cwd(), 'app/root')],
 
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -26,10 +26,13 @@ const config = {
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
     port: 3000,
+    host: '0.0.0.0',
+    disableHostCheck: true,
     historyApiFallback: true,
     proxy: {
       '/web_api': `http://${API_HOST}:${API_PORT}`,
       '/auth/': `http://${API_HOST}:${API_PORT}`,
+      '/widgets/': `http://${API_HOST}:3200`,
     },
   },
 

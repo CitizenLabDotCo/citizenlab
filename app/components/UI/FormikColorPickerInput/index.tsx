@@ -1,27 +1,25 @@
 import React from 'react';
-import Input, { InputProps as VanillaInputProps } from 'components/UI/Input';
+import ColorPickerInput, { Props as VanillaInputProps } from 'components/UI/ColorPickerInput';
 import { FieldProps } from 'formik';
 
 type State = {};
 
-class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {
+class FormikColorPickerInput extends React.Component<FieldProps & VanillaInputProps, State> {
 
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 
   render() {
-    const { name, value, onBlur } = this.props.field;
+    const { value } = this.props.field;
     return (
-      <Input
+      <ColorPickerInput
         {...this.props}
-        name={name}
         value={value}
         onChange={this.handleOnChange}
-        onBlur={onBlur}
       />
     );
   }
 }
 
-export default FormikInput;
+export default FormikColorPickerInput;

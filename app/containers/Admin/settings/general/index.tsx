@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { get, map, merge, set } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
@@ -42,11 +42,11 @@ interface State {
   hasUrlError: boolean;
 }
 
-export default class SettingsGeneralTab extends React.PureComponent<Props, State> {
+export default class SettingsGeneralTab extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       attributesDiff: {},
       tenant: null,
@@ -101,7 +101,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
     }));
   }
 
-  handleUrlOnChange = (url) => {
+  handleUrlOnChange = (url: string) => {
     this.setState((state) => ({
       hasUrlError: false,
       attributesDiff: {
@@ -117,7 +117,7 @@ export default class SettingsGeneralTab extends React.PureComponent<Props, State
     }));
   }
 
-  save = (event: React.FormEvent<any>) => {
+  save = (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { tenant, attributesDiff } = this.state;

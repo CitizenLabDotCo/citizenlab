@@ -162,8 +162,9 @@ class ProfileForm extends PureComponent<Props, State> {
     });
   }
 
-  formikRender = ({ values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid,  status, touched }) => {
-    const { hasCustomFields } = this.state;
+  formikRender = (props) => {
+    const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
+    const { hasCustomFields, localeOptions } = this.state;
 
     const getStatus = () => {
       let returnValue: 'enabled' | 'disabled' | 'error' | 'success' = 'enabled';
@@ -197,8 +198,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createChangeHandler = (fieldName) => value => {
-      if (/_multiloc$/.test(fieldName)) {
+    const createChangeHandler = (fieldName: string) => value => {
+      if (fieldName.endsWith('_multiloc')) {
         setFieldValue(fieldName, { [this.props.locale]: value });
       } else if (value && value.value) {
         setFieldValue(fieldName, value.value);
@@ -207,8 +208,8 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createBlurHandler = (fieldName) => () => {
-      setFieldTouched(fieldName, true);
+    const createBlurHandler = (fieldName: string) => () => {
+      setFieldTouched(fieldName);
     };
 
     const handleAvatarOnAdd = (newAvatar: ImageFile) => {
@@ -332,7 +333,7 @@ class ProfileForm extends PureComponent<Props, State> {
               onChange={createChangeHandler('locale')}
               onBlur={createBlurHandler('locale')}
               value={values.locale}
-              options={this.state.localeOptions}
+              options={localeOptions}
               clearable={false}
             />
             <Error apiErrors={errors.locale} />

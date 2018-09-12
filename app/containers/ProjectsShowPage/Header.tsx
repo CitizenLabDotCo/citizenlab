@@ -106,6 +106,7 @@ const HeaderTitle = styled.div`
   text-align: left;
   margin: 0;
   padding: 0;
+  width: 100%;
 
   ${media.smallerThanMinTablet`
     font-weight: 600;
