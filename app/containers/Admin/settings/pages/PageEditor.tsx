@@ -136,19 +136,29 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 
   initialValues = () => {
-    const { page } = this.props;
+    const { page, remotePageFiles } = this.props;
+    let initialValues = {};
+
     if (!isNilOrError(page)) {
-      return {
+      initialValues = {
         title_multiloc: page.attributes.title_multiloc,
         slug: page.attributes.slug,
         body_multiloc: page.attributes.body_multiloc,
       };
     } else {
-      return {
+      initialValues = {
         title_multiloc: { en: this.props.slug },
         body_multiloc: {},
       };
     }
+
+    if (!isNilOrError(remotePageFiles)) {
+      initialValues['local_page_files'] = remotePageFiles;
+    } else {
+      initialValues['local_page_files'] = [];
+    }
+
+    return initialValues;
   }
 
   handlePageFileOnAdd = (fileToAdd: UploadFile) => {

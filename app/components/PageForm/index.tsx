@@ -28,6 +28,7 @@ export interface FormValues {
   slug?: string;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  local_page_files: UploadFile[] | [];
 }
 
 interface Props {
@@ -76,27 +77,31 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     );
   }
 
-  renderFileUploader = (props: Props) => () => {
-    const { localPageFiles } = props;
+  renderFileUploader = (values: FormValues) => () => {
+    const { local_page_files } = values;
     return (
       <FileUploader
         onFileAdd={this.handlePageFileOnAdd}
         onFileRemove={this.handlePageFileOnRemove}
-        localFiles={localPageFiles}
+        localFiles={local_page_files}
       />
     );
   }
 
   handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    this.props.onPageFileAdd(fileToAdd);
+    const { setFieldValue, values } = this.props;
+    setFieldValue('local_page_files', [...values.local_page_files, fileToAdd]);
   }
 
   handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    this.props.onPageFileRemove(fileToRemove);
+    const { setFieldValue, values } = this.props;
+    const localPageFiles = [...values.local_page_files];
+    const filteredLocalPageFiles = localPageFiles.filter(file => file !== fileToRemove);
+    setFieldValue('local_page_files', filteredLocalPageFiles);
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
+    const { isSubmitting, errors, isValid, touched, mode, hideTitle, values } = this.props;
     return (
       <Form>
         <Section>
@@ -158,7 +163,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
         <Section>
           <Field
             name="page_files"
-            render={this.renderFileUploader(this.props)}
+            render={this.renderFileUploader(values)}
           />
         </Section>
 
