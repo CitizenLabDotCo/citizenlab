@@ -35,9 +35,6 @@ interface Props {
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
   pageId?: string;
-  onPageFileAdd: (fileToAdd: UploadFile) => void;
-  onPageFileRemove: (fileToRemove: UploadFile) => void;
-  localPageFiles: UploadFile[] | null | Error | undefined;
 }
 
 class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {

@@ -161,35 +161,6 @@ class PageEditor extends React.PureComponent<Props, State>{
     return initialValues;
   }
 
-  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    this.setState((prevState: State) => {
-      // If we don't have localPageFiles, we assign an empty array
-      // A spread operator works on an empty array, but not on null
-      const oldlLocalPageFiles = !isNilOrError(prevState.localPageFiles) ? prevState.localPageFiles : [];
-
-      return {
-        localPageFiles: [
-          ...oldlLocalPageFiles,
-          fileToAdd
-        ]
-      };
-    });
-  }
-
-  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    this.setState((prevState: State) => {
-      let localPageFiles: UploadFile[] | null = null;
-
-      if (Array.isArray(prevState.localPageFiles)) {
-        localPageFiles = prevState.localPageFiles.filter(pageFile => pageFile.filename !== fileToRemove.filename);
-      }
-
-      return {
-        localPageFiles
-      };
-    });
-  }
-
   // getFilesToAddPromises = () => {
   //   const { localPageFiles } = this.state;
   //   const { remotePageFiles } = this.props;
@@ -291,9 +262,6 @@ class PageEditor extends React.PureComponent<Props, State>{
           {...props}
           mode="simple"
           hideTitle={this.props.slug !== 'information'}
-          onPageFileAdd={this.handlePageFileOnAdd}
-          onPageFileRemove={this.handlePageFileOnRemove}
-          localPageFiles={this.state.localPageFiles}
         />
       </>
     );
