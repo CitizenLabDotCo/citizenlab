@@ -95,7 +95,9 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def update
-    if @user.update(permitted_attributes(@user))
+    @user.assign_attributes permitted_attributes(@user)
+    authorize @user
+    if @user.save
       SideFxUserService.new.after_update(@user, current_user)
       render json: @user, status: :ok
     else
