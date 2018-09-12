@@ -293,6 +293,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :participatory_budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -424,6 +425,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :participatory_budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -485,6 +487,17 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq @idea.idea_status_id
       end
     end
+
+    describe do
+      let(:participatory_budget) { 1800 }
+
+      example "Change the participatory budget as a non-admin does not work", document: false do
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq nil
+      end
+    end
     
     context "when admin" do
       before do
@@ -516,6 +529,16 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+
+      describe do
+        let(:participatory_budget) { 1800 }
+
+        example_request "Change the participatory budget (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq participatory_budget
         end
       end
     end
