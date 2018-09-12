@@ -51,4 +51,12 @@ export default defineMessages({
     id: 'app.containers.landing.exploreAllProjects',
     defaultMessage: 'Explore all projects',
   },
+  shareYourIdeaTitle: {
+    id: 'app.containers.landing.shareYourIdeaTitle',
+    defaultMessage: 'Share your idea',
+  },
+  shareYourIdeaSubtitle: {
+    id: 'app.containers.landing.shareYourIdeaSubtitle',
+    defaultMessage: 'The more votes your idea gets the more impact it will have',
+  }
 });

@@ -14,11 +14,11 @@ import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
-import Sharing from 'components/Sharing';
+import IdeaSharingModalContent from './IdeaSharingModalContent';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -38,8 +38,6 @@ import { getLocalized } from 'utils/i18n';
 // style
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-
-const rocket = require('./rocket.png');
 
 const Container: any = styled.div`
   height: 100%;
@@ -266,7 +264,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  ideaSocialSharingModalOpened: boolean;
+  ideaIdForSocialSharing: string | null;
 }
 
 class LandingPage extends React.PureComponent<Props, State> {
@@ -275,7 +273,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaSocialSharingModalOpened: false
+      ideaIdForSocialSharing: null
     };
   }
 
@@ -301,7 +299,9 @@ class LandingPage extends React.PureComponent<Props, State> {
             window.history.replaceState(null, '', window.location.pathname);
           }
 
-          this.setState({ ideaSocialSharingModalOpened: true });
+          this.setState({
+            ideaIdForSocialSharing: ideaParams.id
+          });
         }
       })
     ];
@@ -329,11 +329,11 @@ class LandingPage extends React.PureComponent<Props, State> {
   }
 
   closeIdeaSocialSharingModal = () => {
-    this.setState({ ideaSocialSharingModalOpened: false });
+    this.setState({ ideaIdForSocialSharing: null });
   }
 
   render() {
-    const { ideaSocialSharingModalOpened } = this.state;
+    const { ideaIdForSocialSharing } = this.state;
     const { locale, tenant, projects, authUser } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
@@ -413,11 +413,8 @@ class LandingPage extends React.PureComponent<Props, State> {
             </Content>
           </Container>
 
-          <Modal opened={ideaSocialSharingModalOpened} close={this.closeIdeaSocialSharingModal}>
-            <>
-              <img src={rocket} alt="rocket" />
-              <div>Test</div>
-            </>
+          <Modal opened={ideaIdForSocialSharing !== null} close={this.closeIdeaSocialSharingModal}>
+            {ideaIdForSocialSharing && <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />}
           </Modal>
         </>
       );
