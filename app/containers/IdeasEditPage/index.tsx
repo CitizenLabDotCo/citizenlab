@@ -239,17 +239,68 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
     eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
   }
 
+  // getFilesToAddPromises = (output: ) => {
+  //   const { localIdeaFiles } = this.state;
+  //   const localPageFiles = [...local_page_files];
+  //   const { page, remotePageFiles } = this.props;
+  //   const pageId = !isNilOrError(page) ? page.id : null;
+  //   let filesToAdd = localPageFiles;
+  //   let filesToAddPromises: Promise<any>[] = [];
+
+  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+  //     // localPageFiles = local state of files
+  //     // This means those previously uploaded + files that have been added/removed
+  //     // remotePageFiles = last saved state of files (remote)
+
+  //     filesToAdd = localPageFiles.filter((localPageFile) => {
+  //       return !remotePageFiles.some(remotePageFile => remotePageFile.filename === localPageFile.filename);
+  //     });
+  //   }
+
+  //   if (pageId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+  //     filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(pageId as string, fileToAdd.base64, fileToAdd.name));
+  //   }
+
+  //   return filesToAddPromises;
+  // }
+
+  // getFilesToRemovePromises = (values: FormValues) => {
+  //   const { local_page_files } = values;
+  //   const localPageFiles = [...local_page_files];
+  //   const { page, remotePageFiles } = this.props;
+  //   const pageId = !isNilOrError(page) ? page.id : null;
+  //   let filesToRemove = remotePageFiles;
+  //   let filesToRemovePromises: Promise<any>[] = [];
+
+  //   if (!isNilOrError(localPageFiles) && Array.isArray(remotePageFiles)) {
+  //     // localPageFiles = local state of files
+  //     // This means those previously uploaded + files that have been added/removed
+  //     // remotePageFiles = last saved state of files (remote)
+
+  //     filesToRemove = remotePageFiles.filter((remotePageFile) => {
+  //       return !localPageFiles.some(localPageFile => localPageFile.filename === remotePageFile.filename);
+  //     });
+  //   }
+
+  //   if (pageId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+  //     filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(pageId as string, fileToRemove.id));
+  //   }
+
+  //   return filesToRemovePromises;
+  // }
+
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, position } = ideaFormOutput;
+    const { title, description, selectedTopics, position, localIdeaFiles } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
     const oldBase64Image = get(this.state, 'imageFile[0].base64');
     const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
-
+    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(localIdeaFiles);
+    const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(localIdeaFiles);
     this.setState({ processing: true, submitError: false });
 
     try {
