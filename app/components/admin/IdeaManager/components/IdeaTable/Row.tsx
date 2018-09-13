@@ -121,7 +121,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
 
   render() {
     const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
-    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.id');
+    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
       <React.Fragment>
