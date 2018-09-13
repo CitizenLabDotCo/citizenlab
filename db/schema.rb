@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(version: 20180913085920) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "idea_status_id"
     t.string "slug", null: false
-    t.integer "participatory_budget"
+    t.integer "budget"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist

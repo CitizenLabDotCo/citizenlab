@@ -11,7 +11,7 @@ class Basket < ApplicationRecord
 
 
   def total_budget
-  	self.ideas.pluck(:participatory_budget).compact.inject(0){|sum,x| sum + x }
+  	self.ideas.pluck(:budget).compact.inject(0){|sum,x| sum + x }
   end
 
   def budget_exceeds_limit?

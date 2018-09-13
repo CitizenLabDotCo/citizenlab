@@ -9,7 +9,7 @@ FactoryBot.define do
       "nl-BE" => "<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>"
     }}
     publication_status "published"
-    participatory_budget 750
+    budget 750
     association :project, factory: :continuous_project
     author
     idea_status
