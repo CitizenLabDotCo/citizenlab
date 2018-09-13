@@ -1,6 +1,7 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
@@ -23,6 +24,10 @@ import messages from './messages';
 
 // Typings
 import { Multiloc, UploadFile } from 'typings';
+
+const StyledSection = styled(Section)`
+  margin-bottom: 30px;
+`;
 
 export interface FormValues {
   slug?: string;
@@ -101,7 +106,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     const { isSubmitting, errors, isValid, touched, mode, hideTitle, values } = this.props;
     return (
       <Form>
-        <Section>
+        <StyledSection>
           {!hideTitle &&
             <SectionField>
               <Field
@@ -155,14 +160,12 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             </SectionField>
           }
 
-        </Section>
-
-        <Section>
           <Field
             name="page_files"
             render={this.renderFileUploader(values)}
           />
-        </Section>
+
+        </StyledSection>
 
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}
