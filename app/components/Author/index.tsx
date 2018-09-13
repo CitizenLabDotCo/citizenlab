@@ -42,7 +42,7 @@ const AuthorMeta = styled.div`
 
 const AuthorNameContainer: any = styled.div `
   color: ${colors.text};
-  font-size: ${(props: any) => props.fontSize};
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
@@ -76,7 +76,7 @@ type Props = {
   authorId: string | null;
   message: Message;
   createdAt?: string | undefined;
-  size: 'medium' | 'small';
+  size: string;
   notALink?: boolean;
 };
 
@@ -88,7 +88,7 @@ class Author extends React.PureComponent<Props, State> {
   authorId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       author: null
@@ -149,7 +149,7 @@ class Author extends React.PureComponent<Props, State> {
           onClick={notALink ? undefined : this.goToUserProfile}
         />
         <AuthorMeta>
-          <AuthorNameContainer fontSize={(size === 'medium') ? '16px' : '14px'}>
+          <AuthorNameContainer>
             <FormattedMessage
               {...message}
               values={{ authorNameComponent }}

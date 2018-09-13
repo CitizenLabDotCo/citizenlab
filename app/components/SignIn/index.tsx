@@ -30,7 +30,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { color, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('components/SignUp/google.svg') as string;
@@ -65,7 +65,7 @@ const FormElement = styled.div`
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
-      color: ${color('label')}
+      color: ${colors.label}
     }
 
     &:focus::placeholder {
@@ -81,7 +81,7 @@ const PasswordInput = styled(StyledInput)`
 `;
 
 const ForgotPassword = styled(Link)`
-  color: ${color('label')};
+  color: ${colors.label};
   color: #999;
   font-size: ${fontSizes.small}px;
   line-height: 18px;
@@ -166,7 +166,7 @@ const SocialSignInButton = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   user-select: none;
   cursor: pointer;
   position: relative;

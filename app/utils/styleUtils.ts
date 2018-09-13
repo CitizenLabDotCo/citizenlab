@@ -123,7 +123,7 @@ export const colors = {
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
-  separation: '#EAEAEA',
+  separation: '#e0e0e0',
   background: '#F9F9FA',
   clBlueDark: '#147985',
   clBlueDarkBg: '#d3ecf0',

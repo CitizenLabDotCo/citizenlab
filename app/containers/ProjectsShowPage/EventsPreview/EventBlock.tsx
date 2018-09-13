@@ -14,7 +14,7 @@ import { getIsoDate } from 'utils/dateUtils';
 
 // Styling
 import styled from 'styled-components';
-import { color, fontSize, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSize, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: calc(100% * (1/3) - 26px);
@@ -25,7 +25,7 @@ const Container = styled(Link)`
   display: flex;
   padding: 15px;
   cursor: pointer;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 
   &:hover {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
@@ -84,7 +84,7 @@ const TextBlock = styled.div`
 `;
 
 const Time = styled.div`
-  color: ${color('label')};
+  color: ${colors.label};
   font-size: ${fontSize('small')};
   margin-bottom: 8px;
 `;
@@ -97,7 +97,7 @@ const Title = styled.div`
 `;
 
 const Location = styled.div`
-  color: ${color('label')};
+  color: ${colors.label};
   font-size: ${fontSize('small')};
   display: flex;
   align-items: center;
@@ -107,7 +107,7 @@ const Location = styled.div`
 const StyledIcon = styled(Icon)`
   flex: 0 0 20px;
   height: 20px;
-  fill: ${color('label')};
+  fill: ${colors.label};
   margin-right: 5px;
 `;
 

@@ -175,7 +175,7 @@ const StyledLink = styled(Link) `
   margin-bottom: 15px;
   padding: 20px 23px;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   background: #fff;
   transition: all 100ms ease-out;
 

@@ -50,7 +50,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -59,8 +59,8 @@ const loadingDelay = 100;
 
 const contentTimeout = 500;
 const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
-const contentDelay = 600;
-const contentTranslateDistance = '30px';
+const contentDelay = 500;
+const contentTranslateDistance = '25px';
 
 const StyledSpinner = styled<SpinnerProps>(Spinner) `
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
@@ -220,7 +220,7 @@ const IdeaImage = styled.img`
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
-  border: 1px solid ${color('separation')};
+  border: 1px solid ${colors.separation};
 `;
 
 const AuthorContainer = styled.div`
@@ -297,7 +297,7 @@ const LocationButton = styled.div`
 
 const MapWrapper = styled.div`
   border-radius: 8px;
-  border: 1px solid ${color('separation')};
+  border: 1px solid ${colors.separation};
   height: 265px;
   position: relative;
   overflow: hidden;
@@ -336,7 +336,7 @@ const AddressWrapper = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid ${colors.separation};
   margin: 0;
   padding: 10px;
   position: absolute;
@@ -521,8 +521,8 @@ const StatusTitle = styled.h4`
 `;
 
 const VoteControlMobile = styled.div`
-  border-top: solid 1px #e0e0e0;
-  border-bottom: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${colors.separation};
   padding-top: 15px;
   padding-bottom: 15px;
   margin-top: -10px;
@@ -544,8 +544,8 @@ const StyledSharingMobile = styled(Sharing) `
   padding: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-top: solid 1px #e0e0e0;
-  border-bottom: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${colors.separation};
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -827,7 +827,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="medium"
+                      size="36px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>

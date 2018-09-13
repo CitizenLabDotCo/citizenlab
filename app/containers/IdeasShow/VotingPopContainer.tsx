@@ -2,6 +2,8 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
+import { colors } from 'utils/styleUtils';
+
 
 const enterAnimation = keyframes`
   0% {
@@ -36,7 +38,7 @@ const Container = styled.div`
   background-color: #fff;
   position: relative;
   border-radius: 5px;
-  border: solid 1px #e5e5e5;
+  border: solid 1px ${colors.separation};
   margin-top: 0px;
   padding: 15px;
   display: flex;
@@ -56,7 +58,7 @@ const IconWrapper = styled.div`
   align-items: center;
   background-color: #fff;
   border-radius: 50%;
-  border: solid 1px #e5e5e5;
+  border: solid 1px ${colors.separation};
   background: #fff;
   margin-bottom: 15px;
 `;
