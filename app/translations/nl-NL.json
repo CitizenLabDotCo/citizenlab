@@ -167,6 +167,7 @@
   "app.components.admin.pagination.next": "Volgende",
   "app.components.avatar.avatarAltText": "Avatar van {userName}",
   "app.components.avatar.noAvatarAltText": "Standaard avatar pictogram weergeven voor mensen zonder pictogram",
+  "app.container.IdeaForm.budgetLabel": "",
   "app.container.IdeaForm.imageDropzonePlaceholder": "Sleep je afbeelding hierheen",
   "app.containers.Admin.Invitations.adminLabel": "Admin-rechten geven aan de uitgenodigde mensen?",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, ik ben het zeker",

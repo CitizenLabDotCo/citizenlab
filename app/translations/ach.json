@@ -167,6 +167,7 @@
   "app.components.admin.pagination.next": "",
   "app.components.avatar.avatarAltText": "",
   "app.components.avatar.noAvatarAltText": "",
+  "app.container.IdeaForm.budgetLabel": "",
   "app.container.IdeaForm.imageDropzonePlaceholder": "",
   "app.containers.Admin.Invitations.adminLabel": "",
   "app.containers.Admin.Invitations.confirmDelete": "",
