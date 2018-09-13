@@ -6,12 +6,11 @@ class WebApi::V1::BasketsController < ApplicationController
   end
 
   def create
-    @basket = Basket.new(basket_params)
+    @basket = Basket.new basket_params
     authorize @basket
 
-    # SideFxAreaService.new.before_create(@area, current_user)
     if @basket.save
-      # SideFxAreaService.new.after_create(@area, current_user)
+      SideFxAreaService.new.after_create @basket, current_user
       render json: @basket, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
@@ -20,9 +19,8 @@ class WebApi::V1::BasketsController < ApplicationController
 
   def update
     @basket.assign_attributes basket_params
-    # SideFxAreaService.new.before_update(@area, current_user)
     if @basket.save
-      # SideFxAreaService.new.after_update(@area, current_user)
+      SideFxBasketService.new.after_update @basket, current_user
       render json: @basket, status: :ok
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
@@ -30,10 +28,9 @@ class WebApi::V1::BasketsController < ApplicationController
   end
 
   def destroy
-    # SideFxAreaService.new.before_destroy(@basket, current_user)
     basket = @basket.destroy
     if basket.destroyed?
-      # SideFxAreaService.new.after_destroy(basket, current_user)
+      SideFxBasketService.new.after_destroy basket, current_user
       head :ok
     else
       head 500
@@ -44,7 +41,7 @@ class WebApi::V1::BasketsController < ApplicationController
   private
 
   def set_basket
-    @basket = Basket.find(params[:id])
+    @basket = Basket.find params[:id]
     authorize @basket
   end
 
