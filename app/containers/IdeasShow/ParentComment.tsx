@@ -191,7 +191,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                     <StyledAuthor
                       authorId={authorId}
                       createdAt={createdAt}
-                      size="38px"
+                      size="40px"
                       message={messages.parentCommentAuthor}
                     />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />

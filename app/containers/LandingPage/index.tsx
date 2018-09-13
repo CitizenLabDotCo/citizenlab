@@ -273,7 +273,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaIdForSocialSharing: null
+      ideaIdForSocialSharing: '96361f26-5641-4fe6-938b-b422a51feeef'
     };
   }
 
@@ -413,8 +413,14 @@ class LandingPage extends React.PureComponent<Props, State> {
             </Content>
           </Container>
 
-          <Modal opened={ideaIdForSocialSharing !== null} close={this.closeIdeaSocialSharingModal}>
-            {ideaIdForSocialSharing && <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />}
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            fixedHeight={false}
+          >
+            {ideaIdForSocialSharing &&
+              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+            }
           </Modal>
         </>
       );
