@@ -397,7 +397,7 @@ if Apartment::Tenant.current == 'localhost'
       project = Project.offset(rand(Project.count)).first
       phases = []
       if project && project.timeline?
-        phases = project.phases.sample(rand(project.phases.count).select do |phase| 
+        phases = project.phases.sample(rand(project.phases.count)).select do |phase| 
           phase.ideation? || phase.participatory_budgeting?
         end
       end
@@ -415,7 +415,7 @@ if Apartment::Tenant.current == 'localhost'
         created_at: created_at,
         location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
-        participatory_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1)
+        budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1)
       })
 
       [0,0,1,1,2][rand(5)].times do |i|

@@ -293,7 +293,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
-      parameter :participatory_budget, "The budget needed to realize the idea, as determined by the city"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -425,7 +425,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
-      parameter :participatory_budget, "The budget needed to realize the idea, as determined by the city"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -489,14 +489,14 @@ resource "Ideas" do
     end
 
     describe do
-      let(:participatory_budget) { 1800 }
+      let(:budget) { 1800 }
 
       example "Change the participatory budget as a non-admin does not work", document: false do
-        previous_value = @idea.participatory_budget
+        previous_value = @idea.budget
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq previous_value
+        expect(json_response.dig(:data,:attributes,:budget)).to eq previous_value
       end
     end
     
@@ -534,12 +534,12 @@ resource "Ideas" do
       end
 
       describe do
-        let(:participatory_budget) { 1800 }
+        let(:budget) { 1800 }
 
         example_request "Change the participatory budget (as an admin)" do
           expect(status).to be 200
           json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq participatory_budget
+          expect(json_response.dig(:data,:attributes,:budget)).to eq budget
         end
       end
     end
