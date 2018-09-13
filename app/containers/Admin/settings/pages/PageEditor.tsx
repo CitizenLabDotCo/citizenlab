@@ -30,7 +30,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON, UploadFile } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const timeout = 350;
 
@@ -106,7 +106,6 @@ interface DataProps {
 interface InputProps {
   className?: string;
   slug: string;
-  id: string;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -167,7 +166,8 @@ class PageEditor extends React.PureComponent<Props, State>{
   getFilesToAddPromises = (values: FormValues) => {
     const { local_page_files } = values;
     const localPageFiles = [...local_page_files];
-    const { id, remotePageFiles } = this.props;
+    const { page, remotePageFiles } = this.props;
+    const pageId = !isNilOrError(page) ? page.id : null;
     let filesToAdd = localPageFiles;
     let filesToAddPromises: Promise<any>[] = [];
 
@@ -181,8 +181,8 @@ class PageEditor extends React.PureComponent<Props, State>{
       });
     }
 
-    if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(id as string, fileToAdd.base64, fileToAdd.name));
+    if (pageId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(pageId as string, fileToAdd.base64, fileToAdd.name));
     }
 
     return filesToAddPromises;
@@ -191,7 +191,8 @@ class PageEditor extends React.PureComponent<Props, State>{
   getFilesToRemovePromises = (values: FormValues) => {
     const { local_page_files } = values;
     const localPageFiles = [...local_page_files];
-    const { id, remotePageFiles } = this.props;
+    const { page, remotePageFiles } = this.props;
+    const pageId = !isNilOrError(page) ? page.id : null;
     let filesToRemove = remotePageFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
@@ -205,39 +206,25 @@ class PageEditor extends React.PureComponent<Props, State>{
       });
     }
 
-    if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(id as string, fileToRemove.id));
+    if (pageId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(pageId as string, fileToRemove.id));
     }
 
     return filesToRemovePromises;
   }
 
-  // handleOnSubmit = async () => {
-  //   const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
-  //   const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
-
-  //   const allPromises = [
-  //     ...filesToAddPromises,
-  //     ...filesToRemovePromises
-  //   ];
-
-  //   if (allPromises.length > 0) {
-  //     this.setState({ saving: true });
-  //     try {
-  //       await Promise.all(allPromises);
-  //       this.setState({ saving: false });
-  //     } catch (errors) {
-  //       this.setState({ saving: false });
-  //     }
-  //   }
-  // }
-
-  handleSubmit = (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  handleSubmit = async (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { page } = this.props;
-
+    const { slug, title_multiloc, body_multiloc  } = values;
+    const fieldValues = { slug, title_multiloc, body_multiloc };
     let savePromise: Promise<IPage> | null = null;
     const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(values);
     const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(values);
+    const allPromises = [
+      savePromise,
+      ...filesToAddPromises,
+      ...filesToRemovePromises
+    ];
 
     if (page === undefined) {
       return;
@@ -245,19 +232,21 @@ class PageEditor extends React.PureComponent<Props, State>{
       setSubmitting(true);
       setStatus(null);
       if (isNilOrError(page)) {
-        savePromise = createPage(values);
+        savePromise = createPage(fieldValues);
       } else {
-        savePromise = updatePage(page.id, values);
+        savePromise = updatePage(page.id, fieldValues);
       }
     }
-    savePromise.catch((errorResponse) => {
+
+    try {
+      await Promise.all(allPromises);
+      resetForm();
+      setStatus('success');
+    } catch (errorResponse) {
       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);
-    }).then(() => {
-      resetForm();
-      setStatus('success');
-    });
+    }
   }
 
   renderForm = (props) => {
@@ -312,7 +301,7 @@ class PageEditor extends React.PureComponent<Props, State>{
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
-  remotePageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.attributes.slug : null} resourceType="page">{render}</GetResourceFileObjects>
+  remotePageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFileObjects>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
