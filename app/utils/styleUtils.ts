@@ -153,6 +153,11 @@ export const colors = {
   clIconSecondary:'#84939E',
   clIconAccent:'#01A1B1',
   clIconBackground:'rgba(1, 161, 177, 0.07)',
+
+  // social
+  facebook: '#3b5998',
+  facebookMessenger: '#0084ff',
+  twitter: '#1ea4f2'
 };
 
 export function color(name: keyof typeof colors) {

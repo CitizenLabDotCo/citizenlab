@@ -263,9 +263,10 @@ const LocationLabel = styled.div`
 `;
 
 const LocationIconWrapper = styled.div`
-  width: 30px;
-  height: 38px;
+  width: 22px;
+  height: 36px;
   margin: 0;
+  margin-right: 4px;
   padding: 0;
   border: none;
   display: flex;

@@ -22,32 +22,17 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const facebookColor = '#3b5998';
-
-const twitterColor = '#1ea4f2';
-
-const messengerColor = '#0084ff';
-
-const IconWrapper = styled.div`
-  width: 30px;
-  height: 38px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  svg {
-    width: 20px;
-    transition: all 100ms ease-out;
-  }
+const StyledIcon = styled(Icon)`
+  width: 24px;
+  height: 24px;
+  fill: #fff;
+  margin-right: 10px;
 `;
 
 const Text = styled.div`
@@ -65,43 +50,45 @@ const Container = styled.div`
   flex-direction: column;
 
   .sharingButton {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    padding: 5px;
+    padding: 11px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
-    width: 100%;
 
     &.twitter {
-      background: ${twitterColor};
+      background: ${colors.twitter};
       fill: #fff;
       color: #fff;
 
       &:hover {
-        background: ${lighten(0.25, twitterColor)};
+        background: ${darken(0.15, colors.twitter)};
       }
     }
+
     &.facebook {
-      background: ${facebookColor};
+      background: ${colors.facebook};
       fill: #fff;
       color: #fff;
 
       &:hover {
-        background: ${lighten(0.2, facebookColor)};
+        background: ${darken(0.15, colors.facebook)};
       }
     }
 
     &.messenger {
-      background: ${messengerColor};
+      background: ${colors.facebookMessenger};
       fill: #fff;
       color: #fff;
 
       &:hover {
-        background: ${(lighten(0.2, messengerColor))};
+        background: ${(darken(0.15, colors.facebookMessenger))};
       }
+
       ${media.biggerThanMaxTablet`
         display: none;
       `}
@@ -115,22 +102,23 @@ interface ITracks {
   clickMessengerShare: () => void;
 }
 
-type InputProps = {
+interface InputProps {
   className?: string;
-  twitterMessage: string;
+  twitterMessage: string | JSX.Element;
   userId: string | null;
   sharedContent: string;
-};
+}
 
 interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
     const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, sharedContent, className, intl: { formatMessage } } = this.props;
+
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
@@ -149,18 +137,14 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           sharer={true}
           onClick={clickFbShare}
         >
-          <IconWrapper>
-            <Icon name="facebook" />
-          </IconWrapper>
+          <StyledIcon name="facebook" />
           <Text>{facebookText}</Text>
         </FacebookButton>
       ) : null);
 
       const messenger = (facebookAppId ? (
         <a className="sharingButton messenger" href={`fb-messenger://share/?link=${encodeURIComponent(fbURL)}&app_id=${facebookAppId}`} onClick={clickMessengerShare}>
-          <IconWrapper>
-            <Icon name="messenger" />
-          </IconWrapper>
+          <StyledIcon name="messenger" />
           <Text>{messengerText}</Text>
         </a>
       ) : null);
@@ -173,9 +157,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           onClick={clickTwitterShare}
           message={twitterMessage}
         >
-          <IconWrapper>
-            <Icon name="twitter" />
-          </IconWrapper>
+          <StyledIcon name="twitter" />
           <Text>{twitterText}</Text>
         </TwitterButton>
       );

@@ -4,6 +4,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Sharing from 'components/Sharing';
+import Spinner from 'components/UI/Spinner';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -18,17 +19,64 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-// import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
-// import { darken } from 'polished';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const rocket = require('./rocket.png');
 
-const Container = styled.div`
+const Loading = styled.div`
+  width: 100%;
+  height: 500px;
   display: flex;
+  align-items: center;
   justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: 400px;
+  `}
+`;
+
+const Container = styled.div`
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+
+  ${media.smallerThanMaxTablet`
+    min-height: auto;
+  `}
+`;
+
+const Rocket = styled.img`
+  width: 35px;
+  height: 35px;
+`;
+
+const Title = styled.h1`
+  width: 100%;
+  color: ${colors.text};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: 42px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+const Subtitle = styled.h3`
+  width: 100%;
+  max-width: 500px;
+  color: ${colors.text};
+  font-size: ${fontSizes.large}px;
+  line-height: 25px;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 35px;
 `;
 
 const SharingWrapper = styled.div`
+  width: 100%;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
 `;
@@ -54,8 +102,13 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
     if (!isNilOrError(idea) && !isNilOrError(authUser)) {
       return (
         <Container>
-          <img src={rocket} alt="rocket" />
-          <FormattedMessage {...messages.shareYourIdeaTitle} />
+          <Rocket src={rocket} alt="rocket" />
+          <Title>
+            <FormattedMessage {...messages.shareIdeaTitle} />
+          </Title>
+          <Subtitle>
+            <FormattedMessage {...messages.shareIdeaSubtitle} />
+          </Subtitle>
           <SharingWrapper>
             <T value={idea.attributes.title_multiloc} maxLength={50} >
               {(title) => {
@@ -72,7 +125,11 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
       );
     }
 
-    return null;
+    return (
+      <Loading>
+        <Spinner />
+      </Loading>
+    );
   }
 }
 

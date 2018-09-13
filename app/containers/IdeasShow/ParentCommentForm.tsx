@@ -168,7 +168,11 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         />
         {(authUser && canComment) &&
           <CommentContainer className="e2e-comment-form ideaCommentForm">
-            <StyledAuthor authorId={authUser.id} message={messages.author} size="38px"/>
+            <StyledAuthor
+              authorId={authUser.id}
+              message={messages.author}
+              size="40px"
+            />
 
             <label htmlFor="submit-comment">
               <HiddenLabel>

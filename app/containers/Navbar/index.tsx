@@ -274,6 +274,13 @@ const StyledIdeaButton = styled(IdeaButton)`
 
   .Button {
     border: solid 2px ${colors.separation} !important;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 15px;
+      padding-right: 15px;
+    `}
   }
 
   .buttonText {
