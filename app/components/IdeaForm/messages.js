@@ -61,4 +61,8 @@ export default defineMessages({
     id: 'app.container.IdeaForm.imageDropzonePlaceholder',
     defaultMessage: 'Drop your image here',
   },
+  budgetLabel: {
+    id: 'app.container.IdeaForm.budgetLabel',
+    defaultMessage: 'Budget',
+  },
 });

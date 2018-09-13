@@ -183,6 +183,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       description: null,
       selectedTopics: null,
       selectedProject: null,
+      budget: null,
       position: '',
       position_coordinates: props.location.query.position ? { type: 'Point', coordinates: JSON.parse(props.location.query.position) as number[] } : null,
       submitError: false,
@@ -244,7 +245,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
     const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, position, position_coordinates, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, selectedProject, budget, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
@@ -252,6 +253,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const ideaObject: IIdeaAdd = {
+      budget,
       author_id: authorId,
       publication_status: publicationStatus,
       title_multiloc: ideaTitle,

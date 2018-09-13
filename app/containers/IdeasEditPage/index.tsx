@@ -92,6 +92,7 @@ interface State {
   descriptionMultiloc: Multiloc | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
+  budget: number | null;
   location: string;
   imageFile: ImageFile[] | null;
   imageId: string | null;
@@ -112,6 +113,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
       descriptionMultiloc: null,
       selectedTopics: null,
       selectedProject: null,
+      budget: null,
       location: '',
       imageFile: null,
       imageId: null,
@@ -241,7 +243,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
-    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
+    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId, budget } = this.state;
     const { title, description, selectedTopics, position } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
@@ -264,6 +266,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
       }
 
       await updateIdea(ideaId, {
+        budget,
         title_multiloc: {
           ...titleMultiloc,
           [locale]: title
@@ -285,7 +288,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
+      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, budget, submitError, processing } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
@@ -302,6 +305,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
               description={description}
               selectedTopics={selectedTopics}
               selectedProject={selectedProject}
+              budget={budget}
               position={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}

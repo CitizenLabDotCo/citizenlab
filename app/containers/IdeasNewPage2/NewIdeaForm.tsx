@@ -83,6 +83,7 @@ interface GlobalState {
   description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
+  budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
   submitError: boolean;
@@ -102,6 +103,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
       description: null,
       selectedTopics: null,
       selectedProject: null,
+      budget: null,
       position: '',
       imageFile: null,
       submitError: false,
@@ -120,6 +122,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         description,
         selectedTopics,
         selectedProject,
+        budget,
         position,
         imageFile,
         submitError,
@@ -130,6 +133,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           description,
           selectedTopics,
           selectedProject,
+          budget,
           position,
           imageFile,
           submitError,
@@ -160,7 +164,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { title, description, selectedTopics, selectedProject, position, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, selectedProject, budget, position, imageFile, submitError, processing } = this.state;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
@@ -174,6 +178,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           description={description}
           selectedTopics={selectedTopics}
           selectedProject={selectedProject}
+          budget={budget}
           position={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}

@@ -18,6 +18,7 @@ export interface IIdeaData {
     comments_count: number;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
+    budget: number | null;
     created_at: string;
     updated_at: string;
     published_at: string;
@@ -107,6 +108,7 @@ export interface IIdeaAdd {
   phase_ids?: string[] | null;
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
+  budget: number | null;
 }
 
 export function ideaByIdStream(ideaId: string) {
