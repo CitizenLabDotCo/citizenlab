@@ -73,6 +73,7 @@ export interface IIdeaFormOutput {
   selectedProject: IOption | null;
   position: string;
   imageFile: ImageFile[] | null;
+  localIdeaFiles: UploadFile[] | null;
 }
 
 interface DataProps {
@@ -102,7 +103,7 @@ interface State {
   imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
-  localIdeaFiles: GetResourceFileObjectsChildProps;
+  localIdeaFiles: UploadFile[] | null;
 }
 
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -137,15 +138,16 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
+    const localIdeaFiles = !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null;
 
     this.setState({
       selectedTopics,
       selectedProject,
       position,
       imageFile,
+      localIdeaFiles,
       title: (title || ''),
       description: description || '',
-      localIdeaFiles: remoteIdeaFiles,
     });
 
     this.subscriptions = [
@@ -191,6 +193,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const oldPartialProps = pick(prevProps, partialPropertyNames);
     const newPartialProps = pick(this.props, partialPropertyNames);
     const { remoteIdeaFiles } = this.props;
+    const localIdeaFiles = !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null;
 
     if (!isEqual(oldPartialProps, newPartialProps)) {
       const title = (this.props.title || '');
@@ -211,7 +214,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     }
 
     if (prevProps.remoteIdeaFiles !== remoteIdeaFiles) {
-      this.setState({ localIdeaFiles: remoteIdeaFiles });
+      this.setState({ localIdeaFiles });
     }
   }
 
@@ -318,7 +321,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, localIdeaFiles } = this.state;
 
     if (this.validate(title, description)) {
       const output: IIdeaFormOutput = {
@@ -328,6 +331,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         position,
         imageFile,
         description,
+        localIdeaFiles
       };
 
       this.props.onSubmit(output);
