@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
@@ -15,7 +15,7 @@ const Container = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
-  border-top: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;

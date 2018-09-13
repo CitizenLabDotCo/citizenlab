@@ -268,12 +268,12 @@ const StyledIdeaButton = styled(IdeaButton)`
   button {
     &:hover,
     &:focus {
-      border-color: ${darken(0.2, '#e0e0e0')} !important;
+      border-color: ${darken(0.2, colors.separation)} !important;
     }
   }
 
   .Button {
-    border: solid 2px #e0e0e0 !important;
+    border: solid 2px ${colors.separation} !important;
   }
 
   .buttonText {

@@ -21,7 +21,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media, color, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -68,7 +68,7 @@ const SecondLine = styled.div`
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid ${colors.separation};
   padding: 12px 28px;
 
   ${media.smallerThanMaxTablet`
@@ -80,7 +80,7 @@ const SecondLine = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  color: ${color('label')};
+  color: ${colors.label};
   flex: 1;
   text-align: left;
 
@@ -104,7 +104,7 @@ const PagesNav = styled.nav`
 `;
 
 const StyledLink = styled(Link) `
-  color: ${color('label')};
+  color: ${colors.label};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
   line-height: 19px;
@@ -121,7 +121,7 @@ const StyledLink = styled(Link) `
 `;
 
 const Separator = styled.span`
-  color: ${color('label')};
+  color: ${colors.label};
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -136,14 +136,14 @@ const Separator = styled.span`
 
 const CitizenLabLogo = styled(Icon) `
   height: 22px;
-  fill: ${color('label')};
+  fill: ${colors.label};
   margin-left: 8px;
   transition: all 150ms ease-out;
   flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
-  color: ${color('label')};
+  color: ${colors.label};
   font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 19px;
@@ -156,7 +156,7 @@ const PoweredBy = styled.a`
 
   ${media.biggerThanMaxTablet`
     &:hover {
-      color: ${color('label')};
+      color: ${colors.label};
 
       ${CitizenLabLogo} {
         fill: #000;

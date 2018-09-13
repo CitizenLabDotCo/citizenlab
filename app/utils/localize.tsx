@@ -57,7 +57,7 @@ export default function localize<P>(Component: React.ComponentType<P & InjectedL
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
-    localize = (multiloc: Multiloc): string => {
+    localize = (multiloc: Multiloc) => {
       return getLocalized(multiloc, this.state.locale, this.state.tenantLocales);
     }
 

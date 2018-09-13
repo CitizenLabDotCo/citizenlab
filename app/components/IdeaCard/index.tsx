@@ -152,7 +152,7 @@ const IdeaContainerInner = styled.div`
   flex-direction: column;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   position: relative;
   overflow: hidden;
 `;
@@ -258,7 +258,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <Author
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
-                size="medium"
+                size="32px"
                 message={messages.byAuthorNameComponent}
                 notALink
               />

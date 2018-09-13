@@ -1,5 +1,6 @@
 import React from 'react';
 import { isFunction } from 'lodash-es';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -106,7 +107,7 @@ const TopBar: any = styled.div`
   left: 0;
   right: 0;
   background: #fff;
-  border-bottom: solid 1px #e0e0e0;
+  border-bottom: solid 1px ${colors.separation};
   z-index: 10002;
 
   ${media.biggerThanMaxTablet`
@@ -260,23 +261,13 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     }
   }
 
-  disableBodyScroll = () => {
-    if (!document.body.classList.contains('modal-active')) {
-      document.body.classList.add('modal-active');
-    }
-  }
-
-  enableBodyScroll = () => {
-    document.body.classList.remove('modal-active');
-  }
-
   openModal = (url: string | null) => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
 
-    this.disableBodyScroll();
+    disableBodyScroll(this.ModalContentInnerElement);
 
     // on route change
     this.unlisten = clHistory.listen(() => {
@@ -331,8 +322,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
   cleanup = () => {
     this.goBackUrl = null;
 
-    this.enableBodyScroll();
-
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.onEscKeyPressed, true);
 
@@ -346,6 +335,8 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     if (this.ModalContentInnerElement) {
       this.ModalContentInnerElement.scrollTop = 0;
     }
+
+    enableBodyScroll(this.ModalContentInnerElement);
   }
 
   clickOutsideModal = () => {

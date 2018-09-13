@@ -40,7 +40,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 `;
 
 const FiltersArea = styled.div`
@@ -141,7 +141,7 @@ const ViewButton = styled.div`
   justify-content: center;
   cursor: pointer;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 
   &:hover,
   &.active {
@@ -205,7 +205,7 @@ const EmptyContainer = styled.div`
   padding-top: 100px;
   padding-bottom: 100px;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   background: #fff;
 `;
 

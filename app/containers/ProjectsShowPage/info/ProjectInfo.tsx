@@ -151,7 +151,7 @@ const ProjectImages = styled.div`
   img {
     margin: 5px;
     border-radius: 5px;
-    border: solid 1px #e0e0e0;
+    border: solid 1px ${colors.separation};
 
     &:first-child {
       width: calc(100% - 10px);

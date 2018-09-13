@@ -119,7 +119,7 @@ class ChildComment extends React.PureComponent<Props, State> {
             authorId={authorId}
             createdAt={createdAt}
             message={messages.childCommentAuthor}
-            size="medium"
+            size="38px"
           />
 
           <CommentBody
