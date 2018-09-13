@@ -7,8 +7,8 @@ import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { IModalInfo } from 'containers/App';
 import T from 'components/T';
-import { Segment, Header, Icon, Button } from 'semantic-ui-react';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { Segment, Header } from 'semantic-ui-react';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
@@ -63,28 +63,16 @@ class InfoSidebarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     if (isNilOrError(idea)) return null;
 
     return (
-      <>
-        {/* <Button.Group attached="top" size="small">
-          <Button onClick={this.handleClickEdit}>
-            <Icon name="edit" />
-            <FormattedMessage {...messages.edit} />
-          </Button>
-          <Button negative={true} basic={true} onClick={this.handleClickDelete}>
-            <Icon name="trash" />
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </Button.Group> */}
-        <Segment attached="bottom">
-          <StyledLink onClick={this.handleClickShow} role="navigation">
-            <Header as="h5">
-              <T value={idea.attributes.title_multiloc} />
-            </Header>
-          </StyledLink>
-          <p>
-            <T value={idea.attributes.body_multiloc} supportHtml={true} />
-          </p>
-        </Segment>
-      </>
+      <Segment attached="bottom">
+        <StyledLink onClick={this.handleClickShow} role="navigation">
+          <Header as="h5">
+            <T value={idea.attributes.title_multiloc} />
+          </Header>
+        </StyledLink>
+        <p>
+          <T value={idea.attributes.body_multiloc} supportHtml={true} />
+        </p>
+      </Segment>
     );
   }
 }
