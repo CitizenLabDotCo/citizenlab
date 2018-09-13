@@ -9,6 +9,8 @@ module ParticipationContext
   SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
+    has_many :baskets, as: :participation_context, dependent: :destroy
+
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
       validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
