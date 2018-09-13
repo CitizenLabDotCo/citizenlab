@@ -6,6 +6,8 @@ class Basket < ApplicationRecord
   has_many :ideas, through: :baskets_ideas
 
   validates :user, :participation_context, presence: true
+  validate :in_participatory_budgeting_participation_context
+  # TODO require participation_context to be in PB
 
 
   def total_budget
@@ -14,5 +16,14 @@ class Basket < ApplicationRecord
 
   def budget_exceeds_limit?
   	self.total_budget > self.participation_context.max_budget
+  end
+
+
+  private
+
+  def in_participatory_budgeting_participation_context
+  	if !participation_context.participatory_budgeting?
+  		errors.add(:participation_context, :is_not_participatory_budgeting, message: 'is not a in participatory budgeting method')
+  	end
   end
 end
