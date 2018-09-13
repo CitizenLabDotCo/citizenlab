@@ -492,10 +492,11 @@ resource "Ideas" do
       let(:participatory_budget) { 1800 }
 
       example "Change the participatory budget as a non-admin does not work", document: false do
+        previous_value = @idea.participatory_budget
         do_request
         expect(status).to be 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq nil
+        expect(json_response.dig(:data,:attributes,:participatory_budget)).to eq previous_value
       end
     end
     
