@@ -954,6 +954,8 @@
   "app.containers.landing.exploreAllProjects": "All projects",
   "app.containers.landing.ideasFrom": "Ideas for {name}",
   "app.containers.landing.projectsFrom": "Projects from {name}",
+  "app.containers.landing.shareYourIdeaSubtitle": "The more votes your idea gets the more impact it will have",
+  "app.containers.landing.shareYourIdeaTitle": "Share your idea",
   "app.containers.landing.subtitleCity": "Start an idea!",
   "app.containers.landing.titleCity": "Co-create {name}",
   "app.containers.landing.trendingIdeas": "Discover the ideas",

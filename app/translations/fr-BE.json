@@ -954,6 +954,8 @@
   "app.containers.landing.exploreAllProjects": "Tous les {tenantName, select, frw {communes} other {projets}}",
   "app.containers.landing.ideasFrom": "Les idées pour {name}",
   "app.containers.landing.projectsFrom": "Les projets pour {name}",
+  "app.containers.landing.shareYourIdeaSubtitle": "",
+  "app.containers.landing.shareYourIdeaTitle": "",
   "app.containers.landing.subtitleCity": "Lancez une idée !",
   "app.containers.landing.titleCity": "Co-créez {name}",
   "app.containers.landing.trendingIdeas": "Découvrez {tenantName, select, frw {ce qu'il se passe dans toutes les communes} other {les idées}}",

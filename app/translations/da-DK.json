@@ -954,6 +954,8 @@
   "app.containers.landing.exploreAllProjects": "Alle projekter",
   "app.containers.landing.ideasFrom": "Ideer for {name}",
   "app.containers.landing.projectsFrom": "Projekter fra {name}",
+  "app.containers.landing.shareYourIdeaSubtitle": "",
+  "app.containers.landing.shareYourIdeaTitle": "",
   "app.containers.landing.subtitleCity": "Del din ide!",
   "app.containers.landing.titleCity": "Samarbejd {navn}",
   "app.containers.landing.trendingIdeas": "Opdag ideerne",
