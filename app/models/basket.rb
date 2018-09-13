@@ -7,7 +7,6 @@ class Basket < ApplicationRecord
 
   validates :user, :participation_context, presence: true
   validate :in_participatory_budgeting_participation_context
-  # TODO require participation_context to be in PB
 
 
   def total_budget
