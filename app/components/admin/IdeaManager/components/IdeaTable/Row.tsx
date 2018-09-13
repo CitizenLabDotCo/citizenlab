@@ -138,11 +138,11 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
           <Table.Cell>
             <FormattedDate value={attrs.published_at} />
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>

@@ -73,7 +73,7 @@ const MiddleColumn = styled.div`
 const RightColumn = styled.div`
   width: 260px;
   ${media.smallerThan1280px`
-    width: 140px;
+    display: none;
   `}
 
   &.slide-enter {
