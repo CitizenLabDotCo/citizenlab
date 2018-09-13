@@ -248,6 +248,7 @@ type Props = {
   textHoverColor?: string;
   theme?: object | undefined;
   width?: string;
+  type?: string;
 };
 
 type State = {};
@@ -289,7 +290,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
+    const { type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -345,7 +346,7 @@ class Button extends React.PureComponent<Props, State> {
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
         )}
       </Container>
     );
