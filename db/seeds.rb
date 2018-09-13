@@ -364,8 +364,8 @@ if Apartment::Tenant.current == 'localhost'
           end
           if phase.participatory_budgeting?
             phase.update!({
-              max_budget: (rand(1000000) + 100),
-              currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol].shuffle.first
+              max_budget: (rand(1000000) + 100).round(-2),
+              currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
             })
           end
         end
@@ -395,6 +395,12 @@ if Apartment::Tenant.current == 'localhost'
     num_ideas.times do 
       created_at = Faker::Date.between(1.year.ago, Time.now)
       project = Project.offset(rand(Project.count)).first
+      phases = []
+      if project && project.timeline?
+        phases = project.phases.sample(rand(project.phases.count).select do |phase| 
+          phase.ideation? || phase.participatory_budgeting?
+        end
+      end
       idea = Idea.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -403,13 +409,13 @@ if Apartment::Tenant.current == 'localhost'
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         author: User.offset(rand(User.count)).first,
         project: project,
-        phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
+        phases: phases,
         publication_status: 'published',
         published_at: Faker::Date.between(created_at, Time.now),
         created_at: created_at,
         location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
-        participatory_budget: rand(3) == 0 ? nil : rand(10 ** (rand(3) + 2)) + 50
+        participatory_budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1)
       })
 
       [0,0,1,1,2][rand(5)].times do |i|
@@ -429,6 +435,17 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       create_comment_tree(idea, nil)
+    end
+
+    Phase.where(participation_method: 'participatory_budgeting').each do |phase|
+      User.all.shuffle.take(rand(20)+1).each do |user|
+        chosen_ideas = phase.project.ideas.shuffle.take(rand(10))
+        Basket.create!({
+          user: user,
+          participation_context: phase,
+          ideas: chosen_ideas
+        })
+      end
     end
 
     8.times do 

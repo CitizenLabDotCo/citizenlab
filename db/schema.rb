@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180912135727) do
+ActiveRecord::Schema.define(version: 20180913085920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,6 +51,26 @@ ActiveRecord::Schema.define(version: 20180912135727) do
     t.uuid "project_id"
     t.index ["area_id"], name: "index_areas_projects_on_area_id"
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
+  end
+
+  create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "submitted_at"
+    t.uuid "user_id"
+    t.uuid "participation_context_id"
+    t.string "participation_context_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_baskets_on_user_id"
+  end
+
+  create_table "baskets_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "basket_id"
+    t.uuid "idea_id"
+    t.datetime "added_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
+    t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
   end
 
   create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -521,6 +541,9 @@ ActiveRecord::Schema.define(version: 20180912135727) do
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "baskets", "users"
+  add_foreign_key "baskets_ideas", "baskets"
+  add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"
