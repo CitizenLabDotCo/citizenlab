@@ -21,6 +21,8 @@ class Idea < ApplicationRecord
   has_many :areas, through: :areas_ideas
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases
+  has_many :baskets_ideas, dependent: :destroy
+  has_many :baskets, through: :baskets_ideas
 
   has_many :comments, dependent: :destroy
   has_many :votes, as: :votable, dependent: :destroy
