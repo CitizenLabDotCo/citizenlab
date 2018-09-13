@@ -22,6 +22,7 @@ interface IStyledErrorMessage {
 }
 
 const ErrorMessageText = styled.div`
+  flex: 1 1 100%;
   color: ${colors.clRedError};
   font-weight: 400;
 
@@ -155,7 +156,6 @@ const ErrorList = styled.ul`
 const ErrorListItem = styled.li`
   &.isList {
     display: flex;
-    flex-wrap: wrap;
     align-items: flex-start;
     margin-left: 5px;
     margin-top: 10px;
