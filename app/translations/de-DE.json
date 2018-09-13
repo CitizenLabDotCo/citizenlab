@@ -954,6 +954,8 @@
   "app.containers.landing.exploreAllProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.landing.ideasFrom": "{orgName, select, München {Meldungen von {name}} other {Ideen von {name}}}",
   "app.containers.landing.projectsFrom": "Projekte von {name}",
+  "app.containers.landing.shareYourIdeaSubtitle": "",
+  "app.containers.landing.shareYourIdeaTitle": "",
   "app.containers.landing.subtitleCity": "{orgName, select, München {Melden Sie einen Mangel!} other {Starten Sie eine Idee!}}",
   "app.containers.landing.titleCity": "{orgName, select, München {{name} ist eine saubere Stadt - sorgen wir dafür, dass es so bleibt.} other {Gestalten Sie {name} mit}}",
   "app.containers.landing.trendingIdeas": "{orgName, select, München {Entdecken Sie die Mängelmeldungen} other {Entdecken Sie die Ideen}}",
