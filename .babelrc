@@ -3,7 +3,7 @@
     [
       "@babel/preset-env",
       {
-        "useBuiltIns": "usage",
+        "useBuiltIns": "entry",
         "targets": "> 1%, last 1 version, Safari > 8, IE 11"
       }
     ],
