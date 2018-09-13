@@ -67,6 +67,7 @@ export interface IIdeaFormOutput {
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
   position: string;
+  budget: number | null;
   imageFile: ImageFile[] | null;
 }
 
@@ -75,6 +76,7 @@ interface Props {
   description: string | null;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
+  budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
@@ -87,6 +89,7 @@ interface State {
   description: string;
   selectedTopics: IOption[] | null;
   selectedProject: IOption | null;
+  budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
@@ -110,7 +113,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       position: '',
       imageFile: null,
       titleError: null,
-      descriptionError: null
+      descriptionError: null,
+      budget: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -118,7 +122,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   componentDidMount() {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
+    const { title, description, selectedTopics, selectedProject, position, budget, imageFile } = this.props;
 
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
@@ -128,6 +132,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({
       selectedTopics,
       selectedProject,
+      budget,
       position,
       imageFile,
       title: (title || ''),
@@ -173,7 +178,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   componentDidUpdate(prevProps: Props) {
-    const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title'];
+    const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title', 'budget'];
     const oldPartialProps = pick(prevProps, partialPropertyNames);
     const newPartialProps = pick(this.props, partialPropertyNames);
 
@@ -247,6 +252,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({ imageFile: null });
   }
 
+  handleBudgetOnChange = (budget: string) => {
+    this.setState({ budget: Number(budget) });
+  }
+
   handleTitleInputSetRef = (element: HTMLInputElement) => {
     this.titleInputElement = element;
   }
@@ -270,7 +279,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
+    const { title, description, selectedTopics, selectedProject, budget, position, imageFile } = this.state;
 
     if (this.validate(title, description)) {
       const output: IIdeaFormOutput = {
@@ -279,6 +288,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         selectedProject,
         position,
         imageFile,
+        budget,
         description,
       };
 
@@ -289,7 +299,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   render() {
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
-    const { topics, title, description, selectedTopics, position, imageFile, titleError, descriptionError } = this.state;
+    const { topics, title, description, selectedTopics, position, imageFile, budget, titleError, descriptionError } = this.state;
 
     return (
       <Form id="idea-form" className={className}>
@@ -368,6 +378,16 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
               onRemove={this.handleUploadOnRemove}
             />
           </label>
+        </FormElement>
+
+        <FormElement>
+          <Label value={<FormattedMessage {...messages.budgetLabel} />} />
+          <Input
+            id="idea-budget"
+            value={String(budget)}
+            type="number"
+            onChange={this.handleBudgetOnChange}
+          />
         </FormElement>
       </Form>
     );
