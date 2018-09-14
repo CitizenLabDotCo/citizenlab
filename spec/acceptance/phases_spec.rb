@@ -152,7 +152,7 @@ resource "Phases" do
         let(:max_budget) { 420000 }
         let(:currency) { 'BEF' }
 
-        example_request "[error] Create multiple participatory budgeting phase", document: false do
+        example_request "[error] Create multiple participatory budgeting phases", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_participatory_budgeting_phases'}]
