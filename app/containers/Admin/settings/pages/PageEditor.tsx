@@ -220,8 +220,7 @@ class PageEditor extends React.PureComponent<Props, State>{
     let savePromise: Promise<IPage> | null = null;
     const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(values);
     const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(values);
-    const allPromises = [
-      savePromise,
+    const filePromises = [
       ...filesToAddPromises,
       ...filesToRemovePromises
     ];
@@ -239,7 +238,8 @@ class PageEditor extends React.PureComponent<Props, State>{
     }
 
     try {
-      await Promise.all(allPromises);
+      await savePromise;
+      await Promise.all(filePromises);
       resetForm();
       setStatus('success');
     } catch (errorResponse) {
