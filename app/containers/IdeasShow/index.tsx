@@ -748,7 +748,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage } } = this.props;
+    const { inModal, intl: { formatMessage }, localize } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let content: JSX.Element | null = null;
 
@@ -756,7 +756,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const ideaBody = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
+      const ideaTitle = localize(titleMultiloc);
+      const ideaBody = localize(idea.data.attributes.body_multiloc);
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -876,7 +877,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
+                    <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
                   </IdeaBody>
                 </Fragment>
 
@@ -952,6 +953,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                               sharedContent="idea"
                               userId={authUser && authUser.data.id}
+                              emailSubject={ideaTitle}
+                              emailBody={ideaBody}
                             />);
                         }}
                       </T>
