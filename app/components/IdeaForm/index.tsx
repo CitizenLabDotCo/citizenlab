@@ -184,8 +184,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title'];
     const oldPartialProps = pick(prevProps, partialPropertyNames);
     const newPartialProps = pick(this.props, partialPropertyNames);
-    const { remoteIdeaFiles } = this.props;
-    const localIdeaFiles = !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null;
 
     if (!isEqual(oldPartialProps, newPartialProps)) {
       const title = (this.props.title || '');
@@ -203,10 +201,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       || prevProps.imageFile && this.props.imageFile && prevProps.imageFile[0].base64 !== this.props.imageFile[0].base64
     ) {
       this.setState({ imageFile: this.props.imageFile });
-    }
-
-    if (prevProps.remoteIdeaFiles !== remoteIdeaFiles) {
-      this.setState({ localIdeaFiles });
     }
   }
 
