@@ -563,7 +563,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       // remoteProjectFiles = last saved state of files (remote)
 
       filesToAdd = localProjectFiles.filter((localProjectFile) => {
-        return !remoteProjectFiles.some(remoteProjectFile => remoteProjectFile.name === localProjectFile.name);
+        return !remoteProjectFiles.some(remoteProjectFile => remoteProjectFile.filename === localProjectFile.filename);
       });
     }
 
@@ -586,7 +586,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       // remoteProjectFiles = last saved state of files (remote)
 
       filesToRemove = remoteProjectFiles.filter((remoteProjectFile) => {
-        return !localProjectFiles.some(localProjectFile => localProjectFile.name === remoteProjectFile.name);
+        return !localProjectFiles.some(localProjectFile => localProjectFile.filename === remoteProjectFile.filename);
       });
     }
 
