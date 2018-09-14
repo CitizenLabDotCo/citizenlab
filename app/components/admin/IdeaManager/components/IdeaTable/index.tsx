@@ -142,6 +142,14 @@ export default class IdeaTable extends React.Component<Props, State> {
                 <FormattedMessage {...messages.down} />
               </SortableTableHeader>
             </Table.HeaderCell>
+            <Table.HeaderCell width={1}>
+              <SortableTableHeader
+                direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
+                onToggle={this.handleSortClick('baskets_count')}
+              >
+                <FormattedMessage {...messages.participatoryBudgettingPicks} />
+              </SortableTableHeader>
+            </Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
