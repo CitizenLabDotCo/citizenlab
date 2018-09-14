@@ -7,6 +7,7 @@ import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
+  tenantName: string | null;
   orgName: string | null;
   orgType: string | null;
   loaded: boolean;
@@ -19,6 +20,7 @@ function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>
     constructor(props) {
       super(props);
       this.state = {
+        tenantName: null,
         orgName: null,
         orgType: null,
         loaded: false
@@ -36,9 +38,10 @@ function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>
           currentTenant$
         ).subscribe(([locale, tenant]) => {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
+          const tenantName = tenant.data.attributes.name;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
           const orgType = tenant.data.attributes.settings.core.organization_type;
-          this.setState({ orgName, orgType, loaded: true });
+          this.setState({ tenantName, orgName, orgType, loaded: true });
         })
       ];
     }
@@ -48,7 +51,7 @@ function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>
     }
 
     formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: { [key: string]: string | number | boolean | Date } | undefined) => {
-      return this.props.intl.formatMessage(messageDescriptor, { orgName: this.state.orgName, orgType: this.state.orgType, ...values || {} });
+      return this.props.intl.formatMessage(messageDescriptor, { tenantName: this.state.tenantName, orgName: this.state.orgName, orgType: this.state.orgType, ...values || {} });
     }
 
     render() {

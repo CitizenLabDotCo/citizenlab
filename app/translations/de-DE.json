@@ -114,7 +114,7 @@
   "app.components.admin.IdeaManager.allIdeas": "{orgName, select, München {Alle Meldungen} other {Alle Ideen}}",
   "app.components.admin.IdeaManager.author": "Autor",
   "app.components.admin.IdeaManager.delete": "Löschen",
-  "app.components.admin.IdeaManager.deleteAll": "Alles löschen",
+  "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "{orgName, select, München {Sind Sie sich sicher, dass Sie diese Mängelmeldung löschen möchten?} other {Sind Sie sich sicher, dass Sie diese Idee löschen möchten?}}",
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "{orgName, select, München {Sind Sie sich sicher, dass Sie {count} Mängelmeldungen löschen möchten?} other {Sind Sie sich sicher, dass Sie {count} Ideen löschen möchten?}}",
   "app.components.admin.IdeaManager.down": "Gegen",
