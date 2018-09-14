@@ -167,6 +167,7 @@
   "app.components.admin.pagination.next": "Suivant",
   "app.components.avatar.avatarAltText": "Avatar de {userName}",
   "app.components.avatar.noAvatarAltText": "Avatar par défaut pour les utilisateurs qui n'en disposent pas",
+  "app.container.IdeaForm.budgetLabel": "",
   "app.container.IdeaForm.imageDropzonePlaceholder": "Glissez votre image ici",
   "app.containers.Admin.Invitations.adminLabel": "Donner le statut d'administrateur aux utilisateurs invités ?",
   "app.containers.Admin.Invitations.confirmDelete": "Oui, je suis sûr(e)",
