@@ -83,7 +83,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
           type="file"
           multiple
           innerRef={this.fileInput}
-          accept=".mobi, .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
+          accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
         />
         <Label htmlFor="project-attachment-uploader">
           <StyledIcon name="upload-file" />
