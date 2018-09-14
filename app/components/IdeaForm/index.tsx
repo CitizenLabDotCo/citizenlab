@@ -41,9 +41,6 @@ import { IOption, ImageFile, UploadFile, Locale } from 'typings';
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 
-// resource components
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
-
 const Form = styled.form`
   width: 100%;
   display: 'flex';
@@ -76,11 +73,7 @@ export interface IIdeaFormOutput {
   localIdeaFiles: UploadFile[] | null;
 }
 
-interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
-}
-
-interface InputProps {
+interface Props {
   title: string | null;
   description: string | null;
   selectedTopics: IOption[] | null;
@@ -88,9 +81,8 @@ interface InputProps {
   position: string;
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
+  remoteIdeaFiles: UploadFile[] | null;
 }
-
-interface Props extends DataProps, InputProps {}
 
 interface State {
   topics: IOption[] | null;
@@ -434,10 +426,4 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 }
 
-const IdeaFormWithHOCs = injectIntl(IdeaForm);
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetResourceFileObjects resourceId={inputProps.params.id} resourceType="idea">
-    {remoteIdeaFiles => <IdeaFormWithHOCs {...inputProps} remoteIdeaFiles={remoteIdeaFiles} />}
-  </GetResourceFileObjects>
-));
+export default withRouter<Props>(injectIntl(IdeaForm));
