@@ -121,7 +121,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
 
   render() {
     const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
-    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.id');
+    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
       <React.Fragment>
@@ -138,11 +138,11 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
           <Table.Cell>
             <FormattedDate value={attrs.published_at} />
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>

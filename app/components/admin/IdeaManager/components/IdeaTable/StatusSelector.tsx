@@ -44,6 +44,7 @@ class StatusSelector extends React.PureComponent<Props> {
         {statuses.map((status) => (
           <Popup
             key={status.id}
+            basic
             trigger={
               <ColorIndicator
                 color={status.attributes.color}
