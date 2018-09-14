@@ -167,6 +167,7 @@
   "app.components.admin.pagination.next": "Next",
   "app.components.avatar.avatarAltText": "Avatar of {userName}",
   "app.components.avatar.noAvatarAltText": "Default avatar icon for people without a custom one",
+  "app.container.IdeaForm.budgetLabel": "Budget",
   "app.container.IdeaForm.imageDropzonePlaceholder": "Drop your image here",
   "app.containers.Admin.Invitations.adminLabel": "Grant administrator rights to the invited people?",
   "app.containers.Admin.Invitations.confirmDelete": "Yes, I'm sure",

@@ -167,6 +167,7 @@
   "app.components.admin.pagination.next": "Nächste",
   "app.components.avatar.avatarAltText": "Avatar von {userName}",
   "app.components.avatar.noAvatarAltText": "Standard-Avatar-Symbol",
+  "app.container.IdeaForm.budgetLabel": "",
   "app.container.IdeaForm.imageDropzonePlaceholder": "Legen Sie Ihr Bild hier ab",
   "app.containers.Admin.Invitations.adminLabel": "Möchten Sie den eingeladenen Personen Administrator-Rechte geben?",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, ich bin mir sicher",
