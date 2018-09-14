@@ -4,7 +4,7 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/phases`;
 
-export type ParticipationMethod = 'ideation' | 'information' | 'survey';
+export type ParticipationMethod = 'ideation' | 'information' | 'survey' | 'budgeting';
 export type SurveyServices = 'typeform' | 'survey_monkey';
 
 export interface IPhaseData {
@@ -80,4 +80,9 @@ export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
 
 export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
+}
+
+export function canContainIdeas(phase: IPhaseData) : boolean {
+  const pm = phase.attributes.participation_method;
+  return pm === 'ideation' || pm === 'budgeting';
 }

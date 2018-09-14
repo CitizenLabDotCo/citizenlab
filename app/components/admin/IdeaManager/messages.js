@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.down',
     defaultMessage: 'Down',
   },
+  participatoryBudgettingPicks: {
+    id: 'app.components.admin.IdeaManager.participatoryBudgettingPicks',
+    defaultMessage: 'Picks',
+  },
   multiDragAndDropHelp: {
     id: 'app.components.admin.IdeaManager.multiDragAndDropHelp',
     defaultMessage: 'Drag and drop the ideas on an item above to assign them all at once.',

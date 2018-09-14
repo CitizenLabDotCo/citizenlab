@@ -1,5 +1,5 @@
 import React from 'react';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData, canContainIdeas } from 'services/phases';
 import { flow } from 'lodash-es';
 import { Menu, Label } from 'semantic-ui-react';
 import { DropTarget } from 'react-dnd';
@@ -18,7 +18,7 @@ interface Props {
 class FilterSidebarPhasesItem extends React.Component<Props> {
   render() {
     const { phase, active, onClick, connectDropTarget, isOver, canDrop, phaseNumber } = this.props;
-    const disabled = phase.attributes.participation_method !== 'ideation';
+    const disabled = !canContainIdeas(phase);
     return connectDropTarget(
       <div>
         <Menu.Item
@@ -48,7 +48,7 @@ const phaseTarget = {
     };
   },
   canDrop(props) {
-    return props.phase.attributes.participation_method === 'ideation';
+    return canContainIdeas(props.phase);
   },
 };
 

@@ -34,6 +34,7 @@ class PhasesSelector extends React.PureComponent<Props> {
       <div>
         {phases.map((phase, index) => (
           <Popup
+            basic
             key={phase.id}
             trigger={
               <Label
