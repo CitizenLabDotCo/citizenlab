@@ -149,6 +149,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',
   },
+  emailSharingSubject: {
+    id: 'app.containers.IdeasShow.emailSharingSubject',
+    defaultMessage: 'Vote for {ideaTitle}',
+  },
+  emailSharingBody: {
+    id: 'app.containers.IdeasShow.emailSharingBody',
+    defaultMessage: 'Vote for {ideaTitle} on {ideaUrl}',
+  },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',
     defaultMessage: 'by {authorName}',

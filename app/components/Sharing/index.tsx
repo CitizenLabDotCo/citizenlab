@@ -115,7 +115,8 @@ interface ITracks {
 
 interface InputProps {
   className?: string;
-  twitterMessage: string | JSX.Element;
+  url: string;
+  twitterMessage: string;
   userId: string | null;
   sharedContent: string;
   emailSubject?: string;

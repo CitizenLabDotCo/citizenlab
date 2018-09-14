@@ -7,11 +7,11 @@ import Sharing from 'components/Sharing';
 import Spinner from 'components/UI/Spinner';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
-import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import {  InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -108,6 +108,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
 }
@@ -118,12 +119,12 @@ interface State {}
 
 class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   render() {
-    const { idea, authUser, localize } = this.props;
+    const { idea, authUser, localize, locale } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(idea) && !isNilOrError(authUser)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
-      const ideaBody = localize(idea.attributes.body_multiloc);
+      const ideaUrl = `${location.origin}/${locale}/ideas/${idea.attributes.slug}`;
 
       return (
         <Container>
@@ -135,18 +136,14 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
             <FormattedMessage {...messages.shareIdeaSubtitle} />
           </Subtitle>
           <SharingWrapper>
-            <T value={idea.attributes.title_multiloc} maxLength={50} >
-              {(title) => {
-                return (
-                  <Sharing
-                    twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                    sharedContent="idea"
-                    userId={authUser.id}
-                    emailSubject={ideaTitle}
-                    emailBody={ideaBody}
-                  />);
-              }}
-            </T>
+            <Sharing
+              url={ideaUrl}
+              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+              sharedContent="idea"
+              userId={authUser.id}
+              emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+              emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
+            />
           </SharingWrapper>
         </Container>
       );
@@ -163,6 +160,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
 const IdeaSharingModalContentWithHoCs = injectIntl(localize(IdeaSharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
 });
