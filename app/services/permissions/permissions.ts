@@ -16,7 +16,7 @@ interface IRouteItem {
 }
 
 interface IPermissionRule {
-  (resource: TPermissionItem, user: IUser | null, context?: any): boolean;
+  (resource: TPermissionItem | null, user: IUser | null, context?: any): boolean;
 }
 
 interface IPermissionRules {

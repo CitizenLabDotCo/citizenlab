@@ -182,7 +182,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       title: null,
       description: null,
       selectedTopics: null,
-      selectedProject: null,
       budget: null,
       position: '',
       position_coordinates: props.location.query.position ? { type: 'Point', coordinates: JSON.parse(props.location.query.position) as number[] } : null,
@@ -244,12 +243,13 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
+    const { project } = this.props;
     const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, budget, position, position_coordinates, ideaId } = await this.globalState.get();
+    const { title, description, selectedTopics, budget, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-    const projectId = (selectedProject ? selectedProject.value as string : null);
+    const projectId = !isNilOrError(project) ? project.id : null;
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const ideaObject: IIdeaAdd = {
@@ -341,6 +341,9 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   render() {
     const { showIdeaForm, publishing } = this.state;
+    const { project } = this.props;
+
+    if (isNilOrError(project)) return null;
 
     return (
       <Container>
@@ -350,7 +353,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
             {showIdeaForm &&
               <CSSTransition classNames="page" timeout={timeout}>
                 <PageContainer className="ideaForm">
-                  <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
+                  <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
                 </PageContainer>
               </CSSTransition>
             }

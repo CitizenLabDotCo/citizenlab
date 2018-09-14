@@ -17,7 +17,6 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { projectByIdStream, IProject } from 'services/projects';
 import { topicByIdStream, ITopic } from 'services/topics';
 import { hasPermission } from 'services/permissions';
 
@@ -86,12 +85,12 @@ interface Props {
 }
 
 interface State {
+  projectId: string | null;
   locale: Locale;
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
   budget: number | null;
   location: string;
   imageFile: ImageFile[] | null;
@@ -107,12 +106,12 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      projectId: null,
       locale: 'en',
       ideaSlug: null,
       titleMultiloc: null,
       descriptionMultiloc: null,
       selectedTopics: null,
-      selectedProject: null,
       budget: null,
       location: '',
       imageFile: null,
@@ -163,29 +162,13 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
           context: idea.data
         });
 
-        let project$: Observable<null | IProject> = of(null);
         let topics$: Observable<null | ITopic[]> = of(null);
-
-        if (idea.data.relationships.project && idea.data.relationships.project.data) {
-          project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
-        }
 
         if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
           topics$ = combineLatest(
             idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
           );
         }
-
-        const selectedProject$ = project$.pipe(map((project) => {
-          if (project) {
-            return {
-              value: project.data.id,
-              label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
-            };
-          }
-
-          return null;
-        }));
 
         const selectedTopics$ = topics$.pipe(map((topics) => {
           if (topics && topics.length > 0) {
@@ -204,7 +187,6 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
           locale$,
           idea$,
           ideaImage$,
-          selectedProject$,
           selectedTopics$,
           granted$
         );
@@ -212,17 +194,18 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
     );
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedProject, selectedTopics, granted]) => {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedTopics, granted]) => {
         if (granted) {
           this.setState({
             locale,
             selectedTopics,
-            selectedProject,
+            projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             location: idea.data.attributes.location_description,
+            budget: idea.data.attributes.budget,
             imageFile: (ideaImage && ideaImage.file ? [ideaImage.file] : null),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
@@ -243,8 +226,8 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
-    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId, budget } = this.state;
-    const { title, description, selectedTopics, position } = ideaFormOutput;
+    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
+    const { title, description, selectedTopics, position, budget } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
@@ -288,7 +271,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, budget, submitError, processing } = this.state;
+      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, location, imageFile, budget, submitError, processing, projectId } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
@@ -301,10 +284,10 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
             </Title>
 
             <IdeaForm
+              projectId={projectId}
               title={title}
               description={description}
               selectedTopics={selectedTopics}
-              selectedProject={selectedProject}
               budget={budget}
               position={location}
               imageFile={imageFile}
