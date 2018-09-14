@@ -273,7 +273,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaIdForSocialSharing: '749dc511-c294-4677-853f-0768614780df'
+      ideaIdForSocialSharing: null
     };
   }
 
@@ -296,12 +296,10 @@ class LandingPage extends React.PureComponent<Props, State> {
           if (authUser && ideaParams.publish === 'true') {
             await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
-            window.history.replaceState(null, '', window.location.pathname);
           }
 
-          this.setState({
-            ideaIdForSocialSharing: ideaParams.id
-          });
+          window.history.replaceState(null, '', window.location.pathname);
+          this.setState({ ideaIdForSocialSharing: ideaParams.id });
         }
       })
     ];

@@ -63,6 +63,14 @@ export default defineMessages({
     id: 'app.containers.landing.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',
   },
+  emailSharingSubject: {
+    id: 'app.containers.landing.emailSharingSubject',
+    defaultMessage: 'Vote for {ideaTitle}',
+  },
+  emailSharingBody: {
+    id: 'app.containers.landing.emailSharingBody',
+    defaultMessage: 'Vote for {ideaTitle} on {ideaUrl}',
+  },
   skipSharing: {
     id: 'app.containers.landing.skipSharing',
     defaultMessage: `Skip it, I'll do it later`,

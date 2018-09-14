@@ -765,6 +765,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+      const ideaUrl = location.href;
 
       content = (
         <>
@@ -887,6 +888,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   {(title) => {
                     return (
                       <StyledSharingMobile
+                        url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                         sharedContent="idea"
                         userId={authUser && authUser.data.id}
@@ -946,18 +948,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     }
 
                     <SharingWrapper>
-                      <T value={titleMultiloc} maxLength={50} >
-                        {(title) => {
-                          return (
-                            <Sharing
-                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                              sharedContent="idea"
-                              userId={authUser && authUser.data.id}
-                              emailSubject={ideaTitle}
-                              emailBody={ideaBody}
-                            />);
-                        }}
-                      </T>
+                      <Sharing
+                        url={ideaUrl}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                        sharedContent="idea"
+                        userId={authUser && authUser.data.id}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
+                      />
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&
