@@ -64,6 +64,15 @@ const StyledContentContainer = styled(ContentContainer) `
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
+`;
+
+const AttachmentsContainer = styled.div`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const PageContent = styled.div`
@@ -223,17 +232,6 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
           </Helmet>
 
           <PageContent>
-            {pageFiles &&
-              <PageFilesHeader>
-                <FormattedMessage {...messages.projectAttachments} />
-              </PageFilesHeader>
-            }
-            {Array.isArray(pageFiles) && pageFiles.map(file => (
-              <FileDisplay
-                key={file.id}
-                file={file}
-              />
-            ))}
             <StyledContentContainer>
               <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
                 <PageTitle>
@@ -244,6 +242,19 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
                 </PageDescription>
               </Fragment>
             </StyledContentContainer>
+            <AttachmentsContainer>
+              {pageFiles &&
+                <PageFilesHeader>
+                  <FormattedMessage {...messages.projectAttachments} />
+                </PageFilesHeader>
+              }
+              {Array.isArray(pageFiles) && pageFiles.map(file => (
+                <FileDisplay
+                  key={file.id}
+                  file={file}
+                />
+              ))}
+            </AttachmentsContainer>
           </PageContent>
 
           {!isNilOrError(pageLinks) &&
