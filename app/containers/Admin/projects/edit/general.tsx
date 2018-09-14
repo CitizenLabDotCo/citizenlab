@@ -402,7 +402,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleFileOnAdd = (newFile: UploadFile) => {
+  handleProjectFileOnAdd = (newFile: UploadFile) => {
     this.setState((state) => ({
       submitState: 'enabled',
       localProjectFiles: [
@@ -893,7 +893,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
                 <FormattedMessage {...messages.fileUploadLabel} />
               </Label>
               <FileInput
-                onAdd={this.handleFileOnAdd}
+                onAdd={this.handleProjectFileOnAdd}
               />
               <Error fieldName="file" apiErrors={this.state.apiErrors.file} />
               {localProjectFiles.length > 0 && localProjectFiles.map(file => (
