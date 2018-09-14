@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "Idées",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Déplacer l'idée \" {ideaTitle} \" hors du projet actuel lui fera perdre les informations liées au étapes du projet. Voulez-vous la déplacer ? ",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Glissez les idées sur un éléments pour les assignez toutes en une fois.",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "",
   "app.components.admin.IdeaManager.projectsTab": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.components.admin.IdeaManager.publication_date": "Publiée le",
   "app.components.admin.IdeaManager.statusesTab": "Statut",

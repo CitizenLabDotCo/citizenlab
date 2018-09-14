@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "Ideeën",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": " Door '{ideaTitle}' te verplaatsen, verliest het de informatie die specifiek gelinkt was aan de tijdslijn uit het vorige project. Wilt u doorgaan?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Versleep de ideeën naar een bovenstaand item om ze gezamenlijk toe te wijzen. ",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "",
   "app.components.admin.IdeaManager.projectsTab": "Projecten",
   "app.components.admin.IdeaManager.publication_date": "Geplaatst op",
   "app.components.admin.IdeaManager.statusesTab": "Status",
