@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { find, pick, isEqual } from 'lodash-es';
+import { pick, isEqual } from 'lodash-es';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -11,17 +11,19 @@ import bowser from 'bowser';
 // components
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
+import Icon from 'components/UI/Icon';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
+import HasPermission from 'components/HasPermission';
 
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
-import { projectsStream, IProjects, IProjectData } from 'services/projects';
+import { IProjects, IProjectData } from 'services/projects';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -57,6 +59,16 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   cursor: pointer;
 `;
 
+const LabelWithIcon = styled(Label)`
+  display: flex;
+  align-items: center;
+`;
+const StyledIcon = styled(Icon)`
+  width: 16px;
+  height: 16px;
+  margin-left: 10px;
+`;
+
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
 `;
@@ -65,17 +77,16 @@ export interface IIdeaFormOutput {
   title: string;
   description: string;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
   position: string;
   budget: number | null;
   imageFile: ImageFile[] | null;
 }
 
 interface Props {
+  projectId: string | null;
   title: string | null;
   description: string | null;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
   budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
@@ -88,7 +99,6 @@ interface State {
   title: string;
   description: string;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
   budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
@@ -109,7 +119,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       title: '',
       description: '',
       selectedTopics: null,
-      selectedProject: null,
       position: '',
       imageFile: null,
       titleError: null,
@@ -122,16 +131,14 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   componentDidMount() {
-    const { title, description, selectedTopics, selectedProject, position, budget, imageFile } = this.props;
+    const { title, description, selectedTopics, position, budget, imageFile } = this.props;
 
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
     const topics$ = topicsStream().observable;
-    const projects$ = projectsStream().observable;
 
     this.setState({
       selectedTopics,
-      selectedProject,
       budget,
       position,
       imageFile,
@@ -150,25 +157,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         });
       }),
 
-      combineLatest(
-        locale$,
-        currentTenantLocales$,
-        projects$,
-      ).subscribe(([locale, currentTenantLocales, projects]) => {
-        let selectedProject;
-
-        if (this.props.params.slug) {
-          const currentProject = find(projects.data, (project) => project.attributes.slug === this.props.params.slug);
-          selectedProject = this.getOptions({ data: [currentProject] } as IProjects, locale, currentTenantLocales);
-          selectedProject = selectedProject[0];
-        }
-
-        this.setState({
-          selectedProject,
-          projects: this.getOptions(projects, locale, currentTenantLocales)
-        });
-      }),
-
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
 
@@ -184,8 +172,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
     if (!isEqual(oldPartialProps, newPartialProps)) {
       const title = (this.props.title || '');
-      const { selectedTopics, selectedProject, position } = this.props;
-      this.setState({ title, selectedTopics, selectedProject, position });
+      const { selectedTopics, position, budget } = this.props;
+      this.setState({ title, selectedTopics, position, budget });
     }
 
     if (this.props.description !== prevProps.description) {
@@ -232,10 +220,6 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.setState({ selectedTopics });
   }
 
-  handleProjectOnChange = (selectedProject: IOption) => {
-    this.setState({ selectedProject });
-  }
-
   handleLocationOnChange = (position: string) => {
     this.setState({ position });
   }
@@ -279,13 +263,12 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, selectedProject, budget, position, imageFile } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile } = this.state;
 
     if (this.validate(title, description)) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
-        selectedProject,
         position,
         imageFile,
         budget,
@@ -298,7 +281,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
   render() {
     const className = this.props['className'];
-    const { formatMessage } = this.props.intl;
+    const { projectId, intl: { formatMessage } } = this.props;
     const { topics, title, description, selectedTopics, position, imageFile, budget, titleError, descriptionError } = this.state;
 
     return (
@@ -380,15 +363,21 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           </label>
         </FormElement>
 
-        <FormElement>
-          <Label value={<FormattedMessage {...messages.budgetLabel} />} />
-          <Input
-            id="idea-budget"
-            value={String(budget)}
-            type="number"
-            onChange={this.handleBudgetOnChange}
-          />
-        </FormElement>
+        <HasPermission
+          item="ideas"
+          action="assignBudget"
+          context={{ projectId }}
+        >
+          <FormElement>
+            <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+            <Input
+              id="budget"
+              value={String(budget)}
+              type="number"
+              onChange={this.handleBudgetOnChange}
+            />
+          </FormElement>
+        </HasPermission>
       </Form>
     );
   }

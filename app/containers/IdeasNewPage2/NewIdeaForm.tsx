@@ -76,13 +76,13 @@ const MobileButton = styled.div`
 
 interface Props {
   onSubmit: () => void;
+  projectId: string;
 }
 
 interface GlobalState {
   title: string | null;
   description: string | null;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
   budget: number | null;
   position: string;
   imageFile: ImageFile[] | null;
@@ -102,7 +102,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
       title: null,
       description: null,
       selectedTopics: null,
-      selectedProject: null,
       budget: null,
       position: '',
       imageFile: null,
@@ -121,7 +120,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         title,
         description,
         selectedTopics,
-        selectedProject,
         budget,
         position,
         imageFile,
@@ -132,7 +130,6 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           title,
           description,
           selectedTopics,
-          selectedProject,
           budget,
           position,
           imageFile,
@@ -155,16 +152,17 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = ideaFormOutput;
+    const { title, description, selectedTopics, position, imageFile, budget } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, selectedProject, position, imageFile, imageChanged });
+    this.globalState.set({ title, description, selectedTopics, position, imageFile, imageChanged, budget });
     this.props.onSubmit();
   }
 
   render() {
-    const { title, description, selectedTopics, selectedProject, budget, position, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing } = this.state;
+    const { projectId } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
@@ -174,10 +172,10 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         </Title>
 
         <IdeaForm
+          projectId={projectId}
           title={title}
           description={description}
           selectedTopics={selectedTopics}
-          selectedProject={selectedProject}
           budget={budget}
           position={position}
           imageFile={imageFile}
