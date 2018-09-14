@@ -4,7 +4,6 @@ import styled, { keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
 
-
 const enterAnimation = keyframes`
   0% {
     transform: scale(1, 0);
