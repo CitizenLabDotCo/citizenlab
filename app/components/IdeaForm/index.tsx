@@ -81,7 +81,7 @@ interface Props {
   position: string;
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
-  remoteIdeaFiles: UploadFile[] | null;
+  remoteIdeaFiles?: UploadFile[] | null;
 }
 
 interface State {
