@@ -131,18 +131,17 @@ interface Props extends InputProps, DataProps {}
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, emailSubject, emailBody, sharedContent, className, intl: { formatMessage } } = this.props;
+    const { url, clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, emailSubject, emailBody, sharedContent, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
-      const href = window.location.href;
       const facebookText = formatMessage(messages.shareOnFacebook);
       const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
       const emailText = formatMessage(messages.shareByEmail);
-      const fbURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : href;
-      const twitterURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : href;
+      const fbURL = userId ? `${url}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : url;
+      const twitterURL = userId ? `${url}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : url;
 
       const facebook = (facebookAppId ? (
         <FacebookButton
