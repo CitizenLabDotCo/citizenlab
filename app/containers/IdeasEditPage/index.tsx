@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -37,6 +38,9 @@ import { IOption, ImageFile, Multiloc, Locale } from 'typings';
 // style
 import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+// resource components
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const Container = styled.div`
   background: #f9f9fa;
@@ -83,6 +87,7 @@ interface Props {
   params: {
     ideaId: string;
   };
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
 interface State {
@@ -100,7 +105,7 @@ interface State {
   processing: boolean;
 }
 
-export default class IdeaEditPage extends PureComponent<Props, State> {
+class IdeaEditPage extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -335,8 +340,20 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
   }
 
   render() {
+
     if (this.state && this.state.loaded) {
-      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, selectedProject, location, imageFile, submitError, processing } = this.state;
+      const { remoteIdeaFiles } = this.props;
+      const {
+        locale,
+        titleMultiloc,
+        descriptionMultiloc,
+        selectedTopics,
+        selectedProject,
+        location,
+        imageFile,
+        submitError,
+        processing,
+      } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
@@ -356,6 +373,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
               position={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
+              remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
             />
 
             <ButtonWrapper>
@@ -377,3 +395,9 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default ((props: Props) => (
+  <GetResourceFileObjects resourceId={props.params.ideaId} resourceType="idea">
+    {remoteIdeaFiles => <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />}
+  </GetResourceFileObjects>
+));
