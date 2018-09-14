@@ -128,4 +128,4 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedLocalized, St
   }
 }
 
-export default localize<Props>(withTheme(IdeasByTimeChart as any));
+export default withTheme(localize(IdeasByTimeChart));
