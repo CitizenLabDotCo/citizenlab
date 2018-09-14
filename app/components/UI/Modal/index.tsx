@@ -18,7 +18,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const ModalContent: any = styled(clickOutside)`
   width: 100%;
@@ -86,13 +86,20 @@ const ModalContainer = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
   padding: 30px;
   overflow: hidden;
-  z-index: 10002;
+  z-index: 1000000;
   will-change: opacity, transform;
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+    /* height: calc(100vh - ${props => props.theme.mobileMenuHeight}px); */
+    /* bottom: auto; */
+  `}
 
   &.modal-enter {
     opacity: 0;
@@ -126,10 +133,24 @@ const HeaderContainer = styled.div`
   align-items: center;
   padding-left: 40px;
 `;
+
 const FooterContainer = styled(HeaderContainer)`
   background: white;
   border-bottom: none;
   border-top: 2px solid ${colors.separation};
+`;
+
+const Skip = styled.div`
+  color: #fff;
+  font-size: ${fontSizes.base}px;
+  text-align: center;
+  text-decoration: underline;
+  margin-top: 15px;
+  cursor: pointer;
+
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 interface ITracks {
@@ -147,6 +168,8 @@ type Props = {
   className?: string;
   header?: JSX.Element;
   footer?: JSX.Element;
+  hasSkipButton?: boolean;
+  skipText?: JSX.Element;
 };
 
 type State = {};
@@ -171,6 +194,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
       console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
     } else {
       this.ModalPortal.appendChild(this.el);
+    }
+
+    if (this.props.opened) {
+      this.openModal(this.props.url);
     }
   }
 
@@ -255,7 +282,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     let { fixedHeight, width } = this.props;
-    const { children, opened, header, footer } = this.props;
+    const { children, opened, header, footer, hasSkipButton, skipText } = this.props;
 
     fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
     width = (isString(width) ? width : '650px');
@@ -277,6 +304,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
               <CloseIcon name="close3" />
             </CloseButton>
           </ModalContent>
+
+          {hasSkipButton && skipText &&
+            <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
+          }
         </ModalContainer>
       </CSSTransition>
     ) : null);

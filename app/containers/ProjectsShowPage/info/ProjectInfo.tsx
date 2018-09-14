@@ -219,6 +219,8 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   userId={userId}
                   sharedContent="project"
+                  emailSubject={ideaTitle}
+                  emailBody={ideaBody}
                 />);
             }}
           </T>

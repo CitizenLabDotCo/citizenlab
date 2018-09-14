@@ -273,7 +273,7 @@ class LandingPage extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaIdForSocialSharing: '96361f26-5641-4fe6-938b-b422a51feeef'
+      ideaIdForSocialSharing: '749dc511-c294-4677-853f-0768614780df'
     };
   }
 
@@ -417,6 +417,8 @@ class LandingPage extends React.PureComponent<Props, State> {
             opened={!!ideaIdForSocialSharing}
             close={this.closeIdeaSocialSharingModal}
             fixedHeight={false}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
           >
             {ideaIdForSocialSharing &&
               <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />

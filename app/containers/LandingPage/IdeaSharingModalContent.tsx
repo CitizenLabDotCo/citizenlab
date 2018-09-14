@@ -15,6 +15,7 @@ import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import {  InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // style
@@ -25,45 +26,51 @@ const rocket = require('./rocket.png');
 
 const Loading = styled.div`
   width: 100%;
-  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: 400px;
-  `}
 `;
 
 const Container = styled.div`
   width: 100%;
-  min-height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 20px;
-
-  ${media.smallerThanMaxTablet`
-    min-height: auto;
-  `}
 `;
 
 const Rocket = styled.img`
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
+
+  ${media.smallerThanMaxTablet`
+    width: 35px;
+    height: 35px;
+  `}
 `;
 
 const Title = styled.h1`
+  flex-shrink: 0;
   width: 100%;
+  max-width: 300px;
   color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
-  line-height: 42px;
+  line-height: 40px;
   font-weight: 500;
   text-align: center;
+  margin: 0;
+  margin-top: 20px;
   margin-bottom: 10px;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    max-width: auto;
+    font-size: ${fontSizes.xxxl}px;
+    line-height: 36px;
+  `}
 `;
 
 const Subtitle = styled.h3`
+  flex-shrink: 0;
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
@@ -71,14 +78,29 @@ const Subtitle = styled.h3`
   line-height: 25px;
   font-weight: 300;
   text-align: center;
+  margin: 0;
+  margin-top: 10px;
   margin-bottom: 35px;
+  padding: 0;
+
+  ${media.smallerThanMaxTablet`
+    font-size: ${fontSizes.base}px;
+    line-height: 21px;
+    margin-bottom: 20px;
+  `}
 `;
 
 const SharingWrapper = styled.div`
+  flex-shrink: 0;
   width: 100%;
   max-width: 300px;
   display: flex;
   flex-direction: column;
+  padding-bottom: 40px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 20px;
+  `}
 `;
 
 interface InputProps {
@@ -94,12 +116,15 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps, State> {
+class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   render() {
-    const { idea, authUser } = this.props;
+    const { idea, authUser, localize } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (!isNilOrError(idea) && !isNilOrError(authUser)) {
+      const ideaTitle = localize(idea.attributes.title_multiloc);
+      const ideaBody = localize(idea.attributes.body_multiloc);
+
       return (
         <Container>
           <Rocket src={rocket} alt="rocket" />
@@ -117,6 +142,8 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
                     sharedContent="idea"
                     userId={authUser.id}
+                    emailSubject={ideaTitle}
+                    emailBody={ideaBody}
                   />);
               }}
             </T>
@@ -133,7 +160,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
   }
 }
 
-const IdeaSharingModalContentWithHoCs = injectIntl(IdeaSharingModalContent);
+const IdeaSharingModalContentWithHoCs = injectIntl(localize(IdeaSharingModalContent));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,

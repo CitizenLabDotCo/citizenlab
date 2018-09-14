@@ -53,7 +53,7 @@ export default defineMessages({
   },
   shareIdeaTitle: {
     id: 'app.containers.landing.shareIdeaTitle',
-    defaultMessage: 'Share your idea',
+    defaultMessage: 'Share your idea & get some votes',
   },
   shareIdeaSubtitle: {
     id: 'app.containers.landing.shareIdeaSubtitle',
@@ -62,5 +62,9 @@ export default defineMessages({
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
     defaultMessage: 'Vote for {ideaTitle} on',
+  },
+  skipSharing: {
+    id: 'app.containers.landing.skipSharing',
+    defaultMessage: `Skip it, I'll do it later`,
   },
 });

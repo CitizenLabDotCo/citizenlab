@@ -51,6 +51,7 @@ const Container = styled.div`
 
   .sharingButton {
     width: 100%;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,7 +63,6 @@ const Container = styled.div`
 
     &.twitter {
       background: ${colors.twitter};
-      fill: #fff;
       color: #fff;
 
       &:hover {
@@ -72,7 +72,6 @@ const Container = styled.div`
 
     &.facebook {
       background: ${colors.facebook};
-      fill: #fff;
       color: #fff;
 
       &:hover {
@@ -82,7 +81,6 @@ const Container = styled.div`
 
     &.messenger {
       background: ${colors.facebookMessenger};
-      fill: #fff;
       color: #fff;
 
       &:hover {
@@ -92,6 +90,19 @@ const Container = styled.div`
       ${media.biggerThanMaxTablet`
         display: none;
       `}
+    }
+
+    &.email {
+      background: #e6ebec;
+      color: #004d6c;
+
+      ${StyledIcon} {
+        fill: #004d6c;
+      }
+
+      &:hover {
+        background: ${(darken(0.15, '#e6ebec'))};
+      }
     }
   }
 `;
@@ -107,6 +118,8 @@ interface InputProps {
   twitterMessage: string | JSX.Element;
   userId: string | null;
   sharedContent: string;
+  emailSubject?: string;
+  emailBody?: string;
 }
 
 interface DataProps {
@@ -117,7 +130,7 @@ interface Props extends InputProps, DataProps {}
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, sharedContent, className, intl: { formatMessage } } = this.props;
+    const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, emailSubject, emailBody, sharedContent, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
@@ -126,6 +139,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebookText = formatMessage(messages.shareOnFacebook);
       const messengerText = formatMessage(messages.shareViaMessenger);
       const twitterText = formatMessage(messages.shareOnTwitter);
+      const emailText = formatMessage(messages.shareByEmail);
       const fbURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : href;
       const twitterURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : href;
 
@@ -162,11 +176,19 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
         </TwitterButton>
       );
 
+      const email = ((emailSubject && emailBody) ? (
+        <a className="sharingButton email" href={`mailto:?subject=${emailSubject}body=${emailBody}`}>
+          <StyledIcon name="email" />
+          <Text>{emailText}</Text>
+        </a>
+      ) : null);
+
       return (
         <Container className={className}>
           {facebook}
           {messenger}
           {twitter}
+          {email}
         </Container>
       );
     }
