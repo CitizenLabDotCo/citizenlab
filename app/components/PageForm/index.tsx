@@ -36,7 +36,7 @@ export interface FormValues {
   local_page_files: UploadFile[] | [];
 }
 
-interface Props {
+export interface Props {
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
   pageId?: string;
@@ -81,6 +81,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
 
   renderFileUploader = (values: FormValues) => () => {
     const { local_page_files } = values;
+
     return (
       <FileUploader
         onFileAdd={this.handlePageFileOnAdd}

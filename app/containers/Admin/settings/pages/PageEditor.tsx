@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -12,10 +12,11 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
 import PageForm, { FormValues } from 'components/PageForm';
 
-// Services & resources
-import { createPage, updatePage, IPage } from 'services/pages';
+// Services
+import { createPage, updatePage } from 'services/pages';
 import { addPageFile, deletePageFile } from 'services/pageFiles';
 
+// Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
@@ -111,7 +112,7 @@ interface InputProps {
 interface Props extends DataProps, InputProps {}
 
 interface State {
-  deployed: boolean;
+  expanded: boolean;
   localPageFiles: GetResourceFileObjectsChildProps;
 }
 
@@ -120,21 +121,13 @@ class PageEditor extends React.PureComponent<Props, State>{
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      deployed: false,
+      expanded: false,
       localPageFiles: null,
     };
   }
 
-  // componentDidUpdate(prevProps: Props) {
-  //   const { remotePageFiles } = this.props;
-
-  //   if (prevProps.remotePageFiles !== remotePageFiles) {
-  //     this.setState({ localPageFiles: remotePageFiles });
-  //   }
-  // }
-
   toggleDeploy = () => {
-    this.setState({ deployed: !this.state.deployed });
+    this.setState(({ expanded }) => ({ expanded: !expanded }));
   }
 
   initialValues = () => {
@@ -215,65 +208,39 @@ class PageEditor extends React.PureComponent<Props, State>{
 
   handleSubmit = async (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
     const { page } = this.props;
-    const { slug, title_multiloc, body_multiloc  } = values;
-    const fieldValues = { slug, title_multiloc, body_multiloc };
-    let savePromise: Promise<IPage> | null = null;
-    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(values);
-    const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(values);
-    const filePromises = [
-      ...filesToAddPromises,
-      ...filesToRemovePromises
-    ];
 
-    if (page === undefined) {
-      return;
-    } else {
-      setSubmitting(true);
-      setStatus(null);
-      if (isNilOrError(page)) {
-        savePromise = createPage(fieldValues);
-      } else {
-        savePromise = updatePage(page.id, fieldValues);
+    if (page !== undefined) {
+      try {
+        const { slug, title_multiloc, body_multiloc  } = values;
+        const fieldValues = { slug, title_multiloc, body_multiloc };
+        const filesToAddPromises = this.getFilesToAddPromises(values);
+        const filesToRemovePromises = this.getFilesToRemovePromises(values);
+        const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
+        await (isNilOrError(page) ? createPage(fieldValues) : updatePage(page.id, fieldValues));
+        await Promise.all(filePromises);
+        resetForm();
+        setStatus('success');
+      } catch (errorResponse) {
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+        setErrors(apiErrors);
+        setSubmitting(false);
       }
     }
-
-    try {
-      await savePromise;
-      await Promise.all(filePromises);
-      resetForm();
-      setStatus('success');
-    } catch (errorResponse) {
-      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-      setErrors(apiErrors);
-      setSubmitting(false);
-    }
-  }
-
-  renderForm = (props) => {
-    return (
-      <>
-        <PageForm
-          {...props}
-          mode="simple"
-          hideTitle={this.props.slug !== 'information'}
-        />
-      </>
-    );
   }
 
   render() {
-    const { deployed } = this.state;
+    const { expanded } = this.state;
     const { className, slug, page } = this.props;
 
     return (
       <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
-        <Toggle onClick={this.toggleDeploy} className={`${deployed && 'deployed'}`}>
+        <Toggle onClick={this.toggleDeploy} className={`${expanded && 'deployed'}`}>
           <DeployIcon name="chevron-right" />
           {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
         </Toggle>
 
           <CSSTransition
-            in={deployed}
+            in={expanded}
             timeout={timeout}
             mountOnEnter={true}
             unmountOnExit={true}
@@ -285,12 +252,22 @@ class PageEditor extends React.PureComponent<Props, State>{
               {page !== undefined &&
                 <Formik
                   initialValues={this.initialValues()}
+                  enableReinitialize={true}
+                  validateOnChange={false}
+                  validateOnBlur={false}
                   onSubmit={this.handleSubmit}
-                  render={this.renderForm}
                   validate={PageForm.validate}
-                  mode="new"
-                  slug={slug}
-                />
+                >
+                {(props: FormikProps<FormValues>) => {
+                  return (
+                    <PageForm
+                      {...props}
+                      mode="simple"
+                      hideTitle={slug !== 'information'}
+                    />
+                  );
+                }}
+                </Formik>
               }
             </EditionForm>
           </CSSTransition>
