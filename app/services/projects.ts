@@ -2,6 +2,7 @@ import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { SurveyServices, ParticipationMethod } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -9,8 +10,6 @@ type Visibility = 'public' | 'groups' | 'admins';
 type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
-
-import { ParticipationMethod, SurveyServices } from './phases';
 
 export interface IProjectData {
   id: string;
