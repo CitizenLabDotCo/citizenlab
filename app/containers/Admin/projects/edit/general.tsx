@@ -621,17 +621,19 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-        let projectResponse: IProject | null = null;
+        let projectResponse = (projectData || null);
 
-        if (!isEmpty(projectAttributesDiff)) {
-          if (projectData) {
-            projectResponse = await updateProject(projectData.id, projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
-          } else {
-            projectResponse = await addProject(projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
-            redirect = true;
-          }
+        if (projectData && !isEmpty(projectAttributesDiff)) {
+          const response = await updateProject(projectData.id, projectAttributesDiff);
+          projectResponse = response.data;
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
+        }
+
+        if (!projectData && !isEmpty(projectAttributesDiff)) {
+          const response = await addProject(projectAttributesDiff);
+          projectResponse = response.data;
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
+          redirect = true;
         }
 
         if (projectResponse) {
