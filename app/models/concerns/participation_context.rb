@@ -38,6 +38,12 @@ module ParticipationContext
       with_options if: :budgeting? do |budgeting|
         budgeting.validates :max_budget, presence: true
         budgeting.validates :currency, presence: true
+        budgeting.validates :posting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :commenting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :voting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
+        budgeting.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
+        budgeting.validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
       end
 
       before_validation :set_participation_method, on: :create
