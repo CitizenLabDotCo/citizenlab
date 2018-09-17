@@ -129,7 +129,10 @@ class App extends React.PureComponent<Props & WithRouterProps, State> {
       trackPage(newLocation.pathname);
 
       if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
-        clHistory.replace('/complete-signup');
+        clHistory.replace({
+          pathname: '/complete-signup',
+          search: newLocation.search
+        });
       }
     });
 

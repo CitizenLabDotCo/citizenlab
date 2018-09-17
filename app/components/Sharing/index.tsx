@@ -111,14 +111,13 @@ interface ITracks {
   clickFbShare: () => void;
   clickTwitterShare: () => void;
   clickMessengerShare: () => void;
+  clickEmailShare: () => void;
 }
 
 interface InputProps {
   className?: string;
   url: string;
   twitterMessage: string;
-  userId: string | null;
-  sharedContent: string;
   emailSubject?: string;
   emailBody?: string;
 }
@@ -131,55 +130,61 @@ interface Props extends InputProps, DataProps {}
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { url, clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, emailSubject, emailBody, sharedContent, className, intl: { formatMessage } } = this.props;
+    const { url, clickFbShare, clickTwitterShare, clickMessengerShare, clickEmailShare, tenant, twitterMessage, emailSubject, emailBody, className, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
-      const facebookText = formatMessage(messages.shareOnFacebook);
-      const messengerText = formatMessage(messages.shareViaMessenger);
-      const twitterText = formatMessage(messages.shareOnTwitter);
-      const emailText = formatMessage(messages.shareByEmail);
-      const fbURL = userId ? `${url}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : url;
-      const twitterURL = userId ? `${url}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : url;
+      const facebookButtonText = formatMessage(messages.shareOnFacebook);
+      const messengerButtonText = formatMessage(messages.shareViaMessenger);
+      const twitterButtonText = formatMessage(messages.shareOnTwitter);
+      const emailButtonText = formatMessage(messages.shareByEmail);
 
       const facebook = (facebookAppId ? (
         <FacebookButton
-          className="sharingButton facebook first"
-          url={fbURL}
           appId={facebookAppId}
+          url={url}
+          className="sharingButton facebook first"
           sharer={true}
           onClick={clickFbShare}
         >
           <StyledIcon name="facebook" />
-          <Text>{facebookText}</Text>
+          <Text>{facebookButtonText}</Text>
         </FacebookButton>
       ) : null);
 
       const messenger = (facebookAppId ? (
-        <a className="sharingButton messenger" href={`fb-messenger://share/?link=${encodeURIComponent(fbURL)}&app_id=${facebookAppId}`} onClick={clickMessengerShare}>
+        <a
+          className="sharingButton messenger"
+          href={`fb-messenger://share/?link=${encodeURIComponent(url)}&app_id=${facebookAppId}`}
+          onClick={clickMessengerShare}
+        >
           <StyledIcon name="messenger" />
-          <Text>{messengerText}</Text>
+          <Text>{messengerButtonText}</Text>
         </a>
       ) : null);
 
       const twitter = (
         <TwitterButton
+          message={twitterMessage}
+          url={url}
           className="sharingButton twitter"
-          url={twitterURL}
           sharer={true}
           onClick={clickTwitterShare}
-          message={twitterMessage}
         >
           <StyledIcon name="twitter" />
-          <Text>{twitterText}</Text>
+          <Text>{twitterButtonText}</Text>
         </TwitterButton>
       );
 
       const email = ((emailSubject && emailBody) ? (
-        <a className="sharingButton email" href={`mailto:?subject=${emailSubject}body=${emailBody}`}>
+        <a
+          className="sharingButton email"
+          href={`mailto:?subject=${emailSubject}body=${emailBody}`}
+          onClick={clickEmailShare}
+        >
           <StyledIcon name="email" />
-          <Text>{emailText}</Text>
+          <Text>{emailButtonText}</Text>
         </a>
       ) : null);
 
@@ -201,6 +206,7 @@ const SharingWithHocs = injectIntl<Props>(injectTracks<Props>({
   clickFbShare: tracks.clickFbShare,
   clickTwitterShare: tracks.clickTwitterShare,
   clickMessengerShare: tracks.clickMessengerShare,
+  clickEmailShare: tracks.clickEmailShare,
 })(Sharing));
 
 const Data = adopt<DataProps, InputProps>({

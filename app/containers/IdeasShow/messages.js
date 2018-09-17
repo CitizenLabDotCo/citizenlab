@@ -151,11 +151,11 @@ export default defineMessages({
   },
   emailSharingSubject: {
     id: 'app.containers.IdeasShow.emailSharingSubject',
-    defaultMessage: 'Vote for {ideaTitle}',
+    defaultMessage: 'Support my idea: {ideaTitle}.',
   },
   emailSharingBody: {
     id: 'app.containers.IdeasShow.emailSharingBody',
-    defaultMessage: 'Vote for {ideaTitle} on {ideaUrl}',
+    defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
   byAuthorName: {
     id: 'app.containers.IdeasShow.byAuthorName',

@@ -181,11 +181,10 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, authUser, intl: { formatMessage } } = props;
+  const { project, projectImages, intl: { formatMessage } } = props;
 
   if (isNilOrError(project)) return null;
 
-  const userId = !isNilOrError(authUser) ? authUser.id : null;
   const projectUrl = location.href;
 
   return (
@@ -221,8 +220,6 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
                 <Sharing
                   url={projectUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
-                  userId={userId}
-                  sharedContent="project"
                 />);
             }}
           </T>
