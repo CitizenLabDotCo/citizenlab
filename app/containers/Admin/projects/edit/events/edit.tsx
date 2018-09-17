@@ -20,7 +20,6 @@ import FileDisplay from 'components/UI/FileDisplay';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
-import getSubmitState from 'utils/getSubmitState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -65,6 +64,7 @@ interface State {
   loaded: boolean;
   localEventFiles: UploadFile[] | null;
   isNewEvent: boolean;
+  submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
 class AdminProjectEventEdit extends React.PureComponent<Props, State> {
@@ -84,6 +84,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       loaded: false,
       localEventFiles: null,
       isNewEvent: true,
+      submitState: 'disabled',
     };
     this.subscriptions = [];
   }
@@ -121,6 +122,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         title_multiloc: titleMultiloc
@@ -130,6 +132,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 
   handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         location_multiloc: locationMultiloc
@@ -139,6 +142,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 
   handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         description_multiloc: descriptionMultiloc
@@ -148,6 +152,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 
   handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         [name]: moment.toISOString()
@@ -163,6 +168,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       const oldlLocalEventFiles = !isNilOrError(prevState.localEventFiles) ? prevState.localEventFiles : [];
 
       return {
+        submitState: 'enabled',
         localEventFiles: [
           ...oldlLocalEventFiles,
           newFile
@@ -180,7 +186,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       }
 
       return {
-        localEventFiles
+        localEventFiles,
+        submitState: 'enabled'
       };
     });
   }
@@ -261,20 +268,19 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       this.setState({ saving: true, saved: false });
       try {
         await Promise.all(allPromises);
-        this.setState({ saving: false, saved: true, attributeDiff: {}, errors: {} });
+        this.setState({ saving: false, saved: true, attributeDiff: {}, errors: {}, submitState: 'success' });
       } catch (errors) {
-        this.setState({ saving: false, errors: errors.json.errors });
+        this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
       }
     }
   }
 
   render() {
-    const { locale, currentTenant, loaded } = this.state;
+    const { locale, currentTenant, loaded, submitState } = this.state;
 
     if (locale && currentTenant && loaded) {
-      const { errors, saved, event, attributeDiff, saving, localEventFiles } = this.state;
+      const { errors, event, attributeDiff, saving, localEventFiles } = this.state;
       const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
-      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
 
       return (
         <>
