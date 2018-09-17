@@ -51,7 +51,6 @@ const Rocket = styled.img`
 const Title = styled.h1`
   flex-shrink: 0;
   width: 100%;
-  max-width: 300px;
   color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
@@ -130,10 +129,10 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
         <Container>
           <Rocket src={rocket} alt="rocket" />
           <Title>
-            <FormattedMessage {...messages.shareIdeaTitle} />
+            <FormattedMessage {...messages.shareTitle} />
           </Title>
           <Subtitle>
-            <FormattedMessage {...messages.shareIdeaSubtitle} />
+            <FormattedMessage {...messages.shareSubtitle} />
           </Subtitle>
           <SharingWrapper>
             <Sharing
