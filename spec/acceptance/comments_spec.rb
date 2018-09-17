@@ -136,7 +136,7 @@ resource "Comments" do
         before do
           project = create(:continuous_budgeting_project)
           @idea.project = project
-          @idea.save
+          @idea.save!
         end
 
         example_request "Commenting should be enabled by default in a budgeting project", document: false do

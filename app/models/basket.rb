@@ -20,7 +20,7 @@ class Basket < ApplicationRecord
 
   private
 
-  def in_participatory_budgeting_participation_context
+  def in_budgeting_participation_context
   	if !participation_context.budgeting?
   		errors.add(:participation_context, :is_not_budgeting, message: 'is not a in budgeting method')
   	end
