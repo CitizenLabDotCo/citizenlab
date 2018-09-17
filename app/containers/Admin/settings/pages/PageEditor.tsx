@@ -218,8 +218,10 @@ class PageEditor extends React.PureComponent<Props, State>{
         const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
         await (isNilOrError(page) ? createPage(fieldValues) : updatePage(page.id, fieldValues));
         await Promise.all(filePromises);
-        resetForm();
-        setStatus('success');
+        setTimeout(() => {
+          resetForm();
+          setStatus('success');
+        }, 50);
       } catch (errorResponse) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
