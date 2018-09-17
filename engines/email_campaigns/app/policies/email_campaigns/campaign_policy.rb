@@ -41,7 +41,7 @@ module EmailCampaigns
       user&.active? && user.admin?
     end
 
-    def recipients?
+    def deliveries?
       user&.active? && user.admin?
     end
 
