@@ -1,9 +1,7 @@
 import React from 'react';
-import isEqual from 'lodash/isEqual';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { isEqual } from 'lodash-es';
+import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { ICampaignData, listCampaigns, campaignByIdStream } from 'services/campaigns';
 
 interface InputProps {
@@ -45,14 +43,14 @@ export default class GetCampaigns extends React.Component<Props, State> {
           if (ids) {
             if (ids.length > 0) {
               return combineLatest(
-                ids.map(id => campaignByIdStream(id).observable.map(topic => topic.data))
+                ids.map(id => campaignByIdStream(id).observable.pipe(map(topic => topic.data)))
               );
             }
 
             return of(null);
           }
 
-          return listCampaigns().observable.map(campaigns => campaigns.data);
+          return listCampaigns().observable.pipe(map(campaigns => campaigns.data));
         })
       )
       .subscribe((campaigns) => {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { updateCampaign, ICampaignData } from 'services/campaigns';
-import { API } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -39,7 +38,7 @@ class Edit extends React.Component<Props> {
         clHistory.push(`/admin/campaigns/${this.props.campaign.id}`);
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = errorResponse.json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       });

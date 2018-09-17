@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
@@ -14,9 +14,9 @@ import messages from '../messages';
 import { adopt } from 'react-adopt';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
-import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 
@@ -37,13 +37,13 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps, injectedLocalized { }
+interface Props extends InputProps, DataProps, InjectedLocalized { }
 
 export const validateCampaignForm = (values: FormValues): FormikErrors<FormValues> => {
   const errors: FormikErrors<FormValues> = {};
 
   if (every(getValues(values.subject_multiloc), isEmpty)) {
-    errors.subject_multiloc = (errors.subject_multiloc || []).concat({ error: 'blank' });
+    errors.subject_multiloc = [{ error: 'blank' }] as any;
   }
 
   return errors;
@@ -93,7 +93,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />
             {touched.sender && <Error
               fieldName="sender"
-              apiErrors={errors.sender}
+              apiErrors={errors.sender as any}
             />}
           </SectionField>
 
@@ -109,7 +109,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />
             {touched.reply_to && <Error
               fieldName="reply_to"
-              apiErrors={errors.reply_to}
+              apiErrors={errors.reply_to as any}
             />}
           </SectionField>
 
@@ -142,7 +142,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />
             {touched.subject_multiloc && <Error
               fieldName="subject_multiloc"
-              apiErrors={errors.subject_multiloc}
+              apiErrors={errors.subject_multiloc as any}
             />}
           </SectionField>
 
@@ -154,7 +154,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />
             {touched.body_multiloc && <Error
               fieldName="body_multiloc"
-              apiErrors={errors.body_multiloc}
+              apiErrors={errors.body_multiloc as any}
             />}
           </SectionField>
 
@@ -181,7 +181,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
 });
 
-const CampaignFormWithHOCs = localize(CampaignForm);
+const CampaignFormWithHOCs = localize<InputProps>(CampaignForm);
 
 export default(inputProps: InputProps) => (
   <Data {...inputProps}>
