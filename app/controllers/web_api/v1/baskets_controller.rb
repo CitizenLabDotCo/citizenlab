@@ -2,7 +2,7 @@ class WebApi::V1::BasketsController < ApplicationController
   before_action :set_basket, only: [:show, :update, :destroy]
 
   def show
-    render json: @basket, include: ['ideas']
+    render json: @basket, include: ['ideas', 'baskets_ideas']
   end
 
   def create
