@@ -7,6 +7,7 @@ class Basket < ApplicationRecord
 
   validates :user, :participation_context, presence: true
   validate :in_budgeting_participation_context
+  validate :submitted_and_exceeds_limit
 
 
   def total_budget
@@ -24,5 +25,11 @@ class Basket < ApplicationRecord
   	if !participation_context.budgeting?
   		errors.add(:participation_context, :is_not_budgeting, message: 'is not a in budgeting method')
   	end
+  end
+
+  def submitted_and_exceeds_limit
+    if submitted_at && budget_exceeds_limit?
+      errors.add(:ideas, :exceed_budget_limit, message: 'exceed the budget limit while the basket is submitted')
+    end
   end
 end

@@ -66,7 +66,6 @@ ActiveRecord::Schema.define(version: 20180913155502) do
   create_table "baskets_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "basket_id"
     t.uuid "idea_id"
-    t.datetime "added_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
