@@ -11,12 +11,12 @@ import messages from '../messages';
 
 const statusColorMapping: { [k in IRecipientData['attributes']['delivery_status']]: keyof typeof colors } = {
   sent: 'lightGreyishBlue',
-  bounced: 'error',
-  failed: 'error',
+  bounced: 'clRedError',
+  failed: 'clRedError',
   accepted: 'lightGreyishBlue',
   delivered: 'clBlueLight',
-  opened: 'success',
-  clicked: 'success',
+  opened: 'clGreenSuccess',
+  clicked: 'clGreenSuccess',
 };
 
 interface InputProps {
@@ -48,9 +48,10 @@ class RecipientsTable extends React.PureComponent<Props> {
                   <TextCell className="expand">
                     {user.attributes.email}
                   </TextCell>
-                  <StatusLabel color={statusColorMapping[recipient.attributes.delivery_status]}>
-                    <FormattedMessage {...messages[`deliveryStatus_${recipient.attributes.delivery_status}`]} />
-                  </StatusLabel>
+                  <StatusLabel
+                    color={statusColorMapping[recipient.attributes.delivery_status]}
+                    text={<FormattedMessage {...messages[`deliveryStatus_${recipient.attributes.delivery_status}`]} />}
+                  />
                 </>
               )}
             </GetUser>

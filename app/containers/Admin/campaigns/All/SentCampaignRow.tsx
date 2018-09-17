@@ -25,9 +25,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
       &nbsp;
       <FormattedTime value={campaign.attributes.sent_at} />
     </div>
-    <StatusLabel color="success">
-      <FormattedMessage {...messages.sent} />
-    </StatusLabel>
+    <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
     <Button linkTo={`/admin/campaigns/${campaign.id}`} circularCorners={false} icon="analytics" style="secondary">
       <FormattedMessage {...messages.statsButton} />
     </Button>

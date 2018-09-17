@@ -19,10 +19,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
     <TextCell className="expand">
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
-    <StatusLabel color={'draftYellow'}>
-      <FormattedMessage {...messages.draft} />
-    </StatusLabel>
-
+    <StatusLabel color={'draftYellow'} text={<FormattedMessage {...messages.draft} />} />
     <Button linkTo={`/admin/campaigns/${campaign.id}`} style="secondary-outlined" circularCorners={false} icon="edit">
       <FormattedMessage {...messages.manageButtonLabel} />
     </Button>

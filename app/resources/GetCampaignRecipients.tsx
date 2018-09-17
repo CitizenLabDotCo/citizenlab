@@ -1,6 +1,5 @@
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { of } from 'rxjs/observable/of';
+import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IRecipientData, listCampaignRecipients } from 'services/campaigns';
