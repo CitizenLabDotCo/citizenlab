@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "Ideer",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Hvis du flytter '{ideaTitle}' væk fra dens nuværende projekt, vil informationerne om dens tildelte faser gå tabt. Ønsker du at fortsætte?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Træk og slip ideerne på et emne ovenfor for at uddelegere dem alle på en gang.",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "",
   "app.components.admin.IdeaManager.projectsTab": "Projekter",
   "app.components.admin.IdeaManager.publication_date": "Publiceret den",
   "app.components.admin.IdeaManager.statusesTab": "Status",

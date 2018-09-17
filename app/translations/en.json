@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "Ideas",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Drag and drop the ideas on an item above to assign them all at once.",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "Picks",
   "app.components.admin.IdeaManager.projectsTab": "Projects",
   "app.components.admin.IdeaManager.publication_date": "Published on",
   "app.components.admin.IdeaManager.statusesTab": "Status",
