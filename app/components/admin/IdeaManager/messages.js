@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.delete',
     defaultMessage: 'Delete',
   },
-  deleteAll: {
-    id: 'app.components.admin.IdeaManager.deleteAll',
-    defaultMessage: 'Delete all',
+  deleteAllSelectedIdeas: {
+    id: 'app.components.admin.IdeaManager.deleteAllSelectedIdeas',
+    defaultMessage: 'Delete {count} selected ideas',
   },
   deleteIdeaConfirmation: {
     id: 'app.components.admin.IdeaManager.deleteIdeaConfirmation',

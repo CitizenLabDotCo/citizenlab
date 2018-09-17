@@ -116,7 +116,7 @@
   "app.components.admin.IdeaManager.allIdeas": "Alle idéer",
   "app.components.admin.IdeaManager.author": "Forfatter",
   "app.components.admin.IdeaManager.delete": "Slett",
-  "app.components.admin.IdeaManager.deleteAll": "Slett område",
+  "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "Er du sikker på at du ønsker å slette denne gruppen?",
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Er du sikker på at du ønsker å slette {count} idéer?",
   "app.components.admin.IdeaManager.down": "Ned",

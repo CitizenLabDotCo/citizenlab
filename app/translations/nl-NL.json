@@ -116,7 +116,7 @@
   "app.components.admin.IdeaManager.allIdeas": "Alle ideeën",
   "app.components.admin.IdeaManager.author": "Auteur",
   "app.components.admin.IdeaManager.delete": "Verwijder",
-  "app.components.admin.IdeaManager.deleteAll": "Verwijder alle",
+  "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "Bent u zeker dat u dit idee wilt verwijderen?",
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Bent u zeker dat u {count} ideeën wilt verwijderen?",
   "app.components.admin.IdeaManager.down": "Tegen",
