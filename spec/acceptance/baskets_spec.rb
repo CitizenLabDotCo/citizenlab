@@ -30,6 +30,7 @@ resource "Baskets" do
         expect(json_response.dig(:data, :attributes, :total_budget)).to be_present
         expect(json_response.dig(:data, :attributes, :budget_exceeds_limit?)).not_to eq nil
         expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array @ideas.map(&:id)
+        expect(json_response.dig(:included).map{|h| h.dig(:attributes, :slug)}).to match_array @ideas.map(&:slug)
       end
     end
   end
