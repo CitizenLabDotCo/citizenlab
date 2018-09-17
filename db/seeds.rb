@@ -331,8 +331,8 @@ if Apartment::Tenant.current == 'localhost'
         start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
         has_budgeting_phase = false
         rand(8).times do
-          participation_method = ['ideation', 'information', 'ideation', 'participatory_budgeting', 'ideation'].shuffle.first
-          if participation_method = 'participatory_budgeting'
+          participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
+          if participation_method = 'budgeting'
             if has_budgeting_phase
               participation_method = 'ideation'
             else
@@ -362,7 +362,7 @@ if Apartment::Tenant.current == 'localhost'
               voting_limited_max: rand(15)+1,
             })
           end
-          if phase.participatory_budgeting?
+          if phase.budgeting?
             phase.update!({
               max_budget: (rand(1000000) + 100).round(-2),
               currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
@@ -398,7 +398,7 @@ if Apartment::Tenant.current == 'localhost'
       phases = []
       if project && project.timeline?
         phases = project.phases.sample(rand(project.phases.count)).select do |phase| 
-          phase.ideation? || phase.participatory_budgeting?
+          phase.ideation? || phase.budgeting?
         end
       end
       idea = Idea.create!({
@@ -437,7 +437,7 @@ if Apartment::Tenant.current == 'localhost'
       create_comment_tree(idea, nil)
     end
 
-    Phase.where(participation_method: 'participatory_budgeting').each do |phase|
+    Phase.where(participation_method: 'budgeting').each do |phase|
       User.all.shuffle.take(rand(20)+1).each do |user|
         chosen_ideas = phase.project.ideas.shuffle.take(rand(10))
         Basket.create!({

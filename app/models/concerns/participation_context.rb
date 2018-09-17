@@ -3,7 +3,7 @@ require 'active_support/concern'
 module ParticipationContext
   extend ActiveSupport::Concern
 
-  PARTICIPATION_METHODS = %w(information ideation survey participatory_budgeting)
+  PARTICIPATION_METHODS = %w(information ideation survey budgeting)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
   SURVEY_SERVICES = %w(typeform survey_monkey)
@@ -35,7 +35,7 @@ module ParticipationContext
           message: "Not a valid SurveyMonkey embed URL"
         }
       end
-      with_options if: :participatory_budgeting? do |budgeting|
+      with_options if: :budgeting? do |budgeting|
         budgeting.validates :max_budget, presence: true
         budgeting.validates :currency, presence: true
       end
@@ -61,8 +61,8 @@ module ParticipationContext
     self.participation_method == 'survey'
   end
 
-  def participatory_budgeting?
-    self.participation_method == 'participatory_budgeting'
+  def budgeting?
+    self.participation_method == 'budgeting'
   end
 
   def voting_limited?

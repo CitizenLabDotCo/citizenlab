@@ -128,7 +128,7 @@ resource "Phases" do
       end
 
       describe do
-        let(:participation_method) { 'participatory_budgeting' }
+        let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
         let(:currency) { 'BEF' }
 
@@ -143,19 +143,19 @@ resource "Phases" do
       describe do
         before do
           @project.phases.first.update(
-            participation_method: 'participatory_budgeting',
+            participation_method: 'budgeting',
             max_budget: 30000,
             currency: 'cheeseburgers'
             )
         end
-        let(:participation_method) { 'participatory_budgeting' }
+        let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
         let(:currency) { 'BEF' }
 
-        example_request "[error] Create multiple participatory budgeting phases", document: false do
+        example_request "[error] Create multiple budgeting phases", document: false do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_participatory_budgeting_phases'}]
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
         end
       end
     end
