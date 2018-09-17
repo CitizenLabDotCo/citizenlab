@@ -63,7 +63,7 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
-  localEventFiles: GetResourceFileObjectsChildProps;
+  localEventFiles: UploadFile[] | null;
   isNewEvent: boolean;
 }
 
@@ -104,14 +104,14 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       })
     ];
 
-    this.setState({ localEventFiles: remoteEventFiles });
+    this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
   }
 
   componentDidUpdate(prevProps: Props) {
     const { remoteEventFiles } = this.props;
 
     if (prevProps.remoteEventFiles !== remoteEventFiles) {
-      this.setState({ localEventFiles: remoteEventFiles });
+      this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
     }
   }
 
