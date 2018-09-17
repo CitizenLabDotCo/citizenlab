@@ -140,6 +140,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       widgets: {
         enabled: true,
         allowed: true
+      },
+      segmented_emailing: {
+        enabled: true,
+        allowed: true
       }
     }
   })
