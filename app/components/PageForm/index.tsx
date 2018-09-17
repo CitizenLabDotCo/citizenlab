@@ -92,19 +92,21 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
   }
 
   handlePageFileOnAdd = (fileToAdd: UploadFile) => {
-    const { setFieldValue, values } = this.props;
+    const { setFieldValue, setStatus, values } = this.props;
     setFieldValue('local_page_files', [...values.local_page_files, fileToAdd]);
+    setStatus('enabled');
   }
 
   handlePageFileOnRemove = (fileToRemove: UploadFile) => {
-    const { setFieldValue, values } = this.props;
+    const { setFieldValue, setStatus, values } = this.props;
     const localPageFiles = [...values.local_page_files];
     const filteredLocalPageFiles = localPageFiles.filter(file => file !== fileToRemove);
     setFieldValue('local_page_files', filteredLocalPageFiles);
+    setStatus('enabled');
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched, mode, hideTitle, values } = this.props;
+    const { isSubmitting, errors, isValid, touched, mode, hideTitle, values, status } = this.props;
     return (
       <Form>
         <StyledSection>
