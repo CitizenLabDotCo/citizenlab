@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
     example_request "List all published ideas (default behaviour)" do
@@ -162,6 +162,17 @@ resource "Ideas" do
       i1 = create(:idea)
 
       do_request sort: "new"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all ideas sorted by baskets count", document: false do
+      u = create(:user)
+      i1 = create(:idea)
+      baskets = create_list(:basket, 3, ideas: [i1])
+
+      do_request sort: "-baskets_count"
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
       expect(json_response[:data][0][:id]).to eq i1.id
