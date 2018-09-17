@@ -116,7 +116,7 @@
   "app.components.admin.IdeaManager.allIdeas": "",
   "app.components.admin.IdeaManager.author": "",
   "app.components.admin.IdeaManager.delete": "",
-  "app.components.admin.IdeaManager.deleteAll": "",
+  "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "",
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "",
   "app.components.admin.IdeaManager.down": "",

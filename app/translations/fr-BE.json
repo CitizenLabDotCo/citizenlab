@@ -116,7 +116,7 @@
   "app.components.admin.IdeaManager.allIdeas": "Toutes les idées",
   "app.components.admin.IdeaManager.author": "Auteur",
   "app.components.admin.IdeaManager.delete": "Supprimer",
-  "app.components.admin.IdeaManager.deleteAll": "Tout supprimer",
+  "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "Êtes-vous sûr de vouloir supprimer cette idée ?",
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Êtes-vous sûr de vouloir supprimer ces {count} idées ?",
   "app.components.admin.IdeaManager.down": "Contre",
