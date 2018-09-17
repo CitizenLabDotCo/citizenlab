@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import * as moment from 'moment';
+import moment from 'moment';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get, isError } from 'lodash';
+import { get, isError } from 'lodash-es';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -20,7 +20,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -45,14 +45,14 @@ const Container = styled.div`
   }
 
   &.selected {
-    border-color: ${colors.success};
+    border-color: ${colors.clGreen};
   }
 
   &.enabled:hover {
     border-color: #ccc;
 
     &.selected {
-      border-color: ${colors.success};
+      border-color: ${colors.clGreen};
     }
   }
 
@@ -108,7 +108,7 @@ const ProjectContent = styled.div`
 
 const ProjectTitle = styled.h3`
   color: #333;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 25px;
   font-weight: 400;
   margin: 0;
@@ -116,15 +116,15 @@ const ProjectTitle = styled.h3`
 
 const PostingDisabledReason = styled.div`
   color: black;
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 300;
   margin-top: 10px;
 `;
 
 const PostingEnabledReason = styled.div`
-  color: #84939E;
-  font-size: 15px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 300;
   overflow: hidden;
@@ -169,33 +169,33 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class ProjectCard extends PureComponent<Props, State> {
+
   disabledMessage = () => {
-    const { project } = this.props;
-
+    const project = this.props.project;
     if (!isNilOrError(project)) {
-      const { future_enabled } = project.relationships.action_descriptor.data.posting;
-
-      if (future_enabled) {
+      const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
+      if (enabled) {
+        return null;
+      } else if (futureEnabled) {
         return messages.postingPossibleFuture;
+      } else {
+        return messages.postingNotPossible;
       }
-
+    } else {
       return null;
     }
-
-    return messages.postingNotPossible;
   }
 
   calculateCardState = () => {
     const { permission } = this.props;
     const disabledMessage = this.disabledMessage();
-
     if (disabledMessage && permission) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {
       return 'disabled';
+    } else {
+      return 'enabled';
     }
-
-    return 'enabled';
   }
 
   handleOnClick = () => {
@@ -262,7 +262,7 @@ class ProjectCard extends PureComponent<Props, State> {
             id={projectId}
             label=""
             disabled={!enabled}
-            buttonColor={colors.success}
+            buttonColor={colors.clGreen}
           />
         </Container>
       );

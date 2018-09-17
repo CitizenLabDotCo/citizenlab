@@ -1,11 +1,11 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ChildComment from './ChildComment';
-import Author from './Author';
+import Author from 'components/Author';
 import ChildCommentForm from './ChildCommentForm';
 import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
@@ -31,7 +31,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -148,7 +148,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
@@ -187,7 +187,12 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                 {!commentDeleted &&
                   <>
                     <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-                    <StyledAuthor authorId={authorId} createdAt={createdAt} message="parentCommentAuthor" />
+                    <StyledAuthor
+                      authorId={authorId}
+                      createdAt={createdAt}
+                      size="medium"
+                      message={messages.parentCommentAuthor}
+                    />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
                   </>
                 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -26,6 +26,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('./google.svg') as string;
@@ -84,7 +85,7 @@ const SocialSignInButton = styled.div`
 
   span {
     color: #707075 !important;
-    font-size: 15px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 18px;
   }
@@ -138,7 +139,7 @@ const SocialSignInButtonInner = styled.div`
 
 const SocialSignInText = styled.div`
   color: ${(props) => props.theme.colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;

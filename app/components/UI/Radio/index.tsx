@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Wrapper = styled.label`
   display: flex;
@@ -46,7 +47,7 @@ const Checked = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 `;

@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -7,22 +7,21 @@ import Link from 'utils/cl-router/Link';
 // components
 import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
-import { Dropdown } from 'semantic-ui-react';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages.js';
-import { appLocalePairs } from 'i18n';
 
 // services
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { media, color } from 'utils/styleUtils';
+import { media, color, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -56,7 +55,7 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: #444;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 28px;
   text-align: center;
@@ -81,12 +80,15 @@ const SecondLine = styled.div`
 `;
 
 const PagesNav = styled.nav`
-  color: #999;
+  color: ${color('label')};
   flex: 1;
-  list-style: none;
-  margin: 0;
-  padding: 0;
   text-align: left;
+
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
   li {
     display: inline-block;
@@ -102,9 +104,9 @@ const PagesNav = styled.nav`
 `;
 
 const StyledLink = styled(Link) `
-  color: #999;
+  color: ${color('label')};
   font-weight: 400;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
 
@@ -113,15 +115,15 @@ const StyledLink = styled(Link) `
   }
 
   ${media.smallerThanMaxTablet`
-    font-size: 13px;
+    font-size: ${fontSizes.small}px;
     line-height: 16px;
   `}
 `;
 
 const Separator = styled.span`
-  color: #999;
+  color: ${color('label')};
   font-weight: 400;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   padding-left: 10px;
   padding-right: 10px;
@@ -134,16 +136,16 @@ const Separator = styled.span`
 
 const CitizenLabLogo = styled(Icon) `
   height: 22px;
-  fill: #999;
+  fill: ${color('label')};
   margin-left: 8px;
   transition: all 150ms ease-out;
   flex: 1 1 100px;
 `;
 
 const PoweredBy = styled.a`
-  color: #999;
+  color: ${color('label')};
   font-weight: 300;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
   display: flex;
@@ -154,7 +156,7 @@ const PoweredBy = styled.a`
 
   ${media.biggerThanMaxTablet`
     &:hover {
-      color: #999;
+      color: ${color('label')};
 
       ${CitizenLabLogo} {
         fill: #000;
@@ -177,31 +179,6 @@ const PoweredBy = styled.a`
   `}
 `;
 
-const LanguageSelectionWrapper = styled.div`
-  padding-left: 1rem;
-  margin-left: 1rem;
-  text-align: right;
-
-  .ui.selection.dropdown {
-    color: ${color('label')};
-    display: none;
-  }
-
-  &.show {
-    .ui.selection.dropdown {
-      display: block;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    border-left: 0;
-    margin-left: 0;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    padding-left: 0;
-  `}
-`;
-
 type Props = {
   showCityLogoSection?: boolean | undefined;
 };
@@ -210,15 +187,10 @@ type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
-  languageOptions: {
-    key: string;
-    value: Locale;
-    text: string;
-  }[]
 };
 
-class Footer extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+class Footer extends PureComponent<Props & InjectedIntlProps, State> {
+  subscriptions: Subscription[];
 
   public static defaultProps: Partial<Props> = {
     showCityLogoSection: true
@@ -229,8 +201,7 @@ class Footer extends React.PureComponent<Props, State> {
     this.state = {
       locale: null,
       currentTenant: null,
-      showCityLogoSection: false,
-      languageOptions: [],
+      showCityLogoSection: false
     };
     this.subscriptions = [];
   }
@@ -242,17 +213,11 @@ class Footer extends React.PureComponent<Props, State> {
     this.setState({ showCityLogoSection: !!this.props.showCityLogoSection });
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$
       ).subscribe(([locale, currentTenant]) => {
-        const languageOptions = currentTenant.data.attributes.settings.core.locales.map((locale) => ({
-          key: locale,
-          value: locale,
-          text: appLocalePairs[locale],
-        }));
-
-        this.setState({ locale, currentTenant, languageOptions });
+        this.setState({ locale, currentTenant });
       })
     ];
   }
@@ -261,12 +226,9 @@ class Footer extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleLanguageChange (_event, { value }) {
-    updateLocale(value);
-  }
-
   render() {
     const { locale, currentTenant, showCityLogoSection } = this.state;
+    const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -282,14 +244,14 @@ class Footer extends React.PureComponent<Props, State> {
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
           {showCityLogoSection &&
-            <Fragment name={footerLocale}>
+            <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
               <FirstLine id="hook-footer-logo">
                 {currentTenantLogo && tenantSite &&
                   <LogoLink href={tenantSite} target="_blank">
-                    <TenantLogo src={currentTenantLogo} />
+                    <TenantLogo src={currentTenantLogo} alt="Organization logo" />
                   </LogoLink>}
                 {currentTenantLogo && !tenantSite &&
-                  <TenantLogo src={currentTenantLogo} />}
+                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />}
                 <TenantSlogan>{slogan}</TenantSlogan>
               </FirstLine>
             </Fragment>
@@ -297,18 +259,18 @@ class Footer extends React.PureComponent<Props, State> {
 
           <SecondLine>
             <PagesNav>
-              {LEGAL_PAGES.map((slug, index) => (
-                <span key={slug}>
-                  {index !== 0  &&
-                    <Separator>•</Separator>
-                  }
-                  <li>
+              <ul>
+                {LEGAL_PAGES.map((slug, index) => (
+                  <li key={slug}>
+                    {index !== 0  &&
+                      <Separator>•</Separator>
+                    }
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
-                </span>
-              ))}
+                ))}
+              </ul>
             </PagesNav>
 
             <PoweredBy href="https://www.citizenlab.co/">
@@ -316,9 +278,6 @@ class Footer extends React.PureComponent<Props, State> {
               <CitizenLabLogo name="logo" />
             </PoweredBy>
 
-            <LanguageSelectionWrapper className={this.state.languageOptions.length > 1 ? 'show' : ''}>
-              <Dropdown onChange={this.handleLanguageChange} upward={true} search={true} selection={true} value={locale} options={this.state.languageOptions} />
-            </LanguageSelectionWrapper>
           </SecondLine>
         </Container>
       );
@@ -328,4 +287,6 @@ class Footer extends React.PureComponent<Props, State> {
   }
 }
 
-export default Footer;
+const FooterWithInjectedIntl = injectIntl<Props>(Footer);
+
+export default FooterWithInjectedIntl;

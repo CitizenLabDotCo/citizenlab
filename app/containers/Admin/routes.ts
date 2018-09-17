@@ -34,5 +34,9 @@ export default () => ({
     clusteringsRoutes(),
     invitationsRoutes(),
     campaignsRoutes(),
+    {
+      path: 'favicon',
+      getComponent: loadAndRender(import('containers/Admin/favicon')),
+    },
   ],
 });

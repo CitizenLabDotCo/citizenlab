@@ -1,25 +1,26 @@
-import React, { PureComponent, ComponentClass } from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 import { currentTenantStream } from 'services/tenant';
 // tslint:disable-next-line:no-vanilla-formatted-messages
-import { injectIntl as originalInjectIntl, ComponentConstructor, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
+import { injectIntl as originalInjectIntl, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
 
 type State = {
+  tenantName: string | null;
   orgName: string | null;
   orgType: string | null;
   loaded: boolean;
 };
 
-function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps>) {
+function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>) {
   return class NewFormatMessageComponent extends PureComponent<P & InjectedIntlProps, State> {
     subscriptions: Subscription[];
 
-    constructor(props: P) {
-      super(props as any);
+    constructor(props) {
+      super(props);
       this.state = {
+        tenantName: null,
         orgName: null,
         orgType: null,
         loaded: false
@@ -37,9 +38,10 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
           currentTenant$
         ).subscribe(([locale, tenant]) => {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
+          const tenantName = tenant.data.attributes.name;
           const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
           const orgType = tenant.data.attributes.settings.core.organization_type;
-          this.setState({ orgName, orgType, loaded: true });
+          this.setState({ tenantName, orgName, orgType, loaded: true });
         })
       ];
     }
@@ -48,18 +50,17 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
-    formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: {
-      [key: string]: string | number | boolean | Date;
-    } | undefined): string => {
-      return this.props.intl.formatMessage(messageDescriptor, { orgName: this.state.orgName, orgType: this.state.orgType, ...values || {} });
+    formatMessageReplacement = (messageDescriptor: ReactIntl.FormattedMessage.MessageDescriptor, values?: { [key: string]: string | number | boolean | Date } | undefined) => {
+      return this.props.intl.formatMessage(messageDescriptor, { tenantName: this.state.tenantName, orgName: this.state.orgName, orgType: this.state.orgType, ...values || {} });
     }
 
     render() {
       const { loaded } = this.state;
 
       if (loaded) {
+        const { intl } = this.props;
         const intlReplacement = {
-          ...(this.props.intl as object),
+          ...(intl as object),
           formatMessage: this.formatMessageReplacement
         };
 
@@ -71,7 +72,6 @@ function buildComponent<P>(Component: ComponentConstructor<P & InjectedIntlProps
   };
 }
 
-export default function injectIntl<P>(component: ComponentConstructor<P & InjectedIntlProps>, options?: InjectIntlConfig):
-  ComponentClass<P> & { WrappedComponent: ComponentConstructor<P & InjectedIntlProps> } {
-  return originalInjectIntl(buildComponent<P>(component), options);
+export default function injectIntl<P>(component: React.ComponentType<P & InjectedIntlProps>, options?: InjectIntlConfig) {
+  return originalInjectIntl<P & InjectedIntlProps>(buildComponent<P & InjectedIntlProps>(component), options);
 }

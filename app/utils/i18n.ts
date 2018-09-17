@@ -1,5 +1,5 @@
 import { Multiloc, Locale } from 'typings';
-import keys from 'lodash/keys';
+import { keys } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { truncate } from 'utils/textUtils';
 
@@ -8,14 +8,14 @@ export function getLocalized(
   locale: Locale,
   currentTenantLocales: Locale[],
   maxLength?: number,
-): string {
+) {
   if (isNilOrError(multiloc) || isNilOrError(locale) || isNilOrError(currentTenantLocales)) {
     return '';
   }
 
   const candidateLocales = [locale, ...currentTenantLocales, ...(keys(multiloc) || [])];
   const winnerLocale = candidateLocales.find(locale => !!multiloc[locale]);
-
   const winner = (winnerLocale ? multiloc[winnerLocale] : '');
+
   return truncate(winner, maxLength);
 }

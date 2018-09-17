@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -16,25 +16,25 @@ const StyledIcon = styled(Icon)`
   flex: 0 0 24px;
   width: 24px;
   height: 24px;
-  fill: ${colors.clBlueDark};
+  fill: ${colors.clBlueDarker};
   padding: 0px;
   margin: 0px;
   margin-right: 12px;
 `;
 
 const Text = styled.div`
-  color: ${colors.clBlueDark};
-  font-size: 16px;
+  color: ${colors.clBlueDarker};
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.clBlueDarker};
     font-weight: 400;
     text-decoration: underline;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.clBlueDarker)};
     }
   }
 

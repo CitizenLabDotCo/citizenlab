@@ -1,10 +1,8 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import find from 'lodash/find';
-import pick from 'lodash/pick';
-import isEqual from 'lodash/isEqual';
+import { find, pick, isEqual } from 'lodash-es';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -15,7 +13,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Label from 'components/UI/Label';
 import Input from 'components/UI/Input';
 import LocationInput from 'components/UI/LocationInput';
-import QuillEditor from 'components/QuillEditor';
+import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 
@@ -39,6 +37,7 @@ import { IOption, ImageFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
+import { hideVisually } from 'polished';
 
 const Form = styled.form`
   width: 100%;
@@ -50,6 +49,16 @@ const Form = styled.form`
 const FormElement: any = styled.div`
   width: 100%;
   margin-bottom: 40px;
+`;
+
+const StyledMultipleSelect = styled(MultipleSelect)`
+  max-width: 100%;
+  padding: 2.5px 0;
+  cursor: pointer;
+`;
+
+const HiddenLabel = styled.span`
+  ${hideVisually() as any}
 `;
 
 export interface IIdeaFormOutput {
@@ -112,7 +121,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
 
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.map(currentTenant => currentTenant.data.attributes.settings.core.locales);
+    const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
 
@@ -283,7 +292,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const { topics, title, description, selectedTopics, position, imageFile, titleError, descriptionError } = this.state;
 
     return (
-      <Form className={className}>
+      <Form id="idea-form" className={className}>
         <FormElement name="titleInput">
           <Label value={<FormattedMessage {...messages.titleLabel} />} htmlFor="title" />
           <Input
@@ -313,7 +322,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         {topics && topics.length > 0 &&
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
-            <MultipleSelect
+            <StyledMultipleSelect
+              inputId="topics"
               value={selectedTopics}
               placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
               options={topics}
@@ -325,27 +335,39 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
         <FormElement>
           <Label value={<FormattedMessage {...messages.locationLabel} />} htmlFor="location" />
-          <LocationInput
-            id="location"
-            value={position}
-            placeholder={formatMessage(messages.locationPlaceholder)}
-            onChange={this.handleLocationOnChange}
-          />
+          <label htmlFor="location">
+            <HiddenLabel>
+              <FormattedMessage {...messages.locationLabel} />
+            </HiddenLabel>
+            <LocationInput
+              id="location"
+              value={position}
+              placeholder={formatMessage(messages.locationPlaceholder)}
+              onChange={this.handleLocationOnChange}
+            />
+          </label>
         </FormElement>
 
         <FormElement>
           <Label value={<FormattedMessage {...messages.imageUploadLabel} />} />
-          <ImagesDropzone
-            images={imageFile}
-            imagePreviewRatio={135 / 298}
-            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-            maxImageFileSize={5000000}
-            maxNumberOfImages={1}
-            placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
-            onAdd={this.handleUploadOnAdd}
-            onUpdate={this.handleUploadOnUpdate}
-            onRemove={this.handleUploadOnRemove}
-          />
+          {/* Wrapping image dropzone with a label for accesibility */}
+          <label htmlFor="idea-img-dropzone">
+            <HiddenLabel>
+              <FormattedMessage {...messages.imageDropzonePlaceholder} />
+            </HiddenLabel>
+            <ImagesDropzone
+              id="idea-img-dropzone"
+              images={imageFile}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
+              placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
+              onAdd={this.handleUploadOnAdd}
+              onUpdate={this.handleUploadOnUpdate}
+              onRemove={this.handleUploadOnRemove}
+            />
+          </label>
         </FormElement>
       </Form>
     );

@@ -3,12 +3,13 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // libraries
-import * as React from 'react';
-import * as moment from 'moment';
+import React from 'react';
+import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 
 // styling
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   display: inline-flex;
@@ -33,7 +34,7 @@ const Container: any = styled.div`
 
       input {
         color: #333;
-        font-size: 16px;
+        font-size: ${fontSizes.base}px;
         font-weight: 400;
         outline: none;
         box-shadow: none;

@@ -1,5 +1,5 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 
 // Components
 import clickOutside from 'utils/containers/clickOutside';
@@ -10,7 +10,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // Styling
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSizes } from 'utils/styleUtils';
 
 const enterTimeout = 200;
 const exitTimeout = 200;
@@ -23,7 +23,7 @@ const Container = styled(clickOutside)`
   border-radius: 5px;
   border-color: white;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   line-height: 18px;
   opacity: 1;

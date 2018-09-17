@@ -3,7 +3,7 @@ import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetAreas, { GetAreasChildProps } from 'resources/GetAreas';
 import Select from 'components/UI/Select';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 type State = {};
 
-class AreaValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
+class AreaValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
     const { areas, localize } = this.props;

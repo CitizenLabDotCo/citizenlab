@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
 

@@ -1,13 +1,15 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray, isNil, omitBy } from 'lodash';
-import FileSaver from 'file-saver';
+import { isArray, isNil, omitBy, includes } from 'lodash-es';
+import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import MultipleSelectDropdown from 'components/UI/MultipleSelectDropdown';
+import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
+import T from 'components/T';
+import Button from 'components/UI/Button';
 
 // Services
 import { IGroupData } from 'services/groups';
@@ -86,22 +88,83 @@ const ActionButton = styled.button`
   }
 `;
 
-const StyledMultipleSelectDropdown = styled(MultipleSelectDropdown)`
-  margin-right: 40px;
-`;
-
 const StyledIcon = styled(Icon)`
   flex: 0 0 20px;
   height: 20px;
 `;
 
+const ActionButtonWrapper = styled.div`
+  position: relative;
+  margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const DropdownWrapper = styled.div`
+  width: 100%;
+  flex: 0 0 0px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+`;
+
+const DropdownListItemText = styled.div`
+  color: ${colors.label};
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+`;
+
+const DropdownListItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: all 80ms ease-out;
+
+  &.last {
+    margin-bottom: 0px;
+  }
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${colors.clDropdownHoverBackground};
+
+    ${DropdownListItemText} {
+      color: #000;
+    }
+  }
+`;
+
+const StyledCheckbox = styled(Checkbox)`
+  margin-left: 10px;
+`;
+
+const DropdownFooterButton = styled(Button)`
+  .Button {
+    padding: 12px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+`;
+
 // Typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 interface InputProps {
   groupType?: MembershipType;
   selectedUsers: string[] | 'none' | 'all';
   toggleSelectAll: () => void;
+  unselectAll: () => void;
   allUsersIds: string[];
   groupId?: string;
   deleteUsersFromGroup?: (userIds: string[]) => void;
@@ -114,6 +177,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
+  dropdownOpened: boolean;
+  selectedGroupIds: string[];
   processing: boolean;
 }
 
@@ -124,10 +189,11 @@ interface Tracks {
 }
 
 class UserTableActions extends PureComponent<Props & Tracks, State> {
-
   constructor(props) {
     super(props);
     this.state = {
+      dropdownOpened: false,
+      selectedGroupIds: [],
       processing: false
     };
   }
@@ -149,7 +215,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const users = (isArray(usersIds) ? usersIds : null);
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
-      FileSaver.saveAs(blob, 'users-export.xlsx');
+      saveAs(blob, 'users-export.xlsx');
     } catch (error) {
       throw error;
     }
@@ -159,50 +225,87 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     return groupsList.map((group) => ({ text: group.attributes.title_multiloc, id: group.id }));
   }
 
-  addUsersToGroups = async (groupsIds) => {
-    const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
-    const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
-    const promises: Promise<IGroupMembership | API.ErrorResponse>[] = [];
-    const timeout = ms => new Promise(res => setTimeout(res, ms));
+  toggleDropdown = (event: React.FormEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.setState(({ dropdownOpened }) => ({
+      selectedGroupIds: [],
+      dropdownOpened: !dropdownOpened
+    }));
+  }
 
-    trackAddUsersToGroups({
-      extra: {
-        usersIds,
-        groupsIds,
-      }
-    });
+  toggleGroup = (groupId: string) => () => {
+    const { selectedGroupIds } = this.state;
 
-    if (isArray(usersIds)) {
-      groupsIds.forEach((groupId) => {
-        usersIds.forEach((userId) => {
-          promises.push(addGroupMembership(groupId, userId));
-        });
+    if (!includes(selectedGroupIds, groupId)) {
+      this.setState({ selectedGroupIds: [...this.state.selectedGroupIds, groupId] });
+    } else {
+      this.setState({
+        selectedGroupIds: selectedGroupIds.filter((selectedGroupId) => selectedGroupId !== groupId)
       });
     }
+  }
 
-    try {
-      this.setState({ processing: true });
-      await Promise.all(promises);
-      await timeout(1000);
-      await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
-      this.setState({ processing: false });
-      return true;
-    } catch (error) {
-      trackAddedRedundantUserToGroup({
+  addUsersToGroups = async () => {
+    const { selectedGroupIds } = this.state;
+
+    if (selectedGroupIds && selectedGroupIds.length > 0) {
+      const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
+      const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+      const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
+      const timeout = ms => new Promise(res => setTimeout(res, ms));
+      const success = () => {
+        eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds: selectedGroupIds });
+        this.props.unselectAll();
+        this.setState({ selectedGroupIds: [], processing: false, dropdownOpened: false });
+      };
+      const failed = () => {
+        eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />);
+        this.setState({ processing: false });
+      };
+
+      trackAddUsersToGroups({
         extra: {
-          errorResponse: error
+          usersIds,
+          selectedGroupIds,
         }
       });
 
-      if (error && error.json && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
+      if (isArray(usersIds)) {
+        selectedGroupIds.forEach((groupId) => {
+          usersIds.forEach((userId) => {
+            promises.push(addGroupMembership(groupId, userId));
+          });
+        });
+      }
+
+      try {
+        this.setState({ processing: true });
+        await Promise.all(promises);
+        await timeout(1000);
         await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
-        this.setState({ processing: false });
+        success();
         return true;
-      } else {
-        this.setState({ processing: false });
-        throw error;
+      } catch (error) {
+        trackAddedRedundantUserToGroup({
+          extra: {
+            errorResponse: error
+          }
+        });
+
+        // if error because users already part of group(s)
+        if (error && error.json && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
+          await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+          success();
+          return true;
+        } else {
+          failed();
+          throw error;
+        }
       }
     }
+
+    return;
   }
 
   handleGroupsDeleteClick = () => {
@@ -214,17 +317,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }
   }
 
-  emitMembershipAddSuccess = (groupsIds) => (
-    eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds })
-  )
-
-  emitMembershipAddError = () => (
-    eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />)
-  )
-
   render() {
     const { selectedUsers, groupType, groupId, allUsersIds } = this.props;
-    const { processing } = this.state;
+    const { dropdownOpened, selectedGroupIds, processing } = this.state;
     const { groupsList } = this.props.manualGroups;
 
     let selectedCount;
@@ -260,19 +355,56 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         </ActionButton>
 
         {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
-          <StyledMultipleSelectDropdown
-            choices={this.getchoices(groupsList)}
-            dropdownFooterMessage={messages.dropdownFooterMessage}
-            onSubmit={this.addUsersToGroups}
-            processing={processing}
-            emitSuccess={this.emitMembershipAddSuccess}
-            emitError={this.emitMembershipAddError}
-          >
-            <ActionButton className="e2e-move-users noRightMargin">
+          <ActionButtonWrapper>
+            <ActionButton className="e2e-move-users noRightMargin" onClick={this.toggleDropdown}>
               <StyledIcon name="moveFolder" />
               <FormattedMessage {...messages.moveUsers} />
             </ActionButton>
-          </StyledMultipleSelectDropdown>
+
+            <DropdownWrapper>
+              <Dropdown
+                top="10px"
+                opened={dropdownOpened}
+                onClickOutside={this.toggleDropdown}
+                content={(
+                  <>
+                    {groupsList.map((group) => (
+                      <DropdownListItem
+                        key={group.id}
+                        onClick={this.toggleGroup(group.id)}
+                        className="e2e-dropdown-item"
+                      >
+                        <DropdownListItemText>
+                          <T value={group.attributes.title_multiloc} />
+                        </DropdownListItemText>
+                        <StyledCheckbox
+                          value={includes(selectedGroupIds, group.id)}
+                          onChange={this.toggleGroup(group.id)}
+                        />
+                      </DropdownListItem>
+                    ))}
+                  </>
+                )}
+                footer={(
+                  <DropdownFooterButton
+                    className="e2e-dropdown-submit"
+                    style="cl-blue"
+                    onClick={this.addUsersToGroups}
+                    processing={processing}
+                    fullWidth={true}
+                    disabled={!selectedGroupIds || selectedGroupIds.length === 0}
+                  >
+                    <FormattedMessage {...messages.moveUsers} />
+                  </DropdownFooterButton>
+                )}
+              >
+                <ActionButton className="e2e-move-users noRightMargin">
+                  <StyledIcon name="moveFolder" />
+                  <FormattedMessage {...messages.moveUsers} />
+                </ActionButton>
+              </Dropdown>
+            </DropdownWrapper>
+          </ActionButtonWrapper>
         }
 
         {groupType === 'manual' && selectedUsers !== 'none' &&

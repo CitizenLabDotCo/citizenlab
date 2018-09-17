@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon, Popup } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import styled from 'styled-components';
@@ -10,23 +9,16 @@ const Container = styled.div`
 `;
 
 interface Props {
+  htmlFor?: string;
   className?: string;
-  id: string;
-  hasTooltip?: boolean;
+  translateId: string;
 }
 
-const LabelWithTooltip = ({ className, id, hasTooltip }: Props) => (
+const LabelWithTooltip = ({ htmlFor, className, translateId }: Props) => (
   <Container className={className}>
-
-    <Label>
-      <FormattedMessage {...messages[id]} />
+    <Label htmlFor={htmlFor}>
+      <FormattedMessage {...messages[translateId]} />
     </Label>
-
-    {hasTooltip && <Popup
-      trigger={<Icon name="question circle outline" />}
-      content={<FormattedMessage {...messages[`${id}_tooltip`]} />}
-    />}
-
   </Container>
 );
 

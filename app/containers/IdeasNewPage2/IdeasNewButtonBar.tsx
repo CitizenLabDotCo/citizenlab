@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs';
 
 // components
 import Button from 'components/UI/Button';
@@ -38,6 +38,7 @@ const ButtonBarInner = styled.div`
 
 interface Props {
   onSubmit: () => void;
+  form?: string;
 }
 
 interface GlobalState {
@@ -49,7 +50,7 @@ interface State extends GlobalState {}
 
 export default class IdeasNewButtonBar extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -81,12 +82,16 @@ export default class IdeasNewButtonBar extends React.PureComponent<Props, State>
 
   render() {
     const { processing, submitError } = this.state;
+    let { form } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
+
+    form = (form || '');
 
     return (
       <ButtonBar>
         <ButtonBarInner>
           <Button
+            form={form}
             className="e2e-submit-idea-form"
             size="1"
             processing={processing}

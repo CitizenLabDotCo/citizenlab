@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { switchMap, map as rxMap } from 'rxjs/operators';
-import { map, isEmpty, isEqual, difference } from 'lodash';
+import { switchMap, tap, map as rxMap } from 'rxjs/operators';
+import { map, isEmpty, isEqual, difference } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -9,11 +9,10 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 
 // services
@@ -23,6 +22,11 @@ import GetModerators from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+
+const StyledSection = styled(Section)`
+  margin-bottom: 110px;
+`;
 
 const RadioButtonsWrapper = styled.div`
   margin-top: 15px;
@@ -34,7 +38,7 @@ const StyledRadio = styled(Radio)`
   cursor: pointer;
 
   .text {
-    font-size: 16px;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
   }
@@ -78,12 +82,12 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
   componentDidMount() {
     if (this.props.params.projectId) {
       const projectId = this.props.params.projectId;
-      const project$ = projectByIdStream(projectId).observable.do((project) => {
+      const project$ = projectByIdStream(projectId).observable.pipe(tap((project) => {
         this.setState({
           savedVisibleTo: project.data.attributes.visible_to,
           unsavedVisibleTo: project.data.attributes.visible_to
         });
-      });
+      }));
 
       this.subscriptions = [
         project$.pipe(switchMap((project) => {
@@ -167,21 +171,22 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
     }));
   }
 
+  handleGroupsAdded = () => {
+    this.saveChanges();
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { project, unsavedVisibleTo, loading, saving, status } = this.state;
 
-    const groups = ((!loading && unsavedVisibleTo === 'groups' && project) ? (
-      <ProjectGroupsList projectId={project.data.id} />
-    ) : null);
-
     if (!loading && unsavedVisibleTo) {
       return (
-          <Section>
+        <>
+          <StyledSection>
             <SectionField>
-              <Label htmlFor="permissions-type">
+              <SectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
-              </Label>
+              </SectionTitle>
 
               <RadioButtonsWrapper>
                 <StyledRadio
@@ -192,46 +197,52 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                   value="public"
                   id="permissions-all"
                 />
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsAdministrators)}
-                value="admins"
-                id="permissions-administrators"
-              />
-              <StyledRadio
-                onChange={this.handlePermissionTypeChange}
-                currentValue={unsavedVisibleTo}
-                name="permissionsType"
-                label={formatMessage(messages.permissionsSelectionLabel)}
-                value="groups"
-                id="permissions-selection"
-              />
-            </RadioButtonsWrapper>
-          </SectionField>
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsAdministrators)}
+                  value="admins"
+                  id="permissions-administrators"
+                />
+                <StyledRadio
+                  onChange={this.handlePermissionTypeChange}
+                  currentValue={unsavedVisibleTo}
+                  name="permissionsType"
+                  label={formatMessage(messages.permissionsSelectionLabel)}
+                  value="groups"
+                  id="permissions-selection"
+                />
+              </RadioButtonsWrapper>
+            </SectionField>
 
-          {groups}
-          <SectionField>
-            <SubmitWrapper
-              loading={saving}
-              status={status}
-              onClick={this.saveChanges}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </SectionField>
+            {unsavedVisibleTo === 'groups' && project &&
+              <ProjectGroupsList projectId={project.data.id} onAddButtonClicked={this.handleGroupsAdded} />
+            }
 
-          {project &&
-            <GetModerators projectId={project.data.id}>
-              {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
-            </GetModerators>
-          }
-        </Section>
+            {unsavedVisibleTo !== 'groups' &&
+              <SubmitWrapper
+                loading={saving}
+                status={status}
+                onClick={this.saveChanges}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
+              />
+            }
+          </StyledSection>
+
+          <Section>
+            {project &&
+              <GetModerators projectId={project.data.id}>
+                {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
+              </GetModerators>
+            }
+          </Section>
+        </>
       );
     }
 

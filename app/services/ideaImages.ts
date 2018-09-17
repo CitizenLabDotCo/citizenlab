@@ -1,13 +1,13 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ideaByIdStream } from 'services/ideas';
-import { API } from 'typings';
+import { ImageSizes } from 'typings';
 
 export interface IIdeaImageData {
   id: string;
   type: string;
   attributes: {
-    versions: API.ImageSizes;
+    versions: ImageSizes;
     ordering: number;
     created_at: string;
     updated_at: string;

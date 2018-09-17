@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Author from './Author';
+import Author from 'components/Author';
 import CommentBody from './CommentBody';
 
 // services
@@ -18,7 +18,10 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 // style
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
+
+//
+import messages from './messages';
 
 const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
@@ -85,7 +88,7 @@ class ChildComment extends React.PureComponent<Props, State> {
       this.setState({ editionMode: false });
     } catch (error) {
       if (error && error.json) {
-        const apiErrors = (error as API.ErrorResponse).json.errors;
+        const apiErrors = (error as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
@@ -114,7 +117,8 @@ class ChildComment extends React.PureComponent<Props, State> {
           <StyledAuthor
             authorId={authorId}
             createdAt={createdAt}
-            message="childCommentAuthor"
+            message={messages.childCommentAuthor}
+            size="medium"
           />
 
           <CommentBody

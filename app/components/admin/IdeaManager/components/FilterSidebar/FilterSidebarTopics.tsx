@@ -1,5 +1,5 @@
 import React from 'react';
-import { xor } from 'lodash';
+import { xor } from 'lodash-es';
 import { ITopicData } from 'services/topics';
 import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';

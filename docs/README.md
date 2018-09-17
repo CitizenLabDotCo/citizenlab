@@ -1,5 +1,106 @@
 # Changelog
 
+## 2019-09-07
+
+### Fixed
+- Submit idea button is now aligned with idea form
+- An error caused by social sign in on French platforms not longer has an English error message
+- Checkboxes are now keyboard navigable
+- Projects that currently don't accept ideas can no longer be selected when posting an idea
+- Deleting an idea no longer results in a blank page
+- Deleting a comment no longer results in a blank page
+- When sign in fails, the error message no longer says the user doesn't exist
+- `null` is no longer shown as a lastname for migrated cl1 users without last name
+- Clicking on the table headers in the idea managers again swaps the sorting order as expected
+- Typeform Survey now is properly usable on mobile
+### Added
+
+- Email notification control
+  - Every user can opt-out from all recurring types of e-mails sent out by the platform by editing their profile
+  - Emails can be fully disabled per type and per tenant (through S&S ticket)
+- An widget that shows platform ideas can now be embedded on external sites
+  - The style and content of the widget can be configured through admin > settings > widgets
+  - Widget functionality is feature flagged as "widgets", on by default
+
+### Changed
+- Initial loading speed of the platform has drastically improved, particulary noticable on mobile
+- New tenants have custom signup fields and survey feature enabled by default
+
+## 2018-08-20
+
+### Fixed
+- The idea sidepane on the map correctly displays HTML again
+- Editing your own comment no longer turns the screen blank
+- Page tracking to segment no longer tracks the previous page instead of the current one
+- Some browsers no longer break because of missing internationalization support
+- The options of a custom field are now shown in the correct order
+
+### Added
+- A major overhaul of all citizen-facing pages to have significantly better accessibility (almost WCAG2 Level A compliant)
+  - Keyboard navigation supported everywhere
+  - Forms and images will work better with screen readers
+  - Color constrasts have been increased throughout
+  - A warning is shown when the color in admin settings is too low on constrast
+  - And a lot of very small changes to increase WCAG2 compliance
+- Archived projects are visible by citizens
+  - Citizens can filter to see all, active or archived projects
+  - Projects and project cards show a badge indicating a project is archived
+  - In the admin, active and archived projects are shown separately
+- A favicon can now be configured at the hidden location `/admin/favicon`
+  - On android in Chrome, the platform can be added to the Android homescreen and will use the favicon as an icon
+- Visitors coming through Onze Stad App now are trackable in analytics
+
+### Changed
+- All dropdown menus now have the same style
+- The style of all form select fields has changed
+- Page tracking to segment no longer includes the url as the `name` property (salesmachine)
+- Font sizes throughout the citizen-facing side are more consistent
+
+## 2018-08-03
+
+### Fixed
+- The landingpage header layout is no longer broken on mobile devices 
+- Yet another bug related to the landingpage not correctly redirecting the user to the correct locale
+- The Page not found page was not found when a page was not found
+
+### Added
+- The 'Create an account' call to action button on the landing page now gets tracked
+
+## 2018-08-02
+
+### Fixed
+- The browser no longer goes blank when editing a comment
+- Redirect to the correct locale in the URL no longer goes incorrectly to `en`
+
+## 2018-07-31
+
+### Fixed
+- The locale in the URL no longer gets added twice in certain conditions
+- Various fixes to the rich text editor
+  - The controls are now translated
+  - Line breaks in the editor and the resulting page are now consistent
+  - The editor no longer breaks form keyboard accessibility
+  - The images can no longer have inconsistent widht/height ratio wich used to happen in some cases
+  - The toolbar buttons have a label for accessibility
+- A new tenant created in French no longer contains some untranslated content
+- The tenant lifecycle stage is now properly included in `group()` calls to segment
+- Comment body and various dynamic titles are secured against XSS attacks
+
+### Added
+- Ideas published on CitizenLab can now also be pushed to Onze Stad App news stream
+- The rich text editor
+  - Now support copy/paste of images
+- Event descriptions now also support rich text
+- When not signed in, the header shows a CTA to create an account
+- A new smart group rule allows you to specify members than have participated (vote, comment, idea) in a certain project
+- The admin now shows a "Get started" link to the knowledge base on the bottom left
+- The Dutch platforms show a "fake door" to Agenda Setting in the admin navigation
+
+### Changed
+- The idea card now shows name and date on 2 lines
+- The navbar now shows the user name next to the avatar
+- The user menu now shows "My ideas" instead of "Profile page"
+
 ## 2018-07-12
 
 ### Fixed

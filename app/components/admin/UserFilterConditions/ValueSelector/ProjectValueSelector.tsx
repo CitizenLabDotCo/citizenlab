@@ -3,7 +3,7 @@ import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import Select from 'components/UI/Select';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 
 type State = {};
 
-class ProjectValueSelector extends React.PureComponent<Props & injectedLocalized, State> {
+class ProjectValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
 
   generateOptions = (): IOption[] => {
     const { projects, localize } = this.props;
@@ -54,7 +54,7 @@ class ProjectValueSelector extends React.PureComponent<Props & injectedLocalized
 const AreaValueSelectorWithHOC = localize(ProjectValueSelector);
 
 export default (inputProps) => (
-  <GetProjects>
+  <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
     {(projects) => <AreaValueSelectorWithHOC {...inputProps} projects={projects} />}
   </GetProjects>
 );

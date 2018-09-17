@@ -19,15 +19,19 @@ const commands = {
     .waitForElementVisible('@groupNameField')
     .fillMultiloc('@groupNameField', title)
     // From here the command is pretty hacky. It should select Role > is admin by...
-    // Clicking the fist Select element in the rules fild section
-    .click('.e2e-rules-field-section .Select')
-    // Clicking the 3rd option -> breaks if admin is not the 3rd option (language change, field option change...)...
-    // -> also breaks if react-select changes its id pattern
-    .click("#react-select-2--option-3");
+    // Clicking the fist rule's fieldSelector
+    .click('.e2e-rules-field-section #e2e-rule-0-field-e2e-e2e');
+    // Navigating down to 3rd option and hitting enter
+    // -> breaks if admin is not the 3rd option (language change, field option change...)...
+    // -> also breaks if react-select changes its keybindings
     // Press tab to go to next field
-    this.api.keys(this.api.Keys.TAB)
-    // Press enter to display the options
+    this.api.keys(this.api.Keys.ARROW_DOWN)
+    .keys(this.api.Keys.ARROW_DOWN)
+    .keys(this.api.Keys.ARROW_DOWN)
     .keys(this.api.Keys.ENTER)
+    .keys(this.api.Keys.TAB)
+    // Press enter to display the options
+    .keys(this.api.Keys.ARROW_DOWN)
     // Press enter to select the first one which should be "is admin"
     .keys(this.api.Keys.ENTER);
     // note : when in a page, you need the api keyword to use keys and pause and execute

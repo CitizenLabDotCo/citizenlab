@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -27,8 +27,8 @@ type State = {
   selectedValues: string[];
 };
 
-export default class SelectTopic extends React.PureComponent<Props, State> {
-  subscriptions: Rx.Subscription[];
+export default class SelectTopic extends PureComponent<Props, State> {
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
@@ -47,7 +47,7 @@ export default class SelectTopic extends React.PureComponent<Props, State> {
     const topics$ = topicsStream().observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         currentTenant$,
         locale$,
         topics$
@@ -89,8 +89,8 @@ export default class SelectTopic extends React.PureComponent<Props, State> {
             values={options}
             onChange={this.handleOnChange}
             multiple={true}
-            maxWidth={'350px'}
-            mobileMaxWidth={'200px'}
+            right="-10px"
+            mobileLeft="-5px"
           />
         );
       }

@@ -65,32 +65,33 @@ export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {({ project, events }) => {
       if (!isNilOrError(project) && events && events.length > 0) {
-        return (
-          <Container className={`e2e-events-preview`}>
-            <ContentContainer>
-              <Header>
-                <h2>
-                  <FormattedMessage {...messages.upcomingEvents} />
-                </h2>
-                <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${project.attributes.slug}/events`}>
-                  <FormattedMessage {...messages.allEvents} />
-                </Button>
-              </Header>
+        const futureEvents = events.filter((event) => {
+          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+          return (eventTime === 'present' || eventTime === 'future');
+        }).slice(0, 3);
 
-              <Events>
-                {events
-                  .filter((event) => {
-                    const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
-                    return (eventTime === 'present' || eventTime === 'future');
-                  })
-                  .slice(0, 3)
-                  .map((event, index) => (
+        if (futureEvents.length > 0) {
+          return (
+            <Container className={'e2e-events-preview'}>
+              <ContentContainer>
+                <Header>
+                  <h2>
+                    <FormattedMessage {...messages.upcomingEvents} />
+                  </h2>
+                  <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${project.attributes.slug}/events`}>
+                    <FormattedMessage {...messages.allEvents} />
+                  </Button>
+                </Header>
+
+                <Events>
+                  {futureEvents.map((event, index) => (
                     <EventBlock event={event} key={event.id} projectSlug={project.attributes.slug} isLast={(index === 2)} />
                   ))}
-              </Events>
-            </ContentContainer>
-          </Container>
-        );
+                </Events>
+              </ContentContainer>
+            </Container>
+          );
+        }
       }
 
       return null;

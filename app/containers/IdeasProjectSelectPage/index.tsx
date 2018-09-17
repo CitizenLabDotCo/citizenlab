@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import { groupBy, isEmpty, isUndefined } from 'lodash';
+import { groupBy, isEmpty, isUndefined } from 'lodash-es';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -23,7 +23,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -59,7 +59,7 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const PageTitle = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: center;
@@ -69,7 +69,7 @@ const PageTitle = styled.h1`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
 
@@ -127,7 +127,7 @@ const RightColumn = Column.extend`
 
 const ColumnTitle = styled.h2`
   color: #333;
-  font-size: 21px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 26px;
   margin: 0;
@@ -136,7 +136,7 @@ const ColumnTitle = styled.h2`
 
 const ColumnExplanation = styled.div`
   color: #666;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   line-height: 24px;
   font-weight: 300;
   min-height: 7rem;
@@ -191,7 +191,7 @@ const WithoutButtonBar = styled.div`
 
 const EmptyStateContainer = styled.div`
   color: #474747;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   line-height: 24px;
   text-align: center;
   padding-top: 15px;
@@ -358,7 +358,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
 const IdeasProjectSelectPageWithHoCs = withRouter(IdeasProjectSelectPage);
 
 export default (inputProps: InputProps) => (
-  <GetProjects {...inputProps}>
+  <GetProjects publicationStatuses={['published']}>
     {projects => <IdeasProjectSelectPageWithHoCs {...inputProps} projects={projects} />}
   </GetProjects>
 );

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
@@ -43,7 +43,7 @@ const NavigationLabel = styled.div`
   width: 100%;
   height: 16px;
   color: #999;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
   flex: 1;

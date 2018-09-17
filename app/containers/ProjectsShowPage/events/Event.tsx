@@ -1,6 +1,6 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
-import * as moment from 'moment';
+import moment from 'moment';
+import { isEmpty, every } from 'lodash-es';
 import 'moment-timezone';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,12 +10,7 @@ import Icon from 'components/UI/Icon';
 // services
 import { IEventData } from 'services/events';
 
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
@@ -24,7 +19,8 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import T from 'components/T';
 
 const Container = styled.div`
   width: 100%;
@@ -61,10 +57,10 @@ const EventDates = styled.div`
   border-radius: 5px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #f64a00;
+  background: #DF3300;
 
   &.past {
-    background: #cfcfcf;
+    background: #939393;
   }
 
   ${media.smallerThanMaxTablet`
@@ -74,7 +70,7 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   display: flex;
@@ -85,7 +81,7 @@ const EventDate = styled.div`
 
 const EventDatesSeparator = styled.div`
   color: #fff;
-  font-size: 23px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 27px;
   font-weight: 500;
   text-align: center;
@@ -95,7 +91,7 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -107,7 +103,7 @@ const EventYear = styled.div`
   background: #373737;
 
   &.past {
-    background: #a7a7a7;
+    background: ${colors.label};
   }
 `;
 
@@ -134,13 +130,13 @@ const EventInformation = styled.div`
 
 const EventTime = styled.div`
   color: #666;
-  font-size: 17px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 300;
 `;
 
 const EventTitle = styled.div`
   color: #333;
-  font-size: 20px;
+  font-size: ${fontSizes.xl}px;
   line-height: 23px;
   margin-top: 10px;
   margin-bottom: 20px;
@@ -148,14 +144,16 @@ const EventTitle = styled.div`
 `;
 
 const EventDescription = styled.div`
-  color: #939393;
-  font-size: 16px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
 
   strong {
     font-weight: 600;
   }
+
+  ${quillEditedContent()}
 `;
 
 const EventLocationWrapper = styled.div`
@@ -207,7 +205,7 @@ const EventLocationInner = styled.div`
 
 const EventLocationLabel = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: 21px;
   margin-bottom: 2px;
@@ -215,7 +213,7 @@ const EventLocationLabel = styled.div`
 
 const EventLocationAddress = styled.div`
   color: #666;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   display: flex;
@@ -224,27 +222,17 @@ const EventLocationAddress = styled.div`
 
 interface InputProps {
   event: IEventData;
+  className?: string;
 }
-
-interface DataProps {
-  locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps {}
 
 interface State {}
 
-class Event extends React.PureComponent<Props, State> {
+export default class Event extends React.PureComponent<Props, State> {
   render() {
-    const className = this.props['className'];
-    const { locale, tenant, event } = this.props;
+    const { event, className } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(event)) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const eventTitle = getLocalized(event.attributes.title_multiloc, locale, tenantLocales);
-      const eventDescription = getLocalized(event.attributes.description_multiloc, locale, tenantLocales);
-      const eventLocationAddress = getLocalized(event.attributes.location_multiloc, locale, tenantLocales);
+    if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
       const endAtMoment = moment(event.attributes.end_at);
       const startAtIsoDate = getIsoDate(event.attributes.start_at);
@@ -258,6 +246,7 @@ class Event extends React.PureComponent<Props, State> {
       const startAtTime = (isMultiDayEvent ? startAtMoment.format('D MMM LT') : startAtMoment.format('LT'));
       const endAtTime = (isMultiDayEvent ? endAtMoment.format('D MMM LT') : endAtMoment.format('LT'));
       const eventStatus = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+      const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
 
       return (
         <Container className={`${className} ${eventStatus}`}>
@@ -292,15 +281,15 @@ class Event extends React.PureComponent<Props, State> {
             </EventTime>
 
             <EventTitle>
-              {eventTitle}
+              <T value={event.attributes.title_multiloc} />
             </EventTitle>
 
             <EventDescription>
-              <span dangerouslySetInnerHTML={{ __html: eventDescription }} />
+              <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
           </EventInformation>
 
-          {eventLocationAddress &&
+          {hasLocation &&
             <EventLocationWrapper className={eventStatus}>
               <EventLocation>
                 <MapIcon name="mapmarker" />
@@ -310,7 +299,7 @@ class Event extends React.PureComponent<Props, State> {
                     <FormattedMessage {...messages.location} />
                   </EventLocationLabel>
                   <EventLocationAddress>
-                    {eventLocationAddress}
+                    <T value={event.attributes.location_multiloc} />
                   </EventLocationAddress>
                 </EventLocationInner>
               </EventLocation>
@@ -323,14 +312,3 @@ class Event extends React.PureComponent<Props, State> {
     return null;
   }
 }
-
-const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
-  tenant: <GetTenant />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <Event {...inputProps} {...dataProps} />}
-  </Data>
-);

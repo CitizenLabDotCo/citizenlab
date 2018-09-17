@@ -1,7 +1,8 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { find, isString, isObject } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
 import 'moment/locale/en-gb';
@@ -12,14 +13,12 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import { find, isString, isObject } from 'lodash';
-import { isNilOrError } from 'utils/helperUtils';
 
 // context
 import { PreviousPathnameContext } from 'context';
 
 // libraries
-import { RouterState } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // analytics
@@ -95,7 +94,7 @@ type State = {
   visible: boolean;
 };
 
-export default class App extends React.PureComponent<Props & RouterState, State> {
+class App extends React.PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
   unlisten: Function;
 
@@ -224,7 +223,7 @@ export default class App extends React.PureComponent<Props & RouterState, State>
                   url={modalUrl}
                   headerChild={fullscreenModalHeaderChild}
                 >
-                  <IdeasShow ideaId={modalId} inModal={true} />
+                  {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
                 </FullscreenModal>
 
                 <div id="modal-portal" />
@@ -249,3 +248,5 @@ export default class App extends React.PureComponent<Props & RouterState, State>
     );
   }
 }
+
+export default withRouter(App);

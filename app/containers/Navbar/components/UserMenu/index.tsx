@@ -2,10 +2,10 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 
 // components
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import Popover from 'components/Popover';
+import UserName from 'components/UI/UserName';
+import Dropdown from 'components/UI/Dropdown';
 import HasPermission from 'components/HasPermission';
 
 // services
@@ -14,8 +14,8 @@ import { IUser } from 'services/users';
 
 // style
 import styled from 'styled-components';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,67 +23,63 @@ import messages from '../../messages';
 
 const Container = styled.div`
   display: flex;
-  margin-left: 0px;
   position: relative;
-  cursor: pointer;
-  outline: none;
 
   * {
     user-select: none;
   }
 `;
 
-const OpenMenuButton = styled.button`
-  background: none;
-  border-radius: 50%;
-  border: 0;
-  border: 1px solid transparent;
-  cursor: pointer;
-  height: 27px;
-  padding: 0;
-  transition: all .2s;
-  width: 27px;
+const StyledUserName = styled(UserName)`
+  color: ${colors.label};
+  margin-right: 5px;
+  white-space: nowrap;
+  font-size: ${fontSizes.base}px;
+  transition: all 100ms ease-out;
 
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const StyledAvatar = styled(Avatar)`
   svg {
     fill: ${colors.label};
   }
+`;
 
-  &:hover,
-  &:focus {
-    border-color: ${darken(0.2, colors.label)};
+const OpenDropdownButton = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
 
-    svg {
-      fill: ${darken(0.2, colors.label)};
+  &:hover {
+    ${StyledUserName} {
+      color: #000;
+    }
+
+    ${StyledAvatar} {
+      img {
+        border-color: #000;
+      }
+
+      svg {
+        fill: ${darken(0.2, colors.label)};
+      }
     }
   }
 `;
 
-const UserIcon = styled(Icon)`
-  width: 26px;
-  height: 24px;
-  fill: inherit;
-  transition: all 150ms ease;
-  cursor: pointer;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  cursor: pointer;
-`;
-
-const StyledPopover = styled(Popover)`
-  display: flex;
-  flex-direction: column;
-  z-index: 5;
-`;
-
-const PopoverItem = styled(Button)`
-  background: #fff;
-  border-radius: 5px;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    background: #f6f6f6;
+const DropdownListItem = styled(Button)`
+  &.Button.button {
+    font-size: ${fontSizes.medium}px;
+  }
+  a:not(.processing):focus,
+  button:not(.processing):focus,
+  a:not(.processing):hover,
+  button:not(.processing):hover {
+    background: ${colors.clDropdownHoverBackground};
   }
 `;
 
@@ -118,12 +114,12 @@ export default class UserMenu extends React.PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  togglePopover = (event: React.FormEvent) => {
+  toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState(({ opened }) => ({ opened: !opened }));
   }
 
-  closePopover = () => {
+  closeDropdown = () => {
     this.setState({ opened: false });
   }
 
@@ -133,102 +129,111 @@ export default class UserMenu extends React.PureComponent<Props, State> {
 
   render() {
     const { authUser, opened } = this.state;
-    const avatar = (authUser ? authUser.data.attributes.avatar : null);
     const userId = (authUser ? authUser.data.id : null);
     const userSlug = (authUser ? authUser.data.attributes.slug : null);
 
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          <OpenMenuButton onClick={this.togglePopover}>
-            {avatar ?  <StyledAvatar userId={userId} size="small" /> : <UserIcon name="user" />}
-          </OpenMenuButton>
-          <StyledPopover
-            id="e2e-user-menu-dropdown"
-            open={opened}
-            onCloseRequest={this.closePopover}
-          >
-            <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
-              <PopoverItem
-                id="admin-link"
-                linkTo={'/admin'}
-                onClick={this.closePopover}
-                style="text"
-                icon="admin"
-                iconPos="right"
-                iconSize="20px"
-                padding="11px 11px"
-                size="2"
-                justify="space-between"
-              >
-                <FormattedMessage {...messages.admin} />
-              </PopoverItem>
+          <OpenDropdownButton onClick={this.toggleDropdown}>
+            <StyledUserName
+              user={authUser.data}
+              hideLastName={true}
+            />
+            <StyledAvatar
+              userId={userId}
+              size="small"
+            />
+          </OpenDropdownButton>
 
-              <HasPermission.No>
-                {/* Display the project moderation page for moderators, they don't have access to the dashboard */}
-                <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                  <PopoverItem
-                    id="e2e-projects-admin-link"
-                    linkTo={'/admin/projects'}
-                    onClick={this.closePopover}
+          <Dropdown
+            id="e2e-user-menu-dropdown"
+            width="220px"
+            mobileWidth="220px"
+            top="42px"
+            right="-5px"
+            mobileRight="-5px"
+            opened={opened}
+            onClickOutside={this.toggleDropdown}
+            content={(
+              <>
+                <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+                  <DropdownListItem
+                    id="admin-link"
+                    linkTo={'/admin'}
+                    onClick={this.closeDropdown}
                     style="text"
                     icon="admin"
                     iconPos="right"
                     iconSize="20px"
                     padding="11px 11px"
-                    size="2"
                     justify="space-between"
                   >
-                    <FormattedMessage {...messages.projectsModeration} />
-                  </PopoverItem>
+                    <FormattedMessage {...messages.admin} />
+                  </DropdownListItem>
+
+                  <HasPermission.No>
+                    <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
+                      <DropdownListItem
+                        id="e2e-projects-admin-link"
+                        linkTo={'/admin/projects'}
+                        onClick={this.closeDropdown}
+                        style="text"
+                        icon="admin"
+                        iconPos="right"
+                        iconSize="20px"
+                        padding="11px 11px"
+                        justify="space-between"
+                      >
+                        <FormattedMessage {...messages.projectsModeration} />
+                      </DropdownListItem>
+                    </HasPermission>
+                  </HasPermission.No>
                 </HasPermission>
-              </HasPermission.No>
-            </HasPermission>
 
-            <PopoverItem
-              id="e2e-profile-profile-link"
-              linkTo={`/profile/${userSlug}`}
-              onClick={this.closePopover}
-              style="text"
-              icon="user"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              size="2"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.profilePage} />
-            </PopoverItem>
+                <DropdownListItem
+                  id="e2e-profile-profile-link"
+                  linkTo={`/profile/${userSlug}`}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="ideas2"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.myIdeas} />
+                </DropdownListItem>
 
-            <PopoverItem
-              id="e2e-profile-edit-link"
-              linkTo={'/profile/edit'}
-              onClick={this.closePopover}
-              style="text"
-              icon="settings"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              size="2"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.editProfile} />
-            </PopoverItem>
+                <DropdownListItem
+                  id="e2e-profile-edit-link"
+                  linkTo={'/profile/edit'}
+                  onClick={this.closeDropdown}
+                  style="text"
+                  icon="settings"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.editProfile} />
+                </DropdownListItem>
 
-            <PopoverItem
-              id="e2e-sign-out-link"
-              onClick={this.signOut}
-              style="text"
-              icon="power"
-              iconPos="right"
-              iconSize="20px"
-              padding="11px 11px"
-              size="2"
-              justify="space-between"
-            >
-              <FormattedMessage {...messages.signOut} />
-            </PopoverItem>
-          </StyledPopover>
+                <DropdownListItem
+                  id="e2e-sign-out-link"
+                  onClick={this.signOut}
+                  style="text"
+                  icon="power"
+                  iconPos="right"
+                  iconSize="20px"
+                  padding="11px 11px"
+                  justify="space-between"
+                >
+                  <FormattedMessage {...messages.signOut} />
+                </DropdownListItem>
+              </>
+            )}
+          />
         </Container>
       );
     }

@@ -1,7 +1,7 @@
 // Libraries
-import React from 'react';
-import * as Rx from 'rxjs/Rx';
-import { find, map } from 'lodash';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
+import { find, map } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -11,7 +11,6 @@ import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import Warning from 'components/UI/Warning';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import GroupAvatar from './GroupAvatar';
 import { List, Row } from 'components/admin/ResourceList';
@@ -28,12 +27,6 @@ import styled from 'styled-components';
 // Typings
 import { IOption, Locale } from 'typings';
 
-const SRow = styled(Row)`
-  &:first-child {
-    border-top: none;
-  }
-`;
-
 const Container = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -45,8 +38,6 @@ const SelectGroupsContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   align-items: center;
-  /* justify-content: space-between; */
-  /* justify-content: space-between; */
   margin-bottom: 30px;
 `;
 
@@ -58,7 +49,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 const AddGroupButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
-  margin-left: 40px;
+  margin-left: 30px;
 `;
 
 const GroupTitle = styled.p``;
@@ -74,6 +65,7 @@ interface IProjectGroup {
 
 interface Props {
   projectId: string;
+  onAddButtonClicked: () => void;
 }
 
 interface State {
@@ -85,12 +77,11 @@ interface State {
   loading: boolean;
 }
 
-class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> {
+  subscriptions: Subscription[];
 
-  subscriptions: Rx.Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       currentTenantLocales: null,
@@ -110,7 +101,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const groupsProjects$ = groupsProjectsByProjectIdStream(projectId).observable;
 
     this.subscriptions = [
-      Rx.Observable.combineLatest(
+      combineLatest(
         locale$,
         currentTenant$,
         groups$,
@@ -126,8 +117,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             title: getLocalized(group.attributes.title_multiloc, locale, currentTenantLocales),
             membership_count: group.attributes.memberships_count
           };
-        })
-        .reverse();
+        }).reverse();
         const groupsOptions = this.getOptions(groups, groupsProjects, locale, currentTenantLocales);
         const loading = false;
 
@@ -160,6 +150,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
       try {
         await Promise.all(promises);
         this.setState({ selectedGroups: null });
+        this.props.onAddButtonClicked();
       } catch (error) {
         console.log(error);
       }
@@ -196,10 +187,6 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     const { groupsOptions, projectGroups, selectedGroups, loading } = this.state;
     const groupsMultipleSelectPlaceholder = formatMessage(messages.groupsMultipleSelectPlaceholder);
 
-    const noGroups = ((!loading && (!projectGroups || projectGroups.length === 0)) ? (
-      <Warning text={<FormattedMessage {...messages.noSelectedGroupsMessage} />} />
-    ) : null);
-
     const selectGroups = (!loading ? (
       <SelectGroupsContainer>
         <StyledMultipleSelect
@@ -210,7 +197,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
         />
 
         <AddGroupButton
-          text={formatMessage(messages.addGroup)}
+          text={formatMessage(messages.add)}
           style="cl-blue"
           size="1"
           icon="plus-circle"
@@ -223,8 +210,8 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
 
     const groupsList = ((!loading && projectGroups && projectGroups.length > 0) ? (
       <List>
-        {projectGroups.map((projectGroup) => (
-          <SRow key={projectGroup.group_project_id}>
+        {projectGroups.map((projectGroup, index) => (
+          <Row key={projectGroup.group_project_id} lastItem={(index === projectGroups.length - 1)}>
             <GroupAvatar groupId={projectGroup.group_id} />
             <GroupTitle className="expand">
               {projectGroup.title}
@@ -235,7 +222,7 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
             <Button onClick={this.createDeleteGroupHandler(projectGroup.group_project_id)} style="text" circularCorners={false} icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
-          </SRow>
+          </Row>
         ))}
       </List>
     ) : null);
@@ -243,7 +230,6 @@ class ProjectGroupsList extends React.PureComponent<Props & InjectedIntlProps, S
     return (
       <Container>
         {selectGroups}
-        {noGroups}
         {groupsList}
       </Container>
     );

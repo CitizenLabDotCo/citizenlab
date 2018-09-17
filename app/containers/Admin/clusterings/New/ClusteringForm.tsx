@@ -14,7 +14,7 @@ import Label from 'components/UI/Label';
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 // Resources
@@ -44,7 +44,7 @@ export interface FormValues {
   search?: string;
 }
 
-class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocalized & InjectedIntlProps, FormValues>> {
+class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
   levelsOptionList = () => (
     ['project', 'topic', 'area'].map(level => ({
@@ -78,7 +78,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SectionField>
 
@@ -111,7 +111,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & injectedLocaliz
             <Label>
               <FormattedMessage {...messages.fieldProjects} />
             </Label>
-            <GetProjects>
+            <GetProjects publicationStatuses={['published', 'archived']}>
               {(projects) => (projects && isNilOrError(projects)) ? null : (
                 <Field
                   name="projects"

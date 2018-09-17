@@ -1,61 +1,63 @@
 import React from 'react';
 import Link from 'utils/cl-router/Link';
-import { isBoolean, isNil } from 'lodash';
+import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
-import { darken, rgba, readableColor } from 'polished';
+import { darken, readableColor } from 'polished';
 import { color, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
+    case '1':
+      return '17px';
     case '2':
-      return `18px`;
+      return '18px';
     case '3':
-      return `20px`;
+      return '20px';
     case '4':
-      return `22px`;
+      return '22px';
     default:
-      return `16px`;
+      return '16px';
   }
 }
 
 function getPadding(size) {
   switch (size) {
     case '2':
-      return `11px 22px`;
+      return '11px 22px';
     case '3':
-      return `13px 24px`;
+      return '13px 24px';
     case '4':
-      return `15px 26px`;
+      return '15px 26px';
     default:
-      return `.65em 1.45em`;
+      return '.65em 1.45em';
   }
 }
 
 function getIconHeight(size) {
   switch (size) {
     case '2':
-      return `18px`;
+      return '18px';
     case '3':
-      return `19px`;
+      return '19px';
     case '4':
-      return `20px`;
+      return '20px';
     default:
-      return `17px`;
+      return '17px';
   }
 }
 
 function getLineHeight(size) {
   switch (size) {
     case '2':
-      return `24px`;
+      return '24px';
     case '3':
-      return `26px`;
+      return '26px';
     case '4':
-      return `28px`;
+      return '28px';
     default:
-      return `22px`;
+      return '22px';
   }
 }
 
@@ -143,11 +145,11 @@ const Container: any = styled.div`
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
     margin: 0;
-    outline: none;
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
     width: ${(props: any) => props.width || '100%'};
+    outline: none;
     &:not(.disabled) {
       cursor: pointer;
     }
@@ -164,6 +166,7 @@ const Container: any = styled.div`
       line-height: ${(props: any) => getLineHeight(props.size)};
     }
     ${StyledIcon} {
+      flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       height: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       width: ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
       opacity: ${(props: any) => props.processing ? 0 : 1};
@@ -171,8 +174,16 @@ const Container: any = styled.div`
     &.primary {
       ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
     }
+    &.primary-inverse {
+      ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
+    }
     &.secondary {
-      ${buttonTheme(color('lightGreyishBlue'), color('label'), 'transparent', darken(0.05, color('lightGreyishBlue')))}
+      ${buttonTheme(
+        color('lightGreyishBlue'),
+        color('label'),
+        'transparent',
+        darken(0.05, color('lightGreyishBlue'))
+      )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
@@ -184,10 +195,7 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
     }
     &.success {
-      ${buttonTheme(rgba(color('success'), .15), color('success'))}
-    }
-    &.error {
-      ${buttonTheme(rgba(color('error'), .15), color('error'))}
+      ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
     &.cl-blue {
       ${buttonTheme(color('clBlueDark'), 'white')}
@@ -210,13 +218,14 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'error' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
 
 type Props = {
   children?: any;
   circularCorners?: boolean;
   className?: string;
   disabled?: boolean;
+  form?: string;
   fullWidth?: boolean;
   height?: string;
   hiddenText?: string | JSX.Element;
@@ -227,6 +236,7 @@ type Props = {
   id?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
+  openInNewTab?: boolean;
   onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
   padding?: string;
   processing?: boolean;
@@ -254,13 +264,13 @@ class Button extends React.PureComponent<Props, State> {
   getSpinnerSize = (size) => {
     switch (size) {
       case '2':
-        return `26px`;
+        return '26px';
       case '3':
-        return `28px`;
+        return '28px';
       case '4':
-        return `30px`;
+        return '30px';
       default:
-        return `24px`;
+        return '24px';
     }
   }
 
@@ -279,7 +289,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo } = this.props;
+    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -288,7 +298,7 @@ class Button extends React.PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     fullWidth = (isBoolean(fullWidth) ? fullWidth : false);
-    circularCorners = (isBoolean(circularCorners) ? circularCorners : true);
+    circularCorners = (isBoolean(circularCorners) ? circularCorners : false);
     iconPos = (iconPos || 'left');
     className = `${className ? className : ''}`;
 
@@ -303,7 +313,11 @@ class Button extends React.PureComponent<Props, State> {
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
-        {processing && <SpinnerWrapper><Spinner size={spinnerSize} color={spinnerColor} /></SpinnerWrapper>}
+        {processing &&
+          <SpinnerWrapper>
+            <Spinner size={spinnerSize} color={spinnerColor} />
+          </SpinnerWrapper>
+        }
       </>
     );
 
@@ -326,12 +340,12 @@ class Button extends React.PureComponent<Props, State> {
       >
         {linkTo ? (
           (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} className={buttonClassnames}>{childContent}</StyledA>
+            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target={openInNewTab ? '_blank' : '_self'} className={buttonClassnames}>{childContent}</StyledA>
           ) : (
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form}>{childContent}</StyledButton>
         )}
       </Container>
     );

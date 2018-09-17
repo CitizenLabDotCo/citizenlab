@@ -1,8 +1,7 @@
 import React from 'react';
-import { set, keys, difference, get } from 'lodash';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { set, keys, difference, get } from 'lodash-es';
+import { Subscription, combineLatest, of } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -34,9 +33,10 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { API, Locale } from 'typings';
+import { CLErrorsJSON, Locale } from 'typings';
 
 const Form = styled.form`
   width: 100%;
@@ -62,18 +62,18 @@ const TermsAndConditionsWrapper: any = styled.div`
   border: solid 1px transparent;
 
   &.error {
-    border-color: ${(props: any) => props.theme.colors.error};
+    border-color: ${(props: any) => props.theme.colors.clRedError};
   }
 
   span {
-    color: #707075 !important;
-    font-size: 16px;
+    color: #6e6e6f !important;
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 21px;
   }
 
   a > span {
-    color: #707075 !important;
+    color: #6e6e6f !important;
     text-decoration: underline;
   }
 
@@ -85,7 +85,7 @@ const TermsAndConditionsWrapper: any = styled.div`
 
 const AlreadyHaveAnAccount = styled(Link)`
   color: ${(props) => props.theme.colorMain};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
   text-decoration: none;
@@ -122,7 +122,7 @@ type State = {
   tacError: string | null;
   localeError: string | null;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -161,14 +161,14 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
     const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable : of(null));
+    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable.pipe(first()) : of(null));
 
     this.subscriptions = [
       combineLatest(
         locale$,
         currentTenant$,
         customFieldsSchemaForUsersStream$,
-        invitedUser$.first()
+        invitedUser$
       ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
         this.setState((state) => ({
           locale,
@@ -433,7 +433,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               processing={processing}
               text={buttonText}
               onClick={this.handleOnSubmit}
-              circularCorners={true}
+              circularCorners={false}
             />
             {!isInvitation &&
               <AlreadyHaveAnAccount to="/sign-in">

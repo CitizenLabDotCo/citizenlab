@@ -116,6 +116,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.domicile_placeholder',
     defaultMessage: 'Domicile',
   },
+  imageDropzonePlaceholder: {
+    id: 'app.containers.UsersEditPage.imageDropzonePlaceholder',
+    defaultMessage: 'Drop your image here',
+  },
   outside: {
     id: 'app.containers.UsersEditPage.outside',
     defaultMessage: `{orgType, select,
@@ -217,5 +221,13 @@ export default defineMessages({
   submit: {
     id: 'app.containers.UsersEditPage.submit',
     defaultMessage: 'Update profile',
+  },
+  notificationsTitle: {
+    id: 'app.containers.UsersEditPage.notificationsTitle',
+    defaultMessage: 'Notifications',
+  },
+  notificationsSubTitle: {
+    id: 'app.containers.UsersEditPage.notificationsSubTitle',
+    defaultMessage: 'When do you want us to send you an email to notify you?',
   },
 });

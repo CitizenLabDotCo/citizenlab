@@ -1,71 +1,14 @@
-import { includes } from 'lodash';
-
-// These are the pages you can go to.
-// They are all wrapped in the App component, which should contain the navbar etc
-
 import adminRoutes from 'containers/Admin/routes';
 import loadAndRender from 'utils/loadAndRender';
-
-// Static import of all critical containers
-// Those will be included in the main.js file
 import LandingPage from 'containers/LandingPage';
 import IdeasShowPage from 'containers/IdeasShowPage';
 import ProjectShowPage from 'containers/ProjectsShowPage';
-
-import { currentTenantStream } from 'services/tenant';
-import { localeStream, updateLocale } from 'services/locale';
-import PlatformLocales from 'platformLocales';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-
-// Tries to detect the locale passed in the URL to update the internal state
-const localeDetector = (nextState, replace, callback) => {
-  const urlLocale = nextState.params.locale;
-
-  combineLatest([
-    currentTenantStream().observable,
-    localeStream().observable,
-  ])
-  .first()
-  .toPromise()
-  .then(([{ data: tenant }, locale]) => {
-    if (tenant) {
-      const localesSet = new Set(tenant.attributes.settings.core.locales);
-
-      // Try to add a locale if the param is not a supported locale
-      if (!includes(Object.keys(PlatformLocales), urlLocale)) {
-        replace(`/${locale}${location.pathname}${location.search}`);
-      } else if (urlLocale !== locale) {
-        // Update the URL in case the locale in the URL doesn't match the one in the service
-        const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-        replace(`${location.pathname.replace(matchRegexp, `/${locale}/`)}${location.search}`);
-      } else if (localesSet.has(urlLocale)) {
-        // Update locale in the app if it belongs to the TenantLocales
-        updateLocale(urlLocale);
-      }
-
-      callback();
-    }
-  });
-};
-
-// Force the presence of a locale if it wasn't present
-const forceLocale = (_nextState, replace, callback) => {
-  localeStream().observable
-  .first()
-  .toPromise()
-  .then((locale) => {
-    replace(`/${locale}${location.pathname}${location.search}`);
-
-    callback();
-  });
-};
 
 export default function createRoutes() {
   return [
     {
       path: '/:locale',
       name: 'LocaleWrapper',
-      onEnter: localeDetector,
       indexRoute: {
         name: 'home',
         component: LandingPage,
@@ -199,11 +142,6 @@ export default function createRoutes() {
           getComponent: loadAndRender(import('containers/PagesShowPage')),
         },
       ],
-    },
-    {
-      path: '*',
-      name: 'NoLocalePath',
-      onEnter: forceLocale,
     }
   ];
 }

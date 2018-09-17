@@ -8,10 +8,12 @@ import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
+import Warning from 'components/UI/Warning';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import adminMessages from '../../Admin/pages/messages';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -22,6 +24,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const EventsContainer = styled(ContentContainer)`
   background: #f9f9fa;
@@ -34,7 +37,7 @@ const Events = styled.div`
 
 const Title = styled.h1`
   color: #333;
-  font-size: 29px;
+  font-size: ${fontSizes.xxxl}px;
   line-height: 35px;
   font-weight: 600;
   margin-bottom: 15px;
@@ -43,14 +46,14 @@ const Title = styled.h1`
 const EventList = styled.div``;
 
 const NoEvents = styled.div`
-  color: #999;
-  font-size: 18px;
+  color: ${colors.clGreyOnGreyBackground};
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
 `;
 
-const Mod = styled(ProjectModeratorIndicator)`
-  max-width: ${props => props.theme.maxPageWidth}px;
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 15px;
 `;
 
 interface InputProps {}
@@ -86,7 +89,17 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
         return (
           <>
             <Header projectSlug={slug} />
-            {!isNilOrError(project) && <Mod projectId={project.id} displayType="message" />}
+
+            {!isNilOrError(project) &&
+              <ProjectModeratorIndicator projectId={project.id} />
+            }
+
+            {!isNilOrError(project) && project.attributes.publication_status === 'archived' &&
+              <StyledContentContainer>
+                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
+              </StyledContentContainer>
+            }
+
             <EventsContainer>
               <Events>
                 <Title>

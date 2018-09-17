@@ -1,13 +1,16 @@
 // Libraries
 import React from 'react';
 import styled from 'styled-components';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import { isNilOrError } from 'utils/helperUtils';
-import * as moment from 'moment';
+import moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
+
+// Utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { fontSizes } from 'utils/styleUtils';
 
 // Services
 import { deletePhase } from 'services/phases';
@@ -42,7 +45,7 @@ const OrderLabel = styled.div`
   border-radius: 50%;
   color: white;
   height: 3rem;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 3rem;
   text-align: center;
@@ -93,7 +96,7 @@ class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps 
         </AddButton>
 
         {!isNilOrError(phases) && phases.length > 0 &&
-          <div className={`e2e-phases-table`}>
+          <div className={'e2e-phases-table'}>
             <StyledList>
               <HeadRow>
                 <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNil, isEmpty, isFunction } from 'lodash';
+import { isNil, isEmpty, isFunction } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
@@ -7,7 +7,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { color, fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
@@ -18,7 +18,7 @@ const Container: any = styled.div`
 
   .textarea {
     width: 100%;
-    font-size: 17px;
+    font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
@@ -41,11 +41,11 @@ const Container: any = styled.div`
     }
 
     &.error {
-      border-color: ${color('error')} !important;
+      border-color: ${color('clRedError')} !important;
 
       &:hover,
       &:focus {
-        border-color: ${color('error')} !important;
+        border-color: ${color('clRedError')} !important;
       }
     }
   }
@@ -60,7 +60,7 @@ const CharacterCount = styled.p`
   right: 0;
 
   &.error {
-    color: ${color('error')};
+    color: ${color('clRedError')};
   }
 `;
 

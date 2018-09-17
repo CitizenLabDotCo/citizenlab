@@ -31,7 +31,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -72,7 +72,7 @@ const PageContent = styled.div`
 
 const PageTitle = styled.h1`
   color: #333;
-  font-size: 34px;
+  font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
   text-align: left;
@@ -82,38 +82,26 @@ const PageTitle = styled.h1`
   padding-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl};
     line-height: 34px;
   `}
 `;
 
 const PageDescription = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
 
   h1 {
-    font-size: 30px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 27px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 33px;
-    font-weight: 600;
-  }
-
-  h3 {
-    font-size: 24px;
-    line-height: 30px;
-    font-weight: 600;
-  }
-
-  h4 {
-    font-size: 21px;
-    line-height: 27px;
     font-weight: 600;
   }
 
@@ -159,7 +147,7 @@ const PagesNav = styled.nav`
 
 const StyledLink = styled(Link) `
   color: #666;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -182,7 +170,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -200,15 +188,13 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageLinks } = this.props;
 
-    if (isNilOrError(locale) || isNilOrError(tenantLocales) || isNilOrError(page)) {
+    if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
         <Loading>
           <Spinner size="32px" />
         </Loading>
       );
-    }
-
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(page)) {
+    } else {
       let seoTitle = formatMessage(messages.notFoundTitle);
       let seoDescription = formatMessage(messages.notFoundDescription);
       let blockIndexing = true;
@@ -220,7 +206,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
         seoDescription = '';
         blockIndexing = false;
         pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = <T value={page.attributes.body_multiloc} />;
+        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
       }
 
       return (
@@ -268,15 +254,17 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
   }
 }
 
-const Data = adopt<DataProps, InputProps & WithRouterProps & InjectedIntlProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
   pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+const PagesShowPageWithHOCs = injectIntl<InputProps & WithRouterProps>(PagesShowPage);
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <PagesShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <PagesShowPageWithHOCs {...inputProps} {...dataProps} />}
   </Data>
-)));
+));

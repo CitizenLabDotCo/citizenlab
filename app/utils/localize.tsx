@@ -1,7 +1,6 @@
 // Libraries
-import React from 'react';
-import { Subscription } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import React, { PureComponent } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -13,7 +12,7 @@ import { getLocalized } from 'utils/i18n';
 // Typing
 import { Multiloc, Locale } from 'typings';
 
-export interface injectedLocalized {
+export interface InjectedLocalized {
   localize: {
     (multiloc: Multiloc): string;
   };
@@ -21,15 +20,13 @@ export interface injectedLocalized {
   tenantLocales: Locale[];
 }
 
-interface Props {}
-
-interface State {
+export interface State {
   locale: Locale;
   tenantLocales: Locale[];
 }
 
-export default function localize<PassedProps>(ComposedComponent) {
-  return class Localized extends React.PureComponent<Props & PassedProps, State>{
+export default function localize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
+  return class Localized extends PureComponent<P, State> {
     subscriptions: Subscription[];
 
     constructor(props) {
@@ -46,7 +43,7 @@ export default function localize<PassedProps>(ComposedComponent) {
       const currentTenant$ = currentTenantStream().observable;
 
       this.subscriptions = [
-        Observable.combineLatest(
+        combineLatest(
           locale$,
           currentTenant$
         ).subscribe(([locale, currentTenant]) => {
@@ -60,7 +57,7 @@ export default function localize<PassedProps>(ComposedComponent) {
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
-    localize = (multiloc: Multiloc): string => {
+    localize = (multiloc: Multiloc) => {
       return getLocalized(multiloc, this.state.locale, this.state.tenantLocales);
     }
 
@@ -69,10 +66,10 @@ export default function localize<PassedProps>(ComposedComponent) {
 
       if (locale && tenantLocales) {
         return (
-          <ComposedComponent
+          <Component
             localize={this.localize}
-            locale={this.state.locale}
-            tenantLocales={this.state.tenantLocales}
+            locale={locale}
+            tenantLocales={tenantLocales}
             {...this.props}
           />
         );

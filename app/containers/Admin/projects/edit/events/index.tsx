@@ -5,7 +5,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { isNilOrError } from 'utils/helperUtils';
-import * as moment from 'moment';
+import moment from 'moment';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // Services

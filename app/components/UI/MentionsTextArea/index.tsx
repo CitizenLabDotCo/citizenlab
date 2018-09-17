@@ -1,5 +1,6 @@
 import React from 'react';
-import { isString, isEmpty } from 'lodash';
+import { isString, isEmpty } from 'lodash-es';
+import { first } from 'rxjs/operators';
 
 // libraries
 import { MentionsInput, Mention } from 'react-mentions';
@@ -20,11 +21,11 @@ const Container = styled.div`
 
   textarea {
     &:hover {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#999'} !important;
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.error : '#666'} !important;
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#666'} !important;
     }
   }
 
@@ -34,6 +35,7 @@ const Container = styled.div`
 `;
 
 type Props = {
+  id?: string;
   name: string;
   value: string;
   placeholder?: string | undefined;
@@ -132,7 +134,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
   }
 
   mentionDisplayTransform = (_id, display) => {
-    return '@' + display;
+    return `@${display}`;
   }
 
   handleOnChange = (event) => {
@@ -164,11 +166,13 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
         queryParameters['idea_id'] = this.props.ideaId;
       }
 
-      const response = await mentionsStream({ queryParameters }).observable.first().toPromise();
+      const response = await mentionsStream({ queryParameters }).observable.pipe(
+        first()
+      ).toPromise();
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
-          display: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          display: `${user.attributes.first_name} ${user.attributes.last_name ? user.attributes.last_name : ''}`,
           id: user.attributes.slug
         }));
       }
@@ -179,13 +183,14 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows } = this.props;
+    const { name, placeholder, value, error, children, rows, id } = this.props;
     const className = this.props['className'];
 
     if (style) {
       return (
         <Container className={className}>
           <MentionsInput
+            id={id}
             style={style}
             className="textareaWrapper"
             name={name || ''}

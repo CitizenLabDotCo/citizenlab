@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 
 // i18n
@@ -104,8 +104,7 @@ export default class CommentsMoreActions extends PureComponent<Props, State> {
       hasPermission({ item: this.props.comment, action: 'markAsSpam', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'delete', context: { projectId: this.props.projectId } }),
       hasPermission({ item: this.props.comment, action: 'edit', context: { projectId: this.props.projectId } }),
-    ])
-    .pipe(
+    ]).pipe(
       map(([canReport, canDelete, canEdit]) => {
         const actions: IAction[] = [];
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 type Props = {
   children?: any;
@@ -11,13 +11,8 @@ type Props = {
 
 type State = {};
 
-export default class ClickOutside extends React.PureComponent<Props, State> {
-  private container: any;
-
-  constructor(props: Props) {
-    super(props as any);
-    this.container = null;
-  }
+export default class ClickOutside extends PureComponent<Props, State> {
+  container: HTMLDivElement | null = null;
 
   componentDidMount() {
     document.addEventListener('click', this.handle, true);
@@ -26,10 +21,10 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handle, true);
-    document.removeEventListener('keydonwn', this.handle, true);
+    document.removeEventListener('keydown', this.handle, true);
   }
 
-  handle = (event: any) => {
+  handle = (event) => {
     const { onClickOutside } = this.props;
 
     // Escape key to close
@@ -39,11 +34,11 @@ export default class ClickOutside extends React.PureComponent<Props, State> {
 
     // Click outside to close
     if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
-      onClickOutside(event);
+      setTimeout(() => onClickOutside(event), 10);
     }
   }
 
-  handleRef = (element) => {
+  handleRef = (element: HTMLDivElement) => {
     this.container = element;
 
     if (this.props.setRef) {
