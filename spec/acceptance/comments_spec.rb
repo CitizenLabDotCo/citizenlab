@@ -131,6 +131,18 @@ resource "Comments" do
           expect(json_response.dig(:errors, :base)&.first&.dig(:error)).to eq ParticipationContextService::COMMENTING_DISABLED_REASONS[:project_inactive]
         end
       end
+
+      describe do
+        before do
+          project = create(:continuous_budgeting_project)
+          @idea.project = project
+          @idea.save
+        end
+
+        example_request "Commenting should be enabled by default in a budgeting project", document: false do
+          expect(response_status).to eq 201
+        end
+      end
     end
 
     post "web_api/v1/comments/:id/mark_as_deleted" do

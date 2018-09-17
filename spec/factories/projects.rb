@@ -205,9 +205,9 @@ FactoryBot.define do
       survey_embed_url "https://citizenlabco.typeform.com/to/HKGaPV"
     end
 
-    factory :continuous_participatory_budgeting_project do
+    factory :continuous_budgeting_project do
       process_type 'continuous'
-      participation_method 'participatory_budgeting'
+      participation_method 'budgeting'
       max_budget 10000
       currency 'cheeseburgers'
     end
