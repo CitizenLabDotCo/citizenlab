@@ -74,7 +74,7 @@ resource "Baskets" do
 
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :participation_context)).to eq [{error: 'is_not_participatory_budgeting'}]
+        expect(json_response.dig(:errors, :participation_context)).to eq [{error: 'is_not_budgeting'}]
       end
     end
   end
