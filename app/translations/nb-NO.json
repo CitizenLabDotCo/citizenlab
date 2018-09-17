@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "Idéer",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Flytting av '{ideaTitle}' vekk fra sitt nåværende prosjekt vil gjøre at informasjonen om dens tildelte fase går tapt. Ønsker du å fortsette?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Dra og slipp idéene på et element ovenfor for å tildele dem alle samtidig.",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "",
   "app.components.admin.IdeaManager.projectsTab": "Prosjekter",
   "app.components.admin.IdeaManager.publication_date": "Publisert på",
   "app.components.admin.IdeaManager.statusesTab": "Status",

@@ -122,6 +122,7 @@
   "app.components.admin.IdeaManager.header": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "{orgName, select, München {Wenn Sie den Mangel „{ideaTitle}“ aus seinem derzeitigen Bezirk herausnehmen, wird er die Information über die zugeschriebenen Phasen verlieren. Möchten Sie fortfahren?} other {Wenn Sie die Idee „{ideaTitle}“ aus ihrem derzeitigen Projekt herausnehmen, wird sie die Information über die zugeschriebenen Phasen verlieren. Möchten Sie fortfahren?}}",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "{orgName, select, München {Ziehen und legen Sie die Mängelmeldungen über einem Element ab, um sie alle auf einmal zuzuweisen.} other {Ziehen und legen Sie die Ideen über einem Element ab, um sie alle auf einmal zuzuweisen.}}",
+  "app.components.admin.IdeaManager.participatoryBudgettingPicks": "",
   "app.components.admin.IdeaManager.projectsTab": "Projekte",
   "app.components.admin.IdeaManager.publication_date": "Veröffentlicht am",
   "app.components.admin.IdeaManager.statusesTab": "Status",
