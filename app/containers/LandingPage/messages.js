@@ -53,7 +53,7 @@ export default defineMessages({
   },
   shareTitle: {
     id: 'app.containers.landing.shareTitle',
-    defaultMessage: 'Congratulations, your idea was successfully submitted!',
+    defaultMessage: 'Congratulations, your idea was successfully posted!',
   },
   shareSubtitle: {
     id: 'app.containers.landing.shareSubtitle',
