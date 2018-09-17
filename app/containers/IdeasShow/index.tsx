@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString } from 'lodash';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
+import { has, isString, get } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 
@@ -43,7 +41,7 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -52,7 +50,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors, quillEditedContent } from 'utils/styleUtils';
+import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -60,7 +58,7 @@ const loadingEasing = 'ease-out';
 const loadingDelay = 100;
 
 const contentTimeout = 500;
-const contentEasing = `cubic-bezier(0.000, 0.700, 0.000, 1.000)`;
+const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 600;
 const contentTranslateDistance = '30px';
 
@@ -148,7 +146,7 @@ const BelongsToProject = styled.p`
   width: 100%;
   color: ${colors.label};
   font-weight: 300;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   line-height: 21px;
   margin-bottom: 15px;
 `;
@@ -181,14 +179,14 @@ const Header = styled.div`
 const IdeaTitle = styled.h1`
   width: 100%;
   color: #444;
-  font-size: 32px;
+  font-size: ${fontSizes.xxxxl}px;
   font-weight: 500;
   line-height: 38px;
   margin: 0;
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 28px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
     margin-right: 12px;
   `}
@@ -248,11 +246,11 @@ const MetaButtons = styled.div`
 
 const LocationLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-right: 6px;
   max-width: 200px;
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-align: left;
   font-weight: 400;
@@ -334,7 +332,7 @@ const MapPaddingBottom = styled.div`
 
 const AddressWrapper = styled.div`
   color: #fff;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
   border-top: 1px solid #eaeaea;
@@ -347,40 +345,38 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const AuthorAvatar = styled(Avatar) `
-  width: 35px;
-  height: 35px;
-  margin-right: 8px;
-  margin-top: 0px;
-`;
-
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 0 0 calc(100% - 39px);
-  min-width: 0;
+  margin-left: 8px;
 `;
 
-const AuthorName = styled(Link) `
+const AuthorNameWrapper = styled.div`
   color: #333;
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
 
-  &:hover {
-    color: #333;
-    text-decoration: underline;
-  }
-
   ${media.smallerThanMaxTablet`
-    font-size: 14px;
+    font-size: ${fontSizes.small}px;
     line-height: 18px;
   `}
 `;
 
+const AuthorName = styled(Link)`
+  color: ${colors.clBlueDark};
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
+`;
+
 const TimeAgo = styled.div`
-  color: #999;
-  font-size: 13px;
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
   line-height: 17px;
   font-weight: 300;
   margin-top: 2px;
@@ -392,7 +388,7 @@ const TimeAgo = styled.div`
 
 const IdeaBody = styled.div`
   color: #474747;
-  font-size: 19px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 32px;
   word-break: break-word;
@@ -440,7 +436,7 @@ const IdeaBody = styled.div`
 
 const CommentsTitle = styled.h2`
   color: ${colors.text};
-  font-size: 24px;
+  font-size: ${fontSizes.xxl}px;
   line-height: 38px;
   font-weight: 500;
   margin: 0;
@@ -487,7 +483,7 @@ const MetaContent = styled.div`
 
 const VoteLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-bottom: 12px;
   display: none;
@@ -514,7 +510,7 @@ const StatusContainerMobile = styled(StatusContainer) `
 
 const StatusTitle = styled.h4`
   color: ${colors.label};
-  font-size: 16px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin: 0;
   margin-bottom: 8px;
@@ -583,12 +579,12 @@ type State = {
   moreActions: IAction[];
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & injectedLocalized) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     const initialState = {
       authUser: null,
@@ -633,7 +629,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId = (idea.data.relationships.idea_status ? idea.data.relationships.idea_status.data.id : null);
+          const ideaStatusId : string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
@@ -836,11 +832,24 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & injecte
 
                 <AuthorAndAdressWrapper>
                   <AuthorContainer>
-                    <AuthorAvatar userId={authorId} size="small" onClick={authorId ? this.goToUserProfile : () => { }} />
+                    <Avatar
+                      userId={authorId}
+                      size="medium"
+                      onClick={authorId ? this.goToUserProfile : () => { }}
+                    />
                     <AuthorMeta>
-                      <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
-                        <FormattedMessage {...messages.byAuthorName} values={{ authorName: <UserName user={(ideaAuthor ? ideaAuthor.data : null)} /> }} />
-                      </AuthorName>
+                      <AuthorNameWrapper>
+                        <FormattedMessage
+                          {...messages.byAuthorName}
+                          values={{
+                            authorName: (
+                              <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
+                                <UserName user={(ideaAuthor ? ideaAuthor.data : null)} />
+                              </AuthorName>
+                            )
+                          }}
+                        />
+                      </AuthorNameWrapper>
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />

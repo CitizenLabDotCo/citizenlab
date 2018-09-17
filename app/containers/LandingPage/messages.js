@@ -15,6 +15,10 @@ export default defineMessages({
     id: 'app.containers.landing.subtitleCity',
     defaultMessage: 'Start an idea!',
   },
+  createAccount: {
+    id: 'app.containers.landing.createAccount',
+    defaultMessage: 'Create an account',
+  },
 
   // ideas
   ideasFrom: {

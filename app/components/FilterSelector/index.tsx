@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash';
+import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash-es';
 
 // components
 import Title from './title';
@@ -13,8 +13,8 @@ import { media } from 'utils/styleUtils';
 const Container = styled(clickOutside)`
   display: inline-block;
   position: relative;
-  outline: none;
   user-select: none;
+  outline: none;
 
   &:not(:last-child) {
     margin-right: 40px;
@@ -29,7 +29,6 @@ const Container = styled(clickOutside)`
   }
 
   * {
-    outline: none;
     user-select: none;
   }
 `;
@@ -45,21 +44,40 @@ interface Props {
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
-  maxWidth?: string | null | undefined;
-  mobileMaxWidth?: string | null | undefined;
+  width?: string;
+  mobileWidth?: string;
+  maxHeight?: string;
+  mobileMaxHeight?: string;
+  top?: string;
+  left? : string;
+  mobileLeft?: string;
+  right?: string;
+  mobileRight?: string;
 }
 
 interface State {
-  deployed: boolean;
+  opened: boolean;
 }
 
 export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
-  constructor(props: Props) {
-    super(props as any);
+  static defaultProps: Partial<Props> = {
+    width: undefined,
+    mobileWidth: undefined,
+    maxHeight: undefined,
+    mobileMaxHeight: undefined,
+    top: undefined,
+    left: undefined,
+    mobileLeft: undefined,
+    right: undefined,
+    mobileRight:undefined
+  };
+
+  constructor(props) {
+    super(props);
     this.state = {
-      deployed: false
+      opened: false
     };
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
@@ -88,11 +106,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
   }
 
   toggleExpanded = () => {
-    this.setState(state => ({ deployed: !state.deployed }));
+    this.setState(state => ({ opened: !state.opened }));
   }
 
   closeExpanded = () => {
-    this.setState({ deployed: false });
+    this.setState({ opened: false });
   }
 
   selectionChange = (value: string) => {
@@ -121,8 +139,8 @@ export default class FilterSelector extends PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { deployed } = this.state;
-    const { id, values, multiple, selected, title, maxWidth, mobileMaxWidth } = this.props;
+    const { opened } = this.state;
+    const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight } = this.props;
     const currentTitle = this.getTitle(selected, values, multiple, title);
 
     return (
@@ -133,20 +151,27 @@ export default class FilterSelector extends PureComponent<Props, State> {
       >
         <Title
           title={currentTitle}
-          deployed={deployed}
+          opened={opened}
           onClick={this.toggleExpanded}
           baseID={this.baseID}
         />
         <ValuesList
           title={currentTitle}
-          deployed={deployed}
+          opened={opened}
           values={values}
           selected={selected}
           onChange={this.selectionChange}
           multiple={multiple}
           baseID={this.baseID}
-          maxWidth={maxWidth}
-          mobileMaxWidth={mobileMaxWidth}
+          width={width}
+          mobileWidth={mobileWidth}
+          maxHeight={maxHeight}
+          mobileMaxHeight={mobileMaxHeight}
+          top={top}
+          left={left}
+          mobileLeft={mobileLeft}
+          right={right}
+          mobileRight={mobileRight}
         />
       </Container>
     );

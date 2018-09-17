@@ -1,5 +1,4 @@
-import * as React from 'react';
-
+import React, { PureComponent } from 'react';
 import CommentOnYourCommentNotification from '../CommentOnYourCommentNotification';
 import CommentOnYourIdeaNotification from '../CommentOnYourIdeaNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
@@ -10,7 +9,6 @@ import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotific
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
-
 import {
   TNotificationData,
   ICommentOnYourCommentNotificationData,
@@ -29,8 +27,7 @@ type Props = {
   notification: TNotificationData,
 };
 
-export default class Notification extends React.PureComponent<Props> {
-
+export default class Notification extends PureComponent<Props> {
   render() {
     const { notification } = this.props;
 

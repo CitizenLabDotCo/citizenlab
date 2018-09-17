@@ -21,7 +21,6 @@ jobs:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
-      - run: npm run lint:js --silent
       - run: npm run lint:ts --silent
 
   extract_intl:
@@ -155,7 +154,10 @@ jobs:
     steps:
       - checkout
       - run: npm install pa11y-ci
-      - run: npm run test:pa11y --silent
+      - run:
+          command: npm run test:pa11y --silent
+          environment:
+            NODE_ENV: staging
 
 workflows:
   version: 2

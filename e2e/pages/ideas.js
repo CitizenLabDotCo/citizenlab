@@ -12,7 +12,7 @@ const commands = {
     .waitForElementVisible('@sortFilter')
     .click('#e2e-ideas-sort-filter .e2e-filter-selector-button')
     .waitForElementVisible('.e2e-filter-selector-dropdown-list')
-    .click('.e2e-filter-selector-dropdown-list li:nth-child(3)')
+    .click('.e2e-filter-selector-dropdown-list button:nth-child(3)')
     .waitForElementVisible('@firstIdea', 10000);
   },
 };

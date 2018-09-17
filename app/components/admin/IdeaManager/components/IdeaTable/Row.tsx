@@ -1,7 +1,7 @@
 import React from 'react';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { uniq, keys, isEmpty } from 'lodash';
+import { uniq, keys, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { IModalInfo } from 'containers/App';
 import { DragSource } from 'react-dnd';
@@ -23,7 +23,7 @@ import Checkbox from 'components/UI/Checkbox';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import localize, { injectedLocalized } from 'utils/localize';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
 import { FormattedDate, InjectedIntlProps } from 'react-intl';
@@ -73,7 +73,7 @@ type Props = {
 
 type State = {};
 
-class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocalized, State> {
+class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
 
   onClickRow = (event) => {
     if (event.ctrlKey) {
@@ -121,7 +121,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocali
 
   render() {
     const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
-    const selectedStatus = idea.relationships.idea_status && idea.relationships.idea_status.data.id;
+    const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
       <React.Fragment>
@@ -138,11 +138,11 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & injectedLocali
           <Table.Cell>
             <FormattedDate value={attrs.published_at} />
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell singleLine>
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>
@@ -188,7 +188,7 @@ const ideaSource = {
       idea: props.idea,
     };
   },
-  endDrag(props: Props & InjectedIntlProps & injectedLocalized, monitor) {
+  endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 

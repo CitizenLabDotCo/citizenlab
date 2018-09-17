@@ -1,7 +1,7 @@
 // Libraries
 import React from 'react';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Components
 import { FormikUserFilterConditions } from 'components/admin/UserFilterConditions';
@@ -47,7 +47,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
     const errors: FormikErrors<RulesFormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
   }
@@ -67,7 +67,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SSectionField>
           <SSectionField className="e2e-rules-field-section">

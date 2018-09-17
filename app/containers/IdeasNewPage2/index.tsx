@@ -1,9 +1,7 @@
 import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import isString from 'lodash/isString';
-import isEmpty from 'lodash/isEmpty';
-import isError from 'lodash/isError';
+import  { isString, isEmpty, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -346,19 +344,20 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       <Container>
         <ContainerInner className={`${publishing && 'hidden'}`}>
           <TransitionGroup>
-            {showIdeaForm &&
-              <CSSTransition classNames="buttonbar" timeout={timeout}>
-                <ButtonBarContainer>
-                  <IdeasNewButtonBar onSubmit={this.handleOnIdeaSubmit} />
-                </ButtonBarContainer>
-              </CSSTransition>
-            }
 
             {showIdeaForm &&
               <CSSTransition classNames="page" timeout={timeout}>
                 <PageContainer className="ideaForm">
                   <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
                 </PageContainer>
+              </CSSTransition>
+            }
+
+            {showIdeaForm &&
+              <CSSTransition classNames="buttonbar" timeout={timeout}>
+                <ButtonBarContainer>
+                  <IdeasNewButtonBar form="idea-form" onSubmit={this.handleOnIdeaSubmit} />
+                </ButtonBarContainer>
               </CSSTransition>
             }
 

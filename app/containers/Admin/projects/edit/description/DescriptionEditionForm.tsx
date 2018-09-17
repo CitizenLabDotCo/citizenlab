@@ -11,7 +11,7 @@ import Error from 'components/UI/Error';
 import { Section, SectionField } from 'components/admin/Section';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikTextAreaMultiloc from 'components/UI/FormikTextAreaMultiloc';
-import FormikQuillMultiloc from 'components/QuillEditor/FormikQuillMultiloc';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 
 // Typings
 import { Multiloc } from 'typings';
@@ -45,10 +45,10 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               rows={5}
               maxCharCount={280}
             />
-            <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc} />
+            <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc as any} />
           </SectionField>
 
-          <SectionField className="fullWidth">
+          <SectionField>
             <Field
               component={FormikQuillMultiloc}
               inAdmin
@@ -56,7 +56,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}
             />
-            <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc} />
+            <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc as any} />
           </SectionField>
         </Section>
 

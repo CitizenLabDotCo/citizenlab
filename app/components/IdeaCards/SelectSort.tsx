@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -16,9 +16,9 @@ type State = {
   selectedValue: string[];
 };
 
-class SelectSort extends React.PureComponent<Props, State> {
+class SelectSort extends PureComponent<Props, State> {
   constructor(props: Props) {
-    super(props as any);
+    super(props);
     this.state = {
       selectedValue: ['trending']
     };
@@ -47,8 +47,9 @@ class SelectSort extends React.PureComponent<Props, State> {
         values={options}
         onChange={this.handleOnChange}
         multiple={false}
-        maxWidth={'250px'}
-        mobileMaxWidth={'180px'}
+        width="180px"
+        right="-10px"
+        mobileLeft="-5px"
       />
     );
   }

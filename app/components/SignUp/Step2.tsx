@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { isEmpty, get } from 'lodash';
-import { Subscription } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { isEmpty, get } from 'lodash-es';
+import { Subscription, combineLatest } from 'rxjs';
 
 // components
 import Button from 'components/UI/Button';
@@ -22,12 +21,13 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // style
 import styled from 'styled-components';
 
 // typings
-import { API } from 'typings';
+import { CLErrorsJSON } from 'typings';
 
 const Loading = styled.div`
   padding-top: 15px;
@@ -46,8 +46,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const SkipButton = styled.div`
-  color: #999;
-  font-size: 16px;
+  color: ${colors.clGreyOnGreyBackground};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
   cursor: pointer;
@@ -68,7 +68,7 @@ type State = {
   hasRequiredFields: boolean;
   processing: boolean;
   unknownError: string | null;
-  apiErrors: API.ErrorResponse | null;
+  apiErrors: CLErrorsJSON | null;
 };
 
 class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
@@ -176,7 +176,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
-                circularCorners={true}
+                circularCorners={false}
               />
               {!hasRequiredFields &&
                 <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>

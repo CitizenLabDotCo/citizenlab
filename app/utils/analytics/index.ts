@@ -1,7 +1,6 @@
 import React from 'react';
-import { Subject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import mapValues from 'lodash/mapValues';
+import { Subject, combineLatest } from 'rxjs';
+import { mapValues } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
@@ -23,7 +22,7 @@ interface IIdentification {
 }
 
 interface IPageChange {
-  name: string;
+  path: string;
   properties?: {
     [key: string]: any,
   };
@@ -36,8 +35,8 @@ const identifications$ = new Subject<IIdentification>();
 const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
-  if (window && window['analytics']) {
-    window['analytics'].track(
+  if (analytics) {
+    analytics.track(
       event.name,
       addTenantInfo(event.properties, tenant.data),
     );
@@ -45,22 +44,27 @@ combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
 });
 
 combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
-  if (window && window['analytics']) {
-    window['analytics'].page(
-      pageChange.name,
-      addTenantInfo(pageChange.properties, tenant.data),
+  if (analytics) {
+    analytics.page(
+      '',
+      {
+        path: pageChange.path,
+        url: `https://${tenant.data.attributes.host}${pageChange.path}`,
+        title: null,
+        ...addTenantInfo(pageChange.properties, tenant.data),
+      }
     );
   }
 });
 
 combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
-  if (window && window['analytics']) {
-    window['analytics'].identify(
+  if (analytics) {
+    analytics.identify(
       identification.userId,
       addTenantInfo(identification.properties, tenant.data),
     );
 
-    window['analytics'].group(
+    analytics.group(
       tenant && tenant.data.id,
       tenant && {
         name: tenant.data.attributes.name,
@@ -72,10 +76,14 @@ combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) =>
 });
 
 authUser$.subscribe((authUser) => {
-  if (window && window['analytics']) {
+  if (analytics) {
     const userId = (authUser ? authUser.data.id : '');
     const hideMessenger = (authUser ? !isAdmin(authUser) : true);
-    window['analytics'].identify(userId, {}, { Intercom: { hideDefaultLauncher: hideMessenger } });
+    analytics.identify(userId, {}, {
+      Intercom: {
+        hideDefaultLauncher: hideMessenger
+      }
+    } as any);
   }
 });
 
@@ -93,7 +101,7 @@ export function addTenantInfo(properties, tenant: ITenantData) {
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
-    name: path
+    path
   });
 }
 
@@ -143,8 +151,11 @@ export const initializeAnalytics = () => {
   const contents = snippet.min({
     host: 'cdn.segment.com',
     apiKey: CL_SEGMENT_API_KEY,
+    page: false,
   });
 
   // tslint:disable-next-line:no-eval
   eval(contents);
+
+  trackPage(window.location.pathname);
 };

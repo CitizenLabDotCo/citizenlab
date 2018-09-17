@@ -1,205 +1,181 @@
 // Libraries
-import React from 'react';
-import { get } from 'lodash';
-
-import { IStreamParams, IStream } from 'utils/streams';
+import React, { PureComponent } from 'react';
+import { get } from 'lodash-es';
+import { first } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
 
 // Services
-import { IGroupMembershipsFoundUsers, IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+import { findMembership, addMembership } from 'services/moderators';
+import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
+
+// Resources
+import { GetModeratorsChildProps } from 'resources/GetModerators';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-
-import localize, { injectedLocalized } from 'utils/localize';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
 
 // Components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
-import { Async } from 'react-select';
-import Avatar from 'components/Avatar';
+import AsyncSelect from 'react-select/lib/Async';
 
 // Style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import selectStyles from 'components/UI/Select/styles';
 
-const AddUserButton = styled(Button)`
-  padding-left: 0;
+// Typings
+import { IOption } from 'typings';
+
+const Container = styled.div`
+  width: 100%;
+  margin-bottom: 20px;
 `;
 
-const AddUserRow = styled.div`
-  padding: 1rem 0;
-  border-bottom: 1px solid ${color('separation')};
-  border-top: 1px solid ${color('separation')};
-`;
-
-const StyledSelectWrapper = styled.div`
-  max-width: 300px;
-`;
-
-const StyledOption = styled.div`
+const SelectGroupsContainer = styled.div`
+  width: 100%;
   display: flex;
-  /* align-items: center; */
-  /* justify-content: space-between; */
-  max-width: 100%;
-
-  &.disabled {
-    color: ${color('mediumGrey')};
-
-    .email {
-      color: inherit;
-    }
-  }
+  flex-direction: row;
+  align-items: flex-start;
+  align-items: center;
+  margin-bottom: 30px;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  flex: 0;
-  height: 1rem;
-  margin-right: 1rem;
+const StyledAsyncSelect = styled(AsyncSelect)`
+  min-width: 300px;
+  z-index: 5;
 `;
 
-const OptionName = styled.div`
-  flex: 1;
-  margin: 0;
-  overflow: hidden;
-
-  p {
-    margin: 0;
-  }
-
-  .email {
-    color: ${color('label')};
-  }
+const AddGroupButton = styled(Button)`
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: 30px;
 `;
-
-const OptionIcon = styled(Icon)`
-  flex: 0 0 1rem;
-  height: 1rem;
-  fill: ${color('clBlueDark')};
-  margin-left: 1rem;
-`;
-
-// Typing
-import { IOption, Message } from 'typings';
 
 interface Props {
-  resourceId: string;
-  messages: {addUser: Message};
-  searchFunction: (resourceId: string, streamParams: IStreamParams) => IStream<IGroupMembershipsFoundUsers>;
-  addFunction: (resourceId: string, userId: string) => Promise<{}>;
+  projectId: string;
+  moderators: GetModeratorsChildProps;
 }
 
 interface State {
-  selectVisible: boolean;
-  selection: (IOption & {email: string})[];
+  selection: IOption[];
   loading: boolean;
+  processing: boolean;
 }
 
 function isModerator(user: IGroupMembershipsFoundUserData) {
   return get(user.attributes, 'is_moderator') !== undefined;
 }
 
-class MembersAdd extends React.Component<Props & injectedLocalized, State> {
-  constructor(props: Props & injectedLocalized) {
+class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
-
     this.state = {
-      selectVisible: false,
       selection: [],
       loading: false,
+      processing: false
     };
   }
 
-  loadOptions = (inputValue) => {
+  getOptions = (users: IGroupMembershipsFoundUserData[]) => {
+    return users
+      .filter((user) => {
+        let userIsNotYetModerator = true;
+        const { moderators } = this.props;
+
+        if (!isNilOrError(moderators)) {
+          moderators.forEach((moderator) => {
+            if (moderator.id === user.id) {
+              userIsNotYetModerator = false;
+            }
+          });
+        }
+
+        return userIsNotYetModerator;
+      })
+      .map((user) => {
+        return {
+          value: user.id,
+          label: `${user.attributes.first_name} ${user.attributes.last_name}`,
+          email: `${user.attributes.email}`,
+          disabled: isModerator(user) ? get(user.attributes, 'is_moderator') : get(user.attributes, 'is_member'),
+        };
+      });
+  }
+
+  loadOptions = (inputValue: string, callback) => {
     if (inputValue) {
       this.setState({ loading: true });
 
-      return this.props.searchFunction(this.props.resourceId, {
+      findMembership(this.props.projectId, {
         queryParameters: {
           search: inputValue
         }
-      }).observable
-      .first()
-      .toPromise()
-      .then((response) => {
+      }).observable.pipe(
+        first()
+      ).subscribe((response) => {
         const options = this.getOptions(response.data);
         this.setState({ loading: false });
-        return { options };
+        callback(options);
       });
-    } else {
-      return Promise.resolve();
     }
   }
 
-  filterOptions = (options) => {
-    // Do no filtering, just return all options
-    return options;
+  handleOnChange = async (selection: IOption[]) => {
+    this.setState({ selection });
   }
 
-  toggleSelectVisible = () => {
-    this.setState({ selectVisible: !this.state.selectVisible });
-  }
+  handleOnAddModeratorsClick = async () => {
+    const { selection } = this.state;
 
-  handleSelection = (selection: IOption) => {
-    if (selection && selection.value) {
-      this.props.addFunction(this.props.resourceId, selection.value);
+    if (selection && selection.length > 0) {
+      this.setState({ processing: true });
+      const promises = selection.map(item => addMembership(this.props.projectId, item.value));
+
+      try {
+        await Promise.all(promises);
+        this.setState({ selection: [], processing: false });
+      } catch {
+        this.setState({ selection: [], processing: false });
+      }
     }
-  }
-
-  getOptions = (users: IGroupMembershipsFoundUserData[]) => {
-    return users.map((user) => {
-      return {
-        value: user.id,
-        label: `${user.attributes.first_name} ${user.attributes.last_name}`,
-        email: `${user.attributes.email}`,
-        disabled: isModerator(user) ? get(user.attributes, 'is_moderator') : get(user.attributes, 'is_member'),
-      };
-    });
-  }
-
-  renderOption = (option) => {
-    return (
-      <StyledOption className={option.disabled ? 'disabled' : ''}>
-        <StyledAvatar size="small" userId={option.value} />
-        <OptionName>
-          <p>{option.label}</p>
-          <p className="email">{option.email}</p>
-        </OptionName>
-        {!option.disabled &&
-          <OptionIcon name="plus-circle" />
-        }
-      </StyledOption>
-    );
   }
 
   render() {
+    const { selection } = this.state;
+    const { formatMessage } = this.props.intl;
+
     return (
-      <AddUserRow>
-        {!this.state.selectVisible &&
-          <AddUserButton
-            onClick={this.toggleSelectVisible}
+      <Container>
+        <SelectGroupsContainer>
+          <StyledAsyncSelect
+            name="search-user"
+            isMulti={true}
+            cacheOptions={false}
+            defaultOptions={false}
+            loadOptions={this.loadOptions}
+            isLoading={this.state.loading}
+            isDisabled={this.state.processing}
+            value={selection}
+            onChange={this.handleOnChange}
+            placeholder={formatMessage(messages.searchUsers)}
+            styles={selectStyles}
+          />
+
+          <AddGroupButton
+            text={formatMessage(messages.addModerators)}
+            style="cl-blue"
+            size="1"
             icon="plus-circle"
-            style="text"
+            onClick={this.handleOnAddModeratorsClick}
             circularCorners={false}
-          >
-            <FormattedMessage {...this.props.messages.addUser} />
-          </AddUserButton>
-        }
-        {this.state.selectVisible &&
-          <StyledSelectWrapper>
-            <Async
-              autofocus={true}
-              name="search-user"
-              loadOptions={this.loadOptions}
-              isLoading={this.state.loading}
-              onChange={this.handleSelection}
-              optionRenderer={this.renderOption}
-              filterOptions={this.filterOptions}
-            />
-          </StyledSelectWrapper>
-        }
-      </AddUserRow>
+            disabled={!selection || selection.length === 0}
+            processing={this.state.processing}
+          />
+        </SelectGroupsContainer>
+      </Container>
     );
   }
 }
 
-export default localize<Props>(MembersAdd);
+export default injectIntl<Props>(MembersAdd);

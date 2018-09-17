@@ -1,5 +1,5 @@
 import React from 'react';
-import isString from 'lodash/isString';
+import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
@@ -23,7 +23,7 @@ interface State {
 
 export type GetProjectImagesChildProps = IProjectImageData[] | undefined | null | Error;
 
-export default class GetIdea extends React.Component<Props, State> {
+export default class GetProjectImages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

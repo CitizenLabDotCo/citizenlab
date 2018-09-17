@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -6,9 +6,10 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
+import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -16,7 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const FiltersArea = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -51,6 +52,10 @@ const FilterArea = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+
+  &.publicationstatus {
+    margin-right: 30px;
+  }
 
   ${media.smallerThanMaxTablet`
     height: 30px;
@@ -110,7 +115,7 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageLine = styled.div`
   color: #999;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 25px;
   text-align: center;
@@ -130,7 +135,9 @@ interface Props extends InputProps, GetProjectsChildProps {}
 
 interface State {}
 
-class ProjectCards extends React.PureComponent<Props, State> {
+class ProjectCards extends PureComponent<Props, State> {
+  emptyArray: string[] = [];
+
   constructor(props: Props) {
     super(props);
     this.state = {};
@@ -144,15 +151,23 @@ class ProjectCards extends React.PureComponent<Props, State> {
     this.props.onChangeAreas(areas);
   }
 
+  handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
+    this.props.onChangePublicationStatus(status);
+  }
+
   render() {
-    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props;
+    const { queryParameters, projectsList, hasMore, querying, loadingMore, hideAllFilters } = this.props;
     const hasProjects = (projectsList && projectsList.length > 0);
-    const selectedAreas = (queryParameters.areas || []);
+    const selectedAreas = (queryParameters.areas || this.emptyArray);
 
     return (
       <Container id="e2e-projects-container">
-        {this.props.hideAllFilters !== true &&
+        {hideAllFilters !== true &&
           <FiltersArea id="e2e-projects-filters">
+            <FilterArea className="publicationstatus">
+              <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+            </FilterArea>
+
             <FilterArea>
               <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
             </FilterArea>

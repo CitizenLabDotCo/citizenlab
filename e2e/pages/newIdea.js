@@ -6,8 +6,7 @@ const newIdeaCommands = {
     .waitForElementVisible('.e2e-project-card.e2e-open-project')
     .click('.e2e-project-card.e2e-open-project');
     this.api.execute('window.scrollTo(0,document.body.scrollHeight);')
-    .click('.e2e-submit-project-select-form')
-    .click('.e2e-submit-project-select-form-mobile');
+    .click('.e2e-submit-project-select-form');
     this.waitForElementPresent('@form')
 
     // Fill in the form
@@ -23,7 +22,7 @@ module.exports = {
   elements: {
     form: { selector: '#e2e-new-idea-form' },
     title: { selector: '#title' },
-    content: { selector: '.public-DraftEditor-content' },
+    content: { selector: '.ql-editor' },
     submit: { selector: '.e2e-submit-idea-form' },
   },
   commands: [newIdeaCommands],

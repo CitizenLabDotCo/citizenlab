@@ -1,7 +1,6 @@
-import React, { createElement, PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import React, { createElement } from 'react';
+import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
@@ -15,6 +14,7 @@ type Props = {
   className?: string;
   children?: children;
   maxLength?: number;
+  supportHtml?: boolean;
 };
 
 type State = {
@@ -22,14 +22,14 @@ type State = {
   currentTenantLocales: Locale[] | null;
 };
 
-export default class T extends PureComponent<Props, State> {
+export default class T extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
       locale: null,
-      currentTenantLocales: null
+      currentTenantLocales: null,
     };
     this.subscriptions = [];
   }
@@ -58,20 +58,18 @@ export default class T extends PureComponent<Props, State> {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value, as, children, maxLength, className } = this.props;
+      const { value, as, children, maxLength, className, supportHtml } = this.props;
       const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
 
       if (children) {
         return ((children as children)(localizedText));
       }
 
-      if (as) {
-        return createElement(as, { className, dangerouslySetInnerHTML: { __html: localizedText } });
+      if (supportHtml) {
+          return createElement(as || 'span', { className, dangerouslySetInnerHTML: { __html: localizedText } });
+      } else {
+          return createElement(as || 'span', { className, children: localizedText });
       }
-
-      return (
-        <span className={className} dangerouslySetInnerHTML={{ __html: localizedText }} />
-      );
     }
 
     return null;

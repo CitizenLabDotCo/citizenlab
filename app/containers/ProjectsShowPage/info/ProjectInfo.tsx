@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, quillEditedContent } from 'utils/styleUtils';
+import { media, quillEditedContent, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -63,7 +63,7 @@ const Right = styled.aside`
 
 const ProjectDescriptionStyled = styled.div`
   color: #333;
-  font-size: 18px;
+  font-size: ${fontSizes.large}px;
   line-height: 26px;
   font-weight: 300;
 
@@ -72,25 +72,25 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   h1 {
-    font-size: 29px;
+    font-size: ${fontSizes.xxxl}px;
     line-height: 35px;
     font-weight: 600;
   }
 
   h2 {
-    font-size: 24px;
+    font-size: ${fontSizes.xxl}px;
     line-height: 29px;
     font-weight: 600;
   }
 
   h3 {
-    font-size: 21px;
+    font-size: ${fontSizes.xl}px;
     line-height: 26px;
     font-weight: 600;
   }
 
   h4 {
-    font-size: 18px;
+    font-size: ${fontSizes.large}px;
     line-height: 26px;
     font-weight: 600;
   }
@@ -121,6 +121,7 @@ const ProjectImages = styled.div`
   flex-wrap: wrap;
   margin-left: -5px;
   margin-top: -5px;
+  margin-bottom: 30px;
   width: calc(100% + 10px);
 
   img {
@@ -136,10 +137,6 @@ const ProjectImages = styled.div`
       width: calc(33% - 9px);
     }
   }
-`;
-
-const StyledSharing = styled(Sharing) `
-  margin-top: 40px;
 `;
 
 interface InputProps {
@@ -169,18 +166,24 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
           <ProjectDescriptionStyled>
-            <T value={project.attributes.description_multiloc} />
+            <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
         </Left>
 
         <Right>
           {!isNilOrError(projectImages) && projectImages.length > 0 &&
             <ProjectImages>
-              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+              {projectImages.filter(projectImage => projectImage).map((projectImage, index) => (
                 <ImageZoom
                   key={projectImage.id}
-                  image={{ src: projectImage.attributes.versions.large }}
-                  zoomImage={{ src: projectImage.attributes.versions.large }}
+                  image={{
+                    src: projectImage.attributes.versions.large,
+                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                  }}
+                  zoomImage={{
+                    src: projectImage.attributes.versions.large,
+                    alt: formatMessage(messages.imageAltText, { index: index + 1 })
+                  }}
                 />
               ))}
             </ProjectImages>
@@ -188,7 +191,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <T value={project.attributes.title_multiloc} maxLength={50} >
             {(title) => {
               return (
-                <StyledSharing
+                <Sharing
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   userId={userId}
                   sharedContent="project"

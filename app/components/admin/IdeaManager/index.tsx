@@ -1,7 +1,8 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction } from 'lodash';
+import { keys, isEmpty, size, get, isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -19,9 +20,10 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 
 // components
+import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
-import InfoSidebar from './components/InfoSidebar';
 import IdeaTable from './components/IdeaTable';
+import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
 
 // i18n
@@ -70,6 +72,9 @@ const MiddleColumn = styled.div`
 
 const RightColumn = styled.div`
   width: 260px;
+  ${media.smallerThan1280px`
+    display: none;
+  `}
 
   &.slide-enter {
     transform: translateX(100%);
@@ -199,6 +204,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
           </LeftColumn>
+          <MiddleColumn>
+            <ActionBar
+              ideaIds={selectedIdeaIds}
+            />
+          </MiddleColumn>
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
@@ -269,7 +279,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects pageSize={250} sort="new" />,
+  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
   ideas: <GetIdeas type="paginated" pageSize={10} sort="new" />,
   topics: <GetTopics />,
   ideaStatuses: <GetIdeaStatuses />,

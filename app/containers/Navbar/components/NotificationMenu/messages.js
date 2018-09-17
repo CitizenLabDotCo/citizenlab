@@ -72,4 +72,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.adminRightsReceived',
     defaultMessage: 'You\'re now an administrator of the platform',
   },
+  notificationsLabel: {
+    id: 'app.containers.NotificationMenu.notificationsLabel',
+    defaultMessage: 'Notifications',
+  },
 });

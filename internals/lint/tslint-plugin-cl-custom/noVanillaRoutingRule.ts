@@ -1,17 +1,17 @@
-import * as ts from 'typescript';
-import * as Lint from 'tslint';
+import { SourceFile, ImportDeclaration } from 'typescript';
+import { Rules, RuleFailure, RuleWalker } from 'tslint';
 
-export class Rule extends Lint.Rules.AbstractRule {
+export class Rule extends Rules.AbstractRule {
 
-  public apply(sourceFile: ts.SourceFile): Lint.RuleFailure[] {
+  public apply(sourceFile: SourceFile): RuleFailure[] {
     return this.applyWithWalker(new NoImportsWalker(sourceFile, this.getOptions()));
   }
 }
 
 // The walker takes care of all the work.
-class NoImportsWalker extends Lint.RuleWalker {
-  public visitImportDeclaration(node: ts.ImportDeclaration) {
-    const moduleName = node.moduleSpecifier.getText().slice(1,-1);
+class NoImportsWalker extends RuleWalker {
+  public visitImportDeclaration(node: ImportDeclaration) {
+    const moduleName = node.moduleSpecifier.getText().slice(1, -1);
 
     if (moduleName === 'react-router') {
 

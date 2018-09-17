@@ -1,5 +1,5 @@
 import React from 'react';
-import Input, { Props as VanillaInputProps } from 'components/UI/Input';
+import Input, { InputProps as VanillaInputProps } from 'components/UI/Input';
 import { FieldProps } from 'formik';
 
 type State = {};

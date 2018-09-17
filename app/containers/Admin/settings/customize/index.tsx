@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs/Rx';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { Subscription, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash';
+import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
 import Label from 'components/UI/Label';
@@ -11,6 +10,7 @@ import ColorPickerInput from 'components/UI/ColorPickerInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import Warning from 'components/UI/Warning';
 
 // style
 import styled from 'styled-components';
@@ -18,6 +18,7 @@ import styled from 'styled-components';
 // utils
 import { convertUrlToFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
+import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -29,10 +30,13 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { API, ImageFile, Locale, Multiloc } from 'typings';
+import { CLError, ImageFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
-  max-width: 150px;
+`;
+
+const ContrastWarning = styled(Warning)`
+  margin-top: 10px;
 `;
 
 const StyledSectionField = styled(SectionField)`
@@ -57,12 +61,13 @@ type State  = {
   header_bg: ImageFile[] | null;
   colorPickerOpened: boolean;
   loading: boolean;
-  errors: { [fieldName: string]: API.Error[] };
+  errors: { [fieldName: string]: CLError[] };
   saved: boolean;
   logoError: string | null;
   headerError: string | null;
   titleError: Multiloc;
   subtitleError: Multiloc;
+  contrastRatioWarning: boolean;
 };
 
 class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, State> {
@@ -85,7 +90,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       logoError: null,
       headerError: null,
       titleError: {},
-      subtitleError: {}
+      subtitleError: {},
+      contrastRatioWarning: false,
     };
     this.titleMaxCharCount = 45;
     this.subtitleMaxCharCount = 90;
@@ -108,7 +114,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           locale,
           currentTenant,
           currentTenantLogo,
-          currentTenantHeaderBg
+          currentTenantHeaderBg,
         })));
       })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
@@ -136,7 +142,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg') => (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: ImageFile) => {
     this.setState((state) => ({
       ...state,
       [name]: [newImage],
@@ -178,7 +184,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         titleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_title`, titleMultiloc),
+        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_title', titleMultiloc),
       };
     });
   }
@@ -196,15 +202,24 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         subtitleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), `settings.core.header_slogan`, subtitleMultiloc),
+        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_slogan', subtitleMultiloc),
       };
     });
   }
 
-  handleColorPickerOnChange = (color: string) => {
+  handleColorPickerOnChange = (hexColor: string) => {
+    const rgbColor = hexToRgb(hexColor);
+    if (rgbColor) {
+      const { r, g, b } = rgbColor;
+      const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      const contrastRatioWarning = contrastRatio < 4.50 ? true : false;
+      this.setState({ contrastRatioWarning });
+    }
+
     let newDiff = cloneDeep(this.state.attributesDiff);
-    newDiff = set(newDiff, 'settings.core.color_main', color);
+    newDiff = set(newDiff, 'settings.core.color_main', hexColor);
     this.setState({ attributesDiff: newDiff });
+
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -265,7 +280,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { locale, currentTenant, titleError, subtitleError, errors, saved } = this.state;
+    const { locale,
+      currentTenant,
+      titleError,
+      subtitleError,
+      errors,
+      contrastRatioWarning,
+      saved } = this.state;
 
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
@@ -289,6 +310,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 value={get(tenantAttrs, 'settings.core.color_main')}
                 onChange={this.handleColorPickerOnChange}
               />
+              {contrastRatioWarning &&
+                <ContrastWarning
+                  text={
+                    <FormattedMessage
+                      {...messages.contrastRatioTooLow}
+                    />
+                  }
+                />
+              }
             </ColorPickerSectionField>
 
             <SectionField key={'logo'}>
@@ -337,7 +367,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <StyledSectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, `settings.core.header_title`)}
+                valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
                 label={<FormattedMessage {...messages.headerTitleLabel} />}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
@@ -348,7 +378,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <StyledSectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, `settings.core.header_slogan`)}
+                valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
                 label={<FormattedMessage {...messages.headerSubtitleLabel} />}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}

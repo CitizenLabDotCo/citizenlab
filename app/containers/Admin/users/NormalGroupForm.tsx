@@ -1,6 +1,6 @@
 // Libraries
 import React from 'react';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Formik
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -49,7 +49,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
     const errors: FormikErrors<NormalFormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
   }
@@ -69,7 +69,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc}
+              apiErrors={errors.title_multiloc as any}
             />}
           </SectionField>
         </Fill>

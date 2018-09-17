@@ -1,5 +1,5 @@
-import React from 'react';
-import { clone, find } from 'lodash';
+import React, { Component } from 'react';
+import { clone, find } from 'lodash-es';
 
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -8,7 +8,8 @@ import { List } from 'components/admin/ResourceList';
 export interface InputProps {
   items: any[];
   onReorder: (fieldId: string, newOrder: number) => void;
-  children: (renderProps: RenderProps) => JSX.Element | null ;
+  children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
+  className?: string;
 }
 
 type RenderProps = {
@@ -21,7 +22,7 @@ export interface SortableListState {
   itemsWhileDragging: any[] | null;
 }
 
-export class SortableList extends React.Component<InputProps, SortableListState> {
+export class SortableList extends Component<InputProps, SortableListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -60,11 +61,11 @@ export class SortableList extends React.Component<InputProps, SortableListState>
     const { children } = this.props;
 
     return (
-      <List className={this.props['className']}>
+      <List className={this.props.className}>
         {children({ itemsList, handleDragRow: this.handleDragRow, handleDropRow: this.handleDropRow })}
       </List>
     );
   }
 }
 
-export default DragDropContext<InputProps>(HTML5Backend)(SortableList);
+export default DragDropContext(HTML5Backend)(SortableList);

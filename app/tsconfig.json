@@ -1,28 +1,21 @@
 {
   "compilerOptions": {
     "baseUrl": "",
+    "mapRoot": "./",
+    "target": "esnext",
     "module": "esnext",
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "jsx": "react",
-    "lib": ["es7", "dom"],
+    "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noImplicitThis": false,
     "strictNullChecks": true,
-    "strictFunctionTypes": false,
-    "mapRoot": "./",
-    "noImplicitAny": false,
-    "moduleResolution": "node",
     "removeComments": true,
     "preserveConstEnums": true,
     "sourceMap": true,
-    "target": "es6",
-    "allowJs": true,
+    "declaration": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]
@@ -31,14 +24,6 @@
       "**/*"
   ],
   "exclude": [
-    "node_modules",
-    "build",
-    "scripts",
-    "acceptance-tests",
-    "webpack",
-    "jest"
-  ],
-  "types": [
-    "typePatches"
+    "node_modules"
   ]
 }

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
-import { Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs';
+import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 

@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
-import { API, Multiloc, Locale } from 'typings';
+import { ImageSizes, Multiloc, Locale } from 'typings';
 
 export const currentTenantApiEndpoint = `${API_PATH}/tenants/current`;
 
@@ -72,8 +72,9 @@ export interface ITenantData {
     name: string;
     host: string;
     settings: ITenantSettings;
-    logo: API.ImageSizes;
-    header_bg: API.ImageSizes;
+    logo: ImageSizes;
+    header_bg: ImageSizes;
+    favicon?: ImageSizes;
   };
 }
 
@@ -85,6 +86,7 @@ export interface IUpdatedTenantProperties {
   settings?: Partial<ITenantSettings>;
   logo?: string;
   header_bg?: string;
+  favicon?: string;
 }
 
 export function currentTenantStream() {

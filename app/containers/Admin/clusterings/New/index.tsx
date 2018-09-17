@@ -3,8 +3,8 @@ import clHistory from 'utils/cl-router/history';
 import { addClustering } from 'services/clusterings';
 import { Formik, FormikErrors } from 'formik';
 import ClusteringForm, { FormValues } from './ClusteringForm';
-import { API } from 'typings';
-import { isEmpty, values as getValues, every } from 'lodash';
+import { CLErrorsJSON } from 'typings';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 type Props = {};
 
@@ -14,7 +14,7 @@ export default class New extends PureComponent<Props> {
     const errors: FormikErrors<FormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
-      errors.title_multiloc = (errors.title_multiloc || []).concat({ error: 'blank' });
+      errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
   }
@@ -26,7 +26,7 @@ export default class New extends PureComponent<Props> {
         clHistory.push(`/admin/clusterings/${clustering.data.id}`);
       })
       .catch((errorResponse) => {
-        const apiErrors = (errorResponse as API.ErrorResponse).json.errors;
+        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       });

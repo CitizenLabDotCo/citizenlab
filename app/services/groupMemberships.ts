@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams, IInputStreamParams } from 'utils/streams';
-import { API } from 'typings';
+import { ImageSizes } from 'typings';
 // import { getGroups, getGroup } from 'services/groups';
 // import { usersStream } from 'services/users';
 
@@ -28,7 +28,7 @@ export interface IGroupMembershipsFoundUserData {
     first_name: string;
     last_name: string;
     slug: string;
-    avatar: API.ImageSizes;
+    avatar: ImageSizes;
     is_member?: boolean;
     is_moderator?: boolean;
     email: string;

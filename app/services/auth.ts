@@ -23,8 +23,7 @@ export async function signIn(email: string, password: string) {
     const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
     setJwt(jwt);
     const authenticatedUser = await getAuthUserAsync();
-    authUserStream().observer.next(authenticatedUser);
-    streams.reset();
+    streams.reset(authenticatedUser);
     return authenticatedUser;
   } catch (error) {
     signOut();
@@ -69,8 +68,7 @@ export function signOut() {
 
   if (jwt) {
     removeJwt();
-    authUserStream().observer.next(null);
-    streams.reset();
+    streams.reset(null);
 
     if (location.pathname.startsWith('/admin')) {
       clHistory.push('/');

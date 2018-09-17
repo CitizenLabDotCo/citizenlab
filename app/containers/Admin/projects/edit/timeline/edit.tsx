@@ -4,11 +4,10 @@ import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import * as moment from 'moment';
-import { get, isEmpty } from 'lodash';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import moment from 'moment';
+import { get, isEmpty } from 'lodash-es';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -23,7 +22,7 @@ import shallowCompare from 'utils/shallowCompare';
 // Components
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/QuillEditor/QuillMultiloc';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
 import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -37,9 +36,10 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { API, Locale } from 'typings';
+import { CLError, Locale } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -52,7 +52,7 @@ const PhaseForm = styled.form`
     .DateInput,
     .DateInput_input {
       color: inherit;
-      font-size: 16px;
+      font-size: ${fontSizes.base}px;
       font-weight: 400;
       background: transparent;
     }
@@ -82,14 +82,14 @@ interface State {
   project: IProject | null;
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
-  errors: { [fieldName: string]: API.Error[] } | null;
+  errors: { [fieldName: string]: CLError[] } | null;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
@@ -117,15 +117,16 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
     this.params$.next({ projectId, id });
 
     this.subscriptions = [
-      this.params$
-      .distinctUntilChanged(shallowCompare)
-      .switchMap((params: IParams) => {
-        const { projectId, id } = params;
-        const locale$ = localeStream().observable;
-        const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
-        const phase$ = (id ? phaseStream(id).observable : of(null));
-        return combineLatest(locale$, project$, phase$);
-      }).subscribe(([locale, project, phase]) => {
+      this.params$.pipe(
+        distinctUntilChanged(shallowCompare),
+        switchMap((params: IParams) => {
+          const { projectId, id } = params;
+          const locale$ = localeStream().observable;
+          const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+          const phase$ = (id ? phaseStream(id).observable : of(null));
+          return combineLatest(locale$, project$, phase$);
+        })
+      ).subscribe(([locale, project, phase]) => {
         this.setState({
           locale,
           project,
@@ -313,7 +314,7 @@ class AdminProjectTimelineEdit extends React.Component<Props & InjectedIntlProps
                 <Error apiErrors={errors && errors.end_at} />
               </SectionField>
 
-              <SectionField>
+              <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
                   inAdmin

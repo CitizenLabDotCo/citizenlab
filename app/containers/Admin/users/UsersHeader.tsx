@@ -1,7 +1,7 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { Multiloc } from 'typings';
-import { throttle } from 'lodash';
+import { throttle } from 'lodash-es';
 
 // Components
 import Icon from 'components/UI/Icon';

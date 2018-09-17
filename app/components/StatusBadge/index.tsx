@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as Rx from 'rxjs/Rx';
+import React from 'react';
+import { Subscription } from 'rxjs';
 
 // services
 import { ideaStatusStream, IIdeaStatus } from 'services/ideaStatuses';
@@ -10,9 +10,12 @@ import T from 'components/T';
 // style
 import styled from 'styled-components';
 
+// utils
+import { fontSizes } from 'utils/styleUtils';
+
 const Container = styled.div`
   color: #fff;
-  font-size: 12px;
+  font-size: ${fontSizes.xs}px;
   line-height: 16px;
   border-radius: 5px;
   padding: 6px 12px;
@@ -20,7 +23,7 @@ const Container = styled.div`
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
-  background-color: ${(props: any) => props.color}
+  background-color: ${(props: any) => props.color};
 `;
 
 type Props = {
@@ -32,8 +35,7 @@ type State = {
 };
 
 export default class StatusBadge extends React.PureComponent<Props, State> {
-
-  subscriptions: Rx.Subscription[];
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);

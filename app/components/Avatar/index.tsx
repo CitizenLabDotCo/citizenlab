@@ -1,5 +1,5 @@
-import React from 'react';
-import { isFunction } from 'lodash';
+import React, { PureComponent } from 'react';
+import { isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -17,53 +17,47 @@ import messages from './messages';
 
 // styles
 import { darken, lighten } from 'polished';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
-const AvatarImage = styled.img`
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  border: 1px solid #eaeaea;
-  background: #eaeaea;
-`;
+const Container: any = styled.div`
+  width: ${(props: any) => props.pxSize}px;
+  height: ${(props: any) => props.pxSize}px;
+  cursor: inherit;
+  color: #000;
 
-const AvatarIcon = styled(Icon)`
-  height: 100%;
-  fill: ${(props) => props.theme.colors.label};
-  fill: ${(props) => lighten(0.2, props.theme.colors.label)};
-  transition: all 100ms ease-out;
-
-  ${(props: any) => props.isClickable && css`
-    &:hover {
-      fill: ${(props: any) => darken(0.2, props.theme.colors.label)};
-    }`
+  &.clickable {
+    cursor: pointer;
   }
 `;
 
-const Container: any = styled.div`
+const AvatarImage = styled.img`
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: Center;
-  cursor: ${(props: any) => props.isClickable ? 'pointer' : 'inherit'};
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  transition: all 100ms ease-out;
 
-  ${(props: any) => props.isClickable && css`
-    &:hover ${AvatarIcon} {
-      fill: ${(props) => darken(0.2, props.theme.colors.label)};
-    }
+  &.clickable:hover {
+    border-color: #000;
+  }
+`;
 
-    &:hover ${AvatarImage} {
-      background: #ccc;
-      border-color: #ccc;
-    }`
+const AvatarIcon = styled(Icon)`
+  width: 100%;
+  height: 100%;
+  fill: ${lighten(0.2, colors.label)};
+  transition: all 100ms ease-out;
+
+  &.clickable:hover {
+    fill: ${darken(0.2, colors.label)};
   }
 `;
 
 type Props = {
   userId: string | null;
   size: 'small' | 'medium' | 'large';
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent) => void;
   hideIfNoAvatar?: boolean | undefined;
 };
 
@@ -72,7 +66,7 @@ type State = {
   userName: string | null;
 };
 
-export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State> {
+export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -108,9 +102,9 @@ export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleOnClick = () => {
+  handleOnClick = (event: React.FormEvent) => {
     if (this.props.onClick) {
-      this.props.onClick();
+      this.props.onClick(event);
     }
   }
 
@@ -119,16 +113,40 @@ export class Avatar extends React.PureComponent<Props & InjectedIntlProps, State
     const { avatarSrc, userName } = this.state;
     const isClickable = (this.props.onClick && isFunction(this.props.onClick));
 
-    if (this.props.hideIfNoAvatar && !avatarSrc) {
+    const { hideIfNoAvatar, size } = this.props;
+
+    if (hideIfNoAvatar && !avatarSrc) {
       return null;
     }
 
+    let pxSize = 0;
+
+    if (size === 'small') {
+      pxSize = 29;
+    } else if (size === 'medium') {
+      pxSize = 35;
+    } else {
+      pxSize = 160;
+    }
+
     return (
-      <Container className={className} isClickable={isClickable} onClick={this.handleOnClick}>
+      <Container
+        className={`${className} ${isClickable ? 'clickable' : ''}`}
+        onClick={this.handleOnClick}
+        pxSize={pxSize}
+      >
         {avatarSrc ? (
-          <AvatarImage src={avatarSrc} alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })} />
+          <AvatarImage
+            className={`${isClickable ? 'clickable' : ''}`}
+            src={avatarSrc}
+            alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
+          />
         ) : (
-          <AvatarIcon name="user" title={<FormattedMessage {...messages.noAvatarAltText} />} />
+          <AvatarIcon
+            className={`${isClickable ? 'clickable' : ''}`}
+            name="user"
+            title={<FormattedMessage {...messages.noAvatarAltText} />}
+          />
         )}
       </Container>
     );

@@ -1,6 +1,9 @@
 // Libraries
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
+
+// styles
+import { colors } from 'utils/styleUtils';
 
 // Components
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,11 +18,11 @@ const Message = styled.p`
   margin-left: 2rem;
 
   &.error {
-    color: #FC3C2D;
+  color: ${colors.clRedError};
   }
 
   &.success {
-    color: #32B67A;
+    color: ${colors.clGreenSuccess};
   }
 `;
 
@@ -57,6 +60,7 @@ export default class SubmitWrapper extends React.Component<Props> {
 
     if (this.props.status === 'success') {
       style = 'success';
+      this.removeFocus(this.submitButton);
     }
 
     if (this.props.status === 'error') {

@@ -1,227 +1,15 @@
 import React from 'react';
-import { isBoolean } from 'lodash';
+import { isBoolean } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import styled from 'styled-components';
-
-const StyledMultipleSelect = styled(ReactSelect)`
-  max-width: calc(100% - 30px);
-
-  &.Select--multi {
-    margin: 0;
-    padding: 0;
-
-    &:not(.is-open):hover {
-      .Select-control {
-        border-color: #999;
-      }
-    }
-
-    &.is-open {
-      .Select-control {
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-
-        .Select-arrow-zone {
-          .Select-arrow {
-            margin-top: -1px;
-            border-width: 0 5px 5px;
-          }
-        }
-      }
-    }
-
-    &.is-open,
-    &.is-focused {
-      .Select-control {
-        border-color: #000;
-      }
-    }
-
-    &.has-value {
-      .Select-control {
-        padding-bottom: 0px;
-      }
-    }
-
-    .Select-control {
-      width: calc(100% + 30px);
-      height: auto;
-      margin: 0px;
-      padding: 5px;
-      display: flex;
-      cursor: pointer;
-      border-color: #ccc;
-      border-radius: 5px;
-      position: relative;
-      box-shadow: none !important;
-      outline: none !important;
-
-      .Select-arrow-zone {
-        width: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0px;
-        margin: 0px;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-
-        .Select-arrow {
-          margin-top: 1px;
-          height: auto;
-          border-width: 5px 5px 2.5px;
-        }
-      }
-
-      .Select-multi-value-wrapper {
-        width: calc(100%);
-        height: auto;
-        margin: 0px;
-        padding: 0px;
-        position: relative;
-
-        .Select-placeholder {
-          color: #aaa;
-          font-size: 17px;
-          font-weight: 400;
-          line-height: 36px;
-          padding: 0px;
-          padding-bottom: 1px;
-          margin: 0px;
-          margin-left: 6px;
-          position: absolute;
-          top: 0px;
-          bottom: 0px;
-          left: 0px;
-          display: flex;
-          align-items: center;
-        }
-
-        .Select-input {
-          height: auto;
-          font-size: 17px;
-          font-weight: 400;
-          line-height: 36px;
-          padding: 0px;
-          margin: 0px;
-          margin-left: 6px;
-
-          > input {
-            height: 100%;
-            padding: 0px;
-            margin: 0px;
-          }
-        }
-
-        .Select-value {
-          height: auto;
-          display: inline-flex;
-          align-items: center;
-          padding: 0px;
-          margin: 0px;
-          margin-right: 5px;
-          margin-bottom: 5px;
-          border: none;
-          border-radius: 5px;
-          overflow: hidden;
-          cursor: pointer;
-          background: #e0e0e0;
-
-          &:last-child {
-            margin-right: 0px;
-          }
-
-          .Select-value-icon {
-            color: #333;
-            font-size: 32px;
-            line-height: 32px;
-            font-weight: 300;
-            border: none;
-            border-radius: 0;
-            padding: 0px;
-            padding-bottom: 1px;
-            padding-left: 10px;
-            padding-right: 5px;
-            margin: 0px;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            opacity: 0.7;
-
-            &:hover {
-              opacity: 1;
-            }
-          }
-
-          .Select-value-label {
-            color: #333;
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 34px;
-            white-space: nowrap;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-            padding-top: 0px;
-            padding-bottom: 2px;
-            padding-left: 4px;
-            padding-right: 10px;
-            margin: 0;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-
-    .Select-menu-outer {
-      width: calc(100% + 30px);
-      max-height: 214px;
-      border-color: #000;
-      border-top: solid 1px #ccc;
-      border-radius: 0;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-      overflow: hidden;
-      z-index: 2;
-
-      .Select-menu {
-        max-height: 212px;
-
-        .Select-option {
-          color: #333;
-          font-size: 17px;
-          font-weight: 400;
-          padding-top: 12px;
-          padding-bottom: 12px;
-
-          &:hover,
-          &:focus,
-          &:active,
-          &.is-focused {
-            background: #eee;
-          }
-        }
-
-        .Select-noresults {
-          color: #cc0000;
-          font-size: 17px;
-          font-weight: 400;
-          padding: 14px 12px;
-        }
-      }
-    }
-  }
-`;
+import selectStyles from 'components/UI/Select/styles';
 
 export type Props = {
-  value: IOption[] | null | undefined;
-  placeholder?: string | JSX.Element | undefined;
-  options: IOption[] | null | undefined;
+  id?: string;
+  inputId?: string;
+  value: IOption[] | null;
+  placeholder?: string | JSX.Element;
+  options: IOption[] | null;
   max?: number;
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
@@ -244,31 +32,55 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     this.props.onChange((nextValue || this.emptyArray));
   }
 
+  //  Needed to keep our API compatible with react-select v1
+  //  For a native react-select solution, follow this issue:
+  //  https://github.com/JedWatson/react-select/issues/2669
+  findFullOptionValue = (value) => {
+    if (typeof value === 'string') {
+      return this.props.options && this.props.options.find((option) => option.value === value);
+    } else {
+      return value;
+    }
+  }
+
+  findFullOptionValues = () => {
+    const { value } = this.props;
+    if (value instanceof Array) {
+      return value.map(this.findFullOptionValue);
+    } else {
+      return value;
+    }
+  }
+
   render() {
     const className = this.props['className'];
+    const { id } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
+    const { inputId } = this.props;
 
-    value = (value || this.emptyArray);
+    value = this.findFullOptionValues();
     placeholder = (placeholder || '');
     options = (options || this.emptyArray);
     max = (max || undefined);
     autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
 
     return (
-      <StyledMultipleSelect
+      <ReactSelect
+        id={id}
+        inputId={inputId}
         className={className}
-        multi={true}
-        searchable={true}
-        openOnFocus={false}
-        autoBlur={autoBlur}
-        backspaceRemoves={false}
-        scrollMenuIntoView={false}
-        clearable={false}
+        isMulti
+        isSearchable
+        blurInputOnSelect={autoBlur}
+        backspaceRemovesValue={false}
+        menuShouldScrollIntoView={false}
+        isClearable={false}
         value={value}
-        placeholder={<span>{placeholder}</span>}
+        placeholder={placeholder as string}
         options={options}
         onChange={this.handleOnChange}
-        disabled={this.props.disabled}
+        isDisabled={this.props.disabled}
+        styles={selectStyles}
       />
     );
   }

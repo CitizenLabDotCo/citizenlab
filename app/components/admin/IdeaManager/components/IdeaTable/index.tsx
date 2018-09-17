@@ -1,5 +1,5 @@
 import React from 'react';
-import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash';
+import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
 
 // components
 import { Table } from 'semantic-ui-react';
@@ -42,9 +42,14 @@ interface State {}
 
 export default class IdeaTable extends React.Component<Props, State> {
 
-  handleSortClick = (sort: SortAttribute) => () => {
-    if (isFunction(this.props.onChangeIdeaSort)) {
-      this.props.onChangeIdeaSort(sort);
+  handleSortClick = (newSortAttribute: SortAttribute) => () => {
+    const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
+    if (isFunction(onChangeIdeaSort)) {
+      let newSortSign = '-';
+      if (newSortAttribute === oldSortAttribute) {
+        newSortSign = oldSortDirection === 'ascending' ? '-' : '';
+      }
+      onChangeIdeaSort(`${newSortSign}${newSortAttribute}` as Sort);
     }
   }
 
@@ -96,7 +101,7 @@ export default class IdeaTable extends React.Component<Props, State> {
     const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
 
     return(
-      <Table sortable>
+      <Table sortable size="small">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell width={1}>

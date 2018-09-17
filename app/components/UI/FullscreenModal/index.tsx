@@ -1,5 +1,6 @@
 import React from 'react';
-import isFunction from 'lodash/isFunction';
+import { isFunction } from 'lodash-es';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -20,13 +21,13 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import { getUrlLocale } from 'services/locale';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const timeout = 300;
-const easing = `cubic-bezier(0.19, 1, 0.22, 1)`;
+const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 const Container: any = styled.div`
   position: fixed;
@@ -37,7 +38,6 @@ const Container: any = styled.div`
   display: flex;
   justify-content: center;
   overflow: hidden;
-  outline: none;
   background: #fff;
   z-index: -10000;
   transform: none;
@@ -159,7 +159,7 @@ const GoBackButton = styled.div`
 
 const GoBackLabel = styled.div`
   color: ${colors.label};
-  font-size: 15px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   transition: fill 100ms ease-out;
 
@@ -261,23 +261,13 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     }
   }
 
-  disableBodyScroll = () => {
-    if (!document.body.classList.contains('modal-active')) {
-      document.body.classList.add('modal-active');
-    }
-  }
-
-  enableBodyScroll = () => {
-    document.body.classList.remove('modal-active');
-  }
-
   openModal = (url: string | null) => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
 
-    this.disableBodyScroll();
+    disableBodyScroll(this.ModalContentInnerElement);
 
     // on route change
     this.unlisten = clHistory.listen(() => {
@@ -332,8 +322,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
   cleanup = () => {
     this.goBackUrl = null;
 
-    this.enableBodyScroll();
-
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.onEscKeyPressed, true);
 
@@ -347,6 +335,8 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     if (this.ModalContentInnerElement) {
       this.ModalContentInnerElement.scrollTop = 0;
     }
+
+    enableBodyScroll(this.ModalContentInnerElement);
   }
 
   clickOutsideModal = () => {
@@ -356,7 +346,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
 
   clickCloseButton = (event) => {
     event.preventDefault();
-    event.stopPropagation();
     this.props.clickCloseButton({ extra: { url: this.props.url } });
     this.manuallyCloseModal();
   }

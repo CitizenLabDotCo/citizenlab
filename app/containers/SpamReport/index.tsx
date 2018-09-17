@@ -1,5 +1,5 @@
 // libraries
-import * as React from 'react';
+import React from 'react';
 
 // Services
 import { sendSpamReport, Report } from 'services/spamReports';
@@ -8,7 +8,8 @@ import { sendSpamReport, Report } from 'services/spamReports';
 import ReportForm from './SpamReportForm';
 
 // Typings
-import { Forms } from 'typings';
+import { CRUDParams } from 'typings';
+
 interface Props {
   resourceType: 'comments' | 'ideas';
   resourceId: string;
@@ -18,7 +19,7 @@ interface State {
   diff: Report | null;
 }
 
-class SpamReportForm extends React.Component<Props, State & Forms.crudParams> {
+class SpamReportForm extends React.Component<Props, State & CRUDParams> {
   reasonCodes: Report['reason_code'][] = ['wrong_content', 'inappropriate', 'other'];
 
   constructor (props) {

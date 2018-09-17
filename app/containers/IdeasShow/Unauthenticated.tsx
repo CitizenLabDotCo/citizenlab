@@ -1,10 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { fontSizes } from 'utils/styleUtils';
 
 const VerticalContainer = styled.div`
   display: flex;
@@ -19,13 +20,13 @@ const StyledButton = styled(Button)`
 
 const Separator = styled.div`
   color: #999;
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
 `;
 
 const RegisterLink = styled.span`
   color: ${(props) => props.theme.colorMain};
-  font-size: 14px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 18px;
   text-align: center;
