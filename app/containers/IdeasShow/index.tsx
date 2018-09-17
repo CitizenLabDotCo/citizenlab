@@ -749,7 +749,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   render() {
     const { inModal, intl: { formatMessage }, localize } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
     let content: JSX.Element | null = null;
 
     if (idea) {
@@ -890,8 +890,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       <StyledSharingMobile
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                        sharedContent="idea"
-                        userId={authUser && authUser.data.id}
                       />);
                   }}
                 </T>
@@ -951,10 +949,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       <Sharing
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
-                        sharedContent="idea"
-                        userId={authUser && authUser.data.id}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaTitle, ideaUrl })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
                       />
                     </SharingWrapper>
 

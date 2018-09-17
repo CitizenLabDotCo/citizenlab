@@ -53,11 +53,11 @@ export default defineMessages({
   },
   shareIdeaTitle: {
     id: 'app.containers.landing.shareIdeaTitle',
-    defaultMessage: 'Share your idea & get some votes',
+    defaultMessage: 'Congratulations, your idea was successfully posted!',
   },
   shareIdeaSubtitle: {
     id: 'app.containers.landing.shareIdeaSubtitle',
-    defaultMessage: 'The more votes your idea gets, the more impactful it will be!',
+    defaultMessage: 'Share your idea to reach more people, receive more votes and have more impact.',
   },
   twitterMessage: {
     id: 'app.containers.landing.twitterMessage',
@@ -65,11 +65,11 @@ export default defineMessages({
   },
   emailSharingSubject: {
     id: 'app.containers.landing.emailSharingSubject',
-    defaultMessage: 'Vote for {ideaTitle}',
+    defaultMessage: 'Support my idea: {ideaTitle}.',
   },
   emailSharingBody: {
     id: 'app.containers.landing.emailSharingBody',
-    defaultMessage: 'Vote for {ideaTitle} on {ideaUrl}',
+    defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
   skipSharing: {
     id: 'app.containers.landing.skipSharing',

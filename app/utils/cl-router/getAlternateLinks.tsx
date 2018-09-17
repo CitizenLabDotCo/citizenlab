@@ -11,9 +11,10 @@ function replaceLocale(pathname: string, locale: Locale) {
 // https://github.com/nfl/react-helmet/issues/279 href comes first!
 export default function getAlternateLinks(tenantLocales: GetTenantLocalesChildProps, location) {
   if (Array.isArray(tenantLocales)) {
-    return tenantLocales.map(loc =>
-      <link href={`${location.origin}${replaceLocale(location.pathname, loc)}`} rel="alternate" hrefLang={loc} key={loc} />
-    );
+    return tenantLocales.map(loc => {
+      return <link href={`${location.origin}${replaceLocale(location.pathname, loc)}`} rel="alternate" hrefLang={loc} key={loc} />;
+    });
   }
+
   return null;
 }

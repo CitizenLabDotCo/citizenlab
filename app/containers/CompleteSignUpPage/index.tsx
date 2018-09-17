@@ -109,10 +109,11 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
     const { location, authUser, idea } = this.props;
     const authError = includes(location.pathname, 'authentication-error');
     const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
-    const search = (ideaToPublishId ? `?new_idea_id=${ideaToPublishId}&publish=true` : undefined);
-    const pathname = '/';
 
-    clHistory.push({ search, pathname });
+    clHistory.push({
+      pathname: '/',
+      search: (ideaToPublishId ? `?new_idea_id=${ideaToPublishId}&publish=true` : undefined)
+    });
   }
 
   render() {

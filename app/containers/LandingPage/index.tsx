@@ -2,6 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { Subscription, combineLatest, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
@@ -284,8 +285,7 @@ class LandingPage extends React.PureComponent<Props, State> {
     const ideaParams$ = urlHasNewIdeaQueryParam ? of({
       id: get(query, 'new_idea_id'),
       publish: get(query, 'publish')
-    }) : of(null);
-    // const idea$ = (urlHasNewIdeaQueryParam ? ideaByIdStream(query.idea_to_publish).observable : of(null));
+    }).pipe(delay(200)) : of(null);
 
     this.subscriptions = [
       combineLatest(
