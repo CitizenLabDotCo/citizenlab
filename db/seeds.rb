@@ -439,7 +439,7 @@ if Apartment::Tenant.current == 'localhost'
 
     Phase.where(participation_method: 'budgeting').each do |phase|
       User.all.shuffle.take(rand(20)+1).each do |user|
-        chosen_ideas = phase.project.ideas.shuffle.take(rand(10))
+        chosen_ideas = phase.project.ideas.select{|i| i.budget}.shuffle.take(rand(10))
         Basket.create!({
           user: user,
           participation_context: phase,
