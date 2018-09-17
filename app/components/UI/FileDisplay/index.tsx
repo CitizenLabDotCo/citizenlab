@@ -12,6 +12,7 @@ import { UploadFile } from 'typings';
 
 const Container = styled.div`
   display: flex;
+  height: 47px;
   max-width: 520px;
   align-items: center;
   color: ${colors.label};
