@@ -1,22 +1,28 @@
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
-    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :recipients, :stats, :destroy]
+    before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :deliveries, :stats, :destroy]
+
     def index
       @campaigns = policy_scope(Campaign)
-        .order(sent_at: :desc)
+        .order(created_at: :desc)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
-      @campaigns = @campaigns.order(created_at: :desc)
-      render json: @campaigns
+
+      if params[:campaign_name]
+        @campaigns = @campaigns.where(type: Campaign.from_campaign_name(params[:campaign_name]))
+      end
+
+      render json: @campaigns, each_serializer: WebApi::V1::CampaignSerializer
     end
 
     def show
-      render json: @campaign
+      render json: @campaign, serializer: WebApi::V1::CampaignSerializer
     end
 
     def create
-      @campaign = Campaign.new(campaign_params)
+      campaign_claz = Campaign.from_campaign_name(params[:campaign][:campaign_name]).constantize
+      @campaign = campaign_claz.new(campaign_params)
       @campaign.author ||= current_user
 
       authorize @campaign
@@ -24,7 +30,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: @campaign, status: :created
+        render json: @campaign, status: :created, serializer: WebApi::V1::CampaignSerializer
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -39,7 +45,7 @@ module EmailCampaigns
 
       if @campaign.save
         SideFxCampaignService.new.after_update(@campaign, current_user)
-        render json: @campaign, status: :ok
+        render json: @campaign, status: :ok, serializer: WebApi::V1::CampaignSerializer
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -82,15 +88,15 @@ module EmailCampaigns
       render json: {html: html}
     end
 
-    def recipients
-      @recipients = @campaign.campaigns_recipients
+    def deliveries
+      @deliveries = @campaign.deliveries
         .includes(:user)
         .page(params.dig(:page, :number))
-      render json: @recipients, include: [:user]
+      render json: @deliveries, include: [:user]
     end
 
     def stats
-      render json: EmailCampaigns::CampaignsRecipient.status_counts(@campaign.id)
+      render json: EmailCampaigns::Delivery.status_counts(@campaign.id)
     end 
 
     private

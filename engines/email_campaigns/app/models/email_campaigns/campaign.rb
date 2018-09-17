@@ -34,6 +34,10 @@ module EmailCampaigns
       self.name.split('::').last.underscore
     end
 
+    def self.from_campaign_name name
+      "EmailCampaigns::Campaigns::#{name.camelize}"
+    end
+
     def apply_recipient_filters activity: nil, time: nil
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
         self.send(action_symbol, users_scope, {activity: activity, time: time})
@@ -50,6 +54,10 @@ module EmailCampaigns
       self.class.after_send_hooks.each do |action_symbol|
         self.send(action_symbol, command)
       end
+    end
+
+    def self.policy_class
+      CampaignPolicy
     end
 
     protected

@@ -6,7 +6,7 @@ EmailCampaigns::Engine.routes.draw do
         post :send, action: :do_send, on: :member
         post :send_preview, on: :member
         get :preview, on: :member
-        get :recipients, on: :member
+        get :deliveries, on: :member
         get :stats, on: :member
       end
 
