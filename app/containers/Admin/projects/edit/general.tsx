@@ -38,7 +38,8 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject
+  deleteProject,
+  IProject
 } from 'services/projects';
 import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -512,9 +513,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     return !hasErrors;
   }
 
-  getImagesToAddPromises = () => {
-    const { localProjectImages, remoteProjectImages, projectData } = this.state;
-    const projectId = (projectData ? projectData.id : null);
+  getImagesToAddPromises = (projectId: string) => {
+    const { localProjectImages, remoteProjectImages } = this.state;
     let imagesToAdd = localProjectImages;
     let imagesToAddPromises: Promise<any>[] = [];
 
@@ -525,16 +525,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
     }
 
-    if (projectId && imagesToAdd && imagesToAdd.length > 0) {
+    if (imagesToAdd && imagesToAdd.length > 0) {
       imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
     }
 
     return imagesToAddPromises;
   }
 
-  getImagesToRemovePromises = () => {
-    const { localProjectImages, remoteProjectImages, projectData } = this.state;
-    const projectId = (projectData ? projectData.id : null);
+  getImagesToRemovePromises = (projectId: string) => {
+    const { localProjectImages, remoteProjectImages } = this.state;
     let imagesToRemove = localProjectImages;
     let imagesToRemovePromises: Promise<any>[] = [];
 
@@ -544,19 +543,17 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       });
     }
 
-    if (projectId && imagesToRemove && imagesToRemove.length > 0) {
+    if (imagesToRemove && imagesToRemove.length > 0) {
       imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
     }
 
     return imagesToRemovePromises;
   }
 
-  getFilesToAddPromises = () => {
-    const { localProjectFiles, remoteProjectFiles, projectData } = this.state;
-    const projectId = (projectData ? projectData.id : null);
+  getFilesToAddPromises = (projectId: string) => {
+    const { localProjectFiles, remoteProjectFiles } = this.state;
     let filesToAdd = localProjectFiles;
     let filesToAddPromises: Promise<any>[] = [];
-
     if (localProjectFiles && Array.isArray(remoteProjectFiles)) {
       // localProjectFiles = local state of files
       // This means those previously uploaded + files that have been added/removed
@@ -567,16 +564,15 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       });
     }
 
-    if (projectId && filesToAdd && filesToAdd.length > 0) {
+    if (filesToAdd && filesToAdd.length > 0) {
       filesToAddPromises = filesToAdd.map((fileToAdd: any) => addProjectFile(projectId as string, fileToAdd.base64, fileToAdd.name));
     }
 
     return filesToAddPromises;
   }
 
-  getFilesToRemovePromises = () => {
-    const { localProjectFiles, remoteProjectFiles, projectData } = this.state;
-    const projectId = (projectData ? projectData.id : null);
+  getFilesToRemovePromises = (projectId: string) => {
+    const { localProjectFiles, remoteProjectFiles } = this.state;
     let filesToRemove = remoteProjectFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
@@ -590,7 +586,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       });
     }
 
-    if (projectId && Array.isArray(filesToRemove) && filesToRemove.length > 0) {
+    if (Array.isArray(filesToRemove) && filesToRemove.length > 0) {
       filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteProjectFile(projectId as string, fileToRemove.id));
     }
 
@@ -625,33 +621,28 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-
-        const imagesToAddPromises: Promise<any>[] = this.getImagesToAddPromises();
-        const imagesToRemovePromises: Promise<any>[] = this.getImagesToRemovePromises();
-
-        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
-        const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
+        let projectResponse: IProject | null = null;
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
-            await updateProject(projectData.id, projectAttributesDiff);
+            projectResponse = await updateProject(projectData.id, projectAttributesDiff);
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
           } else {
-            await addProject(projectAttributesDiff);
+            projectResponse = await addProject(projectAttributesDiff);
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
             redirect = true;
           }
         }
 
-        if (imagesToAddPromises.length > 0 || imagesToRemovePromises.length > 0) {
+        if (projectResponse) {
+          const { id } = projectResponse.data;
+          const imagesToAddPromises = this.getImagesToAddPromises(id);
+          const imagesToRemovePromises = this.getImagesToRemovePromises(id);
+          const filesToAddPromises = this.getFilesToAddPromises(id);
+          const filesToRemovePromises = this.getFilesToRemovePromises(id);
           await Promise.all([
             ...imagesToAddPromises,
-            ...imagesToRemovePromises
-          ]);
-        }
-
-        if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
-          await Promise.all([
+            ...imagesToRemovePromises,
             ...filesToAddPromises,
             ...filesToRemovePromises
           ]);
