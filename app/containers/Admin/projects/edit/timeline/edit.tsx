@@ -289,9 +289,8 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     this.save(projectId, project, phase, attributeDiff);
   }
 
-  getFilesToAddPromises = () => {
+  getFilesToAddPromises = (phaseId: string) => {
     const { remotePhaseFiles, localPhaseFiles } = this.state;
-    const { id } = this.props.params;
     let filesToAdd = localPhaseFiles;
     let filesToAddPromises: Promise<any>[] = [];
 
@@ -305,20 +304,19 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       });
     }
 
-    if (id && filesToAdd && filesToAdd.length > 0) {
+    if (phaseId && filesToAdd && filesToAdd.length > 0) {
       filesToAddPromises = filesToAdd.filter((fileToAdd) => {
         return isString(fileToAdd.base64);
       }).map((fileToAdd) => {
-        return addPhaseFile(id, fileToAdd.base64 as string, fileToAdd.name);
+        return addPhaseFile(phaseId, fileToAdd.base64 as string, fileToAdd.name);
       });
     }
 
     return filesToAddPromises;
   }
 
-  getFilesToRemovePromises = () => {
+  getFilesToRemovePromises = (phaseId: string) => {
     const { remotePhaseFiles, localPhaseFiles } = this.state;
-    const { id } = this.props.params;
     let filesToRemove: UploadFile[] | null = remotePhaseFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
@@ -332,11 +330,11 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       });
     }
 
-    if (id && filesToRemove && filesToRemove.length > 0) {
+    if (phaseId && filesToRemove && filesToRemove.length > 0) {
       filesToRemovePromises = filesToRemove.filter((fileToRemove) => {
         return isString(fileToRemove.id);
       }).map((fileToRemove) => {
-        return deletePhaseFile(id, fileToRemove.id as string);
+        return deletePhaseFile(phaseId, fileToRemove.id as string);
       });
     }
 
@@ -344,26 +342,30 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
   }
 
   save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
-    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
-    const filesToRemovePromises: Promise<any>[]  = this.getFilesToRemovePromises();
+    let phaseResponse: IPhase | null = null;
 
     try {
       if (!isEmpty(attributeDiff)) {
         if (phase) {
-          const savedPhase = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null, submitState: 'success' });
+          phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: phaseResponse, errors: null, submitState: 'success' });
         } else if (project && projectId) {
-          const savedPhase = await addPhase(project.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null, submitState: 'success' });
+          phaseResponse = await addPhase(project.data.id, attributeDiff);
+          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: phaseResponse, errors: null, submitState: 'success' });
         }
       }
 
-      if (filesToAddPromises.length > 0 || filesToRemovePromises.length > 0) {
+      if (phaseResponse) {
+        const { id: phaseId } = phaseResponse.data;
+        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(phaseId);
+        const filesToRemovePromises: Promise<any>[]  = this.getFilesToRemovePromises(phaseId);
+
         await Promise.all([
           ...filesToAddPromises,
           ...filesToRemovePromises
         ]);
       }
+
     } catch (errors) {
       this.setState({
         errors: get(errors, 'json.errors', null),
