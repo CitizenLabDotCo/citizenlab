@@ -38,8 +38,7 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject,
-  IProject
+  deleteProject
 } from 'services/projects';
 import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
 import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
@@ -148,7 +147,7 @@ interface State {
   projectData: IProjectData | null;
   publicationStatus: 'draft' | 'published' | 'archived';
   projectType: 'continuous' | 'timeline';
-  projectAttributesDiff: IUpdatedProjectProperties;
+   projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: ImageFile[] | null;
   presentationMode: 'map' | 'card';
   remoteProjectImages: ImageFile[];
@@ -621,21 +620,27 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-        let projectResponse: IProject | null = null;
+        let projectResponse = (projectData || null);
 
-        if (!isEmpty(projectAttributesDiff)) {
-          if (projectData) {
-            projectResponse = await updateProject(projectData.id, projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
-          } else {
-            projectResponse = await addProject(projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
-            redirect = true;
-          }
+        // If there's a project and there's been a change in the non-file fields
+        if (projectData && !isEmpty(projectAttributesDiff)) {
+          const response = await updateProject(projectData.id, projectAttributesDiff);
+          projectResponse = response.data;
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
         }
 
+        // If there's no project and there's been a change in the non-file fields
+        if (!projectData && !isEmpty(projectAttributesDiff)) {
+          const response = await addProject(projectAttributesDiff);
+          projectResponse = response.data;
+          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
+          redirect = true;
+        }
+
+        // If there's a project, but no changes in any of the non-file fields
+        // we'll get into this block
         if (projectResponse) {
-          const { id } = projectResponse.data;
+          const { id } = projectResponse;
           const imagesToAddPromises = this.getImagesToAddPromises(id);
           const imagesToRemovePromises = this.getImagesToRemovePromises(id);
           const filesToAddPromises = this.getFilesToAddPromises(id);
