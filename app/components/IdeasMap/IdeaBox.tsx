@@ -15,7 +15,7 @@ import Unauthenticated from './Unauthenticated';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 
 // resources
-import GetIdea from 'resources/GetIdea';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,22 +23,34 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSize } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const Wrapper = styled.div`
-  align-items: strech;
-  background: white;
+const Container = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: strech;
   padding: 30px;
   position: relative;
+  background: #fff;
+  border: solid 1px ${colors.separation};
 `;
 
-const Title = styled.h2``;
+const IdeaTitle: any = styled.h3`
+  color: #333;
+  display: block;
+  display: -webkit-box;
+  width: calc(100% - 50px);
+  margin: 0;
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: 28px;
+  margin-bottom: 10px;
+`;
 
-const Description = styled.div`
+const IdeaDescription = styled.div`
   flex: 1 1 100%;
   margin-bottom: 1rem;
   overflow: hidden;
@@ -61,19 +73,36 @@ const VoteComments = styled.div`
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-top: 10px;
+  margin-bottom: 30px;
 `;
+
 const StyledButton = styled(Button)`
   justify-self: flex-end;
 `;
 
 const CommentsCount = styled.span`
   color: ${colors.label};
-  font-size: ${fontSize('base')};
+  font-size: ${fontSizes.base}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  display: none;
+
+  ${media.biggerThanLargePhone`
+    display: block;
+  `}
+`;
+
+const CommentIcon = styled(Icon)`
+  width: 30px;
+  height: 21px;
+  fill: ${colors.label};
+  margin-right: 7px;
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 13px;
+  height: 10px;
   fill: ${colors.label};
   display: flex;
   align-items: center;
@@ -82,15 +111,15 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.div`
-  height: 40px;
-  width: 40px;
+  height: 34px;
+  width: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
   cursor: pointer;
-  top: 20px;
-  right: 20px;
+  top: 12px;
+  right: 12px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.4, colors.label)};
   transition: border-color 100ms ease-out;
@@ -102,25 +131,25 @@ const CloseButton = styled.div`
       fill: #000;
     }
   }
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 `;
 
-// Typings
-export interface Props {
-  idea: string;
-  className?: string;
-  onClose?: {(event): void};
+interface InputProps {
+  ideaId: string;
+  onClose?: (event) => void;
 }
 
-type State = {
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
-};
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-export default class IdeaBox extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+interface Props extends InputProps, DataProps {}
+
+interface State {
+  showFooter: 'unauthenticated' | 'votingDisabled' | null;
+}
+
+class IdeaBox extends React.PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       showFooter: null,
@@ -156,55 +185,62 @@ export default class IdeaBox extends React.PureComponent<Props, State> {
 
   render() {
     const { showFooter } = this.state;
+    const { idea } = this.props;
 
-    return (
-      <GetIdea id={this.props.idea}>
-        {(idea) => {
-          if (isNilOrError(idea)) return null;
+    if (!isNilOrError(idea)) {
+      return (
+        <Container className={this.props['className']}>
+          {this.props.onClose &&
+            <CloseButton onClick={this.props.onClose}>
+              <CloseIcon name="close3" />
+            </CloseButton>
+          }
+          <IdeaTitle>
+            <T value={idea.attributes.title_multiloc} />
+          </IdeaTitle>
+          <IdeaDescription>
+            <T as="div" value={idea.attributes.body_multiloc} supportHtml />
+          </IdeaDescription>
+          <VoteComments>
+            {!showFooter &&
+              <>
+                <VoteControl
+                  ideaId={idea.id}
+                  size="2"
+                  unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
+                  disabledVoteClick={this.handleDisabledVoteClick}
+                />
+                <CommentsCount>
+                  <CommentIcon name="comments" />
+                  {idea.attributes.comments_count}
+                </CommentsCount>
+              </>
+            }
 
-          return (
-            <Wrapper className={this.props.className}>
-              {this.props.onClose &&
-                <CloseButton onClick={this.props.onClose}>
-                  <CloseIcon name="close3" />
-                </CloseButton>
-              }
-              <Title><T value={idea.attributes.title_multiloc} /></Title>
-              <Description>
-                <T as="div" value={idea.attributes.body_multiloc} supportHtml />
-              </Description>
-              <VoteComments>
-                {!showFooter &&
-                  <>
-                    <VoteControl
-                      ideaId={idea.id}
-                      size="1"
-                      unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
-                      disabledVoteClick={this.handleDisabledVoteClick}
-                    />
-                    <CommentsCount>
-                      <Icon name="comments" />
-                      {idea.attributes.comments_count}
-                    </CommentsCount>
-                  </>
-                }
-                {showFooter === 'unauthenticated' &&
-                  <Unauthenticated />
-                }
-                {showFooter === 'votingDisabled' &&
-                  <VotingDisabled
-                    votingDescriptor={idea.relationships.action_descriptor.data.voting}
-                    projectId={idea.relationships.project.data.id}
-                  />
-                }
-              </VoteComments>
-              <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
-                <FormattedMessage {...messages.seeIdea} />
-              </StyledButton>
-            </Wrapper>
-          );
-        }}
-      </GetIdea>
-    );
+            {showFooter === 'unauthenticated' &&
+              <Unauthenticated />
+            }
+
+            {showFooter === 'votingDisabled' &&
+              <VotingDisabled
+                votingDescriptor={idea.relationships.action_descriptor.data.voting}
+                projectId={idea.relationships.project.data.id}
+              />
+            }
+          </VoteComments>
+          <StyledButton circularCorners={false} width="100%" onClick={this.createIdeaClickHandler(idea)}>
+            <FormattedMessage {...messages.seeIdea} />
+          </StyledButton>
+        </Container>
+      );
+    }
+
+    return  <Container className={this.props['className']} />;
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetIdea id={inputProps.ideaId}>
+    {idea => <IdeaBox {...inputProps} idea={idea} />}
+  </GetIdea>
+);

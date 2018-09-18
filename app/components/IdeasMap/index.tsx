@@ -12,7 +12,7 @@ import tracks from './tracks';
 // Components
 import Map from 'components/Map';
 import Warning from 'components/UI/Warning';
-import IdeaBox, { Props as IdeaBoxProps } from './IdeaBox';
+import IdeaBox from './IdeaBox';
 import IdeaButton from './IdeaButton';
 
 // Injectors
@@ -26,29 +26,19 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
-const StyledMap = styled(Map)`
-  flex: 1;
-  height: 400px;
-  width: 100%;
+// Typing
+import { IIdeaData } from 'services/ideas';
 
-  ${media.biggerThanPhone`
-    flex-basis: 60%;
-    height: 600px;
-  `}
-`;
+const timeout = 40000;
 
-const StyledBox = styled<IdeaBoxProps>(IdeaBox)`
-  flex: 1;
-  flex-basis: 100%;
-
-  ${media.biggerThanPhone`
-    flex-basis: 40%;
-  `}
+const StyledWarning = styled(Warning)`
+  margin-bottom: 10px;
 `;
 
 const MapWrapper = styled.div`
-  display: flex;
   height: 400px;
+  display: flex;
+  align-items: stretch;
   margin-bottom: 2rem;
 
   ${media.biggerThanPhone`
@@ -60,12 +50,27 @@ const MapWrapper = styled.div`
   }
 `;
 
-const StyledWarning = styled(Warning)`
-  margin-bottom: 10px;
+const StyledIdeaBox = styled(IdeaBox)`
+  flex: 0 0 400px;
+
+  ${media.smallerThanMaxTablet`
+    flex: 0 0 40%;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 80%;
+  `}
 `;
 
-// Typing
-import { IIdeaData } from 'services/ideas';
+const StyledMap = styled(Map)`
+  flex: 1;
+  height: 100%;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  ${media.biggerThanPhone`
+    flex-basis: 60%;
+  `}
+`;
 
 interface InputProps {
   projectId?: string;
@@ -79,7 +84,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  selectedIdea: string | null;
+  selectedIdeaId: string | null;
 }
 
 class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
@@ -89,7 +94,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      selectedIdea: null,
+      selectedIdeaId: null,
     };
   }
 
@@ -110,13 +115,16 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
     return ideaPoints;
   }
 
-  selectIdea = (id) => {
+  toggleIdea = (id: string) => {
     trackEventByName(tracks.clickOnIdeaMapMarker, { ideaId: id });
-    this.setState({ selectedIdea: id });
+
+    this.setState(({ selectedIdeaId }) => {
+      return { selectedIdeaId: (id !== selectedIdeaId ? id : null) };
+    });
   }
 
   deselectIdea = () => {
-    this.setState({ selectedIdea: null });
+    this.setState({ selectedIdeaId: null });
   }
 
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
@@ -149,7 +157,7 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { phaseId, projectId, ideaMarkers } = this.props;
-    const { selectedIdea } = this.state;
+    const { selectedIdeaId } = this.state;
     const points = this.getPoints(ideaMarkers);
 
     return (
@@ -159,16 +167,16 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
         }
 
         <MapWrapper>
-          {selectedIdea &&
-            <StyledBox
-              idea={selectedIdea}
+          {selectedIdeaId &&
+            <StyledIdeaBox
+              ideaId={selectedIdeaId}
               onClose={this.deselectIdea}
             />
           }
 
           <StyledMap
             points={points}
-            onMarkerClick={this.selectIdea}
+            onMarkerClick={this.toggleIdea}
             onMapClick={this.onMapClick}
           />
 
