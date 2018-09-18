@@ -266,7 +266,7 @@ const LocationIconWrapper = styled.div`
   width: 22px;
   height: 36px;
   margin: 0;
-  margin-right: 4px;
+  margin-right: 3px;
   padding: 0;
   border: none;
   display: flex;
@@ -830,7 +830,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="36px"
+                      size="42px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>
