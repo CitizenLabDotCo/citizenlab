@@ -957,7 +957,7 @@
   "app.containers.landing.ideasFrom": "Ideas for {name}",
   "app.containers.landing.projectsFrom": "Projects from {name}",
   "app.containers.landing.shareSubtitle": "Share your idea to reach more people, receive more votes and have more impact.",
-  "app.containers.landing.shareTitle": "Congratulations, your idea was successfully submitted!",
+  "app.containers.landing.shareTitle": "Congratulations, your idea was successfully posted!",
   "app.containers.landing.skipSharing": "Skip it, I'll do it later",
   "app.containers.landing.subtitleCity": "Start an idea!",
   "app.containers.landing.titleCity": "Co-create {name}",
