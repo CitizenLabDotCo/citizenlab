@@ -18,6 +18,10 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
@@ -116,7 +120,15 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+interface Tracks {
+  sharingModalOpened: Function;
+}
+
+class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+  componentDidMount() {
+    this.props.sharingModalOpened();
+  }
+
   render() {
     const { idea, authUser, localize, locale } = this.props;
     const { formatMessage } = this.props.intl;
@@ -154,7 +166,9 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
   }
 }
 
-const IdeaSharingModalContentWithHoCs = injectIntl(localize(IdeaSharingModalContent));
+const IdeaSharingModalContentWithHoCs = injectTracks<Props>({
+  sharingModalOpened: tracks.sharingModalOpened,
+  })(injectIntl(localize(IdeaSharingModalContent)));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
