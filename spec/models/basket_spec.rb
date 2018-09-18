@@ -23,4 +23,14 @@ RSpec.describe Basket, type: :model do
   		expect(basket.baskets_ideas.pluck(:created_at).map(&:to_i)).to match_array [t1,t2].map(&:to_i)
   	end
   end
+
+  context "a basket exceeding the maximum budget" do
+    it "cannot be submitted" do
+      project = create(:continuous_budgeting_project, max_budget: 1000)
+      ideas = create_list(:idea, 11, budget: 100, project: project)
+      basket = create(:basket, ideas: ideas, participation_context: project)
+      basket.submitted_at = Time.now
+      expect(basket).to be_invalid
+    end
+  end
 end
