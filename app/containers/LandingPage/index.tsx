@@ -16,6 +16,7 @@ import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -411,17 +412,19 @@ class LandingPage extends React.PureComponent<Props, State> {
             </Content>
           </Container>
 
-          <Modal
-            opened={!!ideaIdForSocialSharing}
-            close={this.closeIdeaSocialSharingModal}
-            fixedHeight={false}
-            hasSkipButton={true}
-            skipText={<FormattedMessage {...messages.skipSharing} />}
-          >
-            {ideaIdForSocialSharing &&
-              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-            }
-          </Modal>
+          <FeatureFlag name="ideaflow_social_sharing">
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              fixedHeight={false}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+            >
+              {ideaIdForSocialSharing &&
+                <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+              }
+            </Modal>
+          </FeatureFlag>
         </>
       );
     }
