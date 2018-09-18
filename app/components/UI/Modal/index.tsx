@@ -202,7 +202,9 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   componentWillUnmount() {
-    this.cleanup();
+    if (this.props.opened) {
+      this.cleanup();
+    }
 
     if (!this.ModalPortal) {
       console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
@@ -223,7 +225,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
-
     disableBodyScroll(this.ModalContentElement);
 
     this.unlisten = clHistory.listen(this.props.close);
