@@ -192,10 +192,9 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     });
   }
 
-  getFilesToAddPromises = () => {
+  getFilesToAddPromises = (eventId: string) => {
     const { localEventFiles } = this.state;
     const { remoteEventFiles } = this.props;
-    const { id } = this.props.params;
     let filesToAdd = localEventFiles;
     let filesToAddPromises: Promise<any>[] = [];
 
@@ -209,17 +208,16 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       });
     }
 
-    if (id && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(id as string, fileToAdd.base64, fileToAdd.name));
+    if (eventId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(eventId as string, fileToAdd.base64, fileToAdd.name));
     }
 
     return filesToAddPromises;
   }
 
-  getFilesToRemovePromises = () => {
+  getFilesToRemovePromises = (eventId: string) => {
     const { localEventFiles } = this.state;
     const { remoteEventFiles } = this.props;
-    const { id } = this.props.params;
     let filesToRemove = remoteEventFiles;
     let filesToRemovePromises: Promise<any>[] = [];
 
@@ -233,8 +231,8 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       });
     }
 
-    if (id && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteEventFile(id as string, fileToRemove.id));
+    if (eventId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteEventFile(eventId as string, fileToRemove.id));
     }
 
     return filesToRemovePromises;
@@ -242,37 +240,47 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
 
   handleOnSubmit = async (event) => {
     event.preventDefault();
-    let savingPromise: Promise<IEvent> | null = null;
-    const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises();
-    const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises();
+    const projectId = !isNilOrError(this.props.project) ? this.props.project.id : null;
+    const { event: projectEvent } = this.state;
+    let eventResponse = projectEvent;
+    let redirect = false;
 
-    if (!isEmpty(this.state.attributeDiff)) {
-
-      if (this.state.event) {
-        savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
-      } else if (this.props.project) {
-        savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
-          clHistory.push(`/admin/projects/${this.props.params.projectId}/events/${response.data.id}`);
-          return response;
-        });
-      }
-    }
-
-    const allPromises = [
-      savingPromise,
-      ...filesToAddPromises,
-      ...filesToRemovePromises
-    ];
-
-    if (allPromises.length > 0) {
+    try {
       this.setState({ saving: true, saved: false });
-      try {
-        await Promise.all(allPromises);
-        this.setState({ saving: false, saved: true, attributeDiff: {}, errors: {}, submitState: 'success' });
-      } catch (errors) {
-        this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+
+      // non-file input fields have changed
+      if (!isEmpty(this.state.attributeDiff)) {
+        // event already exists (in the state)
+        if (projectEvent) {
+          eventResponse = await updateEvent(projectEvent.data.id, this.state.attributeDiff);
+          this.setState({ event: eventResponse, attributeDiff: {} });
+        } else if (projectId) {
+          // event doesn't exist, create with project id
+          eventResponse =  await addEvent(projectId, this.state.attributeDiff);
+          this.setState({ event: eventResponse, attributeDiff: {} });
+          redirect = true;
+        }
       }
+
+      if (eventResponse) {
+        const { id: eventId } = eventResponse.data;
+        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(eventId);
+        const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(eventId);
+        await Promise.all([
+          ...filesToAddPromises,
+          ...filesToRemovePromises
+        ]);
+      }
+
+      this.setState({ saving: false, saved: true, errors: {}, submitState: 'success' });
+      if (redirect && projectId) {
+        clHistory.push(`/admin/projects/${projectId}/events/`);
+      }
+
+    } catch (errors) {
+      this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
     }
+
   }
 
   render() {
