@@ -107,12 +107,17 @@ module EmailCampaigns
     def top_project_ideas
       # take N_TOP_IDEAS
       top_ideas = Idea.where(publication_status: 'published')
-      top_ideas = top_ideas.all.select do |idea|
-        idea_activity_count(idea) > 0 || idea.published_at > Time.now - days_ago
-      end
-      top_ideas = top_ideas.sort_by do |idea| 
-        idea_activity_count idea
+      activity_counts = ideas_activity_counts top_ideas
+      active_ideas = top_ideas.select do |idea|
+        activity_counts.dig(idea.id, :total) > 0
+      end.sort_by do |idea|
+        activity_counts.dig(idea.id, :total)
       end.reverse.take N_TOP_IDEAS
+      new_ideas = top_ideas.where('published_at > ?', Time.now - days_ago).sort_by do |idea|
+        activity_counts.dig(idea.id, :total)
+      end.reverse.take N_TOP_IDEAS
+      top_idea_ids = (new_ideas + active_ideas).map(&:id).uniq
+      top_ideas = top_ideas.where(id: top_idea_ids)
       # project -> top_ideas mapping
       top_project_ideas = {}
       top_ideas.each do |idea|
@@ -122,7 +127,7 @@ module EmailCampaigns
       # ordering of projects
       project_order = top_project_ideas.keys.sort_by do |project_id|
         top_project_ideas[project_id].map do |idea| 
-          idea_activity_count idea
+          activity_counts.dig(idea.id, :total)
         end.inject(0){|x,y| x+y}
       end.reverse
       # payload
@@ -144,7 +149,6 @@ module EmailCampaigns
             end_at: phase.end_at.iso8601
           },
           top_ideas: top_project_ideas[project_id].map{ |idea|
-            new_votes = idea.votes.where('created_at > ?', Time.now - days_ago)
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,
@@ -152,21 +156,39 @@ module EmailCampaigns
               published_at: idea.published_at.iso8601,
               author_name: idea.author_name,
               upvotes_count: idea.upvotes_count,
-              upvotes_increment: new_votes.where(mode: 'up').count,
+              upvotes_increment: activity_counts.dig(idea.id, :upvotes),
               downvotes_count: idea.downvotes_count,
-              downvotes_increment: new_votes.where(mode: 'down').count,
+              downvotes_increment: activity_counts.dig(idea.id, :downvotes),
               comments_count: idea.comments_count,
-              comments_increment: idea.comments.where('created_at > ?', Time.now - days_ago).count
+              comments_increment: activity_counts.dig(idea.id, :comments)
             }
           }
         }
       end
     end
 
-    def idea_activity_count idea
-      new_vote_count = idea.votes.where('created_at > ?', Time.now - days_ago).count
-      new_comments_count = idea.comments.where('created_at > ?', Time.now - days_ago).count
-      new_vote_count + new_comments_count
+    def ideas_activity_counts ideas
+      idea_ids = ideas.pluck(:id)
+      new_votes = Vote.where(votable_id: idea_ids)
+        .where('created_at > ?', Time.now - days_ago)                        
+      new_upvotes_counts = new_votes.where(mode: 'up')
+        .group(:votable_id).count
+      new_downvotes_counts = new_votes.where(mode: 'down')
+        .group(:votable_id).count
+      new_comments_counts = Comment.where(idea_id: idea_ids)
+        .where('created_at > ?', Time.now - days_ago)
+        .group(:idea_id).count
+      idea_ids.map do |idea_id|
+        upvotes = (new_upvotes_counts[idea_id] || 0)
+        downvotes = (new_downvotes_counts[idea_id] || 0)
+        comments = (new_comments_counts[idea_id] || 0)
+        [idea_id, {
+          upvotes: upvotes,
+          downvotes: downvotes,
+          comments: comments,
+          total: (upvotes + downvotes + comments)
+        }]
+      end.to_h
     end
 
   end
