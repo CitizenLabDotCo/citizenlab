@@ -96,6 +96,11 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def update
     if @user.update(permitted_attributes(@user))
+      if permitted_attributes(@user).keys.include?('avatar') && permitted_attributes(@user)['avatar'] == nil
+        # setting the avatar attribute to nil will not remove the avatar
+        @user.remove_avatar!
+        @user.save!
+      end
       SideFxUserService.new.after_update(@user, current_user)
       render json: @user, status: :ok
     else
