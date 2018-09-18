@@ -25,12 +25,25 @@ RSpec.describe Basket, type: :model do
   end
 
   context "a basket exceeding the maximum budget" do
-    it "cannot be submitted" do
+    before do
       project = create(:continuous_budgeting_project, max_budget: 1000)
       ideas = create_list(:idea, 11, budget: 100, project: project)
-      basket = create(:basket, ideas: ideas, participation_context: project)
-      basket.submitted_at = Time.now
-      expect(basket).to be_invalid
+      @basket = create(:basket, ideas: ideas, participation_context: project)
+    end
+    it "cannot be submitted" do
+      @basket.submitted_at = Time.now
+      expect(@basket).to be_invalid
+    end
+  end
+
+  context "an idea without a budget" do
+    before do
+      @idea = create(:idea, budget: nil)
+    end
+    it "cannot be added to a basket" do
+      basket = create(:basket)
+      basket_idea = build(:baskets_idea, basket: basket, idea: @idea)
+      expect(basket_idea).to be_invalid
     end
   end
 end
