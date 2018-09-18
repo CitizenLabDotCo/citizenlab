@@ -101,6 +101,7 @@ class WebApi::V1::UsersController < ::ApplicationController
       # setting the avatar attribute to nil will not remove the avatar
       @user.remove_avatar!
     end
+    authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
       render json: @user, status: :ok
