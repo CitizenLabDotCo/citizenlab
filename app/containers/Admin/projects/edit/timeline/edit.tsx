@@ -8,6 +8,7 @@ import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import moment from 'moment';
 import { get, isEmpty, isString } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 // Services
 import { localeStream } from 'services/locale';
@@ -343,15 +344,17 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
 
   save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     let phaseResponse = phase;
+    let redirect = false;
 
     try {
       if (!isEmpty(attributeDiff)) {
         if (phase) {
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: phaseResponse, errors: null, submitState: 'success' });
+          this.setState({ attributeDiff: {}, phase: phaseResponse });
         } else if (project && projectId) {
-          phaseResponse = await addPhase(project.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: phaseResponse, errors: null, submitState: 'success' });
+          phaseResponse = await addPhase(projectId, attributeDiff);
+          this.setState({ attributeDiff: {}, phase: phaseResponse });
+          redirect = true;
         }
       }
 
@@ -364,6 +367,11 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
           ...filesToAddPromises,
           ...filesToRemovePromises
         ]);
+      }
+
+      this.setState({ saving: false, saved: true, errors: null, submitState: 'success' });
+      if (redirect) {
+        clHistory.push(`/admin/projects/${projectId}/timeline/`);
       }
 
     } catch (errors) {
