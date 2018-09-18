@@ -392,7 +392,7 @@ if Apartment::Tenant.current == 'localhost'
         publication_status: 'published',
         published_at: Faker::Date.between(created_at, Time.now),
         created_at: created_at,
-        location_point: rand(2) == 0 ? nil : "POINT(#{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)})",
+        location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address
       })
 
