@@ -46,8 +46,6 @@ const AuthorNameContainer: any = styled.div `
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
-  word-break: break-all;
-  hyphens: auto;
 `;
 
 const AuthorNameLink = styled(Link)`
