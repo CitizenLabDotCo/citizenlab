@@ -151,11 +151,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = ideaFormOutput;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, localIdeaFiles } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, selectedProject, position, imageFile, imageChanged });
+    this.globalState.set({ title, description, selectedTopics, selectedProject, position, imageFile, imageChanged, localIdeaFiles });
     this.props.onSubmit();
   }
 
