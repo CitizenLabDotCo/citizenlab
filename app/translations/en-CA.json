@@ -113,6 +113,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "",
   "app.components.admin.IdeaManager.allIdeas": "",
   "app.components.admin.IdeaManager.author": "",
+  "app.components.admin.IdeaManager.basketsCountTooltip": "",
   "app.components.admin.IdeaManager.delete": "",
   "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "",

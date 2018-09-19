@@ -113,6 +113,7 @@
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Gemt uden problemer",
   "app.components.admin.IdeaManager.allIdeas": "Alle ideer",
   "app.components.admin.IdeaManager.author": "Forfatter",
+  "app.components.admin.IdeaManager.basketsCountTooltip": "",
   "app.components.admin.IdeaManager.delete": "Slet",
   "app.components.admin.IdeaManager.deleteAllSelectedIdeas": "",
   "app.components.admin.IdeaManager.deleteIdeaConfirmation": "Er du sikker på at du vil slette denne gruppe?",
