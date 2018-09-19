@@ -24,6 +24,8 @@ resource "Campaigns" do
       parameter :number, "Page number"
       parameter :size, "Number of campaigns per page"
     end
+    parameter :campaign_names, "An array of campaign names that should be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
+    parameter :without_campaign_names, "An array of campaign names that should not be returned. Possible values are #{EmailCampaigns::DeliveryService::CAMPAIGN_CLASSES.map(&:campaign_name).join(', ')}", required: false
 
 
     example_request "List all campaigns" do
