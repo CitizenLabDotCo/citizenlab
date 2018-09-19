@@ -73,6 +73,14 @@ class FileInput extends Component<InjectedIntlProps &Props> {
     }
   }
 
+  handleKeyPress = (event) => {
+    const fileInput = this.fileInput.current;
+
+    if (fileInput && event.key === 'Enter') {
+      fileInput.click();
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -87,7 +95,14 @@ class FileInput extends Component<InjectedIntlProps &Props> {
         />
         <Label htmlFor="project-attachment-uploader">
           <StyledIcon name="upload-file" />
-          <FormattedMessage {...messages.FileInputDescription} />
+          <span
+            role="button"
+            aria-controls="project-attachment-uploader"
+            tabIndex={0}
+            onKeyPress={this.handleKeyPress}
+          >
+            <FormattedMessage {...messages.FileInputDescription} />
+          </span>
         </Label>
       </Container>
     );
