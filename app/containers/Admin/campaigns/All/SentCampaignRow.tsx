@@ -21,9 +21,9 @@ const SentCampaignRow = ({ campaign }: Props) => (
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
     <div>
-      <FormattedDate value={campaign.attributes.sent_at} />
+      <FormattedDate value={campaign.attributes.updated_at} />
       &nbsp;
-      <FormattedTime value={campaign.attributes.sent_at} />
+      <FormattedTime value={campaign.attributes.updated_at} />
     </div>
     <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
     <Button linkTo={`/admin/campaigns/${campaign.id}`} circularCorners={false} icon="analytics" style="secondary">

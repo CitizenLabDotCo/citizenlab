@@ -12,9 +12,9 @@ export interface ICampaignData {
     body_multiloc: Multiloc;
     sender: 'author' | 'organization';
     reply_to: 'author' | 'organization';
-    sent_at: string;
     created_at: string;
     updated_at: string;
+    deliveries_count: number;
   };
   relationships: {
     author: {
@@ -97,4 +97,8 @@ export function campaignByIdStream(campaignId: string, streamParams: IStreamPara
 
 export function listCampaignRecipients(campaignId: string, streamParams: IStreamParams | null = null) {
   return streams.get<{ data: IRecipientData[] }>({ apiEndpoint: `${apiEndpoint}/${campaignId}/recipients`, ...streamParams });
+}
+
+export function isDraft(campaign: ICampaignData) {
+  return campaign.attributes.deliveries_count === 0;
 }
