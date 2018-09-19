@@ -270,7 +270,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
     let { attributeDiff } = this.state;
-    const { phase, project } = this.state;
+    const { phase } = this.state;
     const { projectId } = this.props.params;
     const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode } = participationContextConfig;
 
@@ -347,7 +347,6 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     let redirect = false;
 
     try {
-      debugger;
       if (!isEmpty(attributeDiff)) {
         if (phase) {
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
