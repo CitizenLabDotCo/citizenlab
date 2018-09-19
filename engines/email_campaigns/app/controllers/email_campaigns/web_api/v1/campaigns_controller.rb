@@ -9,8 +9,14 @@ module EmailCampaigns
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
-      if params[:campaign_name]
-        @campaigns = @campaigns.where(type: Campaign.from_campaign_name(params[:campaign_name]))
+      if params[:campaign_names]
+        campaign_types = params[:campaign_names].map{|name| Campaign.from_campaign_name(name) }
+        @campaigns = @campaigns.where(type: campaign_types)
+      end
+
+      if params[:without_campaign_names]
+        campaign_types = params[:without_campaign_names].map{|name| Campaign.from_campaign_name(name) }
+        @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
       render json: @campaigns, each_serializer: WebApi::V1::CampaignSerializer
