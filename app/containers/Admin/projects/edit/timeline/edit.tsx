@@ -287,7 +287,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       presentation_mode: presentationMode
     };
 
-    this.save(projectId, project, phase, attributeDiff);
+    this.save(projectId, phase, attributeDiff);
   }
 
   getFilesToAddPromises = (phaseId: string) => {
@@ -342,16 +342,17 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     return filesToRemovePromises;
   }
 
-  save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
+  save = async (projectId: string | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     let phaseResponse = phase;
     let redirect = false;
 
     try {
+      debugger;
       if (!isEmpty(attributeDiff)) {
         if (phase) {
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
           this.setState({ attributeDiff: {}, phase: phaseResponse });
-        } else if (project && projectId) {
+        } else if (projectId) {
           phaseResponse = await addPhase(projectId, attributeDiff);
           this.setState({ attributeDiff: {}, phase: phaseResponse });
           redirect = true;
