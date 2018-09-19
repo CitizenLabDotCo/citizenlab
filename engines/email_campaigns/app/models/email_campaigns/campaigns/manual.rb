@@ -10,7 +10,7 @@ module EmailCampaigns
       CampaignMailer
     end
 
-    def generate_commands recipient:
+    def generate_commands recipient:, time: nil, activity: nil
       [{
         event_payload: {},
         subject_multiloc: subject_multiloc,
