@@ -7,7 +7,6 @@ resource "Campaigns" do
 
   before do
     header "Content-Type", "application/json"
-    @campaigns = create_list(:manual_campaign, 5)
     @user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
@@ -15,6 +14,12 @@ resource "Campaigns" do
 
 
   get "/web_api/v1/campaigns" do
+
+    before do
+      @campaigns = create_list(:manual_campaign, 3)
+      create_list(:mention_in_comment_campaign, 2)
+    end
+
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of campaigns per page"
@@ -24,28 +29,36 @@ resource "Campaigns" do
     example_request "List all campaigns" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq @campaigns.size
+      expect(json_response[:data].size).to eq 5
     end
 
     example "List all manual campaigns" do
-      do_request(campaign_name: "manual")
+      do_request(campaign_names: ["manual"])
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq @campaigns.size
+      expect(json_response[:data].size).to eq 3
+    end
+
+    example "List all non-manual campaigns" do
+      do_request(without_campaign_names: ["manual"])
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
     end
   end
 
   get "/web_api/v1/campaigns/:id" do
-    let(:id) {@campaigns.first.id}
+    let(:campaign) { create(:manual_campaign) }
+    let(:id) {campaign.id}
 
     example_request "Get one campaign by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @campaigns.first.id
+      expect(json_response.dig(:data, :id)).to eq id
     end
   end
 
   get "/web_api/v1/campaigns/:id/preview" do
-    let(:id) {@campaigns.first.id}
+    let(:campaign) { create(:manual_campaign) }
+    let(:id) { campaign.id }
 
     example_request "Get a campaign HTML preview" do
       expect(status).to eq 200
