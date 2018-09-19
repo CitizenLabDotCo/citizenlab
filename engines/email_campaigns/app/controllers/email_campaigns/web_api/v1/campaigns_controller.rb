@@ -69,28 +69,17 @@ module EmailCampaigns
     end
 
     def do_send
-      @campaign.update(
-        sent_at: Time.now,
-        campaigns_recipients: @campaign.calculated_recipients.map do |recipient|
-          CampaignsRecipient.new(
-            delivery_status: 'sent',
-            user_id: recipient.id,
-            campaign_id: @campaign.id
-          )
-        end
-      )
-      SendCampaignJob.perform_later(@campaign)
+      EmailCampaigns::DeliveryService.new.send_now(@campaign)
       render json: @campaign
     end
 
     def send_preview
-      CampaignMailer.campaign_mail(@campaign, current_user).deliver_later
+      EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
       head :ok
     end
 
     def preview
-      mail = CampaignMailer.campaign_mail(@campaign, current_user)
-      html = mail.parts[1].body.to_s
+      html = EmailCampaigns::DeliveryService.new.preview_html(@campaign, current_user)
       render json: {html: html}
     end
 
