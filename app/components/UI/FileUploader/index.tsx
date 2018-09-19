@@ -42,7 +42,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
         <FileInput
           onAdd={this.handleFileOnAdd}
         />
-        <Error fieldName="file" apiErrors={errors && errors.file} />
+        {errors && <Error fieldName="file" apiErrors={errors.file} />}
         {Array.isArray(localFiles) && localFiles.map(file => (
           <FileDisplay
             key={file.id || file.filename}
