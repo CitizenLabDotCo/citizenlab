@@ -1,6 +1,6 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ActiveModel::Serializer
-    attributes :id, :campaign_name, :created_at, :updated_at
+    attributes :id, :campaign_name, :deliveries_count, :created_at, :updated_at
 
     attribute :enabled, if: -> { object.respond_to? :enabled }
     attribute :schedule, if: -> { object.respond_to? :schedule }
