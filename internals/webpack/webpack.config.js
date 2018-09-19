@@ -23,6 +23,8 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
+  devtool: 'eval-source-map',
+
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
     port: 3000,

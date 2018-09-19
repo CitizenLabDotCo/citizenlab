@@ -78,6 +78,10 @@ const LeftFilterArea = FilterArea.extend`
   `}
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const RightFilterArea = FilterArea.extend`
   &.hidden {
     display: none;
@@ -305,6 +309,8 @@ class IdeaCards extends React.PureComponent<Props, State> {
               <SelectSort onChange={this.handleSortOnChange} />
               <SelectTopics onChange={this.handleTopicsOnChange} />
             </DropdownFilters>
+
+            <Spacer />
 
             {showViewToggle &&
               <FeatureFlag name="maps">
