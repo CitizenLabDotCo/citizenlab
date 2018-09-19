@@ -3,7 +3,7 @@ import { returnFileSize } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // components
 import Icon  from 'components/UI/Icon';
@@ -12,7 +12,6 @@ import { UploadFile } from 'typings';
 
 const Container = styled.div`
   display: flex;
-  height: 47px;
   max-width: 520px;
   align-items: center;
   color: ${colors.label};
@@ -25,6 +24,8 @@ const Container = styled.div`
 `;
 
 const Paperclip = styled(Icon)`
+  min-width: 10px;
+  min-height: 20px;
   width: 10px;
   height: 20px;
   fill: ${colors.label};
@@ -36,16 +37,27 @@ const FileDownloadLink = styled.a`
   display: inline-block;
   margin-right: 5px;
   text-decoration: underline;
+  word-break: break-all;
+
+  ${media.smallerThanMinTablet`
+    margin-right: auto;
+  `}
 `;
 
 const FileSize = styled.span`
   margin-right: auto;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const DeleteButton = styled.button`
   display: flex;
+  height: 20px;
   align-items: center;
   cursor: pointer;
+  margin-left: 5px;
 
   &:hover {
     .cl-icon {
