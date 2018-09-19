@@ -30,8 +30,7 @@ import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
-import FileInput from 'components/UI/FileInput';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileUploader from 'components/UI/FileUploader';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -452,19 +451,12 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
               </SectionField>
 
               <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.fileUploadLabel} />
-                </Label>
-                <FileInput
-                  onAdd={this.handlePhaseFileOnAdd}
+                <FileUploader
+                  onFileAdd={this.handlePhaseFileOnAdd}
+                  onFileRemove={this.handlePhaseFileOnRemove}
+                  localFiles={localPhaseFiles}
+                  errors={errors}
                 />
-                {Array.isArray(localPhaseFiles) && localPhaseFiles.map(file => (
-                  <FileDisplay
-                    key={file.id || file.filename}
-                    onDeleteClick={this.handlePhaseFileOnRemove(file)}
-                    file={file}
-                  />)
-                )}
               </SectionField>
 
               {errors && errors.project &&
