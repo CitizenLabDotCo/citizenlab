@@ -2,7 +2,7 @@ import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
 
 // components
-import { Table } from 'semantic-ui-react';
+import { Table, Popup, Icon } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
@@ -148,6 +148,12 @@ export default class IdeaTable extends React.Component<Props, State> {
                 onToggle={this.handleSortClick('baskets_count')}
               >
                 <FormattedMessage {...messages.participatoryBudgettingPicks} />
+                &nbsp;
+                <Popup
+                  basic
+                  trigger={<Icon name="info circle" />}
+                  content={<FormattedMessage {...messages.basketsCountTooltip} />}
+                />
               </SortableTableHeader>
             </Table.HeaderCell>
           </Table.Row>

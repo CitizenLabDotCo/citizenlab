@@ -77,4 +77,8 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.allIdeas',
     defaultMessage: 'All ideas',
   },
+  basketsCountTooltip: {
+    id: 'app.components.admin.IdeaManager.basketsCountTooltip',
+    defaultMessage: 'The number of users that added this idea to their participatory budget',
+  },
 });
