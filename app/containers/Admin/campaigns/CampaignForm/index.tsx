@@ -19,10 +19,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
+import FormikInput from 'components/UI/FormikInput';
 
 export interface FormValues {
   sender: 'author' | 'organization';
-  reply_to: 'author' | 'organization';
+  reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
   group_ids: string[];
@@ -103,9 +104,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             </Label>
             <Field
               name="reply_to"
-              component={FormikSelect}
-              options={this.senderOptions()}
-              clearable={false}
+              component={FormikInput}
+              type="email"
             />
             {touched.reply_to && <Error
               fieldName="reply_to"

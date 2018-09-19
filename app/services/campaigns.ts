@@ -27,9 +27,19 @@ export interface ICampaignData {
 }
 
 export interface CampaignUpdate {
+  campaign_name?: string;
   subject_multiloc?: Multiloc;
   body_multiloc?: Multiloc;
   sender?: string;
+  reply_to?: string;
+  group_ids?: string[];
+}
+
+export interface CampaignCreation  {
+  campaign_name: string;
+  subject_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+  sender: string;
   reply_to?: string;
   group_ids?: string[];
 }
@@ -61,7 +71,7 @@ export function listCampaigns(streamParams: IStreamParams | null = null) {
   return streams.get<{data: ICampaignData[]}>({ apiEndpoint: `${apiEndpoint}`, ...streamParams });
 }
 
-export function createCampaign(campaignData: CampaignUpdate) {
+export function createCampaign(campaignData: CampaignCreation) {
   return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
 }
 

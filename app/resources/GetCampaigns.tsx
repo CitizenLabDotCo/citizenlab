@@ -6,6 +6,8 @@ import { ICampaignData, listCampaigns, campaignByIdStream } from 'services/campa
 
 interface InputProps {
   ids?: string[];
+  campaignNames?: string[];
+  withoutCampaignNames?: string[];
 }
 
 type children = (renderProps: GetCampaignsChildProps) => JSX.Element | null;
@@ -32,14 +34,14 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ids } = this.props;
+    const { ids, campaignNames, withoutCampaignNames } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ids });
+    this.inputProps$ = new BehaviorSubject({ ids, campaignNames, withoutCampaignNames });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids }) => {
+        switchMap(({ ids, campaignNames }) => {
           if (ids) {
             if (ids.length > 0) {
               return combineLatest(
@@ -50,7 +52,10 @@ export default class GetCampaigns extends React.Component<Props, State> {
             return of(null);
           }
 
-          return listCampaigns().observable.pipe(map(campaigns => campaigns.data));
+          return listCampaigns({ queryParameters: {
+            campaign_names: campaignNames,
+            without_campaign_names: withoutCampaignNames,
+          }}).observable.pipe(map(campaigns => campaigns.data));
         })
       )
       .subscribe((campaigns) => {
@@ -60,7 +65,11 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    this.inputProps$.next({ ids: this.props.ids });
+    this.inputProps$.next({
+      ids: this.props.ids,
+      campaignNames: this.props.campaignNames,
+      withoutCampaignNames: this.props.withoutCampaignNames,
+    });
   }
 
   componentWillUnmount() {

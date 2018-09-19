@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
@@ -10,6 +11,7 @@ import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const PageTitle = styled.h1`
   width: 100%;
@@ -17,12 +19,15 @@ const PageTitle = styled.h1`
   margin: 1rem 0 3rem 0;
 `;
 
-type Props = {};
+type Props = {
+  authUser: GetAuthUserChildProps;
+};
 
 class New extends React.Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     createCampaign({
+      campaign_name: 'manual',
       ...values
     })
       .then((response) => {
@@ -36,9 +41,10 @@ class New extends React.Component<Props> {
   }
 
   initialValues = () : FormValues => {
+    const { authUser } = this.props;
     return {
       sender: 'author',
-      reply_to: 'author',
+      reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
       subject_multiloc: {},
       body_multiloc: {},
       group_ids: [],
@@ -76,4 +82,8 @@ class New extends React.Component<Props> {
   }
 }
 
-export default New;
+export default () => (
+  <GetAuthUser>
+    {(user) => isNilOrError(user) ? null : <New authUser={user} />}
+  </GetAuthUser>
+);
