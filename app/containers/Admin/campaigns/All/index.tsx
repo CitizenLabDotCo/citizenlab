@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
+import { isDraft } from 'services/campaigns';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -59,10 +60,10 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
           </FeatureFlag>
           <List key={campaigns.length}>
             {campaigns.map((campaign) => (
-              campaign.attributes.sent_at ?
-                <SentCampaignRow key={campaign.id} campaign={campaign} />
-              :
+              isDraft(campaign) ?
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
+              :
+                <SentCampaignRow key={campaign.id} campaign={campaign} />
             ))}
           </List>
         </PageWrapper>

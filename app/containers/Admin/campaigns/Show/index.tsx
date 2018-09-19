@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign } from 'services/campaigns';
+import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
@@ -77,16 +77,16 @@ class Show extends React.Component<Props> {
         <GoBackButton onClick={this.goBack} />
         <PageTitle>
           <T value={campaign.attributes.subject_multiloc} />
-          {campaign.attributes.sent_at ?
-            <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
-          :
+          {isDraft(campaign) ?
             <StatusLabel color={'draftYellow'} text={<FormattedMessage {...messages.draft} />} />
+          :
+            <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
           }
         </PageTitle>
-        {campaign.attributes.sent_at ?
-          <SentCampaignDetails campaignId={campaign.id} />
-        :
+        {isDraft(campaign) ?
           <DraftCampaignDetails campaignId={campaign.id} />
+        :
+          <SentCampaignDetails campaignId={campaign.id} />
         }
       </div>
     );
