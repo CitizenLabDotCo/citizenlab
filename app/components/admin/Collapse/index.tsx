@@ -26,6 +26,7 @@ const ArrowIcon = styled(Icon) `
     transform: rotate(90deg);
   }
 `;
+
 const Options: any = styled.div`
   display: flex;
   align-items: center;
@@ -115,6 +116,7 @@ class Collapse extends PureComponent<Props> {
 
   render() {
     const { label, children, opened } = this.props;
+
     return (
       <>
         <Options onClick={this.handleToggle}>

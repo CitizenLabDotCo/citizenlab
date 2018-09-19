@@ -84,8 +84,6 @@ const Footer = styled.div`
   justify-content: space-between;
 `;
 
-const StyledVoteControl = styled(VoteControl)``;
-
 const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   height: 21px;
@@ -262,7 +260,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                <StyledVoteControl
+                <VoteControl
                   ideaId={idea.id}
                   unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                   disabledVoteClick={this.disabledVoteClick}
