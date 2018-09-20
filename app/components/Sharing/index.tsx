@@ -29,10 +29,10 @@ import { darken } from 'polished';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledIcon = styled(Icon)`
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
   fill: #fff;
-  margin-right: 10px;
+  margin-right: 12px;
 `;
 
 const Text = styled.div`
@@ -56,7 +56,9 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    padding: 11px;
+    padding: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
@@ -180,7 +182,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const email = ((emailSubject && emailBody) ? (
         <a
           className="sharingButton email"
-          href={`mailto:?subject=${emailSubject}body=${emailBody}`}
+          href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
           onClick={clickEmailShare}
         >
           <StyledIcon name="email" />
