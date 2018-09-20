@@ -14,8 +14,7 @@ import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
-import FileInput from 'components/UI/FileInput';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
@@ -412,7 +411,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  handleProjectFileOnRemove = (removedFile: UploadFile) => () => {
+  handleProjectFileOnRemove = (removedFile: UploadFile) => {
     this.setState((state) => ({
       submitState: 'enabled',
       localProjectFiles: (!isNilOrError(state.localProjectFiles) ? state.localProjectFiles.filter(projectFile => projectFile.filename !== removedFile.filename) : [])
@@ -704,7 +703,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
       projectAttributesDiff,
       areasOptions,
       areaType,
-      submitState
+      submitState,
+      apiErrors
     } = this.state;
 
     if (!loading && currentTenant && locale) {
@@ -885,20 +885,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             </StyledSectionField>
 
             <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fileUploadLabel} />
-              </Label>
-              <FileInput
-                onAdd={this.handleProjectFileOnAdd}
+              <FileUploader
+                onFileAdd={this.handleProjectFileOnAdd}
+                onFileRemove={this.handleProjectFileOnRemove}
+                localFiles={localProjectFiles}
+                errors={apiErrors}
               />
-              <Error fieldName="file" apiErrors={this.state.apiErrors.file} />
-              {localProjectFiles.length > 0 && localProjectFiles.map(file => (
-                <FileDisplay
-                  key={file.id || file.filename}
-                  onDeleteClick={this.handleProjectFileOnRemove(file)}
-                  file={file}
-                />)
-              )}
             </SectionField>
 
             {projectData &&
