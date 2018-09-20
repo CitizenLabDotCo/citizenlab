@@ -13,6 +13,7 @@ const StyledFrame = styled(Frame)`
 
 type Props = {
   campaignId: string;
+  className?: string;
 };
 
 type State = {
@@ -41,11 +42,13 @@ class PreviewFrame extends React.Component<Props, State> {
 
   render() {
     const { previewHtml } = this.state;
+    const { className } = this.props;
 
     if (!previewHtml) return null;
 
     return (
       <StyledFrame
+        className={className}
         initialContent={previewHtml}
       />
     );
