@@ -10,7 +10,6 @@ import moment from 'moment';
 import { get, isEmpty } from 'lodash-es';
 
 // Services
-import { localeStream } from 'services/locale';
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
@@ -39,7 +38,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLError, Locale } from 'typings';
+import { CLError } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -77,7 +76,6 @@ type Props = {
 };
 
 interface State {
-  locale: Locale;
   phase: IPhase | null;
   project: IProject | null;
   presentationMode: 'map' | 'card';
@@ -96,7 +94,6 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      locale: null as any,
       phase: null,
       project: null,
       presentationMode: 'card',
@@ -121,14 +118,12 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
         distinctUntilChanged(shallowCompare),
         switchMap((params: IParams) => {
           const { projectId, id } = params;
-          const locale$ = localeStream().observable;
           const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
           const phase$ = (id ? phaseStream(id).observable : of(null));
-          return combineLatest(locale$, project$, phase$);
+          return combineLatest(project$, phase$);
         })
-      ).subscribe(([locale, project, phase]) => {
+      ).subscribe(([project, phase]) => {
         this.setState({
-          locale,
           project,
           phase,
           loaded: true

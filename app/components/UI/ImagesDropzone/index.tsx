@@ -123,6 +123,7 @@ const StyledDropzone = styled(Dropzone)`
   ${(props: any) => props.disabled ? css`
     cursor: not-allowed;
     border-color: #ccc;
+    cursor: no-drop !important;
 
     ${DropzonePlaceholderText},
     ${DropzoneImagesRemaining} {
@@ -133,6 +134,8 @@ const StyledDropzone = styled(Dropzone)`
       fill: #ccc;
     }
   ` : css`
+    cursor: pointer !important;
+
     &:hover {
       border-color: inherit;
 
