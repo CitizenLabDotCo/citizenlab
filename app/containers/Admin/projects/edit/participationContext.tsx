@@ -13,7 +13,8 @@ import { Section, SectionField } from 'components/admin/Section';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
-import { phaseStream, IPhase, ParticipationMethod, SurveyServices } from 'services/phases';
+import { phaseStream, IPhase } from 'services/phases';
+import { ParticipationMethod, SurveyServices } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
