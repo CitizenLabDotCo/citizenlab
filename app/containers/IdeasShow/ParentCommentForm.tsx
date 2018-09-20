@@ -55,7 +55,7 @@ const StyledTextArea = styled(MentionsTextArea)`
 `;
 
 const StyledAuthor = styled(Author)`
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 `;
 
 const SubmitButton = styled(Button)`
@@ -168,7 +168,11 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
         />
         {(authUser && canComment) &&
           <CommentContainer className="e2e-comment-form ideaCommentForm">
-            <StyledAuthor authorId={authUser.id} message={messages.author} size="medium"/>
+            <StyledAuthor
+              authorId={authUser.id}
+              message={messages.author}
+              size="42px"
+            />
 
             <label htmlFor="submit-comment">
               <HiddenLabel>

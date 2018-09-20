@@ -32,7 +32,6 @@ const CheckboxContainer: any = styled.div`
   background: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#fff'};
   border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
-  margin-left: 10px;
 
   &:hover {
     border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#333'};
@@ -57,24 +56,26 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
 `;
 
-type Props = {
+interface DefaultProps {
+  size?: string;
+}
+
+interface Props extends DefaultProps {
   value: boolean;
   onChange: (event: FormEvent | KeyboardEvent) => void;
   label?: string | JSX.Element | null | undefined;
-  size?: string | undefined;
   disableLabelClick?: boolean;
   className?: string;
-};
+}
 
 type State = {};
 
 export default class Checkbox extends PureComponent<Props, State> {
-  checkboxContainer: HTMLDivElement | null;
+  checkboxContainer: HTMLDivElement | null = null;
 
-  constructor(props: Props)  {
-    super(props as any);
-    this.checkboxContainer = null;
-  }
+  static defaultProps: DefaultProps = {
+    size: '22px'
+  };
 
   toggleCheckbox = (event: FormEvent | KeyboardEvent) => {
     if (event.type === 'click') {
@@ -90,8 +91,10 @@ export default class Checkbox extends PureComponent<Props, State> {
     this.checkboxContainer = el;
   }
 
-  removeFocusCheckboxFocus() {
-    if (this.checkboxContainer) this.checkboxContainer.blur();
+  removeFocusCheckboxFocus = () => {
+    if (this.checkboxContainer) {
+      this.checkboxContainer.blur();
+    }
   }
 
   handleLabelOnClick = (event: FormEvent) => {
@@ -109,15 +112,14 @@ export default class Checkbox extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { size, value, label } = this.props;
-    const checkboxSize = (size || '22px');
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'} e2e-checkbox`} size={checkboxSize}>
+      <Container className={`${className} ${label && 'hasLabel'} e2e-checkbox`} size={size}>
         <CheckboxContainer
           innerRef={this.setCheckboxContainerRef}
           tabIndex={0}
           checked={value}
-          size={checkboxSize}
+          size={size}
           onClick={this.toggleCheckbox}
           onKeyPress={this.handleKeyPress}
         >

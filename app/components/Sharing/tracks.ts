@@ -17,4 +17,10 @@ export default {
       network: 'messenger',
     },
   },
+  clickEmailShare: {
+    name: 'Share button clicked',
+    properties: {
+      network: 'email',
+    },
+  },
 };

@@ -246,7 +246,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
     if (isUndefined(projectsList)) {
       return (
         <Loading>
-          <Spinner size="32px" />
+          <Spinner />
         </Loading>
       );
     }

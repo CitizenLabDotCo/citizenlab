@@ -34,7 +34,6 @@ interface Props {
 }
 
 class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
-
   handleItemClick = (_event, data) => {
     this.props.onChangeActiveFilterMenu(data.id);
   }

@@ -31,12 +31,13 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
 
 const CommentContainer = styled.div`
   padding: 20px;
-  border-top: solid 1px #ddd;
+  border-top: solid 1px #d0d0d0;
   position: relative;
 `;
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
+  margin-right: 60px;
 `;
 
 interface InputProps {
@@ -118,7 +119,7 @@ class ChildComment extends React.PureComponent<Props, State> {
             authorId={authorId}
             createdAt={createdAt}
             message={messages.childCommentAuthor}
-            size="medium"
+            size="42px"
           />
 
           <CommentBody

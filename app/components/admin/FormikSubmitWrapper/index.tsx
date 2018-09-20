@@ -21,7 +21,7 @@ type Props = {
 
 type State = {};
 
-class FormikSubmitWrapper extends React.Component<Props, State> {
+class FormikSubmitWrapper extends React.PureComponent<Props, State> {
 
   getStatus = () => {
     const { isValid, status, touched } = this.props;
