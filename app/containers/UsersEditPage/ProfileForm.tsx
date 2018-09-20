@@ -304,6 +304,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <QuillEditor
               id="bio_multiloc"
               noImages
+              noVideos
               limitedTextFormatting
               value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
               placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}

@@ -312,6 +312,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           <QuillEditor
             id="editor"
             noImages
+            noVideos
             value={description}
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
