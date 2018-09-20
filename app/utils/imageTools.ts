@@ -86,6 +86,16 @@ export async function convertUrlToUploadFile(url: string) {
   return convertBlobToFile(blob, filename) as UploadFile;
 }
 
+export async function convertUrlToUploadFileWithBase64(url: string) {
+  const uploadFile = await convertUrlToUploadFile(url);
+  uploadFile.base64 = await getBase64FromFile(uploadFile);
+  return uploadFile;
+}
+
 export function convertUrlToUploadFileObservable(url: string) {
   return from(convertUrlToUploadFile(url));
+}
+
+export function convertUrlToUploadFileWithBase64Observable(url: string) {
+  return from(convertUrlToUploadFileWithBase64(url));
 }
