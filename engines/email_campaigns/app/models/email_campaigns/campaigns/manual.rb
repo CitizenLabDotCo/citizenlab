@@ -10,6 +10,10 @@ module EmailCampaigns
       CampaignMailer
     end
 
+    # If this would be missing, the campaign would be sent on every event and
+    # every schedule trigger
+    before_send :only_manual_send
+
     def generate_commands recipient:, time: nil, activity: nil
       [{
         author: author,
@@ -19,6 +23,10 @@ module EmailCampaigns
         sender: sender,
         reply_to: reply_to
       }]
+    end
+
+    def only_manual_send activity: nil, time: nil
+      !activity && !time
     end
   end
 end
