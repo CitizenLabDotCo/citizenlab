@@ -31,7 +31,7 @@ import messages from '../messages';
 // services
 import {
   IUpdatedProjectProperties,
-  IProjectData,
+  IProject,
   projectByIdStream,
   addProject,
   updateProject,
@@ -140,7 +140,7 @@ type Props = {
 interface State {
   loading: boolean;
   processing: boolean;
-  projectData: IProjectData | null;
+  projectData: IProject | null;
   publicationStatus: 'draft' | 'published' | 'archived';
   projectType: 'continuous' | 'timeline';
   projectAttributesDiff: IUpdatedProjectProperties;
@@ -210,54 +210,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         locale$,
         currentTenant$,
         areas$,
-        project$.pipe(switchMap((project) => {
-          if (project) {
-            const projectImages$ = (project ? projectImagesStream(project.data.id).observable : of(null)) as Observable<IProjectImages | null>;
-            const headerUrl = get(project, 'data.attributes.header_bg.large');
-            const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : of(null));
-
-            return combineLatest(
-              this.processing$,
-              headerImageFileObservable,
-              projectImages$.pipe(
-                switchMap((projectImages) => {
-                  if (projectImages && projectImages.data && projectImages.data.length > 0) {
-                    const projectImageFiles$ = projectImages.data.map((projectImage) => {
-                      return convertUrlToFileObservable(projectImage.attributes.versions.large).pipe(
-                        map((projectImageFile) => {
-                          projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
-                          return projectImageFile;
-                        })
-                      );
-                    });
-
-                    return combineLatest([...projectImageFiles$]);
-                  }
-
-                  return of(null);
-                })
-              ),
-            ).pipe(
-              filter(([processing]) => !processing),
-              map(([_processing, headerBg, projectImages]) => ({
-                headerBg,
-                oldProjectImages: projectImages,
-                projectData: (project ? project.data : null)
-              }))
-            );
-          }
-
-          return of({
-            headerBg: null,
-            oldProjectImages: null,
-            projectData: null
-          });
-        }))
-      ).subscribe(([locale, currentTenant, areas, { headerBg, oldProjectImages, projectData }]) => {
+        project$
+      ).subscribe(([locale, currentTenant, areas, projectData]) => {
         this.setState((state) => {
-          const publicationStatus = (projectData ? projectData.attributes.publication_status : state.publicationStatus);
-          const projectType = (projectData ? projectData.attributes.process_type : state.projectType);
-          const areaType =  ((projectData && projectData.relationships.areas.data.length > 0) ? 'selection' : 'all');
+          const publicationStatus = (projectData ? projectData.data.attributes.publication_status : state.publicationStatus);
+          const projectType = (projectData ? projectData.data.attributes.process_type : state.projectType);
+          const areaType =  ((projectData && projectData.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
           const areasOptions = areas.data.map((area) => ({
             value: area.id,
             label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
@@ -271,14 +229,61 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             projectType,
             areaType,
             areasOptions,
-            oldProjectImages: (oldProjectImages as ImageFile[] | null),
-            newProjectImages: (oldProjectImages as ImageFile[] | null),
-            headerBg: (headerBg ? [headerBg] : null),
-            presentationMode: (projectData && projectData.attributes.presentation_mode || state.presentationMode),
+            presentationMode: (projectData && projectData.data.attributes.presentation_mode || state.presentationMode),
             areas: areas.data,
             projectAttributesDiff: {},
             loading: false,
           };
+        });
+      }),
+
+      project$.pipe(
+        switchMap((project) => {
+          if (project) {
+            const projectImages$ = (project ? projectImagesStream(project.data.id).observable : of(null)) as Observable<IProjectImages | null>;
+            const headerUrl = get(project, 'data.attributes.header_bg.large');
+            const headerImageFileObservable = (headerUrl ? convertUrlToFileObservable(headerUrl) : of(null));
+
+            return combineLatest(
+              this.processing$,
+              headerImageFileObservable,
+              projectImages$.pipe(
+                switchMap((projectImages) => {
+                  if (projectImages && projectImages.data && projectImages.data.length > 0) {
+                    return combineLatest(
+                      projectImages.data.map((projectImage) => {
+                        return convertUrlToFileObservable(projectImage.attributes.versions.large).pipe(
+                          map((projectImageFile) => {
+                            projectImageFile && (projectImageFile['projectImageId'] = projectImage.id);
+                            return projectImageFile;
+                          })
+                        );
+                      })
+                    );
+                  }
+
+                  return of(null);
+                })
+              ),
+            ).pipe(
+              filter(([processing]) => !processing),
+              map(([_processing, headerBg, projectImages]) => ({
+                headerBg,
+                oldProjectImages: projectImages
+              }))
+            );
+          }
+
+          return of({
+            headerBg: null,
+            oldProjectImages: null
+          });
+        })
+      ).subscribe(({ headerBg, oldProjectImages }) => {
+        this.setState({
+          oldProjectImages: (oldProjectImages as ImageFile[] | null),
+          newProjectImages: (oldProjectImages as ImageFile[] | null),
+          headerBg: (headerBg ? [headerBg] : null)
         });
       }),
 
@@ -456,7 +461,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
     const { projectAttributesDiff, projectData } = this.state;
-    const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
+    const projectAttrs = { ...(projectData ? projectData.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
     if (projectAttrs.title_multiloc) {
@@ -503,7 +508,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         this.processing$.next(true);
 
         let redirect = false;
-        let projectId = (projectData ? projectData.id : null);
+        let projectId = (projectData ? projectData.data.id : null);
         let imagesToAdd = newProjectImages;
         let imagesToRemove = oldProjectImages;
         let imagesToAddPromises: Promise<any>[] = [];
@@ -521,7 +526,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
-            await updateProject(projectData.id, projectAttributesDiff);
+            await updateProject(projectData.data.id, projectAttributesDiff);
             streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
           } else {
             const project = await addProject(projectAttributesDiff);
@@ -567,13 +572,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     const { projectData } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (projectData && projectData.attributes.internal_role === 'open_idea_box') {
+    if (projectData && projectData.data.attributes.internal_role === 'open_idea_box') {
       return;
     }
 
     if (projectData && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
-        await deleteProject(projectData.id);
+        await deleteProject(projectData.data.id);
         clHistory.push('/admin/projects');
       } catch {
         this.setState({ deleteError: formatMessage(messages.deleteProjectError) });
@@ -601,8 +606,8 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
     if (!loading && currentTenant && locale) {
       const newProjectImageFiles = (newProjectImages && newProjectImages.length > 0 ? newProjectImages : null);
-      const projectAttrs = { ...(projectData ? projectData.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-      const areaIds = projectAttrs.area_ids || (projectData && projectData.relationships.areas.data.map((area) => (area.id))) || [];
+      const projectAttrs = { ...(projectData ? projectData.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
+      const areaIds = projectAttrs.area_ids || (projectData && projectData.data.relationships.areas.data.map((area) => (area.id))) || [];
       const areasValues = areaIds.filter((id) => {
         return areasOptions.some(areaOption => areaOption.value === id);
       }).map((id) => {
@@ -705,7 +710,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
 
             {projectData && projectType === 'continuous' &&
               <ParticipationContext
-                projectId={projectData.id}
+                projectId={projectData.data.id}
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
               />
@@ -778,12 +783,12 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
             </StyledSectionField>
 
             {projectData &&
-              <HasPermission item={projectData} action="delete">
+              <HasPermission item={projectData.data} action="delete">
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
                   </Label>
-                  <SemButton type="button" color="red" onClick={this.deleteProject} disabled={projectData.attributes.internal_role === 'open_idea_box'}>
+                  <SemButton type="button" color="red" onClick={this.deleteProject} disabled={projectData.data.attributes.internal_role === 'open_idea_box'}>
                     <SemIcon name="trash" />
                     <FormattedMessage {...messages.deleteProjectButton} />
                   </SemButton>

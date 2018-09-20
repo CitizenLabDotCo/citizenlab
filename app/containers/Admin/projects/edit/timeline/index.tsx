@@ -75,7 +75,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AdminProjectTimelineIndex extends React.Component<Props & WithRouterProps & InjectedIntlProps, State> {
+class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
 
   createDeleteClickHandler = (phaseId: string) => (event: React.FormEvent<any>) => {
     event.preventDefault();
