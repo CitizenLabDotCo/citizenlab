@@ -43,6 +43,6 @@ export default defineMessages({
   },
   skipSocialSharing: {
     id: 'app.containers.IdeasNewPage2.skipSocialSharing',
-    defaultMessage: `Skip it, I'll dot it later`,
+    defaultMessage: `Skip it, I'll do it later`,
   },
 });
