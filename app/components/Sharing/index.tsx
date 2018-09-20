@@ -56,7 +56,8 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    padding: 10px;
+    padding-top: 11px;
+    padding-bottom: 11px;
     padding-left: 12px;
     padding-right: 12px;
     border-radius: 5px;
