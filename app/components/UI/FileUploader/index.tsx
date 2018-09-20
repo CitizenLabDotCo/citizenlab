@@ -8,14 +8,16 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Label from 'components/UI/Label';
 import FileInput from 'components/UI/FileInput';
 import FileDisplay from 'components/UI/FileDisplay';
+import Error from 'components/UI/Error';
 
 // typings
-import { UploadFile } from 'typings';
+import { CLError, UploadFile } from 'typings';
 
 interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: UploadFile) => void;
   localFiles: UploadFile[] | null | Error | undefined;
+  errors?: { [fieldName: string]: CLError[] } | null;
 }
 
 interface State {}
@@ -31,7 +33,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
   }
 
   render() {
-    const { localFiles } = this.props;
+    const { localFiles, errors } = this.props;
     return (
       <>
         <Label>
@@ -40,6 +42,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
         <FileInput
           onAdd={this.handleFileOnAdd}
         />
+        {errors && <Error fieldName="file" apiErrors={errors.file} />}
         {Array.isArray(localFiles) && localFiles.map(file => (
           <FileDisplay
             key={file.id || file.filename}
