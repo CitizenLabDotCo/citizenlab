@@ -48,11 +48,12 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
-export interface IRecipientData {
+export interface IDeliveryData {
   id: string;
   type: string;
   attributes: {
     delivery_status: 'sent' | 'bounced' | 'failed' | 'accepted' | 'delivered' | 'opened' | 'clicked';
+    sent_at: string;
     created_at: string;
     updated_at: string;
   };
@@ -64,7 +65,7 @@ export interface IRecipientData {
 }
 
 export interface IRecipient {
-  data: IRecipientData[];
+  data: IDeliveryData[];
 }
 
 export function listCampaigns(streamParams: IStreamParams | null = null) {
@@ -95,8 +96,8 @@ export function campaignByIdStream(campaignId: string, streamParams: IStreamPara
   return streams.get<ICampaign>({ apiEndpoint: `${apiEndpoint}/${campaignId}`, ...streamParams });
 }
 
-export function listCampaignRecipients(campaignId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IRecipientData[] }>({ apiEndpoint: `${apiEndpoint}/${campaignId}/recipients`, ...streamParams });
+export function listCampaignDeliveries(campaignId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IDeliveryData[] }>({ apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`, ...streamParams });
 }
 
 export function isDraft(campaign: ICampaignData) {

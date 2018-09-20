@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IRecipientData, listCampaignRecipients } from 'services/campaigns';
+import { IDeliveryData, listCampaignDeliveries } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -10,19 +10,19 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-type children = (renderProps: GetCampaignRecipientsChildProps) => JSX.Element | null;
+type children = (renderProps: GetCampaignDeliveriesChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  recipients: IRecipientData[] | undefined | null;
+  deliveries: IDeliveryData[] | undefined | null;
 }
 
-export type GetCampaignRecipientsChildProps = IRecipientData[] | undefined | null;
+export type GetCampaignDeliveriesChildProps = IDeliveryData[] | undefined | null;
 
-export default class GetCampaignRecipients extends React.Component<Props, State> {
+export default class GetCampaignDeliveries extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
@@ -33,7 +33,7 @@ export default class GetCampaignRecipients extends React.Component<Props, State>
   constructor(props: Props) {
     super(props);
     this.state = {
-      recipients: undefined
+      deliveries: undefined
     };
   }
 
@@ -45,10 +45,10 @@ export default class GetCampaignRecipients extends React.Component<Props, State>
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ recipients: undefined })),
-        switchMap(({ campaignId }) => campaignId ? listCampaignRecipients(campaignId).observable : of(null))
+        tap(() => resetOnChange && this.setState({ deliveries: undefined })),
+        switchMap(({ campaignId }) => campaignId ? listCampaignDeliveries(campaignId).observable : of(null))
       )
-        .subscribe((recipients) => this.setState({ recipients: !isNilOrError(recipients) ? recipients.data : recipients }))
+        .subscribe((deliveries) => this.setState({ deliveries: !isNilOrError(deliveries) ? deliveries.data : deliveries }))
     ];
   }
 
@@ -63,7 +63,7 @@ export default class GetCampaignRecipients extends React.Component<Props, State>
 
   render() {
     const { children } = this.props;
-    const { recipients } = this.state;
-    return (children as children)(recipients);
+    const { deliveries } = this.state;
+    return (children as children)(deliveries);
   }
 }

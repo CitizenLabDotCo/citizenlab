@@ -1,15 +1,15 @@
 import React from 'react';
-import GetCampaignRecipients, { GetCampaignRecipientsChildProps } from 'resources/GetCampaignRecipients';
+import GetCampaignRecipients, { GetCampaignDeliveriesChildProps } from 'resources/GetCampaignDeliveries';
 import { isNilOrError } from 'utils/helperUtils';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import GetUser from 'resources/GetUser';
 import StatusLabel from 'components/UI/StatusLabel';
-import { IRecipientData } from 'services/campaigns';
+import { IDeliveryData } from 'services/campaigns';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const statusColorMapping: { [k in IRecipientData['attributes']['delivery_status']]: keyof typeof colors } = {
+const statusColorMapping: { [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors } = {
   sent: 'lightGreyishBlue',
   bounced: 'clRedError',
   failed: 'clRedError',
@@ -25,7 +25,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  recipients: GetCampaignRecipientsChildProps;
+  recipients: GetCampaignDeliveriesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
