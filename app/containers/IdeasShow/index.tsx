@@ -539,7 +539,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharingMobile = styled(Sharing) `
+const SharingMobile = styled(Sharing) `
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -887,9 +887,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <T value={titleMultiloc} maxLength={50} >
                   {(title) => {
                     return (
-                      <StyledSharingMobile
+                      <SharingMobile
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
                       />);
                   }}
                 </T>
