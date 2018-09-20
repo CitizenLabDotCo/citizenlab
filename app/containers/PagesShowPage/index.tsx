@@ -11,7 +11,7 @@ import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // services
 import { PageLink } from 'services/pageLink';
@@ -57,8 +57,6 @@ const Loading = styled.div`
     height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
-
-const PageFilesHeader = styled.h3``;
 
 const StyledContentContainer = styled(ContentContainer) `
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
@@ -243,17 +241,9 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
               </Fragment>
             </StyledContentContainer>
             <AttachmentsContainer>
-              {pageFiles &&
-                <PageFilesHeader>
-                  <FormattedMessage {...messages.projectAttachments} />
-                </PageFilesHeader>
+              {pageFiles && !isNilOrError(pageFiles) &&
+                <FileAttachments files={pageFiles} />
               }
-              {Array.isArray(pageFiles) && pageFiles.map(file => (
-                <FileDisplay
-                  key={file.id}
-                  file={file}
-                />
-              ))}
             </AttachmentsContainer>
           </PageContent>
 

@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -18,7 +18,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // i18n
 import T from 'components/T';
 import messages from './messages';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
@@ -117,8 +117,6 @@ const ProjectDescriptionStyled = styled.div`
   ${quillEditedContent()}
 `;
 
-const ProjectFilesHeader = styled.h3``;
-
 const ProjectImages = styled.div`
   align-items: flex-start;
   display: flex;
@@ -168,17 +166,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
-          {projectFiles &&
-            <ProjectFilesHeader>
-              <FormattedMessage {...messages.projectAttachments} />
-            </ProjectFilesHeader>
+          {projectFiles && !isNilOrError(projectFiles) &&
+            <FileAttachments files={projectFiles} />
           }
-          {Array.isArray(projectFiles) && projectFiles.map(file => (
-            <FileDisplay
-              key={file.id}
-              file={file}
-            />
-          ))}
         </Left>
 
         <Right>

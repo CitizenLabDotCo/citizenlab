@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
@@ -160,8 +160,6 @@ const EventDescription = styled.div`
   ${quillEditedContent()}
 `;
 
-const EventFilesHeader = styled.h3``;
-
 const EventLocationWrapper = styled.div`
   flex: 0 0 300px;
   padding: 20px;
@@ -296,19 +294,9 @@ class Event extends React.PureComponent<Props, State> {
             <EventDescription>
               <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
-            {eventFiles &&
-              <EventFilesHeader>
-                <FormattedMessage {...messages.eventAttachments} />
-              </EventFilesHeader>
+            {eventFiles && !isNilOrError(eventFiles) &&
+              <FileAttachments files={eventFiles} />
             }
-            {!isNilOrError(eventFiles) && eventFiles.map(file => {
-              return (
-                <FileDisplay
-                  key={file.id}
-                  file={file}
-                />
-              );
-            })}
           </EventInformation>
 
           {hasLocation &&

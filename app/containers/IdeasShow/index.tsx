@@ -3,6 +3,7 @@ import { has, isString, get } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -26,7 +27,7 @@ import ParentCommentForm from './ParentCommentForm';
 import Spinner from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -436,8 +437,6 @@ const IdeaDescription = styled.div`
   ${quillEditedContent()}
 `;
 
-const IdeaFilesHeader = styled.h3``;
-
 const CommentsTitle = styled.h2`
   color: ${colors.text};
   font-size: ${fontSizes.xxl}px;
@@ -565,7 +564,7 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 interface DataProps {
-  remoteIdeaFiles: GetResourceFileObjectsChildProps;
+  ideaFiles: GetResourceFileObjectsChildProps;
 }
 
 interface InputProps {
@@ -756,7 +755,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage }, remoteIdeaFiles } = this.props;
+    const { inModal, intl: { formatMessage }, ideaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
     let loader: JSX.Element | null = null;
     let content: JSX.Element | null = null;
@@ -896,17 +895,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </IdeaDescription>
                 </Fragment>
 
-                {remoteIdeaFiles &&
-                  <IdeaFilesHeader>
-                    <FormattedMessage {...messages.projectAttachments} />
-                  </IdeaFilesHeader>
+                {ideaFiles && !isNilOrError(ideaFiles) &&
+                  <FileAttachments files={ideaFiles} />
                 }
-                {Array.isArray(remoteIdeaFiles) && remoteIdeaFiles.map(file => (
-                  <FileDisplay
-                    key={file.id}
-                    file={file}
-                  />
-                ))}
 
                 <SeparatorRow />
 
@@ -1042,6 +1033,6 @@ const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
 
 export default (inputProps: InputProps) => (
   <GetResourceFileObjects resourceId={inputProps.ideaId} resourceType="idea">
-    {remoteIdeaFiles => <IdeasShowWithHOCs {...inputProps} remoteIdeaFiles={remoteIdeaFiles} />}
+    {ideaFiles => <IdeasShowWithHOCs {...inputProps} ideaFiles={ideaFiles} />}
   </GetResourceFileObjects>
 );
