@@ -151,6 +151,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               name="body_multiloc"
               component={FormikQuillMultiloc}
               label={<FormattedMessage {...messages.fieldBody} />}
+              noVideos
+              noAlign
             />
             {touched.body_multiloc && <Error
               fieldName="body_multiloc"
