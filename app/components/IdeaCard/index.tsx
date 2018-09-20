@@ -71,10 +71,11 @@ const IdeaTitle: any = styled.h3`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-  margin-bottom: .5em;
+  margin-bottom: 15px;
 `;
 
 const Footer = styled.div`
+  min-height: 50px;
   position: absolute;
   bottom: 18px;
   left: 20px;
@@ -84,10 +85,15 @@ const Footer = styled.div`
   justify-content: space-between;
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   height: 21px;
-  margin-right: 7px;
+  margin-right: 5px;
+  margin-top: 2px;
   width: 30px;
 `;
 
@@ -146,7 +152,7 @@ const IdeaContainerInner = styled.div`
   flex-direction: column;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   position: relative;
   overflow: hidden;
 `;
@@ -252,7 +258,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <Author
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
-                size="small"
+                size="34px"
                 message={messages.byAuthorNameComponent}
                 notALink
               />
@@ -266,6 +272,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   disabledVoteClick={this.disabledVoteClick}
                   size="2"
                 />
+                <Spacer />
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>

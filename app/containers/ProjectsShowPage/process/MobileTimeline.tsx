@@ -15,7 +15,9 @@ import styled from 'styled-components';
 // Typings
 import { IPhaseData } from 'services/phases';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const SelectWrapper = styled.div`
   width: 100%;

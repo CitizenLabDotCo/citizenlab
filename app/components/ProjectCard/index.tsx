@@ -30,6 +30,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const ProjectImageContainer =  styled.div`
+  width: 190px;
   height: 190px;
   flex-grow: 0;
   flex-shrink: 0;
@@ -61,8 +62,16 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectImage = styled<LazyImageProps>(LazyImage)`
-  flex: 1;
-  width: 100%;
+  width: 190px;
+  height: 190px;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  ${media.smallerThanMaxTablet`
+    width: 100%;
+    height: 150px;
+  `}
 `;
 
 const Container = styled.div`
@@ -293,16 +302,14 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
       return (
         <Container className={`${className} ${isArchived ? 'archived' : ''}`}>
           <ProjectImageContainer>
+            <ProjectImagePlaceholder>
+              <ProjectImagePlaceholderIcon name="project" />
+            </ProjectImagePlaceholder>
+
             {imageUrl &&
               <T value={project.attributes.title_multiloc}>
                 {projectTitle => (<ProjectImage src={imageUrl} alt={formatMessage(messages.imageAltText, { projectTitle })} cover />)}
               </T>
-            }
-
-            {!imageUrl &&
-              <ProjectImagePlaceholder>
-                <ProjectImagePlaceholderIcon name="project" />
-              </ProjectImagePlaceholder>
             }
           </ProjectImageContainer>
 

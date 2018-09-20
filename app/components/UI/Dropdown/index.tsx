@@ -96,7 +96,7 @@ interface State {}
 export default class Dropdown extends PureComponent<Props, State> {
   dropdownElement: HTMLElement | null = null;
 
-  static defaultProps: Partial<Props> = {
+  static defaultProps = {
     width: '260px',
     mobileWidth: '190px',
     maxHeight: '300px',

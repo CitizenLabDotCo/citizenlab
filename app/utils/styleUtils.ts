@@ -123,7 +123,7 @@ export const colors = {
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
-  separation: '#EAEAEA',
+  separation: '#e0e0e0',
   background: '#F9F9FA',
   clBlueDark: '#147985',
   clBlueDarkBg: '#d3ecf0',
@@ -153,6 +153,11 @@ export const colors = {
   clIconSecondary:'#84939E',
   clIconAccent:'#01A1B1',
   clIconBackground:'rgba(1, 161, 177, 0.07)',
+
+  // social
+  facebook: '#3b5998',
+  facebookMessenger: '#0084ff',
+  twitter: '#1ea4f2'
 };
 
 export function color(name: keyof typeof colors) {
@@ -201,7 +206,7 @@ export function quillEditedContent() {
     }
     p, h1, h2, ul, ol {
       margin: 0;
-      margin-bottom: 1rem;
+      margin-bottom: 30px;
     }
     img {
       max-width: 100%;

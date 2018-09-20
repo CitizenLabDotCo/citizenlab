@@ -28,7 +28,7 @@ export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  static defaultProps = {
     resetOnChange: true
   };
 
