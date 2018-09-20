@@ -78,7 +78,7 @@ class Show extends React.Component<Props> {
         <PageTitle>
           <T value={campaign.attributes.subject_multiloc} />
           {isDraft(campaign) ?
-            <StatusLabel color={'draftYellow'} text={<FormattedMessage {...messages.draft} />} />
+            <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
           :
             <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
           }
