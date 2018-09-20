@@ -23,7 +23,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -42,7 +42,7 @@ const config = {
     rules: [
       {
         test: /\.(tsx?)|(js)$/,
-        exclude: /node_modules/,
+        include: path.join(process.cwd(), 'app'),
         use: {
           loader: 'babel-loader',
           options: {
@@ -136,7 +136,7 @@ const config = {
   ],
 
   resolve: {
-    modules: ['app', 'node_modules'],
+    modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
   },
 };
