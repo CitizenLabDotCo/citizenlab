@@ -92,7 +92,7 @@ module EmailCampaigns
 
     def stats
       render json: EmailCampaigns::Delivery.status_counts(@campaign.id)
-    end 
+    end
 
     private
 
