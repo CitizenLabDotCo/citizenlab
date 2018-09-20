@@ -1,11 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { ParticipationMethod, SurveyServices } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/phases`;
-
-export type ParticipationMethod = 'ideation' | 'information' | 'survey';
-export type SurveyServices = 'typeform' | 'survey_monkey';
 
 export interface IPhaseData {
   id: string;
@@ -80,4 +79,15 @@ export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
 
 export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
+}
+
+export function canContainIdeas(phase: IPhaseData) : boolean {
+  const pm = phase.attributes.participation_method;
+  return pm === 'ideation' || pm === 'budgeting';
+}
+
+export function getCurrentPhase(phases: IPhaseData[]) : IPhaseData | undefined {
+  return phases.find((phase) => {
+    return pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present';
+  });
 }

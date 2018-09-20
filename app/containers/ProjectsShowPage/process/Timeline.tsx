@@ -12,7 +12,7 @@ import MobileTimeline from './MobileTimeline';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { phasesStream, IPhases } from 'services/phases';
+import { phasesStream, IPhases, getCurrentPhase } from 'services/phases';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -370,7 +370,8 @@ export default class Timeline extends PureComponent<Props, State> {
           })
         )
         .subscribe(([locale, currentTenant, phases]) => {
-          const currentPhaseId = this.getCurrentPhaseId(phases);
+          const currentPhase = getCurrentPhase(phases.data);
+          const currentPhaseId = currentPhase ? currentPhase.id : null;
           const selectedPhaseId = this.getDefaultSelectedPhaseId(currentPhaseId, phases);
           this.setSelectedPhaseId(selectedPhaseId);
           this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
@@ -384,23 +385,6 @@ export default class Timeline extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  getCurrentPhaseId(phases: IPhases | null) {
-    let currentPhaseId: string | null = null;
-
-    if (phases && phases.data.length > 0) {
-      forEach(phases.data, (phase) => {
-        if (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
-          currentPhaseId = phase.id;
-          return false;
-        }
-
-        return true;
-      });
-    }
-
-    return currentPhaseId as string | null;
   }
 
   getDefaultSelectedPhaseId(currentPhaseId: string | null, phases: IPhases | null) {

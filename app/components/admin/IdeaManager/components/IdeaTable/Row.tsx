@@ -146,10 +146,14 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>
+          <Table.Cell singleLine>
+            <Icon name="euro sign" />
+            {attrs.baskets_count}
+          </Table.Cell>
         </WrappedRow>
         <Table.Row active={selected} onClick={this.onClickRow}>
           <Table.Cell as={FilterCell} collapsing={true} />
-          <Table.Cell colSpan={5} as={FilterCell}>
+          <Table.Cell colSpan={6} as={FilterCell}>
             {activeFilterMenu === 'phases' &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}

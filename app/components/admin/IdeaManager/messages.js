@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.down',
     defaultMessage: 'Down',
   },
+  participatoryBudgettingPicks: {
+    id: 'app.components.admin.IdeaManager.participatoryBudgettingPicks',
+    defaultMessage: 'Picks',
+  },
   multiDragAndDropHelp: {
     id: 'app.components.admin.IdeaManager.multiDragAndDropHelp',
     defaultMessage: 'Drag and drop the ideas on an item above to assign them all at once.',
@@ -72,5 +76,9 @@ export default defineMessages({
   allIdeas: {
     id: 'app.components.admin.IdeaManager.allIdeas',
     defaultMessage: 'All ideas',
+  },
+  basketsCountTooltip: {
+    id: 'app.components.admin.IdeaManager.basketsCountTooltip',
+    defaultMessage: 'The number of users that added this idea to their participatory budget',
   },
 });
