@@ -1,18 +1,28 @@
 import * as React from 'react';
+import styled from 'styled-components';
+
 import { ICampaignData } from 'services/campaigns';
-
-import PageWrapper from 'components/admin/PageWrapper';
-
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
+
+import PageWrapper from 'components/admin/PageWrapper';
+import CampaignStats from './CampaignStats';
 import PreviewFrame from './PreviewFrame';
 import RecipientsTable from './RecipientsTable';
-import styled from 'styled-components';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const StyledRecipientsTable = styled(RecipientsTable)`
-  padding: 20px 0;
+const PaddedCampaignStats = styled(CampaignStats)`
+  padding-bottom: 20px;
+`;
+
+const PaddedPreviewFrame = styled(PreviewFrame)`
+  padding-bottom: 20px;
+`;
+
+const PaddedRecipientsTable = styled(RecipientsTable)`
+  padding-bottom: 20px;
 `;
 
 interface InputProps {
@@ -31,10 +41,10 @@ class SentCampaignDetails extends React.Component<Props> {
     const { campaign } = this.props;
     return (
       <PageWrapper>
-        <h2><FormattedMessage {...messages.previewTitle} /></h2>
-        <PreviewFrame campaignId={campaign.id} />
+        <PaddedCampaignStats campaignId={campaign.id} />
+        <PaddedPreviewFrame campaignId={campaign.id} />
         <h2><FormattedMessage {...messages.recipientsTitle} /></h2>
-        <StyledRecipientsTable campaignId={campaign.id} />
+        <PaddedRecipientsTable campaignId={campaign.id} />
       </PageWrapper>
     );
   }
