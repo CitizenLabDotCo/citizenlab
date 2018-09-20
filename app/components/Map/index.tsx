@@ -17,7 +17,7 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 const icon = require('./marker.svg');
 
-const MapWrapper = styled.div`
+const Container = styled.div`
   height: 300px;
   transition: width .1s, height .1s;
 
@@ -102,10 +102,6 @@ class CLMap extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.interval = window.setInterval(this.resizeDetector, 200);
-  }
-
-  componentDidCatch(error, info) {
-    console.error(error, info);
   }
 
   componentDidMount() {
@@ -210,12 +206,17 @@ class CLMap extends React.PureComponent<Props, State> {
 
   addClusters = () => {
     if (this.map && this.markers) {
-      if (this.clusterLayer) this.map.removeLayer(this.clusterLayer);
+      if (this.clusterLayer) {
+        this.map.removeLayer(this.clusterLayer);
+      }
+
       this.clusterLayer = Leaflet.markerClusterGroup(this.clusterOptions);
       this.clusterLayer.addLayers(this.markers);
       this.map.addLayer(this.clusterLayer);
 
-      if (this.props.onMarkerClick) this.clusterLayer.on('click', this.handleMarkerClick);
+      if (this.props.onMarkerClick) {
+        this.clusterLayer.on('click', this.handleMarkerClick);
+      }
     }
   }
 
@@ -240,9 +241,9 @@ class CLMap extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <MapWrapper className={this.props['className']}>
+      <Container className={this.props['className']}>
         <div id="map-container" ref={this.bindMapContainer} />
-      </MapWrapper>
+      </Container>
     );
   }
 }
