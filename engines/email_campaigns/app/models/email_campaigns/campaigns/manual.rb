@@ -12,6 +12,7 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil, activity: nil
       [{
+        author: author,
         event_payload: {},
         subject_multiloc: subject_multiloc,
         body_multiloc: body_multiloc,

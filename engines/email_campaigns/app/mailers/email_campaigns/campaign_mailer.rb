@@ -16,13 +16,14 @@ module EmailCampaigns
       message = mail(
         from: "#{from_name(command[:sender], command[:author], recipient)} <#{ENV.fetch("DEFAULT_FROM_EMAIL", 'hello@citizenlab.co')}>",
         to: recipient.email,
-        reply_to: command[:reply_to],
+        reply_to: command[:reply_to] || ENV.fetch("DEFAULT_FROM_EMAIL"),
         subject: multiloc_service.t(command[:subject_multiloc], recipient),
       )
 
       if (ActionMailer::Base.delivery_method == :mailgun)    
         message.mailgun_headers = {
           'X-Mailgun-Variables' => {
+            'cl_tenant_id' => Tenant.current.id,
             'cl_campaign_id' => campaign.id,
             'cl_user_id' => recipient.id,     
           }.to_json,
