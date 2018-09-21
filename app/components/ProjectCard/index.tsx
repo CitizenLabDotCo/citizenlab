@@ -67,6 +67,7 @@ const ProjectImage = styled<LazyImageProps>(LazyImage)`
   position: absolute;
   top: 0;
   left: 0;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     width: 100%;
