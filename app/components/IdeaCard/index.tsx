@@ -38,11 +38,13 @@ import { IModalInfo } from 'containers/App';
 const IdeaImageContainer: any = styled.div`
   width: 100%;
   height: 115px;
-  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const IdeaImage: any = styled(LazyImage)`
@@ -154,7 +156,6 @@ const IdeaContainerInner = styled.div`
   background: #fff;
   border: solid 1px ${colors.separation};
   position: relative;
-  overflow: hidden;
 `;
 
 const VotingDisabledWrapper = styled.div`
@@ -242,12 +243,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
           <IdeaContainerInner>
-
             {ideaImageUrl &&
               <IdeaImageContainer>
-              <T value={idea.attributes.title_multiloc}>
-                {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
-              </T>
+                <T value={idea.attributes.title_multiloc}>
+                  {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
+                </T>
               </IdeaImageContainer>
             }
 
