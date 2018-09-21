@@ -126,6 +126,10 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
                 />
               )}
             </GetGroups>
+            {touched.group_ids && <Error
+              fieldName="group_ids"
+              apiErrors={errors.group_ids as any}
+            />}
           </SectionField>
         </Section>
 
