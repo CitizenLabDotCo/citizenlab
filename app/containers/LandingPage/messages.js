@@ -51,4 +51,28 @@ export default defineMessages({
     id: 'app.containers.landing.exploreAllProjects',
     defaultMessage: 'Explore all projects',
   },
+  shareTitle: {
+    id: 'app.containers.landing.shareTitle',
+    defaultMessage: 'Congratulations, your idea was successfully posted!',
+  },
+  shareSubtitle: {
+    id: 'app.containers.landing.shareSubtitle',
+    defaultMessage: 'Share your idea to reach more people, receive more votes and have more impact.',
+  },
+  twitterMessage: {
+    id: 'app.containers.landing.twitterMessage',
+    defaultMessage: 'Vote for {ideaTitle} on',
+  },
+  emailSharingSubject: {
+    id: 'app.containers.landing.emailSharingSubject',
+    defaultMessage: 'Support my idea: {ideaTitle}.',
+  },
+  emailSharingBody: {
+    id: 'app.containers.landing.emailSharingBody',
+    defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+  },
+  skipSharing: {
+    id: 'app.containers.landing.skipSharing',
+    defaultMessage: `Skip it, I'll do it later`,
+  },
 });

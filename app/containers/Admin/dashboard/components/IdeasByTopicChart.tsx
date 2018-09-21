@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
@@ -7,26 +7,26 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import localize, { InjectedLocalized } from 'utils/localize';
 import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
 
-type State = {
+interface Props {
+  startAt: string;
+  endAt: string;
+}
+
+interface State {
   serie: {
     name: any,
     value: any,
     code: any
   }[] | null;
-};
+}
 
-type Props = {
-  startAt: string,
-  endAt: string
-};
-
-class IdeasByTimeChart extends React.PureComponent<Props & InjectedLocalized, State> {
+class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       serie: null,
     };

@@ -25,7 +25,7 @@ export default class GetEvents extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps: Partial<Props> = {
+  static defaultProps = {
     resetOnChange: true
   };
 
