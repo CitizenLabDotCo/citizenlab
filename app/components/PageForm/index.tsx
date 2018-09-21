@@ -86,7 +86,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
       <FileUploader
         onFileAdd={this.handlePageFileOnAdd}
         onFileRemove={this.handlePageFileOnRemove}
-        localFiles={local_page_files}
+        files={local_page_files}
       />
     );
   }

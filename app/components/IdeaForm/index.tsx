@@ -417,7 +417,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
             onFileRemove={this.handleIdeaFileOnRemove}
-            localFiles={localIdeaFiles}
+            files={localIdeaFiles}
           />
         </FormElement>
       </Form>
