@@ -888,7 +888,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
               <FileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
                 onFileRemove={this.handleProjectFileOnRemove}
-                localFiles={localProjectFiles}
+                files={localProjectFiles}
                 errors={apiErrors}
               />
             </SectionField>

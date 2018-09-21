@@ -347,7 +347,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
                 <FileUploader
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
-                  localFiles={localEventFiles}
+                  files={localEventFiles}
                   errors={errors}
                 />
               </SectionField>

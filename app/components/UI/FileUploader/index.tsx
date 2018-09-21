@@ -16,7 +16,7 @@ import { CLError, UploadFile } from 'typings';
 interface Props {
   onFileAdd: (fileToAdd: UploadFile) => void;
   onFileRemove: (fileToRemove: UploadFile) => void;
-  localFiles: UploadFile[] | null | Error | undefined;
+  files: UploadFile[] | null | Error | undefined;
   errors?: { [fieldName: string]: CLError[] } | null;
 }
 
@@ -33,7 +33,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
   }
 
   render() {
-    const { localFiles, errors } = this.props;
+    const { files, errors } = this.props;
     return (
       <>
         <Label>
@@ -43,7 +43,7 @@ export default class FileUploader extends React.PureComponent<Props, State>{
           onAdd={this.handleFileOnAdd}
         />
         {errors && <Error fieldName="file" apiErrors={errors.file} />}
-        {Array.isArray(localFiles) && localFiles.map(file => (
+        {Array.isArray(files) && files.map(file => (
           <FileDisplay
             key={file.id || file.filename}
             onDeleteClick={this.handleFileOnRemove(file)}
