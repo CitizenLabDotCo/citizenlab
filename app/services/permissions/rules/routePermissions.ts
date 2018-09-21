@@ -5,7 +5,10 @@ import { IUser } from 'services/users';
 definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
   if (/^\/admin/.test(item.path)) {
     if (isAdmin(user)) return true;
-    if (isModerator(user) && item.path === '/admin/projects') return true;
+    if (isModerator(user) && (
+      item.path === '/admin/projects' ||
+      item.path === '/admin/campaigns'
+    )) return true;
 
     // Try to find a project ID in the URL
     const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
