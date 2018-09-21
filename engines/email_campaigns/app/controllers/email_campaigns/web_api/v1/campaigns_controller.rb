@@ -2,6 +2,7 @@ module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
 
     before_action :set_campaign, only: [:show, :update, :do_send, :send_preview, :preview, :deliveries, :stats, :destroy]
+    rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
     def index
       @campaigns = policy_scope(Campaign)
@@ -45,15 +46,18 @@ module EmailCampaigns
     def update
       params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
 
-      @campaign.assign_attributes(campaign_params)
+      ActiveRecord::Base.transaction do
+        @campaign.assign_attributes(campaign_params)
+        authorize @campaign
 
-      SideFxCampaignService.new.before_update(@campaign, current_user)
+        SideFxCampaignService.new.before_update(@campaign, current_user)
 
-      if @campaign.save
-        SideFxCampaignService.new.after_update(@campaign, current_user)
-        render json: @campaign, status: :ok, serializer: WebApi::V1::CampaignSerializer
-      else
-        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+        if @campaign.save
+          SideFxCampaignService.new.after_update(@campaign, current_user)
+          render json: @campaign, status: :ok, serializer: WebApi::V1::CampaignSerializer
+        else
+          render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
+        end
       end
     end
 
@@ -109,6 +113,16 @@ module EmailCampaigns
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales,
       )
+    end
+
+    def user_not_authorized exception
+      if %w(create? update? destroy? do_send? send_preview? deliveries? stats?).include? exception.query
+        if !current_user.admin? && current_user.project_moderator?
+          render json: { errors: { group_ids: [{ error: 'unauthorized_choice_moderator' }] } }, status: :unauthorized
+        else
+          render json: { errors: { base: [{ error: 'unauthorized' }] } }, status: :unauthorized
+        end
+      end
     end
   end
 end
