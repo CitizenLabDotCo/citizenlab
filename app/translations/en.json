@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "This field contains an invalid value.",
   "app.errors.generics.taken": "This field should be unique. Another instance with the same value already exists.",
   "app.errors.generics.unsupported_locales": "This field does not support the current locale.",
+  "app.errors.group_ids_unauthorized_choice_moderator": "As a project moderator, you can only email to people that can access your project(s)",
   "app.errors.has_other_overlapping_phases": "Projects cannot have overlapping phases.",
   "app.errors.invalid_email": "The email {value} found in row {row} is not a valid email address",
   "app.errors.invalid_row": "An unknown error occured while trying to process row {row}",

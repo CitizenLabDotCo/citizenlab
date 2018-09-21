@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "Dieses Feld enthält einen ungültigen Wert.",
   "app.errors.generics.taken": "Dieses Feld muss einzigartig sein. Ein gleichlautendes Feld ist bereits vorhanden.",
   "app.errors.generics.unsupported_locales": "Dieses Feld unterstützt nicht die derzeitigen regionalen Einstellungen.",
+  "app.errors.group_ids_unauthorized_choice_moderator": "",
   "app.errors.has_other_overlapping_phases": "Projekte dürfen keine überlappenden Phasen haben.",
   "app.errors.invalid_email": "Die E-Mail-Adresse {value} in der Zeile {row} ist keine gültige E-Mail-Adresse.",
   "app.errors.invalid_row": "Ein unbekannter Fehler trat bei der Verarbeitung der Zeile {row} auf.",
