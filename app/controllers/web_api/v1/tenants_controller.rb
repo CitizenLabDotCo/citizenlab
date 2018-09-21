@@ -12,8 +12,10 @@ class WebApi::V1::TenantsController < ApplicationController
     params[:logo] = tenant_params[:logo] if tenant_params[:logo]
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
     params[:favicon] = tenant_params[:favicon] if tenant_params[:favicon]
+    @tenant.assign_attributes params
+    authorize @tenant
     SideFxTenantService.new.before_update @tenant, current_user
-    if @tenant.update(params)
+    if @tenant.save
       SideFxTenantService.new.after_update @tenant, current_user
       render json: @tenant, status: :ok
     else
