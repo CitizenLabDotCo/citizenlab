@@ -68,6 +68,7 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
   const headers = new Headers();
   headers.append('cache-control', 'no-cache');
   headers.append('pragma', 'no-cache');
+  headers.append('mode', 'cors');
   const blob = await fetch(imageUrl, { headers }).then((response) => response.blob());
   const filename = imageUrl.substring(imageUrl.lastIndexOf('/') + 1);
   return convertBlobToFile(blob, filename);
@@ -81,6 +82,7 @@ export async function convertUrlToUploadFile(url: string) {
   const headers = new Headers();
   headers.append('cache-control', 'no-cache');
   headers.append('pragma', 'no-cache');
+  headers.append('mode', 'cors');
   const blob = await fetch(url, { headers }).then((response) => response.blob());
   const filename = url.substring(url.lastIndexOf('/') + 1);
   return convertBlobToFile(blob, filename) as UploadFile;
