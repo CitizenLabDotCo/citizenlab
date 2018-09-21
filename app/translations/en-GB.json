@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "",
   "app.errors.generics.taken": "",
   "app.errors.generics.unsupported_locales": "",
+  "app.errors.group_ids_unauthorized_choice_moderator": "",
   "app.errors.has_other_overlapping_phases": "",
   "app.errors.invalid_email": "",
   "app.errors.invalid_row": "",

@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "Ce champ contient une valeur non valide.",
   "app.errors.generics.taken": "Ce champ doit être unique. Il existe déjà un champ avec la même valeur.",
   "app.errors.generics.unsupported_locales": "Ce champ ne supporte pas les paramètres régionaux actuels.",
+  "app.errors.group_ids_unauthorized_choice_moderator": "",
   "app.errors.has_other_overlapping_phases": "Les projets ne peuvent pas avoir des phases qui se superposent.",
   "app.errors.invalid_email": "L'adresse e-mail{value} qui se trouve ligne {row} n'est pas valide",
   "app.errors.invalid_row": "Une erreur inconnue est survenue lors du traitement de la ligne {row}",
