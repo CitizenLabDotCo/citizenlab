@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180815114124) do
+ActiveRecord::Schema.define(version: 20180920155127) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,15 @@ ActiveRecord::Schema.define(version: 20180815114124) do
     t.index ["slug"], name: "index_groups_on_slug"
   end
 
+  create_table "groups_permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "permission_id", null: false
+    t.bigint "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_groups_permissions_on_group_id"
+    t.index ["permission_id"], name: "index_groups_permissions_on_permission_id"
+  end
+
   create_table "groups_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "project_id"
@@ -352,6 +361,17 @@ ActiveRecord::Schema.define(version: 20180815114124) do
     t.uuid "project_id"
     t.index ["project_id"], name: "index_pages_on_project_id"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
+  end
+
+  create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "action", null: false
+    t.string "permitted_by", null: false
+    t.uuid "permittable_id", null: false
+    t.string "permittable_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action"], name: "index_permissions_on_action"
+    t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
   end
 
   create_table "phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
