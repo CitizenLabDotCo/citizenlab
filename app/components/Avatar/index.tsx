@@ -21,19 +21,24 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
-  width: ${(props: any) => props.pxSize}px;
-  height: ${(props: any) => props.pxSize}px;
+  flex: 0 0 ${(props: any) => props.pxSize};
+  width: ${(props: any) => props.pxSize};
+  height: ${(props: any) => props.pxSize};
   cursor: inherit;
   color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &.clickable {
     cursor: pointer;
   }
 `;
 
-const AvatarImage = styled.img`
-  width: 100%;
-  height: 100%;
+const AvatarImage: any = styled.img`
+  flex: 0 0 ${(props: any) => props.pxSize};
+  width: ${(props: any) => props.pxSize};
+  height: ${(props: any) => props.pxSize};
   border-radius: 50%;
   border: 1px solid #ccc;
   transition: all 100ms ease-out;
@@ -43,9 +48,10 @@ const AvatarImage = styled.img`
   }
 `;
 
-const AvatarIcon = styled(Icon)`
-  width: 100%;
-  height: 100%;
+const AvatarIcon: any = styled(Icon)`
+  flex: 0 0 ${(props: any) => props.pxSize};
+  width: ${(props: any) => props.pxSize};
+  height: ${(props: any) => props.pxSize};
   fill: ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
 
@@ -56,7 +62,7 @@ const AvatarIcon = styled(Icon)`
 
 type Props = {
   userId: string | null;
-  size: 'small' | 'medium' | 'large';
+  size: string;
   onClick?: (event: React.FormEvent) => void;
   hideIfNoAvatar?: boolean | undefined;
 };
@@ -86,7 +92,8 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
       this.subscriptions = [
         user$.subscribe((user) => {
-          const avatarSrc = (!isNilOrError(user) ? user.data.attributes.avatar[size] : null);
+          const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
+          const avatarSrc = (!isNilOrError(user) ? user.data.attributes.avatar[imageSize] : null);
           const userName = (!isNilOrError(user) ? getUserName(user.data) : null);
 
           this.setState({
@@ -119,33 +126,25 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       return null;
     }
 
-    let pxSize = 0;
-
-    if (size === 'small') {
-      pxSize = 29;
-    } else if (size === 'medium') {
-      pxSize = 35;
-    } else {
-      pxSize = 160;
-    }
-
     return (
       <Container
         className={`${className} ${isClickable ? 'clickable' : ''}`}
         onClick={this.handleOnClick}
-        pxSize={pxSize}
+        pxSize={size}
       >
         {avatarSrc ? (
           <AvatarImage
             className={`${isClickable ? 'clickable' : ''}`}
             src={avatarSrc}
             alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
+            pxSize={size}
           />
         ) : (
           <AvatarIcon
             className={`${isClickable ? 'clickable' : ''}`}
             name="user"
             title={<FormattedMessage {...messages.noAvatarAltText} />}
+            pxSize={size}
           />
         )}
       </Container>

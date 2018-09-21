@@ -29,7 +29,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   background: #fff;
 
   ${media.smallerThanMaxTablet`
@@ -161,7 +161,7 @@ const EventLocationWrapper = styled.div`
   padding: 20px;
   display: flex;
   align-items: center;
-  border-left: 1px solid #e0e0e0;
+  border-left: 1px solid ${colors.separation};
   margin-left: 60px;
 
   &.past {

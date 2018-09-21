@@ -1,7 +1,7 @@
 import React from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
-import  { isString, isEmpty, isError } from 'lodash-es';
+import { isString, isEmpty, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -14,10 +14,11 @@ import clHistory from 'utils/cl-router/history';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
+// import Modal from 'components/UI/Modal';
 
 // services
 import { localeStream } from 'services/locale';
-import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
+import { addIdea, updateIdea, IIdeaAdd, IIdea } from 'services/ideas';
 import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
@@ -158,7 +159,7 @@ interface Props extends InputProps, DataProps {}
 interface LocalState {
   showIdeaForm: boolean;
   locale: Locale | null;
-  publishing: Boolean;
+  publishing: boolean;
 }
 
 interface GlobalState {}
@@ -306,8 +307,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
     try {
       const authUser = await getAuthUserAsync();
-      await this.postIdeaAndIdeaImage('published', authUser.data.id);
-      clHistory.push('/ideas');
+      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      clHistory.push({
+        pathname: '/',
+        search: `?new_idea_id=${idea.data.id}&publish=false`
+      });
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
@@ -330,13 +334,19 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   handleOnSignInUpCompleted = async (userId: string) => {
     this.localState.set({ publishing: true });
+    let idea: IIdea | null = null;
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
-      await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
-    }
+      idea = await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
 
-    clHistory.push('/ideas');
+      if (idea) {
+        clHistory.push({
+          pathname: '/',
+          search: `?new_idea_id=${idea.data.id}&publish=false`
+        });
+      }
+    }
   }
 
   render() {

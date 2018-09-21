@@ -10,7 +10,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { fontSizes } from 'utils/styleUtils';
 
 // Services
 import { deletePhase } from 'services/phases';
@@ -22,6 +21,9 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
+
+// Styling
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // Styles
 const ListWrapper = styled.div`
@@ -57,7 +59,7 @@ const OrderLabel = styled.div`
   }
 
   &.past {
-    background: #E5E5E5;
+    background: ${colors.separation};
   }
 
   &.future {

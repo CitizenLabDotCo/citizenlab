@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { Observer, Observable, Subscription, from, of } from 'rxjs';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
 import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash-es';

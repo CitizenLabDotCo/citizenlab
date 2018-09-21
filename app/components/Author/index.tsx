@@ -30,15 +30,19 @@ const AuthorContainer = styled.div`
   padding: 0;
 `;
 
+const StyledAvatar = styled(Avatar)`
+  margin-top: 3px;
+`;
+
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: .5em;
+  margin-left: 7px;
 `;
 
 const AuthorNameContainer: any = styled.div `
   color: ${colors.text};
-  font-size: ${(props: any) => props.fontSize};
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
@@ -70,7 +74,7 @@ type Props = {
   authorId: string | null;
   message: Message;
   createdAt?: string | undefined;
-  size: 'medium' | 'small';
+  size: string;
   notALink?: boolean;
 };
 
@@ -82,7 +86,7 @@ class Author extends React.PureComponent<Props, State> {
   authorId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       author: null
@@ -101,8 +105,8 @@ class Author extends React.PureComponent<Props, State> {
         distinctUntilChanged(),
         switchMap((authorId) => isString(authorId) ? userByIdStream(authorId).observable : of(null))
       ).subscribe((author) => {
-          this.setState({ author });
-        })
+        this.setState({ author });
+      })
     ];
   }
 
@@ -137,13 +141,13 @@ class Author extends React.PureComponent<Props, State> {
 
     return (
       <AuthorContainer className={className}>
-        <Avatar
+        <StyledAvatar
           userId={authorId}
           size={size}
           onClick={notALink ? undefined : this.goToUserProfile}
         />
         <AuthorMeta>
-          <AuthorNameContainer fontSize={(size === 'medium') ? '16px' : '14px'}>
+          <AuthorNameContainer>
             <FormattedMessage
               {...message}
               values={{ authorNameComponent }}

@@ -32,7 +32,7 @@ const Container = styled.button`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 24px;
+  height: 26px;
   fill: inherit;
   transition: all 150ms ease;`
 ;

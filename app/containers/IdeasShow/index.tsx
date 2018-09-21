@@ -23,7 +23,7 @@ import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
 import VoteWrapper from './VoteWrapper';
 import ParentCommentForm from './ParentCommentForm';
-import Spinner from 'components/UI/Spinner';
+import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
 
@@ -50,7 +50,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, color, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const loadingTimeout = 400;
@@ -59,10 +59,10 @@ const loadingDelay = 100;
 
 const contentTimeout = 500;
 const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
-const contentDelay = 600;
-const contentTranslateDistance = '30px';
+const contentDelay = 500;
+const contentTranslateDistance = '25px';
 
-const StyledSpinner = styled(Spinner) `
+const StyledSpinner = styled<SpinnerProps>(Spinner) `
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
 `;
 
@@ -220,7 +220,7 @@ const IdeaImage = styled.img`
   margin: 0 0 2rem;
   padding: 0;
   border-radius: 8px;
-  border: 1px solid ${color('separation')};
+  border: 1px solid ${colors.separation};
 `;
 
 const AuthorContainer = styled.div`
@@ -263,9 +263,10 @@ const LocationLabel = styled.div`
 `;
 
 const LocationIconWrapper = styled.div`
-  width: 30px;
-  height: 38px;
+  width: 22px;
+  height: 36px;
   margin: 0;
+  margin-right: 3px;
   padding: 0;
   border: none;
   display: flex;
@@ -282,6 +283,7 @@ const LocationButton = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 30px;
 
   &:hover {
     ${LocationLabel} {
@@ -296,7 +298,7 @@ const LocationButton = styled.div`
 
 const MapWrapper = styled.div`
   border-radius: 8px;
-  border: 1px solid ${color('separation')};
+  border: 1px solid ${colors.separation};
   height: 265px;
   position: relative;
   overflow: hidden;
@@ -335,7 +337,7 @@ const AddressWrapper = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   background: rgba(0, 0, 0, 0.4);
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid ${colors.separation};
   margin: 0;
   padding: 10px;
   position: absolute;
@@ -387,14 +389,16 @@ const TimeAgo = styled.div`
 `;
 
 const IdeaBody = styled.div`
-  color: #474747;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
   font-weight: 300;
-  line-height: 32px;
-  word-break: break-word;
+  line-height: 25px;
 
   p {
-    margin-bottom: 32px;
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
 
     &:last-child {
       margin-bottom: 0px;
@@ -403,7 +407,7 @@ const IdeaBody = styled.div`
 
   a {
     color: ${colors.clBlueDark};
-    text-decoration: none;
+    text-decoration: underline;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -415,7 +419,7 @@ const IdeaBody = styled.div`
     list-style-type: disc;
     list-style-position: outside;
     padding: 0;
-    padding-left: 30px;
+    padding-left: 25px;
     margin: 0;
     margin-bottom: 25px;
 
@@ -518,8 +522,8 @@ const StatusTitle = styled.h4`
 `;
 
 const VoteControlMobile = styled.div`
-  border-top: solid 1px #e0e0e0;
-  border-bottom: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${colors.separation};
   padding-top: 15px;
   padding-bottom: 15px;
   margin-top: -10px;
@@ -535,16 +539,14 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const StyledSharing: any = styled(Sharing) ``;
-
-const StyledSharingMobile = styled(StyledSharing) `
+const SharingMobile = styled(Sharing) `
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-top: solid 1px #e0e0e0;
-  border-bottom: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${colors.separation};
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -746,30 +748,24 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage } } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
-    let loader: JSX.Element | null = null;
+    const { inModal, intl: { formatMessage }, localize } = this.props;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
     let content: JSX.Element | null = null;
-
-    if (opened && !loaded) {
-      loader = (
-        <StyledSpinner size="32px" />
-      );
-    }
 
     if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const ideaBody = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
+      const ideaTitle = localize(titleMultiloc);
+      const ideaBody = localize(idea.data.attributes.body_multiloc);
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
       const ideaAdress = (idea.data.attributes.location_description || null);
       const projectTitleMultiloc = (project && project.data ? project.data.attributes.title_multiloc : null);
       const projectId = idea.data.relationships.project.data.id;
-
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
+      const ideaUrl = location.href;
 
       content = (
         <>
@@ -834,7 +830,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="medium"
+                      size="42px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>
@@ -882,7 +878,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <span dangerouslySetInnerHTML={{ __html: ideaBody }} />
+                    <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
                   </IdeaBody>
                 </Fragment>
 
@@ -891,10 +887,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 <T value={titleMultiloc} maxLength={50} >
                   {(title) => {
                     return (
-                      <StyledSharingMobile
+                      <SharingMobile
+                        url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                        sharedContent="idea"
-                        userId={authUser && authUser.data.id}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
                       />);
                   }}
                 </T>
@@ -951,16 +948,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     }
 
                     <SharingWrapper>
-                      <T value={titleMultiloc} maxLength={50} >
-                        {(title) => {
-                          return (
-                            <StyledSharing
-                              twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                              sharedContent="idea"
-                              userId={authUser && authUser.data.id}
-                            />);
-                        }}
-                      </T>
+                      <Sharing
+                        url={ideaUrl}
+                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                      />
                     </SharingWrapper>
 
                     {(moreActions && moreActions.length > 0) &&
@@ -995,7 +988,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           exit={false}
         >
           <Loading>
-            {loader}
+            <StyledSpinner />
           </Loading>
         </CSSTransition>
 

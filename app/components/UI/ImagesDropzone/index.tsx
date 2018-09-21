@@ -81,8 +81,8 @@ const DropzoneContent = styled.div`
 const StyledDropzone = styled(Dropzone)`
   box-sizing: border-box;
   border-radius: 5px;
-  border-color: #666;
-  border-width: 1.5px;
+  border-color: #ccc;
+  border-width: 1px;
   border-style: dashed;
   position: relative;
   cursor: pointer;
@@ -487,7 +487,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
               </DropzoneContent>
             ) : (
               <DropzoneContent>
-                <Spinner size="32px" />
+                <Spinner />
               </DropzoneContent>
             )}
           </StyledDropzone>

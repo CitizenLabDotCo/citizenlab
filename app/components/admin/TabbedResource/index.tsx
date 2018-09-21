@@ -33,10 +33,6 @@ const Title = styled.h1`
   padding: 0;
 `;
 
-// const PublicResourceLink = styled(Link)`
-//   color: ${color('label')};
-// `;
-
 const TabbedNav = styled.nav`
   background: #fcfcfc;
   border-radius: 5px 5px 0 0;
