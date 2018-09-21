@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :permissions_group do
-    permission ""
-    group ""
+    permission
+    group
   end
 end

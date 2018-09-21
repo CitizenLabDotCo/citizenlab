@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :permission do
-    action "MyString"
-    permitted_by "MyString"
-    participation_context_id ""
-    participation_context_type "MyString"
+    action 'posting'
+    permitted_by "groups"
+    permittable { create(:continuous_project, participation_method: 'ideation') }
+    groups
   end
 end
