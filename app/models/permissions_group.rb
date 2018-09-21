@@ -1,2 +1,0 @@
-class PermissionsGroup < ApplicationRecord
-end
