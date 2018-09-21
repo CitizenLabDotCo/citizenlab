@@ -8,6 +8,8 @@ class Group < ApplicationRecord
   has_many :users, through: :memberships
   private :memberships, :memberships=, :membership_ids, :membership_ids=
   private :users, :users=, :user_ids, :user_ids=
+  has_many :groups_permissions, dependent: :destroy
+  has_many :permissions, through: :groups_permissions
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
