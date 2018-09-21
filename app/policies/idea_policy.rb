@@ -24,7 +24,6 @@ class IdeaPolicy < ApplicationPolicy
 
   def create?
     pcs = ParticipationContextService.new 
-
     record.draft? ||
     (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) ||
     (
@@ -49,7 +48,7 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def update?
-    record.draft? || (user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.project_id)))
+    create?
   end
 
   def destroy?

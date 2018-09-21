@@ -33,10 +33,9 @@ module EmailCampaigns
     def update
       params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
 
-      @campaign.assign_attributes(campaign_params)
-
+      @campaign.assign_attributes campaign_params
+      authorize @campaign
       SideFxCampaignService.new.before_update(@campaign, current_user)
-
       if @campaign.save
         SideFxCampaignService.new.after_update(@campaign, current_user)
         render json: @campaign, status: :ok
