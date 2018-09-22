@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "Dit veld bevat een ongeldige waarde.",
   "app.errors.generics.taken": "Dit veld moet uniek zijn. Er bestaat al een ander optie met dezelfde waarde.",
   "app.errors.generics.unsupported_locales": "Dit veld biedt geen ondersteuning voor de huidige landinstelling.",
+  "app.errors.group_ids_unauthorized_choice_moderator": "",
   "app.errors.has_other_overlapping_phases": "Projecten mogen geen overlappende fasen hebben.",
   "app.errors.invalid_email": "Het e-mailadres {value} in rij {row} is geen geldig e-mailadres",
   "app.errors.invalid_row": "Er trad een onbekend fout op bij het verwerken van rij {row}",
