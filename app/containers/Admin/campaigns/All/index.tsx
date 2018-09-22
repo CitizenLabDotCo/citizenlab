@@ -10,6 +10,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
+import Pagination from 'components/admin/Pagination';
 
 import messages from '../messages';
 import FeatureFlag from 'components/FeatureFlag';
@@ -24,9 +25,7 @@ const CampaignTitle = styled.h1`
 
 interface InputProps { }
 
-interface DataProps {
-  campaigns: GetCampaignsChildProps;
-}
+interface DataProps extends GetCampaignsChildProps {}
 
 interface Props extends InputProps, DataProps { }
 
@@ -35,7 +34,7 @@ interface State { }
 class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
   render() {
-    const campaigns = this.props.campaigns;
+    const { campaigns, currentPage, lastPage } = this.props;
 
     if (isNilOrError(campaigns)) return null;
 
@@ -58,7 +57,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
               </Button>
             </ButtonWrapper>
           </FeatureFlag>
-          <List key={campaigns.length}>
+          <List key={campaigns.map(c => c.id).join()}>
             {campaigns.map((campaign) => (
               isDraft(campaign) ?
                 <DraftCampaignRow key={campaign.id} campaign={campaign} />
@@ -66,6 +65,11 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
                 <SentCampaignRow key={campaign.id} campaign={campaign} />
             ))}
           </List>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={lastPage}
+            loadPage={this.props.onChangePage}
+          />
         </PageWrapper>
       </>
     );
@@ -75,7 +79,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 const CampaignsWithInjectedIntl = injectIntl<Props>(Campaigns);
 
 export default (inputProps: Props) => (
-  <GetCampaigns campaignNames={['manual']} >
-    {campaigns => <CampaignsWithInjectedIntl {...inputProps} campaigns={campaigns} />}
+  <GetCampaigns campaignNames={['manual']} pageSize={10}>
+    {campaigns => <CampaignsWithInjectedIntl {...inputProps} {...campaigns} />}
   </GetCampaigns>
 );

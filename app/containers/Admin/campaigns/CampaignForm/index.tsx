@@ -100,21 +100,6 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.fieldReplyTo} />
-            </Label>
-            <Field
-              name="reply_to"
-              component={FormikInput}
-              type="email"
-            />
-            {touched.reply_to && <Error
-              fieldName="reply_to"
-              apiErrors={errors.reply_to as any}
-            />}
-          </SectionField>
-
-          <SectionField>
-            <Label>
               <FormattedMessage {...messages.fieldTo} />
             </Label>
             <GetGroups>
@@ -131,6 +116,22 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               apiErrors={errors.group_ids as any}
             />}
           </SectionField>
+
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fieldReplyTo} />
+            </Label>
+            <Field
+              name="reply_to"
+              component={FormikInput}
+              type="email"
+            />
+            {touched.reply_to && <Error
+              fieldName="reply_to"
+              apiErrors={errors.reply_to as any}
+            />}
+          </SectionField>
+
         </Section>
 
         <Section>
