@@ -998,6 +998,7 @@
   "app.errors.generics.invalid": "Dette felt indeholder en ugyldig værdi.",
   "app.errors.generics.taken": "Dette skal være unikt. En anden instans med den samme værdi eksisterer allerede.",
   "app.errors.generics.unsupported_locales": "Dette felt understøtter ikke den nuværende lokalitet.",
+  "app.errors.group_ids_unauthorized_choice_moderator": "",
   "app.errors.has_other_overlapping_phases": "Projects cannot have overlapping phases.",
   "app.errors.invalid_email": "The email {value} fundet i række {row} er ikke en gyldig e-mailadresse",
   "app.errors.invalid_row": "En ukendt fejl opstod ved forsøg på at behandle række {row}",
