@@ -14,7 +14,6 @@ interface Props {
 
 const SentCampaignRow = ({ campaign }: Props) => (
   <Row
-    key={campaign.id}
     id={campaign.id}
   >
     <TextCell className="expand">

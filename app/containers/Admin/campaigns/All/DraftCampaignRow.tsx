@@ -13,7 +13,6 @@ interface Props {
 
 const DraftCampaignRow = ({ campaign }: Props) => (
   <Row
-    key={campaign.id}
     id={campaign.id}
   >
     <TextCell className="expand">
