@@ -80,10 +80,10 @@ class CampaignStats extends React.Component<Props, State> {
           {this.relevantsStats.map((status) => (
             <GraphCard key={status}>
               <GraphCardPercentage>
-                <FormattedNumber style="percent" value={stats[status] / stats['total']} />
+                {stats[status]}
               </GraphCardPercentage>
               <GraphCardCount>
-                {stats[status]}
+                <FormattedNumber style="percent" value={stats[status] / stats['total']} />
               </GraphCardCount>
               <GraphCardTitle>
                 <FormattedMessage {...messages[`deliveryStatus_${status}`]} />

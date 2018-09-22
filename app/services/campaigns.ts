@@ -6,10 +6,10 @@ const apiEndpoint = `${API_PATH}/campaigns`;
 
 export interface ICampaignsData {
   data: ICampaignData[];
-  links: ICampaignsLinks;
+  links: ILinks;
 }
 
-export interface ICampaignsLinks {
+interface ILinks {
   self: string;
   first: string;
   prev: string;
@@ -61,6 +61,10 @@ export interface ICampaign {
   data: ICampaignData;
 }
 
+export interface IDeliveriesData {
+  data: IDeliveryData[];
+  links: ILinks;
+}
 export interface IDeliveryData {
   id: string;
   type: string;
@@ -121,7 +125,7 @@ export function campaignByIdStream(campaignId: string, streamParams: IStreamPara
 }
 
 export function listCampaignDeliveries(campaignId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IDeliveryData[] }>({ apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`, ...streamParams });
+  return streams.get<IDeliveriesData>({ apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`, ...streamParams });
 }
 
 export function getCampaignStats(campaignId: string, streamParams: IStreamParams | null = null) {
