@@ -176,7 +176,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
     });
   }
 
-  handleEventFileOnRemove = (removedFile: UploadFile) => () => {
+  handleEventFileOnRemove = (removedFile: UploadFile) => {
     this.setState((prevState) => {
       let localEventFiles: UploadFile[] | null = null;
 
