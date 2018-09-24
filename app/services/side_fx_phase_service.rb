@@ -7,6 +7,7 @@ class SideFxPhaseService
   end
 
   def after_create phase, user
+    PermissionsService.new.create_permissions_for phase
     LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
   end
 
@@ -15,6 +16,7 @@ class SideFxPhaseService
   end
 
   def after_update phase, user
+    PermissionsService.new.create_permissions_for phase
     LogActivityJob.perform_later(phase, 'changed', user, phase.updated_at.to_i)
   end
 

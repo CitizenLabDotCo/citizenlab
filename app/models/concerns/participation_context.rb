@@ -7,9 +7,6 @@ module ParticipationContext
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
   SURVEY_SERVICES = %w(typeform survey_monkey)
-  INFORMATION_ACTIONS = %w()
-  IDEATION_ACTIONS = %w(posting)
-  SURVEY_ACTIONS = %w()
 
   included do
     has_many :permissions, as: :permittable, dependent: :destroy
@@ -75,14 +72,6 @@ module ParticipationContext
   def is_participation_context?
     not is_timeline_project?
   end
-
-  # def create_permissions actions
-  #   actions.select do |action|
-  #     permissions.find_by action: action
-  #   end.each do |action|
-  #     permissions.create! action: action
-  #   end
-  # end
 
   
   private
