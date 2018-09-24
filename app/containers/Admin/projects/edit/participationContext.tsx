@@ -9,6 +9,7 @@ import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
+import Select from 'components/UI/Select';
 import { Section, SectionField } from 'components/admin/Section';
 
 // services
@@ -25,6 +26,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
 import { fontSizes } from 'utils/styleUtils';
+
+// typings
+import { IOption } from 'typings';
 
 const Container = styled.div``;
 
@@ -70,6 +74,7 @@ export interface IParticipationContextConfig {
   votingLimit: number | null;
   presentationMode: 'map' | 'card' | null;
   budgetingAmount: number | null;
+  budgetingCurrency: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -99,7 +104,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod: 'unlimited',
       votingLimit: 5,
       noVotingLimit: null,
-      budgetingAmount: 1000,
+      budgetingAmount: null,
+      budgetingCurrency: null,
       loaded: false,
       presentationMode: 'card'
     };
@@ -152,21 +158,27 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         .observeEvent('getParticipationContext')
         .pipe(filter(() => this.validate()))
         .subscribe(() => {
-          const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
-
-          this.props.onSubmit({
-            participationMethod,
-            postingEnabled: (participationMethod === 'ideation' ? postingEnabled : null),
-            commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
-            votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
-            votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
-            votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
-            presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
-            survey_embed_url: (participationMethod === 'survey' ? this.state.survey_embed_url : null),
-            survey_service: (participationMethod === 'survey' ? this.state.survey_service : null),
-          });
+          const output = this.getOutput();
+          this.props.onSubmit(output);
         })
     ];
+  }
+
+  getOutput = () => {
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service, budgetingAmount, budgetingCurrency } = this.state;
+    return {
+      participationMethod,
+      postingEnabled: (participationMethod === 'ideation' ? postingEnabled : null),
+      commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
+      votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
+      votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
+      votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
+      presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
+      survey_embed_url: (participationMethod === 'survey' ? survey_embed_url : null),
+      survey_service: (participationMethod === 'survey' ? survey_service : null),
+      budgetingAmount: (participationMethod === 'budgeting' ? budgetingAmount : null),
+      budgetingCurrency: (participationMethod === 'budgeting' ? budgetingCurrency : null),
+    };
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
@@ -174,18 +186,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
 
     if (!isEqual(prevPartialState, nextPartialState)) {
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, budgetingAmount, presentationMode } = this.state;
-
-      this.props.onChange({
-        participationMethod,
-        postingEnabled: (participationMethod === 'ideation' ? postingEnabled : null),
-        commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
-        votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
-        votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
-        votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
-        presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
-        budgetingAmount: (participationMethod === 'budgeting' ? budgetingAmount : null),
-      });
+      const output = this.getOutput();
+      this.props.onChange(output);
     }
   }
 
@@ -204,6 +206,8 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       presentationMode: (participationMethod === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: (participationMethod === 'survey' ? 'typeform' : null),
+      budgetingAmount: (participationMethod === 'budgeting' ? 1000 : null),
+      budgetingCurrency: (participationMethod === 'budgeting' ? 'EUR' : null)
     });
   }
 
@@ -238,14 +242,17 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.setState({ votingLimit: parseInt(votingLimit, 10) });
   }
 
-  handleIdeasDisplayChange = (value: 'map' | 'card') => {
-    this.setState({
-      presentationMode: value,
-    });
+  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
+    this.setState({ presentationMode });
   }
 
   handleBudgetingAmountChange = (amount: string) => {
     this.setState({ budgetingAmount: parseInt(amount, 10) });
+  }
+
+  handleBudgetingCurrencyChange = (budgetingCurrencyOption: IOption) => {
+    const budgetingCurrency = budgetingCurrencyOption.value as string;
+    this.setState({ budgetingCurrency });
   }
 
   validate() {
@@ -277,8 +284,14 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingLimit,
       noVotingLimit,
       budgetingAmount,
+      budgetingCurrency,
       presentationMode
     } = this.state;
+    const currencyCodes = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BOV', 'BRL', 'BSD', 'BTN', 'BWP', 'BYR', 'BZD', 'CAD', 'CDF', 'CHE', 'CHF', 'CHW', 'CLF', 'CLP', 'CNY', 'COP', 'COU', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'IQD', 'IRR', 'ISK', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MXV', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'SSP', 'STD', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'USN', 'USS', 'UYI', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XCD', 'XDR', 'XFU', 'XOF', 'XPD', 'XPF', 'XPT', 'XTS', 'XXX', 'YER', 'ZAR', 'ZMW'];
+    const currencyCodeOptions = currencyCodes.map((currencyCode) => ({
+      value: currencyCode,
+      label: currencyCode
+    }));
 
     const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
       <>
@@ -350,6 +363,15 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     min="1"
                     placeholder=""
                     value={(budgetingAmount ? budgetingAmount.toString() : null)}
+                  />
+                  <Label>
+                    <FormattedMessage {...messages.amountPerCitizen} />
+                  </Label>
+                  <Select
+                    options={currencyCodeOptions}
+                    onChange={this.handleBudgetingCurrencyChange}
+                    value={{ label: budgetingCurrency as string, value: budgetingCurrency }}
+                    clearable={false}
                   />
                 </SectionField>
               </>

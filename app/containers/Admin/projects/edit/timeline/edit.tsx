@@ -193,30 +193,8 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   }
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    const { attributeDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service } = participationContextConfig;
-
-    this.setState({
-      attributeDiff: {
-        ...attributeDiff,
-        survey_embed_url,
-        survey_service,
-        participation_method: participationMethod,
-        posting_enabled: postingEnabled,
-        commenting_enabled: commentingEnabled,
-        voting_enabled: votingEnabled,
-        voting_method: votingMethod,
-        voting_limited_max: votingLimit,
-        presentation_mode: presentationMode,
-      }
-    });
-  }
-
-  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
     let { attributeDiff } = this.state;
-    const { phase, project } = this.state;
-    const { projectId } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode } = participationContextConfig;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service, budgetingAmount, budgetingCurrency } = participationContextConfig;
 
     attributeDiff = {
       ...attributeDiff,
@@ -228,6 +206,32 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
       voting_enabled: votingEnabled,
       voting_method: votingMethod,
       voting_limited_max: votingLimit,
+      max_budget: budgetingAmount,
+      currency: budgetingCurrency,
+      presentation_mode: presentationMode
+    };
+
+    this.setState({ attributeDiff });
+  }
+
+  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    let { attributeDiff } = this.state;
+    const { phase, project } = this.state;
+    const { projectId } = this.props.params;
+    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode, budgetingAmount, budgetingCurrency } = participationContextConfig;
+
+    attributeDiff = {
+      ...attributeDiff,
+      survey_embed_url,
+      survey_service,
+      participation_method: participationMethod,
+      posting_enabled: postingEnabled,
+      commenting_enabled: commentingEnabled,
+      voting_enabled: votingEnabled,
+      voting_method: votingMethod,
+      voting_limited_max: votingLimit,
+      max_budget: budgetingAmount,
+      currency: budgetingCurrency,
       presentation_mode: presentationMode
     };
 
