@@ -7,7 +7,7 @@ class SideFxProjectService
   end
 
   def after_create project, user
-    PermissionsService.new.create_permissions_for project
+    PermissionsService.new.update_permissions_for project
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
   end
 
@@ -16,7 +16,7 @@ class SideFxProjectService
   end
 
   def after_update project, user
-    PermissionsService.new.create_permissions_for project
+    PermissionsService.new.update_permissions_for project
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
   end
 
