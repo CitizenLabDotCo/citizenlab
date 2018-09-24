@@ -192,11 +192,7 @@ type State = {
 class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
-<<<<<<< HEAD
-  public static defaultProps = {
-=======
   static defaultProps = {
->>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
     showCityLogoSection: true
   };
 
