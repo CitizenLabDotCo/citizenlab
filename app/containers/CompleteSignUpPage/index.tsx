@@ -109,10 +109,11 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
     const { location, authUser, idea } = this.props;
     const authError = includes(location.pathname, 'authentication-error');
     const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
-    const search = (ideaToPublishId ? `?idea_to_publish=${ideaToPublishId}` : undefined);
-    const pathname = '/';
 
-    clHistory.push({ search, pathname });
+    clHistory.push({
+      pathname: '/',
+      search: (ideaToPublishId ? `?new_idea_id=${ideaToPublishId}&publish=true` : undefined)
+    });
   }
 
   render() {
@@ -158,7 +159,7 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  idea: ({ location, render }) => <GetIdea id={get(location.query, 'idea_to_publish', null)}>{render}</GetIdea>
+  idea: ({ location, render }) => <GetIdea id={get(location.query, 'new_idea_id', null)}>{render}</GetIdea>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

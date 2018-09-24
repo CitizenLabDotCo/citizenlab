@@ -36,7 +36,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken, ellipsis } from 'polished';
+import { darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -101,7 +101,7 @@ const Logo = styled.img`
 const NavigationItems = styled.div`
   height: 76px;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   margin-left: 35px;
 
   ${media.smallerThanMaxTablet`
@@ -109,25 +109,18 @@ const NavigationItems = styled.div`
   `}
 `;
 
-const NavigationDropdownItemIcon = styled(Icon)`
-  height: 6px;
-  width: 11px;
-  fill: inherit;
-  margin-left: 4px;
-  margin-top: 3px;
-`;
-
 const NavigationItem = styled(Link)`
-  ${ellipsis('20rem') as any}
-  height: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.medium}px;
+  line-height: ${fontSizes.medium}px;
   font-weight: 400;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
   outline: none;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
 
   &:not(:last-child) {
     margin-right: 40px;
@@ -135,8 +128,7 @@ const NavigationItem = styled(Link)`
 
   &.active {
     color: ${(props) => props.theme.colorMain};
-    border-top: 4px solid transparent;
-    border-bottom: 4px solid ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => props.theme.colorMain};
   }
 
   &:focus,
@@ -146,27 +138,33 @@ const NavigationItem = styled(Link)`
 `;
 
 const NavigationDropdown = styled.div`
+  display: flex;
+  align-items: stretch;
   position: relative;
   margin-right: 40px;
 `;
 
 const NavigationDropdownItem = styled.button`
-  align-items: center;
-  height: 76px;
   color: ${colors.label};
-  display: flex;
   fill: ${colors.label};
   font-size: ${fontSizes.medium}px;
   font-weight: 400;
-  transition: all 100ms ease-out;
-  cursor: pointer;
+  line-height: ${fontSizes.medium}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  transition: all 100ms ease;
   outline: none;
+  cursor: pointer;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
 
   &.active {
-    border-bottom: 4px solid ${(props) => props.theme.colorMain};
-    border-top: 4px solid transparent;
     color: ${(props) => props.theme.colorMain};
     fill: ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => props.theme.colorMain};
   }
 
   &:hover,
@@ -174,6 +172,14 @@ const NavigationDropdownItem = styled.button`
     color: ${(props) => props.theme.colorMain};
     fill: ${(props) => props.theme.colorMain};
   }
+`;
+
+const NavigationDropdownItemIcon = styled(Icon)`
+  width: 11px;
+  height: 6px;
+  fill: inherit;
+  margin-left: 4px;
+  margin-top: 3px;
 `;
 
 const ProjectsListItem = styled(Link)`
@@ -268,12 +274,19 @@ const StyledIdeaButton = styled(IdeaButton)`
   button {
     &:hover,
     &:focus {
-      border-color: ${darken(0.2, '#e0e0e0')} !important;
+      border-color: ${darken(0.2, colors.separation)} !important;
     }
   }
 
   .Button {
-    border: solid 2px #e0e0e0 !important;
+    border: solid 2px ${colors.separation} !important;
+    padding-left: 18px;
+    padding-right: 18px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 10px;
+      padding-right: 10px;
+    `}
   }
 
   .buttonText {

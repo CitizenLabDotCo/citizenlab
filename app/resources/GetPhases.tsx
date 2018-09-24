@@ -26,7 +26,7 @@ export default class GetPhases extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
-  public static defaultProps = {
+  static defaultProps = {
     resetOnChange: true
   };
 

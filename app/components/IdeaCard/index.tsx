@@ -38,11 +38,13 @@ import { IModalInfo } from 'containers/App';
 const IdeaImageContainer: any = styled.div`
   width: 100%;
   height: 115px;
-  overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 `;
 
 const IdeaImage: any = styled(LazyImage)`
@@ -71,10 +73,11 @@ const IdeaTitle: any = styled.h3`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-  margin-bottom: .5em;
+  margin-bottom: 15px;
 `;
 
 const Footer = styled.div`
+  min-height: 50px;
   position: absolute;
   bottom: 18px;
   left: 20px;
@@ -84,10 +87,15 @@ const Footer = styled.div`
   justify-content: space-between;
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const CommentIcon = styled(Icon)`
   fill: ${colors.label};
   height: 21px;
-  margin-right: 7px;
+  margin-right: 5px;
+  margin-top: 2px;
   width: 30px;
 `;
 
@@ -146,9 +154,8 @@ const IdeaContainerInner = styled.div`
   flex-direction: column;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   position: relative;
-  overflow: hidden;
 `;
 
 const VotingDisabledWrapper = styled.div`
@@ -236,12 +243,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
           <IdeaContainerInner>
-
             {ideaImageUrl &&
               <IdeaImageContainer>
-              <T value={idea.attributes.title_multiloc}>
-                {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
-              </T>
+                <T value={idea.attributes.title_multiloc}>
+                  {(ideaTitle) => (<IdeaImage src={ideaImageUrl} alt={formatMessage(messages.imageAltText, { ideaTitle })} />)}
+                </T>
               </IdeaImageContainer>
             }
 
@@ -252,7 +258,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <Author
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
-                size="small"
+                size="34px"
                 message={messages.byAuthorNameComponent}
                 notALink
               />
@@ -266,6 +272,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   disabledVoteClick={this.disabledVoteClick}
                   size="2"
                 />
+                <Spacer />
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>

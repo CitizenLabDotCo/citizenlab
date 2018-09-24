@@ -24,7 +24,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { media, quillEditedContent, fontSizes } from 'utils/styleUtils';
+import { media, quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -64,14 +64,10 @@ const Right = styled.aside`
 `;
 
 const ProjectDescriptionStyled = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
-  line-height: 26px;
   font-weight: 300;
-
-  img {
-    max-width: 100%;
-  }
+  line-height: 25px;
 
   h1 {
     font-size: ${fontSizes.xxxl}px;
@@ -81,7 +77,7 @@ const ProjectDescriptionStyled = styled.div`
 
   h2 {
     font-size: ${fontSizes.xxl}px;
-    line-height: 29px;
+    line-height: 33px;
     font-weight: 600;
   }
 
@@ -98,20 +94,48 @@ const ProjectDescriptionStyled = styled.div`
   }
 
   p {
-    margin-bottom: 35px;
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
+
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
+  }
+
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 25px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  img {
+    max-width: 100%;
   }
 
   strong {
     font-weight: 500;
-  }
-
-  a {
-    color: ${(props) => props.theme.colors.clBlueDark};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${(props) => darken(0.15, props.theme.colors.clBlueDark)};
-    }
   }
 
   ${quillEditedContent()}
@@ -129,7 +153,7 @@ const ProjectImages = styled.div`
   img {
     margin: 5px;
     border-radius: 5px;
-    border: solid 1px #e0e0e0;
+    border: solid 1px ${colors.separation};
 
     &:first-child {
       width: calc(100% - 10px);
@@ -155,9 +179,10 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, projectFiles, authUser, intl: { formatMessage } } = props;
+  const { project, projectImages, projectFiles, intl: { formatMessage } } = props;
   if (isNilOrError(project)) return null;
-  const userId = !isNilOrError(authUser) ? authUser.id : null;
+
+  const projectUrl = location.href;
 
   return (
     <Container>
@@ -193,9 +218,8 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
             {(title) => {
               return (
                 <Sharing
+                  url={projectUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
-                  userId={userId}
-                  sharedContent="project"
                 />);
             }}
           </T>
