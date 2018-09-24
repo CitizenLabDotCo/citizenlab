@@ -89,7 +89,6 @@ class FileInput extends Component<InjectedIntlProps &Props> {
           onChange={this.onChange}
           onClick={this.onClick}
           type="file"
-          multiple
           innerRef={this.fileInput}
           accept=".pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .txt, .sxw, .sxc, .sxi, .sdw, .sdc, .sdd, .csv, .mp3, .mp4, .mkv, .avi"
         />
