@@ -80,38 +80,28 @@ class DraftCampaignDetails extends React.Component<Props> {
         </div>
 
         <Buttons>
+          <Button
+            onClick={this.handleDelete}
+            style="text"
+            icon="delete"
+          >
+            <FormattedMessage {...messages.deleteButtonLabel} />
+          </Button>
 
-          <div>
-            <Button
-              onClick={this.handleDelete}
-              style="text"
-              circularCorners={false}
-              icon="delete"
-            >
-              <FormattedMessage {...messages.deleteButtonLabel} />
-            </Button>
-          </div>
+          <Button
+            style="primary-outlined"
+            onClick={this.handleSendPreview}
+          >
+            <FormattedMessage {...messages.sendPreviewButton} />
+          </Button>
 
-          <div>
-            <Button
-              style="primary-outlined"
-              onClick={this.handleSendPreview}
-              circularCorners={false}
-            >
-              <FormattedMessage {...messages.sendPreviewButton} />
-            </Button>
-          </div>
-
-          <div>
-            <Button
-              style="primary"
-              circularCorners={false}
-              icon="send"
-              onClick={this.handleSendNow}
-            >
-              <FormattedMessage {...messages.sendNowButton} />
-            </Button>
-          </div>
+          <Button
+            style="primary"
+            icon="send"
+            onClick={this.handleSendNow}
+          >
+            <FormattedMessage {...messages.sendNowButton} />
+          </Button>
         </Buttons>
 
       </PageWrapper>
