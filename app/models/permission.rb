@@ -14,6 +14,11 @@ class Permission < ApplicationRecord
   after_validation :set_permitted_by
 
 
+  def granted_to? user
+  	(group_ids & user.group_ids).present?
+  end
+
+
   private
 
   def set_permitted_by
