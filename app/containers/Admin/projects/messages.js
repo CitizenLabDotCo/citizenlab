@@ -165,6 +165,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey',
     defaultMessage: 'Survey',
   },
+  participatoryBudgeting: {
+    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
+    defaultMessage: 'Participatory Budgeting',
+  },
+  amountPerCitizen: {
+    id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
+    defaultMessage: 'Amount per citizen',
+  },
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
     defaultMessage: 'Participation method',

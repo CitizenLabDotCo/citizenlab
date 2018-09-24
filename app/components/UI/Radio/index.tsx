@@ -76,7 +76,6 @@ export default class Radio extends React.PureComponent<Props> {
 
   render() {
     const id = this.props.id || `${this.props.name}-${this.props.value}`;
-
     const className = this.props['className'];
     const checked = (this.props.value === this.props.currentValue);
 
@@ -95,7 +94,9 @@ export default class Radio extends React.PureComponent<Props> {
           className={`${checked ? 'checked' : ''}`}
           disabled={this.props.disabled}
         >
-          {checked && <Checked color={(this.props.buttonColor || '#49B47D')}/>}
+          {checked &&
+            <Checked color={(this.props.buttonColor || '#49B47D')}/>
+          }
         </CustomRadio>
         <Text className="text">{this.props.label}</Text>
       </Wrapper>

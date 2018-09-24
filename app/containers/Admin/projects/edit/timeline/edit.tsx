@@ -3,10 +3,10 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { get, isEmpty } from 'lodash-es';
 
 // Services
@@ -38,7 +38,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLError } from 'typings';
+import { CLError, Multiloc } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -87,7 +87,7 @@ interface State {
   loaded: boolean;
 }
 
-class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
@@ -141,40 +141,42 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleTitleMultilocOnChange = (title_multiloc) => {
-    this.setState((state) => ({
+  handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
+    this.setState(({ attributeDiff }) => ({
       attributeDiff: {
-        ...state.attributeDiff,
+        ...attributeDiff,
         title_multiloc,
       }
     }));
   }
 
-  handleEditorOnChange = (description_multiloc) => {
-    this.setState((state) => ({
+  handleEditorOnChange = (description_multiloc: Multiloc) => {
+    this.setState(({ attributeDiff }) => ({
       attributeDiff: {
-        ...state.attributeDiff,
-        description_multiloc,
+        ...attributeDiff,
+        description_multiloc
       }
     }));
   }
 
   handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
-    this.setState((state) => ({
+    this.setState(({ attributeDiff }) => ({
       presentationMode,
       attributeDiff: {
-        ...state.attributeDiff,
+        ...attributeDiff,
         presentation_mode: presentationMode
       }
     }));
   }
 
-  handleDateUpdate = ({ startDate, endDate }) => {
-    const { attributeDiff } = this.state;
-    const newAttributesDiff = attributeDiff;
-    newAttributesDiff.start_at = startDate ? startDate.format('YYYY-MM-DD') : '';
-    newAttributesDiff.end_at = endDate ? endDate.format('YYYY-MM-DD') : '';
-    this.setState({ attributeDiff: newAttributesDiff });
+  handleDateUpdate = ({ startDate, endDate }: { startDate: Moment, endDate: Moment }) => {
+    this.setState(({ attributeDiff }) => ({
+      attributeDiff: {
+        ...attributeDiff,
+        start_at: startDate ? startDate.format('YYYY-MM-DD') : '',
+        end_at: endDate ? endDate.format('YYYY-MM-DD') : ''
+      }
+    }));
   }
 
   handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
@@ -185,7 +187,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     return false;
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
   }
@@ -235,13 +237,21 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
   save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     if (!isEmpty(attributeDiff)) {
       try {
+        let savedPhase = phase;
+
         if (phase) {
-          const savedPhase = await updatePhase(phase.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+          savedPhase = await updatePhase(phase.data.id, attributeDiff);
         } else if (project && projectId) {
-          const savedPhase = await addPhase(project.data.id, attributeDiff);
-          this.setState({ saving: false, saved: true, attributeDiff: {}, phase: savedPhase, errors: null });
+          savedPhase = await addPhase(project.data.id, attributeDiff);
         }
+
+        this.setState({
+          attributeDiff: {},
+          saving: false,
+          saved: true,
+          phase: savedPhase,
+          errors: null
+        });
       } catch (errors) {
         this.setState({
           errors: get(errors, 'json.errors', null),
