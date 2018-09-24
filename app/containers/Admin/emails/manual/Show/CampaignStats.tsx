@@ -4,7 +4,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import GetCampaignStats from 'resources/GetCampaignStats';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
+import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
 
