@@ -33,17 +33,7 @@ const Container = styled(clickOutside)`
   }
 `;
 
-interface Props {
-  id?: string | undefined;
-  title: string | JSX.Element;
-  name: string;
-  values: {
-    text: string | JSX.Element,
-    value: any
-  }[];
-  onChange?: (value: any) => void;
-  multiple: boolean;
-  selected: string[];
+interface DefaultProps {
   width?: string;
   mobileWidth?: string;
   maxHeight?: string;
@@ -55,6 +45,19 @@ interface Props {
   mobileRight?: string;
 }
 
+interface Props extends DefaultProps {
+  id?: string | undefined;
+  title: string | JSX.Element;
+  name: string;
+  values: {
+    text: string | JSX.Element,
+    value: any
+  }[];
+  onChange?: (value: any) => void;
+  multiple: boolean;
+  selected: string[];
+}
+
 interface State {
   opened: boolean;
 }
@@ -62,7 +65,11 @@ interface State {
 export default class FilterSelector extends PureComponent<Props, State> {
   baseID: string;
 
+<<<<<<< HEAD
   static defaultProps = {
+=======
+  static defaultProps: DefaultProps = {
+>>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
     width: undefined,
     mobileWidth: undefined,
     maxHeight: undefined,

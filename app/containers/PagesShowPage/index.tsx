@@ -99,10 +99,10 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.large}px;
   font-weight: 300;
-  line-height: 26px;
+  line-height: 25px;
 
   h1 {
     font-size: ${fontSizes.xxxl}px;
@@ -117,11 +117,14 @@ const PageDescription = styled.div`
   }
 
   p {
-    margin-bottom: 35px;
-  }
+    color: ${colors.text};
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 27px;
 
-  strong {
-    font-weight: 600;
+    &:last-child {
+      margin-bottom: 0px;
+    }
   }
 
   a {
@@ -130,11 +133,28 @@ const PageDescription = styled.div`
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
     }
   }
 
-  img {
-    max-width: 100%;
+  ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding: 0;
+    padding-left: 25px;
+    margin: 0;
+    margin-bottom: 25px;
+
+    li {
+      padding: 0;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      margin: 0;
+    }
+  }
+
+  strong {
+    font-weight: 500;
   }
 
   ${quillEditedContent()}
@@ -166,7 +186,7 @@ const StyledLink = styled(Link) `
   margin-bottom: 15px;
   padding: 20px 23px;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   background: #fff;
   transition: all 100ms ease-out;
 
@@ -203,7 +223,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
         <Loading>
-          <Spinner size="32px" />
+          <Spinner />
         </Loading>
       );
     } else {

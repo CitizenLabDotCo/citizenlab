@@ -26,7 +26,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('./google.svg') as string;
@@ -68,7 +68,7 @@ const SocialSignInButton = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   user-select: none;
   cursor: pointer;
   position: relative;
@@ -181,7 +181,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [
       globalState$.subscribe((globalState) => {
         this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?idea_to_publish=${globalState.ideaId}` : '')
+          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '')
         });
       })
     ];
