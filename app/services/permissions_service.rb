@@ -7,13 +7,14 @@ class PermissionsService
   SURVEY_ACTIONS = %w()
 
 
-  def create_permissions_for participation_context
+  def update_permissions_for participation_context
     if !participation_context.is_timeline_project?
       actions = "#{participation_context.participation_method.upcase}_ACTIONS".constantize
+      participation_context.permissions.where.not(action: actions).each(&:destroy!)
       actions.select do |action|
-        !permissions.find_by action: action
+        !participation_context.permissions.find_by action: action
       end.each do |action|
-        permissions.create! action: action
+        participation_context.permissions.create! action: action
       end
     end
   end
