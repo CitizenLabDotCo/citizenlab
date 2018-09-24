@@ -391,13 +391,8 @@ const TimeAgo = styled.div`
   `}
 `;
 
-<<<<<<< HEAD
-const IdeaDescription = styled.div`
-  color: #474747;
-=======
 const IdeaBody = styled.div`
   color: ${colors.text};
->>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
   font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 25px;
@@ -762,26 +757,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-<<<<<<< HEAD
-    const { inModal, intl: { formatMessage }, ideaFiles } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions, authUser } = this.state;
-    let loader: JSX.Element | null = null;
-=======
-    const { inModal, intl: { formatMessage }, localize } = this.props;
+    const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
->>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
     let content: JSX.Element | null = null;
 
     if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-<<<<<<< HEAD
-      const ideaDescription = linkifyHtml(this.props.localize(idea.data.attributes.body_multiloc));
-=======
       const ideaTitle = localize(titleMultiloc);
       const ideaBody = localize(idea.data.attributes.body_multiloc);
->>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -901,15 +886,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
-<<<<<<< HEAD
-                  <IdeaDescription className={`${!ideaImageLarge && 'noImage'}`}>
-                    <span dangerouslySetInnerHTML={{ __html: ideaDescription }} />
-                  </IdeaDescription>
-=======
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
                     <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
                   </IdeaBody>
->>>>>>> 1846c0c33adf3ee0dd2d39755d8fe3f63729a230
                 </Fragment>
 
                 {ideaFiles && !isNilOrError(ideaFiles) &&
