@@ -1,32 +1,53 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
+import { withRouter, WithRouterProps } from 'react-router';
+import { API_PATH } from 'containers/App/constants';
 
-import GoBackButton from 'components/UI/GoBackButton';
+// services & resources
+import streams from 'utils/streams';
+import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
+import GetCampaign from 'resources/GetCampaign';
 
+// i18n
+import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { withRouter, WithRouterProps } from 'react-router';
-import GetCampaign from 'resources/GetCampaign';
-import { isNilOrError } from 'utils/helperUtils';
-import T from 'components/T';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
-import { InjectedIntlProps } from 'react-intl';
+
+// components
+import Button from 'components/UI/Button';
 import StatusLabel from 'components/UI/StatusLabel';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
+import T from 'components/T';
+import GoBackButton from 'components/UI/GoBackButton';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+const PageHeader = styled.div`
+  display: flex;
+`;
 
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 3rem 0 4rem;
+  margin-right: auto;
 `;
 
 const PageTitle = styled.h1`
   margin-bottom: 0;
   margin-right: 1rem;
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0;
+  & > * {
+    padding: 0 10px;
+  }
 `;
 
 interface InputProps { }
@@ -80,16 +101,45 @@ class Show extends React.Component<Props> {
     return (
       <div>
         <GoBackButton onClick={this.goBack} />
-        <PageTitleWrapper>
-          <PageTitle>
-            <T value={campaign.attributes.subject_multiloc} />
-          </PageTitle>
-          {isDraft(campaign) ?
-            <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
-          :
-            <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
+        <PageHeader>
+          <PageTitleWrapper>
+            <PageTitle>
+              <T value={campaign.attributes.subject_multiloc} />
+            </PageTitle>
+            {isDraft(campaign) ?
+              <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
+            :
+              <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
+            }
+          </PageTitleWrapper>
+          {isDraft(campaign) &&
+            <Buttons>
+              <Button
+                onClick={this.handleDelete}
+                style="text"
+                icon="delete"
+              >
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </Button>
+
+              <Button
+                style="primary-outlined"
+                onClick={this.handleSendPreview}
+              >
+                <FormattedMessage {...messages.sendPreviewButton} />
+              </Button>
+
+              <Button
+                style="primary"
+                icon="send"
+                onClick={this.handleSendNow}
+              >
+                <FormattedMessage {...messages.sendNowButton} />
+              </Button>
+            </Buttons>
           }
-        </PageTitleWrapper>
+
+        </PageHeader>
         {isDraft(campaign) ?
           <DraftCampaignDetails campaignId={campaign.id} />
         :
