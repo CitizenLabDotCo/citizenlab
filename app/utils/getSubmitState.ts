@@ -6,14 +6,17 @@ interface Options {
     [fieldName: string]: CLError[]
   } | null;
   saved: boolean;
+  diff: object | null;
 }
 
-export default function getSubmitState<DiffType>({ errors, saved, diff }: Options & {diff: DiffType}): 'disabled' | 'enabled' | 'error' | 'success' {
+export default function getSubmitState({ errors, saved, diff }: Options) {
   if (errors && !isEmpty(errors)) {
     return 'error';
   }
+
   if (saved && isEmpty(diff)) {
     return 'success';
   }
+
   return isEmpty(diff) ? 'disabled' : 'enabled';
 }

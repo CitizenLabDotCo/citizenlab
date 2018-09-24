@@ -51,6 +51,7 @@ const ToggleRow = Row.extend`
 const ToggleLabel = styled(Label)`
   width: 100%;
   max-width: 200px;
+  color: #333;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
 `;
@@ -68,6 +69,7 @@ export interface IParticipationContextConfig {
   votingMethod: 'unlimited' | 'limited' | null;
   votingLimit: number | null;
   presentationMode: 'map' | 'card' | null;
+  budgetingAmount: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -97,6 +99,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod: 'unlimited',
       votingLimit: 5,
       noVotingLimit: null,
+      budgetingAmount: 1000,
       loaded: false,
       presentationMode: 'card'
     };
@@ -171,7 +174,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
 
     if (!isEqual(prevPartialState, nextPartialState)) {
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode } = this.state;
+      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, budgetingAmount, presentationMode } = this.state;
 
       this.props.onChange({
         participationMethod,
@@ -181,6 +184,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
         votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
         votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
         presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
+        budgetingAmount: (participationMethod === 'budgeting' ? budgetingAmount : null),
       });
     }
   }
@@ -189,7 +193,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleParticipationMethodOnChange = (participationMethod: 'ideation' | 'information') => {
+  handleParticipationMethodOnChange = (participationMethod: ParticipationMethod) => {
     this.setState({
       participationMethod,
       postingEnabled: (participationMethod === 'ideation' ? true : null),
@@ -199,7 +203,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingLimit: null,
       presentationMode: (participationMethod === 'ideation' ? 'card' : null),
       survey_embed_url: null,
-      survey_service: null,
+      survey_service: (participationMethod === 'survey' ? 'typeform' : null),
     });
   }
 
@@ -240,6 +244,10 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     });
   }
 
+  handleBudgetingAmountChange = (amount: string) => {
+    this.setState({ budgetingAmount: parseInt(amount, 10) });
+  }
+
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
@@ -268,6 +276,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
       votingMethod,
       votingLimit,
       noVotingLimit,
+      budgetingAmount,
       presentationMode
     } = this.state;
 
@@ -317,8 +326,34 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                   label={<FormattedMessage {...messages.survey} />}
                 />
               </FeatureFlag>
-
+              {/* <FeatureFlag name="participatory_budgeting"> */}
+                <Radio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participationMethod}
+                  value="budgeting"
+                  name="participationmethod"
+                  id={'participationmethod-budgeting'}
+                  label={<FormattedMessage {...messages.participatoryBudgeting} />}
+                />
+              {/* </FeatureFlag> */}
             </SectionField>
+
+            {participationMethod === 'budgeting' &&
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.amountPerCitizen} />
+                  </Label>
+                  <Input
+                    onChange={this.handleBudgetingAmountChange}
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={(budgetingAmount ? budgetingAmount.toString() : null)}
+                  />
+                </SectionField>
+              </>
+            }
 
             {participationMethod === 'ideation' &&
               <>
@@ -393,7 +428,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             }
 
             {participationMethod === 'survey' &&
-              <React.Fragment>
+              <>
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.surveyService} />
@@ -420,7 +455,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     value={survey_embed_url}
                   />
                 </SectionField>
-              </React.Fragment>
+              </>
             }
 
           </StyledSection>
