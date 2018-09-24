@@ -204,7 +204,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       this.setState({ imageFile: this.props.imageFile });
     }
 
-    if (!isNilOrError(remoteIdeaFiles) && prevProps.remoteIdeaFiles !== remoteIdeaFiles) {
+    if (!isNilOrError(remoteIdeaFiles) && remoteIdeaFiles !== prevProps.remoteIdeaFiles) {
       this.setState({ localIdeaFiles: remoteIdeaFiles });
     }
   }
