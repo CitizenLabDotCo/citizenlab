@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import PageWrapper from 'components/admin/PageWrapper';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
@@ -55,7 +55,7 @@ class DraftCampaignDetails extends React.Component<Props> {
   }
 
   handleSaveDraft = () => {
-    clHistory.push('/admin/campaigns');
+    clHistory.push('/admin/emails/manual');
   }
 
   handleDelete = () => {
@@ -63,7 +63,7 @@ class DraftCampaignDetails extends React.Component<Props> {
     if (window.confirm(deleteMessage)) {
       deleteCampaign(this.props.campaign.id)
         .then(() => {
-          clHistory.push('/admin/campaigns');
+          clHistory.push('/admin/emails/manual');
         });
     }
   }
@@ -73,7 +73,7 @@ class DraftCampaignDetails extends React.Component<Props> {
     return (
       <PageWrapper>
         <div>
-          <Button linkTo={`/admin/campaigns/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
+          <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
             <FormattedMessage {...messages.editButtonLabel} />
           </Button>
           <PreviewFrame campaignId={campaign.id} />

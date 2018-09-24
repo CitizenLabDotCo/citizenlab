@@ -4,7 +4,7 @@ import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import { FormattedDate, FormattedTime } from 'react-intl';
 import StatusLabel from 'components/UI/StatusLabel';
 
@@ -25,7 +25,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
       <FormattedTime value={campaign.attributes.updated_at} />
     </div>
     <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
-    <Button linkTo={`/admin/campaigns/${campaign.id}`} circularCorners={false} icon="analytics" style="secondary">
+    <Button linkTo={`/admin/emails/manual/${campaign.id}`} circularCorners={false} icon="analytics" style="secondary">
       <FormattedMessage {...messages.statsButton} />
     </Button>
   </Row>

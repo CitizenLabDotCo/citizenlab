@@ -4,7 +4,7 @@ import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
@@ -19,7 +19,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
     <StatusLabel color={'draftYellow'} text={<FormattedMessage {...messages.draft} />} />
-    <Button linkTo={`/admin/campaigns/${campaign.id}`} style="secondary-outlined" circularCorners={false} icon="edit">
+    <Button linkTo={`/admin/emails/manual/${campaign.id}`} style="secondary-outlined" circularCorners={false} icon="edit">
       <FormattedMessage {...messages.manageButtonLabel} />
     </Button>
   </Row>

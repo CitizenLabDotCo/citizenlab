@@ -4,12 +4,11 @@ import { updateCampaign, ICampaignData } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
 import CampaignForm, { FormValues, validateCampaignForm } from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import { withRouter, WithRouterProps } from 'react-router';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
@@ -35,7 +34,7 @@ class Edit extends React.Component<Props> {
       ...values
     })
       .then(() => {
-        clHistory.push(`/admin/campaigns/${this.props.campaign.id}`);
+        clHistory.push(`/admin/emails/manual/${this.props.campaign.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = errorResponse.json.errors;
@@ -63,7 +62,7 @@ class Edit extends React.Component<Props> {
   )
 
   goBack = () => {
-    clHistory.push('/admin/campaigns');
+    clHistory.push('/admin/emails/manual');
   }
 
   render() {
@@ -73,14 +72,12 @@ class Edit extends React.Component<Props> {
         <PageTitle>
           <FormattedMessage {...messages.editCampaignTitle} />
         </PageTitle>
-        <PageWrapper>
-          <Formik
-            initialValues={this.initialValues()}
-            onSubmit={this.handleSubmit}
-            render={this.renderFn}
-            validate={validateCampaignForm}
-          />
-        </PageWrapper>
+        <Formik
+          initialValues={this.initialValues()}
+          onSubmit={this.handleSubmit}
+          render={this.renderFn}
+          validate={validateCampaignForm}
+        />
       </div>
     );
   }
