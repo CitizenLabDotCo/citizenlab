@@ -14,6 +14,7 @@ class Invite < ApplicationRecord
   validates :invitee, presence: true, uniqueness: true
 
   before_validation :generate_token, on: :create
+  before_validation :sanitize_invite_text, if: :invite_text
   after_destroy :destroy_invitee, if: :pending?
 
   private
@@ -28,6 +29,13 @@ class Invite < ApplicationRecord
 
   def generate_token
     self.token ||= ([*('a'..'z'),*('0'..'9')]).sample(8).join
+  end
+
+  def sanitize_invite_text
+    self.invite_text = SanitizationService.new.sanitize(
+      self.invite_text,
+      %i{decoration link}
+    )
   end
 
 end
