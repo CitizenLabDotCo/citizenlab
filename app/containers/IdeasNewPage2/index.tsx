@@ -18,7 +18,7 @@ import SignInUp from './SignInUp';
 
 // services
 import { localeStream } from 'services/locale';
-import { addIdea, updateIdea, IIdeaAdd, IIdea } from 'services/ideas';
+import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
@@ -301,9 +301,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   handleOnIdeaSubmit = async () => {
-    this.globalState.set({ submitError: false, processing: true });
-
     try {
+      this.globalState.set({ submitError: false, processing: true });
       const authUser = await getAuthUserAsync();
       const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
       clHistory.push({
@@ -314,7 +313,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       if (isError(error) && error.message === 'not_authenticated') {
         try {
           await this.postIdeaAndIdeaImage('draft', null);
-          this.globalState.set({ processing: false });
+          this.globalState.set({ processing: false, submitError: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
         } catch (error) {
@@ -332,11 +331,10 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   handleOnSignInUpCompleted = async (userId: string) => {
     this.localState.set({ publishing: true });
-    let idea: IIdea | null = null;
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
-      idea = await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
+      const idea = await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
 
       if (idea) {
         clHistory.push({
@@ -348,7 +346,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    const { showIdeaForm, publishing /*, modalOpened */ } = this.state;
+    const { showIdeaForm, publishing } = this.state;
 
     return (
       <Container>

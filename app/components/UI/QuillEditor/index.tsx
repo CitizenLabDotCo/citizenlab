@@ -1,4 +1,5 @@
 import React from 'react';
+import { isFunction } from 'lodash-es';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
@@ -153,6 +154,7 @@ export interface QuillProps {
   onKeyDown?: React.EventHandler<any>;
   onKeyUp?: React.EventHandler<any>;
   children?: React.ReactElement<any>;
+  setRef?: (arg: any) => void | undefined;
 }
 
 interface State {
@@ -204,9 +206,16 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     this.state = { editorHtml: '' };
   }
 
-  handleChange = html => this.setState({ editorHtml: html });
+  handleChange = (html) => {
+    this.setState({ editorHtml: html });
+  }
 
-  // Begin event tracking functions
+  setRef = (element) => {
+    if (isFunction(this.props.setRef)) {
+      this.props.setRef(element);
+    }
+  }
+
   trackAdvanced = (type, option) => {
     return () => {
       this.props.trackAdvancedEditing({
@@ -217,6 +226,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       });
     };
   }
+
   trackClickDropdown = () => {
     return (e) => {
       if (e.target && e.target.classList.contains('ql-picker-item')) {
@@ -238,6 +248,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       }
     };
   }
+
   trackBasic = (type) => {
     return () => this.props.trackBasicEditing({
       extra: {
@@ -245,13 +256,14 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       },
     });
   }
+
   trackImage = () => {
     return this.props.trackImageEditing();
   }
+
   trackVideo = () => {
     return this.props.trackVideoEditing();
   }
-  // End event tracking functions
 
   render() {
     const {
@@ -389,6 +401,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
           bounds="#boundaries"
           theme="snow"
           formats={formats}
+          ref={this.setRef}
           {...quillProps}
         />
       </Container >
@@ -402,4 +415,5 @@ const QuillEditorWithHoc = injectTracks<Props>({
   trackVideoEditing: tracks.videoEditing,
   trackAdvancedEditing: tracks.advancedEditing,
 })(QuillEditor);
+
 export default injectIntl<Props>(QuillEditorWithHoc);
