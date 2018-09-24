@@ -18,10 +18,15 @@ import StatusLabel from 'components/UI/StatusLabel';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 
+const PageTitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 3rem 0 4rem;
+`;
+
 const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+  margin-bottom: 0;
+  margin-right: 1rem;
 `;
 
 interface InputProps { }
@@ -75,14 +80,16 @@ class Show extends React.Component<Props> {
     return (
       <div>
         <GoBackButton onClick={this.goBack} />
-        <PageTitle>
-          <T value={campaign.attributes.subject_multiloc} />
+        <PageTitleWrapper>
+          <PageTitle>
+            <T value={campaign.attributes.subject_multiloc} />
+          </PageTitle>
           {isDraft(campaign) ?
             <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
           :
             <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
           }
-        </PageTitle>
+        </PageTitleWrapper>
         {isDraft(campaign) ?
           <DraftCampaignDetails campaignId={campaign.id} />
         :
