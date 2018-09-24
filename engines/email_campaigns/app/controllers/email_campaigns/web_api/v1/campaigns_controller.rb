@@ -91,6 +91,7 @@ module EmailCampaigns
       @deliveries = @campaign.deliveries
         .includes(:user)
         .page(params.dig(:page, :number))
+        .per(params.dig(:page, :size))
       render json: @deliveries, include: [:user]
     end
 
