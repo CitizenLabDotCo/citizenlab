@@ -11,7 +11,8 @@ resource "IdeaFile" do
     @user = create(:user)
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
-    @idea = create(:idea, author: @user)
+    @project = create(:continuous_project, with_permissions: true)
+    @idea = create(:idea, author: @user, project: @project)
     create_list(:idea_file, 2, idea: @idea)
   end
 
