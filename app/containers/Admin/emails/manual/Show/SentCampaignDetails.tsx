@@ -11,7 +11,7 @@ import PreviewFrame from './PreviewFrame';
 import RecipientsTable from './RecipientsTable';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 const PaddedCampaignStats = styled(CampaignStats)`
   padding-bottom: 20px;

@@ -240,7 +240,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
       },
       {
         id: 'emails',
-        link: '/admin/campaigns',
+        link: '/admin/emails',
         iconName: 'emails',
         message: 'emails',
         featureName: 'segmented_emailing',
