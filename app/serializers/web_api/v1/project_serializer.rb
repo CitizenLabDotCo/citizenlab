@@ -27,7 +27,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def action_descriptor
     @participation_context_service ||= ParticipationContextService.new
-    posting_disabled_reason = @participation_context_service.posting_disabled_reason(object)
+    posting_disabled_reason = @participation_context_service.posting_disabled_reason(object, current_user)
     {
       posting: {
         enabled: !posting_disabled_reason,
