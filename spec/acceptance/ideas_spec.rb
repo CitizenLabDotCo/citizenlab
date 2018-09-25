@@ -103,7 +103,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a project" do
-      l = create(:project)
+      l = create(:project, with_permissions: true)
       i = create(:idea, project: l)
 
       do_request project: l.id
@@ -113,7 +113,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in a phase of a project" do
-      pr = create(:project_with_phases)
+      pr = create(:project_with_phases, with_permissions: true)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -224,7 +224,7 @@ resource "Ideas" do
     end
 
     example "List all idea markers in a phase of a project", document: false do
-      pr = create(:project_with_phases)
+      pr = create(:project_with_phases, with_permissions: true)
       ph1 = pr.phases.first
       ph2 = pr.phases.second
       i1 = create(:idea, phases: [ph1], project: pr)
@@ -299,7 +299,7 @@ resource "Ideas" do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:idea) { build(:idea) }
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:continuous_project, with_permissions: true) }
     let(:project_id) { project.id }
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
@@ -334,7 +334,7 @@ resource "Ideas" do
 
     describe do
       let(:idea) { build(:idea) }
-      let(:project) { create(:continuous_project) }
+      let(:project) { create(:continuous_project, with_permissions: true) }
       let(:project_id) { project.id }
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
@@ -357,7 +357,7 @@ resource "Ideas" do
     end
 
     describe do
-      let(:project) { create(:project_with_current_phase, current_phase_attrs: {
+      let(:project) { create(:project_with_current_phase, with_permissions: true, current_phase_attrs: {
         participation_method: 'information' 
       })}
 
@@ -371,7 +371,7 @@ resource "Ideas" do
     describe do
       let(:project_id) { nil }
       example_request "[error] Create an idea without a project", document: false do
-        expect(response_status).to eq 422
+        expect(response_status).to be >= 400
       end
     end
     
@@ -383,7 +383,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_current_phase, phases_config: {sequence: "xxcx"}) }
+        let(:project) { create(:project_with_current_phase, with_permissions: true, phases_config: {sequence: "xxcx"}) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
         example_request "Creating an idea in specific phases", document: false do
@@ -394,7 +394,7 @@ resource "Ideas" do
       end
 
       describe do
-        let(:project) { create(:project_with_active_ideation_phase) }
+        let(:project) { create(:project_with_active_ideation_phase, with_permissions: true) }
         let(:other_project) { create(:project_with_active_ideation_phase) }
         let(:phase_ids) { [other_project.phases.first.id] }
 
@@ -409,7 +409,8 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @idea =  create(:idea, author: @user)
+      @project = create(:continuous_project, with_permissions: true)
+      @idea =  create(:idea, author: @user, project: @project)
     end
 
     with_options scope: :idea do
@@ -505,7 +506,7 @@ resource "Ideas" do
 
       describe do
         before do
-          @project = create(:project_with_phases)
+          @project = create(:project_with_phases, with_permissions: true)
           @idea.project = @project
           @idea.phases = [@project.phases.first]
           @idea.save
@@ -522,7 +523,7 @@ resource "Ideas" do
 
     context "when moderator" do
       before do
-        @moderator = create(:moderator, project: @idea.project)
+        @moderator = create(:moderator, project: @project)
         token = Knock::AuthToken.new(payload: { sub: @moderator.id }).token
         header 'Authorization', "Bearer #{token}"
       end
@@ -557,7 +558,8 @@ resource "Ideas" do
 
   patch "web_api/v1/ideas/:id" do
     before do
-      @idea =  create(:idea, author: @user, publication_status: 'draft')
+      @project = create(:continuous_project, with_permissions: true)
+      @idea =  create(:idea, author: @user, publication_status: 'draft', project: @project)
     end
     parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}", required: true, scope: :idea
     
@@ -573,7 +575,8 @@ resource "Ideas" do
 
   delete "web_api/v1/ideas/:id" do
     before do
-      @idea = create(:idea_with_topics, author: @user, publication_status: 'published')
+      @project = create(:continuous_project, with_permissions: true)
+      @idea = create(:idea_with_topics, author: @user, publication_status: 'published', project: @project)
     end
     let(:id) { @idea.id }
 

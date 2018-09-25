@@ -51,7 +51,7 @@ class ParticipationContextService
   end
 
   def posting_disabled_reason project, user
-    context = get_participation_context(project)
+    context = project && get_participation_context(project)
     permission = context && context.permissions.where(action: 'posting').first
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
