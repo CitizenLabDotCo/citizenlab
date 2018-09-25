@@ -64,8 +64,8 @@ Rails.application.routes.draw do
       end
 
       concern :participation_context do
-        # :action is already used as param, so we chose :permission instead
-        resources :permissions, param: :permission
+        # :action is already used as param, so we chose :permission_action instead
+        resources :permissions, param: :permission_action
       end
 
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do

@@ -32,7 +32,7 @@ class WebApi::V1::PermissionsController < ApplicationController
 
   def set_permission
     @permission = Permission.find_by(
-      action: params[:permission],
+      action: params[:permission_action],
       permittable_id: params[params[:parent_param]]
       )
     authorize @permission
