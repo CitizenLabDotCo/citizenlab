@@ -12,7 +12,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -172,7 +172,7 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
-  projectFiles: GetResourceFileObjectsChildProps;
+  projectFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -191,7 +191,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
-          {projectFiles && !isNilOrError(projectFiles) &&
+          {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />
           }
         </Left>
@@ -234,7 +234,7 @@ const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  projectFiles: ({ projectId, render }) => <GetResourceFileObjects resourceId={projectId} resourceType="project">{render}</GetResourceFileObjects>,
+  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
