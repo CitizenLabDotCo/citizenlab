@@ -29,23 +29,26 @@ const Paperclip = styled(Icon)`
   width: 10px;
   height: 20px;
   fill: ${colors.label};
-  margin-right: 10px;
+  margin-right: 15px;
 `;
 
 const FileDownloadLink = styled.a`
   color: ${colors.label};
   display: inline-block;
-  margin-right: 5px;
+  margin-right: 10px;
   text-decoration: underline;
   word-break: break-all;
+  max-width: 70%;
 
   ${media.smallerThanMinTablet`
     margin-right: auto;
+    max-width: 100%;
   `}
 `;
 
 const FileSize = styled.span`
   margin-right: auto;
+  white-space: nowrap;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -57,7 +60,7 @@ const DeleteButton = styled.button`
   height: 20px;
   align-items: center;
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 10px;
 
   &:hover {
     .cl-icon {
