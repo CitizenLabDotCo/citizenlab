@@ -5,7 +5,7 @@ describe IdeaFilePolicy do
   let(:scope) { IdeaFilePolicy::Scope.new(user, idea.idea_files) }
 
   context "on a file of an idea in a public project" do 
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:continuous_project, with_permissions: true) }
     let(:idea) { create(:idea, project: project) }
     let!(:file) { create(:idea_file, idea: idea)}
 
@@ -76,7 +76,7 @@ describe IdeaFilePolicy do
 	end
 
 	 context "on a file of an idea in a private admins project" do 
-	 	let(:project) { create(:private_admins_project) }
+	 	let(:project) { create(:private_admins_project, with_permissions: true) }
     let(:idea) { create(:idea, project: project) }
     let!(:file) { create(:idea_file, idea: idea)}
 

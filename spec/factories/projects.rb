@@ -14,6 +14,22 @@ FactoryBot.define do
     }}
     publication_status 'published'
 
+    transient do
+      with_permissions { false }
+    end
+
+    after(:create) do |project, evaluator|
+      if evaluator.with_permissions
+        if project.is_participation_context?
+          PermissionsService.new.update_permissions_for project
+        else
+          project.phases.each do |phase| 
+            PermissionsService.new.update_permissions_for phase
+          end
+        end
+      end
+    end
+
     factory :project_with_topics do
       transient do
         topics_count 5
