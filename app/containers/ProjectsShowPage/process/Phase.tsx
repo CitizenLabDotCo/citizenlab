@@ -88,7 +88,7 @@ class Phase extends React.PureComponent<Props, State> {
             </Information>
           }
 
-          {phaseFiles && !isNilOrError(phaseFiles) &&
+          {!isNilOrError(phaseFiles) &&
             <FileAttachments files={phaseFiles} />
           }
 
