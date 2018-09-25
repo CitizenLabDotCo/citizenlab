@@ -5,7 +5,7 @@ describe IdeaImagePolicy do
   let(:scope) { IdeaImagePolicy::Scope.new(user, idea.idea_images) }
 
   context "on an image of an idea in a public project" do 
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:continuous_project, with_permissions: true) }
     let(:idea) { create(:idea, project: project) }
     let!(:image) { create(:idea_image, idea: idea)}
 
@@ -76,7 +76,7 @@ describe IdeaImagePolicy do
 	end
 
 	 context "on an image of an idea in a private admins project" do 
-	 	let(:project) { create(:private_admins_project) }
+	 	let(:project) { create(:private_admins_project, with_permissions: true) }
     let(:idea) { create(:idea, project: project) }
     let!(:image) { create(:idea_image, idea: idea)}
 
