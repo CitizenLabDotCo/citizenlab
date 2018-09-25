@@ -25,24 +25,38 @@ describe ParticipationContextService do
   describe "posting_disabled_reason" do
     it "returns nil when posting is allowed" do
       project = create(:project_with_current_phase)
-      expect(service.posting_disabled_reason(project)).to be_nil
+      project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
+      phase = service.get_participation_context project
+      permission = phase.permissions.where(action: 'posting').first
+      groups = create_list(:group, 2, projects: [project])
+      permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+      user = create(:user)
+      group = groups.first
+      group.add_member user
+      group.save!
+      expect(service.posting_disabled_reason(project, user)).to be_nil
     end
 
     it "returns `posting_disabled` when posting is disabled" do
       project = create(:project_with_current_phase, current_phase_attrs: {posting_enabled: false})
-      expect(service.posting_disabled_reason(project)).to eq 'posting_disabled'
+      project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
+      phase = service.get_participation_context project
+      permission = phase.permissions.where(action: 'posting').first
+      permission.update!(permitted_by: 'groups', group_ids: create_list(:group, 2, projects: [project]).map(&:id))
+      expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_permitted'
     end
 
     it "return `not_ideation` when we're not in an ideation context" do
       project = create(:project_with_current_phase, current_phase_attrs: {participation_method: 'information'})
-      expect(service.posting_disabled_reason(project)).to eq 'not_ideation'
+      project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
+      expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_ideation'
     end
 
     it "returns `project_inactive` when we're not in an active context" do
       project = create(:project_with_past_phases)
-      expect(service.posting_disabled_reason(project)).to eq 'project_inactive'
+      project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
+      expect(service.posting_disabled_reason(project, create(:user))).to eq 'project_inactive'
     end
-
   end
 
   describe "commenting_disabled_reasons" do
@@ -52,6 +66,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, phases_config: {
           sequence: 'xxcxx'
         })
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[2]] )
         expect(service.commenting_disabled_reason(idea)).to be_nil
       end
@@ -60,6 +75,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, phases_config: {
           sequence: "xxcxx"
         })
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[1]])
         project.phases[1].update(commenting_enabled: true)
         expect(service.commenting_disabled_reason(idea)).to be_nil
@@ -69,6 +85,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, 
           current_phase_attrs: {commenting_enabled: false},
         )
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason(idea)).to eq 'commenting_disabled'
       end
@@ -77,6 +94,7 @@ describe ParticipationContextService do
         project = create(:project_with_current_phase, 
           current_phase_attrs: {commenting_enabled: false},
         )
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         project.phases[1].update(commenting_enabled: false)
         idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
         expect(service.commenting_disabled_reason(idea)).to eq 'commenting_disabled'
@@ -84,6 +102,7 @@ describe ParticipationContextService do
 
       it "returns 'project_inactive' when the timeline is over" do
         project = create(:project_with_past_phases)
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason(idea)).to eq 'project_inactive'
       end
@@ -92,12 +111,14 @@ describe ParticipationContextService do
     context "continuous project" do
       it "returns 'commenting_disabled' when commenting is disabled in a continuous project" do
         project = create(:continuous_project, commenting_enabled: false)
+        PermissionsService.new.update_permissions_for project
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason(idea)).to eq 'commenting_disabled'
       end
 
       it "returns nil when commenting is enabled in a continuous project" do
         project = create(:continuous_project, commenting_enabled: true)
+        PermissionsService.new.update_permissions_for project
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason(idea)).to be_nil
       end
@@ -114,18 +135,21 @@ describe ParticipationContextService do
     context "timeline project" do
       it "returns nil when voting is enabled in the current phase with unlimited voting" do
         project = create(:project_with_current_phase)
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.voting_disabled_reason(idea)).to be_nil
       end
 
       it "returns `not_in_active_context` when it's not in the current phase" do
         project = create(:project_with_current_phase)
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[1]])
         expect(service.voting_disabled_reason(idea)).to eq reasons[:not_in_active_context]
       end
 
       it "returns 'voting_disabled' if it's in the current phase and voting is disabled" do
         project = create(:project_with_current_phase, current_phase_attrs: {voting_enabled: false})
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.voting_disabled_reason(idea)).to eq reasons[:voting_disabled]
       end
@@ -135,6 +159,7 @@ describe ParticipationContextService do
           voting_method: 'limited', 
           voting_limited_max: 3
         })
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         phase = project.phases[2]
         ideas = create_list(:idea, 3, project: project, phases: [phase])
         ideas.each{|idea| create(:vote, votable: idea, user: user)}
@@ -144,6 +169,7 @@ describe ParticipationContextService do
 
       it "returns 'project_inactive' when the timeline has past" do
         project = create(:project_with_past_phases)
+        project.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.voting_disabled_reason(idea)).to eq reasons[:project_inactive]
       end
@@ -153,18 +179,21 @@ describe ParticipationContextService do
     context "continuous project" do
       it "returns nil when voting is enabled in the current project with unlimited voting" do
         project = create(:continuous_project)
+        PermissionsService.new.update_permissions_for project
         idea = create(:idea, project: project)
         expect(service.voting_disabled_reason(idea)).to be_nil
       end
 
       it "returns 'voting_disabled' if voting is disabled" do
         project = create(:continuous_project, voting_enabled: false)
+        PermissionsService.new.update_permissions_for project
         idea = create(:idea, project: project)
         expect(service.voting_disabled_reason(idea)).to eq reasons[:voting_disabled]
       end
 
       it "returns 'voting_limited_max_reached' when the user reached his limit" do
         project = create(:continuous_project, voting_method: 'limited', voting_limited_max: 3)
+        PermissionsService.new.update_permissions_for project
         ideas = create_list(:idea, 3, project: project)
         ideas.each{|idea| create(:vote, votable: idea, user: user)}
         idea = create(:idea, project: project)
