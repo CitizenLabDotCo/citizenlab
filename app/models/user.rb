@@ -114,6 +114,10 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
   end
 
+  def active_admin_or_moderator? project_id
+    active? && (admin? || project_moderator?(project_id))
+  end
+
   def moderatable_project_ids
     self.roles
       .select{|role| role['type'] == 'project_moderator'}

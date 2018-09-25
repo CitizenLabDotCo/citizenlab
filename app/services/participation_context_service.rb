@@ -3,7 +3,7 @@ class ParticipationContextService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
-    posting_disabled: 'posting_disabled'
+    not_permitted: 'not_permitted'
   }
 
   COMMENTING_DISABLED_REASONS = {
@@ -50,14 +50,14 @@ class ParticipationContextService
     end
   end
 
-  def posting_disabled_reason project
+  def posting_disabled_reason project, user=nil
     context = get_participation_context(project)
+    permission = context.permissions.where(action: 'posting').first
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       POSTING_DISABLED_REASONS[:not_ideation]
-    elsif !context.posting_enabled
-      POSTING_DISABLED_REASONS[:posting_disabled]
+    elsif user && context
     else
       nil
     end

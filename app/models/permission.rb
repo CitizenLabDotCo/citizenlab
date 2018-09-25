@@ -15,7 +15,14 @@ class Permission < ApplicationRecord
 
 
   def granted_to? user
-  	(group_ids & user.group_ids).present?
+  	case permitted_by
+  	when 'everyone'
+  		true
+  	when 'groups'
+  		(group_ids & user.group_ids).present?
+  	when 'admins_moderators'
+  		user.admin? || user.project_moderator?(permittable.project.id)
+  	end
   end
 
 

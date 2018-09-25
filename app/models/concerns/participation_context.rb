@@ -16,7 +16,6 @@ module ParticipationContext
       validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
 
       with_options if: :ideation? do |ideation|
-        ideation.validates :posting_enabled, inclusion: {in: [true, false]}
         ideation.validates :commenting_enabled, inclusion: {in: [true, false]}
         ideation.validates :voting_enabled, inclusion: {in: [true, false]}
         ideation.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
