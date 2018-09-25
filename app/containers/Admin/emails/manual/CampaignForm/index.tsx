@@ -10,7 +10,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
-import messages from '../messages';
+import messages from '../../messages';
 import { adopt } from 'react-adopt';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';

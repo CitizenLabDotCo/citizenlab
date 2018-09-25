@@ -5,12 +5,11 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import PageWrapper from 'components/admin/PageWrapper';
 import CampaignForm, { FormValues, validateCampaignForm } from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const PageTitle = styled.h1`
@@ -31,7 +30,7 @@ class New extends React.Component<Props> {
       ...values
     })
       .then((response) => {
-        clHistory.push(`/admin/campaigns/${response.data.id}`);
+        clHistory.push(`/admin/emails/manual/${response.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = errorResponse.json.errors;
@@ -59,7 +58,7 @@ class New extends React.Component<Props> {
   )
 
   goBack = () => {
-    clHistory.push('/admin/campaigns');
+    clHistory.push('/admin/emails/manual');
   }
 
   render() {
@@ -69,14 +68,12 @@ class New extends React.Component<Props> {
         <PageTitle>
           <FormattedMessage {...messages.addCampaignTitle} />
         </PageTitle>
-        <PageWrapper>
-          <Formik
-            initialValues={this.initialValues()}
-            onSubmit={this.handleSubmit}
-            render={this.renderFn}
-            validate={validateCampaignForm}
-          />
-        </PageWrapper>
+        <Formik
+          initialValues={this.initialValues()}
+          onSubmit={this.handleSubmit}
+          render={this.renderFn}
+          validate={validateCampaignForm}
+        />
       </div>
     );
   }

@@ -7,7 +7,7 @@ import StatusLabel from 'components/UI/StatusLabel';
 import { IDeliveryData } from 'services/campaigns';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';
 

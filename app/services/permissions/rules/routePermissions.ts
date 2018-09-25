@@ -7,7 +7,7 @@ definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
     if (isAdmin(user)) return true;
     if (isModerator(user) && (
       item.path === '/admin/projects' ||
-      item.path === '/admin/campaigns'
+      item.path === '/admin/emails'
     )) return true;
 
     // Try to find a project ID in the URL

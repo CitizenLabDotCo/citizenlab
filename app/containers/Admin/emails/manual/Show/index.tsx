@@ -12,7 +12,7 @@ import GetCampaign from 'resources/GetCampaign';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // components
 import Button from 'components/UI/Button';
@@ -64,7 +64,7 @@ class Show extends React.Component<Props> {
     sendCampaign(this.props.campaign.id)
       .then(() => {
         streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns`);
-        clHistory.push('/admin/campaigns');
+        clHistory.push('/admin/emails/manual');
       })
       .catch(() => {
       });
@@ -79,7 +79,7 @@ class Show extends React.Component<Props> {
   }
 
   handleSaveDraft = () => {
-    clHistory.push('/admin/campaigns');
+    clHistory.push('/admin/emails/manual');
   }
 
   handleDelete = () => {
@@ -87,13 +87,13 @@ class Show extends React.Component<Props> {
     if (window.confirm(deleteMessage)) {
       deleteCampaign(this.props.campaign.id)
         .then(() => {
-          clHistory.push('/admin/campaigns');
+          clHistory.push('/admin/emails/manual');
         });
     }
   }
 
   goBack = () => {
-    clHistory.push('/admin/campaigns');
+    clHistory.push('/admin/emails/manual');
   }
 
   render() {

@@ -13,7 +13,7 @@ import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import clusteringsRoutes from './clusterings/routes';
-import campaignsRoutes from './campaigns/routes';
+import emailsRoutes from './emails/routes';
 
 export default () => ({
   path: 'admin',
@@ -33,7 +33,7 @@ export default () => ({
     pagesRoutes(),
     clusteringsRoutes(),
     invitationsRoutes(),
-    campaignsRoutes(),
+    emailsRoutes(),
     {
       path: 'favicon',
       getComponent: loadAndRender(import('containers/Admin/favicon')),
