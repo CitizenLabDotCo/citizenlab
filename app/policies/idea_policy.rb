@@ -29,7 +29,7 @@ class IdeaPolicy < ApplicationPolicy
     (
       user&.active? &&
       record.author_id == user.id &&
-      !pcs.posting_disabled_reason(record.project) &&
+      !pcs.posting_disabled_reason(record.project, user) &&
       ProjectPolicy.new(user, record.project).show?
     )
   end

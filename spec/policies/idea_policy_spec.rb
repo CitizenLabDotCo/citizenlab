@@ -8,6 +8,10 @@ describe IdeaPolicy do
     let(:project) { create(:continuous_project) }
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     context "for a visitor" do
       let(:user) { nil }
 
@@ -92,6 +96,10 @@ describe IdeaPolicy do
     let(:project) { create(:private_admins_project)}
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     context "for a visitor" do
       let(:user) { nil }
 
@@ -150,6 +158,10 @@ describe IdeaPolicy do
     let!(:project) { create(:private_groups_project)}
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
@@ -165,6 +177,10 @@ describe IdeaPolicy do
     let!(:project) { create(:private_groups_project)}
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
@@ -178,6 +194,10 @@ describe IdeaPolicy do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_project, user: user)}
     let!(:idea) { create(:idea, project: project) }
+
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
 
     it { should permit(:show)    }
     it { should_not permit(:create)  }
@@ -196,6 +216,10 @@ describe IdeaPolicy do
     let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     it { should_not permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
@@ -213,6 +237,10 @@ describe IdeaPolicy do
     let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
     let!(:idea) { create(:idea, project: project) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     it { should permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
@@ -226,6 +254,10 @@ describe IdeaPolicy do
     let!(:user) { create(:admin) }
     let!(:project) { create(:private_groups_project)}
     let!(:idea) { create(:idea, project: project) }
+
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
 
     it { should permit(:show)    }
     it { should permit(:create)  }
@@ -242,6 +274,10 @@ describe IdeaPolicy do
     let(:project) { create(:project, publication_status: 'draft')}
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
+
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
 
     context "for a visitor" do
       let(:user) { nil }
@@ -288,6 +324,10 @@ describe IdeaPolicy do
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
+    before do 
+      PermissionsService.new.update_permissions_for project
+    end
+
     context "for a visitor" do
       let(:user) { nil }
 
@@ -331,6 +371,7 @@ describe IdeaPolicy do
   context "on idea for a project of which the last phase has ended" do 
     let(:project) { 
       pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"})
+      pj.phases.each{|phase| PermissionsService.new.update_permissions_for phase}
       current_phase = pj.phases.sort_by(&:start_at).last
       current_phase.destroy!
       pj.reload
