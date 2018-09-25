@@ -9,7 +9,7 @@ import Icon from 'components/UI/Icon';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // services
 import { IEventData } from 'services/events';
@@ -230,7 +230,7 @@ interface InputProps {
 }
 
 interface Props extends InputProps {
-  eventFiles: GetResourceFileObjectsChildProps;
+  eventFiles: GetResourceFilesChildProps;
 }
 
 interface State {}
@@ -324,7 +324,7 @@ class Event extends React.PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetResourceFileObjects resourceType="event" resourceId={inputProps.event.id}>
+  <GetResourceFiles resourceType="event" resourceId={inputProps.event.id}>
     {eventFiles => <Event eventFiles={eventFiles} {...inputProps} />}
-  </GetResourceFileObjects>
+  </GetResourceFiles>
 );

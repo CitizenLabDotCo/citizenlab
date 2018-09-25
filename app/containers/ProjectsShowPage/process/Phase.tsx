@@ -11,7 +11,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -60,7 +60,7 @@ interface InputProps {
 
 interface DataProps {
   phase: GetPhaseChildProps;
-  phaseFiles: GetResourceFileObjectsChildProps;
+  phaseFiles: GetResourceFilesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -121,7 +121,7 @@ class Phase extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  phaseFiles: ({ phaseId, render }) => <GetResourceFileObjects resourceType="phase" resourceId={phaseId}>{render}</GetResourceFileObjects>
+  phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
 });
 
 export default (inputProps: InputProps) => (

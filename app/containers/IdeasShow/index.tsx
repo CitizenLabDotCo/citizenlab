@@ -54,7 +54,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -566,7 +566,7 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 interface DataProps {
-  ideaFiles: GetResourceFileObjectsChildProps;
+  ideaFiles: GetResourceFilesChildProps;
 }
 
 interface InputProps {
@@ -1025,7 +1025,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
 
 export default (inputProps: InputProps) => (
-  <GetResourceFileObjects resourceId={inputProps.ideaId} resourceType="idea">
+  <GetResourceFiles resourceId={inputProps.ideaId} resourceType="idea">
     {ideaFiles => <IdeasShowWithHOCs {...inputProps} ideaFiles={ideaFiles} />}
-  </GetResourceFileObjects>
+  </GetResourceFiles>
 );
