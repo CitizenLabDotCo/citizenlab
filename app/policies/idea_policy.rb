@@ -25,19 +25,19 @@ class IdeaPolicy < ApplicationPolicy
   def create?
     pcs = ParticipationContextService.new 
     record.draft? ||
-    (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) ||
+    user&.active_admin_or_moderator?(record.project_id) ||
     (
-      user&.active? && (
-        record.author_id == user.id &&
-        (record.project.blank? ||
-        (!pcs.posting_disabled_reason(record.project) &&
-        ProjectPolicy.new(user, record.project).show?))
-      )
+      user&.active? &&
+      record.author_id == user.id &&
+      !pcs.posting_disabled_reason(record.project) &&
+      ProjectPolicy.new(user, record.project).show?
     )
   end
 
   def show?
-    (user&.active? && (user.admin? || user.project_moderator?(record.project_id))) || record.draft? || (
+    record.draft? ||
+    user&.active_admin_or_moderator?(record.project_id) ||
+    (
       ProjectPolicy.new(user, record.project).show? &&
       %w(draft published closed).include?(record.publication_status)
     )
