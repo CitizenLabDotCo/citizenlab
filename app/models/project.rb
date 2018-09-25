@@ -83,6 +83,11 @@ class Project < ApplicationRecord
     self.process_type == 'timeline'
   end
 
+  def project
+    self
+  end
+
+
   private
 
   def generate_slug

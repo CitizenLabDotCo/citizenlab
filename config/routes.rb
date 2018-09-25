@@ -63,8 +63,13 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
-      resources :projects do
-        resources :phases, shallow: true
+      concern :participation_context do
+        # :action is already used as param, so we chose :permission instead
+        resources :permissions, param: :permission
+      end
+
+      resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
+        resources :phases, shallow: true, concerns: :participation_context, defaults: {parent_param: :phase_id}
         resources :events, shallow: true
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}

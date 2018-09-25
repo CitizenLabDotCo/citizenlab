@@ -11,7 +11,7 @@ class Permission < ApplicationRecord
   validates :permitted_by, presence: true, inclusion: {in: PERMITTED_BIES}
   validates :action, uniqueness: {scope: [:permittable_id, :permittable_type]}
 
-  after_validation :set_permitted_by
+  before_validation :set_permitted_by, on: :create
 
 
   def granted_to? user
@@ -22,7 +22,7 @@ class Permission < ApplicationRecord
   private
 
   def set_permitted_by
-  	permitted_by ||= 'everyone'
+  	self.permitted_by ||= 'everyone'
   end
 
 end

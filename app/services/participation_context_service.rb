@@ -139,6 +139,12 @@ class ParticipationContextService
     end
   end
 
+  def moderating_participation_context_ids user
+    project_ids = user.moderatable_project_ids
+    phase_ids = Phase.where(project_id: project_ids).pluck(:id)
+    project_ids + phase_ids
+  end
+
 
   private
 
