@@ -1,5 +1,5 @@
 class Permission < ApplicationRecord
-	ACTIONS = %w(posting)
+	ACTIONS = %w(posting voting commenting budgeting taking_survey)
 	PERMITTED_BIES = %w(everyone groups admins_moderators)
 
   belongs_to :permittable, polymorphic: true
