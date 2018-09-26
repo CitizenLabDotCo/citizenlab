@@ -20,6 +20,8 @@ interface Props {
   errors?: { [fieldName: string]: CLError[] } | null;
 }
 
+interface State {}
+
 export default class FileUploader extends React.PureComponent<Props, State>{
 
   handleFileOnAdd = (fileToAdd: UploadFile) => {
