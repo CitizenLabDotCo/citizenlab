@@ -52,7 +52,8 @@ class WebApi::V1::FilesController < ApplicationController
   def file_params
     params.require(:file).permit(
       :file,
-      :ordering
+      :ordering,
+      :name
     )
   end
 
