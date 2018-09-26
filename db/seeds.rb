@@ -111,6 +111,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       #   client_secret: '65xg35xpa84p14cgntyg0279k',
       #   require_eid: false
       # },
+      pages: {
+        allowed: true, 
+        enabled: true
+      },
       groups: {
         enabled: true,
         allowed:true
@@ -133,11 +137,19 @@ if ['public','example_org'].include? Apartment::Tenant.current
         },
         zoom_level: 12
       },
+      excel_export: {
+       enabled: true,
+       allowed: true,
+      },
       user_custom_fields: {
         enabled: true,
         allowed: true
       },
       widgets: {
+        enabled: true,
+        allowed: true
+      },
+      ideaflow_social_sharing: {
         enabled: true,
         allowed: true
       }
