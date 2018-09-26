@@ -71,9 +71,7 @@ class DraftCampaignDetails extends React.Component<Props> {
   render() {
     const { campaign } = this.props;
     return (
-      <PageWrapper>
-        <PreviewFrame campaignId={campaign.id} />
-      </PageWrapper>
+      <PreviewFrame campaignId={campaign.id} />
     );
   }
 }
