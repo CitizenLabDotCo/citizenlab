@@ -53,12 +53,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
 
     return (
       <Helmet>
-        <html lang={locale} />
         {blockIndexing && <meta name="robots" content="noindex" />}
-        <title>
-          {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-            ${metaTitle}`}
-        </title>
         {/* https://github.com/nfl/react-helmet/issues/279 href comes first! */}
         {tenantLocales.map(loc => <link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />)}
         <meta name="title" content={metaTitle} />
@@ -78,6 +73,11 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         {tenant.attributes.favicon && tenant.attributes.favicon.small && <link rel="icon" sizes="16x16" href={tenant.attributes.favicon.small} />}
         {tenant.attributes.favicon && tenant.attributes.favicon.large && <link rel="apple-touch-icon" sizes="152x152" href={tenant.attributes.favicon.large} />}
         {tenant.attributes.favicon && tenant.attributes.favicon.large && <link rel="manifest" href={`${API_PATH}/manifest.json`} />}
+        <html lang={locale} />
+        <title>
+          {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+            ${metaTitle}`}
+        </title>
       </Helmet>
     );
   }
