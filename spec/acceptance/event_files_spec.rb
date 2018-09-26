@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "ProjectFile" do
+resource "EventFile" do
 
   explanation "File attachments."
 
@@ -12,43 +12,44 @@ resource "ProjectFile" do
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
     @project = create(:project)
-    create_list(:project_file, 2, project: @project)
+    @event = create(:event, project: @project)
+    create_list(:event_file, 2, event: @event)
   end
 
-  get "web_api/v1/projects/:project_id/files" do
-    let(:project_id) { @project.id }
+  get "web_api/v1/events/:event_id/files" do
+    let(:event_id) { @event.id }
 
-    example_request "List all file attachments of a project" do
+    example_request "List all file attachments of an event" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
     end
   end
 
-  get "web_api/v1/projects/:project_id/files/:file_id" do
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
+  get "web_api/v1/events/:event_id/files/:file_id" do
+    let(:event_id) { @event.id }
+    let(:file_id) { EventFile.first.id }
 
-    example_request "Get one file of a project" do
+    example_request "Get one file of an event" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
     end
   end
 
-  post "web_api/v1/projects/:project_id/files" do
+  post "web_api/v1/events/:event_id/files" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
-      parameter :ordering, "An integer that is used to order the file attachments within a project", required: false
+      parameter :ordering, "An integer that is used to order the file attachments within an event", required: false
       parameter :name, "The name of the file, including the file extension", required: true
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFile)
-    let(:project_id) { @project.id }
+    ValidationErrorHelper.new.error_fields(self, EventFile)
+    let(:event_id) { @event.id }
     let(:ordering) { 1 }
     let(:name) { "afvalkalender.pdf" }
     let(:file) { encode_pdf_file_as_base64(name) }
 
-    example_request "Add a file attachment to a project" do
+    example_request "Add a file attachment to an event" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
@@ -58,9 +59,9 @@ resource "ProjectFile" do
     end
 
     describe do
-      let(:file) { encode_exe_file_as_base64("keylogger.exe") } # don't worry, it's not really a keylogger ;-)
+      let(:file) { encode_exe_file_as_base64("keylogger.exe") }
 
-      example_request "[error] Add an unsupported file extension as attachment to a project" do
+      example_request "[error] Add an unsupported file extension as attachment to an event" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors,:file)).to include({:error=>"extension_whitelist_error"})
@@ -68,9 +69,17 @@ resource "ProjectFile" do
     end
 
     describe do
+      let(:file) { "data:application/pdf;base64,===" }
+
+      example_request "[error] Add a file of which the size is too small" do
+        expect(response_status).to eq 422
+      end
+    end
+
+    describe do
       example "[error] Add a file of which the size is too large" do
-        # mock the size_range method of ProjectFileUploader to have 3 bytes as maximum size
-        expect_any_instance_of(ProjectFileUploader).to receive(:size_range).and_return(1..3)
+        # mock the size_range method of EventFileUploader to have 3 bytes as maximum size
+        expect_any_instance_of(EventFileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
         expect(response_status).to eq 422
@@ -80,19 +89,19 @@ resource "ProjectFile" do
     end
   end
 
-  patch "web_api/v1/projects/:project_id/files/:file_id" do
+  patch "web_api/v1/events/:event_id/files/:file_id" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file"
-      parameter :ordering, "An integer that is used to order the file attachments within a project"
+      parameter :ordering, "An integer that is used to order the file attachments within an event"
       parameter :name, "The name of the file, including the file extension"
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFile)
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
+    ValidationErrorHelper.new.error_fields(self, EventFile)
+    let(:event_id) { @event.id }
+    let(:file_id) { EventFile.first.id }
     let(:name) { 'ophaalkalender.pdf' }
     let(:ordering) { 2 }
 
-    example_request "Edit a file attachment for a project" do
+    example_request "Edit a file attachment for an event" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:name)).to eq(name)
@@ -100,13 +109,13 @@ resource "ProjectFile" do
     end
   end
 
-  delete "web_api/v1/projects/:project_id/files/:file_id" do
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
+  delete "web_api/v1/events/:event_id/files/:file_id" do
+    let(:event_id) { @event.id }
+    let(:file_id) { EventFile.first.id }
 
-    example_request "Delete a file attachment from a project" do
+    example_request "Delete a file attachment from an event" do
       expect(response_status).to eq 200
-      expect{ProjectFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect{EventFile.find(file_id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

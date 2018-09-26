@@ -346,6 +346,15 @@ resource "Users" do
           expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
         end
       end
+
+      describe do
+        example "The user avatar can be removed" do
+          @user.update(avatar: Rails.root.join("spec/fixtures/male_avatar_1.jpg").open)
+          expect(@user.reload.avatar_url).to be_present
+          do_request user: {avatar: nil}
+          expect(@user.reload.avatar_url).to be nil
+        end
+      end
     end
 
     post "web_api/v1/users/complete_registration" do

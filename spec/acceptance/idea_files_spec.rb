@@ -40,17 +40,20 @@ resource "IdeaFile" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file", required: true
       parameter :ordering, "An integer that is used to order the files within an idea", required: false
+      parameter :name, "The name of the file, including the file extension", required: true
     end
     ValidationErrorHelper.new.error_fields(self, IdeaFile)
     let(:idea_id) { @idea.id }
     let(:file) { encode_file_as_base64("afvalkalender.pdf") }
     let(:ordering) { 1 }
+    let(:name) { "afvalkalender.pdf" }
 
     example_request "Add a file attachment to an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:file)).to be_present
       expect(json_response.dig(:data,:attributes,:ordering)).to eq(1)
+      expect(json_response.dig(:data,:attributes,:name)).to eq(name)
     end
   end
 
@@ -58,6 +61,7 @@ resource "IdeaFile" do
     with_options scope: :file do
       parameter :file, "The base64 encoded file"
       parameter :ordering, "An integer that is used to order the file attachments within an idea"
+      parameter :name, "The name of the file, including the file extension"
     end
     ValidationErrorHelper.new.error_fields(self, IdeaFile)
     let(:idea_id) { @idea.id }
