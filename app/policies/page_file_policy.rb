@@ -8,7 +8,7 @@ class PageFilePolicy < ApplicationPolicy
     end
 
     def resolve
-      page_ids = Pundit.policy_scope(user, Page).pluck(:id)
+      page_ids = Pundit.policy_scope(user, Page).ids
       scope.where(page_id: page_ids)
     end
   end
