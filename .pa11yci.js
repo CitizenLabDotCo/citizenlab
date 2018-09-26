@@ -1,7 +1,7 @@
 const config = {
   defaults: {
-    timeout: 30000,
-    wait: 8000,
+    timeout: 60000,
+    wait: 10000,
     chromeLaunchConfig: {
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
       // headless: false,
