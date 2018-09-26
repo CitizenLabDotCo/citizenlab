@@ -22,6 +22,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // analytics
+import ConsentManager from 'components/ConsentManager';
 import { trackPage, trackIdentification } from 'utils/analytics';
 
 // components
@@ -234,6 +235,7 @@ class App extends React.PureComponent<Props & WithRouterProps, State> {
                 <Navbar />
 
                 <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
+                <ConsentManager />
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                     <ErrorBoundary>
                       {children}

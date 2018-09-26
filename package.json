@@ -32,6 +32,7 @@
   "dependencies": {
     "@babel/polyfill": "7.0.0",
     "@babel/runtime": "7.0.0",
+    "@segment/consent-manager": "^1.2.0",
     "@segment/snippet": "4.4.0",
     "@sentry/browser": "0.5.4",
     "ajv": "6.5.3",
