@@ -8,7 +8,7 @@ class EventFilePolicy < ApplicationPolicy
     end
 
     def resolve
-      event_ids = Pundit.policy_scope(user, Event).pluck(:id)
+      event_ids = Pundit.policy_scope(user, Event).ids
       scope.where(event_id: event_ids)
     end
   end
