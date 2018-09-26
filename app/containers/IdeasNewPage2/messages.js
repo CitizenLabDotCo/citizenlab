@@ -29,4 +29,20 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage2.goBack',
     defaultMessage: 'Go back',
   },
+  shareViaMessenger: {
+    id: 'app.containers.IdeasNewPage2.shareViaMessenger',
+    defaultMessage: 'Share via Messenger',
+  },
+  shareOnTwitter: {
+    id: 'app.containers.IdeasNewPage2.shareOnTwitter',
+    defaultMessage: 'Share on Twitter',
+  },
+  sendEmail: {
+    id: 'app.containers.IdeasNewPage2.sendEmail',
+    defaultMessage: 'Send an email to your friends',
+  },
+  skipSocialSharing: {
+    id: 'app.containers.IdeasNewPage2.skipSocialSharing',
+    defaultMessage: `Skip it, I'll do it later`,
+  },
 });

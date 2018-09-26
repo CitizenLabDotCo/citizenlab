@@ -101,7 +101,7 @@ export default class IdeaTable extends React.Component<Props, State> {
     const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
 
     return(
-      <Table sortable>
+      <Table sortable size="small">
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell width={1}>

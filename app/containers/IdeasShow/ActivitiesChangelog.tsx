@@ -85,7 +85,7 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
     return (
       <ChangeLogEntry>
         <AvatarWrapper>
-          <Avatar userId={this.props.activity.relationships.user.data.id as string} size="small" />
+          <Avatar userId={this.props.activity.relationships.user.data.id as string} size="30px" />
         </AvatarWrapper>
         <TextWrapper>
           <p>

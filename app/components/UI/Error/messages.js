@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'app.errors.has_other_overlapping_phases',
     defaultMessage: 'Projects cannot have overlapping phases.',
   },
+  file_extension_whitelist_error: {
+    id: 'app.errors.file_extension_whitelist_error',
+    defaultMessage: 'The format of the file you tried to upload is not supported.',
+  }
 });

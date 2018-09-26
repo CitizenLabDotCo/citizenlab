@@ -40,7 +40,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 `;
 
 const FiltersArea = styled.div`
@@ -76,6 +76,10 @@ const LeftFilterArea = FilterArea.extend`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
+`;
+
+const Spacer = styled.div`
+  flex: 1;
 `;
 
 const RightFilterArea = FilterArea.extend`
@@ -141,7 +145,7 @@ const ViewButton = styled.div`
   justify-content: center;
   cursor: pointer;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 
   &:hover,
   &.active {
@@ -205,7 +209,7 @@ const EmptyContainer = styled.div`
   padding-top: 100px;
   padding-bottom: 100px;
   border-radius: 5px;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   background: #fff;
 `;
 
@@ -306,6 +310,8 @@ class IdeaCards extends React.PureComponent<Props, State> {
               <SelectTopics onChange={this.handleTopicsOnChange} />
             </DropdownFilters>
 
+            <Spacer />
+
             {showViewToggle &&
               <FeatureFlag name="maps">
                 <ViewButtons className={`${showCardView && 'cardView'}`}>
@@ -323,7 +329,7 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
         {showCardView && querying &&
           <Loading id="ideas-loading">
-            <Spinner size="32px" />
+            <Spinner />
           </Loading>
         }
 

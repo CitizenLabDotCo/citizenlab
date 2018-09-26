@@ -15,4 +15,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.shareOnTwitter',
     defaultMessage: 'Share on Twitter',
   },
+  shareByEmail: {
+    id: 'app.containers.IdeasShow.shareByEmail',
+    defaultMessage: 'Share by email',
+  },
 });
