@@ -102,7 +102,7 @@ resource "Invites" do
         parameter :locale, "Locale for all invitiees, defaults to first tenant locale", required: false
         parameter :roles, "Roles for all invitees, defaults to normal user", required: false
         parameter :group_ids, "Array of group ids that the invitees will be member of, defaults to none", required: false
-        parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee", required: false
+        parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML", required: false
       end
       with_options scope: :errors do
         response_field 'error', "One of #{InvitesService::INVITE_ERRORS.except(:unparseable_excel, :malformed_admin_value, :malformed_groups_value).values.join(', ')}"
@@ -154,7 +154,7 @@ resource "Invites" do
         parameter :locale, "Locale for invitees without a specified locale in xlsx, defaults to first tenant locale", required: false
         parameter :roles, "Roles for invitees without a specified admin column in xlsx, default to no roles", required: false
         parameter :group_ids, "Group ids for invitiees without a specified groups column in xlsx, defaults to none", required: false
-        parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee", required: false
+        parameter :invite_text, "Optional text that will be included in the outgoing e-mail to the invitee. Supports limited HTML", required: false
       end
 
       with_options scope: :errors do
