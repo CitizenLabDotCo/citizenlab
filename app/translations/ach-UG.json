@@ -777,6 +777,7 @@
   "app.containers.Projects.pastEvents": "crwdns18410:0crwdne18410:0",
   "app.containers.Projects.phaseAttachments": "crwdns19401:0crwdne19401:0",
   "app.containers.Projects.phaseNumber": "crwdns18398:0{phaseNumber}crwdne18398:0",
+  "app.containers.Projects.phaseSelectorTitle": "crwdns19407:0crwdne19407:0",
   "app.containers.Projects.project": "crwdns15833:0crwdne15833:0",
   "app.containers.Projects.projectInformation": "crwdns18399:0crwdne18399:0",
   "app.containers.Projects.selectedPhase": "crwdns19320:0crwdne19320:0",
