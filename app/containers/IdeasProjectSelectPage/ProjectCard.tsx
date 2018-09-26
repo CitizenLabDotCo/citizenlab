@@ -31,7 +31,7 @@ const Container = styled.div`
   position: relative;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
   transition: transform 250ms ease-out;
 
   &.enabled {

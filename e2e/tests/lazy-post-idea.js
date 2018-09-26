@@ -16,6 +16,9 @@ module.exports = {
 
     signinPage
     .signin('koen@citizenlab.co', 'testtest')
+    .waitForElementVisible('#e2e-modal-container')
+
+    .click('.e2e-modal-close-button')
     .waitForElementVisible('#e2e-ideas-list');
 
     browser

@@ -63,7 +63,7 @@ const List = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin: 10px;
+  margin: 6px;
 `;
 
 const ListItem = styled.button`

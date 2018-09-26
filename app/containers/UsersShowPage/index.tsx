@@ -120,7 +120,7 @@ class UsersShowPage extends PureComponent<Props, State> {
         <Container className={this.props['className']}>
           <StyledContentContainer>
             <UserAvatar>
-              <Avatar userId={user.id} size="large" />
+              <Avatar userId={user.id} size="180px" />
             </UserAvatar>
 
             <UserInfo>

@@ -53,7 +53,7 @@ const ContainerInner = styled.div`
   align-items: center;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px #e4e4e4;
+  border: solid 1px ${colors.separation};
 
   * {
     user-select: none;
@@ -72,7 +72,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   background: #f8f8f8;
-  border-bottom: solid 1px #e4e4e4;
+  border-bottom: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
     min-height: 100px;

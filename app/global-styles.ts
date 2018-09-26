@@ -120,10 +120,6 @@ export default injectGlobal`
     width: 100%;
   }
 
-  body.modal-active {
-    overflow: hidden;
-  }
-
   p,
   label {
     line-height: 1.5em;

@@ -10,7 +10,7 @@ import { colors } from 'utils/styleUtils';
 
 const Image: any = styled.img`
   background: ${colors.placeholderBg};
-  transition: opacity .2s;
+  transition: opacity 200ms ease-out;
   opacity: 0;
 
   &.loaded{
