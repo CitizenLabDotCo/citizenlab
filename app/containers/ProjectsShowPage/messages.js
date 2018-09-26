@@ -132,5 +132,9 @@ export default defineMessages({
   selectedPhase: {
     id: 'app.containers.Projects.selectedPhase',
     defaultMessage: 'Selected phase',
-  }
+  },
+  phaseSelectorTitle: {
+    id: 'app.containers.Projects.phaseSelectorTitle',
+    defaultMessage: 'Phase selector',
+  },
 });

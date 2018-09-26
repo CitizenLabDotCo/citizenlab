@@ -777,6 +777,7 @@
   "app.containers.Projects.pastEvents": "Voorbije activiteiten",
   "app.containers.Projects.phaseAttachments": "Bijlagen",
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
+  "app.containers.Projects.phaseSelectorTitle": "",
   "app.containers.Projects.project": "Project",
   "app.containers.Projects.projectInformation": "Info",
   "app.containers.Projects.selectedPhase": "Geselecteerde fase",
