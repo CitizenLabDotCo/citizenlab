@@ -1,5 +1,6 @@
 import React from 'react';
 import { returnFileSize } from 'utils/helperUtils';
+import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
@@ -15,7 +16,7 @@ const Container = styled.div`
   max-width: 520px;
   align-items: center;
   color: ${colors.label};
-  border: 1px solid ${colors.label};
+  border: 1px solid ${lighten(.4, colors.label)};
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -36,9 +37,13 @@ const FileDownloadLink = styled.a`
   color: ${colors.label};
   display: inline-block;
   margin-right: 10px;
-  text-decoration: underline;
   word-break: break-all;
   max-width: 70%;
+
+  &:hover {
+    color: inherit;
+    text-decoration: underline;
+  }
 
   ${media.smallerThanMinTablet`
     margin-right: auto;
