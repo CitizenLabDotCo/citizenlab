@@ -7,10 +7,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -170,19 +172,14 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
+  projectFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
-interface Props extends InputProps, DataProps { }
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-});
+interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, intl: { formatMessage } } = props;
-
+  const { project, projectImages, projectFiles, intl: { formatMessage } } = props;
   if (isNilOrError(project)) return null;
 
   const projectUrl = location.href;
@@ -194,6 +191,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
           </ProjectDescriptionStyled>
+          {!isNilOrError(projectFiles) &&
+            <FileAttachments files={projectFiles} />
+          }
         </Left>
 
         <Right>
@@ -230,6 +230,13 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 };
 
 const ProjectInfoWhithHoc = injectIntl<DataProps & InputProps>(ProjectInfo);
+
+const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
+  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
+});
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

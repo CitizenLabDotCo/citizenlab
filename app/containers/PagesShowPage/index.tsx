@@ -11,6 +11,7 @@ import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // services
 import { PageLink } from 'services/pageLink';
@@ -20,6 +21,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -60,6 +62,15 @@ const StyledContentContainer = styled(ContentContainer) `
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 30px;
+`;
+
+const AttachmentsContainer = styled.div`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
 const PageContent = styled.div`
@@ -196,6 +207,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   page: GetPageChildProps;
+  pageFiles: GetResourceFilesChildProps;
   pageLinks: GetPageLinksChildProps;
 }
 
@@ -206,7 +218,7 @@ interface State { }
 class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageLinks } = this.props;
+    const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
     if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
       return (
@@ -248,6 +260,11 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
                 </PageDescription>
               </Fragment>
             </StyledContentContainer>
+            <AttachmentsContainer>
+              {pageFiles && !isNilOrError(pageFiles) &&
+                <FileAttachments files={pageFiles} />
+              }
+            </AttachmentsContainer>
           </PageContent>
 
           {!isNilOrError(pageLinks) &&
@@ -278,6 +295,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   page: ({ params, render }) => <GetPage slug={params.slug}>{render}</GetPage>,
+  pageFiles: ({ page, render }) => <GetResourceFiles resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFiles>,
   pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
 });
 
