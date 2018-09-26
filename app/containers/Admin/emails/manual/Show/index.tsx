@@ -114,12 +114,8 @@ class Show extends React.Component<Props> {
           </PageTitleWrapper>
           {isDraft(campaign) &&
             <Buttons>
-              <Button
-                onClick={this.handleDelete}
-                style="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
+              <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary" icon="edit">
+                <FormattedMessage {...messages.editButtonLabel} />
               </Button>
 
               <Button

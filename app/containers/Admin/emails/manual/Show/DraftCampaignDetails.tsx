@@ -72,38 +72,7 @@ class DraftCampaignDetails extends React.Component<Props> {
     const { campaign } = this.props;
     return (
       <PageWrapper>
-        <div>
-          <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary" circularCorners={false} icon="edit">
-            <FormattedMessage {...messages.editButtonLabel} />
-          </Button>
-          <PreviewFrame campaignId={campaign.id} />
-        </div>
-
-        <Buttons>
-          <Button
-            onClick={this.handleDelete}
-            style="text"
-            icon="delete"
-          >
-            <FormattedMessage {...messages.deleteButtonLabel} />
-          </Button>
-
-          <Button
-            style="primary-outlined"
-            onClick={this.handleSendPreview}
-          >
-            <FormattedMessage {...messages.sendPreviewButton} />
-          </Button>
-
-          <Button
-            style="primary"
-            icon="send"
-            onClick={this.handleSendNow}
-          >
-            <FormattedMessage {...messages.sendNowButton} />
-          </Button>
-        </Buttons>
-
+        <PreviewFrame campaignId={campaign.id} />
       </PageWrapper>
     );
   }
