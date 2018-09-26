@@ -25,9 +25,7 @@ class WebApi::V1::PagesController < ::ApplicationController
 
   def create
     @page = Page.new(page_params)
-
     SideFxPageService.new.before_create(@page, current_user)
-
     authorize @page
     if @page.save
       SideFxPageService.new.after_create(@page, current_user)
@@ -38,10 +36,9 @@ class WebApi::V1::PagesController < ::ApplicationController
   end
 
   def update
-    @page.assign_attributes(page_params)
-
+    @page.assign_attributes page_params
+    authorize @page
     SideFxPageService.new.before_update(@page, current_user)
-
     if @page.save
       SideFxPageService.new.after_update(@page, current_user)
       render json: @page, status: :ok, include: ['page_links']

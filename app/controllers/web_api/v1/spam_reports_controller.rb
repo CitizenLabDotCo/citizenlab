@@ -33,10 +33,9 @@ class WebApi::V1::SpamReportsController < ApplicationController
   # patch
   def update
     ActiveRecord::Base.transaction do
-      if spam_report_params['reason_code'] != 'other'
-        @spam_report.other_reason = nil
-      end
+      @spam_report.other_reason = nil if spam_report_params['reason_code'] != 'other'
       if @spam_report.update(spam_report_params)
+        authorize @spam_report
         SideFxSpamReportService.new.after_update(@spam_report, current_user)
         render json: @spam_report.reload, status: :ok, include: ['user']
       else
