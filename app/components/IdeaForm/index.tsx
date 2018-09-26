@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { find, pick, isEqual } from 'lodash-es';
+import { find, pick, isEqual, has } from 'lodash-es';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -96,7 +96,7 @@ interface State {
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Subscription[];
   titleInputElement: HTMLInputElement | null;
-  descriptionElement: any | null;
+  descriptionElement: any;
 
   constructor(props: Props) {
     super(props as any);
@@ -251,6 +251,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     this.titleInputElement = element;
   }
 
+  handleDescriptionSetRef = (element) => {
+    this.descriptionElement = element;
+  }
+
   validate = (title: string | null, description: string) => {
     const titleError = (!title ? <FormattedMessage {...messages.titleEmptyError} /> : null);
     const hasDescriptionError = (!description || description === '');
@@ -258,12 +262,12 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
     this.setState({ titleError, descriptionError });
 
-    if (titleError) {
+    if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
-    } else if (descriptionError) {
-      scrollToComponent(this.descriptionElement.editor.refs.editor, { align: 'top', offset: -200, duration: 300 });
-      setTimeout(() => this.descriptionElement && this.descriptionElement.focusEditor(), 300);
+    } else if (descriptionError && has(this.descriptionElement, 'editor.root')) {
+      scrollToComponent(this.descriptionElement.editor.root, { align: 'top', offset: -200, duration: 300 });
+      setTimeout(() => this.descriptionElement.editor.root.focus(), 300);
     }
 
     return (!titleError && !descriptionError);
@@ -271,8 +275,9 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
 
   handleOnSubmit = () => {
     const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
+    const formIsValid = this.validate(title, description);
 
-    if (this.validate(title, description)) {
+    if (formIsValid) {
       const output: IIdeaFormOutput = {
         title,
         selectedTopics,
@@ -315,6 +320,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
             value={description}
             placeholder={formatMessage(messages.descriptionPlaceholder)}
             onChange={this.handleDescriptionOnChange}
+            setRef={this.handleDescriptionSetRef}
           />
           {descriptionError && <Error text={descriptionError} />}
         </FormElement>
