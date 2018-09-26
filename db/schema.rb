@@ -176,6 +176,16 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.index ["email", "snippet", "locale"], name: "index_email_snippets_on_email_and_snippet_and_locale"
   end
 
+  create_table "event_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "event_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["event_id"], name: "index_event_files_on_event_id"
+  end
+
   create_table "events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.jsonb "title_multiloc", default: {}
@@ -224,6 +234,7 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["idea_id"], name: "index_idea_files_on_idea_id"
   end
 
@@ -344,6 +355,16 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
   end
 
+  create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "page_id"
+    t.string "file"
+    t.integer "ordering"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["page_id"], name: "index_page_files_on_page_id"
+  end
+
   create_table "page_links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "linking_page_id", null: false
     t.uuid "linked_page_id", null: false
@@ -363,6 +384,7 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
+<<<<<<< HEAD
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
@@ -372,6 +394,16 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
+=======
+  create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "phase_id"
+    t.string "file"
+    t.integer "ordering"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+    t.index ["phase_id"], name: "index_phase_files_on_phase_id"
+>>>>>>> master
   end
 
   create_table "phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -400,6 +432,7 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.integer "ordering"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
@@ -543,6 +576,7 @@ ActiveRecord::Schema.define(version: 20180920155127) do
   add_foreign_key "email_campaigns_campaigns", "users", column: "author_id"
   add_foreign_key "email_campaigns_campaigns_groups", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "email_campaigns_deliveries", "email_campaigns_campaigns", column: "campaign_id"
+  add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
   add_foreign_key "groups_permissions", "groups"
   add_foreign_key "groups_permissions", "permissions"
@@ -570,9 +604,11 @@ ActiveRecord::Schema.define(version: 20180920155127) do
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "page_files", "pages"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
   add_foreign_key "pages", "projects"
+  add_foreign_key "phase_files", "phases"
   add_foreign_key "phases", "projects"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
