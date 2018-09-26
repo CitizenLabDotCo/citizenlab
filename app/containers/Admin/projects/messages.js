@@ -57,12 +57,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',
   },
-  activeProjects: {
-    id: 'app.containers.AdminPage.ProjectEdit.activeProjects',
-    defaultMessage: 'Active',
+  draft: {
+    id: 'app.containers.AdminPage.ProjectEdit.draft',
+    defaultMessage: 'Draft',
   },
-  archivedProjects: {
-    id: 'app.containers.AdminPage.ProjectEdit.archivedProjects',
+  published: {
+    id: 'app.containers.AdminPage.ProjectEdit.published',
+    defaultMessage: 'Published',
+  },
+  archived: {
+    id: 'app.containers.AdminPage.ProjectEdit.archived',
     defaultMessage: 'Archived',
   },
   goBack: {
