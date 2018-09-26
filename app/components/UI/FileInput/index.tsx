@@ -34,7 +34,7 @@ const Label = styled.label`
   max-width: 520px;
   align-items: center;
   cursor: pointer;
-  border: 1.5px dashed ${colors.adminTextColor};
+  border: 1px dashed ${colors.label};
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
