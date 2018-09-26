@@ -39,10 +39,6 @@ module.exports = {
     .execute('window.scrollTo(0,document.body.scrollHeight);');
     adminProjectsPage
     .click('@submitButton')
-    .waitForElementVisible('@submitSuccess');
-
-    // Check for phase presence in the list
-    browser.back();
 
     adminProjectsPage
     .waitForElementVisible('.e2e-phases-table .e2e-phase-line')
