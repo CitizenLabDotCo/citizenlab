@@ -1,6 +1,7 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+import styled from 'styled-components';
 
 // Components
 import FormikInput from 'components/UI/FormikInput';
@@ -8,10 +9,11 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
-import Error from 'components/UI/Error';
+import ErrorComponent from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Link from 'utils/cl-router/Link';
+import FileUploader from 'components/UI/FileUploader';
 
 // Resources
 // import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -21,12 +23,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Typings
-import { Multiloc } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
+
+const StyledSection = styled(Section)`
+  margin-bottom: 30px;
+`;
 
 export interface FormValues {
   slug?: string;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  local_page_files: UploadFile[] | [];
 }
 
 export interface Props {
@@ -72,12 +79,37 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     );
   }
 
-  render() {
-    const { isSubmitting, errors, isValid, touched, mode, hideTitle } = this.props;
+  renderFileUploader = (values: FormValues) => () => {
+    const { local_page_files } = values;
 
     return (
+      <FileUploader
+        onFileAdd={this.handlePageFileOnAdd}
+        onFileRemove={this.handlePageFileOnRemove}
+        files={local_page_files}
+      />
+    );
+  }
+
+  handlePageFileOnAdd = (fileToAdd: UploadFile) => {
+    const { setFieldValue, setStatus, values } = this.props;
+    setFieldValue('local_page_files', [...values.local_page_files, fileToAdd]);
+    setStatus('enabled');
+  }
+
+  handlePageFileOnRemove = (fileToRemove: UploadFile) => {
+    const { setFieldValue, setStatus, values } = this.props;
+    const localPageFiles = [...values.local_page_files];
+    const filteredLocalPageFiles = localPageFiles.filter(file => file !== fileToRemove);
+    setFieldValue('local_page_files', filteredLocalPageFiles);
+    setStatus('enabled');
+  }
+
+  render() {
+    const { isSubmitting, errors, isValid, touched, mode, hideTitle, values, status } = this.props;
+    return (
       <Form>
-        <Section>
+        <StyledSection>
           {!hideTitle &&
             <SectionField>
               <Field
@@ -86,7 +118,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
                 label={<FormattedMessage {...messages.pageTitle} />}
               />
               {touched.title_multiloc &&
-                <Error
+                <ErrorComponent
                   fieldName="title_multiloc"
                   apiErrors={errors.title_multiloc as any}
                 />
@@ -104,7 +136,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc &&
-              <Error
+              <ErrorComponent
                 fieldName="body_multiloc"
                 apiErrors={errors.body_multiloc as any}
               />
@@ -120,7 +152,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
                 label={<FormattedMessage {...messages.pageSlug} />}
               />
               {touched.slug &&
-                <Error
+                <ErrorComponent
                   fieldName="slug"
                   apiErrors={errors.slug as any}
                 />
@@ -131,7 +163,12 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             </SectionField>
           }
 
-        </Section>
+          <Field
+            name="page_files"
+            render={this.renderFileUploader(values)}
+          />
+
+        </StyledSection>
 
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}

@@ -6,6 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
+import FileAttachments from 'components/UI/FileAttachments';
+
+// resources
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // services
 import { IEventData } from 'services/events';
@@ -224,13 +228,16 @@ interface InputProps {
   event: IEventData;
   className?: string;
 }
-interface Props extends InputProps {}
+
+interface Props extends InputProps {
+  eventFiles: GetResourceFilesChildProps;
+}
 
 interface State {}
 
-export default class Event extends React.PureComponent<Props, State> {
+class Event extends React.PureComponent<Props, State> {
   render() {
-    const { event, className } = this.props;
+    const { event, eventFiles, className } = this.props;
 
     if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
@@ -287,6 +294,9 @@ export default class Event extends React.PureComponent<Props, State> {
             <EventDescription>
               <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
+            {eventFiles && !isNilOrError(eventFiles) &&
+              <FileAttachments files={eventFiles} />
+            }
           </EventInformation>
 
           {hasLocation &&
@@ -312,3 +322,9 @@ export default class Event extends React.PureComponent<Props, State> {
     return null;
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetResourceFiles resourceType="event" resourceId={inputProps.event.id}>
+    {eventFiles => <Event eventFiles={eventFiles} {...inputProps} />}
+  </GetResourceFiles>
+);

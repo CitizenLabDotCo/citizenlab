@@ -16,6 +16,7 @@ import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
+import FileUploader from 'components/UI/FileUploader';
 
 // services
 import { localeStream } from 'services/locale';
@@ -26,6 +27,7 @@ import { projectsStream, IProjects, IProjectData } from 'services/projects';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -33,7 +35,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile, Locale } from 'typings';
+import { IOption, ImageFile, UploadFile, Locale } from 'typings';
 
 // style
 import styled from 'styled-components';
@@ -68,6 +70,7 @@ export interface IIdeaFormOutput {
   selectedProject: IOption | null;
   position: string;
   imageFile: ImageFile[] | null;
+  localIdeaFiles: UploadFile[] | null;
 }
 
 interface Props {
@@ -78,6 +81,7 @@ interface Props {
   position: string;
   imageFile: ImageFile[] | null;
   onSubmit: (arg: IIdeaFormOutput) => void;
+  remoteIdeaFiles?: UploadFile[] | null;
 }
 
 interface State {
@@ -91,6 +95,7 @@ interface State {
   imageFile: ImageFile[] | null;
   titleError: string | JSX.Element | null;
   descriptionError: string | JSX.Element | null;
+  localIdeaFiles: UploadFile[] | null;
 }
 
 class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -110,7 +115,8 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       position: '',
       imageFile: null,
       titleError: null,
-      descriptionError: null
+      descriptionError: null,
+      localIdeaFiles: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -118,18 +124,20 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
   }
 
   componentDidMount() {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.props;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, remoteIdeaFiles } = this.props;
 
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(map(currentTenant => currentTenant.data.attributes.settings.core.locales));
     const topics$ = topicsStream().observable;
     const projects$ = projectsStream().observable;
+    const localIdeaFiles = !isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null;
 
     this.setState({
       selectedTopics,
       selectedProject,
       position,
       imageFile,
+      localIdeaFiles,
       title: (title || ''),
       description: description || '',
     });
@@ -176,6 +184,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const partialPropertyNames = ['selectedTopics', 'selectedTopics', 'position', 'title'];
     const oldPartialProps = pick(prevProps, partialPropertyNames);
     const newPartialProps = pick(this.props, partialPropertyNames);
+    const { remoteIdeaFiles } = this.props;
 
     if (!isEqual(oldPartialProps, newPartialProps)) {
       const title = (this.props.title || '');
@@ -193,6 +202,10 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
       || prevProps.imageFile && this.props.imageFile && prevProps.imageFile[0].base64 !== this.props.imageFile[0].base64
     ) {
       this.setState({ imageFile: this.props.imageFile });
+    }
+
+    if (!isNilOrError(remoteIdeaFiles) && remoteIdeaFiles !== prevProps.remoteIdeaFiles) {
+      this.setState({ localIdeaFiles: remoteIdeaFiles });
     }
   }
 
@@ -273,8 +286,37 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     return (!titleError && !descriptionError);
   }
 
+  handleIdeaFileOnAdd = (fileToAdd: UploadFile) => {
+    this.setState((prevState: State) => {
+      // If we don't have localIdeaFiles, we assign an empty array
+      // A spread operator works on an empty array, but not on null
+      const oldlLocalIdeaFiles = !isNilOrError(prevState.localIdeaFiles) ? prevState.localIdeaFiles : [];
+
+      return {
+        localIdeaFiles: [
+          ...oldlLocalIdeaFiles,
+          fileToAdd
+        ]
+      };
+    });
+  }
+
+  handleIdeaFileOnRemove = (fileToRemove: UploadFile) => {
+    this.setState((prevState: State) => {
+      let localIdeaFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localIdeaFiles)) {
+        localIdeaFiles = prevState.localIdeaFiles.filter(ideaFile => ideaFile.filename !== fileToRemove.filename);
+      }
+
+      return {
+        localIdeaFiles
+      };
+    });
+  }
+
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, selectedProject, position, imageFile } = this.state;
+    const { title, description, selectedTopics, selectedProject, position, imageFile, localIdeaFiles } = this.state;
     const formIsValid = this.validate(title, description);
 
     if (formIsValid) {
@@ -285,6 +327,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
         position,
         imageFile,
         description,
+        localIdeaFiles
       };
 
       this.props.onSubmit(output);
@@ -295,7 +338,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
     const className = this.props['className'];
     const { formatMessage } = this.props.intl;
     const { topics, title, description, selectedTopics, position, imageFile, titleError, descriptionError } = this.state;
-
+    const { localIdeaFiles } = this.state;
     return (
       <Form id="idea-form" className={className}>
         <FormElement name="titleInput">
@@ -374,6 +417,14 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
               onRemove={this.handleUploadOnRemove}
             />
           </label>
+        </FormElement>
+
+        <FormElement>
+          <FileUploader
+            onFileAdd={this.handleIdeaFileOnAdd}
+            onFileRemove={this.handleIdeaFileOnRemove}
+            files={localIdeaFiles}
+          />
         </FormElement>
       </Form>
     );

@@ -19,6 +19,7 @@ import SignInUp from './SignInUp';
 // services
 import { localeStream } from 'services/locale';
 import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
+import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
@@ -191,7 +192,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       ideaId: null,
       imageFile: null,
       imageId: null,
-      imageChanged: false
+      imageChanged: false,
+      localIdeaFiles: null,
     };
     this.state = initialLocalState;
     this.localState = localState(initialLocalState);
@@ -300,14 +302,34 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
   }
 
+  getFilesToAddPromises = async (ideaId: string) => {
+    const { localIdeaFiles } = await this.globalState.get();
+    const filesToAdd = localIdeaFiles;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (ideaId && filesToAdd && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.filter((fileToAdd) => {
+        return isString(fileToAdd.base64);
+      }).map((fileToAdd) => {
+        return addIdeaFile(ideaId, fileToAdd.base64 as string, fileToAdd.name);
+      });
+    }
+
+    return filesToAddPromises;
+  }
+
   handleOnIdeaSubmit = async () => {
     try {
       this.globalState.set({ submitError: false, processing: true });
       const authUser = await getAuthUserAsync();
-      const idea = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      const ideaResponse = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      const ideaId = ideaResponse.data.id;
+      const filesToAddPromises = this.getFilesToAddPromises(ideaId);
+
+      await filesToAddPromises;
       clHistory.push({
         pathname: '/',
-        search: `?new_idea_id=${idea.data.id}&publish=false`
+        search: `?new_idea_id=${ideaResponse.data.id}&publish=false`
       });
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
