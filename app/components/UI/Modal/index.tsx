@@ -301,7 +301,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
             {header && <HeaderContainer> {header} </HeaderContainer>}
             {children}
             {footer && <FooterContainer> {footer} </FooterContainer>}
-            <CloseButton onClick={this.clickCloseButton}>
+            <CloseButton className="e2e-modal-close-button" onClick={this.clickCloseButton}>
               <CloseIcon name="close3" />
             </CloseButton>
           </ModalContent>
