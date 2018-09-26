@@ -8,7 +8,7 @@ class PhaseFilePolicy < ApplicationPolicy
     end
 
     def resolve
-      phase_ids = Pundit.policy_scope(user, Phase).pluck(:id)
+      phase_ids = Pundit.policy_scope(user, Phase).ids
       scope.where(phase_id: phase_ids)
     end
   end
