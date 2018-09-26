@@ -777,6 +777,7 @@
   "app.containers.Projects.pastEvents": "Tidligere hendelser",
   "app.containers.Projects.phaseAttachments": "",
   "app.containers.Projects.phaseNumber": "Fase {phaseNumber}",
+  "app.containers.Projects.phaseSelectorTitle": "",
   "app.containers.Projects.project": "Prosjekt",
   "app.containers.Projects.projectInformation": "Prosjektinformasjon",
   "app.containers.Projects.selectedPhase": "Selected phase",

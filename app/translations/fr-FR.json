@@ -777,6 +777,7 @@
   "app.containers.Projects.pastEvents": "Evénements passés",
   "app.containers.Projects.phaseAttachments": "",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
+  "app.containers.Projects.phaseSelectorTitle": "",
   "app.containers.Projects.project": "Projet",
   "app.containers.Projects.projectInformation": "Informations",
   "app.containers.Projects.selectedPhase": "Phase sélectionnée",
