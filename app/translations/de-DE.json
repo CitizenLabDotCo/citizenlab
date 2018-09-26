@@ -777,6 +777,7 @@
   "app.containers.Projects.pastEvents": "Ehemalige Veranstaltungen",
   "app.containers.Projects.phaseAttachments": "Attachments",
   "app.containers.Projects.phaseNumber": "Phase {phaseNumber}",
+  "app.containers.Projects.phaseSelectorTitle": "",
   "app.containers.Projects.project": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.Projects.projectInformation": "{orgName, select, München {Bezirksinfo} other {Projekt-Informationen}}",
   "app.containers.Projects.selectedPhase": "Ausgewählte Phase",
