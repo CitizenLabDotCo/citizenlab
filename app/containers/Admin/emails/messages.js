@@ -171,4 +171,20 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.tabAutomated',
     defaultMessage: 'Automated',
   },
+  instructionsHeader: {
+    id: 'app.containers.Admin.Campaigns.instructionsHeader',
+    defaultMessage: 'Almost ready',
+  },
+  instructionsText: {
+    id: 'app.containers.Admin.Campaigns.instructionsText',
+    defaultMessage: 'Your campaign is almost ready. Make sure it doesn\'t contain errors and hit the Send now button!',
+  },
+  campaignFrom: {
+    id: 'app.containers.Admin.Campaigns.campaignFrom',
+    defaultMessage: 'From: ',
+  },
+  campaignTo: {
+    id: 'app.containers.Admin.Campaigns.campaignTo',
+    defaultMessage: 'To: ',
+  }
 });
