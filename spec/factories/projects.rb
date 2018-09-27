@@ -210,9 +210,6 @@ FactoryBot.define do
     factory :continuous_project do
       process_type 'continuous'
       participation_method 'ideation'
-      posting_enabled true
-      commenting_enabled true
-      voting_enabled true
       voting_method 'unlimited'
       voting_limited_max 7
 

@@ -51,7 +51,7 @@ class ParticipationContextService
   end
 
   def posting_disabled_reason project, user
-    context = project && get_participation_context project
+    context = project && get_participation_context(project)
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
@@ -66,9 +66,9 @@ class ParticipationContextService
   def commenting_disabled_reason idea, user
     context = get_participation_context idea.project
     last_context = get_last_active_participation_context idea
-    if !context && !last_context
+    if !context || !last_context
       COMMENTING_DISABLED_REASONS[:project_inactive]
-    elsif !(context && context_permission(context, 'commenting')&.granted_to?(user))
+    elsif !context_permission(context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
     elsif !context_permission(last_context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
