@@ -7,7 +7,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 interface Props {
   name?: string;
-  children: (showFeature: boolean) => JSX.Element;
+  children: (showFeature: boolean) => JSX.Element | null;
 }
 
 interface State {
