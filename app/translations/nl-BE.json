@@ -175,6 +175,7 @@
   "app.containers.Admin.Campaigns.deliveryStatus_failed": "",
   "app.containers.Admin.Campaigns.deliveryStatus_opened": "",
   "app.containers.Admin.Campaigns.deliveryStatus_sent": "",
+  "app.containers.Admin.Campaigns.noAccess": "",
   "app.containers.Admin.Campaigns.tabAutomated": "",
   "app.containers.Admin.Campaigns.tabManual": "",
   "app.containers.Admin.Invitations.adminLabel": "Admin-rechten geven aan de uitgenodigde mensen?",

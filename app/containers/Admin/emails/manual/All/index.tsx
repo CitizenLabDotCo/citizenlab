@@ -12,7 +12,6 @@ import Button from 'components/UI/Button';
 import Pagination from 'components/admin/Pagination';
 
 import messages from '../../messages';
-import FeatureFlag from 'components/FeatureFlag';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { SectionTitle } from 'components/admin/Section';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -35,21 +34,19 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
     return (
       <>
-        <FeatureFlag name="segmented_emailing">
-          <SectionTitle>
-            <FormattedMessage {...messages.listTitle} />
-          </SectionTitle>
-          <ButtonWrapper>
-            <Button
-              style="cl-blue"
-              circularCorners={false}
-              icon="plus-circle"
-              linkTo="/admin/emails/manual/new"
-            >
-              <FormattedMessage {...messages.addCampaignButton} />
-            </Button>
-          </ButtonWrapper>
-        </FeatureFlag>
+        <SectionTitle>
+          <FormattedMessage {...messages.listTitle} />
+        </SectionTitle>
+        <ButtonWrapper>
+          <Button
+            style="cl-blue"
+            circularCorners={false}
+            icon="plus-circle"
+            linkTo="/admin/emails/manual/new"
+          >
+            <FormattedMessage {...messages.addCampaignButton} />
+          </Button>
+        </ButtonWrapper>
         <List key={campaigns.map(c => c.id).join()}>
           {campaigns.map((campaign) => (
             isDraft(campaign) ?
