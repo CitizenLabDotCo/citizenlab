@@ -3,7 +3,9 @@ require 'rails_helper'
 describe VotePolicy do
   subject { VotePolicy.new(user, vote) }
   let(:scope) { VotePolicy::Scope.new(user, Vote) }
-  let!(:vote) { create(:vote) }
+  let(:project) { create(:continuous_project, with_permissions: true) }
+  let(:votable) { create(:idea, project: project)}
+  let!(:vote) { create(:vote, votable: votable) }
 
   context "for a visitor" do 
   	let(:user) { nil }
