@@ -19,14 +19,8 @@ FactoryBot.define do
     end
 
     after(:create) do |project, evaluator|
-      if evaluator.with_permissions
-        if project.is_participation_context?
-          PermissionsService.new.update_permissions_for project
-        else
-          project.phases.each do |phase| 
-            PermissionsService.new.update_permissions_for phase
-          end
-        end
+      if evaluator.with_permissions && project.is_participation_context?
+        PermissionsService.new.update_permissions_for project
       end
     end
 
@@ -61,7 +55,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1 + rand(120)).days
+            end_at: start_at += (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -69,7 +64,10 @@ FactoryBot.define do
 
     factory :project_with_active_ideation_phase do
       after(:create) do |project, evaluator|
-        project.phases << create(:active_phase, participation_method: 'ideation')
+        project.phases << create(:active_phase, 
+          participation_method: 'ideation', 
+          with_permissions: evaluator.with_permissions
+          )
       end
     end
 
@@ -83,7 +81,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1+ rand(72)).days
+            end_at: start_at += (1+ rand(72)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -99,6 +98,7 @@ FactoryBot.define do
           start_at: Faker::Date.between(6.months.ago, Time.now),
           end_at: Faker::Date.between(Time.now+1.day, 6.months.from_now),
           project: project,
+          with_permissions: evaluator.with_permissions,
           **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
         )
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
@@ -108,6 +108,7 @@ FactoryBot.define do
           project.phases << create(:phase, 
             end_at: end_at - 1,
             start_at: end_at -= (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions,
             **(evaluator.phases_config[sequence_char] || {})
           )
         end
@@ -117,6 +118,7 @@ FactoryBot.define do
           project.phases << create(:phase, 
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions,
             **(evaluator.phases_config[sequence_char] || {})
           )
         end
@@ -132,7 +134,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1 + rand(120)).days
+            end_at: start_at += (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -162,7 +165,7 @@ FactoryBot.define do
           project.areas << create(:area)
         end
         evaluator.phases_count.times do |i|
-          project.phases << create(:phase_sequence)
+          project.phases << create(:phase_sequence, with_permissions: evaluator.with_permissions)
         end
         evaluator.events_count.times do |i|
           project.events << create(:event)
