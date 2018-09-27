@@ -13,6 +13,14 @@ FactoryBot.define do
     start_at "2017-05-01"
     end_at "2017-06-30"
 
+    transient do
+      with_permissions { false }
+    end
+
+    after(:create) do |phase, evaluator|
+      PermissionsService.new.update_permissions_for(phase) if evaluator.with_permissions
+    end
+
     factory :active_phase do
       after(:create) do |phase, evaluator|
         phase.start_at  = Time.now - (1 + rand(120)).days

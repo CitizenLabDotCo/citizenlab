@@ -384,7 +384,6 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
-<<<<<<< HEAD
   create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "action", null: false
     t.string "permitted_by", null: false
@@ -394,7 +393,8 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.datetime "updated_at", null: false
     t.index ["action"], name: "index_permissions_on_action"
     t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
-=======
+  end
+
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "phase_id"
     t.string "file"
@@ -403,7 +403,6 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.index ["phase_id"], name: "index_phase_files_on_phase_id"
->>>>>>> master
   end
 
   create_table "phases", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
