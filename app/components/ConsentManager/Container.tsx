@@ -60,7 +60,7 @@ export default class Container extends PureComponent<Props, State> {
 
     // TODO: add state for banner so it doesn't disappear on implicit consent (which is annoying UX)
     return (
-      <div>
+      <>
         {isConsentRequired &&
           newDestinations.length > 0 && (
             <Banner
@@ -93,7 +93,7 @@ export default class Container extends PureComponent<Props, State> {
             </div>
           }
         </Modal>
-      </div>
+      </>
     );
   }
   renderPrefFooter = (marketingAndAnalytics, advertising, functional, isDialogOpen, isCancelling) => {
