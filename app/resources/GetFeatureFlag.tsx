@@ -44,6 +44,6 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
       get(tenantSettings, `${name}.enabled`) === true
     ));
 
-    return children(showFeature);
+    return children ? children(showFeature) : null;
   }
 }
