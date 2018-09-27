@@ -35,7 +35,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
 
     return (
       <>
-        <FeatureFlag name="segmented_emailing">
+        <FeatureFlag name="manual_emailing">
           <SectionTitle>
             <FormattedMessage {...messages.listTitle} />
           </SectionTitle>
