@@ -14,7 +14,7 @@ definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
     const idRegexp = /^\/admin\/projects\/([a-z0-9-]+)\//;
     const matches = idRegexp.exec(item.path);
     const pathProjectId = matches && matches[1];
-    if (isProjectModerator(user, pathProjectId)) return true;
+    if (pathProjectId && isProjectModerator(user, pathProjectId)) return true;
 
     return false;
   } else {

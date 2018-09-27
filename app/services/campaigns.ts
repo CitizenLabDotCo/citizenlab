@@ -21,6 +21,9 @@ export interface ICampaignData {
   id: string;
   type: string;
   attributes: {
+    campaign_name: string;
+    campaign_description_multiloc: Multiloc;
+    enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
     sender: 'author' | 'organization';
@@ -28,6 +31,8 @@ export interface ICampaignData {
     created_at: string;
     updated_at: string;
     deliveries_count: number;
+    schedule: any;
+    schedule_multiloc: Multiloc;
   };
   relationships: {
     author: {
@@ -46,6 +51,7 @@ export interface CampaignUpdate {
   sender?: string;
   reply_to?: string;
   group_ids?: string[];
+  enabled?: boolean;
 }
 
 export interface CampaignCreation  {

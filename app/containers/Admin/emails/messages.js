@@ -186,5 +186,9 @@ export default defineMessages({
   campaignTo: {
     id: 'app.containers.Admin.Campaigns.campaignTo',
     defaultMessage: 'To: ',
-  }
+  },
+  noAccess: {
+    id: 'app.containers.Admin.Campaigns.noAccess',
+    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the e-mails section',
+  },
 });
