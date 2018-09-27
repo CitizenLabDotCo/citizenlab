@@ -222,7 +222,7 @@ class Show extends React.Component<Props> {
   }
 }
 
-const ShowWithHOCs = withRouter(injectIntl(localize(Show));
+const ShowWithHOCs = withRouter(injectIntl(localize(Show)));
 
 export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
   <GetCampaign id={inputProps.params.campaignId}>
