@@ -267,8 +267,6 @@ describe ParticipationContextService do
           c: {posting_permitted: false}
         }
       )
-      # project.phases.order(:start_at).map{|phase| phase.permissions.find_by(action: 'posting').permitted_by}
-      # byebug
       expect(service.future_posting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
@@ -303,7 +301,7 @@ describe ParticipationContextService do
           c: {voting_permitted: false}
         }
       )
-      expect(service.future_voting_enabled_phase(project, create(:user))).to eq project.phases[7]
+      expect(service.future_voting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns nil if no next phase has voting enabled" do
@@ -337,7 +335,7 @@ describe ParticipationContextService do
           c: {commenting_permitted: false}
         }
       )
-      expect(service.future_commenting_enabled_phase(project, create(:user))).to eq project.phases[7]
+      expect(service.future_commenting_enabled_phase(project, create(:user))).to eq project.phases.order(:start_at)[7]
     end
 
     it "returns nil if no next phase has commenting enabled" do
