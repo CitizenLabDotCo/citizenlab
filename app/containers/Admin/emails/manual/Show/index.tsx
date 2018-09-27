@@ -92,15 +92,10 @@ class Show extends React.Component<Props> {
     }
   }
 
-  goBack = () => {
-    clHistory.push('/admin/emails/manual');
-  }
-
   render() {
     const { campaign } = this.props;
     return (
       <div>
-        <GoBackButton onClick={this.goBack} />
         <PageHeader>
           <PageTitleWrapper>
             <PageTitle>
@@ -134,8 +129,16 @@ class Show extends React.Component<Props> {
               </Button>
             </Buttons>
           }
-
         </PageHeader>
+        <div>
+          <h2>Almost ready</h2>
+          <p>Your campaign is almost ready. Make sure it doesn't contain errors and hit the Send now button!</p>
+        </div>
+        <hr/>
+        <div>
+
+        </div>
+
         {isDraft(campaign) ?
           <DraftCampaignDetails campaignId={campaign.id} />
         :
