@@ -5,7 +5,7 @@ import { CLErrorsJSON } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
 import { updatePage } from 'services/pages';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import PageForm, { FormValues } from 'components/PageForm';
+import PageForm from 'components/PageForm';
 import { Formik } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
 import { fontSize } from 'utils/styleUtils';
@@ -50,7 +50,9 @@ class EditPage extends React.Component<Props & WithRouterProps, State> {
     return pick(newValues, changedKeys);
   }
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  // Still need to handle file saving if we'll use this form.
+  // Also change typing of values parameter to something different (probably FormValues) than 'any'
+  handleSubmit = (values: any, { setErrors, setSubmitting }) => {
     const { page } = this.props;
 
     if (isNilOrError(page)) return;

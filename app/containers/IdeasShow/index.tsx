@@ -3,6 +3,7 @@ import { has, isString, get } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -26,6 +27,7 @@ import ParentCommentForm from './ParentCommentForm';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -52,6 +54,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -562,10 +565,16 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-type Props = {
+interface DataProps {
+  ideaFiles: GetResourceFilesChildProps;
+}
+
+interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
-};
+}
+
+interface Props extends DataProps, InputProps {}
 
 type State = {
   authUser: IUser | null;
@@ -748,7 +757,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage }, localize } = this.props;
+    const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
     let content: JSX.Element | null = null;
 
@@ -882,6 +891,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </IdeaBody>
                 </Fragment>
 
+                {ideaFiles && !isNilOrError(ideaFiles) &&
+                  <FileAttachments files={ideaFiles} />
+                }
+
                 <SeparatorRow />
 
                 <T value={titleMultiloc} maxLength={50} >
@@ -1009,4 +1022,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-export default injectIntl(localize(IdeasShow));
+const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
+
+export default (inputProps: InputProps) => (
+  <GetResourceFiles resourceId={inputProps.ideaId} resourceType="idea">
+    {ideaFiles => <IdeasShowWithHOCs {...inputProps} ideaFiles={ideaFiles} />}
+  </GetResourceFiles>
+);
