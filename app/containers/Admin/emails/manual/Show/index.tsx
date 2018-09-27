@@ -3,16 +3,19 @@ import styled from 'styled-components';
 import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
 import { API_PATH } from 'containers/App/constants';
+import { adopt } from 'react-adopt';
 
 // services & resources
 import streams from 'utils/streams';
 import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
 import GetCampaign from 'resources/GetCampaign';
+import GetGroup from 'resources/GetGroup';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
@@ -99,7 +102,7 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, WithRouterProps, InjectedIntlProps { }
+interface Props extends InputProps, DataProps, WithRouterProps, InjectedIntlProps, InjectedLocalized { }
 
 class Show extends React.Component<Props> {
 
@@ -137,6 +140,7 @@ class Show extends React.Component<Props> {
 
   render() {
     const { campaign } = this.props;
+    const groupIds = campaign.relationships.groups.data.map(group => group.id);
     return (
       <div>
         <PageHeader>
@@ -187,7 +191,17 @@ class Show extends React.Component<Props> {
               <span>
                 <FormattedMessage {...messages.campaignTo}/>
               </span>
-              <span>{}</span>
+              {groupIds.forEach((groupId, index) => (
+                <GetGroup id={groupId}>
+                  {group => {
+                    console.log(group);
+                    if (index < groupIds.length - 1) {
+                      return <span>{this.props.localize(group.attributes.title_multiloc)},</span>;
+                    }
+                    return <span>{this.props.localize(group.attributes.title_multiloc)}</span>;
+                  }}
+                </GetGroup>
+              ))}
             </div>
           </FromTo>
         </CampaignHeader>
@@ -208,7 +222,7 @@ class Show extends React.Component<Props> {
   }
 }
 
-const ShowWithHOCs = withRouter(injectIntl(Show));
+const ShowWithHOCs = withRouter(injectIntl(localize(Show));
 
 export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
   <GetCampaign id={inputProps.params.campaignId}>
