@@ -3,7 +3,7 @@ import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
-import { color, invisibleA11yText } from 'utils/styleUtils';
+import { color, colors, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps } from 'components/UI/Icon';
 
@@ -200,6 +200,9 @@ const Container: any = styled.div`
     &.cl-blue {
       ${buttonTheme(color('clBlueDark'), 'white')}
     }
+    &.admin-dark {
+      ${buttonTheme(colors.adminTextColor, 'white')}
+    }
   }
 `;
 
@@ -218,7 +221,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark';
 
 type Props = {
   children?: any;
