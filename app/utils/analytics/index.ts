@@ -27,6 +27,14 @@ interface IPageChange {
   };
 }
 
+export interface IDestination {
+  id: string;
+  name: string;
+  description: string;
+  website: string;
+  category: string;
+}
+
 const tenant$ = currentTenantStream().observable;
 const authUser$ = authUserStream().observable;
 const events$ = new Subject<IEvent>();
