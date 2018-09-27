@@ -3,7 +3,7 @@ require 'rubyXL'
 class PermissionsService
 
   INFORMATION_ACTIONS = %w()
-  IDEATION_ACTIONS = %w(posting)
+  IDEATION_ACTIONS = %w(posting voting commenting)
   SURVEY_ACTIONS = %w()
 
 

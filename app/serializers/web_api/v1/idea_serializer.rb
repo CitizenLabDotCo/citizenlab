@@ -35,20 +35,20 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def action_descriptor
     @participation_context_service = @instance_options[:pcs] || ParticipationContextService.new
-    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object)
-    voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, scope)
-    cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, scope)
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object, current_user)
+    voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, current_user, scope)
+    cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user, scope)
     {
       voting: {
         enabled: !voting_disabled_reason,
         disabled_reason: voting_disabled_reason,
-        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project)&.start_at,
+        future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user)&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
       },
       commenting: {
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
-        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project)&.start_at
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user)&.start_at
       }
     }
   end

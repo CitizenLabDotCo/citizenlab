@@ -32,7 +32,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
       posting: {
         enabled: !posting_disabled_reason,
         disabled_reason: posting_disabled_reason,
-        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object)&.start_at
+        future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user)&.start_at
       }
     }
   end
