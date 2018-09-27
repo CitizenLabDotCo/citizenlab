@@ -20,13 +20,56 @@ import StatusLabel from 'components/UI/StatusLabel';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
-import GoBackButton from 'components/UI/GoBackButton';
+import Icon from 'components/UI/Icon';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// styling
+import { fontSizes, colors } from 'utils/styleUtils';
+
+const Instructions = styled.div`
+  max-width: 600px;
+  margin-bottom: 30px;
+`;
+
+const InstructionsHeader = styled.h2`
+  font-weight: 400;
+`;
+
+const InstructionsText = styled.p`
+  font-size: ${fontSizes.base}px;
+  color: #616D76;
+`;
+
 const PageHeader = styled.div`
   display: flex;
+`;
+
+const CampaignHeader = styled.div`
+  display: flex;
+  padding: 20px 0;
+  border-top: 1px solid #d8d8d8;
+  border-bottom: 1px solid #d8d8d8;
+  margin-bottom: 20px;
+`;
+
+const StampIcon = styled(Icon)`
+  margin-right: 20px;
+`;
+
+const FromTo = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const SendPreviewButton = styled.button`
+  margin-bottom: 30px;
+  text-decoration: underline;
+  font-size: ${fontSizes.base}px;
+  font-weight: bold;
+  cursor: pointer;
 `;
 
 const PageTitleWrapper = styled.div`
@@ -109,20 +152,13 @@ class Show extends React.Component<Props> {
           </PageTitleWrapper>
           {isDraft(campaign) &&
             <Buttons>
-              <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary" icon="edit">
+              <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary">
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
-
               <Button
-                style="primary-outlined"
-                onClick={this.handleSendPreview}
-              >
-                <FormattedMessage {...messages.sendPreviewButton} />
-              </Button>
-
-              <Button
-                style="primary"
+                style="admin-dark"
                 icon="send"
+                iconPos="right"
                 onClick={this.handleSendNow}
               >
                 <FormattedMessage {...messages.sendNowButton} />
@@ -130,14 +166,37 @@ class Show extends React.Component<Props> {
             </Buttons>
           }
         </PageHeader>
-        <div>
-          <h2>Almost ready</h2>
-          <p>Your campaign is almost ready. Make sure it doesn't contain errors and hit the Send now button!</p>
-        </div>
-        <hr/>
-        <div>
+        <Instructions>
+          <InstructionsHeader>
+            <FormattedMessage {...messages.instructionsHeader} />
+          </InstructionsHeader>
+          <InstructionsText>
+            <FormattedMessage {...messages.instructionsText} />
+          </InstructionsText>
+        </Instructions>
+        <CampaignHeader>
+          <StampIcon name="stamp" />
+          <FromTo>
+            <div>
+              <span>
+                <FormattedMessage {...messages.campaignFrom}/>
+              </span>
+              <span>{}</span>
+            </div>
+            <div>
+              <span>
+                <FormattedMessage {...messages.campaignTo}/>
+              </span>
+              <span>{}</span>
+            </div>
+          </FromTo>
+        </CampaignHeader>
 
-        </div>
+        <SendPreviewButton
+          onClick={this.handleSendPreview}
+        >
+          <FormattedMessage {...messages.sendPreviewButton} />
+        </SendPreviewButton>
 
         {isDraft(campaign) ?
           <DraftCampaignDetails campaignId={campaign.id} />
