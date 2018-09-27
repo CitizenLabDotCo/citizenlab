@@ -16,6 +16,7 @@ const StyledLabel = styled.label`
 `;
 
 type Props = {
+  id?: string;
   value?: string | JSX.Element;
   htmlFor?: string;
   children?: any;
@@ -30,11 +31,11 @@ export default class Label extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, htmlFor, children } = this.props;
+    const { value, htmlFor, children, id } = this.props;
     const className = this.props['className'];
 
     return (
-      <StyledLabel className={`${booleanClass(className, className)}${booleanClass(this.props.hidden, 'invisible')}`} htmlFor={htmlFor}>{children || value}</StyledLabel>
+      <StyledLabel id={id} className={`${booleanClass(className, className)}${booleanClass(this.props.hidden, 'invisible')}`} htmlFor={htmlFor}>{children || value}</StyledLabel>
     );
   }
 }

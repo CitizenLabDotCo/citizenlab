@@ -11,6 +11,7 @@ export default class FormikQuillMultiloc extends React.Component<FieldProps & Mu
 
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
+    this.props.form.setStatus('enabled');
   }
   handleOnBlur = () => {
     this.props.form.setFieldTouched(this.props.field.name);

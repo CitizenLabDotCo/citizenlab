@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.PagesShowPage.notFoundDescription',
     defaultMessage: 'The requested page could not be found',
   },
+  projectAttachments: {
+    id: 'app.components.PagesShowPage.projectAttachments',
+    defaultMessage: 'Attachments',
+  },
 });
