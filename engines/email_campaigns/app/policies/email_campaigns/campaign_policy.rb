@@ -41,15 +41,15 @@ module EmailCampaigns
     end
 
     def update?
-      !record.sent? && can_access_and_modify?
+      !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
     end
 
     def do_send?
-      !record.sent? && can_access_and_modify?
+      !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
     end
 
     def send_preview?
-      !record.sent? && can_access_and_modify?
+      !(record.respond_to?(:sent?) && record.sent?) && can_access_and_modify?
     end
 
     def preview?

@@ -108,6 +108,7 @@ module EmailCampaigns
 
     def campaign_params
       params.require(:campaign).permit(
+        :enabled,
         :sender,
         :reply_to,
         group_ids: [],
