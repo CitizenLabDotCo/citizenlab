@@ -1,3 +1,27 @@
+module FactoryHelpers
+  extend self
+
+  def extract_permissions_config phase_config
+    permissions_config = {}
+    permission_keys = phase_config.keys.select do |key|
+      key.to_s.end_with? '_permitted'
+    end
+    permission_keys.each do |key|
+      permissions_config[key.to_s.chomp('_permitted')] = phase_config[key]
+      phase_config.delete(key)
+    end
+    permissions_config
+  end
+
+  def apply_permissions_config phase, permissions_config
+    permissions_config.each do |action, is_permitted|
+      permission = phase.permissions.find_by action: action
+      permission = phase.permissions.create!(action: action) if !permission
+      permission.update!(permitted_by: (is_permitted ? 'everyone' : 'admins_moderators'))
+    end
+  end
+end
+
 FactoryBot.define do
   factory :project do
     title_multiloc {{
@@ -94,33 +118,44 @@ FactoryBot.define do
         phases_config {{sequence: "xxcxx"}}
       end
       after(:create) do |project, evaluator|
+        phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
+        permissions_config = FactoryHelpers.extract_permissions_config phase_config
         active_phase = create(:phase, 
           start_at: Faker::Date.between(6.months.ago, Time.now),
           end_at: Faker::Date.between(Time.now+1.day, 6.months.from_now),
           project: project,
           with_permissions: evaluator.with_permissions,
-          **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
+          **phase_config
         )
+        FactoryHelpers.apply_permissions_config active_phase, permissions_config
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
 
         end_at = active_phase.start_at
         phases_before&.chars&.map(&:to_sym)&.reverse&.each do |sequence_char|
-          project.phases << create(:phase, 
+          phase_config = evaluator.phases_config[sequence_char].clone || {}
+          permissions_config = FactoryHelpers.extract_permissions_config phase_config
+          phase = create(:phase, 
             end_at: end_at - 1,
             start_at: end_at -= (1 + rand(120)).days,
             with_permissions: evaluator.with_permissions,
-            **(evaluator.phases_config[sequence_char] || {})
+            **phase_config
           )
+          project.phases << phase
+          FactoryHelpers.apply_permissions_config phase, permissions_config
         end
 
         start_at = active_phase.end_at
         phases_after&.chars&.map(&:to_sym)&.each do |sequence_char|
-          project.phases << create(:phase, 
+          phase_config = evaluator.phases_config[sequence_char].clone || {}
+          permissions_config = FactoryHelpers.extract_permissions_config phase_config
+          phase = create(:phase, 
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
             with_permissions: evaluator.with_permissions,
-            **(evaluator.phases_config[sequence_char] || {})
+            **phase_config
           )
+          project.phases << phase
+          FactoryHelpers.apply_permissions_config phase, permissions_config
         end
       end
     end
