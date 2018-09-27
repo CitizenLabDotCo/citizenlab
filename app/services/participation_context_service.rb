@@ -8,12 +8,12 @@ class ParticipationContextService
 
   COMMENTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    commenting_disabled: 'commenting_disabled'
+    not_permitted: 'not_permitted'
   }
 
   VOTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
-    voting_disabled: 'voting_disabled',
+    not_permitted: 'not_permitted',
     voting_limited_max_reached: 'voting_limited_max_reached',
     not_in_active_context: 'not_in_active_context'
   }
@@ -27,7 +27,7 @@ class ParticipationContextService
     if project.continuous?
       project
     elsif project.timeline?
-      @timeline_service.current_phase(project)
+      @timeline_service.current_phase project
     end
   end
 
@@ -36,13 +36,13 @@ class ParticipationContextService
     if project.continuous?
       project
     elsif project.timeline?
-      idea.phases.sort_by(&:start_at).last
+      idea.phases.sort_by(&:end_at).last
     end
   end
 
   def in_current_context? idea, current_context=nil
     project = idea.project
-    current_context ||= get_participation_context(project)
+    current_context ||= get_participation_context project
     if project.continuous?
       true
     else
@@ -51,92 +51,82 @@ class ParticipationContextService
   end
 
   def posting_disabled_reason project, user
-    context = project && get_participation_context(project)
-    permission = context && context.permissions.where(action: 'posting').first
+    context = project && get_participation_context project
     if !context
       POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       POSTING_DISABLED_REASONS[:not_ideation]
-    elsif !(user && permission&.granted_to?(user))
+    elsif !context_permission(context, 'posting')&.granted_to?(user)
       POSTING_DISABLED_REASONS[:not_permitted]
     else
       nil
     end
   end
 
-  def commenting_disabled_reason idea
-    project = idea.project
-    current_context = get_participation_context(project)
-    last_context = get_last_active_participation_context(idea)
-    if !current_context || !last_context
+  def commenting_disabled_reason idea, user
+    context = get_participation_context idea.project
+    last_context = get_last_active_participation_context idea
+    if !context && !last_context
       COMMENTING_DISABLED_REASONS[:project_inactive]
-    elsif !current_context.commenting_enabled
-      COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    elsif !last_context.commenting_enabled
-      COMMENTING_DISABLED_REASONS[:commenting_disabled]
+    elsif !(context && context_permission(context, 'commenting')&.granted_to?(user))
+      COMMENTING_DISABLED_REASONS[:not_permitted]
+    elsif !context_permission(last_context, 'commenting')&.granted_to?(user)
+      COMMENTING_DISABLED_REASONS[:not_permitted]
     else
       nil
     end
   end
 
-  def voting_disabled_reason idea, user=nil
-    project = idea.project
-    current_context = get_participation_context(project)
-    if !current_context
+  def voting_disabled_reason idea, user
+    context = get_participation_context idea.project
+    if !context
       VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:not_in_active_context]
+    elsif !context_permission(context, 'voting')&.granted_to?(user)
+      VOTING_DISABLED_REASONS[:not_permitted]
+    elsif (
+      user && 
+      context.voting_limited? && 
+      votes_in_context(context, user) >= context.voting_limited_max
+      )
+      VOTING_DISABLED_REASONS[:voting_limited_max_reached]
     else
-      in_current_context = in_current_context?(idea, current_context)
-      if !in_current_context
-        VOTING_DISABLED_REASONS[:not_in_active_context]
-      elsif !current_context.voting_enabled
-        VOTING_DISABLED_REASONS[:voting_disabled]
-      elsif (
-        user && 
-        current_context.voting_limited? && 
-        votes_in_context(current_context, user) >= current_context.voting_limited_max
-        )
-        VOTING_DISABLED_REASONS[:voting_limited_max_reached]
-      else
-        nil
-      end
+      nil
     end
   end
 
-  def cancelling_votes_disabled_reason idea, user=nil
-    project = idea.project
-    current_context = get_participation_context(project)
-    if !current_context
+  def cancelling_votes_disabled_reason idea, user
+    context = get_participation_context idea.project
+    if !context
       VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:not_in_active_context]
+    elsif !(user && context_permission(context, 'voting')&.granted_to?(user))
+      VOTING_DISABLED_REASONS[:not_permitted]
     else
-      in_current_context = in_current_context?(idea, current_context)
-      if !in_current_context
-        VOTING_DISABLED_REASONS[:not_in_active_context]
-      elsif !current_context.voting_enabled
-        VOTING_DISABLED_REASONS[:voting_disabled]
-      else
-        nil
-      end
+      nil
     end
   end
 
-  def future_posting_enabled_phase project, time=Time.now
+  def future_posting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.posting_enabled
+      context_permission(phase, 'posting')&.granted_to?(user)
     end
   end
 
-  def future_commenting_enabled_phase project, time=Time.now
+  def future_commenting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.commenting_enabled
+      context_permission(phase, 'commenting')&.granted_to?(user)
     end
   end
 
-  def future_voting_enabled_phase project, time=Time.now
+  def future_voting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.voting_enabled
+      context_permission(phase, 'voting')&.granted_to?(user)
     end
   end
 
@@ -155,6 +145,10 @@ class ParticipationContextService
 
   def calculate_votes_in_context context, user
     user.votes.where(votable_id: context.ideas).count
+  end
+
+  def context_permission context, action
+    context.permissions.where(action: action).first
   end
 
 end

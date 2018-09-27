@@ -370,8 +370,33 @@ resource "Ideas" do
 
     describe do
       let(:project_id) { nil }
+      
       example_request "[error] Create an idea without a project", document: false do
         expect(response_status).to be >= 400
+      end
+    end
+
+    describe do
+      before do
+        permission = project.permissions.where(action: 'posting').first
+        permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
+      end
+      example_request "[error] Create an idea in a project with groups posting permission", document: false do
+        expect(response_status).to eq 401
+      end
+    end
+
+    describe do
+      before do
+        permission = project.permissions.where(action: 'posting').first
+        groups = create_list(:group, 2)
+        g = groups.first
+        g.add_member @user
+        g.save!
+        permission.update!(permitted_by: 'groups', groups: groups)
+      end
+      example_request "Create an idea in a project with groups posting permission", document: false do
+        expect(response_status).to eq 201
       end
     end
     
