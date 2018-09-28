@@ -6,8 +6,8 @@ nl:
       "comment_on_your_idea": Iemand reageert op mijn idee
       "admin_rights_received": Beheerdersrechten ontvangen
       "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
-      "comment_marked_as_spam": Een reactie is aangeduid als spam
-      "idea_marked_as_spam": Een idee is aangeduid als spam
+      "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
+      "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
       "invite_received": Iemand mij uitnodigt op het platform
       "invite_accepted": Iemand aanvaardt mijn uitnodiging
       "mention_in_comment": Iemand vernoemt me in een reactie
