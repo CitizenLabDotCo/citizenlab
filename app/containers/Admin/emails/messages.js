@@ -9,19 +9,15 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   titleEmails: {
     id: 'app.containers.Admin.emails.titleEmails',
-    defaultMessage: 'E-mails',
+    defaultMessage: 'Email Campaigns',
   },
   helmetTitle: {
     id: 'app.containers.Admin.emails.helmetTitle',
-    defaultMessage: 'E-mails',
+    defaultMessage: 'Email Campaigns',
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
     defaultMessage: 'Send out manual emails to certain citizen group and active automated campaigns',
-  },
-  listTitle: {
-    id: 'app.containers.Admin.emails.listTitle',
-    defaultMessage: 'Email Campaigns',
   },
   campaignDeletionConfirmation: {
     id: 'app.containers.Admin.emails.campaignDeletionConfirmation',
@@ -189,10 +185,18 @@ export default defineMessages({
   },
   noAccess: {
     id: 'app.containers.Admin.Campaigns.noAccess',
-    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the e-mails section',
+    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the emails section',
   },
   deleteCampaignButton: {
     id: 'app.containers.Admin.emails.deleteCampaignButton',
     defaultMessage: 'Delete Campaign',
+  },
+  noCampaignsHeader: {
+    id: 'app.containers.Admin.emails.noCampaignsHeader',
+    defaultMessage: 'No custom email campaigns yet',
+  },
+  noCampaignsDescription: {
+    id: 'app.containers.Admin.emails.noCampaignsDescription',
+    defaultMessage: 'Click the button below to create your first campaign.',
   },
 });
