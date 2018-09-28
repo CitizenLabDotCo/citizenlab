@@ -11,7 +11,8 @@ resource "Idea Votes" do
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @idea = create(:idea)
+    @project = create(:continuous_project, with_permissions: true)
+    @idea = create(:idea, project: @project)
     @votes = create_list(:vote, 2, votable: @idea)
   end
 
@@ -88,13 +89,14 @@ resource "Idea Votes" do
     describe do
       before do
         project = @idea.project
-        project.update(voting_enabled: false)
+        project.permissions.find_by(action: 'voting').update!(permitted_by: 'admins_moderators')
+        @user.update!(roles: [])
       end
 
-      example_request "[error] Upvote an idea in a project where voting is disabled" do
+      example_request "[error] Upvote an idea in a project where voting is not permitted" do
         expect(status).to eq 401
         json_response = json_parse(response_body)
-        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:voting_disabled]
+        expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:not_permitted]
         expect(@idea.reload.upvotes_count).to eq 2
         expect(@idea.reload.downvotes_count).to eq 0
       end

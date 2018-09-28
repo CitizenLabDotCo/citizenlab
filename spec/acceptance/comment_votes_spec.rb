@@ -11,7 +11,9 @@ resource "Comment Votes" do
     token = Knock::AuthToken.new(payload: { sub: @user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    @comment = create(:comment)
+    @project = create(:continuous_project, with_permissions: true)
+    @idea = create(:idea, project: @project)
+    @comment = create(:comment, idea: @idea)
     @votes = create_list(:vote, 2, votable: @comment)
   end
 
