@@ -481,6 +481,12 @@ const icons = {
       </g>
     </svg>
   ),
+  mailBig: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {injectTitle(title)}
+      <path d="M53.75 0H6.25A6.259 6.259 0 0 0 0 6.25v27.5A6.259 6.259 0 0 0 6.25 40h47.5A6.259 6.259 0 0 0 60 33.75V6.25A6.259 6.259 0 0 0 53.75 0zm-31.7 22.21l-15 12.5c-.232.195-.518.29-.8.29a1.252 1.252 0 0 1-.803-2.212l15-12.5c.53-.44 1.32-.368 1.763.16.442.532.37 1.322-.16 1.762zm7.95.332a6.98 6.98 0 0 1-3.953-1.232L5.546 7.283a1.252 1.252 0 0 1-.327-1.738 1.246 1.246 0 0 1 1.737-.325l20.502 14.027a4.476 4.476 0 0 0 5.083 0L53.042 5.22a1.25 1.25 0 0 1 1.413 2.063L33.953 21.31A6.98 6.98 0 0 1 30 22.543zM54.71 34.55a1.244 1.244 0 0 1-1.76.16l-15-12.5a1.252 1.252 0 0 1-.16-1.762c.443-.528 1.23-.6 1.763-.16l15 12.5c.527.442.6 1.232.157 1.762z" fill="#01A1B1" fill-opacity=".25"/>
+    </svg>
+  ),
   remove: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
