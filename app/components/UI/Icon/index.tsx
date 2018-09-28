@@ -646,6 +646,12 @@ const clIcons = {
       </g>
     </svg>
   ),
+  charts: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {injectTitle(title)}
+      <path d="M7.8 3.6H5.4C5.0688 3.6 4.8 3.8688 4.8 4.2V11.4C4.8 11.7312 5.0688 12 5.4 12H7.8C8.1312 12 8.4 11.7312 8.4 11.4V4.2C8.4 3.8688 8.1312 3.6 7.8 3.6ZM3 7.2H0.6C0.2688 7.2 0 7.4688 0 7.8V11.4C0 11.7312 0.2688 12 0.6 12H3C3.3312 12 3.6 11.7312 3.6 11.4V7.8C3.6 7.4688 3.3312 7.2 3 7.2ZM12.6 0H10.2C9.8688 0 9.6 0.2688 9.6 0.6V11.4C9.6 11.7312 9.8688 12 10.2 12H12.6C12.9312 12 13.2 11.7312 13.2 11.4V0.6C13.2 0.2688 12.9312 0 12.6 0Z" fill="#84939E"/>
+    </svg>
+  ),
   invitations: (className, title, theme) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
