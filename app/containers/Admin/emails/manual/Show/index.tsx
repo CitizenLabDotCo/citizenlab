@@ -10,6 +10,8 @@ import streams from 'utils/streams';
 import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -29,7 +31,7 @@ import Icon from 'components/UI/Icon';
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Instructions = styled.div`
   max-width: 600px;
@@ -100,11 +102,15 @@ interface InputProps { }
 
 interface DataProps {
   campaign: ICampaignData;
+  user: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps, WithRouterProps, InjectedIntlProps, InjectedLocalized { }
 
-class Show extends React.Component<Props> {
+interface State {}
+
+class Show extends React.Component<Props, State> {
 
   handleSendNow = () => {
     sendCampaign(this.props.campaign.id)
@@ -138,9 +144,25 @@ class Show extends React.Component<Props> {
     }
   }
 
+  getSenderName = (senderType: string) => {
+    const { user, tenant, localize } = this.props;
+    let senderName: string | null = null;
+
+    if (senderType === 'author' && !isNilOrError(user)) {
+      senderName = `${user.attributes.first_name} ${user.attributes.last_name}`;
+    } else if (senderType === 'organization' && !isNilOrError(tenant)) {
+      senderName = localize(tenant.attributes.settings.core.organization_name);
+    }
+
+    return senderName;
+  }
+
   render() {
     const { campaign } = this.props;
     const groupIds = campaign.relationships.groups.data.map(group => group.id);
+    const senderType = campaign.attributes.sender;
+    const senderName = this.getSenderName(senderType);
+
     return (
       <div>
         <PageHeader>
@@ -185,20 +207,19 @@ class Show extends React.Component<Props> {
               <span>
                 <FormattedMessage {...messages.campaignFrom}/>
               </span>
-              <span>{}</span>
+              <span>{senderName}</span>
             </div>
             <div>
               <span>
                 <FormattedMessage {...messages.campaignTo}/>
               </span>
-              {groupIds.forEach((groupId, index) => (
-                <GetGroup id={groupId}>
+              {groupIds.map((groupId, index) => (
+                <GetGroup key={groupId} id={groupId}>
                   {group => {
-                    console.log(group);
                     if (index < groupIds.length - 1) {
-                      return <span>{this.props.localize(group.attributes.title_multiloc)},</span>;
+                      return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </span>;
                     }
-                    return <span>{this.props.localize(group.attributes.title_multiloc)}</span>;
+                    return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</span>;
                   }}
                 </GetGroup>
               ))}
@@ -222,10 +243,16 @@ class Show extends React.Component<Props> {
   }
 }
 
-const ShowWithHOCs = withRouter(injectIntl(localize(Show)));
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  campaign: ({ params, render }) => <GetCampaign id={params.campaignId}>{render}</GetCampaign>,
+  user: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
+  tenant: ({ render }) => <GetTenant>{render}</GetTenant>
+});
 
-export default (inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-  <GetCampaign id={inputProps.params.campaignId}>
-    {campaign => isNilOrError(campaign) ? null : <ShowWithHOCs {...inputProps} campaign={campaign} />}
-  </GetCampaign>
-);
+const ShowWithHOCs = injectIntl(localize(Show));
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ShowWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
+));
