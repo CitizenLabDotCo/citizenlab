@@ -25,6 +25,25 @@ class Permission < ApplicationRecord
   	end
   end
 
+  def groups_inclusion user
+    group_ids = user.group_ids
+    groups.map do |group|
+      rules = group.rules.map do |rule|
+        {
+          rule: rule,
+          inclusion: SmartGroupsService.new.parse_json_rule(rule).filter(User.where(id: user.id)).exists?
+        }
+      end
+      {
+        id: group.id,
+        title_multiloc: group.title_multiloc,
+        membership_type: group.membership_type,
+        inclusion: group_ids.include?(group.id),
+        rules: rules
+      }
+    end
+  end
+
 
   private
 

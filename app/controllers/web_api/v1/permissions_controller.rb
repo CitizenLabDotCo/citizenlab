@@ -1,5 +1,5 @@
 class WebApi::V1::PermissionsController < ApplicationController
-  before_action :set_permission, only: [:show, :update]
+  before_action :set_permission, only: [:show, :update, :groups_inclusion]
 
   def index
     @permissions = policy_scope(Permission)
@@ -24,6 +24,14 @@ class WebApi::V1::PermissionsController < ApplicationController
       render json: @permission, status: :ok
     else
       render json: { errors: @permission.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  def groups_inclusion
+    if current_user
+      render json: @permission.groups_inclusion(current_user), status: :ok
+    else
+      user_not_authorized
     end
   end
 

@@ -66,7 +66,9 @@ Rails.application.routes.draw do
 
       concern :participation_context do
         # :action is already used as param, so we chose :permission_action instead
-        resources :permissions, param: :permission_action
+        resources :permissions, param: :permission_action do
+          get 'groups_inclusion', on: :member
+        end
       end
 
       # Events and phases are split in two because we cannot have a non-shallow
