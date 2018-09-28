@@ -33,18 +33,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes } from 'utils/styleUtils';
 
-const Instructions = styled.div`
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
-
-const InstructionsHeader = styled.h2`
+const PreviewHeader = styled.h2`
   font-weight: 400;
-`;
-
-const InstructionsText = styled.p`
-  font-size: ${fontSizes.base}px;
-  color: #616D76;
 `;
 
 const PageHeader = styled.div`
@@ -74,7 +64,7 @@ const FromToHeader = styled.span`
   font-weight: bold;
 `;
 
-const SendPreviewButton = styled.button`
+const SendTestEmailButton = styled.button`
   margin-bottom: 30px;
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
@@ -85,7 +75,6 @@ const SendPreviewButton = styled.button`
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 3rem 0 4rem;
   margin-right: auto;
 `;
 
@@ -127,7 +116,7 @@ class Show extends React.Component<Props, State> {
       });
   }
 
-  handleSendPreview = () => {
+  handleSendTestEmail = () => {
     sendCampaignPreview(this.props.campaign.id)
       .then(() => {
         const previewSentConfirmation = this.props.intl.formatMessage(messages.previewSentConfirmation);
@@ -185,14 +174,14 @@ class Show extends React.Component<Props, State> {
               </Buttons>
             }
           </PageHeader>
-          <Instructions>
-            <InstructionsHeader>
-              <FormattedMessage {...messages.instructionsHeader} />
-            </InstructionsHeader>
-            <InstructionsText>
-              <FormattedMessage {...messages.instructionsText} />
-            </InstructionsText>
-          </Instructions>
+          <SendTestEmailButton
+            onClick={this.handleSendTestEmail}
+          >
+            <FormattedMessage {...messages.sendTestEmailButton} />
+          </SendTestEmailButton>
+          <PreviewHeader>
+            <FormattedMessage {...messages.previewHeader} />
+          </PreviewHeader>
           <CampaignHeader>
             <StampIcon name="stamp" />
             <FromTo>
@@ -221,12 +210,6 @@ class Show extends React.Component<Props, State> {
               </div>
             </FromTo>
           </CampaignHeader>
-
-          <SendPreviewButton
-            onClick={this.handleSendPreview}
-          >
-            <FormattedMessage {...messages.sendPreviewButton} />
-          </SendPreviewButton>
 
           {isDraft(campaign) ?
             <DraftCampaignDetails campaignId={campaign.id} />
