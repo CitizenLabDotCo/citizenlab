@@ -5,7 +5,7 @@ import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
 import { color, colors, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
-import Icon, { Props as IconProps } from 'components/UI/Icon';
+import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
@@ -203,6 +203,9 @@ const Container: any = styled.div`
     &.admin-dark {
       ${buttonTheme(colors.adminTextColor, 'white')}
     }
+    &.delete {
+      ${buttonTheme(colors.clRedError, 'white')}
+    }
   }
 `;
 
@@ -221,7 +224,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark' | 'delete';
 
 type Props = {
   children?: any;
@@ -236,6 +239,7 @@ type Props = {
   iconPos?: 'left' | 'right';
   iconSize?: string;
   iconTitle?: IconProps['title'];
+  iconTheme?: clColorTheme;
   id?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
@@ -292,7 +296,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
+    const { text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -312,10 +316,10 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
