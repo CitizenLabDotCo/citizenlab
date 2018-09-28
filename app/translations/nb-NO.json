@@ -262,6 +262,7 @@
   "app.containers.Admin.emails.addCampaignTitle": "",
   "app.containers.Admin.emails.campaignDeletionConfirmation": "",
   "app.containers.Admin.emails.deleteButtonLabel": "",
+  "app.containers.Admin.emails.deleteCampaignButton": "",
   "app.containers.Admin.emails.draft": "",
   "app.containers.Admin.emails.editButtonLabel": "",
   "app.containers.Admin.emails.editCampaignTitle": "",
