@@ -6,8 +6,8 @@ fr:
       "comment_on_your_idea": Quelqu'un répond à mon idée
       "admin_rights_received": Je recois les droits d'administrateurs
       "comment_deleted_by_admin": Un admin supprime mon commentaire
-      "comment_marked_as_spam": Un commentaire est marqué comme spam
-      "idea_marked_as_spam": Une idée est marquée comme spam
+      "comment_marked_as_spam": Un commentaire est marqué comme spam (pour les administrateurs et modérateurs)
+      "idea_marked_as_spam": Une idée est marquée comme spam (pour les administrateurs et modérateurs)
       "invite_received": Quelqu'un m’invite à la plate-forme
       "invite_accepted": Quelqu'un accepte mon invitation
       "mention_in_comment": Quelqu'un me mentionne dans un commentaire
