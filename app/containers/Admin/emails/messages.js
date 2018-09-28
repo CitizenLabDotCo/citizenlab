@@ -95,9 +95,9 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.sendNowButton',
     defaultMessage: 'Send now',
   },
-  sendPreviewButton: {
-    id: 'app.containers.Admin.emails.sendPreviewButton',
-    defaultMessage: 'Send me a preview',
+  sendTestEmailButton: {
+    id: 'app.containers.Admin.emails.sendTestEmailButton',
+    defaultMessage: 'Send a test email',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
@@ -167,13 +167,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.tabAutomated',
     defaultMessage: 'Automated',
   },
-  instructionsHeader: {
-    id: 'app.containers.Admin.Campaigns.instructionsHeader',
-    defaultMessage: 'Almost ready',
-  },
-  instructionsText: {
-    id: 'app.containers.Admin.Campaigns.instructionsText',
-    defaultMessage: 'Your campaign is almost ready. Make sure it doesn\'t contain errors and hit the Send now button!',
+  previewHeader: {
+    id: 'app.containers.Admin.Campaigns.previewHeader',
+    defaultMessage: 'Preview',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
