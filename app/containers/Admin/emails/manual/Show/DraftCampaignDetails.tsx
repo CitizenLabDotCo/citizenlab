@@ -14,6 +14,7 @@ import { API_PATH } from 'containers/App/constants';
 import { InjectedIntlProps } from 'react-intl';
 import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
+import { clColorTheme } from 'components/UI/Icon';
 
 const Buttons = styled.div`
   display: flex;
@@ -22,6 +23,12 @@ const Buttons = styled.div`
   & > * {
     padding: 0 10px;
   }
+`;
+
+const ButtonWrapper = styled.div`
+  margin: 40px 0;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 interface InputProps {
@@ -70,8 +77,26 @@ class DraftCampaignDetails extends React.Component<Props> {
 
   render() {
     const { campaign } = this.props;
+    const iconColors: clColorTheme = {
+      clIconPrimary: '#fff',
+      clIconSecondary: '',
+      clIconAccent: '#fff',
+      clIconBackground: ''
+    };
     return (
-      <PreviewFrame campaignId={campaign.id} />
+      <>
+        <PreviewFrame campaignId={campaign.id} />
+        <ButtonWrapper>
+          <Button
+            iconTheme={iconColors}
+            style="delete"
+            icon="trash"
+            onClick={this.handleDelete}
+          >
+            <FormattedMessage {...messages.deleteCampaignButton} />
+          </Button>
+        </ButtonWrapper>
+      </>
     );
   }
 }

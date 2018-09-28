@@ -191,4 +191,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.noAccess',
     defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the e-mails section',
   },
+  deleteCampaignButton: {
+    id: 'app.containers.Admin.emails.deleteCampaignButton',
+    defaultMessage: 'Delete Campaign',
+  },
 });
