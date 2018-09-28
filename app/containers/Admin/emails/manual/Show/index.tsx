@@ -159,87 +159,92 @@ class Show extends React.Component<Props, State> {
 
   render() {
     const { campaign } = this.props;
-    const groupIds = campaign.relationships.groups.data.map(group => group.id);
-    const senderType = campaign.attributes.sender;
-    const senderName = this.getSenderName(senderType);
 
-    return (
-      <div>
-        <PageHeader>
-          <PageTitleWrapper>
-            <PageTitle>
-              <T value={campaign.attributes.subject_multiloc} />
-            </PageTitle>
-            {isDraft(campaign) ?
-              <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
-            :
-              <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
+    if (campaign) {
+      const groupIds = campaign.relationships.groups.data.map(group => group.id);
+      const senderType = campaign.attributes.sender;
+      const senderName = this.getSenderName(senderType);
+
+      return (
+        <div>
+          <PageHeader>
+            <PageTitleWrapper>
+              <PageTitle>
+                <T value={campaign.attributes.subject_multiloc} />
+              </PageTitle>
+              {isDraft(campaign) ?
+                <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
+              :
+                <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
+              }
+            </PageTitleWrapper>
+            {isDraft(campaign) &&
+              <Buttons>
+                <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary">
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </Button>
+                <Button
+                  style="admin-dark"
+                  icon="send"
+                  iconPos="right"
+                  onClick={this.handleSendNow}
+                >
+                  <FormattedMessage {...messages.sendNowButton} />
+                </Button>
+              </Buttons>
             }
-          </PageTitleWrapper>
-          {isDraft(campaign) &&
-            <Buttons>
-              <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary">
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
-              <Button
-                style="admin-dark"
-                icon="send"
-                iconPos="right"
-                onClick={this.handleSendNow}
-              >
-                <FormattedMessage {...messages.sendNowButton} />
-              </Button>
-            </Buttons>
+          </PageHeader>
+          <Instructions>
+            <InstructionsHeader>
+              <FormattedMessage {...messages.instructionsHeader} />
+            </InstructionsHeader>
+            <InstructionsText>
+              <FormattedMessage {...messages.instructionsText} />
+            </InstructionsText>
+          </Instructions>
+          <CampaignHeader>
+            <StampIcon name="stamp" />
+            <FromTo>
+              <div>
+                <span>
+                  <FormattedMessage {...messages.campaignFrom}/>
+                </span>
+                <span>{senderName}</span>
+              </div>
+              <div>
+                <span>
+                  <FormattedMessage {...messages.campaignTo}/>
+                </span>
+                {groupIds.map((groupId, index) => (
+                  <GetGroup key={groupId} id={groupId}>
+                    {group => {
+                      if (index < groupIds.length - 1) {
+                        return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </span>;
+                      }
+                      return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</span>;
+                    }}
+                  </GetGroup>
+                ))}
+              </div>
+            </FromTo>
+          </CampaignHeader>
+
+          <SendPreviewButton
+            onClick={this.handleSendPreview}
+          >
+            <FormattedMessage {...messages.sendPreviewButton} />
+          </SendPreviewButton>
+
+          {isDraft(campaign) ?
+            <DraftCampaignDetails campaignId={campaign.id} />
+          :
+            <SentCampaignDetails campaignId={campaign.id} />
           }
-        </PageHeader>
-        <Instructions>
-          <InstructionsHeader>
-            <FormattedMessage {...messages.instructionsHeader} />
-          </InstructionsHeader>
-          <InstructionsText>
-            <FormattedMessage {...messages.instructionsText} />
-          </InstructionsText>
-        </Instructions>
-        <CampaignHeader>
-          <StampIcon name="stamp" />
-          <FromTo>
-            <div>
-              <span>
-                <FormattedMessage {...messages.campaignFrom}/>
-              </span>
-              <span>{senderName}</span>
-            </div>
-            <div>
-              <span>
-                <FormattedMessage {...messages.campaignTo}/>
-              </span>
-              {groupIds.map((groupId, index) => (
-                <GetGroup key={groupId} id={groupId}>
-                  {group => {
-                    if (index < groupIds.length - 1) {
-                      return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </span>;
-                    }
-                    return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</span>;
-                  }}
-                </GetGroup>
-              ))}
-            </div>
-          </FromTo>
-        </CampaignHeader>
+        </div>
+      );
+    }
 
-        <SendPreviewButton
-          onClick={this.handleSendPreview}
-        >
-          <FormattedMessage {...messages.sendPreviewButton} />
-        </SendPreviewButton>
-
-        {isDraft(campaign) ?
-          <DraftCampaignDetails campaignId={campaign.id} />
-        :
-          <SentCampaignDetails campaignId={campaign.id} />
-        }
-      </div>
-    );
+    return null;
   }
 }
 
