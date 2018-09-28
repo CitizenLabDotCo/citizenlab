@@ -69,6 +69,10 @@ const FromTo = styled.div`
   justify-content: space-between;
 `;
 
+const FromToHeader = styled.span`
+  font-weight: bold;
+`;
+
 const SendPreviewButton = styled.button`
   margin-bottom: 30px;
   text-decoration: underline;
@@ -206,15 +210,17 @@ class Show extends React.Component<Props, State> {
             <StampIcon name="stamp" />
             <FromTo>
               <div>
-                <span>
+                <FromToHeader>
                   <FormattedMessage {...messages.campaignFrom}/>
-                </span>
+                  &nbsp;
+                </FromToHeader>
                 <span>{senderName}</span>
               </div>
               <div>
-                <span>
+                <FromToHeader>
                   <FormattedMessage {...messages.campaignTo}/>
-                </span>
+                  &nbsp;
+                </FromToHeader>
                 {groupIds.map((groupId, index) => (
                   <GetGroup key={groupId} id={groupId}>
                     {group => {

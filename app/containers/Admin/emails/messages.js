@@ -181,11 +181,11 @@ export default defineMessages({
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
-    defaultMessage: 'From: ',
+    defaultMessage: 'From:',
   },
   campaignTo: {
     id: 'app.containers.Admin.Campaigns.campaignTo',
-    defaultMessage: 'To: ',
+    defaultMessage: 'To:',
   },
   noAccess: {
     id: 'app.containers.Admin.Campaigns.noAccess',
