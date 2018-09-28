@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 
 // services & resources
 import streams from 'utils/streams';
-import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
+import { sendCampaign, sendCampaignPreview, ICampaignData, isDraft } from 'services/campaigns';
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -133,20 +133,6 @@ class Show extends React.Component<Props, State> {
         const previewSentConfirmation = this.props.intl.formatMessage(messages.previewSentConfirmation);
         window.alert(previewSentConfirmation);
       });
-  }
-
-  handleSaveDraft = () => {
-    clHistory.push('/admin/emails/manual');
-  }
-
-  handleDelete = () => {
-    const deleteMessage = this.props.intl.formatMessage(messages.campaignDeletionConfirmation);
-    if (window.confirm(deleteMessage)) {
-      deleteCampaign(this.props.campaign.id)
-        .then(() => {
-          clHistory.push('/admin/emails/manual');
-        });
-    }
   }
 
   getSenderName = (senderType: string) => {
