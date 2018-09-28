@@ -44,6 +44,14 @@ class Group < ApplicationRecord
 
   scope :order_new, -> (direction=:desc) {order(created_at: direction)}
 
+  def member? user
+    if rules?
+      SmartGroupsService.new.groups_for_user(user).where(id: id).exists?
+    else
+      users.where(id: user.id).exists?
+    end
+  end
+
   def add_member user
     if manual?
       users << user
