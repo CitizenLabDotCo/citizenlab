@@ -41,7 +41,7 @@ export default defineMessages({
   },
   manageButtonLabel: {
     id: 'app.containers.Admin.emails.manageButtonLabel',
-    defaultMessage: 'Manage',
+    defaultMessage: 'Manage & Edit & Preview & Delete',
   },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
