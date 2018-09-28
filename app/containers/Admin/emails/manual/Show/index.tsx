@@ -74,6 +74,10 @@ const FromToHeader = styled.span`
   font-weight: bold;
 `;
 
+const FromToHeader = styled.span`
+  font-weight: bold;
+`;
+
 const SendPreviewButton = styled.button`
   margin-bottom: 30px;
   text-decoration: underline;
