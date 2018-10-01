@@ -92,6 +92,15 @@ const Buttons = styled.div`
   }
 `;
 
+const GroupLink = styled.a`
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 interface InputProps { }
 
 interface DataProps {
@@ -122,6 +131,11 @@ class Show extends React.Component<Props, State> {
         const previewSentConfirmation = this.props.intl.formatMessage(messages.previewSentConfirmation);
         window.alert(previewSentConfirmation);
       });
+  }
+
+  handleGroupLinkClick = (groupId: string) => (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    clHistory.push(`/admin/users/${groupId}`);
   }
 
   getSenderName = (senderType: string) => {
@@ -203,9 +217,9 @@ class Show extends React.Component<Props, State> {
                   <GetGroup key={groupId} id={groupId}>
                     {group => {
                       if (index < groupIds.length - 1) {
-                        return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </span>;
+                        return <GroupLink onClick={this.handleGroupLinkClick(groupId)}>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </GroupLink>;
                       }
-                      return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</span>;
+                      return <GroupLink onClick={this.handleGroupLinkClick(groupId)}>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</GroupLink>;
                     }}
                   </GetGroup>
                 ))}
