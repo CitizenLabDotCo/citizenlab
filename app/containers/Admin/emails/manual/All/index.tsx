@@ -11,6 +11,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import Warning from 'components/UI/Warning';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -79,6 +80,9 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
     } else {
       return (
         <>
+          <Warning
+            text={<FormattedMessage {...messages.customEmailCampaignsInfo} />}
+          />
           <ButtonWrapper>
             <Button
               style="cl-blue"
