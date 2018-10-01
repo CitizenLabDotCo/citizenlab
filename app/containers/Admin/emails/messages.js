@@ -195,4 +195,12 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.noCampaignsDescription',
     defaultMessage: 'Click the button below to create your first campaign.',
   },
+  customEmailCampaignsInfo: {
+    id: 'app.containers.Admin.emails.customEmailCampaignsInfo',
+    defaultMessage: 'Custom email campaigns are emails you can make to tailor specific needs.'
+  },
+  automatedEmailCampaignsInfo: {
+    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
+    defaultMessage: 'Automated email campaigns are automatic emails sent out by CitizenLab. You can turn some of them on/off.'
+  }
 });
