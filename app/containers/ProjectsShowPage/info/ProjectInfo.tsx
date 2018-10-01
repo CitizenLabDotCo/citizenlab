@@ -184,11 +184,11 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 
   const projectUrl = location.href;
   const utmParams = authUser ? {
-    source:'share_idea',
+    source:'share_project',
     campaign:'share_content',
     content: authUser.id
   } : {
-    source:'share_idea',
+    source:'share_project',
     campaign:'share_content'
   };
 
