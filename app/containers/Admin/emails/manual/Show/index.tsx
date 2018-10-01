@@ -174,11 +174,13 @@ class Show extends React.Component<Props, State> {
               </Buttons>
             }
           </PageHeader>
-          <SendTestEmailButton
-            onClick={this.handleSendTestEmail}
-          >
-            <FormattedMessage {...messages.sendTestEmailButton} />
-          </SendTestEmailButton>
+          {isDraft(campaign) &&
+            <SendTestEmailButton
+              onClick={this.handleSendTestEmail}
+            >
+              <FormattedMessage {...messages.sendTestEmailButton} />
+            </SendTestEmailButton>
+          }
           <PreviewHeader>
             <FormattedMessage {...messages.previewHeader} />
           </PreviewHeader>
