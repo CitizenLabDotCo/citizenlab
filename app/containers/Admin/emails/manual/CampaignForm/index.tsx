@@ -4,7 +4,7 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
+import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Multiloc } from 'typings';
@@ -89,7 +89,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             <Label>
               <FormattedMessage {...messages.fieldSender} />
             </Label>
-            <Field
+            <FastField
               name="sender"
               component={FormikSelect}
               options={this.senderOptions()}
@@ -125,7 +125,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             <Label>
               <FormattedMessage {...messages.fieldReplyTo} />
             </Label>
-            <Field
+            <FastField
               name="reply_to"
               component={FormikInput}
               type="email"
@@ -143,7 +143,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             2. <FormattedMessage {...messages.formTitleWhat} />
           </SectionTitle>
           <SectionField>
-            <Field
+            <FastField
               name="subject_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldSubject} />}
@@ -156,7 +156,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           </SectionField>
 
           <SectionField>
-            <Field
+            <FastField
               name="body_multiloc"
               component={FormikQuillMultiloc}
               label={<FormattedMessage {...messages.fieldBody} />}
