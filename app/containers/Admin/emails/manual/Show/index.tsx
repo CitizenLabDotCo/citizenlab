@@ -26,12 +26,17 @@ import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
 import Icon from 'components/UI/Icon';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
+
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 20px;
+`;
 
 const PreviewHeader = styled.h2`
   font-weight: 400;
@@ -155,6 +160,10 @@ class Show extends React.Component<Props, State> {
     return senderName;
   }
 
+  goBack = () => {
+    clHistory.push('/admin/emails/manual');
+  }
+
   render() {
     const { campaign } = this.props;
 
@@ -165,6 +174,7 @@ class Show extends React.Component<Props, State> {
 
       return (
         <div>
+          <StyledGoBackButton onClick={this.goBack} />
           <PageHeader>
             <PageTitleWrapper>
               <PageTitle>
