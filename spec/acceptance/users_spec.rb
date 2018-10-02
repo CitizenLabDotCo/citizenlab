@@ -332,10 +332,29 @@ resource "Users" do
       let(:id) { @user.id }
       let(:first_name) { "Edmond" }
 
-      example_request "Update a user" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
+      describe do
+        let(:custom_field_values) {{birthyear: 1984}}
+
+        example "Update a user" do
+          oldtimers = create(:smart_group, rules: [
+            {
+              ruleType: 'custom_field_number', 
+              customFieldId: create(:custom_field_number, title_multiloc: {'en' => 'Birthyear?'}, key: 'birthyear', code: 'birthyear').id,
+              predicate: 'is_smaller_than_or_equal', 
+              value: 1988
+            }
+          ])
+          project = create(:continuous_project, with_permissions: true)
+          granted_permission = project.permissions.find_by(action: 'posting')
+          granted_permission.update!(permitted_by: 'groups', groups: [oldtimers])
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :first_name)).to eq "Edmond"
+          expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq 1
+          expect(json_response.dig(:included).select{|i| i[:type] == 'permissions'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
+          expect(json_response.dig(:included).select{|i| i[:type] == 'projects'}.first&.dig(:attributes, :slug)).to eq project.slug
+        end
       end
 
       describe do
