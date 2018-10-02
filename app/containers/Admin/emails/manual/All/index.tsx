@@ -11,7 +11,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import Warning from 'components/UI/Warning';
 import Pagination from 'components/admin/Pagination';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DraftCampaignRow from './DraftCampaignRow';
@@ -20,10 +19,6 @@ import SentCampaignRow from './SentCampaignRow';
 import messages from '../../messages';
 
 import { fontSizes, colors } from 'utils/styleUtils';
-
-const StyledWarning = styled(Warning)`
-  max-width: 600px;
-`;
 
 const NoCampaignsWrapper = styled.div`
   display: flex;
@@ -84,9 +79,6 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
     } else {
       return (
         <>
-          <StyledWarning
-            text={<FormattedMessage {...messages.customEmailCampaignsInfo} />}
-          />
           <ButtonWrapper>
             <Button
               style="cl-blue"

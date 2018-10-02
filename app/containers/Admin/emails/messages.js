@@ -193,11 +193,7 @@ export default defineMessages({
   },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',
-    defaultMessage: 'Click the button below to create your first campaign.',
-  },
-  customEmailCampaignsInfo: {
-    id: 'app.containers.Admin.emails.customEmailCampaignsInfo',
-    defaultMessage: 'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.'
+    defaultMessage: 'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
   },
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',

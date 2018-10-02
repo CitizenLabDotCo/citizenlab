@@ -31,10 +31,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes } from 'utils/styleUtils';
 
-const PreviewHeader = styled.h2`
-  font-weight: 400;
-`;
-
 const PageHeader = styled.div`
   display: flex;
   margin-bottom: 20px;
