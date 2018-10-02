@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
@@ -7,7 +7,7 @@ import QuillMultiloc, { MultilocEditorProps } from 'components/UI/QuillEditor/Qu
 
 // typings
 
-export default class FormikQuillMultiloc extends React.Component<FieldProps & MultilocEditorProps> {
+export default class FormikQuillMultiloc extends PureComponent<FieldProps & MultilocEditorProps> {
 
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
