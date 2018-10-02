@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 
 // services & resources
 import streams from 'utils/streams';
-import { sendCampaign, sendCampaignPreview, ICampaignData, deleteCampaign, isDraft } from 'services/campaigns';
+import { sendCampaign, sendCampaignPreview, ICampaignData, isDraft } from 'services/campaigns';
 import GetCampaign from 'resources/GetCampaign';
 import GetGroup from 'resources/GetGroup';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -33,22 +33,13 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes } from 'utils/styleUtils';
 
-const Instructions = styled.div`
-  max-width: 600px;
-  margin-bottom: 30px;
-`;
-
-const InstructionsHeader = styled.h2`
+const PreviewHeader = styled.h2`
   font-weight: 400;
-`;
-
-const InstructionsText = styled.p`
-  font-size: ${fontSizes.base}px;
-  color: #616D76;
 `;
 
 const PageHeader = styled.div`
   display: flex;
+  margin-bottom: 20px;
 `;
 
 const CampaignHeader = styled.div`
@@ -74,7 +65,7 @@ const FromToHeader = styled.span`
   font-weight: bold;
 `;
 
-const SendPreviewButton = styled.button`
+const SendTestEmailButton = styled.button`
   margin-bottom: 30px;
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
@@ -85,7 +76,6 @@ const SendPreviewButton = styled.button`
 const PageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin: 3rem 0 4rem;
   margin-right: auto;
 `;
 
@@ -97,9 +87,17 @@ const PageTitle = styled.h1`
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 20px 0;
   & > * {
     padding: 0 10px;
+  }
+`;
+
+const GroupLink = styled.a`
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -127,7 +125,7 @@ class Show extends React.Component<Props, State> {
       });
   }
 
-  handleSendPreview = () => {
+  handleSendTestEmail = () => {
     sendCampaignPreview(this.props.campaign.id)
       .then(() => {
         const previewSentConfirmation = this.props.intl.formatMessage(messages.previewSentConfirmation);
@@ -135,17 +133,12 @@ class Show extends React.Component<Props, State> {
       });
   }
 
-  handleSaveDraft = () => {
-    clHistory.push('/admin/emails/manual');
-  }
-
-  handleDelete = () => {
-    const deleteMessage = this.props.intl.formatMessage(messages.campaignDeletionConfirmation);
-    if (window.confirm(deleteMessage)) {
-      deleteCampaign(this.props.campaign.id)
-        .then(() => {
-          clHistory.push('/admin/emails/manual');
-        });
+  handleGroupLinkClick = (groupId?: string) => (event: React.FormEvent<any>) => {
+    event.preventDefault();
+    if (groupId) {
+      clHistory.push(`/admin/users/${groupId}`);
+    } else {
+      clHistory.push('/admin/users');
     }
   }
 
@@ -166,7 +159,7 @@ class Show extends React.Component<Props, State> {
     const { campaign } = this.props;
 
     if (campaign) {
-      const groupIds = campaign.relationships.groups.data.map(group => group.id);
+      const groupIds: string[] = campaign.relationships.groups.data.map(group => group.id);
       const senderType = campaign.attributes.sender;
       const senderName = this.getSenderName(senderType);
 
@@ -199,14 +192,18 @@ class Show extends React.Component<Props, State> {
               </Buttons>
             }
           </PageHeader>
-          <Instructions>
-            <InstructionsHeader>
-              <FormattedMessage {...messages.instructionsHeader} />
-            </InstructionsHeader>
-            <InstructionsText>
-              <FormattedMessage {...messages.instructionsText} />
-            </InstructionsText>
-          </Instructions>
+          {isDraft(campaign) &&
+            <>
+              <SendTestEmailButton
+                onClick={this.handleSendTestEmail}
+              >
+                <FormattedMessage {...messages.sendTestEmailButton} />
+              </SendTestEmailButton>
+              <PreviewHeader>
+                <FormattedMessage {...messages.previewHeader} />
+              </PreviewHeader>
+            </>
+          }
           <CampaignHeader>
             <StampIcon name="stamp" />
             <FromTo>
@@ -222,25 +219,22 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.campaignTo}/>
                   &nbsp;
                 </FromToHeader>
+                {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>
+                  {this.props.intl.formatMessage(messages.allUsers)}
+                </GroupLink>}
                 {groupIds.map((groupId, index) => (
                   <GetGroup key={groupId} id={groupId}>
                     {group => {
                       if (index < groupIds.length - 1) {
-                        return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </span>;
+                        return <GroupLink onClick={this.handleGroupLinkClick(groupId)}>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}, </GroupLink>;
                       }
-                      return <span>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</span>;
+                      return <GroupLink onClick={this.handleGroupLinkClick(groupId)}>{!isNilOrError(group) && this.props.localize(group.attributes.title_multiloc)}</GroupLink>;
                     }}
                   </GetGroup>
                 ))}
               </div>
             </FromTo>
           </CampaignHeader>
-
-          <SendPreviewButton
-            onClick={this.handleSendPreview}
-          >
-            <FormattedMessage {...messages.sendPreviewButton} />
-          </SendPreviewButton>
 
           {isDraft(campaign) ?
             <DraftCampaignDetails campaignId={campaign.id} />

@@ -7,10 +7,13 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import { Form, FastField, InjectedFormikProps, FormikErrors } from 'formik';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
+
+// i18n
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
+
 import { adopt } from 'react-adopt';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -38,7 +41,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps, InjectedLocalized { }
+interface Props extends InputProps, DataProps, InjectedLocalized, InjectedIntlProps { }
 
 export const validateCampaignForm = (values: FormValues): FormikErrors<FormValues> => {
   const errors: FormikErrors<FormValues> = {};
@@ -67,10 +70,21 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   groupsOptions = (groups: GetGroupsChildProps) => {
-    return !isNilOrError(groups.groupsList) && groups.groupsList.map((group) => ({
-      label: this.props.localize(group.attributes.title_multiloc),
-      value: group.id,
-    }));
+    let allOptions;
+
+    if (!isNilOrError(groups.groupsList)) {
+      const groupOptions = groups.groupsList.map((group) => ({
+        label: this.props.localize(group.attributes.title_multiloc),
+        value: group.id,
+      }));
+
+      allOptions = [...groupOptions, {
+        label: this.props.intl.formatMessage(messages.allUsers),
+        value: ''
+      }];
+    }
+
+    return allOptions;
   }
 
   render() {
@@ -188,7 +202,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: ({ render }) => <GetTenant>{render}</GetTenant>,
 });
 
-const CampaignFormWithHOCs = localize<InputProps>(CampaignForm);
+const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
 
 export default(inputProps: InputProps) => (
   <Data {...inputProps}>

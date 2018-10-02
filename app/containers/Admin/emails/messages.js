@@ -9,19 +9,15 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   titleEmails: {
     id: 'app.containers.Admin.emails.titleEmails',
-    defaultMessage: 'E-mails',
+    defaultMessage: 'Email Campaigns',
   },
   helmetTitle: {
     id: 'app.containers.Admin.emails.helmetTitle',
-    defaultMessage: 'E-mails',
+    defaultMessage: 'Email Campaigns',
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
     defaultMessage: 'Send out manual emails to certain citizen group and active automated campaigns',
-  },
-  listTitle: {
-    id: 'app.containers.Admin.emails.listTitle',
-    defaultMessage: 'Email Campaigns',
   },
   campaignDeletionConfirmation: {
     id: 'app.containers.Admin.emails.campaignDeletionConfirmation',
@@ -45,7 +41,7 @@ export default defineMessages({
   },
   manageButtonLabel: {
     id: 'app.containers.Admin.emails.manageButtonLabel',
-    defaultMessage: 'Manage',
+    defaultMessage: 'Manage & Edit & Preview & Delete',
   },
   fieldSender: {
     id: 'app.containers.Admin.emails.fieldSender',
@@ -99,9 +95,9 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.sendNowButton',
     defaultMessage: 'Send now',
   },
-  sendPreviewButton: {
-    id: 'app.containers.Admin.emails.sendPreviewButton',
-    defaultMessage: 'Send me a preview',
+  sendTestEmailButton: {
+    id: 'app.containers.Admin.emails.sendTestEmailButton',
+    defaultMessage: 'Send a test email',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
@@ -171,13 +167,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.tabAutomated',
     defaultMessage: 'Automated',
   },
-  instructionsHeader: {
-    id: 'app.containers.Admin.Campaigns.instructionsHeader',
-    defaultMessage: 'Almost ready',
-  },
-  instructionsText: {
-    id: 'app.containers.Admin.Campaigns.instructionsText',
-    defaultMessage: 'Your campaign is almost ready. Make sure it doesn\'t contain errors and hit the Send now button!',
+  previewHeader: {
+    id: 'app.containers.Admin.Campaigns.previewHeader',
+    defaultMessage: 'Preview',
   },
   campaignFrom: {
     id: 'app.containers.Admin.Campaigns.campaignFrom',
@@ -189,10 +181,30 @@ export default defineMessages({
   },
   noAccess: {
     id: 'app.containers.Admin.Campaigns.noAccess',
-    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the e-mails section',
+    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the emails section',
   },
   deleteCampaignButton: {
     id: 'app.containers.Admin.emails.deleteCampaignButton',
     defaultMessage: 'Delete Campaign',
   },
+  noCampaignsHeader: {
+    id: 'app.containers.Admin.emails.noCampaignsHeader',
+    defaultMessage: 'No custom email campaigns yet',
+  },
+  noCampaignsDescription: {
+    id: 'app.containers.Admin.emails.noCampaignsDescription',
+    defaultMessage: 'Click the button below to create your first campaign.',
+  },
+  customEmailCampaignsInfo: {
+    id: 'app.containers.Admin.emails.customEmailCampaignsInfo',
+    defaultMessage: 'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.'
+  },
+  automatedEmailCampaignsInfo: {
+    id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
+    defaultMessage: 'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.'
+  },
+  allUsers: {
+    id: 'app.containers.Admin.emails.allUsers',
+    defaultMessage: 'All users'
+  }
 });
