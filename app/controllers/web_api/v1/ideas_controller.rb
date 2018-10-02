@@ -126,6 +126,7 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
     ActiveRecord::Base.transaction do
       if @idea.update(permitted_attributes(@idea))
+        authorize @idea
         SideFxIdeaService.new.after_update(@idea, current_user)
         render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
       else

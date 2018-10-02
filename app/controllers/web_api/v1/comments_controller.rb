@@ -40,9 +40,7 @@ class WebApi::V1::CommentsController < ApplicationController
     @comment.idea_id = params[:idea_id]
     @comment.author ||= current_user
     authorize @comment
-
     SideFxCommentService.new.before_create(@comment, current_user)
-
     if @comment.save
       SideFxCommentService.new.after_create(@comment, current_user)
       render json: @comment, status: :created, include: ['author']
@@ -53,9 +51,8 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def update
     @comment.attributes = permitted_attributes(@comment)
-
+    authorize @comment
     SideFxCommentService.new.before_update(@comment, current_user)
-
     if @comment.save
       SideFxCommentService.new.after_update(@comment, current_user)
       render json: @comment, status: :ok, include: ['author']
@@ -83,9 +80,7 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def destroy
-
     SideFxCommentService.new.before_destroy(@comment, current_user)
-
     comment = @comment.destroy
     if comment.destroyed?
       SideFxCommentService.new.after_destroy(comment, current_user)

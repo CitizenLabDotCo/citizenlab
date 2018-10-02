@@ -60,12 +60,23 @@ Rails.application.routes.draw do
         get :current, on: :collection
       end
       resources :pages do
+        resources :files, defaults: {container_class: Page, file_class: PageFile}, shallow: false
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      # Events and phases are split in two because we cannot have a non-shallow
+      # resource (i.e. files) nested in a shallow resource. File resources have
+      # to be shallow so we can determine their container class. See e.g.
+      # https://github.com/rails/rails/pull/24405
+      resources :events, only: [:show, :edit, :update, :destroy] do
+        resources :files, defaults: {container_class: Event, file_class: EventFile}, shallow: false
+      end
+      resources :phases, only: [:show, :edit, :update, :destroy] do
+        resources :files, defaults: {container_class: Phase, file_class: PhaseFile}, shallow: false
+      end
       resources :projects do
-        resources :phases, shallow: true
-        resources :events, shallow: true
+        resources :events, only: [:index, :new, :create]
+        resources :phases, only: [:index, :new, :create]
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]

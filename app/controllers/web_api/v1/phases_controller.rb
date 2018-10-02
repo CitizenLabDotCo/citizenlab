@@ -17,11 +17,8 @@ class WebApi::V1::PhasesController < ApplicationController
   def create
     @phase = Phase.new(phase_params)
     @phase.project_id = params[:project_id]
-
     SideFxPhaseService.new.before_create(@phase, current_user)
-
     authorize @phase
-
     if @phase.save
       SideFxPhaseService.new.after_create(@phase, current_user)
       render json: @phase, status: :created
@@ -31,10 +28,9 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def update
-    @phase.assign_attributes(phase_params)
-
+    @phase.assign_attributes phase_params
+    authorize @phase
     SideFxPhaseService.new.before_update(@phase, current_user)
-
     if @phase.save
       SideFxPhaseService.new.after_update(@phase, current_user)
       render json: @phase, status: :ok

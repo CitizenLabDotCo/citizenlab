@@ -7,6 +7,7 @@ class Phase < ApplicationRecord
   has_many :ideas, through: :ideas_phases
   has_many :votes, through: :ideas
   has_many :text_images, as: :imageable, dependent: :destroy
+  has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
