@@ -21,6 +21,10 @@ import messages from '../../messages';
 
 import { fontSizes, colors } from 'utils/styleUtils';
 
+const StyledWarning = styled(Warning)`
+  max-width: 600px;
+`;
+
 const NoCampaignsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -80,7 +84,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
     } else {
       return (
         <>
-          <Warning
+          <StyledWarning
             text={<FormattedMessage {...messages.customEmailCampaignsInfo} />}
           />
           <ButtonWrapper>

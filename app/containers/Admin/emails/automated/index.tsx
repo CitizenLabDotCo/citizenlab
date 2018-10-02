@@ -13,6 +13,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 const StyledWarning = styled(Warning)`
+  max-width: 600px;
   margin-bottom: 30px;
 `;
 
