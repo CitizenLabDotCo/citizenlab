@@ -64,7 +64,6 @@ const SendTestEmailButton = styled.button`
   margin-bottom: 30px;
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
-  font-weight: bold;
   cursor: pointer;
 `;
 
