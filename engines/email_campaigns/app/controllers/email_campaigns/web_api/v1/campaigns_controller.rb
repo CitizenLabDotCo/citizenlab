@@ -74,7 +74,7 @@ module EmailCampaigns
 
     def do_send
       EmailCampaigns::DeliveryService.new.send_now(@campaign)
-      render json: @campaign
+      render json: @campaign.reload, serializer: WebApi::V1::CampaignSerializer
     end
 
     def send_preview
