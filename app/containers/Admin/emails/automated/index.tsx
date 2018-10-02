@@ -10,6 +10,7 @@ import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 const StyledWarning = styled(Warning)`
@@ -25,7 +26,7 @@ type Props = DataProps & {
 
 };
 
-class AutomatedCampaigns extends React.PureComponent<Props> {
+class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> {
 
   handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign(campaign.id, {
