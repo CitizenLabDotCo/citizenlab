@@ -8,13 +8,7 @@ class PermissionPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user&.admin? 
-        scope.all
-      elsif user
-        scope.where(permittable_id: ParticipationContextService.new.moderating_participation_context_ids(user))
-      else
-        scope.none
-      end
+      scope.for_user(user)
     end
   end
 
