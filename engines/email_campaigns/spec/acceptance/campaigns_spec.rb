@@ -141,6 +141,17 @@ resource "Campaigns" do
     end
   end
 
+  post "web_api/v1/campaigns/:id/send" do
+    let(:campaign) { create(:manual_campaign)}
+    let(:id) { campaign.id }
+
+    example_request "Send out the campaign now" do
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data,:attributes,:deliveries_count)).to eq User.count
+    end
+  end
+
   get "web_api/v1/campaigns/:id/deliveries" do
     with_options scope: :page do
       parameter :number, "Page number"
