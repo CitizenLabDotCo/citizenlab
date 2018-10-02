@@ -59,7 +59,7 @@ class WebApi::V1::ClusteringsController < ApplicationController
 
   def update
     @clustering.assign_attributes clustering_params
-
+    authorize @clustering
     SideFxClusteringService.new.before_update(@clustering, current_user)
     if @clustering.save
       SideFxClusteringService.new.after_update(@clustering, current_user)

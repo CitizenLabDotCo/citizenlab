@@ -55,10 +55,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     
-    @project.assign_attributes(permitted_attributes(Project))
-
+    @project.assign_attributes permitted_attributes(Project)
+    authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
-
     if @project.save
       SideFxProjectService.new.after_update(@project, current_user)
       render json: @project, status: :ok
