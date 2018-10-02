@@ -14,6 +14,23 @@ class Permission < ApplicationRecord
   before_validation :set_permitted_by, on: :create
 
 
+  scope :for_user, -> (user) {
+    if user&.admin? 
+      all
+    elsif user
+      permissions_for_everyone_ids = where(permitted_by: 'everyone').ids
+      moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
+      moderating_permissions_ids = where(permittable_id: moderating_context_ids).ids
+      group_permission_ids = joins(:groups_permissions)
+        .where(permitted_by: 'groups')
+        .where('groups_permissions.group_id = ?', user.group_ids).ids
+      where(id: (permissions_for_everyone_ids + moderating_permissions_ids + group_permission_ids).uniq)
+    else
+      where(permitted_by: 'everyone')
+    end
+  }
+
+
   def granted_to? user
   	case permitted_by
   	when 'everyone'
