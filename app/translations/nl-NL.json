@@ -259,6 +259,7 @@
   "app.containers.Admin.clusterViewer.viewButtonLabel": "Weergave",
   "app.containers.Admin.emails.addCampaignButton": "",
   "app.containers.Admin.emails.addCampaignTitle": "",
+  "app.containers.Admin.emails.allUsers": "",
   "app.containers.Admin.emails.automatedEmailCampaignsInfo": "",
   "app.containers.Admin.emails.campaignDeletionConfirmation": "",
   "app.containers.Admin.emails.customEmailCampaignsInfo": "",
