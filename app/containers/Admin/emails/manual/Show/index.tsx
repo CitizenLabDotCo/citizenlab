@@ -133,9 +133,13 @@ class Show extends React.Component<Props, State> {
       });
   }
 
-  handleGroupLinkClick = (groupId: string) => (event: React.FormEvent<any>) => {
+  handleGroupLinkClick = (groupId?: string) => (event: React.FormEvent<any>) => {
     event.preventDefault();
-    clHistory.push(`/admin/users/${groupId}`);
+    if (groupId) {
+      clHistory.push(`/admin/users/${groupId}`);
+    } else {
+      clHistory.push('/admin/users');
+    }
   }
 
   getSenderName = (senderType: string) => {
@@ -155,7 +159,7 @@ class Show extends React.Component<Props, State> {
     const { campaign } = this.props;
 
     if (campaign) {
-      const groupIds = campaign.relationships.groups.data.map(group => group.id);
+      const groupIds: string[] = campaign.relationships.groups.data.map(group => group.id);
       const senderType = campaign.attributes.sender;
       const senderName = this.getSenderName(senderType);
 
@@ -215,6 +219,7 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.campaignTo}/>
                   &nbsp;
                 </FromToHeader>
+                {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>All users</GroupLink>}
                 {groupIds.map((groupId, index) => (
                   <GetGroup key={groupId} id={groupId}>
                     {group => {
