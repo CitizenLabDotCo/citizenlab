@@ -62,7 +62,8 @@ class Edit extends React.Component<Props> {
   )
 
   goBack = () => {
-    clHistory.push('/admin/emails/manual');
+    const { id } = this.props.campaign;
+    clHistory.push(`/admin/emails/manual/${id}`);
   }
 
   render() {

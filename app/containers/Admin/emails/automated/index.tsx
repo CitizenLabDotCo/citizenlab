@@ -4,9 +4,18 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-
 import Toggle from 'components/UI/Toggle';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
+import Warning from 'components/UI/Warning';
+import styled from 'styled-components';
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from '../messages';
+
+const StyledWarning = styled(Warning)`
+  max-width: 600px;
+  margin-bottom: 30px;
+`;
 
 type DataProps = GetCampaignsChildProps & {
 
@@ -30,29 +39,36 @@ class AutomatedCampaigns extends React.PureComponent<Props> {
     if (isNilOrError(campaigns)) return null;
 
     return (
-      <List>
-        {campaigns.map((campaign) => (
-          <Row key={campaign.id}>
-            <Toggle
-              disabled={isUndefined(campaign.attributes.enabled)}
-              value={isUndefined(campaign.attributes.enabled) || campaign.attributes.enabled}
-              onChange={this.handleOnEnabledToggle(campaign)}
-            />
-            <TextCell className="expand">
-              <T value={campaign.attributes.campaign_description_multiloc} />
-            </TextCell>
-            <div>
-              <T value={campaign.attributes.schedule_multiloc} />
-            </div>
-          </Row>
-        ))}
-      </List>
+      <>
+        <StyledWarning
+          text={<FormattedMessage {...messages.automatedEmailCampaignsInfo} />}
+        />
+        <List>
+          {campaigns.map((campaign) => (
+            <Row key={campaign.id}>
+              <Toggle
+                disabled={isUndefined(campaign.attributes.enabled)}
+                value={isUndefined(campaign.attributes.enabled) || campaign.attributes.enabled}
+                onChange={this.handleOnEnabledToggle(campaign)}
+              />
+              <TextCell className="expand">
+                <T value={campaign.attributes.campaign_description_multiloc} />
+              </TextCell>
+              <div>
+                <T value={campaign.attributes.schedule_multiloc} />
+              </div>
+            </Row>
+          ))}
+        </List>
+      </>
     );
   }
 }
 
+const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
+
 export default (inputProps: Props) => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {campaigns => <AutomatedCampaigns {...inputProps} {...campaigns} />}
+    {campaigns => <AutomatedCampaignsWithIntl {...inputProps} {...campaigns} />}
   </GetCampaigns>
 );

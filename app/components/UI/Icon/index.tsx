@@ -481,6 +481,12 @@ const icons = {
       </g>
     </svg>
   ),
+  mailBig: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} width="60" height="40" viewBox="0 0 60 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {injectTitle(title)}
+      <path d="M53.75 0H6.25A6.259 6.259 0 0 0 0 6.25v27.5A6.259 6.259 0 0 0 6.25 40h47.5A6.259 6.259 0 0 0 60 33.75V6.25A6.259 6.259 0 0 0 53.75 0zm-31.7 22.21l-15 12.5c-.232.195-.518.29-.8.29a1.252 1.252 0 0 1-.803-2.212l15-12.5c.53-.44 1.32-.368 1.763.16.442.532.37 1.322-.16 1.762zm7.95.332a6.98 6.98 0 0 1-3.953-1.232L5.546 7.283a1.252 1.252 0 0 1-.327-1.738 1.246 1.246 0 0 1 1.737-.325l20.502 14.027a4.476 4.476 0 0 0 5.083 0L53.042 5.22a1.25 1.25 0 0 1 1.413 2.063L33.953 21.31A6.98 6.98 0 0 1 30 22.543zM54.71 34.55a1.244 1.244 0 0 1-1.76.16l-15-12.5a1.252 1.252 0 0 1-.16-1.762c.443-.528 1.23-.6 1.763-.16l15 12.5c.527.442.6 1.232.157 1.762z" fill="#01A1B1" fill-opacity=".25"/>
+    </svg>
+  ),
   remove: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
@@ -638,6 +644,12 @@ const clIcons = {
           <path d="M17.0821 19.9883C15.1739 21.5493 13.7169 21.9871 11.0531 21.9871C4.94878 21.9871 0 17.065 0 10.9935C0 4.92211 4.55288 0 10.0483 0V10.9935L17.0821 19.9883Z" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
         </g>
       </g>
+    </svg>
+  ),
+  charts: (className, title) => (
+    <svg className={`cl-icon ${className ? className : ''}`} width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {injectTitle(title)}
+      <path d="M7.8 3.6H5.4C5.0688 3.6 4.8 3.8688 4.8 4.2V11.4C4.8 11.7312 5.0688 12 5.4 12H7.8C8.1312 12 8.4 11.7312 8.4 11.4V4.2C8.4 3.8688 8.1312 3.6 7.8 3.6ZM3 7.2H0.6C0.2688 7.2 0 7.4688 0 7.8V11.4C0 11.7312 0.2688 12 0.6 12H3C3.3312 12 3.6 11.7312 3.6 11.4V7.8C3.6 7.4688 3.3312 7.2 3 7.2ZM12.6 0H10.2C9.8688 0 9.6 0.2688 9.6 0.6V11.4C9.6 11.7312 9.8688 12 10.2 12H12.6C12.9312 12 13.2 11.7312 13.2 11.4V0.6C13.2 0.2688 12.9312 0 12.6 0Z" fill="#84939E"/>
     </svg>
   ),
   invitations: (className, title, theme) => (
