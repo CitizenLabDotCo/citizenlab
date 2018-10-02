@@ -197,10 +197,10 @@ export default defineMessages({
   },
   customEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.customEmailCampaignsInfo',
-    defaultMessage: 'Custom email campaigns are emails you can make to tailor specific needs.'
+    defaultMessage: 'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.'
   },
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
-    defaultMessage: 'Automated email campaigns are automatic emails sent out by CitizenLab. You can turn some of them on/off.'
+    defaultMessage: 'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.'
   }
 });
