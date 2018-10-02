@@ -70,21 +70,10 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   groupsOptions = (groups: GetGroupsChildProps) => {
-    let allOptions;
-
-    if (!isNilOrError(groups.groupsList)) {
-      const groupOptions = groups.groupsList.map((group) => ({
+    return !isNilOrError(groups.groupsList) && groups.groupsList.map((group) => ({
         label: this.props.localize(group.attributes.title_multiloc),
         value: group.id,
       }));
-
-      allOptions = [...groupOptions, {
-        label: this.props.intl.formatMessage(messages.allUsers),
-        value: ''
-      }];
-    }
-
-    return allOptions;
   }
 
   render() {
@@ -122,6 +111,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
                   name="group_ids"
                   component={FormikMultipleSelect}
                   options={this.groupsOptions(groups)}
+                  placeholder={this.props.intl.formatMessage(messages.allUsers)}
                 />
               )}
             </GetGroups>
