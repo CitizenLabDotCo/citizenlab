@@ -262,7 +262,6 @@
   "app.containers.Admin.emails.allUsers": "All users",
   "app.containers.Admin.emails.automatedEmailCampaignsInfo": "Automated email campaigns are automatic emails sent out by CitizenLab. You can turn some of them on/off.",
   "app.containers.Admin.emails.campaignDeletionConfirmation": "Are you sure?",
-  "app.containers.Admin.emails.customEmailCampaignsInfo": "Custom email campaigns are emails you can make to tailor specific needs.",
   "app.containers.Admin.emails.deleteButtonLabel": "Delete",
   "app.containers.Admin.emails.deleteCampaignButton": "Delete Campaign",
   "app.containers.Admin.emails.draft": "Draft",
