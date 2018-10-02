@@ -114,8 +114,11 @@ export function updateCampaign(campaignId: string, campaignData: CampaignUpdate)
   return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, { campaign: campaignData });
 }
 
-export function sendCampaign(campaignId: string) {
-  return streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send`, {});
+export async function sendCampaign(campaignId: string) {
+  const stream =  await streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send`, {});
+  await streams.fetchAllStreamsWithEndpoint(`${apiEndpoint}/${campaignId}`);
+  await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns`);
+  return stream;
 }
 
 export function sendCampaignPreview(campaignId: string) {
