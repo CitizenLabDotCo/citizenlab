@@ -202,5 +202,9 @@ export default defineMessages({
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
     defaultMessage: 'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.'
+  },
+  allUsers: {
+    id: 'app.containers.Admin.emails.allUsers',
+    defaultMessage: 'All users'
   }
 });
