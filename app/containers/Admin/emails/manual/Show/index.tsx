@@ -39,6 +39,7 @@ const PreviewHeader = styled.h2`
 
 const PageHeader = styled.div`
   display: flex;
+  margin-bottom: 20px;
 `;
 
 const CampaignHeader = styled.div`
@@ -86,7 +87,6 @@ const PageTitle = styled.h1`
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 20px 0;
   & > * {
     padding: 0 10px;
   }
@@ -189,15 +189,17 @@ class Show extends React.Component<Props, State> {
             }
           </PageHeader>
           {isDraft(campaign) &&
-            <SendTestEmailButton
-              onClick={this.handleSendTestEmail}
-            >
-              <FormattedMessage {...messages.sendTestEmailButton} />
-            </SendTestEmailButton>
+            <>
+              <SendTestEmailButton
+                onClick={this.handleSendTestEmail}
+              >
+                <FormattedMessage {...messages.sendTestEmailButton} />
+              </SendTestEmailButton>
+              <PreviewHeader>
+                <FormattedMessage {...messages.previewHeader} />
+              </PreviewHeader>
+            </>
           }
-          <PreviewHeader>
-            <FormattedMessage {...messages.previewHeader} />
-          </PreviewHeader>
           <CampaignHeader>
             <StampIcon name="stamp" />
             <FromTo>
