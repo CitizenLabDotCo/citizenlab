@@ -123,8 +123,6 @@ class Show extends React.Component<Props, State> {
   handleSendNow = () => {
     sendCampaign(this.props.campaign.id)
       .then(() => {
-        streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns`);
-        clHistory.push('/admin/emails/manual');
       })
       .catch(() => {
       });
