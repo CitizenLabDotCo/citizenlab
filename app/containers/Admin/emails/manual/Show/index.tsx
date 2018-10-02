@@ -219,7 +219,9 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.campaignTo}/>
                   &nbsp;
                 </FromToHeader>
-                {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>All users</GroupLink>}
+                {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>
+                  {this.props.intl.formatMessage(messages.allUsers)}
+                </GroupLink>}
                 {groupIds.map((groupId, index) => (
                   <GetGroup key={groupId} id={groupId}>
                     {group => {
