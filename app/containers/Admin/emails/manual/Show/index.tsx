@@ -57,6 +57,7 @@ const FromTo = styled.div`
   flex-direction: column;
   justify-content: space-between;
   font-size: ${fontSizes.base}px;
+  margin-right: auto;
 `;
 
 const FromToHeader = styled.span`
@@ -188,18 +189,6 @@ class Show extends React.Component<Props, State> {
               </Buttons>
             }
           </PageHeader>
-          {isDraft(campaign) &&
-            <>
-              <SendTestEmailButton
-                onClick={this.handleSendTestEmail}
-              >
-                <FormattedMessage {...messages.sendTestEmailButton} />
-              </SendTestEmailButton>
-              <PreviewHeader>
-                <FormattedMessage {...messages.previewHeader} />
-              </PreviewHeader>
-            </>
-          }
           <CampaignHeader>
             <StampIcon name="stamp" />
             <FromTo>
@@ -230,6 +219,13 @@ class Show extends React.Component<Props, State> {
                 ))}
               </div>
             </FromTo>
+            {isDraft(campaign) &&
+              <SendTestEmailButton
+                onClick={this.handleSendTestEmail}
+              >
+                <FormattedMessage {...messages.sendTestEmailButton} />
+              </SendTestEmailButton>
+            }
           </CampaignHeader>
 
           {isDraft(campaign) ?

@@ -97,7 +97,7 @@ export default defineMessages({
   },
   sendTestEmailButton: {
     id: 'app.containers.Admin.emails.sendTestEmailButton',
-    defaultMessage: 'Send a test email',
+    defaultMessage: 'Send a preview',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
