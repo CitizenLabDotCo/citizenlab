@@ -4,7 +4,7 @@ import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';
 import Error from 'components/UI/Error';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import { Form, FastField, InjectedFormikProps, FormikErrors } from 'formik';
+import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Multiloc } from 'typings';
@@ -118,7 +118,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             </Label>
             <GetGroups>
               {(groups) => (isNilOrError(groups)) ? null : (
-                <FastField
+                <Field
                   name="group_ids"
                   component={FormikMultipleSelect}
                   options={this.groupsOptions(groups)}
