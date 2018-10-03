@@ -66,7 +66,7 @@
         
       <div style="">
         
-      <!-- LOGO -->
+      <!-- LOGO  -->
 
       <!--[if mso | IE]>
       <table
@@ -101,7 +101,7 @@
             <td style="vertical-align:top;padding:0;">
               
       <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
-        <img src="<%= @tenant_logo_url %>" alt="Organization logo">
+        <img src="<%= @tenant_logo_url %>" style="height:80px;width:auto;" alt="Organization logo">
       </table>
     
             </td>
@@ -131,7 +131,7 @@
         </tr>
       </table>
       
-      <!-- START OF BODY -->
+      <!-- START OF BODY  -->
 
       <table
          align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
@@ -169,10 +169,8 @@
             <tr>
               <td align="left" style="font-size:0px;padding:0;word-break:break-word;">
                 
-      <div style="font-family:Arial;font-size:15px;line-height:150%;text-align:left;color:black;">
-        <p style="margin-bottom: 40px;">
+      <div style="font-family:Arial;font-size:15px;line-height:150%;text-align:left;color:black;margin-bottom:40px;">
           <%== @body_html %>
-        </p>
       </div>
     
               </td>
@@ -208,7 +206,7 @@
       </table>
       <![endif]-->
     
-      <!-- START OF FOOTER -->
+      <!-- START OF FOOTER  -->
 
       <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F6F6F6;background-color:#F6F6F6;width:100%;">
         <tbody>
@@ -218,7 +216,7 @@
         
       <!--[if mso | IE]>
       <table
-         align="center" border="0" cellpadding="0" cellspacing="0" class="" style="width:600px;" width="600"
+         align="center" border="0" cellpadding="0" cellspacing="0" style="width:600px" width="600"
       >
         <tr>
           <td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;">
@@ -237,7 +235,7 @@
         <tr>
       
             <td
-               class="" style="vertical-align:top;width:550px;"
+               style="vertical-align:top;width:550px;"
             >
           <![endif]-->
             
@@ -248,8 +246,32 @@
           <tr>
             <td style="vertical-align:top;padding:0;">
               
-      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="" width="100%">
+      <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
         
+            <tr>
+              <td align="left" style="font-size:0px;padding:0;padding-bottom:20px;word-break:break-word;">
+                
+      <div style="font-family:Arial;font-size:15px;line-height:150%;text-align:left;color:black;">
+        <a href="<%== @profile_settings_url %>" style="color: #84939E; text-decoration: none; margin-right: 10px;">Unsubscribe</a> |
+        <a href="<%== @terms_conditions_url %>" style="color: #84939E; text-decoration: none; margin: 0 10px;">Terms &amp; Conditions</a> |
+        <a href="<%== @privacy_policy_url %>" style="color: #84939E; text-decoration: none; margin-left: 10px;">Privacy Policy</a>
+      </div>
+    
+              </td>
+            </tr>
+          
+            <tr>
+              <td align="left" style="font-size:0px;padding:0;padding-bottom:20px;word-break:break-word;">
+                
+      <div style="font-family:Arial;font-size:15px;line-height:150%;text-align:left;color:#84939E;">
+        <p style="font-size: 12px;">
+        This e-mail was sent to you by CitizenLab on behalf of <%== @organization_name %>, because you are a registered user of <a href="<%== @host_url %>" style="color: #84939E; text-decoration: underline;"><%== @host_url %></a>. You can <a href="<%== @profile_settings_url %>" style="color: #84939E; text-decoration: underline;">unsubscribe</a> if you do not want to receive these e-mails in the future.
+      </p>
+      </div>
+    
+              </td>
+            </tr>
+          
             <tr>
               <td align="left" style="font-size:0px;padding:0;word-break:break-word;">
                 
