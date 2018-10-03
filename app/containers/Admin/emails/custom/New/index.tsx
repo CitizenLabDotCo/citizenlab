@@ -30,7 +30,7 @@ class New extends React.Component<Props> {
       ...values
     })
       .then((response) => {
-        clHistory.push(`/admin/emails/manual/${response.data.id}`);
+        clHistory.push(`/admin/emails/custom/${response.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = errorResponse.json.errors;
@@ -58,7 +58,7 @@ class New extends React.Component<Props> {
   )
 
   goBack = () => {
-    clHistory.push('/admin/emails/manual');
+    clHistory.push('/admin/emails/custom');
   }
 
   render() {

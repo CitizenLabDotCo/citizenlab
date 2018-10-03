@@ -4,24 +4,24 @@ export default () => ({
   path: 'emails',
   getComponent: loadAndRender(import('./')),
   indexRoute: {
-    getComponent: loadAndRender(import('./manual/All')),
+    getComponent: loadAndRender(import('./custom/All')),
   },
   childRoutes: [
     {
-      path: 'manual',
-      getComponent: loadAndRender(import('./manual/All')),
+      path: 'custom',
+      getComponent: loadAndRender(import('./custom/All')),
     },
     {
-      path: 'manual/new',
-      getComponent: loadAndRender(import('./manual/New')),
+      path: 'custom/new',
+      getComponent: loadAndRender(import('./custom/New')),
     },
     {
-      path: 'manual/:campaignId/edit',
-      getComponent: loadAndRender(import('./manual/Edit')),
+      path: 'custom/:campaignId/edit',
+      getComponent: loadAndRender(import('./custom/Edit')),
     },
     {
-      path: 'manual/:campaignId',
-      getComponent: loadAndRender(import('./manual/Show')),
+      path: 'custom/:campaignId',
+      getComponent: loadAndRender(import('./custom/Show')),
     },
     {
       path: 'automated',

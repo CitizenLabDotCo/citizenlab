@@ -26,7 +26,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
     </div>
     <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
     <Button
-      linkTo={`/admin/emails/manual/${campaign.id}`}
+      linkTo={`/admin/emails/custom/${campaign.id}`}
       icon="charts"
       style="text"
     >
