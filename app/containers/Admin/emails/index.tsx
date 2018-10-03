@@ -26,7 +26,7 @@ class EmailsDashboard extends React.PureComponent<Props & InjectedIntlProps & Wi
     const { intl: { formatMessage }, location: { pathname } } = this.props;
     const tabs: any = [];
     if (this.props.canManageManualCampaigns && this.props.manualEmailingEnabled) {
-      tabs.push({ label: formatMessage(messages.tabManual), url: '/admin/emails/manual' });
+      tabs.push({ label: formatMessage(messages.tabCustom), url: '/admin/emails/manual' });
     }
     if (this.props.canManageAutomatedCampaigns && this.props.automatedEmailingEnabled) {
       tabs.push({ label: formatMessage(messages.tabAutomated), url: '/admin/emails/automated' });
