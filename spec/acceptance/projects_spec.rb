@@ -153,6 +153,9 @@ resource "Projects" do
         parameter :topic_ids, "Array of ids of the associated topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}. Defaults to public.", required: false
         parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
+        parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project? Defaults to true", required: false
+        parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project? Defaults to true", required: false
+        parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project? Defaults to true", required: false
         parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project. Defaults to 10", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
@@ -196,6 +199,9 @@ resource "Projects" do
         let(:process_type) { project.process_type }
         let(:participation_method) { project.participation_method }
         let(:presentation_mode){ 'map' }
+        let(:posting_enabled) { project.posting_enabled }
+        let(:commenting_enabled) { project.commenting_enabled }
+        let(:voting_enabled) { project.voting_enabled }
         let(:voting_method) { project.voting_method }
         let(:voting_limited_max) { project.voting_limited_max }
 
@@ -210,6 +216,9 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
           expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
           expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
+          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
+          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
+          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
         end
@@ -254,6 +263,9 @@ resource "Projects" do
         parameter :topic_ids, "Array of ids of the associated topics"
         parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(",")}.", required: false
         parameter :participation_method, "Only for continuous project. Either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}.", required: false
+        parameter :posting_enabled, "Only for continuous project. Can citizens post ideas in this project?", required: false
+        parameter :commenting_enabled, "Only for continuous project. Can citizens post comment in this project?", required: false
+        parameter :voting_enabled, "Only for continuous project. Can citizens vote in this project?", required: false
         parameter :voting_method, "Only for continuous project with voting enabled. How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}.", required: false
         parameter :voting_limited_max, "Only for continuous project with limited voting. Number of votes a citizen can perform in this project.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false

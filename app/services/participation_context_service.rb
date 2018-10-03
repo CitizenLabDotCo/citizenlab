@@ -3,16 +3,19 @@ class ParticipationContextService
   POSTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
+    posting_disabled: 'posting_disabled',
     not_permitted: 'not_permitted'
   }
 
   COMMENTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    commenting_disabled: 'commenting_disabled',
     not_permitted: 'not_permitted'
   }
 
   VOTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
     voting_limited_max_reached: 'voting_limited_max_reached',
     not_in_active_context: 'not_in_active_context'
@@ -56,6 +59,8 @@ class ParticipationContextService
       POSTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       POSTING_DISABLED_REASONS[:not_ideation]
+    elsif !context.posting_enabled
+      POSTING_DISABLED_REASONS[:posting_disabled]
     elsif !context_permission(context, 'posting')&.granted_to?(user)
       POSTING_DISABLED_REASONS[:not_permitted]
     else
@@ -68,8 +73,12 @@ class ParticipationContextService
     last_context = get_last_active_participation_context idea
     if !context || !last_context
       COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.commenting_enabled
+      COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
+    elsif !last_context.commenting_enabled
+      COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(last_context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
     else
@@ -83,6 +92,8 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:not_in_active_context]
+    elsif !context.voting_enabled
+      VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
       VOTING_DISABLED_REASONS[:not_permitted]
     elsif (
@@ -102,6 +113,8 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:not_in_active_context]
+    elsif !context.voting_enabled
+      VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
       VOTING_DISABLED_REASONS[:not_permitted]
     else
@@ -112,21 +125,21 @@ class ParticipationContextService
   def future_posting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      context_permission(phase, 'posting')&.granted_to?(user)
+      phase.posting_enabled && context_permission(phase, 'posting')&.granted_to?(user)
     end
   end
 
   def future_commenting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      context_permission(phase, 'commenting')&.granted_to?(user)
+      phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
     end
   end
 
   def future_voting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      context_permission(phase, 'voting')&.granted_to?(user)
+      phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
     end
   end
 
