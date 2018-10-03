@@ -5,12 +5,31 @@ import Container from './Container';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 
+export interface IDestination {
+  id: string;
+  name: string;
+  description: string;
+  website: string;
+  category: string;
+}
+export interface CustomPreferences {
+  analytics: boolean | null;
+  advertising: boolean | null;
+  functional: boolean | null;
+}
+const initialPreferences = {
+  analytics: null,
+  advertising: null,
+  functional: null
+};
+
 export default class ConsentManager extends PureComponent {
   render() {
     return (
       <ConsentManagerBuilder
         writeKey={CL_SEGMENT_API_KEY}
         mapCustomPreferences={this.handleMapCustomPreferences}
+        initialPreferences={initialPreferences}
       >
         {(ConsentManagerProps) => (
           <Container {...ConsentManagerProps} />
@@ -21,7 +40,7 @@ export default class ConsentManager extends PureComponent {
 
   handleMapCustomPreferences = ({ destinations, preferences }) => {
     const destinationPreferences = {};
-    const customPreferences = {} as any;
+    const customPreferences = {} as CustomPreferences;
 
     // Default unset preferences to true (for implicit consent)
     for (const preferenceName of Object.keys(preferences)) {
@@ -41,7 +60,7 @@ export default class ConsentManager extends PureComponent {
       } else {
         // Fallback to marketing
         destinationPreferences[destination.id] =
-          customPreferences.marketingAndAnalytics;
+          customPreferences.analytics;
       }
     }
 

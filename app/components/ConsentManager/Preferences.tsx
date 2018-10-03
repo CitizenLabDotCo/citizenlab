@@ -1,44 +1,20 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
-import { IDestination } from 'utils/analytics';
+import Warning from 'components/UI/Warning';
+import Button from 'components/UI/Button';
 
-const TableScroll = styled('div')`
+import { IDestination } from './';
+
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+const Scroll = styled('div')`
   overflow-x: auto;
   margin-top: 16px;
 `;
 
-const Table = styled('table')`
-  border-collapse: collapse;
-  font-size: 12px;
-`;
-
-const ColumnHeading = styled('th')`
-  background: #f7f8fa;
-  color: #1f4160;
-  font-weight: 600;
-  text-align: left;
-  border-width: 2px;
-`;
-
-const RowHeading = styled('th')`
-  font-weight: normal;
-  text-align: left;
-`;
-
-const Row = styled('tr')`
-  th,
-  td {
-    vertical-align: top;
-    padding: 8px 12px;
-    border: 1px solid rgba(67, 90, 111, 0.114);
-  }
-  td {
-    border-top: none;
-  }
-`;
-
-const InputCell = styled('td')`
+const InputCell = styled.div`
   input {
     vertical-align: middle;
   }
@@ -49,16 +25,30 @@ const InputCell = styled('td')`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  button {
+    margin : 4px;
+  }
+  Button.button.primary {
+    border-color: white;
+  }
+`;
+
 interface Props {
   onCancel: () => void;
   onSave: () => void;
   onChange: (category, value) => void;
-  marketingDestinations: IDestination[];
-  advertisingDestinations: IDestination[];
-  functionalDestinations: IDestination[];
-  marketingAndAnalytics: Boolean;
-  advertising: Boolean;
-  functional: Boolean;
+  categoryDestinatons: {
+    analytics: IDestination[];
+    advertising: IDestination[];
+    functional: IDestination[];
+  };
+  analytics: boolean | null;
+  advertising: boolean | null;
+  functional: boolean | null;
 }
 
 export default class Preferences extends PureComponent<Props> {
@@ -66,192 +56,87 @@ export default class Preferences extends PureComponent<Props> {
 
   render() {
     const {
-      marketingDestinations,
-      advertisingDestinations,
-      functionalDestinations,
-      marketingAndAnalytics,
-      advertising,
-      functional,
+      onCancel,
+      onSave,
     } = this.props;
 
     return (
-        <TableScroll>
-          <Table>
-            <thead>
-              <Row>
-                <ColumnHeading scope="col">Allow</ColumnHeading>
-                <ColumnHeading scope="col">Category</ColumnHeading>
-                <ColumnHeading scope="col">Purpose</ColumnHeading>
-                <ColumnHeading scope="col">
-                  Tools
-                </ColumnHeading>
-              </Row>
-            </thead>
-
-            <tbody>
-              <Row>
-                <InputCell>
-                  <label>
-                    <input
-                      type="radio"
-                      name="functional"
-                      value="true"
-                      checked={functional === true}
-                      aria-checked={functional === true}
-                      onChange={this.handleChange}
-                      aria-label="Allow functional tracking"
-                      required
-                    />{' '}
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="functional"
-                      value="false"
-                      checked={functional === false}
-                      aria-checked={functional === false}
-                      onChange={this.handleChange}
-                      aria-label="Disallow functional tracking"
-                      required
-                    />{' '}
-                    No
-                  </label>
-                </InputCell>
-                <RowHeading scope="row">Functional</RowHeading>
-                <td>
-                  <p>
-                    To monitor the performance of our site and to enhance your
-                    browsing experience.
-                  </p>
-                  <p>
-                    For example, these tools enable you to communicate with us
-                    via live chat.
-                  </p>
-                </td>
-                <td>
-                  {functionalDestinations.map(d => d.name).join(', ')}
-                </td>
-              </Row>
-
-              <Row>
-                <InputCell>
-                  <label>
-                    <input
-                      type="radio"
-                      name="marketingAndAnalytics"
-                      value="true"
-                      checked={marketingAndAnalytics === true}
-                      aria-checked={marketingAndAnalytics === true}
-                      onChange={this.handleChange}
-                      aria-label="Allow marketing and analytics tracking"
-                      required
-                    />{' '}
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="marketingAndAnalytics"
-                      value="false"
-                      checked={marketingAndAnalytics === false}
-                      aria-checked={marketingAndAnalytics === false}
-                      onChange={this.handleChange}
-                      aria-label="Disallow marketing and analytics tracking"
-                      required
-                    />{' '}
-                    No
-                  </label>
-                </InputCell>
-                <RowHeading scope="row">Marketing and Analytics</RowHeading>
-                <td>
-                  <p>
-                    To understand user behavior in order to provide you with a
-                    more relevant browsing experience or personalize the content
-                    on our site.
-                  </p>
-                  <p>
-                    For example, we collect information about which pages you
-                    visit to help us present more relevant information.
-                  </p>
-                </td>
-                <td>
-                  {marketingDestinations.map(d => d.name).join(', ')}
-                </td>
-              </Row>
-
-              <Row>
-                <InputCell>
-                  <label>
-                    <input
-                      type="radio"
-                      name="advertising"
-                      value="true"
-                      checked={advertising === true}
-                      aria-checked={advertising === true}
-                      onChange={this.handleChange}
-                      aria-label="Allow advertising tracking"
-                      required
-                    />{' '}
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="advertising"
-                      value="false"
-                      checked={advertising === false}
-                      aria-checked={advertising === false}
-                      onChange={this.handleChange}
-                      aria-label="Disallow advertising tracking"
-                      required
-                    />{' '}
-                    No
-                  </label>
-                </InputCell>
-                <RowHeading scope="row">Advertising</RowHeading>
-                <td>
-                  <p>
-                    To personalize and measure the effectiveness of advertising
-                    on our site and other websites.
-                  </p>
-                  <p>
-                    For example, we may serve you a personalized ad based on the
-                    pages you visit on our site.
-                  </p>
-                </td>
-                <td>
-                  {advertisingDestinations.map(d => d.name).join(', ')}
-                </td>
-              </Row>
-
-              <Row>
-                <td>N/A</td>
-                <RowHeading scope="row">Essential</RowHeading>
-                <td>
-                  <p>
-                    We use browser cookies that are necessary for the site to
-                    work as intended.
-                  </p>
-                  <p>
-                    For example, we store your website data collection
-                    preferences so we can honor them if you return to our site.
-                    You can disable these cookies in your browser settings but
-                    if you do the site may not work as intended.
-                  </p>
-                </td>
-                <td />
-              </Row>
-            </tbody>
-          </Table>
-        </TableScroll>
+      <>
+        <Scroll>
+          {this.renderCategories()}
+        </Scroll>
+        <ButtonContainer>
+          <Button onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button onClick={onSave}>Save</Button>
+        </ButtonContainer>
+      </>
     );
   }
+  renderCategories = () => {
+    const { categoryDestinatons } = this.props;
+    const blocks = [] as JSX.Element[];
 
-  handleChange = e => {
-    const { onChange } = this.props;
-
-    onChange(e.target.name, e.target.value === 'true');
+    for (const category of Object.keys(categoryDestinatons)) {
+      if (categoryDestinatons[category].length > 0) {
+        blocks.push(this.renderBlock(category));
+      }
+    }
+    return blocks;
   }
 
+  renderBlock = (category) => {
+    const handleChange = e => {
+      const { onChange } = this.props;
+
+      onChange(e.target.name, e.target.value === 'true');
+    };
+    const destinations = this.props.categoryDestinatons[category];
+    const checked = this.props[category];
+    return (
+      <Warning
+        key={category}
+        text={
+          <>
+            <FormattedMessage
+              {...messages[category]}
+            />
+            <FormattedMessage
+              {...messages[`${category}Purpose`]}
+            />
+            <InputCell>
+              <label>
+                <input
+                  type="radio"
+                  name={category}
+                  value="true"
+                  checked={checked === true}
+                  aria-checked={checked === true}
+                  onChange={handleChange}
+                  aria-label={`Allow ${category} tracking`}
+                  required
+                />
+                Yes
+          </label>
+              <label>
+                <input
+                  type="radio"
+                  name={category}
+                  value="false"
+                  checked={checked === false}
+                  aria-checked={checked === false}
+                  onChange={handleChange}
+                  aria-label={`Disallow ${category} tracking`}
+                  required
+                />{' '}
+                No
+          </label>
+            </InputCell>
+            {destinations.map(d => d.name).join(', ')}
+          </>
+        }
+      />
+    );
+  }
 }
