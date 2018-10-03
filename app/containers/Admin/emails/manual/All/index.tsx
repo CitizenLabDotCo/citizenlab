@@ -24,13 +24,14 @@ const NoCampaignsWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px 0 100px;;
+  padding: 80px 0 100px;
+  text-align: center;
 `;
 
 const NoCampaignsHeader = styled.h2`
   font-size: ${fontSizes.xl}px;
   font-weight: bold;
-  margin-bottom: 0;
+  margin-bottom: 20px;
 `;
 
 const NoCampaignsDescription = styled.p`
@@ -38,6 +39,7 @@ const NoCampaignsDescription = styled.p`
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   margin-bottom: 30px;
+  max-width: 450px;
 `;
 
 interface InputProps { }
