@@ -235,7 +235,7 @@ const Right = styled.div`
   align-items: center;
 
   ${media.smallerThanMinTablet`
-    padding-right: 10px;
+    margin-right: 10px;
   `}
 `;
 
