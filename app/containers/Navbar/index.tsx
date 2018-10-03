@@ -25,7 +25,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { getProjectUrl } from 'services/projects';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isMobileDevice } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -357,6 +357,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
     tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
     const secondUrlSegment = location.pathname.replace(/^\/+/g, '').split('/')[1];
+    const mobileDevice = isMobileDevice();
 
     return (
       <>
@@ -425,9 +426,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-            <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="1" />
-            </RightItem>
+            {!mobileDevice &&
+              <RightItem className="addIdea" loggedIn={authUser !== null}>
+                <StyledIdeaButton style="secondary-outlined" size="1" />
+              </RightItem>
+            }
 
             {!authUser &&
               <RightItem>
