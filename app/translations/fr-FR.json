@@ -938,7 +938,6 @@
   "app.containers.app.navbar.logoAltText": "{tenantName} - logo",
   "app.containers.app.navbar.mobilePageHome": "Accueil",
   "app.containers.app.navbar.mobilePageIdeas": "Idées",
-  "app.containers.app.navbar.mobilePageProfile": "Profil",
   "app.containers.app.navbar.mobilePageProjects": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.app.navbar.myIdeas": "Mes idées",
   "app.containers.app.navbar.pageIdeas": "Idées",
