@@ -102,7 +102,7 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:not_in_active_context]
-    elsif !(user && context_permission(context, 'voting')&.granted_to?(user))
+    elsif !context_permission(context, 'voting')&.granted_to?(user)
       VOTING_DISABLED_REASONS[:not_permitted]
     else
       nil

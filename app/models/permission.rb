@@ -36,9 +36,9 @@ class Permission < ApplicationRecord
   	when 'everyone'
   		true
   	when 'groups'
-  		(group_ids & user.group_ids).present?
+  		user && (group_ids & user.group_ids).present?
   	when 'admins_moderators'
-  		user.admin? || user.project_moderator?(permittable.project.id)
+  		user&.admin? || user&.project_moderator?(permittable.project.id)
   	end
   end
 
