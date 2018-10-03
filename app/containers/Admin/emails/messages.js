@@ -159,9 +159,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.deliveryStatus_clicked',
     defaultMessage: 'Clicked',
   },
-  tabManual: {
-    id: 'app.containers.Admin.Campaigns.tabManual',
-    defaultMessage: 'Manual',
+  tabCustom: {
+    id: 'app.containers.Admin.Campaigns.tabCustom',
+    defaultMessage: 'Custom',
   },
   tabAutomated: {
     id: 'app.containers.Admin.Campaigns.tabAutomated',
