@@ -233,6 +233,10 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMinTablet`
+    padding-right: 10px;
+  `}
 `;
 
 const RightItem: any = styled.div`
