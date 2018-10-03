@@ -37,6 +37,11 @@ describe ParticipationContextService do
       expect(service.posting_disabled_reason(project, user)).to be_nil
     end
 
+    it "returns `posting_disabled` when posting is disabled" do
+      project = create(:project_with_current_phase, current_phase_attrs: {posting_enabled: false})
+      expect(service.posting_disabled_reason(project)).to eq 'posting_disabled'
+    end
+
     it "returns `not_permitted` when posting is not permitted" do
       project = create(:project_with_current_phase, with_permissions: true)
       permission = service.get_participation_context(project).permissions.find_by(action: 'posting')
