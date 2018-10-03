@@ -72,7 +72,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
             style="cl-blue"
             circularCorners={false}
             icon="plus-circle"
-            linkTo="/admin/emails/manual/new"
+            linkTo="/admin/emails/custom/new"
           >
             <FormattedMessage {...messages.addCampaignButton} />
           </Button>
@@ -86,7 +86,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
               style="cl-blue"
               circularCorners={false}
               icon="plus-circle"
-              linkTo="/admin/emails/manual/new"
+              linkTo="/admin/emails/custom/new"
             >
               <FormattedMessage {...messages.addCampaignButton} />
             </Button>

@@ -170,7 +170,7 @@ class Show extends React.Component<Props, State> {
             </PageTitleWrapper>
             {isDraft(campaign) &&
               <Buttons>
-                <Button linkTo={`/admin/emails/manual/${campaign.id}/edit`} style="secondary">
+                <Button linkTo={`/admin/emails/custom/${campaign.id}/edit`} style="secondary">
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>
                 <Button

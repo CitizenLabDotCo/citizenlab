@@ -35,7 +35,7 @@ class DraftCampaignDetails extends React.Component<Props> {
     if (window.confirm(deleteMessage)) {
       deleteCampaign(this.props.campaign.id)
         .then(() => {
-          clHistory.push('/admin/emails/manual');
+          clHistory.push('/admin/emails/custom');
         });
     }
   }
