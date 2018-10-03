@@ -180,7 +180,7 @@
   "app.containers.Admin.Campaigns.noAccess": "",
   "app.containers.Admin.Campaigns.previewHeader": "",
   "app.containers.Admin.Campaigns.tabAutomated": "",
-  "app.containers.Admin.Campaigns.tabManual": "",
+  "app.containers.Admin.Campaigns.tabCustom": "",
   "app.containers.Admin.Invitations.adminLabel": "Giv administratorrettigheder til de inviterede personer?",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, jeg er sikker",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Der er ingen inviterede der matcher din søgning",

@@ -180,7 +180,7 @@
   "app.containers.Admin.Campaigns.noAccess": "",
   "app.containers.Admin.Campaigns.previewHeader": "",
   "app.containers.Admin.Campaigns.tabAutomated": "",
-  "app.containers.Admin.Campaigns.tabManual": "",
+  "app.containers.Admin.Campaigns.tabCustom": "",
   "app.containers.Admin.Invitations.adminLabel": "Möchten Sie den eingeladenen Personen Administrator-Rechte geben?",
   "app.containers.Admin.Invitations.confirmDelete": "Ja, ich bin mir sicher",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "Es gibt keine Einladungen, die Ihren Suchkriterien entsprechen",

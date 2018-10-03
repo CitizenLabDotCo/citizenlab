@@ -180,7 +180,7 @@
   "app.containers.Admin.Campaigns.noAccess": "",
   "app.containers.Admin.Campaigns.previewHeader": "",
   "app.containers.Admin.Campaigns.tabAutomated": "",
-  "app.containers.Admin.Campaigns.tabManual": "",
+  "app.containers.Admin.Campaigns.tabCustom": "",
   "app.containers.Admin.Invitations.adminLabel": "",
   "app.containers.Admin.Invitations.confirmDelete": "",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "",

@@ -180,7 +180,7 @@
   "app.containers.Admin.Campaigns.noAccess": "We're sorry, but it seems like you don't have access to the e-mails section",
   "app.containers.Admin.Campaigns.previewHeader": "Preview",
   "app.containers.Admin.Campaigns.tabAutomated": "Automated",
-  "app.containers.Admin.Campaigns.tabManual": "Manual",
+  "app.containers.Admin.Campaigns.tabCustom": "Custom",
   "app.containers.Admin.Invitations.adminLabel": "Grant administrator rights to the invited people?",
   "app.containers.Admin.Invitations.confirmDelete": "Yes, I'm sure",
   "app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch": "There are no invites that match your search",
