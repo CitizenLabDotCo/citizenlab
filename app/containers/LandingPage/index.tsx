@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isMobileDevice } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { has, get, isString, isEmpty } from 'lodash-es';
@@ -17,6 +17,7 @@ import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
+import IdeaButton from 'components/IdeaButton';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -351,7 +352,7 @@ class LandingPage extends React.PureComponent<Props, State> {
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
-
+      const mobileDevice = isMobileDevice();
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
@@ -368,6 +369,12 @@ class LandingPage extends React.PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
+                {authUser && mobileDevice &&
+                  <IdeaButton
+                    style="primary-inverse"
+                    size="2"
+                  />
+                }
                 {!authUser && <Button
                   style="primary-inverse"
                   size="2"
