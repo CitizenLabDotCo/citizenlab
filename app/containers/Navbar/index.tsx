@@ -252,12 +252,6 @@ const RightItem: any = styled.div`
     `}
   }
 
-  &.usermenu {
-    ${media.smallPhone`
-      display: none;
-    `}
-  }
-
   &.addIdea {
     padding-left: 0px;
 
