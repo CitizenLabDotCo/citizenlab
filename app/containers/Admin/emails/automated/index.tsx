@@ -53,7 +53,7 @@ class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> 
                 onChange={this.handleOnEnabledToggle(campaign)}
               />
               <TextCell className="expand">
-                <T value={campaign.attributes.campaign_description_multiloc} />
+                <T value={campaign.attributes.admin_campaign_description_multiloc} />
               </TextCell>
               <div>
                 <T value={campaign.attributes.schedule_multiloc} />
