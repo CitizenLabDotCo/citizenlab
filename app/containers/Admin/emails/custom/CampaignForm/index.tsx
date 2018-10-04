@@ -76,6 +76,19 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
       }));
   }
 
+  renderFormikQuillMultiloc = (props) => {
+    const infoMessage = this.props.intl.formatMessage(messages.nameVariablesInfo);
+    return (
+      <FormikQuillMultiloc
+        label={<FormattedMessage {...messages.fieldBody} />}
+        noVideos
+        noAlign
+        infoMessage={infoMessage}
+        {...props}
+      />
+    );
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
@@ -158,10 +171,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <FastField
               name="body_multiloc"
-              component={FormikQuillMultiloc}
-              label={<FormattedMessage {...messages.fieldBody} />}
-              noVideos
-              noAlign
+              render={this.renderFormikQuillMultiloc}
             />
             {touched.body_multiloc && <Error
               fieldName="body_multiloc"
