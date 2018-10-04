@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :idea_file do
-    idea
+  factory :page_file do
+    page
     file { Rails.root.join("spec/fixtures/afvalkalender.pdf").open }
     name { 'afvalkalender.pdf' }
   end

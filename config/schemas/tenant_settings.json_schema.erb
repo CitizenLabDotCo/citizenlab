@@ -375,6 +375,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "ideaflow_social_sharing": {
+        "type": "object",
+        "description":  "A social sharing option is presented after posting an idea",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
       "manual_emailing": {
         "type": "object",
         "description":  "Allows admins and moderators to send out direct email to groups of citizens",
