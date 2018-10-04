@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 
 import Banner from './Banner';
-import Preferences from './Preferences';
+import PreferencesDialog from './PreferencesDialog';
+import CancelDialog from './CancelDialog';
 import Modal from 'components/UI/Modal';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
@@ -57,17 +58,15 @@ export default class Container extends PureComponent<Props, State> {
         categoryDestinatons.analytics.push(destination);
       }
     }
-
     // TODO: add state for banner so it doesn't disappear on implicit consent (which is annoying UX)
     return (
       <>
         <Modal
-          opened={isDialogOpen || isCancelling}
+          opened={isDialogOpen}
           close={this.closeDialog}
-          header={<h2>Your privacy preferences</h2>}
         >
-          {isDialogOpen &&
-            <Preferences
+          {!isCancelling &&
+            <PreferencesDialog
               onCancel={this.handleCancel}
               onSave={this.handleSave}
               onChange={this.handleCategoryChange}
@@ -78,9 +77,10 @@ export default class Container extends PureComponent<Props, State> {
             />
           }
           {isCancelling &&
-            <div>
-              If you cancel, your preferences won't be saved
-            </div>
+            <CancelDialog
+              onCancelConfirm={this.handleCancelConfirm}
+              onCancelBack={this.handleCancelBack}
+            />
           }
         </Modal>
         {isConsentRequired && newDestinations.length > 0 && (
@@ -129,25 +129,26 @@ export default class Container extends PureComponent<Props, State> {
   }
 
   handleCancel = () => {
-    const { resetPreferences, newDestinations } = this.props;
+    const { resetPreferences, newDestinations, preferences } = this.props;
 
-    this.setState({
-      isDialogOpen: false
-    });
+    const isEmpty = Object.keys(preferences).every(e => preferences[e] === null);
 
-    // Only show the cancel confirmation if there's unconsented destinations
-    if (newDestinations.length > 0) {
+    // Only show the cancel confirmation if there's unconsented destinations...
+    // or if the user made a choice
+    if (newDestinations.length > 0 && !isEmpty) {
       this.setState({
         isCancelling: true
       });
     } else {
+      this.setState({
+        isDialogOpen: false
+      });
       resetPreferences();
     }
   }
 
   handleCancelBack = () => {
     this.setState({
-      isDialogOpen: true,
       isCancelling: false
     });
   }
@@ -156,7 +157,8 @@ export default class Container extends PureComponent<Props, State> {
     const { resetPreferences } = this.props;
 
     this.setState({
-      isCancelling: false
+      isCancelling: false,
+      isDialogOpen: false
     });
     resetPreferences();
   }
