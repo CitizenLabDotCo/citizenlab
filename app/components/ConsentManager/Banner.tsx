@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 
 const Root = styled.div`
   position: fixed;
