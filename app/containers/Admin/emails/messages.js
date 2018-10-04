@@ -205,6 +205,6 @@ export default defineMessages({
   },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',
-    defaultMessage: 'You can speak directly to citizens using the variables {{first_name}} {{last_name}}. E.g. "Dear {{first_name}} {{last_name}}, ..."'
+    defaultMessage: 'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."'
   }
 });
