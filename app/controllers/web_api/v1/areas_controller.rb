@@ -28,6 +28,7 @@ class WebApi::V1::AreasController < ApplicationController
 
   def update
     @area.assign_attributes area_params
+    authorize @area
     SideFxAreaService.new.before_update(@area, current_user)
     if @area.save
       SideFxAreaService.new.after_update(@area, current_user)
