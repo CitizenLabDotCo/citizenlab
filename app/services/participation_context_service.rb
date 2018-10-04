@@ -21,6 +21,10 @@ class ParticipationContextService
     not_in_active_context: 'not_in_active_context'
   }
 
+  TAKING_SURVEY_DISABLED_REASONS = {
+    not_permitted: 'not_permitted'
+  }
+
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
     @timeline_service = TimelineService.new
@@ -117,6 +121,14 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
       VOTING_DISABLED_REASONS[:not_permitted]
+    else
+      nil
+    end
+  end
+
+  def taking_survey_disabled_reason context, user
+    if !context_permission(context, 'taking_survey')&.granted_to?(user)
+      TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
     else
       nil
     end

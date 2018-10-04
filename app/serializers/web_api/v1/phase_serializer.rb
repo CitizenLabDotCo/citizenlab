@@ -7,4 +7,21 @@ class WebApi::V1::PhaseSerializer < ActiveModel::Serializer
   belongs_to :project
 
   has_many :permissions
+
+  has_one :action_descriptor
+
+
+  def action_descriptor
+    @participation_context_service ||= ParticipationContextService.new
+    if object.survey?
+      taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason object, current_user
+      { taking_survey: {
+          enabled: !taking_survey_disabled_reason,
+          disabled_reason: taking_survey_disabled_reason
+        }
+      }
+    else
+      {}
+    end
+  end
 end
