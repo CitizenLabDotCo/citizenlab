@@ -121,8 +121,20 @@ export default defineMessages({
     id: 'app.containers.Projects.archived',
     defaultMessage: 'Archived',
   },
+  phaseAttachments: {
+    id: 'app.containers.Projects.phaseAttachments',
+    defaultMessage: 'Attachments',
+  },
+  eventAttachments: {
+    id: 'app.containers.Projects.eventAttachments',
+    defaultMessage: 'Attachments',
+  },
   selectedPhase: {
     id: 'app.containers.Projects.selectedPhase',
     defaultMessage: 'Selected phase',
-  }
+  },
+  phaseSelectorTitle: {
+    id: 'app.containers.Projects.phaseSelectorTitle',
+    defaultMessage: 'Phase selector',
+  },
 });

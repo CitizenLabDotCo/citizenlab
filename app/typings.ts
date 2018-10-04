@@ -24,6 +24,13 @@ export interface ImageFile extends ImageFile {
   objectUrl?: string;
 }
 
+export interface UploadFile extends File {
+  filename: string;
+  base64?: string;
+  url: string;
+  id?: string;
+}
+
 export interface IOption {
   value: any;
   label: string;

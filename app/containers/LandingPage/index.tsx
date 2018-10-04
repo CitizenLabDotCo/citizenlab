@@ -2,9 +2,11 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { Subscription, combineLatest, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
+import { has, get, isString, isEmpty } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -12,10 +14,13 @@ import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
+import Modal from 'components/UI/Modal';
+import IdeaSharingModalContent from './IdeaSharingModalContent';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, updateIdea } from 'services/ideas';
+import { updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -124,8 +129,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 52px;
-  line-height: 60px;
+  font-size: 50px;
+  line-height: 58px;
   font-weight: 600;
   text-align: center;
   white-space: normal;
@@ -136,8 +141,8 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 48px;
-    line-height: 60px;
+    font-size: 46px;
+    line-height: 58px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -260,32 +265,44 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  ideaIdForSocialSharing: string | null;
+}
 
 class LandingPage extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
-    this.state = {};
+    this.state = {
+      ideaIdForSocialSharing: null
+    };
   }
 
   componentDidMount() {
     const query = clHistory.getCurrentLocation().query;
     const authUser$ = authUserStream().observable;
-    const ideaToPublish$ = (query && query.idea_to_publish ? ideaByIdStream(query.idea_to_publish).observable : of(null));
+    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
+    const ideaParams$ = urlHasNewIdeaQueryParam ? of({
+      id: get(query, 'new_idea_id'),
+      publish: get(query, 'publish')
+    }).pipe(delay(200)) : of(null);
 
     this.subscriptions = [
-      // if 'idea_to_publish' parameter is present in landingpage url,
-      // find the draft idea previously created (before login/signup)
-      // and update its status and author name
       combineLatest(
         authUser$,
-        ideaToPublish$
-      ).subscribe(async ([authUser, ideaToPublish]) => {
-        if (authUser && ideaToPublish && ideaToPublish.data.attributes.publication_status === 'draft') {
-          await updateIdea(ideaToPublish.data.id, { author_id: authUser.data.id, publication_status: 'published' });
-          streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+        ideaParams$
+      ).subscribe(async ([authUser, ideaParams]) => {
+        if (ideaParams && isString(ideaParams.id) && !isEmpty(ideaParams.id)) {
+          if (authUser) {
+            this.setState({ ideaIdForSocialSharing: ideaParams.id });
+
+            if (ideaParams.publish === 'true') {
+              await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
+              streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+            }
+          }
+
           window.history.replaceState(null, '', window.location.pathname);
         }
       })
@@ -313,7 +330,12 @@ class LandingPage extends React.PureComponent<Props, State> {
     clHistory.push('/sign-up');
   }
 
+  closeIdeaSocialSharingModal = () => {
+    this.setState({ ideaIdForSocialSharing: null });
+  }
+
   render() {
+    const { ideaIdForSocialSharing } = this.state;
     const { locale, tenant, projects, authUser } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
@@ -392,6 +414,20 @@ class LandingPage extends React.PureComponent<Props, State> {
               <Footer />
             </Content>
           </Container>
+
+          <FeatureFlag name="ideaflow_social_sharing">
+            <Modal
+              opened={!!ideaIdForSocialSharing}
+              close={this.closeIdeaSocialSharingModal}
+              fixedHeight={false}
+              hasSkipButton={true}
+              skipText={<FormattedMessage {...messages.skipSharing} />}
+            >
+              {ideaIdForSocialSharing &&
+                <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+              }
+            </Modal>
+          </FeatureFlag>
         </>
       );
     }

@@ -46,7 +46,7 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
 `;
 
 const Container = styled.div`
-  margin-top: 35px;
+  margin-top: 38px;
 `;
 
 const CommentsWithReplyBoxContainer = styled.div`
@@ -56,7 +56,7 @@ const CommentsWithReplyBoxContainer = styled.div`
 const CommentsContainer = styled.div`
   border-radius: 5px;
   position: relative;
-  border: solid 1px #ddd;
+  border: solid 1px #d0d0d0;
   background: #fff;
 
   &.hasReplyBox {
@@ -80,6 +80,7 @@ const CommentContainerInner = styled.div`
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
+  margin-right: 60px;
 `;
 
 const ChildCommentsContainer = styled.div``;
@@ -190,7 +191,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                     <StyledAuthor
                       authorId={authorId}
                       createdAt={createdAt}
-                      size="medium"
+                      size="42px"
                       message={messages.parentCommentAuthor}
                     />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />

@@ -39,7 +39,7 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
       <List>
         { authUser && !isNilOrError(moderators) && moderators.map((moderator, index) =>
           <Row key={moderator.id} lastItem={(index === moderators.length - 1)}>
-            <Avatar userId={moderator.id} size="small" />
+            <Avatar userId={moderator.id} size="30px" />
             <p className="expand">{`${moderator.attributes.first_name} ${moderator.attributes.last_name}`}</p>
             <p className="expand">{moderator.attributes.email}</p>
             <Button

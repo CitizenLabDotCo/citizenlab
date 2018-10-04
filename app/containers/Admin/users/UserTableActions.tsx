@@ -48,7 +48,7 @@ const TableOptions = styled.div`
   padding-left: 5px;
   padding-right: 5px;
   margin-bottom: 15px;
-  border-bottom: solid 1px #eaeaea;
+  border-bottom: solid 1px ${colors.separation};
   user-select: none;
 `;
 

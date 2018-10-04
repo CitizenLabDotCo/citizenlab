@@ -54,16 +54,12 @@ const StyledCheckbox = styled(Checkbox)`
   margin-left: 10px;
 `;
 
-type Value = {
+interface Value {
   text: string | JSX.Element;
   value: any;
-};
+}
 
-type Props = {
-  title: string | JSX.Element;
-  values: Value[];
-  onChange: (arg: string) => void;
-  selected: any[];
+interface DefaultProps {
   width?: string;
   mobileWidth?: string;
   maxHeight?: string;
@@ -73,15 +69,24 @@ type Props = {
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
+}
+
+interface Props extends DefaultProps {
+  title: string | JSX.Element;
+  values: Value[];
+  onChange: (arg: string) => void;
+  selected: any[];
+  right?: string;
+  mobileRight?: string;
   multiple?: boolean;
   opened: boolean;
   baseID: string;
-};
+}
 
-type State = {};
+interface State {}
 
 export default class ValuesList extends PureComponent<Props, State> {
-  static defaultProps: Partial<Props> = {
+  static defaultProps: DefaultProps = {
     width: undefined,
     mobileWidth: undefined,
     maxHeight: undefined,
@@ -135,7 +140,10 @@ export default class ValuesList extends PureComponent<Props, State> {
                   <ListItemText>{entry.text}</ListItemText>
 
                   {multiple &&
-                    <StyledCheckbox value={checked} onChange={this.handleOnToggle(entry, index)} />
+                    <StyledCheckbox
+                      value={checked}
+                      onChange={this.handleOnToggle(entry, index)}
+                    />
                   }
                 </ListItem>
               );

@@ -219,7 +219,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         <td>
           <Avatar
             userId={user.id}
-            size="small"
+            size="30px"
           />
         </td>
         <td>{user.attributes.first_name} {user.attributes.last_name}</td>

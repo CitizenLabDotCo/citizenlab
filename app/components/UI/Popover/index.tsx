@@ -5,6 +5,7 @@ import clickOutside from 'utils/containers/clickOutside';
 
 // style
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   position: relative;
@@ -41,7 +42,7 @@ const ContentInner: any = styled.div`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   background-color: ${(props: any) => props.backgroundColor};
-  border: solid 1px ${(props: any) => props.borderColor || '#e0e0e0'};
+  border: solid 1px ${(props: any) => props.borderColor || colors.separation};
 
   ::before,
   ::after {
@@ -67,7 +68,7 @@ const ContentInner: any = styled.div`
     left: 0;
     right: 0;
     margin: 0 auto;
-    border-color: transparent transparent ${(props: any) => props.borderColor || '#e0e0e0'} transparent;
+    border-color: transparent transparent ${(props: any) => props.borderColor || colors.separation} transparent;
     border-width: 11px;
   }
 `;

@@ -14,10 +14,12 @@ import clHistory from 'utils/cl-router/history';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
+// import Modal from 'components/UI/Modal';
 
 // services
 import { localeStream } from 'services/locale';
 import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
+import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
 import { getAuthUserAsync } from 'services/auth';
 import { localState, ILocalStateService } from 'services/localState';
@@ -158,7 +160,7 @@ interface Props extends InputProps, DataProps {}
 interface LocalState {
   showIdeaForm: boolean;
   locale: Locale | null;
-  publishing: Boolean;
+  publishing: boolean;
 }
 
 interface GlobalState {}
@@ -190,7 +192,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       ideaId: null,
       imageFile: null,
       imageId: null,
-      imageChanged: false
+      imageChanged: false,
+      localIdeaFiles: null,
     };
     this.state = initialLocalState;
     this.localState = localState(initialLocalState);
@@ -299,18 +302,40 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
   }
 
-  handleOnIdeaSubmit = async () => {
-    this.globalState.set({ submitError: false, processing: true });
+  getFilesToAddPromises = async (ideaId: string) => {
+    const { localIdeaFiles } = await this.globalState.get();
+    const filesToAdd = localIdeaFiles;
+    let filesToAddPromises: Promise<any>[] = [];
 
+    if (ideaId && filesToAdd && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.filter((fileToAdd) => {
+        return isString(fileToAdd.base64);
+      }).map((fileToAdd) => {
+        return addIdeaFile(ideaId, fileToAdd.base64 as string, fileToAdd.name);
+      });
+    }
+
+    return filesToAddPromises;
+  }
+
+  handleOnIdeaSubmit = async () => {
     try {
+      this.globalState.set({ submitError: false, processing: true });
       const authUser = await getAuthUserAsync();
-      await this.postIdeaAndIdeaImage('published', authUser.data.id);
-      clHistory.push('/ideas');
+      const ideaResponse = await this.postIdeaAndIdeaImage('published', authUser.data.id);
+      const ideaId = ideaResponse.data.id;
+      const filesToAddPromises = this.getFilesToAddPromises(ideaId);
+
+      await filesToAddPromises;
+      clHistory.push({
+        pathname: '/',
+        search: `?new_idea_id=${ideaResponse.data.id}&publish=false`
+      });
     } catch (error) {
       if (isError(error) && error.message === 'not_authenticated') {
         try {
           await this.postIdeaAndIdeaImage('draft', null);
-          this.globalState.set({ processing: false });
+          this.globalState.set({ processing: false, submitError: false });
           this.localState.set({ showIdeaForm: false });
           window.scrollTo(0, 0);
         } catch (error) {
@@ -331,10 +356,15 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     const { ideaId } = await this.globalState.get();
 
     if (ideaId) {
-      await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
-    }
+      const idea = await updateIdea(ideaId, { author_id: userId, publication_status: 'published' });
 
-    clHistory.push('/ideas');
+      if (idea) {
+        clHistory.push({
+          pathname: '/',
+          search: `?new_idea_id=${idea.data.id}&publish=false`
+        });
+      }
+    }
   }
 
   render() {

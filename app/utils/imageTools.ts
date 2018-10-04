@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 import { from } from 'rxjs';
-import { ImageFile } from 'typings';
+import { ImageFile, UploadFile } from 'typings';
 
 export const imageSizes = {
   headerBg: {
@@ -39,7 +39,7 @@ export async function getBase64FromObjectUrl(objectUrl: string) {
   });
 }
 
-export function createObjectUrl(image: File | ImageFile) {
+export function createObjectUrl(image: File | ImageFile | UploadFile) {
   const blob = new Blob([image], { type: image.type });
   const objectUrl = window.URL.createObjectURL(blob);
   return objectUrl;
@@ -61,10 +61,6 @@ export function convertBlobToFile(blob: Blob, fileName: string) {
 }
 
 export async function convertUrlToFile(imageUrl: string | null): Promise<File | null> {
-  // We don't cache this, to deal with CORS issues.
-  // https://bugs.chromium.org/p/chromium/issues/detail?id=260239
-  // https://stackoverflow.com/questions/26352083/chrome-cors-cache-requesting-same-file-from-two-different-origins
-
   if (!imageUrl) {
     return null;
   }
@@ -79,4 +75,27 @@ export async function convertUrlToFile(imageUrl: string | null): Promise<File | 
 
 export function convertUrlToFileObservable(imageUrl: string | null) {
   return from(convertUrlToFile(imageUrl));
+}
+
+export async function convertUrlToUploadFile(url: string) {
+  const headers = new Headers();
+  headers.append('cache-control', 'no-cache');
+  headers.append('pragma', 'no-cache');
+  const blob = await fetch(url, { headers }).then((response) => response.blob());
+  const filename = url.substring(url.lastIndexOf('/') + 1);
+  return convertBlobToFile(blob, filename) as UploadFile;
+}
+
+export async function convertUrlToUploadFileWithBase64(url: string) {
+  const uploadFile = await convertUrlToUploadFile(url);
+  uploadFile.base64 = await getBase64FromFile(uploadFile);
+  return uploadFile;
+}
+
+export function convertUrlToUploadFileObservable(url: string) {
+  return from(convertUrlToUploadFile(url));
+}
+
+export function convertUrlToUploadFileWithBase64Observable(url: string) {
+  return from(convertUrlToUploadFileWithBase64(url));
 }

@@ -22,32 +22,17 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
-const facebookColor = '#3b5998';
-
-const twitterColor = '#1ea4f2';
-
-const messengerColor = '#0084ff';
-
-const IconWrapper = styled.div`
-  width: 30px;
-  height: 38px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  svg {
-    width: 20px;
-    transition: all 100ms ease-out;
-  }
+const StyledIcon = styled(Icon)`
+  width: 21px;
+  height: 21px;
+  fill: #fff;
+  margin-right: 12px;
 `;
 
 const Text = styled.div`
@@ -65,46 +50,62 @@ const Container = styled.div`
   flex-direction: column;
 
   .sharingButton {
+    width: 100%;
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    padding: 5px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+    padding-left: 12px;
+    padding-right: 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
-    width: 100%;
 
     &.twitter {
-      background: ${twitterColor};
-      fill: #fff;
+      background: ${colors.twitter};
       color: #fff;
 
       &:hover {
-        background: ${lighten(0.25, twitterColor)};
+        background: ${darken(0.15, colors.twitter)};
       }
     }
+
     &.facebook {
-      background: ${facebookColor};
-      fill: #fff;
+      background: ${colors.facebook};
       color: #fff;
 
       &:hover {
-        background: ${lighten(0.2, facebookColor)};
+        background: ${darken(0.15, colors.facebook)};
       }
     }
 
     &.messenger {
-      background: ${messengerColor};
-      fill: #fff;
+      background: ${colors.facebookMessenger};
       color: #fff;
 
       &:hover {
-        background: ${(lighten(0.2, messengerColor))};
+        background: ${(darken(0.15, colors.facebookMessenger))};
       }
+
       ${media.biggerThanMaxTablet`
         display: none;
       `}
+    }
+
+    &.email {
+      background: #e6ebec;
+      color: #004d6c;
+
+      ${StyledIcon} {
+        fill: #004d6c;
+      }
+
+      &:hover {
+        background: ${(darken(0.15, '#e6ebec'))};
+      }
     }
   }
 `;
@@ -113,78 +114,89 @@ interface ITracks {
   clickFbShare: () => void;
   clickTwitterShare: () => void;
   clickMessengerShare: () => void;
+  clickEmailShare: () => void;
 }
 
-type InputProps = {
+interface InputProps {
   className?: string;
+  url: string;
   twitterMessage: string;
-  userId: string | null;
-  sharedContent: string;
-};
+  emailSubject?: string;
+  emailBody?: string;
+}
 
 interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
-    const { clickFbShare, clickTwitterShare, clickMessengerShare, userId, tenant, twitterMessage, sharedContent, className, intl: { formatMessage } } = this.props;
+    const { url, clickFbShare, clickTwitterShare, clickMessengerShare, clickEmailShare, tenant, twitterMessage, emailSubject, emailBody, className, intl: { formatMessage } } = this.props;
+
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
       const facebookAppId = (facebookSettings ? facebookSettings.app_id : null);
-      const href = window.location.href;
-      const facebookText = formatMessage(messages.shareOnFacebook);
-      const messengerText = formatMessage(messages.shareViaMessenger);
-      const twitterText = formatMessage(messages.shareOnTwitter);
-      const fbURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=facebook&utm_campaign=autopublish&utm_content=${userId}` : href;
-      const twitterURL = userId ? `${href}?utm_source=share_${sharedContent}&utm_medium=twitter&utm_campaign=autopublish&utm_content=${userId}` : href;
+      const facebookButtonText = formatMessage(messages.shareOnFacebook);
+      const messengerButtonText = formatMessage(messages.shareViaMessenger);
+      const twitterButtonText = formatMessage(messages.shareOnTwitter);
+      const emailButtonText = formatMessage(messages.shareByEmail);
 
       const facebook = (facebookAppId ? (
         <FacebookButton
-          className="sharingButton facebook first"
-          url={fbURL}
           appId={facebookAppId}
+          url={url}
+          className="sharingButton facebook first"
           sharer={true}
           onClick={clickFbShare}
         >
-          <IconWrapper>
-            <Icon name="facebook" />
-          </IconWrapper>
-          <Text>{facebookText}</Text>
+          <StyledIcon name="facebook" />
+          <Text>{facebookButtonText}</Text>
         </FacebookButton>
       ) : null);
 
       const messenger = (facebookAppId ? (
-        <a className="sharingButton messenger" href={`fb-messenger://share/?link=${encodeURIComponent(fbURL)}&app_id=${facebookAppId}`} onClick={clickMessengerShare}>
-          <IconWrapper>
-            <Icon name="messenger" />
-          </IconWrapper>
-          <Text>{messengerText}</Text>
+        <a
+          className="sharingButton messenger"
+          href={`fb-messenger://share/?link=${encodeURIComponent(url)}&app_id=${facebookAppId}`}
+          onClick={clickMessengerShare}
+        >
+          <StyledIcon name="messenger" />
+          <Text>{messengerButtonText}</Text>
         </a>
       ) : null);
 
       const twitter = (
         <TwitterButton
+          message={twitterMessage}
+          url={url}
           className="sharingButton twitter"
-          url={twitterURL}
           sharer={true}
           onClick={clickTwitterShare}
-          message={twitterMessage}
         >
-          <IconWrapper>
-            <Icon name="twitter" />
-          </IconWrapper>
-          <Text>{twitterText}</Text>
+          <StyledIcon name="twitter" />
+          <Text>{twitterButtonText}</Text>
         </TwitterButton>
       );
+
+      const email = ((emailSubject && emailBody) ? (
+        <a
+          className="sharingButton email"
+          href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
+          onClick={clickEmailShare}
+        >
+          <StyledIcon name="email" />
+          <Text>{emailButtonText}</Text>
+        </a>
+      ) : null);
 
       return (
         <Container className={className}>
           {facebook}
           {messenger}
           {twitter}
+          {email}
         </Container>
       );
     }
@@ -197,6 +209,7 @@ const SharingWithHocs = injectIntl<Props>(injectTracks<Props>({
   clickFbShare: tracks.clickFbShare,
   clickTwitterShare: tracks.clickTwitterShare,
   clickMessengerShare: tracks.clickMessengerShare,
+  clickEmailShare: tracks.clickEmailShare,
 })(Sharing));
 
 const Data = adopt<DataProps, InputProps>({

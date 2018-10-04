@@ -135,6 +135,12 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         {ideaImage && <meta property="og:image" content={ideaImage} />}
         <meta property="og:image:width" content={`${imageSizes.ideaImg.fb[0]}`} />
         <meta property="og:image:height" content={`${imageSizes.ideaImg.fb[1]}`} />
+
+        <meta name="twitter:title" content={ideaOgTitle} />
+        <meta name="twitter:description" content={formatMessage(messages.ideaOgDescription)} />
+        {ideaImage && <meta name="twitter:image" content={ideaImage} />}
+        <meta name="twitter:card" content="summary_large_image" />
+
         {ideaImage &&
           <script type="application/ld+json">
             {JSON.stringify(articleJson)}
@@ -146,7 +152,6 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
 
         <meta property="og:url" content={ideaUrl} />
         <meta property="og:locale" content={locale} />
-        <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
     );
   }

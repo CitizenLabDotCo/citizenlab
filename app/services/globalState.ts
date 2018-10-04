@@ -6,7 +6,7 @@ import { isObject, isEmpty, has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, ImageFile, UploadFile } from 'typings';
 import { setTimeout } from 'timers';
 
 export interface IIdeasNewPageGlobalState {
@@ -22,6 +22,7 @@ export interface IIdeasNewPageGlobalState {
   imageFile: ImageFile[] | null;
   imageId: string | null;
   imageChanged: boolean;
+  localIdeaFiles: UploadFile[] | null;
 }
 
 export interface IAdminFullWidth {
