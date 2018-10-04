@@ -19,6 +19,18 @@ class PermissionsService
     end
   end
 
+  def update_permissions_for_current_tenant
+    Project.all.each do |project|
+      PermissionsService.new.update_permissions_for project
+      project.phases.each do |phase|
+        PermissionsService.new.update_permissions_for phase
+      end
+    end
+    Permission.all.each do |permission|
+      permission.destroy! if !permission.valid?
+    end
+  end
+
 
   private
 
