@@ -309,6 +309,29 @@ describe ParticipationContextService do
     end
   end
 
+  describe "taking_survey_disabled_reason" do
+    it "returns nil when taking the survey is allowed" do
+      project = create(:continuous_survey_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      groups = create_list(:group, 2, projects: [project])
+      permission.update!(permitted_by: 'groups', group_ids: groups.map(&:id))
+      user = create(:user)
+      group = groups.first
+      group.add_member user
+      group.save!
+      expect(service.taking_survey_disabled_reason(project, user)).to be_nil
+    end
+
+    it "returns `not_permitted` when taking the survey is not permitted" do
+      project = create(:continuous_survey_project, with_permissions: true)
+      permission = service.get_participation_context(project).permissions.find_by(action: 'taking_survey')
+      permission.update!(permitted_by: 'groups', 
+        group_ids: create_list(:group, 2).map(&:id)
+        )
+      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'not_permitted'
+    end
+  end
+
   describe "future_posting_enabled_phase" do
     it "returns the first upcoming phase that has posting enabled" do
       project = create(:project_with_current_phase, with_permissions: true, 
