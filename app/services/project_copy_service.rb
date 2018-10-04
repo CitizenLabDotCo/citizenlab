@@ -8,6 +8,7 @@ class ProjectCopyService
   end
 
   def export project
+    phase_hashes = {}
     project_ref = { 'title_multiloc'               => project.title_multiloc,
                     'description_multiloc'         => project.description_multiloc,
                     'remote_header_bg_url'         => project.header_bg_url,
@@ -38,7 +39,7 @@ class ProjectCopyService
           }
         },
         'phase' => project.phases.map{ |p|
-          {
+          h = {
             'title_multiloc'       => p.title_multiloc,
             'description_multiloc' => p.description_multiloc,
             'project_ref'          => project_ref,
@@ -53,7 +54,22 @@ class ProjectCopyService
             'survey_embed_url'     => p.survey_embed_url,
             'survey_service'       => p.survey_service
           }
+          phase_hashes[p.id] = h
+          h
         },
+        'permission' => (
+          if project.continuous?
+            project.permissions.map{ |p|
+              permission_h p, project_ref
+            }
+          else
+            project.phases.map(&:permissions).flat_map { |ps|
+              ps.map { |p|
+                permission_h p, phase_hashes[p.permittable_id]
+              }
+            }
+          end
+          ),
         'event' => project.events.map{ |e|
           {
             'title_multiloc'       => e.title_multiloc,
@@ -74,6 +90,14 @@ class ProjectCopyService
       } 
     }
     template
+  end
+
+  def permission_h permission, permittable_h
+    {
+      'action' => permission.action,
+      'permitted_by' => permission.permitted_by,
+      'permittable_ref' => permittable_h
+    }
   end
 
 end
