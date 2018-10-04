@@ -6,8 +6,9 @@ import Label from 'components/UI/Label';
 
 // I18n
 import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import { InjectedIntlProps } from 'react-intl';
 
 // Styling
 import styled from 'styled-components';
@@ -15,7 +16,9 @@ import styled from 'styled-components';
 // Typings
 import { IPhaseData } from 'services/phases';
 
-const Container = styled.div``;
+const Container = styled.div`
+  width: 100%;
+`;
 
 const SelectWrapper = styled.div`
   width: 100%;
@@ -86,7 +89,7 @@ interface Props {
   className?: string;
 }
 
-class MobileTimeline extends PureComponent<Props & InjectedLocalized> {
+class MobileTimeline extends PureComponent<Props & InjectedLocalized & InjectedIntlProps> {
   handleOnChange = (event) => {
     event.preventDefault();
     this.props.onPhaseSelection(event.target.value);
@@ -97,11 +100,16 @@ class MobileTimeline extends PureComponent<Props & InjectedLocalized> {
 
     return (
       <Container>
-        <Label>
+        <Label id="phase-selector-label">
           <FormattedMessage {...messages.selectedPhase} />
         </Label>
         <SelectWrapper>
-          <select value={selectedPhase || phases[0].id} onChange={this.handleOnChange}>
+          <select
+            aria-labelledby="phase-selector-label"
+            value={selectedPhase || phases[0].id}
+            onChange={this.handleOnChange}
+            title={this.props.intl.formatMessage(messages.phaseSelectorTitle)}
+          >
             {phases.map((phase) => (
               <option key={phase.id} value={phase.id} aria-selected={selectedPhase === phase.id ? true : false}>
                 {this.props.localize(phase.attributes.title_multiloc)}
@@ -114,4 +122,4 @@ class MobileTimeline extends PureComponent<Props & InjectedLocalized> {
   }
 }
 
-export default localize(MobileTimeline);
+export default injectIntl<Props>(localize(MobileTimeline));

@@ -103,7 +103,7 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
           ) : (
               loading ? (
                 <Loading>
-                  <Spinner size="32px" />
+                  <Spinner />
                 </Loading>
               ) : (
                 <>

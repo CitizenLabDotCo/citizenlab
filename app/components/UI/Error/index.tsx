@@ -248,23 +248,37 @@ export default class Error extends PureComponent<Props, State> {
 
               {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
                 <ErrorList>
-                  {apiErrors.map((error) => {
+                  {apiErrors.map((error, index) => {
+                    // If we have multiple possible errors for a certain input field,
+                    // we can 'group' them in the messages.js file using the fieldName as a prefix
+                    // Check the implementation of findMessage for details
                     const errorMessage = this.findMessage(fieldName, error.error);
 
                     if (errorMessage) {
+                      // Variables for inside messages.js
                       const value = get(error, 'value', null);
                       const row = get(error, 'row', null);
                       const rows = get(error, 'rows', null);
 
+                      if (value || row || rows) {
+                        return (
+                          <ErrorListItem key={index} className={`${apiErrors.length > 1 && 'isList'}`}>
+                            <FormattedMessage
+                              {...errorMessage}
+                              values={{
+                                row: <strong>{row}</strong>,
+                                rows: (rows ? <strong>{rows.join(', ')}</strong> : null),
+                                value: <strong>'{value}'</strong>
+                              }}
+                            />
+                          </ErrorListItem>
+                        );
+                      }
+
                       return (
-                        <ErrorListItem key={error.value} className={`${apiErrors.length > 1 && 'isList'}`}>
+                        <ErrorListItem key={index} className={`${apiErrors.length > 1 && 'isList'}`}>
                           <FormattedMessage
                             {...errorMessage}
-                            values={{
-                              row: <strong>{row}</strong>,
-                              rows: (rows ? <strong>{rows.join(', ')}</strong> : null),
-                              value: <strong>'{value}'</strong>
-                            }}
                           />
                         </ErrorListItem>
                       );

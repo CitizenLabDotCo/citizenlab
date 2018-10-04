@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -15,7 +17,7 @@ const Container = styled.div`
   padding-left: 10px;
   padding-right: 10px;
   background: #fff;
-  border-top: solid 1px #e0e0e0;
+  border-top: solid 1px ${colors.separation};
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;
@@ -73,7 +75,17 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-export default class MobileNavigation extends PureComponent {
+interface InputProps {}
+
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class MobileNavigation extends PureComponent<Props, State> {
   render() {
     return (
       <Container className={this.props['className']}>
@@ -105,16 +117,24 @@ export default class MobileNavigation extends PureComponent {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/profile/edit" activeClassName="active">
-          <NavigationIconWrapper>
-            <NavigationIcon name="profile" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageProfile} />
-          </NavigationLabel>
-        </NavigationItem>
+        {!isNilOrError(this.props.authUser) &&
+          <NavigationItem to="/profile/edit" activeClassName="active">
+            <NavigationIconWrapper>
+              <NavigationIcon name="profile" />
+            </NavigationIconWrapper>
+            <NavigationLabel>
+              <FormattedMessage {...messages.mobilePageProfile} />
+            </NavigationLabel>
+          </NavigationItem>
+        }
 
       </Container>
     );
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetAuthUser>
+    {authUser => <MobileNavigation authUser={authUser} {...inputProps} />}
+  </GetAuthUser>
+);
