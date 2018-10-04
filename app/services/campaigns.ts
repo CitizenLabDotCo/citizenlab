@@ -22,7 +22,7 @@ export interface ICampaignData {
   type: string;
   attributes: {
     campaign_name: string;
-    campaign_description_multiloc: Multiloc;
+    admin_campaign_description_multiloc: Multiloc;
     enabled?: boolean;
     subject_multiloc: Multiloc;
     body_multiloc: Multiloc;
