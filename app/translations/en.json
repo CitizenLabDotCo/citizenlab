@@ -287,6 +287,7 @@
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
   "app.containers.Admin.emails.helmetTitle": "Email Campaigns",
   "app.containers.Admin.emails.manageButtonLabel": "Manage",
+  "app.containers.Admin.emails.nameVariablesInfo": "You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. \"Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ...\"",
   "app.containers.Admin.emails.noCampaignsDescription": "Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.",
   "app.containers.Admin.emails.noCampaignsHeader": "No custom email campaigns yet",
   "app.containers.Admin.emails.previewSentConfirmation": "A preview email has been sent to your email address",
