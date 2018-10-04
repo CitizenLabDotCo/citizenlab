@@ -3,7 +3,6 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // libraries
 import Link from 'utils/cl-router/Link';
-import { openConsentManager } from '@segment/consent-manager';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -19,6 +18,8 @@ import messages from './messages.js';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
+
+import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
@@ -183,6 +184,8 @@ const PoweredBy = styled.a`
   `}
 `;
 
+const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
+
 type Props = {
   showCityLogoSection?: boolean | undefined;
 };
@@ -277,7 +280,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 <li>
                   <Separator>•</Separator>
                   <StyledButton onClick={openConsentManager}>
-                    <FormattedMessage {...messages.consentManager} />
+                    <FormattedMessage {...messages.cookieSettings} />
                   </StyledButton>
                 </li>
               </ul>

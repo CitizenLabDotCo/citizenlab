@@ -29,9 +29,9 @@ export default defineMessages({
     id: 'app.containers.footer.cookies-policy',
     defaultMessage: 'Cookie Policy',
   },
-  consentManager: {
-    id: 'app.containers.footer.consentManager',
-    defaultMessage: 'Consent Manager',
+  cookieSettings: {
+    id: 'app.containers.footer.cookieSettings',
+    defaultMessage: 'Cookie settings',
   },
   iframeTitle: {
     id: 'app.containers.footer.iframeTitle',
