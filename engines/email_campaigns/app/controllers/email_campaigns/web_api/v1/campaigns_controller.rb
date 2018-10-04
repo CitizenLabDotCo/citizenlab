@@ -73,7 +73,9 @@ module EmailCampaigns
     end
 
     def do_send
+      SideFxCampaignService.new.before_send(@campaign, current_user)
       EmailCampaigns::DeliveryService.new.send_now(@campaign)
+      SideFxCampaignService.new.after_send(@campaign, current_user)
       render json: @campaign.reload, serializer: WebApi::V1::CampaignSerializer
     end
 
