@@ -52,7 +52,7 @@ const Block = styled.div`
   display: flex;
   padding: 20px;
   border-radius: 5px;
-  background-color: rgba(50, 182, 122, 0.06);
+  background-color: ${props => transparentize(.95, props.theme.colorMain)};;
   border: 1px solid ${colors.separation};
 `;
 
