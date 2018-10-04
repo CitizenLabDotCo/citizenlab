@@ -3,7 +3,7 @@ import { getBase64FromFile, createObjectUrl } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
 // i18n
-import messages from './messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -100,7 +100,7 @@ class FileInput extends Component<InjectedIntlProps &Props> {
             tabIndex={0}
             onKeyPress={this.handleKeyPress}
           >
-            <FormattedMessage {...messages.FileInputDescription} />
+            <FormattedMessage {...messages.fileInputDescription} />
           </span>
         </Label>
       </Container>
