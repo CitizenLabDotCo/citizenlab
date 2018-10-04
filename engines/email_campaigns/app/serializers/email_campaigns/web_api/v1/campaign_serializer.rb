@@ -1,7 +1,7 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ActiveModel::Serializer
 
-    attributes :id, :campaign_name, :campaign_description_multiloc, :created_at, :updated_at
+    attributes :id, :campaign_name, :admin_campaign_description_multiloc, :created_at, :updated_at
     belongs_to :author
 
     attribute :enabled, if: :disableable?
@@ -25,8 +25,8 @@ module EmailCampaigns
       end
     end
 
-    def campaign_description_multiloc
-      object.class.campaign_description_multiloc
+    def admin_campaign_description_multiloc
+      object.class.admin_campaign_description_multiloc
     end
 
     def disableable?
