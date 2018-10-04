@@ -1,4 +1,8 @@
 import React, { PureComponent } from 'react';
+import { Subscription } from 'rxjs';
+
+// Events
+import eventEmitter from 'utils/eventEmitter';
 
 import Banner from './Banner';
 import PreferencesDialog from './PreferencesDialog';
@@ -26,12 +30,22 @@ interface State {
 }
 
 export default class Container extends PureComponent<Props, State> {
+  subscriptions: Subscription[] = [];
   constructor(props) {
     super(props);
     this.state = {
       isDialogOpen: false,
       isCancelling: false
     };
+  }
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent('openConsentManager').subscribe(this.openDialog)
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
