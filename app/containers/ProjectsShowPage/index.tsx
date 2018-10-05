@@ -6,6 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Meta from './Meta';
+import ProjectNavbar from './ProjectNavbar';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
@@ -107,6 +108,7 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
                 </Loading>
               ) : (
                 <>
+                  <ProjectNavbar projectSlug={this.props.params.slug} />
                   <Content>{children}</Content>
                   <Footer showCityLogoSection={false} />
                 </>
