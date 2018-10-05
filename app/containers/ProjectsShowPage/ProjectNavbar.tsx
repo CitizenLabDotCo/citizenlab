@@ -76,17 +76,20 @@ const ProjectNavbarLink = styled(Link)`
   display: flex;
   align-items: center;
   color: inherit;
+  border-top: 2px solid transparant;
+  border-bottom: 2px solid rgba(255, 255, 255, 0);
 
   &.active,
   &:focus {
-    border-bottom: 2px solid ${(props) => props.theme.colorMain};
+    border-bottom: 2px solid #fff;
   }
 
   &:hover {
-    color: ${(props) => props.theme.colorMain};
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
 
     ${ProjectNavbarIcon} {
-      fill: ${(props) => props.theme.colorMain};
+      fill: rgba(255, 255, 255, 0.8);
     }
   }
 `;
