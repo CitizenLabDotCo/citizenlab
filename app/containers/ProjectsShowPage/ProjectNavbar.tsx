@@ -17,23 +17,16 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 
 const ProjectNavbarWrapper = styled.nav`
-  display: flex;
-  align-items: center;
   height: 58px;
   background-color: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
-  padding-left: 254px;
 `;
 
 const ProjectNavbarItems = styled.ul`
   display: flex;
-`;
-
-const ProjectNavbarItem = styled.li`
-  display: flex;
-  align-items: center;
-  margin-right: 40px;
+  margin: 0;
+  height: 100%;
 `;
 
 const ProjectNavbarIconWrapper = styled.div`
@@ -50,6 +43,26 @@ const ProjectNavbarIcon = styled(Icon)`
   transition: fill 100ms ease-out;
 `;
 
+const ProjectNavbarItem = styled(Link)`
+  display: flex;
+  align-items: center;
+  color: inherit;
+  margin-right: 40px;
+
+  &.active,
+  &:focus {
+    border-bottom: 2px solid ${(props) => props.theme.colorMain};
+  }
+
+  &:hover {
+    color: ${(props) => props.theme.colorMain};
+
+    ${ProjectNavbarIcon} {
+      fill: ${(props) => props.theme.colorMain};
+    }
+  }
+`;
+
 interface InputProps {
   projectSlug: string;
 }
@@ -60,10 +73,6 @@ interface DataProps {
 }
 
 interface Props extends InputProps, DataProps {}
-
-const ProjectNavbarLink = styled(Link)`
-  color: inherit;
-`;
 
 const ProjectNavbar = (props: Props) => {
 
@@ -78,50 +87,65 @@ const ProjectNavbar = (props: Props) => {
         <ProjectNavbarItems>
 
           {/* Information link */}
-          <ProjectNavbarItem>
+          <ProjectNavbarItem
+            to={`/projects/${projectSlug}/info`}
+            activeClassName="active"
+          >
             <ProjectNavbarIconWrapper>
               <ProjectNavbarIcon name="info2" />
             </ProjectNavbarIconWrapper>
-            <ProjectNavbarLink to={`/projects/${projectSlug}/info`}>Information</ProjectNavbarLink>
+            Information
           </ProjectNavbarItem>
 
           {/* Process link */}
           {project && project.attributes.process_type === 'timeline' &&
-            <ProjectNavbarItem>
+            <ProjectNavbarItem
+              to={`/projects/${projectSlug}/process`}
+              activeClassName="active"
+            >
               <ProjectNavbarIconWrapper>
                 <ProjectNavbarIcon name="timeline" />
               </ProjectNavbarIconWrapper>
-              <ProjectNavbarLink to={`/projects/${projectSlug}/process`}>Process</ProjectNavbarLink>
+              Process
             </ProjectNavbarItem>
           }
 
           {/* Ideas link */}
           {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
-            <ProjectNavbarItem>
+            <ProjectNavbarItem
+              to={`/projects/${projectSlug}/ideas`}
+              activeClassName="active"
+            >
               <ProjectNavbarIconWrapper>
                 <ProjectNavbarIcon name="idea" />
               </ProjectNavbarIconWrapper>
-              <ProjectNavbarLink to={`/projects/${projectSlug}/ideas`}>Ideas</ProjectNavbarLink>
+              Ideas
             </ProjectNavbarItem>
           }
 
           {/* Survey link */}
           {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
-            <ProjectNavbarItem>
+            <ProjectNavbarItem
+              to={`/projects/${projectSlug}/survey`}
+              activeClassName="active"
+            >
               <ProjectNavbarIconWrapper>
                 <ProjectNavbarIcon name="survey" />
               </ProjectNavbarIconWrapper>
-              <ProjectNavbarLink to={`/projects/${projectSlug}/survey`}>Survey</ProjectNavbarLink>
+              Survey
             </ProjectNavbarItem>
           }
 
           {/* Events link */}
           {hasEvents &&
-            <ProjectNavbarItem>
+            <ProjectNavbarItem
+              to={`/projects/${projectSlug}/events`}
+              activeClassName="active"
+            >
               <ProjectNavbarIconWrapper>
                 <ProjectNavbarIcon name="calendar" />
               </ProjectNavbarIconWrapper>
-              <ProjectNavbarLink to={`/projects/${projectSlug}/events`}>Events</ProjectNavbarLink>
+              Events
             </ProjectNavbarItem>
           }
         </ProjectNavbarItems>
