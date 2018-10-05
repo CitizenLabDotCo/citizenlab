@@ -71,6 +71,10 @@ module ParticipationContext
     self.participation_method == 'budgeting'
   end
 
+  def can_contain_ideas?
+    ideation? || budgeting?
+  end
+
   def voting_limited?
     self.voting_method == 'limited'
   end

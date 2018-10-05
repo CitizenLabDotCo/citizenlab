@@ -20,7 +20,7 @@ class IdeasPhase < ApplicationRecord
   end
 
   def phase_is_ideation
-    unless phase.ideation?
+    unless phase.can_contain_ideas?
       self.errors.add(
         :phase_id, 
         :phase_not_ideation, 
