@@ -346,6 +346,7 @@
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "Moderatoren nicht gefunden",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Moderationsrechte erlauben jemandem, die oder der keinen Administrator-Status haben, die Projekt-Einstellungen zu verändern sowie Ideen und Kommentare, die zum Projekt gehören, zu bearbeiten. Administratoren haben immer Moderationsrechte für alle Projekte.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Wer kann dieses Projekt moderieren?",
+  "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "{orgName, select, München {Bitte wählen Sie ein Kopfzeilen-Bild für den Bezirk} other {Bitte wählen Sie ein Kopfzeilen-Bild für das Projekt}}",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Bitte wählen Sie einen Projekt-Typ",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Bitte geben Sie eine Projektüberschrift ein",
