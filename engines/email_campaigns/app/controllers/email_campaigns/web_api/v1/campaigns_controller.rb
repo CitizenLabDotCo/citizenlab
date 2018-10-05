@@ -37,7 +37,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: @campaign, status: :created, serializer: WebApi::V1::CampaignSerializer, status: :created
+        render json: @campaign, status: :created, serializer: WebApi::V1::CampaignSerializer
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
