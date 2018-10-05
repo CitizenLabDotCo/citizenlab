@@ -10,7 +10,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // styles
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
@@ -23,11 +23,39 @@ const ProjectNavbarWrapper = styled.nav`
   font-size: ${fontSizes.base}px;
 `;
 
+const StyledContentContainer = styled(ContentContainer)`
+  ${media.largePhone`
+     padding: 0;
+  `};
+`;
+
 const ProjectNavbarItems = styled.ul`
   display: flex;
   margin: 0;
   padding: 0;
   height: 58px;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ProjectNavbarItem = styled.li`
+  display: flex;
+  margin-right: 40px;
+  vertical-align: middle;
+
+  &:first-of-type {
+    margin-left: 30px;
+  }
+
+  &:last-of-type::after {
+    content: '';
+    width: 30px;
+  }
 `;
 
 const ProjectNavbarIconWrapper = styled.div`
@@ -42,11 +70,6 @@ const ProjectNavbarIconWrapper = styled.div`
 const ProjectNavbarIcon = styled(Icon)`
   fill: #fff;
   transition: fill 100ms ease-out;
-`;
-
-const ProjectNavbarItem = styled.li`
-  display: flex;
-  margin-right: 40px;
 `;
 
 const ProjectNavbarLink = styled(Link)`
@@ -89,7 +112,7 @@ const ProjectNavbar = (props: Props) => {
 
     return (
       <ProjectNavbarWrapper>
-        <ContentContainer>
+        <StyledContentContainer>
           <ProjectNavbarItems>
 
             {/* Process link */}
@@ -165,7 +188,7 @@ const ProjectNavbar = (props: Props) => {
               </ProjectNavbarItem>
             }
           </ProjectNavbarItems>
-        </ContentContainer>
+        </StyledContentContainer>
       </ProjectNavbarWrapper>
     );
   }
