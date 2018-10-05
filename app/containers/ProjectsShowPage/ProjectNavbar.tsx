@@ -86,17 +86,6 @@ const ProjectNavbar = (props: Props) => {
       <ProjectNavbarWrapper>
         <ProjectNavbarItems>
 
-          {/* Information link */}
-          <ProjectNavbarItem
-            to={`/projects/${projectSlug}/info`}
-            activeClassName="active"
-          >
-            <ProjectNavbarIconWrapper>
-              <ProjectNavbarIcon name="info2" />
-            </ProjectNavbarIconWrapper>
-            Information
-          </ProjectNavbarItem>
-
           {/* Process link */}
           {project && project.attributes.process_type === 'timeline' &&
             <ProjectNavbarItem
@@ -109,6 +98,17 @@ const ProjectNavbar = (props: Props) => {
               Process
             </ProjectNavbarItem>
           }
+
+          {/* Information link */}
+          <ProjectNavbarItem
+            to={`/projects/${projectSlug}/info`}
+            activeClassName="active"
+          >
+            <ProjectNavbarIconWrapper>
+              <ProjectNavbarIcon name="info2" />
+            </ProjectNavbarIconWrapper>
+            Information
+          </ProjectNavbarItem>
 
           {/* Ideas link */}
           {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
