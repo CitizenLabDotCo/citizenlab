@@ -21,10 +21,10 @@ nl:
       "moderator_digest": Een weekoverzicht (voor moderatoren)
       "user_digest": Een weekoverzicht (voor burgers)
     admin_campaign_type_description:
-      "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": When a user receives a reply on their comment
-      "comment_on_your_idea": When a user receives a reply on their idea
-      "admin_rights_received": When a user is given admin rights
+      "manual": Directe berichten verzonden door beheerders of moderatoren
+      "comment_on_your_comment": Wanneer een gebruiker een reactie ontvangt op een eigen reactie
+      "comment_on_your_idea": Wanneer een gebruiker een reactie ontvangt op een eigen idee
+      "admin_rights_received": Wanneer een gebruiker beheerdersrechten ontvangt
       "comment_deleted_by_admin": When an admin deletes my comment
       "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
       "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
