@@ -45,7 +45,10 @@ const HeaderContent = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 500px;
 
   &.timeline {
     margin-top: -40px;
@@ -55,16 +58,6 @@ const HeaderContent = styled.div`
     flex-direction: column;
     justify-content: flex-start;
   `}
-`;
-
-const HeaderContentLeft = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-right: 30px;
-  max-width: 500px;
 `;
 
 const ArchivedLabel = styled.span`
@@ -150,16 +143,14 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
           <HeaderOverlay />
           <ContentContainer>
             <HeaderContent className={projectType}>
-              <HeaderContentLeft>
-                {projectPublicationStatus === 'archived' &&
-                  <ArchivedLabel>
-                    <FormattedMessage {...messages.archived} />
-                  </ArchivedLabel>
-                }
-                <HeaderTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </HeaderTitle>
-              </HeaderContentLeft>
+              {projectPublicationStatus === 'archived' &&
+                <ArchivedLabel>
+                  <FormattedMessage {...messages.archived} />
+                </ArchivedLabel>
+              }
+              <HeaderTitle>
+                <T value={project.attributes.title_multiloc} />
+              </HeaderTitle>
             </HeaderContent>
           </ContentContainer>
         </Container>
