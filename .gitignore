@@ -25,3 +25,4 @@ tests_output/*
 browserstack.err
 .babel-cache/*
 .cache-loader/*
+report.html
