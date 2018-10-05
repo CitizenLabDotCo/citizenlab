@@ -98,7 +98,7 @@ export default class Banner extends PureComponent<Props> {
     } = this.props;
 
     return (
-      <Root>
+      <Root role="banner">
         <StyledContentContainer>
           <Content>
             <FormattedMessage

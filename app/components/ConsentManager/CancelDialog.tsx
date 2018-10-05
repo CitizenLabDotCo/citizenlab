@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 export default ({ onCancelBack, onCancelConfirm }) => {
   return (
-    <ContentContainer>
+    <ContentContainer role="dialog" aria-modal>
       <FormattedMessage {...messages.confirmation} tagName="h1" />
       <Spacer />
       <ButtonContainer>
