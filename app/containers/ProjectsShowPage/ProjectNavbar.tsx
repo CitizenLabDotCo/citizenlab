@@ -24,7 +24,7 @@ const ProjectNavbarWrapper = styled.nav`
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
      padding: 0;
   `};
 `;
