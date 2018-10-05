@@ -275,7 +275,7 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
                     </HeaderButtonText>
                   </HeaderButton>
 
-                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
+                  {project && project.attributes.process_type === 'continuous' && (project.attributes.participation_method === 'ideation' || project.attributes.participation_method === 'budgeting') &&
                     <HeaderButton
                       to={`/projects/${projectSlug}/ideas`}
                       activeClassName="active"

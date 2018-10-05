@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { debounce, omitBy, isNil, isEmpty, isString } from 'lodash-es';
 import { stringify } from 'qs';
@@ -32,7 +32,7 @@ type State = {
   codeModalOpened: boolean;
 };
 
-class IdeasWidget extends React.Component<Props & InjectedIntlProps, State> {
+class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
@@ -77,7 +77,12 @@ class IdeasWidget extends React.Component<Props & InjectedIntlProps, State> {
   }
 
   handleOnSubmit = (values: FormValues, { setSubmitting }) => {
-    this.setState({ widgetParams: { ...this.state.widgetParams, ...values } });
+    this.setState(({ widgetParams }) => ({
+      widgetParams: {
+        ...widgetParams,
+        ...values
+      }
+    }));
     setSubmitting(false);
   }
 
@@ -99,7 +104,12 @@ class IdeasWidget extends React.Component<Props & InjectedIntlProps, State> {
     // This is a hack to react on Formik form changes without submitting,
     // since there is no global onChange()
     // See https://github.com/jaredpalmer/formik/issues/271
-    this.debouncedSetState({ widgetParams: { ...this.state.widgetParams, ...props.values } });
+    this.debouncedSetState({
+      widgetParams: {
+        ...this.state.widgetParams,
+        ...props.values
+      }
+    });
 
     return <Form {...props} />;
   }

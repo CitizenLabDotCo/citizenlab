@@ -85,7 +85,7 @@ class Phase extends React.PureComponent<Props, State> {
             </Information>
           }
 
-          {participationMethod === 'ideation' &&
+          {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
             <IdeasWrapper>
               <IdeaCards
                 type="load-more"

@@ -25,6 +25,7 @@ type State = {
   locale: Locale | null;
   topics: ITopics | null;
   selectedValues: string[];
+  titleKey: number;
 };
 
 export default class SelectTopic extends PureComponent<Props, State> {
@@ -36,7 +37,8 @@ export default class SelectTopic extends PureComponent<Props, State> {
       currentTenant: null,
       locale: null,
       topics: null,
-      selectedValues: []
+      selectedValues: [],
+      titleKey: Math.floor(Math.random() * 10000000)
     };
     this.subscriptions = [];
   }
@@ -67,7 +69,7 @@ export default class SelectTopic extends PureComponent<Props, State> {
   }
 
   render() {
-    const { currentTenant, locale, topics, selectedValues } = this.state;
+    const { currentTenant, locale, topics, selectedValues, titleKey } = this.state;
     let options: any = [];
 
     if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
@@ -83,7 +85,7 @@ export default class SelectTopic extends PureComponent<Props, State> {
       if (options && options.length > 0) {
         return (
           <FilterSelector
-            title={<FormattedMessage {...messages.topicsTitle} />}
+            title={<FormattedMessage {...messages.topicsTitle} key={titleKey} />}
             name="topics"
             selected={selectedValues}
             values={options}

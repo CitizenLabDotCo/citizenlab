@@ -299,7 +299,10 @@ class LandingPage extends React.PureComponent<Props, State> {
 
             if (ideaParams.publish === 'true') {
               await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
-              streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+              streams.fetchAllWith({
+                dataId: [ideaParams.id],
+                apiEndpoint: [`${API_PATH}/ideas`]
+              });
             }
           }
 

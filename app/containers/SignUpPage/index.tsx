@@ -101,7 +101,7 @@ class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State>
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        window.scrollTo(0, 0);
       })
     ];
   }

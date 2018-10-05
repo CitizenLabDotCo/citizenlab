@@ -221,6 +221,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
   },
+  noBudgetingAmountErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
+    defaultMessage: 'Not a valid amount',
+  },
   defaultDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
