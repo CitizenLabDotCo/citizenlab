@@ -7,6 +7,8 @@ import { get } from 'lodash-es';
 // components
 import QuillEditor, { Props as VanillaProps } from 'components/UI/QuillEditor';
 import Label from 'components/UI/Label';
+import { Popup } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
@@ -30,6 +32,13 @@ const EditorWrapper = styled.div`
 
 const LabelWrapper = styled.div`
   display: flex;
+  align-items: flex-start;
+`;
+
+const InfoIcon = styled(Icon)`
+  cursor: pointer;
+  width: 20px;
+  margin-left: 10px;
 `;
 
 const LanguageExtension = styled(Label)`
@@ -41,6 +50,7 @@ export type InputProps = {
   id: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null;
+  infoMessage?: string;
   onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
 };
@@ -66,7 +76,7 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
   }
 
   render() {
-    const { tenantLocales, id, label, valueMultiloc, renderPerLocale, ...otherProps } = this.props;
+    const { tenantLocales, id, label, valueMultiloc, renderPerLocale, infoMessage, ...otherProps } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
 
@@ -85,6 +95,16 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
                     {tenantLocales.length > 1 &&
                       <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
                     }
+                    {infoMessage && <Popup
+                      basic
+                      trigger={
+                        <div>
+                          <InfoIcon name="info" />
+                        </div>
+                      }
+                      content={infoMessage}
+                      position="bottom left"
+                    />}
                   </LabelWrapper>
                 }
 
