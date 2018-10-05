@@ -10,7 +10,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { transparentize } from 'polished';
+import { transparentize, hideVisually } from 'polished';
 
 export const ContentContainer = styled.div`
   height: 100%;
@@ -27,8 +27,8 @@ export const ContentContainer = styled.div`
 `;
 
 const Scroll = styled.div`
-overflow-x: auto;
-margin-top: 16px;
+  overflow-x: auto;
+  margin-top: 16px;
 `;
 
 export const Spacer = styled.div`
@@ -40,6 +40,8 @@ export const ButtonContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  flex-shrink: 0;
+  margin-top: 10px;
   button {
     margin : 4px;
   }
@@ -54,6 +56,11 @@ const Block = styled.div`
   border-radius: 5px;
   background-color: ${props => transparentize(.95, props.theme.colorMain)};;
   border: 1px solid ${colors.separation};
+  margin-bottom: 10px;
+  margin-right: 10px;
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+  `}
 `;
 
 const TextContainer = styled.div`
@@ -61,6 +68,9 @@ const TextContainer = styled.div`
   p {
     color: ${colors.label}
   }
+  ${media.smallerThanMaxTablet`
+    padding: 0;
+  `}
 `;
 
 const InputContainer = styled.div`
@@ -68,6 +78,13 @@ const InputContainer = styled.div`
   justify-content: flex-start;
   flex-direction: column;
   padding-right: 0;
+  ${media.smallerThanMaxTablet`
+    margin-top: 20px;
+  `}
+`;
+
+const HiddenLabel = styled.div`
+  ${hideVisually()}
 `;
 
 const Separator = styled.span`
@@ -82,6 +99,31 @@ const Separator = styled.span`
     padding-left: 8px;
     padding-right: 8px;
   `}
+`;
+
+const StyledLabel = styled.label`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: nowrap;
+  font-size: ${fontSizes.base}px;
+  color: ${colors.label};
+  cursor: pointer;
+  font-weight: 400;
+  span {
+    margin-left: 5px;
+    margin-bottom: 4px;
+  }
+  input {
+    cursor: pointer;
+  }
+  &:focus-within, &:hover {
+    color: black;
+    input {
+      border: 1px solid hsl(0, 0%, 66%);
+    }
+  }
 `;
 
 interface Props {
@@ -107,7 +149,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
     } = this.props;
 
     return (
-      <ContentContainer>
+      <ContentContainer role="dialog" aria-modal>
         <FormattedMessage {...messages.title} tagName="h1" />
         <Scroll>
           {this.renderCategories()}
@@ -147,6 +189,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
       <Block key={category}>
         <TextContainer>
           <FormattedMessage
+            id={`${category}-label`}
             tagName="h2"
             {...messages[category]}
           />
@@ -168,23 +211,39 @@ export default class PreferencesDialog extends PureComponent<Props> {
             ))}
           </p>
         </TextContainer>
-        <InputContainer>
-          <ControlledRadio
-            isChecked={checked === true}
-            value="true"
-            label={<FormattedMessage {...messages.allow} />}
-            onChange={this.handleChange}
-            aria-label={`Allow ${category} tracking`}
-            name={category}
-          />
-          <ControlledRadio
-            isChecked={checked === false}
-            value="false"
-            label={<FormattedMessage {...messages.disallow} />}
-            onChange={this.handleChange}
-            aria-label={`Disallow ${category} tracking`}
-            name={category}
-          />
+        <InputContainer role="radiogroup" aria-labelledby={`${category}-radio`}>
+          <HiddenLabel id={`${category}-radio`}>
+            <FormattedMessage
+              {...messages.ariaRadioGroup}
+              values={{ category }}
+            />
+          </HiddenLabel>
+          <StyledLabel htmlFor={`${category}-radio-true`}>
+            <input
+              type="radio"
+              name={`${category}-radio`}
+              id={`${category}-radio-true`}
+              value="true"
+              checked={checked === true}
+              aria-checked={checked === true}
+              onChange={this.handleChange}
+              required
+            />
+            <FormattedMessage {...messages.allow} />
+          </StyledLabel>
+          <StyledLabel htmlFor={`${category}-radio-false`}>
+            <input
+              type="radio"
+              name={`${category}-radio`}
+              id={`${category}-radio-false`}
+              value="false"
+              checked={checked === false}
+              aria-checked={checked === false}
+              onChange={this.handleChange}
+              required
+            />
+            <FormattedMessage {...messages.disallow} />
+          </StyledLabel>
         </InputContainer>
       </Block>
     );

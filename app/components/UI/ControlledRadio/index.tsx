@@ -44,6 +44,7 @@ const Text = styled.div`
 
 const HiddenInput = styled.input`
   display: none;
+  position: absolute;
 `;
 
 export interface Props {
