@@ -89,9 +89,13 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
     }
   }
 
-  handleSubmitForm = (id) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
-    updateGroup(id, { ...values }).then(() => {
-      streams.fetchAllActiveStreamsWithEndpoint(`${API_PATH}/users`);
+  handleSubmitForm = (groupId: string) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
+    updateGroup(groupId, { ...values }).then(() => {
+      streams.fetchAllWith({
+        dataId: [groupId],
+        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+        onlyFetchActiveStreams: true
+      });
       this.closeGroupEditionModal();
     }).catch((errorResponse) => {
       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
@@ -126,7 +130,10 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
 
         try {
           await Promise.all(promises);
-          await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+          await streams.fetchAllWith({
+            dataId: [groupId],
+            apiEndpoint: [`${API_PATH}/groups`]
+          });
         } catch (error) {
           eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
         }

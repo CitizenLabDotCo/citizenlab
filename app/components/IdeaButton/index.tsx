@@ -57,17 +57,17 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
         phaseId$
       ).pipe(
         switchMap(([projectId, phaseId]) => {
-          const phaseObservable: Observable<IPhase | undefined> = (phaseId ? phaseStream(phaseId).observable : of(undefined));
+          const phase$: Observable<IPhase | undefined> = (phaseId ? phaseStream(phaseId).observable : of(undefined));
 
-          return phaseObservable.pipe(
+          return phase$.pipe(
             map((phase) => ({
               phase,
               projectId: (phase ? phase.data.relationships.project.data.id : projectId)
             })),
             switchMap(({ projectId, phase }) => {
-              const projectObservable: Observable<IProject | undefined> = (projectId ? projectByIdStream(projectId).observable : of(undefined));
+              const project$: Observable<IProject | undefined> = (projectId ? projectByIdStream(projectId).observable : of(undefined));
 
-              return projectObservable.pipe(
+              return project$.pipe(
                 map(project => ({ project, phase }))
               );
             })

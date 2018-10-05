@@ -91,7 +91,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props) {
     super(props);
     this.state = {
       phase: null,
@@ -192,49 +192,25 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
     eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
   }
 
-  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    let { attributeDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service, budgetingAmount, budgetingCurrency } = participationContextConfig;
-
-    attributeDiff = {
-      ...attributeDiff,
-      survey_embed_url,
-      survey_service,
-      participation_method: participationMethod,
-      posting_enabled: postingEnabled,
-      commenting_enabled: commentingEnabled,
-      voting_enabled: votingEnabled,
-      voting_method: votingMethod,
-      voting_limited_max: votingLimit,
-      max_budget: budgetingAmount,
-      currency: budgetingCurrency,
-      presentation_mode: presentationMode
+  getAttributeDiff = (participationContextConfig: IParticipationContextConfig) => {
+    const attributeDiff: IUpdatedPhaseProperties = {
+      ...this.state.attributeDiff,
+      ...participationContextConfig
     };
 
-    this.setState({ attributeDiff });
+    return attributeDiff;
+  }
+
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+    this.setState({
+      attributeDiff: this.getAttributeDiff(participationContextConfig)
+    });
   }
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
-    let { attributeDiff } = this.state;
     const { phase, project } = this.state;
     const { projectId } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode, budgetingAmount, budgetingCurrency } = participationContextConfig;
-
-    attributeDiff = {
-      ...attributeDiff,
-      survey_embed_url,
-      survey_service,
-      participation_method: participationMethod,
-      posting_enabled: postingEnabled,
-      commenting_enabled: commentingEnabled,
-      voting_enabled: votingEnabled,
-      voting_method: votingMethod,
-      voting_limited_max: votingLimit,
-      max_budget: budgetingAmount,
-      currency: budgetingCurrency,
-      presentation_mode: presentationMode
-    };
-
+    const attributeDiff = this.getAttributeDiff(participationContextConfig);
     this.save(projectId, project, phase, attributeDiff);
   }
 
@@ -244,7 +220,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
         let savedPhase = phase;
 
         if (phase) {
-          savedPhase = await updatePhase(phase.data.id, attributeDiff);
+          savedPhase = await updatePhase(phase.data.id, { max_budget: 980 });
         } else if (project && projectId) {
           savedPhase = await addPhase(project.data.id, attributeDiff);
         }

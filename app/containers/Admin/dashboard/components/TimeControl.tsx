@@ -78,6 +78,13 @@ type State  = {
 };
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTime: undefined
+    };
+  }
+
   static getDerivedStateFromProps(nextProps: Props & InjectedIntlProps, _prevState: State) {
     const getCurrentTime = () => {
       const { currentTime, interval } = nextProps;

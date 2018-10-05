@@ -186,7 +186,12 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
         deleteUser(user.id).then(() => {
-          setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 2000);
+          setTimeout(() => {
+            streams.fetchAllWith({
+              dataId: [user.id],
+              apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
+            });
+          }, 2000);
         }).catch(() => {
           eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });

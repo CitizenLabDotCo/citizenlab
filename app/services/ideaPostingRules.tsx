@@ -3,12 +3,12 @@ import { IProjectData } from './projects';
 import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-type ButtonStateResponse  = {
-  show: boolean;
-  enabled: boolean;
-};
+interface IPostingButtonStateInput {
+  project?: IProjectData | null | Error;
+  phase?: IPhaseData | null | Error;
+}
 
-export const postingButtonState = ({ project, phase }: {project?: IProjectData | null | Error, phase?: IPhaseData | null | Error}): ButtonStateResponse => {
+export const postingButtonState = ({ project, phase }: IPostingButtonStateInput) => {
   if (!isNil(phase) && !isError(phase)) {
     const inCurrentPhase = (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
 
