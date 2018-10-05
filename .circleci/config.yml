@@ -159,6 +159,19 @@ jobs:
           environment:
             NODE_ENV: staging
 
+  test_lighthouse:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+        user: pptruser
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      - run:
+          command: npx lighthouse-ci https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+      - store_artifacts:
+          path: /tmp/report.html
+          destination: lighthouse
+
 workflows:
   version: 2
   build-and-deploy:
