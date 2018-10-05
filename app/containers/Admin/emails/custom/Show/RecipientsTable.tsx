@@ -48,7 +48,7 @@ class RecipientsTable extends React.PureComponent<Props> {
                   <TextCell>
                     <Avatar
                       userId={user.id}
-                      size="small"
+                      size="30px"
                     />
                   </TextCell>
                   <TextCell>
