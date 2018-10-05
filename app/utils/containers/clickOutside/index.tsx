@@ -20,6 +20,7 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.container = null;
     document.removeEventListener('click', this.handle, true);
     document.removeEventListener('keydown', this.handle, true);
   }
@@ -34,7 +35,11 @@ export default class ClickOutside extends PureComponent<Props, State> {
 
     // Click outside to close
     if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
-      setTimeout(() => onClickOutside(event), 10);
+      setTimeout(() => {
+        if (this.container) {
+          onClickOutside(event);
+        }
+      }, 10);
     }
   }
 

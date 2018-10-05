@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, filter, distinctUntilChanged } from 'rxjs/operators';
-import { isEmpty, get, forOwn } from 'lodash-es';
+import { isEmpty, get, forOwn, isString } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -160,13 +160,13 @@ interface State {
   deleteError: string | null;
 }
 
-class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, State> {
   projectId$: BehaviorSubject<string | null>;
   processing$: BehaviorSubject<boolean>;
   subscriptions: Subscription[] = [];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       loading: true,
       processing: false,
@@ -316,26 +316,13 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   }
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    this.setState((state) => {
-      const { projectAttributesDiff } = state;
-      const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_service, survey_embed_url } = participationContextConfig;
-      const newprojectAttributesDiff: IUpdatedProjectProperties = {
-        ...projectAttributesDiff,
-        survey_service,
-        survey_embed_url,
-        participation_method: participationMethod,
-        posting_enabled: postingEnabled,
-        commenting_enabled: commentingEnabled,
-        voting_enabled: votingEnabled,
-        voting_method: votingMethod,
-        voting_limited_max: votingLimit
-      };
-
-      return {
+    this.setState((state) => ({
         submitState: 'enabled',
-        projectAttributesDiff: newprojectAttributesDiff
-      };
-    });
+        projectAttributesDiff: {
+          ...state.projectAttributesDiff,
+          ...participationContextConfig
+        }
+    }));
   }
 
   handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
@@ -429,7 +416,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }));
   }
 
-  onSubmit = (event: React.FormEvent<any>) => {
+  onSubmit = (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { projectType } = this.state;
@@ -483,25 +470,11 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
   save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
-      let { projectAttributesDiff } = this.state;
       const { projectData, oldProjectImages, newProjectImages } = this.state;
-
-      if (participationContextConfig) {
-        const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_service, survey_embed_url } = participationContextConfig;
-
-        projectAttributesDiff = {
-          ...projectAttributesDiff,
-          survey_service,
-          survey_embed_url,
-          participation_method: participationMethod,
-          posting_enabled: postingEnabled,
-          commenting_enabled: commentingEnabled,
-          voting_enabled: votingEnabled,
-          voting_method: votingMethod,
-          voting_limited_max: votingLimit,
-          presentation_mode: presentationMode
-        };
-      }
+      const projectAttributesDiff: IUpdatedProjectProperties = {
+        ...this.state.projectAttributesDiff,
+        ...participationContextConfig
+      };
 
       try {
         this.setState({ saved: false });
@@ -527,29 +500,34 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
         if (!isEmpty(projectAttributesDiff)) {
           if (projectData) {
             await updateProject(projectData.data.id, projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
+            streams.fetchAllWith({ dataId: [projectData.data.id] });
           } else {
             const project = await addProject(projectAttributesDiff);
-            streams.fetchAllStreamsWithEndpoint(`${API_PATH}/projects`);
             projectId = project.data.id;
             redirect = true;
           }
         }
 
-        if (projectId && imagesToAdd && imagesToAdd.length > 0) {
-          imagesToAddPromises = imagesToAdd.map((imageToAdd: any) => addProjectImage(projectId as string, imageToAdd.base64));
+        if (isString(projectId) && imagesToAdd && imagesToAdd.length > 0) {
+          imagesToAddPromises = imagesToAdd.filter((imageToAdd) => {
+            return (imageToAdd && isString(imageToAdd.base64));
+          }).map((imageToAdd: ImageFile) => {
+            return addProjectImage(projectId as string, imageToAdd.base64 as string);
+          });
         }
 
-        if (projectId && imagesToRemove && imagesToRemove.length > 0) {
-          imagesToRemovePromises = imagesToRemove.map((imageToRemove: any) => deleteProjectImage(projectId as string, imageToRemove.projectImageId));
+        if (isString(projectId) && imagesToRemove && imagesToRemove.length > 0) {
+          imagesToRemovePromises = imagesToRemove.filter((imageToRemove) => {
+            return (imageToRemove && isString(imageToRemove['projectImageId']));
+          }).map((imageToRemove: ImageFile) => {
+            return deleteProjectImage(projectId as string, imageToRemove['projectImageId']);
+          });
         }
 
-        if (imagesToAddPromises.length > 0 || imagesToRemovePromises.length > 0) {
-          await Promise.all([
-            ...imagesToAddPromises,
-            ...imagesToRemovePromises
-          ]);
-        }
+        await Promise.all([
+          ...imagesToAddPromises,
+          ...imagesToRemovePromises
+        ]);
 
         if (redirect) {
           clHistory.push('/admin/projects');
@@ -566,7 +544,7 @@ class AdminProjectEditGeneral extends React.PureComponent<Props & InjectedIntlPr
     }
   }
 
-  deleteProject = async (event) => {
+  deleteProject = async (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { projectData } = this.state;

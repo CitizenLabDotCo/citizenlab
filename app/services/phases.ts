@@ -23,6 +23,8 @@ export interface IPhaseData {
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
     presentation_mode: 'card' | 'map';
+    max_budget?: number;
+    currency?: string;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
   };

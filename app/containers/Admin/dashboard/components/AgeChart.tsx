@@ -122,4 +122,4 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl(withTheme<Props & InjectedIntlProps, State>(AgeChart));
+export default injectIntl<Props>(withTheme(AgeChart) as any);

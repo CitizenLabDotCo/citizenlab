@@ -15,9 +15,12 @@ import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -34,6 +37,20 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
+
+const IdeaBudget = styled.div`
+  color: #FC3C2D;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
+  font-weight: 500;
+  padding: 10px 12px;
+  position: absolute;
+  top: 15px;
+  left: 19px;
+  border-radius: 5px;
+  border: solid 1px #FC3C2D;
+  background: #fff;
+`;
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
@@ -55,6 +72,10 @@ const IdeaContent = styled.div`
   flex-grow: 1;
   padding: 20px;
   padding-top: 15px;
+
+  &.extraTopPadding {
+    padding-top: 80px;
+  }
 `;
 
 const IdeaTitle: any = styled.h3`
@@ -167,9 +188,12 @@ export interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -221,16 +245,25 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, project, locale, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNilOrError(idea)) {
+    if (!isNilOrError(locale) && !isNilOrError(idea)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
+      let ideaBudget: JSX.Element | null = null;
+
+      console.log(idea);
+
+      if (!isNilOrError(project) && project.attributes.currency && idea.attributes.budget) {
+        const currency = project.attributes.currency;
+        const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
+        ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
+      }
 
       const className = `${this.props['className']}
         e2e-idea-card
@@ -251,7 +284,9 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </IdeaImageContainer>
             }
 
-            <IdeaContent>
+            {ideaBudget}
+
+            <IdeaContent className={(ideaImageUrl === null && ideaBudget !== null) ? 'extraTopPadding' : ''}>
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
@@ -308,9 +343,12 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
   ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
+  project: ({ idea, render }) => <GetProject id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.project.data, 'id', null) : null}>{render}</GetProject>,
+  // phase: ({ idea, render }) => <GetPhase id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.phases[0].data, 'id', null) : null}>{render}</GetPhase>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);
