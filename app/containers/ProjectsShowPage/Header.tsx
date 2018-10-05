@@ -2,11 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import Link from 'utils/cl-router/Link';
-
 // components
-import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
 
 // resources
@@ -71,18 +67,6 @@ const HeaderContentLeft = styled.div`
   max-width: 500px;
 `;
 
-const HeaderContentRight = styled.div`
-  ${media.biggerThanMinTablet`
-    display: flex;
-    align-items: center;
-    justify-content: right;
-  `}
-
-  ${media.smallerThanMinTablet`
-    margin-top: 20px;
-  `}
-`;
-
 const ArchivedLabel = styled.span`
   flex-grow: 0;
   flex-shrink: 1;
@@ -113,74 +97,6 @@ const HeaderTitle = styled.div`
     font-size: ${fontSizes.xxxl}px;
     line-height: 36px;
   `}
-`;
-
-const HeaderButtons = styled.div`
-  min-width: 220px;
-`;
-
-const HeaderButtonIconWrapper = styled.div`
-  width: 22px;
-  height: 17px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HeaderButtonIcon = styled(Icon)`
-  fill: rgba(255, 255, 255, 0.6);
-  transition: fill 100ms ease-out;
-`;
-
-const HeaderButtonText = styled.div`
-  color: rgba(255, 255, 255, 0.6);
-  font-size: ${fontSizes.medium}px;
-  font-weight: 400;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 100ms ease-out;
-`;
-
-const HeaderButton = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 5px;
-  padding: 14px 22px;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.6);
-  border: solid 1px rgba(255, 255, 255, 0.2);
-  transition: all 100ms ease-out;
-
-  &.active {
-    background: #fff;
-    border-color: #fff;
-
-    ${HeaderButtonIcon} {
-      fill: #333;
-    }
-
-    ${HeaderButtonText} {
-      color: #333;
-    }
-  }
-
-  &:not(.active):hover {
-    text-decoration: none;
-    background: #000;
-    border-color: #fff;
-
-    ${HeaderButtonIcon} {
-      fill: #fff;
-    }
-
-    ${HeaderButtonText} {
-      color: #fff;
-    }
-  }
 `;
 
 const HeaderOverlay = styled.div`
@@ -220,15 +136,13 @@ interface State {}
 
 class ProjectsShowPage extends React.PureComponent<Props, State> {
   render() {
-    const { project, events } = this.props;
+    const { project } = this.props;
 
     if (!isNilOrError(project)) {
       const className = this.props['className'];
-      const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
       const projectPublicationStatus = project.attributes.publication_status;
-      const hasEvents = (events && events.length > 0);
 
       return (
         <Container className={`${className ? className : ''} ${projectType}`}>
@@ -246,78 +160,6 @@ class ProjectsShowPage extends React.PureComponent<Props, State> {
                   <T value={project.attributes.title_multiloc} />
                 </HeaderTitle>
               </HeaderContentLeft>
-
-              <HeaderContentRight>
-                <HeaderButtons>
-                  {project && project.attributes.process_type === 'timeline' &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/process`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="timeline" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navProcess} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  <HeaderButton
-                    to={`/projects/${projectSlug}/info`}
-                    activeClassName="active"
-                  >
-                    <HeaderButtonIconWrapper>
-                      <HeaderButtonIcon name="info2" />
-                    </HeaderButtonIconWrapper>
-                    <HeaderButtonText>
-                      <FormattedMessage {...messages.navInformation} />
-                    </HeaderButtonText>
-                  </HeaderButton>
-
-                  {project && project.attributes.process_type === 'continuous' && (project.attributes.participation_method === 'ideation' || project.attributes.participation_method === 'budgeting') &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/ideas`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="idea" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navIdeas} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/survey`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="survey" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navSurvey} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  {hasEvents &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/events`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="calendar" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navEvents} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-                </HeaderButtons>
-              </HeaderContentRight>
             </HeaderContent>
           </ContentContainer>
         </Container>
