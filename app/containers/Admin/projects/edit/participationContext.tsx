@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { isFinite, isEqual } from 'lodash-es';
+import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 
 // components
 import Input from 'components/UI/Input';
@@ -66,15 +66,15 @@ const VotingLimitInput = styled(Input)`
 `;
 
 export interface IParticipationContextConfig {
-  participationMethod: ParticipationMethod;
-  postingEnabled: boolean | null;
-  commentingEnabled: boolean | null;
-  votingEnabled: boolean | null;
-  votingMethod: 'unlimited' | 'limited' | null;
-  votingLimit: number | null;
-  presentationMode: 'map' | 'card' | null;
-  budgetingAmount: number | null;
-  budgetingCurrency: string | null;
+  participation_method: ParticipationMethod;
+  posting_enabled?: boolean | null;
+  commenting_enabled?: boolean | null;
+  voting_enabled?: boolean | null;
+  voting_method?: 'unlimited' | 'limited' | null;
+  voting_limited_max?: number | null;
+  presentation_mode?: 'map' | 'card' | null;
+  max_budget?: number | null;
+  currency?: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -88,26 +88,30 @@ type Props = {
 
 interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
+  noBudgetingAmount: JSX.Element | null;
   loaded: boolean;
 }
 
-export default class ParticipationContext extends React.PureComponent<Props, State> {
+export default class ParticipationContext extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      participationMethod: 'ideation',
-      postingEnabled: true,
-      commentingEnabled: true,
-      votingEnabled: true,
-      votingMethod: 'unlimited',
-      votingLimit: 5,
-      noVotingLimit: null,
-      budgetingAmount: null,
-      budgetingCurrency: null,
+      participation_method: 'ideation',
+      posting_enabled: true,
+      commenting_enabled: true,
+      voting_enabled: true,
+      voting_method: 'unlimited',
+      voting_limited_max: 5,
+      presentation_mode: 'card',
+      max_budget: null,
+      currency: null,
+      survey_service: null,
+      survey_embed_url: null,
       loaded: false,
-      presentationMode: 'card'
+      noVotingLimit: null,
+      noBudgetingAmount: null
     };
     this.subscriptions = [];
   }
@@ -125,7 +129,21 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.subscriptions = [
       data$.subscribe((data) => {
         if (data) {
+          const participation_method = data.data.attributes.participation_method as ParticipationMethod;
           const {
+            posting_enabled,
+            commenting_enabled,
+            voting_enabled,
+            voting_method,
+            voting_limited_max,
+            presentation_mode,
+            max_budget,
+            currency,
+            survey_embed_url,
+            survey_service,
+          } = data.data.attributes;
+
+          this.setState({
             participation_method,
             posting_enabled,
             commenting_enabled,
@@ -133,20 +151,10 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
             voting_method,
             voting_limited_max,
             presentation_mode,
+            max_budget,
+            currency,
             survey_embed_url,
             survey_service,
-          } = data.data.attributes;
-
-          this.setState({
-            survey_embed_url,
-            survey_service,
-            participationMethod: participation_method as ParticipationMethod,
-            postingEnabled: posting_enabled,
-            commentingEnabled: commenting_enabled,
-            votingEnabled: voting_enabled,
-            votingMethod: voting_method,
-            votingLimit: voting_limited_max,
-            presentationMode: presentation_mode,
             loaded: true
           });
         } else {
@@ -165,25 +173,55 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
   }
 
   getOutput = () => {
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service, budgetingAmount, budgetingCurrency } = this.state;
-    return {
-      participationMethod,
-      postingEnabled: (participationMethod === 'ideation' ? postingEnabled : null),
-      commentingEnabled: (participationMethod === 'ideation' ? commentingEnabled : null),
-      votingEnabled: (participationMethod === 'ideation' ? votingEnabled : null),
-      votingMethod: (participationMethod === 'ideation' ? votingMethod : null),
-      votingLimit: (participationMethod === 'ideation' && votingMethod === 'limited' ? votingLimit : null),
-      presentationMode: (participationMethod === 'ideation' ? presentationMode : null),
-      survey_embed_url: (participationMethod === 'survey' ? survey_embed_url : null),
-      survey_service: (participationMethod === 'survey' ? survey_service : null),
-      budgetingAmount: (participationMethod === 'budgeting' ? budgetingAmount : null),
-      budgetingCurrency: (participationMethod === 'budgeting' ? budgetingCurrency : null),
-    };
+    const {
+      participation_method,
+      posting_enabled,
+      commenting_enabled,
+      voting_enabled,
+      voting_method,
+      voting_limited_max,
+      presentation_mode,
+      max_budget,
+      currency,
+      survey_embed_url,
+      survey_service
+    } = this.state;
+    let output: IParticipationContextConfig = {} as any;
+
+    if (participation_method === 'information') {
+      output = {
+        participation_method
+      };
+    } else if (participation_method === 'ideation') {
+      output = omitBy({
+        participation_method,
+        posting_enabled,
+        commenting_enabled,
+        voting_enabled,
+        presentation_mode,
+        voting_method: (voting_enabled ? voting_method : null),
+        voting_limited_max: (voting_enabled && voting_method === 'limited' ? voting_limited_max : null)
+      }, isNil) as IParticipationContextConfig;
+    } else if (participation_method === 'survey') {
+      output = {
+        participation_method,
+        survey_embed_url,
+        survey_service
+      };
+    } else if (participation_method === 'budgeting') {
+      output = {
+        participation_method,
+        max_budget,
+        currency
+      };
+    }
+
+    return output;
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { noVotingLimit: prevNoVotingLimit , loaded: prevLoaded, ...prevPartialState } = prevState;
-    const { noVotingLimit: nextNoVotingLimit, loaded: nextLoaded, ...nextPartialState } = this.state;
+    const { noVotingLimit: prevNoVotingLimit, noBudgetingAmount: prevNoBudgetingAmount, loaded: prevLoaded, ...prevPartialState } = prevState;
+    const { noVotingLimit: nextNoVotingLimit, noBudgetingAmount: nextNoBudgetingAmount, loaded: nextLoaded, ...nextPartialState } = this.state;
 
     if (!isEqual(prevPartialState, nextPartialState)) {
       const output = this.getOutput();
@@ -195,19 +233,19 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleParticipationMethodOnChange = (participationMethod: ParticipationMethod) => {
+  handleParticipationMethodOnChange = (participation_method: ParticipationMethod) => {
     this.setState({
-      participationMethod,
-      postingEnabled: (participationMethod === 'ideation' ? true : null),
-      commentingEnabled: (participationMethod === 'ideation' ? true : null),
-      votingEnabled: (participationMethod === 'ideation' ? true : null),
-      votingMethod: (participationMethod === 'ideation' ? 'unlimited' : null),
-      votingLimit: null,
-      presentationMode: (participationMethod === 'ideation' ? 'card' : null),
+      participation_method,
+      posting_enabled: (participation_method === 'ideation' ? true : null),
+      commenting_enabled: (participation_method === 'ideation' ? true : null),
+      voting_enabled: (participation_method === 'ideation' ? true : null),
+      voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
+      voting_limited_max: null,
+      presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
-      survey_service: (participationMethod === 'survey' ? 'typeform' : null),
-      budgetingAmount: (participationMethod === 'budgeting' ? 1000 : null),
-      budgetingCurrency: (participationMethod === 'budgeting' ? 'EUR' : null)
+      survey_service: (participation_method === 'survey' ? 'typeform' : null),
+      max_budget: (participation_method === 'budgeting' ? 1000 : null),
+      currency: (participation_method === 'budgeting' ? 'EUR' : null)
     });
   }
 
@@ -220,52 +258,56 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
   }
 
   togglePostingEnabled = () => {
-    this.setState((state: State) => ({ postingEnabled: !state.postingEnabled }));
+    this.setState((state) => ({ posting_enabled: !state.posting_enabled }));
   }
 
   toggleCommentingEnabled = () => {
-    this.setState((state: State) => ({ commentingEnabled: !state.commentingEnabled }));
+    this.setState((state) => ({ commenting_enabled: !state.commenting_enabled }));
   }
 
   toggleVotingEnabled = () => {
-    this.setState((state: State) => ({ votingEnabled: !state.votingEnabled }));
+    this.setState((state) => ({ voting_enabled: !state.voting_enabled }));
   }
 
-  handeVotingMethodOnChange = (votingMethod: 'unlimited' | 'limited') => {
+  handeVotingMethodOnChange = (voting_method: 'unlimited' | 'limited') => {
     this.setState({
-      votingMethod,
-      votingLimit: (votingMethod === 'unlimited' ? null : 5)
+      voting_method,
+      voting_limited_max: (voting_method === 'unlimited' ? null : 5)
     });
   }
 
-  handleVotingLimitOnChange = (votingLimit: string) => {
-    this.setState({ votingLimit: parseInt(votingLimit, 10) });
+  handleVotingLimitOnChange = (voting_limited_max: string) => {
+    this.setState({ voting_limited_max: parseInt(voting_limited_max, 10), noVotingLimit: null });
   }
 
-  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
-    this.setState({ presentationMode });
+  handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
+    this.setState({ presentation_mode });
   }
 
-  handleBudgetingAmountChange = (amount: string) => {
-    this.setState({ budgetingAmount: parseInt(amount, 10) });
+  handleBudgetingAmountChange = (max_budget: string) => {
+    this.setState({ max_budget: parseInt(max_budget, 10), noBudgetingAmount: null });
   }
 
   handleBudgetingCurrencyChange = (budgetingCurrencyOption: IOption) => {
-    const budgetingCurrency = budgetingCurrencyOption.value as string;
-    this.setState({ budgetingCurrency });
+    const currency = budgetingCurrencyOption.value as string;
+    this.setState({ currency });
   }
 
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
-    const { votingMethod, votingLimit } = this.state;
+    let noBudgetingAmount: JSX.Element | null = null;
+    const { voting_method, voting_limited_max, participation_method, max_budget } = this.state;
 
-    if (votingMethod === 'limited' && (!votingLimit || !isFinite(votingLimit) || votingLimit < 1)) {
+    if (voting_method === 'limited' && (!voting_limited_max || !isFinite(voting_limited_max) || voting_limited_max < 1)) {
       noVotingLimit = <FormattedMessage {...messages.noVotingLimitErrorMessage} />;
+      isValidated = false;
+    } else if (participation_method === 'budgeting' && !(parseInt(max_budget as any, 10) > 0)) {
+      noBudgetingAmount = <FormattedMessage {...messages.noBudgetingAmountErrorMessage} />;
       isValidated = false;
     }
 
-    this.setState({ noVotingLimit });
+    this.setState({ noVotingLimit, noBudgetingAmount });
 
     return isValidated;
   }
@@ -273,42 +315,26 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
   render() {
     const className = this.props['className'];
     const {
-      participationMethod,
-      postingEnabled,
-      commentingEnabled,
-      votingEnabled,
-      loaded,
-      survey_service,
+      participation_method,
+      posting_enabled,
+      commenting_enabled,
+      voting_enabled,
+      voting_method,
+      voting_limited_max,
+      presentation_mode,
+      max_budget,
+      currency,
       survey_embed_url,
-      votingMethod,
-      votingLimit,
+      survey_service,
+      loaded,
       noVotingLimit,
-      budgetingAmount,
-      budgetingCurrency,
-      presentationMode
+      noBudgetingAmount,
     } = this.state;
     const currencyCodes = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BOV', 'BRL', 'BSD', 'BTN', 'BWP', 'BYR', 'BZD', 'CAD', 'CDF', 'CHE', 'CHF', 'CHW', 'CLF', 'CLP', 'CNY', 'COP', 'COU', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'IQD', 'IRR', 'ISK', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MXV', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'SSP', 'STD', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'USN', 'USS', 'UYI', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XCD', 'XDR', 'XFU', 'XOF', 'XPD', 'XPF', 'XPT', 'XTS', 'XXX', 'YER', 'ZAR', 'ZMW'];
     const currencyCodeOptions = currencyCodes.map((currencyCode) => ({
       value: currencyCode,
       label: currencyCode
     }));
-
-    const votingLimitSection = (participationMethod === 'ideation' && votingMethod === 'limited') ? (
-      <>
-        <Label htmlFor="voting-title">
-          <FormattedMessage {...messages.votingLimit} />
-        </Label>
-        <VotingLimitInput
-          id="voting-limit"
-          type="number"
-          min="1"
-          placeholder=""
-          value={(votingLimit ? votingLimit.toString() : null)}
-          onChange={this.handleVotingLimitOnChange}
-        />
-        {/* <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} /> */}
-      </>
-    ) : null;
 
     if (loaded) {
       return (
@@ -321,7 +347,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               {['ideation', 'information'].map((method) => (
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participationMethod}
+                  currentValue={participation_method}
                   value={method}
                   name="participationmethod"
                   id={`participationmethod-${method}`}
@@ -332,7 +358,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               <FeatureFlag name="surveys">
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participationMethod}
+                  currentValue={participation_method}
                   value="survey"
                   name="participationmethod"
                   id={'participationmethod-survey'}
@@ -342,7 +368,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               {/* <FeatureFlag name="participatory_budgeting"> */}
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participationMethod}
+                  currentValue={participation_method}
                   value="budgeting"
                   name="participationmethod"
                   id={'participationmethod-budgeting'}
@@ -351,7 +377,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               {/* </FeatureFlag> */}
             </SectionField>
 
-            {participationMethod === 'budgeting' &&
+            {participation_method === 'budgeting' &&
               <>
                 <SectionField>
                   <Label>
@@ -362,22 +388,25 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     type="number"
                     min="1"
                     placeholder=""
-                    value={(budgetingAmount ? budgetingAmount.toString() : null)}
+                    value={(max_budget ? max_budget.toString() : null)}
                   />
+                  <Error text={noBudgetingAmount} />
+                </SectionField>
+                <SectionField>
                   <Label>
                     <FormattedMessage {...messages.amountPerCitizen} />
                   </Label>
                   <Select
                     options={currencyCodeOptions}
                     onChange={this.handleBudgetingCurrencyChange}
-                    value={{ label: budgetingCurrency as string, value: budgetingCurrency }}
+                    value={{ label: currency as string, value: currency }}
                     clearable={false}
                   />
                 </SectionField>
               </>
             }
 
-            {participationMethod === 'ideation' &&
+            {participation_method === 'ideation' &&
               <>
                 <StyledSectionField>
                   <Label>
@@ -388,31 +417,31 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <ToggleLabel>
                       <FormattedMessage {...messages.postingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={postingEnabled as boolean} onChange={this.togglePostingEnabled} />
+                    <Toggle value={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
                   </ToggleRow>
 
                   <ToggleRow>
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={commentingEnabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                   </ToggleRow>
 
                   <ToggleRow className="last">
                     <ToggleLabel>
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={votingEnabled as boolean} onChange={this.toggleVotingEnabled} />
+                    <Toggle value={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
                   </ToggleRow>
                 </StyledSectionField>
-                {votingEnabled &&
+                {voting_enabled &&
                   <SectionField>
                     <Label>
                       <FormattedMessage {...messages.votingMethod} />
                     </Label>
                     <Radio
                       onChange={this.handeVotingMethodOnChange}
-                      currentValue={votingMethod}
+                      currentValue={voting_method}
                       value="unlimited"
                       name="votingmethod"
                       id="votingmethod-unlimited"
@@ -420,14 +449,28 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     />
                     <Radio
                       onChange={this.handeVotingMethodOnChange}
-                      currentValue={votingMethod}
+                      currentValue={voting_method}
                       value="limited"
                       name="votingmethod"
                       id="votingmethod-limited"
                       label={<FormattedMessage {...messages.limited} />}
                     />
-                    {votingLimitSection}
-                    <Error text={noVotingLimit} />
+                    {participation_method === 'ideation' && voting_method === 'limited' &&
+                      <>
+                        <Label htmlFor="voting-title">
+                          <FormattedMessage {...messages.votingLimit} />
+                        </Label>
+                        <VotingLimitInput
+                          id="voting-limit"
+                          type="number"
+                          min="1"
+                          placeholder=""
+                          value={(voting_limited_max ? voting_limited_max.toString() : null)}
+                          onChange={this.handleVotingLimitOnChange}
+                        />
+                        <Error text={noVotingLimit} />
+                      </>
+                    }
                   </SectionField>
                 }
                 <SectionField>
@@ -438,7 +481,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
                     <Radio
                       key={key}
                       onChange={this.handleIdeasDisplayChange}
-                      currentValue={presentationMode}
+                      currentValue={presentation_mode}
                       value={key}
                       name="presentation_mode"
                       id={`presentation_mode-${key}`}
@@ -449,7 +492,7 @@ export default class ParticipationContext extends React.PureComponent<Props, Sta
               </>
             }
 
-            {participationMethod === 'survey' &&
+            {participation_method === 'survey' &&
               <>
                 <SectionField>
                   <Label>

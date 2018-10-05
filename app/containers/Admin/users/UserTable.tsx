@@ -101,7 +101,12 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
         ];
       }
       updateUser(user.id, { roles: newRoles }).then(() => {
-        setTimeout(() => streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`), 2000);
+        setTimeout(() => {
+          streams.fetchAllWith({
+            dataId: [user.id],
+            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
+          });
+        }, 2000);
       });
     }
   }

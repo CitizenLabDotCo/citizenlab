@@ -346,6 +346,7 @@
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "Moderatorer ikke fundet",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Moderationsrettigheder giver nogen der ikke er administrator, rettigheder til at ændre projektindstillingerne og moderere ideer og kommentarer som hører til projektet. Administratorer har altid moderationsrettigheder for alle projekter.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Hvem kan moderere dette projekt?",
+  "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Vælg venligst et sidehovedbillede for projektet",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Indtast venligst en projekttitel",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Indtast venligst en projekttitel",

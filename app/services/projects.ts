@@ -34,6 +34,8 @@ export interface IProjectData {
     presentation_mode: PresentationMode;
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
+    max_budget?: number;
+    currency?: string;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
@@ -73,6 +75,8 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
+  max_budget?: number | null;
+  currency?: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -109,8 +113,10 @@ export function reorderProject(projectId: IProjectData['id'], newOrder: number) 
   return streams.update<IProject>(`${apiEndpoint}/${projectId}/reorder`, projectId, { project: { ordering: newOrder } });
 }
 
-export function deleteProject(projectId: string) {
-  return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+export async function deleteProject(projectId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
 export function getProjectUrl(project: IProjectData) {
