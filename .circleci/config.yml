@@ -210,6 +210,12 @@ workflows:
           filters:
             branches:
               only: master
+      - test_lighthouse:
+          requires:
+            - deploy_demo
+          filters:
+            branches:
+              only: master
       - deploy_production:
           filters:
             branches:
