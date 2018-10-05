@@ -39,13 +39,31 @@ namespace :cl2_back do
         user_custom_fields: {
           enabled: true,
           allowed: true
-        }
+        },
+        clustering: {
+          enabled: true,
+          allowed: true
+        },
+        widgets: {
+          enabled: true,
+          allowed: true
+        },
+        manual_emailing: {
+          enabled: true,
+          allowed: true
+        },
+        automated_emailing_control: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 
     Apartment::Tenant.switch tenant.schema_name do
       TenantTemplateService.new.apply_template('en_tenant_template')
     end
+
+    SideFxTenantService.new.after_create(tenant, nil)
 
   end
 end
