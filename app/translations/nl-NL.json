@@ -346,6 +346,7 @@
   "app.containers.AdminPage.ProjectEdit.moderatorsNotFound": "Moderatoren niet gevonden",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Door hier moderatorrechten te geven aan iemand die geen beheerder is van het platform, geef je die persoon het recht om de settings van alleen dit project te beheren en om ideeën te beheren binnen enkel dit project. Alleen Beheerders hebben moderatorrechten in alle projecten op het platform.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Wie heeft moderatorrechten voor dit project? ",
+  "app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage": "",
   "app.containers.AdminPage.ProjectEdit.noHeaderErrorMessage": "Kies een bannerafbeelding voor je project",
   "app.containers.AdminPage.ProjectEdit.noProjectTypeErrorMessage": "Kies het type project",
   "app.containers.AdminPage.ProjectEdit.noTitleErrorMessage": "Voer een titel in van het project",
