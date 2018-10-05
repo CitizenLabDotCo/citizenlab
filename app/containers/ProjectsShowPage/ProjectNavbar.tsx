@@ -15,9 +15,9 @@ import styled from 'styled-components';
 
 // components
 import Icon from 'components/UI/Icon';
+import ContentContainer from 'components/ContentContainer';
 
 const ProjectNavbarWrapper = styled.nav`
-  height: 58px;
   background-color: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
@@ -26,7 +26,8 @@ const ProjectNavbarWrapper = styled.nav`
 const ProjectNavbarItems = styled.ul`
   display: flex;
   margin: 0;
-  height: 100%;
+  padding: 0;
+  height: 58px;
 `;
 
 const ProjectNavbarIconWrapper = styled.div`
@@ -43,11 +44,15 @@ const ProjectNavbarIcon = styled(Icon)`
   transition: fill 100ms ease-out;
 `;
 
-const ProjectNavbarItem = styled(Link)`
+const ProjectNavbarItem = styled.li`
+  display: flex;
+  margin-right: 40px;
+`;
+
+const ProjectNavbarLink = styled(Link)`
   display: flex;
   align-items: center;
   color: inherit;
-  margin-right: 40px;
 
   &.active,
   &:focus {
@@ -84,71 +89,83 @@ const ProjectNavbar = (props: Props) => {
 
     return (
       <ProjectNavbarWrapper>
-        <ProjectNavbarItems>
+        <ContentContainer>
+          <ProjectNavbarItems>
 
-          {/* Process link */}
-          {project && project.attributes.process_type === 'timeline' &&
-            <ProjectNavbarItem
-              to={`/projects/${projectSlug}/process`}
-              activeClassName="active"
-            >
-              <ProjectNavbarIconWrapper>
-                <ProjectNavbarIcon name="timeline" />
-              </ProjectNavbarIconWrapper>
-              Process
+            {/* Process link */}
+            {project && project.attributes.process_type === 'timeline' &&
+              <ProjectNavbarItem>
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/process`}
+                  activeClassName="active"
+                >
+                  <ProjectNavbarIconWrapper>
+                    <ProjectNavbarIcon name="timeline" />
+                  </ProjectNavbarIconWrapper>
+                  Process
+                </ProjectNavbarLink>
+              </ProjectNavbarItem>
+            }
+
+            {/* Information link */}
+            <ProjectNavbarItem>
+              <ProjectNavbarLink
+                to={`/projects/${projectSlug}/info`}
+                activeClassName="active"
+              >
+                <ProjectNavbarIconWrapper>
+                  <ProjectNavbarIcon name="info2" />
+                </ProjectNavbarIconWrapper>
+                Information
+              </ProjectNavbarLink>
             </ProjectNavbarItem>
-          }
 
-          {/* Information link */}
-          <ProjectNavbarItem
-            to={`/projects/${projectSlug}/info`}
-            activeClassName="active"
-          >
-            <ProjectNavbarIconWrapper>
-              <ProjectNavbarIcon name="info2" />
-            </ProjectNavbarIconWrapper>
-            Information
-          </ProjectNavbarItem>
+            {/* Ideas link */}
+            {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
+              <ProjectNavbarItem>
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/ideas`}
+                  activeClassName="active"
+                >
+                  <ProjectNavbarIconWrapper>
+                    <ProjectNavbarIcon name="idea" />
+                  </ProjectNavbarIconWrapper>
+                  Ideas
+                </ProjectNavbarLink>
+              </ProjectNavbarItem>
+            }
 
-          {/* Ideas link */}
-          {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
-            <ProjectNavbarItem
-              to={`/projects/${projectSlug}/ideas`}
-              activeClassName="active"
-            >
-              <ProjectNavbarIconWrapper>
-                <ProjectNavbarIcon name="idea" />
-              </ProjectNavbarIconWrapper>
-              Ideas
-            </ProjectNavbarItem>
-          }
+            {/* Survey link */}
+            {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
+              <ProjectNavbarItem>
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/survey`}
+                  activeClassName="active"
+                >
+                  <ProjectNavbarIconWrapper>
+                    <ProjectNavbarIcon name="survey" />
+                  </ProjectNavbarIconWrapper>
+                  Survey
+                </ProjectNavbarLink>
+              </ProjectNavbarItem>
+            }
 
-          {/* Survey link */}
-          {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
-            <ProjectNavbarItem
-              to={`/projects/${projectSlug}/survey`}
-              activeClassName="active"
-            >
-              <ProjectNavbarIconWrapper>
-                <ProjectNavbarIcon name="survey" />
-              </ProjectNavbarIconWrapper>
-              Survey
-            </ProjectNavbarItem>
-          }
-
-          {/* Events link */}
-          {hasEvents &&
-            <ProjectNavbarItem
-              to={`/projects/${projectSlug}/events`}
-              activeClassName="active"
-            >
-              <ProjectNavbarIconWrapper>
-                <ProjectNavbarIcon name="calendar" />
-              </ProjectNavbarIconWrapper>
-              Events
-            </ProjectNavbarItem>
-          }
-        </ProjectNavbarItems>
+            {/* Events link */}
+            {hasEvents &&
+              <ProjectNavbarItem>
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/events`}
+                  activeClassName="active"
+                >
+                  <ProjectNavbarIconWrapper>
+                    <ProjectNavbarIcon name="calendar" />
+                  </ProjectNavbarIconWrapper>
+                  Events
+                </ProjectNavbarLink>
+              </ProjectNavbarItem>
+            }
+          </ProjectNavbarItems>
+        </ContentContainer>
       </ProjectNavbarWrapper>
     );
   }
