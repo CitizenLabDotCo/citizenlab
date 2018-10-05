@@ -81,10 +81,11 @@ const ProjectNavbarLink = styled(Link)`
 
   &.active,
   &:focus {
+    color: inherit;
     border-bottom: 2px solid #fff;
   }
 
-  &:hover {
+  &:not(.active):hover {
     color: rgba(255, 255, 255, 0.8);
     border-bottom: 2px solid rgba(255, 255, 255, 0.8);
 
