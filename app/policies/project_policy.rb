@@ -28,7 +28,7 @@ class ProjectPolicy < ApplicationPolicy
       elsif user
         scope.where(id: user.moderatable_project_ids)
       else
-        []
+        scope.none
       end
     end
 
