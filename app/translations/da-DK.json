@@ -40,6 +40,8 @@
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} har opdateret status på denne idé} published {{userName} oprettede denne idé} changed_title {{userName} opdaterede titlen på denne idé} changed_body {{userName} opdaterede beskrivelsen af denne idé}}",
   "app.components.IdeasShow.commentingDisabledInContext": "Kommentering på ideer i '{projectName}' er deaktiveret i øjeblikket.",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Det er ikke muligt at kommentere på denne idé, da '{projectName}' ikke længere er aktivt eller ikke aktivt endnu.",
+  "app.components.IdeasShow.commentingMaybeNotPermitted": "",
+  "app.components.IdeasShow.commentingNotPermitted": "",
   "app.components.IdeasShow.editIdea": "Rediger idé",
   "app.components.IdeasShow.goBack": "Gå tilbage",
   "app.components.IdeasShow.goBackToList": "Gå tilbage til listen",

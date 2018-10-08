@@ -40,6 +40,8 @@
   "app.components.IdeasShow.changeLogEntry": "",
   "app.components.IdeasShow.commentingDisabledInContext": "",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "",
+  "app.components.IdeasShow.commentingMaybeNotPermitted": "",
+  "app.components.IdeasShow.commentingNotPermitted": "",
   "app.components.IdeasShow.editIdea": "",
   "app.components.IdeasShow.goBack": "",
   "app.components.IdeasShow.goBackToList": "",
