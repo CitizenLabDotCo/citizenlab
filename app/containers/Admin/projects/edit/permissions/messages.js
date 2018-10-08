@@ -69,4 +69,28 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
+  granularPermissionsTitle: {
+    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
+    defaultMessage: 'Who can take which action?',
+  },
+  permissionAction_commenting: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
+    defaultMessage: 'Commenting',
+  },
+  permissionAction_voting: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_voting',
+    defaultMessage: 'Voting',
+  },
+  permissionAction_posting: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_posting',
+    defaultMessage: 'Posting ideas',
+  },
+  permissionAction_taking_survey: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
+    defaultMessage: 'Taking the survey',
+  },
+  noActionsCanBeTaken: {
+    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTaken',
+    defaultMessage: 'No permissions to configure, since the user can\'t do anything here',
+  },
 });
