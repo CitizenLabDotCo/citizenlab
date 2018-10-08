@@ -17,7 +17,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { quillEditedContent, fontSizes } from 'utils/styleUtils';
+import { quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
 import T from 'components/T';
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -25,21 +25,28 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const Information = styled.div`
+  border-radius: 5px;
+  background-color: #F1F2F3;
+  padding: 25px 30px 30px;
   margin-top: 45px;
   margin-bottom: 20px;
 `;
 
 const InformationTitle = styled.h2`
   color: #333;
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   font-weight: 600;
 `;
 
 const InformationBody = styled.div`
-  color: #333;
-  font-size: ${fontSizes.large}px;
-  line-height: 28px;
-  font-weight: 300;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.large}px;
+
+  & span > p {
+    margin-bottom: 0;
+    line-height: ${fontSizes.xxl}px;
+  }
 
   strong {
     font-weight: 500;
@@ -48,9 +55,7 @@ const InformationBody = styled.div`
   ${quillEditedContent()}
 `;
 
-const IdeasWrapper = styled.div`
-  margin-top: 60px;
-`;
+const IdeasWrapper = styled.div``;
 
 interface InputProps {
   phaseId: string;
