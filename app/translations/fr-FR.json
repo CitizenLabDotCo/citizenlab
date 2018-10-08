@@ -40,6 +40,8 @@
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} a mis le statut de cette idée à jour} published {{userName} a créé cette idée} changed_title {{userName} a modifié le titre de cette idée} changed_body {{userName} a modifié la description de cette idée}}",
   "app.components.IdeasShow.commentingDisabledInContext": "Les commentaires sur les idées du projet '{projectName}' sont désactivés pour le moment.",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Vous ne pouvez pas commenter sur cette idée car '{projectName}' n'est pas un projet actif.",
+  "app.components.IdeasShow.commentingMaybeNotPermitted": "",
+  "app.components.IdeasShow.commentingNotPermitted": "",
   "app.components.IdeasShow.editIdea": "Modifier l’idée",
   "app.components.IdeasShow.goBack": "Retour",
   "app.components.IdeasShow.goBackToList": "Retour à la liste",
