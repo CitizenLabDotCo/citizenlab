@@ -1,7 +1,5 @@
 module EmailCampaigns
   class Campaigns::StatusChangeOfVotedIdea < Campaign
-    include Disableable
-    include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
 
