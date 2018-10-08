@@ -14,6 +14,9 @@ import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
+import FeatureFlag from 'components/FeatureFlag';
+import TimelineGranularPermissions from './granular/TimelineGranularPermissions';
+import ContinuousGranularPermissions from './granular/ContinuousGranularPermissions';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
@@ -234,6 +237,24 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               />
             }
           </StyledSection>
+
+          <FeatureFlag name="granular_permissions">
+            <StyledSection>
+              <SectionTitle>
+                <FormattedMessage {...messages.granularPermissionsTitle} />
+              </SectionTitle>
+              {project && project.data.attributes.process_type === 'timeline' &&
+                <TimelineGranularPermissions
+                  projectId={project.data.id}
+                />
+              }
+              {project && project.data.attributes.process_type === 'continuous' &&
+                <ContinuousGranularPermissions
+                  project={project.data}
+                />
+              }
+            </StyledSection>
+          </FeatureFlag>
 
           <Section>
             {project &&

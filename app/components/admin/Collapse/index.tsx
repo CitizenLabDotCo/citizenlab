@@ -101,6 +101,7 @@ interface Props {
   children: JSX.Element | string;
   opened: boolean;
   onToggle: () => void;
+  className?: string;
 }
 
 const CollapseInner = styled.div`
@@ -115,7 +116,7 @@ class Collapse extends PureComponent<Props> {
   }
 
   render() {
-    const { label, children, opened } = this.props;
+    const { label, children, opened, className } = this.props;
 
     return (
       <>
@@ -135,7 +136,7 @@ class Collapse extends PureComponent<Props> {
           enter={true}
           exit={true}
         >
-          <CollapseContainer>
+          <CollapseContainer className={className}>
             <CollapseInner>
               {children}
             </CollapseInner>
