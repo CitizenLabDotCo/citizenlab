@@ -38,8 +38,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-left: 15px;
-  padding-right: 15px;
 `;
 
 const padding = 30;
@@ -47,7 +45,6 @@ const mobilePadding = 20;
 
 const ContainerInner = styled.div`
   width: 100%;
-  max-width: ${(props) => props.theme.maxPageWidth}px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -63,15 +60,12 @@ const ContainerInner = styled.div`
 const Header = styled.div`
   width: 100%;
   min-height: 70px;
-  padding: 0px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 8px;
   padding-bottom: 8px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f8f8f8;
+  justify-content: center;
   border-bottom: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
@@ -79,6 +73,14 @@ const Header = styled.div`
     padding-left: ${mobilePadding}px;
     padding-right: ${mobilePadding}px;
   `}
+`;
+
+const HeaderSectionsWrapper = styled.div`
+  width: 100%;
+  max-width: ${(props) => props.theme.maxPageWidth}px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const HeaderSection = styled.div`
@@ -130,15 +132,16 @@ const HeaderTitleWrapper = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.div`
+const HeaderTitle = styled.h2`
   color: ${colors.text};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   line-height: 25px;
-  font-weight: 400;
+  font-weight: 600;
   margin-right: 20px;
+  margin-bottom: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xl}px;
+    font-size: ${fontSizes.large}px;
     line-height: 24px;
   `}
 `;
@@ -445,6 +448,7 @@ export default class Timeline extends PureComponent<Props, State> {
         <Container className={className}>
           <ContainerInner>
             <Header>
+              <HeaderSectionsWrapper>
               <HeaderLeftSection>
                 {isSelected &&
                   <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
@@ -499,8 +503,8 @@ export default class Timeline extends PureComponent<Props, State> {
                   phaseId={selectedPhaseId}
                 />
               </HeaderRightSection>
+              </HeaderSectionsWrapper>
             </Header>
-
             <MobileTimelineContainer>
               <MobileTimeline
                 phases={phases.data}
