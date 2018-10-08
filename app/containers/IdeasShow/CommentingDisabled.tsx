@@ -43,6 +43,10 @@ class CommentingDisabled extends React.PureComponent<Props> {
         return messages.commentingDisabledProjectInactive;
       } else if (commentingDisabledReason === 'commenting_disabled') {
         return messages.commentingDisabledInContext;
+      } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
+        return messages.commentingNotPermitted;
+      } else if (!isLoggedIn && commentingDisabledReason === 'not_permitted') {
+        return messages.commentingMaybeNotPermitted;
       } else {
         return messages.signInToComment;
       }
