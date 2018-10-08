@@ -35,9 +35,39 @@ resource "Comments" do
 
   get "web_api/v1/comments/as_xlsx" do
     parameter :project, 'Filter by project', required: false
+    parameter :ideas, 'Filter by a given list of idea ids', required: false
 
     example_request "XLSX export" do
       expect(status).to eq 200
+    end
+
+    describe do
+      before do 
+        @project = create(:project)
+        @comments = 3.times.collect do |i|
+          create(:comment, idea: create(:idea, project: @project))
+        end
+      end
+      let(:project) { @project.id }
+
+      example_request 'XLSX export by project', document: false do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@comments.size + 1)
+      end
+    end
+
+    describe do
+      before do 
+        @comments = create_list(:comment, 4)
+      end
+      let(:ideas) { @comments.map(&:idea_id) }
+      
+      example_request 'XLSX export by idea ids', document: false do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (ideas.size + 1)
+      end
     end
   end
 
