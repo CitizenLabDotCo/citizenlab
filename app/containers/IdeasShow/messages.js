@@ -209,14 +209,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentSuccess',
     defaultMessage: 'Thanks for contributing!',
   },
-  signInToComment: {
-    id: 'app.containers.IdeasShow.signInToComment',
-    defaultMessage: 'Please {signInLink} to spread your wisdom.',
-  },
-  signInLinkText: {
-    id: 'app.containers.IdeasShow.signInLinkText',
-    defaultMessage: 'log in',
-  },
   login: {
     id: 'app.components.IdeasShow.login',
     defaultMessage: 'Login',
@@ -254,6 +246,14 @@ export default defineMessages({
       changed_body {{userName} updated the description of this idea}
     }`,
   },
+  signInToComment: {
+    id: 'app.containers.IdeasShow.signInToComment',
+    defaultMessage: 'Please {signInLink} to spread your wisdom.',
+  },
+  signInLinkText: {
+    id: 'app.containers.IdeasShow.signInLinkText',
+    defaultMessage: 'log in',
+  },
   commentingDisabledProjectInactive: {
     id: 'app.components.IdeasShow.commentingDisabledProjectInactive',
     defaultMessage: 'Commenting on this idea is not possible, since \'{projectName}\' is not yet or no longer active.',
@@ -261,6 +261,14 @@ export default defineMessages({
   commentingDisabledInContext: {
     id: 'app.components.IdeasShow.commentingDisabledInContext',
     defaultMessage: 'Commenting on ideas in \'{projectName}\' is currently disabled.',
+  },
+  commentingNotPermitted: {
+    id: 'app.components.IdeasShow.commentingNotPermitted',
+    defaultMessage: 'Unfortunately, you don\'t have the rights to comment on this idea.',
+  },
+  commentingMaybeNotPermitted: {
+    id: 'app.components.IdeasShow.commentingMaybeNotPermitted',
+    defaultMessage: 'Not all users are allowed to comment. Please {signInLink} to see whether you comply.',
   },
   goBack: {
     id: 'app.components.IdeasShow.goBack',
