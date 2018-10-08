@@ -97,6 +97,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
+        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
       },
       facebook_login: {
@@ -180,6 +181,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
+        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
       },
       facebook_login: {
@@ -390,8 +392,8 @@ if Apartment::Tenant.current == 'localhost'
           end
           if phase.budgeting?
             phase.update!({
-              max_budget: (rand(1000000) + 100).round(-2),
-              currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
+              max_budget: (rand(1000000) + 100).round(-2)
+              # currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
             })
           end
         end

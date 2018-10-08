@@ -9,7 +9,7 @@
       "core": {
         "type": "object",
         "description": "The core of the system. Container for general settings. Always enabled",
-        "required-settings": ["organization_type", "timezone", "locales", "color_main"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main"],
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -31,6 +31,11 @@
             "type": "string",
             "default": "Europe/Brussels",
             "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+          },
+          "currency": {
+            "type": "string",
+            "default": "EUR",
+            "enum": [<%= CL2_SUPPORTED_CURRENCIES %>]
           },
           "locales": {
             "type": "array",

@@ -57,7 +57,6 @@ resource "Phases" do
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :currency, "The currency in which the amounts are expressed during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
@@ -130,13 +129,11 @@ resource "Phases" do
       describe do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
-        let(:currency) { 'BEF' }
 
         example_request "Create a participatory budgeting phase", document: false do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
-          expect(json_response.dig(:data,:attributes,:currency)).to eq currency
         end
       end
 
@@ -150,7 +147,6 @@ resource "Phases" do
         end
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
-        let(:currency) { 'BEF' }
 
         example_request "[error] Create multiple budgeting phases", document: false do
           expect(response_status).to eq 422
@@ -175,7 +171,6 @@ resource "Phases" do
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
-        parameter :currency, "The currency in which the amounts are expressed during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end

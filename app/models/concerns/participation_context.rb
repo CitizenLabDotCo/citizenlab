@@ -37,7 +37,6 @@ module ParticipationContext
       end
       with_options if: :budgeting? do |budgeting|
         budgeting.validates :max_budget, presence: true
-        budgeting.validates :currency, presence: true
         budgeting.validates :posting_enabled, inclusion: {in: [true, false]}
         budgeting.validates :commenting_enabled, inclusion: {in: [true, false]}
         budgeting.validates :voting_enabled, inclusion: {in: [true, false]}
