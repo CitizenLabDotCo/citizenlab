@@ -35,7 +35,7 @@
           "currency": {
             "type": "string",
             "default": "EUR",
-            "enum": [<%= CL2_SUPPORTED_CURRENCIES %>]
+            "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "locales": {
             "type": "array",
