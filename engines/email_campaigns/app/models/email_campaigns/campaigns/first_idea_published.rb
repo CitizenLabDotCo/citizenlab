@@ -1,6 +1,5 @@
 module EmailCampaigns
   class Campaigns::FirstIdeaPublished < Campaign
-    include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
 

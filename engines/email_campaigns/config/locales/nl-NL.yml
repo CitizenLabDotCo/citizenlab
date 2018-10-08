@@ -6,9 +6,9 @@ nl:
       "comment_on_your_idea": Iemand reageert op mijn idee
       "admin_rights_received": Beheerdersrechten ontvangen
       "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
-      "comment_marked_as_spam": Een reactie is aangeduid als spam
-      "idea_marked_as_spam": Een idee is aangeduid als spam
-      "invite_received": When someone invites me to the platform
+      "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
+      "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
+      "invite_received": Iemand mij uitnodigt op het platform
       "invite_accepted": Iemand aanvaardt mijn uitnodiging
       "mention_in_comment": Iemand vernoemt me in een reactie
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen
@@ -17,6 +17,26 @@ nl:
       "password_reset": Ik stel het wachtwoord voor mijn account opnieuw in
       "first_idea_published": Mijn eerste idee wordt gepubliceerd
       "idea_published": Mijn idee wordt gepubliceerd
+      "admin_digest": Een weekoverzicht (voor beheerders)
+      "moderator_digest": Een weekoverzicht (voor moderatoren)
+      "user_digest": Een weekoverzicht (voor burgers)
+    admin_campaign_type_description:
+      "manual": Directe berichten verzonden door beheerders of moderatoren
+      "comment_on_your_comment": Wanneer een gebruiker een reactie ontvangt op een eigen reactie
+      "comment_on_your_idea": Wanneer een gebruiker een reactie ontvangt op een eigen idee
+      "admin_rights_received": Wanneer een gebruiker beheerdersrechten ontvangt
+      "comment_deleted_by_admin": Wanneer een beheerder mijn reactie verwijdert
+      "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)
+      "idea_marked_as_spam": Wanneer een gebruiker een idee aanduidt als spam (voor beheerders en moderatoren)
+      "invite_received": Wanneer een gebruiker uitgenodigd wordt op het platform
+      "invite_accepted": Wanneer een gebruiker mijn uitnodiging aanvaardt
+      "mention_in_comment": Wanneer een gebruiker vernoemd wordt in een reactie
+      "project_moderation_rights_received": Wanneer een gebruiker projectmoderatorrechten ontvangt
+      "status_change_of_your_idea": Wanneer de status van mijn idee verandert
+      "welcome": Wanneer een gebruiker zich registreert op het platform
+      "password_reset": Wanneer een gebruiker een nieuw wachtwoord aanvraagt
+      "first_idea_published": Wanneer het eerste idee van een gebruiker wordt gepubliceerd
+      "idea_published": Wanneer mijn idee gepubliceerd wordt
       "admin_digest": Een weekoverzicht (voor beheerders)
       "moderator_digest": Een weekoverzicht (voor moderatoren)
       "user_digest": Een weekoverzicht (voor burgers)

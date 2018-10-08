@@ -159,6 +159,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
       ideaflow_social_sharing: {
         enabled: true,
         allowed: true
+      },
+      manual_emailing: {
+        enabled: true,
+        allowed: true
+      },
+      automated_emailing_control: {
+        enabled: true,
+        allowed: true
       }
     }
   })
