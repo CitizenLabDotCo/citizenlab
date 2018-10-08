@@ -6,11 +6,11 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 // Image & video resize modules
-import BlotFormatter from 'quill-blot-formatter';
+import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction } from 'quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 // BEGIN allow image alignment styles
-const ImageFormatAttributesList = [
+const FormatAttributesList = [
   'alt',
   'height',
   'width',
@@ -18,9 +18,10 @@ const ImageFormatAttributesList = [
 ];
 
 const BaseImageFormat = Quill.import('formats/image');
+
 class ImageFormat extends BaseImageFormat {
   static formats(domNode) {
-    return ImageFormatAttributesList.reduce((formats, attribute) => {
+    return FormatAttributesList.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
         formats[attribute] = domNode.getAttribute(attribute);
       }
@@ -28,7 +29,7 @@ class ImageFormat extends BaseImageFormat {
     }, {});
   }
   format(name, value) {
-    if (ImageFormatAttributesList.indexOf(name) > -1) {
+    if (FormatAttributesList.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
       } else {
@@ -39,9 +40,48 @@ class ImageFormat extends BaseImageFormat {
     }
   }
 }
+ImageFormat.blotName = 'imageFormat';
+ImageFormat.tagName = 'img';
 
 Quill.register(ImageFormat, true);
-// END allow image alignment styles
+
+const BaseVideoFormat = Quill.import('formats/video');
+
+class VideoFormat extends BaseVideoFormat {
+  static formats(domNode) {
+    return FormatAttributesList.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (FormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+VideoFormat.blotName = 'videoFormat';
+VideoFormat.tagName = 'iframe';
+Quill.register(VideoFormat, true);
+// END allow image & video resizing styles
+class CustomImageSpec extends ImageSpec {
+  getActions() {
+    return [ResizeAction];
+  }
+}
+class CustomIframeVideoSpec extends IframeVideoSpec {
+  getActions() {
+    return [ResizeAction];
+  }
+}
 
 // Localization
 import { injectIntl } from 'utils/cl-intl';
@@ -287,7 +327,9 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      blotFormatter: (noImages && noVideos) ? false : {},
+      blotFormatter: (noImages && noVideos) ? false : {
+        specs: [CustomImageSpec, CustomIframeVideoSpec],
+      },
       keyboard: {
         // This will overwrite the default binding also named 'tab'
         bindings: {
@@ -313,8 +355,8 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     };
 
     const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image'); }
-    if (!noVideos) { formats.push('video'); }
+    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width'); }
+    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width'); }
     if (!limitedTextFormatting) {
       formats.push('list');
       if (!noAlign) {
@@ -402,8 +444,8 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
 
           {!(noImages && noVideos) &&
             <span className="ql-formats">
-              {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>}
-              {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>}
+              {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
+              {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
             </span>
           }
         </div>
