@@ -56,10 +56,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     margin: 5px 0;
-    padding-top: 11px;
-    padding-bottom: 11px;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding: 11px 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
@@ -96,15 +93,15 @@ const Container = styled.div`
     }
 
     &.email {
-      background: #e6ebec;
-      color: #004d6c;
+      background: colors.emailBg;
+      color: ${colors.emailText};
 
       ${StyledIcon} {
-        fill: #004d6c;
+        fill: ${colors.emailText};
       }
 
       &:hover {
-        background: ${(darken(0.15, '#e6ebec'))};
+        background: ${(darken(0.15, colors.emailBg))};
       }
     }
   }
@@ -117,23 +114,53 @@ interface ITracks {
   clickEmailShare: () => void;
 }
 
+export type UtmParams = {
+  source: string;
+  campaign: string;
+  content?: string;
+};
+
 interface InputProps {
   className?: string;
   url: string;
   twitterMessage: string;
   emailSubject?: string;
   emailBody?: string;
+  utmParams?: UtmParams;
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
+  buildUrl = (medium : string) => {
+    const { utmParams, url } = this.props;
+    let resUrl = url;
+    if (utmParams) {
+      resUrl += `?utm_source=${utmParams.source}&utm_campaign=${utmParams.campaign}&utm_medium=${medium}`;
+      if (utmParams.content) {
+        resUrl += `&utm_content=${utmParams.content}`;
+      }
+    }
+    return resUrl;
+  }
+
   render() {
-    const { url, clickFbShare, clickTwitterShare, clickMessengerShare, clickEmailShare, tenant, twitterMessage, emailSubject, emailBody, className, intl: { formatMessage } } = this.props;
+    const {
+      clickFbShare,
+      clickTwitterShare,
+      clickMessengerShare,
+      clickEmailShare,
+      tenant,
+      twitterMessage,
+      emailSubject,
+      emailBody,
+      className,
+      intl: { formatMessage }
+    } = this.props;
 
     if (!isNilOrError(tenant)) {
       const facebookSettings = (tenant && tenant.attributes.settings.facebook_login ? tenant.attributes.settings.facebook_login : null);
@@ -146,7 +173,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const facebook = (facebookAppId ? (
         <FacebookButton
           appId={facebookAppId}
-          url={url}
+          url={this.buildUrl('facebook')}
           className="sharingButton facebook first"
           sharer={true}
           onClick={clickFbShare}
@@ -159,7 +186,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const messenger = (facebookAppId ? (
         <a
           className="sharingButton messenger"
-          href={`fb-messenger://share/?link=${encodeURIComponent(url)}&app_id=${facebookAppId}`}
+          href={`fb-messenger://share/?link=${encodeURIComponent(this.buildUrl('messenger'))}&app_id=${facebookAppId}`}
           onClick={clickMessengerShare}
         >
           <StyledIcon name="messenger" />
@@ -170,7 +197,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const twitter = (
         <TwitterButton
           message={twitterMessage}
-          url={url}
+          url={this.buildUrl('twitter')}
           className="sharingButton twitter"
           sharer={true}
           onClick={clickTwitterShare}

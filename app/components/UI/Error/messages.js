@@ -117,6 +117,10 @@ export default defineMessages({
     id: 'app.errors.has_other_overlapping_phases',
     defaultMessage: 'Projects cannot have overlapping phases.',
   },
+  group_ids_unauthorized_choice_moderator: {
+    id: 'app.errors.group_ids_unauthorized_choice_moderator',
+    defaultMessage: 'As a project moderator, you can only email to people that can access your project(s)',
+  },
   file_extension_whitelist_error: {
     id: 'app.errors.file_extension_whitelist_error',
     defaultMessage: 'The format of the file you tried to upload is not supported.',
