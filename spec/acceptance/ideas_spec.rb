@@ -240,9 +240,40 @@ resource "Ideas" do
 
   get "web_api/v1/ideas/as_xlsx" do
     parameter :project, 'Filter by project', required: false
+    parameter :ideas, 'Filter by a given list of idea ids', required: false
 
     example_request "XLSX export" do
       expect(status).to eq 200
+    end
+
+    describe do
+      before do 
+        @project = create(:project)
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 3
+        @selected_ideas.each do |idea|
+          idea.update! project: @project
+        end
+      end
+      let(:project) { @project.id }
+
+      example_request 'XLSX export by project', document: false do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
+    end
+
+    describe do
+      before do 
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 2
+      end
+      let(:ideas) { @selected_ideas.map(&:id) }
+      
+      example_request 'XLSX export by idea ids', document: false do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
     end
   end
 
