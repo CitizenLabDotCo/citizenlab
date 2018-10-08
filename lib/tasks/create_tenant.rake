@@ -22,6 +22,7 @@ namespace :cl2_back do
             "nl-BE" => Faker::Address.city,
           },
           timezone: "Europe/Brussels",
+          currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
           color_main: Faker::Color.hex_color,
         },
         groups: {

@@ -11,7 +11,6 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   attribute :survey_embed_url, if: :is_participation_context?
   attribute :survey_service, if: :is_participation_context?
   attribute :max_budget, if: :is_participation_context?
-  attribute :currency, if: :is_participation_context?
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas

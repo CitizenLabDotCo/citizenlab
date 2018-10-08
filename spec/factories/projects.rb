@@ -209,7 +209,6 @@ FactoryBot.define do
       process_type 'continuous'
       participation_method 'budgeting'
       max_budget 10000
-      currency 'cheeseburgers'
     end
 
   end
