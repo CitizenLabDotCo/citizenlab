@@ -40,6 +40,8 @@
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} has updated the status of this idea} published {{userName} created this idea} changed_title {{userName} updated the title of this idea} changed_body {{userName} updated the description of this idea}}",
   "app.components.IdeasShow.commentingDisabledInContext": "Commenting on ideas in '{projectName}' is currently disabled.",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Commenting on this idea is not possible, since '{projectName}' is not yet or no longer active.",
+  "app.components.IdeasShow.commentingMaybeNotPermitted": "Not all users are allowed to comment. Please {signInLink} to see whether you comply.",
+  "app.components.IdeasShow.commentingNotPermitted": "Unfortunately, you don't have the rights to comment on this idea.",
   "app.components.IdeasShow.editIdea": "Edit idea",
   "app.components.IdeasShow.goBack": "Go back",
   "app.components.IdeasShow.goBackToList": "Go back to the list",
