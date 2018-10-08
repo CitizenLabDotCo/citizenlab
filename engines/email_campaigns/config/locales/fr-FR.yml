@@ -17,6 +17,10 @@ fr:
       "password_reset": Je demande de réinitialiser mon mot de passe
       "first_idea_published": Ma première idée est publiée
       "idea_published": Mon idée est publiée
+      "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
+      "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
+      "status_change_of_commented_idea": When the status of an idea I commented on has been changed
+      "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
       "moderator_digest": Un aperçu hebdomadaire (pour les modérateurs)
       "user_digest": Un aperçu hebdomadaire (pour les citoyens)
