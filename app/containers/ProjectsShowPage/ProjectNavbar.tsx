@@ -21,6 +21,14 @@ const ProjectNavbarWrapper = styled.nav`
   background-color: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
+  position: sticky;
+  top: ${(props) => props.theme.menuHeight}px;
+  z-index: 2;
+  width: 100%;
+
+  ${media.smallerThanMaxTablet`
+    top: 0;
+  `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
