@@ -63,7 +63,8 @@ class XlsxService
           "downvotes_count",
           "project",
           "topics",
-          "areas"
+          "areas",
+          "url"
         ], style: header_style(s)
         ideas.each do |idea|
           sheet.add_row [
@@ -78,7 +79,8 @@ class XlsxService
             idea.downvotes_count,
             @@multiloc_service.t(idea&.project&.title_multiloc),
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
-            idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(',')
+            idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
+            FrontendService.new.model_to_url(idea)
           ]
         end
         sheet.column_info[2].width = 65
