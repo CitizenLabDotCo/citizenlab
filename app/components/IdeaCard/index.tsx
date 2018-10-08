@@ -245,7 +245,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, project, locale, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, project, phase, locale, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(idea)) {
@@ -257,12 +257,12 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       let ideaBudget: JSX.Element | null = null;
 
-      console.log(idea);
-
-      if (!isNilOrError(project) && project.attributes.currency && idea.attributes.budget) {
-        const currency = project.attributes.currency;
-        const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
-        ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
+      if (idea.attributes.budget) {
+        if (!isNilOrError(project) && project.attributes.participation_method === 'budgeting') {
+          const currency = project.attributes.currency;
+          const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
+          ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
+        }
       }
 
       const className = `${this.props['className']}
@@ -272,6 +272,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
+
+      console.log(idea);
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
@@ -348,7 +350,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
   ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
   project: ({ idea, render }) => <GetProject id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.project.data, 'id', null) : null}>{render}</GetProject>,
-  // phase: ({ idea, render }) => <GetPhase id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.phases[0].data, 'id', null) : null}>{render}</GetPhase>
+  phase: ({ idea, render }) => <GetPhase id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.phases.data[0], 'id', null) : null}>{render}</GetPhase>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);
