@@ -257,8 +257,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       let ideaBudget: JSX.Element | null = null;
 
-      console.log(idea);
-
       if (!isNilOrError(project) && project.attributes.currency && idea.attributes.budget) {
         const currency = project.attributes.currency;
         const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);

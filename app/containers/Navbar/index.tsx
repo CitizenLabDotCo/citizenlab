@@ -111,8 +111,8 @@ const NavigationItems = styled.div`
 
 const NavigationItem = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
-  line-height: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -147,9 +147,9 @@ const NavigationDropdown = styled.div`
 const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: ${fontSizes.medium}px;
+  line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +184,7 @@ const NavigationDropdownItemIcon = styled(Icon)`
 
 const ProjectsListItem = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
@@ -210,7 +210,7 @@ const ProjectsListItem = styled(Link)`
 const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: #fff;
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
@@ -290,14 +290,14 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
-    font-size: ${fontSizes.medium}px !important;
+    font-size: ${fontSizes.base}px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
 
 const LoginLink = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   padding: 0;
 
