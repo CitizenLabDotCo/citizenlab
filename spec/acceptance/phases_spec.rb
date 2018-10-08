@@ -141,8 +141,7 @@ resource "Phases" do
         before do
           @project.phases.first.update(
             participation_method: 'budgeting',
-            max_budget: 30000,
-            currency: 'cheeseburgers'
+            max_budget: 30000
             )
         end
         let(:participation_method) { 'budgeting' }
