@@ -54,19 +54,22 @@ class Pagination extends React.PureComponent<Props> {
   render() {
     const { currentPage, totalPages } = this.props;
     const pageItems = this.calculateMenuItems(currentPage, totalPages);
-    return (
-      <Menu pagination={true} floated="right">
-        {pageItems.map((item) => (
-          <Menu.Item
-            key={item}
-            name={item < 0 ? '...' : item.toString()}
-            active={item === currentPage}
-            onClick={this.handleItemClick}
-            disabled={(item < 0) || item === currentPage}
-          />
-        ))}
-      </Menu>
-    );
+    if (totalPages > 1) {
+      return (
+        <Menu pagination={true} floated="right">
+          {pageItems.map((item) => (
+            <Menu.Item
+              key={item}
+              name={item < 0 ? '...' : item.toString()}
+              active={item === currentPage}
+              onClick={this.handleItemClick}
+              disabled={(item < 0) || item === currentPage}
+            />
+          ))}
+        </Menu>
+      );
+    }
+    return null;
   }
 }
 

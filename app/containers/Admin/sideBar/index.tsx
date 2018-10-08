@@ -3,13 +3,13 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
-import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 import { hasPermission } from 'services/permissions';
+import MenuItem from './MenuItem';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -24,6 +24,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -63,52 +64,6 @@ const Text = styled.div`
   ${media.smallerThanMinTablet`
     display: none;
   `}
-`;
-
-const MenuItem: any = styled(Link) `
-  flex: 0 0 auto;
-  width: 210px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 5px;
-  padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  border-radius: 5px;
-
-  &:hover {
-    ${Text} {
-      color: #fff;
-    };
-
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.clIconAccent}
-      }
-      .cl-icon-accent {
-        fill: ${colors.clIconPrimary}
-      }
-    };
-  }
-
-  &.selected {
-    background: rgba(0, 0, 0, 0.25);
-
-    ${Text} {
-      color: #fff;
-    };
-
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.clIconAccent}
-      }
-      .cl-icon-accent {
-        fill: ${colors.clIconPrimary}
-      }
-    };
-  }
 `;
 
 const FakeDoor = styled.a`
@@ -173,7 +128,7 @@ type State = {
 };
 
 // message: keyof typeof messages
-type NavItem = {
+export type NavItem = {
   id: string,
   link: string,
   iconName: IconNames,
@@ -239,6 +194,13 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
       },
       {
+        id: 'emails',
+        link: '/admin/emails',
+        iconName: 'emails',
+        message: 'emails',
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/emails`))
+      },
+      {
         id: 'settings',
         link: '/admin/settings/general',
         iconName: 'setting',
@@ -296,14 +258,24 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                   </FeatureFlag>
                 );
               } else { return null; }
+            } else if (route.id === 'emails') {
+              return (
+                <GetFeatureFlag name="manual_emailing" key={route.id}>
+                  {(manualEmailing) => (
+                    <GetFeatureFlag name="automated_emailing_control">
+                      {(automatedEmailing) => manualEmailing || automatedEmailing ?
+                        <MenuItem route={route} pathname={pathname} />
+                      :
+                        null
+                      }
+                    </GetFeatureFlag>
+                  )}
+                </GetFeatureFlag>
+              );
             } else {
               return (
                 <FeatureFlag name={route.featureName} key={route.id}>
-                  <MenuItem activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
-                    <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-                    <Text>{formatMessage({ ...messages[route.message] })}</Text>
-                    {route.isActive(pathname) && <Icon name="arrowLeft" />}
-                  </MenuItem>
+                  <MenuItem route={route} pathname={pathname} />
                 </FeatureFlag>
               );
             }
