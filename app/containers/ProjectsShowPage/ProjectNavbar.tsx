@@ -49,7 +49,9 @@ const ProjectNavbarItem = styled.li`
   vertical-align: middle;
 
   &:first-of-type {
-    margin-left: 30px;
+    ${media.smallerThanMinTablet`
+      margin-left: 30px;
+    `
   }
 
   &:last-of-type::after {
