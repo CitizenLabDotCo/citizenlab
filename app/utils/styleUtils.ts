@@ -79,14 +79,14 @@ export function calculateContrastRatio(backgroundColor: number[], textColor: num
       v /= 255;
 
       return v <= 0.03928
-          ? v / 12.92
-          : Math.pow((v + 0.055) / 1.055, 2.4);
+        ? v / 12.92
+        : Math.pow((v + 0.055) / 1.055, 2.4);
     });
     return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
   }
 
   const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
-  / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
+    / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
 
   return contrastRatio;
 }
@@ -94,9 +94,9 @@ export function calculateContrastRatio(backgroundColor: number[], textColor: num
 export function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
   } : null;
 }
 
@@ -150,9 +150,9 @@ export const colors = {
 
   // Icon colors
   clIconPrimary: '#00577C',
-  clIconSecondary:'#84939E',
-  clIconAccent:'#01A1B1',
-  clIconBackground:'rgba(1, 161, 177, 0.07)',
+  clIconSecondary: '#84939E',
+  clIconAccent: '#01A1B1',
+  clIconBackground: 'rgba(1, 161, 177, 0.07)',
 
   // social
   facebook: '#3b5998',
@@ -198,6 +198,7 @@ export function booleanClass(value: any, className: string) {
 
 export function quillEditedContent() {
   return `
+    max-width: 100%;
     .ql-align-right {
       text-align: right;
     }
@@ -211,6 +212,9 @@ export function quillEditedContent() {
     img {
       max-width: 100%;
       height: auto;
+    }
+    iframe {
+      max-width: 100%;
     }
   `;
 }
