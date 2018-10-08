@@ -1,6 +1,5 @@
 module EmailCampaigns
   class Campaigns::InviteAccepted < Campaigns::NotificationCampaign
-  	include Disableable
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable

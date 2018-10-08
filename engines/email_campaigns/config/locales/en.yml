@@ -24,3 +24,23 @@ en:
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
       "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
       "user_digest": A weekly overview of the activity on the platform (for citizens)
+    admin_campaign_type_description:
+      "manual": Direct messages sent by administrators or moderators
+      "comment_on_your_comment": When a user receives a reply on their comment
+      "comment_on_your_idea": When a user receives a reply on their idea
+      "admin_rights_received": When a user is given admin rights
+      "comment_deleted_by_admin": When an admin deletes my comment
+      "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
+      "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
+      "invite_received": When a user gets invited to the platform
+      "invite_accepted": When a user accepts my invitation
+      "mention_in_comment": When a user is mentioned in a comment
+      "project_moderation_rights_received": When a user is given project moderation rights
+      "status_change_of_your_idea": When the status of my idea changes
+      "welcome": When a user registers on the platform
+      "password_reset": When a user requests a password reset
+      "first_idea_published": When a user’s first idea gets published
+      "idea_published": When my idea gets published
+      "admin_digest": A weekly overview of the activity on the platform (only for administrators)
+      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
+      "user_digest": A weekly overview of the activity on the platform (for citizens)
