@@ -23,7 +23,7 @@ const ProjectNavbarWrapper = styled.nav`
   font-size: ${fontSizes.base}px;
   position: sticky;
   top: ${(props) => props.theme.menuHeight}px;
-  z-index: 2;
+  z-index: 10;
   width: 100%;
 
   ${media.smallerThanMaxTablet`
