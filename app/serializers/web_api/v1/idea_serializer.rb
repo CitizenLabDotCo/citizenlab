@@ -1,6 +1,6 @@
 class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :baskets_count
+  attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :currency, :baskets_count
 
   has_many :topics
   has_many :areas
@@ -17,8 +17,18 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   has_one :action_descriptor
 
+
   def location_point_geojson
     RGeo::GeoJSON.encode(object.location_point)
+  end
+
+  def currency
+    project = idea.project
+    if project.continuous?
+      project.currency
+    elsif project.timeline?
+      project.phases.find_by(participation_method: 'budgeting')&.currency
+    end
   end
 
   def signed_in?
