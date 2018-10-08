@@ -17,6 +17,10 @@ en-CA:
       "password_reset": I request a password reset for my account
       "first_idea_published": My first idea gets published
       "idea_published": My idea gets published
+      "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
+      "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
+      "status_change_of_commented_idea": When the status of an idea I commented on has been changed
+      "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": A weekly overview (for administrators)
       "moderator_digest": A weekly overview (for moderators)
       "user_digest": A weekly overview (for citizens)
