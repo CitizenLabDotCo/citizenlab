@@ -37,9 +37,9 @@ const DropdownItemIcon = styled(Icon)`
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 17px;
+  line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -59,7 +59,7 @@ const OpenMenuButton = styled.button`
 
 const ListItemText = styled.div`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
