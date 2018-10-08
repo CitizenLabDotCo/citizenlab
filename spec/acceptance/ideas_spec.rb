@@ -260,9 +260,15 @@ resource "Ideas" do
 
   get "web_api/v1/ideas/:id" do
     let!(:baskets) {create_list(:basket, 2, ideas: [@ideas.first])}
-    let(:id) {@ideas.first.id}
+    let(:idea) {@ideas.first}
+    let(:id) {idea.id}
+    let(:currency) {'bitcoins'}
 
-    example_request "Get one idea by id" do
+    example "Get one idea by id" do
+      idea.update! project: create(:project_with_current_phase, phases_config: {sequence: 'xcx', c: 
+        {participation_method: 'budgeting', currency: currency, max_budget: '42'}
+      })
+      do_request
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @ideas.first.id

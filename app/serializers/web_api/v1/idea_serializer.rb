@@ -23,7 +23,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
   end
 
   def currency
-    project = idea.project
+    project = object.project
     if project.continuous?
       project.currency
     elsif project.timeline?
