@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledMaxReached',
     defaultMessage: 'You\'ve reached your maximum number of votes in {projectName}',
   },
+  votingDisabledNotPermitted: {
+    id: 'app.components.VoteControl.votingDisabledNotPermitted',
+    defaultMessage: 'Unfortunately, you don\'t have the rights to vote on this idea',
+  },
 });
