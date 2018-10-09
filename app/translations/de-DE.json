@@ -110,6 +110,7 @@
   "app.components.VoteControl.votingDisabledForProject": "{orgName, select, München {Bewertung von Mängeln in {projectName} ist nicht möglich} other {Abstimmung über Ideen zu {projectName} ist nicht möglich}}",
   "app.components.VoteControl.votingDisabledMaxReached": "{orgName, select, München {Sie haben die maximale Anzahl von Bewertungen in {projectName} erreicht} other {Sie haben die maximale Anzahl von Stimmen zu {projectName} erreicht}}",
   "app.components.VoteControl.votingDisabledNotInActiveContext": "{orgName, select, München {Diese Mängelmeldung in {projectName} wird nicht mehr oder noch nicht berücksichtigt} other {Diese Idee zu {projectName} wird nicht mehr oder noch nicht berücksichtigt}}",
+  "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "{orgName, select, München {Bewertungen von Mängelmeldungen in {projectName} werden ab dem {enabledFromDate} möglich sein} other {Abstimmungen zu Ideen für {projectName} werden ab dem {enabledFromDate} möglich sein}}",
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Sie können nicht mehr Mängelmeldungen in {projectName} bewerten} other {Sie können nicht mehr zu Ideen für {projectName} abstimmen}}",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fehler",
