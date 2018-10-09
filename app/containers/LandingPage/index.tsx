@@ -38,7 +38,6 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 
-
 // style
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
