@@ -28,8 +28,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 70px;
-  margin-bottom: 90px;
+  margin-top: 50px;
+  margin-bottom: 70px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;

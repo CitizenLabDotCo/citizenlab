@@ -25,6 +25,7 @@ export interface ITenantSettings {
     meta_description: Multiloc | null;
     color_main: string | null;
     color_menu_bg: string | null;
+    currency: string;
   };
   demographic_fields: {
     allowed: boolean;

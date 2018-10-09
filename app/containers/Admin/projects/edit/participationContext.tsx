@@ -74,7 +74,6 @@ export interface IParticipationContextConfig {
   voting_limited_max?: number | null;
   presentation_mode?: 'map' | 'card' | null;
   max_budget?: number | null;
-  currency?: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -106,7 +105,6 @@ export default class ParticipationContext extends PureComponent<Props, State> {
       voting_limited_max: 5,
       presentation_mode: 'card',
       max_budget: null,
-      currency: null,
       survey_service: null,
       survey_embed_url: null,
       loaded: false,
@@ -138,7 +136,6 @@ export default class ParticipationContext extends PureComponent<Props, State> {
             voting_limited_max,
             presentation_mode,
             max_budget,
-            currency,
             survey_embed_url,
             survey_service,
           } = data.data.attributes;
@@ -152,7 +149,6 @@ export default class ParticipationContext extends PureComponent<Props, State> {
             voting_limited_max,
             presentation_mode,
             max_budget,
-            currency,
             survey_embed_url,
             survey_service,
             loaded: true
@@ -182,7 +178,6 @@ export default class ParticipationContext extends PureComponent<Props, State> {
       voting_limited_max,
       presentation_mode,
       max_budget,
-      currency,
       survey_embed_url,
       survey_service
     } = this.state;
@@ -211,8 +206,7 @@ export default class ParticipationContext extends PureComponent<Props, State> {
     } else if (participation_method === 'budgeting') {
       output = {
         participation_method,
-        max_budget,
-        currency
+        max_budget
       };
     }
 
@@ -244,8 +238,7 @@ export default class ParticipationContext extends PureComponent<Props, State> {
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: (participation_method === 'survey' ? 'typeform' : null),
-      max_budget: (participation_method === 'budgeting' ? 1000 : null),
-      currency: (participation_method === 'budgeting' ? 'EUR' : null)
+      max_budget: (participation_method === 'budgeting' ? 1000 : null)
     });
   }
 
@@ -288,11 +281,6 @@ export default class ParticipationContext extends PureComponent<Props, State> {
     this.setState({ max_budget: parseInt(max_budget, 10), noBudgetingAmount: null });
   }
 
-  handleBudgetingCurrencyChange = (budgetingCurrencyOption: IOption) => {
-    const currency = budgetingCurrencyOption.value as string;
-    this.setState({ currency });
-  }
-
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
@@ -323,18 +311,12 @@ export default class ParticipationContext extends PureComponent<Props, State> {
       voting_limited_max,
       presentation_mode,
       max_budget,
-      currency,
       survey_embed_url,
       survey_service,
       loaded,
       noVotingLimit,
       noBudgetingAmount,
     } = this.state;
-    const currencyCodes = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BOV', 'BRL', 'BSD', 'BTN', 'BWP', 'BYR', 'BZD', 'CAD', 'CDF', 'CHE', 'CHF', 'CHW', 'CLF', 'CLP', 'CNY', 'COP', 'COU', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'INR', 'IQD', 'IRR', 'ISK', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MXV', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'SSP', 'STD', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'USN', 'USS', 'UYI', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XCD', 'XDR', 'XFU', 'XOF', 'XPD', 'XPF', 'XPT', 'XTS', 'XXX', 'YER', 'ZAR', 'ZMW'];
-    const currencyCodeOptions = currencyCodes.map((currencyCode) => ({
-      value: currencyCode,
-      label: currencyCode
-    }));
 
     if (loaded) {
       return (
@@ -378,32 +360,19 @@ export default class ParticipationContext extends PureComponent<Props, State> {
             </SectionField>
 
             {participation_method === 'budgeting' &&
-              <>
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.amountPerCitizen} />
-                  </Label>
-                  <Input
-                    onChange={this.handleBudgetingAmountChange}
-                    type="number"
-                    min="1"
-                    placeholder=""
-                    value={(max_budget ? max_budget.toString() : null)}
-                  />
-                  <Error text={noBudgetingAmount} />
-                </SectionField>
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.amountPerCitizen} />
-                  </Label>
-                  <Select
-                    options={currencyCodeOptions}
-                    onChange={this.handleBudgetingCurrencyChange}
-                    value={{ label: currency as string, value: currency }}
-                    clearable={false}
-                  />
-                </SectionField>
-              </>
+              <SectionField>
+                <Label>
+                  <FormattedMessage {...messages.amountPerCitizen} />
+                </Label>
+                <Input
+                  onChange={this.handleBudgetingAmountChange}
+                  type="number"
+                  min="1"
+                  placeholder=""
+                  value={(max_budget ? max_budget.toString() : null)}
+                />
+                <Error text={noBudgetingAmount} />
+              </SectionField>
             }
 
             {participation_method === 'ideation' &&
