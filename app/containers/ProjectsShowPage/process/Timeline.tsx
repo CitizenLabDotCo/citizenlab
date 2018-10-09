@@ -199,6 +199,7 @@ const MobileTimelineContainer = styled.div`
 
 const Phases = styled.div`
   width: 100%;
+  max-width: 1200px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 40px;
