@@ -233,9 +233,9 @@ class App extends React.PureComponent<Props & WithRouterProps, State> {
                 <div id="modal-portal" />
 
                 <Navbar />
+                <ConsentManager />
 
                 <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
-                <ConsentManager />
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
                     <ErrorBoundary>
                       {children}
