@@ -129,13 +129,13 @@ export default defineMessages({
     id: 'app.containers.Projects.yourExpenses',
     defaultMessage: 'Your expenses',
   },
-  total: {
-    id: 'app.containers.Projects.total',
-    defaultMessage: 'Total',
+  totalBudget: {
+    id: 'app.containers.Projects.totalBudget',
+    defaultMessage: 'Total budget',
   },
-  assignedBudget: {
-    id: 'app.containers.Projects.assignedBudget',
-    defaultMessage: 'Assigned budget',
+  spentBudget: {
+    id: 'app.containers.Projects.spentBudget',
+    defaultMessage: 'Spent budget',
   },
   manageBudget: {
     id: 'app.containers.Projects.manageBudget',
