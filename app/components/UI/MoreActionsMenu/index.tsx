@@ -46,7 +46,7 @@ const MoreOptions = styled.button`
     user-select: none;
   }
 
-  &:hover {
+  &:hover, &:focus {
     ${MoreOptionsIcon} {
       fill: #000;
     }
@@ -107,7 +107,6 @@ export interface Props {
   actions: IAction[];
   label?: string | JSX.Element | undefined;
   className?: string;
-  setRef: (HTMLButtonElement) => void;
 }
 
 interface State {
@@ -133,7 +132,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   }
 
   render() {
-    const { actions, setRef } = this.props;
+    const { actions } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -168,7 +167,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
         >
-          <MoreOptions onClick={this.toggleMenu} innerRef={setRef}>
+          <MoreOptions onClick={this.toggleMenu}>
             <MoreOptionsIcon name="more-options" />
             {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>

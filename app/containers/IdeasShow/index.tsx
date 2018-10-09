@@ -594,7 +594,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
-  private openButtonNode: HTMLButtonElement | undefined;
 
   constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
@@ -756,9 +755,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
-  setopenButtonNodeRef = (element: HTMLButtonElement) => {
-    this.openButtonNode = (element || null);
-  }
 
   render() {
     const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
@@ -914,7 +910,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                   emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
                 />
 
@@ -974,7 +970,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
@@ -982,7 +978,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     {(moreActions && moreActions.length > 0) &&
                       <MoreActionsMenuWrapper>
                         <MoreActionsMenu
-                          setRef={this.setopenButtonNodeRef}
                           actions={moreActions}
                           label={<FormattedMessage {...messages.moreOptions} />}
                         />
@@ -997,8 +992,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           <Modal
             opened={this.state.spamModalVisible}
             close={this.closeSpamModal}
-            label={formatMessage(messages.spanModalLabel)}
-            onCloseFocusNode={this.openButtonNode}
+            label={formatMessage(messages.spanModalLabelIdea)}
           >
             <SpamReportForm
               resourceId={idea.data.id}

@@ -6,6 +6,8 @@ import { map, first } from 'rxjs/operators';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
 
 // Services
 import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
@@ -49,8 +51,9 @@ export type State = {
   actions: IAction[] | null;
 };
 
-export default class CommentsMoreActions extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
+
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       modalVisible_spam: false,
@@ -135,7 +138,13 @@ export default class CommentsMoreActions extends PureComponent<Props, State> {
           className={this.props.className}
           actions={this.state.actions}
         />
-        <Modal fixedHeight={false} opened={this.state.modalVisible_delete} close={this.closeDeleteModal} className="e2e-comment-deletion-modal">
+        <Modal
+          fixedHeight={false}
+          opened={this.state.modalVisible_delete}
+          close={this.closeDeleteModal}
+          className="e2e-comment-deletion-modal"
+          label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
+        >
           <HasPermission item={this.props.comment} action="justifyDeletion" context={{ projectId: this.props.projectId }}>
             {/* Justification required for the deletion */}
             <CommentsAdminDeletionModal onCloseDeleteModal={this.closeDeleteModal} onDeleteComment={this.deleteComment} />
@@ -152,10 +161,17 @@ export default class CommentsMoreActions extends PureComponent<Props, State> {
             </HasPermission.No>
           </HasPermission>
         </Modal>
-        <Modal fixedHeight={false} opened={this.state.modalVisible_spam} close={this.closeSpamModal}>
+        <Modal
+          fixedHeight={false}
+          opened={this.state.modalVisible_spam}
+          close={this.closeSpamModal}
+          label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
+        >
           <SpamReportForm resourceId={this.props.comment.id} resourceType="comments" />
         </Modal>
       </>
     );
   }
 }
+
+export default injectIntl(CommentsMoreActions);
