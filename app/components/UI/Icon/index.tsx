@@ -153,10 +153,15 @@ const icons = {
     </svg>
   ),
   'chevron-right': (className, title) => (
-    <svg className={className} height="100%" viewBox="9.155 6.565 6.279 10.869">
+    <svg className={className} height="100%" viewBox="0 0 11 18">
       {injectTitle(title)}
-      <path d="M15.435 12L10 6.565l-.845.846 4.298 4.307.282.283-.282.283-4.298 4.307.845.845" />
-      <path fill="none" d="M0 0h24v24H0V0z" />
+      <path d="M2.099 0L0 2.123 6.802 9 0 15.877 2.099 18 11 9z"/>
+    </svg>
+  ),
+  'chevron-left': (className, title) => (
+    <svg className={className} height="100%" viewBox="0 0 11 18">
+      {injectTitle(title)}
+      <path d="M11 2.123L8.9 0 0 9l8.9 9 2.1-2.123L4.198 9z"/>
     </svg>
   ),
   'downvote-outline': (className, title) => (

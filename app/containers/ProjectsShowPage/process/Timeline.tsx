@@ -6,8 +6,8 @@ import moment from 'moment';
 
 // components
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
-import MobileTimeline from './MobileTimeline';
 
 // services
 import { localeStream } from 'services/locale';
@@ -64,11 +64,10 @@ const Header = styled.div`
   padding-top: 8px;
   padding-bottom: 8px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   border-bottom: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
-    min-height: 100px;
     padding-left: ${mobilePadding}px;
     padding-right: ${mobilePadding}px;
   `}
@@ -77,6 +76,8 @@ const Header = styled.div`
 const HeaderSectionsWrapper = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -85,17 +86,13 @@ const HeaderSectionsWrapper = styled.div`
 const HeaderSection = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
 `;
 
 const HeaderLeftSection = HeaderSection.extend`
   flex-direction: column;
   align-items: flex-start;
-
-  ${media.smallerThanMinTablet`
-    padding-top: 20px;
-    padding-bottom: 20px;
-  `}
+  padding-top: 8px;
+  padding-bottom: 8px;
 `;
 
 const HeaderRightSection = HeaderSection.extend``;
@@ -103,10 +100,6 @@ const HeaderRightSection = HeaderSection.extend``;
 const PhaseSummary = styled.div`
   display: flex;
   align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-bottom: 20px;
-  `}
 `;
 
 const PhaseNumberWrapper = styled.div`
@@ -163,7 +156,7 @@ const MobileDate = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 4px;
+  margin-top: 2px;
   display: none;
 
   ${media.smallerThanMaxTablet`
@@ -171,11 +164,12 @@ const MobileDate = styled.div`
   `}
 `;
 
-const MobileIdeaButton: any = styled(IdeaButton)`
-  display: none;
+const IdeaButtonMobile: any = styled(IdeaButton)`
+  margin-top: 15px;
+  margin-bottom: 10px;
 
-  ${media.smallerThanMinTablet`
-    display: block;
+  ${media.biggerThanMinTablet`
+    display: none;
   `}
 `;
 
@@ -199,7 +193,7 @@ const HeaderDate = styled.div`
   `}
 `;
 
-const StyledIdeaButton: any = styled(IdeaButton)`
+const IdeaButtonDesktop: any = styled(IdeaButton)`
   margin-left: 20px;
 
   ${media.smallerThanMinTablet`
@@ -207,20 +201,21 @@ const StyledIdeaButton: any = styled(IdeaButton)`
   `}
 `;
 
-const MobileTimelineContainer = styled.div`
-  width: 100%;
+const MobilePhaseNavigation = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-left: ${mobilePadding}px;
-  padding-right: ${mobilePadding}px;
-  padding-top: 30px;
-  padding-bottom: 30px;
 
-  ${media.biggerThanMaxTablet`
+  ${media.biggerThanMinTablet`
     display: none;
   `}
 `;
+
+const PhaseButton = styled(Button)``;
+
+const PreviousPhaseButton = PhaseButton.extend`
+  margin-right: 9px;
+`;
+
+const NextPhaseButton = PhaseButton.extend``;
 
 const Phases = styled.div`
   width: 100%;
@@ -454,6 +449,14 @@ export default class Timeline extends PureComponent<Props, State> {
     this.setSelectedPhaseId(phaseId);
   }
 
+  goToNextPhase = () => {
+    // todo
+  }
+
+  goToPreviousPhase = () => {
+    // todo
+  }
+
   render() {
     const className = this.props['className'];
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
@@ -503,11 +506,6 @@ export default class Timeline extends PureComponent<Props, State> {
                       </MobileDate>
                     </HeaderTitleWrapper>
                   </PhaseSummary>
-                  <MobileIdeaButton
-                    size="1"
-                    projectId={this.props.projectId}
-                    phaseId={selectedPhaseId}
-                  />
                 </HeaderLeftSection>
 
                 <HeaderRightSection>
@@ -529,22 +527,37 @@ export default class Timeline extends PureComponent<Props, State> {
                     }
                   </HeaderDate>
 
-                  <StyledIdeaButton
+                  <IdeaButtonDesktop
                     size="1"
                     projectId={this.props.projectId}
                     phaseId={selectedPhaseId}
                   />
+
+                  <MobilePhaseNavigation>
+                    <PreviousPhaseButton
+                      onClick={this.goToPreviousPhase}
+                      icon="chevron-left"
+                      style="secondary"
+                      padding="10px 6px"
+                      disabled={false}
+                    />
+                    <NextPhaseButton
+                      onClick={this.goToNextPhase}
+                      icon="chevron-right"
+                      style="secondary"
+                      padding="10px 6px"
+                      disabled={false}
+                    />
+                  </MobilePhaseNavigation>
                 </HeaderRightSection>
               </HeaderSectionsWrapper>
-            </Header>
-            <MobileTimelineContainer>
-              <MobileTimeline
-                phases={phases.data}
-                currentPhase={currentPhaseId}
-                selectedPhase={selectedPhaseId}
-                onPhaseSelection={this.handleOnPhaseSelectionFromDropdown}
+
+              <IdeaButtonMobile
+                size="1"
+                projectId={this.props.projectId}
+                phaseId={selectedPhaseId}
               />
-            </MobileTimelineContainer>
+            </Header>
 
             <Phases>
               {phases.data.map((phase, index) => {
