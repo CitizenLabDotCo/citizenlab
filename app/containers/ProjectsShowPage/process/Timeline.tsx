@@ -88,11 +88,24 @@ const HeaderSection = styled.div`
   justify-content: flex-start;
 `;
 
-const HeaderLeftSection = HeaderSection.extend``;
+const HeaderLeftSection = HeaderSection.extend`
+  flex-direction: column;
+  align-items: flex-start;
 
-const HeaderRightSection = HeaderSection.extend`
-  ${media.smallerThanMaxTablet`
-    display: none;
+  ${media.smallerThanMinTablet`
+    padding-top: 20px;
+    padding-bottom: 20px;
+  `}
+`;
+
+const HeaderRightSection = HeaderSection.extend``;
+
+const PhaseSummary = styled.div`
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 20px;
   `}
 `;
 
@@ -158,6 +171,14 @@ const MobileDate = styled.div`
   `}
 `;
 
+const MobileIdeaButton: any = styled(IdeaButton)`
+  display: none;
+
+  ${media.smallerThanMinTablet`
+    display: block;
+  `}
+`;
+
 const HeaderSubtitle = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -180,6 +201,10 @@ const HeaderDate = styled.div`
 
 const StyledIdeaButton: any = styled(IdeaButton)`
   margin-left: 20px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const MobileTimelineContainer = styled.div`
@@ -202,7 +227,7 @@ const Phases = styled.div`
   max-width: 1200px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
-  padding-top: 40px;
+  padding-top: 80px;
   padding-bottom: 40px;
   margin: 0;
   margin-left: auto;
@@ -449,60 +474,67 @@ export default class Timeline extends PureComponent<Props, State> {
           <ContainerInner>
             <Header>
               <HeaderSectionsWrapper>
-              <HeaderLeftSection>
-                {isSelected &&
-                  <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                    <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                      {selectedPhaseNumber}
-                    </PhaseNumber>
-                  </PhaseNumberWrapper>
-                }
+                <HeaderLeftSection>
+                  <PhaseSummary>
+                    {isSelected &&
+                      <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                        <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                          {selectedPhaseNumber}
+                        </PhaseNumber>
+                      </PhaseNumberWrapper>
+                    }
 
-                <HeaderTitleWrapper>
-                  <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                    {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
-                  </HeaderTitle>
-                  <MobileDate>
-                    {phaseStatus === 'past' && (
-                      <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
-                    )}
+                    <HeaderTitleWrapper>
+                      <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                        {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+                      </HeaderTitle>
+                      <MobileDate>
+                        {phaseStatus === 'past' && (
+                          <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                        )}
 
-                    {phaseStatus === 'present' && (
-                      <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
-                    )}
+                        {phaseStatus === 'present' && (
+                          <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                        )}
 
-                    {phaseStatus === 'future' && (
-                      <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
-                    )}
-                  </MobileDate>
-                </HeaderTitleWrapper>
-              </HeaderLeftSection>
+                        {phaseStatus === 'future' && (
+                          <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                        )}
+                      </MobileDate>
+                    </HeaderTitleWrapper>
+                  </PhaseSummary>
+                  <MobileIdeaButton
+                    size="1"
+                    projectId={this.props.projectId}
+                    phaseId={selectedPhaseId}
+                  />
+                </HeaderLeftSection>
 
-              <HeaderRightSection>
-                <HeaderDate>
-                  {isSelected &&
-                    <HeaderSubtitle>
-                      {phaseStatus === 'past' && (
-                        <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
-                      )}
+                <HeaderRightSection>
+                  <HeaderDate>
+                    {isSelected &&
+                      <HeaderSubtitle>
+                        {phaseStatus === 'past' && (
+                          <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                        )}
 
-                      {phaseStatus === 'present' && (
-                        <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
-                      )}
+                        {phaseStatus === 'present' && (
+                          <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                        )}
 
-                      {phaseStatus === 'future' && (
-                        <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
-                      )}
-                    </HeaderSubtitle>
-                  }
-                </HeaderDate>
+                        {phaseStatus === 'future' && (
+                          <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                        )}
+                      </HeaderSubtitle>
+                    }
+                  </HeaderDate>
 
-                <StyledIdeaButton
-                  size="2"
-                  projectId={this.props.projectId}
-                  phaseId={selectedPhaseId}
-                />
-              </HeaderRightSection>
+                  <StyledIdeaButton
+                    size="1"
+                    projectId={this.props.projectId}
+                    phaseId={selectedPhaseId}
+                  />
+                </HeaderRightSection>
               </HeaderSectionsWrapper>
             </Header>
             <MobileTimelineContainer>
