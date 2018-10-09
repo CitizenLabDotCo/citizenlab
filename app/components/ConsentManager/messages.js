@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
     defaultMessage: 'Your cookie preferences',
   },
+  modalLabel: {
+    id: 'app.components.ConsentManager.Modal.PreferencesDialog.modalLabel',
+    defaultMessage: 'Your cookie preferences',
+  },
   functional: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.functional',
     defaultMessage: 'Functional',

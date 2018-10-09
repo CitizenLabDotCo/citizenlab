@@ -10,6 +10,10 @@ import PreferencesDialog from './PreferencesDialog';
 import CancelDialog from './CancelDialog';
 import Modal from 'components/UI/Modal';
 
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 
 import { IDestination, CustomPreferences } from './';
@@ -30,7 +34,7 @@ interface State {
   isCancelling: boolean;
 }
 
-export default class Container extends PureComponent<Props, State> {
+class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
   private openButtonNode: HTMLButtonElement | undefined;
 
@@ -60,6 +64,7 @@ export default class Container extends PureComponent<Props, State> {
       newDestinations,
       preferences,
       isConsentRequired,
+      intl,
     } = this.props;
     const { isDialogOpen, isCancelling } = this.state;
     const categoryDestinatons = {
@@ -85,7 +90,7 @@ export default class Container extends PureComponent<Props, State> {
           opened={isDialogOpen}
           close={this.closeDialog}
           openButtonNode={this.openButtonNode}
-          label="close"
+          label={intl.formatMessage(messages.modalLabel)}
         >
           {!isCancelling &&
             <PreferencesDialog
@@ -186,3 +191,5 @@ export default class Container extends PureComponent<Props, State> {
     resetPreferences();
   }
 }
+
+export default injectIntl(Container);
