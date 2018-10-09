@@ -990,7 +990,6 @@
   "app.containers.app.navbar.logoAltText": "{tenantName} - logo",
   "app.containers.app.navbar.mobilePageHome": "Home",
   "app.containers.app.navbar.mobilePageIdeas": "Ideas",
-  "app.containers.app.navbar.mobilePageProfile": "Profile",
   "app.containers.app.navbar.mobilePageProjects": "Projects",
   "app.containers.app.navbar.myIdeas": "My ideas",
   "app.containers.app.navbar.pageIdeas": "Ideas",
