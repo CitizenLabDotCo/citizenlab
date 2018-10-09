@@ -49,8 +49,6 @@ const ContainerInner = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
-  background: #fff;
-  border: solid 1px ${colors.separation};
 
   * {
     user-select: none;
@@ -60,6 +58,7 @@ const ContainerInner = styled.div`
 const Header = styled.div`
   width: 100%;
   min-height: 70px;
+  background-color: #fff;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 8px;
