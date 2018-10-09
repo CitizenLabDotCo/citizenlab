@@ -233,6 +233,10 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 10px;
+  `}
 `;
 
 const RightItem: any = styled.div`
@@ -248,18 +252,12 @@ const RightItem: any = styled.div`
     `}
   }
 
-  &.usermenu {
-    ${media.smallPhone`
-      display: none;
-    `}
-  }
-
   &.addIdea {
     padding-left: 0px;
 
     ${(props: any) => props.loggedIn && css`
       ${media.smallerThanMinTablet`
-        display: flex;
+        display: none;
       `}
     `}
   }
@@ -425,9 +423,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-            <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="1" />
-            </RightItem>
+              <RightItem className="addIdea" loggedIn={authUser !== null}>
+                <StyledIdeaButton style="secondary-outlined" size="1" />
+              </RightItem>
 
             {!authUser &&
               <RightItem>
