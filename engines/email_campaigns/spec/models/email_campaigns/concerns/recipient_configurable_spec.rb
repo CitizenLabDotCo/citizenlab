@@ -28,6 +28,19 @@ RSpec.describe EmailCampaigns::RecipientConfigurable, type: :model do
       @campaign.update(groups: [])
       expect(@campaign.apply_recipient_filters.count).to eq User.all.count
     end
+
+    it "only returns active users when there are no associated groups" do
+      u1 = create(:invited_user)
+      @campaign.update(groups: [])
+      expect(@campaign.apply_recipient_filters).not_to include(u1)
+    end
+
+    it "only returns active users, even when the inactive are in the associated group" do
+      g1 = create(:group)
+      u1 = create(:invited_user, manual_groups: [g1])
+      @campaign.update(groups: [g1])
+      expect(@campaign.apply_recipient_filters).to be_empty
+    end
   end
 
 end
