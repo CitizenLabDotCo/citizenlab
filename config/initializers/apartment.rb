@@ -86,7 +86,7 @@ end
 #   request.host.split('.').first
 # }
 Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new do |request|
-  if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/
+  if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events"
     nil
   else
     if Rails.env.development? || Rails.env.staging?

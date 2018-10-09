@@ -58,4 +58,16 @@ class FrontendService
     "#{tenant.base_frontend_uri}/?utm_source=manifest"
   end
 
+  def edit_profile_url tenant: Tenant.current
+    "#{tenant.base_frontend_uri}/profile/edit"
+  end
+
+  def terms_conditions_url tenant: Tenant.current
+    "#{tenant.base_frontend_uri}/pages/terms-and-conditions"
+  end
+
+  def privacy_policy_url tenant: Tenant.current
+    "#{tenant.base_frontend_uri}/pages/privacy-policy"
+  end
+
 end
