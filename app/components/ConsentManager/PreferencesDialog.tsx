@@ -207,7 +207,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
                 {index !== 0 &&
                   <Separator>•</Separator>
                 }
-                <a href={d.website} target="_blank">
+                <a href={d.website} target="_blank" tabIndex={-1}>
                   {d.name}
                 </a>
               </Fragment>

@@ -86,6 +86,7 @@ const CloseButton = styled.button`
 interface Props {
   onAccept: () => void;
   onChangePreferences: () => void;
+  setRef: (HTMLButtonElement) => void;
 }
 
 export default class Banner extends PureComponent<Props> {
@@ -95,6 +96,7 @@ export default class Banner extends PureComponent<Props> {
     const {
       onAccept,
       onChangePreferences,
+      setRef
     } = this.props;
 
     return (
@@ -116,7 +118,7 @@ export default class Banner extends PureComponent<Props> {
           </Content>
           <Spacer />
           <ButtonContainer>
-            <Button style="primary" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
+            <Button style="primary" onClick={onChangePreferences} setSubmitButtonRef={setRef}><FormattedMessage {...messages.manage} /></Button>
             <Button style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
           </ButtonContainer>
         </StyledContentContainer>

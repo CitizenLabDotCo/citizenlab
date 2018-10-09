@@ -32,6 +32,8 @@ interface State {
 
 export default class Container extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
+  private openButtonNode: HTMLButtonElement | undefined;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -47,6 +49,9 @@ export default class Container extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+  setopenButtonNodeRef = (element: HTMLButtonElement) => {
+    this.openButtonNode = (element || null);
   }
 
   render() {
@@ -79,6 +84,8 @@ export default class Container extends PureComponent<Props, State> {
         <Modal
           opened={isDialogOpen}
           close={this.closeDialog}
+          openButtonNode={this.openButtonNode}
+          label="close"
         >
           {!isCancelling &&
             <PreferencesDialog
@@ -100,6 +107,7 @@ export default class Container extends PureComponent<Props, State> {
         </Modal>
         {isConsentRequired && newDestinations.length > 0 && (
           <Banner
+            setRef={this.setopenButtonNodeRef}
             onAccept={this.handleBannerAccept}
             onChangePreferences={this.openDialog}
           />
