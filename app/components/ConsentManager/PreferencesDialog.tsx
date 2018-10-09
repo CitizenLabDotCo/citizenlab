@@ -1,14 +1,17 @@
 import React, { PureComponent, Fragment } from 'react';
-import styled from 'styled-components';
 
+// Components
 import Button from 'components/UI/Button';
-import ControlledRadio from 'components/UI/ControlledRadio';
 
+// Typing
 import { IDestination } from './';
 
+// Translation
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// Styling
+import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize, hideVisually } from 'polished';
 
@@ -83,7 +86,7 @@ const InputContainer = styled.div`
   `}
 `;
 
-const HiddenLabel = styled.div`
+const HiddenLabel = styled.label`
   ${hideVisually()}
 `;
 
@@ -221,7 +224,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
           <StyledLabel htmlFor={`${category}-radio-true`}>
             <input
               type="radio"
-              name={`${category}-radio`}
+              name={category}
               id={`${category}-radio-true`}
               value="true"
               checked={checked === true}
@@ -234,7 +237,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
           <StyledLabel htmlFor={`${category}-radio-false`}>
             <input
               type="radio"
-              name={`${category}-radio`}
+              name={category}
               id={`${category}-radio-false`}
               value="false"
               checked={checked === false}

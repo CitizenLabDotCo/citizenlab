@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 // Events
 import eventEmitter from 'utils/eventEmitter';
 
+// Components
 import Banner from './Banner';
 import PreferencesDialog from './PreferencesDialog';
 import CancelDialog from './CancelDialog';
