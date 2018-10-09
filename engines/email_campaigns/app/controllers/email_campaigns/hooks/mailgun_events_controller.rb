@@ -7,6 +7,8 @@ module EmailCampaigns
     skip_after_action :verify_authorized
 
     before_action :verify, only: [:create]
+    around_action :switch_tenant
+
 
     MAILGUN_STATUS_MAPPING = {
       'accepted' => 'accepted',
@@ -64,5 +66,15 @@ module EmailCampaigns
       end
     end
 
+    def switch_tenant
+      tenant_id = params.dig(:'event-data', :'user-variables', :'cl_tenant_id')
+      if tenant_id
+        Apartment::Tenant.switch(Tenant.find(tenant_id).schema_name) do
+          yield
+        end
+      else
+        head :not_acceptable
+      end
+    end
   end
 end

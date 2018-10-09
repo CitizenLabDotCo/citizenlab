@@ -21,7 +21,7 @@ resource "Campaign consents" do
         create(:comment_on_your_idea_campaign),
         # create(:comment_deleted_by_admin_campaign),
         create(:mention_in_comment_campaign),
-        # create(:status_change_of_your_idea_campaign),
+        create(:status_change_of_your_idea_campaign),
         # create(:idea_published_campaign),
         create(:user_digest_campaign),
         create(:manual_campaign),

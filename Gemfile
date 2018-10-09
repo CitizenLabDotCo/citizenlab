@@ -97,7 +97,7 @@ gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
 gem 'acts_as_list'
-gem 'ice_cube'
+gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'skylight'
 gem 'mailgun-ruby'
 

@@ -34,6 +34,10 @@ module EmailCampaigns
       self.name.split('::').last.underscore
     end
 
+    def self.from_campaign_name name
+      "EmailCampaigns::Campaigns::#{name.camelize}"
+    end
+
     def apply_recipient_filters activity: nil, time: nil
       self.class.recipient_filters.inject(User.all) do |users_scope, action_symbol|
         self.send(action_symbol, users_scope, {activity: activity, time: time})
@@ -50,6 +54,24 @@ module EmailCampaigns
       self.class.after_send_hooks.each do |action_symbol|
         self.send(action_symbol, command)
       end
+    end
+
+    def self.campaign_description_multiloc
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc(
+        "email_campaigns.campaign_type_description.#{self.campaign_name}"
+      )
+    end
+
+    def self.admin_campaign_description_multiloc
+      @multiloc_service ||= MultilocService.new
+      @multiloc_service.i18n_to_multiloc(
+        "email_campaigns.admin_campaign_type_description.#{self.campaign_name}"
+      )
+    end
+
+    def self.policy_class
+      CampaignPolicy
     end
 
     protected
