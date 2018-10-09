@@ -6,8 +6,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import Label from 'components/UI/Label';
-import FileInput from 'components/UI/FileInput';
-import FileDisplay from 'components/UI/FileDisplay';
+import FileInput from './FileInput';
+import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
 
 // typings
