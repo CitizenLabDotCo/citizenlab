@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/CitizenLabDotCo/ice_cube.git
+  revision: 9e1269471640efca60efb8feb91ae7dd249a0246
+  specs:
+    ice_cube (0.16.3)
+
+GIT
   remote: https://github.com/ngty/knock.git
   revision: 97fb32f59b2027c808964b875be2fff22400da1d
   ref: 97fb32f59b2027c808964b875be2fff22400da1d
@@ -195,7 +201,6 @@ GEM
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    ice_cube (0.16.2)
     image_optimizer (1.7.2)
     ipaddress (0.8.3)
     json (2.1.0)
@@ -443,7 +448,7 @@ DEPENDENCIES
   faker
   fog-aws
   groupdate
-  ice_cube
+  ice_cube!
   kaminari (~> 1.1.1)
   knock (~> 2.1.1)!
   liquid (~> 4.0)

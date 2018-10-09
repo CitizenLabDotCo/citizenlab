@@ -7,7 +7,7 @@ module EmailCampaigns
       Campaigns::CommentOnYourIdea,
       Campaigns::CommentMarkedAsSpam,
       Campaigns::IdeaMarkedAsSpam,
-      # Campaigns::StatusChangeOfYourIdea,
+      Campaigns::StatusChangeOfYourIdea,
       Campaigns::MentionInComment,
       # Campaigns::CommentDeletedByAdmin,
       Campaigns::AdminRightsReceived,
@@ -18,6 +18,10 @@ module EmailCampaigns
       Campaigns::PasswordReset,
       Campaigns::FirstIdeaPublished,
       # Campaigns::IdeaPublished,
+      Campaigns::NewCommentOnCommentedIdea,
+      Campaigns::NewCommentOnVotedIdea,
+      Campaigns::StatusChangeOfCommentedIdea,
+      Campaigns::StatusChangeOfVotedIdea,
       Campaigns::AdminDigest,
       Campaigns::ModeratorDigest,
       Campaigns::UserDigest
@@ -51,6 +55,30 @@ module EmailCampaigns
       apply_send_pipeline([campaign])
     end
 
+    def send_preview campaign, recipient
+      campaign.generate_commands(
+        recipient: recipient,
+        time: Time.now
+      ).each do |command|
+        process_command(campaign, command.merge({ recipient: recipient }))
+      end
+    end
+
+    # This only works for emails that are sent out internally
+    def preview_html campaign, recipient
+      command = campaign.generate_commands(
+        recipient: recipient,
+        time: Time.now
+      ).first&.merge({ recipient: recipient })
+
+      if command
+        mail = campaign.mailer_class.campaign_mail(campaign, command)
+        mail.parts[1].body.to_s
+      else
+        nil
+      end
+    end
+
     private
 
     # Takes options, either
@@ -75,14 +103,17 @@ module EmailCampaigns
           .zip([campaign].cycle)
         end
         .each do |(command, campaign)|
-          if campaign.respond_to? :mailer_class
-            send_command_internal(campaign, command)
-          else
-            send_command_external(campaign, command)
-          end
-
+          process_command(campaign, command)
           campaign.run_after_send_hooks(command)
         end
+    end
+
+    def process_command campaign, command
+      if campaign.respond_to? :mailer_class
+        send_command_internal(campaign, command)
+      else
+        send_command_external(campaign, command)
+      end
     end
 
     # This method is triggered when the given sending command should be sent
