@@ -17,6 +17,10 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
 const ProjectNavbarWrapper = styled.nav`
   background-color: #002332;
   color: #fff;
@@ -25,6 +29,7 @@ const ProjectNavbarWrapper = styled.nav`
   top: ${(props) => props.theme.menuHeight}px;
   z-index: 10;
   width: 100%;
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
 
   ${media.smallerThanMaxTablet`
     top: 0;
@@ -41,7 +46,7 @@ const ProjectNavbarItems = styled.ul`
   display: flex;
   margin: 0;
   padding: 0;
-  height: 58px;
+  height: 60px;
   overflow-x: scroll;
   -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
   -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
@@ -53,55 +58,56 @@ const ProjectNavbarItems = styled.ul`
 
 const ProjectNavbarItem = styled.li`
   display: flex;
-  margin-right: 40px;
+  margin-right: 60px;
   vertical-align: middle;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 40px;
+  `}
 
   &:first-of-type {
     ${media.smallerThanMinTablet`
-      margin-left: 30px;
-    `
+      margin-left: 20px;
+    `}
   }
 
-  &:last-of-type::after {
-    content: '';
-    width: 30px;
-  }
-`;
+  &:last-of-type {
+    margin-right: 0px;
 
-const ProjectNavbarIconWrapper = styled.div`
-  width: 20px;
-  height: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 10px;
+    ${media.smallerThanMinTablet`
+      margin-right: 20px;
+    `}
+  }
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
+  height: 15px;
   fill: #fff;
+  margin-right: 7px;
   transition: fill 100ms ease-out;
+
+  &.idea {
+    height: 18px;
+    margin-top: -4px;
+  }
 `;
 
 const ProjectNavbarLink = styled(Link)`
   display: flex;
   align-items: center;
-  color: inherit;
-  border-top: 2px solid transparant;
-  border-bottom: 2px solid rgba(255, 255, 255, 0);
+  color: #fff;
+  border-bottom: 3px solid transparent;
+  opacity: 0.6;
 
   &.active,
-  &:focus {
-    color: inherit;
-    border-bottom: 2px solid #fff;
+  &:focus,
+  &:hover {
+    color: #fff;
+    opacity: 1;
   }
 
-  &:not(.active):hover {
-    color: rgba(255, 255, 255, 0.8);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.8);
-
-    ${ProjectNavbarIcon} {
-      fill: rgba(255, 255, 255, 0.8);
-    }
+  &.active {
+    border-bottom: 3px solid rgba(255, 255, 255, 1);
   }
 `;
 
@@ -136,10 +142,8 @@ const ProjectNavbar = (props: Props) => {
                   to={`/projects/${projectSlug}/process`}
                   activeClassName="active"
                 >
-                  <ProjectNavbarIconWrapper>
-                    <ProjectNavbarIcon name="timeline" />
-                  </ProjectNavbarIconWrapper>
-                  Process
+                  <ProjectNavbarIcon name="timeline" />
+                  <FormattedMessage {...messages.navProcess} />
                 </ProjectNavbarLink>
               </ProjectNavbarItem>
             }
@@ -150,10 +154,8 @@ const ProjectNavbar = (props: Props) => {
                 to={`/projects/${projectSlug}/info`}
                 activeClassName="active"
               >
-                <ProjectNavbarIconWrapper>
-                  <ProjectNavbarIcon name="info2" />
-                </ProjectNavbarIconWrapper>
-                Information
+                <ProjectNavbarIcon name="info2" />
+                <FormattedMessage {...messages.navInformation} />
               </ProjectNavbarLink>
             </ProjectNavbarItem>
 
@@ -164,10 +166,8 @@ const ProjectNavbar = (props: Props) => {
                   to={`/projects/${projectSlug}/ideas`}
                   activeClassName="active"
                 >
-                  <ProjectNavbarIconWrapper>
-                    <ProjectNavbarIcon name="idea" />
-                  </ProjectNavbarIconWrapper>
-                  Ideas
+                  <ProjectNavbarIcon name="idea" className="idea" />
+                  <FormattedMessage {...messages.navIdeas} />
                 </ProjectNavbarLink>
               </ProjectNavbarItem>
             }
@@ -179,10 +179,8 @@ const ProjectNavbar = (props: Props) => {
                   to={`/projects/${projectSlug}/survey`}
                   activeClassName="active"
                 >
-                  <ProjectNavbarIconWrapper>
-                    <ProjectNavbarIcon name="survey" />
-                  </ProjectNavbarIconWrapper>
-                  Survey
+                  <ProjectNavbarIcon name="survey" />
+                  <FormattedMessage {...messages.navSurvey} />
                 </ProjectNavbarLink>
               </ProjectNavbarItem>
             }
@@ -194,10 +192,8 @@ const ProjectNavbar = (props: Props) => {
                   to={`/projects/${projectSlug}/events`}
                   activeClassName="active"
                 >
-                  <ProjectNavbarIconWrapper>
-                    <ProjectNavbarIcon name="calendar" />
-                  </ProjectNavbarIconWrapper>
-                  Events
+                  <ProjectNavbarIcon name="calendar" />
+                  <FormattedMessage {...messages.navEvents} />
                 </ProjectNavbarLink>
               </ProjectNavbarItem>
             }
