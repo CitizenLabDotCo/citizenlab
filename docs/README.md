@@ -1,5 +1,20 @@
 # Changelog
 
+## 2018-10-09
+
+### Fixed
+- UTM tags are again present on social sharing
+- Start an idea button is no longer shown in the navbar on mobile
+- Exceptionally slow initial loading has been fixed
+- Sharing on facebook is again able to (quite) consistently scrape the images
+- When using the project copy tool in Admin HQ, attachments are now copied over as well
+
+### Added
+- Email engine in the admin (feature flagged)
+  - Direct emails can be sent to specific groups by admins and moderators
+  - Delivered/Opened/Clicked statistics can be seen for every campaign
+  - An overview of all automated emails is shown and some can be disabled for the whole platform
+
 ## 2018-09-26
 
 ### Fixed
