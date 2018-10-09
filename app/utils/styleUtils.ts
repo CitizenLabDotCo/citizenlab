@@ -101,30 +101,41 @@ export function hexToRgb(hex) {
 }
 
 export const colors = {
+  background: '#F9F9FA',
   text: '#222',
-  text2: '#767676',
+  label: '#596B7A',
   placeholder: '#aaa',
-  clBlue: '#008292',
-  // this is the first grey to get 4.5 on the light greyish background we often use (#f9f9fa)
+  separation: '#e0e0e0',
+  /**
+  * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
+  */
   clGreyOnGreyBackground: '#737373',
-  // hover color used for clGrey (e.g. in the navbar)
-  clGreyHover: '#222',
-  // background color of dropdown items (e.g. in the navbar)
+  /**
+  * background color of dropdown items (e.g. in the navbar)
+  */
   clDropdownHoverBackground: '#e9e9e9',
+  /**
+  * Green that has a contrast ratio of >=4.5 on a white background
+  */
   clGreen: '#04884C',
-  // darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  /**
+  * darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  */
   clGreenSuccess: '#008040',
   clGreenSuccessBackground: '#e4f7ef',
+  /**
+  * Red that has a contrast ratio of >=4.5 on a white background
+  */
   clRed: '#E52516',
-  // darker red than clRed for when we have a light red background (clRedSuccessBackground)
+  /**
+  * darker red than clRed for when we have a light red background (clRedErrorBackground)
+  */
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
-  label: '#596B7A',
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
-  separation: '#e0e0e0',
-  background: '#F9F9FA',
+  clBlue: '#008292',
   clBlueDark: '#147985',
   clBlueDarkBg: '#d3ecf0',
   clBlueDarker: '#0A5159',

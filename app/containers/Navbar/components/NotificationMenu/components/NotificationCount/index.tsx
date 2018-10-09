@@ -27,7 +27,7 @@ const Container = styled.button`
 
   &:hover,
   &:focus {
-    fill: ${colors.clGreyHover};
+    fill: ${colors.text};
   }
 `;
 

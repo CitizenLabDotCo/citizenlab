@@ -21,7 +21,7 @@ const Container = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${colors.clGreyHover};
+    color: ${colors.text};
     background-color: ${colors.clDropdownHoverBackground};
   }
 `;

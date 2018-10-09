@@ -302,7 +302,7 @@ const LoginLink = styled(Link)`
   padding: 0;
 
   &:hover {
-    color: ${colors.clGreyHover};
+    color: ${colors.text};
   }
 `;
 
