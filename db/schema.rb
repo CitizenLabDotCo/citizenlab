@@ -425,7 +425,6 @@ ActiveRecord::Schema.define(version: 20180919144612) do
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
-    t.string "currency"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -472,7 +471,6 @@ ActiveRecord::Schema.define(version: 20180919144612) do
     t.string "survey_service"
     t.integer "ordering"
     t.integer "max_budget"
-    t.string "currency"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
