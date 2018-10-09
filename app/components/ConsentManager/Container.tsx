@@ -89,7 +89,7 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
         <Modal
           opened={isDialogOpen}
           close={this.closeDialog}
-          openButtonNode={this.openButtonNode}
+          onCloseFocusNode={this.openButtonNode}
           label={intl.formatMessage(messages.modalLabel)}
         >
           {!isCancelling &&
