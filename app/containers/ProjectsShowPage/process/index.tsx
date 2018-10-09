@@ -24,11 +24,6 @@ import messages from '../../Admin/pages/messages';
 
 const Container = styled.div``;
 
-const StyledTimeline = styled(Timeline)`
-  margin-top: -40px;
-  position: relative;
-`;
-
 const StyledContentContainer = styled(ContentContainer)`
   margin-top: 15px;
 `;
@@ -73,7 +68,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         <Container className={className}>
           <Header projectSlug={slug} />
 
-          <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+          <Timeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
 
           <ProjectModeratorIndicator projectId={project.id} />
 
