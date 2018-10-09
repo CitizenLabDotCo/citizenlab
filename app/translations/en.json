@@ -13,6 +13,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Allow",
   "app.components.ConsentManager.Modal.PreferencesDialog.analytics": "Marketing and analytics",
   "app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose": "We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals.",
+  "app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup": "Allow {category} tracking?",
   "app.components.ConsentManager.Modal.PreferencesDialog.cancel": "Cancel",
   "app.components.ConsentManager.Modal.PreferencesDialog.disallow": "Disallow",
   "app.components.ConsentManager.Modal.PreferencesDialog.functional": "Functional",
