@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { ConsentManagerBuilder } from '@segment/consent-manager';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
+
 import Container from './Container';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
