@@ -132,6 +132,8 @@ const Container: any = styled.div`
 // Typings
 export interface InputProps {
   noImages?: boolean;
+  noVideos?: boolean;
+  noAlign?: boolean;
   limitedTextFormatting?: boolean;
   noToolbar?: boolean;
   id: string;
@@ -269,7 +271,9 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     const {
       id,
       noToolbar,
+      noAlign,
       noImages,
+      noVideos,
       limitedTextFormatting,
       inAdmin,
       trackBasicEditing,
@@ -283,7 +287,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      blotFormatter: noImages ? false : {},
+      blotFormatter: (noImages && noVideos) ? false : {},
       keyboard: {
         // This will overwrite the default binding also named 'tab'
         bindings: {
@@ -309,8 +313,15 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     };
 
     const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image', 'video'); }
-    if (!limitedTextFormatting) { formats.push('list', 'align', 'header'); }
+    if (!noImages) { formats.push('image'); }
+    if (!noVideos) { formats.push('video'); }
+    if (!limitedTextFormatting) {
+      formats.push('list');
+      if (!noAlign) {
+        formats.push('align');
+      }
+      formats.push('header');
+    }
 
     return (
       <Container
@@ -345,7 +356,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
               </select>
             </span>
           }
-          {!limitedTextFormatting &&
+          {!limitedTextFormatting && !noAlign &&
             <span className="ql-formats">
               <button
                 className="ql-align"
@@ -389,10 +400,10 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
             <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
           </span>
 
-          {!noImages &&
+          {!(noImages && noVideos) &&
             <span className="ql-formats">
-              <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>
-              <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>
+              {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>}
+              {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>}
             </span>
           }
         </div>
