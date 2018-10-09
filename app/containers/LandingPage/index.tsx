@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { isNilOrError, isMobileDevice } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { has, get, isString, isEmpty } from 'lodash-es';
@@ -182,6 +182,14 @@ const HeaderSubtitle: any = styled.h2`
   `}
 `;
 
+const SIdeaButton = styled(IdeaButton)`
+  display: none;
+
+  ${media.smallerThanMinTablet`
+    display: block;
+  `}
+`;
+
 const Content = styled.div`
   width: 100%;
   z-index: 3;
@@ -352,7 +360,6 @@ class LandingPage extends React.PureComponent<Props, State> {
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
-      const mobileDevice = isMobileDevice();
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
@@ -369,8 +376,8 @@ class LandingPage extends React.PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
-                {authUser && mobileDevice &&
-                  <IdeaButton
+                {authUser &&
+                  <SIdeaButton
                     style="primary-inverse"
                     size="2"
                   />
