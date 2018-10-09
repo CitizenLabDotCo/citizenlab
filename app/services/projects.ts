@@ -35,7 +35,6 @@ export interface IProjectData {
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
     max_budget?: number;
-    currency?: string;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
@@ -76,7 +75,6 @@ export interface IUpdatedProjectProperties {
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
   max_budget?: number | null;
-  currency?: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }

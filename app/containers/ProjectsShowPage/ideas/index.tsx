@@ -24,8 +24,8 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 const IdeasContainer = styled.div`
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 `;
 
 const IdeasTitle = styled.h1`

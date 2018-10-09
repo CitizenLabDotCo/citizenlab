@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash-es';
+import { get, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
@@ -13,14 +13,15 @@ import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
+import Button from 'components/UI/Button';
 
 // resources
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -29,6 +30,7 @@ import eventEmitter from 'utils/eventEmitter';
 import T from 'components/T';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
@@ -74,7 +76,7 @@ const IdeaContent = styled.div`
   padding-top: 15px;
 
   &.extraTopPadding {
-    padding-top: 80px;
+    padding-top: 75px;
   }
 `;
 
@@ -106,6 +108,18 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const SeeIdeaButton = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  padding: 0;
+  padding-left: 14px;
+
+  &:hover {
+    color: #000;
+  }
 `;
 
 const Spacer = styled.div`
@@ -188,12 +202,12 @@ export interface InputProps {
 }
 
 interface DataProps {
+  location: GetLocationChildProps;
+  tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
-  project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -212,7 +226,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  onCardClick = (event: FormEvent<MouseEvent>) => {
+  onCardClick = (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { idea } = this.props;
@@ -244,21 +258,29 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
+  assignBudget = (event: FormEvent<any>) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   render() {
-    const { idea, ideaImage, ideaAuthor, project, locale, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant, locale, location, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNilOrError(locale) && !isNilOrError(idea)) {
+    if (!isNilOrError(location) && !isNilOrError(tenant) && !isNilOrError(locale) && !isNilOrError(idea)) {
+      const pathname = location.pathname.replace(/\/$/, '');
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
+      const hasBudget = !!idea.attributes.budget;
+      const currentPageIsProjectPage = includes(pathname, '/projects/');
       let ideaBudget: JSX.Element | null = null;
 
-      if (!isNilOrError(project) && project.attributes.currency && idea.attributes.budget) {
-        const currency = project.attributes.currency;
+      if (idea.attributes.budget && currentPageIsProjectPage) {
+        const currency = tenant.attributes.settings.core.currency;
         const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
         ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
       }
@@ -299,13 +321,28 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                <VoteControl
-                  ideaId={idea.id}
-                  unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                  disabledVoteClick={this.disabledVoteClick}
-                  size="2"
-                />
+                {!hasBudget &&
+                  <VoteControl
+                    ideaId={idea.id}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    disabledVoteClick={this.disabledVoteClick}
+                    size="2"
+                  />
+                }
+
+                {hasBudget && currentPageIsProjectPage &&
+                  <>
+                    <Button onClick={this.assignBudget}>
+                      <FormattedMessage {...messages.assign} />
+                    </Button>
+                    <SeeIdeaButton onClick={this.onCardClick}>
+                      <FormattedMessage {...messages.seeIdea} />
+                    </SeeIdeaButton>
+                  </>
+                }
+
                 <Spacer />
+
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>
@@ -341,12 +378,12 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  location: <GetLocation />,
+  tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
-  project: ({ idea, render }) => <GetProject id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.project.data, 'id', null) : null}>{render}</GetProject>,
-  // phase: ({ idea, render }) => <GetPhase id={(!isNilOrError(idea) && idea.attributes.budget) ? get(idea.relationships.phases[0].data, 'id', null) : null}>{render}</GetPhase>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);

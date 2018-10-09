@@ -111,7 +111,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
           size={size}
           padding={padding}
           text={startAnIdeaText}
-          circularCorners={false}
           disabled={!enabled}
         />
       );

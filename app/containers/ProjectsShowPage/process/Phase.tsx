@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import Survey from './survey';
+import ExpensesBox from '../pb/ExpensesBox';
 import IdeaCards from 'components/IdeaCards';
 
 // resources
@@ -57,6 +58,10 @@ const InformationBody = styled.div`
 
 const IdeasWrapper = styled.div``;
 
+const StyledExpensesBox = styled(ExpensesBox)`
+  margin-bottom: 50px;
+`;
+
 interface InputProps {
   phaseId: string;
 }
@@ -77,6 +82,7 @@ class Phase extends React.PureComponent<Props, State> {
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
       const hasDescription = !every(phase.attributes.description_multiloc, isEmpty);
+
       return (
         <StyledContentContainer className={className}>
           {hasDescription &&
@@ -92,6 +98,9 @@ class Phase extends React.PureComponent<Props, State> {
 
           {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
             <IdeasWrapper>
+              {participationMethod === 'budgeting' &&
+                <StyledExpensesBox />
+              }
               <IdeaCards
                 type="load-more"
                 sort={'trending'}
