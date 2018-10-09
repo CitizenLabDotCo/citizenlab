@@ -21,6 +21,7 @@ resource "Mailgun Events" do
       :'event-data' => {
         event: 'opened',
         :'user-variables' => {
+          cl_tenant_id: Tenant.current.id,
           cl_campaign_id: delivery.campaign_id,
           cl_user_id: delivery.user_id
         }

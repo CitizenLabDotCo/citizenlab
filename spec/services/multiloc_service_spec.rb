@@ -82,4 +82,24 @@ describe MultilocService do
     end
   end
 
+  describe "block_to_multiloc" do
+    it "assembles a multiloc object with a given block" do
+      expect(service.block_to_multiloc{|locale| locale}).to eq({
+        'fr-FR' => 'fr-FR',
+        'en' => 'en',
+        'nl-BE' => 'nl-BE'
+      })
+    end
+
+    it "switches the i18n.locale in the given block" do
+      expect(service.block_to_multiloc{|_locale| I18n.locale.to_s}).to eq({
+        'fr-FR' => 'fr-FR',
+        'en' => 'en',
+        'nl-BE' => 'nl-BE'
+      })
+    end
+  end
+
+
+
 end

@@ -1,6 +1,5 @@
 module EmailCampaigns
   class Campaigns::ProjectModerationRightsReceived < Campaigns::NotificationCampaign
-  	include Disableable
     include ActivityTriggerable
     include RecipientConfigurable
 
