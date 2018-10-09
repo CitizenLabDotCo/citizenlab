@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 20180920155127) do
     t.jsonb "body_multiloc", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "deliveries_count", default: 0, null: false
     t.index ["author_id"], name: "index_email_campaigns_campaigns_on_author_id"
     t.index ["type"], name: "index_email_campaigns_campaigns_on_type"
   end

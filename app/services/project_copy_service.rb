@@ -9,6 +9,7 @@ class ProjectCopyService
 
   def export project
     phase_hashes = {}
+    event_hashes = {}
     project_ref = { 'title_multiloc'               => project.title_multiloc,
                     'description_multiloc'         => project.description_multiloc,
                     'remote_header_bg_url'         => project.header_bg_url,
@@ -70,8 +71,18 @@ class ProjectCopyService
             }
           end
           ),
+        'phase_file' => project.phases.map(&:phase_files).flat_map { |pfs|
+           pfs.map { |pf|
+            {
+              'phase_ref'        => phase_hashes[pf.phase_id],
+              'remote_file_url'  => pf.file_url,
+              'name'             => pf.name,
+              'ordering'         => pf.ordering
+            }
+           }
+         },
         'event' => project.events.map{ |e|
-          {
+          h = {
             'title_multiloc'       => e.title_multiloc,
             'description_multiloc' => e.description_multiloc,
             'project_ref'          => project_ref,
@@ -79,12 +90,25 @@ class ProjectCopyService
             'end_at'               => e.end_at,
             'location_multiloc'    => e.location_multiloc
           }
+          event_hashes[e.id] = h
+          h
         },
+        'event_file' => project.events.map(&:event_files).flat_map { |efs|
+           efs.map { |ef|
+            {
+              'event_ref'        => event_hashes[ev.event_id],
+              'remote_file_url'  => ef.file_url,
+              'name'             => ef.name,
+              'ordering'         => ef.ordering
+            }
+           }
+         },
         'project_file' => project.project_files.map{ |pf|
           {
-            'project_ref'     => project_ref,
-            'remote_file_url' => pf.file_url,
-            'ordering'        => pf.ordering
+            'project_ref'      => project_ref,
+            'remote_file_url'  => pf.file_url,
+            'name'             => pf.name,
+            'ordering'         => pf.ordering
           }
         }
       } 
@@ -99,5 +123,4 @@ class ProjectCopyService
       'permittable_ref' => permittable_h
     }
   end
-
 end

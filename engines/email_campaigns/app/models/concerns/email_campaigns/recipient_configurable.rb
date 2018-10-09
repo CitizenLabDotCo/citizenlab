@@ -15,9 +15,10 @@ module EmailCampaigns
       user_ids = groups.map(&:member_ids).inject(:+)&.uniq
       if user_ids
       users_scope
+        .active
         .where(id: groups.map(&:members).inject(:+)&.uniq )
       else
-        users_scope
+        users_scope.active
       end
     end
 
