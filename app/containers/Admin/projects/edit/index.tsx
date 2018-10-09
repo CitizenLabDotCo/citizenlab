@@ -148,7 +148,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
       const tabbedProps = {
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
-          publicLink: project ? `/projects/${project.id}` : ''
+          publicLink: project ? `/projects/${project.attributes.slug}` : ''
         },
         messages: {
           viewPublicResource: messages.viewPublicProject,
