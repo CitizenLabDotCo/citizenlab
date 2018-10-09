@@ -443,14 +443,6 @@ export default class Timeline extends PureComponent<Props, State> {
       const isSelected = (selectedPhaseId !== null);
       const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
 
-      console.log(selectedPhaseStart, selectedPhaseEnd, moment(new Date()).format('LL'));
-      const arr = [selectedPhaseStart, selectedPhaseEnd, moment(new Date()).format('LL')];
-      const start = selectedPhaseStart && new Date(selectedPhaseStart).getTime();
-      const end = selectedPhaseEnd && new Date(selectedPhaseEnd).getTime();
-      const now = new Date(moment(new Date()).format('LL')).getTime();
-      const percentage = start && end && (now - start) / (end - start);
-      console.log('%: ', percentage);
-
       return (
         <Container className={className}>
           <ContainerInner>
