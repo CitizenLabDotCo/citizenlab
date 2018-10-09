@@ -124,5 +124,25 @@ export default defineMessages({
   selectedPhase: {
     id: 'app.containers.Projects.selectedPhase',
     defaultMessage: 'Selected phase',
+  },
+  yourExpenses: {
+    id: 'app.containers.Projects.yourExpenses',
+    defaultMessage: 'Your expenses',
+  },
+  total: {
+    id: 'app.containers.Projects.total',
+    defaultMessage: 'Total',
+  },
+  assignedBudget: {
+    id: 'app.containers.Projects.assignedBudget',
+    defaultMessage: 'Assigned budget',
+  },
+  manageBudget: {
+    id: 'app.containers.Projects.manageBudget',
+    defaultMessage: 'Manage budget',
+  },
+  submitMyExpenses: {
+    id: 'app.containers.Projects.submitMyExpenses',
+    defaultMessage: 'Submit my expenses',
   }
 });

@@ -14,8 +14,8 @@ import GetProject from 'resources/GetProject';
 import styled from 'styled-components';
 
 const SurveyContainer = styled.div`
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 `;
 
 export default withRouter((props: WithRouterProps) => (

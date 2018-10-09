@@ -24,7 +24,6 @@ export interface IPhaseData {
     voting_limited_max: number;
     presentation_mode: 'card' | 'map';
     max_budget?: number;
-    currency?: string;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
   };
@@ -60,7 +59,6 @@ export interface IUpdatedPhaseProperties {
   voting_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
   max_budget?: number | null;
-  currency?: string | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
