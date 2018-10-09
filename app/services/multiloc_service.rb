@@ -17,4 +17,13 @@ class MultilocService
       end
     end
   end
+
+  def block_to_multiloc
+    Tenant.settings('core','locales').each_with_object({}) do |locale, result|
+      I18n.with_locale(locale) do
+        result[locale] = yield(locale)
+      end
+    end
+  end
+
 end

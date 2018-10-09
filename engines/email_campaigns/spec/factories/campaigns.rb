@@ -72,6 +72,22 @@ FactoryBot.define do
     enabled true
   end
 
+  factory :new_comment_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedIdea do
+    enabled true
+  end
+
+  factory :new_comment_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
+    enabled true
+  end
+
+  factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
+    enabled true
+  end
+
+  factory :status_change_of_voted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
+    enabled true
+  end
+
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled true
     schedule { weekly_schedule }
