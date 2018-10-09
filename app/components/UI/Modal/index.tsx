@@ -178,7 +178,7 @@ type Props = {
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
-  label: string;
+  label?: string;
   onCloseFocusNode?: HTMLElement;
 };
 
