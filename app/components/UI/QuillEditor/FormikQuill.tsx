@@ -1,10 +1,10 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 import QuillEditor, { Props as VanillaProps } from 'components/UI/QuillEditor';
 
-class FormikEditor extends React.Component<FieldProps & VanillaProps> {
+class FormikEditor extends PureComponent<FieldProps & VanillaProps> {
   handleOnChange(html: string) {
     this.props.form.setFieldValue(this.props.field.name, html);
   }

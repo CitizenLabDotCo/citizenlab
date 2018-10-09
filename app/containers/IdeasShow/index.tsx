@@ -65,7 +65,7 @@ const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 500;
 const contentTranslateDistance = '25px';
 
-const StyledSpinner = styled<SpinnerProps>(Spinner) `
+const StyledSpinner = styled<SpinnerProps>(Spinner)`
   transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
 `;
 
@@ -154,7 +154,7 @@ const BelongsToProject = styled.p`
   margin-bottom: 15px;
 `;
 
-const ProjectLink = styled(Link) `
+const ProjectLink = styled(Link)`
   color: inherit;
   font-weight: 400;
   font-size: inherit;
@@ -277,7 +277,7 @@ const LocationIconWrapper = styled.div`
   justify-content: flex-start;
 `;
 
-const LocationIcon = styled(Icon) `
+const LocationIcon = styled(Icon)`
   width: 18px;
   fill: ${colors.label};
 `;
@@ -504,7 +504,7 @@ const StatusContainer = styled.div`
   margin-top: 35px;
 `;
 
-const StatusContainerMobile = styled(StatusContainer) `
+const StatusContainerMobile = styled(StatusContainer)`
   margin-top: -20px;
   margin-bottom: 35px;
   transform-origin: top left;
@@ -542,7 +542,7 @@ const SharingWrapper = styled.div`
   flex-direction: column;
 `;
 
-const SharingMobile = styled(Sharing) `
+const SharingMobile = styled(Sharing)`
   margin: 0;
   margin-bottom: 25px;
   padding: 0;
@@ -574,7 +574,7 @@ interface InputProps {
   inModal?: boolean | undefined;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 type State = {
   authUser: IUser | null;
@@ -640,7 +640,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId : string | null = get(idea, 'data.relationships.idea_status.data.id', null);
+          const ideaStatusId: string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
@@ -674,7 +674,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ).pipe(
         switchMap(([idea, authUser]) => {
           return hasPermission({
-            item: idea  && idea.data ? idea.data : null,
+            item: idea && idea.data ? idea.data : null,
             action: 'edit',
             context: idea && idea.data ? idea.data : null,
           }).pipe(
@@ -776,6 +776,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const ideaUrl = location.href;
 
+      const auth = this.state.authUser;
+      const utmParams = auth
+        ? {
+          source: 'share_idea',
+          campaign: 'share_content',
+          content: auth.data.id
+        } : {
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
+
       content = (
         <>
           <IdeaMeta
@@ -806,7 +817,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               <Header>
                 <IdeaTitle>
-                  <T value={titleMultiloc} />
+                  {ideaTitle}
                 </IdeaTitle>
               </Header>
             </HeaderWrapper>
@@ -830,9 +841,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaImageLarge &&
-                  <T value={titleMultiloc}>
-                    {(ideaTitle) => <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} />}
-                  </T>
+                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} />
                 }
 
                 <AuthorAndAdressWrapper>
@@ -897,17 +906,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <SeparatorRow />
 
-                <T value={titleMultiloc} maxLength={50} >
-                  {(title) => {
-                    return (
-                      <SharingMobile
-                        url={ideaUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle: title })}
-                        emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
-                      />);
-                  }}
-                </T>
+                <SharingMobile
+                  url={ideaUrl}
+                  twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
+                  emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
+                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                  utmParams={utmParams}
+                />
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -966,6 +971,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                         emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                        utmParams={utmParams}
                       />
                     </SharingWrapper>
 

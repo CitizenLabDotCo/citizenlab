@@ -157,7 +157,9 @@ export const colors = {
   // social
   facebook: '#3b5998',
   facebookMessenger: '#0084ff',
-  twitter: '#1ea4f2'
+  twitter: '#1ea4f2',
+  emailText: '#004d6c',
+  emailBg: '#e6ebec'
 };
 
 export function color(name: keyof typeof colors) {

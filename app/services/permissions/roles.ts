@@ -19,5 +19,8 @@ export const isModerator = (user?: IUser) => {
 };
 
 export const isProjectModerator = (user?: IUser, projectId?: IProjectData['id'] | null) => {
-  return isModerator(user) && !!(user && projectId && user.data.attributes.roles && user.data.attributes.roles.find((r) => r.project_id === projectId));
+  return isModerator(user) && (
+    !projectId ||
+    !!(user && projectId && user.data.attributes.roles && user.data.attributes.roles.find((r) => r.project_id === projectId))
+  );
 };
