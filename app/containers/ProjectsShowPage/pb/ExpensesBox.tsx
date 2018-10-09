@@ -10,7 +10,7 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -64,6 +64,11 @@ const ProgressBar = styled.div`
   margin-top: 30px;
   margin-bottom: 30px;
   background: repeating-linear-gradient(-45deg, #eff1f2, #eff1f2 10px, #e6e9ec 10px, #e6e9ec 20px);
+
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+    margin-bottom: 20px;
+  `}
 `;
 
 const ProgressBarOverlay = styled.div`
@@ -84,14 +89,53 @@ const ProgressBarPercentage = styled.span`
 
 const Footer = styled.div`
   display: flex;
+
+  ${media.biggerThanMinTablet`
+    align-items: center;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
+`;
+
+const Budgets = styled.div`
+  ${media.smallerThanMinTablet`
+    display: flex;
+    flex-direction: column;
+  `}
+`;
+
+const TotalBudgetDesktop = Budget.extend`
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const TotalBudgetMobile = Budget.extend`
+  margin-top: 10px;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Buttons = styled.div`
   display: flex;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+  `}
 `;
 
 const ManageBudgetButton = styled(Button)`
   margin-right: 10px;
+`;
+
+const SubmitExpensesButton = styled(Button)`
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 interface Props {}
@@ -111,7 +155,7 @@ class ExpensesBox extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const totalBudget = '100$';
-    const assignedBudget = '100$';
+    const spentBudget = '100$';
 
     return (
       <Container className={className}>
@@ -120,14 +164,14 @@ class ExpensesBox extends PureComponent<Props, State> {
             <FormattedMessage {...messages.yourExpenses} />
           </Title>
           <Spacer />
-          <Budget>
+          <TotalBudgetDesktop>
             <BudgetLabel>
-              <FormattedMessage {...messages.total} />:
+              <FormattedMessage {...messages.totalBudget} />:
             </BudgetLabel>
             <BudgetAmount>
               {totalBudget}
             </BudgetAmount>
-          </Budget>
+          </TotalBudgetDesktop>
         </Header>
 
         <ProgressBar>
@@ -137,14 +181,24 @@ class ExpensesBox extends PureComponent<Props, State> {
         </ProgressBar>
 
         <Footer>
-        <Budget>
-            <BudgetLabel>
-              <FormattedMessage {...messages.assignedBudget} />:
-            </BudgetLabel>
-            <BudgetAmount>
-              {assignedBudget}
-            </BudgetAmount>
-          </Budget>
+          <Budgets />
+            <Budget>
+              <BudgetLabel>
+                <FormattedMessage {...messages.spentBudget} />:
+              </BudgetLabel>
+              <BudgetAmount>
+                {spentBudget}
+              </BudgetAmount>
+            </Budget>
+            <TotalBudgetMobile>
+              <BudgetLabel>
+                <FormattedMessage {...messages.totalBudget} />:
+              </BudgetLabel>
+              <BudgetAmount>
+                {totalBudget}
+              </BudgetAmount>
+            </TotalBudgetMobile>
+          <Budgets />
           <Spacer />
           <Buttons>
             <ManageBudgetButton
@@ -158,14 +212,14 @@ class ExpensesBox extends PureComponent<Props, State> {
             >
               <FormattedMessage {...messages.manageBudget} />
             </ManageBudgetButton>
-            <Button
+            <SubmitExpensesButton
               onClick={this.handleSubmitExpensesOnClick}
               icon="submit"
               iconPos="right"
               bgColor={colors.adminTextColor}
             >
               <FormattedMessage {...messages.submitMyExpenses} />
-            </Button>
+            </SubmitExpensesButton>
           </Buttons>
         </Footer>
       </Container>
