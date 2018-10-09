@@ -110,6 +110,7 @@
   "app.components.VoteControl.votingDisabledForProject": "Stemmen op ideeën in {projectName} is niet mogelijk",
   "app.components.VoteControl.votingDisabledMaxReached": "U hebt het maximum aantal stemmen in {projectName} bereikt",
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Dit idee zit niet langer of nog niet in {projectName}",
+  "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "Stemmen op ideeën in {projectName} wordt mogelijk vanaf {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "U kunt niet meer stemmen op ideeën in {projectName}",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fout",
