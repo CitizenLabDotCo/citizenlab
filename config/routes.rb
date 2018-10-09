@@ -78,12 +78,12 @@ Rails.application.routes.draw do
       resources :events, only: [:show, :edit, :update, :destroy] do
         resources :files, defaults: {container_class: Event, file_class: EventFile}, shallow: false
       end
-      resources :phases, only: [:show, :edit, :update, :destroy] do
+      resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
         resources :files, defaults: {container_class: Phase, file_class: PhaseFile}, shallow: false
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
-        resources :phases, only: [:index, :new, :create], concerns: :participation_context, defaults: {parent_param: :phase_id}
+        resources :phases, only: [:index, :new, :create]
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}
         resources :files, defaults: {container_class: Project, file_class: ProjectFile}
         resources :groups_projects, shallow: true, except: [:update]
