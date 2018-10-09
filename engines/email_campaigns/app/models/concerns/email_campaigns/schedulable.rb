@@ -16,7 +16,11 @@ module EmailCampaigns
     end
 
     def ic_schedule
-      IceCube::Schedule.from_hash(self.schedule || self.class.default_schedule)
+      if self.schedule.blank?
+        self.class.default_schedule
+      else
+        IceCube::Schedule.from_hash(self.schedule)
+      end
     end
 
     def ic_schedule= ics

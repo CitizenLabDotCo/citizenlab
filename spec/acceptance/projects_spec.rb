@@ -405,6 +405,22 @@ resource "Projects" do
       end
     end
   end
+
+  context "when not logged in" do
+    get "web_api/v1/projects" do
+      parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
+      before do
+        @projects = create_list(:project, 10, publication_status: 'published')
+      end
+      let(:filter_can_moderate) {true}
+
+      example_request "List all projects the current user can moderate", document: false do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 0
+      end
+    end
+  end
 end
 
 def encode_image_as_base64 filename
