@@ -36,7 +36,7 @@ const MoreOptionsLabel = styled.div`
   transition: all 100ms ease-out;
 `;
 
-const MoreOptions = styled.div`
+const MoreOptions = styled.button`
   height: 20px;
   display: flex;
   align-items: center;
@@ -92,14 +92,14 @@ const ListItem = styled.button`
   }
 `;
 
-const StyledIcon  = styled(Icon)`
+const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
 `;
 
 export interface IAction {
   label: string | JSX.Element;
-  handler: {(): void};
+  handler: { (): void };
   icon?: IconNames;
 }
 
@@ -107,6 +107,7 @@ export interface Props {
   actions: IAction[];
   label?: string | JSX.Element | undefined;
   className?: string;
+  setRef: (HTMLButtonElement) => void;
 }
 
 interface State {
@@ -114,7 +115,7 @@ interface State {
 }
 
 export default class MoreActionsMenu extends PureComponent<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       visible: false,
@@ -131,8 +132,8 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState(({ visible }) => ({ visible: !visible }));
   }
 
-  render () {
-    const { actions } = this.props;
+  render() {
+    const { actions, setRef } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
 
@@ -167,7 +168,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
         >
-          <MoreOptions onClick={this.toggleMenu}>
+          <MoreOptions onClick={this.toggleMenu} innerRef={setRef}>
             <MoreOptionsIcon name="more-options" />
             {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>
