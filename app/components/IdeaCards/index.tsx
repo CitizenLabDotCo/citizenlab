@@ -226,7 +226,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: ${colors.text2};
+  color: #767676;
   font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 22px;
