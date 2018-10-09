@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { isFunction, isBoolean, isString } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
+import FocusTrap from 'focus-trap-react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -12,6 +13,10 @@ import clickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
+// Translation
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
 // analytics
 import { injectTracks, trackPage } from 'utils/analytics';
 import tracks from './tracks';
@@ -19,11 +24,12 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import { hideVisually } from 'polished';
 
 const ModalContent: any = styled(clickOutside)`
   width: 100%;
   max-width: ${(props: any) => props.width};
-  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white' };
+  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white'};
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -54,7 +60,7 @@ const CloseIcon = styled(Icon)`
   justify-content: center;
 `;
 
-const CloseButton = styled.div`
+const CloseButton = styled.button`
   height: 32px;
   width: 32px;
   display: flex;
@@ -77,7 +83,9 @@ const CloseButton = styled.div`
   }
 `;
 
-const ModalContainer = styled.div`
+const HiddenSpan = styled.span`${hideVisually()}`;
+
+const ModalContainer = styled(FocusTrap)`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -170,6 +178,8 @@ type Props = {
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
+  label: string;
+  openButtonNode?: HTMLButtonElement;
 };
 
 type State = {};
@@ -180,6 +190,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
+  private ModalCloseButton: HTMLButtonElement | null;
 
   constructor(props: Props & ITracks) {
     super(props);
@@ -229,6 +240,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     this.unlisten = clHistory.listen(this.props.close);
 
+    if (this.ModalCloseButton) {
+      this.ModalCloseButton.focus();
+    }
+
     if (url) {
       window.history.pushState({ path: url }, '', url);
 
@@ -243,7 +258,10 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     if (this.props.url && this.goBackUrl) {
       clHistory.push(this.goBackUrl);
     }
-
+    const { openButtonNode } = this.props;
+    if (openButtonNode) {
+      openButtonNode.focus();
+    }
     this.props.close();
   }
 
@@ -277,33 +295,57 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     this.manuallyCloseModal();
   }
 
-  setRef = (element: HTMLDivElement) => {
+  setCloseButtonRef = (element: HTMLButtonElement) => {
+    this.ModalCloseButton = (element || null);
+  }
+  setContentRef = (element: HTMLDivElement) => {
     this.ModalContentElement = (element || null);
+  }
+
+  onOpen = () => {
+    this.setState({ isOpen: true }, () => {
+      if (this.ModalCloseButton) {
+        this.ModalCloseButton.focus();
+      }
+    });
   }
 
   render() {
     let { fixedHeight, width } = this.props;
-    const { children, opened, header, footer, hasSkipButton, skipText } = this.props;
+    const { children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
     fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
     width = (isString(width) ? width : '650px');
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer id="e2e-modal-container" className={this.props.className}>
+        <ModalContainer
+          id="e2e-modal-container"
+          className={this.props.className}
+          aria-modal="true"
+          role="dialog"
+          aria-label={label}
+        >
           <ModalContent
             className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
             hasHeaderOrFooter={header !== undefined || footer !== undefined}
-            innerRef={this.setRef}
+            innerRef={this.setContentRef}
           >
+            <CloseButton
+              className="e2e-modal-close-button"
+              onClick={this.clickCloseButton}
+              innerRef={this.setCloseButtonRef}
+            >
+              <HiddenSpan>
+                <FormattedMessage {...messages.closeButtonLabel} />
+              </HiddenSpan>
+              <CloseIcon name="close3" />
+            </CloseButton >
             {header && <HeaderContainer> {header} </HeaderContainer>}
             {children}
             {footer && <FooterContainer> {footer} </FooterContainer>}
-            <CloseButton className="e2e-modal-close-button" onClick={this.clickCloseButton}>
-              <CloseIcon name="close3" />
-            </CloseButton>
           </ModalContent>
 
           {hasSkipButton && skipText &&
@@ -311,13 +353,16 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           }
         </ModalContainer>
       </CSSTransition>
-    ) : null);
+    ) : undefined);
 
     return ReactDOM.createPortal(
-      <TransitionGroup>
+      <TransitionGroup
+        tabIndex="-1"
+        component="aside"
+      >
         {element}
       </TransitionGroup>,
-      this.el,
+      document.body
     );
   }
 }
