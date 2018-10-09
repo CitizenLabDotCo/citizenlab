@@ -58,10 +58,10 @@ class ProjectCopyService
           phase_hashes[p.id] = h
           h
         },
-        'phase_file' => project.phases.map(&:phase_files).flat_map { |ps|
-           ps.map { |pf|
+        'phase_file' => project.phases.map(&:phase_files).flat_map { |pfs|
+           pfs.map { |pf|
             {
-              'phase_ref'      => phase_hashes[ps.id],
+              'phase_ref'        => phase_hashes[pf.phase_id],
               'remote_file_url'  => pf.file_url,
               'name'             => pf.name,
               'ordering'         => pf.ordering
@@ -80,10 +80,10 @@ class ProjectCopyService
           event_hashes[e.id] = h
           h
         },
-        'event_file' => project.events.map(&:event_files).flat_map { |ev|
-           ev.map { |ef|
+        'event_file' => project.events.map(&:event_files).flat_map { |efs|
+           efs.map { |ef|
             {
-              'event_ref'      => event_hashes[ev.id],
+              'event_ref'        => event_hashes[ev.event_id],
               'remote_file_url'  => ef.file_url,
               'name'             => ef.name,
               'ordering'         => ef.ordering
