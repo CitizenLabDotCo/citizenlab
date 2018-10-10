@@ -93,7 +93,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { project, phase } = this.state;
-    const { show, enabled } = postingButtonState({ project, phase });
+    const { show, enabled } = postingButtonState({ project, phaseContext: phase });
 
     if (show) {
       let { style, size } = this.props;

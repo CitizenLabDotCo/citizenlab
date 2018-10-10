@@ -98,6 +98,7 @@ class Phase extends React.PureComponent<Props, State> {
                 type="load-more"
                 sort={'trending'}
                 pageSize={12}
+                projectId={phase.relationships.project.data.id}
                 phaseId={phase.id}
                 showViewToggle={true}
                 defaultView={phase.attributes.presentation_mode}
