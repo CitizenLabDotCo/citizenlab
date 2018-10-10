@@ -1,7 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -24,7 +23,6 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 
 // typings
 import { Locale } from 'typings';
-
 
 const Container = styled.div`
   position: relative;
@@ -105,13 +103,10 @@ const ListItem = styled.button`
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  user: GetAuthUserChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
-interface Props extends DataProps {
-  currentLocale: Locale;
-  localeOptions: Locale[];
-}
+interface Props extends DataProps {}
 
 type State = {
   dropdownOpened: boolean;
@@ -130,56 +125,62 @@ class LanguageSelector extends React.PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleLanguageSelect = (newLocale: Locale) => () => {
-    const userId = this.props.user && this.props.user.id;
-    // const { id: userId } = this.props.user.;
-    // const userId: string = !isNilOrError(user) && user.id;
-    const update = { locale: newLocale };
-    userId && updateUser(userId, update).then((user) => {
-      updateLocale(user.data.attributes.locale);
-    });
+  handleLanguageSelect = (locale: Locale) => () => {
+    const { authUser: user } = this.props;
+
+    if (!isNilOrError(user)) {
+      updateUser(user.id, { locale }).then((user) => {
+        updateLocale(user.data.attributes.locale);
+      });
+    }
+
     this.setState({ dropdownOpened: false });
   }
 
   render() {
     const { dropdownOpened } = this.state;
-    const { locales: localeOptions } = !isNilOrError(this.props.tenant) && this.props.tenant.data.attributes.settings.core;
-    const { currentLocale } = this.props;
 
-    return (
-      <Container>
-        <OpenMenuButton onClick={this.toggleDropdown}>
-          {currentLocale.substr(0, 2).toUpperCase()}
-          <DropdownItemIcon name="dropdown" />
-        </OpenMenuButton>
+    if (!isNilOrError(this.props.tenant) && !isNilOrError(this.props.authUser)) {
+      const localeOptions = this.props.tenant.attributes.settings.core.locales;
+      const currentLocale = this.props.authUser.attributes.locale;
 
-        <Dropdown
-          width="180px"
-          top="36px"
-          right="-5px"
-          mobileRight="-5px"
-          opened={dropdownOpened}
-          onClickOutside={this.toggleDropdown}
-          content={(
-            <>
-              {localeOptions.map((locale, index) => {
-                const last = (index === localeOptions.length - 1);
+      return (
+        <Container>
+          <OpenMenuButton onClick={this.toggleDropdown}>
+            {currentLocale.substr(0, 2).toUpperCase()}
+            <DropdownItemIcon name="dropdown" />
+          </OpenMenuButton>
 
-                return (
-                  <ListItem
-                    key={locale}
-                    onClick={this.handleLanguageSelect(locale)}
-                    className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
-                  >
-                    <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
-                  </ListItem>
-                );
-              })}
-            </>
-          )}
-        />
-      </Container>
-    );
+          <Dropdown
+            width="180px"
+            top="36px"
+            right="-5px"
+            mobileRight="-5px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={(
+              <>
+                {localeOptions.map((locale, index) => {
+                  const last = (index === localeOptions.length - 1);
+
+                  return (
+                    <ListItem
+                      key={locale}
+                      onClick={this.handleLanguageSelect(locale)}
+                      className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                    >
+                      <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
+                    </ListItem>
+                  );
+                })}
+              </>
+            )}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
