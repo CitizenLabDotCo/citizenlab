@@ -8,6 +8,7 @@ import { get, isError } from 'lodash-es';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import { FormattedMessage } from 'utils/cl-intl';
@@ -162,6 +163,7 @@ interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
   permission: GetPermissionChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -171,11 +173,17 @@ interface State {}
 class ProjectCard extends PureComponent<Props, State> {
 
   disabledMessage = () => {
-    const project = this.props.project;
+    const { project, authUser } = this.props;
     if (!isNilOrError(project)) {
-      const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
+      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.relationships.action_descriptor.data.posting;
       if (enabled) {
         return null;
+      } else if (disabledReason === 'not_permitted') {
+        if (isNilOrError(authUser)) {
+          return messages.postingDisabledMaybeNoPermissions;
+        } else {
+          return messages.postingDisabledNoPermissions;
+        }
       } else if (futureEnabled) {
         return messages.postingPossibleFuture;
       } else {
@@ -275,7 +283,8 @@ class ProjectCard extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>,
-  permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>
+  permission: ({ project, render }) => <GetPermission item="ideas" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
+  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (

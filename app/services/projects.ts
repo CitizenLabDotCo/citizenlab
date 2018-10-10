@@ -51,7 +51,7 @@ export interface IProjectData {
         posting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'not_ideation' | 'posting_disabled',
+          disabled_reason: 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted',
         }
       }
     }
