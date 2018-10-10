@@ -57,6 +57,7 @@ const ContainerInner = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  height: 0; // For IE11, which has trouble with vertical centering without a set height
   min-height: 70px;
   background-color: #fff;
   padding-left: ${padding}px;
@@ -64,7 +65,8 @@ const Header = styled.div`
   padding-top: 8px;
   padding-bottom: 8px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   border-bottom: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
@@ -76,8 +78,6 @@ const Header = styled.div`
 const HeaderSectionsWrapper = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
-  margin-left: auto;
-  margin-right: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
