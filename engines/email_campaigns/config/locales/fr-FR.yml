@@ -17,19 +17,19 @@ fr:
       "password_reset": Je demande de réinitialiser mon mot de passe
       "first_idea_published": Ma première idée est publiée
       "idea_published": Mon idée est publiée
-      "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
-      "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
-      "status_change_of_commented_idea": When the status of an idea I commented on has been changed
-      "status_change_of_voted_idea": When the status of an idea I voted for has been changed
+      "new_comment_on_commented_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai commenté
+      "new_comment_on_voted_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai voté
+      "status_change_of_commented_idea": Lorsque le status d'une idée que j'ai commenté a changé
+      "status_change_of_voted_idea": Lorsque le status d'une idée que j'ai voté a changé
       "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
       "moderator_digest": Un aperçu hebdomadaire (pour les modérateurs)
       "user_digest": Un aperçu hebdomadaire (pour les citoyens)
     admin_campaign_type_description:
-      "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": When a user receives a reply on their comment
-      "comment_on_your_idea": When a user receives a reply on their idea
-      "admin_rights_received": When a user is given admin rights
-      "comment_deleted_by_admin": When an admin deletes my comment
+      "manual": Messages directs envoyés par les administrateurs ou les modérateurs
+      "comment_on_your_comment": Lorsque l'utilisateur reçoit une réponse à son commentaire
+      "comment_on_your_idea": Lorsque l'utilisateur reçoit une réponse à son idée
+      "admin_rights_received": Je recois les droits d'administrateurs
+      "comment_deleted_by_admin": Lorsqu'un admin supprime mon commentaire
       "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
       "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
       "invite_received": When a user gets invited to the platform
