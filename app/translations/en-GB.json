@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "",
   "app.containers.IdeasProjectSelect.pageTitle": "",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "",
   "app.containers.IdeasProjectSelect.postingNotPossible": "",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "",

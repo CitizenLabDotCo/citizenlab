@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "Something else",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "Have an idea about something else? See whether {orgType, select, generic {others} other {fellow citizens}} agree and make {orgName} notice!",
   "app.containers.IdeasProjectSelect.pageTitle": "What's your idea about?",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "Only certain users can post in this project. Please sign in first.",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "You don't have the rights to post in this project.",
   "app.containers.IdeasProjectSelect.postingNotPossible": "This project does currently not accept new ideas.",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "Only administrators can currently post in this project.",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "Adding ideas to this project will be possible from {date}.",

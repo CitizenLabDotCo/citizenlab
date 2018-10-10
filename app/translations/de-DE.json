@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "Etwas anderes",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "{orgName, select, München {Haben Sie ein anderes Anliegen? Finden Sie heraus, ob {orgType, select, generic {Nutzer} other {Mitbürger}} Ihr Anliegen unterstützen und machen Sie damit {orgName} auf Ihr Anliegen aufmerksam!} other {Haben Sie eine Idee zu etwas anderem? Finden Sie heraus, ob {orgType, select, generic {Nutzer} other {Mitbürger}} Ihre Idee unterstützen und machen Sie damit {orgName} auf Ihre Idee aufmerksam!}}",
   "app.containers.IdeasProjectSelect.pageTitle": "{orgName, select, München {Worum geht es bei Ihrer Meldung?} other {Worum geht es bei Ihrer Idee?}}",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "",
   "app.containers.IdeasProjectSelect.postingNotPossible": "{orgName, select, München {In diesem Bezirk können Sie derzeit keine neuen Mängelmeldungen hinzufügen.} other {Dieses Projekt lässt derzeit keine neuen Ideen zu.}}",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "{orgName, select, München {Zur Zeit können in diesem Bezirk nur Administratoren Meldungen verfassen.} other {Zur Zeit können in diesem Projekt nur Administratoren Ideen veröffentlichen.}}",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "{orgName, select, München {Das Hinzufügen von Mängelmeldungen in diesem Bezirk wird ab dem {date} möglich sein.} other {Das Hinzufügen von Ideen zu diesem Projekt wird ab dem {date} möglich sein.}}",
