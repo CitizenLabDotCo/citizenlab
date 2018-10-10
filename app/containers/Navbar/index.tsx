@@ -449,7 +449,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
             {tenantLocales.length > 1 && locale &&
               <RightItem>
-                <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
+                <LanguageSelector />
               </RightItem>
             }
 
