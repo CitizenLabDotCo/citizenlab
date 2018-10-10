@@ -110,6 +110,7 @@
   "app.components.VoteControl.votingDisabledForProject": "Afstemning på ideer i {projectName} vil være muligt fra",
   "app.components.VoteControl.votingDisabledMaxReached": "Du har opnået dit maksimale antal stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledNotInActiveContext": "Ideen bliver ikke længere eller ikke endnu vurderet i {projectName}",
+  "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "Afstemning på ideer i {projectName} vil være muligt fra {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke længere stemme på ideer i {projectName}",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fejl",

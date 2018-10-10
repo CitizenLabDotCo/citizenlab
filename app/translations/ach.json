@@ -110,6 +110,7 @@
   "app.components.VoteControl.votingDisabledForProject": "",
   "app.components.VoteControl.votingDisabledMaxReached": "",
   "app.components.VoteControl.votingDisabledNotInActiveContext": "",
+  "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "",
   "app.components.VoteControl.votingDisabledProjectInactive": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "",
