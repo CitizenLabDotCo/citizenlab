@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "Noget andet",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "Har du en idé om noget andet? Se om {orgType, select, generic {others} andre {fellow citizens}} er enige og få {orgName} til at lægge mærke til den!",
   "app.containers.IdeasProjectSelect.pageTitle": "Hvad handler din idé om?",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "",
   "app.containers.IdeasProjectSelect.postingNotPossible": "Dette projekt accepterer ikke nye ideer i øjeblikket.",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "Kun administratorer kan opslå i dette projekt i øjeblikket.",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "Tilføjelse af ideer til dette projekt vil være muligt fra {date}.",
