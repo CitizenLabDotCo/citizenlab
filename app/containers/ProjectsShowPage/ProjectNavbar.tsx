@@ -54,6 +54,8 @@ const ProjectNavbarItems = styled.ul`
   &::-webkit-scrollbar {
     display: none;
   }
+
+
 `;
 
 const ProjectNavbarItem = styled.li`
@@ -82,8 +84,9 @@ const ProjectNavbarItem = styled.li`
 
 const ProjectNavbarIcon = styled(Icon)`
   height: 15px;
+  width: 15px;
   fill: #fff;
-  margin-right: 7px;
+  margin-right: 10px;
   transition: fill 100ms ease-out;
 
   &.idea {
@@ -92,10 +95,15 @@ const ProjectNavbarIcon = styled(Icon)`
   }
 `;
 
+const InfoIcon = ProjectNavbarIcon.extend`
+  margin-right: 7px;
+`;
+
 const ProjectNavbarLink = styled(Link)`
   display: flex;
   align-items: center;
   color: #fff;
+  border-top: 3px solid transparent;
   border-bottom: 3px solid transparent;
   opacity: 0.6;
 
@@ -154,7 +162,7 @@ const ProjectNavbar = (props: Props) => {
                 to={`/projects/${projectSlug}/info`}
                 activeClassName="active"
               >
-                <ProjectNavbarIcon name="info2" />
+                <InfoIcon name="info2" />
                 <FormattedMessage {...messages.navInformation} />
               </ProjectNavbarLink>
             </ProjectNavbarItem>
