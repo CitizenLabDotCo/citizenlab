@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -35,7 +36,7 @@ const StyledIcon = styled(Icon)`
 `;
 
 interface InputProps {
-  projectId?: string;
+  projectId: string;
   phaseId?: string;
   onClick?: () => void;
 }
@@ -57,7 +58,10 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
   render() {
     const { project, phase } = this.props;
-    const { show, enabled } = postingButtonState({ project, phase });
+
+    if (isNilOrError(project)) return null;
+
+    const { show, enabled } = postingButtonState({ project, phaseContext: phase });
 
     if (!show) {
       return (
@@ -69,15 +73,17 @@ class IdeaButton extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Button
-        onClick={this.props.onClick}
-        icon="plus-circle"
-        style="primary"
-        size="2"
-        text={<FormattedMessage {...messages.postIdeaHere} />}
-        circularCorners={false}
-        disabled={!enabled}
-      />
+      <>
+        <Button
+          onClick={this.props.onClick}
+          icon="plus-circle"
+          style="primary"
+          size="2"
+          text={<FormattedMessage {...messages.postIdeaHere} />}
+          circularCorners={false}
+          disabled={!enabled}
+        />
+      </>
     );
   }
 }
