@@ -27,12 +27,12 @@ resource "Users" do
           expect(status).to eq 202
         end
 
-        example "is case insensitive" do
+        example "does not use underscores in a special manner" do
           do_request(user: {email: 's_hoorens@gmail.com'})
           expect(status).to eq 404
         end
       
-        example "is case insensitive" do
+        example "does not use percentages in a special manner" do
           do_request(user: {email: '%hoorens@gmail.com%'})
           expect(status).to eq 404
         end
