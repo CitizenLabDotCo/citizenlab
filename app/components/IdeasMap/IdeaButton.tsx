@@ -20,6 +20,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+import { PostingDisabledReasons } from 'services/projects';
 
 const DisabledText = styled.div`
   color: rgba(121, 137, 147, 1);
@@ -52,6 +53,13 @@ interface State {}
 
 class IdeaButton extends React.PureComponent<Props, State> {
 
+  disabledMessages: { [key in PostingDisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+    project_inactive: messages.postingHereImpossible,
+    not_ideation: messages.postingHereImpossible,
+    posting_disabled: messages.postingHereImpossible,
+    not_permitted: messages.postingNotPermitted,
+  };
+
   handleOnAddIdeaClick = () => {
     this.props.onClick && this.props.onClick();
   }
@@ -61,29 +69,31 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
     if (isNilOrError(project)) return null;
 
-    const { show, enabled } = postingButtonState({ project, phaseContext: phase });
+    const { show, enabled, disabledReason } = postingButtonState({ project, phaseContext: phase });
 
-    if (!show) {
+    if (!show || !enabled) {
       return (
         <DisabledText>
           <StyledIcon name="lock-outlined" />
-          <FormattedMessage {...messages.postingHereImpossible} />
+          {disabledReason ?
+            <FormattedMessage {...this.disabledMessages[disabledReason]} />
+          :
+            <FormattedMessage {...messages.postingHereImpossible} />
+          }
         </DisabledText>
       );
     }
 
     return (
-      <>
-        <Button
-          onClick={this.props.onClick}
-          icon="plus-circle"
-          style="primary"
-          size="2"
-          text={<FormattedMessage {...messages.postIdeaHere} />}
-          circularCorners={false}
-          disabled={!enabled}
-        />
-      </>
+      <Button
+        onClick={this.props.onClick}
+        icon="plus-circle"
+        style="primary"
+        size="2"
+        text={<FormattedMessage {...messages.postIdeaHere} />}
+        circularCorners={false}
+        disabled={!enabled}
+      />
     );
   }
 }

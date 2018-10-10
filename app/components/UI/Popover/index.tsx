@@ -73,7 +73,7 @@ const ContentInner: any = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   children: JSX.Element;
   content: JSX.Element;
   top: string;

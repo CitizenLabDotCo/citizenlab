@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.components.IdeasMap.postingHereImpossible',
     defaultMessage: 'Posting an idea here is currently impossible.',
   },
+  postingNotPermitted: {
+    id: 'app.components.IdeasMap.postingNotPermitted',
+    defaultMessage: 'Unfortunately, You don\'t have the rights to post ideas here.',
+  },
 });
