@@ -1,4 +1,7 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -6,6 +9,11 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
+import { updateUser } from 'services/users';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // style
 import styled from 'styled-components';
@@ -16,6 +24,7 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 
 // typings
 import { Locale } from 'typings';
+
 
 const Container = styled.div`
   position: relative;
@@ -94,16 +103,21 @@ const ListItem = styled.button`
   }
 `;
 
-type Props = {
+interface DataProps {
+  tenant: GetTenantChildProps;
+  user: GetAuthUserChildProps;
+}
+
+interface Props extends DataProps {
   currentLocale: Locale;
   localeOptions: Locale[];
-};
+}
 
 type State = {
   dropdownOpened: boolean;
 };
 
-export default class LanguageSelector extends React.PureComponent<Props, State> {
+class LanguageSelector extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -117,13 +131,20 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
   }
 
   handleLanguageSelect = (newLocale: Locale) => () => {
-    updateLocale(newLocale);
+    const userId = this.props.user && this.props.user.id;
+    // const { id: userId } = this.props.user.;
+    // const userId: string = !isNilOrError(user) && user.id;
+    const update = { locale: newLocale };
+    userId && updateUser(userId, update).then((user) => {
+      updateLocale(user.data.attributes.locale);
+    });
     this.setState({ dropdownOpened: false });
   }
 
   render() {
     const { dropdownOpened } = this.state;
-    const { localeOptions, currentLocale } = this.props;
+    const { locales: localeOptions } = !isNilOrError(this.props.tenant) && this.props.tenant.data.attributes.settings.core;
+    const { currentLocale } = this.props;
 
     return (
       <Container>
@@ -161,3 +182,14 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
     );
   }
 }
+
+const Data = adopt<DataProps>({
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
+});
+
+export default () => (
+  <Data>
+    {dataProps => <LanguageSelector {...dataProps} />}
+  </Data>
+);
