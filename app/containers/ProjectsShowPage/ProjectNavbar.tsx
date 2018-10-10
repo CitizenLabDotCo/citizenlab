@@ -31,6 +31,16 @@ const ProjectNavbarWrapper = styled.nav`
   width: 100%;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
 
+  ${media.smallerThanMinTablet`
+    overflow-x: scroll;
+
+    -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+`}
   ${media.smallerThanMaxTablet`
     top: 0;
   `}
@@ -47,15 +57,6 @@ const ProjectNavbarItems = styled.ul`
   margin: 0;
   padding: 0;
   height: 60px;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
-  -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-
 `;
 
 const ProjectNavbarItem = styled.li`
