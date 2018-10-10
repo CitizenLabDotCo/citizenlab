@@ -1,12 +1,11 @@
-import { IProjectData } from './projects';
+import { IProjectData, PostingDisabledReasons } from './projects';
 import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { Multiloc } from 'typings';
 
 type ButtonStateResponse  = {
   show: boolean;
   enabled: boolean;
-  disabledMessage?: Multiloc;
+  disabledReason?: PostingDisabledReasons;
 };
 
 interface PostingButtonStateArg {
@@ -27,6 +26,7 @@ export const postingButtonState = ({ project, phaseContext }: PostingButtonState
       return {
         show: phaseContext.attributes.posting_enabled,
         enabled: project.relationships.action_descriptor.data.posting.enabled,
+        disabledReason: project.relationships.action_descriptor.data.posting.disabled_reason,
       };
     } else { // if not in current phase
       return {
