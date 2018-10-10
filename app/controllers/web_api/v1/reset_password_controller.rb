@@ -4,7 +4,7 @@
 
 
     def reset_password_email
-      @user = User.find_by!(email: params[:user][:email])
+      @user = User.find_by! email: params[:user][:email].downcase
       token = ResetPasswordService.new.generate_reset_password_token @user
       @user.update(reset_password_token: token)
       ResetPasswordService.new.log_password_reset_to_segment(@user, token)
@@ -23,6 +23,7 @@
         render json: {errors: {token: [{error: "invalid", value: reset_password_params[:token]}]}}, status: :unauthorized
       end
     end
+
 
     private 
 

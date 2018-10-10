@@ -57,6 +57,7 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
+  before_validation :downcase_email
 
   scope :order_role, -> (direction=:asc) {
     joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
@@ -84,7 +85,8 @@ class User < ApplicationRecord
     end
   }
   
-  def self.build_with_omniauth(auth)
+
+  def self.build_with_omniauth auth
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
     new({
       first_name: auth.info['first_name'],
@@ -93,6 +95,7 @@ class User < ApplicationRecord
       remote_avatar_url: auth.info['image'],
     }.merge(extra_user_attrs))
   end
+
 
   def avatar_blank?
     avatar.file.nil?
@@ -158,6 +161,7 @@ class User < ApplicationRecord
   
   private
 
+
   def generate_slug
     if !self.slug && self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.display_name
@@ -166,6 +170,10 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
+  end
+
+  def downcase_email
+    self.email = email&.downcase
   end
 
   def original_authenticate(unencrypted_password)
