@@ -26,16 +26,12 @@ resource "Users" do
           do_request(user: {email: 'S.Hoorens@gmail.com'})
           expect(status).to eq 202
         end
-      end
 
-      describe "Email matching on password reset" do
         example "is case insensitive" do
           do_request(user: {email: 's_hoorens@gmail.com'})
           expect(status).to eq 404
         end
-      end
-
-      describe "Email matching on password reset" do
+      
         example "is case insensitive" do
           do_request(user: {email: '%hoorens@gmail.com%'})
           expect(status).to eq 404
