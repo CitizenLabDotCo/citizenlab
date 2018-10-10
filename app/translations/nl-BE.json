@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "Iets anders",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "Heb je een idee over iets anders? Ontdek wat {orgType, select, generic {anderen} other {je medeburgers}} erover denken en overtuig {orgName}.",
   "app.containers.IdeasProjectSelect.pageTitle": "Maak je keuze",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "",
   "app.containers.IdeasProjectSelect.postingNotPossible": "In dit project kunnen momenteel geen nieuwe ideeën geplaatst worden. ",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "Enkel beheerders kunnen momenteel ideeën plaatsen in dit project.",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "Ideeën toevoegen aan dit project zal mogelijk zijn vanaf {date}.",

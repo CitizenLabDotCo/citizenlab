@@ -707,6 +707,8 @@
   "app.containers.IdeasProjectSelect.openProject": "Autre (boîte à idées)",
   "app.containers.IdeasProjectSelect.openProjectExplanation": "Vous avez une idée sur un autre sujet ? Collectez l'avis des autres {orgType, select, generic {utilisateurs} other {citoyens}} et portez la à l'attention de {orgName} !",
   "app.containers.IdeasProjectSelect.pageTitle": "Quelle est votre idée ?",
+  "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "",
+  "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "",
   "app.containers.IdeasProjectSelect.postingNotPossible": "Ce projet n'accepte pas de nouvelles idées actuellement.",
   "app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin": "Seuls les administrateurs peuvent actuellement poster dans ce projet.",
   "app.containers.IdeasProjectSelect.postingPossibleFuture": "L'ajout d'idées à ce projet sera possible à partir du {date}.",
