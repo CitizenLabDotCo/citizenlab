@@ -34,7 +34,6 @@ const ProjectNavbarWrapper = styled.nav`
 
   ${media.smallerThanMinTablet`
     overflow-x: scroll;
-
     -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
     -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
 
@@ -77,10 +76,9 @@ const ProjectNavbarItem = styled.li`
   }
 
   &:last-of-type {
-    margin-right: 0px;
 
     ${media.smallerThanMinTablet`
-      margin-right: 20px;
+      padding-right: 20px;
     `}
   }
 `;
