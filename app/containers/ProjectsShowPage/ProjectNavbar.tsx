@@ -25,11 +25,22 @@ const ProjectNavbarWrapper = styled.nav`
   background-color: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
+  position: fixed; // IE11 fallback
   position: sticky;
   top: ${(props) => props.theme.menuHeight}px;
   z-index: 10;
   width: 100%;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
+
+  ${media.smallerThanMinTablet`
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
+    -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+`}
 
   ${media.smallerThanMaxTablet`
     top: 0;
@@ -47,13 +58,6 @@ const ProjectNavbarItems = styled.ul`
   margin: 0;
   padding: 0;
   height: 60px;
-  overflow-x: scroll;
-  -webkit-overflow-scrolling: touch; /* Make it smooth scrolling on iOS devices */
-  -ms-overflow-style: -ms-autohiding-scrollbar; /* Hide the ugly scrollbars in Edge until the scrollable area is hovered */
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const ProjectNavbarItem = styled.li`
@@ -72,18 +76,18 @@ const ProjectNavbarItem = styled.li`
   }
 
   &:last-of-type {
-    margin-right: 0px;
 
     ${media.smallerThanMinTablet`
-      margin-right: 20px;
+      padding-right: 20px;
     `}
   }
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
   height: 15px;
+  width: 15px;
   fill: #fff;
-  margin-right: 7px;
+  margin-right: 10px;
   transition: fill 100ms ease-out;
 
   &.idea {
@@ -92,10 +96,15 @@ const ProjectNavbarIcon = styled(Icon)`
   }
 `;
 
+const InfoIcon = ProjectNavbarIcon.extend`
+  margin-right: 7px;
+`;
+
 const ProjectNavbarLink = styled(Link)`
   display: flex;
   align-items: center;
   color: #fff;
+  border-top: 3px solid transparent;
   border-bottom: 3px solid transparent;
   opacity: 0.6;
 
@@ -154,7 +163,7 @@ const ProjectNavbar = (props: Props) => {
                 to={`/projects/${projectSlug}/info`}
                 activeClassName="active"
               >
-                <ProjectNavbarIcon name="info2" />
+                <InfoIcon name="info2" />
                 <FormattedMessage {...messages.navInformation} />
               </ProjectNavbarLink>
             </ProjectNavbarItem>
