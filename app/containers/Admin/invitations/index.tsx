@@ -514,6 +514,7 @@ class Invitations extends React.PureComponent<Props, State> {
               onChange={this.handleInviteTextOnChange}
               limitedTextFormatting
               noImages
+              noVideos
             />
           </SectionField>
 
