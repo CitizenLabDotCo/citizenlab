@@ -1,7 +1,6 @@
 module EmailCampaigns
   class Campaigns::PasswordReset < Campaign
     include ActivityTriggerable
-    include RecipientConfigurable
 
     recipient_filter :filter_recipient
 
