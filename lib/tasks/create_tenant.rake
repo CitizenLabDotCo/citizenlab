@@ -56,6 +56,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        granular_permissions: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 

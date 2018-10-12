@@ -167,6 +167,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       automated_emailing_control: {
         enabled: true,
         allowed: true
+      },
+      granular_permissions: {
+        enabled: true,
+        allowed: true
       }
     }
   })
