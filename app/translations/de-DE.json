@@ -596,6 +596,7 @@
   "app.containers.AdminPage.groups.permissions.add": "Hinzufügen",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Löschen",
   "app.containers.AdminPage.groups.permissions.editButtonLabel": "Bearbeiten",
+  "app.containers.AdminPage.groups.permissions.engagementWarning": "",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Sind Sie sich sicher, dass Sie diese Gruppe aus dem Projekt entfernen möchten?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Gruppe(n) auswählen",
