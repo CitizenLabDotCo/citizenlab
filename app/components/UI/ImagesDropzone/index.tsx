@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
 import { size, compact, isEmpty, has } from 'lodash-es';
 
@@ -18,10 +18,12 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/image
 
 // style
 import styled, { css } from 'styled-components';
-import { ImageFile } from 'typings';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { UploadFile } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -255,7 +257,7 @@ const RemoveButton: any = styled.div`
 
 type Props = {
   id?: string | undefined;
-  images: ImageFile[] | null;
+  images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio?: number
   maxImagePreviewWidth?: string;
@@ -264,23 +266,23 @@ type Props = {
   placeholder?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
-  onAdd: (arg: ImageFile) => void;
-  onUpdate: (arg: ImageFile[] | null) => void;
-  onRemove: (arg: ImageFile) => void;
+  onAdd: (arg: UploadFile) => void;
+  onUpdate: (arg: UploadFile[] | null) => void;
+  onRemove: (arg: UploadFile) => void;
   imageRadius?: string;
 };
 
 type State = {
-  images: ImageFile[] | null;
+  images: UploadFile[] | null;
   errorMessage: string | null;
   processing: boolean;
   canAnimate: boolean;
   canAnimateTimeout: any;
 };
 
-class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       images: [],
       errorMessage: null,
@@ -305,8 +307,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
       for (let i = 0; i < images.length; i += 1) {
         const image  = images[i];
 
-        if (image && image.objectUrl) {
-          revokeObjectURL(image.objectUrl);
+        if (image && image['objectUrl']) {
+          revokeObjectURL(image['objectUrl']);
         }
       }
     }
@@ -330,15 +332,18 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  getImageFiles = async (images: ImageFile[] | null) => {
+  getImageFiles = async (images: UploadFile[] | null) => {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
-        if (!has(images[i], 'base64')) {
-          images[i]['base64'] = await getBase64FromFile(images[i]);
+        images[i].remote = false;
+
+        if (!images[i].base64) {
+          images[i].base64 = await getBase64FromFile(images[i]);
         }
 
         if (!has(images[i], 'objectUrl')) {
           images[i]['objectUrl'] = createObjectUrl(images[i]);
+          images[i].url = images[i]['objectUrl'];
         }
       }
     }
@@ -346,7 +351,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     return images;
   }
 
-  onDrop = async (images: ImageFile[]) => {
+  onDrop = async (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxItemsCount = this.props.maxNumberOfImages;
     const oldItemsCount = size(this.props.images);
@@ -378,7 +383,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  onDropRejected = (images: ImageFile[]) => {
+  onDropRejected = (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxSize = this.props.maxImageFileSize || 5000000;
 
@@ -390,7 +395,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  removeImage = (removedImage: ImageFile) => (event: React.FormEvent<any>) => {
+  removeImage = (removedImage: UploadFile) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -407,8 +412,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
 
     setTimeout(() => this.props.onRemove(removedImage), 50);
 
-    if (removedImage && removedImage.objectUrl) {
-      revokeObjectURL(removedImage.objectUrl);
+    if (removedImage && removedImage['objectUrl']) {
+      revokeObjectURL(removedImage['objectUrl']);
     }
   }
 
@@ -439,14 +444,14 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
         const exit = !isEmpty(animate);
 
         return (
-          <CSSTransition key={image.objectUrl} classNames="image" timeout={timeout} enter={enter} exit={exit}>
+          <CSSTransition key={image['objectUrl']} classNames="image" timeout={timeout} enter={enter} exit={exit}>
             <Box
               key={index}
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
               className={`${hasSpacing} ${animate}`}
             >
-              <Image imageRadius={imageRadius} src={image.objectUrl} objectFit={objectFit}>
+              <Image imageRadius={imageRadius} src={image['objectUrl']} objectFit={objectFit}>
                 <RemoveButton onClick={this.removeImage(image)} className="remove-button">
                   <RemoveIcon name="close2" />
                 </RemoveButton>

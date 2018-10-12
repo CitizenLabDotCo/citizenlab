@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty, get } from 'lodash-es';
 
@@ -19,7 +19,7 @@ import { hasCustomFields } from 'utils/customFields';
 import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
@@ -40,7 +40,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { hideVisually } from 'polished';
 
 // typings
-import { IOption, ImageFile, CLErrorsJSON } from 'typings';
+import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
@@ -54,7 +54,7 @@ interface InputProps {
 }
 
 interface State {
-  avatar: ImageFile[] | null;
+  avatar: UploadFile[] | null;
   hasCustomFields: boolean;
   localeOptions: IOption[];
   customFieldsFormData: any;
@@ -97,7 +97,11 @@ class ProfileForm extends PureComponent<Props, State> {
       ).pipe(
         switchMap(([user, locale, customFieldsSchema]) => {
           const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
-          return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
+          const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl) : of(null));
+
+          return avatar$.pipe(
+            map(avatar => ({ user, avatar, locale, customFieldsSchema }))
+          );
         })
       ).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
@@ -212,13 +216,13 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched(fieldName);
     };
 
-    const handleAvatarOnAdd = (newAvatar: ImageFile) => {
+    const handleAvatarOnAdd = (newAvatar: UploadFile) => {
       this.setState(() => ({ avatar: [newAvatar] }));
       setFieldValue('avatar', newAvatar.base64);
       setFieldTouched('avatar');
     };
 
-    const handleAvatarOnUpdate = (updatedAvatar: ImageFile[]) => {
+    const handleAvatarOnUpdate = (updatedAvatar: UploadFile[]) => {
       const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
       this.setState({ avatar });
       setFieldValue('avatar', updatedAvatar[0].base64);
@@ -304,6 +308,7 @@ class ProfileForm extends PureComponent<Props, State> {
             <QuillEditor
               id="bio_multiloc"
               noImages
+              noVideos
               limitedTextFormatting
               value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
               placeholder={this.props.intl.formatMessage({ ...messages.bio_placeholder })}

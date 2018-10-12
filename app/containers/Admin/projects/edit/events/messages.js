@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
   },
+  fileUploadLabel: {
+    id: 'app.containers.AdminPage.ProjectEvents.fileUploadLabel',
+    defaultMessage: 'Add files to this event',
+  }
 });

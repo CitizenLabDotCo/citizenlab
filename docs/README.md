@@ -1,6 +1,52 @@
 # Changelog
 
-## 2019-09-07
+## 2018-10-09
+
+### Fixed
+- UTM tags are again present on social sharing
+- Start an idea button is no longer shown in the navbar on mobile
+- Exceptionally slow initial loading has been fixed
+- Sharing on facebook is again able to (quite) consistently scrape the images
+- When using the project copy tool in Admin HQ, attachments are now copied over as well
+
+### Added
+- Email engine in the admin (feature flagged)
+  - Direct emails can be sent to specific groups by admins and moderators
+  - Delivered/Opened/Clicked statistics can be seen for every campaign
+  - An overview of all automated emails is shown and some can be disabled for the whole platform
+
+## 2018-09-26
+
+### Fixed
+- Error messages are no longer cut off when they are longer than the red box
+- The timeline dropdown on mobile shows the correct phase names again
+- Adding an idea by clicking on the map works again
+- Filip peeters is no longer sending out spam reports
+- Reordering projects on the projects admin no longer behaves unexpectedly
+- Fixes to the idea manager
+  - Tabs on the left no longer overlap the idea table
+  - Idea status tooltips no longer have an arrow that points too much to the right
+  - When the screen in not wide enough, the preview panel on the right is no longer shown
+  - Changing an idea status through the idea manager is possible again
+
+### Added
+- Social sharing modal is now shown after posting an idea
+  - Feature flagged as `ideaflow_social_sharing`
+  - Offers sharing buttons for facebook, twitter and email
+- File attachments can now be added to
+  - Ideas, shown on the idea page. Also works for citizens.
+  - Projects, shown in the information page, for admins and moderators
+  - Phases, shown under the phase description under the timeline, for admins and moderators
+  - Events, shown under the event description, for admins and moderators
+  - Pages, shown under the text, for admins
+- Some limited rich text options can now be used in email invitation texts
+
+### Changed
+- The admin projects page now shows 3 seperate sections for published, draft and archived
+- When there are no voting buttons, comment icon and count are now also aligned to the right
+- It's now possible to remove your avatar
+
+## 2018-09-07
 
 ### Fixed
 - Submit idea button is now aligned with idea form

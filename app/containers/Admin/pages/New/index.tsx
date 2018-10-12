@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
 import PageWrapper from 'components/admin/PageWrapper';
-import PageForm, { FormValues } from 'components/PageForm';
+import PageForm from 'components/PageForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,8 +21,9 @@ const PageTitle = styled.h1`
 type Props = {};
 
 class New extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  // Still need to handle file saving if we'll use this form.
+  // Also change typing of values parameter to something different (probably FormValues) than 'any'
+  handleSubmit = (values: any, { setErrors, setSubmitting }) => {
     createPage({
       ...values
     })

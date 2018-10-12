@@ -7,16 +7,18 @@ import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import moment, { Moment } from 'moment';
-import { get, isEmpty } from 'lodash-es';
+import { get, isEmpty, isString, some, filter } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 // Services
-import { projectByIdStream, IProject } from 'services/projects';
+import { localeStream } from 'services/locale';
+import { phaseFilesStream, addPhaseFile, deletePhaseFile } from 'services/phaseFiles';
 import { phaseStream, updatePhase, addPhase, IPhase, IUpdatedPhaseProperties } from 'services/phases';
 import eventEmitter from 'utils/eventEmitter';
 
 // Utils
-import getSubmitState from 'utils/getSubmitState';
 import shallowCompare from 'utils/shallowCompare';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -27,6 +29,7 @@ import { DateRangePicker } from 'react-dates';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
+import FileUploader from 'components/UI/FileUploader';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -38,7 +41,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLError, Multiloc } from 'typings';
+import { CLError, Locale, UploadFile, Multiloc } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
@@ -71,13 +74,15 @@ interface IParams {
   id: string | null;
 }
 
-type Props = {
-  params: IParams
-};
+interface DataProps {}
+
+interface Props extends DataProps {
+  params: IParams;
+}
 
 interface State {
+  locale: Locale | null;
   phase: IPhase | null;
-  project: IProject | null;
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
   errors: { [fieldName: string]: CLError[] } | null;
@@ -85,6 +90,9 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
+  phaseFiles: UploadFile[] | null;
+  phaseFilesToRemove: UploadFile[] | null;
+  submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
 class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, State> {
@@ -94,15 +102,18 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   constructor(props) {
     super(props);
     this.state = {
+      locale: null,
       phase: null,
-      project: null,
       presentationMode: 'card',
       attributeDiff: {},
       errors: null,
       saving: false,
       focusedInput: null,
       saved: false,
-      loaded: false
+      loaded: false,
+      phaseFiles: null,
+      phaseFilesToRemove: null,
+      submitState: 'disabled'
     };
     this.subscriptions = [];
     this.params$ = new BehaviorSubject(null);
@@ -117,17 +128,41 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
       this.params$.pipe(
         distinctUntilChanged(shallowCompare),
         switchMap((params: IParams) => {
-          const { projectId, id } = params;
-          const project$ = (projectId ? projectByIdStream(projectId).observable : of(null));
+          const { id } = params;
+          const locale$ = localeStream().observable;
           const phase$ = (id ? phaseStream(id).observable : of(null));
-          return combineLatest(project$, phase$);
+          return combineLatest(locale$, phase$);
         })
-      ).subscribe(([project, phase]) => {
+      ).subscribe(([locale, phase]) => {
         this.setState({
-          project,
+          locale,
           phase,
           loaded: true
         });
+      }),
+
+      this.params$.pipe(
+        distinctUntilChanged(shallowCompare),
+        switchMap((params: IParams) => {
+          return (params.id ? phaseFilesStream(params.id).observable.pipe(
+            switchMap((phaseFiles) => {
+              if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
+                return combineLatest(
+                  phaseFiles.data.map((phaseFile) => {
+                    const url = phaseFile.attributes.file.url;
+                    const filename = phaseFile.attributes.name;
+                    const id = phaseFile.id;
+                    return convertUrlToUploadFileObservable(url, true, filename, id);
+                  })
+                );
+              }
+
+              return of(null);
+            })
+          ) : of(null));
+        })
+      ).subscribe((phaseFiles) => {
+        this.setState({ phaseFiles });
       })
     ];
   }
@@ -143,15 +178,17 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
   handleTitleMultilocOnChange = (title_multiloc: Multiloc) => {
     this.setState(({ attributeDiff }) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
-        title_multiloc,
+        title_multiloc
       }
     }));
   }
 
   handleEditorOnChange = (description_multiloc: Multiloc) => {
     this.setState(({ attributeDiff }) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
         description_multiloc
@@ -171,6 +208,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
   handleDateUpdate = ({ startDate, endDate }: { startDate: Moment, endDate: Moment }) => {
     this.setState(({ attributeDiff }) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
         start_at: startDate ? startDate.format('YYYY-MM-DD') : '',
@@ -185,6 +223,32 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
   isOutsideRange = () => {
     return false;
+  }
+
+  handlePhaseFileOnAdd = (newFile: UploadFile) => {
+    this.setState((prevState) => {
+      const isDuplicate = some(prevState.phaseFiles, file => file.base64 === newFile.base64);
+      const phaseFiles = (isDuplicate ? prevState.phaseFiles : [...(prevState.phaseFiles || []), newFile]);
+      const submitState = (isDuplicate ? prevState.submitState : 'enabled');
+
+      return {
+        phaseFiles,
+        submitState
+      };
+    });
+  }
+
+  handlePhaseFileOnRemove = (fileToRemove: UploadFile) => {
+    this.setState((prevState) => {
+      const phaseFiles = filter(prevState.phaseFiles, file => file.base64 !== fileToRemove.base64);
+      const phaseFilesToRemove = [...(prevState.phaseFilesToRemove || []), fileToRemove];
+
+      return {
+        phaseFiles,
+        phaseFilesToRemove,
+        submitState: 'enabled'
+      };
+    });
   }
 
   handleOnSubmit = async (event: FormEvent<any>) => {
@@ -208,46 +272,94 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   }
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
-    const { phase, project } = this.state;
+    const { phase } = this.state;
     const { projectId } = this.props.params;
     const attributeDiff = this.getAttributeDiff(participationContextConfig);
-    this.save(projectId, project, phase, attributeDiff);
+    this.save(projectId, phase, attributeDiff);
   }
 
-  save = async (projectId: string | null, project: IProject | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
+  getFilesToAddPromises = (phaseId: string) => {
+    const { phaseFiles } = this.state;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (phaseId && phaseFiles && phaseFiles.length > 0) {
+      filesToAddPromises = phaseFiles.filter((file) => {
+        return isString(file.base64) && file.remote !== true;
+      }).map((file) => {
+        return addPhaseFile(phaseId, file.base64, file.name);
+      });
+    }
+
+    return filesToAddPromises;
+  }
+
+  getFilesToRemovePromises = (phaseId: string) => {
+    const { phaseFilesToRemove } = this.state;
+    let filesToRemovePromises: Promise<any>[] = [];
+
+    if (phaseId && phaseFilesToRemove && phaseFilesToRemove.length > 0) {
+      filesToRemovePromises = phaseFilesToRemove.filter((file) => {
+        return !!(file.remote === true && isString(file.id));
+      }).map((file) => {
+        return deletePhaseFile(phaseId, file.id as string);
+      });
+    }
+
+    return filesToRemovePromises;
+  }
+
+  save = async (projectId: string | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
     if (!isEmpty(attributeDiff)) {
       try {
-        let savedPhase = phase;
+        let phaseResponse = phase;
+        let redirect = false;
 
-        if (phase) {
-          savedPhase = await updatePhase(phase.data.id, { max_budget: 980 });
-        } else if (project && projectId) {
-          savedPhase = await addPhase(project.data.id, attributeDiff);
+        if (phase && !isEmpty(attributeDiff)) {
+          phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+        } else if (projectId && !isEmpty(attributeDiff)) {
+          phaseResponse = await addPhase(projectId, attributeDiff);
+          redirect = true;
+        }
+
+        if (phaseResponse) {
+          const filesToAddPromises = this.getFilesToAddPromises(phaseResponse.data.id);
+          const filesToRemovePromises  = this.getFilesToRemovePromises(phaseResponse.data.id);
+          await Promise.all([
+            ...filesToAddPromises,
+            ...filesToRemovePromises
+          ]);
         }
 
         this.setState({
           attributeDiff: {},
+          phaseFilesToRemove: null,
           saving: false,
           saved: true,
-          phase: savedPhase,
-          errors: null
+          errors: null,
+          submitState: 'success'
         });
+
+        if (redirect) {
+          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+        }
       } catch (errors) {
         this.setState({
           errors: get(errors, 'json.errors', null),
           saving: false,
-          saved: false
+          saved: false,
+          submitState: 'error'
         });
       }
     }
   }
 
   render() {
-    if (this.state.loaded) {
+    const { loaded } = this.state;
+
+    if (loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, saved, phase, attributeDiff, saving } = this.state;
+      const { errors,  phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
-      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
       const startDate = (phaseAttrs.start_at ? moment(phaseAttrs.start_at) : null);
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
 
@@ -310,6 +422,15 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
                 <Error apiErrors={errors && errors.description_multiloc} />
               </SectionField>
 
+              <SectionField>
+                <FileUploader
+                  onFileAdd={this.handlePhaseFileOnAdd}
+                  onFileRemove={this.handlePhaseFileOnRemove}
+                  files={phaseFiles}
+                  errors={errors}
+                />
+              </SectionField>
+
               {errors && errors.project &&
                 <SectionField>
                   <Error apiErrors={errors.project} />
@@ -341,4 +462,4 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   }
 }
 
-export default injectIntl(AdminProjectTimelineEdit);
+export default injectIntl<Props>(AdminProjectTimelineEdit);

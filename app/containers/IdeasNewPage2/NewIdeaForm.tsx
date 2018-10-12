@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // components
@@ -92,7 +92,7 @@ interface GlobalState {
 
 interface State extends GlobalState {}
 
-export default class NewIdeaForm extends React.PureComponent<Props, State> {
+export default class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
 
@@ -152,11 +152,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, position, imageFile, budget } = ideaFormOutput;
+    const { title, description, selectedTopics, position, imageFile, localIdeaFiles } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, position, imageFile, imageChanged, budget });
+    this.globalState.set({ title, description, selectedTopics, position, imageFile, imageChanged, localIdeaFiles });
     this.props.onSubmit();
   }
 

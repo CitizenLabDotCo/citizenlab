@@ -15,6 +15,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import InvitesTable from './all';
+import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 
 // services
@@ -507,9 +508,12 @@ class Invitations extends React.PureComponent<Props, State> {
             <Label>
               <FormattedMessage {...messages.inviteTextLabel} />
             </Label>
-            <TextArea
-              value={(selectedInviteText || '')}
+            <QuillEditor
+              id="invite-text"
+              value={selectedInviteText || ''}
               onChange={this.handleInviteTextOnChange}
+              limitedTextFormatting
+              noImages
             />
           </SectionField>
 

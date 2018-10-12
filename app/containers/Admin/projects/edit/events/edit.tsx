@@ -2,6 +2,7 @@ import React from 'react';
 import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -10,14 +11,14 @@ import clHistory from 'utils/cl-router/history';
 import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
-import Error from 'components/UI/Error';
+import ErrorComponent from 'components/UI/Error';
 import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import FileUploader from 'components/UI/FileUploader';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';
-import getSubmitState from 'utils/getSubmitState';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,17 +29,25 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
 import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
+import { addEventFile, deleteEventFile } from 'services/eventFiles';
+
+// resources
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 // typings
-import { Multiloc, CLError, Locale } from 'typings';
+import { Multiloc, CLError, Locale, UploadFile } from 'typings';
 
-type Props = {
+interface DataProps {
+  remoteEventFiles: GetResourceFileObjectsChildProps;
+}
+
+interface Props extends DataProps {
   params: {
     id: string | null,
     projectId: string | null,
-  },
+  };
   project: IProjectData | null;
-};
+}
 
 interface State {
   locale: Locale | null;
@@ -52,9 +61,12 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
+  localEventFiles: UploadFile[] | null;
+  isNewEvent: boolean;
+  submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-export default class AdminProjectEventEdit extends React.PureComponent<Props, State> {
+class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -68,7 +80,10 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
       saving: false,
       focusedInput: null,
       saved: false,
-      loaded: false
+      loaded: false,
+      localEventFiles: null,
+      isNewEvent: true,
+      submitState: 'disabled',
     };
     this.subscriptions = [];
   }
@@ -76,6 +91,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
   componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
+    const { remoteEventFiles } = this.props;
     const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : of(null));
 
     this.subscriptions = [
@@ -84,9 +100,19 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        this.setState({ locale, currentTenant, event, loaded: true });
+        this.setState({ locale, currentTenant, event, loaded: true, isNewEvent: event === null });
       })
     ];
+
+    this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { remoteEventFiles } = this.props;
+
+    if (prevProps.remoteEventFiles !== remoteEventFiles) {
+      this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
+    }
   }
 
   componentWillUnmount() {
@@ -95,6 +121,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         title_multiloc: titleMultiloc
@@ -104,6 +131,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
 
   handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         location_multiloc: locationMultiloc
@@ -113,6 +141,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
 
   handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         description_multiloc: descriptionMultiloc
@@ -122,6 +151,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
 
   handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
     this.setState((state) => ({
+      submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
         [name]: moment.toISOString()
@@ -130,40 +160,134 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     }));
   }
 
-  handleOnSubmit = (event) => {
-    event.preventDefault();
+  handleEventFileOnAdd = (newFile: UploadFile) => {
+    this.setState((prevState) => {
+      // If we don't have localEventFiles, we assign an empty array
+      // A spread operator works on an empty array, but not on null
+      const oldlLocalEventFiles = !isNilOrError(prevState.localEventFiles) ? prevState.localEventFiles : [];
 
-    if (!isEmpty(this.state.attributeDiff)) {
-      let savingPromise: Promise<IEvent> | null = null;
+      return {
+        submitState: 'enabled',
+        localEventFiles: [
+          ...oldlLocalEventFiles,
+          newFile
+        ]
+      };
+    });
+  }
 
-      if (this.state.event) {
-        savingPromise = updateEvent(this.state.event.data.id, this.state.attributeDiff);
-      } else if (this.props.project) {
-        savingPromise = addEvent(this.props.project.id, this.state.attributeDiff).then((response) => {
-          clHistory.push(`/admin/projects/${this.props.params.projectId}/events/${response.data.id}`);
-          return response;
-        });
+  handleEventFileOnRemove = (removedFile: UploadFile) => {
+    this.setState((prevState) => {
+      let localEventFiles: UploadFile[] | null = null;
+
+      if (Array.isArray(prevState.localEventFiles)) {
+        localEventFiles = prevState.localEventFiles.filter(eventFile => eventFile.filename !== removedFile.filename);
       }
 
-      if (savingPromise) {
-        this.setState({ saving: true, saved: false });
+      return {
+        localEventFiles,
+        submitState: 'enabled'
+      };
+    });
+  }
 
-        savingPromise.then((response) => {
-          this.setState({ saving: false, saved: true, attributeDiff: {}, event: response, errors: {} });
-        }).catch((e) => {
-          this.setState({ saving: false, errors: e.json.errors });
-        });
-      }
+  getFilesToAddPromises = (eventId: string) => {
+    const { localEventFiles } = this.state;
+    const { remoteEventFiles } = this.props;
+    let filesToAdd = localEventFiles;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
+      // localEventFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteEventFiles = last saved state of files (remote)
+
+      filesToAdd = localEventFiles.filter((localEventFile) => {
+        return !remoteEventFiles.some(remoteEventFile => remoteEventFile.filename === localEventFile.filename);
+      });
     }
+
+    if (eventId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(eventId as string, fileToAdd.base64, fileToAdd.name));
+    }
+
+    return filesToAddPromises;
+  }
+
+  getFilesToRemovePromises = (eventId: string) => {
+    const { localEventFiles } = this.state;
+    const { remoteEventFiles } = this.props;
+    let filesToRemove = remoteEventFiles;
+    let filesToRemovePromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
+      // localEventFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteEventFiles = last saved state of files (remote)
+
+      filesToRemove = remoteEventFiles.filter((remoteEventFile) => {
+        return !localEventFiles.some(localEventFile => localEventFile.filename === remoteEventFile.filename);
+      });
+    }
+
+    if (eventId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteEventFile(eventId as string, fileToRemove.id));
+    }
+
+    return filesToRemovePromises;
+  }
+
+  handleOnSubmit = async (event) => {
+    event.preventDefault();
+    const projectId = !isNilOrError(this.props.project) ? this.props.project.id : null;
+    const { event: projectEvent } = this.state;
+    let eventResponse = projectEvent;
+    let redirect = false;
+
+    try {
+      this.setState({ saving: true, saved: false });
+
+      // non-file input fields have changed
+      if (!isEmpty(this.state.attributeDiff)) {
+        // event already exists (in the state)
+        if (projectEvent) {
+          eventResponse = await updateEvent(projectEvent.data.id, this.state.attributeDiff);
+          this.setState({ event: eventResponse, attributeDiff: {} });
+        } else if (projectId) {
+          // event doesn't exist, create with project id
+          eventResponse =  await addEvent(projectId, this.state.attributeDiff);
+          this.setState({ event: eventResponse, attributeDiff: {} });
+          redirect = true;
+        }
+      }
+
+      if (eventResponse) {
+        const { id: eventId } = eventResponse.data;
+        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(eventId);
+        const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(eventId);
+        await Promise.all([
+          ...filesToAddPromises,
+          ...filesToRemovePromises
+        ]);
+      }
+
+      this.setState({ saving: false, saved: true, errors: {}, submitState: 'success' });
+      if (redirect && projectId) {
+        clHistory.push(`/admin/projects/${projectId}/events/`);
+      }
+
+    } catch (errors) {
+      this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+    }
+
   }
 
   render() {
-    const { locale, currentTenant, loaded } = this.state;
+    const { locale, currentTenant, loaded, submitState } = this.state;
 
     if (locale && currentTenant && loaded) {
-      const { errors, saved, event, attributeDiff, saving } = this.state;
+      const { errors, event, attributeDiff, saving, localEventFiles } = this.state;
       const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
-      const submitState = getSubmitState({ errors, saved, diff: attributeDiff });
 
       return (
         <>
@@ -182,7 +306,7 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.title_multiloc}
                   onChange={this.handleTitleMultilocOnChange}
                 />
-                <Error apiErrors={errors.title_multiloc} />
+                <ErrorComponent apiErrors={errors.title_multiloc} />
               </SectionField>
 
               <SectionField>
@@ -193,19 +317,19 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.location_multiloc}
                   onChange={this.handleLocationMultilocOnChange}
                 />
-                <Error apiErrors={errors.location_multiloc} />
+                <ErrorComponent apiErrors={errors.location_multiloc} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
                 <DateTimePicker value={eventAttrs.start_at} onChange={this.handleDateTimePickerOnChange('start_at')} />
-                <Error apiErrors={errors.start_at} />
+                <ErrorComponent apiErrors={errors.start_at} />
               </SectionField>
 
               <SectionField>
                 <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
                 <DateTimePicker value={eventAttrs.end_at} onChange={this.handleDateTimePickerOnChange('end_at')} />
-                <Error apiErrors={errors.end_at} />
+                <ErrorComponent apiErrors={errors.end_at} />
               </SectionField>
 
               <SectionField className="fullWidth">
@@ -216,7 +340,16 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
                 />
-                <Error apiErrors={errors.description_multiloc} />
+                <ErrorComponent apiErrors={errors.description_multiloc} />
+              </SectionField>
+
+              <SectionField>
+                <FileUploader
+                  onFileAdd={this.handleEventFileOnAdd}
+                  onFileRemove={this.handleEventFileOnRemove}
+                  files={localEventFiles}
+                  errors={errors}
+                />
               </SectionField>
             </Section>
 
@@ -238,3 +371,9 @@ export default class AdminProjectEventEdit extends React.PureComponent<Props, St
     return null;
   }
 }
+
+export default (props: Props) => (
+  <GetResourceFileObjects resourceId={props.params.id} resourceType="event">
+    {remoteEventFiles => <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />}
+  </GetResourceFileObjects>
+);

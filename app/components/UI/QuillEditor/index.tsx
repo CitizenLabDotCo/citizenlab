@@ -1,4 +1,5 @@
 import React from 'react';
+import { isFunction } from 'lodash-es';
 
 // Quill editor & modules
 import ReactQuill, { Quill } from 'react-quill';
@@ -131,6 +132,8 @@ const Container: any = styled.div`
 // Typings
 export interface InputProps {
   noImages?: boolean;
+  noVideos?: boolean;
+  noAlign?: boolean;
   limitedTextFormatting?: boolean;
   noToolbar?: boolean;
   id: string;
@@ -153,6 +156,7 @@ export interface QuillProps {
   onKeyDown?: React.EventHandler<any>;
   onKeyUp?: React.EventHandler<any>;
   children?: React.ReactElement<any>;
+  setRef?: (arg: any) => void | undefined;
 }
 
 interface State {
@@ -204,9 +208,16 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     this.state = { editorHtml: '' };
   }
 
-  handleChange = html => this.setState({ editorHtml: html });
+  handleChange = (html) => {
+    this.setState({ editorHtml: html });
+  }
 
-  // Begin event tracking functions
+  setRef = (element) => {
+    if (isFunction(this.props.setRef)) {
+      this.props.setRef(element);
+    }
+  }
+
   trackAdvanced = (type, option) => {
     return () => {
       this.props.trackAdvancedEditing({
@@ -217,6 +228,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       });
     };
   }
+
   trackClickDropdown = () => {
     return (e) => {
       if (e.target && e.target.classList.contains('ql-picker-item')) {
@@ -238,6 +250,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       }
     };
   }
+
   trackBasic = (type) => {
     return () => this.props.trackBasicEditing({
       extra: {
@@ -245,19 +258,22 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
       },
     });
   }
+
   trackImage = () => {
     return this.props.trackImageEditing();
   }
+
   trackVideo = () => {
     return this.props.trackVideoEditing();
   }
-  // End event tracking functions
 
   render() {
     const {
       id,
       noToolbar,
+      noAlign,
       noImages,
+      noVideos,
       limitedTextFormatting,
       inAdmin,
       trackBasicEditing,
@@ -271,7 +287,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     const toolbarId = `ql-editor-toolbar-${id}`;
 
     const modules: ModulesConfig = {
-      blotFormatter: noImages ? false : {},
+      blotFormatter: (noImages && noVideos) ? false : {},
       keyboard: {
         // This will overwrite the default binding also named 'tab'
         bindings: {
@@ -297,8 +313,15 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     };
 
     const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image', 'video'); }
-    if (!limitedTextFormatting) { formats.push('list', 'align', 'header'); }
+    if (!noImages) { formats.push('image'); }
+    if (!noVideos) { formats.push('video'); }
+    if (!limitedTextFormatting) {
+      formats.push('list');
+      if (!noAlign) {
+        formats.push('align');
+      }
+      formats.push('header');
+    }
 
     return (
       <Container
@@ -333,7 +356,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
               </select>
             </span>
           }
-          {!limitedTextFormatting &&
+          {!limitedTextFormatting && !noAlign &&
             <span className="ql-formats">
               <button
                 className="ql-align"
@@ -377,10 +400,10 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
             <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
           </span>
 
-          {!noImages &&
+          {!(noImages && noVideos) &&
             <span className="ql-formats">
-              <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>
-              <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>
+              {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)}/>}
+              {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)}/>}
             </span>
           }
         </div>
@@ -389,6 +412,7 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
           bounds="#boundaries"
           theme="snow"
           formats={formats}
+          ref={this.setRef}
           {...quillProps}
         />
       </Container >
@@ -402,4 +426,5 @@ const QuillEditorWithHoc = injectTracks<Props>({
   trackVideoEditing: tracks.videoEditing,
   trackAdvancedEditing: tracks.advancedEditing,
 })(QuillEditor);
+
 export default injectIntl<Props>(QuillEditorWithHoc);

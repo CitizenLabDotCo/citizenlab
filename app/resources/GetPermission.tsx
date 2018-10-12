@@ -17,10 +17,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  permission: Boolean | null;
+  permission: boolean | null;
 }
 
-export type GetPermissionChildProps = Boolean | null;
+export type GetPermissionChildProps = boolean | null;
 
 export default class GetPermission extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
