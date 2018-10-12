@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "Flere handlinger",
   "app.components.PagesForm.advancedEditorLink": "Avanceret editor",
   "app.components.PagesForm.dontChange": "Lav ikke om på dette! (medmindre du virkelig ved hvad du laver)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Indhold",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "Den anmodede side kunne ikke findes",

@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "Meer acties",
   "app.components.PagesForm.advancedEditorLink": "Geavanceerde editor",
   "app.components.PagesForm.dontChange": "Dit niet veranderen! (tenzij je goed weet waar je mee bezig bent)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Inhoud",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Titel",
   "app.components.PagesShowPage.notFoundDescription": "De opgevraagde pagina kon niet worden gevonden",
