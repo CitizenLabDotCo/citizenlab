@@ -22,7 +22,9 @@ class ParticipationContextService
   }
 
   TAKING_SURVEY_DISABLED_REASONS = {
-    not_permitted: 'not_permitted'
+    project_inactive: 'project_inactive',
+    not_permitted: 'not_permitted',
+    not_survey: 'not_survey'
   }
 
   def initialize
@@ -31,7 +33,9 @@ class ParticipationContextService
   end
 
   def get_participation_context project
-    if project.continuous?
+    if project.archived?
+      nil
+    elsif project.continuous?
       project
     elsif project.timeline?
       @timeline_service.current_phase project
@@ -126,8 +130,13 @@ class ParticipationContextService
     end
   end
 
-  def taking_survey_disabled_reason context, user
-    if !context_permission(context, 'taking_survey')&.granted_to?(user)
+  def taking_survey_disabled_reason project, user
+    context = get_participation_context project
+    if !context
+      TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
+    elsif !context.survey?
+      TAKING_SURVEY_DISABLED_REASONS[:not_survey]
+    elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
       TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
     else
       nil

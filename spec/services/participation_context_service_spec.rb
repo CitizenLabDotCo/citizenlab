@@ -22,6 +22,16 @@ describe ParticipationContextService do
       project = create(:project_with_past_phases)
       expect(service.get_participation_context(project)).to eq nil
     end
+
+    it "returns nil for a timeline project that's archived" do
+      project = create(:project_with_current_phase, publication_status: 'archived')
+      expect(service.get_participation_context(project)).to eq nil
+    end
+
+    it "returns nil for a continuous project that's archived" do
+      project = create(:continuous_project, publication_status: 'archived')
+      expect(service.get_participation_context(project)).to eq nil
+    end
   end
 
   describe "posting_disabled_reason" do
@@ -59,8 +69,13 @@ describe ParticipationContextService do
       expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_ideation'
     end
 
-    it "returns `project_inactive` when we're not in an active context" do
+    it "returns `project_inactive` when the timeline is over" do
       project = create(:project_with_past_phases, with_permissions: true)
+      expect(service.posting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+    end
+
+    it "returns 'project_inactive' when the project is archived" do
+      project = create(:continuous_project, publication_status: 'archived')
       expect(service.posting_disabled_reason(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -151,6 +166,12 @@ describe ParticipationContextService do
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason(idea, create(:user))).to be_nil
       end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_project, publication_status: 'archived')
+        idea = create(:idea, project: project)
+        expect(service.commenting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
+      end
     end
   end
 
@@ -206,6 +227,7 @@ describe ParticipationContextService do
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.voting_disabled_reason(idea, user)).to eq reasons[:project_inactive]
       end
+
     end
 
     context "continuous project" do
@@ -240,6 +262,12 @@ describe ParticipationContextService do
         ideas.each{|idea| create(:vote, votable: idea, user: user)}
         idea = create(:idea, project: project)
         expect(service.voting_disabled_reason(idea, user)).to eq reasons[:voting_limited_max_reached]
+      end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+        idea = create(:idea, project: project)
+        expect(service.voting_disabled_reason(idea, user)).to eq 'project_inactive'
       end
     end
   end
@@ -306,6 +334,12 @@ describe ParticipationContextService do
           )
         expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:not_permitted]
       end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_project, publication_status: 'archived')
+        idea = create(:idea, project: project, phases: project.phases)
+        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:project_inactive]
+      end
     end
   end
 
@@ -329,6 +363,24 @@ describe ParticipationContextService do
         group_ids: create_list(:group, 2).map(&:id)
         )
       expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'not_permitted'
+    end
+
+    it "returns `not_survey` when the active context is not a survey" do
+      project = create(:project_with_current_phase, 
+        with_permissions: true, 
+        current_phase_attrs: {participation_method: 'ideation'}
+        )
+      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'not_survey'
+    end
+
+    it "returns `project_inactive` when the timeline has past" do
+      project = create(:project_with_past_phases, with_permissions: true)
+      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'project_inactive'
+    end
+
+    it "returns `project_inactive` when the continuous project is archived" do
+      project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+      expect(service.taking_survey_disabled_reason(project, create(:user))).to eq 'project_inactive'
     end
   end
 
