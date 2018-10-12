@@ -247,12 +247,6 @@ FactoryBot.define do
       participation_method 'ideation'
       voting_method 'unlimited'
       voting_limited_max 7
-
-      factory :continuous_project_with_permissions do
-        after(:create) do |project, evaluator|
-          PermissionsService.new.update_permissions_for project
-        end
-      end
     end
 
     factory :continuous_survey_project do
