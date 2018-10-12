@@ -71,7 +71,7 @@ export default class GetResourceFileObjects extends React.Component<Props, State
         switchMap((files) => {
           if (files && files.data && files.data.length > 0) {
             return combineLatest(
-              files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url, true, file.attributes.name, file.id))
+              files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url, file.id, file.attributes.name))
             );
           }
 

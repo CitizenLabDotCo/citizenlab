@@ -149,14 +149,9 @@ class IdeaEditPage extends PureComponent<Props, State> {
           first(),
           switchMap((ideaImage) => {
             if (ideaImage && ideaImage.data && ideaImage.data.attributes.versions.large) {
-              const ideaImageFile$ = convertUrlToUploadFileObservable(ideaImage.data.attributes.versions.large);
-
-              return ideaImageFile$.pipe(
-                map((ideaImageFile) => ({
-                  file: ideaImageFile,
-                  id: ideaImage.data.id
-                }))
-              );
+              const url = ideaImage.data.attributes.versions.large;
+              const id = ideaImage.data.id;
+              return convertUrlToUploadFileObservable(url, id);
             }
 
             return of(null);
@@ -212,7 +207,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             location: idea.data.attributes.location_description,
             budget: idea.data.attributes.budget,
-            imageFile: (ideaImage && ideaImage.file ? [ideaImage.file] : null),
+            imageFile: (ideaImage ? [ideaImage] : null),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
         } else {

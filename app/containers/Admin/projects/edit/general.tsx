@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { switchMap, map, filter as rxFilter, distinctUntilChanged } from 'rxjs/operators';
-import { isEmpty, get, forOwn, isString, some, filter } from 'lodash-es';
+import { isEmpty, get, forOwn, isString } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -134,7 +134,7 @@ const ParticipationContextWrapper = styled.div`
 type Props = {
   lang: string,
   params: {
-    projectId: string,
+    projectId: string
   }
 };
 
@@ -147,10 +147,10 @@ interface State {
    projectAttributesDiff: IUpdatedProjectProperties;
   headerBg: UploadFile[] | null;
   presentationMode: 'map' | 'card';
-  projectImages: UploadFile[] | null;
-  projectImagesToRemove: UploadFile[] | null;
-  projectFiles: UploadFile[] | null;
-  projectFilesToRemove: UploadFile[] | null;
+  projectImages: UploadFile[];
+  projectImagesToRemove: UploadFile[];
+  projectFiles: UploadFile[];
+  projectFilesToRemove: UploadFile[];
   noTitleError: Multiloc | null;
   apiErrors: { [fieldName: string]: CLError[] };
   saved: boolean;
@@ -245,7 +245,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       project$.pipe(
         switchMap((project) => {
           if (project) {
-            const headerUrl: string | null = get(project, 'data.attributes.header_bg.large', null);
+            const headerUrl = project.data.attributes.header_bg.large;
             const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl) : of(null));
 
             const projectFiles$ = (project ? projectFilesStream(project.data.id).observable.pipe(
@@ -256,14 +256,14 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                       const url = projectFile.attributes.file.url;
                       const filename = projectFile.attributes.name;
                       const id = projectFile.id;
-                      return convertUrlToUploadFileObservable(url, true, filename, id);
+                      return convertUrlToUploadFileObservable(url, id, filename);
                     })
                   );
                 }
 
-                return of(null);
+                return of([]);
               })
-            ) : of(null));
+            ) : of([]));
 
             const projectImages$ = (project ? projectImagesStream(project.data.id).observable.pipe(
               switchMap((projectImages) => {
@@ -272,18 +272,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     return !!(projectImage.attributes.versions && projectImage.attributes.versions.large);
                   }).map((projectImage) => {
                     const url = projectImage.attributes.versions.large as string;
-                    return convertUrlToUploadFileObservable(url).pipe(
-                      map((projectImageFile) => {
-                        projectImageFile['projectImageId'] = projectImage.id;
-                        return projectImageFile;
-                      })
-                    );
+                    return convertUrlToUploadFileObservable(url, projectImage.id);
                   }));
                 }
 
-                return of(null);
+                return of([]);
               })
-            ) : of(null));
+            ) : of([]));
 
             return combineLatest(
               this.processing$,
@@ -302,11 +297,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
           return of({
             headerBg: null,
-            projectFiles: null,
-            projectImages: null
+            projectFiles: [],
+            projectImages: []
           });
         })
       ).subscribe(({ headerBg, projectFiles, projectImages }) => {
+        console.log(projectImages);
         this.setState({
           projectFiles,
           projectImages,
@@ -331,71 +327,66 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc, locale: Locale) => {
-    this.setState((state) => ({
+    this.setState(({ noTitleError, projectAttributesDiff }) => ({
       submitState: 'enabled',
       noTitleError: {
-        ...state.noTitleError,
+        ...noTitleError,
         [locale]: null
       },
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         title_multiloc: titleMultiloc
       }
     }));
   }
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
         submitState: 'enabled',
         projectAttributesDiff: {
-          ...state.projectAttributesDiff,
+          ...projectAttributesDiff,
           ...participationContextConfig
         }
     }));
   }
 
   handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       projectType,
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         process_type: projectType
       }
     }));
   }
 
   handleHeaderOnAdd = (newHeader: UploadFile) => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         header_bg: newHeader.base64
       },
       headerBg: [newHeader]
     }));
   }
 
-  // handleHeaderOnUpdate = (updatedHeaders: UploadFile[]) => {
-  //   const headerBg = (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null);
-  //   this.setState({ headerBg });
-  // }
-
   handleHeaderOnRemove = async () => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         header_bg: null
       },
       headerBg: null
     }));
   }
 
-  handleProjectFileOnAdd = (newFile: UploadFile) => {
+  handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     this.setState((prevState) => {
-      const isDuplicate = some(prevState.projectFiles, file => file.base64 === newFile.base64);
-      const projectFiles = (isDuplicate ? prevState.projectFiles : [...(prevState.projectFiles || []), newFile]);
+      const isDuplicate = prevState.projectFiles.some(file => file.base64 === newProjectFile.base64);
+      const projectFiles = (isDuplicate ? prevState.projectFiles : [...prevState.projectFiles, newProjectFile]);
       const submitState = (isDuplicate ? prevState.submitState : 'enabled');
 
       return {
@@ -405,65 +396,55 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     });
   }
 
-  handleProjectFileOnRemove = (fileToRemove: UploadFile) => {
-    this.setState((prevState) => {
-      const projectFiles = filter(prevState.projectFiles, file => file.base64 !== fileToRemove.base64);
-      const projectFilesToRemove = [...(prevState.projectFilesToRemove || []), fileToRemove];
-
-      return {
-        projectFiles,
-        projectFilesToRemove,
-        submitState: 'enabled'
-      };
-    });
+  handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
+    this.setState(({ projectFiles, projectFilesToRemove }) => ({
+      submitState: 'enabled',
+      projectFiles: projectFiles.filter(file => file.base64 !== projectFileToRemove.base64),
+      projectFilesToRemove: [
+        ...projectFilesToRemove,
+        projectFileToRemove
+      ],
+    }));
   }
 
   handleProjectImageOnAdd = (newProjectImage: UploadFile) => {
     this.setState((prevState) => {
-      const isDuplicate = some(prevState.projectImages, image => image.base64 === newProjectImage.base64);
-      const projectImages = (isDuplicate ? prevState.projectImages : [...(prevState.projectImages || []), newProjectImage]);
-      const submitState = (isDuplicate ? prevState.submitState : 'enabled');
+      const isDuplicate = prevState.projectImages.some(image => image.base64 === newProjectImage.base64);
 
       return {
-        projectImages,
-        submitState
+        submitState: (isDuplicate ? prevState.submitState : 'enabled'),
+        projectImages: (isDuplicate ? prevState.projectImages : [...prevState.projectImages, newProjectImage])
       };
     });
   }
 
-  // handleProjectImagesOnUpdate = (projectImages: UploadFile[]) => {
-  //   this.setState({ projectImages });
-  // }
-
-  handleProjectImageOnRemove = async (imageToRemove: UploadFile) => {
-    this.setState((prevState) => {
-      const projectImages = filter(prevState.projectImages, image => image.base64 !== imageToRemove.base64);
-      const projectImagesToRemove = [...(prevState.projectImagesToRemove || []), imageToRemove];
-
-      return {
-        projectImages,
-        projectImagesToRemove,
-        submitState: 'enabled'
-      };
-    });
+  handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
+    this.setState(({ projectImages, projectImagesToRemove }) => ({
+      submitState: 'enabled',
+      projectImages: projectImages.filter(image => image.base64 !== projectImageToRemove.base64),
+      projectImagesToRemove: [
+        ...projectImagesToRemove,
+        projectImageToRemove
+      ]
+    }));
   }
 
   handleAreaTypeChange = (value: 'all' | 'selection') => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       areaType: value,
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
-        area_ids: (value === 'all' ? [] : state.projectAttributesDiff.area_ids)
+        ...projectAttributesDiff,
+        area_ids: (value === 'all' ? [] : projectAttributesDiff.area_ids)
       }
     }));
   }
 
   handleAreaSelectionChange = (values: IOption[]) => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         area_ids: values.map((value) => (value.value))
       }
     }));
@@ -487,11 +468,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   handleStatusChange = (value: 'draft' | 'published' | 'archived') => {
-    this.setState((state) => ({
+    this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       publicationStatus: value,
       projectAttributesDiff: {
-        ...state.projectAttributesDiff,
+        ...projectAttributesDiff,
         publication_status: value
       }
     }));
@@ -520,70 +501,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     return !hasErrors;
   }
 
-  getProjectImagesToAddPromises = (projectId: string) => {
-    const { projectImages } = this.state;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (projectId && projectImages && projectImages.length > 0) {
-      filesToAddPromises = projectImages.filter((file) => {
-        return (isString(file.base64) && file.remote !== true);
-      }).map((file) => {
-        return addProjectImage(projectId, file.base64);
-      });
-    }
-
-    return filesToAddPromises;
-  }
-
-  getProjectImagesToRemoveImages = (projectId: string) => {
-    const { projectImagesToRemove } = this.state;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (projectId && projectImagesToRemove && projectImagesToRemove.length > 0) {
-      filesToRemovePromises = projectImagesToRemove.filter((file) => {
-        return (file.remote === true && isString(file['projectImageId']));
-      }).map((file) => {
-        return deleteProjectImage(projectId, file['projectImageId']);
-      });
-    }
-
-    return filesToRemovePromises;
-  }
-
-  getProjectFilesToAddPromises = (projectId: string) => {
-    const { projectFiles } = this.state;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (projectId && projectFiles && projectFiles.length > 0) {
-      filesToAddPromises = projectFiles.filter((file) => {
-        return (isString(file.base64) && file.remote !== true);
-      }).map((file) => {
-        return addProjectFile(projectId, file.base64, file.name);
-      });
-    }
-
-    return filesToAddPromises;
-  }
-
-  getProjectFilesToRemovePromises = (projectId: string) => {
-    const { projectFilesToRemove } = this.state;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (projectId && projectFilesToRemove && projectFilesToRemove.length > 0) {
-      filesToRemovePromises = projectFilesToRemove.filter((file) => {
-        return (file.remote === true && isString(file.id));
-      }).map((file) => {
-        return deleteProjectFile(projectId, file.id as string);
-      });
-    }
-
-    return filesToRemovePromises;
-  }
-
   save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
     if (this.validate()) {
       const { formatMessage } = this.props.intl;
-      const { project } = this.state;
+      const { project, projectImages, projectImagesToRemove, projectFiles, projectFilesToRemove } = this.state;
       const projectAttributesDiff: IUpdatedProjectProperties = {
         ...this.state.projectAttributesDiff,
         ...participationContextConfig
@@ -607,17 +528,34 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           }
         }
 
-        if (projectId) {
-          const imagesToAddPromises = this.getProjectImagesToAddPromises(projectId);
-          const imagesToRemovePromises = this.getProjectImagesToRemoveImages(projectId);
-          const filesToAddPromises = this.getProjectFilesToAddPromises(projectId);
-          const filesToRemovePromises = this.getProjectFilesToRemovePromises(projectId);
-          await Promise.all([
+        if (isString(projectId)) {
+          console.log('projectImages');
+          console.log(projectImages);
+          console.log('projectImagesToRemove');
+          console.log(projectImagesToRemove);
+          console.log('projectFiles');
+          console.log(projectFiles);
+          console.log('projectFilesToRemove');
+          console.log(projectFilesToRemove);
+
+          const imagesToAddPromises = projectImages.filter(file => !file.remote).map(file => addProjectImage(projectId as string, file.base64));
+          const imagesToRemovePromises = projectImagesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectImage(projectId as string, file.id as string));
+          const filesToAddPromises = projectFiles.filter(file => !file.remote).map(file => addProjectFile(projectId as string, file.base64, file.name));
+          const filesToRemovePromises = projectFilesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectFile(projectId as string, file.id as string));
+
+          console.log([
             ...imagesToAddPromises,
             ...imagesToRemovePromises,
             ...filesToAddPromises,
             ...filesToRemovePromises
           ]);
+
+          await Promise.all([
+            ...imagesToAddPromises,
+            ...imagesToRemovePromises,
+            ...filesToAddPromises,
+            ...filesToRemovePromises
+          ] as Promise<any>[]);
         }
 
         if (redirect) {
@@ -830,7 +768,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 maxNumberOfImages={1}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderOnAdd}
-                // onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
             </StyledSectionField>
@@ -847,7 +784,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 maxImageFileSize={5000000}
                 maxNumberOfImages={5}
                 onAdd={this.handleProjectImageOnAdd}
-                // onUpdate={this.handleProjectImagesOnUpdate}
                 onRemove={this.handleProjectImageOnRemove}
               />
             </StyledSectionField>
