@@ -214,12 +214,13 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 
         if (eventResponse) {
           const { id: eventId } = eventResponse.data;
-          const filesToAddPromises: Promise<any>[] = eventFiles.filter(file => !file.remote).map(file => addEventFile(eventId, file.base64, file.name));
-          const filesToRemovePromises: Promise<any>[] = eventFilesToRemove.filter(file => file.remote).map(file => deleteEventFile(eventId, file.id as string));
+          const filesToAddPromises = eventFiles.filter(file => !file.remote).map(file => addEventFile(eventId, file.base64, file.name));
+          const filesToRemovePromises = eventFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteEventFile(eventId, file.id as string));
+
           await Promise.all([
             ...filesToAddPromises,
             ...filesToRemovePromises
-          ]);
+          ] as Promise<any>[]);
         }
 
         this.setState({ saving: false, saved: true, errors: {}, submitState: 'success', eventFilesToRemove: [] });

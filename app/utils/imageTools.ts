@@ -46,7 +46,7 @@ function convertBlobToFile(blob: Blob, fileName: string) {
   return <File>b;
 }
 
-export async function convertUrlToUploadFile(url: string, isRemote = true, filename?: string, id?: string) {
+export async function convertUrlToUploadFile(url: string, id?: string, filename?: string) {
   const headers = new Headers();
   headers.append('cache-control', 'no-cache');
   headers.append('pragma', 'no-cache');
@@ -54,13 +54,13 @@ export async function convertUrlToUploadFile(url: string, isRemote = true, filen
   const urlFilename = url.substring(url.lastIndexOf('/') + 1);
   const uploadFile = convertBlobToFile(blob, (filename || urlFilename)) as UploadFile;
   const base64 = await getBase64FromFile(uploadFile);
-  uploadFile.filename = (filename || urlFilename);
   uploadFile.base64 = base64;
+  uploadFile.remote = true;
+  uploadFile.filename = (filename || urlFilename);
   uploadFile.id = (id || undefined);
-  uploadFile.remote = isRemote;
   return uploadFile;
 }
 
-export function convertUrlToUploadFileObservable(url: string, isRemote = true, filename?: string, id?: string) {
-  return from(convertUrlToUploadFile(url, isRemote, filename, id));
+export function convertUrlToUploadFileObservable(url: string, id?: string, filename?: string) {
+  return from(convertUrlToUploadFile(url, id, filename));
 }

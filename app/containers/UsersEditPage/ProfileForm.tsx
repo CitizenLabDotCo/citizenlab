@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
-import { isEqual, isEmpty, get } from 'lodash-es';
+import { isEqual, isEmpty } from 'lodash-es';
 
 // services
 import { IAreaData } from 'services/areas';
@@ -96,7 +96,7 @@ class ProfileForm extends PureComponent<Props, State> {
         customFieldsSchemaForUsersStream$
       ).pipe(
         switchMap(([user, locale, customFieldsSchema]) => {
-          const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
+          const avatarUrl = user.attributes.avatar.medium;
           const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl) : of(null));
 
           return avatar$.pipe(

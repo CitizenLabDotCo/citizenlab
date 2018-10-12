@@ -108,8 +108,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         currentTenant$
       ).pipe(
         switchMap(([locale, currentTenant]) => {
-          const logo$ = (currentTenant.data.attributes.logo.large ? convertUrlToUploadFileObservable(currentTenant.data.attributes.logo.large) : of(null));
-          const headerBg$ = (currentTenant.data.attributes.header_bg.large ? convertUrlToUploadFileObservable(currentTenant.data.attributes.header_bg.large) : of(null));
+          const logoUrl = currentTenant.data.attributes.logo.large;
+          const headerUrl = currentTenant.data.attributes.header_bg.large;
+          const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl) : of(null));
+          const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl) : of(null));
 
           return combineLatest(
             logo$,
