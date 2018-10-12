@@ -1,4 +1,6 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -6,6 +8,11 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
+import { updateUser } from 'services/users';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // style
 import styled from 'styled-components';
@@ -94,16 +101,18 @@ const ListItem = styled.button`
   }
 `;
 
-type Props = {
-  currentLocale: Locale;
-  localeOptions: Locale[];
-};
+interface DataProps {
+  tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends DataProps {}
 
 type State = {
   dropdownOpened: boolean;
 };
 
-export default class LanguageSelector extends React.PureComponent<Props, State> {
+class LanguageSelector extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -116,48 +125,72 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleLanguageSelect = (newLocale: Locale) => () => {
-    updateLocale(newLocale);
+  handleLanguageSelect = (locale: Locale) => () => {
+    const { authUser: user } = this.props;
+
+    if (!isNilOrError(user)) {
+      updateUser(user.id, { locale }).then((user) => {
+        updateLocale(user.data.attributes.locale);
+      });
+    }
+
     this.setState({ dropdownOpened: false });
   }
 
   render() {
     const { dropdownOpened } = this.state;
-    const { localeOptions, currentLocale } = this.props;
 
-    return (
-      <Container>
-        <OpenMenuButton onClick={this.toggleDropdown}>
-          {currentLocale.substr(0, 2).toUpperCase()}
-          <DropdownItemIcon name="dropdown" />
-        </OpenMenuButton>
+    if (!isNilOrError(this.props.tenant) && !isNilOrError(this.props.authUser)) {
+      const localeOptions = this.props.tenant.attributes.settings.core.locales;
+      const currentLocale = this.props.authUser.attributes.locale;
 
-        <Dropdown
-          width="180px"
-          top="36px"
-          right="-5px"
-          mobileRight="-5px"
-          opened={dropdownOpened}
-          onClickOutside={this.toggleDropdown}
-          content={(
-            <>
-              {localeOptions.map((locale, index) => {
-                const last = (index === localeOptions.length - 1);
+      return (
+        <Container>
+          <OpenMenuButton onClick={this.toggleDropdown}>
+            {currentLocale.substr(0, 2).toUpperCase()}
+            <DropdownItemIcon name="dropdown" />
+          </OpenMenuButton>
 
-                return (
-                  <ListItem
-                    key={locale}
-                    onClick={this.handleLanguageSelect(locale)}
-                    className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
-                  >
-                    <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
-                  </ListItem>
-                );
-              })}
-            </>
-          )}
-        />
-      </Container>
-    );
+          <Dropdown
+            width="180px"
+            top="36px"
+            right="-5px"
+            mobileRight="-5px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={(
+              <>
+                {localeOptions.map((locale, index) => {
+                  const last = (index === localeOptions.length - 1);
+
+                  return (
+                    <ListItem
+                      key={locale}
+                      onClick={this.handleLanguageSelect(locale)}
+                      className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                    >
+                      <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
+                    </ListItem>
+                  );
+                })}
+              </>
+            )}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps>({
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
+});
+
+export default () => (
+  <Data>
+    {dataProps => <LanguageSelector {...dataProps} />}
+  </Data>
+);
