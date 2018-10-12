@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { darken } from 'polished';
-import Icon from 'components/UI/Icon';
+import Icon, { IconNames } from 'components/UI/Icon';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -46,16 +46,18 @@ const Text = styled.div`
 interface Props {
   text?: string | JSX.Element;
   children?: string | JSX.Element;
+  icon?: IconNames;
 }
 
 export default class Warning extends PureComponent<Props> {
+
   render() {
     const className = this.props['className'];
-    const { text, children } = this.props;
+    const { text, children, icon } = this.props;
 
     return (
       <Container className={className}>
-        <StyledIcon name="info" />
+        <StyledIcon name={icon || 'info'} />
         <Text>
           {text || children}
         </Text>

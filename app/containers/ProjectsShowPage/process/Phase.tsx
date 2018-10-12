@@ -108,8 +108,10 @@ class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'survey' &&
             <Survey
+              projectId={phase.relationships.project.data.id}
               surveyEmbedUrl={phase.attributes.survey_embed_url}
               surveyService={phase.attributes.survey_service}
+              phase={phase}
             />
           }
         </StyledContentContainer>

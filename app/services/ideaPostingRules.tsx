@@ -16,7 +16,7 @@ interface PostingButtonStateArg {
   signedIn: boolean;
 }
 
-const disabledReason = (backendReason: PostingDisabledReasons, signedIn: boolean, futureEnabled: string | null) : DisabledReasons | null => {
+const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null) : DisabledReasons | null => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';
@@ -31,7 +31,7 @@ const disabledReason = (backendReason: PostingDisabledReasons, signedIn: boolean
 
 /** Should we show and/or disable the idea posting button in the given context. And with what message?
  * @param context
- *  project: The project context we are posting to. Mandatory.
+ *  project: The project context we are posting to.
  *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  signedIn: Whether the user is currently authenticated
  */
