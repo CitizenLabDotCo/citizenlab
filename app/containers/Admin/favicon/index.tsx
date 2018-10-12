@@ -134,7 +134,7 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="152px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
+                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder="Drop file here"
                 errorMessage={faviconError}
@@ -148,7 +148,7 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="32px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
+                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}
@@ -162,7 +162,7 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="16px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
+                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}

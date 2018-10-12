@@ -376,10 +376,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     }));
   }
 
-  handleHeaderOnUpdate = (updatedHeaders: UploadFile[]) => {
-    const headerBg = (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null);
-    this.setState({ headerBg });
-  }
+  // handleHeaderOnUpdate = (updatedHeaders: UploadFile[]) => {
+  //   const headerBg = (updatedHeaders && updatedHeaders.length > 0 ? updatedHeaders : null);
+  //   this.setState({ headerBg });
+  // }
 
   handleHeaderOnRemove = async () => {
     this.setState((state) => ({
@@ -419,22 +419,25 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   handleProjectImageOnAdd = (newProjectImage: UploadFile) => {
-    this.setState((state) => ({
-      submitState: 'enabled',
-      projectImages: [
-        ...(state.projectImages || []),
-        newProjectImage
-      ]
-    }));
+    this.setState((prevState) => {
+      const isDuplicate = some(prevState.projectImages, image => image.base64 === newProjectImage.base64);
+      const projectImages = (isDuplicate ? prevState.projectImages : [...(prevState.projectImages || []), newProjectImage]);
+      const submitState = (isDuplicate ? prevState.submitState : 'enabled');
+
+      return {
+        projectImages,
+        submitState
+      };
+    });
   }
 
-  handleProjectImagesOnUpdate = (projectImages: UploadFile[]) => {
-    this.setState({ projectImages });
-  }
+  // handleProjectImagesOnUpdate = (projectImages: UploadFile[]) => {
+  //   this.setState({ projectImages });
+  // }
 
   handleProjectImageOnRemove = async (imageToRemove: UploadFile) => {
     this.setState((prevState) => {
-      const projectImages = filter(prevState.projectImages, file => file.base64 !== imageToRemove.base64);
+      const projectImages = filter(prevState.projectImages, image => image.base64 !== imageToRemove.base64);
       const projectImagesToRemove = [...(prevState.projectImagesToRemove || []), imageToRemove];
 
       return {
@@ -620,7 +623,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         if (redirect) {
           clHistory.push('/admin/projects');
         } else {
-          this.setState({ saved: true, submitState: 'success' });
+          this.setState({ saved: true, submitState: 'success', projectFilesToRemove: [] });
           this.processing$.next(false);
         }
       } catch (errors) {
@@ -680,6 +683,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       }).map((id) => {
         return areasOptions.find(areaOption => areaOption.value === id) as IOption;
       });
+
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
@@ -826,7 +830,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 maxNumberOfImages={1}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleHeaderOnAdd}
-                onUpdate={this.handleHeaderOnUpdate}
+                // onUpdate={this.handleHeaderOnUpdate}
                 onRemove={this.handleHeaderOnRemove}
               />
             </StyledSectionField>
@@ -843,7 +847,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 maxImageFileSize={5000000}
                 maxNumberOfImages={5}
                 onAdd={this.handleProjectImageOnAdd}
-                onUpdate={this.handleProjectImagesOnUpdate}
+                // onUpdate={this.handleProjectImagesOnUpdate}
                 onRemove={this.handleProjectImageOnRemove}
               />
             </StyledSectionField>

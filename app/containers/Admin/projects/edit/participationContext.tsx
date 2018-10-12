@@ -9,7 +9,6 @@ import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
-import Select from 'components/UI/Select';
 import { Section, SectionField } from 'components/admin/Section';
 
 // services
@@ -26,9 +25,6 @@ import messages from '../messages';
 import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
 import { fontSizes } from 'utils/styleUtils';
-
-// typings
-import { IOption } from 'typings';
 
 const Container = styled.div``;
 

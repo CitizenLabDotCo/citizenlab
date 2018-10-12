@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of } from 'rxjs';
 import moment from 'moment';
 import { isEmpty } from 'lodash-es';
@@ -61,16 +61,16 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
-  localEventFiles: UploadFile[] | null;
-  isNewEvent: boolean;
+  eventFiles: UploadFile[];
+  eventFilesToRemove: UploadFile[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectEventEdit extends React.PureComponent<Props, State> {
+class AdminProjectEventEdit extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       currentTenant: null,
@@ -81,17 +81,17 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
       focusedInput: null,
       saved: false,
       loaded: false,
-      localEventFiles: null,
-      isNewEvent: true,
+      eventFiles: [],
+      eventFilesToRemove: [],
       submitState: 'disabled',
     };
     this.subscriptions = [];
   }
 
   componentDidMount() {
+    const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const { remoteEventFiles } = this.props;
     const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : of(null));
 
     this.subscriptions = [
@@ -100,18 +100,23 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
         currentTenant$,
         event$
       ).subscribe(([locale, currentTenant, event]) => {
-        this.setState({ locale, currentTenant, event, loaded: true, isNewEvent: event === null });
+        this.setState({
+          locale,
+          currentTenant,
+          event,
+          loaded: true
+        });
       })
     ];
 
-    this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
+    this.setState({ eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [] });
   }
 
   componentDidUpdate(prevProps: Props) {
     const { remoteEventFiles } = this.props;
 
     if (prevProps.remoteEventFiles !== remoteEventFiles) {
-      this.setState({ localEventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : null });
+      this.setState({ eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [] });
     }
   }
 
@@ -161,132 +166,78 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
   }
 
   handleEventFileOnAdd = (newFile: UploadFile) => {
-    this.setState((prevState) => {
-      // If we don't have localEventFiles, we assign an empty array
-      // A spread operator works on an empty array, but not on null
-      const oldlLocalEventFiles = !isNilOrError(prevState.localEventFiles) ? prevState.localEventFiles : [];
-
-      return {
-        submitState: 'enabled',
-        localEventFiles: [
-          ...oldlLocalEventFiles,
-          newFile
-        ]
-      };
-    });
+    this.setState((prevState) => ({
+      submitState: 'enabled',
+      eventFiles: [
+        ...prevState.eventFiles,
+        newFile
+      ]
+    }));
   }
 
-  handleEventFileOnRemove = (removedFile: UploadFile) => {
-    this.setState((prevState) => {
-      let localEventFiles: UploadFile[] | null = null;
-
-      if (Array.isArray(prevState.localEventFiles)) {
-        localEventFiles = prevState.localEventFiles.filter(eventFile => eventFile.filename !== removedFile.filename);
-      }
-
-      return {
-        localEventFiles,
-        submitState: 'enabled'
-      };
-    });
+  handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
+    this.setState((prevState) => ({
+      submitState: 'enabled',
+      eventFiles: prevState.eventFiles.filter(eventFile => eventFile.base64 !== eventFileToRemove.base64),
+      eventFilesToRemove: [
+        ...prevState.eventFilesToRemove,
+        eventFileToRemove
+      ]
+    }));
   }
 
-  getFilesToAddPromises = (eventId: string) => {
-    const { localEventFiles } = this.state;
-    const { remoteEventFiles } = this.props;
-    let filesToAdd = localEventFiles;
-    let filesToAddPromises: Promise<any>[] = [];
+  handleOnSubmit = async (e) => {
+    e.preventDefault();
 
-    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
-      // localEventFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remoteEventFiles = last saved state of files (remote)
+    if (!isNilOrError(this.props.project)) {
+      const projectId = this.props.project.id;
+      const { event, eventFiles, eventFilesToRemove } = this.state;
+      let eventResponse = event;
+      let redirect = false;
 
-      filesToAdd = localEventFiles.filter((localEventFile) => {
-        return !remoteEventFiles.some(remoteEventFile => remoteEventFile.filename === localEventFile.filename);
-      });
-    }
+      try {
+        this.setState({ saving: true, saved: false });
 
-    if (eventId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addEventFile(eventId as string, fileToAdd.base64, fileToAdd.name));
-    }
-
-    return filesToAddPromises;
-  }
-
-  getFilesToRemovePromises = (eventId: string) => {
-    const { localEventFiles } = this.state;
-    const { remoteEventFiles } = this.props;
-    let filesToRemove = remoteEventFiles;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (!isNilOrError(localEventFiles) && Array.isArray(remoteEventFiles)) {
-      // localEventFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remoteEventFiles = last saved state of files (remote)
-
-      filesToRemove = remoteEventFiles.filter((remoteEventFile) => {
-        return !localEventFiles.some(localEventFile => localEventFile.filename === remoteEventFile.filename);
-      });
-    }
-
-    if (eventId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteEventFile(eventId as string, fileToRemove.id));
-    }
-
-    return filesToRemovePromises;
-  }
-
-  handleOnSubmit = async (event) => {
-    event.preventDefault();
-    const projectId = !isNilOrError(this.props.project) ? this.props.project.id : null;
-    const { event: projectEvent } = this.state;
-    let eventResponse = projectEvent;
-    let redirect = false;
-
-    try {
-      this.setState({ saving: true, saved: false });
-
-      // non-file input fields have changed
-      if (!isEmpty(this.state.attributeDiff)) {
-        // event already exists (in the state)
-        if (projectEvent) {
-          eventResponse = await updateEvent(projectEvent.data.id, this.state.attributeDiff);
-          this.setState({ event: eventResponse, attributeDiff: {} });
-        } else if (projectId) {
-          // event doesn't exist, create with project id
-          eventResponse =  await addEvent(projectId, this.state.attributeDiff);
-          this.setState({ event: eventResponse, attributeDiff: {} });
-          redirect = true;
+        // non-file input fields have changed
+        if (!isEmpty(this.state.attributeDiff)) {
+          // event already exists (in the state)
+          if (event) {
+            eventResponse = await updateEvent(event.data.id, this.state.attributeDiff);
+            this.setState({ event: eventResponse, attributeDiff: {} });
+          } else if (projectId) {
+            // event doesn't exist, create with project id
+            eventResponse =  await addEvent(projectId, this.state.attributeDiff);
+            this.setState({ event: eventResponse, attributeDiff: {} });
+            redirect = true;
+          }
         }
-      }
 
-      if (eventResponse) {
-        const { id: eventId } = eventResponse.data;
-        const filesToAddPromises: Promise<any>[] = this.getFilesToAddPromises(eventId);
-        const filesToRemovePromises: Promise<any>[] = this.getFilesToRemovePromises(eventId);
-        await Promise.all([
-          ...filesToAddPromises,
-          ...filesToRemovePromises
-        ]);
-      }
+        if (eventResponse) {
+          const { id: eventId } = eventResponse.data;
+          const filesToAddPromises: Promise<any>[] = eventFiles.filter(file => !file.remote).map(file => addEventFile(eventId, file.base64, file.name));
+          const filesToRemovePromises: Promise<any>[] = eventFilesToRemove.filter(file => file.remote).map(file => deleteEventFile(eventId, file.id as string));
+          await Promise.all([
+            ...filesToAddPromises,
+            ...filesToRemovePromises
+          ]);
+        }
 
-      this.setState({ saving: false, saved: true, errors: {}, submitState: 'success' });
-      if (redirect && projectId) {
-        clHistory.push(`/admin/projects/${projectId}/events/`);
-      }
+        this.setState({ saving: false, saved: true, errors: {}, submitState: 'success', eventFilesToRemove: [] });
 
-    } catch (errors) {
-      this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+        if (redirect && projectId) {
+          clHistory.push(`/admin/projects/${projectId}/events/`);
+        }
+      } catch (errors) {
+        this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+      }
     }
-
   }
 
   render() {
     const { locale, currentTenant, loaded, submitState } = this.state;
 
     if (locale && currentTenant && loaded) {
-      const { errors, event, attributeDiff, saving, localEventFiles } = this.state;
+      const { errors, event, attributeDiff, saving, eventFiles } = this.state;
       const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
 
       return (
@@ -347,7 +298,7 @@ class AdminProjectEventEdit extends React.PureComponent<Props, State> {
                 <FileUploader
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
-                  files={localEventFiles}
+                  files={eventFiles}
                   errors={errors}
                 />
               </SectionField>

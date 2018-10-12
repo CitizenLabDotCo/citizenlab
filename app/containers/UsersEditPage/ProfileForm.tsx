@@ -222,12 +222,12 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched('avatar');
     };
 
-    const handleAvatarOnUpdate = (updatedAvatar: UploadFile[]) => {
-      const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
-      this.setState({ avatar });
-      setFieldValue('avatar', updatedAvatar[0].base64);
-      setFieldTouched('avatar');
-    };
+    // const handleAvatarOnUpdate = (updatedAvatar: UploadFile[]) => {
+    //   const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
+    //   this.setState({ avatar });
+    //   setFieldValue('avatar', updatedAvatar[0].base64);
+    //   setFieldTouched('avatar');
+    // };
 
     const handleAvatarOnRemove = async () => {
       this.setState(() => ({ avatar: null }));
@@ -256,7 +256,7 @@ class ProfileForm extends PureComponent<Props, State> {
                 maxImageFileSize={5000000}
                 maxNumberOfImages={1}
                 onAdd={handleAvatarOnAdd}
-                onUpdate={handleAvatarOnUpdate}
+                // onUpdate={handleAvatarOnUpdate}
                 onRemove={handleAvatarOnRemove}
                 imageRadius="50%"
               />

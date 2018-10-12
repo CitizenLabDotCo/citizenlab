@@ -1,7 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 import { isString, isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
