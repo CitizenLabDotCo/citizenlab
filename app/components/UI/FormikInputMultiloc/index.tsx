@@ -5,6 +5,7 @@ import { FieldProps } from 'formik';
 class FormikInputMultiloc extends PureComponent<FieldProps & VanillaInputMultilocProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
+    this.props.form.setStatus('enabled');
   }
 
   handleOnBlur = () => {

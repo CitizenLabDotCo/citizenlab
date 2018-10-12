@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
@@ -16,7 +16,7 @@ import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 
 // utils
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 
@@ -30,7 +30,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { CLError, ImageFile, Locale, Multiloc } from 'typings';
+import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
 `;
@@ -45,8 +45,8 @@ const StyledSectionField = styled(SectionField)`
 
 interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
-  logo?: ImageFile | undefined;
-  header_bg?: ImageFile | undefined;
+  logo?: UploadFile | undefined;
+  header_bg?: UploadFile | undefined;
 }
 
 type Props  = {
@@ -57,8 +57,8 @@ type State  = {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
-  logo: ImageFile[] | null;
-  header_bg: ImageFile[] | null;
+  logo: UploadFile[] | null;
+  header_bg: UploadFile[] | null;
   colorPickerOpened: boolean;
   loading: boolean;
   errors: { [fieldName: string]: CLError[] };
@@ -106,20 +106,27 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       combineLatest(
         locale$,
         currentTenant$
-      ).pipe(switchMap(([locale, currentTenant]) => {
-        return combineLatest(
-          convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
-          convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
-        ).pipe(map(([currentTenantLogo, currentTenantHeaderBg]) => ({
-          locale,
-          currentTenant,
-          currentTenantLogo,
-          currentTenantHeaderBg,
-        })));
-      })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+      ).pipe(
+        switchMap(([locale, currentTenant]) => {
+          const logo$ = (currentTenant.data.attributes.logo.large ? convertUrlToUploadFileObservable(currentTenant.data.attributes.logo.large) : of(null));
+          const headerBg$ = (currentTenant.data.attributes.header_bg.large ? convertUrlToUploadFileObservable(currentTenant.data.attributes.header_bg.large) : of(null));
+
+          return combineLatest(
+            logo$,
+            headerBg$,
+          ).pipe(
+            map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+              locale,
+              currentTenant,
+              currentTenantLogo,
+              currentTenantHeaderBg,
+            }))
+          );
+        })
+      ).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
-        let logo: ImageFile[] | null = null;
-        let header_bg: ImageFile[] | null = null;
+        let logo: UploadFile[] | null = null;
+        let header_bg: UploadFile[] | null = null;
 
         if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
           logo = [currentTenantLogo];
@@ -142,7 +149,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
     this.setState((state) => ({
       ...state,
       [name]: [newImage],
@@ -153,7 +160,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     }));
   }
 
-  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
+  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: UploadFile[]) => {
     this.setState((state) => ({
       ...state,
       [name]: updatedImages

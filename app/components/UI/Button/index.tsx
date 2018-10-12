@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
-import { color, invisibleA11yText } from 'utils/styleUtils';
+import { color, colors, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
-import Icon, { Props as IconProps } from 'components/UI/Icon';
+import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
@@ -208,6 +208,12 @@ const Container: any = styled.div`
     &.cl-blue {
       ${(props: any) => buttonTheme(props, color('clBlueDark'), 'white')}
     }
+    &.admin-dark {
+      ${(props: any) => buttonTheme(props, colors.adminTextColor, 'white')}
+    }
+    &.delete {
+      ${(props: any) => buttonTheme(props, colors.clRedError, 'white')}
+    }
   }
 `;
 
@@ -226,7 +232,7 @@ const HiddenText = styled.span`
   ${invisibleA11yText()}
 `;
 
-export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue';
+export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark' | 'delete';
 
 type Props = {
   children?: any;
@@ -241,11 +247,12 @@ type Props = {
   iconPos?: 'left' | 'right';
   iconSize?: string;
   iconTitle?: IconProps['title'];
+  iconTheme?: clColorTheme;
   id?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
   openInNewTab?: boolean;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
   padding?: string;
   processing?: boolean;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
@@ -261,13 +268,14 @@ type Props = {
   borderThickness?: string;
   theme?: object | undefined;
   width?: string;
+  type?: string;
 };
 
 type State = {};
 
-class Button extends React.PureComponent<Props, State> {
+class Button extends PureComponent<Props, State> {
 
-  handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+  handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
       event.preventDefault();
       this.props.onClick(event);
@@ -302,7 +310,7 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, width, height, padding, justify, icon, iconSize, iconTitle, hiddenText, children, linkTo, openInNewTab } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -322,10 +330,10 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} />}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
@@ -363,7 +371,7 @@ class Button extends React.PureComponent<Props, State> {
             <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
           )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form}>{childContent}</StyledButton>
+          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
         )}
       </Container>
     );

@@ -17,6 +17,8 @@ module.exports = {
     newIdeaPage
     .navigate()
     .postIdea(title, 'Lorem ipsum dolor sit amet')
+    .waitForElementVisible('#e2e-modal-container')
+    .click('.e2e-modal-close-button')
     .waitForElementVisible('#e2e-ideas-list');
 
     browser

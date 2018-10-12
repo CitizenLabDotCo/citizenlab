@@ -30,7 +30,7 @@ const ListHeader = styled.div`
   margin-bottom: 25px;
 
   &.marginTop {
-    margin-top: 80px;
+    margin-top: 70px;
   }
 `;
 
@@ -80,88 +80,184 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  activeProjects: IProjectData[] | null | undefined;
-  archivedProjects: IProjectData[] | null | undefined;
+  draftProjects: IProjectData[] | null;
+  publishedProjects: IProjectData[] | null;
+  archivedProjects: IProjectData[] | null;
 }
 
 class AdminProjectsList extends PureComponent<Props, State> {
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      activeProjects: undefined,
-      archivedProjects: undefined
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    return {
-      activeProjects: !isNilOrError(nextProps.projects.projectsList) ? nextProps.projects.projectsList.filter(project => project.attributes.publication_status !== 'archived') : null,
-      archivedProjects: !isNilOrError(nextProps.projects.projectsList) ? nextProps.projects.projectsList.filter(project => project.attributes.publication_status === 'archived') : null
-    };
-  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
   }
 
-  renderRow = (project : IProjectData) => {
-    return (
-      <RowContent>
-        <RowContentInner className="expand primary">
-          <RowTitle value={project.attributes.title_multiloc} />
-          {project.attributes.visible_to === 'groups' &&
-            <GetProjectGroups projectId={project.id}>
-              {(projectGroups) => {
-                if (!isNilOrError(projectGroups)) {
-                  return (
-                    <StyledStatusLabel
-                      text={projectGroups.length > 0 ? (
-                        <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
-                      ) : (
-                        <FormattedMessage {...messages.onlyAdminsCanView} />
-                      )}
-                      color="clBlue"
-                      icon="lock"
-                    />
-                  );
-                }
-
-                return null;
-              }}
-            </GetProjectGroups>
-          }
-
-          {project.attributes.visible_to === 'admins' &&
-            <StyledStatusLabel
-              text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-              color="clBlue"
-              icon="lock"
-            />
-          }
-
-          {project.attributes.publication_status === 'draft' &&
-            <StyledStatusLabel
-              text={<FormattedMessage {...messages.draft} />}
-              color="draftYellow"
-            />
-          }
-        </RowContentInner>
-        <StyledButton
-          className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
-          linkTo={`/admin/projects/${project.id}/edit`}
-          style="secondary"
-          circularCorners={false}
-          icon="edit"
-        >
-          <FormattedMessage {...messages.editButtonLabel} />
-        </StyledButton>
-      </RowContent>
-    );
-  }
-
   render () {
-    const { activeProjects, archivedProjects } = this.state;
+    const { projects } = this.props;
+    let lists: JSX.Element | null = null;
+
+    if (projects && !isNilOrError(projects.projectsList)) {
+      const { projectsList } = projects;
+      const draftProjects = projectsList.filter((project) => {
+        return project.attributes.publication_status === 'draft';
+      });
+      const publishedProjects = projectsList.filter((project) => {
+        return project.attributes.publication_status === 'published';
+      });
+      const archivedProjects = projectsList.filter((project) => {
+        return project.attributes.publication_status === 'archived';
+      });
+
+      const row = (project : IProjectData) => {
+        return (
+          <RowContent>
+            <RowContentInner className="expand primary">
+              <RowTitle value={project.attributes.title_multiloc} />
+              {project.attributes.visible_to === 'groups' &&
+                <GetProjectGroups projectId={project.id}>
+                  {(projectGroups) => {
+                    if (!isNilOrError(projectGroups)) {
+                      return (
+                        <StyledStatusLabel
+                          text={projectGroups.length > 0 ? (
+                            <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
+                          ) : (
+                            <FormattedMessage {...messages.onlyAdminsCanView} />
+                          )}
+                          color="clBlue"
+                          icon="lock"
+                        />
+                      );
+                    }
+
+                    return null;
+                  }}
+                </GetProjectGroups>
+              }
+
+              {project.attributes.visible_to === 'admins' &&
+                <StyledStatusLabel
+                  text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+                  color="clBlue"
+                  icon="lock"
+                />
+              }
+            </RowContentInner>
+            <StyledButton
+              className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              linkTo={`/admin/projects/${project.id}/edit`}
+              style="secondary"
+              circularCorners={false}
+              icon="edit"
+            >
+              <FormattedMessage {...messages.editButtonLabel} />
+            </StyledButton>
+          </RowContent>
+        );
+      };
+
+      lists = (
+        <>
+          {draftProjects && draftProjects.length > 0 &&
+            <>
+              <ListHeader className="marginTop">
+                <ListHeaderTitle>
+                  <FormattedMessage {...messages.draft} />
+                </ListHeaderTitle>
+              </ListHeader>
+              <HasPermission item="projects" action="reorder">
+                <SortableList
+                  items={draftProjects}
+                  onReorder={this.handleReorder}
+                  className="e2e-admin-projects-list"
+                >
+                  {({ itemsList, handleDragRow, handleDropRow }) => (
+                    itemsList.map((project: IProjectData, index: number) => (
+                      <SortableRow
+                        key={project.id}
+                        id={project.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={(index === draftProjects.length - 1)}
+                      >
+                        {row(project)}
+                      </SortableRow>
+                    ))
+                  )}
+                </SortableList>
+                <HasPermission.No>
+                  <List>
+                    {draftProjects.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
+                        {row(project)}
+                      </Row>
+                    ))}
+                  </List>
+                </HasPermission.No>
+              </HasPermission>
+            </>
+          }
+
+          {publishedProjects && publishedProjects.length > 0 &&
+            <>
+              <ListHeader className="marginTop">
+                <ListHeaderTitle>
+                  <FormattedMessage {...messages.published} />
+                </ListHeaderTitle>
+              </ListHeader>
+              <HasPermission item="projects" action="reorder">
+                <SortableList
+                  items={publishedProjects}
+                  onReorder={this.handleReorder}
+                  className="e2e-admin-projects-list"
+                >
+                  {({ itemsList, handleDragRow, handleDropRow }) => (
+                    itemsList.map((project: IProjectData, index: number) => (
+                      <SortableRow
+                        key={project.id}
+                        id={project.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={(index === publishedProjects.length - 1)}
+                      >
+                        {row(project)}
+                      </SortableRow>
+                    ))
+                  )}
+                </SortableList>
+                <HasPermission.No>
+                  <List>
+                    {publishedProjects.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
+                        {row(project)}
+                      </Row>
+                    ))}
+                  </List>
+                </HasPermission.No>
+              </HasPermission>
+            </>
+          }
+
+          {archivedProjects && archivedProjects.length > 0 &&
+            <>
+              <ListHeader className="marginTop">
+                <ListHeaderTitle>
+                  <FormattedMessage {...messages.archived} />
+                </ListHeaderTitle>
+              </ListHeader>
+              <List>
+                {archivedProjects.map((project, index) => (
+                  <Row key={project.id} lastItem={(index === archivedProjects.length - 1)}>
+                    {row(project)}
+                  </Row>
+                ))}
+              </List>
+            </>
+          }
+        </>
+      );
+    }
 
     return (
       <>
@@ -172,56 +268,12 @@ class AdminProjectsList extends PureComponent<Props, State> {
         <PageWrapper>
           <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
             <ListHeader>
-              <ListHeaderTitle><FormattedMessage {...messages.activeProjects} /></ListHeaderTitle>
               <Button className="e2e-admin-add-project" linkTo="/admin/projects/new" style="cl-blue" circularCorners={false} icon="plus-circle">
                 <FormattedMessage {...messages.addNewProject} />
               </Button>
             </ListHeader>
           </HasPermission>
-          {activeProjects && activeProjects.length > 0 &&
-            <HasPermission item="projects" action="reorder">
-              <SortableList items={activeProjects} onReorder={this.handleReorder} className="e2e-admin-projects-list">
-                {({ itemsList, handleDragRow, handleDropRow }) => (
-                  itemsList.map((project: IProjectData, index: number) => (
-                    <SortableRow
-                      key={project.id}
-                      id={project.id}
-                      index={index}
-                      moveRow={handleDragRow}
-                      dropRow={handleDropRow}
-                      lastItem={(index === activeProjects.length - 1)}
-                    >
-                      {this.renderRow(project)}
-                    </SortableRow>
-                  ))
-                )}
-              </SortableList>
-              <HasPermission.No>
-                <List>
-                  {activeProjects.map((project, index) => (
-                    <Row key={project.id} lastItem={(index === activeProjects.length - 1)}>
-                      {this.renderRow(project)}
-                    </Row>
-                  ))}
-                </List>
-              </HasPermission.No>
-            </HasPermission>
-          }
-
-          {archivedProjects && archivedProjects.length > 0 &&
-            <>
-              <ListHeader className="marginTop">
-                <ListHeaderTitle><FormattedMessage {...messages.archivedProjects} /></ListHeaderTitle>
-              </ListHeader>
-              <List>
-                {archivedProjects.map((project, index) => (
-                  <Row key={project.id} lastItem={(index === archivedProjects.length - 1)}>
-                    {this.renderRow(project)}
-                  </Row>
-                ))}
-              </List>
-            </>
-          }
+          {lists}
         </PageWrapper>
       </>
     );

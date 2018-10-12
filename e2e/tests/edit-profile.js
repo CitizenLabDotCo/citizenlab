@@ -26,7 +26,6 @@ module.exports = {
     .clearValue('#lastName')
     .pause(200)
     .setValue('#lastName', newLastName)
-    .execute('var submitChange = document.getElementsByClassName("e2e-submit-wrapper-button");submitChange[0].scrollIntoView(true);')
     .click('.e2e-submit-wrapper-button button')
     .waitForElementVisible('.success')
     .url(`http://${process.env.ROOT_URL}/profile/edit`)

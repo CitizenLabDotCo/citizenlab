@@ -8,9 +8,11 @@ import ContentContainer from 'components/ContentContainer';
 import Survey from './survey';
 import ExpensesBox from '../pb/ExpensesBox';
 import IdeaCards from 'components/IdeaCards';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -68,6 +70,7 @@ interface InputProps {
 
 interface DataProps {
   phase: GetPhaseChildProps;
+  phaseFiles: GetResourceFilesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -77,7 +80,7 @@ interface State {}
 class Phase extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
-    const { phase } = this.props;
+    const { phase, phaseFiles } = this.props;
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
@@ -94,6 +97,10 @@ class Phase extends React.PureComponent<Props, State> {
                 <T value={phase.attributes.description_multiloc} supportHtml={true} />
               </InformationBody>
             </Information>
+          }
+
+          {!isNilOrError(phaseFiles) &&
+            <FileAttachments files={phaseFiles} />
           }
 
           {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
@@ -127,7 +134,8 @@ class Phase extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
 });
 
 export default (inputProps: InputProps) => (

@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isString, isEmpty, get } from 'lodash-es';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -19,6 +20,7 @@ import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { topicByIdStream, ITopic } from 'services/topics';
 import { hasPermission } from 'services/permissions';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -27,15 +29,18 @@ import { getLocalized } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, ImageFile, Multiloc, Locale } from 'typings';
+import { IOption, UploadFile, Multiloc, Locale } from 'typings';
 
 // style
 import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+
+// resource components
+import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const Container = styled.div`
   background: #f9f9fa;
@@ -82,6 +87,7 @@ interface Props {
   params: {
     ideaId: string;
   };
+  remoteIdeaFiles: GetResourceFileObjectsChildProps;
 }
 
 interface State {
@@ -93,14 +99,14 @@ interface State {
   selectedTopics: IOption[] | null;
   budget: number | null;
   location: string;
-  imageFile: ImageFile[] | null;
+  imageFile: UploadFile[] | null;
   imageId: string | null;
   submitError: boolean;
   loaded: boolean;
   processing: boolean;
 }
 
-export default class IdeaEditPage extends PureComponent<Props, State> {
+class IdeaEditPage extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -139,12 +145,12 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-
         const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
           first(),
           switchMap((ideaImage) => {
-            if (ideaImage && ideaImage.data) {
-              const ideaImageFile$ = convertUrlToFileObservable(ideaImage.data.attributes.versions.large);
+            if (ideaImage && ideaImage.data && ideaImage.data.attributes.versions.large) {
+              const ideaImageFile$ = convertUrlToUploadFileObservable(ideaImage.data.attributes.versions.large);
+
               return ideaImageFile$.pipe(
                 map((ideaImageFile) => ({
                   file: ideaImageFile,
@@ -224,17 +230,64 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
     eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
   }
 
+  getFilesToAddPromises = (localIdeaFiles: UploadFile[]) => {
+    const { remoteIdeaFiles } = this.props;
+    const ideaId = this.props.params.ideaId;
+    let filesToAdd = localIdeaFiles;
+    let filesToAddPromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localIdeaFiles) && Array.isArray(remoteIdeaFiles)) {
+      // localIdeaFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteIdeaFiles = last saved state of files (remote)
+
+      filesToAdd = localIdeaFiles.filter((localIdeaFile) => {
+        return !remoteIdeaFiles.some(remoteIdeaFile => remoteIdeaFile.filename === localIdeaFile.filename);
+      });
+    }
+
+    if (ideaId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addIdeaFile(ideaId as string, fileToAdd.base64, fileToAdd.name));
+    }
+
+    return filesToAddPromises;
+  }
+
+  getFilesToRemovePromises = (localIdeaFiles: UploadFile[]) => {
+    const { remoteIdeaFiles } = this.props;
+    const ideaId = this.props.params.ideaId;
+    let filesToRemove = remoteIdeaFiles;
+    let filesToRemovePromises: Promise<any>[] = [];
+
+    if (!isNilOrError(localIdeaFiles) && Array.isArray(remoteIdeaFiles)) {
+      // localIdeaFiles = local state of files
+      // This means those previously uploaded + files that have been added/removed
+      // remoteIdeaFiles = last saved state of files (remote)
+
+      filesToRemove = remoteIdeaFiles.filter((remoteIdeaFile) => {
+        return !localIdeaFiles.some(localIdeaFile => localIdeaFile.filename === remoteIdeaFile.filename);
+      });
+    }
+
+    if (ideaId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteIdeaFile(ideaId as string, fileToRemove.id));
+    }
+
+    return filesToRemovePromises;
+  }
+
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
     const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, position, budget } = ideaFormOutput;
+    const { title, description, selectedTopics, position, budget, localIdeaFiles } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
     const oldBase64Image = get(this.state, 'imageFile[0].base64');
     const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
-
+    const filesToAddPromises: Promise<any>[] = !isNilOrError(localIdeaFiles) ? this.getFilesToAddPromises(localIdeaFiles) : [];
+    const filesToRemovePromises: Promise<any>[] = !isNilOrError(localIdeaFiles) ? this.getFilesToRemovePromises(localIdeaFiles) : [];
     this.setState({ processing: true, submitError: false });
 
     try {
@@ -263,6 +316,11 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
         location_description: locationDescription
       });
 
+      await Promise.all([
+        ...filesToAddPromises,
+        ...filesToRemovePromises
+      ]);
+
       clHistory.push(`/ideas/${ideaSlug}`);
     } catch {
       this.setState({ processing: false, submitError: true });
@@ -271,7 +329,19 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
 
   render() {
     if (this.state && this.state.loaded) {
-      const { locale, titleMultiloc, descriptionMultiloc, selectedTopics, location, imageFile, budget, submitError, processing, projectId } = this.state;
+      const { remoteIdeaFiles } = this.props;
+      const {
+        locale,
+        projectId,
+        titleMultiloc,
+        descriptionMultiloc,
+        selectedTopics,
+        location,
+        imageFile,
+        submitError,
+        processing,
+        budget
+      } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
@@ -292,6 +362,7 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
               position={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
+              remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
             />
 
             <ButtonWrapper>
@@ -313,3 +384,9 @@ export default class IdeaEditPage extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default ((props: Props) => (
+  <GetResourceFileObjects resourceId={props.params.ideaId} resourceType="idea">
+    {remoteIdeaFiles => <IdeaEditPage {...props} remoteIdeaFiles={remoteIdeaFiles} />}
+  </GetResourceFileObjects>
+));

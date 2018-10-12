@@ -7,7 +7,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 interface Props {
   name?: string;
-  children: (showFeature: boolean) => JSX.Element;
+  children?: (showFeature: boolean) => JSX.Element | null;
 }
 
 interface State {
@@ -44,6 +44,6 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
       get(tenantSettings, `${name}.enabled`) === true
     ));
 
-    return children(showFeature);
+    return children ? children(showFeature) : null;
   }
 }

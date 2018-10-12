@@ -23,7 +23,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: 'cheap-module-eval-source-map',
+  devtool: isDev ? 'cheap-module-eval-source-map' : false,
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
