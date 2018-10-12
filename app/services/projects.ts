@@ -11,7 +11,7 @@ type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
-
+export type SurveyDisabledReasons = 'project_inactive' | 'not_permitted' | 'not_survey';
 export interface IProjectData {
   id: string;
   type: 'projects';
@@ -51,7 +51,11 @@ export interface IProjectData {
         posting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: PostingDisabledReasons,
+          disabled_reason: PostingDisabledReasons | null,
+        }
+        taking_survey: {
+          enabled: boolean;
+          disabled_reason: SurveyDisabledReasons | null;
         }
       }
     }
