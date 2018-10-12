@@ -93,4 +93,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTaken',
     defaultMessage: 'No permissions to configure, since the user can\'t do anything here',
   },
+  engagementWarning: {
+    id: 'app.containers.AdminPage.groups.permissions.engagementWarning',
+    defaultMessage: 'Apply these restrictions carefully, as higher barriers lead to lower engagement.',
+  },
 });

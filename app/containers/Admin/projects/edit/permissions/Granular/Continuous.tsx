@@ -25,7 +25,7 @@ interface DataProps {
 }
 interface Props extends InputProps, DataProps {}
 
-class ContinuousGranularPermissions extends PureComponent<Props> {
+class Continuous extends PureComponent<Props> {
 
   handlePermissionChange = (permission: IPermissionData, permittedBy: IPermissionData['attributes']['permitted_by'], groupIds: string[]) => {
     updateProjectPermission(
@@ -54,6 +54,6 @@ class ContinuousGranularPermissions extends PureComponent<Props> {
 
 export default (inputProps) => (
   <GetProjectPermissions projectId={inputProps.project.id}>
-    {(permissions) => <ContinuousGranularPermissions {...inputProps} permissions={permissions} />}
+    {(permissions) => <Continuous {...inputProps} permissions={permissions} />}
   </GetProjectPermissions>
 );
