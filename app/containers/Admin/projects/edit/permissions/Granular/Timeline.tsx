@@ -37,7 +37,7 @@ interface State {
   openedPhase: string | null;
 }
 
-class TimelineGranularPermissions extends PureComponent<Props, State> {
+class Timeline extends PureComponent<Props, State> {
 
   constructor(props) {
     super(props);
@@ -93,6 +93,6 @@ class TimelineGranularPermissions extends PureComponent<Props, State> {
 
 export default (inputProps) => (
   <GetPhases projectId={inputProps.projectId}>
-    {(phases) => <TimelineGranularPermissions {...inputProps} phases={phases} />}
+    {(phases) => <Timeline {...inputProps} phases={phases} />}
   </GetPhases>
 );
