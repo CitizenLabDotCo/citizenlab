@@ -1,14 +1,16 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 
 // services
-import { PostingDisabledReasons } from 'services/projects';
-import { postingButtonState } from 'services/ideaPostingRules';
+import { postingButtonState, DisabledReasons } from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import Button, { ButtonStyles } from 'components/UI/Button';
 import Tooltip from 'components/UI/Tooltip';
+import Icon from 'components/UI/Icon';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -17,9 +19,29 @@ import messages from './messages';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// styling
+import { fontSizes, colors } from 'utils/styleUtils';
+
+const StyledIcon = styled(Icon)`
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
+`;
+
+const TooltipWrapper = styled.div`
+  padding: 15px;
+  min-width: 300px;
+  color: ${colors.popoverDarkFg};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+`;
+
 interface DataProps {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface InputProps {
@@ -30,23 +52,27 @@ interface InputProps {
   padding?: string;
 }
 
-interface Props extends InputProps, DataProps {};
+interface Props extends InputProps, DataProps {}
 
 class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
 
-  disabledMessages: { [key in PostingDisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
-    project_inactive: messages.postingHereImpossible,
-    not_ideation: messages.postingHereImpossible,
-    posting_disabled: messages.postingHereImpossible,
-    not_permitted: messages.postingNotPermitted,
+  disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
+    notPermitted: messages.postingNotPermitted,
+    maybeNotPermitted: messages.postingMaybeNotPermitted,
+    postingDisabled: messages.postingHereImpossible,
+    projectInactive: messages.postingProjectInactive,
+    notActivePhase: messages.postingNotActivePhase,
+    futureEnabled: messages.postingHereImpossible,
   };
 
   render() {
-    const { project, phase } = this.props;
+    const { project, phase, authUser } = this.props;
 
-    if (isNilOrError(project)) return null;
-
-    const { show, enabled, disabledReason } = postingButtonState({ project, phaseContext: phase });
+    const { show, enabled, disabledReason } = postingButtonState({
+      project: isNilOrError(project) ? null : project,
+      phaseContext: phase,
+      signedIn: !isNilOrError(authUser)
+    });
 
     if (show) {
       let { style, size } = this.props;
@@ -59,12 +85,23 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
       return (
         <Tooltip
           enabled={!enabled && !!disabledReason}
-          content={disabledReason ? <FormattedMessage {...this.disabledMessages[disabledReason]} /> : <></>}
-          top="55px"
+          content={disabledReason ?
+            <TooltipWrapper>
+              <StyledIcon name="lock-outlined" />
+              <FormattedMessage
+                {...this.disabledMessages[disabledReason]}
+              />
+            </TooltipWrapper>
+          :
+            null
+          }
+          backgroundColor={colors.popoverDarkBg}
+          borderColor={colors.popoverDarkBg}
+          top="57px"
         >
           <Button
             className={this.props['className']}
-            linkTo={(project ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
+            linkTo={(isNilOrError(project) ? '/ideas/new' : `/projects/${project.attributes.slug}/ideas/new`)}
             style={style}
             size={size}
             padding={padding}
@@ -85,10 +122,11 @@ const IdeaButtonWithHOCs = injectIntl<Props>(IdeaButton);
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => <IdeaButtonWithHOCs {...inputProps} {...dataProps} />}
   </Data>
-)
+);

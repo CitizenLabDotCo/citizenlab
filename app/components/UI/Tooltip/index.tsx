@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { omit } from 'lodash-es';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
 import { Omit } from 'typings';
 
-const ContentWrapper = styled.div`
-  padding: 15px;
-`;
-interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'> {
-  /** whether the tooltip should work at all */
+interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'|'content'> {
+  /** whether the tooltip should be active at all. NOT it's opened state */
   enabled: boolean;
+  content: PopoverProps['content'] | null;
 }
 
 interface State {
@@ -39,23 +36,34 @@ export default class Tooltip extends PureComponent<Props, State> {
       this.setState({ opened: false });
     }
 
+    handleOnClick = () => {
+      this.setState({ opened: !this.state.opened });
+    }
+
     render() {
       const { opened } = this.state;
-      const { content, enabled } = this.props;
-      const passthroughProps = omit(this.props, ['dropdownOpened', 'onClickOutside', 'content']);
+      const { enabled, children, content } = this.props;
+      const passthroughProps = omit(this.props, ['dropdownOpened', 'onClickOutside']);
+
+      if (!enabled) {
+        return children;
+      }
+
+      if (!content) {
+        return children;
+      }
+
       return (
         <div
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
+          onClick={this.handleOnClick}
+          role="tooltip"
         >
           <Popover
             {...passthroughProps}
-            content={
-              <ContentWrapper>
-                {content}
-              </ContentWrapper>
-            }
-            dropdownOpened={enabled && opened}
+            content={content}
+            dropdownOpened={opened}
             onClickOutside={this.handleOnMouseLeave}
           />
         </div>
