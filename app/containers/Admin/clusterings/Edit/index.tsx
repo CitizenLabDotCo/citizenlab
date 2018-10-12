@@ -180,7 +180,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
             structure={clustering.attributes.structure}
             onClickNode={this.handleOnClickNode}
             onShiftClickNode={this.handleOnShiftClickNode}
-            onCtrlCickNode={this.handleOnCtrlClickNode}
+            onCtrlClickNode={this.handleOnCtrlClickNode}
           />
           <StyledInfoPane
             activeComparison={activeComparison}
