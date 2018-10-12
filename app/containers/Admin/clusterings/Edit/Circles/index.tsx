@@ -96,6 +96,8 @@ class Circles extends PureComponent<Props, State> {
   }
 
   handleOnClickNode = (node: D3Node, event: MouseEvent) => {
+    event.preventDefault();
+
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
     } else if (this.state.ctrlKeyPressed) {
