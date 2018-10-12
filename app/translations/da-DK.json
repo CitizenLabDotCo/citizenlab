@@ -596,6 +596,7 @@
   "app.containers.AdminPage.groups.permissions.add": "Add",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Slet",
   "app.containers.AdminPage.groups.permissions.editButtonLabel": "Rediger",
+  "app.containers.AdminPage.groups.permissions.engagementWarning": "",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Er du sikker på at du vil fjerne denne gruppe fra projektet?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Vælg gruppe(r)",

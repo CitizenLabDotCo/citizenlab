@@ -596,6 +596,7 @@
   "app.containers.AdminPage.groups.permissions.add": "Add",
   "app.containers.AdminPage.groups.permissions.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.groups.permissions.editButtonLabel": "Edit",
+  "app.containers.AdminPage.groups.permissions.engagementWarning": "Apply these restrictions carefully, as higher barriers lead to lower engagement.",
   "app.containers.AdminPage.groups.permissions.granularPermissionsTitle": "Who can take which action?",
   "app.containers.AdminPage.groups.permissions.groupDeletionConfirmation": "Are you sure you want to remove this group from the project?",
   "app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder": "Select group(s)",
