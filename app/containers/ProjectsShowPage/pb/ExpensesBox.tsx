@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent } from 'react';
 
 // components
 import Button from 'components/UI/Button';
@@ -9,7 +9,6 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div`

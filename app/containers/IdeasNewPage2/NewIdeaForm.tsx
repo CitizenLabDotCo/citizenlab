@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, UploadFile } from 'typings';
 
 // style
 import { media, fontSizes } from 'utils/styleUtils';
@@ -85,7 +85,7 @@ interface GlobalState {
   selectedTopics: IOption[] | null;
   budget: number | null;
   position: string;
-  imageFile: ImageFile[] | null;
+  imageFile: UploadFile[] | null;
   submitError: boolean;
   processing: boolean;
 }

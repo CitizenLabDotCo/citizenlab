@@ -409,7 +409,7 @@ class IdeaForm extends React.PureComponent<Props & InjectedIntlProps & WithRoute
               maxNumberOfImages={1}
               placeholder={<FormattedMessage {...messages.imageUploadPlaceholder} />}
               onAdd={this.handleUploadOnAdd}
-              onUpdate={this.handleUploadOnUpdate}
+              // onUpdate={this.handleUploadOnUpdate}
               onRemove={this.handleUploadOnRemove}
             />
           </label>

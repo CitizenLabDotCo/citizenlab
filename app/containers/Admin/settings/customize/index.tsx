@@ -339,7 +339,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="150px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd('logo')}
-                onUpdate={this.handleUploadOnUpdate('logo')}
+                // onUpdate={this.handleUploadOnUpdate('logo')}
                 onRemove={this.handleUploadOnRemove('logo')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={logoError}
@@ -364,7 +364,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleUploadOnAdd('header_bg')}
-                onUpdate={this.handleUploadOnUpdate('header_bg')}
+                // onUpdate={this.handleUploadOnUpdate('header_bg')}
                 onRemove={this.handleUploadOnRemove('header_bg')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={headerError}

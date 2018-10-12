@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
-import { size, compact, isEmpty, has } from 'lodash-es';
+import { size, compact, isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -267,7 +267,7 @@ type Props = {
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile) => void;
-  onUpdate: (arg: UploadFile[] | null) => void;
+  // onUpdate: (arg: UploadFile[] | null) => void;
   onRemove: (arg: UploadFile) => void;
   imageRadius?: string;
 };
@@ -292,13 +292,13 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  async componentDidMount() {
-    if (size(this.props.images) > 0) {
-      const images = await this.getImageFiles(this.props.images);
-      this.props.onUpdate(images);
-      this.setState({ images });
-    }
-  }
+  // async componentDidMount() {
+  //   if (size(this.props.images) > 0) {
+  //     const images = await this.getImageFiles(this.props.images);
+  //     this.props.onUpdate(images);
+  //     this.setState({ images });
+  //   }
+  // }
 
   componentWillUnmount() {
     const { images } = this.props;
@@ -335,13 +335,11 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   getImageFiles = async (images: UploadFile[] | null) => {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
-        images[i].remote = false;
-
         if (!images[i].base64) {
           images[i].base64 = await getBase64FromFile(images[i]);
         }
 
-        if (!has(images[i], 'objectUrl')) {
+        if (!images[i].url && !images[i]['objectUrl']) {
           images[i]['objectUrl'] = createObjectUrl(images[i]);
           images[i].url = images[i]['objectUrl'];
         }
@@ -444,14 +442,14 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
         const exit = !isEmpty(animate);
 
         return (
-          <CSSTransition key={image['objectUrl']} classNames="image" timeout={timeout} enter={enter} exit={exit}>
+          <CSSTransition key={image.url} classNames="image" timeout={timeout} enter={enter} exit={exit}>
             <Box
               key={index}
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
               className={`${hasSpacing} ${animate}`}
             >
-              <Image imageRadius={imageRadius} src={image['objectUrl']} objectFit={objectFit}>
+              <Image imageRadius={imageRadius} src={image.url} objectFit={objectFit}>
                 <RemoveButton onClick={this.removeImage(image)} className="remove-button">
                   <RemoveIcon name="close2" />
                 </RemoveButton>
