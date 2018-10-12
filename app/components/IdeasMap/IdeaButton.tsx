@@ -7,11 +7,12 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 
 // services
-import { postingButtonState } from 'services/ideaPostingRules';
+import { postingButtonState, DisabledReasons } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,7 +21,6 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-import { PostingDisabledReasons } from 'services/projects';
 
 const DisabledText = styled.div`
   color: rgba(121, 137, 147, 1);
@@ -31,9 +31,9 @@ const DisabledText = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  height: 1rem;
-  width: 1rem;
-  margin-right: 0.5rem;
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
 `;
 
 interface InputProps {
@@ -45,6 +45,7 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -53,11 +54,13 @@ interface State {}
 
 class IdeaButton extends React.PureComponent<Props, State> {
 
-  disabledMessages: { [key in PostingDisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
-    project_inactive: messages.postingHereImpossible,
-    not_ideation: messages.postingHereImpossible,
-    posting_disabled: messages.postingHereImpossible,
-    not_permitted: messages.postingNotPermitted,
+  disabledReasonToMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+    notPermitted: messages.postingNotPermitted,
+    maybeNotPermitted: messages.postingMaybeNotPermitted,
+    postingDisabled: messages.postingHereImpossible,
+    projectInactive: messages.postingProjectInactive,
+    notActivePhase: messages.postingNotActivePhase,
+    futureEnabled: messages.postingHereImpossible,
   };
 
   handleOnAddIdeaClick = () => {
@@ -65,18 +68,22 @@ class IdeaButton extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { project, phase } = this.props;
+    const { project, phase, authUser } = this.props;
 
     if (isNilOrError(project)) return null;
 
-    const { show, enabled, disabledReason } = postingButtonState({ project, phaseContext: phase });
+    const { show, enabled, disabledReason } = postingButtonState({
+      project,
+      phaseContext: phase,
+      signedIn: !isNilOrError(authUser)
+    });
 
     if (!show || !enabled) {
       return (
         <DisabledText>
           <StyledIcon name="lock-outlined" />
           {disabledReason ?
-            <FormattedMessage {...this.disabledMessages[disabledReason]} />
+            <FormattedMessage {...this.disabledReasonToMessage[disabledReason]} />
           :
             <FormattedMessage {...messages.postingHereImpossible} />
           }
@@ -100,7 +107,8 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (

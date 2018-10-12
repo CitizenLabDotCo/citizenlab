@@ -133,7 +133,10 @@ export const colors = {
   clBlueLighter: '#80CFD8',
   clBlueLight: '#40B8C5',
   placeholderBg: '#CFD6DB',
-
+  /** Dark background color for popovers, tooltips, dropdown menus, ... */
+  popoverDarkBg: '#2D2D2D',
+  /** Foreground (text) color for dark popovers, tooltip, dropdown menus , ... */
+  popoverDarkFg: '#CBCBCB',
   // Admin colors
   adminBackground: '#F0F3F4',
   adminContentBackground: '#fff',
