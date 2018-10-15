@@ -68,6 +68,13 @@ export interface Props {
 }
 
 export default class Radio extends React.PureComponent<Props> {
+
+  handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.handleChange();
+    }
+  }
+
   handleChange = () => {
     if (!this.props.disabled) {
       if (this.props.onChange) this.props.onChange(this.props.value);
@@ -92,6 +99,8 @@ export default class Radio extends React.PureComponent<Props> {
           onChange={this.handleChange}
         />
         <CustomRadio
+          tabIndex={0}
+          onKeyPress={this.handleKeyPress}
           className={`${checked ? 'checked' : ''}`}
           disabled={this.props.disabled}
         >
