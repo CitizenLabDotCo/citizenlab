@@ -80,8 +80,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  draftProjects: IProjectData[] | null;
   publishedProjects: IProjectData[] | null;
+  draftProjects: IProjectData[] | null;
   archivedProjects: IProjectData[] | null;
 }
 
@@ -97,11 +97,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     if (projects && !isNilOrError(projects.projectsList)) {
       const { projectsList } = projects;
-      const draftProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'draft';
-      });
       const publishedProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'published';
+      });
+      const draftProjects = projectsList.filter((project) => {
+        return project.attributes.publication_status === 'draft';
       });
       const archivedProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'archived';
@@ -157,47 +157,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       lists = (
         <>
-          {draftProjects && draftProjects.length > 0 &&
-            <>
-              <ListHeader className="marginTop">
-                <ListHeaderTitle>
-                  <FormattedMessage {...messages.draft} />
-                </ListHeaderTitle>
-              </ListHeader>
-              <HasPermission item="projects" action="reorder">
-                <SortableList
-                  items={draftProjects}
-                  onReorder={this.handleReorder}
-                  className="e2e-admin-projects-list"
-                >
-                  {({ itemsList, handleDragRow, handleDropRow }) => (
-                    itemsList.map((project: IProjectData, index: number) => (
-                      <SortableRow
-                        key={project.id}
-                        id={project.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === draftProjects.length - 1)}
-                      >
-                        {row(project)}
-                      </SortableRow>
-                    ))
-                  )}
-                </SortableList>
-                <HasPermission.No>
-                  <List>
-                    {draftProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
-                        {row(project)}
-                      </Row>
-                    ))}
-                  </List>
-                </HasPermission.No>
-              </HasPermission>
-            </>
-          }
-
           {publishedProjects && publishedProjects.length > 0 &&
             <>
               <ListHeader className="marginTop">
@@ -230,6 +189,47 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {publishedProjects.map((project, index) => (
                       <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
+                        {row(project)}
+                      </Row>
+                    ))}
+                  </List>
+                </HasPermission.No>
+              </HasPermission>
+            </>
+          }
+
+          {draftProjects && draftProjects.length > 0 &&
+            <>
+              <ListHeader className="marginTop">
+                <ListHeaderTitle>
+                  <FormattedMessage {...messages.draft} />
+                </ListHeaderTitle>
+              </ListHeader>
+              <HasPermission item="projects" action="reorder">
+                <SortableList
+                  items={draftProjects}
+                  onReorder={this.handleReorder}
+                  className="e2e-admin-projects-list"
+                >
+                  {({ itemsList, handleDragRow, handleDropRow }) => (
+                    itemsList.map((project: IProjectData, index: number) => (
+                      <SortableRow
+                        key={project.id}
+                        id={project.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={(index === draftProjects.length - 1)}
+                      >
+                        {row(project)}
+                      </SortableRow>
+                    ))
+                  )}
+                </SortableList>
+                <HasPermission.No>
+                  <List>
+                    {draftProjects.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
                         {row(project)}
                       </Row>
                     ))}
