@@ -50,7 +50,9 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    record.errors.add(:email, :taken) if (record.email && find_by_cimail(record.email))
+    if (record.email && User.where('lower(email) = lower(?)', record.email).pluck(:email).select{|email| email != record.email}.present?)
+      record.errors.add(:email, :taken)
+    end
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
