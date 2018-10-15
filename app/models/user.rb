@@ -50,6 +50,7 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
+    record.errors.add(:email, :taken) if (record.email && find_by_cimail(record.email))
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
@@ -57,7 +58,6 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
-  before_validation :downcase_email
 
   scope :order_role, -> (direction=:asc) {
     joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
@@ -84,7 +84,11 @@ class User < ApplicationRecord
       joins(:memberships).where(memberships: {group_id: group.id})
     end
   }
-  
+
+
+  def self.find_by_cimail email
+    where('lower(email) = lower(?)', email).first
+  end
 
   def self.build_with_omniauth auth
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
@@ -159,8 +163,8 @@ class User < ApplicationRecord
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
   
-  private
 
+  private
 
   def generate_slug
     if !self.slug && self.first_name.present?
@@ -170,10 +174,6 @@ class User < ApplicationRecord
 
   def set_cl1_migrated
     self.cl1_migrated ||= false
-  end
-
-  def downcase_email
-    self.email = email&.downcase
   end
 
   def original_authenticate(unencrypted_password)
