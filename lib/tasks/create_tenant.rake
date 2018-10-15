@@ -65,6 +65,7 @@ namespace :cl2_back do
 
     Apartment::Tenant.switch tenant.schema_name do
       TenantTemplateService.new.apply_template('en_tenant_template')
+      SideFxTenantService.new.after_apply_template(tenant, nil)
     end
 
     SideFxTenantService.new.after_create(tenant, nil)
