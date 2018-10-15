@@ -179,7 +179,6 @@ type Props = {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   label?: string;
-  onCloseFocusNode?: HTMLElement;
 };
 
 type State = {};
@@ -257,10 +256,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   manuallyCloseModal = () => {
     if (this.props.url && this.goBackUrl) {
       clHistory.push(this.goBackUrl);
-    }
-    const { onCloseFocusNode } = this.props;
-    if (onCloseFocusNode) {
-      onCloseFocusNode.focus();
     }
     this.props.close();
   }
