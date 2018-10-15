@@ -4,7 +4,8 @@
 
 
     def reset_password_email
-      @user = User.find_by! email: params[:user][:email].downcase
+      @user = User.find_by_cimail email: params[:user][:email].downcase
+      User.find_by! email: params[:user][:email].downcase if !@user # throw active record not found error
       token = ResetPasswordService.new.generate_reset_password_token @user
       @user.update(reset_password_token: token)
       ResetPasswordService.new.log_password_reset_to_segment(@user, token)

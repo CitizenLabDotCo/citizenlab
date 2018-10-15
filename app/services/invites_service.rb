@@ -210,7 +210,7 @@ class InvitesService
         elsif field == :email && error_descriptor[:error] == :invalid
           add_error(:invalid_email, row: row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :taken
-          if (User.find_by(email: e.record.email).invite_status == 'pending')
+          if (User.find_by_cimail(e.record.email).invite_status == 'pending')
             add_error(:email_already_invited, row: row, value: error_descriptor[:value], raw_error: e)
           else
             add_error(:email_already_active, row: row, value: error_descriptor[:value], raw_error: e)
