@@ -36,7 +36,6 @@ interface State {
 
 class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
-  private openButtonNode: HTMLButtonElement | undefined;
 
   constructor(props) {
     super(props);
@@ -53,72 +52,6 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-  setopenButtonNodeRef = (element: HTMLButtonElement) => {
-    this.openButtonNode = (element || null);
-  }
-
-  render() {
-    const {
-      destinations,
-      newDestinations,
-      preferences,
-      isConsentRequired,
-      intl,
-    } = this.props;
-    const { isDialogOpen, isCancelling } = this.state;
-    const categoryDestinatons = {
-      analytics: [] as IDestination[],
-      advertising: [] as IDestination[],
-      functional: [] as IDestination[],
-    };
-
-    for (const destination of destinations) {
-      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinatons.advertising.push(destination);
-      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinatons.functional.push(destination);
-      } else {
-        // Fallback to analytics
-        categoryDestinatons.analytics.push(destination);
-      }
-    }
-    // TODO: add state for banner so it doesn't disappear on implicit consent (which is annoying UX)
-    return (
-      <>
-        <Modal
-          opened={isDialogOpen}
-          close={this.closeDialog}
-          onCloseFocusNode={this.openButtonNode}
-          label={intl.formatMessage(messages.modalLabel)}
-        >
-          {!isCancelling &&
-            <PreferencesDialog
-              onCancel={this.handleCancel}
-              onSave={this.handleSave}
-              onChange={this.handleCategoryChange}
-              categoryDestinatons={categoryDestinatons}
-              analytics={preferences.analytics}
-              advertising={preferences.advertising}
-              functional={preferences.functional}
-            />
-          }
-          {isCancelling &&
-            <CancelDialog
-              onCancelConfirm={this.handleCancelConfirm}
-              onCancelBack={this.handleCancelBack}
-            />
-          }
-        </Modal>
-        {isConsentRequired && newDestinations.length > 0 && (
-          <Banner
-            setRef={this.setopenButtonNodeRef}
-            onAccept={this.handleBannerAccept}
-            onChangePreferences={this.openDialog}
-          />
-        )}
-      </>
-    );
   }
 
   openDialog = () => {
@@ -189,6 +122,67 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
       isDialogOpen: false
     });
     resetPreferences();
+  }
+
+  render() {
+    const {
+      destinations,
+      newDestinations,
+      preferences,
+      isConsentRequired,
+      intl,
+    } = this.props;
+    const { isDialogOpen, isCancelling } = this.state;
+    const categoryDestinations = {
+      analytics: [] as IDestination[],
+      advertising: [] as IDestination[],
+      functional: [] as IDestination[],
+    };
+
+    for (const destination of destinations) {
+      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
+        categoryDestinations.advertising.push(destination);
+      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
+        categoryDestinations.functional.push(destination);
+      } else {
+        // Fallback to analytics
+        categoryDestinations.analytics.push(destination);
+      }
+    }
+
+    return (
+      <>
+        <Modal
+          opened={isDialogOpen}
+          close={this.closeDialog}
+          label={intl.formatMessage(messages.modalLabel)}
+        >
+          {!isCancelling &&
+            <PreferencesDialog
+              onCancel={this.handleCancel}
+              onSave={this.handleSave}
+              onChange={this.handleCategoryChange}
+              categoryDestinations={categoryDestinations}
+              analytics={preferences.analytics}
+              advertising={preferences.advertising}
+              functional={preferences.functional}
+            />
+          }
+          {isCancelling &&
+            <CancelDialog
+              onCancelConfirm={this.handleCancelConfirm}
+              onCancelBack={this.handleCancelBack}
+            />
+          }
+        </Modal>
+        {isConsentRequired && newDestinations.length > 0 && (
+          <Banner
+            onAccept={this.handleBannerAccept}
+            onChangePreferences={this.openDialog}
+          />
+        )}
+      </>
+    );
   }
 }
 

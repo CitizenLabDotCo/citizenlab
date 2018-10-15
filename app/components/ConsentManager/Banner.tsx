@@ -7,14 +7,14 @@ import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Root = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
   background: ${(props) => props.theme.colorMain};
-  font-size: 15px;
+  font-size: ${fontSizes.small};
   line-height: 22px;
   z-index: 10;
   width: 100%;
@@ -30,17 +30,30 @@ const Root = styled.div`
 const Spacer = styled.div`
   flex: 1;
 `;
+
 const StyledContentContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
 `;
+
+const StyledLink = styled(Link)`
+  color: white;
+  text-decoration: underline;
+  &:hover, &:focus {
+    font-weight: 700;
+    color: white;
+    outline: none;
+    text-decoration: underline;
+  }
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   button {
-    margin : 4px;
+    margin: 4px;
   }
   Button.button.primary {
     border-color: white;
@@ -49,24 +62,10 @@ const ButtonContainer = styled.div`
     flex-wrap: wrap;
   `}
 `;
-const Content = styled.div`
-  a {
-    display: inline;
-    padding: 0;
-    border: none;
-    background: none;
-    color: inherit;
-    font: inherit;
-    text-decoration: underline;
-    cursor: pointer;
-    &:hover {
-      color: white;
-    }
-  }
-  p:first-child {
+
+const StyledFormattedMessage = styled(FormattedMessage)`
     font-weight: 700;
     margin-bottom: 5px;
-  }
 `;
 
 const CloseButton = styled.button`
@@ -86,7 +85,6 @@ const CloseButton = styled.button`
 interface Props {
   onAccept: () => void;
   onChangePreferences: () => void;
-  setRef: (HTMLButtonElement) => void;
 }
 
 export default class Banner extends PureComponent<Props> {
@@ -96,29 +94,28 @@ export default class Banner extends PureComponent<Props> {
     const {
       onAccept,
       onChangePreferences,
-      setRef
     } = this.props;
 
     return (
       <Root role="banner">
         <StyledContentContainer>
-          <Content>
-            <FormattedMessage
+          <div>
+            <StyledFormattedMessage
               tagName="p"
               {...messages.mainText}
               values={{
                 // tslint:disable-next-line
                 policyLink: (
-                  <Link to="/pages/privacy-policy" target="_blank">
+                  <StyledLink to="/pages/cookie-policy" target="_blank">
                     <FormattedMessage {...messages.policyLink} />
-                  </Link>)
+                  </StyledLink>)
               }}
             />
             <FormattedMessage {...messages.subText} tagName="p" />
-          </Content>
+          </div>
           <Spacer />
           <ButtonContainer>
-            <Button style="primary" onClick={onChangePreferences} setSubmitButtonRef={setRef}><FormattedMessage {...messages.manage} /></Button>
+            <Button style="primary" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
             <Button style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
           </ButtonContainer>
         </StyledContentContainer>
