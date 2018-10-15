@@ -13,7 +13,7 @@ class OmniauthCallbackController < ApplicationController
       @identity = Identity.create_with_omniauth(auth)
     end
 
-    @user = @identity.user || User.find_by(email: auth.info.email)
+    @user = @identity.user || User.find_by_cimail(auth.info.email)
 
     if @user
       @identity.update(user: @user) unless @identity.user
@@ -39,7 +39,6 @@ class OmniauthCallbackController < ApplicationController
 
   def failure
     omniauth_params = request.env['omniauth.params']
-
     redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
   end
 
@@ -72,6 +71,5 @@ class OmniauthCallbackController < ApplicationController
       expires: 1.month.from_now
     }
   end
-
 
 end
