@@ -6,7 +6,7 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 // Image & video resize modules
-import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction } from 'quill-blot-formatter';
+import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction } from 'quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 // BEGIN allow image alignment styles
@@ -74,12 +74,12 @@ Quill.register(VideoFormat, true);
 // END allow image & video resizing styles
 class CustomImageSpec extends ImageSpec {
   getActions() {
-    return [ResizeAction];
+    return [ResizeAction, AlignAction];
   }
 }
 class CustomIframeVideoSpec extends IframeVideoSpec {
   getActions() {
-    return [ResizeAction];
+    return [ResizeAction, AlignAction];
   }
 }
 
@@ -355,8 +355,8 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
     };
 
     const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width'); }
-    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width'); }
+    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width', 'style'); }
+    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width', 'style'); }
     if (!limitedTextFormatting) {
       formats.push('list');
       if (!noAlign) {
