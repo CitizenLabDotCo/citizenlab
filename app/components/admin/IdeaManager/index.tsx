@@ -227,8 +227,6 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
       saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exportingIdeas: false });
     } catch (error) {
-      console.log(error);
-      console.log('something went wrong');
       this.setState({ exportingIdeas: false });
     }
   }
