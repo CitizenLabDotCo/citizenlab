@@ -1,5 +1,4 @@
 import React from 'react';
-import { saveAs } from 'file-saver';
 
 // components
 import PageWrapper from 'components/admin/PageWrapper';
