@@ -124,6 +124,8 @@
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Er du sikker på at du ønsker å slette {count} idéer?",
   "app.components.admin.IdeaManager.down": "Ned",
   "app.components.admin.IdeaManager.edit": "Rediger",
+  "app.components.admin.IdeaManager.exportComments": "",
+  "app.components.admin.IdeaManager.exportIdeas": "",
   "app.components.admin.IdeaManager.header": "Idéer",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Flytting av '{ideaTitle}' vekk fra sitt nåværende prosjekt vil gjøre at informasjonen om dens tildelte fase går tapt. Ønsker du å fortsette?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Dra og slipp idéene på et element ovenfor for å tildele dem alle samtidig.",
