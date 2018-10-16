@@ -73,4 +73,12 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.allIdeas',
     defaultMessage: 'All ideas',
   },
+  exportIdeas: {
+    id: 'app.components.admin.IdeaManager.exportIdeas',
+    defaultMessage: 'Export all ideas',
+  },
+  exportComments: {
+    id: 'app.components.admin.IdeaManager.exportComments',
+    defaultMessage: 'Export all comments',
+  },
 });
