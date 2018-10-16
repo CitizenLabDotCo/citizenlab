@@ -92,6 +92,13 @@ class User < ApplicationRecord
     where('lower(email) = lower(?)', email).first
   end
 
+  def self.from_token_request request
+    # This method is used by knock to get the user.
+    # Default is by email, but we want to compare
+    # case insensitively.
+    find_by_cimail request.params["auth"]["email"]
+  end
+
   def self.build_with_omniauth auth
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
     new({
