@@ -9,6 +9,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { isNilOrError } from 'utils/helperUtils';
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
+import { saveAs } from 'file-saver';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -225,6 +226,8 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
       saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exportingIdeas: false });
     } catch (error) {
+      console.log(error);
+      console.log('something went wrong');
       this.setState({ exportingIdeas: false });
     }
   }
@@ -260,7 +263,7 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
       <div ref={this.handleContextRef}>
         <ExportButtons>
           <ExportIdeasButton
-            style="secondary-outlined"
+            style="secondary"
             icon="download"
             onClick={this.handleExportIdeas}
             processing={this.state.exportingIdeas}
