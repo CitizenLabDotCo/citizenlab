@@ -124,6 +124,8 @@
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "",
   "app.components.admin.IdeaManager.down": "",
   "app.components.admin.IdeaManager.edit": "",
+  "app.components.admin.IdeaManager.exportComments": "",
+  "app.components.admin.IdeaManager.exportIdeas": "",
   "app.components.admin.IdeaManager.header": "",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "",

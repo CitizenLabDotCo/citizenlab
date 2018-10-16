@@ -124,6 +124,8 @@
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Êtes-vous sûr de vouloir supprimer ces {count} idées ?",
   "app.components.admin.IdeaManager.down": "Contre",
   "app.components.admin.IdeaManager.edit": "Modifier",
+  "app.components.admin.IdeaManager.exportComments": "",
+  "app.components.admin.IdeaManager.exportIdeas": "",
   "app.components.admin.IdeaManager.header": "Idées",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Déplacer l'idée \" {ideaTitle} \" hors du projet actuel lui fera perdre les informations liées au étapes du projet. Voulez-vous la déplacer ? ",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Glissez les idées sur un éléments pour les assignez toutes en une fois.",

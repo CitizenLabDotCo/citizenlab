@@ -124,6 +124,8 @@
   "app.components.admin.IdeaManager.deleteIdeasConfirmation": "Are you sure you want to delete {count} ideas?",
   "app.components.admin.IdeaManager.down": "Down",
   "app.components.admin.IdeaManager.edit": "Edit",
+  "app.components.admin.IdeaManager.exportComments": "Export all comments",
+  "app.components.admin.IdeaManager.exportIdeas": "Export all ideas",
   "app.components.admin.IdeaManager.header": "Ideas",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Drag and drop the ideas on an item above to assign them all at once.",
