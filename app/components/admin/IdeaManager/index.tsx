@@ -44,6 +44,7 @@ const ExportButtons = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   width: 100%;
+  margin-bottom: 30px;
 `;
 
 const ExportIdeasButton = styled(Button)`
