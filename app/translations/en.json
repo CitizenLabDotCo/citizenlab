@@ -976,8 +976,6 @@
   "app.containers.UsersShowPage.loadingUser": "Loading...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Loading user ideas...",
   "app.containers.UsersShowPage.memberSince": "Member since {date}",
-  "app.containers.admin.ideas.all.exportComments": "Export all comments",
-  "app.containers.admin.ideas.all.exportIdeas": "Export all ideas",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Who can view this project?",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators",

@@ -976,8 +976,6 @@
   "app.containers.UsersShowPage.loadingUser": "Wird geladen...",
   "app.containers.UsersShowPage.loadingUserIdeas": "{orgName, select, München {Mängelmeldungen und Anliegen des Benutzers werden geladen...} other {Benutzerideen werden geladen...}}",
   "app.containers.UsersShowPage.memberSince": "Mitglied seit {date}",
-  "app.containers.admin.ideas.all.exportComments": "Alle Kommentare exportieren",
-  "app.containers.admin.ideas.all.exportIdeas": "{orgName, select, München {Alle Meldungen exportieren} other {Alle Ideen exportieren}}",
   "app.containers.admin.ideas.all.header": "{orgName, select, München {Meldungen} other {Ideen}}",
   "app.containers.admin.project.permissions.permissionTypeLabel": "{orgName, select, München {Wer kann dieses Projekt oder diesen Bezirk anschauen?} other {Wer kann dieses Projekt anschauen?}}",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratoren",

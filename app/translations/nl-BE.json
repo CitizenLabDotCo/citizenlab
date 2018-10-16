@@ -976,8 +976,6 @@
   "app.containers.UsersShowPage.loadingUser": "Bezig met laden...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Laden van ideeën van gebruiker...",
   "app.containers.UsersShowPage.memberSince": "Lid sinds {date}",
-  "app.containers.admin.ideas.all.exportComments": "Alle reacties exporteren",
-  "app.containers.admin.ideas.all.exportIdeas": "Alle ideeën exporteren",
   "app.containers.admin.ideas.all.header": "Ideeën",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Wie kan dit project zien?",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Beheerders",
