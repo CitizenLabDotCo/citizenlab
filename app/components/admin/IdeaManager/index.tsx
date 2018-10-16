@@ -7,6 +7,8 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isNilOrError } from 'utils/helperUtils';
+import { API_PATH } from 'containers/App/constants';
+import { requestBlob } from 'utils/request';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -25,33 +27,27 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
+import Button from 'components/UI/Button';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-interface InputProps {
-  project?: IProjectData | null;
-}
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
-interface DataProps {
-  projects: GetProjectsChildProps;
-  ideas: GetIdeasChildProps;
-  topics: GetTopicsChildProps;
-  ideaStatuses: GetIdeaStatusesChildProps;
-  phases: GetPhasesChildProps;
-}
+const ExportButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`;
 
-interface Props extends InputProps, DataProps {}
+const ExportIdeasButton = styled(Button)`
+  margin-right: 10px;
+`;
 
-type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
-
-interface State {
-  selectedIdeas: { [key: string]: boolean };
-  activeFilterMenu: TFilterMenu | null;
-  visibleFilterMenus: string[];
-  contextRef: any;
-}
+const ExportCommentsButton = styled(Button)``;
 
 const ThreeColumns = styled.div`
   display: flex;
@@ -99,16 +95,49 @@ const RightColumn = styled.div`
   }
 `;
 
-class IdeaManager extends React.PureComponent<Props, State> {
+interface InputProps {
+  project?: IProjectData | null;
+}
+
+interface DataProps {
+  projects: GetProjectsChildProps;
+  ideas: GetIdeasChildProps;
+  topics: GetTopicsChildProps;
+  ideaStatuses: GetIdeaStatusesChildProps;
+  phases: GetPhasesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
+
+interface State {
+  selectedIdeas: { [key: string]: boolean };
+  activeFilterMenu: TFilterMenu | null;
+  visibleFilterMenus: string[];
+  contextRef: any;
+  exportingIdeas: boolean;
+  exportingComments: boolean;
+}
+
+interface ITracks {
+  clickExportAllIdeas: () => void;
+  clickExportAllComments: () => void;
+}
+
+class IdeaManager extends React.PureComponent<Props & ITracks, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
-  constructor(props: Props) {
+  constructor(props: Props & ITracks) {
     super(props);
     this.state = {
       selectedIdeas: {},
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
+      exportingIdeas: false,
+      exportingComments: false
+
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -185,6 +214,33 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ contextRef });
   }
 
+  handleExportIdeas = async () => {
+    // track this click for user analytics
+    this.props.clickExportAllIdeas();
+    try {
+      this.setState({ exportingIdeas: true });
+      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      saveAs(blob, 'ideas-export.xlsx');
+      this.setState({ exportingIdeas: false });
+    } catch (error) {
+      this.setState({ exportingIdeas: false });
+    }
+  }
+
+  handleExportComments = async () => {
+    // track this click for user analytics
+    this.props.clickExportAllComments();
+    try {
+      this.setState({ exportingComments: true });
+      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      saveAs(blob, 'comments-export.xlsx');
+      this.setState({ exportingComments: false });
+
+    } catch (error) {
+      this.setState({ exportingComments: false });
+    }
+  }
+
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
@@ -200,6 +256,24 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     return (
       <div ref={this.handleContextRef}>
+        <ExportButtons>
+            <ExportIdeasButton
+              style="cl-blue"
+              icon="download"
+              onClick={this.handleExportIdeas}
+              processing={this.state.exportingIdeas}
+            >
+              <FormattedMessage {...messages.exportIdeas} />
+            </ExportIdeasButton>
+            <ExportCommentsButton
+              style="cl-blue"
+              icon="download"
+              onClick={this.handleExportComments}
+              processing={this.state.exportingComments}
+            >
+              <FormattedMessage {...messages.exportComments} />
+            </ExportCommentsButton>
+          </ExportButtons>
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
@@ -286,7 +360,7 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
 });
 
-const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
+const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(injectTracks<Props>(tracks)(IdeaManager));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
