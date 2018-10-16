@@ -976,8 +976,6 @@
   "app.containers.UsersShowPage.loadingUser": "Indlæser...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Indlæser brugerideer...",
   "app.containers.UsersShowPage.memberSince": "Medlem siden {date}",
-  "app.containers.admin.ideas.all.exportComments": "Eksporter alle kommentarer",
-  "app.containers.admin.ideas.all.exportIdeas": "Eksporter alle ideer",
   "app.containers.admin.ideas.all.header": "Ideer",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Hvem kan se dette projekt?",
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administratorer",
