@@ -34,16 +34,16 @@ export interface IPermissionUpdate {
   permitted_by: IPermissionData['attributes']['permitted_by'];
 }
 
-export function phasePermissions(projectId: string, phaseId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IPermissions>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases/${phaseId}/permissions`, ...streamParams });
+export function phasePermissions(phaseId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IPermissions>({ apiEndpoint: `${API_PATH}/phases/${phaseId}/permissions`, ...streamParams });
 }
 
 export function projectPermissions(projectId: string, streamParams: IStreamParams | null = null) {
   return streams.get<IPermissions>({ apiEndpoint: `${API_PATH}/projects/${projectId}/permissions`, ...streamParams });
 }
 
-export function updatePhasePermission(permissionId: string, projectId: string, phaseId: string, action: string, permission: Partial<IPermissionUpdate>) {
-  return streams.update<IPermission>(`${API_PATH}/projects/${projectId}/phases/${phaseId}/permissions/${action}`, permissionId, { permission });
+export function updatePhasePermission(permissionId: string, phaseId: string, action: string, permission: Partial<IPermissionUpdate>) {
+  return streams.update<IPermission>(`${API_PATH}/phases/${phaseId}/permissions/${action}`, permissionId, { permission });
 }
 
 export function updateProjectPermission(permissionId: string, projectId: string, action: string, permission: Partial<IPermissionUpdate>) {
