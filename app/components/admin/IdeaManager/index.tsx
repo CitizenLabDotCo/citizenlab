@@ -40,7 +40,9 @@ import tracks from './tracks';
 const ExportButtons = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
   align-items: flex-end;
+  width: 100%;
 `;
 
 const ExportIdeasButton = styled(Button)`
@@ -257,23 +259,23 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     return (
       <div ref={this.handleContextRef}>
         <ExportButtons>
-            <ExportIdeasButton
-              style="cl-blue"
-              icon="download"
-              onClick={this.handleExportIdeas}
-              processing={this.state.exportingIdeas}
-            >
-              <FormattedMessage {...messages.exportIdeas} />
-            </ExportIdeasButton>
-            <ExportCommentsButton
-              style="cl-blue"
-              icon="download"
-              onClick={this.handleExportComments}
-              processing={this.state.exportingComments}
-            >
-              <FormattedMessage {...messages.exportComments} />
-            </ExportCommentsButton>
-          </ExportButtons>
+          <ExportIdeasButton
+            style="secondary"
+            icon="download"
+            onClick={this.handleExportIdeas}
+            processing={this.state.exportingIdeas}
+          >
+            <FormattedMessage {...messages.exportIdeas} />
+          </ExportIdeasButton>
+          <ExportCommentsButton
+            style="secondary"
+            icon="download"
+            onClick={this.handleExportComments}
+            processing={this.state.exportingComments}
+          >
+            <FormattedMessage {...messages.exportComments} />
+          </ExportCommentsButton>
+        </ExportButtons>
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
