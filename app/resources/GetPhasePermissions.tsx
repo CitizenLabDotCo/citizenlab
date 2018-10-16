@@ -4,7 +4,6 @@ import { IPermissionData, phasePermissions } from 'services/participationContext
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  projectId: string;
   phaseId: string;
 }
 
@@ -31,9 +30,9 @@ export default class GetPhasePermissions extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId, phaseId } = this.props;
+    const { phaseId } = this.props;
     this.subscriptions = [
-      phasePermissions(projectId, phaseId).observable.subscribe(permissions => this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions }))
+      phasePermissions(phaseId).observable.subscribe(permissions => this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions }))
     ];
   }
 

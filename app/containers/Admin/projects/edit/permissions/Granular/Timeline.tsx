@@ -24,7 +24,6 @@ const InnerCollapse = styled.div`
 `;
 
 interface InputProps {
-  projectId: string;
 }
 
 interface DataProps {
@@ -54,7 +53,6 @@ class Timeline extends PureComponent<Props, State> {
   handlePermissionChange = (permission: IPermissionData, permittedBy: IPermissionData['attributes']['permitted_by'], groupIds: string[]) => {
     updatePhasePermission(
       permission.id,
-      this.props.projectId,
       permission.relationships.permittable.data.id,
       permission.attributes.action,
       { permitted_by: permittedBy, group_ids: groupIds }
@@ -62,7 +60,7 @@ class Timeline extends PureComponent<Props, State> {
   }
 
   render() {
-    const { phases, projectId } = this.props;
+    const { phases } = this.props;
     const { openedPhase } = this.state;
 
     return (
@@ -75,7 +73,7 @@ class Timeline extends PureComponent<Props, State> {
             label={<T value={phase.attributes.title_multiloc} />}
           >
             <InnerCollapse>
-              <GetPhasePermissions projectId={projectId} phaseId={phase.id}>
+              <GetPhasePermissions phaseId={phase.id}>
                 {(permissions) => isNilOrError(permissions) ? null :
                   <ActionsForm
                     permissions={permissions}
