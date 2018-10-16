@@ -112,7 +112,6 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
               icon="download"
               onClick={this.handleExportIdeas}
               processing={this.state.exportingIdeas}
-              circularCorners={false}
             >
               <FormattedMessage {...messages.exportIdeas} />
             </ExportIdeasButton>
@@ -121,7 +120,6 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
               icon="download"
               onClick={this.handleExportComments}
               processing={this.state.exportingComments}
-              circularCorners={false}
             >
               <FormattedMessage {...messages.exportComments} />
             </ExportCommentsButton>
