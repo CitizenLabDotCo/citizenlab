@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "More actions",
   "app.components.PagesForm.advancedEditorLink": "Advanced editor",
   "app.components.PagesForm.dontChange": "Don't change this! (unless you really know what you're doing)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Content",
+  "app.components.PagesForm.editContent": "Content",
   "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Title",
   "app.components.PagesShowPage.notFoundDescription": "The requested page could not be found",
