@@ -206,7 +206,7 @@ class InvitesService
     e.record.errors.details.each do |field, error_descriptors|
       error_descriptors.each do |error_descriptor|
         if field == :locale
-          add_error(:unknown_locale, row: row, value: error_descriptors.first[:value], raw_error: e)
+          add_error(:unknown_locale, row: row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :invalid
           add_error(:invalid_email, row: row, value: error_descriptor[:value], raw_error: e)
         elsif field == :email && error_descriptor[:error] == :taken
