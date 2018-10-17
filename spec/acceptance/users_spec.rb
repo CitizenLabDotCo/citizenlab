@@ -313,6 +313,17 @@ resource "Users" do
           expect(response_status).to eq 422
         end
       end
+
+      describe do
+        before do
+          create(:user, email: 'JeZuS@citizenlab.co')
+        end
+        let(:email) { 'jEzUs@citizenlab.co' }
+      
+        example_request "[error] Registering a user with case insensitive email duplicate", document: false do
+          expect(response_status).to eq 422
+        end
+      end
     end
 
     put "web_api/v1/users/:id" do
