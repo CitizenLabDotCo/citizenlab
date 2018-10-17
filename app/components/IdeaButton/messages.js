@@ -23,6 +23,6 @@ export default defineMessages({
   },
   postingNotActivePhase: {
     id: 'app.containers.IdeaButton.postingNotActivePhase',
-    defaultMessage: 'You can\'t post ideas in a past or future phase. Please select the active phase on the timeline.',
+    defaultMessage: 'You can\'t post ideas in a past or future phase.',
   },
 });
