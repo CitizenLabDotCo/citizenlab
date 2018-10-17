@@ -50,6 +50,9 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
+    if (record.email && User.where('lower(email) = lower(?)', record.email).pluck(:email).select{|email| email != record.email}.present?)
+      record.errors.add(:email, :taken, value: record.email)
+    end
   end
 
   ROLES_JSON_SCHEMA = Rails.root.join('config', 'schemas', 'user_roles.json_schema').to_s
@@ -83,8 +86,20 @@ class User < ApplicationRecord
       joins(:memberships).where(memberships: {group_id: group.id})
     end
   }
-  
-  def self.build_with_omniauth(auth)
+
+
+  def self.find_by_cimail email
+    where('lower(email) = lower(?)', email).first
+  end
+
+  def self.from_token_request request
+    # This method is used by knock to get the user.
+    # Default is by email, but we want to compare
+    # case insensitively.
+    find_by_cimail request.params["auth"]["email"]
+  end
+
+  def self.build_with_omniauth auth
     extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
     new({
       first_name: auth.info['first_name'],
@@ -93,6 +108,7 @@ class User < ApplicationRecord
       remote_avatar_url: auth.info['image'],
     }.merge(extra_user_attrs))
   end
+
 
   def avatar_blank?
     avatar.file.nil?
@@ -160,6 +176,7 @@ class User < ApplicationRecord
     manual_group_ids + SmartGroupsService.new.groups_for_user(self).pluck(:id)
   end
   
+
   private
 
   def generate_slug
