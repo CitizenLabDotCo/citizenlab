@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "Flere handlinger",
   "app.components.PagesForm.advancedEditorLink": "Advanced editor",
   "app.components.PagesForm.dontChange": "Don't change this! (unless you really know what you're doing)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Content",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Title",
   "app.components.PagesShowPage.notFoundDescription": "Den forespurte siden ble ikke funnet",

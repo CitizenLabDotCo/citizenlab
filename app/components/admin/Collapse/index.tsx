@@ -18,6 +18,7 @@ const StyledLabel = styled(Label)`
 const ArrowIcon = styled(Icon) `
   fill: ${(props) => props.theme.colors.label};
   height: 11px;
+  width: 11px;
   margin-right: 8px;
   transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
               fill 80ms ease-out;
@@ -30,6 +31,7 @@ const ArrowIcon = styled(Icon) `
 const Options: any = styled.div`
   display: flex;
   align-items: center;
+  flex-direction: row;
   padding-bottom: 8px;
   transition: all 80ms ease-out;
   cursor: pointer;

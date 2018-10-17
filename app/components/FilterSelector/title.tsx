@@ -24,7 +24,7 @@ const DropdownIcon = styled(Icon)`
   transition: all 100ms ease-out;
 `;
 
-const Container = styled.div`
+const Container = styled.button`
   height: 24px;
   cursor: pointer;
   display: flex;
@@ -35,6 +35,7 @@ const Container = styled.div`
   position: relative;
 
   &:hover,
+  &:focus,
   &.opened {
     ${Text} {
       color: #000;
@@ -43,6 +44,10 @@ const Container = styled.div`
     ${DropdownIcon} {
       fill: #000;
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
