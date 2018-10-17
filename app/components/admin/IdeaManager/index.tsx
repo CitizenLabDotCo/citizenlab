@@ -252,7 +252,7 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
 
     try {
       this.setState({ exportingComments: true });
-      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParameter);
+      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
       saveAs(blob, 'comments-export.xlsx');
       this.setState({ exportingComments: false });
     } catch (error) {
