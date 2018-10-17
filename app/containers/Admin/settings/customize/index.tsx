@@ -110,8 +110,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         switchMap(([locale, currentTenant]) => {
           const logoUrl = currentTenant.data.attributes.logo.large;
           const headerUrl = currentTenant.data.attributes.header_bg.large;
-          const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl) : of(null));
-          const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl) : of(null));
+          const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
+          const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
           return combineLatest(
             logo$,
@@ -159,13 +159,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         ...(state.attributesDiff || {}),
         [name]: (newImage.base64 as string)
       }
-    }));
-  }
-
-  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: UploadFile[]) => {
-    this.setState((state) => ({
-      ...state,
-      [name]: updatedImages
     }));
   }
 
@@ -218,6 +211,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
   handleColorPickerOnChange = (hexColor: string) => {
     const rgbColor = hexToRgb(hexColor);
+
     if (rgbColor) {
       const { r, g, b } = rgbColor;
       const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
@@ -228,7 +222,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     let newDiff = cloneDeep(this.state.attributesDiff);
     newDiff = set(newDiff, 'settings.core.color_main', hexColor);
     this.setState({ attributesDiff: newDiff });
-
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -289,13 +282,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { locale,
+    const {
+      locale,
       currentTenant,
       titleError,
       subtitleError,
       errors,
       contrastRatioWarning,
-      saved } = this.state;
+      saved
+    } = this.state;
 
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
@@ -341,7 +336,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="150px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd('logo')}
-                // onUpdate={this.handleUploadOnUpdate('logo')}
                 onRemove={this.handleUploadOnRemove('logo')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={logoError}
@@ -366,7 +360,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleUploadOnAdd('header_bg')}
-                // onUpdate={this.handleUploadOnUpdate('header_bg')}
                 onRemove={this.handleUploadOnRemove('header_bg')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={headerError}

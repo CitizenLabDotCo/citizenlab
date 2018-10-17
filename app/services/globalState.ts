@@ -19,10 +19,11 @@ export interface IIdeasNewPageGlobalState {
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
-  imageFile: UploadFile[] | null;
+  imageFile: UploadFile[];
   imageId: string | null;
   imageChanged: boolean;
-  localIdeaFiles: UploadFile[] | null;
+  ideaFiles: UploadFile[];
+  ideaFilesToRemove: UploadFile[];
 }
 
 export interface IAdminFullWidth {

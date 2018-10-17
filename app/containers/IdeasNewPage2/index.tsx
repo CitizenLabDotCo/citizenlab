@@ -18,8 +18,8 @@ import SignInUp from './SignInUp';
 
 // services
 import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
-import { addIdeaFile } from 'services/ideaFiles';
-import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
@@ -186,10 +186,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       submitError: false,
       processing: false,
       ideaId: null,
-      imageFile: null,
+      imageFile: [],
       imageId: null,
       imageChanged: false,
-      localIdeaFiles: null,
+      ideaFiles: [],
+      ideaFilesToRemove: []
     };
     this.state = initialLocalState;
     this.localState = localState(initialLocalState);
@@ -254,20 +255,23 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null) {
     try {
-      let ideaImage: IIdeaImage | null = null;
-      const { imageId, imageChanged, imageFile } = await this.globalState.get();
+      const { imageId, imageChanged, imageFile, ideaFiles, ideaFilesToRemove } = await this.globalState.get();
       const idea = await this.postIdea(publicationStatus, authorId);
+      const imageToAddPromise = (imageChanged && imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
+      const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(idea.data.id, file.base64, file.name));
+      const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(idea.data.id, file.id as string));
 
-      // check if an image was previously saved and changed afterwards
-      // if so, delete the old image from the server first before uploading the new one
       if (imageId && imageChanged) {
         await deleteIdeaImage(idea.data.id, imageId);
       }
 
-      // upload the newly dropped image to the server
-      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && isString(imageFile[0].base64)) {
-        ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
-      }
+      const response = await Promise.all([
+        imageToAddPromise,
+        ...filesToAddPromises,
+        ...filesToRemovePromises
+      ] as Promise<any>[]);
+
+      const ideaImage = response[0];
 
       this.globalState.set({
         ideaId: idea.data.id,
@@ -281,22 +285,6 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
   }
 
-  getFilesToAddPromises = async (ideaId: string) => {
-    const { localIdeaFiles } = await this.globalState.get();
-    const filesToAdd = localIdeaFiles;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (ideaId && filesToAdd && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.filter((fileToAdd) => {
-        return isString(fileToAdd.base64);
-      }).map((fileToAdd) => {
-        return addIdeaFile(ideaId, fileToAdd.base64 as string, fileToAdd.name);
-      });
-    }
-
-    return filesToAddPromises;
-  }
-
   handleOnIdeaSubmit = async () => {
     const { authUser } = this.props;
 
@@ -305,9 +293,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     if (!isNilOrError(authUser)) {
       try {
         const ideaResponse = await this.postIdeaAndIdeaImage('published', authUser.id);
-        const ideaId = ideaResponse.data.id;
-        const filesToAddPromises = await this.getFilesToAddPromises(ideaId);
-        await Promise.all(filesToAddPromises);
+
         clHistory.push({
           pathname: '/',
           search: `?new_idea_id=${ideaResponse.data.id}&publish=false`

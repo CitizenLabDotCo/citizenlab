@@ -246,7 +246,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         switchMap((project) => {
           if (project) {
             const headerUrl = project.data.attributes.header_bg.large;
-            const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl) : of(null));
+            const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
             const projectFiles$ = (project ? projectFilesStream(project.data.id).observable.pipe(
               switchMap((projectFiles) => {
@@ -272,7 +272,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     return !!(projectImage.attributes.versions && projectImage.attributes.versions.large);
                   }).map((projectImage) => {
                     const url = projectImage.attributes.versions.large as string;
-                    return convertUrlToUploadFileObservable(url, projectImage.id);
+                    return convertUrlToUploadFileObservable(url, projectImage.id, null);
                   }));
                 }
 
@@ -302,7 +302,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           });
         })
       ).subscribe(({ headerBg, projectFiles, projectImages }) => {
-        console.log(projectImages);
         this.setState({
           projectFiles,
           projectImages,
@@ -529,26 +528,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         }
 
         if (isString(projectId)) {
-          console.log('projectImages');
-          console.log(projectImages);
-          console.log('projectImagesToRemove');
-          console.log(projectImagesToRemove);
-          console.log('projectFiles');
-          console.log(projectFiles);
-          console.log('projectFilesToRemove');
-          console.log(projectFilesToRemove);
-
           const imagesToAddPromises = projectImages.filter(file => !file.remote).map(file => addProjectImage(projectId as string, file.base64));
           const imagesToRemovePromises = projectImagesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectImage(projectId as string, file.id as string));
           const filesToAddPromises = projectFiles.filter(file => !file.remote).map(file => addProjectFile(projectId as string, file.base64, file.name));
           const filesToRemovePromises = projectFilesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectFile(projectId as string, file.id as string));
-
-          console.log([
-            ...imagesToAddPromises,
-            ...imagesToRemovePromises,
-            ...filesToAddPromises,
-            ...filesToRemovePromises
-          ]);
 
           await Promise.all([
             ...imagesToAddPromises,
@@ -561,7 +544,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         if (redirect) {
           clHistory.push('/admin/projects');
         } else {
-          this.setState({ saved: true, submitState: 'success', projectFilesToRemove: [] });
+          this.setState({
+            saved: true,
+            submitState: 'success',
+            projectImagesToRemove: [],
+            projectFilesToRemove: []
+          });
           this.processing$.next(false);
         }
       } catch (errors) {

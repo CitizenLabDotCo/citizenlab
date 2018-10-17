@@ -199,6 +199,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
   handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
     this.setState(({ attributeDiff }) => ({
       presentationMode,
+      submitState: 'enabled',
       attributeDiff: {
         ...attributeDiff,
         presentation_mode: presentationMode
