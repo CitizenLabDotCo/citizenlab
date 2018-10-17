@@ -42,6 +42,16 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
+        <ButtonWrapper>
+          <Button
+            style="cl-blue"
+            circularCorners={false}
+            icon="plus-circle"
+            linkTo="/admin/settings/areas/new"
+          >
+            <FormattedMessage {...messages.addAreaButton} />
+          </Button>
+        </ButtonWrapper>
         <List>
           {areas.map((area, index) => (
             <Row key={area.id} lastItem={(index === areas.length - 1)}>
@@ -67,16 +77,6 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
           </Row>
         ))}
         </List>
-        <ButtonWrapper>
-            <Button
-              style="cl-blue"
-              circularCorners={false}
-              icon="plus-circle"
-              linkTo="/admin/settings/areas/new"
-            >
-              <FormattedMessage {...messages.addAreaButton} />
-            </Button>
-          </ButtonWrapper>
       </Section>
     );
   }
