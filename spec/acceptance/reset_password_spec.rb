@@ -6,7 +6,7 @@ resource "Users" do
 
   before do
     header "Content-Type", "application/json"
-    @user = create(:user)
+    @user = create(:user, email: 's.hoorens@gmail.com')
   end
 
   context "when not authenticated" do
@@ -15,10 +15,27 @@ resource "Users" do
       with_options scope: :user do
         parameter :email, "The email of the user for whom the password should be reset", required: true
       end
-      let (:email) { @user.email }
+      let(:email) { @user.email }
 
       example_request "Trigger email with password reset link" do
         expect(status).to eq 202
+      end
+
+      describe "Email matching on password reset" do
+        example "is case insensitive" do
+          do_request(user: {email: 'S.Hoorens@gmail.com'})
+          expect(status).to eq 202
+        end
+
+        example "does not use underscores in a special manner" do
+          do_request(user: {email: 's_hoorens@gmail.com'})
+          expect(status).to eq 404
+        end
+      
+        example "does not use percentages in a special manner" do
+          do_request(user: {email: '%hoorens@gmail.com%'})
+          expect(status).to eq 404
+        end
       end
     end
 
