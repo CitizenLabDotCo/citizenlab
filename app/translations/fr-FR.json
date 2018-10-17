@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "Plus d’options",
   "app.components.PagesForm.advancedEditorLink": "Editeur avancé",
   "app.components.PagesForm.dontChange": "Ne changez pas cela (sauf si vous savez vraiment ce que vous faîtes !)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Contenu",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "Slug de l'URL",
   "app.components.PagesForm.pageTitle": "Titre",
   "app.components.PagesShowPage.notFoundDescription": "La page demandée est introuvable",
