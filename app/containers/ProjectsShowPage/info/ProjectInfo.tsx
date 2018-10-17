@@ -179,10 +179,18 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, projectFiles, intl: { formatMessage } } = props;
+  const { project, projectImages, projectFiles, intl: { formatMessage }, authUser } = props;
   if (isNilOrError(project)) return null;
 
   const projectUrl = location.href;
+  const utmParams = authUser ? {
+    source:'share_project',
+    campaign:'share_content',
+    content: authUser.id
+  } : {
+    source:'share_project',
+    campaign:'share_content'
+  };
 
   return (
     <Container>
@@ -220,6 +228,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
                 <Sharing
                   url={projectUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                  utmParams={utmParams}
                 />);
             }}
           </T>

@@ -17,6 +17,7 @@ import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
+import IdeaButton from 'components/IdeaButton';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -178,6 +179,14 @@ const HeaderSubtitle: any = styled.h2`
     line-height: 26px;
     margin-top: 15px;
     margin-bottom: 20px;
+  `}
+`;
+
+const SIdeaButton = styled(IdeaButton)`
+  display: none;
+
+  ${media.smallerThanMinTablet`
+    display: block;
   `}
 `;
 
@@ -351,7 +360,6 @@ class LandingPage extends React.PureComponent<Props, State> {
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
-
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
@@ -368,6 +376,12 @@ class LandingPage extends React.PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
+                {authUser &&
+                  <SIdeaButton
+                    style="primary-inverse"
+                    size="2"
+                  />
+                }
                 {!authUser && <Button
                   style="primary-inverse"
                   size="2"
