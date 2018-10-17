@@ -17,26 +17,34 @@ fr:
       "password_reset": Je demande de réinitialiser mon mot de passe
       "first_idea_published": Ma première idée est publiée
       "idea_published": Mon idée est publiée
+      "new_comment_on_commented_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai commenté
+      "new_comment_on_voted_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai voté
+      "status_change_of_commented_idea": Lorsque le status d'une idée que j'ai commenté a changé
+      "status_change_of_voted_idea": Lorsque le status d'une idée que j'ai voté a changé
       "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
       "moderator_digest": Un aperçu hebdomadaire (pour les modérateurs)
       "user_digest": Un aperçu hebdomadaire (pour les citoyens)
     admin_campaign_type_description:
-      "manual": Direct messages sent by administrators or moderators
-      "comment_on_your_comment": When a user receives a reply on their comment
-      "comment_on_your_idea": When a user receives a reply on their idea
-      "admin_rights_received": When a user is given admin rights
-      "comment_deleted_by_admin": When an admin deletes my comment
-      "comment_marked_as_spam": When a user marks a comment as spam (for administrators and moderators)
-      "idea_marked_as_spam": When a user marks an idea as spam (for administrators and moderators)
-      "invite_received": When a user gets invited to the platform
-      "invite_accepted": When a user accepts my invitation
-      "mention_in_comment": When a user is mentioned in a comment
-      "project_moderation_rights_received": When a user is given project moderation rights
-      "status_change_of_your_idea": When the status of my idea changes
-      "welcome": When a user registers on the platform
-      "password_reset": When a user requests a password reset
-      "first_idea_published": When a user’s first idea gets published
-      "idea_published": When my idea gets published
-      "admin_digest": A weekly overview of the activity on the platform (only for administrators)
-      "moderator_digest": A weekly overview of the activity on the platform (only for moderators)
-      "user_digest": A weekly overview of the activity on the platform (for citizens)
+      "manual": Messages directs envoyés par les administrateurs ou les modérateurs
+      "comment_on_your_comment": Lorsque l'utilisateur reçoit une réponse à son commentaire
+      "comment_on_your_idea": Lorsque l'utilisateur reçoit une réponse à son idée
+      "admin_rights_received": Je recois les droits d'administrateurs
+      "comment_deleted_by_admin": Lorsqu'un admin supprime mon commentaire
+      "comment_marked_as_spam": Lorsqu'un utilisateur marque un commentaire comme spam (pour administrateurs et modérateurs)
+      "idea_marked_as_spam": Lorsqu'un utilisateur marque un idée comme spam (pour administrateurs et modérateurs)
+      "invite_received": Lorsqu’un utilisateur est invité sur la plate-forme
+      "invite_accepted": Lorsqu’un utilisateur accepte mon invitation
+      "mention_in_comment": Lorsqu'un utilisateur est mentionné dans un commentaire
+      "project_moderation_rights_received": Lorsqu'un utilisateur reçoit les droits de modérateur de projet 
+      "status_change_of_your_idea": Lorsque le status de mon idée change
+      "welcome": Lorsqu'un utilisateur s'enregistre sur la plate-forme
+      "password_reset": Lorsqu'un utilisateur demande de réinitialiser son password
+      "first_idea_published": Lorsque la première idée de l’utilisateur est publiée
+      "idea_published": Lorsque mon idée est publiée
+      "new_comment_on_commented_idea": Lorsqu'un nouveau commentaire a été posté sur une idée que l'utilisateur a commenté
+      "new_comment_on_voted_idea": Lorsqu'un commentaire a été posté sur une idée que l'utilisateur à voté
+      "status_change_of_commented_idea": Lorsque le status d'une idée que l'utilisateur a commenté a changé
+      "status_change_of_voted_idea": Lorsque le status d'une idée que l'utilisateur a voté a été changé
+      "admin_digest": Un aperçu hebdomadaire de l’activité sur la plate-forme (uniquement pour les administrateurs)
+      "moderator_digest": Un aperçu hebdomadaire de l’activité sur la plate-forme (uniquement pour les modérateurs)
+      "user_digest": Un aperçu hebdomadaire de l’activité sur la plateforme (des citoyens)

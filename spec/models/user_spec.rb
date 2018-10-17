@@ -52,8 +52,15 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe "roles" do
+  describe 'email' do
+    it 'is invalid if there is a case insensitive duplicate' do
+      u1 = create(:user, email: 'KoEn@citizenlab.co')
+      u2 = build(:user, email: 'kOeN@citizenlab.co')
+      expect(u2).to be_invalid
+    end
+  end
 
+  describe "roles" do
     it "is valid without roles" do
       u = build(:user, roles: [])
       expect(u).to be_valid
@@ -79,11 +86,9 @@ RSpec.describe User, type: :model do
       u = build(:user, roles: [{type: "project_moderator"}])
       expect{ u.valid? }.to change{ u.errors[:roles] }
     end
-
   end
 
   describe "admin?" do
-
     it "responds true when the user has the admin role" do
       u = build(:user, roles: [{type: "admin"}])
       expect(u.admin?).to eq true
@@ -93,11 +98,9 @@ RSpec.describe User, type: :model do
       u = build(:user, roles: [])
       expect(u.admin?).to eq false
     end
-
   end
 
   describe "project_moderator?" do
-
     it "responds true when the user has the project_moderator role" do
       l = create(:project)
       u = build(:user, roles: [{type: "project_moderator", project_id: l.id}])
@@ -126,7 +129,6 @@ RSpec.describe User, type: :model do
       u = build(:admin)
       expect(u.project_moderator?).to eq false
     end
-
   end
 
   describe "add_role" do
@@ -396,6 +398,19 @@ RSpec.describe User, type: :model do
       user4 = create(:user, manual_groups: [create(:group)])
 
       expect(User.in_group(group).pluck(:id)).to match_array [user1.id, user2.id]
+    end
+  end
+
+  describe "find_by_cimail" do
+    before do
+      create_list(:user, 3)
+    end
+
+    it "finds a user with the same email but different caps" do
+      some_user = create(:user, email: 'SeBi@citizenlab.co')
+      same_user = User.find_by_cimail 'sEbI@citizenlab.co'
+
+      expect(some_user.id).to eq same_user&.id
     end
   end
 
