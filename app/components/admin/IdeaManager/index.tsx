@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction } from 'lodash-es';
+import { keys, isEmpty, size, get, isFunction, isString } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -218,12 +218,20 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     this.setState({ contextRef });
   }
 
-  handleExportIdeas = async () => {
+  handleExportIdeas = (queryParameter: 'all' | string | string[]) => async () => {
     // track this click for user analytics
     this.props.clickExportAllIdeas();
+
+    const queryParametersObject = {};
+    if (isString(queryParameter) && queryParameter !== 'all') {
+      queryParametersObject['project'] = queryParameter;
+    } else if (!isString(queryParameter))  {
+      queryParametersObject['ideas'] = queryParameter;
+    }
+
     try {
       this.setState({ exportingIdeas: true });
-      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
       saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exportingIdeas: false });
     } catch (error) {
@@ -231,15 +239,22 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
-  handleExportComments = async () => {
+  handleExportComments = (queryParameter: 'all' | string | string[]) => async () => {
     // track this click for user analytics
     this.props.clickExportAllComments();
+
+    const queryParametersObject = {};
+    if (isString(queryParameter) && queryParameter !== 'all') {
+      queryParametersObject['project'] = queryParameter;
+    } else if (!isString(queryParameter))  {
+      queryParametersObject['ideas'] = queryParameter;
+    }
+
     try {
       this.setState({ exportingComments: true });
-      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParameter);
       saveAs(blob, 'comments-export.xlsx');
       this.setState({ exportingComments: false });
-
     } catch (error) {
       this.setState({ exportingComments: false });
     }
@@ -258,13 +273,22 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
+    let exportQueryParameter;
+    if (selectedIdeaIds.length > 0) {
+      exportQueryParameter = [...selectedIdeaIds];
+    } else if (selectedProject) {
+      exportQueryParameter = selectedProject;
+    } else  {
+      exportQueryParameter = 'all';
+    }
+
     return (
       <div ref={this.handleContextRef}>
         <ExportButtons>
           <ExportIdeasButton
             style="secondary"
             icon="download"
-            onClick={this.handleExportIdeas}
+            onClick={this.handleExportIdeas(exportQueryParameter)}
             processing={this.state.exportingIdeas}
           >
             <FormattedMessage {...messages.exportIdeas} />
@@ -272,7 +296,7 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
           <ExportCommentsButton
             style="secondary"
             icon="download"
-            onClick={this.handleExportComments}
+            onClick={this.handleExportComments(exportQueryParameter)}
             processing={this.state.exportingComments}
           >
             <FormattedMessage {...messages.exportComments} />
