@@ -255,11 +255,11 @@ const RemoveButton: any = styled.div`
   }
 `;
 
-type Props = {
+interface Props {
   id?: string | undefined;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
-  imagePreviewRatio?: number
+  imagePreviewRatio?: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
   maxNumberOfImages?: number;
@@ -267,18 +267,17 @@ type Props = {
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
   onAdd: (arg: UploadFile) => void;
-  // onUpdate: (arg: UploadFile[] | null) => void;
   onRemove: (arg: UploadFile) => void;
   imageRadius?: string;
-};
+}
 
-type State = {
+interface State {
   images: UploadFile[] | null;
   errorMessage: string | null;
   processing: boolean;
   canAnimate: boolean;
   canAnimateTimeout: any;
-};
+}
 
 class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
@@ -292,13 +291,10 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  // async componentDidMount() {
-  //   if (size(this.props.images) > 0) {
-  //     const images = await this.getImageFiles(this.props.images);
-  //     this.props.onUpdate(images);
-  //     this.setState({ images });
-  //   }
-  // }
+  async componentDidMount() {
+    const images = await this.getImageFiles(this.props.images);
+    this.setState({ images });
+  }
 
   componentWillUnmount() {
     const { images } = this.props;

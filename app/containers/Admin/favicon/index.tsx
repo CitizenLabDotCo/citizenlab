@@ -76,8 +76,11 @@ class Favicon extends PureComponent<Props, State> {
 
     if (prevProps.tenant !== tenant && !isNilOrError(tenant)) {
       if (tenant.attributes.favicon && tenant.attributes.favicon.large) {
-        convertUrlToUploadFile(tenant.attributes.favicon.large).then((res) => {
-          if (res) this.setState({ favicon: [res] });
+        const url = tenant.attributes.favicon.large;
+        convertUrlToUploadFile(url, null, null).then((res) => {
+          if (res) {
+            this.setState({ favicon: [res] });
+          }
         });
       }
     }
@@ -85,10 +88,6 @@ class Favicon extends PureComponent<Props, State> {
 
   handleUploadOnAdd = (newImage: UploadFile) => {
     this.setState({ attributesDiff: { favicon: newImage.base64 as string }, favicon: [newImage] });
-  }
-
-  handleUploadOnUpdate = (updatedImages: UploadFile[]) => {
-    this.setState({ favicon: updatedImages });
   }
 
   handleUploadOnRemove = () => {
@@ -134,7 +133,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="152px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder="Drop file here"
                 errorMessage={faviconError}
@@ -148,7 +146,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="32px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}
@@ -162,7 +159,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="16px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                // onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}

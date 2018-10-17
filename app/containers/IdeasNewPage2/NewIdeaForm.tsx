@@ -85,7 +85,7 @@ interface GlobalState {
   selectedTopics: IOption[] | null;
   budget: number | null;
   position: string;
-  imageFile: UploadFile[] | null;
+  imageFile: UploadFile[];
   submitError: boolean;
   processing: boolean;
 }
@@ -96,7 +96,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       title: null,
@@ -104,7 +104,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
       selectedTopics: null,
       budget: null,
       position: '',
-      imageFile: null,
+      imageFile: [],
       submitError: false,
       processing: false
     };
@@ -152,11 +152,11 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, position, imageFile, localIdeaFiles } = ideaFormOutput;
+    const { title, description, selectedTopics, position, imageFile, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, position, imageFile, imageChanged, localIdeaFiles });
+    this.globalState.set({ title, description, selectedTopics, position, imageFile, imageChanged, ideaFiles, ideaFilesToRemove });
     this.props.onSubmit();
   }
 
