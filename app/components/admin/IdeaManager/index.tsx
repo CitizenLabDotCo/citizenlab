@@ -274,12 +274,16 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
     let exportQueryParameter;
+    let exportType: null | string = null;
     if (selectedIdeaIds.length > 0) {
       exportQueryParameter = [...selectedIdeaIds];
+      exportType = 'selected_ideas';
     } else if (selectedProject) {
       exportQueryParameter = selectedProject;
+      exportType = 'project';
     } else  {
       exportQueryParameter = 'all';
+      exportType = 'all';
     }
 
     return (
@@ -291,7 +295,9 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
             onClick={this.handleExportIdeas(exportQueryParameter)}
             processing={this.state.exportingIdeas}
           >
-            <FormattedMessage {...messages.exportIdeas} />
+            {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
+            {exportType === 'project' && <FormattedMessage {...messages.exportIdeasProjects} />}
+            {exportType === 'selected_ideas' && <FormattedMessage {...messages.exportSelectedIdeas} />}
           </ExportIdeasButton>
           <ExportCommentsButton
             style="secondary"
@@ -299,7 +305,9 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
             onClick={this.handleExportComments(exportQueryParameter)}
             processing={this.state.exportingComments}
           >
-            <FormattedMessage {...messages.exportComments} />
+            {exportType === 'all' && <FormattedMessage {...messages.exportComments} />}
+            {exportType === 'project' && <FormattedMessage {...messages.exportCommentsProjects} />}
+            {exportType === 'selected_ideas' && <FormattedMessage {...messages.exportSelectedComments} />}
           </ExportCommentsButton>
         </ExportButtons>
         <ThreeColumns>
