@@ -125,8 +125,8 @@ interface State {
 }
 
 interface ITracks {
-  clickExportAllIdeas: () => void;
-  clickExportAllComments: () => void;
+  clickExportIdeas: () => void;
+  clickExportComments: () => void;
 }
 
 class IdeaManager extends React.PureComponent<Props & ITracks, State> {
@@ -220,7 +220,7 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
 
   handleExportIdeas = (queryParameter: 'all' | string | string[]) => async () => {
     // track this click for user analytics
-    this.props.clickExportAllIdeas();
+    this.props.clickExportIdeas();
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -241,7 +241,7 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
 
   handleExportComments = (queryParameter: 'all' | string | string[]) => async () => {
     // track this click for user analytics
-    this.props.clickExportAllComments();
+    this.props.clickExportComments();
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
