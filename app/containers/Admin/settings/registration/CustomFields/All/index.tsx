@@ -109,6 +109,18 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
     return (
       <>
+        <FeatureFlag name="user_custom_fields">
+          <ButtonWrapper>
+            <Button
+              style="cl-blue"
+              circularCorners={false}
+              icon="plus-circle"
+              linkTo="/admin/settings/registration/custom_fields/new"
+            >
+              <FormattedMessage {...messages.addFieldButton} />
+            </Button>
+          </ButtonWrapper>
+        </FeatureFlag>
         <List key={listItems.length}>
           {
             listItems.map((field, index) => {
@@ -149,18 +161,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             })
           }
         </List>
-        <FeatureFlag name="user_custom_fields">
-          <ButtonWrapper>
-            <Button
-              style="cl-blue"
-              circularCorners={false}
-              icon="plus-circle"
-              linkTo="/admin/settings/registration/custom_fields/new"
-            >
-              <FormattedMessage {...messages.addFieldButton} />
-            </Button>
-          </ButtonWrapper>
-        </FeatureFlag>
       </>
     );
   }
