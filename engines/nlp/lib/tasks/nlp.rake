@@ -4,17 +4,8 @@ require 'json'
 namespace :nlp do
   desc "Creates a json dump for NLP town, givent the tenant host as parameter."
   task :json_dump, [:host] => [:environment] do |t, args|
-    host = args[:host]
-    data = {host: host}
-    Apartment::Tenant.switch(host.gsub('.', '_')) do
-        data[:id]       = Tenant.current.id
-        data[:name]     = Tenant.current.name
-        data[:locales]  = Tenant.current.settings.dig('core','locales')
-        data[:topics]   = encode_topics
-        data[:ideas]    = encode_ideas
-        data[:areas]    = encode_areas
-        data[:projects] = encode_projects
-    end
+    tenant = Tenant.find_by_host(args[:host])
+    data = NLP::TenantDumpService.new.dump(tenant)
     File.open("tmp/#{data[:name]}_dump.json", 'w') {|f| f.write data.to_json }
   end
 

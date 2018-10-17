@@ -38,6 +38,13 @@ PATH
       rails (~> 5.1.5)
 
 PATH
+  remote: engines/nlp
+  specs:
+    nlp (0.1.0)
+      httparty (~> 0.16.2)
+      rails (~> 5.1.5)
+
+PATH
   remote: engines/public_api
   specs:
     public_api (0.1.0)
@@ -199,6 +206,8 @@ GEM
     htmlentities (4.3.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
+    httparty (0.16.2)
+      multi_xml (>= 0.5.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     image_optimizer (1.7.2)
@@ -456,6 +465,7 @@ DEPENDENCIES
   mailgun-ruby
   mini_magick
   mongo (~> 2.5)
+  nlp!
   okcomputer
   omniauth
   omniauth-facebook
