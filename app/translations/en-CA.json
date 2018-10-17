@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "",
   "app.components.PagesForm.advancedEditorLink": "",
   "app.components.PagesForm.dontChange": "",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "",
   "app.components.PagesForm.pageTitle": "",
   "app.components.PagesShowPage.notFoundDescription": "",

@@ -59,7 +59,7 @@
   "app.components.MoreActions.buttonLabel": "Weitere Aktionen",
   "app.components.PagesForm.advancedEditorLink": "Fortgeschrittene Textaufbereitung",
   "app.components.PagesForm.dontChange": "Verändern Sie dies nicht! (Es sei denn, Sie wissen wirklich, was Sie tun)",
-  "app.components.PagesForm.editBodyAsHTMLLabel": "Inhalt",
+  "app.components.PagesForm.editContent": "",
   "app.components.PagesForm.pageSlug": "Slug",
   "app.components.PagesForm.pageTitle": "Überschrift",
   "app.components.PagesShowPage.notFoundDescription": "Entschuldigen Sie, die angeforderte Seite konnte leider nicht gefunden werden",
