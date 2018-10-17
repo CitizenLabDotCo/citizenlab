@@ -1,8 +1,8 @@
 export default {
-  clickExportAllIdeas: {
-    name: 'Button export all ideas clicked',
+  clickExportIdeas: {
+    name: 'Idea export button clicked',
   },
-  clickExportAllComments: {
-    name: 'Button export all comments clicked',
+  clickExportComments: {
+    name: 'Comment export button clicked',
   },
 };
