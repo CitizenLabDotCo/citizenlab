@@ -59,6 +59,16 @@ resource "Permissions" do
       end
     end
 
+    get "web_api/v1/phases/:phase_id/permissions/:action" do
+      let(:action) { @phase.permissions.first.action }
+
+      example_request "Get one permission by id" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq @phase.permissions.first.id
+      end
+    end
+
     patch "web_api/v1/projects/:project_id/permissions/:action" do
       with_options scope: :permission do
         parameter :permitted_by, "Defines who is granted permission, either #{Permission::PERMITTED_BIES.join(",")}.", required: false
