@@ -25,7 +25,7 @@
   "app.components.CustomFieldsForm.requiredError": "This field is required",
   "app.components.ErrorBoundary.genericError": "An error occured and we cannot display this content. Please try again.",
   "app.components.FileAttachments.attachmentsHeader": "Attachments",
-  "app.components.FileUploader.fileInputDescription.": "Select a file to upload...",
+  "app.components.FileUploader.fileInputDescription": "Select a file to upload...",
   "app.components.FileUploader.fileUploadLabel": "Add files",
   "app.components.FullscreenModal.closeButtonLabel": "Close",
   "app.components.FullscreenModal.goBack": "Go back",
