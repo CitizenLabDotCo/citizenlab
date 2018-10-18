@@ -54,7 +54,9 @@ class ClusteringService
         )
         ActiveRecord::Base.connection.execute(sql).map do |hash|
           [hash["area_id"], eval(hash["idea_ids"])]
-        end.to_h       
+        end.to_h
+      when 'clustering'
+        nil       
       else
         raise "Unknown level #{levels.first}"
       end
@@ -65,7 +67,24 @@ class ClusteringService
   def create_children levels, idea_ids, levels_to_ids, options
     if levels.present?
       level = levels.first
-      levels_to_ids[level].map do |level_id, filter_idea_ids|
+      if level == 'clustering'
+        api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
+        dump = NLP::TenantDumpService.new.dump(Tenant.current)
+        api.update_tenant(dump)
+        clustering_items = api.ideas_clustering(
+          Tenant.current.id, 
+          Tenant.current.settings.dig('core','locales').first, 
+          idea_ids: idea_ids
+          ).parsed_response.dig('data','items')
+        clustering_levels_to_ids = {}
+        clustering_items.each do |item|
+          clustering_levels_to_ids[item['cluster']] ||= []
+          clustering_levels_to_ids[item['cluster']] += item['id']
+        end
+        clustering_levels_to_ids
+      else
+        levels_to_ids[level]
+      end.map do |level_id, filter_idea_ids|
         clustering = nil
         begin
           clustering = self.send "#{level}_to_cluster",level_id
@@ -123,6 +142,13 @@ class ClusteringService
     {
       type: "idea",
       id: idea_id
+    }
+  end
+
+  def clustering_to_cluster cluster_id
+    {
+      type: "clustering",
+      id: cluster_id
     }
   end
 end
