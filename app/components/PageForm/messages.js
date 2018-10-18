@@ -16,7 +16,7 @@ export default defineMessages({
     defaultMessage: 'Slug',
   },
   editContent: {
-    id: 'app.components.PagesForm.editBodyAsHTMLLabel',
+    id: 'app.components.PagesForm.editContent',
     defaultMessage: 'Content',
   },
   advancedEditorLink: {

@@ -17,6 +17,7 @@ import Button from 'components/UI/Button';
 import Modal from 'components/UI/Modal';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
+import IdeaButton from 'components/IdeaButton';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -33,9 +34,10 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -181,6 +183,14 @@ const HeaderSubtitle: any = styled.h2`
   `}
 `;
 
+const SIdeaButton = styled(IdeaButton)`
+  display: none;
+
+  ${media.smallerThanMinTablet`
+    display: block;
+  `}
+`;
+
 const Content = styled.div`
   width: 100%;
   z-index: 3;
@@ -269,10 +279,10 @@ interface State {
   ideaIdForSocialSharing: string | null;
 }
 
-class LandingPage extends React.PureComponent<Props, State> {
+class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       ideaIdForSocialSharing: null
@@ -336,7 +346,7 @@ class LandingPage extends React.PureComponent<Props, State> {
 
   render() {
     const { ideaIdForSocialSharing } = this.state;
-    const { locale, tenant, projects, authUser } = this.props;
+    const { locale, tenant, projects, authUser, intl } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -351,7 +361,6 @@ class LandingPage extends React.PureComponent<Props, State> {
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
-
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
@@ -368,6 +377,12 @@ class LandingPage extends React.PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
+                {authUser &&
+                  <SIdeaButton
+                    style="primary-inverse"
+                    size="2"
+                  />
+                }
                 {!authUser && <Button
                   style="primary-inverse"
                   size="2"
@@ -422,6 +437,7 @@ class LandingPage extends React.PureComponent<Props, State> {
               fixedHeight={false}
               hasSkipButton={true}
               skipText={<FormattedMessage {...messages.skipSharing} />}
+              label={intl.formatMessage(messages.modalShareLabel)}
             >
               {ideaIdForSocialSharing &&
                 <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
@@ -443,8 +459,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />
 });
 
+const LandingPageWithHoc = injectIntl<InputProps & DataProps>(LandingPage);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <LandingPage {...inputProps} {...dataProps} />}
+    {dataProps => <LandingPageWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );
