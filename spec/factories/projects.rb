@@ -1,3 +1,27 @@
+module FactoryHelpers
+  extend self
+
+  def extract_permissions_config phase_config
+    permissions_config = {}
+    permission_keys = phase_config.keys.select do |key|
+      key.to_s.end_with? '_permitted'
+    end
+    permission_keys.each do |key|
+      permissions_config[key.to_s.chomp('_permitted')] = phase_config[key]
+      phase_config.delete(key)
+    end
+    permissions_config
+  end
+
+  def apply_permissions_config phase, permissions_config
+    permissions_config.each do |action, is_permitted|
+      permission = phase.permissions.find_by action: action
+      permission = phase.permissions.create!(action: action) if !permission
+      permission.update!(permitted_by: (is_permitted ? 'everyone' : 'admins_moderators'))
+    end
+  end
+end
+
 FactoryBot.define do
   factory :project do
     title_multiloc {{
@@ -13,6 +37,16 @@ FactoryBot.define do
       "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
     publication_status 'published'
+
+    transient do
+      with_permissions { false }
+    end
+
+    after(:create) do |project, evaluator|
+      if evaluator.with_permissions && project.is_participation_context?
+        PermissionsService.new.update_permissions_for project
+      end
+    end
 
     factory :project_with_topics do
       transient do
@@ -45,7 +79,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1 + rand(120)).days
+            end_at: start_at += (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -53,7 +88,10 @@ FactoryBot.define do
 
     factory :project_with_active_ideation_phase do
       after(:create) do |project, evaluator|
-        project.phases << create(:active_phase, participation_method: 'ideation')
+        project.phases << create(:active_phase, 
+          participation_method: 'ideation', 
+          with_permissions: evaluator.with_permissions
+          )
       end
     end
 
@@ -67,7 +105,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1+ rand(72)).days
+            end_at: start_at += (1+ rand(72)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -79,30 +118,44 @@ FactoryBot.define do
         phases_config {{sequence: "xxcxx"}}
       end
       after(:create) do |project, evaluator|
+        phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
+        permissions_config = FactoryHelpers.extract_permissions_config phase_config
         active_phase = create(:phase, 
           start_at: Faker::Date.between(6.months.ago, Time.now),
           end_at: Faker::Date.between(Time.now+1.day, 6.months.from_now),
           project: project,
-          **(evaluator.current_phase_attrs.merge((evaluator.phases_config[:c] || {})))
+          with_permissions: evaluator.with_permissions,
+          **phase_config
         )
+        FactoryHelpers.apply_permissions_config active_phase, permissions_config
         phases_before, phases_after = evaluator.phases_config[:sequence].split('c')
 
         end_at = active_phase.start_at
         phases_before&.chars&.map(&:to_sym)&.reverse&.each do |sequence_char|
-          project.phases << create(:phase, 
+          phase_config = evaluator.phases_config[sequence_char].clone || {}
+          permissions_config = FactoryHelpers.extract_permissions_config phase_config
+          phase = create(:phase, 
             end_at: end_at - 1,
             start_at: end_at -= (1 + rand(120)).days,
-            **(evaluator.phases_config[sequence_char] || {})
+            with_permissions: evaluator.with_permissions,
+            **phase_config
           )
+          project.phases << phase
+          FactoryHelpers.apply_permissions_config phase, permissions_config
         end
 
         start_at = active_phase.end_at
         phases_after&.chars&.map(&:to_sym)&.each do |sequence_char|
-          project.phases << create(:phase, 
+          phase_config = evaluator.phases_config[sequence_char].clone || {}
+          permissions_config = FactoryHelpers.extract_permissions_config phase_config
+          phase = create(:phase, 
             start_at: start_at + 1,
             end_at: start_at += (1 + rand(120)).days,
-            **(evaluator.phases_config[sequence_char] || {})
+            with_permissions: evaluator.with_permissions,
+            **phase_config
           )
+          project.phases << phase
+          FactoryHelpers.apply_permissions_config phase, permissions_config
         end
       end
     end
@@ -116,7 +169,8 @@ FactoryBot.define do
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
-            end_at: start_at += (1 + rand(120)).days
+            end_at: start_at += (1 + rand(120)).days,
+            with_permissions: evaluator.with_permissions
           )
         end
       end
@@ -146,7 +200,7 @@ FactoryBot.define do
           project.areas << create(:area)
         end
         evaluator.phases_count.times do |i|
-          project.phases << create(:phase_sequence)
+          project.phases << create(:phase_sequence, with_permissions: evaluator.with_permissions)
         end
         evaluator.events_count.times do |i|
           project.events << create(:event)
@@ -191,9 +245,6 @@ FactoryBot.define do
     factory :continuous_project do
       process_type 'continuous'
       participation_method 'ideation'
-      posting_enabled true
-      commenting_enabled true
-      voting_enabled true
       voting_method 'unlimited'
       voting_limited_max 7
     end
