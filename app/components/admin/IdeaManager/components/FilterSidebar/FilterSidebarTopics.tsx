@@ -12,7 +12,7 @@ interface Props {
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
-class FilterSidebarTopics extends React.Component<Props> {
+class FilterSidebarTopics extends React.PureComponent<Props> {
 
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
