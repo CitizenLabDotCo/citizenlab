@@ -33,7 +33,7 @@ interface Props {
   visibleFilterMenus: string[];
 }
 
-class FilterSidebar extends React.Component<Props & InjectedIntlProps> {
+class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
   handleItemClick = (_event, data) => {
     this.props.onChangeActiveFilterMenu(data.id);
   }

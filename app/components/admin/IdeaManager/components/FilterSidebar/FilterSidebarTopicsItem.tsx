@@ -14,7 +14,7 @@ interface Props {
   connectDropTarget: any;
 }
 
-class FilterSidebarTopicsItem extends React.Component<Props> {
+class FilterSidebarTopicsItem extends React.PureComponent<Props> {
   render() {
     const { topic, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
     return connectDropTarget(
