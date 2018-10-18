@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   votingDisabledProjectInactive: {
     id: 'app.components.VoteControl.votingDisabledProjectInactive',
-    defaultMessage: 'You can no longer vote on ideas in {projectName}',
+    defaultMessage: 'You can no longer or not yet vote on ideas in {projectName}',
   },
   votingDisabledNotInActiveContext: {
     id: 'app.components.VoteControl.votingDisabledNotInActiveContext',
@@ -20,5 +20,9 @@ export default defineMessages({
   votingDisabledMaxReached: {
     id: 'app.components.VoteControl.votingDisabledMaxReached',
     defaultMessage: 'You\'ve reached your maximum number of votes in {projectName}',
+  },
+  votingDisabledNotPermitted: {
+    id: 'app.components.VoteControl.votingDisabledNotPermitted',
+    defaultMessage: 'Unfortunately, you don\'t have the rights to vote on this idea',
   },
 });

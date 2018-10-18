@@ -371,9 +371,6 @@ export default class VoteControl extends PureComponent<Props, State> {
     const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
     const { ideaId } = this.props;
 
-    // if (!votingEnabled) {
-    //   this.props.disabledVoteClick && this.props.disabledVoteClick();
-    // } else
     if (!authUser) {
       this.props.unauthenticatedVoteClick && this.props.unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {

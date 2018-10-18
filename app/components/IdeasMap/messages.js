@@ -25,4 +25,20 @@ export default defineMessages({
     id: 'app.components.IdeasMap.postingHereImpossible',
     defaultMessage: 'Posting an idea here is currently impossible.',
   },
+  postingNotPermitted: {
+    id: 'app.components.IdeasMap.postingNotPermitted',
+    defaultMessage: 'Unfortunately, You don\'t have the rights to post ideas here.',
+  },
+  postingMaybeNotPermitted: {
+    id: 'app.components.IdeasMap.postingMaybeNotPermitted',
+    defaultMessage: 'Only certain users can post ideas here. Please sign in first.',
+  },
+  postingProjectInactive: {
+    id: 'app.components.IdeasMap.postingProjectInactive',
+    defaultMessage: 'This project is not yet or no longer accepting new ideas.',
+  },
+  postingNotActivePhase: {
+    id: 'app.components.IdeasMap.postingNotActivePhase',
+    defaultMessage: 'You can\'t post ideas in a past or future phase.',
+  },
 });
