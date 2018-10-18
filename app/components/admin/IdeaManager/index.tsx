@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction, isString } from 'lodash-es';
+import { keys, isEmpty, size, get, isFunction } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -7,9 +7,6 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
-import { requestBlob } from 'utils/request';
-import { saveAs } from 'file-saver';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -28,30 +25,11 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
-import Button from 'components/UI/Button';
+import ExportButtons from './components/ExportButtons';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// analytics
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
-const ExportButtons = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  width: 100%;
-  margin-bottom: 30px;
-`;
-
-const ExportIdeasButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const ExportCommentsButton = styled(Button)``;
 
 const ThreeColumns = styled.div`
   display: flex;
@@ -120,28 +98,18 @@ interface State {
   activeFilterMenu: TFilterMenu | null;
   visibleFilterMenus: string[];
   contextRef: any;
-  exportingIdeas: boolean;
-  exportingComments: boolean;
 }
 
-interface ITracks {
-  clickExportIdeas: () => void;
-  clickExportComments: () => void;
-}
-
-class IdeaManager extends React.PureComponent<Props & ITracks, State> {
+class IdeaManager extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
 
-  constructor(props: Props & ITracks) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedIdeas: {},
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
-      exportingIdeas: false,
-      exportingComments: false
-
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -218,48 +186,6 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
     this.setState({ contextRef });
   }
 
-  handleExportIdeas = (queryParameter: 'all' | string | string[]) => async () => {
-    // track this click for user analytics
-    this.props.clickExportIdeas();
-
-    const queryParametersObject = {};
-    if (isString(queryParameter) && queryParameter !== 'all') {
-      queryParametersObject['project'] = queryParameter;
-    } else if (!isString(queryParameter))  {
-      queryParametersObject['ideas'] = queryParameter;
-    }
-
-    try {
-      this.setState({ exportingIdeas: true });
-      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
-      saveAs(blob, 'ideas-export.xlsx');
-      this.setState({ exportingIdeas: false });
-    } catch (error) {
-      this.setState({ exportingIdeas: false });
-    }
-  }
-
-  handleExportComments = (queryParameter: 'all' | string | string[]) => async () => {
-    // track this click for user analytics
-    this.props.clickExportComments();
-
-    const queryParametersObject = {};
-    if (isString(queryParameter) && queryParameter !== 'all') {
-      queryParametersObject['project'] = queryParameter;
-    } else if (!isString(queryParameter))  {
-      queryParametersObject['ideas'] = queryParameter;
-    }
-
-    try {
-      this.setState({ exportingComments: true });
-      const blob = await requestBlob(`${API_PATH}/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
-      saveAs(blob, 'comments-export.xlsx');
-      this.setState({ exportingComments: false });
-    } catch (error) {
-      this.setState({ exportingComments: false });
-    }
-  }
-
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
@@ -288,28 +214,10 @@ class IdeaManager extends React.PureComponent<Props & ITracks, State> {
 
     return (
       <div ref={this.handleContextRef}>
-        <ExportButtons>
-          <ExportIdeasButton
-            style="secondary"
-            icon="download"
-            onClick={this.handleExportIdeas(exportQueryParameter)}
-            processing={this.state.exportingIdeas}
-          >
-            {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
-            {exportType === 'project' && <FormattedMessage {...messages.exportIdeasProjects} />}
-            {exportType === 'selected_ideas' && <FormattedMessage {...messages.exportSelectedIdeas} />}
-          </ExportIdeasButton>
-          <ExportCommentsButton
-            style="secondary"
-            icon="download"
-            onClick={this.handleExportComments(exportQueryParameter)}
-            processing={this.state.exportingComments}
-          >
-            {exportType === 'all' && <FormattedMessage {...messages.exportComments} />}
-            {exportType === 'project' && <FormattedMessage {...messages.exportCommentsProjects} />}
-            {exportType === 'selected_ideas' && <FormattedMessage {...messages.exportSelectedComments} />}
-          </ExportCommentsButton>
-        </ExportButtons>
+        <ExportButtons
+          exportType={exportType}
+          exportQueryParameter={exportQueryParameter}
+        />
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
@@ -396,7 +304,7 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
 });
 
-const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(injectTracks<Props>(tracks)(IdeaManager));
+const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
