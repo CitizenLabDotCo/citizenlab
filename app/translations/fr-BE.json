@@ -25,7 +25,7 @@
   "app.components.CustomFieldsForm.requiredError": "Ce champ est requis",
   "app.components.ErrorBoundary.genericError": "Une erreur s'est produite et le contenu n'a pas pu être affiché. Veuillez essayer à nouveau",
   "app.components.FileAttachments.attachmentsHeader": "Pièces jointes",
-  "app.components.FileUploader.fileInputDescription.": "Select a file to upload...",
+  "app.components.FileUploader.fileInputDescription": "",
   "app.components.FileUploader.fileUploadLabel": "Add files",
   "app.components.FullscreenModal.closeButtonLabel": "Fermer",
   "app.components.FullscreenModal.goBack": "Retour",
