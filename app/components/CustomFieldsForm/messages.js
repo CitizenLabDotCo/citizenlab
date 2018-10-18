@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.requiredError',
     defaultMessage: 'This field is required',
   },
+  optional: {
+    id: 'app.components.CustomFieldsForm.optional',
+    defaultMessage: '(optional)',
+  },
 });
