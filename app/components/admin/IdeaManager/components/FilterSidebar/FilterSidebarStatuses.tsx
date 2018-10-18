@@ -12,7 +12,7 @@ interface Props {
   onChangeStatusFilter?: (status: string | null) => void;
 }
 
-class FilterSidebarStatuses extends React.Component<Props> {
+class FilterSidebarStatuses extends React.PureComponent<Props> {
 
   handleItemClick = (id) => () => {
     this.props.onChangeStatusFilter && this.props.onChangeStatusFilter(id);
