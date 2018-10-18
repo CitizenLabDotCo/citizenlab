@@ -58,6 +58,19 @@ class ProjectCopyService
           phase_hashes[p.id] = h
           h
         },
+        'permission' => (
+          if project.continuous?
+            project.permissions.map{ |p|
+              permission_h p, project_ref
+            }
+          else
+            project.phases.map(&:permissions).flat_map { |ps|
+              ps.map { |p|
+                permission_h p, phase_hashes[p.permittable_id]
+              }
+            }
+          end
+          ),
         'phase_file' => project.phases.map(&:phase_files).flat_map { |pfs|
            pfs.map { |pf|
             {
@@ -103,4 +116,11 @@ class ProjectCopyService
     template
   end
 
+  def permission_h permission, permittable_h
+    {
+      'action' => permission.action,
+      'permitted_by' => permission.permitted_by,
+      'permittable_ref' => permittable_h
+    }
+  end
 end

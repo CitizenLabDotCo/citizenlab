@@ -8,7 +8,8 @@ resource "Comments" do
 
   before do
     header "Content-Type", "application/json"
-    @idea = create(:idea)
+    @project = create(:continuous_project, with_permissions: true)
+    @idea = create(:idea, project: @project)
     @comments = ['published','deleted'].map{|ps| create(:comment, idea: @idea, publication_status: ps)}
   end
 

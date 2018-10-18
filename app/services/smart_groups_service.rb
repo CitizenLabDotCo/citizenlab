@@ -61,6 +61,18 @@ class SmartGroupsService
     }
   end
 
+  def parse_json_rules json_rules
+    json_rules.map do |json_rule|
+      parse_json_rule json_rule
+    end
+  end
+
+  def parse_json_rule json_rule
+    rule_class = rule_type_to_class(json_rule['ruleType'])
+    rule_class.from_json(json_rule)
+  end
+
+
   private
 
   def each_rule
@@ -70,15 +82,6 @@ class SmartGroupsService
   def rule_type_to_class rule_type
     RULE_TYPE_TO_CLASS[rule_type]
   end
-
-  def parse_json_rules json_rules
-    json_rules.map do |json_rule|
-      rule_class = rule_type_to_class(json_rule['ruleType'])
-      rule_class.from_json(json_rule)
-    end
-  end
-
-
 
 end
 
