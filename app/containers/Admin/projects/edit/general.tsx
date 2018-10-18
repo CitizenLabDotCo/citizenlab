@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { switchMap, map, filter as rxFilter, distinctUntilChanged } from 'rxjs/operators';
-import { isEmpty, get, forOwn, isString } from 'lodash-es';
+import { isEmpty, get, isString } from 'lodash-es';
 
 // router
 import clHistory from 'utils/cl-router/history';
@@ -12,12 +12,12 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Label from 'components/UI/Label';
+import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
-import { Button as SemButton, Icon as SemIcon } from 'semantic-ui-react';
 import HasPermission from 'components/HasPermission';
 
 // animation
@@ -131,6 +131,10 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+`;
+
 type Props = {
   lang: string,
   params: {
@@ -160,6 +164,7 @@ interface State {
   currentTenant: ITenant | null;
   areasOptions: IOption[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
+  processingDelete: boolean;
   deleteError: string | null;
 }
 
@@ -192,6 +197,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       currentTenant: null,
       areasOptions: [],
       submitState: 'disabled',
+      processingDelete: false,
       deleteError: null,
     };
     this.projectId$ = new BehaviorSubject(null);
@@ -217,29 +223,31 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         areas$,
         project$
       ).subscribe(([locale, currentTenant, areas, project]) => {
-        this.setState((state) => {
-          const publicationStatus = (project ? project.data.attributes.publication_status : state.publicationStatus);
-          const projectType = (project ? project.data.attributes.process_type : state.projectType);
-          const areaType =  ((project && project.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
-          const areasOptions = areas.data.map((area) => ({
-            value: area.id,
-            label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-          }));
+        if (!this.state.processingDelete) {
+          this.setState((state) => {
+            const publicationStatus = (project ? project.data.attributes.publication_status : state.publicationStatus);
+            const projectType = (project ? project.data.attributes.process_type : state.projectType);
+            const areaType =  ((project && project.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
+            const areasOptions = areas.data.map((area) => ({
+              value: area.id,
+              label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
+            }));
 
-          return {
-            locale,
-            currentTenant,
-            project,
-            publicationStatus,
-            projectType,
-            areaType,
-            areasOptions,
-            presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
-            areas: areas.data,
-            projectAttributesDiff: {},
-            loading: false,
-          };
-        });
+            return {
+              locale,
+              currentTenant,
+              project,
+              publicationStatus,
+              projectType,
+              areaType,
+              areasOptions,
+              presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
+              areas: areas.data,
+              projectAttributesDiff: {},
+              loading: false,
+            };
+          });
+        }
       }),
 
       project$.pipe(
@@ -302,11 +310,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           });
         })
       ).subscribe(({ headerBg, projectFiles, projectImages }) => {
-        this.setState({
-          projectFiles,
-          projectImages,
-          headerBg: (headerBg ? [headerBg] : null)
-        });
+        if (!this.state.processingDelete) {
+          this.setState({
+            projectFiles,
+            projectImages,
+            headerBg: (headerBg ? [headerBg] : null)
+          });
+        }
       }),
 
       this.processing$.subscribe((processing) => {
@@ -341,11 +351,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     this.setState(({ projectAttributesDiff }) => ({
-        submitState: 'enabled',
-        projectAttributesDiff: {
-          ...projectAttributesDiff,
-          ...participationContextConfig
-        }
+      submitState: 'enabled',
+      projectAttributesDiff: {
+        ...projectAttributesDiff,
+        ...participationContextConfig
+      }
     }));
   }
 
@@ -463,6 +473,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+    console.log(participationContextConfig);
     this.save(participationContextConfig);
   }
 
@@ -480,14 +491,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
-    const { projectAttributesDiff, project } = this.state;
+    const { currentTenant, projectAttributesDiff, project } = this.state;
+    const currentTenantLocales = (currentTenant ? currentTenant.data.attributes.settings.core.locales : null);
     const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
-    if (projectAttrs.title_multiloc) {
-      forOwn(projectAttrs.title_multiloc, (title, locale) => {
-        if (!title || (title && title.length < 1)) {
-          noTitleError[locale] = formatMessage(messages.noTitleErrorMessage);
+    if (currentTenantLocales) {
+      currentTenantLocales.forEach((currentTenantLocale) => {
+        const title = get(projectAttrs.title_multiloc, currentTenantLocale);
+
+        if (isEmpty(title)) {
+          noTitleError[currentTenantLocale] = formatMessage(messages.noTitleErrorMessage);
           hasErrors = true;
         }
       });
@@ -573,10 +587,14 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
     if (project && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
       try {
+        this.setState({ processingDelete: true });
         await deleteProject(project.data.id);
         clHistory.push('/admin/projects');
       } catch {
-        this.setState({ deleteError: formatMessage(messages.deleteProjectError) });
+        this.setState({
+          processingDelete: false,
+          deleteError: formatMessage(messages.deleteProjectError)
+        });
       }
     }
   }
@@ -598,7 +616,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       areasOptions,
       areaType,
       submitState,
-      apiErrors
+      apiErrors,
+      processingDelete
     } = this.state;
 
     if (!loading && currentTenant && locale) {
@@ -791,10 +810,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
                   </Label>
-                  <SemButton type="button" color="red" onClick={this.deleteProject} disabled={project.data.attributes.internal_role === 'open_idea_box'}>
-                    <SemIcon name="trash" />
-                    <FormattedMessage {...messages.deleteProjectButton} />
-                  </SemButton>
+                  <ButtonWrapper>
+                    <Button
+                      icon="delete"
+                      style="delete"
+                      onClick={this.deleteProject}
+                      processing={processingDelete}
+                      disabled={project.data.attributes.internal_role === 'open_idea_box'}
+                    >
+                      <FormattedMessage {...messages.deleteProjectButton} />
+                    </Button>
+                  </ButtonWrapper>
                   <Error text={this.state.deleteError} />
                 </SectionField>
               </HasPermission>

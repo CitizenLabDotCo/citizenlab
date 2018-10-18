@@ -59,6 +59,7 @@ const Wrapper = styled.div`
     top: 69px !important;
     left: -1px !important;
   }
+
   .CalendarMonth_caption {
     color: inherit;
   }
@@ -109,10 +110,6 @@ class DateTimePicker extends React.PureComponent<Props, State> {
   componentDidMount() {
     // Update the parent component value, useful when initializing a new picker
     this.updateDateTime(this.state.selectedMoment);
-  }
-
-  componentDidCatch(error) {
-    console.log(error);
   }
 
   updateDateTime = (newMoment: moment.Moment) => {

@@ -30,8 +30,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
   margin-left: auto;
   margin-right: auto;
 

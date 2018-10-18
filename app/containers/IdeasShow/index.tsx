@@ -125,8 +125,8 @@ const IdeaContainer = styled.div`
   padding: 0;
   padding-top: 60px;
   padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
