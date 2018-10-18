@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { indexOf, isString, forEach } from 'lodash-es';
+import { indexOf, isString, forEach, findIndex } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import moment from 'moment';
@@ -29,6 +29,8 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 
+const padding = 30;
+const mobilePadding = 20;
 const greyTransparent = css`rgba(116, 116, 116, 0.3)`;
 const greyOpaque = `${colors.label}`;
 const greenTransparent = css`rgba(4, 136, 76, 0.3)`;
@@ -39,9 +41,6 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
 `;
-
-const padding = 30;
-const mobilePadding = 20;
 
 const ContainerInner = styled.div`
   width: 100%;
@@ -57,30 +56,44 @@ const ContainerInner = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  /*
   height: 0; // For IE11, which has trouble with vertical centering without a set height
   min-height: 70px;
+  */
   background-color: #fff;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 8px;
   padding-bottom: 8px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   border-bottom: solid 1px ${colors.separation};
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     padding-left: ${mobilePadding}px;
     padding-right: ${mobilePadding}px;
   `}
 `;
 
-const HeaderSectionsWrapper = styled.div`
+const HeaderRow = styled.div`
+  flex: 1;
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const HeaderFirstRow = HeaderRow.extend``;
+
+const HeaderSecondRow = HeaderRow.extend`
+  padding-top: 20px;
+  padding-bottom: 10px;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const HeaderSection = styled.div`
@@ -104,8 +117,8 @@ const PhaseSummary = styled.div`
 
 const PhaseNumberWrapper = styled.div`
   flex: 0 0 auto;
-  width: 31px;
-  height: 31px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +135,7 @@ const PhaseNumber = styled.div`
   color: #fff;
   font-size: ${fontSizes.base}px;
   line-height: 16px;
-  font-weight: 400;
+  font-weight: 500;
   margin: 0;
   padding: 0;
 `;
@@ -132,20 +145,23 @@ const HeaderTitleWrapper = styled.div`
   flex-direction: column;
   margin-right: 15px;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     margin-right: 0px;
   `}
 `;
 
 const HeaderTitle = styled.h2`
+  min-height: 60px;
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
   line-height: 25px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
   margin-right: 20px;
   margin-bottom: 0;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
     line-height: 24px;
   `}
@@ -156,20 +172,11 @@ const MobileDate = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 2px;
+  margin-top: 0px;
   display: none;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     display: block;
-  `}
-`;
-
-const IdeaButtonMobile: any = styled(IdeaButton)`
-  margin-top: 15px;
-  margin-bottom: 10px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
   `}
 `;
 
@@ -188,7 +195,7 @@ const HeaderDate = styled.div`
   line-height: 16px;
   white-space: nowrap;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
@@ -231,7 +238,7 @@ const Phases = styled.div`
   flex-direction: row;
   flex-wrap: nowrap;
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
@@ -286,10 +293,12 @@ const selectedPhaseBar = css`
   ${PhaseBar} { background: ${greyOpaque}; }
   ${PhaseText} { color: ${greyOpaque}; }
 `;
+
 const currentPhaseBar = css`
   ${PhaseBar} { background: ${greenTransparent}; }
   ${PhaseText} { color: ${greenTransparent}; }
 `;
+
 const currentSelectedPhaseBar = css`
   ${PhaseBar} { background: ${greenOpaque}; }
   ${PhaseText} { color: ${greenOpaque}; }
@@ -450,11 +459,21 @@ export default class Timeline extends PureComponent<Props, State> {
   }
 
   goToNextPhase = () => {
-    // todo
+    const { selectedPhaseId } = this.state;
+    const phases = this.state.phases as IPhases;
+    const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
+    const nextPhaseIndex = phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
+    const nextPhaseId = phases.data[nextPhaseIndex].id;
+    this.setSelectedPhaseId(nextPhaseId);
   }
 
   goToPreviousPhase = () => {
-    // todo
+    const { selectedPhaseId } = this.state;
+    const phases = this.state.phases as IPhases;
+    const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
+    const prevPhaseIndex = selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
+    const prevPhaseId = phases.data[prevPhaseIndex].id;
+    this.setSelectedPhaseId(prevPhaseId);
   }
 
   render() {
@@ -476,7 +495,7 @@ export default class Timeline extends PureComponent<Props, State> {
         <Container className={className}>
           <ContainerInner>
             <Header>
-              <HeaderSectionsWrapper>
+              <HeaderFirstRow>
                 <HeaderLeftSection>
                   <PhaseSummary>
                     {isSelected &&
@@ -550,13 +569,16 @@ export default class Timeline extends PureComponent<Props, State> {
                     />
                   </MobilePhaseNavigation>
                 </HeaderRightSection>
-              </HeaderSectionsWrapper>
+              </HeaderFirstRow>
 
-              <IdeaButtonMobile
-                size="1"
-                projectId={this.props.projectId}
-                phaseId={selectedPhaseId}
-              />
+              <HeaderSecondRow>
+                <IdeaButton
+                  size="1"
+                  projectId={this.props.projectId}
+                  phaseId={selectedPhaseId || undefined}
+                  fullWidth={true}
+                />
+              </HeaderSecondRow>
             </Header>
 
             <Phases>

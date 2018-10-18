@@ -45,8 +45,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: fixed;
   top: 0;
   background: #fff;
@@ -233,10 +233,6 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
 `;
 
 const RightItem: any = styled.div`

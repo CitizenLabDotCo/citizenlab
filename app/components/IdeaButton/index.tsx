@@ -20,6 +20,7 @@ type Props = {
   phaseId?: string | undefined;
   style?: ButtonStyles;
   size?: '1' | '2' | '3' | '4';
+  fullWidth?: boolean;
   padding?: string;
 };
 
@@ -33,8 +34,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   phaseId$: BehaviorSubject<string | undefined>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       project: undefined,
       phase: undefined
@@ -96,12 +97,13 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
     const { show, enabled } = postingButtonState({ project, phase });
 
     if (show) {
-      let { style, size } = this.props;
+      let { style, size, fullWidth } = this.props;
       const { padding } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
 
       style = (style || 'primary');
       size = (size || '1');
+      fullWidth = (fullWidth || false);
 
       return (
         <Button
@@ -112,6 +114,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
           padding={padding}
           text={startAnIdeaText}
           disabled={!enabled}
+          fullWidth={fullWidth}
         />
       );
     }

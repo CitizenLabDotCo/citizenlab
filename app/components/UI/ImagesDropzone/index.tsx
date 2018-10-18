@@ -297,22 +297,18 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillUnmount() {
-    const { images } = this.props;
-
-    if (images && images.length > 0) {
-      for (let i = 0; i < images.length; i += 1) {
-        const image  = images[i];
-
-        if (image && image['objectUrl']) {
-          revokeObjectURL(image['objectUrl']);
-        }
-      }
-    }
+    this.revokeObjectUrls(this.state.images);
   }
 
   async componentDidUpdate(prevProps: Props) {
     if (!shallowCompare(prevProps, this.props)) {
-      const images = (this.props.images !== this.state.images ? await this.getImageFiles(this.props.images) : this.state.images);
+      let images = this.state.images;
+
+      if (this.props.images !== this.state.images) {
+        this.revokeObjectUrls(this.state.images);
+        images = await this.getImageFiles(this.props.images);
+      }
+
       const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
       const processing = (this.state.canAnimate && !errorMessage && size(images) > size(this.state.images));
 
@@ -335,14 +331,23 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
           images[i].base64 = await getBase64FromFile(images[i]);
         }
 
-        if (!images[i].url && !images[i]['objectUrl']) {
-          images[i]['objectUrl'] = createObjectUrl(images[i]);
-          images[i].url = images[i]['objectUrl'];
+        if (!images[i].url) {
+          images[i].url = createObjectUrl(images[i]);
         }
       }
     }
 
     return images;
+  }
+
+  revokeObjectUrls = (images: UploadFile[] | null) => {
+    if (images && images.length > 0) {
+      for (let i = 0; i < images.length; i += 1) {
+        if (images[i].url && images[i].url.startsWith('blob:')) {
+          revokeObjectURL(images[i].url);
+        }
+      }
+    }
   }
 
   onDrop = async (images: UploadFile[]) => {

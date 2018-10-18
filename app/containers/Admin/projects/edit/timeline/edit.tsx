@@ -268,6 +268,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
   handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     this.setState({
+      submitState: 'enabled',
       attributeDiff: this.getAttributeDiff(participationContextConfig)
     });
   }

@@ -20,7 +20,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
+import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -29,10 +29,14 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const Information = styled.div`
   border-radius: 5px;
-  background-color: #F1F2F3;
+  background-color: #f1f2f3;
   padding: 25px 30px 30px;
-  margin-top: 45px;
+  margin-top: 30px;
   margin-bottom: 20px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+  `}
 `;
 
 const InformationTitle = styled.h2`
@@ -61,7 +65,7 @@ const InformationBody = styled.div`
 const IdeasWrapper = styled.div``;
 
 const StyledExpensesBox = styled(ExpensesBox)`
-  margin-bottom: 50px;
+  margin-bottom: 75px;
 `;
 
 interface InputProps {

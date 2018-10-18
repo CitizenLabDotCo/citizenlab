@@ -25,20 +25,13 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMinTablet`
-    padding: 0;
+    height: 200px;
   `}
-
-  &.timeline {
-    ${media.smallerThanMinTablet`
-      height: 220px;
-      padding: 0;
-    `}
-  }
 `;
 
 const HeaderContent = styled.div`
@@ -53,6 +46,7 @@ const HeaderContent = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
+    margin-top: 0px;
   `}
 `;
 
