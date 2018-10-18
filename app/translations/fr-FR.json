@@ -255,6 +255,7 @@
   "app.containers.Admin.clusterViewer.fieldTitle": "Titre",
   "app.containers.Admin.clusterViewer.fieldTopics": "Thèmes",
   "app.containers.Admin.clusterViewer.level_area": "Lieux",
+  "app.containers.Admin.clusterViewer.level_clustering": "",
   "app.containers.Admin.clusterViewer.level_project": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.Admin.clusterViewer.level_topic": "Thèmes",
   "app.containers.Admin.clusterViewer.relative": "Relatif",

@@ -255,6 +255,7 @@
   "app.containers.Admin.clusterViewer.fieldTitle": "Überschrift",
   "app.containers.Admin.clusterViewer.fieldTopics": "Themen",
   "app.containers.Admin.clusterViewer.level_area": "Gebiete",
+  "app.containers.Admin.clusterViewer.level_clustering": "",
   "app.containers.Admin.clusterViewer.level_project": "Projekte",
   "app.containers.Admin.clusterViewer.level_topic": "Themen",
   "app.containers.Admin.clusterViewer.relative": "Relativ",
