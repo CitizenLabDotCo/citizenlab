@@ -233,6 +233,14 @@ export default defineMessages({
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
   },
+  spanModalLabelIdea: {
+    id: 'app.components.IdeasShow.spanModalLabelIdea',
+    defaultMessage: 'Report idea as spam : select reason',
+  },
+  spanModalLabelComment: {
+    id: 'app.components.IdeasShow.spanModalLabelComment',
+    defaultMessage: 'Report comment as spam : select reason',
+  },
   editIdea: {
     id: 'app.components.IdeasShow.editIdea',
     defaultMessage: 'Edit idea',
@@ -283,4 +291,3 @@ export default defineMessages({
     defaultMessage: 'Attachments',
   },
 });
-
