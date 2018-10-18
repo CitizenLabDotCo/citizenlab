@@ -73,6 +73,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
   renderQuill = (props) => {
     return (
       <FormikQuillMultiloc
+        label={<FormattedMessage {...messages.editContent} />}
         inAdmin
         {...props}
       />
@@ -132,7 +133,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             <Field
               name="body_multiloc"
               render={this.renderQuill}
-              label={<FormattedMessage {...messages.editContent} />}
               renderPerLocale={this.renderAdavancedEditorLink}
             />
             {touched.body_multiloc &&

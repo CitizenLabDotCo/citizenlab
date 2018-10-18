@@ -4,7 +4,6 @@ import { mapValues } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { isAdmin } from 'services/permissions/roles';
 
 interface IEvent {
@@ -150,7 +149,7 @@ export const initializeAnalytics = () => {
   // Initialize segments window.analytics object
   const contents = snippet.min({
     host: 'cdn.segment.com',
-    apiKey: CL_SEGMENT_API_KEY,
+    load: false,
     page: false,
   });
 
