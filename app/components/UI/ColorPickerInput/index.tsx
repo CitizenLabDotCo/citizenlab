@@ -31,6 +31,7 @@ const Color: any = styled.div`
 
 const StyledInput = styled(Input)`
   input {
+    cursor: pointer;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     border-left: none !important;
@@ -107,6 +108,7 @@ class ColorPickerInput extends React.Component<Props, State> {
             color={this.props.value}
           />
           <StyledInput
+            readOnly
             type="text"
             value={this.props.value}
             onFocus={this.open}
