@@ -135,7 +135,7 @@ resource "Comments" do
 
       describe do
         before do
-          project = create(:continuous_budgeting_project)
+          project = create(:continuous_budgeting_project, with_permissions: true)
           @idea.project = project
           @idea.save!
         end

@@ -5,6 +5,7 @@ class PermissionsService
   INFORMATION_ACTIONS = %w()
   IDEATION_ACTIONS = %w(posting voting commenting)
   SURVEY_ACTIONS = %w(taking_survey)
+  BUDGETING_ACTIONS = %w(posting voting commenting)
 
 
   def update_permissions_for participation_context
@@ -30,8 +31,5 @@ class PermissionsService
       permission.destroy! if !permission.valid?
     end
   end
-
-
-  private
 
 end

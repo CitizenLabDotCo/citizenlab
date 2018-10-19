@@ -36,13 +36,13 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.new(comment_params)
+    @comment = Comment.new comment_params
     @comment.idea_id = params[:idea_id]
     @comment.author ||= current_user
     authorize @comment
-    SideFxCommentService.new.before_create(@comment, current_user)
+    SideFxCommentService.new.before_create @comment, current_user
     if @comment.save
-      SideFxCommentService.new.after_create(@comment, current_user)
+      SideFxCommentService.new.after_create @comment, current_user
       render json: @comment, status: :created, include: ['author']
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
@@ -50,11 +50,11 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def update
-    @comment.attributes = permitted_attributes(@comment)
+    @comment.attributes = permitted_attributes @comment
     authorize @comment
-    SideFxCommentService.new.before_update(@comment, current_user)
+    SideFxCommentService.new.before_update @comment, current_user
     if @comment.save
-      SideFxCommentService.new.after_update(@comment, current_user)
+      SideFxCommentService.new.after_update @comment, current_user
       render json: @comment, status: :ok, include: ['author']
     else
       render json: { errors: @comment.errors.details }, status: :unprocessable_entity
