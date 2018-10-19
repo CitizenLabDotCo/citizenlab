@@ -53,7 +53,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_budgeting_phases
-    if budgeting? && project.phases.select(&:budgeting?).present?
+    if budgeting? && project.phases.where.not(id: id).select(&:budgeting?).present?
       errors.add(
         :base, :has_other_budgeting_phases, 
         message: 'has other budgeting phases'
