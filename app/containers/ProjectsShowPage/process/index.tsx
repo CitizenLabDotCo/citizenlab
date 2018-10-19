@@ -6,7 +6,11 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Header from '../Header';
 import Timeline from './Timeline';
-import Phase from './Phase';
+import PhaseAbout from './PhaseAbout';
+import PhaseAttachments from './PhaseAttachments';
+import PhaseExpenses from './PhaseExpenses';
+import PhaseSurvey from './PhaseSurvey';
+import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import Warning from 'components/UI/Warning';
@@ -24,8 +28,22 @@ import messages from '../../Admin/pages/messages';
 
 const Container = styled.div``;
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
+const StyledPhaseAbout = styled(PhaseAbout)`
+  margin-bottom: 25px;
+`;
+
+const StyledPhaseAttachments = styled(PhaseAttachments)`
+  margin-bottom: 25px;
+`;
+
+const StyledPhaseExpenses = styled(PhaseExpenses)`
+  margin-bottom: 25px;
+`;
+
+const StyledPhaseSurvey = styled(PhaseSurvey)``;
+
+const StyledPhaseIdeas = styled(PhaseIdeas)`
+  margin-bottom: 25px;
 `;
 
 interface InputProps {}
@@ -41,9 +59,8 @@ interface State {
 }
 
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
-
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       selectedPhaseId: null
     };
@@ -72,15 +89,16 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
           <ProjectModeratorIndicator projectId={project.id} />
 
-          {project.attributes.publication_status === 'archived' &&
-            <StyledContentContainer>
+          <ContentContainer>
+            {project.attributes.publication_status === 'archived' &&
               <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-            </StyledContentContainer>
-          }
-
-          {selectedPhaseId &&
-            <Phase phaseId={selectedPhaseId} />
-          }
+            }
+            <StyledPhaseAbout phaseId={selectedPhaseId} />
+            <StyledPhaseAttachments phaseId={selectedPhaseId} />
+            <StyledPhaseExpenses phaseId={selectedPhaseId} />
+            <StyledPhaseSurvey phaseId={selectedPhaseId} />
+            <StyledPhaseIdeas phaseId={selectedPhaseId} />
+          </ContentContainer>
 
           <EventsPreview projectId={project.id} />
         </Container>

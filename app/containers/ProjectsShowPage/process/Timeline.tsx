@@ -88,7 +88,7 @@ const HeaderRow = styled.div`
 const HeaderFirstRow = HeaderRow.extend``;
 
 const HeaderSecondRow = HeaderRow.extend`
-  padding-top: 20px;
+  padding-top: 15px;
   padding-bottom: 10px;
 
   ${media.biggerThanMinTablet`
@@ -136,22 +136,21 @@ const PhaseNumber = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 16px;
   font-weight: 500;
-  margin: 0;
-  padding: 0;
 `;
 
 const HeaderTitleWrapper = styled.div`
+  min-height: 55px;
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  margin-right: 15px;
 
   ${media.smallerThanMinTablet`
+    min-height: 80px;
     margin-right: 0px;
   `}
 `;
 
 const HeaderTitle = styled.h2`
-  min-height: 60px;
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
   line-height: 25px;
@@ -172,7 +171,7 @@ const MobileDate = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 0px;
+  margin-top: 1px;
   display: none;
 
   ${media.smallerThanMinTablet`
@@ -216,7 +215,11 @@ const MobilePhaseNavigation = styled.div`
   `}
 `;
 
-const PhaseButton = styled(Button)``;
+const PhaseButton = styled(Button)`
+  &.disabled {
+    opacity: 0.2;
+  }
+`;
 
 const PreviousPhaseButton = PhaseButton.extend`
   margin-right: 9px;
@@ -229,7 +232,7 @@ const Phases = styled.div`
   max-width: 1200px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 40px;
   margin: 0;
   margin-left: auto;
@@ -490,6 +493,7 @@ export default class Timeline extends PureComponent<Props, State> {
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
       const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
+      const lastPhaseIndex = phases.data.length - 1;
 
       return (
         <Container className={className}>
@@ -558,14 +562,14 @@ export default class Timeline extends PureComponent<Props, State> {
                       icon="chevron-left"
                       style="secondary"
                       padding="10px 6px"
-                      disabled={false}
+                      disabled={selectedPhaseId === phases.data[0].id}
                     />
                     <NextPhaseButton
                       onClick={this.goToNextPhase}
                       icon="chevron-right"
                       style="secondary"
                       padding="10px 6px"
-                      disabled={false}
+                      disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
                     />
                   </MobilePhaseNavigation>
                 </HeaderRightSection>

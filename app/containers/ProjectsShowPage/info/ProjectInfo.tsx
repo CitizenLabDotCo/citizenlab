@@ -36,7 +36,7 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 60px;
   `}
 `;
@@ -180,6 +180,7 @@ interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
   const { project, projectImages, projectFiles, intl: { formatMessage }, authUser } = props;
+
   if (isNilOrError(project)) return null;
 
   const projectUrl = location.href;

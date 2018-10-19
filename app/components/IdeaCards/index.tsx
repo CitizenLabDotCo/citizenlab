@@ -244,6 +244,7 @@ const LoadMoreButton = styled(Button)``;
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
+  className?: string;
 }
 
 interface Props extends InputProps, GetIdeasChildProps {}
@@ -291,14 +292,14 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   render() {
     const { selectedView } = this.state;
-    const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore } = this.props;
+    const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore, className } = this.props;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
 
     return (
-      <Container id="e2e-ideas-container">
+      <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
             <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
