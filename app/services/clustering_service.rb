@@ -69,17 +69,16 @@ class ClusteringService
       level = levels.first
       if level == 'clustering'
         api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
-        dump = NLP::TenantDumpService.new.dump(Tenant.current)
-        api.update_tenant(dump)
+          ).parsed_response.class
         clustering_items = api.ideas_clustering(
           Tenant.current.id, 
-          Tenant.current.settings.dig('core','locales').first, 
+          'nl', # TODO figure out a language
           idea_ids: idea_ids
           ).parsed_response.dig('data','items')
         clustering_levels_to_ids = {}
         clustering_items.each do |item|
           clustering_levels_to_ids[item['cluster']] ||= []
-          clustering_levels_to_ids[item['cluster']] += item['id']
+          clustering_levels_to_ids[item['cluster']] += [item['id']]
         end
         clustering_levels_to_ids
       else
@@ -147,8 +146,8 @@ class ClusteringService
 
   def clustering_to_cluster cluster_id
     {
-      type: "clustering",
-      id: cluster_id
+      type: "custom",
+      id: cluster_id.to_s
     }
   end
 end
