@@ -83,9 +83,14 @@ class Project < ApplicationRecord
     self.process_type == 'timeline'
   end
 
+  def archived?
+    publication_status == 'archived'
+  end
+
   def project
     self
   end
+
 
   private
 

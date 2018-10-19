@@ -64,6 +64,13 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'pages#by_slug'
       end
 
+      concern :participation_context do
+        # :action is already used as param, so we chose :permission_action instead
+        resources :permissions, param: :permission_action do
+          get 'groups_inclusion', on: :member
+        end
+      end
+
       # Events and phases are split in two because we cannot have a non-shallow
       # resource (i.e. files) nested in a shallow resource. File resources have
       # to be shallow so we can determine their container class. See e.g.
@@ -71,10 +78,10 @@ Rails.application.routes.draw do
       resources :events, only: [:show, :edit, :update, :destroy] do
         resources :files, defaults: {container_class: Event, file_class: EventFile}, shallow: false
       end
-      resources :phases, only: [:show, :edit, :update, :destroy] do
+      resources :phases, only: [:show, :edit, :update, :destroy], concerns: :participation_context, defaults: {parent_param: :phase_id} do
         resources :files, defaults: {container_class: Phase, file_class: PhaseFile}, shallow: false
       end
-      resources :projects do
+      resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
         resources :phases, only: [:index, :new, :create]
         resources :images, defaults: {container_class: Project, image_class: ProjectImage}

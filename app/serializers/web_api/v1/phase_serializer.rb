@@ -5,4 +5,7 @@ class WebApi::V1::PhaseSerializer < ActiveModel::Serializer
   attributes :participation_method, :posting_enabled, :commenting_enabled, :voting_enabled, :voting_method, :voting_limited_max, :presentation_mode, :survey_embed_url, :survey_service, :max_budget
   
   belongs_to :project
+
+  has_many :permissions
+
 end

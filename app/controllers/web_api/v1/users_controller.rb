@@ -88,7 +88,8 @@ class WebApi::V1::UsersController < ::ApplicationController
 
     if @user.save
       SideFxUserService.new.after_create(@user, current_user)
-      render json: @user, status: :created
+      permissions = Permission.for_user(@user)
+      render json: @user, status: :created, granted_permissions: permissions
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
@@ -96,6 +97,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
   def update
     user_params = permitted_attributes @user
+    permissions_before = Permission.for_user(@user)
     @user.assign_attributes user_params
     if user_params.keys.include?('avatar') && user_params['avatar'] == nil
       # setting the avatar attribute to nil will not remove the avatar
@@ -104,7 +106,8 @@ class WebApi::V1::UsersController < ::ApplicationController
     authorize @user
     if @user.save
       SideFxUserService.new.after_update(@user, current_user)
-      render json: @user, status: :ok
+      permissions = Permission.for_user(@user).where.not(id: permissions_before.ids)
+      render json: @user, include: ['granted_permissions', 'granted_permissions.permittable'], status: :ok, granted_permissions: permissions
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end

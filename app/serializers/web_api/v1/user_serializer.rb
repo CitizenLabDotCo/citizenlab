@@ -8,6 +8,9 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
 
   attribute :unread_notifications, if: :unread_notifications
 
+  has_many :granted_permissions, serializer: WebApi::V1::PermissionSerializer
+
+
   def view_private_attributes?
     Pundit.policy!(current_user, object).view_private_attributes?
   end
@@ -21,6 +24,10 @@ class WebApi::V1::UserSerializer < ActiveModel::Serializer
     # everytime the current_user is rendered, except if coming from the /me
     # endpoint
     instance_options[:unread_notifications] || (scope && scope.notifications.unread.count)
+  end
+
+  def granted_permissions
+    @instance_options[:granted_permissions]
   end
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180919144612) do
+ActiveRecord::Schema.define(version: 20181011143305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,15 @@ ActiveRecord::Schema.define(version: 20180919144612) do
     t.index ["slug"], name: "index_groups_on_slug"
   end
 
+  create_table "groups_permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "permission_id", null: false
+    t.uuid "group_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_groups_permissions_on_group_id"
+    t.index ["permission_id"], name: "index_groups_permissions_on_permission_id"
+  end
+
   create_table "groups_projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "project_id"
@@ -397,6 +406,17 @@ ActiveRecord::Schema.define(version: 20180919144612) do
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
+  create_table "permissions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "action", null: false
+    t.string "permitted_by", null: false
+    t.uuid "permittable_id", null: false
+    t.string "permittable_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["action"], name: "index_permissions_on_action"
+    t.index ["permittable_id"], name: "index_permissions_on_permittable_id"
+  end
+
   create_table "phase_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "phase_id"
     t.string "file"
@@ -551,6 +571,7 @@ ActiveRecord::Schema.define(version: 20180919144612) do
     t.string "invite_status"
     t.jsonb "custom_field_values", default: {}
     t.datetime "registration_completed_at"
+    t.index "lower((email)::text)", name: "users_unique_lower_email_idx", unique: true
     t.index ["email"], name: "index_users_on_email"
     t.index ["slug"], name: "index_users_on_slug", unique: true
   end
@@ -584,6 +605,8 @@ ActiveRecord::Schema.define(version: 20180919144612) do
   add_foreign_key "email_campaigns_deliveries", "email_campaigns_campaigns", column: "campaign_id"
   add_foreign_key "event_files", "events"
   add_foreign_key "events", "projects"
+  add_foreign_key "groups_permissions", "groups"
+  add_foreign_key "groups_permissions", "permissions"
   add_foreign_key "groups_projects", "groups"
   add_foreign_key "groups_projects", "projects"
   add_foreign_key "idea_files", "ideas"

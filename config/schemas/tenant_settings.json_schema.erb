@@ -390,6 +390,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "granular_permissions": {
+        "type": "object",
+        "description":  "Choose which users are permitted to take which actions (e.g. posting, voting) in which projects/phases",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "manual_emailing": {
         "type": "object",
         "description":  "Allows admins and moderators to send out direct email to groups of citizens",
