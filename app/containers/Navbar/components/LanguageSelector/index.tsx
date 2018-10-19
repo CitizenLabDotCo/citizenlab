@@ -13,6 +13,7 @@ import { updateUser } from 'services/users';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
@@ -103,6 +104,7 @@ const ListItem = styled.button`
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -132,6 +134,8 @@ class LanguageSelector extends React.PureComponent<Props, State> {
       updateUser(user.id, { locale }).then((user) => {
         updateLocale(user.data.attributes.locale);
       });
+    } else {
+      updateLocale(locale);
     }
 
     this.setState({ dropdownOpened: false });
@@ -139,10 +143,10 @@ class LanguageSelector extends React.PureComponent<Props, State> {
 
   render() {
     const { dropdownOpened } = this.state;
+    const { tenant, locale: currentLocale } = this.props;
 
-    if (!isNilOrError(this.props.tenant) && !isNilOrError(this.props.authUser)) {
-      const localeOptions = this.props.tenant.attributes.settings.core.locales;
-      const currentLocale = this.props.authUser.attributes.locale;
+    if (!isNilOrError(tenant) && !isNilOrError(currentLocale)) {
+      const localeOptions = tenant.attributes.settings.core.locales;
 
       return (
         <Container>
@@ -186,6 +190,7 @@ class LanguageSelector extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps>({
   tenant: <GetTenant />,
+  locale: <GetLocale />,
   authUser: <GetAuthUser />,
 });
 
