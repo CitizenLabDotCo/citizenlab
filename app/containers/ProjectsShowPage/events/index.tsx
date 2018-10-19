@@ -24,11 +24,15 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const EventsContainer = styled(ContentContainer)`
   background: #f9f9fa;
   padding-top: 50px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const Events = styled.div`

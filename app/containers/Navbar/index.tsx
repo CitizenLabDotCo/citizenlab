@@ -59,11 +59,6 @@ const Container = styled.div`
       top: auto;
     `}
   }
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
 `;
 
 const Left = styled.div`
@@ -419,12 +414,12 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-              <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <StyledIdeaButton style="secondary-outlined" size="1" />
-              </RightItem>
+            <RightItem className="addIdea" loggedIn={authUser !== null}>
+              <StyledIdeaButton style="secondary-outlined" size="1" />
+            </RightItem>
 
             {!authUser &&
-              <RightItem>
+              <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
                   <FormattedMessage {...messages.login} />
                 </LoginLink>
@@ -448,7 +443,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 <LanguageSelector />
               </RightItem>
             }
-
           </Right>
         </Container>
       </>

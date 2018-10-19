@@ -15,6 +15,7 @@ const Container = styled.div``;
 interface InputProps {
   surveyEmbedUrl?: string;
   surveyService?: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -27,13 +28,13 @@ interface State {}
 
 class Survey extends React.PureComponent<Props, State> {
   render() {
-    const { surveyEmbedUrl, surveyService, authUser } = this.props;
+    const { surveyEmbedUrl, surveyService, authUser, className } = this.props;
 
     if (surveyEmbedUrl && surveyService) {
       const email = (authUser ? authUser.attributes.email : null);
 
       return (
-        <Container className={this.props['className']}>
+        <Container className={className}>
           {surveyService === 'typeform' &&
             <TypeformSurvey
               typeformUrl={surveyEmbedUrl}
