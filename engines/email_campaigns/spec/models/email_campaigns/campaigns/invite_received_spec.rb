@@ -29,4 +29,16 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
       	).to eq(invite.id)
   	end
   end
+
+  describe "#apply_recipient_filters" do
+    let(:campaign) { create(:invite_received_campaign) }
+    let(:invite) { create(:invite) }
+    let(:activity) { create(:activity, item: invite, action: 'created', user: invite.inviter) }
+
+    it "does not filter out the invitee" do
+      recipients = campaign.apply_recipient_filters(activity: activity)
+
+      expect(recipients.where(id: invite.invitee.id).count).to eq 1
+    end
+  end
 end

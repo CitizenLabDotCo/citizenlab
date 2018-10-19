@@ -57,11 +57,16 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        granular_permissions: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 
     Apartment::Tenant.switch tenant.schema_name do
       TenantTemplateService.new.apply_template('en_tenant_template')
+      SideFxTenantService.new.after_apply_template(tenant, nil)
     end
 
     SideFxTenantService.new.after_create(tenant, nil)

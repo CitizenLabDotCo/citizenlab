@@ -15,13 +15,14 @@ module AdminApi
     end
 
     def create
-      @tenant = Tenant.new(tenant_params)
-      SideFxTenantService.new.before_create(@tenant, nil)
+      @tenant = Tenant.new tenant_params
+      SideFxTenantService.new.before_create @tenant, nil
       if @tenant.save
-        SideFxTenantService.new.after_create(@tenant, nil)
+        SideFxTenantService.new.after_create @tenant, nil
         Apartment::Tenant.switch(@tenant.schema_name) do
           TenantTemplateService.new.apply_template(params[:template] || 'base')
         end
+        SideFxTenantService.new.after_apply_template @tenant, nil
         render json: @tenant, status: :created
       else
         render json: {errors: @tenant.errors.details}, status: :unprocessable_entity

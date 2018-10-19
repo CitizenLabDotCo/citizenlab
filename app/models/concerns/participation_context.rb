@@ -10,6 +10,7 @@ module ParticipationContext
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
+    has_many :permissions, as: :permittable, dependent: :destroy
 
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
@@ -89,13 +90,13 @@ module ParticipationContext
   def is_participation_context?
     not is_timeline_project?
   end
+
   
   private
   
   def is_timeline_project?
     self.class == Project && self.timeline? 
   end
-
 
   def set_participation_method
     self.participation_method ||= 'ideation'

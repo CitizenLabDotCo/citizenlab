@@ -18,7 +18,7 @@ class TimelineService
     date = time.to_date
     if project.timeline?
       project.phases.find do |phase|
-        phase.start_at <= date && phase.end_at >= date.to_date
+        phase.start_at <= date && phase.end_at >= date
       end
     end
   end
