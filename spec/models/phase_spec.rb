@@ -77,4 +77,17 @@ RSpec.describe Phase, type: :model do
       expect(phase_right).to be_valid
     end
   end
+
+  describe "max_budget" do
+    it "can be updated in a project with just one phase" do
+      project = create(:project_with_current_phase, 
+        phases_config: {sequence: 'xc'},
+        current_phase_attrs: {participation_method: 'budgeting', max_budget: 1234} 
+        )
+      phase = project.phases.find_by participation_method: 'budgeting'
+
+      phase.max_budget = 9876
+      expect(phase).to be_valid
+    end
+  end
 end
