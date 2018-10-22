@@ -5,8 +5,10 @@ import * as serviceLocale from '../../services/locale';
 jest.spyOn(serviceLocale, 'getUrlLocale').mockReturnValue('fr-be');
 
 test('updates "/fr-BE" to "/nl-BE"', () => {
-  expect(updateLocationDescriptor('/fr-BE', 'nl-BE')).toBe({
+  expect(updateLocationDescriptor('/nl-BE', 'fr-BE')).toEqual({
     pathname: '/nl-BE',
-    state: 'nl-BE'
+    state: {
+      locale: 'fr-BE'
+    }
   });
 });
