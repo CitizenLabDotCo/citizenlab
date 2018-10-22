@@ -15,7 +15,24 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_time
-    serie = @@stats_service.group_by_time(User.active, 'registration_completed_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(
+      User.active,
+      'registration_completed_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+    render json: serie
+  end
+
+  def users_by_time_cumulative
+    serie = @@stats_service.group_by_time_cumulative(
+      User.active,
+      'registration_completed_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
     render json: serie
   end
 
@@ -102,6 +119,17 @@ class WebApi::V1::StatsController < ApplicationController
     render json: serie
   end
 
+  def ideas_by_time_cumulative
+    serie = @@stats_service.group_by_time_cumulative(
+      Idea,
+      'published_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+    render json: serie
+  end
+
   # ** comments ***
 
   def comments_count
@@ -114,7 +142,24 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def comments_by_time
-    serie = @@stats_service.group_by_time(Comment, 'created_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(
+      Comment,
+      'created_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+    render json: serie
+  end
+
+  def comments_by_time_cumulative
+    serie = @@stats_service.group_by_time_cumulative(
+      Comment,
+      'created_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
     render json: serie
   end
 
@@ -154,7 +199,24 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_time
-    serie = @@stats_service.group_by_time(votes_by_resource, 'created_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(
+      votes_by_resource,
+      'created_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+    render json: serie
+  end
+
+  def votes_by_time_cumulative
+    serie = @@stats_service.group_by_time_cumulative(
+      votes_by_resource,
+      'created_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
     render json: serie
   end
 
