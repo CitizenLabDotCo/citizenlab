@@ -1,6 +1,6 @@
-import updateLocationDescriptor from './updateLocationDescriptor';
+import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 
-import * as serviceLocale from '../../services/locale';
+import * as serviceLocale from 'services/locale';
 
 jest.spyOn(serviceLocale, 'getUrlLocale').mockReturnValue('fr-be');
 
