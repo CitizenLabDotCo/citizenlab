@@ -26,7 +26,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -155,8 +155,8 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     requiredFieldNames.filter((requiredFieldName) => {
       return (isNil(formData[requiredFieldName])
-              || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
-              || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
+        || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
+        || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
       );
     }).forEach((requiredFieldName) => {
       errors[requiredFieldName].addError(requiredErrorMessage);
@@ -267,17 +267,14 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   CustomFieldTemplate: any = (props: FieldProps) => {
-    const { id, label, description, rawErrors, children } = props;
+    const { id, label, description, rawErrors, children, required } = props;
     const errors: any = uniq(rawErrors);
-
     if (props.hidden !== true) {
       return (
         <SectionField>
           {(props.schema.type !== 'boolean') &&
             <>
-              {label && label.length > 0 &&
-                <Label htmlFor={id}>{label}</Label>
-              }
+              {renderLabel(id, label, required)}
 
               {description && description.props && description.props.description && description.props.description.length > 0 &&
                 <Description dangerouslySetInnerHTML={{ __html: description.props.description }} />
@@ -350,6 +347,22 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
       </Container>
     );
   }
+}
+function renderLabel(id, label, required) {
+  if (label && label.length > 0) {
+    return (
+      <Label htmlFor={id}>
+        {label}
+        {!required &&
+          <>
+            <span>&nbsp;</span>
+            <FormattedMessage {...messages.optional} />
+          </>
+        }
+      </Label>
+    );
+  }
+return;
 }
 
 export default injectIntl<Props>(CustomFieldsForm);
