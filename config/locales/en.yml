@@ -89,6 +89,10 @@ en:
   projects:
     open_idea_project_title: Open Idea Project
     open_idea_project_description: The ideas found here are not linked to a project.
+    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Then post it here, gather support and get it on the political agenda!
+  events:
+    council_meeting_title: Council Meeting
+    council_meeting_description: <p>During this council meeting, those citizen initiatives who gained 100 votes in less than 3 months, will be presented.</p><p>The council will then shed light on their perspective on each idea.</p>
   custom_fields:
     gender: Gender
     birthyear: Year of birth
