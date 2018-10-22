@@ -115,7 +115,13 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def ideas_by_time
-    serie = @@stats_service.group_by_time(Idea, 'published_at', @start_at, @end_at, params[:interval])
+    serie = @@stats_service.group_by_time(
+      Idea,
+      'published_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
     render json: serie
   end
 

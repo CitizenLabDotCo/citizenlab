@@ -14,11 +14,14 @@ class ParticipantsService
       end
       User.where(id: (ideas.distinct.pluck(:author_id) + comments.distinct.pluck(:author_id) + votes.distinct.pluck(:user_id)).uniq)
     else
-      activities = Activity.all
+      users = User
+        .joins(:activities)
+        .group('users.id')
       if since
-        activities = activities.where('acted_at::date >= (?)::date', since)
+        users.where("activities.acted_at::date >= ?", since)
+      else
+        users
       end
-      User.where(id: activities.distinct.pluck(:user_id))
     end
   end
 
