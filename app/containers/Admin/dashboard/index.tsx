@@ -20,7 +20,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
     const { formatMessage } = this.props.intl;
 
     const tabs = [
-      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard-summary' },
+      { label: formatMessage(messages.tabSummary), url: '/admin' },
       { label: formatMessage(messages.tabUsers), url: '/admin/dashboard-users' },
       { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' },
     ];
