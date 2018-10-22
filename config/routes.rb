@@ -120,6 +120,7 @@ Rails.application.routes.draw do
         get 'users_count'
         get 'users_by_time'
         get 'users_by_time_cumulative'
+        get 'active_users_by_time'
         get 'users_by_gender'
         get 'users_by_birthyear'
         get 'users_by_domicile'

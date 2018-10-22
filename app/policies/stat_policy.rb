@@ -12,6 +12,10 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def active_users_by_time?
+    user&.active? && user.admin?
+  end
+
   def users_by_gender?
     user&.active? && user.admin?
   end

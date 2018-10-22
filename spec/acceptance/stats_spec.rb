@@ -88,6 +88,34 @@ resource "Stats" do
       end
     end
 
+    get "web_api/v1/stats/active_users_by_time" do
+      explanation "Active users are users that have done anything on the platform within a 30-day window"
+      time_series_parameters self
+
+      before do
+        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
+          user = create(:user)
+          create_list(:activity, 2, user: user)
+          create(:activity)
+        end
+        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
+          create_list(:activity, 2)
+        end
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+
+      example_request "Active users by time" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 4
+      end
+    end
+
     get "web_api/v1/stats/users_by_gender" do
       time_boundary_parameters self
 

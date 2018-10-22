@@ -36,6 +36,17 @@ class WebApi::V1::StatsController < ApplicationController
     render json: serie
   end
 
+  def active_users_by_time
+    serie = @@stats_service.group_by_time(
+      Activity.select(:user_id).distinct,
+      'acted_at',
+      @start_at,
+      @end_at,
+      params[:interval]
+    )
+    render json: serie
+  end
+
   def users_by_gender
     serie = User
       .active
