@@ -6,6 +6,33 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  //NEW MESSAGES
+  tabSummary: {
+    id: 'app.containers.AdminPage.DashboardPage.tabSummary',
+    defaultMessage: 'Summary',
+  },
+  tabUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.tabUsers',
+    defaultMessage: 'Users',
+  },
+  tabAcquisition: {
+    id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
+    defaultMessage: 'Acquisition',
+  },
+  viewPublicResource: {
+    id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
+    defaultMessage: 'Dashboards',
+  },
+  //OLD MESSAGES CONFIRMED STILL IN USE
+  helmetTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
+    defaultMessage: 'Admin dashboard page',
+  },
+  helmetDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
+    defaultMessage: 'Dashboard for activities on the platform',
+  },
+  //OLD MESSAGES
   loading: {
     id: 'app.containers.AdminPage.DashboardPage.loading',
     defaultMessage: 'Loading...',
@@ -61,14 +88,6 @@ export default defineMessages({
   year: {
     id: 'app.containers.AdminPage.DashboardPage.year',
     defaultMessage: 'Year',
-  },
-  helmetTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
-    defaultMessage: 'Admin dashboard page',
-  },
-  helmetDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
-    defaultMessage: 'Dashboard for activities on the platform',
   },
   male: {
     id: 'app.containers.AdminPage.DashboardPage.male',
