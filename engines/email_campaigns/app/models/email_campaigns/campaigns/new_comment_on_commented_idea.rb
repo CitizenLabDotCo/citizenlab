@@ -2,8 +2,10 @@ module EmailCampaigns
   class Campaigns::NewCommentOnCommentedIdea < Campaign
     include ActivityTriggerable
     include RecipientConfigurable
+    include Disableable
 
     recipient_filter :filter_recipient
+
 
     def activity_triggers
       {'Comment' => {'created' => true}}
@@ -32,6 +34,13 @@ module EmailCampaigns
           }
         }
       }]
+    end
+
+
+    protected
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
     end
   end
 end
