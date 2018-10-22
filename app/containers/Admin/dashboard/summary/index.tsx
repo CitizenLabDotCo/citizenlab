@@ -92,6 +92,9 @@ interface Props {}
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
 }
 
 export default class DashboardPage extends PureComponent<Props, State> {
@@ -99,7 +102,10 @@ export default class DashboardPage extends PureComponent<Props, State> {
     super(props);
     this.state = {
       interval: 'months',
-      intervalIndex: 0
+      intervalIndex: 0,
+      currentProjectFilter: '',
+      currentGroupFilter: '',
+      currentTopicFilter: ''
     };
   }
 
@@ -109,6 +115,21 @@ export default class DashboardPage extends PureComponent<Props, State> {
 
   changeIntervalIndex = (intervalIndex: number) => {
     this.setState({ intervalIndex });
+  }
+
+  handleOnProjectFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentProjectFilter: filter });
+  }
+
+  handleOnGroupFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentGroupFilter: filter });
+  }
+
+  handleOnTopicFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentTopicFilter: filter });
   }
 
   chartTheme = (theme) => {
