@@ -1,7 +1,6 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: '',
   name: 'Admin dashboard',
   getComponent: loadAndRender(import('./')),
   indexRoute: {
@@ -9,7 +8,7 @@ export default () => ({
   },
   childRoutes: [
     {
-      path: 'dashboard-summary',
+      path: '',
       getComponent: loadAndRender(import('./summary')),
     },
     {
