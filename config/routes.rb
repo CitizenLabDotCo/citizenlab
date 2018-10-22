@@ -119,16 +119,19 @@ Rails.application.routes.draw do
       scope 'stats', controller: 'stats' do
         get 'users_count'
         get 'users_by_time'
+        get 'users_by_time_cumulative'
         get 'users_by_gender'
         get 'users_by_birthyear'
         get 'users_by_domicile'
         get 'users_by_education'
         get 'ideas_count'
         get 'ideas_by_time'
+        get 'ideas_by_time_cumulative'
         get 'ideas_by_topic'
         get 'ideas_by_area'
         get 'comments_count'
         get 'comments_by_time'
+        get 'comments_by_time_cumulative'
         get 'votes_count'
         get 'votes_by_birthyear'
         get 'votes_by_education'
@@ -136,6 +139,7 @@ Rails.application.routes.draw do
         get 'votes_by_gender'
         get 'votes_by_custom_field'
         get 'votes_by_time'
+        get 'votes_by_time_cumulative'
       end
 
       scope 'mentions', controller: 'mentions' do

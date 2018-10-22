@@ -25,16 +25,23 @@ resource "Stats" do
   end
 
   describe "users" do
-    before do
+    before(:each) do
       # we need the built in custom fields first, so lets run the base tenant template
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
-      create(:user, gender: nil)
-      create(:user, gender: 'male')
-      create(:user, gender: 'female')
-      create(:user, gender: 'unspecified')
-      create(:invited_user)
-      create_list(:user_with_demographics, 10)
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.days) do
+        create(:user)
+      end
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 10.days) do
+        create(:user, gender: nil)
+        create(:user, gender: 'male')
+        create(:user, gender: 'female')
+        create(:user, gender: 'unspecified')
+        create(:invited_user)
+      end
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 25.days) do
+        create_list(:user_with_demographics, 4)
+      end
     end
 
     get "web_api/v1/stats/users_count" do
@@ -59,6 +66,25 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_month.day
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 10
+      end
+    end
+
+    get "web_api/v1/stats/users_by_time_cumulative" do
+      time_series_parameters self
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+
+      example_request "Users by time (cumulative)" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        # monotonically increasing
+        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+        expect(json_response.values.last).to eq 11
       end
     end
 
@@ -120,10 +146,16 @@ resource "Stats" do
 
   describe "ideas" do
     before do
-      @ideas_with_topics = create_list(:idea_with_topics, 5)
-      @ideas_with_areas = create_list(:idea_with_areas, 5)
-      # Create one without areas and topics as well, for completeness
-      create(:idea)
+      travel_to Time.now.in_time_zone(@timezone).beginning_of_year - 1.months do
+        create(:idea)
+      end
+      travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 2.months do
+        @ideas_with_topics = create_list(:idea_with_topics, 5)
+      end
+      travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 5.months do
+        @ideas_with_areas = create_list(:idea_with_areas, 5)
+        create(:idea)
+      end
     end
 
     get "web_api/v1/stats/ideas_count" do
@@ -178,11 +210,46 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_year.yday
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 11
+      end
+    end
+
+    get "web_api/v1/stats/ideas_by_time_cumulative" do
+      time_series_parameters self
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:interval) { 'day' }
+
+      example_request "Ideas by time (published_at) cumulative" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_year.yday
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        # monotonically increasing
+        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+        expect(json_response.values.last).to eq Idea.published.count
       end
     end
   end
 
   describe "comments" do
+
+    before do
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.day) do
+        create(:comment)
+      end
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 1.day) do
+        create_list(:comment, 3)
+      end
+
+      travel_to(Time.now.in_time_zone(@timezone).end_of_month - 1.day) do
+        create_list(:comment, 2)
+      end
+      travel_to(Time.now.in_time_zone(@timezone).end_of_month + 1.day) do
+        create(:comment)
+      end
+    end
 
     get "web_api/v1/stats/comments_count" do
       time_boundary_parameters self
@@ -206,12 +273,30 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq start_at.end_of_month.day
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 5
+      end
+    end
+
+    get "web_api/v1/stats/comments_by_time_cumulative" do
+      time_series_parameters self
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+
+      example_request "Comments by time (cumulative)" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+        expect(json_response.values.last).to eq 6
       end
     end
   end
 
   describe "votes" do
-    before do
+    before(:each) do
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
       create_list(:vote, 6)
@@ -399,6 +484,25 @@ resource "Stats" do
         json_response = json_parse(response_body)
         expect(json_response.size).to eq 7
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 8
+      end
+    end
+
+    get "web_api/v1/stats/votes_by_time_cumulative" do
+      time_series_parameters self
+      parameter :resource, "Either Idea or Comment. If not provided, all votes are taken.", required: false
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      let(:interval) { 'day' }
+
+      example_request "Votes by time (cumulative)" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq 7
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+        expect(json_response.values.last).to eq 8
       end
     end
   end
