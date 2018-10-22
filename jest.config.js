@@ -58,26 +58,27 @@ module.exports = {
   // globals: {},
   globals: {
     "ts-jest": {
-      "diagnostics": {
-        "warnOnly": true
-      },
-      "babelConfig": true
+      "tsConfigFile": "<rootDir>/app/tsconfig.json",
+      // "babelConfig": true,
+      // "useBabelrc": true
     }
   },
 
   // An array of directory names to be searched recursively up from the requiring module's location
   moduleDirectories: [
-    "node_modules",
-    "app"
+    "./node_modules",
+    "./app"
   ],
 
   // An array of file extensions your modules use
-  // moduleFileExtensions: [
-  //   "js",
-  //   "json",
-  //   "jsx",
-  //   "node"
-  // ],
+  moduleFileExtensions: [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json",
+    "node"
+  ],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
@@ -93,8 +94,8 @@ module.exports = {
   // notifyMode: "always",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: null,
-  preset: 'ts-jest/presets/js-with-babel',
+  preset: null,
+  // preset: 'ts-jest/presets/js-with-babel',
 
   // Run tests from one or more projects
   // projects: null,
@@ -119,7 +120,7 @@ module.exports = {
 
   // A list of paths to directories that Jest should use to search for files in
   roots: [
-    "<rootDir>",
+    // "<rootDir>",
     "<rootDir>/app"
   ],
 
@@ -146,10 +147,9 @@ module.exports = {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  // testMatch: [
-  //   "**/__tests__/**/*.js?(x)",
-  //   "**/?(*.)+(spec|test).js?(x)"
-  // ],
+  testMatch: [
+    "**/?(*.)+(spec|test).(js|jsx|ts|tsx)"
+  ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
@@ -174,8 +174,13 @@ module.exports = {
   // A map from regular expressions to paths to transformers
   // transform: null,
   transform: {
-    "^.+\\.js$": "babel-jest",
-    "^.+\\.ts$": "ts-jest"
+    // "^.+\\.js$": "babel-jest",
+    // "^.+\\.ts$": "ts-jest",
+    "^.+\\.(ts|tsx)$": "ts-jest",
+    // "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+    // "^.+\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest",
+    // "^.+\\.(j|t)sx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js",
+    // "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
@@ -183,7 +188,8 @@ module.exports = {
   //   "/node_modules/"
   // ],
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!lodash-es)"
+    // "<rootDir>/node_modules/(?!lodash-es)",
+    // "<rootDir>/node_modules/(?!lodash-es/.*)"
   ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
