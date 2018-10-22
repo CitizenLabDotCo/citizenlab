@@ -19,8 +19,8 @@ export default () => ({
   path: 'admin',
   name: 'Admin page',
   getComponent: loadAndRender(import('containers/Admin')),
-  indexRoute: dashboardRoutes(),
   childRoutes: [
+    dashboardRoutes(),
     ideasRoutes(),
     usersRoutes(),
     projectsRoutes(),
