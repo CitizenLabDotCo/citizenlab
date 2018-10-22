@@ -28,7 +28,7 @@
     "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie",
     "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
-    "test": "jest --no-cache"
+    "test": "jest"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
@@ -101,6 +101,7 @@
     "@babel/plugin-proposal-class-properties": "7.1.0",
     "@babel/plugin-proposal-object-rest-spread": "7.0.0",
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "7.1.0",
     "@babel/plugin-transform-runtime": "7.1.0",
     "@babel/preset-env": "7.1.0",
     "@babel/preset-react": "7.0.0",
@@ -133,7 +134,7 @@
     "@types/segment-analytics": "0.0.28",
     "@types/shelljs": "0.8.0",
     "@types/webpack": "4.4.12",
-    "babel-core": "^7.0.0-bridge.0",
+    "babel-core": "7.0.0-bridge.0",
     "babel-jest": "23.6.0",
     "babel-loader": "8.0.4",
     "babel-plugin-module-resolver": "3.1.1",
