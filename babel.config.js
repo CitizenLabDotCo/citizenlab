@@ -1,4 +1,6 @@
 module.exports = function (api) {
+  api.cache(api.env('development'));
+
   const presets = [
     [
       "@babel/preset-env",
@@ -18,8 +20,6 @@ module.exports = function (api) {
     "@babel/proposal-object-rest-spread",
     "@babel/plugin-transform-runtime"
   ];
-
-  api.cache(true);
 
   return {
     presets,
