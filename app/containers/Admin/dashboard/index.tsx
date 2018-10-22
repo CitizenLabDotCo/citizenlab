@@ -15,6 +15,7 @@ import IdeasByTimeChart from './components/IdeasByTimeChart';
 import UsersByTimeChart from './components/UsersByTimeChart';
 import IdeasByTopicChart from './components/IdeasByTopicChart';
 import { colors, fontSizes } from 'utils/styleUtils';
+import ChartFilters from './components/ChartFilters';
 
 const Container = styled.div``;
 
@@ -93,6 +94,9 @@ interface Props {}
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
 }
 
 export default class DashboardPage extends PureComponent<Props, State> {
@@ -100,7 +104,10 @@ export default class DashboardPage extends PureComponent<Props, State> {
     super(props);
     this.state = {
       interval: 'months',
-      intervalIndex: 0
+      intervalIndex: 0,
+      currentProjectFilter: '',
+      currentGroupFilter: '',
+      currentTopicFilter: ''
     };
   }
 
@@ -121,6 +128,21 @@ export default class DashboardPage extends PureComponent<Props, State> {
       chartLabelColor: colors.adminSecondaryTextColor,
       chartLabelSize: 13
     };
+  }
+
+  handleOnProjectFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentProjectFilter: filter });
+  }
+
+  handleOnGroupFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentGroupFilter: filter });
+  }
+
+  handleOnTopicFilter = (filter) => {
+    // To be implemented
+    this.setState({ currentTopicFilter: filter });
   }
 
   render() {
@@ -163,6 +185,18 @@ export default class DashboardPage extends PureComponent<Props, State> {
             onChange={this.changeInterval}
           />
         </ControlBar>
+
+        <ChartFilters
+          currentProjectFilter={this.state.currentProjectFilter}
+          currentGroupFilter={this.state.currentGroupFilter}
+          currentTopicFilter={this.state.currentTopicFilter}
+          projectFilterOptions={['Project A', 'Project B']}
+          groupFilterOptions={['Group A', 'Group B']}
+          topicFilterOptions={['Topic A', 'Topic B']}
+          onProjectFilter={this.handleOnProjectFilter}
+          onGroupFilter={this.handleOnGroupFilter}
+          onTopicFilter={this.handleOnTopicFilter}
+        />
 
         <ThemeProvider theme={this.chartTheme}>
           <GraphsContainer>
