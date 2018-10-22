@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -28,7 +28,6 @@ import { Locale } from 'typings';
 const Container = styled.div`
   position: relative;
   cursor: pointer;
-
   * {
     user-select: none;
   }
@@ -45,20 +44,18 @@ const DropdownItemIcon = styled(Icon)`
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 17px;
+  line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
   outline: none;
-
   &:hover,
   &:focus {
     color: #000;
-
     ${DropdownItemIcon} {
       fill: #000;
     }
@@ -67,7 +64,7 @@ const OpenMenuButton = styled.button`
 
 const ListItemText = styled.div`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
@@ -86,16 +83,13 @@ const ListItem = styled.button`
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
-
   &.last {
     margin-bottom: 0px;
   }
-
   &:hover,
   &:focus,
   &.active {
     background: ${colors.clDropdownHoverBackground};
-
     ${ListItemText} {
       color: #000;
     }
@@ -104,8 +98,8 @@ const ListItem = styled.button`
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  locale: GetLocaleChildProps;
 }
 
 interface Props extends DataProps {}
@@ -114,9 +108,9 @@ type State = {
   dropdownOpened: boolean;
 };
 
-class LanguageSelector extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
+class LanguageSelector extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       dropdownOpened: false
     };
@@ -127,31 +121,30 @@ class LanguageSelector extends React.PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleLanguageSelect = (locale: Locale) => () => {
-    const { authUser: user } = this.props;
+  handleLanguageSelect = (selectedLocale: Locale) => () => {
+    const { authUser } = this.props;
 
-    if (!isNilOrError(user)) {
-      updateUser(user.id, { locale }).then((user) => {
-        updateLocale(user.data.attributes.locale);
-      });
-    } else {
-      updateLocale(locale);
+    updateLocale(selectedLocale);
+
+    if (!isNilOrError(authUser)) {
+      updateUser(authUser.id, { locale: selectedLocale });
     }
 
     this.setState({ dropdownOpened: false });
   }
 
   render() {
+    const { tenant, locale } = this.props;
     const { dropdownOpened } = this.state;
-    const { tenant, locale: currentLocale } = this.props;
 
-    if (!isNilOrError(tenant) && !isNilOrError(currentLocale)) {
-      const localeOptions = tenant.attributes.settings.core.locales;
+    if (!isNilOrError(tenant) && !isNilOrError(locale)) {
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const currentlySelectedLocale = locale;
 
       return (
         <Container>
           <OpenMenuButton onClick={this.toggleDropdown}>
-            {currentLocale.substr(0, 2).toUpperCase()}
+            {currentlySelectedLocale.substr(0, 2).toUpperCase()}
             <DropdownItemIcon name="dropdown" />
           </OpenMenuButton>
 
@@ -164,16 +157,16 @@ class LanguageSelector extends React.PureComponent<Props, State> {
             onClickOutside={this.toggleDropdown}
             content={(
               <>
-                {localeOptions.map((locale, index) => {
-                  const last = (index === localeOptions.length - 1);
+                {tenantLocales.map((tenantLocale, index) => {
+                  const last = (index === tenantLocales.length - 1);
 
                   return (
                     <ListItem
-                      key={locale}
-                      onClick={this.handleLanguageSelect(locale)}
-                      className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                      key={tenantLocale}
+                      onClick={this.handleLanguageSelect(tenantLocale)}
+                      className={`${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
                     >
-                      <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
+                      <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
                     </ListItem>
                   );
                 })}
@@ -183,17 +176,14 @@ class LanguageSelector extends React.PureComponent<Props, State> {
         </Container>
       );
     }
-
     return null;
   }
 }
-
 const Data = adopt<DataProps>({
   tenant: <GetTenant />,
-  locale: <GetLocale />,
   authUser: <GetAuthUser />,
+  locale: <GetLocale />
 });
-
 export default () => (
   <Data>
     {dataProps => <LanguageSelector {...dataProps} />}
