@@ -25,7 +25,11 @@ class TextImageService
       end
 
     doc.css("img")
-      .select{|img| img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/}
+      .select do |img| 
+        ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
+          !img.attr('src').start_with?(FrontendService.new.home_url)
+          )
+      end
       .each do |img|
         old_url = img.attr('src')
         new_url = yield(old_url, :url)
