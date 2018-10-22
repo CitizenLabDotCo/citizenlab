@@ -1,7 +1,7 @@
 import { isString } from 'lodash-es';
-import { getUrlLocale } from '../../services/locale';
+import { getUrlLocale } from 'services/locale';
 import { LocationDescriptor } from 'history';
-import { Locale } from '../../typings';
+import { Locale } from 'typings';
 
 export default function updateLocationDescriptor(location: LocationDescriptor, locale: Locale) {
   const descriptor = (isString(location) ? { pathname: location } : location);
