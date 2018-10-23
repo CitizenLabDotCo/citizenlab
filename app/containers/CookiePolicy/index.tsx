@@ -1,34 +1,32 @@
+// libraries
 import React from 'react';
-import { adopt } from 'react-adopt';
-import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
+import Helmet from 'react-helmet';
+
+// i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import T from 'components/T';
-import styled from 'styled-components';
+
+// events
 import eventEmitter from 'utils/eventEmitter';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { darken } from 'polished';
-import Helmet from 'react-helmet';
+
+// services
+import { LEGAL_PAGES } from 'services/pages';
 
 // components
-
+import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
-import FileAttachments from 'components/UI/FileAttachments';
 
-// services
-import { PageLink } from 'services/pageLink';
+// styles
+import styled from 'styled-components';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { darken } from 'polished';
 
-// resources
-import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetPageLinks, { GetPageLinksChildProps } from 'resources/GetPageLinks';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
-
-const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
+// these styled components should be imported from PagesShowPage for consistency.
+// but : https://github.com/styled-components/styled-components/issues/1063
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -46,14 +44,6 @@ const SContentContainer = styled(ContentContainer)`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
-`;
-
-const AttachmentsContainer = styled.div`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 30px;
-  padding-right: 30px;
 `;
 
 const PageContent = styled.div`
@@ -94,13 +84,13 @@ const PageDescription = styled.div`
   }
 
   h2 {
-    padding-top: 20px;
+    padding-top: 30px;
     font-size: ${fontSizes.xxl}px;
     line-height: 33px;
     font-weight: 600;
   }
-  h2 {
-    padding-top: 10px;
+  h3 {
+    padding-top: 20px;
     font-size: ${fontSizes.xl}px;
     line-height: 30px;
     font-weight: 600;
@@ -180,19 +170,10 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps { }
+const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-interface DataProps {
-  page: GetPageChildProps;
-  pageFiles: GetResourceFilesChildProps;
-  pageLinks: GetPageLinksChildProps;
-}
-
-interface Props extends InputProps, DataProps { }
-
-const CookiePolicy = (props: Props & InjectedIntlProps) => {
+const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
-  const { pageFiles, pageLinks } = props;
   return (
     <Container>
       <Helmet>
@@ -225,7 +206,7 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
                 {...messages.whoAreWeContent}
                 values={{
                   citizenLabLink: (
-                    <a href={formatMessage(messages.citizenLabHref)}>
+                    <a target="_blank" href={formatMessage(messages.citizenLabHref)}>
                       CitizenLab
                     </a>
                   )
@@ -237,7 +218,7 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
                 {...messages.whatAreCookiesContent}
                 values={{
                   wikipediaCookieLink: (
-                    <a href={props.intl.formatMessage(messages.wikipediaCookieLinkHref)}>
+                    <a target="_blank" href={props.intl.formatMessage(messages.wikipediaCookieLinkHref)}>
                       {formatMessage(messages.wikipediaCookieLinkText)}
                     </a>
                   )
@@ -251,7 +232,7 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
                 {...messages.analyticsContent}
                 values={{
                   analyticsLink: (
-                    <a href={formatMessage(messages.analyticsHref)}>
+                    <a target="_blank" href={formatMessage(messages.analyticsHref)}>
                       {formatMessage(messages.analyticsLinkText)}
                     </a>
                   )
@@ -263,7 +244,7 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
                 {...messages.advertisingContent}
                 values={{
                   advertisingLink: (
-                    <a href={formatMessage(messages.advertisingHref)}>
+                    <a target="_blank" href={formatMessage(messages.advertisingHref)}>
                       {formatMessage(messages.advertisingLinkText)}
                     </a>
                   )
@@ -275,7 +256,7 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
                 {...messages.functionalContent}
                 values={{
                   functionalLink: (
-                    <a href={formatMessage(messages.functionalHref)}>
+                    <a target="_blank" href={formatMessage(messages.functionalHref)}>
                       {formatMessage(messages.functionalLinkText)}
                     </a>
                   )
@@ -296,20 +277,14 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
             </PageDescription>
           </Fragment>
         </SContentContainer>
-        <AttachmentsContainer>
-          {pageFiles && !isNilOrError(pageFiles) &&
-            <FileAttachments files={pageFiles} />
-          }
-        </AttachmentsContainer>
       </PageContent>
 
-      {!isNilOrError(pageLinks) &&
         <PagesNavWrapper>
           <PagesNav>
             <SContentContainer>
-              {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
-                  <T value={pageLink.attributes.linked_page_title_multiloc} />
+              {LEGAL_PAGES.map((pageSlug) => (
+                <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
+                  <FormattedMessage {...messages[`${pageSlug}PageName`]} />
                   <LinkIcon name="chevron-right" />
                 </StyledLink>
               ))}
@@ -323,16 +298,4 @@ const CookiePolicy = (props: Props & InjectedIntlProps) => {
   );
 };
 
-const Data = adopt<DataProps>({
-  page: ({ render }) => <GetPage slug="cookie-policy">{render}</GetPage>,
-  pageFiles: ({ page, render }) => <GetResourceFiles resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFiles>,
-  pageLinks: ({ page, render }) => <GetPageLinks pageId={(!isNilOrError(page) ? page.id : null)}>{render}</GetPageLinks>,
-});
-
-const CokiePolicyWithHoc = injectIntl(CookiePolicy);
-
-export default () => (
-  <Data>
-    {dataProps => <CokiePolicyWithHoc {...dataProps} />}
-  </Data>
-);
+export default injectIntl(CookiePolicy);
