@@ -17,6 +17,8 @@ import IdeasByTopicChart from './components/IdeasByTopicChart';
 import { colors, fontSizes } from 'utils/styleUtils';
 import ChartFilters from './components/ChartFilters';
 
+import { IOption } from 'typings';
+
 const Container = styled.div``;
 
 const StyledWarning = styled(Warning)`
@@ -26,6 +28,7 @@ const StyledWarning = styled(Warning)`
 const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 `;
 
 const GraphsContainer = styled.div`
@@ -94,7 +97,7 @@ interface Props {}
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentProjectFilter: string;
+  currentProjectFilter: IOption;
   currentGroupFilter: string;
   currentTopicFilter: string;
 }
@@ -105,7 +108,7 @@ export default class DashboardPage extends PureComponent<Props, State> {
     this.state = {
       interval: 'months',
       intervalIndex: 0,
-      currentProjectFilter: '',
+      currentProjectFilter: { label: 'Project A', value: 'projecta' },
       currentGroupFilter: '',
       currentTopicFilter: ''
     };
@@ -187,10 +190,10 @@ export default class DashboardPage extends PureComponent<Props, State> {
         </ControlBar>
 
         <ChartFilters
-          currentProjectFilter={this.state.currentProjectFilter}
+          currentProjectFilter={this.state.currentProjectFilter.value}
           currentGroupFilter={this.state.currentGroupFilter}
           currentTopicFilter={this.state.currentTopicFilter}
-          projectFilterOptions={['Project A', 'Project B']}
+          projectFilterOptions={[{ label: 'Project A', value: 'projecta' }, { label: 'Project B', value: 'projectb' }]}
           groupFilterOptions={['Group A', 'Group B']}
           topicFilterOptions={['Topic A', 'Topic B']}
           onProjectFilter={this.handleOnProjectFilter}
