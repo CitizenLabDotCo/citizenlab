@@ -122,6 +122,11 @@ export default function createRoutes() {
           ],
         },
         {
+          path: 'pages/cookie-policy',
+          name: 'pagesShowPage',
+          getComponent: loadAndRender(import('containers/CookiePolicy')),
+        },
+        {
           path: 'pages/:slug',
           name: 'pagesShowPage',
           getComponent: loadAndRender(import('containers/PagesShowPage')),
