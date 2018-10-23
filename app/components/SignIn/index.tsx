@@ -56,6 +56,8 @@ const Form = styled.form`
   width: 100%;
 `;
 
+const PasswordLogin = styled.div``;
+
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 15px;
@@ -181,6 +183,12 @@ const SocialSignInButton = styled.div`
     border-color: #345697;
   }
 `;
+
+// const AzureAdSignInButton = SocialSignInButton.extend`
+//   &:hover {
+//     border-color: #000;
+//   }
+// `;
 
 type Props = {
   onSignedIn: (userId: string) => void;
@@ -318,9 +326,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { title } = this.props;
     const { formatMessage } = this.props.intl;
     const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
+    const passwordLogin = false;
     const googleLoginEnabled = !!get(currentTenant, 'data.attributes.settings.google_login.enabled');
     const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+    const azureAdLoginEnabled = true;
+    // const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
@@ -338,58 +349,65 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
           <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-            <FormElement>
-              <StyledInput
-                ariaLabel={formatMessage(messages.emailPlaceholder)}
-                type="email"
-                id="email"
-                value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
-                error={emailError}
-                onChange={this.handleEmailOnChange}
-                setRef={this.handleEmailInputSetRef}
-              />
-            </FormElement>
+            {passwordLogin &&
+              <PasswordLogin>
+                <FormElement>
+                  <StyledInput
+                    ariaLabel={formatMessage(messages.emailPlaceholder)}
+                    type="email"
+                    id="email"
+                    value={email}
+                    placeholder={formatMessage(messages.emailPlaceholder)}
+                    error={emailError}
+                    onChange={this.handleEmailOnChange}
+                    setRef={this.handleEmailInputSetRef}
+                  />
+                </FormElement>
 
-            <FormElement>
-              <PasswordInput
-                ariaLabel={formatMessage(messages.passwordPlaceholder)}
-                type="password"
-                id="password"
-                value={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
-                onChange={this.handlePasswordOnChange}
-                setRef={this.handlePasswordInputSetRef}
-              />
-              <ForgotPassword to="/password-recovery">
-                <FormattedMessage {...messages.forgotPassword} />
-              </ForgotPassword>
-            </FormElement>
+                <FormElement>
+                  <PasswordInput
+                    ariaLabel={formatMessage(messages.passwordPlaceholder)}
+                    type="password"
+                    id="password"
+                    value={password}
+                    placeholder={formatMessage(messages.passwordPlaceholder)}
+                    error={passwordError}
+                    onChange={this.handlePasswordOnChange}
+                    setRef={this.handlePasswordInputSetRef}
+                  />
+                  <ForgotPassword to="/password-recovery">
+                    <FormattedMessage {...messages.forgotPassword} />
+                  </ForgotPassword>
+                </FormElement>
 
-            <FormElement>
-              <ButtonWrapper>
-                <Button
-                  onClick={this.handleOnSubmit}
-                  size="1"
-                  processing={processing}
-                  text={formatMessage(messages.submit)}
-                  circularCorners={false}
-                  className="e2e-submit-signin"
-                />
-                {createAccount}
-              </ButtonWrapper>
-              <Error marginTop="10px" text={signInError} />
-            </FormElement>
+                <FormElement>
+                  <ButtonWrapper>
+                    <Button
+                      onClick={this.handleOnSubmit}
+                      size="1"
+                      processing={processing}
+                      text={formatMessage(messages.submit)}
+                      circularCorners={false}
+                      className="e2e-submit-signin"
+                    />
+                    {createAccount}
+                  </ButtonWrapper>
+                  <Error marginTop="10px" text={signInError} />
+                </FormElement>
+              </PasswordLogin>
+            }
 
-            {showSocialLogin &&
+            {(showSocialLogin || azureAdLoginEnabled) &&
               <div>
-                <Separator />
-
+                {(passwordLogin && (showSocialLogin || azureAdLoginEnabled)) &&
+                  <Separator />
+                }
                 <Footer>
-                  <SocialLoginText>
-                    {formatMessage(messages.orLogInWith)}
-                  </SocialLoginText>
+                  {(passwordLogin && (showSocialLogin || azureAdLoginEnabled)) &&
+                    <SocialLoginText>
+                      {formatMessage(messages.orLogInWith)}
+                    </SocialLoginText>
+                  }
                   <SocialLoginButtons>
                     <FeatureFlag name="google_login">
                       <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
@@ -402,6 +420,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       </SocialSignInButton>
                     </FeatureFlag>
                   </SocialLoginButtons>
+                  {/* <FeatureFlag name="azure_ad_login">
+                    <AzureAdSignInButton className="azure_ad" onClick={this.handleOnSSOClick('azure_ad')}>
+                      <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+                    </AzureAdSignInButton>
+                  </FeatureFlag> */}
                 </Footer>
               </div>
             }
