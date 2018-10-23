@@ -183,7 +183,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
 
       <PageContent>
         <SContentContainer>
-          <Fragment name="cookie-policy">
+          <Fragment name="pages/cookie-policy/content">
             <PageTitle>
               <FormattedMessage {...messages.cookiePolicyTitle} />
             </PageTitle>
