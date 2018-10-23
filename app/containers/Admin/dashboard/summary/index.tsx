@@ -14,6 +14,7 @@ import IdeasByTimeChart from '../components/IdeasByTimeChart';
 import UsersByTimeChart from '../components/UsersByTimeChart';
 import IdeasByTopicChart from '../components/IdeasByTopicChart';
 import { colors, fontSizes } from 'utils/styleUtils';
+import ChartFilters from '../components/ChartFilters';
 
 const Container = styled.div``;
 
@@ -156,7 +157,6 @@ export default class DashboardPage extends PureComponent<Props, State> {
 
     return (
       <Container>
-
         <FeatureFlag name={'clustering'}>
           <StyledWarning
             text={
@@ -182,6 +182,18 @@ export default class DashboardPage extends PureComponent<Props, State> {
             onChange={this.changeInterval}
           />
         </ControlBar>
+
+        <ChartFilters
+          currentProjectFilter={this.state.currentProjectFilter}
+          currentGroupFilter={this.state.currentGroupFilter}
+          currentTopicFilter={this.state.currentTopicFilter}
+          projectFilterOptions={['Project A', 'Project B']}
+          groupFilterOptions={['Group A', 'Group B']}
+          topicFilterOptions={['Topic A', 'Topic B']}
+          onProjectFilter={this.handleOnProjectFilter}
+          onGroupFilter={this.handleOnGroupFilter}
+          onTopicFilter={this.handleOnTopicFilter}
+        />
 
         <ThemeProvider theme={this.chartTheme}>
           <GraphsContainer>
@@ -211,25 +223,6 @@ export default class DashboardPage extends PureComponent<Props, State> {
                     <FormattedMessage {...messages.usersByTimeTitle} />
                   </GraphCardTitle>
                   <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
-                </GraphCardInner>
-              </GraphCard>
-            </Line>
-
-            <Line className="last">
-              <GraphCard className="first halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.ideasByTimeTitle} />
-                  </GraphCardTitle>
-                  <IdeasByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
-                </GraphCardInner>
-              </GraphCard>
-              <GraphCard className="halfWidth dynamicHeight">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.ideasByTopicTitle} />
-                  </GraphCardTitle>
-                  <IdeasByTopicChart startAt={startAt} endAt={endAt} />
                 </GraphCardInner>
               </GraphCard>
             </Line>
