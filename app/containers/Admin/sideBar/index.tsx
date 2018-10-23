@@ -156,7 +156,8 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         link: '/admin',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`
+      || pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard-`)),
       },
       {
         id: 'users',
