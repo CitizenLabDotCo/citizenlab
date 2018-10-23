@@ -155,7 +155,7 @@
         "description":  "Allow signing in and registering with Azure Active Directory (used for e.g. VUB)",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["tenant", "application_id"],
+        "required-settings": ["tenant", "client_id"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -163,9 +163,19 @@
             "type": "string",
             "private": true
           },
-          "application_id": {
+          "client_id": {
+            "description": "Sometimes also called 'application_id'",
             "type": "string",
             "private": true
+          },
+          "logo_url": {
+            "type": "string",
+            "pattern": "^https:\/\/.+",
+            "description": "The full url to a logo image, that will be shown on the authentication button"
+          },
+          "logo_alt_text": {
+            "type": "string",
+            "description": "The text to show as the logo, for users that can't see images"
           }
         }
       },

@@ -19,6 +19,16 @@ GOOGLE_SETUP_PROC = lambda do |env|
   end
 end
 
+AZURE_AD_SETUP_PROC = lambda do |env|
+  request = Rack::Request.new(env)
+  tenant = Tenant.current
+  if tenant.has_feature('azure_ad_login')
+    env['omniauth.strategy'].options[:client_id] = Tenant.settings("azure_ad_login", "client_id")
+    env['omniauth.strategy'].options[:tenant] = Tenant.settings("azure_ad_login", "tenant")
+  end
+end
+
+
 # TWITTER_SETUP_PROC = lambda do |env|
 #   request = Rack::Request.new(env)
 #   tenant = Tenant.current
@@ -28,30 +38,12 @@ end
 #   end
 # end
 
-# MYDIGIPASS_SETUP_PROC = lambda do |env|
-#   request = Rack::Request.new(env)
-#   tenant = Tenant.current
-#   if tenant.has_feature('mydigipass_login')
-#     env['omniauth.strategy'].options[:client_id] = Tenant.settings("mydigipass_login", "client_id")
-#     env['omniauth.strategy'].options[:client_secret] = Tenant.settings("mydigipass_login", "client_secret")
-
-#     redirect_uri = "#{Tenant.current.base_backend_uri}/auth/mydigipass/callback"
-#     env['omniauth.strategy'].options.token_params[:redirect_uri] = redirect_uri
-#     if Tenant.settings('mydigipass_login','require_eid')
-#       env['omniauth.strategy'].options.authorize_params[:scope] = "eid_profile eid_address email profile"
-#     else
-#       env['omniauth.strategy'].options.authorize_params[:scope] = "email profile"
-#     end
-#   end
-# end
-
-
    
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, :setup => FACEBOOK_SETUP_PROC
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
+  provider :azure_activedirectory, :setup => AZURE_AD_SETUP_PROC
   # provider :twitter, :setup => TWITTER_SETUP_PROC
-  # provider :mydigipass, :setup => MYDIGIPASS_SETUP_PROC
 end
 
 
