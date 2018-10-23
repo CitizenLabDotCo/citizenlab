@@ -87,7 +87,9 @@ const GraphCardTitle = styled.h3`
   padding-bottom: 20px;
 `;
 
-interface Props {}
+interface Props {
+  visibleProjects?: string[];
+}
 
 interface State {
   interval: 'weeks' | 'months' | 'years';
