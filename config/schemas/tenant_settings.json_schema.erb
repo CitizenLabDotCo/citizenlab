@@ -150,6 +150,26 @@
         }
       },
 
+      "azure_ad_login": {
+        "type": "object",
+        "description":  "Allow signing in and registering with Azure Active Directory (used for e.g. VUB)",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "required-settings": ["tenant", "application_id"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "tenant": {
+            "type": "string",
+            "private": true
+          },
+          "application_id": {
+            "type": "string",
+            "private": true
+          }
+        }
+      },
+
       /* "twitter_login": {
         "type": "object",
         "description":  "Allow signing in and registering through a twitter account",
@@ -165,31 +185,6 @@
           "api_secret": {
             "type": "string",
             "private": true
-          }
-        }
-      }, */
-
-
-      /* "mydigipass_login": {
-        "type": "object",
-        "description":  "Allow signing in and registering through a mydigipass account. Requires Belgian eID.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "client_id": {
-            "type": "string"
-          },
-          "client_secret": {
-            "type": "string",
-            "private": true
-          },
-          "require_eid": {
-            "description": "Force the use of eID for profile information",
-            "type": "boolean",
-            "default": true
           }
         }
       }, */
