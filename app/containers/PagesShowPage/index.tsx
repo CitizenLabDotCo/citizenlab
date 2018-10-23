@@ -12,7 +12,6 @@ import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
-import CookiePolicy from './CookiePolicy';
 
 // services
 import { PageLink } from 'services/pageLink';
@@ -219,52 +218,7 @@ interface State { }
 class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {
     const { formatMessage } = this.props.intl;
-    const { locale, tenantLocales, page, pageFiles, pageLinks, params } = this.props;
-    if (params.slug === 'cookie-policy') {
-      return (
-        <Container>
-          <Helmet>
-            <title>{formatMessage(messages.cookiePolicyTitle)}</title>
-            <meta name="description" content={formatMessage(messages.cookiePolicyDescription)} />
-          </Helmet>
-
-          <PageContent>
-            <StyledContentContainer>
-              <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
-                <PageTitle>
-                  <FormattedMessage {...messages.cookiePolicyTitle}/>
-                </PageTitle>
-                <PageDescription>
-                  <CookiePolicy />
-                </PageDescription>
-              </Fragment>
-            </StyledContentContainer>
-            <AttachmentsContainer>
-              {pageFiles && !isNilOrError(pageFiles) &&
-                <FileAttachments files={pageFiles} />
-              }
-            </AttachmentsContainer>
-          </PageContent>
-
-          {!isNilOrError(pageLinks) &&
-            <PagesNavWrapper>
-              <PagesNav>
-                <StyledContentContainer>
-                  {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                    <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
-                      <T value={pageLink.attributes.linked_page_title_multiloc} />
-                      <LinkIcon name="chevron-right" />
-                    </StyledLink>
-                  ))}
-                </StyledContentContainer>
-              </PagesNav>
-            </PagesNavWrapper>
-          }
-
-          <Footer showCityLogoSection={false} />
-        </Container>
-      );
-    } else {
+    const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
       if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
         return (
@@ -334,7 +288,6 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
       }
     }
   }
-}
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
