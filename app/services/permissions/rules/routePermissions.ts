@@ -7,6 +7,7 @@ definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
     if (isAdmin(user)) return true;
     if (isModerator(user) && (
       item.path === '/admin/projects' ||
+      item.path === '/admin' ||
       item.path === '/admin/emails'
     )) return true;
 
