@@ -38,8 +38,8 @@ export default defineMessages({// Cookie policy
     defaultMessage: 'What are cookies?',
   },
   whatAreCookiesContent: {
-    defaultMessage: 'Cookies are little text files which are stored on the browser or on the hard drive of your computer or mobile device when you visit a webpage or application. Cookies remember your actions and preferences. Logged in last time? A cookie will make sure you’re automatically logged in the next time you visit us. Visited the platform two weeks ago? A cookie will prove helpful to highlight what has been added to the platform in the last two weeks. More info on cookies in general, can be found in {wikipediaCookieLink}.',
     id: 'app.components.PagesShowPage.CookiePolicy.whatAreCookiesContent',
+    defaultMessage: 'Cookies are little text files which are stored on the browser or on the hard drive of your computer or mobile device when you visit a webpage or application. Cookies remember your actions and preferences. Logged in last time? A cookie will make sure you’re automatically logged in the next time you visit us. Visited the platform two weeks ago? A cookie will prove helpful to highlight what has been added to the platform in the last two weeks. More info on cookies in general, can be found in {wikipediaCookieLink}.',
   },
   wikipediaCookieLinkText: {
     id: 'app.components.PagesShowPage.CookiePolicy.wikipediaCookieLinkText',
@@ -63,7 +63,7 @@ export default defineMessages({// Cookie policy
   },
   analyticsContent: {
     id: 'app.components.PagesShowPage.CookiePolicy.analyticsContent',
-    defaultMessage: 'We only use mass analytics. Meaning that no individual data are used, and that you’re browsing our platform anonymously. These aggregated data, or mass analytics, show us which pages are the most and least popular and see how visitors move around the platform. This is necessary information for continuous improvement of the user experience. {googleAnalyticsLink} is our primary tool for analytics.',
+    defaultMessage: 'We only use mass analytics. Meaning that no individual data are used, and that you’re browsing our platform anonymously. These aggregated data, or mass analytics, show us which pages are the most and least popular and see how visitors move around the platform. This is necessary information for continuous improvement of the user experience. {analyticsLink} is our primary tool for analytics.',
   },
   analyticsHref: {
     id: 'app.components.PagesShowPage.CookiePolicy.analyticsHref',
@@ -116,5 +116,17 @@ export default defineMessages({// Cookie policy
   contactInfo: {
     id: 'app.components.PagesShowPage.CookiePolicy.contactInfo',
     defaultMessage: 'Further questions or remarks? You\'ll find us here: support@citizenlab.co.',
+  },
+  informationPageName: {
+    id: 'app.components.PagesShowPage.CookiePolicy.informationPageName',
+    defaultMessage: 'Information Page',
+  },
+  'terms-and-conditionsPageName': {
+    id: 'app.components.PagesShowPage.CookiePolicy.terms-and-conditionsPageName',
+    defaultMessage: 'Terms & conditions',
+  },
+  'privacy-policyPageName': {
+    id: 'app.components.PagesShowPage.CookiePolicy.privacy-policyPageName',
+    defaultMessage: 'Privacy Policy',
   },
 });
