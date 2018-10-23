@@ -1,92 +1,20 @@
+// libraries
 import React, { PureComponent } from 'react';
 import moment from 'moment';
-import styled, { ThemeProvider } from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import messages from '../messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import FeatureFlag from 'components/FeatureFlag';
-import Warning from 'components/UI/Warning';
+import { ThemeProvider } from 'styled-components';
+
+// components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import GenderChart from '../components/GenderChart';
-import AgeChart from '../components/AgeChart';
 import IdeasByTimeChart from '../components/IdeasByTimeChart';
 import UsersByTimeChart from '../components/UsersByTimeChart';
 import IdeasByTopicChart from '../components/IdeasByTopicChart';
-import { colors, fontSizes } from 'utils/styleUtils';
 import ChartFilters from '../components/ChartFilters';
+import { chartTheme, Container, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
 
-const Container = styled.div``;
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
-`;
-
-const ControlBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const GraphsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  margin-bottom: 30px;
-`;
-
-const Line = styled.div`
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-`;
-
-const GraphCardInner = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
-const GraphCard = styled.div`
-  width: 100%;
-  height: 350px;
-  display: flex;
-  position: relative;
-  border: solid 1px ${colors.adminBorder};
-  border-radius: 5px;
-  background: ${colors.adminContentBackground};
-
-  &.dynamicHeight {
-    height: auto;
-
-    ${GraphCardInner} {
-      position: relative;
-    }
-  }
-
-  &.first {
-    margin-right: 20px;
-  }
-
-  &.halfWidth {
-    width: 50%;
-  }
-`;
-
-const GraphCardTitle = styled.h3`
-  font-size: ${fontSizes.xl}px;
-  font-weight: 400;
-  align-self: flex-start;
-  padding-bottom: 20px;
-`;
+// i18n
+import messages from '../messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 interface Props {
   visibleProjects?: string[];
@@ -135,17 +63,6 @@ export default class DashboardPage extends PureComponent<Props, State> {
     this.setState({ currentTopicFilter: filter });
   }
 
-  chartTheme = (theme) => {
-    return {
-      ...theme,
-      chartStroke: colors.clIconAccent,
-      chartFill: colors.clIconAccent,
-      barFill: colors.adminContentBackground,
-      chartLabelColor: colors.adminSecondaryTextColor,
-      chartLabelSize: 13
-    };
-  }
-
   render() {
 
     const { interval, intervalIndex } = this.state;
@@ -157,19 +74,6 @@ export default class DashboardPage extends PureComponent<Props, State> {
 
     return (
       <Container>
-        <FeatureFlag name={'clustering'}>
-          <StyledWarning
-            text={
-              <FormattedMessage
-                {...messages.tryOutInsights}
-                values={{
-                  insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                }}
-              />
-            }
-          />
-        </FeatureFlag>
-
         <ControlBar>
           <TimeControl
             value={intervalIndex}
@@ -195,27 +99,8 @@ export default class DashboardPage extends PureComponent<Props, State> {
           onTopicFilter={this.handleOnTopicFilter}
         />
 
-        <ThemeProvider theme={this.chartTheme}>
+        <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <Line>
-              <GraphCard className="first halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByGenderTitle} />
-                  </GraphCardTitle>
-                  <GenderChart startAt={startAt} endAt={endAt} />
-                </GraphCardInner>
-              </GraphCard>
-              <GraphCard className="halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByAgeTitle} />
-                  </GraphCardTitle>
-                  <AgeChart startAt={startAt} endAt={endAt} />
-                </GraphCardInner>
-              </GraphCard>
-            </Line>
-
             <Line>
               <GraphCard>
                 <GraphCardInner>
