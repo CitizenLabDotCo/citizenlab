@@ -1,6 +1,7 @@
 import { colors } from 'utils/styleUtils';
 
-const SelectStyles = {
+export function getSelectStyles(borderColor = '#ccc') {
+  return {
     container: (base) => ({
       ...base,
     }),
@@ -8,7 +9,7 @@ const SelectStyles = {
       ...base,
       fontSize: '16px',
       borderWidth: '1px',
-      borderColor: isFocused ? '#000' : '#ccc',
+      borderColor: isFocused ? '#000' : `${borderColor}`,
       borderRadius: '5px',
       minHeight: '48px',
       backgroundColor: '#FFF',
@@ -34,5 +35,6 @@ const SelectStyles = {
       padding: '6px',
     }),
   };
+}
 
-export default SelectStyles;
+export default getSelectStyles();
