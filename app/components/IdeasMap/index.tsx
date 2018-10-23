@@ -130,11 +130,13 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    Leaflet
-      .popup()
-      .setLatLng(position)
-      .setContent(this.createIdeaButton)
-      .openOn(map);
+    if (this.props.projectId) {
+      Leaflet
+        .popup()
+        .setLatLng(position)
+        .setContent(this.createIdeaButton)
+        .openOn(map);
+    }
 
     return;
   }
@@ -179,14 +181,15 @@ class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
             onMarkerClick={this.toggleIdea}
             onMapClick={this.onMapClick}
           />
-
-          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
-            <IdeaButton
-              projectId={projectId}
-              phaseId={phaseId}
-              onClick={this.redirectToIdeaCreation}
-            />
-          </div>
+          {projectId &&
+            <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+              <IdeaButton
+                projectId={projectId}
+                phaseId={phaseId}
+                onClick={this.redirectToIdeaCreation}
+              />
+            </div>
+          }
         </MapWrapper>
       </>
     );

@@ -46,6 +46,14 @@ export default defineMessages({
     id: 'app.containers.IdeasProjectSelect.postingPossibleBecauseAdmin',
     defaultMessage: 'Only administrators can currently post in this project.',
   },
+  postingDisabledNoPermissions: {
+    id: 'app.containers.IdeasProjectSelect.postingDisabledNoPermissions',
+    defaultMessage: 'You don\'t have the rights to post in this project.',
+  },
+  postingDisabledMaybeNoPermissions: {
+    id: 'app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions',
+    defaultMessage: 'Only certain users can post in this project. Please sign in first.',
+  },
   noProjects: {
     id: 'app.containers.IdeasProjectSelect.noProjects',
     defaultMessage: 'Sorry, there currently are no projects to add ideas to.',
