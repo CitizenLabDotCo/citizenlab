@@ -144,6 +144,11 @@ const Footer = styled.div`
   flex-direction: column;
 `;
 
+const CreateAccount = styled.div`
+  margin-top: 20px;
+  margin-left: -15px;
+`;
+
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
@@ -425,6 +430,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       <img src={azureAdLogo} height="21px" role="presentation" alt="" />
                     </AzureAdSignInButton>
                   </FeatureFlag> */}
+                  {!passwordLogin &&
+                    <CreateAccount>
+                      {createAccount}
+                    </CreateAccount>
+                  }
                 </Footer>
               </div>
             }
