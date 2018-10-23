@@ -8,6 +8,8 @@ class Group < ApplicationRecord
   has_many :users, through: :memberships
   private :memberships, :memberships=, :membership_ids, :membership_ids=
   private :users, :users=, :user_ids, :user_ids=
+  has_many :groups_permissions, dependent: :destroy
+  has_many :permissions, through: :groups_permissions
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
@@ -41,6 +43,14 @@ class Group < ApplicationRecord
   }
 
   scope :order_new, -> (direction=:desc) {order(created_at: direction)}
+
+  def member? user
+    if rules?
+      SmartGroupsService.new.groups_for_user(user).where(id: id).exists?
+    else
+      users.where(id: user.id).exists?
+    end
+  end
 
   def add_member user
     if manual?

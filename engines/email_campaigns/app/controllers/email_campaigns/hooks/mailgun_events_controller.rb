@@ -75,6 +75,10 @@ module EmailCampaigns
       else
         head :not_acceptable
       end
+    rescue Apartment::TenantNotFound => e
+      head :not_acceptable
+    rescue ActiveRecord::RecordNotFound => e
+      head :not_acceptable
     end
   end
 end
