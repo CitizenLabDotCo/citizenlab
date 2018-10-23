@@ -7,7 +7,7 @@ import selectStyles from 'components/UI/Select/styles';
 export type Props = {
   id?: string;
   inputId?: string;
-  value: IOption[] | null;
+  value: IOption[] | null | IOption['value'];
   placeholder?: string | JSX.Element;
   options: IOption[] | null;
   max?: number;

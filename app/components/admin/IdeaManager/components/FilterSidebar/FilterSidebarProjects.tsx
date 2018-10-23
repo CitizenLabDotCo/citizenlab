@@ -11,7 +11,7 @@ interface Props {
   onChangeProjectFilter?: (project: string | null) => void;
 }
 
-class FilterSidebarProjects extends React.Component<Props> {
+class FilterSidebarProjects extends React.PureComponent<Props> {
 
   handleItemClick = (id) => () => {
     this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(id);

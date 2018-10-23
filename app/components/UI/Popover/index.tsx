@@ -22,7 +22,7 @@ const Content: any = styled(clickOutside)`
   top: ${(props: any) => props.top || '0px'};
   left: 50%;
   transform-origin: top left;
-  z-index: 2;
+  z-index: 3;
 
   &.dropdown-enter {
     opacity: 0;
@@ -73,7 +73,7 @@ const ContentInner: any = styled.div`
   }
 `;
 
-interface Props {
+export interface Props {
   children: JSX.Element;
   content: JSX.Element;
   top: string;

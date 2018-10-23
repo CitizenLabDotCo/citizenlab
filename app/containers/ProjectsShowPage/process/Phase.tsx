@@ -98,6 +98,7 @@ class Phase extends React.PureComponent<Props, State> {
                 type="load-more"
                 sort={'trending'}
                 pageSize={12}
+                projectId={phase.relationships.project.data.id}
                 phaseId={phase.id}
                 showViewToggle={true}
                 defaultView={phase.attributes.presentation_mode}
@@ -107,8 +108,10 @@ class Phase extends React.PureComponent<Props, State> {
 
           {participationMethod === 'survey' &&
             <Survey
+              projectId={phase.relationships.project.data.id}
               surveyEmbedUrl={phase.attributes.survey_embed_url}
               surveyService={phase.attributes.survey_service}
+              phase={phase}
             />
           }
         </StyledContentContainer>

@@ -25,33 +25,11 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
+import ExportButtons from './components/ExportButtons';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-interface InputProps {
-  project?: IProjectData | null;
-}
-
-interface DataProps {
-  projects: GetProjectsChildProps;
-  ideas: GetIdeasChildProps;
-  topics: GetTopicsChildProps;
-  ideaStatuses: GetIdeaStatusesChildProps;
-  phases: GetPhasesChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
-
-interface State {
-  selectedIdeas: { [key: string]: boolean };
-  activeFilterMenu: TFilterMenu | null;
-  visibleFilterMenus: string[];
-  contextRef: any;
-}
 
 const ThreeColumns = styled.div`
   display: flex;
@@ -98,6 +76,29 @@ const RightColumn = styled.div`
     }
   }
 `;
+
+interface InputProps {
+  project?: IProjectData | null;
+}
+
+interface DataProps {
+  projects: GetProjectsChildProps;
+  ideas: GetIdeasChildProps;
+  topics: GetTopicsChildProps;
+  ideaStatuses: GetIdeaStatusesChildProps;
+  phases: GetPhasesChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
+
+interface State {
+  selectedIdeas: { [key: string]: boolean };
+  activeFilterMenu: TFilterMenu | null;
+  visibleFilterMenus: string[];
+  contextRef: any;
+}
 
 class IdeaManager extends React.PureComponent<Props, State> {
   globalState: IGlobalStateService<IAdminFullWidth>;
@@ -198,8 +199,25 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
 
+    let exportQueryParameter;
+    let exportType: null | string = null;
+    if (selectedIdeaIds.length > 0) {
+      exportQueryParameter = [...selectedIdeaIds];
+      exportType = 'selected_ideas';
+    } else if (selectedProject) {
+      exportQueryParameter = selectedProject;
+      exportType = 'project';
+    } else  {
+      exportQueryParameter = 'all';
+      exportType = 'all';
+    }
+
     return (
       <div ref={this.handleContextRef}>
+        <ExportButtons
+          exportType={exportType}
+          exportQueryParameter={exportQueryParameter}
+        />
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
