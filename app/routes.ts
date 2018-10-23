@@ -123,7 +123,7 @@ export default function createRoutes() {
         },
         {
           path: 'pages/cookie-policy',
-          name: 'pagesShowPage',
+          name: 'cookiePolicy',
           getComponent: loadAndRender(import('containers/CookiePolicy')),
         },
         {
