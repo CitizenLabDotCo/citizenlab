@@ -5,7 +5,7 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
 
   context "on idea in a public project" do 
-    let(:project) { create(:continuous_project) }
+    let(:project) { create(:continuous_project, with_permissions: true) }
     let!(:idea) { create(:idea, project: project) }
 
     context "for a visitor" do
@@ -89,7 +89,7 @@ describe IdeaPolicy do
   end
 
   context "on idea in a private admins project" do 
-    let(:project) { create(:private_admins_project)}
+    let(:project) { create(:private_admins_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     context "for a visitor" do
@@ -147,7 +147,7 @@ describe IdeaPolicy do
 
   context "for a visitor on an idea in a private groups project" do
     let!(:user) { nil }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
@@ -162,7 +162,7 @@ describe IdeaPolicy do
 
   context "for a user on an idea in a private groups project where she's no member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
@@ -176,7 +176,7 @@ describe IdeaPolicy do
 
   context "for a user on an idea in a private groups project where she's a member of a manual group with access" do
     let!(:user) { create(:user) }
-    let!(:project) { create(:private_groups_project, user: user)}
+    let!(:project) { create(:private_groups_project, user: user, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
@@ -193,7 +193,7 @@ describe IdeaPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group], with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should_not permit(:show)    }
@@ -210,7 +210,7 @@ describe IdeaPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:project) { create(:project, visible_to: 'groups', groups: [group])}
+    let!(:project) { create(:project, visible_to: 'groups', groups: [group], with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
@@ -224,7 +224,7 @@ describe IdeaPolicy do
 
   context "for an admin on an idea in a private groups project" do
     let!(:user) { create(:admin) }
-    let!(:project) { create(:private_groups_project)}
+    let!(:project) { create(:private_groups_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
 
     it { should permit(:show)    }
@@ -239,7 +239,7 @@ describe IdeaPolicy do
   end
 
   context "on idea in a draft project" do 
-    let(:project) { create(:project, publication_status: 'draft')}
+    let(:project) { create(:project, publication_status: 'draft', with_permissions: true)}
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -284,7 +284,7 @@ describe IdeaPolicy do
   end
 
   context "on idea for a survey project" do 
-    let(:project) { create(:continuous_survey_project) }
+    let(:project) { create(:continuous_survey_project, with_permissions: true) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -330,7 +330,7 @@ describe IdeaPolicy do
 
   context "on idea for a project of which the last phase has ended" do 
     let(:project) { 
-      pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"})
+      pj = create(:project_with_current_phase, phases_config: {sequence: "xxc"}, with_permissions: true)
       current_phase = pj.phases.sort_by(&:start_at).last
       current_phase.destroy!
       pj.reload

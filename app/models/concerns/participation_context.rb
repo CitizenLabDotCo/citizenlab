@@ -9,6 +9,8 @@ module ParticipationContext
   SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
+    has_many :permissions, as: :permittable, dependent: :destroy
+    
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
       validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
@@ -70,13 +72,13 @@ module ParticipationContext
   def is_participation_context?
     not is_timeline_project?
   end
+
   
   private
   
   def is_timeline_project?
     self.class == Project && self.timeline? 
   end
-
 
   def set_participation_method
     self.participation_method ||= 'ideation'
