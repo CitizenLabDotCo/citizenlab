@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Banner.accept',
     defaultMessage: 'Accept',
   },
+  ariaButtonClose: {
+    id: 'app.components.ConsentManager.Banner.ariaButtonClose',
+    defaultMessage: 'Accept policy and close banner',
+  },
   title: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.title',
     defaultMessage: 'Your cookie preferences',
