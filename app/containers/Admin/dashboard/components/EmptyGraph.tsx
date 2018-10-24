@@ -8,7 +8,7 @@ import messages from '../messages';
 const Container = styled.div``;
 
 interface Props {
-  unit: string;
+  unit: 'Users' | 'Ideas' | 'Comments';
 }
 
 export default ({ unit }: Props) => (
