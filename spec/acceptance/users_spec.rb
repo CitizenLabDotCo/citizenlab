@@ -385,27 +385,6 @@ resource "Users" do
           expect(@user.reload.avatar_url).to be nil
         end
       end
-
-      describe "Updating email" do
-        before do
-          @user = create(:user, first_name: 'Karel', email: 'karel@karel.be')
-          token = Knock::AuthToken.new(payload: { sub: @user.id }).token
-          header 'Authorization', "Bearer #{token}"
-        end
-
-        example "works when this would cause you to loose permission through a smart group" do
-          project = create(:continuous_project, with_permissions: true)
-          karels = create(:smart_group, rules: [{
-            ruleType: 'email',
-            predicate: 'contains',
-            value: 'karel'
-          }])
-          posting = project.permissions.find_by action: 'posting'
-          posting.update! permitted_by: 'groups', group_ids: [karels.id]
-          do_request email: 'karel@wups.be'
-          expect(response_status).to eq 200
-        end
-      end
     end
 
     post "web_api/v1/users/complete_registration" do
