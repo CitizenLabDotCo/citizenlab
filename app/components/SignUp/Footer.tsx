@@ -102,6 +102,12 @@ const SocialSignUpButton = styled.div`
   }
 `;
 
+const AzureAdSignUpButton = SocialSignUpButton.extend`
+  &:hover {
+    border-color: #000;
+  }
+`;
+
 const SocialSignUpButtonInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
@@ -169,7 +175,7 @@ interface InputProps {
 interface Props extends InputProps {}
 
 interface State {
-  socialLoginClicked: 'google' | 'facebook' | null;
+  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
   socialLoginTaCAccepted: boolean;
   socialLoginUrlParameter: string;
 }
@@ -207,11 +213,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook') => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
     this.setState(state => ({ socialLoginClicked: (state.socialLoginClicked === provider && !state.socialLoginTaCAccepted ? null : provider) }));
   }
 
-  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook') => () => {
+  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
     this.setState({ socialLoginTaCAccepted: true });
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
@@ -227,8 +233,8 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
     const azureAdLoginEnabled = true;
-    // const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
-
+    const azureAdLogo = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
+    const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
     const googleCheckbox = (socialLoginClicked === 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
@@ -281,6 +287,35 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       </CSSTransition>
     ));
 
+    const azureAdCheckbox = (socialLoginClicked === 'azureactivedirectory' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignUpButtonInner>
+          <Checkbox
+            value={socialLoginTaCAccepted}
+            onChange={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+            disableLabelClick={true}
+            label={
+              <FormattedMessage
+                {...messages.acceptTermsAndConditionsAzureAd}
+                values={{
+                  tenantLoginMechanismName,
+                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                }}
+              />
+            }
+          />
+        </SocialSignUpButtonInner>
+      </CSSTransition>
+    ));
+
+    const azureAdImage = (socialLoginClicked !== 'azureactivedirectory' && (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignUpButtonInner>
+          <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+        </SocialSignUpButtonInner>
+      </CSSTransition>
+    ));
+
     if (showSocialLogin || azureAdLoginEnabled) {
       return (
         <>
@@ -318,11 +353,17 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </SocialSignUpButton>
               </FeatureFlag>
             </SocialSignUpButtons>
-            {/* <FeatureFlag name="azure_ad_login">
-              <AzureAdSignUpButton className="azure_ad" onClick={this.handleOnSSOClick('azure_ad')}>
-                <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+            <FeatureFlag name="azure_ad_login">
+              <AzureAdSignUpButton
+                className={`azureactivedirectory ${socialLoginClicked === 'azureactivedirectory' && 'active'}`}
+                onClick={this.handleOnSSOClick('azureactivedirectory')}
+              >
+                <TransitionGroup>
+                  {azureAdCheckbox}
+                  {azureAdImage}
+                </TransitionGroup>
               </AzureAdSignUpButton>
-            </FeatureFlag> */}
+            </FeatureFlag>
             {!passwordLoginEnabled &&
               <AlreadyHaveAnAccount to="/sign-in">
                 <FormattedMessage {...messages.alreadyHaveAnAccount} />
