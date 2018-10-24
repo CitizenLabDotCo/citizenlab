@@ -913,6 +913,7 @@
   "app.containers.SignIn.title": "Inloggen",
   "app.containers.SignInPage.title": "Inloggen",
   "app.containers.SignInUpBanner.slogan": "Wat zijn je ideeën? Laat je stem horen!",
+  "app.containers.SignUp.acceptTermsAndConditionsAzureAd": "",
   "app.containers.SignUp.acceptTermsAndConditionsFacebook": "Accepteer de {tacLink} om je in te schrijven met Facebook",
   "app.containers.SignUp.acceptTermsAndConditionsGoogle": "Accepteer de {tacLink} om je in te schrijven met Google",
   "app.containers.SignUp.alreadyHaveAnAccount": "Heb je al een account?",

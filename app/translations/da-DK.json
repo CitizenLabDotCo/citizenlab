@@ -913,6 +913,7 @@
   "app.containers.SignIn.title": "Log ind",
   "app.containers.SignInPage.title": "Log ind",
   "app.containers.SignInUpBanner.slogan": "Hvad er dine ideer? Få din stemme hørt!",
+  "app.containers.SignUp.acceptTermsAndConditionsAzureAd": "",
   "app.containers.SignUp.acceptTermsAndConditionsFacebook": "Accepter vores {tacLink} for at registrere via Facebook",
   "app.containers.SignUp.acceptTermsAndConditionsGoogle": "Accepter vores {tacLink} for at registrere via Google",
   "app.containers.SignUp.alreadyHaveAnAccount": "Har du allerede en konto?",

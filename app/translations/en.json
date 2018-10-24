@@ -913,6 +913,7 @@
   "app.containers.SignIn.title": "Log in",
   "app.containers.SignInPage.title": "Log in",
   "app.containers.SignInUpBanner.slogan": "What are your ideas? Make your voice heard!",
+  "app.containers.SignUp.acceptTermsAndConditionsAzureAd": "Accept our {tacLink} to sign up via {tenantLoginMechanismName}",
   "app.containers.SignUp.acceptTermsAndConditionsFacebook": "Accept our {tacLink} to sign up via Facebook",
   "app.containers.SignUp.acceptTermsAndConditionsGoogle": "Accept our {tacLink} to sign up via Google",
   "app.containers.SignUp.alreadyHaveAnAccount": "Already have an account?",

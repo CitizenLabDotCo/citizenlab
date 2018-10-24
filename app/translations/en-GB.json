@@ -913,6 +913,7 @@
   "app.containers.SignIn.title": "",
   "app.containers.SignInPage.title": "",
   "app.containers.SignInUpBanner.slogan": "",
+  "app.containers.SignUp.acceptTermsAndConditionsAzureAd": "",
   "app.containers.SignUp.acceptTermsAndConditionsFacebook": "",
   "app.containers.SignUp.acceptTermsAndConditionsGoogle": "",
   "app.containers.SignUp.alreadyHaveAnAccount": "",
