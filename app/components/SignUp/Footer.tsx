@@ -235,9 +235,9 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const passwordLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.password_login, 'enabled', false) : false);
     const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
-    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
-    const azureAdLoginEnabled = true;
-    const azureAdLogo = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
+    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled);
+    const azureAdLoginEnabled: boolean = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
+    const azureAdLogo: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
 
     const googleCheckbox = (socialLoginClicked === 'google' && (
@@ -333,61 +333,64 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
       </CSSTransition>
     ));
 
-    if (showSocialLogin || azureAdLoginEnabled) {
+    if (socialLoginEnabled || azureAdLoginEnabled) {
       return (
         <>
-        {passwordLoginEnabled &&
-          <Separator />
-        }
-        <Container>
-          <FooterContent>
-            {(passwordLoginEnabled && (showSocialLogin || azureAdLoginEnabled)) &&
-              <SocialSignUpText>
-                {formatMessage(messages.orSignUpWith)}
-              </SocialSignUpText>
-            }
-            <SocialSignUpButtons>
-              <FeatureFlag name="google_login">
-                <SocialSignUpButton
-                  className={`google ${socialLoginClicked === 'google' && 'active'}`}
-                  onClick={this.handleOnSSOClick('google')}
+          {passwordLoginEnabled &&
+            <Separator />
+          }
+          <Container>
+            <FooterContent>
+              {passwordLoginEnabled &&
+                <SocialSignUpText>
+                  {formatMessage(messages.orSignUpWith)}
+                </SocialSignUpText>
+              }
+
+              <SocialSignUpButtons>
+                <FeatureFlag name="google_login">
+                  <SocialSignUpButton
+                    className={`google ${socialLoginClicked === 'google' && 'active'}`}
+                    onClick={this.handleOnSSOClick('google')}
+                  >
+                    <TransitionGroup>
+                      {googleCheckbox}
+                      {googleImage}
+                    </TransitionGroup>
+                  </SocialSignUpButton>
+                </FeatureFlag>
+                <FeatureFlag name="facebook_login">
+                  <SocialSignUpButton
+                    className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`}
+                    onClick={this.handleOnSSOClick('facebook')}
+                  >
+                    <TransitionGroup>
+                      {facebookCheckbox}
+                      {facebookImage}
+                    </TransitionGroup>
+                  </SocialSignUpButton>
+                </FeatureFlag>
+              </SocialSignUpButtons>
+
+              <FeatureFlag name="azure_ad_login">
+                <AzureAdSignUpButton
+                  className={`azureactivedirectory ${socialLoginClicked === 'azureactivedirectory' && 'active'}`}
+                  onClick={this.handleOnSSOClick('azureactivedirectory')}
                 >
                   <TransitionGroup>
-                    {googleCheckbox}
-                    {googleImage}
+                    {azureAdCheckbox}
+                    {azureAdImage}
                   </TransitionGroup>
-                </SocialSignUpButton>
+                </AzureAdSignUpButton>
               </FeatureFlag>
-              <FeatureFlag name="facebook_login">
-                <SocialSignUpButton
-                  className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`}
-                  onClick={this.handleOnSSOClick('facebook')}
-                >
-                  <TransitionGroup>
-                    {facebookCheckbox}
-                    {facebookImage}
-                  </TransitionGroup>
-                </SocialSignUpButton>
-              </FeatureFlag>
-            </SocialSignUpButtons>
-            <FeatureFlag name="azure_ad_login">
-              <AzureAdSignUpButton
-                className={`azureactivedirectory ${socialLoginClicked === 'azureactivedirectory' && 'active'}`}
-                onClick={this.handleOnSSOClick('azureactivedirectory')}
-              >
-                <TransitionGroup>
-                  {azureAdCheckbox}
-                  {azureAdImage}
-                </TransitionGroup>
-              </AzureAdSignUpButton>
-            </FeatureFlag>
-            {!passwordLoginEnabled &&
-              <AlreadyHaveAnAccount to="/sign-in">
-                <FormattedMessage {...messages.alreadyHaveAnAccount} />
-              </AlreadyHaveAnAccount>
-            }
-          </FooterContent>
-        </Container>
+
+              {!passwordLoginEnabled &&
+                <AlreadyHaveAnAccount to="/sign-in">
+                  <FormattedMessage {...messages.alreadyHaveAnAccount} />
+                </AlreadyHaveAnAccount>
+              }
+            </FooterContent>
+          </Container>
         </>
       );
     }
