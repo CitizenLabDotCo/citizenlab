@@ -15,7 +15,8 @@ type State = {
 
 type Props = {
   startAt: string,
-  endAt: string
+  endAt: string,
+  currentGroupFilter?: string
 };
 
 const labelColors = {
@@ -40,8 +41,10 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt || this.props.endAt !== prevProps.endAt) {
-      this.resubscribe(this.props.startAt, this.props.endAt);
+    if (this.props.startAt !== prevProps.startAt
+      || this.props.endAt !== prevProps.endAt
+      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.resubscribe(this.props.startAt, this.props.endAt, this.props.currentGroupFilter);
     }
   }
 
@@ -57,13 +60,17 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   }
 
-  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
+  resubscribe(
+    startAt= this.props.startAt,
+    endAt= this.props.endAt,
+    currentGroupFilter= this.props.currentGroupFilter) {
     if (this.subscription) this.subscription.unsubscribe();
 
     this.subscription = usersByGenderStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
+        // current-group_filter: currentGroupFilter TODO
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });

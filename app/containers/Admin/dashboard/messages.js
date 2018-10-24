@@ -23,6 +23,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
     defaultMessage: 'Dashboards',
   },
+  emptyUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
+    defaultMessage: 'No users',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
