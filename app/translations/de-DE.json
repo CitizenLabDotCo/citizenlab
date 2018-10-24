@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Für die bereitgestellten Anmeldedaten wurde kein Konto gefunden",
   "app.containers.SignIn.signUp": "Registrieren Sie sich",
+  "app.containers.SignIn.signUpButtonAltText": "",
   "app.containers.SignIn.submit": "Anmelden",
   "app.containers.SignIn.title": "Anmeldung",
   "app.containers.SignInPage.title": "Anmelden",

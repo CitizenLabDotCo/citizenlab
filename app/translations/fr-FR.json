@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Cette combinaison d'e-mail et mot de passe n'est pas correcte",
   "app.containers.SignIn.signUp": "S'inscrire",
+  "app.containers.SignIn.signUpButtonAltText": "",
   "app.containers.SignIn.submit": "Se connecter",
   "app.containers.SignIn.title": "Se connecter",
   "app.containers.SignInPage.title": "Se connecter",
