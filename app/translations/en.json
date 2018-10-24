@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.ConsentManager.Banner.accept": "Accept",
+  "app.components.ConsentManager.Banner.ariaButtonClose": "Accept policy and close banner",
   "app.components.ConsentManager.Banner.mainText": "By navigating the platform, you agree to our {policyLink}",
   "app.components.ConsentManager.Banner.manage": "Manage",
   "app.components.ConsentManager.Banner.policyLink": "Cookie Policy",

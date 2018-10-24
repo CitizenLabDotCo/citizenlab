@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Achtung: der Kontrast der Farbe, die Sie ausgewählt haben, ist nicht hoch genug. Dies könnte dazu führen, dass der Text schwer zu lesen ist. Wählen Sie eine dunklere Farbe um die Lesbarkeit zu optimieren.",
   "app.components.ConsentManager.Banner.accept": "",
+  "app.components.ConsentManager.Banner.ariaButtonClose": "",
   "app.components.ConsentManager.Banner.mainText": "",
   "app.components.ConsentManager.Banner.manage": "",
   "app.components.ConsentManager.Banner.policyLink": "",
