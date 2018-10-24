@@ -907,6 +907,7 @@
   "app.containers.SignIn.orLogInWith": "Oder anmelden mit",
   "app.containers.SignIn.passwordLabel": "Passwort",
   "app.containers.SignIn.passwordPlaceholder": "Passwort",
+  "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Für die bereitgestellten Anmeldedaten wurde kein Konto gefunden",
   "app.containers.SignIn.signUp": "Registrieren Sie sich",
   "app.containers.SignIn.submit": "Anmelden",

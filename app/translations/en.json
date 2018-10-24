@@ -907,6 +907,7 @@
   "app.containers.SignIn.orLogInWith": "Or log in with",
   "app.containers.SignIn.passwordLabel": "Password",
   "app.containers.SignIn.passwordPlaceholder": "Password",
+  "app.containers.SignIn.signInButtonAltText": "Sign in with {loginMechanismName}",
   "app.containers.SignIn.signInError": "This combination of e-mail and password is not correct",
   "app.containers.SignIn.signUp": "Sign up",
   "app.containers.SignIn.submit": "Log in",
