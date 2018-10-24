@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Det ble ikke funnet noen konto med den oppgitte innloggingsinformasjonen",
   "app.containers.SignIn.signUp": "Registrer deg",
+  "app.containers.SignIn.signUpButtonAltText": "",
   "app.containers.SignIn.submit": "Logg inn",
   "app.containers.SignIn.title": "Logg inn",
   "app.containers.SignInPage.title": "Logg inn",
