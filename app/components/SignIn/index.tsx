@@ -145,7 +145,7 @@ const Footer = styled.div`
 `;
 
 const CreateAccount = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: -15px;
 `;
 
