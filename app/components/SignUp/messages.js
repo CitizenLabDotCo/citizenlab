@@ -181,6 +181,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.acceptTermsAndConditionsFacebook',
     defaultMessage: 'Accept our {tacLink} to sign up via Facebook',
   },
+  acceptTermsAndConditionsAzureAd: {
+    id: 'app.containers.SignUp.acceptTermsAndConditionsAzureAd',
+    defaultMessage: 'Accept our {tacLink} to sign up via {tenantLoginMechanismName}',
+  },
   termsAndConditions: {
     id: 'app.containers.SignUp.termsAndConditions',
     defaultMessage: 'terms and conditions',
