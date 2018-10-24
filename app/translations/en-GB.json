@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "",
   "app.components.ConsentManager.Banner.accept": "",
+  "app.components.ConsentManager.Banner.ariaButtonClose": "",
   "app.components.ConsentManager.Banner.mainText": "",
   "app.components.ConsentManager.Banner.manage": "",
   "app.components.ConsentManager.Banner.policyLink": "",
