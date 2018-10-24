@@ -190,7 +190,7 @@ export default defineMessages({
     defaultMessage: 'Please accept the terms and conditions',
   },
   signUpButtonAltText: {
-    id: 'app.containers.SignIn.signUpButtonAltText',
+    id: 'app.containers.SignUp.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
   }
 });
