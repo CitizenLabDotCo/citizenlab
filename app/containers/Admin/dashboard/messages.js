@@ -27,6 +27,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
     defaultMessage: 'No users',
   },
+  registeredUsersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.registeredUsersByTimeTitle',
+    defaultMessage: 'Users',
+  },
+  numberOfUers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfUers',
+    defaultMessage: 'Users',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',

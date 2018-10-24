@@ -5,8 +5,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { usersByTimeStream } from 'services/stats';
+import { usersByTimeCumulativeStream } from 'services/stats';
 import messages from '../messages';
+import EmptyGraph from './EmptyGraph';
 
 type State = {
   serie: {
@@ -20,6 +21,9 @@ type Props = {
   startAt: string,
   endAt: string,
   resolution: 'month' | 'day';
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
 };
 
 class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -28,20 +32,26 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null
+      serie: null,
     };
   }
 
   componentDidMount() {
-    const { startAt, endAt, resolution } = this.props;
-    this.resubscribe(startAt, endAt, resolution);
+    const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
+    this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { startAt, endAt, resolution } = this.props;
+    const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
 
-    if (startAt !== prevProps.startAt || endAt !== prevProps.endAt || resolution !== prevProps.resolution) {
-      this.resubscribe(startAt, endAt, resolution);
+    if (startAt !== prevProps.startAt
+      || endAt !== prevProps.endAt
+      || resolution !== prevProps.resolution
+      || currentGroupFilter !== prevProps.currentGroupFilter
+      || currentTopicFilter !== prevProps.currentTopicFilter
+      || currentProjectFilter !== prevProps.currentProjectFilter
+    ) {
+      this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
     }
   }
 
@@ -57,16 +67,26 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     }));
   }
 
-  resubscribe(startAt: string, endAt: string, resolution: 'month' | 'day') {
+  resubscribe(
+    startAt: string,
+    endAt: string,
+    resolution: 'month' | 'day',
+    currentGroupFilter?: string,
+    currentTopicFilter?: string,
+    currentProjectFilter?: string
+  ) {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = usersByTimeStream({
+    this.subscription = usersByTimeCumulativeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
         interval: resolution,
+        // current_group_filter: currentGroupFilter, TODO
+        // current_topic_filter: currentTopicFilter, TODO
+        // current_project_filter: currentProjectFilter, TODO
       }
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);
@@ -96,41 +116,48 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   render() {
-    const theme = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
+    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
 
-    return (
-      <ResponsiveContainer>
-        <AreaChart data={serie}>
-          <Area
-            type="monotone"
-            dataKey="value"
-            name={formatMessage(messages.numberOfRegistrations)}
-            dot={false}
-            fill={theme.chartFill}
-            fillOpacity={1}
-            stroke={theme.chartStroke}
-          />
-          <XAxis
-            dataKey="name"
-            interval="preserveStartEnd"
-            stroke={theme.chartLabelColor}
-            fontSize={theme.chartLabelSize}
-            tick={{ transform: 'translate(0, 7)' }}
-            tickFormatter={this.formatTick}
-          />
-          <YAxis
-            stroke={theme.chartLabelColor}
-            fontSize={theme.chartLabelSize}
-          />
-          <Tooltip
-            isAnimationActive={false}
-            labelFormatter={this.formatLabel}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
-    );
+    if (!isEmpty) {
+      return (
+        <ResponsiveContainer>
+          <AreaChart data={serie}>
+            <Area
+              type="monotone"
+              dataKey="value"
+              name={formatMessage(messages.numberOfUers)}
+              dot={false}
+              fill={chartFill}
+              fillOpacity={1}
+              stroke={chartStroke}
+            />
+            <XAxis
+              dataKey="name"
+              interval="preserveStartEnd"
+              stroke={chartLabelColor}
+              fontSize={chartLabelSize}
+              tick={{ transform: 'translate(0, 7)' }}
+              tickFormatter={this.formatTick}
+            />
+            <YAxis
+              stroke={chartLabelColor}
+              fontSize={chartLabelSize}
+            />
+            <Tooltip
+              isAnimationActive={false}
+              labelFormatter={this.formatLabel}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      );
+    } else {
+      return (
+        <EmptyGraph unit="Users" />
+      );
+    }
   }
 }
 

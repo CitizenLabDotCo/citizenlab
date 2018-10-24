@@ -102,9 +102,16 @@ export default class DashboardPage extends PureComponent<Props, State> {
               <GraphCard>
                 <GraphCardInner>
                   <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByTimeTitle} />
+                    <FormattedMessage {...messages.registeredUsersByTimeTitle} />
                   </GraphCardTitle>
-                  <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
+                  <UsersByTimeChart
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    currentProjectFilter={this.state.currentProjectFilter}
+                    currentGroupFilter={this.state.currentGroupFilter}
+                    currentTopicFilter={this.state.currentTopicFilter}
+                  />
                 </GraphCardInner>
               </GraphCard>
             </Line>
