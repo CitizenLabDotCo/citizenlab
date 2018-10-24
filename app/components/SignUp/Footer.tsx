@@ -14,7 +14,7 @@ import Checkbox from 'components/UI/Checkbox';
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -27,6 +27,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // logos
 const googleLogo = require('./google.svg') as string;
@@ -53,13 +54,13 @@ const FooterContent = styled.div`
   flex-direction: column;
 `;
 
-const SocialSignInButtons = styled.div`
+const SocialSignUpButtons = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
 `;
 
-const SocialSignInButton = styled.div`
+const SocialSignUpButton = styled.div`
   width: 100%;
   height: 58px;
   margin-bottom: 15px;
@@ -101,7 +102,7 @@ const SocialSignInButton = styled.div`
   }
 `;
 
-const SocialSignInButtonInner = styled.div`
+const SocialSignUpButtonInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   position: absolute;
@@ -137,7 +138,7 @@ const SocialSignInButtonInner = styled.div`
   }
 `;
 
-const SocialSignInText = styled.div`
+const SocialSignUpText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
@@ -146,15 +147,26 @@ const SocialSignInText = styled.div`
   margin-bottom: 20px;
 `;
 
+const AlreadyHaveAnAccount = styled(Link)`
+  color: ${(props) => props.theme.colorMain};
+  font-size: ${fontSizes.base}px;
+  line-height: 20px;
+  font-weight: 400;
+  text-decoration: none;
+  cursor: pointer;
+  margin-top: 10px;
+
+  &:hover {
+    color: ${(props) => darken(0.15, props.theme.colorMain)};
+  }
+`;
+
 interface InputProps {
   goToSignIn: () => void;
-}
-
-interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps {}
 
 interface State {
   socialLoginClicked: 'google' | 'facebook' | null;
@@ -210,13 +222,16 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
+    const passwordLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.password_login, 'enabled', false) : false);
     const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+    const azureAdLoginEnabled = true;
+    // const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
 
     const googleCheckbox = (socialLoginClicked === 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignInButtonInner>
+        <SocialSignUpButtonInner>
           <Checkbox
             value={socialLoginTaCAccepted}
             onChange={this.handleSocialLoginAcceptTaC('google')}
@@ -228,21 +243,21 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               />
             }
           />
-        </SocialSignInButtonInner>
+        </SocialSignUpButtonInner>
       </CSSTransition>
     ));
 
     const googleImage = (socialLoginClicked !== 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignInButtonInner>
+        <SocialSignUpButtonInner>
           <img src={googleLogo} height="29px" role="presentation" alt="" />
-        </SocialSignInButtonInner>
+        </SocialSignUpButtonInner>
       </CSSTransition>
     ));
 
     const facebookCheckbox = (socialLoginClicked === 'facebook' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignInButtonInner>
+        <SocialSignUpButtonInner>
           <Checkbox
             value={socialLoginTaCAccepted}
             onChange={this.handleSocialLoginAcceptTaC('facebook')}
@@ -254,29 +269,34 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
               />
             }
           />
-        </SocialSignInButtonInner>
+        </SocialSignUpButtonInner>
       </CSSTransition>
     ));
 
     const facebookImage = (socialLoginClicked !== 'facebook' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignInButtonInner>
+        <SocialSignUpButtonInner>
           <img src={facebookLogo} height="21px" role="presentation" alt="" />
-        </SocialSignInButtonInner>
+        </SocialSignUpButtonInner>
       </CSSTransition>
     ));
 
-    if (showSocialLogin) {
+    if (showSocialLogin || azureAdLoginEnabled) {
       return (
-        <Container>
+        <>
+        {passwordLoginEnabled &&
           <Separator />
+        }
+        <Container>
           <FooterContent>
-            <SocialSignInText>
-              {formatMessage(messages.orSignUpWith)}
-            </SocialSignInText>
-            <SocialSignInButtons>
+            {(passwordLoginEnabled && (showSocialLogin || azureAdLoginEnabled)) &&
+              <SocialSignUpText>
+                {formatMessage(messages.orSignUpWith)}
+              </SocialSignUpText>
+            }
+            <SocialSignUpButtons>
               <FeatureFlag name="google_login">
-                <SocialSignInButton
+                <SocialSignUpButton
                   className={`google ${socialLoginClicked === 'google' && 'active'}`}
                   onClick={this.handleOnSSOClick('google')}
                 >
@@ -284,10 +304,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     {googleCheckbox}
                     {googleImage}
                   </TransitionGroup>
-                </SocialSignInButton>
+                </SocialSignUpButton>
               </FeatureFlag>
               <FeatureFlag name="facebook_login">
-                <SocialSignInButton
+                <SocialSignUpButton
                   className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`}
                   onClick={this.handleOnSSOClick('facebook')}
                 >
@@ -295,11 +315,22 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     {facebookCheckbox}
                     {facebookImage}
                   </TransitionGroup>
-                </SocialSignInButton>
+                </SocialSignUpButton>
               </FeatureFlag>
-            </SocialSignInButtons>
+            </SocialSignUpButtons>
+            {/* <FeatureFlag name="azure_ad_login">
+              <AzureAdSignUpButton className="azure_ad" onClick={this.handleOnSSOClick('azure_ad')}>
+                <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+              </AzureAdSignUpButton>
+            </FeatureFlag> */}
+            {!passwordLoginEnabled &&
+              <AlreadyHaveAnAccount to="/sign-in">
+                <FormattedMessage {...messages.alreadyHaveAnAccount} />
+              </AlreadyHaveAnAccount>
+            }
           </FooterContent>
         </Container>
+        </>
       );
     }
 
@@ -309,8 +340,4 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
 const FooterWithInjectedIntl = injectIntl<Props>(Footer);
 
-export default (inputProps: InputProps) => (
-  <GetTenant>
-    {tenant => <FooterWithInjectedIntl {...inputProps} tenant={tenant} />}
-  </GetTenant>
-);
+export default FooterWithInjectedIntl;
