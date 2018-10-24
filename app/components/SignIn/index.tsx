@@ -335,12 +335,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { title } = this.props;
     const { formatMessage } = this.props.intl;
     const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
-    const passwordLogin = false;
+    const passwordLoginEnabled: boolean = get(currentTenant, 'data.attributes.settings.password_login.enabled');
     const googleLoginEnabled = !!get(currentTenant, 'data.attributes.settings.google_login.enabled');
     const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
-    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
-    const azureAdLoginEnabled = true;
-    const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
+    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled);
+    const azureAdLoginEnabled: boolean = get(currentTenant, 'data.attributes.settings.azure_ad_login.enabled');
+    const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
@@ -359,7 +359,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
           <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-            {passwordLogin &&
+            {passwordLoginEnabled &&
               <PasswordLogin>
                 <FormElement>
                   <StyledInput
@@ -407,53 +407,52 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               </PasswordLogin>
             }
 
-            {(showSocialLogin || azureAdLoginEnabled) &&
-              <div>
-                {(passwordLogin && (showSocialLogin || azureAdLoginEnabled)) &&
-                  <Separator />
-                }
-                <Footer>
-                  {(passwordLogin && (showSocialLogin || azureAdLoginEnabled)) &&
-                    <SocialLoginText>
-                      {formatMessage(messages.orLogInWith)}
-                    </SocialLoginText>
-                  }
-                  <SocialLoginButtons>
-                    <FeatureFlag name="google_login">
-                      <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
-                        <img
-                          src={googleLogo}
-                          height="29px"
-                          alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Google' })}
-                        />
-                      </SocialSignInButton>
-                    </FeatureFlag>
-                    <FeatureFlag name="facebook_login">
-                      <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
-                        <img
-                          src={facebookLogo}
-                          height="21px"
-                          alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Facebook' })}
-                        />
-                      </SocialSignInButton>
-                    </FeatureFlag>
-                  </SocialLoginButtons>
-                  <FeatureFlag name="azure_ad_login">
-                    <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
+            {passwordLoginEnabled && (socialLoginEnabled || azureAdLoginEnabled) &&
+              <Separator />
+            }
+
+            {(socialLoginEnabled || azureAdLoginEnabled) &&
+              <Footer>
+                {(passwordLoginEnabled &&
+                  <SocialLoginText>
+                    {formatMessage(messages.orLogInWith)}
+                  </SocialLoginText>
+                )}
+                <SocialLoginButtons>
+                  <FeatureFlag name="google_login">
+                    <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
                       <img
-                        src={azureAdLogo}
-                        height="21px"
-                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                        src={googleLogo}
+                        height="29px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Google' })}
                       />
-                    </AzureAdSignInButton>
+                    </SocialSignInButton>
                   </FeatureFlag>
-                  {!passwordLogin &&
-                    <CreateAccount>
-                      {createAccount}
-                    </CreateAccount>
-                  }
-                </Footer>
-              </div>
+                  <FeatureFlag name="facebook_login">
+                    <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
+                      <img
+                        src={facebookLogo}
+                        height="21px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Facebook' })}
+                      />
+                    </SocialSignInButton>
+                  </FeatureFlag>
+                </SocialLoginButtons>
+                <FeatureFlag name="azure_ad_login">
+                  <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
+                    <img
+                      src={azureAdLogo}
+                      height="21px"
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                    />
+                  </AzureAdSignInButton>
+                </FeatureFlag>
+                {!passwordLoginEnabled &&
+                  <CreateAccount>
+                    {createAccount}
+                  </CreateAccount>
+                }
+              </Footer>
             }
           </Form>
         </Container>
