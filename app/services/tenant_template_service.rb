@@ -38,7 +38,7 @@ class TenantTemplateService
         end
         begin 
           model.save!
-          ImageAssignmentJob.perform_later model, image_assignments
+          ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           if e.message == "Validation failed: Avatar could not download file: 404 Not Found"
             # e.message = e.message + ": #{model.email} + #{template_name}" ### doesn't work
@@ -48,6 +48,7 @@ class TenantTemplateService
         obj_to_id_and_class[attributes] = [model.id, model_class]
       end
     end
+    nil
   end
 
   private
