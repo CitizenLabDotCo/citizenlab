@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "Sign in with {loginMechanismName}",
   "app.containers.SignIn.signInError": "This combination of e-mail and password is not correct",
   "app.containers.SignIn.signUp": "Sign up",
+  "app.containers.SignIn.signUpButtonAltText": "Sign up with {loginMechanismName}",
   "app.containers.SignIn.submit": "Log in",
   "app.containers.SignIn.title": "Log in",
   "app.containers.SignInPage.title": "Log in",

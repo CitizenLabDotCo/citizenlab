@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Deze combinatie van e-mail en wachtwoord klopt niet",
   "app.containers.SignIn.signUp": "Registreren",
+  "app.containers.SignIn.signUpButtonAltText": "",
   "app.containers.SignIn.submit": "Inloggen",
   "app.containers.SignIn.title": "Inloggen",
   "app.containers.SignInPage.title": "Inloggen",
