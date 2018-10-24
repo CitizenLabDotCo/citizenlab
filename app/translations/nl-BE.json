@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
   "app.components.ConsentManager.Banner.accept": "",
+  "app.components.ConsentManager.Banner.ariaButtonClose": "",
   "app.components.ConsentManager.Banner.mainText": "",
   "app.components.ConsentManager.Banner.manage": "",
   "app.components.ConsentManager.Banner.policyLink": "",
