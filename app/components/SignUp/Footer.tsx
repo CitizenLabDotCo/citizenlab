@@ -365,7 +365,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                         socialLoginClicked={socialLoginClicked}
                         tenantLoginMechanismName="Google"
                         socialLoginTaCAccepted={socialLoginTaCAccepted}
-                        onCheck={this.handleSocialLoginAcceptTaC}
+                        onCheck={this.handleSocialLoginAcceptTaC('google')}
                       /> */}
                       {googleCheckbox}
                       {googleImage}

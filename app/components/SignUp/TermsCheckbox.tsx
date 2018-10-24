@@ -54,7 +54,7 @@ interface Props {
   socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
   tenantLoginMechanismName: string;
   socialLoginTaCAccepted: boolean;
-  onCheck: (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => void;
+  onCheck: () => void;
 }
 
 const TermsCheckbox = ({
@@ -62,25 +62,31 @@ const TermsCheckbox = ({
   socialLoginTaCAccepted,
   tenantLoginMechanismName,
   onCheck
-}: Props) => (
-  <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-    <SocialSignUpButtonInner>
-      <Checkbox
-        value={socialLoginTaCAccepted}
-        onChange={onCheck(socialLoginClicked)}
-        disableLabelClick={true}
-        label={
-          <FormattedMessage
-            {...messages.acceptTermsAndConditions}
-            values={{
-              tenantLoginMechanismName,
-              tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-            }}
+}: Props) => {
+  if (socialLoginClicked) {
+    return (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <SocialSignUpButtonInner>
+          <Checkbox
+            value={socialLoginTaCAccepted}
+            onChange={onCheck}
+            disableLabelClick={true}
+            label={
+              <FormattedMessage
+                {...messages.acceptTermsAndConditions}
+                values={{
+                  tenantLoginMechanismName,
+                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                }}
+              />
+            }
           />
-        }
-      />
-    </SocialSignUpButtonInner>
-  </CSSTransition>
-);
+        </SocialSignUpButtonInner>
+      </CSSTransition>
+    );
+  }
+
+  return null;
+};
 
 export default injectIntl<Props>(TermsCheckbox);
