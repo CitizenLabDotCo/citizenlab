@@ -189,11 +189,11 @@ const SocialSignInButton = styled.div`
   }
 `;
 
-// const AzureAdSignInButton = SocialSignInButton.extend`
-//   &:hover {
-//     border-color: #000;
-//   }
-// `;
+const AzureAdSignInButton = SocialSignInButton.extend`
+  &:hover {
+    border-color: #000;
+  }
+`;
 
 type Props = {
   onSignedIn: (userId: string) => void;
@@ -323,7 +323,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleOnSSOClick = (provider) => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
     window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
@@ -336,7 +336,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
     const azureAdLoginEnabled = true;
-    // const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
+    const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
@@ -425,11 +425,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       </SocialSignInButton>
                     </FeatureFlag>
                   </SocialLoginButtons>
-                  {/* <FeatureFlag name="azure_ad_login">
-                    <AzureAdSignInButton className="azure_ad" onClick={this.handleOnSSOClick('azure_ad')}>
+                  <FeatureFlag name="azure_ad_login">
+                    <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
                       <img src={azureAdLogo} height="21px" role="presentation" alt="" />
                     </AzureAdSignInButton>
-                  </FeatureFlag> */}
+                  </FeatureFlag>
                   {!passwordLogin &&
                     <CreateAccount>
                       {createAccount}
