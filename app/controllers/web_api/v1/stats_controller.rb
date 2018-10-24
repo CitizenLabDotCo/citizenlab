@@ -269,6 +269,29 @@ class WebApi::V1::StatsController < ApplicationController
     render json: serie
   end
 
+  def votes_by_topic
+    serie = Vote.where(votable_type: 'Idea')
+      .where(created_at: @start_at..@end_at)
+      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .joins("JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
+      .group("ideas_topics.topic_id")
+      .order("ideas_topics.topic_id")
+      .count
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  end
+
+  def votes_by_project
+    serie = Vote.where(votable_type: 'Idea')
+      .where(created_at: @start_at..@end_at)
+      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+      .group("ideas.project_id")
+      .order("ideas.project_id")
+      .count
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h}
+  end
+
   private
 
   def parse_time_boundaries

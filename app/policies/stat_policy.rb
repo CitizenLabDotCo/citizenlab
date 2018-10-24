@@ -107,4 +107,12 @@ class StatPolicy < ApplicationPolicy
   def votes_by_time_cumulative?
     user&.active? && user.admin?
   end
+
+  def votes_by_topic?
+    user&.active? && user.admin?
+  end
+
+  def votes_by_project?
+    user&.active? && user.admin?
+  end
 end
