@@ -144,6 +144,8 @@ Rails.application.routes.draw do
         get 'votes_by_custom_field'
         get 'votes_by_time'
         get 'votes_by_time_cumulative'
+        get 'votes_by_topic'
+        get 'votes_by_project'
       end
 
       scope 'mentions', controller: 'mentions' do
