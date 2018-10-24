@@ -55,7 +55,7 @@ export interface ITenantSettings {
     tenant: string;
     client_id: string;
     logo_url: string;
-    logo_alt_text: string;
+    login_mechanism_name: string;
   };
   pages?: TenantFeature;
   groups?: TenantFeature;
