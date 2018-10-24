@@ -35,6 +35,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfUers',
     defaultMessage: 'Users',
   },
+  activeUsersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
+    defaultMessage: 'Active Users',
+  },
+  numberOfActiveUers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUers',
+    defaultMessage: 'Active users',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
