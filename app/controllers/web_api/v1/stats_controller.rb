@@ -160,7 +160,7 @@ class WebApi::V1::StatsController < ApplicationController
   # ** comments ***
 
   def comments_count
-    count = Comment
+    count = Comment.published
       .where(created_at: @start_at..@end_at)
       .published
       .count
@@ -170,7 +170,7 @@ class WebApi::V1::StatsController < ApplicationController
 
   def comments_by_time
     serie = @@stats_service.group_by_time(
-      Comment,
+      Comment.published,
       'created_at',
       @start_at,
       @end_at,
@@ -181,13 +181,35 @@ class WebApi::V1::StatsController < ApplicationController
 
   def comments_by_time_cumulative
     serie = @@stats_service.group_by_time_cumulative(
-      Comment,
+      Comment.published,
       'created_at',
       @start_at,
       @end_at,
       params[:interval]
     )
     render json: serie
+  end
+
+  def comments_by_topic
+    serie = Comment.published
+      .where(created_at: @start_at..@end_at)
+      .joins(idea: :ideas_topics)
+      .group("ideas_topics.topic_id")
+      .order("ideas_topics.topic_id")
+      .count
+    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  end
+
+  def comments_by_project
+    serie = Comment.published
+      .where(created_at: @start_at..@end_at)
+      .joins(:idea)
+      .group("ideas.project_id")
+      .order("ideas.project_id")
+      .count
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, projects: projects.map{|p| [p.id, p.attributes.except('id')]}.to_h}
   end
 
   # *** votes ***
