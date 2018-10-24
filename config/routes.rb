@@ -129,6 +129,7 @@ Rails.application.routes.draw do
         get 'ideas_by_time'
         get 'ideas_by_time_cumulative'
         get 'ideas_by_topic'
+        get 'ideas_by_project'
         get 'ideas_by_area'
         get 'comments_count'
         get 'comments_by_time'
