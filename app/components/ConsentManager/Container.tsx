@@ -156,6 +156,7 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
           opened={isDialogOpen}
           close={this.closeDialog}
           label={intl.formatMessage(messages.modalLabel)}
+          fixedHeight={false}
         >
           {!isCancelling &&
             <PreferencesDialog

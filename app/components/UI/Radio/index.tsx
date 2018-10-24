@@ -10,7 +10,7 @@ const Wrapper = styled.label`
   cursor: pointer;
 `;
 
-const CustomRadio = styled<any, 'div'>('div')`
+export const CustomRadio = styled<any, 'div'>('div')`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -38,7 +38,7 @@ const CustomRadio = styled<any, 'div'>('div')`
   }
 `;
 
-const Checked = styled.div`
+export const Checked = styled.div`
   flex: 0 0 12px;
   width: 12px;
   height: 12px;

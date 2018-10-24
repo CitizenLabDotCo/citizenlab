@@ -6,11 +6,13 @@ import { transparentize, hideVisually } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import { CustomRadio, Checked } from 'components/UI/Radio';
+
 const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: 5px;
-  background-color: ${props => transparentize(.95, props.theme.colorMain)};;
+  background-color: ${transparentize(.95, colors.adminTextColor)};;
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
   margin-right: 10px;
@@ -42,6 +44,9 @@ const InputContainer = styled.div`
 const HiddenLabel = styled.label`
   ${hideVisually()}
 `;
+const StyledInput = styled.input`
+  ${hideVisually()}
+`;
 
 const Separator = styled.span`
   color: ${colors.label};
@@ -68,7 +73,6 @@ const StyledLabel = styled.label`
   cursor: pointer;
   font-weight: 400;
   span {
-    margin-left: 5px;
     margin-bottom: 4px;
   }
   input {
@@ -76,8 +80,8 @@ const StyledLabel = styled.label`
   }
   &:focus-within, &:hover {
     color: black;
-    input {
-      border: 1px solid hsl(0, 0%, 66%);
+    div {
+      border-color: black;
     }
   }
 `;
@@ -123,7 +127,7 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         />
       </HiddenLabel>
       <StyledLabel htmlFor={`${category}-radio-true`}>
-        <input
+        <StyledInput
           type="radio"
           name={category}
           id={`${category}-radio-true`}
@@ -133,10 +137,15 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
           onChange={handleChange}
           required
         />
+        <CustomRadio
+          className={`${checked === true ? 'checked' : ''}`}
+        >
+          {checked === true && <Checked color="#49B47D" />}
+        </CustomRadio>
         <FormattedMessage {...messages.allow} />
       </StyledLabel>
       <StyledLabel htmlFor={`${category}-radio-false`}>
-        <input
+        <StyledInput
           type="radio"
           name={category}
           id={`${category}-radio-false`}
@@ -146,6 +155,11 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
           onChange={handleChange}
           required
         />
+        <CustomRadio
+          className={`${checked === false ? 'checked' : ''}`}
+        >
+          {checked === false && <Checked color="#49B47D" />}
+        </CustomRadio>
         <FormattedMessage {...messages.disallow} />
       </StyledLabel>
     </InputContainer>

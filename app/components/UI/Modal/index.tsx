@@ -49,6 +49,11 @@ const ModalContent: any = styled(clickOutside)`
     &.fixedHeight {
       height: 80vh;
     }
+    ${media.smallerThanMinTablet`
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+    `}
   `}
 `;
 
@@ -104,7 +109,7 @@ const ModalContainer = styled(FocusTrap)`
   will-change: opacity, transform;
 
   ${media.smallerThanMaxTablet`
-    padding: 20px;
+    padding: 0;
     /* height: calc(100vh - ${props => props.theme.mobileMenuHeight}px); */
     /* bottom: auto; */
   `}
