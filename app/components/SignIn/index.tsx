@@ -30,7 +30,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // logos
 const googleLogo = require('components/SignUp/google.svg') as string;
@@ -177,6 +177,10 @@ const SocialSignInButton = styled.div`
   user-select: none;
   cursor: pointer;
   position: relative;
+
+  ${media.largePhone`
+    height: 90px;
+  `}
 
   &.google:hover,
   &.google.active {
