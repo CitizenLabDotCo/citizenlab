@@ -19,7 +19,7 @@ type Props = {
 
 };
 
-export default class AquisitionDashboard extends React.PureComponent<Props, State> {
+export default class AquisitionDashboard extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

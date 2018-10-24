@@ -23,9 +23,9 @@ interface Props {
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
 }
 
 export default class DashboardPage extends PureComponent<Props, State> {
@@ -34,9 +34,6 @@ export default class DashboardPage extends PureComponent<Props, State> {
     this.state = {
       interval: 'months',
       intervalIndex: 0,
-      currentProjectFilter: '',
-      currentGroupFilter: '',
-      currentTopicFilter: ''
     };
   }
 

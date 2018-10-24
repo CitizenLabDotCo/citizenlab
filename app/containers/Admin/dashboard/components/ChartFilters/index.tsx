@@ -9,9 +9,9 @@ const Container = styled.div`
 `;
 
 interface Props {
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
   projectFilterOptions: string[];
   groupFilterOptions: string[];
   topicFilterOptions: string[];

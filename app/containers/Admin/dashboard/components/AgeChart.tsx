@@ -8,6 +8,7 @@ import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByBirthyearStream, IUsersByBirthyear } from 'services/stats';
 import messages from '../messages';
+import EmptyGraph from './EmptyGraph';
 
 type State = {
   serie: {
@@ -19,7 +20,8 @@ type State = {
 
 type Props = {
   startAt: string,
-  endAt: string
+  endAt: string,
+  currentGroupFilter?: string,
 };
 
 class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -37,8 +39,10 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt || this.props.endAt !== prevProps.endAt) {
-      this.resubscribe(this.props.startAt, this.props.endAt);
+    if (this.props.startAt !== prevProps.startAt
+      || this.props.endAt !== prevProps.endAt
+      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.resubscribe(this.props.startAt, this.props.endAt, this.props.currentGroupFilter);
     }
   }
 
@@ -76,7 +80,10 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
     ];
   }
 
-  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
+  resubscribe(
+    startAt = this.props.startAt,
+    endAt = this.props.endAt,
+    currentGroupFilter = this.props.currentGroupFilter) {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
@@ -85,6 +92,7 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
+        // current-group_filter: currentGroupFilter TODO
       },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie) as any;
@@ -93,32 +101,40 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const theme = this.props['theme'];
+    const { chartFill, barFill, chartLabelSize, chartLabelColor } = this.props['theme'];
+    const { serie } = this.state;
+    const isEmpty = !serie || serie.every(item => item.value === 0);
 
-    return (
-      <ResponsiveContainer>
-        <BarChart data={this.state.serie} margin={{ right: 40 }}>
-          <Bar
-            dataKey="value"
-            name="name"
-            fill={theme.chartFill}
-            label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-          />
-          <XAxis
-            dataKey="name"
-            stroke={theme.chartLabelColor}
-            fontSize={theme.chartLabelSize}
-            tick={{ transform: 'translate(0, 7)' }}
-          />
-          <YAxis
-            stroke={theme.chartLabelColor}
-            fontSize={theme.chartLabelSize}
-          />
-          <Tooltip isAnimationActive={false} />
+    if (!isEmpty) {
+      return (
+        <ResponsiveContainer>
+          <BarChart data={this.state.serie} margin={{ right: 40 }}>
+            <Bar
+              dataKey="value"
+              name="name"
+              fill={chartFill}
+              label={{ fill: barFill, fontSize: chartLabelSize }}
+            />
+            <XAxis
+              dataKey="name"
+              stroke={chartLabelColor}
+              fontSize={chartLabelSize}
+              tick={{ transform: 'translate(0, 7)' }}
+            />
+            <YAxis
+              stroke={chartLabelColor}
+              fontSize={chartLabelSize}
+            />
+            <Tooltip isAnimationActive={false} />
 
-        </BarChart>
-      </ResponsiveContainer>
-    );
+          </BarChart>
+        </ResponsiveContainer >
+      );
+    } else {
+      return (
+        <EmptyGraph unit="Users"/>
+      );
+    }
   }
 }
 

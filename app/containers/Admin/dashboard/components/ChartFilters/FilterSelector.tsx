@@ -3,7 +3,7 @@ import React from 'react';
 interface Props {
   onFilter: (filter: string) => void;
   filterOptions: string[];
-  currentFilter: string;
+  currentFilter?: string;
   hide?: boolean | undefined;
 }
 
