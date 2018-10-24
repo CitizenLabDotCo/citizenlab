@@ -913,6 +913,7 @@
   "app.containers.SignIn.title": "Anmeldung",
   "app.containers.SignInPage.title": "Anmelden",
   "app.containers.SignInUpBanner.slogan": "{orgName, select, München {Welche Anliegen haben Sie? Verschaffen Sie Ihrer Stimme Gehör!} other {Welche Ideen haben Sie? Verschaffen Sie Ihrer Stimme Gehör!}}!",
+  "app.containers.SignUp.acceptTermsAndConditionsAzureAd": "",
   "app.containers.SignUp.acceptTermsAndConditionsFacebook": "Akzeptieren Sie unsere {tacLink}, um sich per Facebook anzumelden",
   "app.containers.SignUp.acceptTermsAndConditionsGoogle": "Akzeptieren Sie unsere {tacLink}, um sich über Google anzumelden",
   "app.containers.SignUp.alreadyHaveAnAccount": "Sie haben bereits ein Konto?",
