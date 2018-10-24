@@ -907,6 +907,7 @@
   "app.containers.SignIn.orLogInWith": "",
   "app.containers.SignIn.passwordLabel": "",
   "app.containers.SignIn.passwordPlaceholder": "",
+  "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "",
   "app.containers.SignIn.signUp": "",
   "app.containers.SignIn.submit": "",
