@@ -9,6 +9,7 @@ import IntervalControl from '../components/IntervalControl';
 import IdeasByTimeChart from '../components/IdeasByTimeChart';
 import UsersByTimeChart from '../components/UsersByTimeChart';
 import IdeasByTopicChart from '../components/IdeasByTopicChart';
+import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, Container, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
 
@@ -99,12 +100,59 @@ export default class DashboardPage extends PureComponent<Props, State> {
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
             <Line>
-              <GraphCard>
+              <GraphCard className="first halfWidth">
                 <GraphCardInner>
                   <GraphCardTitle>
                     <FormattedMessage {...messages.registeredUsersByTimeTitle} />
                   </GraphCardTitle>
                   <UsersByTimeChart
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    currentProjectFilter={this.state.currentProjectFilter}
+                    currentGroupFilter={this.state.currentGroupFilter}
+                    currentTopicFilter={this.state.currentTopicFilter}
+                  />
+                </GraphCardInner>
+              </GraphCard>
+              <GraphCard className="halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.activeUsersByTimeTitle} />
+                  </GraphCardTitle>
+                  <ActiveUsersByTimeChart
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    currentProjectFilter={this.state.currentProjectFilter}
+                    currentGroupFilter={this.state.currentGroupFilter}
+                    currentTopicFilter={this.state.currentTopicFilter}
+                  />
+                </GraphCardInner>
+              </GraphCard>
+            </Line>
+            <Line>
+              <GraphCard className="first halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.ideasByTimeTitle} />
+                  </GraphCardTitle>
+                  <IdeasByTimeChart
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    currentProjectFilter={this.state.currentProjectFilter}
+                    currentGroupFilter={this.state.currentGroupFilter}
+                    currentTopicFilter={this.state.currentTopicFilter}
+                  />
+                </GraphCardInner>
+              </GraphCard>
+              <GraphCard className="halfWidth">
+                <GraphCardInner>
+                  <GraphCardTitle>
+                    <FormattedMessage {...messages.activeUsersByTimeTitle} />
+                  </GraphCardTitle>
+                  <ActiveUsersByTimeChart
                     startAt={startAt}
                     endAt={endAt}
                     resolution={resolution}

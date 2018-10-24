@@ -5,30 +5,34 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { ideasByTimeCumulativeStream } from 'services/stats';
+import { activeUsersByTimeStream } from 'services/stats';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
 
 type State = {
-  serie: { name: string | number, value: number, code: string }[] | null;
+  serie: {
+    name: string | number,
+    value: number,
+    code: string
+  }[] | null;
 };
 
 type Props = {
   startAt: string,
   endAt: string,
-  resolution: 'month' | 'day',
+  resolution: 'month' | 'day';
   currentProjectFilter?: string;
   currentGroupFilter?: string;
   currentTopicFilter?: string;
 };
 
-class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null
+      serie: null,
     };
   }
 
@@ -55,7 +59,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat(serie: { [key: string]: number }) {
+  convertToGraphFormat = (serie: { [key: string]: number }) => {
     return map(serie, (value, key) => ({
       value,
       name: key,
@@ -75,7 +79,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
       this.subscription.unsubscribe();
     }
 
-    this.subscription = ideasByTimeCumulativeStream({
+    this.subscription = activeUsersByTimeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -96,7 +100,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
 
     return formatDate(date, {
       day: (resolution === 'month' ? undefined : '2-digit'),
-      month: 'short'
+      month: 'short',
     });
   }
 
@@ -112,19 +116,19 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   render() {
-    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
+    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
 
     if (!isEmpty) {
       return (
         <ResponsiveContainer>
-          <AreaChart data={serie} margin={{ right: 40 }}>
+          <AreaChart data={serie}>
             <Area
               type="monotone"
               dataKey="value"
-              name={formatMessage(messages.numberOfIdeas)}
+              name={formatMessage(messages.numberOfActiveUers)}
               dot={false}
               fill={chartFill}
               fillOpacity={1}
@@ -157,4 +161,4 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
   }
 }
 
-export default injectIntl<Props>(withTheme(IdeasByTimeChart as any) as any);
+export default injectIntl<Props>(withTheme(ActiveUsersByTimeChart as any) as any);
