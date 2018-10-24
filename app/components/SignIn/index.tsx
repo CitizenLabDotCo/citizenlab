@@ -341,6 +341,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
     const azureAdLoginEnabled = true;
     const azureAdLogo = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
+    const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
@@ -420,18 +421,30 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   <SocialLoginButtons>
                     <FeatureFlag name="google_login">
                       <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
-                        <img src={googleLogo} height="29px" role="presentation" alt="" />
+                        <img
+                          src={googleLogo}
+                          height="29px"
+                          alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Google' })}
+                        />
                       </SocialSignInButton>
                     </FeatureFlag>
                     <FeatureFlag name="facebook_login">
                       <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
-                        <img src={facebookLogo} height="21px" role="presentation" alt="" />
+                        <img
+                          src={facebookLogo}
+                          height="21px"
+                          alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Facebook' })}
+                        />
                       </SocialSignInButton>
                     </FeatureFlag>
                   </SocialLoginButtons>
                   <FeatureFlag name="azure_ad_login">
                     <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
-                      <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+                      <img
+                        src={azureAdLogo}
+                        height="21px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                      />
                     </AzureAdSignInButton>
                   </FeatureFlag>
                   {!passwordLogin &&
