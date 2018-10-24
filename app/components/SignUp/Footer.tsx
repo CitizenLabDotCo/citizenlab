@@ -250,7 +250,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             disableLabelClick={true}
             label={
               <FormattedMessage
-                {...messages.acceptTermsAndConditionsGoogle}
+                {...messages.acceptTermsAndConditions}
                 values={{
                   tenantLoginMechanismName: 'Google',
                   tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
@@ -283,11 +283,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             disableLabelClick={true}
             label={
               <FormattedMessage
-                {...messages.acceptTermsAndConditionsFacebook}
+                {...messages.acceptTermsAndConditions}
                 values={{
                   tenantLoginMechanismName: 'Facebook',
                   tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-                }}              />
+                }}
+              />
             }
           />
         </SocialSignUpButtonInner>
@@ -315,7 +316,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             disableLabelClick={true}
             label={
               <FormattedMessage
-                {...messages.acceptTermsAndConditionsAzureAd}
+                {...messages.acceptTermsAndConditions}
                 values={{
                   tenantLoginMechanismName,
                   tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
