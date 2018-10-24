@@ -239,6 +239,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const azureAdLoginEnabled = true;
     const azureAdLogo = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
+
     const googleCheckbox = (socialLoginClicked === 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
@@ -260,7 +261,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const googleImage = (socialLoginClicked !== 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
-          <img src={googleLogo} height="29px" role="presentation" alt="" />
+          <img
+            src={googleLogo}
+            height="29px"
+            alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'Google' })}
+          />
         </SocialSignUpButtonInner>
       </CSSTransition>
     ));
@@ -286,7 +291,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const facebookImage = (socialLoginClicked !== 'facebook' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
-          <img src={facebookLogo} height="21px" role="presentation" alt="" />
+        <img
+          src={facebookLogo}
+          height="21px"
+          alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'Facebook' })}
+        />
         </SocialSignUpButtonInner>
       </CSSTransition>
     ));
@@ -315,7 +324,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const azureAdImage = (socialLoginClicked !== 'azureactivedirectory' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
-          <img src={azureAdLogo} height="21px" role="presentation" alt="" />
+          <img
+            src={azureAdLogo}
+            height="21px"
+            alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+          />
         </SocialSignUpButtonInner>
       </CSSTransition>
     ));

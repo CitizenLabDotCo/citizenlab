@@ -197,4 +197,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.tacError',
     defaultMessage: 'Please accept the terms and conditions',
   },
+  signUpButtonAltText: {
+    id: 'app.containers.SignIn.signUpButtonAltText',
+    defaultMessage: 'Sign up with {loginMechanismName}',
+  }
 });
