@@ -173,16 +173,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.gdprApproval',
     defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink} and {ppLink}',
   },
-  acceptTermsAndConditionsGoogle: {
-    id: 'app.containers.SignUp.acceptTermsAndConditionsGoogle',
-    defaultMessage: 'Accept our {tacLink} to sign up via Google',
-  },
-  acceptTermsAndConditionsFacebook: {
-    id: 'app.containers.SignUp.acceptTermsAndConditionsFacebook',
-    defaultMessage: 'Accept our {tacLink} to sign up via Facebook',
-  },
-  acceptTermsAndConditionsAzureAd: {
-    id: 'app.containers.SignUp.acceptTermsAndConditionsAzureAd',
+  acceptTermsAndConditions: {
+    id: 'app.containers.SignUp.acceptTermsAndConditions',
     defaultMessage: 'Accept our {tacLink} to sign up via {tenantLoginMechanismName}',
   },
   termsAndConditions: {
