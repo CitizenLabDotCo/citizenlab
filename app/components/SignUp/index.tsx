@@ -1,6 +1,5 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 
 // libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -11,6 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Footer from './Footer';
+import FeatureFlag from 'components/FeatureFlag';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -159,7 +159,6 @@ class SignUp extends React.PureComponent<Props, State> {
   render() {
     const { visibleStep } = this.state;
     const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
-    const passwordLoginEnabled = get(tenant, 'data.attributes.settings.password_login.enabled');
 
     return (
       <Container>
@@ -175,11 +174,13 @@ class SignUp extends React.PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
-                  {passwordLoginEnabled && <Step1
-                    isInvitation={isInvitation}
-                    token={token}
-                    onCompleted={this.handleStep1Completed}
-                  />}
+                  <FeatureFlag name="password_login">
+                    <Step1
+                      isInvitation={isInvitation}
+                      token={token}
+                      onCompleted={this.handleStep1Completed}
+                    />
+                  </FeatureFlag>
 
                   {!isInvitation &&
                     <Footer tenant={tenant} goToSignIn={this.goToSignIn} />
