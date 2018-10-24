@@ -251,7 +251,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             label={
               <FormattedMessage
                 {...messages.acceptTermsAndConditionsGoogle}
-                values={{ tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
+                values={{
+                  tenantLoginMechanismName: 'Google',
+                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                }}
               />
             }
           />
@@ -281,8 +284,10 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             label={
               <FormattedMessage
                 {...messages.acceptTermsAndConditionsFacebook}
-                values={{ tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link> }}
-              />
+                values={{
+                  tenantLoginMechanismName: 'Facebook',
+                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                }}              />
             }
           />
         </SocialSignUpButtonInner>
