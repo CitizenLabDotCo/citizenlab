@@ -910,6 +910,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "",
   "app.containers.SignIn.signUp": "",
+  "app.containers.SignIn.signUpButtonAltText": "",
   "app.containers.SignIn.submit": "",
   "app.containers.SignIn.title": "",
   "app.containers.SignInPage.title": "",
