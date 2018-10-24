@@ -907,6 +907,7 @@
   "app.containers.SignIn.orLogInWith": "Of log in met",
   "app.containers.SignIn.passwordLabel": "Wachtwoord",
   "app.containers.SignIn.passwordPlaceholder": "Wachtwoord",
+  "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Deze combinatie van e-mail en wachtwoord klopt niet",
   "app.containers.SignIn.signUp": "Registreren",
   "app.containers.SignIn.submit": "Inloggen",

@@ -907,6 +907,7 @@
   "app.containers.SignIn.orLogInWith": "Eller logg inn med",
   "app.containers.SignIn.passwordLabel": "Passord",
   "app.containers.SignIn.passwordPlaceholder": "Passord",
+  "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "Det ble ikke funnet noen konto med den oppgitte innloggingsinformasjonen",
   "app.containers.SignIn.signUp": "Registrer deg",
   "app.containers.SignIn.submit": "Logg inn",
