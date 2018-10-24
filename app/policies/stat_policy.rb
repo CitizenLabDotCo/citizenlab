@@ -68,6 +68,14 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def comments_by_topic?
+    user&.active? && user.admin?
+  end
+
+  def comments_by_project?
+    user&.active? && user.admin?
+  end
+
   def votes_count?
     user&.active? && user.admin?
   end

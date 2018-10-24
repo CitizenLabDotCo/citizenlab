@@ -134,6 +134,8 @@ Rails.application.routes.draw do
         get 'comments_count'
         get 'comments_by_time'
         get 'comments_by_time_cumulative'
+        get 'comments_by_topic'
+        get 'comments_by_project'
         get 'votes_count'
         get 'votes_by_birthyear'
         get 'votes_by_education'
