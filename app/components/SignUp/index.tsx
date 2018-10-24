@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 
 // libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -12,6 +13,7 @@ import Step2 from './Step2';
 import Footer from './Footer';
 
 // resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
@@ -108,6 +110,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
@@ -155,7 +158,8 @@ class SignUp extends React.PureComponent<Props, State> {
 
   render() {
     const { visibleStep } = this.state;
-    const { isInvitation, token, step1Title, step2Title } = this.props;
+    const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
+    const passwordLoginEnabled = get(tenant, 'data.attributes.settings.password_login.enabled');
 
     return (
       <Container>
@@ -171,14 +175,14 @@ class SignUp extends React.PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
-                  <Step1
+                  {passwordLoginEnabled && <Step1
                     isInvitation={isInvitation}
                     token={token}
                     onCompleted={this.handleStep1Completed}
-                  />
+                  />}
 
                   {!isInvitation &&
-                    <Footer goToSignIn={this.goToSignIn} />
+                    <Footer tenant={tenant} goToSignIn={this.goToSignIn} />
                   }
                 </StepContainer>
               </CSSTransition>
@@ -203,6 +207,7 @@ class SignUp extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
   locale: <GetLocale />,
   customFieldsSchema: <GetCustomFieldsSchema />
 });
