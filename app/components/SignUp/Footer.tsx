@@ -26,7 +26,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
@@ -73,6 +73,10 @@ const SocialSignUpButton = styled.div`
   user-select: none;
   cursor: pointer;
   position: relative;
+
+  ${media.largePhone`
+    height: 90px;
+  `}
 
   &.google:hover,
   &.google.active {
