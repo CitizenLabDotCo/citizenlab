@@ -23,15 +23,22 @@ resource "Stats - Ideas" do
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
 
+    @project1 = create(:project)
+    @project2 = create(:project)
+    @project3 = create(:project)
+    @ideas_with_topics = []
+    @ideas_with_areas = []
     travel_to Time.now.in_time_zone(@timezone).beginning_of_year - 1.months do
-      create(:idea)
+      create(:idea, project: @project3)
     end
     travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 2.months do
-      @ideas_with_topics = create_list(:idea_with_topics, 5)
+      @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1)
+      @ideas_with_areas += create_list(:idea_with_areas, 3, project: @project2)
     end
     travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 5.months do
-      @ideas_with_areas = create_list(:idea_with_areas, 5)
-      create(:idea)
+      @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1)
+      @ideas_with_areas += create_list(:idea_with_areas, 2, project: @project2)
+      create(:idea, project: @project3)
     end
   end
 
@@ -57,6 +64,24 @@ resource "Stats - Ideas" do
       expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
       expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
       expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+    end
+  end
+
+  get "web_api/v1/stats/ideas_by_project" do
+    time_boundary_parameters self
+
+    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
+    example_request "Ideas by project" do
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:data].stringify_keys).to match({
+        @project1.id => 5,
+        @project2.id => 5,
+        @project3.id => 1
+      })
+      expect(json_response[:projects].keys.map(&:to_s)).to eq [@project1.id, @project2.id, @project3.id]
     end
   end
 

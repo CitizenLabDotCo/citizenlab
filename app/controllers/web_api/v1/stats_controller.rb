@@ -114,6 +114,16 @@ class WebApi::V1::StatsController < ApplicationController
     render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
+  def ideas_by_project
+    serie = Idea
+      .where(published_at: @start_at..@end_at)
+      .group(:project_id)
+      .order(:project_id)
+      .count
+    projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
+    render json: {data: serie, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
+  end
+
   def ideas_by_area
     serie = Idea
       .where(published_at: @start_at..@end_at)
