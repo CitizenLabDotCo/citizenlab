@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Checkbox from 'components/UI/Checkbox';
+import TermsCheckbox from './TermsCheckbox';
 
 // services
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
@@ -354,6 +355,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnSSOClick('google')}
                   >
                     <TransitionGroup>
+                      {/* <TermsCheckbox
+                        socialLoginClicked={socialLoginClicked}
+                        tenantLoginMechanismName="Google"
+                        socialLoginTaCAccepted={socialLoginTaCAccepted}
+                        onCheck={this.handleSocialLoginAcceptTaC}
+                      /> */}
                       {googleCheckbox}
                       {googleImage}
                     </TransitionGroup>
