@@ -1,5 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
 
@@ -14,13 +15,17 @@ import IdeasByTopicChart from '../components/IdeasByTopicChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
+import T from 'components/T';
 
 // i18n
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -29,6 +34,8 @@ interface InputProps {
 
 interface DataProps {
   projects: GetProjectsChildProps;
+  groups: GetGroupsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -41,8 +48,8 @@ interface State {
   currentTopicFilter?: string;
 }
 
-class DashboardPageSummary extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, State> {
+  constructor(props: Props & InjectedLocalized) {
     super(props);
     this.state = {
       interval: 'months',
@@ -88,7 +95,12 @@ class DashboardPageSummary extends PureComponent<Props, State> {
     const { projects, projects: { projectsList } } = this.props;
 
     if (projects && !isNilOrError(projectsList)) {
-      console.log(projectsList);
+      const projectFilterOptions = projectsList.map(project => {
+        return {
+          value: project.id,
+          label: localize(project.attributes.title_multiloc),
+        };
+      });
 
       return (
         <>
@@ -109,7 +121,7 @@ class DashboardPageSummary extends PureComponent<Props, State> {
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
-            projectFilterOptions={['Project A', 'Project B']}
+            projectFilterOptions={projectFilterOptions}
             groupFilterOptions={['Group A', 'Group B']}
             topicFilterOptions={['Topic A', 'Topic B']}
             onProjectFilter={this.handleOnProjectFilter}
@@ -199,8 +211,16 @@ class DashboardPageSummary extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}/>,
+  groups: <GetGroups />,
+  topics: <GetTopics />,
+});
+
+const DashboardPageSummaryWithHOCs = localize(DashboardPageSummary);
+
 export default (inputProps: InputProps) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
-    {projects => <DashboardPageSummary {...inputProps} projects={projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps =>  <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );
