@@ -71,6 +71,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotes',
     defaultMessage: 'Votes',
   },
+  numberOfIdeas: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
+    defaultMessage: 'Ideas',
+  },
+  ideas: {
+    id: 'app.containers.AdminPage.DashboardPage.ideas',
+    defaultMessage: 'Ideas',
+  },
+  votes: {
+    id: 'app.containers.AdminPage.DashboardPage.votes',
+    defaultMessage: 'Votes',
+  },
+  comments: {
+    id: 'app.containers.AdminPage.DashboardPage.comments',
+    defaultMessage: 'Comments',
+  },
+  byTopicTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
+    defaultMessage: 'by Topics',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',

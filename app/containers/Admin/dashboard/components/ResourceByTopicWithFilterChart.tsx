@@ -5,13 +5,21 @@ import { map, sortBy } from 'lodash-es';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import localize, { InjectedLocalized } from 'utils/localize';
-import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
+import { ideasByTopicStream, IIdeasByTopic, commentsByTopicStream, ICommentsByTopic, votesByTopicStream, IVotesByTopic } from 'services/stats';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
+
+import { IResource } from '../summary';
 
 interface Props {
   startAt: string;
   endAt: string;
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
+  selectedResource: IResource;
 }
 
 interface State {
@@ -22,9 +30,10 @@ interface State {
   }[] | null;
 }
 
-class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
+class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
+  selectedResource$: BehaviorSubject<IResource | null>;
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -35,11 +44,13 @@ class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
     this.subscriptions = [];
     this.startAt$ = new BehaviorSubject(null);
     this.endAt$ = new BehaviorSubject(null);
+    this.selectedResource$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
     this.startAt$.next(this.props.startAt);
     this.endAt$.next(this.props.endAt);
+    this.selectedResource$.next(this.props.selectedResource);
 
     this.subscriptions = [
       combineLatest(
@@ -48,15 +59,34 @@ class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
         ),
         this.endAt$.pipe(
           filter(endAt => endAt !== null)
+        ),
+        this.selectedResource$.pipe(
+          filter(endAt => endAt !== null)
         )
       ).pipe(
-        switchMap(([startAt, endAt]) => {
+        switchMap(([startAt, endAt, selectedResource]) => {
+          if (selectedResource === 'ideas') {
           return ideasByTopicStream({
             queryParameters: {
               start_at: startAt,
               end_at: endAt,
             },
           }).observable;
+        } else if (selectedResource === 'comments') {
+          return commentsByTopicStream({
+            queryParameters: {
+              start_at: startAt,
+              end_at: endAt,
+            },
+          }).observable;
+        } else {
+          return votesByTopicStream({
+            queryParameters: {
+              start_at: startAt,
+              end_at: endAt,
+            },
+          }).observable;
+        }
         })
       ).subscribe((serie) => {
         const convertedSerie = this.convertToGraphFormat(serie);
@@ -73,13 +103,16 @@ class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
     if (this.props.endAt !== prevProps.endAt) {
       this.endAt$.next(this.props.endAt);
     }
+    if (this.props.selectedResource !== prevProps.selectedResource) {
+      this.selectedResource$.next(this.props.selectedResource);
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  convertToGraphFormat = (serie: IIdeasByTopic) => {
+  convertToGraphFormat = (serie: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
     if (serie) {
       const { data, topics } = serie;
       const { localize } = this.props;
@@ -99,6 +132,7 @@ class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
   render() {
     const theme = this.props['theme'];
     const { serie } = this.state;
+    const { selectedResource, intl: { formatMessage } } = this.props;
 
     return (
       <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
@@ -130,4 +164,4 @@ class IdeasByTimeChart extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-export default withTheme(localize(IdeasByTimeChart));
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByTopicWithFilterChart as any) as any));

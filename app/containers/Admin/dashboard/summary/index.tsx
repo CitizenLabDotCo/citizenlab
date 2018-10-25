@@ -1,7 +1,7 @@
 // libraries
 import React, { PureComponent } from 'react';
 import moment from 'moment';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
 // components
 import TimeControl from '../components/TimeControl';
@@ -10,10 +10,14 @@ import IdeasByTimeChart from '../components/IdeasByTimeChart';
 import CommentsByTimeChart from '../components/CommentsByTimeChart';
 import VotesByTimeChart from '../components/VotesByTimeChart';
 import UsersByTimeChart from '../components/UsersByTimeChart';
-import IdeasByTopicChart from '../components/IdeasByTopicChart';
+import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
+import Select from 'components/UI/Select';
+
+// typings
+import { IOption } from 'typings';
 
 // i18n
 import messages from '../messages';
@@ -22,6 +26,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import { isNilOrError } from 'utils/helperUtils';
+
+const SSelect = styled(Select)`
+  flex: 1;
+  & > * {
+    flex: 1;
+  }
+`;
+
+export type IResource = 'ideas' | 'comments' | 'votes';
 
 interface InputProps {
   onlyModerator?: boolean;
@@ -36,9 +49,10 @@ interface Props extends InputProps, DataProps { }
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
+  currentResourceByTopic: IResource;
 }
 
 class DashboardPageSummary extends PureComponent<Props, State> {
@@ -47,6 +61,10 @@ class DashboardPageSummary extends PureComponent<Props, State> {
     this.state = {
       interval: 'months',
       intervalIndex: 0,
+      currentProjectFilter: 'all',
+      currentGroupFilter: 'all',
+      currentTopicFilter: 'all',
+      currentResourceByTopic: 'ideas'
     };
   }
 
@@ -73,13 +91,18 @@ class DashboardPageSummary extends PureComponent<Props, State> {
     this.setState({ currentTopicFilter: filter });
   }
 
+  onResourceByTopicChange = (option) => {
+    this.setState({ currentResourceByTopic: option.value });
+  }
+
   render() {
     const {
       interval,
       intervalIndex,
       currentProjectFilter,
       currentGroupFilter,
-      currentTopicFilter } = this.state;
+      currentTopicFilter,
+      currentResourceByTopic } = this.state;
     const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
     const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
@@ -189,6 +212,27 @@ class DashboardPageSummary extends PureComponent<Props, State> {
                     />
                   </GraphCardInner>
                 </GraphCard>
+                <GraphCard className="halfWidth dynamicHeight">
+                  <GraphCardInner>
+                    <GraphCardTitle>
+                      <SSelect
+                        id="projectFilter"
+                        onChange={this.onResourceByTopicChange}
+                        value={currentResourceByTopic}
+                        options={resourceByTopicOptions}
+                        clearable={false}
+                        borderColor="#EAEAEA"
+                      />
+                      <FormattedMessage {...messages.byTopicTitle} />
+                    </GraphCardTitle>
+                    <ResourceByTopicWithFilterChart
+                      startAt={startAt}
+                      endAt={endAt}
+                      selectedResource={currentResourceByTopic}
+                      {...this.state}
+                    />
+                  </GraphCardInner>
+                </GraphCard>
               </Line>
             </GraphsContainer>
           </ThemeProvider>
@@ -198,6 +242,12 @@ class DashboardPageSummary extends PureComponent<Props, State> {
     return null;
   }
 }
+
+    const resourceByTopicOptions: IOption[] = [
+      { value: 'ideas', label: 'ideas' },
+      { value: 'comments', label: 'comments' },
+      { value: 'votes', label: 'votes' }
+    ];
 
 export default (inputProps: InputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
