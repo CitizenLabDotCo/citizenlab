@@ -1,44 +1,50 @@
-import React, { PureComponent } from 'react';
-import moment from 'moment';
+import React from 'react';
+
+// router
+import { withRouter, WithRouterProps } from 'react-router';
+
+// components
 import HelmetIntl from 'components/HelmetIntl';
-import styled, { ThemeProvider } from 'styled-components';
-import Link from 'utils/cl-router/Link';
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import FeatureFlag from 'components/FeatureFlag';
+import TabbedResource from 'components/admin/TabbedResource';
+import Summary from './summary';
 import Warning from 'components/UI/Warning';
-import TimeControl from './components/TimeControl';
-import IntervalControl from './components/IntervalControl';
-import GenderChart from './components/GenderChart';
-import AgeChart from './components/AgeChart';
-import IdeasByTimeChart from './components/IdeasByTimeChart';
-import UsersByTimeChart from './components/UsersByTimeChart';
-import IdeasByTopicChart from './components/IdeasByTopicChart';
+import FeatureFlag from 'components/FeatureFlag';
+import Link from 'utils/cl-router/Link';
+
+// resource
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// permissions
+import { isAdmin, isProjectModerator } from 'services/permissions/roles';
+import { IProjectModerator } from 'services/users';
+
+// i18n
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+
+// styling
+import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import ChartFilters from './components/ChartFilters';
-
-import { IOption } from 'typings';
-
-const Container = styled.div``;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-const ControlBar = styled.div`
+export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
 `;
 
-const GraphsContainer = styled.div`
+export const GraphsContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 30px;
   margin-bottom: 30px;
 `;
 
-const Line = styled.div`
+export const Line = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 20px;
@@ -48,7 +54,7 @@ const Line = styled.div`
   }
 `;
 
-const GraphCardInner = styled.div`
+export const GraphCardInner = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
@@ -59,7 +65,7 @@ const GraphCardInner = styled.div`
   left: 0;
 `;
 
-const GraphCard = styled.div`
+export const GraphCard = styled.div`
   width: 100%;
   height: 350px;
   display: flex;
@@ -85,175 +91,99 @@ const GraphCard = styled.div`
   }
 `;
 
-const GraphCardTitle = styled.h3`
+export const GraphCardTitle = styled.h3`
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   align-self: flex-start;
   padding-bottom: 20px;
 `;
 
-interface Props {}
-
-interface State {
-  interval: 'weeks' | 'months' | 'years';
-  intervalIndex: number;
-  currentProjectFilter: IOption;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+interface Props {
+  authUser: GetAuthUserChildProps;
 }
+export const chartTheme = (theme) => {
+  return {
+    ...theme,
+    chartStroke: colors.clIconAccent,
+    chartFill: colors.clIconAccent,
+    barFill: colors.adminContentBackground,
+    chartLabelColor: colors.adminSecondaryTextColor,
+    chartLabelSize: 13
+  };
+};
 
-export default class DashboardPage extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      interval: 'months',
-      intervalIndex: 0,
-      currentProjectFilter: { label: 'Project A', value: 'projecta' },
-      currentGroupFilter: '',
-      currentTopicFilter: ''
-    };
-  }
-
-  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
-    this.setState({ interval, intervalIndex: 0 });
-  }
-
-  changeIntervalIndex = (intervalIndex: number) => {
-    this.setState({ intervalIndex });
-  }
-
-  chartTheme = (theme) => {
-    return {
-      ...theme,
-      chartStroke: colors.clIconAccent,
-      chartFill: colors.clIconAccent,
-      barFill: colors.adminContentBackground,
-      chartLabelColor: colors.adminSecondaryTextColor,
-      chartLabelSize: 13
-    };
-  }
-
-  handleOnProjectFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentProjectFilter: filter });
-  }
-
-  handleOnGroupFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentGroupFilter: filter });
-  }
-
-  handleOnTopicFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentTopicFilter: filter });
-  }
-
+class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps> {
   render() {
-    const { interval, intervalIndex } = this.state;
-    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
-    const endAtMoment = moment(startAtMoment).add(1, interval);
-    const startAt = startAtMoment.toISOString();
-    const endAt = endAtMoment.toISOString();
-    const resolution = (interval === 'years' ? 'month' : 'day');
+    const { children, authUser } = this.props;
+    const { formatMessage } = this.props.intl;
 
-    return (
-      <Container>
-        <HelmetIntl
-          title={messages.helmetTitle}
-          description={messages.helmetDescription}
-        />
-
-        <FeatureFlag name={'clustering'}>
-          <StyledWarning
-            text={
-              <FormattedMessage
-                {...messages.tryOutInsights}
-                values={{
-                  insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                }}
+    const tabs = [
+      { label: formatMessage(messages.tabSummary), url: '/admin' },
+      { label: formatMessage(messages.tabUsers), url: '/admin/dashboard-users' },
+      { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' }
+    ];
+    const resource = {
+      title: formatMessage(messages.viewPublicResource)
+    };
+    if (authUser) {
+      if (isAdmin({ data: authUser })) {
+        return (
+          <TabbedResource
+            resource={resource}
+            messages={messages}
+            tabs={tabs}
+          >
+            <HelmetIntl
+              title={messages.helmetTitle}
+              description={messages.helmetDescription}
+            />
+            <FeatureFlag name={'clustering'}>
+              <StyledWarning
+                text={
+                  <FormattedMessage
+                    {...messages.tryOutInsights}
+                    values={{
+                      insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                    }}
+                  />
+                }
               />
-            }
-          />
-        </FeatureFlag>
-
-        <ControlBar>
-          <TimeControl
-            value={intervalIndex}
-            interval={interval}
-            onChange={this.changeIntervalIndex}
-            currentTime={startAtMoment}
-          />
-          <IntervalControl
-            value={interval}
-            onChange={this.changeInterval}
-          />
-        </ControlBar>
-
-        <ChartFilters
-          currentProjectFilter={this.state.currentProjectFilter.value}
-          currentGroupFilter={this.state.currentGroupFilter}
-          currentTopicFilter={this.state.currentTopicFilter}
-          projectFilterOptions={[{ label: 'Project A', value: 'projecta' }, { label: 'Project B', value: 'projectb' }]}
-          groupFilterOptions={['Group A', 'Group B']}
-          topicFilterOptions={['Topic A', 'Topic B']}
-          onProjectFilter={this.handleOnProjectFilter}
-          onGroupFilter={this.handleOnGroupFilter}
-          onTopicFilter={this.handleOnTopicFilter}
-        />
-
-        <ThemeProvider theme={this.chartTheme}>
-          <GraphsContainer>
-            <Line>
-              <GraphCard className="first halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByGenderTitle} />
-                  </GraphCardTitle>
-                  <GenderChart startAt={startAt} endAt={endAt} />
-                </GraphCardInner>
-              </GraphCard>
-              <GraphCard className="halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByAgeTitle} />
-                  </GraphCardTitle>
-                  <AgeChart startAt={startAt} endAt={endAt} />
-                </GraphCardInner>
-              </GraphCard>
-            </Line>
-
-            <Line>
-              <GraphCard>
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByTimeTitle} />
-                  </GraphCardTitle>
-                  <UsersByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
-                </GraphCardInner>
-              </GraphCard>
-            </Line>
-
-            <Line className="last">
-              <GraphCard className="first halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.ideasByTimeTitle} />
-                  </GraphCardTitle>
-                  <IdeasByTimeChart startAt={startAt} endAt={endAt} resolution={resolution} />
-                </GraphCardInner>
-              </GraphCard>
-              <GraphCard className="halfWidth dynamicHeight">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.ideasByTopicTitle} />
-                  </GraphCardTitle>
-                  <IdeasByTopicChart startAt={startAt} endAt={endAt} />
-                </GraphCardInner>
-              </GraphCard>
-            </Line>
-          </GraphsContainer>
-        </ThemeProvider>
-      </Container>
-    );
+            </FeatureFlag>
+            {children}
+          </TabbedResource>
+        );
+      } else if (isProjectModerator({ data: authUser })) {
+        const projectIds = authUser.attributes.roles ?
+        authUser.attributes.roles
+        .filter(role => role.type === 'project_moderator')
+        .map((role: IProjectModerator) => role.project_id) : [];
+        return (
+          <>
+          <FeatureFlag name={'clustering'}>
+            <StyledWarning
+              text={
+                <FormattedMessage
+                  {...messages.tryOutInsights}
+                  values={{
+                    insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                  }}
+                />
+              }
+            />
+          </FeatureFlag>
+          <Summary visibleProjects={projectIds} />
+          </>
+        );
+      }
+    }
+    return null;
   }
 }
+
+const DashboardsPageWithHoC = withRouter(injectIntl(DashboardsPage));
+
+export default (props) => (
+  <GetAuthUser {...props}>
+    {authUser => <DashboardsPageWithHoC authUser={authUser} {...props} />}
+  </GetAuthUser>
+);

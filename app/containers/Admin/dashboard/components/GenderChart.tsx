@@ -8,14 +8,16 @@ import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { usersByGenderStream } from 'services/stats';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
+import EmptyGraph from './EmptyGraph';
 
 type State = {
-  serie: {name: string, value: number, code: string}[] | null;
+  serie: { name: string, value: number, code: string }[] | null;
 };
 
 type Props = {
   startAt: string,
-  endAt: string
+  endAt: string,
+  currentGroupFilter?: string
 };
 
 const labelColors = {
@@ -40,8 +42,10 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt || this.props.endAt !== prevProps.endAt) {
-      this.resubscribe(this.props.startAt, this.props.endAt);
+    if (this.props.startAt !== prevProps.startAt
+      || this.props.endAt !== prevProps.endAt
+      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.resubscribe(this.props.startAt, this.props.endAt, this.props.currentGroupFilter);
     }
   }
 
@@ -49,7 +53,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: {[key: string]: number}) => {
+  convertToGraphFormat = (serie: { [key: string]: number }) => {
     return map(serie, (value, key) => ({
       value,
       name: this.props.intl.formatMessage(messages[key]),
@@ -57,13 +61,17 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   }
 
-  resubscribe(startAt= this.props.startAt, endAt= this.props.endAt) {
+  resubscribe(
+    startAt = this.props.startAt,
+    endAt = this.props.endAt,
+    currentGroupFilter = this.props.currentGroupFilter) {
     if (this.subscription) this.subscription.unsubscribe();
 
     this.subscription = usersByGenderStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
+        // current-group_filter: currentGroupFilter TODO
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });
@@ -71,28 +79,36 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const theme = this.props['theme'];
+    const { colorMain } = this.props['theme'];
+    const { serie } = this.state;
+    const isEmpty = !serie || serie.every(item => item.value === 0);
 
-    return (
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            isAnimationActive={true}
-            animationDuration={200}
-            data={this.state.serie}
-            dataKey="value"
-            innerRadius={60}
-            fill={theme.colorMain}
-            label={{ fill: colors.adminTextColor, fontSize: '14px' }}
-          >
-            {this.state.serie && this.state.serie.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
-            ))}
-          </Pie>
-          <Tooltip isAnimationActive={false} />
-        </PieChart>
-      </ResponsiveContainer>
-    );
+    if (!isEmpty) {
+      return (
+        <ResponsiveContainer>
+          <PieChart>
+            <Pie
+              isAnimationActive={true}
+              animationDuration={200}
+              data={serie}
+              dataKey="value"
+              innerRadius={60}
+              fill={colorMain}
+              label={{ fill: colors.adminTextColor, fontSize: '14px' }}
+            >
+              {serie && serie.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
+              ))}
+            </Pie>
+            <Tooltip isAnimationActive={false} />
+          </PieChart>
+        </ResponsiveContainer>
+      );
+    } else {
+      return (
+        <EmptyGraph unit="Users" />
+      );
+    }
   }
 }
 
