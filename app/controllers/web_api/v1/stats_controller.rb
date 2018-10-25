@@ -27,6 +27,10 @@ class WebApi::V1::StatsController < ApplicationController
       users_scope = users_scope.merge(group.members)
     end
 
+    if params[:topic]
+      users_scope = StatsService.new.filter_users_by_topic(users_scope, params[:topic])
+    end
+
     serie = @@stats_service.group_by_time(
       users_scope,
       'registration_completed_at',
@@ -48,6 +52,10 @@ class WebApi::V1::StatsController < ApplicationController
     if params[:group]
       group = Group.find(params[:group])
       users_scope = users_scope.merge(group.members)
+    end
+
+    if params[:topic]
+      users_scope = StatsService.new.filter_users_by_topic(users_scope, params[:topic])
     end
 
     serie = @@stats_service.group_by_time_cumulative(
@@ -73,6 +81,11 @@ class WebApi::V1::StatsController < ApplicationController
     if params[:group]
       group = Group.find(params[:group])
       activities_scope = activities_scope.where(user_id: group.members)
+    end
+
+    if params[:topic]
+      users_scope = StatsService.new.filter_users_by_topic(User, params[:topic])
+      activities_scope = activities_scope.where(user_id: users_scope)
     end
 
     serie = @@stats_service.group_by_time(
