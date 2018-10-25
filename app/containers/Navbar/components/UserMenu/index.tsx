@@ -48,13 +48,14 @@ const StyledAvatar = styled(Avatar)`
   }
 `;
 
-const OpenDropdownButton = styled.div`
+const OpenDropdownButton = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     ${StyledUserName} {
       color: #000;
     }
@@ -68,6 +69,10 @@ const OpenDropdownButton = styled.div`
         fill: ${darken(0.2, colors.label)};
       }
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 

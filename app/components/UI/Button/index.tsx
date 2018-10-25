@@ -179,11 +179,11 @@ const Container: any = styled.div`
     }
     &.secondary {
       ${buttonTheme(
-        color('lightGreyishBlue'),
-        color('label'),
-        'transparent',
-        darken(0.05, color('lightGreyishBlue'))
-      )}
+    color('lightGreyishBlue'),
+    color('label'),
+    'transparent',
+    darken(0.05, color('lightGreyishBlue'))
+  )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
@@ -297,11 +297,10 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
+    const { size, type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
+    let { id, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
-    size = (size || '1');
     style = (style || 'primary');
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
@@ -317,10 +316,10 @@ class Button extends React.PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
@@ -347,14 +346,27 @@ class Button extends React.PureComponent<Props, State> {
         textHoverColor={textHoverColor}
       >
         {linkTo ? (
-          (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target={openInNewTab ? '_blank' : '_self'} className={buttonClassnames}>{childContent}</StyledA>
+          (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+            <StyledA
+              innerRef={this.props.setSubmitButtonRef}
+              href={(linkTo as string)}
+              target={openInNewTab ? '_blank' : '_self'}
+              className={buttonClassnames}
+            >
+              {childContent}
+            </StyledA>
           ) : (
-            <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
-          )
+              <StyledLink
+                innerRef={this.props.setSubmitButtonRef}
+                to={linkTo}
+                className={buttonClassnames}
+              >
+                {childContent}
+              </StyledLink>
+            )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
-        )}
+            <StyledButton disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+          )}
       </Container>
     );
   }

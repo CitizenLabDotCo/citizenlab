@@ -1,8 +1,6 @@
 import React from 'react';
-import { saveAs } from 'file-saver';
 
 // components
-import Button from 'components/UI/Button';
 import PageWrapper from 'components/admin/PageWrapper';
 import IdeaManager from 'components/admin/IdeaManager';
 
@@ -13,10 +11,6 @@ import messages from './messages';
 // utils
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
-
-// analytics
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
 
 // styling
 import styled from 'styled-components';
@@ -39,18 +33,6 @@ const HeaderTitle = styled.h1`
   margin: 0;
 `;
 
-const ExportButtons = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-`;
-
-const ExportIdeasButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const ExportCommentsButton = styled(Button)``;
-
 interface Props {}
 
 interface ITracks {
@@ -63,7 +45,7 @@ interface State {
   exportingComments: boolean;
 }
 
-export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
+export default class AllIdeas extends React.PureComponent<Props & ITracks, State> {
   constructor(props: Props & ITracks) {
     super(props);
     this.state = {
@@ -106,26 +88,6 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
           <HeaderTitle>
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
-          <ExportButtons>
-            <ExportIdeasButton
-              style="cl-blue"
-              icon="download"
-              onClick={this.handleExportIdeas}
-              processing={this.state.exportingIdeas}
-              circularCorners={false}
-            >
-              <FormattedMessage {...messages.exportIdeas} />
-            </ExportIdeasButton>
-            <ExportCommentsButton
-              style="cl-blue"
-              icon="download"
-              onClick={this.handleExportComments}
-              processing={this.state.exportingComments}
-              circularCorners={false}
-            >
-              <FormattedMessage {...messages.exportComments} />
-            </ExportCommentsButton>
-          </ExportButtons>
         </HeaderContainer>
         <PageWrapper>
           <IdeaManager />
@@ -134,5 +96,3 @@ export class AllIdeas extends React.PureComponent<Props & ITracks, State> {
     );
   }
 }
-
-export default injectTracks<Props>(tracks)(AllIdeas);

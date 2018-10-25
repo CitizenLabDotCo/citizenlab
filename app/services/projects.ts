@@ -2,6 +2,7 @@ import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
+import { ParticipationMethod, SurveyServices } from './phases';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -9,9 +10,8 @@ type Visibility = 'public' | 'groups' | 'admins';
 type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
-
-import { ParticipationMethod, SurveyServices } from './phases';
-
+export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
+export type SurveyDisabledReasons = 'project_inactive' | 'not_permitted' | 'not_survey';
 export interface IProjectData {
   id: string;
   type: 'projects';
@@ -51,7 +51,11 @@ export interface IProjectData {
         posting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'not_ideation' | 'posting_disabled',
+          disabled_reason: PostingDisabledReasons | null,
+        }
+        taking_survey: {
+          enabled: boolean;
+          disabled_reason: SurveyDisabledReasons | null;
         }
       }
     }
