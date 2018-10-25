@@ -172,6 +172,7 @@ class ProjectCard extends PureComponent<Props, State> {
 
   disabledMessage = () => {
     const project = this.props.project;
+
     if (!isNilOrError(project)) {
       const { enabled, future_enabled: futureEnabled } = project.relationships.action_descriptor.data.posting;
       if (enabled) {
@@ -189,6 +190,9 @@ class ProjectCard extends PureComponent<Props, State> {
   calculateCardState = () => {
     const { permission } = this.props;
     const disabledMessage = this.disabledMessage();
+
+    console.log(this.props);
+
     if (disabledMessage && permission) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {

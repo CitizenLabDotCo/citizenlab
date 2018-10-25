@@ -7,7 +7,6 @@ import clHistory from 'utils/cl-router/history';
 import Header from '../Header';
 import Timeline from './Timeline';
 import PhaseAbout from './PhaseAbout';
-import PhaseAttachments from './PhaseAttachments';
 import PhaseExpenses from './PhaseExpenses';
 import PhaseSurvey from './PhaseSurvey';
 import PhaseIdeas from './PhaseIdeas';
@@ -21,29 +20,47 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
-import messages from '../../Admin/pages/messages';
+import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const StyledPhaseAbout = styled(PhaseAbout)`
-  margin-bottom: 25px;
+const FirstRow = styled.div`
+  background: #f8f8f8;
 `;
 
-const StyledPhaseAttachments = styled(PhaseAttachments)`
-  margin-bottom: 25px;
+const SecondRow = styled.div`
+  background: #f4f3f3;
+  border-top: solid 1px ${colors.separation};
+`;
+
+const StyledPhaseAbout = styled(PhaseAbout)`
+  margin-bottom: 50px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 50px;
+  `}
+`;
+
+const SecondRowContentContainer = styled(ContentContainer)`
+  z-index: 0;
 `;
 
 const StyledPhaseExpenses = styled(PhaseExpenses)`
-  margin-bottom: 25px;
+  margin-bottom: -140px;
 `;
 
-const StyledPhaseSurvey = styled(PhaseSurvey)``;
+const StyledPhaseSurvey = styled(PhaseSurvey)`
+  margin-top: 50px;
+  margin-bottom: 50px;
+`;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
-  margin-bottom: 25px;
+  margin-top: 50px;
+  margin-bottom: 70px;
 `;
 
 interface InputProps {}
@@ -83,24 +100,25 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
       return (
         <Container className={className}>
-          <Header projectSlug={slug} />
-
-          <Timeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
-
-          <ProjectModeratorIndicator projectId={project.id} />
-
-          <ContentContainer>
-            {project.attributes.publication_status === 'archived' &&
-              <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-            }
-            <StyledPhaseAbout phaseId={selectedPhaseId} />
-            <StyledPhaseAttachments phaseId={selectedPhaseId} />
-            <StyledPhaseExpenses phaseId={selectedPhaseId} />
-            <StyledPhaseSurvey phaseId={selectedPhaseId} />
-            <StyledPhaseIdeas phaseId={selectedPhaseId} />
-          </ContentContainer>
-
-          <EventsPreview projectId={project.id} />
+          <Header projectSlug={slug} phaseId={selectedPhaseId} />
+          <FirstRow>
+            <Timeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+            <ProjectModeratorIndicator projectId={project.id} />
+            <ContentContainer>
+              {project.attributes.publication_status === 'archived' &&
+                <Warning text={<FormattedMessage {...messages.archivedProject} />} />
+              }
+              <StyledPhaseAbout phaseId={selectedPhaseId} />
+              <StyledPhaseExpenses phaseId={selectedPhaseId} />
+              <StyledPhaseSurvey phaseId={selectedPhaseId} />
+            </ContentContainer>
+          </FirstRow>
+          <SecondRow>
+            <SecondRowContentContainer>
+              <StyledPhaseIdeas phaseId={selectedPhaseId} />
+            </SecondRowContentContainer>
+            <EventsPreview projectId={project.id} />
+          </SecondRow>
         </Container>
       );
     }
