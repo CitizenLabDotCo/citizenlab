@@ -169,4 +169,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
     defaultMessage: 'insights',
   },
+  projectFilterLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.projectFilterLabel',
+    defaultMessage: 'Projects',
+  },
+  groupFilterLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.groupFilterLabel',
+    defaultMessage: 'Groups',
+  },
+  topicFilterLabel: {
+    id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
+    defaultMessage: 'Topics',
+  },
 });
