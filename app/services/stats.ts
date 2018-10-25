@@ -24,7 +24,35 @@ export interface IUsersByTime{
   [key: string]: number;
 }
 
+export interface ICommentsByTime{
+  [key: string]: number;
+}
+
+export interface IVotesByTime{
+  [key: string]: number;
+}
+
 export interface IIdeasByTopic{
+  data: {
+    [key: string]: number;
+  };
+  topics: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+export interface IVotesByTopic{
+  data: {
+    [key: string]: number;
+  };
+  topics: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+export interface ICommentsByTopic{
   data: {
     [key: string]: number;
   };
@@ -80,11 +108,11 @@ export function ideasByTimeCumulativeStream(streamParams: IStreamParams | null =
 }
 
 export function commentsByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/comments_by_time_cumulative`, ...streamParams });
+  return streams.get<ICommentsByTime>({ apiEndpoint: `${apiEndpoint}/comments_by_time_cumulative`, ...streamParams });
 }
 
 export function votesByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`, ...streamParams });
+  return streams.get<IVotesByTime>({ apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`, ...streamParams });
 }
 
 export function usersByTimeStream(streamParams: IStreamParams | null = null) {
@@ -101,6 +129,14 @@ export function activeUsersByTimeStream(streamParams: IStreamParams | null = nul
 
 export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
+}
+
+export function commentsByTopicStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICommentsByTopic>({ apiEndpoint: `${apiEndpoint}/comments_by_topic`, ...streamParams });
+}
+
+export function votesByTopicStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByTopic>({ apiEndpoint: `${apiEndpoint}/votes_by_topic`, ...streamParams });
 }
 
 export function votesByGenderStream(streamParams: IStreamParams | null = null) {

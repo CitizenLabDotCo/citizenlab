@@ -95,6 +95,10 @@ export const GraphCardTitle = styled.h3`
   font-weight: 400;
   align-self: flex-start;
   padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
 `;
 
 interface Props {
