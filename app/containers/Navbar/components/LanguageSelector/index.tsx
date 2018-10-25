@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -6,6 +8,12 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
+import { updateUser } from 'services/users';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
@@ -20,7 +28,6 @@ import { Locale } from 'typings';
 const Container = styled.div`
   position: relative;
   cursor: pointer;
-
   * {
     user-select: none;
   }
@@ -37,20 +44,18 @@ const DropdownItemIcon = styled(Icon)`
 
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 17px;
+  line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
   outline: none;
-
   &:hover,
   &:focus {
     color: #000;
-
     ${DropdownItemIcon} {
       fill: #000;
     }
@@ -59,7 +64,7 @@ const OpenMenuButton = styled.button`
 
 const ListItemText = styled.div`
   color: ${colors.label};
-  font-size: 17px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
@@ -78,34 +83,34 @@ const ListItem = styled.button`
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
-
   &.last {
     margin-bottom: 0px;
   }
-
   &:hover,
   &:focus,
   &.active {
     background: ${colors.clDropdownHoverBackground};
-
     ${ListItemText} {
       color: #000;
     }
   }
 `;
 
-type Props = {
-  currentLocale: Locale;
-  localeOptions: Locale[];
-};
+interface DataProps {
+  tenant: GetTenantChildProps;
+  authUser: GetAuthUserChildProps;
+  locale: GetLocaleChildProps;
+}
+
+interface Props extends DataProps {}
 
 type State = {
   dropdownOpened: boolean;
 };
 
-export default class LanguageSelector extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
+class LanguageSelector extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       dropdownOpened: false
     };
@@ -116,48 +121,71 @@ export default class LanguageSelector extends React.PureComponent<Props, State> 
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleLanguageSelect = (newLocale: Locale) => () => {
-    updateLocale(newLocale);
+  handleLanguageSelect = (selectedLocale: Locale) => () => {
+    const { authUser } = this.props;
+
+    updateLocale(selectedLocale);
+
+    if (!isNilOrError(authUser)) {
+      updateUser(authUser.id, { locale: selectedLocale });
+    }
+
     this.setState({ dropdownOpened: false });
   }
 
   render() {
+    const { tenant, locale } = this.props;
     const { dropdownOpened } = this.state;
-    const { localeOptions, currentLocale } = this.props;
 
-    return (
-      <Container>
-        <OpenMenuButton onClick={this.toggleDropdown}>
-          {currentLocale.substr(0, 2).toUpperCase()}
-          <DropdownItemIcon name="dropdown" />
-        </OpenMenuButton>
+    if (!isNilOrError(tenant) && !isNilOrError(locale)) {
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const currentlySelectedLocale = locale;
 
-        <Dropdown
-          width="180px"
-          top="36px"
-          right="-5px"
-          mobileRight="-5px"
-          opened={dropdownOpened}
-          onClickOutside={this.toggleDropdown}
-          content={(
-            <>
-              {localeOptions.map((locale, index) => {
-                const last = (index === localeOptions.length - 1);
+      return (
+        <Container>
+          <OpenMenuButton onClick={this.toggleDropdown}>
+            {currentlySelectedLocale.substr(0, 2).toUpperCase()}
+            <DropdownItemIcon name="dropdown" />
+          </OpenMenuButton>
 
-                return (
-                  <ListItem
-                    key={locale}
-                    onClick={this.handleLanguageSelect(locale)}
-                    className={`${locale === currentLocale ? 'active' : ''} ${last ? 'last' : ''}`}
-                  >
-                    <ListItemText>{shortenedAppLocalePairs[locale]}</ListItemText>
-                  </ListItem>
-                );
-              })}
-            </>
-          )}
-        />
-      </Container>
-    );
+          <Dropdown
+            width="180px"
+            top="36px"
+            right="-5px"
+            mobileRight="-5px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={(
+              <>
+                {tenantLocales.map((tenantLocale, index) => {
+                  const last = (index === tenantLocales.length - 1);
+
+                  return (
+                    <ListItem
+                      key={tenantLocale}
+                      onClick={this.handleLanguageSelect(tenantLocale)}
+                      className={`${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                    >
+                      <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
+                    </ListItem>
+                  );
+                })}
+              </>
+            )}
+          />
+        </Container>
+      );
+    }
+    return null;
   }
 }
+const Data = adopt<DataProps>({
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
+  locale: <GetLocale />
+});
+export default () => (
+  <Data>
+    {dataProps => <LanguageSelector {...dataProps} />}
+  </Data>
+);

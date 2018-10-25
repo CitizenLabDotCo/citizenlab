@@ -362,7 +362,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           <MobileNavigation />
         }
 
-        <Container role="banner" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
+        <Container role="navigation" className={`${isAdminPage ? 'admin' : 'citizen'} ${'alwaysShowBorder'}`}>
           <Left>
             {tenantLogo &&
               <LogoLink to="/" onlyActiveOnIndex={true}>
@@ -449,7 +449,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
             {tenantLocales.length > 1 && locale &&
               <RightItem>
-                <LanguageSelector localeOptions={tenantLocales} currentLocale={locale} />
+                <LanguageSelector />
               </RightItem>
             }
 

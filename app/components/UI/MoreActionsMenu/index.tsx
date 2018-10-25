@@ -36,7 +36,7 @@ const MoreOptionsLabel = styled.div`
   transition: all 100ms ease-out;
 `;
 
-const MoreOptions = styled.div`
+const MoreOptions = styled.button`
   height: 20px;
   display: flex;
   align-items: center;
@@ -46,7 +46,7 @@ const MoreOptions = styled.div`
     user-select: none;
   }
 
-  &:hover {
+  &:hover, &:focus {
     ${MoreOptionsIcon} {
       fill: #000;
     }
@@ -92,14 +92,14 @@ const ListItem = styled.button`
   }
 `;
 
-const StyledIcon  = styled(Icon)`
+const StyledIcon = styled(Icon)`
   width: 20px;
   height: 20px;
 `;
 
 export interface IAction {
   label: string | JSX.Element;
-  handler: {(): void};
+  handler: { (): void };
   icon?: IconNames;
 }
 
@@ -114,7 +114,7 @@ interface State {
 }
 
 export default class MoreActionsMenu extends PureComponent<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       visible: false,
@@ -131,7 +131,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState(({ visible }) => ({ visible: !visible }));
   }
 
-  render () {
+  render() {
     const { actions } = this.props;
     const { visible } = this.state;
     const className = this.props.className;
