@@ -33,8 +33,8 @@ import styled, { css } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // logos
-const googleLogo = require('components/SignUp/google.svg') as string;
-const facebookLogo = require('components/SignUp/facebook.svg') as string;
+const googleLogo = require('components/SignUp/Footer/svg/google.svg') as string;
+const facebookLogo = require('components/SignUp/Footer/svg/facebook.svg') as string;
 
 const Container = styled.div`
   flex: 1;
