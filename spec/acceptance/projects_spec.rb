@@ -218,7 +218,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
           expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
           expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
-          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled 
+          expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
         end

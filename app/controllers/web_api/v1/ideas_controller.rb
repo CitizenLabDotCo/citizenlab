@@ -81,6 +81,7 @@ class WebApi::V1::IdeasController < ApplicationController
         .includes(:author, :topics, :areas, :project)
         .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+      @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end
@@ -174,7 +175,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def user_not_authorized exception
     pcs = ParticipationContextService.new
     if exception.query == "create?"
-      reason = pcs.posting_disabled_reason(exception.record.project)
+      reason = pcs.posting_disabled_reason(exception.record.project, current_user)
       if reason
         render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
         return
