@@ -67,11 +67,7 @@ export default class DashboardPage extends PureComponent<Props, State> {
       intervalIndex,
       currentProjectFilter,
       currentGroupFilter,
-<<<<<<< HEAD
       currentTopicFilter } = this.state;
-=======
-      currentTopicFilter,} = this.state;
->>>>>>> 6bf4f18f4f4f0a121b5edb5c1db514f5822a9cfb
     const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
     const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
