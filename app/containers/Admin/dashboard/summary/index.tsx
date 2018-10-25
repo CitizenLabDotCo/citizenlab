@@ -62,8 +62,12 @@ export default class DashboardPage extends PureComponent<Props, State> {
   }
 
   render() {
-
-    const { interval, intervalIndex } = this.state;
+    const {
+      interval,
+      intervalIndex,
+      currentProjectFilter,
+      currentGroupFilter,
+      currentTopicFilter,} = this.state;
     const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
     const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
@@ -86,9 +90,9 @@ export default class DashboardPage extends PureComponent<Props, State> {
         </ControlBar>
 
         <ChartFilters
-          currentProjectFilter={this.state.currentProjectFilter}
-          currentGroupFilter={this.state.currentGroupFilter}
-          currentTopicFilter={this.state.currentTopicFilter}
+          currentProjectFilter={currentProjectFilter}
+          currentGroupFilter={currentGroupFilter}
+          currentTopicFilter={currentTopicFilter}
           projectFilterOptions={['Project A', 'Project B']}
           groupFilterOptions={['Group A', 'Group B']}
           topicFilterOptions={['Topic A', 'Topic B']}
@@ -109,9 +113,9 @@ export default class DashboardPage extends PureComponent<Props, State> {
                     startAt={startAt}
                     endAt={endAt}
                     resolution={resolution}
-                    currentProjectFilter={this.state.currentProjectFilter}
-                    currentGroupFilter={this.state.currentGroupFilter}
-                    currentTopicFilter={this.state.currentTopicFilter}
+                    currentProjectFilter={currentProjectFilter}
+                    currentGroupFilter={currentGroupFilter}
+                    currentTopicFilter={currentTopicFilter}
                   />
                 </GraphCardInner>
               </GraphCard>
@@ -124,9 +128,9 @@ export default class DashboardPage extends PureComponent<Props, State> {
                     startAt={startAt}
                     endAt={endAt}
                     resolution={resolution}
-                    currentProjectFilter={this.state.currentProjectFilter}
-                    currentGroupFilter={this.state.currentGroupFilter}
-                    currentTopicFilter={this.state.currentTopicFilter}
+                    currentProjectFilter={currentProjectFilter}
+                    currentGroupFilter={currentGroupFilter}
+                    currentTopicFilter={currentTopicFilter}
                   />
                 </GraphCardInner>
               </GraphCard>
@@ -141,9 +145,9 @@ export default class DashboardPage extends PureComponent<Props, State> {
                     startAt={startAt}
                     endAt={endAt}
                     resolution={resolution}
-                    currentProjectFilter={this.state.currentProjectFilter}
-                    currentGroupFilter={this.state.currentGroupFilter}
-                    currentTopicFilter={this.state.currentTopicFilter}
+                    currentProjectFilter={currentProjectFilter}
+                    currentGroupFilter={currentGroupFilter}
+                    currentTopicFilter={currentTopicFilter}
                   />
                 </GraphCardInner>
               </GraphCard>
@@ -156,9 +160,9 @@ export default class DashboardPage extends PureComponent<Props, State> {
                     startAt={startAt}
                     endAt={endAt}
                     resolution={resolution}
-                    currentProjectFilter={this.state.currentProjectFilter}
-                    currentGroupFilter={this.state.currentGroupFilter}
-                    currentTopicFilter={this.state.currentTopicFilter}
+                    currentProjectFilter={currentProjectFilter}
+                    currentGroupFilter={currentGroupFilter}
+                    currentTopicFilter={currentTopicFilter}
                   />
                 </GraphCardInner>
               </GraphCard>
