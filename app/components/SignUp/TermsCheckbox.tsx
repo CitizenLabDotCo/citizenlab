@@ -51,6 +51,7 @@ const SocialSignUpButtonInner = styled.div`
 `;
 
 interface Props {
+  loginProvider: 'google' | 'facebook' | 'azureactivedirectory';
   socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
   tenantLoginMechanismName: string;
   socialLoginTaCAccepted: boolean;
@@ -58,12 +59,13 @@ interface Props {
 }
 
 const TermsCheckbox = ({
+  loginProvider,
   socialLoginClicked,
   socialLoginTaCAccepted,
   tenantLoginMechanismName,
   onCheck
 }: Props) => {
-  if (socialLoginClicked) {
+  if (socialLoginClicked === loginProvider) {
     return (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
