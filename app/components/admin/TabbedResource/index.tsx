@@ -152,7 +152,7 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
-              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})`);
+              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})(\/)?$`);
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>

@@ -75,8 +75,20 @@ export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
 }
 
+export function ideasByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time_cumulative`, ...streamParams });
+}
+
 export function usersByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
+}
+
+export function usersByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time_cumulative`, ...streamParams });
+}
+
+export function activeUsersByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/active_users_by_time`, ...streamParams });
 }
 
 export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
