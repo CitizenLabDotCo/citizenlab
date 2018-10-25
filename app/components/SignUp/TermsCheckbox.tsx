@@ -10,6 +10,7 @@ import styled from 'styled-components';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const timeout = 250;
@@ -58,13 +59,15 @@ interface Props {
   onCheck: () => void;
 }
 
-const TermsCheckbox = ({
-  loginProvider,
-  socialLoginClicked,
-  socialLoginTaCAccepted,
-  tenantLoginMechanismName,
-  onCheck
-}: Props) => {
+const TermsCheckbox = (props: Props & InjectedIntlProps) => {
+  const {
+    loginProvider,
+    socialLoginClicked,
+    socialLoginTaCAccepted,
+    tenantLoginMechanismName,
+    onCheck
+  } = props;
+
   if (socialLoginClicked === loginProvider) {
     return (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
