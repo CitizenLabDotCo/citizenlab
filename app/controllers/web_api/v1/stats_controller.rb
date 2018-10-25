@@ -33,11 +33,16 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_time_cumulative
-    users_scope = if params[:project]
+    users_scope = User.active
+
+    if params[:project]
       project = Project.find(params[:project])
-      ProjectPolicy::InverseScope.new(project, User.active).resolve
-    else
-      User.active
+      users_scope = ProjectPolicy::InverseScope.new(project, users_scope).resolve
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users_scope = users_scope.merge(group.members)
     end
 
     serie = @@stats_service.group_by_time_cumulative(
