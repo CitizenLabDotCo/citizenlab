@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import Checkbox from 'components/UI/Checkbox';
 import TermsCheckbox from './TermsCheckbox';
 
 // services
@@ -241,27 +240,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const azureAdLogo: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
 
-    const googleCheckbox = (socialLoginClicked === 'google' && (
-      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignUpButtonInner>
-          <Checkbox
-            value={socialLoginTaCAccepted}
-            onChange={this.handleSocialLoginAcceptTaC('google')}
-            disableLabelClick={true}
-            label={
-              <FormattedMessage
-                {...messages.acceptTermsAndConditions}
-                values={{
-                  tenantLoginMechanismName: 'Google',
-                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-                }}
-              />
-            }
-          />
-        </SocialSignUpButtonInner>
-      </CSSTransition>
-    ));
-
     const googleImage = (socialLoginClicked !== 'google' && (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SocialSignUpButtonInner>
@@ -269,27 +247,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
             src={googleLogo}
             height="29px"
             alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'Google' })}
-          />
-        </SocialSignUpButtonInner>
-      </CSSTransition>
-    ));
-
-    const facebookCheckbox = (socialLoginClicked === 'facebook' && (
-      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignUpButtonInner>
-          <Checkbox
-            value={socialLoginTaCAccepted}
-            onChange={this.handleSocialLoginAcceptTaC('facebook')}
-            disableLabelClick={true}
-            label={
-              <FormattedMessage
-                {...messages.acceptTermsAndConditions}
-                values={{
-                  tenantLoginMechanismName: 'Facebook',
-                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-                }}
-              />
-            }
           />
         </SocialSignUpButtonInner>
       </CSSTransition>
@@ -303,27 +260,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
           height="21px"
           alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'Facebook' })}
         />
-        </SocialSignUpButtonInner>
-      </CSSTransition>
-    ));
-
-    const azureAdCheckbox = (socialLoginClicked === 'azureactivedirectory' && (
-      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignUpButtonInner>
-          <Checkbox
-            value={socialLoginTaCAccepted}
-            onChange={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
-            disableLabelClick={true}
-            label={
-              <FormattedMessage
-                {...messages.acceptTermsAndConditions}
-                values={{
-                  tenantLoginMechanismName,
-                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                }}
-              />
-            }
-          />
         </SocialSignUpButtonInner>
       </CSSTransition>
     ));
@@ -361,13 +297,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnSSOClick('google')}
                   >
                     <TransitionGroup>
-                      {/* <TermsCheckbox
+                      <TermsCheckbox
+                        loginProvider="google"
                         socialLoginClicked={socialLoginClicked}
                         tenantLoginMechanismName="Google"
                         socialLoginTaCAccepted={socialLoginTaCAccepted}
                         onCheck={this.handleSocialLoginAcceptTaC('google')}
-                      /> */}
-                      {googleCheckbox}
+                      />
                       {googleImage}
                     </TransitionGroup>
                   </SocialSignUpButton>
@@ -378,7 +314,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleOnSSOClick('facebook')}
                   >
                     <TransitionGroup>
-                      {facebookCheckbox}
+                      <TermsCheckbox
+                        loginProvider="facebook"
+                        socialLoginClicked={socialLoginClicked}
+                        tenantLoginMechanismName="Facebook"
+                        socialLoginTaCAccepted={socialLoginTaCAccepted}
+                        onCheck={this.handleSocialLoginAcceptTaC('facebook')}
+                      />
                       {facebookImage}
                     </TransitionGroup>
                   </SocialSignUpButton>
@@ -391,7 +333,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   onClick={this.handleOnSSOClick('azureactivedirectory')}
                 >
                   <TransitionGroup>
-                    {azureAdCheckbox}
+                    <TermsCheckbox
+                      loginProvider="azureactivedirectory"
+                      socialLoginClicked={socialLoginClicked}
+                      tenantLoginMechanismName="VUB net ID"
+                      socialLoginTaCAccepted={socialLoginTaCAccepted}
+                      onCheck={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                    />
                     {azureAdImage}
                   </TransitionGroup>
                 </AzureAdSignUpButton>
