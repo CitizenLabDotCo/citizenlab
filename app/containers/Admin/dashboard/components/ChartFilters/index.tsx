@@ -2,20 +2,46 @@ import React from 'react';
 import styled from 'styled-components';
 
 // components
+import Select from 'components/UI/Select';
 import FilterSelector from './FilterSelector';
+import Label from 'components/UI/Label';
+
+// typings
+import { IOption } from 'typings';
+
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { getPageLink } from 'services/pageLink';
 
 const Container = styled.div`
   display: flex;
+  width: 100%;
+
+  & > * {
+    flex: 1;
+  }
+`;
+
+const FilterContainer = styled.div`
+  margin-right: 10px;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+`;
+
+const FilterSelector2 = styled(Select)`
+
 `;
 
 interface Props {
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
-  projectFilterOptions: string[];
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
+  projectFilterOptions: IOption[];
   groupFilterOptions: string[];
   topicFilterOptions: string[];
-  onProjectFilter: (filter: string) => void;
+  onProjectFilter: (filter: IOption) => void;
   onGroupFilter: (filter: string) => void;
   onTopicFilter: (filter: string) => void;
 }
@@ -39,9 +65,37 @@ export default class ChartFilters extends React.PureComponent<Props, State> {
       onProjectFilter,
       onGroupFilter,
       onTopicFilter } = this.props;
+
     return(
       <Container>
-        <FilterSelector
+        <FilterContainer>
+          <Label htmlFor="projectFilter">
+          Projects
+            {/* <FormattedMessage {...messages.projectFilterLabel} /> */}
+          </Label>
+          <FilterSelector2
+            id="projectFilter"
+            onChange={onProjectFilter}
+            value={currentProjectFilter}
+            options={projectFilterOptions}
+            clearable={false}
+            borderColor="#EAEAEA"
+          />
+        </FilterContainer>
+
+        <FilterSelector2
+          onChange={onProjectFilter}
+          value={currentProjectFilter}
+          options={projectFilterOptions}
+          clearable={false}
+        />
+        <FilterSelector2
+          onChange={onProjectFilter}
+          value={currentProjectFilter}
+          options={projectFilterOptions}
+          clearable={false}
+        />
+        {/* <FilterSelector
           filterOptions={projectFilterOptions}
           currentFilter={currentProjectFilter}
           onFilter={onProjectFilter}
@@ -55,7 +109,7 @@ export default class ChartFilters extends React.PureComponent<Props, State> {
           filterOptions={topicFilterOptions}
           currentFilter={currentTopicFilter}
           onFilter={onTopicFilter}
-        />
+        /> */}
       </Container>
     );
   }

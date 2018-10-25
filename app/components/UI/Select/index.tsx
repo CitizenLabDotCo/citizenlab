@@ -2,7 +2,7 @@ import React from 'react';
 import { isBoolean } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
-import selectStyles from 'components/UI/Select/styles';
+import selectStyles, { getSelectStyles } from 'components/UI/Select/styles';
 
 export type Props = {
   id?: string;
@@ -16,6 +16,7 @@ export type Props = {
   onChange: (arg: IOption) => void;
   onBlur?: () => void;
   disabled?: boolean;
+  borderColor?: string;
 };
 
 type State = {};
@@ -47,9 +48,10 @@ export default class Select extends React.PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { id } = this.props;
-    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
+    let { value, placeholder, options, autoBlur, clearable, searchable, borderColor } = this.props;
     const { inputId } = this.props;
     const { disabled } = this.props;
+    const styles = borderColor ? getSelectStyles(borderColor) : selectStyles;
 
     value = this.findFullOptionValue();
     placeholder = (placeholder || '');
@@ -73,7 +75,7 @@ export default class Select extends React.PureComponent<Props, State> {
         onChange={this.handleOnChange}
         onBlur={this.props.onBlur}
         isDisabled={disabled}
-        styles={selectStyles}
+        styles={styles}
       />
     );
   }
