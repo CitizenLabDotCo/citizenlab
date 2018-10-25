@@ -38,7 +38,7 @@ resource "Stats - Users" do
       create(:invited_user)
     end
     travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 25.days) do
-      create_list(:user_with_demographics, 4)
+      create_list(:user_with_demographics, 4, roles: [type: 'admin'])
     end
   end
 
@@ -66,7 +66,7 @@ resource "Stats - Users" do
       json_response = json_parse(response_body)
       expect(json_response.size).to eq start_at.end_of_month.day
       expect(json_response.values.map(&:class).uniq).to eq [Integer]
-      expect(json_response.values.inject(&:+)).to eq 2
+      expect(json_response.values.inject(&:+)).to eq 6
     end
 
   end
@@ -78,6 +78,7 @@ resource "Stats - Users" do
     let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
     let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
     let(:interval) { 'day' }
+    let(:project) { create(:private_admins_project).id }
 
     example_request "Users by time (cumulative)" do
       expect(response_status).to eq 200
@@ -86,7 +87,7 @@ resource "Stats - Users" do
       expect(json_response.values.map(&:class).uniq).to eq [Integer]
       # monotonically increasing
       expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-      expect(json_response.values.last).to eq 11
+      expect(json_response.values.last).to eq 6
     end
   end
 
