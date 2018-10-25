@@ -26,8 +26,6 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-export const Container = styled.div``;
-
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
@@ -35,6 +33,7 @@ const StyledWarning = styled(Warning)`
 export const ControlBar = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 30px;
 `;
 
 export const GraphsContainer = styled.div`

@@ -13,7 +13,7 @@ import UsersByTimeChart from '../components/UsersByTimeChart';
 import IdeasByTopicChart from '../components/IdeasByTopicChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
-import { chartTheme, Container, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
+import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
 
 // i18n
 import messages from '../messages';
@@ -74,8 +74,12 @@ class DashboardPageSummary extends PureComponent<Props, State> {
   }
 
   render() {
-
-    const { interval, intervalIndex } = this.state;
+    const {
+      interval,
+      intervalIndex,
+      currentProjectFilter,
+      currentGroupFilter,
+      currentTopicFilter } = this.state;
     const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
     const endAtMoment = moment(startAtMoment).add(1, interval);
     const startAt = startAtMoment.toISOString();
@@ -87,7 +91,7 @@ class DashboardPageSummary extends PureComponent<Props, State> {
       console.log(projectsList);
 
       return (
-        <Container>
+        <>
           <ControlBar>
             <TimeControl
               value={intervalIndex}
@@ -102,9 +106,9 @@ class DashboardPageSummary extends PureComponent<Props, State> {
           </ControlBar>
 
           <ChartFilters
-            currentProjectFilter={this.state.currentProjectFilter}
-            currentGroupFilter={this.state.currentGroupFilter}
-            currentTopicFilter={this.state.currentTopicFilter}
+            currentProjectFilter={currentProjectFilter}
+            currentGroupFilter={currentGroupFilter}
+            currentTopicFilter={currentTopicFilter}
             projectFilterOptions={['Project A', 'Project B']}
             groupFilterOptions={['Group A', 'Group B']}
             topicFilterOptions={['Topic A', 'Topic B']}
@@ -188,7 +192,7 @@ class DashboardPageSummary extends PureComponent<Props, State> {
               </Line>
             </GraphsContainer>
           </ThemeProvider>
-        </Container>
+        </>
       );
     }
     return null;
