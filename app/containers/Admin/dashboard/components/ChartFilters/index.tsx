@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 // components
 import Select from 'components/UI/Select';
-import FilterSelector from './FilterSelector';
 import Label from 'components/UI/Label';
 
 // typings
@@ -11,7 +10,8 @@ import { IOption } from 'typings';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { getPageLink } from 'services/pageLink';
+import messages from '../../messages';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
   display: flex;
@@ -30,27 +30,25 @@ const FilterContainer = styled.div`
   }
 `;
 
-const FilterSelector2 = styled(Select)`
-
-`;
+const FilterSelector = styled(Select)``;
 
 interface Props {
   currentProjectFilter: string;
   currentGroupFilter: string;
   currentTopicFilter: string;
   projectFilterOptions: IOption[];
-  groupFilterOptions: string[];
-  topicFilterOptions: string[];
+  groupFilterOptions: IOption[];
+  topicFilterOptions: IOption[];
   onProjectFilter: (filter: IOption) => void;
-  onGroupFilter: (filter: string) => void;
-  onTopicFilter: (filter: string) => void;
+  onGroupFilter: (filter: IOption) => void;
+  onTopicFilter: (filter: IOption) => void;
 }
 
 interface State {}
 
-export default class ChartFilters extends React.PureComponent<Props, State> {
+class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State> {
 
-  constructor(props: Props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
   }
 
@@ -70,10 +68,9 @@ export default class ChartFilters extends React.PureComponent<Props, State> {
       <Container>
         <FilterContainer>
           <Label htmlFor="projectFilter">
-          Projects
-            {/* <FormattedMessage {...messages.projectFilterLabel} /> */}
+            <FormattedMessage {...messages.projectFilterLabel} />
           </Label>
-          <FilterSelector2
+          <FilterSelector
             id="projectFilter"
             onChange={onProjectFilter}
             value={currentProjectFilter}
@@ -83,35 +80,36 @@ export default class ChartFilters extends React.PureComponent<Props, State> {
           />
         </FilterContainer>
 
-        <FilterSelector2
-          onChange={onProjectFilter}
-          value={currentProjectFilter}
-          options={projectFilterOptions}
-          clearable={false}
-        />
-        <FilterSelector2
-          onChange={onProjectFilter}
-          value={currentProjectFilter}
-          options={projectFilterOptions}
-          clearable={false}
-        />
-        {/* <FilterSelector
-          filterOptions={projectFilterOptions}
-          currentFilter={currentProjectFilter}
-          onFilter={onProjectFilter}
-        />
-        <FilterSelector
-          filterOptions={groupFilterOptions}
-          currentFilter={currentGroupFilter}
-          onFilter={onGroupFilter}
-        />
-        <FilterSelector
-          filterOptions={topicFilterOptions}
-          currentFilter={currentTopicFilter}
-          onFilter={onTopicFilter}
-        /> */}
+        <FilterContainer>
+          <Label htmlFor="groupFilter">
+            <FormattedMessage {...messages.groupFilterLabel} />
+          </Label>
+          <FilterSelector
+            id="groupFilter"
+            onChange={onGroupFilter}
+            value={currentGroupFilter}
+            options={groupFilterOptions}
+            clearable={false}
+            borderColor="#EAEAEA"
+          />
+        </FilterContainer>
+
+        <FilterContainer>
+          <Label htmlFor="topicFilter">
+            <FormattedMessage {...messages.topicFilterLabel} />
+          </Label>
+          <FilterSelector
+            id="topicFilter"
+            onChange={onTopicFilter}
+            value={currentTopicFilter}
+            options={topicFilterOptions}
+            clearable={false}
+            borderColor="#EAEAEA"
+          />
+        </FilterContainer>
       </Container>
     );
   }
-
 }
+
+export default injectIntl<Props>(ChartFilters);
