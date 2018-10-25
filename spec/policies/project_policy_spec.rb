@@ -3,6 +3,7 @@ require 'rails_helper'
 describe ProjectPolicy do
   subject { ProjectPolicy.new(user, project) }
   let(:scope) { ProjectPolicy::Scope.new(user, Project) }
+  let(:inverse_scope) { ProjectPolicy::InverseScope.new(project, User) }
 
   context "on a public project" do 
     let!(:project) { create(:project) }
@@ -34,6 +35,10 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 0
       end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
 
     context "for an admin" do
@@ -49,6 +54,10 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 1
       end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
 
     context "for a moderator of another project" do
@@ -63,6 +72,10 @@ describe ProjectPolicy do
       it "should index the project"  do
         expect(scope.resolve.size).to eq 2
         expect(scope.moderatable.size).to eq 1
+      end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
       end
     end
   end
@@ -97,6 +110,11 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 0
         expect(scope.moderatable.size).to eq 0
       end
+
+      it "should not include the user in the users that have access" do
+        expect(inverse_scope.resolve).not_to include(user)
+      end
+
     end
 
     context "for an admin" do
@@ -112,6 +130,10 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 1
       end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
 
     context "for a moderator" do
@@ -126,6 +148,10 @@ describe ProjectPolicy do
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 1
+      end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
       end
     end
   end
@@ -159,6 +185,10 @@ describe ProjectPolicy do
       expect(scope.resolve.size).to eq 0
       expect(scope.moderatable.size).to eq 0
     end
+
+    it "should not include the user in the users that have access" do
+      expect(inverse_scope.resolve).not_to include(user)
+    end
   end
 
   context "for a user on a private groups project where she's a member of a manual group with access" do
@@ -175,6 +205,10 @@ describe ProjectPolicy do
       expect(scope.resolve.size).to eq 1
       expect(scope.moderatable.size).to eq 0
     end
+
+    it "should include the user in the users that have access" do
+      expect(inverse_scope.resolve).to include(user)
+    end
   end
 
   context "for a user on a private groups project where she's no member of a rules group with access" do
@@ -190,6 +224,11 @@ describe ProjectPolicy do
     it { should_not permit(:destroy) }
     it "should not index the project"  do
       expect(scope.resolve.size).to eq 0
+      expect(scope.moderatable.size).to eq 0
+    end
+
+    it "should not include the user in the users that have access" do
+      expect(inverse_scope.resolve).not_to include(user)
     end
   end
 
@@ -207,6 +246,11 @@ describe ProjectPolicy do
 
     it "should index the project"  do
       expect(scope.resolve.size).to eq 1
+      expect(scope.moderatable.size).to eq 0
+    end
+
+    it "should include the user in the users that have access" do
+      expect(inverse_scope.resolve).to include(user)
     end
   end
 
@@ -223,6 +267,10 @@ describe ProjectPolicy do
     it "should index the project"  do
       expect(scope.resolve.size).to eq 1
       expect(scope.moderatable.size).to eq 1
+    end
+
+    it "should include the user in the users that have access" do
+      expect(inverse_scope.resolve).to include(user)
     end
 
   end
@@ -257,6 +305,11 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 0
         expect(scope.moderatable.size).to eq 0
       end
+
+      it "should not include the user in the users that have access" do
+        expect(inverse_scope.resolve).not_to include(user)
+      end
+
     end
 
     context "for an admin" do
@@ -272,6 +325,10 @@ describe ProjectPolicy do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 1
       end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
+      end
     end
 
     context "for a moderator" do
@@ -286,6 +343,10 @@ describe ProjectPolicy do
       it "should index the project"  do
         expect(scope.resolve.size).to eq 1
         expect(scope.moderatable.size).to eq 1
+      end
+
+      it "should include the user in the users that have access" do
+        expect(inverse_scope.resolve).to include(user)
       end
     end
   end
