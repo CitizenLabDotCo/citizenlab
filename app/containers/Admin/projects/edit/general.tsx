@@ -473,7 +473,6 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
-    console.log(participationContextConfig);
     this.save(participationContextConfig);
   }
 

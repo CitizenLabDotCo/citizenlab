@@ -16,7 +16,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.div``;
+
+const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: strech;
@@ -172,69 +174,71 @@ class PhaseExpenses extends PureComponent<Props, State> {
 
       return (
         <Container className={this.props['className']}>
-          <Header>
-            <Title>
-              <FormattedMessage {...messages.yourExpenses} />
-            </Title>
-            <Spacer />
-            <TotalBudgetDesktop>
-              <BudgetLabel>
-                <FormattedMessage {...messages.totalBudget} />:
-              </BudgetLabel>
-              <BudgetAmount>
-                {totalBudget}
-              </BudgetAmount>
-            </TotalBudgetDesktop>
-          </Header>
-
-          <ProgressBar>
-            <ProgressBarOverlay>
-              <ProgressBarPercentage>25%</ProgressBarPercentage>
-            </ProgressBarOverlay>
-          </ProgressBar>
-
-          <Footer>
-            <Budgets />
-              <Budget>
-                <BudgetLabel>
-                  <FormattedMessage {...messages.spentBudget} />:
-                </BudgetLabel>
-                <BudgetAmount>
-                  {spentBudget}
-                </BudgetAmount>
-              </Budget>
-              <TotalBudgetMobile>
+          <InnerContainer>
+`            <Header>
+              <Title>
+                <FormattedMessage {...messages.yourExpenses} />
+              </Title>
+              <Spacer />
+              <TotalBudgetDesktop>
                 <BudgetLabel>
                   <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
                 <BudgetAmount>
                   {totalBudget}
                 </BudgetAmount>
-              </TotalBudgetMobile>
-            <Budgets />
-            <Spacer />
-            <Buttons>
-              <ManageBudgetButton
-                onClick={this.handleManageBudgetOnClick}
-                icon="moneybag"
-                textColor={colors.adminTextColor}
-                bgColor="transparent"
-                bgHoverColor="transparent"
-                borderColor={colors.separation}
-                borderThickness="2px"
-              >
-                <FormattedMessage {...messages.manageBudget} />
-              </ManageBudgetButton>
-              <SubmitExpensesButton
-                onClick={this.handleSubmitExpensesOnClick}
-                icon="submit"
-                iconPos="right"
-                bgColor={colors.adminTextColor}
-              >
-                <FormattedMessage {...messages.submitMyExpenses} />
-              </SubmitExpensesButton>
-            </Buttons>
-          </Footer>
+              </TotalBudgetDesktop>
+            </Header>
+
+            <ProgressBar>
+              <ProgressBarOverlay>
+                <ProgressBarPercentage>25%</ProgressBarPercentage>
+              </ProgressBarOverlay>
+            </ProgressBar>
+
+            <Footer>
+              <Budgets />
+                <Budget>
+                  <BudgetLabel>
+                    <FormattedMessage {...messages.spentBudget} />:
+                  </BudgetLabel>
+                  <BudgetAmount>
+                    {spentBudget}
+                  </BudgetAmount>
+                </Budget>
+                <TotalBudgetMobile>
+                  <BudgetLabel>
+                    <FormattedMessage {...messages.totalBudget} />:
+                  </BudgetLabel>
+                  <BudgetAmount>
+                    {totalBudget}
+                  </BudgetAmount>
+                </TotalBudgetMobile>
+              <Budgets />
+              <Spacer />
+              <Buttons>
+                <ManageBudgetButton
+                  onClick={this.handleManageBudgetOnClick}
+                  icon="moneybag"
+                  textColor={colors.adminTextColor}
+                  bgColor="transparent"
+                  bgHoverColor="transparent"
+                  borderColor={colors.separation}
+                  borderThickness="2px"
+                >
+                  <FormattedMessage {...messages.manageBudget} />
+                </ManageBudgetButton>
+                <SubmitExpensesButton
+                  onClick={this.handleSubmitExpensesOnClick}
+                  icon="submit"
+                  iconPos="right"
+                  bgColor={colors.adminTextColor}
+                >
+                  <FormattedMessage {...messages.submitMyExpenses} />
+                </SubmitExpensesButton>
+              </Buttons>
+            </Footer>`
+          </InnerContainer>
         </Container>
       );
     }

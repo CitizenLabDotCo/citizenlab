@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
+
+// components
+import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -43,12 +48,17 @@ const InformationBody = styled.div`
   ${quillEditedContent()}
 `;
 
+const StyledFileAttachments = styled(FileAttachments)`
+  margin-top: 20px;
+`;
+
 interface InputProps {
   phaseId: string | null;
 }
 
 interface DataProps {
   phase: GetPhaseChildProps;
+  phaseFiles: GetResourceFilesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -57,7 +67,7 @@ interface State {}
 
 class PhaseAbout extends PureComponent<Props, State> {
   render() {
-    const { phase } = this.props;
+    const { phase, phaseFiles } = this.props;
 
     if (!isNilOrError(phase)) {
       return (
@@ -68,6 +78,9 @@ class PhaseAbout extends PureComponent<Props, State> {
           <InformationBody>
             <T value={phase.attributes.description_multiloc} supportHtml={true} />
           </InformationBody>
+          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
+            <StyledFileAttachments files={phaseFiles} />
+          }
         </Container>
       );
     }
@@ -77,7 +90,8 @@ class PhaseAbout extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+  phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
 });
 
 export default (inputProps: InputProps) => (
