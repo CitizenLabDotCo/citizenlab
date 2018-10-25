@@ -27,6 +27,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
     defaultMessage: 'No users',
   },
+  emptyIdeas: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyIdeas',
+    defaultMessage: 'No ideas',
+  },
+  emptyComments: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyComments',
+    defaultMessage: 'No comments',
+  },
+  emptyVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyVotes',
+    defaultMessage: 'No votes',
+  },
   registeredUsersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.registeredUsersByTimeTitle',
     defaultMessage: 'Users',
@@ -42,6 +54,22 @@ export default defineMessages({
   numberOfActiveUers: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUers',
     defaultMessage: 'Active users',
+  },
+  commentsByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
+    defaultMessage: 'Comments',
+  },
+  numberOfComments: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfComments',
+    defaultMessage: 'Comments',
+  },
+  votesByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.votesByTimeTitle',
+    defaultMessage: 'Votes',
+  },
+  numberOfVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfVotes',
+    defaultMessage: 'Votes',
   },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {

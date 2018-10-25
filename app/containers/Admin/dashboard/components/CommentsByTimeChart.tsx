@@ -5,7 +5,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { ideasByTimeCumulativeStream } from 'services/stats';
+import { commentsByTimeCumulativeStream } from 'services/stats';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
 
@@ -22,7 +22,7 @@ type Props = {
   currentTopicFilter?: string;
 };
 
-class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class CommentsByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -75,7 +75,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
       this.subscription.unsubscribe();
     }
 
-    this.subscription = ideasByTimeCumulativeStream({
+    this.subscription = commentsByTimeCumulativeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -124,7 +124,7 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
             <Area
               type="monotone"
               dataKey="value"
-              name={formatMessage(messages.numberOfIdeas)}
+              name={formatMessage(messages.numberOfComments)}
               dot={false}
               fill={chartFill}
               fillOpacity={1}
@@ -151,10 +151,10 @@ class IdeasByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
       );
     } else {
       return (
-        <EmptyGraph unit="Ideas" />
+        <EmptyGraph unit="Comments" />
       );
     }
   }
 }
 
-export default injectIntl<Props>(withTheme(IdeasByTimeChart as any) as any);
+export default injectIntl<Props>(withTheme(CommentsByTimeChart as any) as any);

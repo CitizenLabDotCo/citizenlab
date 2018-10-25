@@ -4,7 +4,7 @@ import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { activeUsersByTimeStream } from 'services/stats';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
@@ -119,24 +119,20 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
-    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
+    const { chartFill, chartLabelSize, chartLabelColor, barFill } = this.props['theme'];
 
     if (!isEmpty) {
       return (
         <ResponsiveContainer>
-          <AreaChart data={serie}>
-            <Area
-              type="monotone"
+          <BarChart data={serie}>
+            <Bar
               dataKey="value"
               name={formatMessage(messages.numberOfActiveUers)}
-              dot={false}
               fill={chartFill}
-              fillOpacity={1}
-              stroke={chartStroke}
+              label={{ fill: barFill, fontSize: chartLabelSize }}
             />
             <XAxis
               dataKey="name"
-              interval="preserveStartEnd"
               stroke={chartLabelColor}
               fontSize={chartLabelSize}
               tick={{ transform: 'translate(0, 7)' }}
@@ -150,7 +146,7 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
               isAnimationActive={false}
               labelFormatter={this.formatLabel}
             />
-          </AreaChart>
+          </BarChart>
         </ResponsiveContainer>
       );
     } else {
