@@ -128,7 +128,7 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
             <Tooltip isAnimationActive={false} />
 
           </BarChart>
-        </ResponsiveContainer >
+        </ResponsiveContainer>
       );
     } else {
       return (

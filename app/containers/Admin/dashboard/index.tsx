@@ -16,7 +16,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
-import { IProjectModerator } from 'services/users';
 
 // i18n
 import messages from './messages';
@@ -154,10 +153,6 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
           </TabbedResource>
         );
       } else if (isProjectModerator({ data: authUser })) {
-        const projectIds = authUser.attributes.roles ?
-        authUser.attributes.roles
-        .filter(role => role.type === 'project_moderator')
-        .map((role: IProjectModerator) => role.project_id) : [];
         return (
           <>
           <FeatureFlag name={'clustering'}>
@@ -172,7 +167,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
               }
             />
           </FeatureFlag>
-          <Summary visibleProjects={projectIds} />
+          <Summary onlyModerator />
           </>
         );
       }
