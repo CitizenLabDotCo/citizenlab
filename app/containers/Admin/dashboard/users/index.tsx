@@ -6,7 +6,6 @@ import { ThemeProvider } from 'styled-components';
 // components
 import {
   chartTheme,
-  Container,
   GraphsContainer,
   Line,
   GraphCard,
@@ -64,7 +63,7 @@ export default class UsersDashboard extends PureComponent<Props, State> {
     const endAt = endAtMoment.toISOString();
 
     return (
-      <Container>
+      <>
         <ControlBar>
           <TimeControl
             value={intervalIndex}
@@ -99,7 +98,7 @@ export default class UsersDashboard extends PureComponent<Props, State> {
             </Line>
           </GraphsContainer>
         </ThemeProvider>
-      </Container>
+      </>
     );
   }
 }
