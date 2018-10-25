@@ -17,7 +17,7 @@ import { GetTenantChildProps } from 'resources/GetTenant';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // utils
 import { AUTH_PATH } from 'containers/App/constants';
@@ -28,8 +28,8 @@ import { fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
-const googleLogoUrl = require('./google.svg') as string;
-const facebookLogoUrl = require('./facebook.svg') as string;
+const googleLogoUrl = require('./svg/google.svg') as string;
+const facebookLogoUrl = require('./svg/facebook.svg') as string;
 
 const Container = styled.div`
   width: 100%;
