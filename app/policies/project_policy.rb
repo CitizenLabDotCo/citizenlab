@@ -43,6 +43,27 @@ class ProjectPolicy < ApplicationPolicy
     end
   end
 
+  # The normal scope: Given this user, which resources can she access? 
+  # The inverse scope: Given this resource, which users can access it?
+  class InverseScope
+    attr_reader :record, :scope
+
+    def initialize(record, scope)
+      @record = record
+      @scope = scope
+    end
+
+    def resolve
+      if record.visible_to == 'public' && record.publication_status != 'draft'
+        scope.all
+      elsif record.visible_to == 'groups' && record.publication_status != 'draft'
+        scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderators(record.id))
+      else
+        scope.admin.or(scope.project_moderators(record.id))
+      end
+    end
+  end
+
 
   def create?
     user&.active? && user.admin?
@@ -54,7 +75,7 @@ class ProjectPolicy < ApplicationPolicy
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
-          (record.groups.pluck(:id) & user.group_ids).any?
+          (record.groups.ids & user.group_ids).any?
         )
       )
     )

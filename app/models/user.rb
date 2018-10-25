@@ -79,6 +79,7 @@ class User < ApplicationRecord
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   }
 
+
   scope :in_group, -> (group) {
     if group.rules?
       SmartGroupsService.new.filter(self.all, group.rules)
@@ -87,6 +88,14 @@ class User < ApplicationRecord
     end
   }
 
+  scope :in_any_group, -> (groups) {
+    user_ids = groups
+      .flat_map do |group|
+        in_group(group).ids
+      end
+      .uniq
+    where(id: user_ids)
+  }
 
   def self.find_by_cimail email
     where('lower(email) = lower(?)', email).first
