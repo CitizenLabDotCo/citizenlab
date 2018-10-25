@@ -12,6 +12,10 @@ def time_series_parameters s
   s.parameter :interval, "Either day, week, month, year"
 end
 
+def group_filter_parameter s
+  s.parameter :group, "Group ID. Only return users that are a member of the given group", required: false
+end
+
 resource "Stats - Users" do
 
   explanation "The various stats endpoints can be used to show how certain properties of users."
@@ -94,6 +98,7 @@ resource "Stats - Users" do
   get "web_api/v1/stats/active_users_by_time" do
     explanation "Active users are that have generated some activity within the given interval window"
     time_series_parameters self
+    group_filter_parameter self
     parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
     context "with time filters only" do
@@ -141,6 +146,30 @@ resource "Stats - Users" do
         expect(json_response.size).to eq start_at.end_of_month.day
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
         expect(json_response.values.inject(&:+)).to eq 1
+      end
+    end
+
+    context "with group filter" do
+      before do
+        @group = create(:group)
+        @user1 = create(:user, manual_groups: [@group])
+        @user2 = create(:user, manual_groups: [@group])
+        create(:activity, user: @user1)
+        create(:activity, user: @user2)
+        create(:activity)
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+      let(:group) { @group.id }
+
+      example_request "Active users by time filtered by project" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 2
       end
     end
   end

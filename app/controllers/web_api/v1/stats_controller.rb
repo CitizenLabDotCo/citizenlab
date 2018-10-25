@@ -60,6 +60,11 @@ class WebApi::V1::StatsController < ApplicationController
       activities_scope = activities_scope.where(user_id: participants)
     end
 
+    if params[:group]
+      group = Group.find(params[:group])
+      activities_scope = activities_scope.where(user_id: group.members)
+    end
+
     serie = @@stats_service.group_by_time(
       activities_scope,
       'acted_at',
