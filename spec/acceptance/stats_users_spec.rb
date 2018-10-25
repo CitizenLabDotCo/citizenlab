@@ -96,27 +96,52 @@ resource "Stats - Users" do
     time_series_parameters self
     parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
-    before do
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
-        user = create(:user)
-        create_list(:activity, 2, user: user)
-        create(:activity)
+    context "with time filters only" do
+      before do
+        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
+          user = create(:user)
+          create_list(:activity, 2, user: user)
+          create(:activity)
+        end
+        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
+          create_list(:activity, 2)
+        end
       end
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
-        create_list(:activity, 2)
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+
+      example_request "Active users by time" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 4
       end
     end
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-    let(:interval) { 'day' }
+    context "with project filter" do
+      before do
+        @project = create(:project)
+        @idea1 = create(:idea, project: @project)
+        create(:idea_published_activity, item: @idea1, user: @idea1.author)
+        @idea2 = create(:idea)
+        create(:idea_published_activity, item: @idea2, user: @idea2.author)
+      end
 
-    example_request "Active users by time" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.size).to eq start_at.end_of_month.day
-      expect(json_response.values.map(&:class).uniq).to eq [Integer]
-      expect(json_response.values.inject(&:+)).to eq 4
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:interval) { 'day' }
+      let(:project) { @project.id }
+
+      example_request "Active users by time filtered by project" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_month.day
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response.values.inject(&:+)).to eq 1
+      end
     end
   end
 

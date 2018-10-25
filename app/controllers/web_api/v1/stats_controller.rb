@@ -51,8 +51,17 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def active_users_by_time
+    activities_scope = Activity.select(:user_id).distinct
+
+    if params[:project]
+      ps = ParticipantsService.new
+      project = Project.find(params[:project])
+      participants = ps.participants(project: project)
+      activities_scope = activities_scope.where(user_id: participants)
+    end
+
     serie = @@stats_service.group_by_time(
-      Activity.select(:user_id).distinct,
+      activities_scope,
       'acted_at',
       @start_at,
       @end_at,
