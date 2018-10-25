@@ -2,13 +2,11 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import TermsCheckbox from './TermsCheckbox';
-import LoginProviderImage from './LoginProviderImage';
+import SignUpButton from './SignUpButton';
 
 // services
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
@@ -26,14 +24,12 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
 const googleLogoUrl = require('./google.svg') as string;
 const facebookLogoUrl = require('./facebook.svg') as string;
-
-const timeout = 250;
 
 const Container = styled.div`
   width: 100%;
@@ -58,58 +54,6 @@ const SocialSignUpButtons = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const SocialSignUpButton = styled.div`
-  width: 100%;
-  height: 58px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-
-  ${media.largePhone`
-    height: 90px;
-  `}
-
-  &.google:hover,
-  &.google.active {
-    border-color: #2a81f4;
-  }
-
-  &.facebook:hover,
-  &.facebook.active {
-    border-color: #345697;
-  }
-
-  span {
-    color: #707075 !important;
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 18px;
-  }
-
-  a > span {
-    color: #707075 !important;
-    text-decoration: underline;
-  }
-
-  a:hover > span {
-    color: #000 !important;
-    text-decoration: underline;
-  }
-`;
-
-const AzureAdSignUpButton = SocialSignUpButton.extend`
-  &:hover {
-    border-color: #000;
-  }
 `;
 
 const SocialSignUpText = styled.div`
@@ -220,78 +164,42 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
               <SocialSignUpButtons>
                 <FeatureFlag name="google_login">
-                  <SocialSignUpButton
-                    className={`google ${socialLoginClicked === 'google' && 'active'}`}
+                  <SignUpButton
+                    logoUrl={googleLogoUrl}
+                    logoHeight="29px"
+                    loginProvider="google"
+                    socialLoginClicked={socialLoginClicked}
+                    loginMechanismName="Google"
+                    socialLoginTaCAccepted={socialLoginTaCAccepted}
                     onClick={this.handleOnSSOClick('google')}
-                  >
-                    <TransitionGroup>
-                      <TermsCheckbox
-                        loginProvider="google"
-                        socialLoginClicked={socialLoginClicked}
-                        tenantLoginMechanismName="Google"
-                        socialLoginTaCAccepted={socialLoginTaCAccepted}
-                        onCheck={this.handleSocialLoginAcceptTaC('google')}
-                      />
-                      <LoginProviderImage
-                        logoUrl={googleLogoUrl}
-                        logoHeight="29px"
-                        timeout={timeout}
-                        loginProvider="google"
-                        socialLoginClicked={socialLoginClicked}
-                        loginMechanismName="Google"
-                      />
-                    </TransitionGroup>
-                  </SocialSignUpButton>
+                    onAcceptToC={this.handleSocialLoginAcceptTaC('google')}
+                  />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
-                  <SocialSignUpButton
-                    className={`facebook ${socialLoginClicked === 'facebook' && 'active'}`}
+                  <SignUpButton
+                    logoUrl={facebookLogoUrl}
+                    logoHeight="21px"
+                    loginProvider="facebook"
+                    socialLoginClicked={socialLoginClicked}
+                    loginMechanismName="Facebook"
+                    socialLoginTaCAccepted={socialLoginTaCAccepted}
                     onClick={this.handleOnSSOClick('facebook')}
-                  >
-                    <TransitionGroup>
-                      <TermsCheckbox
-                        loginProvider="facebook"
-                        socialLoginClicked={socialLoginClicked}
-                        tenantLoginMechanismName="Facebook"
-                        socialLoginTaCAccepted={socialLoginTaCAccepted}
-                        onCheck={this.handleSocialLoginAcceptTaC('facebook')}
-                      />
-                      <LoginProviderImage
-                        logoUrl={facebookLogoUrl}
-                        logoHeight="21px"
-                        timeout={timeout}
-                        loginProvider="facebook"
-                        socialLoginClicked={socialLoginClicked}
-                        loginMechanismName="Facebook"
-                      />
-                    </TransitionGroup>
-                  </SocialSignUpButton>
+                    onAcceptToC={this.handleSocialLoginAcceptTaC('facebook')}
+                  />
                 </FeatureFlag>
               </SocialSignUpButtons>
 
               <FeatureFlag name="azure_ad_login">
-                <AzureAdSignUpButton
-                  className={`azureactivedirectory ${socialLoginClicked === 'azureactivedirectory' && 'active'}`}
+                <SignUpButton
+                  logoUrl={azureAdLogoUrl}
+                  logoHeight="25px"
+                  loginProvider="azureactivedirectory"
+                  socialLoginClicked={socialLoginClicked}
+                  loginMechanismName={tenantLoginMechanismName}
+                  socialLoginTaCAccepted={socialLoginTaCAccepted}
                   onClick={this.handleOnSSOClick('azureactivedirectory')}
-                >
-                  <TransitionGroup>
-                    <TermsCheckbox
-                      loginProvider="azureactivedirectory"
-                      socialLoginClicked={socialLoginClicked}
-                      tenantLoginMechanismName={tenantLoginMechanismName}
-                      socialLoginTaCAccepted={socialLoginTaCAccepted}
-                      onCheck={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
-                    />
-                    <LoginProviderImage
-                      logoUrl={azureAdLogoUrl}
-                      logoHeight="25px"
-                      timeout={timeout}
-                      loginProvider="azureactivedirectory"
-                      socialLoginClicked={socialLoginClicked}
-                      loginMechanismName={tenantLoginMechanismName}
-                    />
-                  </TransitionGroup>
-                </AzureAdSignUpButton>
+                  onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                />
               </FeatureFlag>
 
               {!passwordLoginEnabled &&

@@ -1,49 +1,15 @@
 import React from 'react';
 
+// components
+import { SignUpButtonInner } from './index';
+
 // styling
-import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
-
-const SocialSignUpButtonInner = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all ${(props) => props.timeout}ms ease-out;
-  will-change: opacity;
-
-  &.tac-enter {
-    opacity: 0;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-
-    &.tac-enter-active {
-      opacity: 1;
-    }
-  }
-
-  &.tac-exit {
-    opacity: 1;
-
-    &.tac-exit-active {
-      opacity: 0;
-    }
-  }
-`;
+import messages from '../messages';
 
 interface Props {
   logoUrl: string;
@@ -66,13 +32,13 @@ const LoginProviderImage = (props: Props & InjectedIntlProps) => {
   if (loginProvider !== socialLoginClicked) {
     return (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <SocialSignUpButtonInner>
+        <SignUpButtonInner>
           <img
             src={logoUrl}
             height={logoHeight}
             alt={props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName })}
           />
-        </SocialSignUpButtonInner>
+        </SignUpButtonInner>
       </CSSTransition>
     );
   }

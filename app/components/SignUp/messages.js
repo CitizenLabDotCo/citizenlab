@@ -175,7 +175,7 @@ export default defineMessages({
   },
   acceptTermsAndConditions: {
     id: 'app.containers.SignUp.acceptTermsAndConditions',
-    defaultMessage: 'Accept our {tacLink} to sign up via {tenantLoginMechanismName}',
+    defaultMessage: 'Accept our {tacLink} to sign up via {loginMechanismName}',
   },
   termsAndConditions: {
     id: 'app.containers.SignUp.termsAndConditions',
