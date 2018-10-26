@@ -338,8 +338,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     const passwordLoginEnabled: boolean = get(currentTenant, 'data.attributes.settings.password_login.enabled');
     const googleLoginEnabled = !!get(currentTenant, 'data.attributes.settings.google_login.enabled');
     const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
-    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled);
     const azureAdLoginEnabled: boolean = get(currentTenant, 'data.attributes.settings.azure_ad_login.enabled');
+    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
     const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
@@ -407,11 +407,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               </PasswordLogin>
             }
 
-            {passwordLoginEnabled && (socialLoginEnabled || azureAdLoginEnabled) &&
+            {passwordLoginEnabled && socialLoginEnabled &&
               <Separator />
             }
 
-            {(socialLoginEnabled || azureAdLoginEnabled) &&
+            {socialLoginEnabled &&
               <Footer>
                 {(passwordLoginEnabled &&
                   <SocialLoginText>
