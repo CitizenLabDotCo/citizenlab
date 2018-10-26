@@ -260,7 +260,18 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def comments_by_topic
-    serie = Comment.published
+    comments = Comment.published
+
+    if params[:project]
+      comments = comments.joins(:idea).where(ideas: {project_id: params[:project]})
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      comments = comments.where(author_id: group.members)
+    end
+
+    serie = comments
       .where(created_at: @start_at..@end_at)
       .joins(idea: :ideas_topics)
       .group("ideas_topics.topic_id")
@@ -271,7 +282,20 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def comments_by_project
-    serie = Comment.published
+    comments = Comment.published
+
+    if params[:topic]
+      comments = comments
+        .joins(idea: :ideas_topics)
+        .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      comments = comments.where(author_id: group.members)
+    end
+
+    serie = comments
       .where(created_at: @start_at..@end_at)
       .joins(:idea)
       .group("ideas.project_id")
