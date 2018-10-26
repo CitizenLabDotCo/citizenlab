@@ -57,9 +57,9 @@ interface Props extends InputProps, DataProps { }
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
 }
@@ -72,9 +72,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     this.state = {
       interval: 'months',
       intervalIndex: 0,
-      currentProjectFilter: 'all',
-      currentGroupFilter: 'all',
-      currentTopicFilter: 'all',
+      currentProjectFilter: null,
+      currentGroupFilter: null,
+      currentTopicFilter: null,
       currentResourceByTopic: 'Ideas',
       currentResourceByProject: 'Ideas'
     };
@@ -153,8 +153,8 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       }
     }
 
-    const filterOptionsFinal = [{ value: 'all', label: 'All' }, ...filterOptions];
-    return filterOptionsFinal;
+    filterOptions = [{ value: null, label: 'All' }, ...filterOptions];
+    return filterOptions;
   }
 
   render() {

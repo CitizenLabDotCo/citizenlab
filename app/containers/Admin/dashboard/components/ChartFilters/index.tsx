@@ -33,9 +33,9 @@ const FilterContainer = styled.div`
 const FilterSelector = styled(Select)``;
 
 interface Props {
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
   projectFilterOptions: IOption[];
   groupFilterOptions: IOption[];
   topicFilterOptions: IOption[];

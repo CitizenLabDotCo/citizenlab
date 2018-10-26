@@ -47,8 +47,8 @@ export default class Select extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { id } = this.props;
-    let { value, placeholder, options, autoBlur, clearable, searchable, borderColor } = this.props;
+    const { id, borderColor } = this.props;
+    let { value, placeholder, options, autoBlur, clearable, searchable } = this.props;
     const { inputId } = this.props;
     const { disabled } = this.props;
     const styles = borderColor ? getSelectStyles(borderColor) : selectStyles;
