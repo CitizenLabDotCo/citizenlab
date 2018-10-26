@@ -47,8 +47,10 @@ class SingleSignOnService
     user_attrs
   end
 
-  def azure_activedirectory_to_user_attrs auth
-    {}
+  def azureactivedirectory_profile_to_user_attrs auth
+    {
+      locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
+    }
   end
 
   private
