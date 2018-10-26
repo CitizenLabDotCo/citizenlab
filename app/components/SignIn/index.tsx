@@ -418,6 +418,15 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     {formatMessage(messages.orLogInWith)}
                   </SocialLoginText>
                 )}
+                <FeatureFlag name="azure_ad_login">
+                  <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
+                    <img
+                      src={azureAdLogo}
+                      height="21px"
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                    />
+                  </AzureAdSignInButton>
+                </FeatureFlag>
                 <SocialLoginButtons>
                   <FeatureFlag name="google_login">
                     <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
@@ -438,15 +447,6 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     </SocialSignInButton>
                   </FeatureFlag>
                 </SocialLoginButtons>
-                <FeatureFlag name="azure_ad_login">
-                  <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
-                    <img
-                      src={azureAdLogo}
-                      height="21px"
-                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
-                    />
-                  </AzureAdSignInButton>
-                </FeatureFlag>
                 {!passwordLoginEnabled &&
                   <CreateAccount>
                     {createAccount}

@@ -162,6 +162,19 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </SocialSignUpText>
               }
 
+              <FeatureFlag name="azure_ad_login">
+                <SignUpButton
+                  logoUrl={azureAdLogoUrl}
+                  logoHeight="25px"
+                  loginProvider="azureactivedirectory"
+                  socialLoginClicked={socialLoginClicked}
+                  loginMechanismName={tenantLoginMechanismName}
+                  socialLoginTaCAccepted={socialLoginTaCAccepted}
+                  onClick={this.handleOnSSOClick('azureactivedirectory')}
+                  onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                />
+              </FeatureFlag>
+
               <SocialSignUpButtons>
                 <FeatureFlag name="google_login">
                   <SignUpButton
@@ -188,19 +201,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   />
                 </FeatureFlag>
               </SocialSignUpButtons>
-
-              <FeatureFlag name="azure_ad_login">
-                <SignUpButton
-                  logoUrl={azureAdLogoUrl}
-                  logoHeight="25px"
-                  loginProvider="azureactivedirectory"
-                  socialLoginClicked={socialLoginClicked}
-                  loginMechanismName={tenantLoginMechanismName}
-                  socialLoginTaCAccepted={socialLoginTaCAccepted}
-                  onClick={this.handleOnSSOClick('azureactivedirectory')}
-                  onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
-                />
-              </FeatureFlag>
 
               {!passwordLoginEnabled &&
                 <AlreadyHaveAnAccount to="/sign-in">
