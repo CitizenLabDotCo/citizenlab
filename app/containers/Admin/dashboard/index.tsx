@@ -52,6 +52,15 @@ export const Line = styled.div`
     margin-bottom: 0px;
   }
 `;
+export const Column = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  &.first {
+    margin-right: 20px;
+  }
+`;
 
 export const GraphCardInner = styled.div`
   width: 100%;
@@ -83,6 +92,9 @@ export const GraphCard = styled.div`
 
   &.first {
     margin-right: 20px;
+  }
+  &.colFirst {
+    margin-bottom: 20px;
   }
 
   &.halfWidth {

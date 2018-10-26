@@ -75,21 +75,33 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
     defaultMessage: 'Ideas',
   },
-  ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.ideas',
+  'Ideas': {
+    id: 'app.containers.AdminPage.DashboardPage.Ideas',
     defaultMessage: 'Ideas',
   },
-  votes: {
-    id: 'app.containers.AdminPage.DashboardPage.votes',
+  'Votes': {
+    id: 'app.containers.AdminPage.DashboardPage.Votes',
     defaultMessage: 'Votes',
   },
-  comments: {
-    id: 'app.containers.AdminPage.DashboardPage.comments',
+  'Comments': {
+    id: 'app.containers.AdminPage.DashboardPage.Comments',
     defaultMessage: 'Comments',
   },
   byTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
-    defaultMessage: 'by Topics',
+    defaultMessage: 'by Topic',
+  },
+  byProjectTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
+    defaultMessage: 'by Project',
+  },
+  resourceByTopicDifference: {
+    id: 'app.containers.AdminPage.DashboardPage.resourcebyTopicDifference',
+    defaultMessage: '{resourceName} difference with {topic}',
+  },
+  resourceByProjectDifference: {
+    id: 'app.containers.AdminPage.DashboardPage.resourcebyProjectDifference',
+    defaultMessage: '{resourceName} difference with {project}',
   },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
