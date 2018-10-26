@@ -143,12 +143,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     const passwordLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.password_login, 'enabled', false) : false);
     const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
     const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
-    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled);
     const azureAdLoginEnabled: boolean = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
+    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
     const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
 
-    if (socialLoginEnabled || azureAdLoginEnabled) {
+    if (socialLoginEnabled) {
       return (
         <>
           {passwordLoginEnabled &&
