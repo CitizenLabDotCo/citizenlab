@@ -6,6 +6,8 @@ import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import localize, { InjectedLocalized } from 'utils/localize';
 import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
+import messages from '../messages';
+import EmptyGraph from './EmptyGraph';
 
 interface Props {
   startAt: string;

@@ -52,6 +52,15 @@ export const Line = styled.div`
     margin-bottom: 0px;
   }
 `;
+export const Column = styled.div`
+  width: 50%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  &.first {
+    margin-right: 20px;
+  }
+`;
 
 export const GraphCardInner = styled.div`
   width: 100%;
@@ -84,6 +93,9 @@ export const GraphCard = styled.div`
   &.first {
     margin-right: 20px;
   }
+  &.colFirst {
+    margin-bottom: 20px;
+  }
 
   &.halfWidth {
     width: 50%;
@@ -95,6 +107,10 @@ export const GraphCardTitle = styled.h3`
   font-weight: 400;
   align-self: flex-start;
   padding-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
 `;
 
 interface Props {
