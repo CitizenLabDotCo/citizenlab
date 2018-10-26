@@ -1,5 +1,4 @@
 FACEBOOK_SETUP_PROC = lambda do |env| 
-  request = Rack::Request.new(env)
   tenant = Tenant.current
   if tenant.has_feature('facebook_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("facebook_login", "app_id")
@@ -9,7 +8,6 @@ FACEBOOK_SETUP_PROC = lambda do |env|
 end
 
 GOOGLE_SETUP_PROC = lambda do |env|
-  request = Rack::Request.new(env)
   tenant = Tenant.current
   if tenant.has_feature('google_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("google_login", "client_id")
@@ -20,7 +18,6 @@ GOOGLE_SETUP_PROC = lambda do |env|
 end
 
 AZURE_AD_SETUP_PROC = lambda do |env|
-  request = Rack::Request.new(env)
   tenant = Tenant.current
   if tenant.has_feature('azure_ad_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("azure_ad_login", "client_id")
@@ -30,7 +27,6 @@ end
 
 
 # TWITTER_SETUP_PROC = lambda do |env|
-#   request = Rack::Request.new(env)
 #   tenant = Tenant.current
 #   if tenant.has_feature('twitter_login')
 #     env['omniauth.strategy'].options[:client_id] = Tenant.settings("twitter_login", "api_key")
