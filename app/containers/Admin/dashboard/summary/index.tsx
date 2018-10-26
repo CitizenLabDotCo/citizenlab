@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
+import { IOption } from 'typings';
 
 // components
 import TimeControl from '../components/TimeControl';
@@ -15,7 +16,6 @@ import IdeasByTopicChart from '../components/IdeasByTopicChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar } from '../';
-import T from 'components/T';
 
 // i18n
 import messages from '../messages';
@@ -43,9 +43,9 @@ interface Props extends InputProps, DataProps { }
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
+  currentProjectFilter: string;
+  currentGroupFilter: string;
+  currentTopicFilter: string;
 }
 
 class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, State> {
@@ -54,6 +54,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, Stat
     this.state = {
       interval: 'months',
       intervalIndex: 0,
+      currentProjectFilter: 'all',
+      currentGroupFilter: 'all',
+      currentTopicFilter: 'all',
     };
   }
 
@@ -80,6 +83,51 @@ class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, Stat
     this.setState({ currentTopicFilter: filter });
   }
 
+  generateFilterOptions = (filter: 'project' | 'group' | 'topic'): IOption[] => {
+    const { projects,
+      projects: { projectsList },
+      groups,
+      groups: { groupsList },
+      topics,
+      localize } = this.props;
+
+    let filterOptions: IOption[] | [] = [];
+
+    if (filter === 'project') {
+      if (!isNilOrError(projects) && projectsList) {
+        filterOptions = projectsList.map((project) => (
+          {
+            value: project.id,
+            label: localize(project.attributes.title_multiloc),
+          }
+        ));
+      }
+    } else if (filter === 'group') {
+      if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
+        filterOptions = groupsList.map((group) => (
+          {
+            value: group.id,
+            label: localize(group.attributes.title_multiloc)
+          }
+        ));
+      }
+    } else if (filter === 'topic') {
+      if (!isNilOrError(topics)) {
+        filterOptions = topics.map((topic) => {
+            if (isNilOrError(topic)) return { value: '', label: '' };
+
+            return {
+              value: topic.id,
+              label: localize(topic.attributes.title_multiloc),
+            };
+        });
+      }
+    }
+
+    const filterOptionsFinal = [{ value: 'all', label: 'All' }, ...filterOptions];
+    return filterOptionsFinal;
+  }
+
   render() {
     const {
       interval,
@@ -95,13 +143,6 @@ class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, Stat
     const { projects, projects: { projectsList } } = this.props;
 
     if (projects && !isNilOrError(projectsList)) {
-      const projectFilterOptions = projectsList.map(project => {
-        return {
-          value: project.id,
-          label: localize(project.attributes.title_multiloc),
-        };
-      });
-
       return (
         <>
           <ControlBar>
@@ -121,9 +162,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedLocalized, Stat
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
-            projectFilterOptions={projectFilterOptions}
-            groupFilterOptions={['Group A', 'Group B']}
-            topicFilterOptions={['Topic A', 'Topic B']}
+            projectFilterOptions={this.generateFilterOptions('project')}
+            groupFilterOptions={this.generateFilterOptions('group')}
+            topicFilterOptions={this.generateFilterOptions('topic')}
             onProjectFilter={this.handleOnProjectFilter}
             onGroupFilter={this.handleOnGroupFilter}
             onTopicFilter={this.handleOnTopicFilter}
