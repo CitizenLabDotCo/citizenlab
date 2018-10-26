@@ -136,7 +136,7 @@ resource "Stats - Ideas" do
           @project2.id => 5,
           @project3.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to eq [@project1.id, @project2.id, @project3.id]
+        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id, @project3.id]
       end
     end
 
