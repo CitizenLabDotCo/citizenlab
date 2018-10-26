@@ -1,5 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import moment from 'moment';
 import styled, { ThemeProvider } from 'styled-components';
 
@@ -21,12 +22,16 @@ import Select from 'components/UI/Select';
 import { IOption } from 'typings';
 
 // i18n
+import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 
 const SSelect = styled(Select)`
@@ -44,6 +49,8 @@ interface InputProps {
 
 interface DataProps {
   projects: GetProjectsChildProps;
+  groups: GetGroupsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -58,10 +65,10 @@ interface State {
   currentResourceByProject: IResource;
 }
 
-class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps, State> {
+class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   resourceOptions: IOption[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     this.state = {
       interval: 'months',
@@ -126,7 +133,12 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps, Stat
     const { projects, projects: { projectsList } } = this.props;
 
     if (projects && !isNilOrError(projectsList)) {
-      console.log(projectsList);
+      const projectFilterOptions = projectsList.map(project => {
+        return {
+          value: project.id,
+          label: localize(project.attributes.title_multiloc),
+        };
+      });
 
       return (
         <>
@@ -147,7 +159,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps, Stat
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
-            projectFilterOptions={['Project A', 'Project B']}
+            projectFilterOptions={projectFilterOptions}
             groupFilterOptions={['Group A', 'Group B']}
             topicFilterOptions={['Topic A', 'Topic B']}
             onProjectFilter={this.handleOnProjectFilter}
@@ -281,10 +293,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-const DashboardPageSummaryWithHoCs = injectIntl(DashboardPageSummary);
+const Data = adopt<DataProps, InputProps>({
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}/>,
+  groups: <GetGroups />,
+  topics: <GetTopics />,
+});
+
+const DashboardPageSummaryWithHOCs =  localize<Props>(injectIntl(DashboardPageSummary));
 
 export default (inputProps: InputProps) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
-    {projects => <DashboardPageSummaryWithHoCs {...inputProps} projects={projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps =>  <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );
