@@ -22,7 +22,6 @@ import Select from 'components/UI/Select';
 import { IOption } from 'typings';
 
 // i18n
-import T from 'components/T';
 import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -95,18 +94,15 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   }
 
   handleOnProjectFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentProjectFilter: filter });
+    this.setState({ currentProjectFilter: filter.value });
   }
 
   handleOnGroupFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentGroupFilter: filter });
+    this.setState({ currentGroupFilter: filter.value });
   }
 
   handleOnTopicFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentTopicFilter: filter });
+    this.setState({ currentTopicFilter: filter.value });
   }
 
   onResourceByTopicChange = (option) => {
