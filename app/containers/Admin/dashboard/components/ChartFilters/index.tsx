@@ -62,7 +62,8 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
       topicFilterOptions,
       onProjectFilter,
       onGroupFilter,
-      onTopicFilter } = this.props;
+      onTopicFilter
+    } = this.props;
 
     return(
       <Container>
