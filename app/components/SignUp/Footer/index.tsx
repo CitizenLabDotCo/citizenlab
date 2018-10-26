@@ -1,8 +1,8 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -13,6 +13,7 @@ import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // resources
 import { GetTenantChildProps } from 'resources/GetTenant';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -84,7 +85,14 @@ interface InputProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps {}
+interface DataProps {
+  passwordLoginEnabled: boolean | null;
+  googleLoginEnabled: boolean | null;
+  facebookLoginEnabled: boolean | null;
+  azureAdLoginEnabled: boolean | null;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
@@ -137,13 +145,9 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant } = this.props;
-    const { formatMessage } = this.props.intl;
     const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
-    const passwordLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.password_login, 'enabled', false) : false);
-    const googleLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.google_login, 'enabled', false) : false);
-    const facebookLoginEnabled = (!isNilOrError(tenant) ? get(tenant.attributes.settings.facebook_login, 'enabled', false) : false);
-    const azureAdLoginEnabled: boolean = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
+    const { tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled } = this.props;
+    const { formatMessage } = this.props.intl;
     const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
     const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
@@ -219,4 +223,15 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
 const FooterWithInjectedIntl = injectIntl<Props>(Footer);
 
-export default FooterWithInjectedIntl;
+const Data = adopt<Props>({
+  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
+  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
+  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+});
+
+export default (inputProps) => (
+  <Data>
+    {dataProps => <FooterWithInjectedIntl {...inputProps} {...dataProps} />}
+  </Data>
+);
