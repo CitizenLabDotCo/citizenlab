@@ -155,7 +155,7 @@
         "description":  "Allow signing in and registering with Azure Active Directory (used for e.g. VUB)",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["tenant", "client_id"],
+        "required-settings": ["tenant", "client_id", "logo_url", "login_mechanism_name"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -171,11 +171,11 @@
           "logo_url": {
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "description": "The full url to a logo image, that will be shown on the authentication button"
+            "description": "The full url to a logo image, that will be shown on the authentication button. Should be approximately 25px in height."
           },
-          "logo_alt_text": {
+          "login_mechanism_name": {
             "type": "string",
-            "description": "The text to show as the logo, for users that can't see images"
+            "description": "The name of the login mechanism. Will be used in copy like 'Sign up with {login_mechanism_name}'"
           }
         }
       },
