@@ -203,6 +203,12 @@ const AzureAdSignInButton = SocialSignInButton.extend`
   }
 `;
 
+interface InputProps {
+  onSignedIn: (userId: string) => void;
+  title?: string | JSX.Element;
+  goToSignUpForm?: () => void;
+}
+
 interface DataProps {
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
@@ -210,11 +216,7 @@ interface DataProps {
   azureAdLoginEnabled: boolean | null;
 }
 
-type Props = {
-  onSignedIn: (userId: string) => void;
-  title?: string | JSX.Element;
-  goToSignUpForm?: () => void;
-};
+interface Props extends InputProps, DataProps {}
 
 type State = {
   location: Location | null;
@@ -229,13 +231,13 @@ type State = {
   loading: boolean;
 };
 
-class SignIn extends React.PureComponent<Props & DataProps & InjectedIntlProps, State> {
+class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       location: clHistory.getCurrentLocation(),
       currentTenant: null,
@@ -488,14 +490,14 @@ class SignIn extends React.PureComponent<Props & DataProps & InjectedIntlProps, 
 
 const SignInWithInjectedIntl = injectIntl<Props>(SignIn);
 
-const Data = adopt<Props>({
+const Data = adopt<DataProps, {}>({
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
 });
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <Data>
     {dataProps => <SignInWithInjectedIntl {...inputProps} {...dataProps} />}
   </Data>

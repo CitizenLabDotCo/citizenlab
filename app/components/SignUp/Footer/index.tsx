@@ -223,14 +223,14 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
 
 const FooterWithInjectedIntl = injectIntl<Props>(Footer);
 
-const Data = adopt<Props>({
+const Data = adopt<DataProps, {}>({
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
 });
 
-export default (inputProps) => (
+export default (inputProps: InputProps) => (
   <Data>
     {dataProps => <FooterWithInjectedIntl {...inputProps} {...dataProps} />}
   </Data>
