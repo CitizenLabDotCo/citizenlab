@@ -13,8 +13,6 @@ import messages from '../../messages';
 
 interface Props {
   timeout: number;
-  loginProvider: 'google' | 'facebook' | 'azureactivedirectory';
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
   loginMechanismName: string;
   socialLoginTaCAccepted: boolean;
   onCheck: () => void;
@@ -23,15 +21,12 @@ interface Props {
 const TermsCheckbox = (props: Props & InjectedIntlProps) => {
   const {
     timeout,
-    loginProvider,
-    socialLoginClicked,
     socialLoginTaCAccepted,
     loginMechanismName,
     onCheck
   } = props;
 
-  if (socialLoginClicked === loginProvider) {
-    return (
+return (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SignUpButtonInner>
           <Checkbox
@@ -51,9 +46,7 @@ const TermsCheckbox = (props: Props & InjectedIntlProps) => {
         </SignUpButtonInner>
       </CSSTransition>
     );
-  }
 
-  return null;
 };
 
 export default injectIntl<Props>(TermsCheckbox);

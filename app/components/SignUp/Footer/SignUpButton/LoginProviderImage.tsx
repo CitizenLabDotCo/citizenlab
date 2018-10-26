@@ -15,8 +15,6 @@ interface Props {
   logoUrl: string;
   logoHeight: string;
   timeout: number;
-  loginProvider: 'google' | 'facebook' | 'azureactivedirectory';
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
   loginMechanismName: string;
 }
 
@@ -25,11 +23,8 @@ const LoginProviderImage = (props: Props & InjectedIntlProps) => {
     logoUrl,
     logoHeight,
     timeout,
-    loginProvider,
-    socialLoginClicked,
     loginMechanismName } = props;
 
-  if (loginProvider !== socialLoginClicked) {
     return (
       <CSSTransition classNames="tac" timeout={timeout} exit={true}>
         <SignUpButtonInner>
@@ -41,9 +36,7 @@ const LoginProviderImage = (props: Props & InjectedIntlProps) => {
         </SignUpButtonInner>
       </CSSTransition>
     );
-  }
 
-  return null;
 };
 
 export default injectIntl<Props>(LoginProviderImage);
