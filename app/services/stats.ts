@@ -62,6 +62,36 @@ export interface ICommentsByTopic{
     }
   };
 }
+export interface IIdeasByProject{
+  data: {
+    [key: string]: number;
+  };
+  projects: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+export interface IVotesByProject{
+  data: {
+    [key: string]: number;
+  };
+  projects: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+export interface ICommentsByProject{
+  data: {
+    [key: string]: number;
+  };
+  projects: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
 
 interface IGenderCounts {
   male: number;
@@ -137,6 +167,18 @@ export function commentsByTopicStream(streamParams: IStreamParams | null = null)
 
 export function votesByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByTopic>({ apiEndpoint: `${apiEndpoint}/votes_by_topic`, ...streamParams });
+}
+
+export function ideasByProjectStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByProject>({ apiEndpoint: `${apiEndpoint}/ideas_by_project`, ...streamParams });
+}
+
+export function commentsByProjectStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICommentsByProject>({ apiEndpoint: `${apiEndpoint}/comments_by_project`, ...streamParams });
+}
+
+export function votesByProjectStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IVotesByProject>({ apiEndpoint: `${apiEndpoint}/votes_by_project`, ...streamParams });
 }
 
 export function votesByGenderStream(streamParams: IStreamParams | null = null) {
