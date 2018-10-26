@@ -14,8 +14,6 @@ import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
 
-import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
-
 // context
 import { PreviousPathnameContext } from 'context';
 
