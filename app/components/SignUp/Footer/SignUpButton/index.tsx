@@ -127,22 +127,21 @@ const SignUpButton = (props: Props) => {
       onClick={onClick}
     >
       <TransitionGroup>
-        <TermsCheckbox
-          timeout={timeout}
-          loginProvider={loginProvider}
-          socialLoginClicked={socialLoginClicked}
-          loginMechanismName={loginMechanismName}
-          socialLoginTaCAccepted={socialLoginTaCAccepted}
-          onCheck={onAcceptToC}
-        />
-        <LoginProviderImage
-          logoUrl={logoUrl}
-          logoHeight={logoHeight}
-          timeout={timeout}
-          loginProvider={loginProvider}
-          socialLoginClicked={socialLoginClicked}
-          loginMechanismName={loginMechanismName}
-        />
+        {(loginProvider === socialLoginClicked) ?
+          <TermsCheckbox
+            timeout={timeout}
+            loginMechanismName={loginMechanismName}
+            socialLoginTaCAccepted={socialLoginTaCAccepted}
+            onCheck={onAcceptToC}
+          />
+          :
+          <LoginProviderImage
+            logoUrl={logoUrl}
+            logoHeight={logoHeight}
+            timeout={timeout}
+            loginMechanismName={loginMechanismName}
+          />
+        }
       </TransitionGroup>
     </SignUpButtonWrapper>
   );
