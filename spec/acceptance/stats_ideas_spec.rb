@@ -12,6 +12,19 @@ def time_series_parameters s
   s.parameter :interval, "Either day, week, month, year"
 end
 
+def project_filter_parameter s
+  s.parameter :project, "Project ID. Only count ideas that are in the given project", required: false
+end
+
+def group_filter_parameter s
+  s.parameter :group, "Group ID. Only count ideas posted by users in the given group", required: false
+end
+
+def topic_filter_parameter s
+  s.parameter :topic, "Topic ID. Only count ideas that have the given topic assigned", required: false
+end
+
+
 resource "Stats - Ideas" do
 
   explanation "The various stats endpoints can be used to show certain properties of ideas."
@@ -54,35 +67,115 @@ resource "Stats - Ideas" do
 
   get "web_api/v1/stats/ideas_by_topic" do
     time_boundary_parameters self
+    project_filter_parameter self
+    group_filter_parameter self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+    describe "with time filters only" do
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
 
-    example_request "Ideas by topic" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
-      expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
-      expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+      example_request "Ideas by topic" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
+        expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
+        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+      end
+    end
+
+    describe "with project filter" do
+      before do
+        @project = create(:project)
+        idea = create(:idea, project: @project, topics: [create(:topic)])
+        create(:idea)
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:project) { @project.id }
+
+      example_request "Ideas by topic filtered by project" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].values.inject(&:+)).to eq 1
+      end
+    end
+
+    describe "with group filter" do
+      before do
+        @group = create(:group)
+        create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:group) { @group.id }
+
+      example_request "Ideas by topic filtered by group" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].values.inject(&:+)).to eq 2
+      end
     end
   end
 
   get "web_api/v1/stats/ideas_by_project" do
     time_boundary_parameters self
+    topic_filter_parameter self
+    group_filter_parameter self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+    describe "with time filters only" do
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
 
-    example_request "Ideas by project" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].stringify_keys).to match({
-        @project1.id => 5,
-        @project2.id => 5,
-        @project3.id => 1
-      })
-      expect(json_response[:projects].keys.map(&:to_s)).to eq [@project1.id, @project2.id, @project3.id]
+      example_request "Ideas by project" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].stringify_keys).to match({
+          @project1.id => 5,
+          @project2.id => 5,
+          @project3.id => 1
+        })
+        expect(json_response[:projects].keys.map(&:to_s)).to eq [@project1.id, @project2.id, @project3.id]
+      end
     end
+
+    describe "with topic filter" do
+      before do
+        idea = create(:idea_with_topics)
+        create(:idea)
+        @topic = idea.topics.first
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:topic) { @topic.id}
+
+      example_request "Ideas by project filtered by topic" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].values.inject(&:+)).to eq 1
+      end
+    end
+
+    describe "with group filter" do
+      before do
+        @group = create(:group)
+        user = create(:user, manual_groups: [@group])
+        idea = create(:idea, author: user)
+        create(:idea)
+      end
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:group) { @group.id }
+
+      example_request "Ideas by project filtered by group" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].values.inject(&:+)).to eq 1
+      end
+    end
+
   end
 
   get "web_api/v1/stats/ideas_by_area" do

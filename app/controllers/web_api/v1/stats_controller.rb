@@ -155,22 +155,40 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def ideas_by_topic
-    serie = Idea
+    ideas = Idea.published
+
+    ideas = ideas.where(project_id: params[:project]) if params[:project]
+    if params[:group]
+      group = Group.find(params[:group])
+      ideas = ideas.joins(:author).where(author: group.members)
+    end
+
+    serie = ideas
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_topics)
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
       .count
+
     topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {data: serie, topics: topics.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
 
   def ideas_by_project
-    serie = Idea
+    ideas = Idea.published
+
+    ideas = ideas.with_some_topics([params[:topic]]) if params[:topic]
+    if params[:group]
+      group = Group.find(params[:group])
+      ideas = ideas.joins(:author).where(author: group.members)
+    end
+
+    serie = ideas
       .where(published_at: @start_at..@end_at)
       .group(:project_id)
       .order(:project_id)
       .count
+
     projects = Project.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {data: serie, projects: projects.map{|t| [t.id, t.attributes.except('id')]}.to_h}
   end
