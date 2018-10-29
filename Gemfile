@@ -92,7 +92,7 @@ gem 'omniauth' # , '~> 1.7.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-# gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
+gem 'omniauth-azure-activedirectory'
 gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
