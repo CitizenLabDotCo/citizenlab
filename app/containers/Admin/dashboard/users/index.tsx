@@ -17,6 +17,7 @@ import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
 import GenderChart from '../components/GenderChart';
 import AgeChart from '../components/AgeChart';
+import ChartFilters from '../components/ChartFilters';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -76,6 +77,24 @@ export default class UsersDashboard extends PureComponent<Props, State> {
             onChange={this.changeInterval}
           />
         </ControlBar>
+
+        <ChartFilters
+          configuration={{
+            showProjectFilter: false,
+            showGroupFilter: true,
+            showTopicFilter: false
+          }}
+          filters={{
+            currentGroupFilter
+          }}
+          filterOptions={{
+            groupFilterOptions: this.generateFilterOptions('group'),
+          }}
+          onFilter={{
+            onGroupFilter: this.handleOnGroupFilter,
+          }}
+        />
+
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
             <Line>
