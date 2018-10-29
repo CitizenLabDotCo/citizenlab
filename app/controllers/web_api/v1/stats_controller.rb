@@ -363,9 +363,21 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_topic
-    serie = Vote.where(votable_type: 'Idea')
-      .where(created_at: @start_at..@end_at)
+    votes = Vote
+      .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
+
+    if params[:project]
+      votes = votes.where(ideas: {project_id: params[:project]})
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      votes = votes.where(user_id: group.members)
+    end
+
+    serie = votes
+      .where(created_at: @start_at..@end_at)
       .joins("JOIN ideas_topics ON ideas_topics.idea_id = ideas.id")
       .group("ideas_topics.topic_id")
       .order("ideas_topics.topic_id")
@@ -375,9 +387,22 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_project
-    serie = Vote.where(votable_type: 'Idea')
-      .where(created_at: @start_at..@end_at)
+    votes = Vote
+      .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
+
+    if params[:topic]
+      votes = votes
+        .joins("JOIN ideas_topics ON ideas.id = ideas_topics.idea_id")
+        .where(ideas_topics: {topic_id: params[:topic]})
+    end
+
+    if params[:group]
+      group = Group.find(params[:group])
+      votes = votes.where(user_id: group.members)
+    end
+    serie = votes
+      .where(created_at: @start_at..@end_at)
       .group("ideas.project_id")
       .order("ideas.project_id")
       .count
