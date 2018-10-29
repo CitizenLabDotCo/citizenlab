@@ -190,15 +190,26 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
           </ControlBar>
 
           <ChartFilters
-            currentProjectFilter={currentProjectFilter}
-            currentGroupFilter={currentGroupFilter}
-            currentTopicFilter={currentTopicFilter}
-            projectFilterOptions={this.generateFilterOptions('project')}
-            groupFilterOptions={this.generateFilterOptions('group')}
-            topicFilterOptions={this.generateFilterOptions('topic')}
-            onProjectFilter={this.handleOnProjectFilter}
-            onGroupFilter={this.handleOnGroupFilter}
-            onTopicFilter={this.handleOnTopicFilter}
+            configuration={{
+              showProjectFilter: true,
+              showGroupFilter: true,
+              showTopicFilter: true
+            }}
+            filters={{
+              currentProjectFilter,
+              currentGroupFilter,
+              currentTopicFilter
+            }}
+            filterOptions={{
+              projectFilterOptions: this.generateFilterOptions('project'),
+              groupFilterOptions: this.generateFilterOptions('group'),
+              topicFilterOptions: this.generateFilterOptions('topic')
+            }}
+            onFilter={{
+              onProjectFilter: this.handleOnProjectFilter,
+              onGroupFilter: this.handleOnGroupFilter,
+              onTopicFilter: this.handleOnTopicFilter
+            }}
           />
 
           <ThemeProvider theme={chartTheme}>

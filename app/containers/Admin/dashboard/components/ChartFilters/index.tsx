@@ -33,15 +33,26 @@ const FilterContainer = styled.div`
 const FilterSelector = styled(Select)``;
 
 interface Props {
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
-  projectFilterOptions: IOption[];
-  groupFilterOptions: IOption[];
-  topicFilterOptions: IOption[];
-  onProjectFilter: (filter: IOption) => void;
-  onGroupFilter: (filter: IOption) => void;
-  onTopicFilter: (filter: IOption) => void;
+  configuration: {
+    showProjectFilter: boolean;
+    showGroupFilter: boolean;
+    showTopicFilter: boolean;
+  };
+  filters: {
+    currentProjectFilter: string | null;
+    currentGroupFilter: string | null;
+    currentTopicFilter: string | null;
+  };
+  filterOptions: {
+    projectFilterOptions: IOption[];
+    groupFilterOptions: IOption[];
+    topicFilterOptions: IOption[];
+  };
+  onFilter: {
+    onProjectFilter: (filter: IOption) => void;
+    onGroupFilter: (filter: IOption) => void;
+    onTopicFilter: (filter: IOption) => void;
+  };
 }
 
 interface State {}
@@ -54,60 +65,61 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
 
   render() {
     const {
-      currentProjectFilter,
-      currentGroupFilter,
-      currentTopicFilter,
-      projectFilterOptions,
-      groupFilterOptions,
-      topicFilterOptions,
-      onProjectFilter,
-      onGroupFilter,
-      onTopicFilter
+      configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
+      filters: { currentProjectFilter, currentGroupFilter, currentTopicFilter },
+      filterOptions: { projectFilterOptions, groupFilterOptions, topicFilterOptions },
+      onFilter: { onProjectFilter, onGroupFilter, onTopicFilter }
     } = this.props;
 
     return(
       <Container>
-        <FilterContainer>
-          <Label htmlFor="projectFilter">
-            <FormattedMessage {...messages.projectFilterLabel} />
-          </Label>
-          <FilterSelector
-            id="projectFilter"
-            onChange={onProjectFilter}
-            value={currentProjectFilter}
-            options={projectFilterOptions}
-            clearable={false}
-            borderColor="#EAEAEA"
-          />
-        </FilterContainer>
+        {showProjectFilter &&
+          <FilterContainer>
+            <Label htmlFor="projectFilter">
+              <FormattedMessage {...messages.projectFilterLabel} />
+            </Label>
+            <FilterSelector
+              id="projectFilter"
+              onChange={onProjectFilter}
+              value={currentProjectFilter}
+              options={projectFilterOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
+            />
+          </FilterContainer>
+        }
 
-        <FilterContainer>
-          <Label htmlFor="groupFilter">
-            <FormattedMessage {...messages.groupFilterLabel} />
-          </Label>
-          <FilterSelector
-            id="groupFilter"
-            onChange={onGroupFilter}
-            value={currentGroupFilter}
-            options={groupFilterOptions}
-            clearable={false}
-            borderColor="#EAEAEA"
-          />
-        </FilterContainer>
+        {showGroupFilter &&
+          <FilterContainer>
+            <Label htmlFor="groupFilter">
+              <FormattedMessage {...messages.groupFilterLabel} />
+            </Label>
+            <FilterSelector
+              id="groupFilter"
+              onChange={onGroupFilter}
+              value={currentGroupFilter}
+              options={groupFilterOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
+            />
+          </FilterContainer>
+        }
 
-        <FilterContainer>
-          <Label htmlFor="topicFilter">
-            <FormattedMessage {...messages.topicFilterLabel} />
-          </Label>
-          <FilterSelector
-            id="topicFilter"
-            onChange={onTopicFilter}
-            value={currentTopicFilter}
-            options={topicFilterOptions}
-            clearable={false}
-            borderColor="#EAEAEA"
-          />
-        </FilterContainer>
+        {showTopicFilter &&
+          <FilterContainer>
+            <Label htmlFor="topicFilter">
+              <FormattedMessage {...messages.topicFilterLabel} />
+            </Label>
+            <FilterSelector
+              id="topicFilter"
+              onChange={onTopicFilter}
+              value={currentTopicFilter}
+              options={topicFilterOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
+            />
+          </FilterContainer>
+        }
       </Container>
     );
   }
