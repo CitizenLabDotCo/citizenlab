@@ -1,18 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Checkbox UI component renders and changes 1`] = `
+exports[`Checkbox UI component renders when checked 1`] = `
 <Checkbox__Container
   className="undefined hasLabel e2e-checkbox"
   size="22px"
 >
   <Checkbox__CheckboxContainer
-    checked={false}
+    checked={true}
     innerRef={[Function]}
     onClick={[Function]}
     onKeyPress={[Function]}
     size="22px"
     tabIndex={0}
-  />
+  >
+    <Checkbox__CheckmarkIcon
+      name="checkmark"
+    />
+  </Checkbox__CheckboxContainer>
   <Checkbox__Label
     onClick={[Function]}
   >
@@ -21,7 +25,7 @@ exports[`Checkbox UI component renders and changes 1`] = `
 </Checkbox__Container>
 `;
 
-exports[`Checkbox UI component renders and changes 2`] = `
+exports[`Checkbox UI component renders when unchecked 1`] = `
 <Checkbox__Container
   className="undefined hasLabel e2e-checkbox"
   size="22px"

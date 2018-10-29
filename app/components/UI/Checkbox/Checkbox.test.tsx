@@ -9,14 +9,18 @@ const getValue = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true);
 const onChangeCheckbox = jest.fn();
 
 describe('Checkbox UI component', () => {
-it('renders', () => {
+it('renders when unchecked', () => {
+    const checkbox = shallow(<Checkbox label="test" value={getValue()} onChange={onChangeCheckbox} />);
+    expect(checkbox).toMatchSnapshot();
+  });
+it('renders when checked', () => {
     const checkbox = shallow(<Checkbox label="test" value={getValue()} onChange={onChangeCheckbox} />);
     expect(checkbox).toMatchSnapshot();
   });
 
 it('changes', () => {
     const checkbox = shallow(<Checkbox label="test" value={getValue()} onChange={onChangeCheckbox} />);
-    checkbox.find('label').simulate('click');
+    checkbox.find('Checkbox__CheckboxContainer').simulate('click', { preventDefault() {}, stopPropagation() {} });
     expect(onChangeCheckbox).toBeCalledTimes(1);
   });
 });
