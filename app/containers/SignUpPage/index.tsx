@@ -21,6 +21,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -101,7 +102,9 @@ class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State>
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
-        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        if (!isNilOrError(document.documentElement)) {
+          document.body.scrollTop = document.documentElement.scrollTop = 0;
+        }
       })
     ];
   }
