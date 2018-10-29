@@ -81,7 +81,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
             <FilterSelector
               id="projectFilter"
               onChange={onProjectFilter}
-              value={currentProjectFilter}
+              value={currentProjectFilter || ''}
               options={projectFilterOptions}
               clearable={false}
               borderColor="#EAEAEA"
@@ -97,7 +97,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
             <FilterSelector
               id="groupFilter"
               onChange={onGroupFilter}
-              value={currentGroupFilter}
+              value={currentGroupFilter || ''}
               options={groupFilterOptions}
               clearable={false}
               borderColor="#EAEAEA"
@@ -113,7 +113,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
             <FilterSelector
               id="topicFilter"
               onChange={onTopicFilter}
-              value={currentTopicFilter}
+              value={currentTopicFilter || ''}
               options={topicFilterOptions}
               clearable={false}
               borderColor="#EAEAEA"
