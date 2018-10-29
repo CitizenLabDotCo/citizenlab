@@ -55,7 +55,11 @@ namespace :migrate do
     end
     yml_models['models']['topic'].each do |yml_topic|
       Topic.all.each do |topic|
-        yml_topic['title_multiloc'].each do |key, value|
+        title_hash = CL2_SUPPORTED_LOCALES.map do |locale|
+              translation = I18n.with_locale(locale) { I18n.t!(yml_topic['title_multiloc']) }
+              [locale, translation]
+            end.to_h
+        title_hash.each do |key, value|
           if topic.title_multiloc[key] == value
             topics_hash[topic.id] = yml_topic
           end
