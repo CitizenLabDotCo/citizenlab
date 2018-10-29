@@ -39,19 +39,19 @@ interface Props {
     showTopicFilter: boolean;
   };
   filters: {
-    currentProjectFilter: string | null;
-    currentGroupFilter: string | null;
-    currentTopicFilter: string | null;
+    currentProjectFilter?: string | null;
+    currentGroupFilter?: string | null;
+    currentTopicFilter?: string | null;
   };
   filterOptions: {
-    projectFilterOptions: IOption[];
-    groupFilterOptions: IOption[];
-    topicFilterOptions: IOption[];
+    projectFilterOptions?: IOption[];
+    groupFilterOptions?: IOption[];
+    topicFilterOptions?: IOption[];
   };
   onFilter: {
-    onProjectFilter: (filter: IOption) => void;
-    onGroupFilter: (filter: IOption) => void;
-    onTopicFilter: (filter: IOption) => void;
+    onProjectFilter?: (filter: IOption) => void;
+    onGroupFilter?: (filter: IOption) => void;
+    onTopicFilter?: (filter: IOption) => void;
   };
 }
 
