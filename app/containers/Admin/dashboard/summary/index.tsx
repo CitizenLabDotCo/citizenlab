@@ -32,9 +32,11 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
+import { ITopicData } from 'services/topics';
 
 const SSelect = styled(Select)`
   flex: 1;
+
   & > * {
     flex: 1;
   }
@@ -112,7 +114,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     this.setState({ currentResourceByProject: option.value });
   }
 
-  generateFilterOptions = (filter: 'project' | 'group' | 'topic'): IOption[] => {
+  generateFilterOptions = (filter: 'project' | 'group' | 'topic') => {
     const { projects,
       projects: { projectsList },
       groups,
@@ -120,7 +122,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       topics,
       localize } = this.props;
 
-    let filterOptions: IOption[] | [] = [];
+    let filterOptions: IOption[] = [];
 
     if (filter === 'project') {
       if (!isNilOrError(projects) && projectsList) {
@@ -142,18 +144,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       }
     } else if (filter === 'topic') {
       if (!isNilOrError(topics)) {
-        filterOptions = topics.map((topic) => {
-            if (isNilOrError(topic)) return { value: '', label: '' };
-
-            return {
-              value: topic.id,
-              label: localize(topic.attributes.title_multiloc),
-            };
+        filterOptions = topics.filter(topic => !isNilOrError(topic)).map((topic: ITopicData) => {
+          return {
+            value: topic.id,
+            label: localize(topic.attributes.title_multiloc),
+          };
         });
       }
     }
 
-    filterOptions = [{ value: null, label: 'All' }, ...filterOptions];
+    filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
     return filterOptions;
   }
 
