@@ -118,18 +118,38 @@ export async function deleteProject(projectId: string) {
 }
 
 export function getProjectUrl(project: IProjectData) {
-  let lastUrlSegment;
+  let lastUrlSegment: string;
+  const projectType = project.attributes.process_type;
+  const projectMethod = project.attributes.participation_method;
+  const rootProjectUrl = `/projects/${project.attributes.slug}`;
 
   // Determine where to send the user based on process type & participation method
-  if (project.attributes.process_type === 'timeline') {
+  if (projectType === 'timeline') {
     lastUrlSegment = 'process';
-  } else if (project.attributes.participation_method === 'survey') {
+  } else if (projectMethod === 'survey') {
     lastUrlSegment = 'survey';
-  } else if (project.attributes.participation_method === 'ideation') {
+  } else if (projectMethod === 'ideation' || (projectType === 'continuous' && projectMethod === 'budgeting')) {
     lastUrlSegment = 'ideas';
   } else {
     lastUrlSegment = 'info';
   }
 
-  return `/projects/${project.attributes.slug}/${lastUrlSegment}`;
+  return `${rootProjectUrl}/${lastUrlSegment}`;
+}
+
+export function getProjectIdeasUrl(project: IProjectData) {
+  let projectUrl: string;
+  const projectType = project.attributes.process_type;
+  const projectMethod = project.attributes.participation_method;
+  const rootProjectUrl = `/projects/${project.attributes.slug}`;
+
+  if (projectType === 'timeline') {
+    projectUrl = `${rootProjectUrl}/process`;
+  } else if (projectMethod === 'ideation' || projectMethod === 'budgeting') {
+    projectUrl = `${rootProjectUrl}/ideas`;
+  } else {
+    projectUrl = getProjectUrl(project);
+  }
+
+  return projectUrl;
 }

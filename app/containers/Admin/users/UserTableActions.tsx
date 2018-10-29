@@ -397,12 +397,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     <FormattedMessage {...messages.moveUsers} />
                   </DropdownFooterButton>
                 )}
-              >
-                <ActionButton className="e2e-move-users noRightMargin">
-                  <StyledIcon name="moveFolder" />
-                  <FormattedMessage {...messages.moveUsers} />
-                </ActionButton>
-              </Dropdown>
+              />
             </DropdownWrapper>
           </ActionButtonWrapper>
         }

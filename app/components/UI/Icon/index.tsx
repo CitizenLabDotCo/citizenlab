@@ -499,9 +499,9 @@ const icons = {
     </svg>
   ),
   remove: (className, title) => (
-    <svg className={`cl-icon ${className ? className : ''}`} width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg className={`cl-icon ${className ? className : ''}`} height="100%" viewBox="0 0 18 18">
       {injectTitle(title)}
-      <path d="M9 0C4.0275 0 0 4.0275 0 9C0 13.9725 4.0275 18 9 18C13.9725 18 18 13.9725 18 9C18 4.0275 13.9725 0 9 0ZM13.5 9.9H4.5V8.1H13.5V9.9Z" fill="#FC3C2D" />
+      <path d="M9 0C4.027 0 0 4.027 0 9s4.027 9 9 9 9-4.027 9-9-4.027-9-9-9zm4.5 9.9h-9V8.1h9v1.8z"/>
     </svg>
   ),
   add: (className, title) => (

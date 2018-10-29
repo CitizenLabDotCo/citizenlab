@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ContentContainer from 'components/ContentContainer';
+import ProjectNavbar from './ProjectNavbar';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -104,6 +105,7 @@ const HeaderImage: any = styled.div`
 
 interface InputProps {
   projectSlug: string;
+  phaseId?: string | null;
 }
 
 interface DataProps {
@@ -115,33 +117,35 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectsShowPage extends React.PureComponent<Props, State> {
+class ProjectsShowPage extends PureComponent<Props, State> {
   render() {
-    const { project } = this.props;
+    const { projectSlug, phaseId, project } = this.props;
 
     if (!isNilOrError(project)) {
-      const className = this.props['className'];
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
       const projectPublicationStatus = project.attributes.publication_status;
 
       return (
-        <Container className={`${className ? className : ''} ${projectType}`}>
-          <HeaderImage src={projectHeaderImageLarge} />
-          <HeaderOverlay />
-          <ContentContainer>
-            <HeaderContent className={projectType}>
-              <HeaderTitle>
-                <T value={project.attributes.title_multiloc} />
-              </HeaderTitle>
-              {projectPublicationStatus === 'archived' &&
-                <ArchivedLabel>
-                  <FormattedMessage {...messages.archived} />
-                </ArchivedLabel>
-              }
-            </HeaderContent>
-          </ContentContainer>
-        </Container>
+        <>
+          <ProjectNavbar projectSlug={projectSlug} phaseId={phaseId} />
+          <Container className={projectType}>
+            <HeaderImage src={projectHeaderImageLarge} />
+            <HeaderOverlay />
+            <ContentContainer>
+              <HeaderContent className={projectType}>
+                <HeaderTitle>
+                  <T value={project.attributes.title_multiloc} />
+                </HeaderTitle>
+                {projectPublicationStatus === 'archived' &&
+                  <ArchivedLabel>
+                    <FormattedMessage {...messages.archived} />
+                  </ArchivedLabel>
+                }
+              </HeaderContent>
+            </ContentContainer>
+          </Container>
+        </>
       );
     }
 
