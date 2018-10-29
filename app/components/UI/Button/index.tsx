@@ -297,11 +297,10 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
-    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
+    const { size, type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
+    let { id, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
-    size = (size || '1');
     style = (style || 'primary');
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);

@@ -65,4 +65,8 @@ export default defineMessages({
     id: 'app.containers.SignIn.orLogInWith',
     defaultMessage: 'Or log in with',
   },
+  signInButtonAltText: {
+    id: 'app.containers.SignIn.signInButtonAltText',
+    defaultMessage: 'Sign in with {loginMechanismName}',
+  }
 });

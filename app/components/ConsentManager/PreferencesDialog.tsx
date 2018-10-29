@@ -13,7 +13,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // Styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 export const ContentContainer = styled.div`
   height: 100%;
@@ -27,6 +28,9 @@ export const ContentContainer = styled.div`
   h2 {
     font-size: ${fontSizes.large}px;
   }
+  ${media.smallerThanMaxTablet`
+    margin: 0;
+  `}
 `;
 
 const Scroll = styled.div`
@@ -48,8 +52,14 @@ export const ButtonContainer = styled.div`
   button {
     margin : 4px;
   }
-  Button.button.primary-inverse {
-    border-color: ${props => props.theme.colorMain};
+  Button.button.primary-inverse span {
+    color: ${colors.adminTextColor}
+  }
+  Button.button.primary:not(.disabled) {
+    background-color: ${colors.adminTextColor};
+    &:hover, &:focus {
+      background-color: ${darken(0.1, colors.adminTextColor)};
+    }
   }
 `;
 
