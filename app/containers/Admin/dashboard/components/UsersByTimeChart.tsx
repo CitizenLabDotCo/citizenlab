@@ -84,9 +84,9 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
         start_at: startAt,
         end_at: endAt,
         interval: resolution,
+        project: currentProjectFilter,
         group: currentGroupFilter,
         topic: currentTopicFilter,
-        project: currentProjectFilter
       }
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);

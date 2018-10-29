@@ -21,9 +21,9 @@ type Props = {
   startAt: string,
   endAt: string,
   resolution: 'month' | 'day';
-  currentProjectFilter?: string;
-  currentGroupFilter?: string;
-  currentTopicFilter?: string;
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
 };
 
 class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -71,9 +71,9 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
     startAt: string,
     endAt: string,
     resolution: 'month' | 'day',
-    currentGroupFilter?: string,
-    currentTopicFilter?: string,
-    currentProjectFilter?: string
+    currentProjectFilter: string | null,
+    currentGroupFilter: string | null,
+    currentTopicFilter: string | null
   ) {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -84,9 +84,9 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
         start_at: startAt,
         end_at: endAt,
         interval: resolution,
-        // current_group_filter: currentGroupFilter, TODO
-        // current_topic_filter: currentTopicFilter, TODO
-        // current_project_filter: currentProjectFilter, TODO
+        project: currentProjectFilter,
+        group: currentGroupFilter,
+        topic: currentTopicFilter,
       }
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);
