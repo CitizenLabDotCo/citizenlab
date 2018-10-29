@@ -23,6 +23,9 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
+// services
+import { addBasket, updateBasket } from 'services/baskets';
+
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
@@ -261,6 +264,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   assignBudget = (event: FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
+
+    // updateBasket()
   }
 
   render() {
@@ -278,6 +283,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const hasBudget = !!idea.attributes.budget;
       const currentPageIsProjectPage = includes(pathname, '/projects/');
       let ideaBudget: JSX.Element | null = null;
+
+      console.log(idea);
 
       if (idea.attributes.budget && currentPageIsProjectPage) {
         const currency = tenant.attributes.settings.core.currency;
