@@ -39,19 +39,19 @@ interface Props {
     showTopicFilter: boolean;
   };
   filters: {
-    currentProjectFilter?: string | null;
-    currentGroupFilter?: string | null;
-    currentTopicFilter?: string | null;
+    currentProjectFilter: string | null;
+    currentGroupFilter: string | null;
+    currentTopicFilter: string | null;
   };
   filterOptions: {
-    projectFilterOptions?: IOption[];
-    groupFilterOptions?: IOption[];
-    topicFilterOptions?: IOption[];
+    projectFilterOptions: IOption[] | null;
+    groupFilterOptions: IOption[] | null;
+    topicFilterOptions: IOption[] | null;
   };
   onFilter: {
-    onProjectFilter?: (filter: IOption) => void;
-    onGroupFilter?: (filter: IOption) => void;
-    onTopicFilter?: (filter: IOption) => void;
+    onProjectFilter: ((filter: IOption) => void) | null;
+    onGroupFilter: ((filter: IOption) => void) | null;
+    onTopicFilter: ((filter: IOption) => void) | null;
   };
 }
 
@@ -73,7 +73,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
 
     return(
       <Container>
-        {showProjectFilter &&
+        {showProjectFilter && onProjectFilter &&
           <FilterContainer>
             <Label htmlFor="projectFilter">
               <FormattedMessage {...messages.projectFilterLabel} />
@@ -89,7 +89,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
           </FilterContainer>
         }
 
-        {showGroupFilter &&
+        {showGroupFilter && onGroupFilter &&
           <FilterContainer>
             <Label htmlFor="groupFilter">
               <FormattedMessage {...messages.groupFilterLabel} />
@@ -105,7 +105,7 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
           </FilterContainer>
         }
 
-        {showTopicFilter &&
+        {showTopicFilter && onTopicFilter &&
           <FilterContainer>
             <Label htmlFor="topicFilter">
               <FormattedMessage {...messages.topicFilterLabel} />

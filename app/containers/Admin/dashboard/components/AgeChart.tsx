@@ -21,7 +21,7 @@ type State = {
 type Props = {
   startAt: string,
   endAt: string,
-  currentGroupFilter?: string,
+  currentGroupFilter: string | null,
 };
 
 class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -92,7 +92,7 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
-        // current-group_filter: currentGroupFilter TODO
+        group: currentGroupFilter
       },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie) as any;
