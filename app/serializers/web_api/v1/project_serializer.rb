@@ -19,6 +19,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   
   has_one :action_descriptor
   has_one :user_basket
+  
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h

@@ -121,6 +121,15 @@ resource "Projects" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq @projects.first.id
       end
+
+      example "Get a project with a basket", document: false do
+        project = create(:continuous_budgeting_project)
+        basket = create(:basket, participation_context: project, user: @user)
+        do_request id: project.id
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
+      end
     end
 
     get "web_api/v1/projects/by_slug/:slug" do
