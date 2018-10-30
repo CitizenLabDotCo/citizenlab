@@ -18,6 +18,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :permissions
   
   has_one :action_descriptor
+  has_one :user_basket
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -42,6 +43,10 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
         disabled_reason: taking_survey_disabled_reason
       }
     }
+  end
+
+  def user_basket
+    current_user&.baskets&.find_by participation_context_id: object.id
   end
 
 end
