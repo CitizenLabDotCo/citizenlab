@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181011143305) do
+ActiveRecord::Schema.define(version: 20181022092934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20181011143305) do
   create_table "email_campaigns_campaigns", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type", null: false
     t.uuid "author_id"
-    t.boolean "enabled", default: true
+    t.boolean "enabled"
     t.string "sender"
     t.string "reply_to"
     t.jsonb "schedule", default: {}

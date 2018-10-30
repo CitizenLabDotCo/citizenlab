@@ -262,6 +262,9 @@ GEM
     omniauth (1.8.1)
       hashie (>= 3.4.6, < 3.6.0)
       rack (>= 1.6.2, < 3)
+    omniauth-azure-activedirectory (1.0.0)
+      jwt (~> 1.5)
+      omniauth (~> 1.1)
     omniauth-facebook (4.0.0)
       omniauth-oauth2 (~> 1.2)
     omniauth-google-oauth2 (0.5.3)
@@ -458,6 +461,7 @@ DEPENDENCIES
   mongo (~> 2.5)
   okcomputer
   omniauth
+  omniauth-azure-activedirectory
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-twitter
