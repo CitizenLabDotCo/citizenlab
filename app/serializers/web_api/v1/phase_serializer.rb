@@ -7,5 +7,12 @@ class WebApi::V1::PhaseSerializer < ActiveModel::Serializer
   belongs_to :project
 
   has_many :permissions
+  
+  has_one :user_basket
+
+
+  def user_basket
+    current_user&.baskets&.find_by participation_context_id: object.id
+  end
 
 end
