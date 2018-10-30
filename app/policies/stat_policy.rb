@@ -32,6 +32,10 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def users_by_custom_field?
+    user&.active? && user.admin?
+  end
+
   def ideas_count?
     user&.active? && user.admin?
   end

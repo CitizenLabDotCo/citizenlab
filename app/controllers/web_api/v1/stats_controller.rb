@@ -107,7 +107,7 @@ class WebApi::V1::StatsController < ApplicationController
     end
 
     serie = users
-      .where(created_at: @start_at..@end_at)
+      .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
       .order("custom_field_values->'gender'")
       .count
@@ -124,7 +124,7 @@ class WebApi::V1::StatsController < ApplicationController
     end
 
     serie = users
-      .where(created_at: @start_at..@end_at)
+      .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
       .order("custom_field_values->'birthyear'")
       .count
@@ -141,7 +141,7 @@ class WebApi::V1::StatsController < ApplicationController
     end
 
     serie = users
-      .where(created_at: @start_at..@end_at)
+      .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'domicile'")
       .order("custom_field_values->'domicile'")
       .count
@@ -159,12 +159,55 @@ class WebApi::V1::StatsController < ApplicationController
     end
 
     serie = users
-      .where(created_at: @start_at..@end_at)
+      .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
       .order("custom_field_values->'education'")
       .count
     serie['_blank'] = serie.delete(nil) || 0
     render json: serie
+  end
+
+  def users_by_custom_field
+    users = User.active
+
+    @custom_field = CustomField.find(params[:custom_field_id])
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users = users.merge(group.members)
+    end
+
+    case @custom_field.input_type
+    when 'select'
+      serie = users
+        .where(registration_completed_at: @start_at..@end_at)
+        .group("custom_field_values->'#{@custom_field.key}'")
+        .order("custom_field_values->'#{@custom_field.key}'")
+        .count
+      serie['_blank'] = serie.delete(nil) || 0
+      options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
+      render json: {data: serie, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
+    when 'multiselect'
+      serie = users
+        .joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(custom_field_values->'#{@custom_field.key}') as field_value, id FROM users) as cfv ON users.id = cfv.id")
+        .where(registration_completed_at: @start_at..@end_at)
+        .group("cfv.field_value")
+        .order("cfv.field_value")
+        .count
+      serie['_blank'] = serie.delete(nil) || 0
+      options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
+      render json: {data: serie, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
+    when 'checkbox'
+      serie = users
+        .where(registration_completed_at: @start_at..@end_at)
+        .group("custom_field_values->'#{@custom_field.key}'")
+        .order("custom_field_values->'#{@custom_field.key}'")
+        .count
+      serie['_blank'] = serie.delete(nil) || 0
+      render json:  serie
+    else
+      head :not_implemented
+    end
   end
 
   # # *** ideas ***

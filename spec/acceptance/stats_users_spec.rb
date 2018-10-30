@@ -149,7 +149,7 @@ resource "Stats - Users" do
       end
 
     end
-    
+
     get "web_api/v1/stats/users_by_time_cumulative" do
       time_series_parameters self
       group_filter_parameter self
@@ -475,6 +475,123 @@ resource "Stats - Users" do
           '5': 1,
           _blank: 1,
         })
+      end
+    end
+
+    get "web_api/v1/stats/users_by_custom_field/:custom_field_id" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      describe "with select field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_select)
+          @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          end
+
+          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
+          create(:user, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => @option3.key})
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+          end
+
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (select)" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to match({
+            options: {
+              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
+              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
+            },
+            data: {
+              @option1.key.to_sym => 1,
+              @option2.key.to_sym => 1,
+              _blank: 1
+            }
+          })
+        end
+
+      end
+
+
+      describe "with multiselect field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_multiselect)
+          @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          end
+
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
+          create(:user, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+          end
+
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (multiselect)" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to match({
+            options: {
+              @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
+              @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
+            },
+            data: {
+              @option1.key.to_sym => 2,
+              @option2.key.to_sym => 1,
+              _blank: 1
+            }
+          })
+        end
+      end
+
+      describe "with checkbox field" do
+        before do
+          @group = create(:group)
+          @custom_field = create(:custom_field_checkbox)
+          travel_to(start_at - 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          end
+          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+          create(:user, manual_groups: [@group])
+
+          travel_to(end_at + 1.day) do
+            create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+          end
+        end
+
+        let(:group) { @group.id }
+        let(:custom_field_id) { @custom_field.id }
+
+        example_request "Users by custom field (checkbox)" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to match({
+            true: 1,
+            false: 1,
+            _blank: 1
+          })
+        end
       end
     end
 
