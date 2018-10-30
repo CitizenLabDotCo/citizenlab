@@ -2,7 +2,7 @@ import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { colors, fontSizes } from '../styleUtils';
 
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 const theme = {
   colors,
   fontSizes,
@@ -19,4 +19,13 @@ export const shallowWithTheme = (tree) => {
     .instance()
     .getChildContext();
   return shallow(tree, { context });
+};
+export const mountWithTheme = (tree) => {
+  const context = shallow(<ThemeProvider theme={theme} />)
+    .instance()
+    .getChildContext();
+  return mount(tree, {
+    context,
+    childContextTypes: ThemeProvider.childContextTypes,
+  });
 };
