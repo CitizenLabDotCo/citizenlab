@@ -11,14 +11,14 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // components
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
 import Dropdown from 'components/UI/Dropdown';
-import Button from 'components/UI/Button';
+import PBBasket from './PBBasket';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -152,59 +152,6 @@ const DropdownWrapper = styled.div`
   justify-content: center;
 `;
 
-const DropdownListItemText = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: left;
-`;
-
-const RemoveIcon = styled(Icon)`
-  height: 20px;
-  fill: ${colors.clIconSecondary};
-  cursor: pointer;
-
-  &:hover {
-    fill: ${colors.clRed};
-  }
-`;
-
-const DropdownListItem = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0px;
-  margin-bottom: 4px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 5px;
-  outline: none;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-
-  /*
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus,
-  &.selected {
-    background: ${colors.clDropdownHoverBackground};
-
-    ${DropdownListItemText} {
-      color: #000;
-    }
-  }
-  */
-`;
-
-const ConfirmExpensesButton = styled(Button)`
-  margin: 10px;
-`;
-
 interface InputProps {
   projectSlug: string;
   phaseId?: string | null;
@@ -253,6 +200,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
         const isPBProject = (projectType === 'continuous' && projectMethod === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
         const isPBProjectOrPhase = (isPBProject || isPBPhase);
+        const participationContextId = (phase && isPBPhase ? phase.id : project.id);
 
         return (
           <ProjectNavbarWrapper>
@@ -326,30 +274,11 @@ class ProjectNavbar extends PureComponent<Props, State> {
                           top="-5px"
                           opened={dropdownOpened}
                           onClickOutside={this.toggleExpensesDropdown}
-                          content={(
-                            <>
-                              <DropdownListItem>
-                                <DropdownListItemText>Test</DropdownListItemText>
-                                <RemoveIcon name="remove" />
-                              </DropdownListItem>
-                              <DropdownListItem>
-                                <DropdownListItemText>Test</DropdownListItemText>
-                                <RemoveIcon name="remove" />
-                              </DropdownListItem>
-                            </>
-                          )}
-                          footer={
-                            <ConfirmExpensesButton
-                              className="e2e-dropdown-submit"
-                              style="admin-dark"
-                              icon="submit"
-                              iconPos="right"
-                              onClick={this.confirmExpenses}
-                              fullWidth={true}
-                              disabled={false}
-                            >
-                              <FormattedMessage {...messages.submitMyExpenses} />
-                            </ConfirmExpensesButton>
+                          content={
+                            <PBBasket
+                              participationContextType={isPBPhase ? 'Phase' : 'Project'}
+                              participationContextId={participationContextId}
+                            />
                           }
                         />
                       </DropdownWrapper>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { find, isString, isObject } from 'lodash-es';
@@ -94,7 +94,7 @@ type State = {
   visible: boolean;
 };
 
-class App extends React.PureComponent<Props & WithRouterProps, State> {
+class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
   unlisten: Function;
 

@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/baskets`;
@@ -35,6 +35,10 @@ export interface IBasket {
   data: IBasketData;
 }
 
+export interface IBaskets {
+  data: IBasketData[];
+}
+
 export interface INewBasket {
   user_id: string;
   participation_context_id: string;
@@ -43,8 +47,13 @@ export interface INewBasket {
   submitted_at?: string;
 }
 
-export function basketByIdStream(basketId: string) {
-  return streams.get<IBasket>({ apiEndpoint: `${apiEndpoint}/${basketId}` });
+export function basketsStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IBaskets>({ apiEndpoint, ...streamParams });
+}
+
+export function basketByIdStream(basketId: string, streamParams: IStreamParams | null = null) {
+  console.log(apiEndpoint);
+  return streams.get<IBasket>({ apiEndpoint: `${apiEndpoint}/${basketId}`, ...streamParams });
 }
 
 export function addBasket(object: INewBasket) {
