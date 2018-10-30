@@ -149,6 +149,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
           </Subtitle>
           <SharingWrapper>
             <Sharing
+              location="modal"
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
               emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
