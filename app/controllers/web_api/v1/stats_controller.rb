@@ -342,24 +342,24 @@ class WebApi::V1::StatsController < ApplicationController
 
   def votes_by_time
     serie = @@stats_service.group_by_time(
-      votes_by_resource,
+      votes_by_resource.group(:mode),
       'created_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-    render json: serie
+    render json: double_grouped_by_to_nested_hashes(serie)
   end
 
   def votes_by_time_cumulative
     serie = @@stats_service.group_by_time_cumulative(
-      votes_by_resource,
+      votes_by_resource.group(:mode),
       'created_at',
       @start_at,
       @end_at,
       params[:interval]
     )
-    render json: serie
+    render json: double_grouped_by_to_nested_hashes(serie)
   end
 
   def votes_by_topic
@@ -423,6 +423,18 @@ class WebApi::V1::StatsController < ApplicationController
       votes = votes.where(votable_type: params[:resource])
     end
     votes
+  end
+
+  def double_grouped_by_to_nested_hashes serie
+    response = {
+      "up" => {},
+      "down" => {},
+      "total" => Hash.new{|hash,key| hash[key] = 0}
+    }
+    serie.each_with_object(response) do |((mode, date), count), object|
+      object[mode][date] = count
+      object["total"][date] += count
+    end
   end
 
   def apply_idea_filters ideas, filter_params
