@@ -7,7 +7,7 @@ class WebApi::V1::StatsController < ApplicationController
   # ** users ***
 
   def users_count
-    count = User
+    count = User.active
       .where(registration_completed_at: @start_at..@end_at)
       .active
       .count
@@ -99,8 +99,14 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_gender
-    serie = User
-      .active
+    users = User.active
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users = users.merge(group.members)
+    end
+
+    serie = users
       .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
       .order("custom_field_values->'gender'")
@@ -110,8 +116,14 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_birthyear
-    serie = User
-      .active
+    users = User.active
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users = users.merge(group.members)
+    end
+
+    serie = users
       .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
       .order("custom_field_values->'birthyear'")
@@ -121,8 +133,14 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_domicile
-    serie = User
-      .active
+    users = User.active
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users = users.merge(group.members)
+    end
+
+    serie = users
       .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'domicile'")
       .order("custom_field_values->'domicile'")
@@ -133,8 +151,14 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def users_by_education
-    serie = User
-      .active
+    users = User.active
+
+    if params[:group]
+      group = Group.find(params[:group])
+      users = users.merge(group.members)
+    end
+
+    serie = users
       .where(created_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
       .order("custom_field_values->'education'")

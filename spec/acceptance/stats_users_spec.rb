@@ -30,327 +30,333 @@ resource "Stats - Users" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
+  end
 
-    travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.days) do
-      create(:user)
+  describe "not depending on custom fields" do
+
+    before do
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.days) do
+        create(:user)
+      end
+      
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 10.days) do
+        create(:user)
+        create(:user)
+        create(:admin)
+        create(:user)
+        create(:invited_user)
+      end
+      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 25.days) do
+        create_list(:user, 4)
+      end
+    end
+
+    get "web_api/v1/stats/users_count" do
+      time_boundary_parameters self
+
+      example_request "Count all users" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:count]).to eq User.active.count
+      end
+    end
+
+    get "web_api/v1/stats/users_by_time" do
+      time_series_parameters self
+      group_filter_parameter self
+      topic_filter_parameter self
+      parameter :project, "Project ID. Only return users that can access the given project.", required: false
+
+      context "with time filters only" do
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
+        example_request "Users by time" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 10
+        end
+      end
+
+      context "with project filter" do
+        before do
+          create_list(:admin, 2)
+        end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:project) { create(:private_admins_project).id }
+
+        example_request "Users by time filtered by project" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 4
+        end
+      end
+
+      context "with group filter" do
+        before do
+          @group1 = create(:group)
+          @group2 = create(:group)
+          @user1 = create(:user, manual_groups: [@group1])
+          @user2 = create(:user, manual_groups: [@group2])
+        end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:group) { @group1.id }
+
+        example_request "Users by time filtered by group" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 1
+        end
+      end
+
+      context "with topic filter" do
+        before do
+          @topic1 = create(:topic)
+          @topic2 = create(:topic)
+          @user1 = create(:user)
+          @user2 = create(:user)
+          @idea1 = create(:idea, author: @user1, topics: [@topic1])
+          @idea2 = create(:idea, topics: [@topic2])
+          @idea3 = create(:idea)
+          @comment1 = create(:comment, author: @user2, idea: @idea1)
+          @comment2 = create(:comment, idea: @idea2)
+          create(:vote, votable: @idea1)
+        end
+
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:topic) { @topic1.id }
+
+        example_request "Users by time filtered by topic" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 3
+        end
+      end
+
     end
     
-    travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 10.days) do
-      create(:user)
-      create(:user)
-      create(:admin)
-      create(:user)
-      create(:invited_user)
-    end
-    travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 25.days) do
-      create_list(:user, 4)
-    end
-  end
+    get "web_api/v1/stats/users_by_time_cumulative" do
+      time_series_parameters self
+      group_filter_parameter self
+      topic_filter_parameter self
+      parameter :project, "Project ID. Only return users that can access the given project.", required: false
 
-  get "web_api/v1/stats/users_count" do
-    time_boundary_parameters self
+      context "with time filters only" do
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
 
-    example_request "Count all users" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response[:count]).to eq User.active.count
-    end
-  end
+        example_request "Users by time (cumulative)" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          # monotonically increasing
+          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+          expect(json_response.values.last).to eq 11
+        end
+      end
 
-  get "web_api/v1/stats/users_by_time" do
-    time_series_parameters self
-    group_filter_parameter self
-    topic_filter_parameter self
-    parameter :project, "Project ID. Only return users that can access the given project.", required: false
+      context "with project filter" do
+        before do
+          create_list(:admin, 4)
+        end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:project) { create(:private_admins_project).id }
 
-    context "with time filters only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
+        example_request "Users by time (cumulative) filtered by project" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          # monotonically increasing
+          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+          expect(json_response.values.last).to eq 6
+        end
+      end
 
-      example_request "Users by time" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 10
+      context "with group filter" do
+        before do
+          @group1 = create(:group)
+          @group2 = create(:group)
+          @user1 = create(:user, manual_groups: [@group1])
+          @user2 = create(:user, manual_groups: [@group2])
+        end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:group) { @group1.id }
+
+        example_request "Users by time (cumulative) filtered by group" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          # monotonically increasing
+          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+          expect(json_response.values.last).to eq 1
+        end
+      end
+
+      context "with topic filter" do
+        before do
+          @topic1 = create(:topic)
+          @topic2 = create(:topic)
+          @user1 = create(:user)
+          @user2 = create(:user)
+          @idea1 = create(:idea, author: @user1, topics: [@topic1])
+          @idea2 = create(:idea, topics: [@topic2])
+          @idea3 = create(:idea)
+          @comment1 = create(:comment, author: @user2, idea: @idea1)
+          @comment2 = create(:comment, idea: @idea2)
+          create(:vote, votable: @idea1)
+        end
+
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:topic) { @topic1.id }
+
+        example_request "Users by time (cumulative) filtered by topic" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          # monotonically increasing
+          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+          expect(json_response.values.last).to eq 3
+        end
       end
     end
 
-    context "with project filter" do
-      before do
-        create_list(:admin, 2)
-      end
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:project) { create(:private_admins_project).id }
+    get "web_api/v1/stats/active_users_by_time" do
+      explanation "Active users are that have generated some activity within the given interval window"
+      time_series_parameters self
+      group_filter_parameter self
+      parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
-      example_request "Users by time filtered by project" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 4
-      end
-    end
+      context "with time filters only" do
+        before do
+          travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
+            user = create(:user)
+            create_list(:activity, 2, user: user)
+            create(:activity)
+          end
+          travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
+            create_list(:activity, 2)
+          end
+        end
 
-    context "with group filter" do
-      before do
-        @group1 = create(:group)
-        @group2 = create(:group)
-        @user1 = create(:user, manual_groups: [@group1])
-        @user2 = create(:user, manual_groups: [@group2])
-      end
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:group) { @group1.id }
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
 
-      example_request "Users by time filtered by group" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 1
-      end
-    end
-
-    context "with topic filter" do
-      before do
-        @topic1 = create(:topic)
-        @topic2 = create(:topic)
-        @user1 = create(:user)
-        @user2 = create(:user)
-        @idea1 = create(:idea, author: @user1, topics: [@topic1])
-        @idea2 = create(:idea, topics: [@topic2])
-        @idea3 = create(:idea)
-        @comment1 = create(:comment, author: @user2, idea: @idea1)
-        @comment2 = create(:comment, idea: @idea2)
-        create(:vote, votable: @idea1)
+        example_request "Active users by time" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 4
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:topic) { @topic1.id }
+      context "with project filter" do
+        before do
+          @project = create(:project)
+          @idea1 = create(:idea, project: @project)
+          create(:idea_published_activity, item: @idea1, user: @idea1.author)
+          @idea2 = create(:idea)
+          create(:idea_published_activity, item: @idea2, user: @idea2.author)
+        end
 
-      example_request "Users by time filtered by topic" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 3
-      end
-    end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:project) { @project.id }
 
-  end
-
-  get "web_api/v1/stats/users_by_time_cumulative" do
-    time_series_parameters self
-    group_filter_parameter self
-    topic_filter_parameter self
-    parameter :project, "Project ID. Only return users that can access the given project.", required: false
-
-    context "with time filters only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-
-      example_request "Users by time (cumulative)" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        # monotonically increasing
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 11
-      end
-    end
-
-    context "with project filter" do
-      before do
-        create_list(:admin, 4)
-      end
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:project) { create(:private_admins_project).id }
-
-      example_request "Users by time (cumulative) filtered by project" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        # monotonically increasing
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 6
-      end
-    end
-
-    context "with group filter" do
-      before do
-        @group1 = create(:group)
-        @group2 = create(:group)
-        @user1 = create(:user, manual_groups: [@group1])
-        @user2 = create(:user, manual_groups: [@group2])
-      end
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:group) { @group1.id }
-
-      example_request "Users by time (cumulative) filtered by group" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        # monotonically increasing
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 1
-      end
-    end
-
-    context "with topic filter" do
-      before do
-        @topic1 = create(:topic)
-        @topic2 = create(:topic)
-        @user1 = create(:user)
-        @user2 = create(:user)
-        @idea1 = create(:idea, author: @user1, topics: [@topic1])
-        @idea2 = create(:idea, topics: [@topic2])
-        @idea3 = create(:idea)
-        @comment1 = create(:comment, author: @user2, idea: @idea1)
-        @comment2 = create(:comment, idea: @idea2)
-        create(:vote, votable: @idea1)
+        example_request "Active users by time filtered by project" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 1
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:topic) { @topic1.id }
-
-      example_request "Users by time (cumulative) filtered by topic" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        # monotonically increasing
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 3
-      end
-    end
-  end
-
-  get "web_api/v1/stats/active_users_by_time" do
-    explanation "Active users are that have generated some activity within the given interval window"
-    time_series_parameters self
-    group_filter_parameter self
-    parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
-
-    context "with time filters only" do
-      before do
-        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
-          user = create(:user)
-          create_list(:activity, 2, user: user)
+      context "with group filter" do
+        before do
+          @group1 = create(:group)
+          @group2 = create(:group)
+          @user1 = create(:user, manual_groups: [@group1])
+          @user2 = create(:user, manual_groups: [@group2])
+          create(:activity, user: @user1)
+          create(:activity, user: @user2)
           create(:activity)
         end
-        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
-          create_list(:activity, 2)
+
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:group) { @group1.id }
+
+        example_request "Active users by time filtered by group" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 1
         end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
+      context "with topic filter" do
+        before do
+          @topic1 = create(:topic)
+          @topic2 = create(:topic)
+          @user1 = create(:user)
+          @user2 = create(:user)
+          @idea1 = create(:idea, author: @user1, topics: [@topic1])
+          @idea2 = create(:idea, topics: [@topic2])
+          @idea3 = create(:idea)
+          @comment1 = create(:comment, author: @user2, idea: @idea1)
+          @comment2 = create(:comment, idea: @idea2)
+          create(:vote, votable: @idea1)
+          create(:activity, user: @user1)
+          create(:activity, user: @user2)
+        end
 
-      example_request "Active users by time" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 4
-      end
-    end
+        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        let(:topic) { @topic1.id }
 
-    context "with project filter" do
-      before do
-        @project = create(:project)
-        @idea1 = create(:idea, project: @project)
-        create(:idea_published_activity, item: @idea1, user: @idea1.author)
-        @idea2 = create(:idea)
-        create(:idea_published_activity, item: @idea2, user: @idea2.author)
-      end
-
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:project) { @project.id }
-
-      example_request "Active users by time filtered by project" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 1
-      end
-    end
-
-    context "with group filter" do
-      before do
-        @group1 = create(:group)
-        @group2 = create(:group)
-        @user1 = create(:user, manual_groups: [@group1])
-        @user2 = create(:user, manual_groups: [@group2])
-        create(:activity, user: @user1)
-        create(:activity, user: @user2)
-        create(:activity)
-      end
-
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:group) { @group1.id }
-
-      example_request "Active users by time filtered by group" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 1
-      end
-    end
-
-    context "with topic filter" do
-      before do
-        @topic1 = create(:topic)
-        @topic2 = create(:topic)
-        @user1 = create(:user)
-        @user2 = create(:user)
-        @idea1 = create(:idea, author: @user1, topics: [@topic1])
-        @idea2 = create(:idea, topics: [@topic2])
-        @idea3 = create(:idea)
-        @comment1 = create(:comment, author: @user2, idea: @idea1)
-        @comment2 = create(:comment, idea: @idea2)
-        create(:vote, votable: @idea1)
-        create(:activity, user: @user1)
-        create(:activity, user: @user2)
-      end
-
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-      let(:interval) { 'day' }
-      let(:topic) { @topic1.id }
-
-      example_request "Active users by time filtered by topic" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 2
+        example_request "Active users by time filtered by topic" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 2
+        end
       end
     end
   end
+
 
   describe "depending on custom fields" do
 
@@ -358,65 +364,117 @@ resource "Stats - Users" do
       # we need the built in custom fields first, so lets run the base tenant template
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
-      create(:user, gender: nil)
-      create(:user, gender: 'male')
-      create(:admin, gender: 'female')
-      create(:user, gender: 'unspecified')
-      create_list(:user_with_demographics, 4)
+      travel_to(start_at - 1.day) { create(:user) }
+      travel_to(end_at + 1.day) { create(:user) }
     end
+
+    let (:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+    let (:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
 
     get "web_api/v1/stats/users_by_gender" do
       time_boundary_parameters self
+      group_filter_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      before do
+        create_list(:user, 2, gender: 'female')
+        create(:user, gender: 'unspecified')
+        @group = create(:group)
+        User.all.each{|u| create(:membership, user: u, group: @group)}
+        create(:user)
+      end
+
+      let(:group) { @group.id }
 
       example_request "Users by gender" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.stringify_keys.keys.uniq).to match_array ['male','female','unspecified','_blank']
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response).to match({
+          female: 2,
+          unspecified: 1,
+          _blank: 1,
+        })
       end
     end
 
     get "web_api/v1/stats/users_by_birthyear" do
       time_boundary_parameters self
+      group_filter_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      before do
+        create_list(:user, 2, birthyear: 1980)
+        create(:user, birthyear: 1976)
+        @group = create(:group)
+        User.all.each{|u| create(:membership, user: u, group: @group)}
+        create(:user, birthyear: 1980)
+      end
+
+      let(:group) { @group.id }
 
       example_request "Users by birthyear" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response).to match({
+          '1980': 2,
+          '1976': 1,
+          _blank: 1,
+        })
       end
     end
 
     get "web_api/v1/stats/users_by_domicile" do
       time_boundary_parameters self
+      group_filter_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      before do
+        @area1, @area2, @area3 = create_list(:area, 3)
+        create_list(:user, 2, domicile: @area1.id)
+        create(:user, domicile: @area2.id)
+        @group = create(:group)
+        User.all.each{|u| create(:membership, user: u, group: @group)}
+        create(:user, birthyear: 1980)
+      end
+
+      let(:group) { @group.id }
 
       example_request "Users by domicile" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+        expect(json_response).to match({
+          :areas => {
+            @area1.id.to_sym => { title_multiloc: @area1.title_multiloc.symbolize_keys },
+            @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys }
+          },
+          :data => {
+            @area1.id.to_sym => 2,
+            @area2.id.to_sym  => 1,
+            _blank: 1
+          }
+        })
       end
     end
 
     get "web_api/v1/stats/users_by_education" do
       time_boundary_parameters self
+      group_filter_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      before do
+        create_list(:user, 2, education: '3')
+        create(:user, education: '5')
+        @group = create(:group)
+        User.all.each{|u| create(:membership, user: u, group: @group)}
+        create(:user, education: '3')
+      end
+
+      let(:group) { @group.id }
 
       example_request "Users by education" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        allowed_keys = ['0','1','2','3','4','5','6','7','8','_blank']
-        expect(json_response.stringify_keys.keys.uniq - allowed_keys).to be_empty
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response).to match({
+          '3': 2,
+          '5': 1,
+          _blank: 1,
+        })
       end
     end
 
