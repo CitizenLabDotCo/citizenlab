@@ -2,6 +2,11 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
+import { adopt } from 'react-adopt';
+import localize, { InjectedLocalized } from 'utils/localize';
+
+// resources
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
 import {
@@ -23,23 +28,31 @@ import ChartFilters from '../components/ChartFilters';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// typings
+import { IOption } from 'typings';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
 interface State {
   interval: 'weeks' | 'months' | 'years';
   intervalIndex: number;
-  currentGroupFilter?: string;
+  currentGroupFilter: string | null;
 }
 
-type Props = {
+interface DataProps {
+  groups: GetGroupsChildProps;
+}
 
-};
+interface Props extends DataProps {}
 
-export default class UsersDashboard extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
+  constructor(props: Props & InjectedLocalized) {
     super(props);
     this.state = {
       interval: 'months',
       intervalIndex: 0,
-      currentGroupFilter: undefined
+      currentGroupFilter: null
     };
   }
 
@@ -52,8 +65,28 @@ export default class UsersDashboard extends PureComponent<Props, State> {
   }
 
   handleOnGroupFilter = (filter) => {
-    // To be implemented
-    this.setState({ currentGroupFilter: filter });
+    this.setState({ currentGroupFilter: filter.value });
+  }
+
+  generateGroupFilterOptions = () => {
+    const {
+      groups,
+      groups: { groupsList },
+      localize } = this.props;
+
+    let filterOptions: IOption[] = [];
+
+    if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
+      filterOptions = groupsList.map((group) => (
+        {
+          value: group.id,
+          label: localize(group.attributes.title_multiloc)
+        }
+      ));
+    }
+
+    filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
+    return filterOptions;
   }
 
   render() {
@@ -85,13 +118,19 @@ export default class UsersDashboard extends PureComponent<Props, State> {
             showTopicFilter: false
           }}
           filters={{
-            currentGroupFilter
+            currentGroupFilter,
+            currentProjectFilter: null,
+            currentTopicFilter: null
           }}
           filterOptions={{
-            groupFilterOptions: this.generateFilterOptions('group'),
+            projectFilterOptions: null,
+            groupFilterOptions: this.generateGroupFilterOptions(),
+            topicFilterOptions: null,
           }}
           onFilter={{
+            onProjectFilter: null,
             onGroupFilter: this.handleOnGroupFilter,
+            onTopicFilter: null,
           }}
         />
 
@@ -121,3 +160,15 @@ export default class UsersDashboard extends PureComponent<Props, State> {
     );
   }
 }
+
+const Data = adopt<DataProps, {}>({
+  groups: <GetGroups />
+});
+
+const UsersDashBoardWithHOCs = localize<Props>(UsersDashboard);
+
+export default () => (
+  <Data>
+    {dataProps => <UsersDashBoardWithHOCs {...dataProps} />}
+  </Data>
+);

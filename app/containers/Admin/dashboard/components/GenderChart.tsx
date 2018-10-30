@@ -17,7 +17,7 @@ type State = {
 type Props = {
   startAt: string,
   endAt: string,
-  currentGroupFilter?: string
+  currentGroupFilter: string | null
 };
 
 const labelColors = {
@@ -71,7 +71,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
-        // current-group_filter: currentGroupFilter TODO
+        group: currentGroupFilter
       },
     }).observable.subscribe((serie) => {
       this.setState({ serie: this.convertToGraphFormat(serie) });
