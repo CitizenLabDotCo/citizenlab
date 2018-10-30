@@ -125,6 +125,7 @@ Rails.application.routes.draw do
         get 'users_by_birthyear'
         get 'users_by_domicile'
         get 'users_by_education'
+        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field
         get 'ideas_count'
         get 'ideas_by_time'
         get 'ideas_by_time_cumulative'
