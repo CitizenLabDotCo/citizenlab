@@ -191,8 +191,6 @@ class ProjectCard extends PureComponent<Props, State> {
     const { permission } = this.props;
     const disabledMessage = this.disabledMessage();
 
-    console.log(this.props);
-
     if (disabledMessage && permission) {
       return 'enabledBecauseAdmin';
     } else if (disabledMessage) {

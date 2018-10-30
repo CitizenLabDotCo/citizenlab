@@ -24,7 +24,7 @@ import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // services
-import { addBasket, updateBasket } from 'services/baskets';
+import { addBasket, updateBasket, basketsStream, basketByIdStream } from 'services/baskets';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -265,7 +265,31 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    // updateBasket()
+    // updateBasket('75429323-3768-4746-af87-f4bc738aeb00', {
+    //   user_id: '9316ce5c-2342-41c2-ac83-49d152007b1b',
+    //   participation_context_id: '7872c6e8-d020-4bc9-9be1-fdee49da6173',
+    //   participation_context_type: 'Phase',
+    //   idea_ids: ['6129f478-e17c-44b2-ab10-8aa5c95a43e5', '0bc6b154-9f80-4e4e-929b-76f3ff548c0f']
+    // }).then((response) => {
+    //   console.log('succes');
+    //   console.log(response);
+    // }).catch((error) => {
+    //   console.log('error');
+    //   console.log(error);
+    // });
+
+    // addBasket({
+    //   user_id: '9316ce5c-2342-41c2-ac83-49d152007b1b',
+    //   participation_context_id: '7872c6e8-d020-4bc9-9be1-fdee49da6173',
+    //   participation_context_type: 'Phase',
+    //   idea_ids: ['6129f478-e17c-44b2-ab10-8aa5c95a43e5']
+    // }).then((response) => {
+    //   console.log('succes');
+    //   console.log(response);
+    // }).catch((error) => {
+    //   console.log('error');
+    //   console.log(error);
+    // });
   }
 
   render() {
@@ -283,8 +307,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const hasBudget = !!idea.attributes.budget;
       const currentPageIsProjectPage = includes(pathname, '/projects/');
       let ideaBudget: JSX.Element | null = null;
-
-      console.log(idea);
 
       if (idea.attributes.budget && currentPageIsProjectPage) {
         const currency = tenant.attributes.settings.core.currency;
