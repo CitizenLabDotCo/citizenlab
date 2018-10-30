@@ -38,7 +38,7 @@ return (
                 {...messages.acceptTermsAndConditions}
                 values={{
                   loginMechanismName,
-                  tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                  tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
                 }}
               />
             }
