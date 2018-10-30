@@ -11,10 +11,18 @@ class StatsService
   def group_by_time_cumulative resource, field, start_at, end_at, interval
     serie = group_by_time(resource, field, start_at, end_at, interval)
     count_at_start_at = resource.where("#{field} < ?", start_at).count
-    serie.inject(count_at_start_at) do |total, (date, count)|
-      new_total = count + total
-      serie[date] = new_total
-      new_total
+    # When the given resource scope is a GROUP BY query
+    if count_at_start_at.kind_of? Hash
+      serie.inject(count_at_start_at) do |totals, (group, count)|
+        totals[group.first] = 0 unless totals[group.first]
+        totals[group.first] += count
+        serie[group] = totals[group.first]
+        totals
+      end
+    else # When the given reource scope is a normal query
+      serie.inject(count_at_start_at) do |total, (date, count)|
+        serie[date] = count + total
+      end
     end
     serie
   end

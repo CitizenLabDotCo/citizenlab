@@ -240,9 +240,9 @@ resource "Stats - Votes" do
       example_request "Votes by time" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.size).to eq 7
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 8
+        expect(json_response[:up].values.inject(&:+)).to eq 6
+        expect(json_response[:down].values.inject(&:+)).to eq 2
+        expect(json_response[:total].values.inject(&:+)).to eq 8
       end
     end
 
@@ -253,14 +253,14 @@ resource "Stats - Votes" do
       let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
+      let!(:vote_before) { travel_to(Time.now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
 
       example_request "Votes by time (cumulative)" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.size).to eq 7
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 8
+        expect(json_response[:up].values.last).to eq 7
+        expect(json_response[:down].values.last).to eq 2
+        expect(json_response[:total].values.last).to eq 9
       end
     end
   end
