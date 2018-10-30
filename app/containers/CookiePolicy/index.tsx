@@ -194,7 +194,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
                 {...messages.changePreferences}
                 values={{
                   changePreferencesButton: (
-                    <StyledButton onClick={openConsentManager}>
+                    <StyledButton onClick={openConsentManager} className="cookiePreferences" >
                       <FormattedMessage {...messages.changePreferencesButtonText} />
                     </StyledButton>
                   )
@@ -267,7 +267,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
                 {...messages.cookiesList}
                 values={{
                   cookiesListButton: (
-                    <StyledButton onClick={openConsentManager}>
+                    <StyledButton onClick={openConsentManager} className="cookieList" >
                       {formatMessage(messages.cookiesListButtonText)}
                     </StyledButton>
                   )
