@@ -127,6 +127,8 @@ export const chartTheme = (theme) => {
   return {
     ...theme,
     chartStroke: colors.clIconAccent,
+    chartStrokeGreen: colors.clGreen,
+    chartStrokeRed: colors.clRed,
     chartFill: colors.clIconAccent,
     barFill: colors.adminContentBackground,
     chartLabelColor: colors.adminSecondaryTextColor,
