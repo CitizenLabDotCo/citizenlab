@@ -118,9 +118,7 @@ export const GraphCardFigure = styled.span`
   margin-right: 5px;
 `;
 
-export const GraphCardFigureChange = styled.span`
-  color: ${colors.clGreenSuccess}
-`;
+export const GraphCardFigureChange = styled.span``;
 
 interface Props {
   authUser: GetAuthUserChildProps;
