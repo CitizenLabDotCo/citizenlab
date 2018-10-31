@@ -111,6 +111,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.resourceByProjectDifference',
     defaultMessage: '{resourceName} difference with {project}',
   },
+  selectedProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedProject',
+    defaultMessage: 'current project filter',
+  },
+  selectedTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
+    defaultMessage: 'current topic filter',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',

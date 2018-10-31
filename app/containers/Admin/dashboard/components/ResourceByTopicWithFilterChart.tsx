@@ -12,7 +12,7 @@ import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
 
 import { IResource } from '../summary';
-import { IGraphFormat } from 'typings';
+import { IGraphFormat, IOption } from 'typings';
 
 interface Props {
   startAt: string;
@@ -20,6 +20,7 @@ interface Props {
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
+  topicOptions: IOption[];
   selectedResource: IResource;
 }
 
@@ -149,15 +150,22 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
 
   filterByTopic = (serie: IGraphFormat | null) => {
     if (serie) {
-      const { currentTopicFilter } = this.props;
+      const { currentTopicFilter, topicOptions, intl: { formatMessage } } = this.props;
       const selectedTopic = serie.find(item => item.code === currentTopicFilter);
       const selectedTopicCount = selectedTopic ? selectedTopic.value : 0;
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedTopicCount, ...rest };
       }).filter(item => item.code !== currentTopicFilter);
+      let topicName;
+      if (selectedTopic) {
+        topicName = selectedTopic.name;
+      } else {
+        const foundOption = topicOptions.find(option => option.value === currentTopicFilter);
+        topicName = foundOption ? foundOption.label : formatMessage(messages.selectedTopic);
+      }
       filteredSerie.unshift({
-        name: selectedTopic ? selectedTopic.name : 'selected topic',
+        name: topicName,
         value: 0,
         code: currentTopicFilter,
       });

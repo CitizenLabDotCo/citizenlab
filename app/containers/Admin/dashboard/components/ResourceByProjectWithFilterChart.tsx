@@ -1,7 +1,5 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
@@ -10,12 +8,12 @@ import { withTheme } from 'styled-components';
 
 // components
 import EmptyGraph from './EmptyGraph';
+
+// resources
+import GetResourcesByProject from './GetResourcesByProject';
 import {
-  ideasByProjectStream,
   IIdeasByProject,
-  commentsByProjectStream,
   ICommentsByProject,
-  votesByProjectStream,
   IVotesByProject
 } from 'services/stats';
 
@@ -25,17 +23,23 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
-// typing
+// typings
+import { IOption } from 'typings';
 import { IResource } from '../summary';
 
-interface Props {
+interface DataProps {
+  serie: IIdeasByProject | ICommentsByProject | IVotesByProject | null;
+}
+interface InputProps {
   startAt: string;
   endAt: string;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
+  projectOptions: IOption[];
   selectedResource: IResource;
 }
+interface Props extends InputProps, DataProps { }
 
 type IGraphFormat = {
   name: any,
@@ -48,107 +52,38 @@ interface State {
 }
 
 class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  startAt$: BehaviorSubject<string | null>;
-  endAt$: BehaviorSubject<string | null>;
-  currentGroupFilter$: BehaviorSubject<string | null>;
-  currentTopicFilter$: BehaviorSubject<string | null>;
-  currentProjectFilter$: BehaviorSubject<string | null>;
-  selectedResource$: BehaviorSubject<IResource | null>;
-  subscriptions: Subscription[];
-
   constructor(props) {
     super(props);
     this.state = {
       serie: null,
     };
-    this.subscriptions = [];
-    this.startAt$ = new BehaviorSubject(null);
-    this.endAt$ = new BehaviorSubject(null);
-    this.selectedResource$ = new BehaviorSubject(null);
-    this.currentGroupFilter$ = new BehaviorSubject(null);
-    this.currentTopicFilter$ = new BehaviorSubject(null);
-    this.currentProjectFilter$ = new BehaviorSubject(null);
-  }
-
-  componentDidMount() {
-    this.startAt$.next(this.props.startAt);
-    this.endAt$.next(this.props.endAt);
-    this.selectedResource$.next(this.props.selectedResource);
-    this.currentGroupFilter$.next(this.props.currentGroupFilter);
-    this.currentTopicFilter$.next(this.props.currentTopicFilter);
-    this.currentProjectFilter$.next(this.props.currentProjectFilter);
-
-    this.subscriptions = [
-      combineLatest(
-        this.startAt$.pipe(
-          filter(startAt => startAt !== null)
-        ),
-        this.endAt$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.selectedResource$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentGroupFilter$,
-        this.currentProjectFilter$,
-        this.currentTopicFilter$
-      ).pipe(
-        switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentTopicFilter]) => {
-          const queryParameters = {
-            startAt,
-            endAt,
-            // TODO group: currentGroupFilter,
-            // TODO topic: currentTopicFilter,
-          };
-          if (selectedResource === 'Ideas') {
-            return ideasByProjectStream({
-              queryParameters
-            }).observable;
-          } else if (selectedResource === 'Comments') {
-            return commentsByProjectStream({
-              queryParameters
-            }).observable;
-          } else {
-            return votesByProjectStream({
-              queryParameters
-            }).observable;
-          }
-        })
-      ).subscribe((serie) => {
-        const convertedSerie = this.convertToGraphFormat(serie);
-        if (this.props.currentProjectFilter) {
-          this.setState({ serie: this.filterByProject(convertedSerie) });
-        } else { this.setState({ serie: convertedSerie }); }
-      })
-    ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt) {
-      this.startAt$.next(this.props.startAt);
+    if (this.props.serie) {
+      if (this.props.serie !== prevProps.serie) {
+        if (this.props.currentProjectFilter) {
+          this.setState({
+            serie: this.filterByProject(this.convertToGraphFormat(this.props.serie))
+          });
+        } else {
+          this.setState({
+            serie: this.convertToGraphFormat(this.props.serie)
+          });
+        }
+      }
+      if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
+        if (this.props.currentProjectFilter) {
+          this.setState({
+            serie: this.filterByProject(this.convertToGraphFormat(this.props.serie))
+          });
+        } else {
+          this.setState({
+            serie: this.convertToGraphFormat(this.props.serie)
+          });
+        }
+      }
     }
-
-    if (this.props.endAt !== prevProps.endAt) {
-      this.endAt$.next(this.props.endAt);
-    }
-    if (this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
-      this.currentGroupFilter$.next(this.props.currentGroupFilter);
-    }
-
-    if (this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
-      this.currentTopicFilter$.next(this.props.currentTopicFilter);
-    }
-    if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.currentProjectFilter$.next(this.props.currentProjectFilter);
-    }
-
-    if (this.props.selectedResource !== prevProps.selectedResource) {
-      this.selectedResource$.next(this.props.selectedResource);
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   convertToGraphFormat = (serie: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
@@ -169,15 +104,22 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
 
   filterByProject = (serie: IGraphFormat | null) => {
     if (serie) {
-      const { currentProjectFilter } = this.props;
+      const { currentProjectFilter, projectOptions, intl: { formatMessage } } = this.props;
       const selectedProject = serie.find(item => item.code === currentProjectFilter);
       const selectedProjectCount = selectedProject ? selectedProject.value : 0;
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedProjectCount, ...rest };
       }).filter(item => item.code !== currentProjectFilter);
+      let projectName;
+      if (selectedProject) {
+        projectName = selectedProject.name;
+      } else {
+        const foundOption = projectOptions.find(option => option.value === currentProjectFilter);
+        projectName = foundOption ? foundOption.label : formatMessage(messages.selectedProject);
+      }
       filteredSerie.unshift({
-        name: selectedProject ? selectedProject.name : 'selected project',
+        name: projectName,
         value: 0,
         code: currentProjectFilter,
       });
@@ -188,13 +130,13 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
   }
 
   render() {
-    const theme = this.props['theme'];
     const { serie } = this.state;
     const { selectedResource, intl: { formatMessage }, currentProjectFilter } = this.props;
     if (!serie || serie.every(item => item.value === 0)) {
       return (<EmptyGraph unit={selectedResource} />);
 
     } else {
+      const theme = this.props['theme'];
       const unitName = currentProjectFilter
         ? formatMessage(messages.resourceByProjectDifference, {
           resourceName: formatMessage(messages[selectedResource]),
@@ -233,4 +175,10 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByProjectWithFilterChart as any) as any));
+const ResourceByProjectWithFilterChartHoc = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByProjectWithFilterChart as any) as any));
+
+export default (inputProps: InputProps) => (
+  <GetResourcesByProject {...inputProps}>
+    {serie => <ResourceByProjectWithFilterChartHoc {...inputProps} {...serie} />}
+  </GetResourcesByProject>
+);
