@@ -1,13 +1,16 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash-es';
-import { injectIntl } from 'utils/cl-intl';
+import { map, isNumber } from 'lodash-es';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByTimeCumulativeStream } from 'services/stats';
 import messages from '../messages';
+
+// components
 import EmptyGraph from './EmptyGraph';
+import { GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../';
 
 type State = {
   serie: {
@@ -115,43 +118,69 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     });
   }
 
+  formatSerieChange = (serieChange: number) => {
+    if (serieChange > 0) {
+      return `(+${serieChange.toString()})`;
+    } else if (serieChange < 0) {
+      return `(${serieChange.toString()})`;
+    }
+    return null;
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
+    const firstSerieValue = serie && serie[0].value;
+    const lastSerieValue = serie && serie[serie.length - 1].value;
+    const serieChange = firstSerieValue && lastSerieValue && (lastSerieValue - firstSerieValue);
+    const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
     if (!isEmpty) {
       return (
-        <ResponsiveContainer>
-          <AreaChart data={serie}>
-            <Area
-              type="monotone"
-              dataKey="value"
-              name={formatMessage(messages.numberOfUers)}
-              dot={false}
-              fill={chartFill}
-              fillOpacity={1}
-              stroke={chartStroke}
-            />
-            <XAxis
-              dataKey="name"
-              interval="preserveStartEnd"
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-              tick={{ transform: 'translate(0, 7)' }}
-              tickFormatter={this.formatTick}
-            />
-            <YAxis
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-            />
-            <Tooltip
-              isAnimationActive={false}
-              labelFormatter={this.formatLabel}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <GraphCardInner>
+          <GraphCardTitle>
+            <FormattedMessage {...messages.registeredUsersByTimeTitle} />
+            <GraphCardFigureContainer>
+              <GraphCardFigure>
+                {lastSerieValue}
+              </GraphCardFigure>
+              <GraphCardFigureChange>
+                {formattedSerieChange}
+              </GraphCardFigureChange>
+            </GraphCardFigureContainer>
+          </GraphCardTitle>
+          <ResponsiveContainer>
+            <AreaChart data={serie}>
+              <Area
+                type="monotone"
+                dataKey="value"
+                name={formatMessage(messages.numberOfUers)}
+                dot={false}
+                fill={chartFill}
+                fillOpacity={1}
+                stroke={chartStroke}
+              />
+              <XAxis
+                dataKey="name"
+                interval="preserveStartEnd"
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+                tick={{ transform: 'translate(0, 7)' }}
+                tickFormatter={this.formatTick}
+              />
+              <YAxis
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+              />
+              <Tooltip
+                isAnimationActive={false}
+                labelFormatter={this.formatLabel}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </GraphCardInner>
       );
     } else {
       return (
