@@ -52,7 +52,6 @@ export function basketsStream(streamParams: IStreamParams | null = null) {
 }
 
 export function basketByIdStream(basketId: string, streamParams: IStreamParams | null = null) {
-  console.log(apiEndpoint);
   return streams.get<IBasket>({ apiEndpoint: `${apiEndpoint}/${basketId}`, ...streamParams });
 }
 

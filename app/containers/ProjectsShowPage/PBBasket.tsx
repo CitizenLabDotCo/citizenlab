@@ -1,11 +1,14 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// services
+import { addBasket, updateBasket, basketsStream, basketByIdStream } from 'services/baskets';
+
 // resources
-// import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-// import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
+import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -14,10 +17,14 @@ import styled from 'styled-components';
 // components
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
+import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// typings
+import { IIdeaData } from 'services/ideas';
 
 const Container = styled.div``;
 
@@ -27,6 +34,14 @@ const DropdownListItemText = styled.div`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
+`;
+
+const RemoveIconWrapper = styled.div`
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const RemoveIcon = styled(Icon)`
@@ -63,13 +78,14 @@ const ConfirmExpensesButton = styled(Button)`
 interface InputProps {
   participationContextId: string;
   participationContextType: 'Project' | 'Phase';
+  basketId: string | null;
   className?: string;
 }
 
 interface DataProps {
-  // project: GetProjectChildProps;
-  // phase: GetPhaseChildProps;
+  authUser: GetAuthUserChildProps;
   basket: GetBasketChildProps;
+  ideaList: GetIdeaListChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -77,27 +93,51 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class PBBasket extends PureComponent<Props, State> {
+  removeIdeaFromBasket = (ideaIdToRemove: string) => (event: FormEvent<any>) => {
+    event.preventDefault();
+
+    const { authUser, basket, participationContextId, participationContextType } = this.props;
+
+    if (!isNilOrError(basket) && !isNilOrError(authUser)) {
+      const newIdeas = basket.relationships.ideas.data.filter(idea => idea.id !== ideaIdToRemove).map(idea => idea.id);
+
+      updateBasket(basket.id, {
+        user_id: authUser.id,
+        participation_context_id: participationContextId,
+        participation_context_type: participationContextType,
+        idea_ids: newIdeas
+      }).then((response) => {
+        console.log('removeIdeaFromBasket succes');
+        console.log(response);
+      }).catch((error) => {
+        console.log('removeIdeaFromBasket error');
+        console.log(error);
+      });
+    }
+  }
+
   confirmExpenses = () => {
 
   }
 
   render() {
-    const { basket, className } = this.props;
+    const { basket, ideaList, className } = this.props;
 
     if (!isNilOrError(basket)) {
-
-      console.log(basket);
+      const ideas = (!isNilOrError(ideaList) ? ideaList.filter(idea => !isNilOrError(idea)) as IIdeaData[] : null);
 
       return (
         <Container className={className}>
-          <DropdownListItem>
-            <DropdownListItemText>Test</DropdownListItemText>
-            <RemoveIcon name="remove" />
-          </DropdownListItem>
-          <DropdownListItem>
-            <DropdownListItemText>Test</DropdownListItemText>
-            <RemoveIcon name="remove" />
-          </DropdownListItem>
+          {ideas && ideas.length > 0 && ideas.map((idea) => (
+            <DropdownListItem key={idea.id}>
+              <DropdownListItemText>
+                <T value={idea.attributes.title_multiloc} />
+              </DropdownListItemText>
+              <RemoveIconWrapper onClick={this.removeIdeaFromBasket(idea.id)}>
+                <RemoveIcon name="remove" />
+              </RemoveIconWrapper>
+            </DropdownListItem>
+          ))}
           <ConfirmExpensesButton
             className="e2e-dropdown-submit"
             style="admin-dark"
@@ -118,9 +158,9 @@ class PBBasket extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  // project: ({ participationContextId, participationContextType, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  // phase: ({ participationContextId, participationContextType, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
-  basket: ({ participationContextId, render }) => <GetBasket id={participationContextId}>{render}</GetBasket>
+  authUser: <GetAuthUser />,
+  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>,
+  ideaList: ({ basket, render }) => <GetIdeaList ids={!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : null} >{render}</GetIdeaList>
 });
 
 export default (inputProps: InputProps) => (

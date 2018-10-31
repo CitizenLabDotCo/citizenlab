@@ -14,7 +14,7 @@ import styled from 'styled-components';
 const Container = styled.div``;
 
 const StyledIdeaCards = styled(IdeaCards)`
-  &.pbIdeas {
+  &.budgeting {
     margin-top: 200px;
   }
 `;
@@ -40,16 +40,26 @@ class PhaseIdeas extends PureComponent<Props, State> {
       const participationMethod = phase.attributes.participation_method;
 
       if ((participationMethod === 'ideation' || participationMethod === 'budgeting')) {
+        let basketId: string | null = null;
+
+        if (participationMethod === 'budgeting' && phase.relationships.user_basket.data) {
+          basketId = phase.relationships.user_basket.data.id;
+        }
+
         return (
           <Container className={className}>
             <StyledIdeaCards
-              className={participationMethod === 'budgeting' ? 'pbIdeas' : ''}
+              className={participationMethod}
               type="load-more"
               sort={'trending'}
               pageSize={12}
               phaseId={phase.id}
               showViewToggle={true}
               defaultView={phase.attributes.presentation_mode}
+              participationMethod={participationMethod}
+              participationContextId={phase.id}
+              participationContextType="Phase"
+              basketId={basketId}
             />
           </Container>
         );

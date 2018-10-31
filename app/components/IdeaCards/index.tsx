@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -27,6 +27,9 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { ParticipationMethod } from 'services/participationContexts';
 
 const Container = styled.div`
   width: 100%;
@@ -244,17 +247,21 @@ const LoadMoreButton = styled(Button)``;
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: 'Phase' | 'Project' | null;
+  basketId?: string | null;
   className?: string;
 }
 
 interface Props extends InputProps, GetIdeasChildProps {}
 
-type State = {
+interface State {
   selectedView: 'card' | 'map';
-};
+}
 
-class IdeaCards extends React.PureComponent<Props, State> {
-  constructor(props) {
+class IdeaCards extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card')
@@ -292,7 +299,19 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   render() {
     const { selectedView } = this.state;
-    const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore, className } = this.props;
+    const {
+      queryParameters,
+      searchValue,
+      ideasList,
+      hasMore,
+      querying,
+      loadingMore,
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      basketId,
+      className
+    } = this.props;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
@@ -352,7 +371,14 @@ class IdeaCards extends React.PureComponent<Props, State> {
         {showCardView && !querying && hasIdeas && ideasList &&
           <IdeasList id="e2e-ideas-list">
             {ideasList.map((idea) => (
-              <StyledIdeaCard ideaId={idea.id} key={idea.id} />
+              <StyledIdeaCard
+                key={idea.id}
+                ideaId={idea.id}
+                participationMethod={participationMethod}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+                basketId={basketId}
+              />
             ))}
           </IdeasList>
         }

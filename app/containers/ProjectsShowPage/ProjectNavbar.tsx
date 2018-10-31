@@ -24,6 +24,10 @@ import PBBasket from './PBBasket';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// typings
+import { ParticipationMethod } from 'services/participationContexts';
+import { IPhaseData } from 'services/phases';
+
 const ProjectNavbarWrapper = styled.nav`
   background-color: #002332;
   color: #fff;
@@ -197,10 +201,32 @@ class ProjectNavbar extends PureComponent<Props, State> {
       if (project) {
         const projectType = project.attributes.process_type;
         const projectMethod = project.attributes.participation_method;
-        const isPBProject = (projectType === 'continuous' && projectMethod === 'budgeting');
+        const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
-        const isPBProjectOrPhase = (isPBProject || isPBPhase);
-        const participationContextId = (phase && isPBPhase ? phase.id : project.id);
+
+        let participationContextType: 'Project' | 'Phase' | null = null;
+
+        if (isPBProject) {
+          participationContextType = 'Project';
+        } else if (isPBPhase) {
+          participationContextType = 'Phase';
+        }
+
+        let participationContextId: string | null = null;
+
+        if (isPBProject) {
+          participationContextId = project.id;
+        } else if (isPBPhase && phase) {
+          participationContextId = phase.id;
+        }
+
+        let basketId: string | null = null;
+
+        if (isPBProject && project.relationships.user_basket.data) {
+          basketId = project.relationships.user_basket.data.id;
+        } else if (isPBPhase && phase && phase.relationships.user_basket.data) {
+          basketId = phase.relationships.user_basket.data.id;
+        }
 
         return (
           <ProjectNavbarWrapper>
@@ -260,7 +286,8 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   </ProjectNavbarLink>
                 }
 
-                {isPBProjectOrPhase &&
+                {/* PB basket button */}
+                {participationContextType && participationContextId &&
                   <>
                     <Spacer/>
                     <ManageBudgetWrapper>
@@ -276,8 +303,9 @@ class ProjectNavbar extends PureComponent<Props, State> {
                           onClickOutside={this.toggleExpensesDropdown}
                           content={
                             <PBBasket
-                              participationContextType={isPBPhase ? 'Phase' : 'Project'}
+                              participationContextType={participationContextType}
                               participationContextId={participationContextId}
+                              basketId={basketId}
                             />
                           }
                         />
