@@ -119,10 +119,27 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   calculateSerieChange = (firstSerieValue: number, lastSerieValue: number) => {
-    const serieChange = true ?
-      (100 * (lastSerieValue - 1) / 1) : null;
+    let serieChange: number | null = null;
+
+    if (firstSerieValue > 0) {
+      serieChange = (100 * (lastSerieValue - firstSerieValue) / firstSerieValue);
+    }
 
     return serieChange;
+  }
+
+  formatSerieChange = (serieChange: number) => {
+    let formattedSerieChange: string;
+
+    if (serieChange > 0) {
+      formattedSerieChange = `(+${serieChange.toString()}%)`;
+    } else if (serieChange < 0) {
+      formattedSerieChange = `(-${serieChange.toString()}}%)`;
+    } else {
+      formattedSerieChange = '(-)';
+    }
+
+    return formattedSerieChange;
   }
 
   render() {
@@ -133,8 +150,8 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     const firstSerieValue = serie && serie[0].value;
     const lastSerieValue = serie && serie[serie.length - 1].value;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && this.calculateSerieChange(firstSerieValue, lastSerieValue);
+    const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
-    console.log(serieChange);
     if (!isEmpty) {
       return (
         <GraphCardInner>
@@ -145,7 +162,7 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
                 {lastSerieValue}
               </GraphCardFigure>
               <GraphCardFigureChange>
-              {`&lpar;${serieChange}&percnt;&rpar;`}
+               {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardTitle>
