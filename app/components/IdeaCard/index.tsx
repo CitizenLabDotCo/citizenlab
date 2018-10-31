@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get, includes } from 'lodash-es';
+import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
@@ -19,12 +19,14 @@ import Button from 'components/UI/Button';
 import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 
 // services
-import { addBasket, updateBasket, basketsStream, basketByIdStream } from 'services/baskets';
+import { addBasket, updateBasket } from 'services/baskets';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -42,6 +44,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
+import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
   color: #FC3C2D;
@@ -202,15 +205,21 @@ const VotingDisabledWrapper = styled.div`
 
 export interface InputProps {
   ideaId: string;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: 'Phase' | 'Project' | null;
+  basketId?: string | null;
 }
 
 interface DataProps {
   location: GetLocationChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
+  basket: GetBasketChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -265,39 +274,47 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    // updateBasket('75429323-3768-4746-af87-f4bc738aeb00', {
-    //   user_id: '9316ce5c-2342-41c2-ac83-49d152007b1b',
-    //   participation_context_id: '7872c6e8-d020-4bc9-9be1-fdee49da6173',
-    //   participation_context_type: 'Phase',
-    //   idea_ids: ['6129f478-e17c-44b2-ab10-8aa5c95a43e5', '0bc6b154-9f80-4e4e-929b-76f3ff548c0f']
-    // }).then((response) => {
-    //   console.log('succes');
-    //   console.log(response);
-    // }).catch((error) => {
-    //   console.log('error');
-    //   console.log(error);
-    // });
+    const { idea, authUser, basket, participationMethod, participationContextId, participationContextType } = this.props;
 
-    // addBasket({
-    //   user_id: '9316ce5c-2342-41c2-ac83-49d152007b1b',
-    //   participation_context_id: '7872c6e8-d020-4bc9-9be1-fdee49da6173',
-    //   participation_context_type: 'Phase',
-    //   idea_ids: ['6129f478-e17c-44b2-ab10-8aa5c95a43e5']
-    // }).then((response) => {
-    //   console.log('succes');
-    //   console.log(response);
-    // }).catch((error) => {
-    //   console.log('error');
-    //   console.log(error);
-    // });
+    if (participationMethod === 'budgeting' && participationContextId && participationContextType && !isNilOrError(idea) && !isNilOrError(authUser)) {
+      if (!isNilOrError(basket)) {
+        updateBasket(basket.id, {
+          user_id: authUser.id,
+          participation_context_id: participationContextId,
+          participation_context_type: participationContextType,
+          idea_ids: [
+            ...basket.relationships.ideas.data.map(idea => idea.id),
+            idea.id
+          ]
+        }).then((response) => {
+          console.log('updateBasket succes');
+          console.log(response);
+        }).catch((error) => {
+          console.log('updateBasket error');
+          console.log(error);
+        });
+      } else {
+        addBasket({
+          user_id: authUser.id,
+          participation_context_id: participationContextId,
+          participation_context_type: participationContextType,
+          idea_ids: [idea.id]
+        }).then((response) => {
+          console.log('addBasket succes');
+          console.log(response);
+        }).catch((error) => {
+          console.log('addBasket error');
+          console.log(error);
+        });
+      }
+    }
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, locale, location, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant, locale, location, participationMethod, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
     if (!isNilOrError(location) && !isNilOrError(tenant) && !isNilOrError(locale) && !isNilOrError(idea)) {
-      const pathname = location.pathname.replace(/\/$/, '');
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
@@ -305,10 +322,10 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const hasBudget = !!idea.attributes.budget;
-      const currentPageIsProjectPage = includes(pathname, '/projects/');
+      const hasPBContext = (participationMethod === 'budgeting');
       let ideaBudget: JSX.Element | null = null;
 
-      if (idea.attributes.budget && currentPageIsProjectPage) {
+      if (idea.attributes.budget && hasPBContext && hasBudget) {
         const currency = tenant.attributes.settings.core.currency;
         const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
         ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
@@ -359,7 +376,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 }
 
-                {hasBudget && currentPageIsProjectPage &&
+                {hasBudget && hasPBContext &&
                   <>
                     <Button onClick={this.assignBudget}>
                       <FormattedMessage {...messages.assign} />
@@ -410,9 +427,11 @@ const Data = adopt<DataProps, InputProps>({
   location: <GetLocation />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
+  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);

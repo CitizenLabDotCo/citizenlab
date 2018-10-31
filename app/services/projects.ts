@@ -55,6 +55,9 @@ export interface IProjectData {
         }
       }
     }
+    user_basket: {
+      data: IRelationship | null;
+    }
   };
 }
 

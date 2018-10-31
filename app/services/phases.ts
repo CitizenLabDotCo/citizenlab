@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ParticipationMethod, SurveyServices } from './participationContexts';
 
@@ -28,11 +28,14 @@ export interface IPhaseData {
     survey_embed_url?: string;
   };
   relationships: {
+    permissions: {
+      data: IRelationship[];
+    }
     project: {
-      data: {
-        id: string;
-        type: string;
-      }
+      data: IRelationship;
+    }
+    user_basket: {
+      data: IRelationship | null;
     }
   };
 }
