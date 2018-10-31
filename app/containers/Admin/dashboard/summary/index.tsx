@@ -216,17 +216,15 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
             <GraphsContainer>
               <Line>
                 <GraphCard className="first halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
+                    {/* <GraphCardTitle>
                       <FormattedMessage {...messages.registeredUsersByTimeTitle} />
-                    </GraphCardTitle>
+                    </GraphCardTitle> */}
                     <UsersByTimeChart
                       startAt={startAt}
                       endAt={endAt}
                       resolution={resolution}
                       {...this.state}
                     />
-                  </GraphCardInner>
                 </GraphCard>
                 <GraphCard className="halfWidth">
                   <GraphCardInner>
@@ -256,7 +254,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     />
                   </GraphCardInner>
                 </GraphCard>
-                <GraphCard className="halfWidth">
+                {/* <GraphCard className="halfWidth">
                   <GraphCardInner>
                     <GraphCardTitle>
                       <FormattedMessage {...messages.commentsByTimeTitle} />
@@ -268,7 +266,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       {...this.state}
                     />
                   </GraphCardInner>
-                </GraphCard>
+                </GraphCard> */}
               </Line>
               <Line>
                 <Column className="first">

@@ -1,13 +1,16 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map } from 'lodash-es';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByTimeCumulativeStream } from 'services/stats';
 import messages from '../messages';
+
+// components
 import EmptyGraph from './EmptyGraph';
+import { GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../';
 
 type State = {
   serie: {
@@ -123,35 +126,48 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
 
     if (!isEmpty) {
       return (
-        <ResponsiveContainer>
-          <AreaChart data={serie}>
-            <Area
-              type="monotone"
-              dataKey="value"
-              name={formatMessage(messages.numberOfUers)}
-              dot={false}
-              fill={chartFill}
-              fillOpacity={1}
-              stroke={chartStroke}
-            />
-            <XAxis
-              dataKey="name"
-              interval="preserveStartEnd"
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-              tick={{ transform: 'translate(0, 7)' }}
-              tickFormatter={this.formatTick}
-            />
-            <YAxis
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-            />
-            <Tooltip
-              isAnimationActive={false}
-              labelFormatter={this.formatLabel}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <GraphCardInner>
+          <GraphCardTitle>
+            <FormattedMessage {...messages.registeredUsersByTimeTitle} />
+            <GraphCardFigureContainer>
+              <GraphCardFigure>
+                {124}
+              </GraphCardFigure>
+              <GraphCardFigureChange>
+                {'(+12%)'}
+              </GraphCardFigureChange>
+            </GraphCardFigureContainer>
+          </GraphCardTitle>
+          <ResponsiveContainer>
+            <AreaChart data={serie}>
+              <Area
+                type="monotone"
+                dataKey="value"
+                name={formatMessage(messages.numberOfUers)}
+                dot={false}
+                fill={chartFill}
+                fillOpacity={1}
+                stroke={chartStroke}
+              />
+              <XAxis
+                dataKey="name"
+                interval="preserveStartEnd"
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+                tick={{ transform: 'translate(0, 7)' }}
+                tickFormatter={this.formatTick}
+              />
+              <YAxis
+                stroke={chartLabelColor}
+                fontSize={chartLabelSize}
+              />
+              <Tooltip
+                isAnimationActive={false}
+                labelFormatter={this.formatLabel}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </GraphCardInner>
       );
     } else {
       return (
