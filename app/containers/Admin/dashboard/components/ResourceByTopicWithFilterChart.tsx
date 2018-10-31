@@ -12,21 +12,16 @@ import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
 
 import { IResource } from '../summary';
+import { IGraphFormat } from 'typings';
 
 interface Props {
   startAt: string;
   endAt: string;
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
   selectedResource: IResource;
 }
-
-type IGraphFormat = {
-  name: any,
-  value: any,
-  code: any
-}[];
 
 interface State {
   serie: IGraphFormat | null;
@@ -74,22 +69,16 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
         this.selectedResource$.pipe(
           filter(endAt => endAt !== null)
         ),
-        this.currentProjectFilter$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentGroupFilter$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentTopicFilter$.pipe(
-          filter(endAt => endAt !== null)
-        )
+        this.currentGroupFilter$,
+        this.currentProjectFilter$,
+        this.currentTopicFilter$
       ).pipe(
         switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentProjectFilter]) => {
           const queryParameters = {
             startAt,
             endAt,
-            // TODO group: (currentGroupFilter === 'all') ? undefined : currentGroupFilter,
-            // TODO project: (currentProjectFilter === 'all') ? undefined : currentProjectFilter,
+            project: currentProjectFilter,
+            group: currentGroupFilter,
           };
           if (selectedResource === 'Ideas') {
             return ideasByTopicStream({
@@ -107,7 +96,7 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
         })
       ).subscribe((serie) => {
         const convertedSerie = this.convertToGraphFormat(serie);
-        if (this.props.currentTopicFilter !== 'all') {
+        if (this.props.currentTopicFilter) {
           this.setState({ serie: this.filterByTopic(convertedSerie) });
         } else { this.setState({ serie: convertedSerie }); }
       })
@@ -121,6 +110,16 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
 
     if (this.props.endAt !== prevProps.endAt) {
       this.endAt$.next(this.props.endAt);
+    }
+    if (this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.currentGroupFilter$.next(this.props.currentGroupFilter);
+    }
+
+    if (this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
+      this.currentTopicFilter$.next(this.props.currentTopicFilter);
+    }
+    if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
+      this.currentProjectFilter$.next(this.props.currentProjectFilter);
     }
 
     if (this.props.selectedResource !== prevProps.selectedResource) {
@@ -175,7 +174,7 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
     const isEmpty = !serie || serie.every(item => item.value === 0);
 
     if (!isEmpty) {
-      const unitName = (currentTopicFilter !== 'all' && serie)
+      const unitName = (currentTopicFilter && serie)
         ? formatMessage(messages.resourceByTopicDifference, {
           resourceName: formatMessage(messages[selectedResource]),
           topic: serie[0].name

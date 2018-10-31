@@ -4,31 +4,8 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
-export interface IUsersByGender {
-  [key: string]: number;
-}
-
-export interface IUsersCount {
-  count: number;
-}
-
-export interface IUsersByBirthyear{
-  [key: string]: number;
-}
-
+// Ideas
 export interface IIdeasByTime{
-  [key: string]: number;
-}
-
-export interface IUsersByTime{
-  [key: string]: number;
-}
-
-export interface ICommentsByTime{
-  [key: string]: number;
-}
-
-export interface IVotesByTime{
   [key: string]: number;
 }
 
@@ -42,26 +19,7 @@ export interface IIdeasByTopic{
     }
   };
 }
-export interface IVotesByTopic{
-  data: {
-    [key: string]: number;
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc
-    }
-  };
-}
-export interface ICommentsByTopic{
-  data: {
-    [key: string]: number;
-  };
-  topics: {
-    [key: string]: {
-      title_multiloc: Multiloc
-    }
-  };
-}
+
 export interface IIdeasByProject{
   data: {
     [key: string]: number;
@@ -72,7 +30,81 @@ export interface IIdeasByProject{
     }
   };
 }
-export interface IVotesByProject{
+
+export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
+}
+
+export function ideasByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time_cumulative`, ...streamParams });
+}
+
+export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
+}
+
+export function ideasByProjectStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasByProject>({ apiEndpoint: `${apiEndpoint}/ideas_by_project`, ...streamParams });
+}
+
+// Users
+export interface IUsersByGender {
+  [key: string]: number;
+}
+
+export interface IUsersCount {
+  count: number;
+}
+
+export interface IUsersByBirthyear{
+  [key: string]: number;
+}
+
+export interface IUsersByTime{
+  [key: string]: number;
+}
+
+export function usersByGenderStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
+}
+
+export function usersCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersCount>({ apiEndpoint: `${apiEndpoint}/users_count`, ...streamParams });
+}
+
+export function usersByBirthyearStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
+}
+
+export function usersByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
+}
+
+export function usersByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time_cumulative`, ...streamParams });
+}
+
+export function activeUsersByTimeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/active_users_by_time`, ...streamParams });
+}
+
+// Comments
+export interface ICommentsByTime{
+  [key: string]: number;
+}
+
+export interface ICommentsByTopic{
+  data: {
+    [key: string]: number;
+  };
+  topics: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+
+export interface ICommentsByProject{
   data: {
     [key: string]: number;
   };
@@ -82,7 +114,35 @@ export interface IVotesByProject{
     }
   };
 }
-export interface ICommentsByProject{
+
+export function commentsByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICommentsByTime>({ apiEndpoint: `${apiEndpoint}/comments_by_time_cumulative`, ...streamParams });
+}
+
+export function commentsByTopicStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICommentsByTopic>({ apiEndpoint: `${apiEndpoint}/comments_by_topic`, ...streamParams });
+}
+
+export function commentsByProjectStream(streamParams: IStreamParams | null = null) {
+  return streams.get<ICommentsByProject>({ apiEndpoint: `${apiEndpoint}/comments_by_project`, ...streamParams });
+}
+
+// Votes
+export interface IVotesByTime{
+  [key: string]: number;
+}
+export interface IVotesByTopic{
+  data: {
+    [key: string]: number;
+  };
+  topics: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
+
+export interface IVotesByProject{
   data: {
     [key: string]: number;
   };
@@ -99,10 +159,17 @@ interface IGenderCounts {
   unspecified: number;
   _blank: number;
 }
+
 export interface IVotesByGender {
   up: IGenderCounts;
   down: IGenderCounts;
   total: IGenderCounts;
+}
+
+export interface IVotesByTimeCumulative {
+  up: {[key: string]: number};
+  down: {[key: string]: number};
+  total: {[key: string]: number};
 }
 
 export interface IVotesByBirthyear {
@@ -117,65 +184,15 @@ export interface IVotesByDomicile {
   total: { [key: string]: number };
 }
 
-export function usersByGenderStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
-}
-
-export function usersCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersCount>({ apiEndpoint: `${apiEndpoint}/users_count`, ...streamParams });
-}
-
-export function usersByBirthyearStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
-}
-
-export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
-}
-
-export function ideasByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time_cumulative`, ...streamParams });
-}
-
-export function commentsByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<ICommentsByTime>({ apiEndpoint: `${apiEndpoint}/comments_by_time_cumulative`, ...streamParams });
-}
-
 export function votesByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IVotesByTime>({ apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`, ...streamParams });
+  return streams.get<IVotesByTimeCumulative>({ apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`, ...streamParams });
 }
 
-export function usersByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time`, ...streamParams });
-}
-
-export function usersByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/users_by_time_cumulative`, ...streamParams });
-}
-
-export function activeUsersByTimeStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/active_users_by_time`, ...streamParams });
-}
-
-export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByTopic>({ apiEndpoint: `${apiEndpoint}/ideas_by_topic`, ...streamParams });
-}
-
-export function commentsByTopicStream(streamParams: IStreamParams | null = null) {
-  return streams.get<ICommentsByTopic>({ apiEndpoint: `${apiEndpoint}/comments_by_topic`, ...streamParams });
-}
 
 export function votesByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByTopic>({ apiEndpoint: `${apiEndpoint}/votes_by_topic`, ...streamParams });
 }
 
-export function ideasByProjectStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasByProject>({ apiEndpoint: `${apiEndpoint}/ideas_by_project`, ...streamParams });
-}
-
-export function commentsByProjectStream(streamParams: IStreamParams | null = null) {
-  return streams.get<ICommentsByProject>({ apiEndpoint: `${apiEndpoint}/comments_by_project`, ...streamParams });
-}
 
 export function votesByProjectStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByProject>({ apiEndpoint: `${apiEndpoint}/votes_by_project`, ...streamParams });
