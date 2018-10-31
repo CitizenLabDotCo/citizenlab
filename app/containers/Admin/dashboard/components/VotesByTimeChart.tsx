@@ -4,13 +4,13 @@ import { map } from 'lodash-es';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { votesByTimeCumulativeStream } from 'services/stats';
+import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
 
 type State = {
-  serie: { name: string | number, value: number, code: string }[] | null;
+  serie: { date: string | number, up: number, down: number, total: number, code: string }[] | null;
 };
 
 type Props = {
@@ -55,12 +55,18 @@ class CommentsByTimeChart extends React.PureComponent<Props & InjectedIntlProps,
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat(serie: { [key: string]: number }) {
-    return map(serie, (value, key) => ({
-      value,
-      name: key,
-      code: key
-    }));
+  convertToGraphFormat(serie: IVotesByTimeCumulative | null) {
+    if (serie) {
+      const { up, down, total } = serie;
+      return map(total, (value, key) => ({
+        total: value,
+        down: down[key],
+        up: up[key],
+        date: key,
+        code: key
+      }));
+    }
+    return null;
   }
 
   resubscribe(
@@ -112,26 +118,39 @@ class CommentsByTimeChart extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
-    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
+    const { chartLabelSize, chartLabelColor, chartStroke, chartStrokeGreen, chartStrokeRed } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const isEmpty = !serie || serie.every(item => (item.up === 0) && (item.down === 0) && (item.total === 0));
 
     if (!isEmpty) {
       return (
         <ResponsiveContainer>
-          <AreaChart data={serie} margin={{ right: 40 }}>
-            <Area
+          <LineChart data={serie} margin={{ right: 40 }}>
+            <CartesianGrid strokeDasharray="5 5" />
+            <Line
               type="monotone"
-              dataKey="value"
-              name={formatMessage(messages.numberOfVotes)}
+              dataKey="up"
+              name={formatMessage(messages.numberOfVotesUp)}
               dot={false}
-              fill={chartFill}
-              fillOpacity={1}
+              stroke={chartStrokeGreen}
+            />
+            <Line
+              type="monotone"
+              dataKey="down"
+              name={formatMessage(messages.numberOfVotesDown)}
+              dot={false}
+              stroke={chartStrokeRed}
+            />
+            <Line
+              type="monotone"
+              dataKey="total"
+              name={formatMessage(messages.numberOfVotesTotal)}
+              dot={false}
               stroke={chartStroke}
             />
             <XAxis
-              dataKey="name"
+              dataKey="date"
               interval="preserveStartEnd"
               stroke={chartLabelColor}
               fontSize={chartLabelSize}
@@ -146,7 +165,8 @@ class CommentsByTimeChart extends React.PureComponent<Props & InjectedIntlProps,
               isAnimationActive={false}
               labelFormatter={this.formatLabel}
             />
-          </AreaChart>
+            <Legend />
+          </LineChart>
         </ResponsiveContainer>
       );
     } else {
