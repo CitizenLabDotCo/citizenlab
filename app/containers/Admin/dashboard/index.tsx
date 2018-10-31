@@ -103,14 +103,23 @@ export const GraphCard = styled.div`
 `;
 
 export const GraphCardTitle = styled.h3`
+  display: flex;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  align-self: flex-start;
+  justify-content: space-between;
   padding-bottom: 20px;
+`;
+
+export const GraphCardFigureContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
+`;
+
+export const GraphCardFigure = styled.span`
+  margin-right: 5px;
+`;
+
+export const GraphCardFigureChange = styled.span`
+  color: ${colors.clGreenSuccess}
 `;
 
 interface Props {
