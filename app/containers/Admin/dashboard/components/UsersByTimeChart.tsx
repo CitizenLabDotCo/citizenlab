@@ -118,28 +118,13 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     });
   }
 
-  calculateSerieChange = (firstSerieValue: number, lastSerieValue: number) => {
-    let serieChange: number | null = null;
-
-    if (firstSerieValue > 0) {
-      serieChange = (100 * (lastSerieValue - firstSerieValue) / firstSerieValue);
-    }
-
-    return serieChange;
-  }
-
   formatSerieChange = (serieChange: number) => {
-    let formattedSerieChange: string;
-
     if (serieChange > 0) {
-      formattedSerieChange = `(+${serieChange.toString()}%)`;
+      return `(+${serieChange.toString()})`;
     } else if (serieChange < 0) {
-      formattedSerieChange = `(-${serieChange.toString()}}%)`;
-    } else {
-      formattedSerieChange = '(-)';
+      return `(${serieChange.toString()})`;
     }
-
-    return formattedSerieChange;
+    return null;
   }
 
   render() {
@@ -149,7 +134,7 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
     const firstSerieValue = serie && serie[0].value;
     const lastSerieValue = serie && serie[serie.length - 1].value;
-    const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && this.calculateSerieChange(firstSerieValue, lastSerieValue);
+    const serieChange = firstSerieValue && lastSerieValue && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
     if (!isEmpty) {
@@ -162,7 +147,7 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
                 {lastSerieValue}
               </GraphCardFigure>
               <GraphCardFigureChange>
-               {formattedSerieChange}
+                {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardTitle>
