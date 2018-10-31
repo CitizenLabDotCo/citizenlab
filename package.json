@@ -28,7 +28,8 @@
     "test:browserstack": "nightwatch -c nightwatch-bs.conf.js -e chrome,firefox,safari,edge,ie",
     "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
