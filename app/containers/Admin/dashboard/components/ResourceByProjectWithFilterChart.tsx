@@ -1,24 +1,39 @@
+// libraries
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
-import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+
+// styling
+import { withTheme } from 'styled-components';
+
+// components
+import EmptyGraph from './EmptyGraph';
+import {
+  ideasByProjectStream,
+  IIdeasByProject,
+  commentsByProjectStream,
+  ICommentsByProject,
+  votesByProjectStream,
+  IVotesByProject
+} from 'services/stats';
+
+// intl
 import localize, { InjectedLocalized } from 'utils/localize';
-import { ideasByProjectStream, IIdeasByProject, commentsByProjectStream, ICommentsByProject, votesByProjectStream, IVotesByProject } from 'services/stats';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
-import EmptyGraph from './EmptyGraph';
 
+// typing
 import { IResource } from '../summary';
 
 interface Props {
   startAt: string;
   endAt: string;
-  currentProjectFilter: string;
-  currentGroupFilter: string;
-  currentTopicFilter: string;
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
   selectedResource: IResource;
 }
 
@@ -74,22 +89,16 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
         this.selectedResource$.pipe(
           filter(endAt => endAt !== null)
         ),
-        this.currentProjectFilter$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentGroupFilter$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentTopicFilter$.pipe(
-          filter(endAt => endAt !== null)
-        )
+        this.currentGroupFilter$,
+        this.currentProjectFilter$,
+        this.currentTopicFilter$
       ).pipe(
         switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentTopicFilter]) => {
           const queryParameters = {
             startAt,
             endAt,
-            // TODO group: (currentGroupFilter === 'all') ? undefined : currentGroupFilter,
-            // TODO project: (currentTopicFilter === 'all') ? undefined : currentTopicFilter,
+            // TODO group: currentGroupFilter,
+            // TODO topic: currentTopicFilter,
           };
           if (selectedResource === 'Ideas') {
             return ideasByProjectStream({
@@ -107,7 +116,7 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
         })
       ).subscribe((serie) => {
         const convertedSerie = this.convertToGraphFormat(serie);
-        if (this.props.currentProjectFilter !== 'all') {
+        if (this.props.currentProjectFilter) {
           this.setState({ serie: this.filterByProject(convertedSerie) });
         } else { this.setState({ serie: convertedSerie }); }
       })
@@ -121,6 +130,16 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
 
     if (this.props.endAt !== prevProps.endAt) {
       this.endAt$.next(this.props.endAt);
+    }
+    if (this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.currentGroupFilter$.next(this.props.currentGroupFilter);
+    }
+
+    if (this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
+      this.currentTopicFilter$.next(this.props.currentTopicFilter);
+    }
+    if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
+      this.currentProjectFilter$.next(this.props.currentProjectFilter);
     }
 
     if (this.props.selectedResource !== prevProps.selectedResource) {
@@ -176,7 +195,7 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
       return (<EmptyGraph unit={selectedResource} />);
 
     } else {
-      const unitName = (currentProjectFilter !== 'all')
+      const unitName = currentProjectFilter
         ? formatMessage(messages.resourceByProjectDifference, {
           resourceName: formatMessage(messages[selectedResource]),
           project: serie[0].name
