@@ -68,6 +68,11 @@ interface State {
 
 class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   resourceOptions: IOption[];
+  filterOptions: {
+    projectFilterOptions: IOption[],
+    groupFilterOptions: IOption[],
+    topicFilterOptions: IOption[]
+  };
 
   constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
@@ -85,6 +90,23 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       { value: 'Comments', label: props.intl.formatMessage(messages['Comments']) },
       { value: 'Votes', label: props.intl.formatMessage(messages['Votes']) }
     ];
+    this.filterOptions = {
+      projectFilterOptions: this.generateFilterOptions('project'),
+      groupFilterOptions: this.generateFilterOptions('group'),
+      topicFilterOptions: this.generateFilterOptions('topic')
+    };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.projects !== prevProps.projects) {
+      this.filterOptions.projectFilterOptions = this.generateFilterOptions('project');
+    }
+    if (this.props.topics !== prevProps.topics) {
+      this.filterOptions.topicFilterOptions = this.generateFilterOptions('topic');
+    }
+    if (this.props.groups !== prevProps.groups) {
+      this.filterOptions.groupFilterOptions = this.generateFilterOptions('group');
+    }
   }
 
   changeInterval = (interval: 'weeks' | 'months' | 'years') => {
@@ -200,11 +222,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               currentGroupFilter,
               currentTopicFilter
             }}
-            filterOptions={{
-              projectFilterOptions: this.generateFilterOptions('project'),
-              groupFilterOptions: this.generateFilterOptions('group'),
-              topicFilterOptions: this.generateFilterOptions('topic')
-            }}
+            filterOptions={this.filterOptions}
             onFilter={{
               onProjectFilter: this.handleOnProjectFilter,
               onGroupFilter: this.handleOnGroupFilter,
@@ -302,6 +320,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       startAt={startAt}
                       endAt={endAt}
                       selectedResource={currentResourceByProject}
+                      projectOptions={this.filterOptions.projectFilterOptions}
                       {...this.state}
                     />
                   </GraphCardInner>
@@ -324,6 +343,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       startAt={startAt}
                       endAt={endAt}
                       selectedResource={currentResourceByTopic}
+                      topicOptions={this.filterOptions.topicFilterOptions}
                       {...this.state}
                     />
                   </GraphCardInner>
