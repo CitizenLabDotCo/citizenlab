@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash-es';
+import { map, isNumber } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
@@ -118,12 +118,23 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
     });
   }
 
+  calculateSerieChange = (firstSerieValue: number, lastSerieValue: number) => {
+    const serieChange = true ?
+      (100 * (lastSerieValue - 1) / 1) : null;
+
+    return serieChange;
+  }
+
   render() {
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
+    const firstSerieValue = serie && serie[0].value;
+    const lastSerieValue = serie && serie[serie.length - 1].value;
+    const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && this.calculateSerieChange(firstSerieValue, lastSerieValue);
 
+    console.log(serieChange);
     if (!isEmpty) {
       return (
         <GraphCardInner>
@@ -131,10 +142,10 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
             <FormattedMessage {...messages.registeredUsersByTimeTitle} />
             <GraphCardFigureContainer>
               <GraphCardFigure>
-                {124}
+                {lastSerieValue}
               </GraphCardFigure>
               <GraphCardFigureChange>
-                {'(+12%)'}
+              {`&lpar;${serieChange}&percnt;&rpar;`}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardTitle>
