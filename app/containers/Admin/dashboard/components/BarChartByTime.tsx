@@ -3,11 +3,26 @@ import { Subscription } from 'rxjs';
 import { map } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../messages';
-import EmptyGraph from './EmptyGraph';
+
+// components
 import { GraphCard, GraphCardInner, GraphCardTitle } from '../';
+import EmptyGraph from './EmptyGraph';
+import { Popup } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
+
+const TitleWithInfoIcon = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const InfoIcon = styled(Icon)`
+  cursor: pointer;
+  width: 20px;
+  margin-left: 10px;
+`;
 
 type State = {
   serie: {
@@ -28,6 +43,7 @@ type Props = {
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
   stream: Function;
+  infoMessage: string;
 };
 
 class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -123,7 +139,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitleMessageKey, graphUnit } = this.props;
+    const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
@@ -133,7 +149,19 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
         <GraphCard className={className}>
           <GraphCardInner>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              <TitleWithInfoIcon>
+                <FormattedMessage {...messages[graphTitleMessageKey]} />
+                {infoMessage && <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />}
+              </TitleWithInfoIcon>
             </GraphCardTitle>
 
             <ResponsiveContainer>
