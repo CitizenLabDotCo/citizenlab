@@ -175,6 +175,8 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     const startAt = startAtMoment.toISOString();
     const endAt = endAtMoment.toISOString();
     const resolution = (interval === 'years' ? 'month' : 'day');
+    const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
+
     const { projects, projects: { projectsList } } = this.props;
 
     if (projects && !isNilOrError(projectsList)) {
@@ -237,6 +239,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                   endAt={endAt}
                   resolution={resolution}
                   stream={activeUsersByTimeStream}
+                  infoMessage={infoMessage}
                   {...this.state}
                 />
               </Row>

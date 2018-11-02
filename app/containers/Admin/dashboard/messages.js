@@ -51,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
   },
+  activeUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+    defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
+  },
   numberOfActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUsers',
     defaultMessage: 'Active users',
