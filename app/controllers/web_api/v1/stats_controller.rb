@@ -210,6 +210,35 @@ class WebApi::V1::StatsController < ApplicationController
     end
   end
 
+  def users_engagement_scores
+    activities = Activity
+    ps = ParticipantsService.new
+
+    if params[:group]
+      group = Group.find(params[:group])
+      activities = activities.where(user_id: group.members)
+    end
+
+    engaging_activities = ps.filter_engaging_activities(activities)
+    scored_activities = ps.with_engagement_scores(engaging_activities)
+   
+    serie = Activity
+      .from(scored_activities.select(:user_id).where(acted_at: @start_at..@end_at))
+      .group(:user_id)
+      .includes(:user)
+      .select("user_id, SUM(score) as sum_score")
+      .order("sum_score DESC")
+      .limit(10)
+
+    # data = serie.map{|r| [r.user_id, r.sum_score]}.to_h
+    # users = User
+    #   .where(id: data.keys)
+    #   .select(:id, :first_name, :last_name, :avatar)
+    #   .group_by(&:id)
+    # # render json: {data: data, users: users}
+    render json: serie, each_serializer: EngagementScoreSerializer, include: [:user]
+  end
+
   # # *** ideas ***
 
   def ideas_count

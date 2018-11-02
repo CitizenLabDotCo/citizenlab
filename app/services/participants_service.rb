@@ -27,10 +27,10 @@ class ParticipantsService
 
 
   ENGAGING_ACTIVITIES = [
-    {item_type: 'Comment', action: 'created'},
-    {item_type: 'Idea', action: 'published'},
-    {item_type: 'Vote', action: 'idea_upvoted'},
-    {item_type: 'Vote', action: 'idea_downvoted'}
+    {item_type: 'Comment', action: 'created', score: 3},
+    {item_type: 'Idea', action: 'published', score: 5},
+    {item_type: 'Vote', action: 'idea_upvoted', score: 1},
+    {item_type: 'Vote', action: 'idea_downvoted', score: 1}
   ]
 
   # Adapts the passed activities_scope to only take into account activities
@@ -48,6 +48,17 @@ class ParticipantsService
       end
     end
     output
+  end
+
+  # Adds a `score` field to the results, indicating the engagement score for the activity
+  def with_engagement_scores activities_scope
+    activities_scope
+      .select("""(CASE 
+        #{ENGAGING_ACTIVITIES.map do |activity|
+          "WHEN item_type = '#{activity[:item_type]}' AND action = '#{activity[:action]}' THEN #{activity[:score]}" 
+          end.join(" ")
+        }
+      ELSE 0 END) as score""")
   end
 
 end

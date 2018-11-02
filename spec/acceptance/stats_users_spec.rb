@@ -355,6 +355,42 @@ resource "Stats - Users" do
         end
       end
     end
+
+    get "web_api/v1/stats/users_engagement_scores" do
+      time_boundary_parameters self
+      group_filter_parameter self
+
+      before do
+        @group = create(:group)
+        @u1 = create(:user)
+        create(:membership, user: @u1, group: @group)
+        @u2 = create(:user)
+        create(:membership, user: @u2, group: @group)
+        @u3 = create(:user)
+
+        create(:comment_created_activity, user: @u1)
+        create(:idea_upvoted_activity, user: @u1)
+        create(:idea_published_activity, user: @u2)
+        create(:idea_downvoted_activity, user: @u2)
+        create(:comment_created_activity, user: @u3)
+
+        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.day) do
+          create(:idea_published_activity, user: @u2)
+        end
+      end
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:group) { @group.id }
+
+      example_request "List 10 best user engagement scores" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].map{|d| d[:attributes][:sum_score]}).to eq([6, 4])
+        expect(json_response[:data].map{|d| d[:relationships][:user][:data][:id]}).to eq([@u2.id, @u1.id])
+        expect(json_response[:included].size).to eq 2
+      end
+    end
   end
 
 

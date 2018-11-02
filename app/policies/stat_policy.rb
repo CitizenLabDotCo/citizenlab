@@ -36,6 +36,10 @@ class StatPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def users_engagement_scores?
+    user&.active? && user.admin?
+  end
+
   def ideas_count?
     user&.active? && user.admin?
   end

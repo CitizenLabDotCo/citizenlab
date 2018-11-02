@@ -110,4 +110,37 @@ describe TimelineService do
     end
   end
 
+  describe "with_engagement_scores" do
+
+    it "gives idea publishing a score of 5" do
+      activity = create(:idea_published_activity)
+      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 5
+    end
+
+    it "gives comment creation a score of 3" do
+      activity = create(:comment_created_activity)
+      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 3
+    end
+
+    it "gives voting a score of 1" do
+      upvote_activity = create(:idea_upvoted_activity)
+      downvote_activity = create(:idea_downvoted_activity)
+      expect(service.with_engagement_scores(Activity.where(id: upvote_activity.id)).first.score).to eq 1
+      expect(service.with_engagement_scores(Activity.where(id: downvote_activity.id)).first.score).to eq 1
+    end
+
+    it "returns 0 for non-engaging activities" do
+      activity = create(:idea_changed_body_activity)
+      expect(service.with_engagement_scores(Activity.where(id: activity.id)).first.score).to eq 0
+    end
+
+    it "allows adding other select fields to the query" do
+      activity = create(:idea_published_activity)
+      scope = service.with_engagement_scores(Activity.where(id: activity.id).select(:user_id))
+      expect(scope.first.user_id).to eq activity.user_id
+      expect(scope.first.score).to be_present
+    end
+
+  end
+
 end
