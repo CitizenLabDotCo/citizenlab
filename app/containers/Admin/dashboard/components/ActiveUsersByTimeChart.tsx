@@ -127,7 +127,7 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
           <BarChart data={serie}>
             <Bar
               dataKey="value"
-              name={formatMessage(messages.numberOfActiveUers)}
+              name={formatMessage(messages.numberOfActiveUsers)}
               fill={chartFill}
               label={{ fill: barFill, fontSize: chartLabelSize }}
             />

@@ -43,16 +43,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.registeredUsersByTimeTitle',
     defaultMessage: 'Users',
   },
-  numberOfUers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfUers',
+  numberOfUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfUsers',
     defaultMessage: 'Users',
   },
   activeUsersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active Users',
   },
-  numberOfActiveUers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUers',
+  numberOfActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUsers',
     defaultMessage: 'Active users',
   },
   commentsByTimeTitle: {
@@ -69,15 +69,15 @@ export default defineMessages({
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
-    defaultMessage: 'Up Votes',
+    defaultMessage: 'Upvotes',
   },
   numberOfVotesDown: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesDown',
-    defaultMessage: 'Down Votes',
+    defaultMessage: 'Downvotes',
   },
   numberOfVotesTotal: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
-    defaultMessage: 'Total Votes',
+    defaultMessage: 'Total votes',
   },
   numberOfIdeas: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
