@@ -156,7 +156,7 @@ class UsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, St
               <Area
                 type="monotone"
                 dataKey="value"
-                name={formatMessage(messages.numberOfUers)}
+                name={formatMessage(messages.numberOfUsers)}
                 dot={false}
                 fill={chartFill}
                 fillOpacity={1}
