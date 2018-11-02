@@ -68,11 +68,10 @@ class ClusteringService
     if levels.present?
       level = levels.first
       if level == 'clustering'
-        api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
-          ).parsed_response.class
+        api = NLP::API.new(ENV.fetch("CL2_NLP_HOST")).parsed_response.class
         clustering_items = api.ideas_clustering(
           Tenant.current.id, 
-          'nl', # TODO figure out a language
+          Tenant.current.settings.dig(:core, :locale).first[0...2], # TODO figure out a language
           idea_ids: idea_ids
           ).parsed_response.dig('data','items')
         clustering_levels_to_ids = {}
