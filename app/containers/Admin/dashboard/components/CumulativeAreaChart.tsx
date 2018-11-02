@@ -20,11 +20,11 @@ type State = {
 };
 
 type Props = {
-  className?: string
+  className?: string;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
-  graphTitleMessageKey: string,
-  startAt: string,
-  endAt: string,
+  graphTitleMessageKey: string;
+  startAt: string;
+  endAt: string;
   resolution: 'month' | 'day';
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
