@@ -119,7 +119,7 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
-    const { chartFill, chartLabelSize, chartLabelColor, barFill } = this.props['theme'];
+    const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
 
     if (!isEmpty) {
       return (
@@ -129,7 +129,6 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
               dataKey="value"
               name={formatMessage(messages.numberOfActiveUsers)}
               fill={chartFill}
-              label={{ fill: barFill, fontSize: chartLabelSize }}
             />
             <XAxis
               dataKey="name"
