@@ -43,10 +43,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyVotes',
     defaultMessage: 'No votes',
   },
-  registeredUsersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.registeredUsersByTimeTitle',
-    defaultMessage: 'Users',
-  },
   numberOfUsers: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfUsers',
     defaultMessage: 'Users',
@@ -147,11 +143,11 @@ export default defineMessages({
   },
   ideasByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas over time',
+    defaultMessage: 'Ideas',
   },
   usersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
-    defaultMessage: 'Registrations over time',
+    defaultMessage: 'Users',
   },
   ideasByTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',
