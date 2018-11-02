@@ -15,7 +15,7 @@ import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFil
 import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
-import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
+import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
 
 // typings
@@ -214,17 +214,14 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
-              <Line>
+              <Row>
                 <GraphCard className="first halfWidth">
-                    {/* <GraphCardTitle>
-                      <FormattedMessage {...messages.registeredUsersByTimeTitle} />
-                    </GraphCardTitle> */}
-                    <UsersByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
+                  <UsersByTimeChart
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    {...this.state}
+                  />
                 </GraphCard>
                 <GraphCard className="halfWidth">
                   <GraphCardInner>
@@ -239,8 +236,8 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     />
                   </GraphCardInner>
                 </GraphCard>
-              </Line>
-              <Line>
+              </Row>
+              <Row>
                 <GraphCard className="first halfWidth">
                   <GraphCardInner>
                     <GraphCardTitle>
@@ -254,7 +251,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     />
                   </GraphCardInner>
                 </GraphCard>
-                {/* <GraphCard className="halfWidth">
+                <GraphCard className="halfWidth">
                   <GraphCardInner>
                     <GraphCardTitle>
                       <FormattedMessage {...messages.commentsByTimeTitle} />
@@ -266,9 +263,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       {...this.state}
                     />
                   </GraphCardInner>
-                </GraphCard> */}
-              </Line>
-              <Line>
+                </GraphCard>
+              </Row>
+              <Row>
                 <Column className="first">
                 <GraphCard className="colFirst">
                   <GraphCardInner>
@@ -326,7 +323,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     />
                   </GraphCardInner>
                 </GraphCard>
-              </Line>
+              </Row>
             </GraphsContainer>
           </ThemeProvider>
         </>
