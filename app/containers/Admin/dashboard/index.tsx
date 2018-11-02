@@ -43,7 +43,7 @@ export const GraphsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-export const Line = styled.div`
+export const Row = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 20px;

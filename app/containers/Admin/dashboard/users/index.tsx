@@ -12,7 +12,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import {
   chartTheme,
   GraphsContainer,
-  Line,
+  Row,
   GraphCard,
   GraphCardInner,
   GraphCardTitle,
@@ -136,7 +136,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <Line>
+            <Row>
               <GraphCard className="first halfWidth">
                 <GraphCardInner>
                   <GraphCardTitle>
@@ -153,7 +153,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
                   <AgeChart startAt={startAt} endAt={endAt} currentGroupFilter={currentGroupFilter} />
                 </GraphCardInner>
               </GraphCard>
-            </Line>
+            </Row>
           </GraphsContainer>
         </ThemeProvider>
       </>
