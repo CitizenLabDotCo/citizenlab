@@ -97,4 +97,17 @@ describe TimelineService do
 
   end
 
+  describe "filter_engaging_activities" do
+
+    it "does not filter out an upvote" do
+      activity = create(:idea_published_activity)
+      expect(service.filter_engaging_activities(Activity.all)).to eq [activity]
+    end
+
+    it "filters out an idea changed title activity" do
+      activity = create(:idea_changed_title_activity)
+      expect(service.filter_engaging_activities(Activity.all)).to be_empty
+    end
+  end
+
 end
