@@ -17,16 +17,11 @@ import styled from 'styled-components';
 // components
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
-import Dropdown from 'components/UI/Dropdown';
-import PBBasket from './PBBasket';
+import PBNavbarButton from './pb/PBNavbarButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// typings
-import { ParticipationMethod } from 'services/participationContexts';
-import { IPhaseData } from 'services/phases';
 
 const ProjectNavbarWrapper = styled.nav`
   background-color: #002332;
@@ -123,37 +118,8 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const ManageBudgetWrapper = styled.div`
-  height: 100%;
-  position: relative;
+const StyledPBNavbarButton = styled(PBNavbarButton)`
   margin-left: 40px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ManageBudgetButton = styled.button`
-  height: 100%;
-  display: flex;
-  color: #fff;
-  opacity: 0.6;
-  align-items: center;
-  white-space: nowrap;
-  cursor: pointer;
-  outline: none;
-
-  &:focus,
-  &:hover {
-    color: #fff;
-    opacity: 1;
-  }
-`;
-
-const DropdownWrapper = styled.div`
-  width: 100%;
-  flex: 0 0 0px;
-  position: relative;
-  display: flex;
-  justify-content: center;
 `;
 
 interface InputProps {
@@ -192,7 +158,6 @@ class ProjectNavbar extends PureComponent<Props, State> {
 
   render() {
     const { project, events, phase } = this.props;
-    const { dropdownOpened } = this.state;
 
     if (!isNilOrError(project)) {
       const projectSlug = project.attributes.slug;
@@ -218,14 +183,6 @@ class ProjectNavbar extends PureComponent<Props, State> {
           participationContextId = project.id;
         } else if (isPBPhase && phase) {
           participationContextId = phase.id;
-        }
-
-        let basketId: string | null = null;
-
-        if (isPBProject && project.relationships.user_basket.data) {
-          basketId = project.relationships.user_basket.data.id;
-        } else if (isPBPhase && phase && phase.relationships.user_basket.data) {
-          basketId = phase.relationships.user_basket.data.id;
         }
 
         return (
@@ -290,27 +247,10 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {participationContextType && participationContextId &&
                   <>
                     <Spacer/>
-                    <ManageBudgetWrapper>
-                      <ManageBudgetButton onClick={this.toggleExpensesDropdown}>
-                        <ProjectNavbarIcon name="moneybag" className="moneybag" />
-                        <FormattedMessage {...messages.manageBudget} />
-                      </ManageBudgetButton>
-
-                      <DropdownWrapper>
-                        <Dropdown
-                          top="-5px"
-                          opened={dropdownOpened}
-                          onClickOutside={this.toggleExpensesDropdown}
-                          content={
-                            <PBBasket
-                              participationContextType={participationContextType}
-                              participationContextId={participationContextId}
-                              basketId={basketId}
-                            />
-                          }
-                        />
-                      </DropdownWrapper>
-                    </ManageBudgetWrapper>
+                    <StyledPBNavbarButton
+                      participationContextType={participationContextType}
+                      participationContextId={participationContextId}
+                    />
                   </>
                 }
               </ProjectNavbarItems>

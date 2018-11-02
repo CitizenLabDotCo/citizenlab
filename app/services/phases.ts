@@ -86,13 +86,15 @@ export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
 }
 
-export function canContainIdeas(phase: IPhaseData) : boolean {
+export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
   return pm === 'ideation' || pm === 'budgeting';
 }
 
-export function getCurrentPhase(phases: IPhaseData[]) : IPhaseData | undefined {
-  return phases.find((phase) => {
+export function getCurrentPhase(phases: IPhaseData[]) {
+  const currentPhase = phases.find((phase) => {
     return pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present';
   });
+
+  return (currentPhase || null);
 }

@@ -1,13 +1,16 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // services
-import { addBasket, updateBasket, basketsStream, basketByIdStream } from 'services/baskets';
+import { updateBasket } from 'services/baskets';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
@@ -21,7 +24,7 @@ import T from 'components/T';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // typings
 import { IIdeaData } from 'services/ideas';
@@ -76,15 +79,16 @@ const ConfirmExpensesButton = styled(Button)`
 `;
 
 interface InputProps {
-  participationContextId: string;
+  participationContextId: string | null;
   participationContextType: 'Project' | 'Phase';
-  basketId: string | null;
   className?: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   basket: GetBasketChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
   ideaList: GetIdeaListChildProps;
 }
 
@@ -159,7 +163,19 @@ class PBBasket extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  basket: ({ participationContextType, project, phase, render }) => {
+    let basketId: string | null = null;
+
+    if (participationContextType === 'Project') {
+      basketId = (!isNilOrError(project) ? get(project.relationships.user_basket.data, 'id', null) : null);
+    } else {
+      basketId = (!isNilOrError(phase) ? get(phase.relationships.user_basket.data, 'id', null) : null);
+    }
+
+    return <GetBasket id={basketId}>{render}</GetBasket>;
+  },
   ideaList: ({ basket, render }) => <GetIdeaList ids={!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : null} >{render}</GetIdeaList>
 });
 

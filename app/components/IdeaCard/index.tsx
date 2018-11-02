@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { get, includes } from 'lodash-es';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
@@ -311,7 +311,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, locale, location, participationMethod, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant, locale, location, participationMethod, basket, intl: { formatMessage } } = this.props;
     const { showVotingDisabled } = this.state;
 
     if (!isNilOrError(location) && !isNilOrError(tenant) && !isNilOrError(locale) && !isNilOrError(idea)) {
@@ -323,14 +323,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const hasBudget = !!idea.attributes.budget;
       const hasPBContext = (participationMethod === 'budgeting');
-      let ideaBudget: JSX.Element | null = null;
-
-      if (idea.attributes.budget && hasPBContext && hasBudget) {
-        const currency = tenant.attributes.settings.core.currency;
-        const budget = new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(idea.attributes.budget);
-        ideaBudget = <IdeaBudget>{budget}</IdeaBudget>;
-      }
-
+      const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
+      const isInBasket = includes(basketIdeaIds, idea.id);
       const className = `${this.props['className']}
         e2e-idea-card
         ${idea.relationships.user_vote && idea.relationships.user_vote.data ? 'voted' : 'not-voted' }
@@ -350,9 +344,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </IdeaImageContainer>
             }
 
-            {ideaBudget}
+            {idea.attributes.budget && hasPBContext && hasBudget &&
+              <IdeaBudget>{getFormattedBudget(locale, idea.attributes.budget, tenant.attributes.settings.core.currency)}</IdeaBudget>
+            }
 
-            <IdeaContent className={(ideaImageUrl === null && ideaBudget !== null) ? 'extraTopPadding' : ''}>
+            <IdeaContent className={(ideaImageUrl === null && hasPBContext && hasBudget) ? 'extraTopPadding' : ''}>
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
@@ -378,7 +374,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                 {hasBudget && hasPBContext &&
                   <>
-                    <Button onClick={this.assignBudget}>
+                    <Button onClick={this.assignBudget} disabled={isInBasket}>
                       <FormattedMessage {...messages.assign} />
                     </Button>
                     <SeeIdeaButton onClick={this.onCardClick}>
