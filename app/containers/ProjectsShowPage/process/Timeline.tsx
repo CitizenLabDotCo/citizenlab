@@ -12,7 +12,7 @@ import IdeaButton from 'components/IdeaButton';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { phasesStream, IPhases, getCurrentPhase } from 'services/phases';
+import { phasesStream, IPhases, IPhaseData, getCurrentPhase } from 'services/phases';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -349,7 +349,7 @@ const PhaseContainer: any = styled.div`
 
 type Props = {
   projectId: string
-  onPhaseSelected: (phaseId: string | null) => void;
+  onPhaseSelected: (phase: IPhaseData | null) => void;
 };
 
 type State = {
@@ -407,8 +407,8 @@ export default class Timeline extends PureComponent<Props, State> {
         .subscribe(([locale, currentTenant, phases]) => {
           const currentPhase = getCurrentPhase(phases.data);
           const currentPhaseId = currentPhase ? currentPhase.id : null;
-          const selectedPhaseId = this.getDefaultSelectedPhaseId(currentPhaseId, phases);
-          this.setSelectedPhaseId(selectedPhaseId);
+          const selectedPhaseId = this.getDefaultSelectedPhase(currentPhase, phases);
+          this.setSelectedPhase(selectedPhaseId);
           this.setState({ locale, currentTenant, phases, currentPhaseId, loaded: true });
         })
     ];
@@ -422,43 +422,45 @@ export default class Timeline extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getDefaultSelectedPhaseId(currentPhaseId: string | null, phases: IPhases | null) {
-    let selectedPhaseId: string | null = null;
+  getDefaultSelectedPhase(currentPhase: IPhaseData | null, phases: IPhases | null) {
+    let selectedPhase: IPhaseData | null = null;
 
-    if (isString(currentPhaseId)) {
-      selectedPhaseId = currentPhaseId;
+    if (isString(currentPhase)) {
+      selectedPhase = currentPhase;
     } else if (phases && phases.data.length > 0) {
       forEach(phases.data, (phase) => {
         const phaseTime = pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
 
         if (phaseTime === 'present' || phaseTime === 'future') {
-          selectedPhaseId = phase.id;
+          selectedPhase = phase;
           return false;
         }
 
         return true;
       });
 
-      if (!selectedPhaseId) {
-        selectedPhaseId = phases.data[phases.data.length - 1].id;
+      if (!selectedPhase) {
+        selectedPhase = phases.data[phases.data.length - 1];
       }
     }
 
-    return selectedPhaseId;
+    return selectedPhase;
   }
 
-  setSelectedPhaseId = (selectedPhaseId: string | null) => {
-    this.props.onPhaseSelected(selectedPhaseId);
-    this.setState({ selectedPhaseId });
+  setSelectedPhase = (selectedPhase: IPhaseData | null) => {
+    this.props.onPhaseSelected(selectedPhase);
+    this.setState({
+      selectedPhaseId: (selectedPhase ? selectedPhase.id : null)
+    });
   }
 
-  handleOnPhaseSelection = (phaseId: string) => (event: FormEvent<MouseEvent>) => {
+  handleOnPhaseSelection = (phase: IPhaseData) => (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    this.setSelectedPhaseId(phaseId);
+    this.setSelectedPhase(phase);
   }
 
-  handleOnPhaseSelectionFromDropdown = (phaseId: string) => {
-    this.setSelectedPhaseId(phaseId);
+  handleOnPhaseSelectionFromDropdown = (phase: IPhaseData) => {
+    this.setSelectedPhase(phase);
   }
 
   goToNextPhase = () => {
@@ -466,8 +468,8 @@ export default class Timeline extends PureComponent<Props, State> {
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const nextPhaseIndex = phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
-    const nextPhaseId = phases.data[nextPhaseIndex].id;
-    this.setSelectedPhaseId(nextPhaseId);
+    const nextPhase = phases.data[nextPhaseIndex];
+    this.setSelectedPhase(nextPhase);
   }
 
   goToPreviousPhase = () => {
@@ -475,8 +477,8 @@ export default class Timeline extends PureComponent<Props, State> {
     const phases = this.state.phases as IPhases;
     const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
     const prevPhaseIndex = selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
-    const prevPhaseId = phases.data[prevPhaseIndex].id;
-    this.setSelectedPhaseId(prevPhaseId);
+    const prevPhase = phases.data[prevPhaseIndex];
+    this.setSelectedPhase(prevPhase);
   }
 
   render() {
@@ -603,7 +605,7 @@ export default class Timeline extends PureComponent<Props, State> {
                     className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'currentPhase'} ${isSelectedPhase && 'selectedPhase'}`}
                     key={index}
                     numberOfDays={numberOfDays}
-                    onClick={this.handleOnPhaseSelection(phase.id)}
+                    onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>
                       {index + 1}

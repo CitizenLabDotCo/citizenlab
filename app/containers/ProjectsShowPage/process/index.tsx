@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -7,13 +8,16 @@ import clHistory from 'utils/cl-router/history';
 import Header from '../Header';
 import Timeline from './Timeline';
 import PhaseAbout from './PhaseAbout';
-import PhaseExpenses from './PhaseExpenses';
+import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import Warning from 'components/UI/Warning';
 import ContentContainer from 'components/ContentContainer';
+
+// services
+import { IPhaseData } from 'services/phases';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -49,7 +53,7 @@ const SecondRowContentContainer = styled(ContentContainer)`
   z-index: 0;
 `;
 
-const StyledPhaseExpenses = styled(PhaseExpenses)`
+const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: -140px;
 `;
 
@@ -72,26 +76,28 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  selectedPhaseId: string | null;
+  selectedPhase: IPhaseData | null;
 }
 
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedPhaseId: null
+      selectedPhase: null
     };
   }
 
-  handleOnPhaseSelected = (selectedPhaseId: string | null) => {
-    this.setState({ selectedPhaseId });
+  handleOnPhaseSelected = (selectedPhase: IPhaseData | null) => {
+    this.setState({ selectedPhase });
   }
 
   render() {
     const className = this.props['className'];
     const { project } = this.props;
     const { slug } = this.props.params;
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
+    const isPBPhase = (selectedPhase && selectedPhase.attributes.participation_method === 'budgeting');
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
@@ -109,7 +115,12 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 <Warning text={<FormattedMessage {...messages.archivedProject} />} />
               }
               <StyledPhaseAbout phaseId={selectedPhaseId} />
-              <StyledPhaseExpenses phaseId={selectedPhaseId} />
+              {isPBPhase &&
+                <StyledPBExpenses
+                  participationContextId={selectedPhaseId}
+                  participationContextType="Phase"
+                />
+              }
               <StyledPhaseSurvey phaseId={selectedPhaseId} />
             </ContentContainer>
           </FirstRow>
@@ -127,8 +138,12 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 }
 
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+});
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
-    {project => <ProjectTimelinePage {...inputProps} project={project} />}
-  </GetProject>
+  <Data {...inputProps}>
+    {dataProps => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+  </Data>
 ));
