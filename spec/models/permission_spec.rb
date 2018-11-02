@@ -184,5 +184,14 @@ RSpec.describe Permission, type: :model do
       @g1.save!
       expect(Permission.for_user(member).count).to eq 2
     end
+
+    it 'returns the group permissions for a user in multiple groups, without errors' do
+      member = create(:user, birthyear: 1992)
+      @g1.add_member member
+      @g1.save!
+      @g2.add_member member
+      @g2.save!
+      expect(Permission.for_user(member).count).to eq 3
+    end
   end
 end

@@ -17,6 +17,7 @@ class TenantTemplateService
 
       fields.each do |attributes|
         model = model_class.new
+        image_assignments = {}
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
             multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
@@ -29,12 +30,15 @@ class TenantTemplateService
               id, ref_class = obj_to_id_and_class[field_value]
               model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
             end
+          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url')
+            image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
           end
         end
         begin 
           model.save!
+          ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           if e.message == "Validation failed: Avatar could not download file: 404 Not Found"
             # e.message = e.message + ": #{model.email} + #{template_name}" ### doesn't work
@@ -44,6 +48,7 @@ class TenantTemplateService
         obj_to_id_and_class[attributes] = [model.id, model_class]
       end
     end
+    nil
   end
 
   private
