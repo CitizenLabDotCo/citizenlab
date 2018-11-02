@@ -3,6 +3,9 @@ module EmailCampaigns
 
     belongs_to :author, class_name: 'User', optional: true
 
+    before_validation :set_enabled, on: :create
+
+
     def self.before_send action_symbol
       @before_send_hooks ||= []
       @before_send_hooks << action_symbol
@@ -74,7 +77,12 @@ module EmailCampaigns
       CampaignPolicy
     end
 
+
     protected
+
+    def set_enabled
+      self.enabled = true if self.enabled.nil?
+    end
 
     def serialize_campaign item
       serializer = "#{self.class.name}Serializer".constantize
