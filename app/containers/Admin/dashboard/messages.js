@@ -49,7 +49,7 @@ export default defineMessages({
   },
   activeUsersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
-    defaultMessage: 'Active Users',
+    defaultMessage: 'Active users',
   },
   numberOfActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUsers',
