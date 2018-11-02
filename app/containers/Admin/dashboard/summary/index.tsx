@@ -7,16 +7,14 @@ import styled, { ThemeProvider } from 'styled-components';
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import IdeasByTimeChart from '../components/IdeasByTimeChart';
-import CommentsByTimeChart from '../components/CommentsByTimeChart';
 import VotesByTimeChart from '../components/VotesByTimeChart';
-import UsersByTimeChart from '../components/UsersByTimeChart';
 import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
 import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
 import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
+import CumulativeAreaChart from '../components/CumulativeAreaChart';
 
 // typings
 import { IOption } from 'typings';
@@ -33,6 +31,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
+import { usersByTimeCumulativeStream, ideasByTimeCumulativeStream, commentsByTimeCumulativeStream } from 'services/stats';
 
 const SSelect = styled(Select)`
   flex: 1;
@@ -215,14 +214,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
               <Row>
-                <GraphCard className="first halfWidth">
-                  <UsersByTimeChart
-                    startAt={startAt}
-                    endAt={endAt}
-                    resolution={resolution}
-                    {...this.state}
-                  />
-                </GraphCard>
+                <CumulativeAreaChart
+                  className="first halfWidth"
+                  graphTitleMessageKey="registeredUsersByTimeTitle"
+                  graphUnit="Users"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={usersByTimeCumulativeStream}
+                  {...this.state}
+                />
                 <GraphCard className="halfWidth">
                   <GraphCardInner>
                     <GraphCardTitle>
@@ -238,32 +239,26 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                 </GraphCard>
               </Row>
               <Row>
-                <GraphCard className="first halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.ideasByTimeTitle} />
-                    </GraphCardTitle>
-                    <IdeasByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-                <GraphCard className="halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.commentsByTimeTitle} />
-                    </GraphCardTitle>
-                    <CommentsByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
+                <CumulativeAreaChart
+                  className="first halfWidth"
+                  graphTitleMessageKey="ideasByTimeTitle"
+                  graphUnit="Ideas"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={ideasByTimeCumulativeStream}
+                  {...this.state}
+                />
+                <CumulativeAreaChart
+                  className="halfWidth"
+                  graphTitleMessageKey="commentsByTimeTitle"
+                  graphUnit="Comments"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={commentsByTimeCumulativeStream}
+                  {...this.state}
+                />
               </Row>
               <Row>
                 <Column className="first">
