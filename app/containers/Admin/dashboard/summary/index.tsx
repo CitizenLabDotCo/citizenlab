@@ -10,11 +10,11 @@ import IntervalControl from '../components/IntervalControl';
 import VotesByTimeChart from '../components/VotesByTimeChart';
 import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
 import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
-import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
 import CumulativeAreaChart from '../components/CumulativeAreaChart';
+import BarChartByTime from '../components/BarChartByTime';
 
 // typings
 import { IOption } from 'typings';
@@ -31,7 +31,12 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
-import { usersByTimeCumulativeStream, ideasByTimeCumulativeStream, commentsByTimeCumulativeStream } from 'services/stats';
+import {
+  usersByTimeCumulativeStream,
+  activeUsersByTimeStream,
+  ideasByTimeCumulativeStream,
+  commentsByTimeCumulativeStream,
+ } from 'services/stats';
 
 const SSelect = styled(Select)`
   flex: 1;
@@ -224,19 +229,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                   stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
-                <GraphCard className="halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.activeUsersByTimeTitle} />
-                    </GraphCardTitle>
-                    <ActiveUsersByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
+                <BarChartByTime
+                  className="halfWidth"
+                  graphUnit="ActiveUsers"
+                  graphTitleMessageKey="activeUsersByTimeTitle"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={activeUsersByTimeStream}
+                  {...this.state}
+                />
               </Row>
               <Row>
                 <CumulativeAreaChart
