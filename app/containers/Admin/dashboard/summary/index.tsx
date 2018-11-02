@@ -216,7 +216,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               <Row>
                 <CumulativeAreaChart
                   className="first halfWidth"
-                  graphTitleMessageKey="registeredUsersByTimeTitle"
+                  graphTitleMessageKey="usersByTimeTitle"
                   graphUnit="Users"
                   startAt={startAt}
                   endAt={endAt}
@@ -262,41 +262,41 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               </Row>
               <Row>
                 <Column className="first">
-                <GraphCard className="colFirst">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.votesByTimeTitle} />
-                    </GraphCardTitle>
-                    <VotesByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-                <GraphCard className="dynamicHeight">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <SSelect
-                        id="projectFilter"
-                        onChange={this.onResourceByProjectChange}
-                        value={currentResourceByProject}
-                        options={this.resourceOptions}
-                        clearable={false}
-                        borderColor="#EAEAEA"
+                  <GraphCard className="colFirst">
+                    <GraphCardInner>
+                      <GraphCardTitle>
+                        <FormattedMessage {...messages.votesByTimeTitle} />
+                      </GraphCardTitle>
+                      <VotesByTimeChart
+                        startAt={startAt}
+                        endAt={endAt}
+                        resolution={resolution}
+                        {...this.state}
                       />
-                      <FormattedMessage {...messages.byProjectTitle} />
-                    </GraphCardTitle>
-                    <ResourceByProjectWithFilterChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      selectedResource={currentResourceByProject}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-              </Column>
+                    </GraphCardInner>
+                  </GraphCard>
+                  <GraphCard className="dynamicHeight">
+                    <GraphCardInner>
+                      <GraphCardTitle>
+                        <SSelect
+                          id="projectFilter"
+                          onChange={this.onResourceByProjectChange}
+                          value={currentResourceByProject}
+                          options={this.resourceOptions}
+                          clearable={false}
+                          borderColor="#EAEAEA"
+                        />
+                        <FormattedMessage {...messages.byProjectTitle} />
+                      </GraphCardTitle>
+                      <ResourceByProjectWithFilterChart
+                        startAt={startAt}
+                        endAt={endAt}
+                        selectedResource={currentResourceByProject}
+                        {...this.state}
+                      />
+                    </GraphCardInner>
+                  </GraphCard>
+                </Column>
                 <GraphCard className="halfWidth dynamicHeight">
                   <GraphCardInner>
                     <GraphCardTitle>
