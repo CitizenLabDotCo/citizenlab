@@ -10,7 +10,7 @@ import { IOption } from 'typings';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
