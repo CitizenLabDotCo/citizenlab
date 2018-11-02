@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
     defaultMessage: 'No users',
   },
+  emptyActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyActiveUsers',
+    defaultMessage: 'No active users',
+  },
   emptyIdeas: {
     id: 'app.containers.AdminPage.DashboardPage.emptyIdeas',
     defaultMessage: 'No ideas',
