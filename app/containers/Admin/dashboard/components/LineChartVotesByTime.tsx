@@ -1,12 +1,12 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash-es';
+import { map, isNumber, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
 import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../messages';
 import EmptyGraph from './EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardTitle } from '../';
+import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -15,8 +15,10 @@ import { InjectedIntlProps } from 'react-intl';
 type State = {
   serie: {
     date: string | number,
-    up: number, down: number,
-    total: number, code: string
+    up: number,
+    down: number,
+    total: number,
+    code: string
   }[] | null;
 };
 
@@ -57,7 +59,6 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       currentGroupFilter,
       currentTopicFilter,
       currentProjectFilter
-
       );
   }
 
@@ -95,6 +96,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
 
   convertToGraphFormat(serie: IVotesByTimeCumulative) {
     const { up, down, total } = serie;
+
     return map(total, (value, key) => ({
       total: value,
       down: down[key],
@@ -121,12 +123,13 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
         start_at: startAt,
         end_at: endAt,
         interval: resolution,
+        project: currentProjectFilter,
         group: currentGroupFilter,
         topic: currentTopicFilter,
-        project: currentProjectFilter
       }
     }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
+      const validSerie = !isEmpty(serie.down) && !isEmpty(serie.up) && !isEmpty(serie.total);
+      const convertedSerie = validSerie ? this.convertToGraphFormat(serie) : null;
       this.setState({ serie: convertedSerie });
     });
   }
@@ -152,19 +155,44 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     });
   }
 
+  formatSerieChange = (serieChange: number) => {
+    if (serieChange > 0) {
+      return `(+${serieChange.toString()})`;
+    } else if (serieChange < 0) {
+      return `(${serieChange.toString()})`;
+    }
+    return null;
+  }
+
   render() {
     const { chartLabelSize, chartLabelColor, chartStroke, chartStrokeGreen, chartStrokeRed } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
     const isEmpty = !serie || serie.every(item => (item.up === 0) && (item.down === 0) && (item.total === 0));
+    const firstSerieValue = serie && serie[0].total;
+    const lastSerieValue = serie && serie[serie.length - 1].total;
+    const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
+    const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
-    if (!isEmpty) {
-      return (
-        <GraphCard className={className}>
+    return (
+      <GraphCard className={className}>
+        {!isEmpty ?
           <GraphCardInner>
             <GraphCardTitle>
               <FormattedMessage {...messages.votesByTimeTitle} />
+              <GraphCardFigureContainer>
+                <GraphCardFigure>
+                  {lastSerieValue}
+                </GraphCardFigure>
+                <GraphCardFigureChange
+                  className={
+                    isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
+                  }
+                >
+                  {formattedSerieChange}
+                </GraphCardFigureChange>
+              </GraphCardFigureContainer>
             </GraphCardTitle>
             <ResponsiveContainer>
               <LineChart data={serie} margin={{ right: 40 }}>
@@ -206,17 +234,19 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Legend />
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: '20px'
+                  }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </GraphCardInner>
-        </GraphCard>
-      );
-    } else {
-      return (
-        <EmptyGraph unit="Votes" />
-      );
-    }
+          :
+          <EmptyGraph unit="Votes" />
+        }
+      </GraphCard>
+    );
   }
 }
 
