@@ -163,7 +163,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitleMessageKey, graphUnit } = this.props;
+    const { graphTitleMessageKey, graphUnit } = this.props;
+    let { className } = this.props;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
@@ -171,6 +172,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const lastSerieValue = serie && serie[serie.length - 1].value;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
+    className = serieChange && serieChange > 0 ? `${className} increase` : `${className} decrease`;
 
     return (
       <GraphCard className={className}>
@@ -182,7 +184,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                 <GraphCardFigure>
                   {lastSerieValue}
                 </GraphCardFigure>
-                <GraphCardFigureChange>
+                <GraphCardFigureChange className={className}>
                   {formattedSerieChange}
                 </GraphCardFigureChange>
               </GraphCardFigureContainer>
