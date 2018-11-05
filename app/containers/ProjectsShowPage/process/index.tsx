@@ -67,7 +67,9 @@ const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-bottom: 70px;
 `;
 
-interface InputProps {}
+interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
   project: GetProjectChildProps;
@@ -92,8 +94,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    const className = this.props['className'];
-    const { project } = this.props;
+    const { project, className } = this.props;
     const { slug } = this.props.params;
     const { selectedPhase } = this.state;
     const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);

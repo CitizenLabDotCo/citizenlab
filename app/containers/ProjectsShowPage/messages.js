@@ -137,6 +137,14 @@ export default defineMessages({
     id: 'app.containers.Projects.yourExpenses',
     defaultMessage: 'Your expenses',
   },
+  budgetValidated: {
+    id: 'app.containers.Projects.budgetValidated',
+    defaultMessage: 'Expenses validated, congratulations!',
+  },
+  budgetExceeded: {
+    id: 'app.containers.Projects.budgetExceeded',
+    defaultMessage: 'Your expenses exceed the total assignable budget',
+  },
   totalBudget: {
     id: 'app.containers.Projects.totalBudget',
     defaultMessage: 'Total budget',
@@ -157,4 +165,8 @@ export default defineMessages({
     id: 'app.containers.Projects.phaseSelectorTitle',
     defaultMessage: 'Phase selector',
   },
+  noExpenses: {
+    id: 'app.containers.Projects.noExpenses',
+    defaultMessage: `You don't have any expenses yet`,
+  }
 });

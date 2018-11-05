@@ -30,6 +30,7 @@ import { addBasket, updateBasket } from 'services/baskets';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import streams from 'utils/streams';
 
 // i18n
 import T from 'components/T';
@@ -226,6 +227,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
+  processing: boolean;
 }
 
 export const namespace = 'components/IdeaCard/index';
@@ -235,6 +237,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       showVotingDisabled: null,
+      processing: false
     };
   }
 
@@ -270,49 +273,62 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
-  assignBudget = (event: FormEvent<any>) => {
+  assignBudget = (isInBasket: boolean) => async (event: FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
 
     const { idea, authUser, basket, participationMethod, participationContextId, participationContextType } = this.props;
 
     if (participationMethod === 'budgeting' && participationContextId && participationContextType && !isNilOrError(idea) && !isNilOrError(authUser)) {
+      this.setState({ processing: true });
+
       if (!isNilOrError(basket)) {
-        updateBasket(basket.id, {
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: participationContextType,
-          idea_ids: [
-            ...basket.relationships.ideas.data.map(idea => idea.id),
+        let newIdeas: string[] = [];
+
+        if (isInBasket) {
+          newIdeas = basket.relationships.ideas.data.filter((basketIdea) => {
+            return basketIdea.id !== idea.id;
+          }).map((basketIdea) => {
+            return basketIdea.id;
+          });
+        } else {
+          newIdeas = [
+            ...basket.relationships.ideas.data.map(basketIdea => basketIdea.id),
             idea.id
-          ]
-        }).then((response) => {
-          console.log('updateBasket succes');
-          console.log(response);
-        }).catch((error) => {
-          console.log('updateBasket error');
-          console.log(error);
-        });
+          ];
+        }
+
+        try {
+          await updateBasket(basket.id, {
+            user_id: authUser.id,
+            participation_context_id: participationContextId,
+            participation_context_type: participationContextType,
+            idea_ids: newIdeas
+          });
+        } catch (error) {
+          streams.fetchAllWith({ dataId: [basket.id] });
+          this.setState({ processing: false });
+        }
       } else {
-        addBasket({
-          user_id: authUser.id,
-          participation_context_id: participationContextId,
-          participation_context_type: participationContextType,
-          idea_ids: [idea.id]
-        }).then((response) => {
-          console.log('addBasket succes');
-          console.log(response);
-        }).catch((error) => {
-          console.log('addBasket error');
-          console.log(error);
-        });
+        try {
+          await addBasket({
+            user_id: authUser.id,
+            participation_context_id: participationContextId,
+            participation_context_type: participationContextType,
+            idea_ids: [idea.id]
+          });
+        } catch (error) {
+          this.setState({ processing: false });
+        }
       }
+
+      this.setState({ processing: false });
     }
   }
 
   render() {
     const { idea, ideaImage, ideaAuthor, tenant, locale, location, participationMethod, basket, intl: { formatMessage } } = this.props;
-    const { showVotingDisabled } = this.state;
+    const { showVotingDisabled, processing } = this.state;
 
     if (!isNilOrError(location) && !isNilOrError(tenant) && !isNilOrError(locale) && !isNilOrError(idea)) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
@@ -324,6 +340,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const hasBudget = !!idea.attributes.budget;
       const hasPBContext = (participationMethod === 'budgeting');
       const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
+      const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
       const isInBasket = includes(basketIdeaIds, idea.id);
       const className = `${this.props['className']}
         e2e-idea-card
@@ -374,8 +391,17 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                 {hasBudget && hasPBContext &&
                   <>
-                    <Button onClick={this.assignBudget} disabled={isInBasket}>
-                      <FormattedMessage {...messages.assign} />
+                    <Button
+                      onClick={this.assignBudget(isInBasket)}
+                      processing={processing}
+                      bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
+                      disabled={budgetExceedsLimit && !isInBasket}
+                    >
+                      {!isInBasket ? (
+                        <FormattedMessage {...messages.assign} />
+                      ) : (
+                        <FormattedMessage {...messages.undo} />
+                      )}
                     </Button>
                     <SeeIdeaButton onClick={this.onCardClick}>
                       <FormattedMessage {...messages.seeIdea} />
