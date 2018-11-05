@@ -22,6 +22,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // analytics
+import ConsentManager from 'components/ConsentManager';
 import { trackPage, trackIdentification } from 'utils/analytics';
 
 // components
@@ -232,6 +233,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 <div id="modal-portal" />
 
                 <Navbar />
+                <ConsentManager />
 
                 <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">

@@ -81,4 +81,28 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.basketsCountTooltip',
     defaultMessage: 'The number of users that added this idea to their participatory budget',
   },
+  exportIdeas: {
+    id: 'app.components.admin.IdeaManager.exportIdeas',
+    defaultMessage: 'Export all ideas (.xslx)',
+  },
+  exportIdeasProjects: {
+    id: 'app.components.admin.IdeaManager.exportIdeasProjects',
+    defaultMessage: 'Export ideas for this project (.xslx)',
+  },
+  exportSelectedIdeas: {
+    id: 'app.components.admin.IdeaManager.exportSelectedIdeas',
+    defaultMessage: 'Export selected ideas (.xslx)',
+  },
+  exportComments: {
+    id: 'app.components.admin.IdeaManager.exportComments',
+    defaultMessage: 'Export all comments (.xslx)',
+  },
+  exportCommentsProjects: {
+    id: 'app.components.admin.IdeaManager.exportCommentsProjects',
+    defaultMessage: 'Export comments for this project (.xslx)',
+  },
+  exportSelectedComments: {
+    id: 'app.components.admin.IdeaManager.exportSelectedComments',
+    defaultMessage: 'Export comments for selected ideas (.xslx)',
+  },
 });

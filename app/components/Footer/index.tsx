@@ -19,8 +19,11 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
+import eventEmitter from 'utils/eventEmitter';
+
 // style
 import styled from 'styled-components';
+import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
@@ -103,7 +106,7 @@ const PagesNav = styled.nav`
   `}
 `;
 
-const StyledLink = styled(Link) `
+const StyledThing = styled(Polymorph)`
   color: ${colors.label};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
@@ -119,6 +122,8 @@ const StyledLink = styled(Link) `
     line-height: 16px;
   `}
 `;
+const StyledButton = StyledThing.withComponent('button');
+const StyledLink = StyledThing.withComponent(Link);
 
 const Separator = styled.span`
   color: ${colors.label};
@@ -134,7 +139,7 @@ const Separator = styled.span`
   `}
 `;
 
-const CitizenLabLogo = styled(Icon) `
+const CitizenLabLogo = styled(Icon)`
   height: 22px;
   fill: ${colors.label};
   margin-left: 8px;
@@ -178,6 +183,8 @@ const PoweredBy = styled.a`
     }
   `}
 `;
+
+const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
 type Props = {
   showCityLogoSection?: boolean | undefined;
@@ -262,7 +269,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
                   <li key={slug}>
-                    {index !== 0  &&
+                    {index !== 0 &&
                       <Separator>•</Separator>
                     }
                     <StyledLink to={`/pages/${slug}`}>
@@ -270,6 +277,12 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                     </StyledLink>
                   </li>
                 ))}
+                <li>
+                  <Separator>•</Separator>
+                  <StyledButton onClick={openConsentManager}>
+                    <FormattedMessage {...messages.cookieSettings} />
+                  </StyledButton>
+                </li>
               </ul>
             </PagesNav>
 

@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Add files',
   },
   fileInputDescription: {
-    id: 'app.components.FileUploader.fileInputDescription.',
+    id: 'app.components.FileUploader.fileInputDescription',
     defaultMessage: 'Select a file to upload...',
   },
 });

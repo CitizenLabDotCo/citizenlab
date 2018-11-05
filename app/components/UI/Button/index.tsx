@@ -330,10 +330,10 @@ class Button extends PureComponent<Props, State> {
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
+        {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
         {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme}/>}
+        {icon && iconPos === 'right' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}
         {processing &&
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
@@ -365,14 +365,27 @@ class Button extends PureComponent<Props, State> {
         borderThickness={borderThickness}
       >
         {linkTo ? (
-          (typeof(linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
-            <StyledA innerRef={this.props.setSubmitButtonRef} href={(linkTo as string)} target={openInNewTab ? '_blank' : '_self'} className={buttonClassnames}>{childContent}</StyledA>
+          (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (
+            <StyledA
+              innerRef={this.props.setSubmitButtonRef}
+              href={(linkTo as string)}
+              target={openInNewTab ? '_blank' : '_self'}
+              className={buttonClassnames}
+            >
+              {childContent}
+            </StyledA>
           ) : (
-            <StyledLink innerRef={this.props.setSubmitButtonRef} to={linkTo} className={buttonClassnames}>{childContent}</StyledLink>
-          )
+              <StyledLink
+                innerRef={this.props.setSubmitButtonRef}
+                to={linkTo}
+                className={buttonClassnames}
+              >
+                {childContent}
+              </StyledLink>
+            )
         ) : (
-          <StyledButton innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
-        )}
+            <StyledButton disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+          )}
       </Container>
     );
   }

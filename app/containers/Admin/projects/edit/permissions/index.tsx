@@ -14,6 +14,8 @@ import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
+import FeatureFlag from 'components/FeatureFlag';
+import Granular from './Granular';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
@@ -234,6 +236,10 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               />
             }
           </StyledSection>
+
+          <FeatureFlag name="granular_permissions">
+            {project && <Granular project={project.data} />}
+          </FeatureFlag>
 
           <Section>
             {project &&
