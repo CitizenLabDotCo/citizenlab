@@ -415,8 +415,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <FormattedMessage
                   {...messages.gdprApproval}
                   values={{
-                    tacLink: <Link to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                    ppLink: <Link to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
+                    tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                    ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
                   }}
                 />
               }

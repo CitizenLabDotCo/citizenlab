@@ -1,5 +1,13 @@
 # Changelog
 
+## 2018-11-05
+
+### Fixed
+- Clicking Terms & Conditions links during sign up now opens in a new tab
+
+### Added
+- Azure Active Directory login support, used for VUB Net ID
+
 ## 2018-10-25
 
 ### Fixed
