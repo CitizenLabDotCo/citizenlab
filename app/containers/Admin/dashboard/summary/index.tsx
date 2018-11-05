@@ -7,7 +7,6 @@ import styled, { ThemeProvider } from 'styled-components';
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import VotesByTimeChart from '../components/VotesByTimeChart';
 import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
 import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
 import ChartFilters from '../components/ChartFilters';
@@ -15,6 +14,7 @@ import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardT
 import Select from 'components/UI/Select';
 import CumulativeAreaChart from '../components/CumulativeAreaChart';
 import BarChartByTime from '../components/BarChartByTime';
+import LineChartVotesByTime from '../components/LineChartVotesByTime';
 
 // typings
 import { IOption } from 'typings';
@@ -267,19 +267,13 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               </Row>
               <Row>
                 <Column className="first">
-                  <GraphCard className="colFirst">
-                    <GraphCardInner>
-                      <GraphCardTitle>
-                        <FormattedMessage {...messages.votesByTimeTitle} />
-                      </GraphCardTitle>
-                      <VotesByTimeChart
-                        startAt={startAt}
-                        endAt={endAt}
-                        resolution={resolution}
-                        {...this.state}
-                      />
-                    </GraphCardInner>
-                  </GraphCard>
+                  <LineChartVotesByTime
+                    className="colFirst"
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    {...this.state}
+                  />
                   <GraphCard className="dynamicHeight">
                     <GraphCardInner>
                       <GraphCardTitle>
