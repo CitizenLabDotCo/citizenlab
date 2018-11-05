@@ -116,9 +116,20 @@ export const GraphCardFigureContainer = styled.div`
 
 export const GraphCardFigure = styled.span`
   margin-right: 5px;
+  font-weight: bold;
 `;
 
-export const GraphCardFigureChange = styled.span``;
+export const GraphCardFigureChange = styled.span`
+  font-size: ${fontSizes.base}px;
+
+  &.increase {
+    color: ${colors.clGreenSuccess};
+  }
+
+  &.decrease {
+    color: ${colors.clRedError};
+  }
+`;
 
 interface Props {
   authUser: GetAuthUserChildProps;
