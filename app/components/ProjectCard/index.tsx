@@ -302,7 +302,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <T value={project.attributes.description_preview_multiloc} />
               </ProjectDescription>
               <ProjectMetaItems>
-                {showIdeasCount &&
+                {showIdeasCount && ideasCount > 0 &&
                   <IdeaCount to={projectIdeasUrl}>
                     <IdeaCountIcon name="idea" />
                     <IdeaCountText>

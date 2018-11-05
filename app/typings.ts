@@ -76,3 +76,5 @@ export interface CRUDParams {
   errors: CLErrors | null;
   saved: boolean;
 }
+
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

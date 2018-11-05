@@ -35,6 +35,10 @@ export interface ITenantSettings {
     domicile: boolean;
     education: boolean;
   };
+  password_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   facebook_login?: {
     allowed: boolean;
     app_id: string;
@@ -45,6 +49,14 @@ export interface ITenantSettings {
     allowed: boolean;
     client_id: string;
     enabled: boolean;
+  };
+  azure_ad_login?: {
+    allowed: boolean;
+    enabled: boolean;
+    tenant: string;
+    client_id: string;
+    logo_url: string;
+    login_mechanism_name: string;
   };
   pages?: TenantFeature;
   groups?: TenantFeature;

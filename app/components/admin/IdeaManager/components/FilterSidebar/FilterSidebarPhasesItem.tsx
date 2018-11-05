@@ -15,7 +15,7 @@ interface Props {
   connectDropTarget: any;
 }
 
-class FilterSidebarPhasesItem extends React.Component<Props> {
+class FilterSidebarPhasesItem extends React.PureComponent<Props> {
   render() {
     const { phase, active, onClick, connectDropTarget, isOver, canDrop, phaseNumber } = this.props;
     const disabled = !canContainIdeas(phase);

@@ -1,100 +1,79 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, Observable, combineLatest, of } from 'rxjs';
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import styled from 'styled-components';
 
 // services
-import { IProjectData, projectByIdStream, IProject } from 'services/projects';
-import { IPhase, IPhaseData, phaseStream } from 'services/phases';
-import { postingButtonState } from 'services/ideaPostingRules';
+import { postingButtonState, DisabledReasons } from 'services/ideaPostingRules';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import Button, { ButtonStyles } from 'components/UI/Button';
+import Tooltip from 'components/UI/Tooltip';
+import Icon from 'components/UI/Icon';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
-type Props = {
+// styling
+import { fontSizes, colors } from 'utils/styleUtils';
+
+const StyledIcon = styled(Icon)`
+  height: 2rem;
+  width: 2rem;
+  margin-right: 1rem;
+`;
+
+const TooltipWrapper = styled.div`
+  padding: 15px;
+  min-width: 300px;
+  color: ${colors.popoverDarkFg};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+`;
+
+interface DataProps {
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
+  authUser: GetAuthUserChildProps;
+}
+
+interface InputProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
   style?: ButtonStyles;
   size?: '1' | '2' | '3' | '4';
   fullWidth?: boolean;
   padding?: string;
-};
+}
 
-type State = {
-  project?: IProjectData | undefined;
-  phase?: IPhaseData | undefined;
-};
+interface Props extends InputProps, DataProps {}
 
-class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
-  projectId$: BehaviorSubject<string | undefined>;
-  phaseId$: BehaviorSubject<string | undefined>;
-  subscriptions: Subscription[];
+class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      project: undefined,
-      phase: undefined
-    };
-    this.projectId$ = new BehaviorSubject(undefined);
-    this.phaseId$ = new BehaviorSubject(undefined);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const projectId$ = this.projectId$.pipe(distinctUntilChanged());
-    const phaseId$ = this.phaseId$.pipe(distinctUntilChanged());
-
-    this.projectId$.next(this.props.projectId);
-    this.phaseId$.next(this.props.phaseId);
-
-    this.subscriptions = [
-      combineLatest(
-        projectId$,
-        phaseId$
-      ).pipe(
-        switchMap(([projectId, phaseId]) => {
-          const phase$: Observable<IPhase | undefined> = (phaseId ? phaseStream(phaseId).observable : of(undefined));
-
-          return phase$.pipe(
-            map((phase) => ({
-              phase,
-              projectId: (phase ? phase.data.relationships.project.data.id : projectId)
-            })),
-            switchMap(({ projectId, phase }) => {
-              const project$: Observable<IProject | undefined> = (projectId ? projectByIdStream(projectId).observable : of(undefined));
-
-              return project$.pipe(
-                map(project => ({ project, phase }))
-              );
-            })
-          );
-        })
-      ).subscribe(({ project, phase }) => {
-        this.setState({
-          project: (project ? project.data : undefined),
-          phase: (phase ? phase.data : undefined)
-        });
-      })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.projectId$.next(this.props.projectId);
-    this.phaseId$.next(this.props.phaseId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+  disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
+    notPermitted: messages.postingNotPermitted,
+    maybeNotPermitted: messages.postingMaybeNotPermitted,
+    postingDisabled: messages.postingHereImpossible,
+    projectInactive: messages.postingProjectInactive,
+    notActivePhase: messages.postingNotActivePhase,
+    futureEnabled: messages.postingHereImpossible,
+  };
 
   render() {
-    const { project, phase } = this.state;
-    const { show, enabled } = postingButtonState({ project, phase });
+    const { project, phase, authUser } = this.props;
+
+    const { show, enabled, disabledReason } = postingButtonState({
+      project: isNilOrError(project) ? null : project,
+      phaseContext: phase,
+      signedIn: !isNilOrError(authUser)
+    });
 
     if (show) {
       let { style, size, fullWidth } = this.props;
@@ -106,16 +85,33 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       fullWidth = (fullWidth || false);
 
       return (
-        <Button
-          className={this.props['className']}
-          linkTo={(project ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
-          style={style}
-          size={size}
-          padding={padding}
-          text={startAnIdeaText}
-          disabled={!enabled}
-          fullWidth={fullWidth}
-        />
+        <Tooltip
+          enabled={!enabled && !!disabledReason}
+          content={disabledReason ?
+            <TooltipWrapper>
+              <StyledIcon name="lock-outlined" />
+              <FormattedMessage
+                {...this.disabledMessages[disabledReason]}
+              />
+            </TooltipWrapper>
+          :
+            null
+          }
+          backgroundColor={colors.popoverDarkBg}
+          borderColor={colors.popoverDarkBg}
+          top="57px"
+        >
+          <Button
+            className={this.props['className']}
+            linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
+            style={style}
+            size={size}
+            padding={padding}
+            text={startAnIdeaText}
+            disabled={!enabled}
+            fullWidth={fullWidth}
+          />
+        </Tooltip>
       );
     }
 
@@ -123,4 +119,16 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(IdeaButton);
+const IdeaButtonWithHOCs = injectIntl<Props>(IdeaButton);
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {(dataProps) => <IdeaButtonWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
+);

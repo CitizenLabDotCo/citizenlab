@@ -28,7 +28,6 @@ import { Locale } from 'typings';
 const Container = styled.div`
   position: relative;
   cursor: pointer;
-
   * {
     user-select: none;
   }
@@ -54,11 +53,9 @@ const OpenMenuButton = styled.button`
   display: flex;
   align-items: center;
   outline: none;
-
   &:hover,
   &:focus {
     color: #000;
-
     ${DropdownItemIcon} {
       fill: #000;
     }
@@ -86,16 +83,13 @@ const ListItem = styled.button`
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;
-
   &.last {
     margin-bottom: 0px;
   }
-
   &:hover,
   &:focus,
   &.active {
     background: ${colors.clDropdownHoverBackground};
-
     ${ListItemText} {
       color: #000;
     }
@@ -182,17 +176,14 @@ class LanguageSelector extends PureComponent<Props, State> {
         </Container>
       );
     }
-
     return null;
   }
 }
-
 const Data = adopt<DataProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />
 });
-
 export default () => (
   <Data>
     {dataProps => <LanguageSelector {...dataProps} />}

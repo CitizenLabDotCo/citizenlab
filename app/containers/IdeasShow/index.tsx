@@ -690,7 +690,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               ...moreActions,
               {
                 label: <FormattedMessage {...messages.reportAsSpam} />,
-                handler: this.openSpamModal
+                handler: this.openSpamModal,
               }
             ];
           }
@@ -910,7 +910,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                   emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                  emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                   utmParams={utmParams}
                 />
 
@@ -970,7 +970,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                         url={ideaUrl}
                         twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                         emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl })}
+                        emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
@@ -989,8 +989,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          <Modal opened={this.state.spamModalVisible} close={this.closeSpamModal}>
-            <SpamReportForm resourceId={idea.data.id} resourceType="ideas" />
+          <Modal
+            opened={this.state.spamModalVisible}
+            close={this.closeSpamModal}
+            label={formatMessage(messages.spanModalLabelIdea)}
+          >
+            <SpamReportForm
+              resourceId={idea.data.id}
+              resourceType="ideas"
+            />
           </Modal>
         </>
       );

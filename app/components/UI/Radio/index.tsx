@@ -10,7 +10,7 @@ const Wrapper = styled.label`
   cursor: pointer;
 `;
 
-const CustomRadio = styled<any, 'div'>('div')`
+export const CustomRadio = styled<any, 'div'>('div')`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -38,7 +38,7 @@ const CustomRadio = styled<any, 'div'>('div')`
   }
 `;
 
-const Checked = styled.div`
+export const Checked = styled.div`
   flex: 0 0 12px;
   width: 12px;
   height: 12px;
@@ -68,6 +68,13 @@ export interface Props {
 }
 
 export default class Radio extends React.PureComponent<Props> {
+
+  handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.handleChange();
+    }
+  }
+
   handleChange = () => {
     if (!this.props.disabled) {
       if (this.props.onChange) this.props.onChange(this.props.value);
@@ -91,6 +98,8 @@ export default class Radio extends React.PureComponent<Props> {
           onChange={this.handleChange}
         />
         <CustomRadio
+          tabIndex={0}
+          onKeyPress={this.handleKeyPress}
           className={`${checked ? 'checked' : ''}`}
           disabled={this.props.disabled}
         >

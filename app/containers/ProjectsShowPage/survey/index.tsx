@@ -30,6 +30,7 @@ export default withRouter((props: WithRouterProps) => (
             <SurveyContainer>
               {project &&
                 <Survey
+                  projectId={project.id}
                   surveyService={project.attributes.survey_service}
                   surveyEmbedUrl={project.attributes.survey_embed_url}
                 />

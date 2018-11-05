@@ -51,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.landing.exploreAllProjects',
     defaultMessage: 'Explore all projects',
   },
+  modalShareLabel: {
+    id: 'app.containers.landing.modalShareLabel',
+    defaultMessage: 'Your idea was posted, share it now to reach more votes!',
+  },
   shareTitle: {
     id: 'app.containers.landing.shareTitle',
     defaultMessage: 'Congratulations, your idea was successfully posted!',

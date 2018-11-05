@@ -83,6 +83,7 @@ export type InputProps = {
   maxCharCount?: number | undefined;
   disabled?: boolean;
   spellCheck?: boolean;
+  readOnly?: boolean;
 };
 
 interface DataProps {
@@ -132,7 +133,7 @@ class Input extends React.PureComponent<Props, State> {
     let { value, placeholder, error } = this.props;
     const className = this.props['className'];
     const { formikContext } = this.props;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck } = this.props;
+    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
 
@@ -171,6 +172,7 @@ class Input extends React.PureComponent<Props, State> {
           min={min}
           autoFocus={autoFocus}
           disabled={disabled}
+          readOnly={readOnly}
           {...optionalProps}
         />
 
