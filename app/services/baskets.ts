@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { IRelationship, Multiloc } from 'typings';
+import { IRelationship } from 'typings';
 
 const apiEndpoint = `${API_PATH}/baskets`;
 
@@ -8,8 +8,9 @@ export interface IBasketData {
   id: string;
   type: string;
   attributes: {
-    title_multiloc: Multiloc;
-    description_multiloc: Multiloc;
+    submitted_at: string,
+    total_budget: number,
+    'budget_exceeds_limit?': false
   };
   relationships: {
     participation_context: {

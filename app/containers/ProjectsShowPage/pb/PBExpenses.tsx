@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
-import { get, isNumber, round } from 'lodash-es';
+import { get, round } from 'lodash-es';
+import moment from 'moment';
 
 // services
-import { IIdeaData } from 'services/ideas';
+import { updateBasket } from 'services/baskets';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -12,12 +13,11 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // components
 import Button from 'components/UI/Button';
 import Dropdown from 'components/UI/Dropdown';
-// import Icon from 'components/UI/Icon';
+import Icon from 'components/UI/Icon';
 import PBBasket from './PBBasket';
 
 // i18n
@@ -46,12 +46,31 @@ const Header = styled.div`
 `;
 
 const Title = styled.h1`
+  min-height: 20px;
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
-  line-height: ${fontSizes.large}px;
+  line-height: 21px;
   font-weight: 500;
+  display: flex;
+  align-items: center;
   padding: 0;
   margin: 0;
+  margin-right: 15px;
+
+  &.validationError {
+    color: ${colors.clRedError};
+    fill: ${colors.clRedError};
+  }
+
+  &.validationSuccess {
+    color: ${colors.clGreenSuccess};
+    fill: ${colors.clGreenSuccess};
+  }
+`;
+
+const TitleIcon = styled(Icon)`
+  height: 20px;
+  margin-right: 10px;
 `;
 
 const Spacer = styled.div`
@@ -73,6 +92,14 @@ const BudgetLabel = styled.span`
 
 const BudgetAmount = styled.span`
   font-weight: 500;
+
+  &.red {
+    color: ${colors.clRedError};
+  }
+
+  &.green {
+    color: ${colors.clGreenSuccess};
+  }
 `;
 
 const ProgressBar = styled.div`
@@ -92,17 +119,30 @@ const ProgressBar = styled.div`
 const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
-  background: ${colors. adminTextColor};
+  background: ${colors.adminTextColor};
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
+
+  &.red {
+    background: ${colors.clRedError};
+  }
+
+  &.green {
+    background: ${colors.clGreenSuccess};
+  }
 `;
 
 const ProgressBarPercentage = styled.span`
   color: #fff;
   font-size: 14px;
   font-weight: 500;
+
+  &.hidden {
+    display: none;
+  }
 `;
 
 const Footer = styled.div`
@@ -125,6 +165,8 @@ const Budgets = styled.div`
 `;
 
 const TotalBudgetDesktop = Budget.extend`
+  white-space: nowrap;
+
   ${media.smallerThanMinTablet`
     display: none;
   `}
@@ -153,9 +195,7 @@ const ManageBudgetWrapper = styled.div`
   flex-direction: column;
 `;
 
-const ManageBudgetButton = styled(Button)`
-  margin-right: 10px;
-`;
+const ManageBudgetButton = styled(Button)``;
 
 const DropdownWrapper = styled.div`
   width: 100%;
@@ -166,6 +206,8 @@ const DropdownWrapper = styled.div`
 `;
 
 const SubmitExpensesButton = styled(Button)`
+  margin-left: 10px;
+
   ${media.smallerThanMinTablet`
     display: none;
   `}
@@ -183,45 +225,72 @@ interface DataProps {
   basket: GetBasketChildProps;
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
-  ideaList: GetIdeaListChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
+  submitState: 'clean' | 'dirty';
+  processing: boolean;
 }
 
 class PBExpenses extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      dropdownOpened: false
+      dropdownOpened: false,
+      submitState: 'clean',
+      processing: false
     };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { basket } = this.props;
+    const prevSubmittedAt = get(prevProps, 'basket.attributes.submitted_at', null);
+    const submittedAt = get(basket, 'attributes.submitted_at', null);
+
+    if ((prevProps.basket !== basket) && (prevSubmittedAt === submittedAt)) {
+      this.setState({ submitState: 'dirty' });
+    }
   }
 
   toggleExpensesDropdown = () => {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleManageBudgetOnClick = () => {
-
-  }
-
   handleSubmitExpensesOnClick = () => {
+    const { basket } = this.props;
+    const now = moment().format();
 
+    if (!isNilOrError(basket)) {
+      this.setState({ processing: true });
+
+      updateBasket(basket.id, {
+        submitted_at: now
+      }).then(() => {
+        this.setState({ submitState: 'clean', processing: false });
+      }).catch((_error) => {
+        this.setState({ submitState: 'clean', processing: false });
+      });
+    }
   }
 
   render() {
     const { locale, tenant } = this.props;
+    const { submitState, processing } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const { participationContextType, participationContextId, project, phase, basket, ideaList, className } = this.props;
+      const { participationContextType, participationContextId, project, phase, basket, className } = this.props;
       const { dropdownOpened } = this.state;
       const currency = tenant.attributes.settings.core.currency;
+      const spentBudget = (!isNilOrError(basket) ? basket.attributes.total_budget : 0);
+      const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
+      const submittedAt = (!isNilOrError(basket) ? basket.attributes.submitted_at : null);
       let totalBudget = 0;
-      let spentBudget = 0;
       let progress = 0;
+      let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'Project' && !isNilOrError(project)) {
         totalBudget = project.attributes.max_budget as number;
@@ -229,40 +298,42 @@ class PBExpenses extends PureComponent<Props, State> {
         totalBudget = phase.attributes.max_budget as number;
       }
 
-      if (!isNilOrError(ideaList) && ideaList.length > 0) {
-        spentBudget = ideaList.filter((idea) => {
-          return !isNilOrError(idea) && idea.attributes.budget && isNumber(idea.attributes.budget);
-        })
-        .map((idea: IIdeaData) => {
-          return idea.attributes.budget as number;
-        })
-        .reduce((total, ideaBudget) => {
-          const newTotal = total + ideaBudget;
-          return newTotal;
-        }, 0);
+      if (totalBudget > 0 && spentBudget > 0) {
+        progress = round((spentBudget / totalBudget) * 100, 1);
       }
 
-      progress = round((spentBudget / totalBudget) * 100, 1);
+      if (budgetExceedsLimit) {
+        validationStatus = 'validationError';
+      } else if (submittedAt && submitState === 'clean' && !budgetExceedsLimit && spentBudget > 0) {
+        validationStatus = 'validationSuccess';
+      }
 
-      console.log('tenant');
-      console.log(tenant);
-      console.log('phase:');
-      console.log(phase);
-      console.log('basket:');
-      console.log(basket);
-      console.log('ideaList:');
-      console.log(ideaList);
-      console.log('totalBudget: ' + totalBudget);
-      console.log('spentBudget: ' + spentBudget);
-      console.log('progress: ' + progress);
-      console.log('currency: ' + currency);
+      if (validationStatus === 'validationSuccess' && submitState === 'clean') {
+        progressBarColor = 'green';
+      } else if (budgetExceedsLimit) {
+        progressBarColor = 'red';
+      }
 
       return (
         <Container className={className}>
           <InnerContainer>
-  `            <Header>
-              <Title>
-                <FormattedMessage {...messages.yourExpenses} />
+            <Header>
+              <Title className={validationStatus}>
+                {validationStatus === 'notValidated' &&
+                  <FormattedMessage {...messages.yourExpenses} />
+                }
+                {validationStatus === 'validationError' &&
+                  <>
+                    <TitleIcon name="error" />
+                    <FormattedMessage {...messages.budgetExceeded} />
+                  </>
+                }
+                {validationStatus === 'validationSuccess' &&
+                  <>
+                    <TitleIcon name="checkmark" />
+                    <FormattedMessage {...messages.budgetValidated} />
+                  </>
+                }
               </Title>
               <Spacer />
               <TotalBudgetDesktop>
@@ -276,8 +347,11 @@ class PBExpenses extends PureComponent<Props, State> {
             </Header>
 
             <ProgressBar>
-              <ProgressBarOverlay progress={progress}>
-                <ProgressBarPercentage>{progress}%</ProgressBarPercentage>
+              <ProgressBarOverlay
+                className={progressBarColor}
+                progress={budgetExceedsLimit ? 100 : progress}
+              >
+                <ProgressBarPercentage className={progress === 0 ? 'hidden' : ''}>{progress}%</ProgressBarPercentage>
               </ProgressBarOverlay>
             </ProgressBar>
 
@@ -287,7 +361,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   <BudgetLabel>
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
-                  <BudgetAmount>
+                  <BudgetAmount className={progressBarColor}>
                     {getFormattedBudget(locale, spentBudget, currency)}
                   </BudgetAmount>
                 </Budget>
@@ -317,7 +391,7 @@ class PBExpenses extends PureComponent<Props, State> {
 
                   <DropdownWrapper>
                     <Dropdown
-                      top="-5px"
+                      top="10px"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}
                       content={
@@ -335,11 +409,13 @@ class PBExpenses extends PureComponent<Props, State> {
                   icon="submit"
                   iconPos="right"
                   bgColor={colors.adminTextColor}
+                  disabled={submitState === 'clean' || progress === 0 || budgetExceedsLimit}
+                  processing={processing}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />
                 </SubmitExpensesButton>
               </Buttons>
-            </Footer>`
+            </Footer>
           </InnerContainer>
         </Container>
       );
@@ -364,8 +440,7 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     return <GetBasket id={basketId}>{render}</GetBasket>;
-  },
-  ideaList: ({ basket, render }) => <GetIdeaList ids={!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : null} >{render}</GetIdeaList>
+  }
 });
 
 export default (inputProps: InputProps) => (
