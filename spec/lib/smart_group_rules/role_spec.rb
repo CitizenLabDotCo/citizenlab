@@ -31,17 +31,40 @@ describe SmartGroupRules::Role do
     let!(:users) {
       mortals = create_list(:user, 3)
       admins = create_list(:admin, 2)
-      mortals + admins
+      moderators = create_list(:moderator, 2)
+      admin_and_moderator = create(:moderator)
+      admin_and_moderator.update(roles: admin_and_moderator.roles + [{type: 'admin'}])
+      mortals + admins + moderators + [admin_and_moderator]
     }
 
     it "correctly filters on 'is_admin' predicate" do
       rule = SmartGroupRules::Role.new('is_admin')
-      expect(rule.filter(User).count).to eq 2 
+      expect(rule.filter(User).count).to eq 3
     end
 
     it "correctly filters on 'not_is_admin' predicate" do
       rule = SmartGroupRules::Role.new('not_is_admin')
+      expect(rule.filter(User).count).to eq 5
+    end
+
+    it "correctly filters on 'is_project_moderator' predicate" do
+      rule = SmartGroupRules::Role.new('is_project_moderator')
       expect(rule.filter(User).count).to eq 3
+    end
+
+    it "correctly filters on 'not_is_project_moderator' predicate" do
+      rule = SmartGroupRules::Role.new('not_is_project_moderator')
+      expect(rule.filter(User).count).to eq 5
+    end
+
+    it "correctly filters on 'is_normal_user' predicate" do
+      rule = SmartGroupRules::Role.new('is_normal_user')
+      expect(rule.filter(User).count).to eq 3
+    end
+
+    it "correctly filters on 'not_is_normal_user' predicate" do
+      rule = SmartGroupRules::Role.new('not_is_normal_user')
+      expect(rule.filter(User).count).to eq 5
     end
  
   end
