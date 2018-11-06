@@ -60,6 +60,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        password_login: {
+          enabled: true,
+          allowed: true
+        }
       }
     })
 
