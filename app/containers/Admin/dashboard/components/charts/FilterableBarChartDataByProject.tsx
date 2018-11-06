@@ -1,18 +1,32 @@
+// libraries
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
-import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+
+// styling
+import { withTheme } from 'styled-components';
+
+// components
+import EmptyGraph from './EmptyGraph';
+import {
+  ideasByProjectStream,
+  IIdeasByProject,
+  commentsByProjectStream,
+  ICommentsByProject,
+  votesByProjectStream,
+  IVotesByProject
+} from 'services/stats';
+
+// intl
 import localize, { InjectedLocalized } from 'utils/localize';
-import { ideasByTopicStream, IIdeasByTopic, commentsByTopicStream, ICommentsByTopic, votesByTopicStream, IVotesByTopic } from 'services/stats';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import EmptyGraph from './EmptyGraph';
 
+// typing
 import { IResource } from '../../summary';
-import { IGraphFormat } from 'typings';
 
 interface Props {
   startAt: string;
@@ -23,11 +37,17 @@ interface Props {
   selectedResource: IResource;
 }
 
+type IGraphFormat = {
+  name: any,
+  value: any,
+  code: any
+}[];
+
 interface State {
   serie: IGraphFormat | null;
 }
 
-class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class FilterableBarChartDataByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
   currentGroupFilter$: BehaviorSubject<string | null>;
@@ -73,31 +93,31 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
         this.currentProjectFilter$,
         this.currentTopicFilter$
       ).pipe(
-        switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentProjectFilter]) => {
+        switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentTopicFilter]) => {
           const queryParameters = {
             startAt,
             endAt,
-            project: currentProjectFilter,
-            group: currentGroupFilter,
+            // TODO group: currentGroupFilter,
+            // TODO topic: currentTopicFilter,
           };
           if (selectedResource === 'Ideas') {
-            return ideasByTopicStream({
+            return ideasByProjectStream({
               queryParameters
             }).observable;
           } else if (selectedResource === 'Comments') {
-            return commentsByTopicStream({
+            return commentsByProjectStream({
               queryParameters
             }).observable;
           } else {
-            return votesByTopicStream({
+            return votesByProjectStream({
               queryParameters
             }).observable;
           }
         })
       ).subscribe((serie) => {
         const convertedSerie = this.convertToGraphFormat(serie);
-        if (this.props.currentTopicFilter) {
-          this.setState({ serie: this.filterByTopic(convertedSerie) });
+        if (this.props.currentProjectFilter) {
+          this.setState({ serie: this.filterByProject(convertedSerie) });
         } else { this.setState({ serie: convertedSerie }); }
       })
     ];
@@ -131,15 +151,15 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  convertToGraphFormat = (serie: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
+  convertToGraphFormat = (serie: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
     if (serie) {
-      const { data, topics } = serie;
+      const { data, projects } = serie;
       const { localize } = this.props;
 
-      const mapped = map(data, (count: number, topicId: string) => ({
-        name: localize(topics[topicId].title_multiloc),
+      const mapped = map(data, (count: number, projectId: string) => ({
+        name: localize(projects[projectId].title_multiloc),
         value: count,
-        code: topicId,
+        code: projectId,
       }));
       return sortBy(mapped, 'name');
     }
@@ -147,19 +167,19 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
     return null;
   }
 
-  filterByTopic = (serie: IGraphFormat | null) => {
+  filterByProject = (serie: IGraphFormat | null) => {
     if (serie) {
-      const { currentTopicFilter } = this.props;
-      const selectedTopic = serie.find(item => item.code === currentTopicFilter);
-      const selectedTopicCount = selectedTopic ? selectedTopic.value : 0;
+      const { currentProjectFilter } = this.props;
+      const selectedProject = serie.find(item => item.code === currentProjectFilter);
+      const selectedProjectCount = selectedProject ? selectedProject.value : 0;
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
-        return { value: value - selectedTopicCount, ...rest };
-      }).filter(item => item.code !== currentTopicFilter);
+        return { value: value - selectedProjectCount, ...rest };
+      }).filter(item => item.code !== currentProjectFilter);
       filteredSerie.unshift({
-        name: selectedTopic ? selectedTopic.name : 'selected topic',
+        name: selectedProject ? selectedProject.name : 'selected project',
         value: 0,
-        code: currentTopicFilter,
+        code: currentProjectFilter,
       });
       return filteredSerie;
     }
@@ -170,14 +190,15 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
   render() {
     const theme = this.props['theme'];
     const { serie } = this.state;
-    const { selectedResource, intl: { formatMessage }, currentTopicFilter } = this.props;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const { selectedResource, intl: { formatMessage }, currentProjectFilter } = this.props;
+    if (!serie || serie.every(item => item.value === 0)) {
+      return (<EmptyGraph unit={selectedResource} />);
 
-    if (!isEmpty) {
-      const unitName = (currentTopicFilter && serie)
-        ? formatMessage(messages.resourceByTopicDifference, {
+    } else {
+      const unitName = currentProjectFilter
+        ? formatMessage(messages.resourceByProjectDifference, {
           resourceName: formatMessage(messages[selectedResource]),
-          topic: serie[0].name
+          project: serie[0].name
         })
         : formatMessage(messages[selectedResource]);
 
@@ -208,10 +229,8 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
           </BarChart>
         </ResponsiveContainer>
       );
-    } else {
-      return (<EmptyGraph unit={selectedResource} />);
     }
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByTopicWithFilterChart as any) as any));
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartDataByProject as any) as any));

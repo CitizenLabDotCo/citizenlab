@@ -7,8 +7,8 @@ import styled, { ThemeProvider } from 'styled-components';
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import ResourceByTopicWithFilterChart from '../components/charts/ResourceByTopicWithFilterChart';
-import ResourceByProjectWithFilterChart from '../components/charts/ResourceByProjectWithFilterChart';
+import FilterableBarChartDataByTopic from '../components/charts/FilterableBarChartDataByTopic';
+import FilterableBarChartDataByProject from '../components/charts/FilterableBarChartDataByProject';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
@@ -287,7 +287,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                         />
                         <FormattedMessage {...messages.byProjectTitle} />
                       </GraphCardTitle>
-                      <ResourceByProjectWithFilterChart
+                      <FilterableBarChartDataByProject
                         startAt={startAt}
                         endAt={endAt}
                         selectedResource={currentResourceByProject}
@@ -309,7 +309,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       />
                       <FormattedMessage {...messages.byTopicTitle} />
                     </GraphCardTitle>
-                    <ResourceByTopicWithFilterChart
+                    <FilterableBarChartDataByTopic
                       startAt={startAt}
                       endAt={endAt}
                       selectedResource={currentResourceByTopic}
