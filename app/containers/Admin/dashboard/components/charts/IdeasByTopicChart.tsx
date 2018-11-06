@@ -7,7 +7,7 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import localize, { InjectedLocalized } from 'utils/localize';
 import { ideasByTopicStream, IIdeasByTopic } from 'services/stats';
 import messages from '../../messages';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../EmptyGraph';
 
 interface Props {
   startAt: string;

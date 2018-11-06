@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components';
 import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../../components/EmptyGraph';
 import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n

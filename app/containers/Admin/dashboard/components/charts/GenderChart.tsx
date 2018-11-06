@@ -8,7 +8,7 @@ import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { usersByGenderStream } from 'services/stats';
 import messages from '../../messages';
 import { colors } from 'utils/styleUtils';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../EmptyGraph';
 
 type State = {
   serie: { name: string, value: number, code: string }[] | null;

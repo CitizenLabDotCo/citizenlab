@@ -21,11 +21,11 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import { GraphCard, GraphCardInner, GraphCardTitleWithFilter } from '../..';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../../components/EmptyGraph';
 import Select from 'components/UI/Select';
 
 // typings
-import { IResource } from '../../summary';
+import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
 const SSelect = styled(Select)`

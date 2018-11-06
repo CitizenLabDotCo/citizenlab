@@ -9,7 +9,7 @@ import messages from '../../messages';
 
 // components
 import { GraphCard, GraphCardInner, GraphCardTitle } from '../..';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../../components/EmptyGraph';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 
