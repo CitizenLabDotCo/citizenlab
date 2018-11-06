@@ -237,6 +237,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
                   name={unitName}
                   fill={theme.chartFill}
                   label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                  barSize={20}
                 />
                 <YAxis
                   dataKey="name"
