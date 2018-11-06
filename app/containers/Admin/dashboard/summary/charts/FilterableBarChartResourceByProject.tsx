@@ -247,6 +247,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
                     name={unitName}
                     fill={theme.chartFill}
                     label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                    barSize={20}
                   />
                   <YAxis
                     dataKey="name"
