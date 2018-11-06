@@ -19,6 +19,8 @@ const TitleWithInfoIcon = styled.div`
 `;
 
 const InfoIcon = styled(Icon)`
+  display: flex;
+  align-items: center;
   cursor: pointer;
   width: 20px;
   margin-left: 10px;
