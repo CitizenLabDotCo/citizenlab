@@ -104,10 +104,16 @@ export const GraphCard = styled.div`
 
 export const GraphCardTitle = styled.h3`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  justify-content: space-between;
   padding-bottom: 20px;
+`;
+
+export const GraphCardTitleWithFilter = GraphCardTitle.extend`
+  justify-content: center;
+  font-size: ${fontSizes.base}px;
 `;
 
 export const GraphCardFigureContainer = styled.div`

@@ -20,7 +20,7 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardTitle } from '../..';
+import { GraphCard, GraphCardInner, GraphCardTitleWithFilter } from '../..';
 import EmptyGraph from './EmptyGraph';
 import Select from 'components/UI/Select';
 
@@ -30,10 +30,8 @@ import { IGraphFormat, IOption } from 'typings';
 
 const SSelect = styled(Select)`
   flex: 1;
-
-  & > * {
-    flex: 1;
-  }
+  max-width: 50%;
+  margin-right: 10px;
 `;
 
 interface Props {
@@ -221,7 +219,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       return (
         <GraphCard className={className}>
           <GraphCardInner>
-            <GraphCardTitle>
+            <GraphCardTitleWithFilter>
               <SSelect
                 id="topicFilter"
                 onChange={onResourceByTopicChange}
@@ -231,7 +229,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
                 borderColor="#EAEAEA"
               />
               <FormattedMessage {...messages.byTopicTitle} />
-            </GraphCardTitle>
+            </GraphCardTitleWithFilter>
             <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
               <BarChart data={serie} layout="vertical">
                 <Bar

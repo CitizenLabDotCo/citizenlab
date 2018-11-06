@@ -101,11 +101,11 @@ export default defineMessages({
   },
   byTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
-    defaultMessage: 'by Topic',
+    defaultMessage: 'by topic',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
-    defaultMessage: 'by Project',
+    defaultMessage: 'by project',
   },
   resourceByTopicDifference: {
     id: 'app.containers.AdminPage.DashboardPage.resourceByTopicDifference',
