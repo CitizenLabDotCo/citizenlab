@@ -199,10 +199,10 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                 <CartesianGrid strokeDasharray="5 5" />
                 <Line
                   type="monotone"
-                  dataKey="up"
-                  name={formatMessage(messages.numberOfVotesUp)}
+                  dataKey="total"
+                  name={formatMessage(messages.numberOfVotesTotal)}
                   dot={false}
-                  stroke={chartStrokeGreen}
+                  stroke={chartStroke}
                 />
                 <Line
                   type="monotone"
@@ -213,10 +213,10 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                 />
                 <Line
                   type="monotone"
-                  dataKey="total"
-                  name={formatMessage(messages.numberOfVotesTotal)}
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  stroke={chartStroke}
+                  stroke={chartStrokeGreen}
                 />
                 <XAxis
                   dataKey="date"
