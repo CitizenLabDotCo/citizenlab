@@ -3,6 +3,10 @@ class ClusteringService
   def build_structure levels, idea_scope=Idea, options={}
     drop_empty = options[:drop_empty] == false ? false : true
     options = {drop_empty: drop_empty}
+    # if levels.include? 'clustering'
+    #   dump = NLP::TenantDumpService.new.dump(Tenant.current)
+    #   NLP::API.new(ENV.fetch("CL2_NLP_HOST")).update_tenant dump
+    # end
     output = {
       type: "custom",
       id: SecureRandom.uuid,
@@ -64,22 +68,28 @@ class ClusteringService
     end.to_h
   end
 
+
+  def clustering_levels_to_ids idea_ids
+    api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
+    clustering_items = api.ideas_clustering(
+      Tenant.current.id, 
+      Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
+      idea_ids: idea_ids,
+      n_clusters: (idea_ids.size / 10 + 1)
+      ).parsed_response.dig('data','items')
+    clti = {}
+    clustering_items.each do |item|
+      clti[item['cluster']] ||= []
+      clti[item['cluster']] += [item['id']]
+    end
+    clti
+  end
+
   def create_children levels, idea_ids, levels_to_ids, options
     if levels.present?
       level = levels.first
       if level == 'clustering'
-        api = NLP::API.new(ENV.fetch("CL2_NLP_HOST")).parsed_response.class
-        clustering_items = api.ideas_clustering(
-          Tenant.current.id, 
-          Tenant.current.settings.dig(:core, :locale).first[0...2], # TODO figure out a language
-          idea_ids: idea_ids
-          ).parsed_response.dig('data','items')
-        clustering_levels_to_ids = {}
-        clustering_items.each do |item|
-          clustering_levels_to_ids[item['cluster']] ||= []
-          clustering_levels_to_ids[item['cluster']] += [item['id']]
-        end
-        clustering_levels_to_ids
+        clustering_levels_to_ids idea_ids
       else
         levels_to_ids[level]
       end.map do |level_id, filter_idea_ids|
@@ -146,7 +156,7 @@ class ClusteringService
   def clustering_to_cluster cluster_id
     {
       type: "custom",
-      id: cluster_id.to_s
+      id: "#{cluster_id}-#{SecureRandom.uuid}"
     }
   end
 end
