@@ -3,13 +3,17 @@ import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-
-// styling
-import { withTheme } from 'styled-components';
 
 // components
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { GraphCard, GraphCardInner, GraphCardTitle } from '../..';
+import Select from 'components/UI/Select';
 import EmptyGraph from './EmptyGraph';
+
+// styling
+import styled, { withTheme } from 'styled-components';
+
+// resources
 import {
   ideasByProjectStream,
   IIdeasByProject,
@@ -21,14 +25,27 @@ import {
 
 // intl
 import localize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
-// typing
+// typings
+import { IOption } from 'typings';
 import { IResource } from '../../summary';
 
+const SSelect = styled(Select)`
+  flex: 1;
+
+  & > * {
+    flex: 1;
+  }
+`;
+
 interface Props {
+  className: string;
+  onResourceByProjectChange: (option: IOption) => void;
+  currentResourceByProject: IResource;
+  resourceOptions: IOption[];
   startAt: string;
   endAt: string;
   currentProjectFilter: string | null;
@@ -47,7 +64,7 @@ interface State {
   serie: IGraphFormat | null;
 }
 
-class FilterableBarChartDataByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class FilterableBarChartResourceByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
   currentGroupFilter$: BehaviorSubject<string | null>;
@@ -190,7 +207,15 @@ class FilterableBarChartDataByProject extends PureComponent<Props & InjectedLoca
   render() {
     const theme = this.props['theme'];
     const { serie } = this.state;
-    const { selectedResource, intl: { formatMessage }, currentProjectFilter } = this.props;
+    const {
+      className,
+      onResourceByProjectChange,
+      currentResourceByProject,
+      resourceOptions,
+      selectedResource,
+      intl: { formatMessage },
+      currentProjectFilter
+    } = this.props;
     if (!serie || serie.every(item => item.value === 0)) {
       return (<EmptyGraph unit={selectedResource} />);
 
@@ -203,34 +228,49 @@ class FilterableBarChartDataByProject extends PureComponent<Props & InjectedLoca
         : formatMessage(messages[selectedResource]);
 
       return (
-        <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-          <BarChart data={serie} layout="vertical">
-            <Bar
-              dataKey="value"
-              name={unitName}
-              fill={theme.chartFill}
-              label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-            />
-            <YAxis
-              dataKey="name"
-              type="category"
-              width={150}
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              tickLine={false}
-            />
-            <XAxis
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              type="number"
-              tick={{ transform: 'translate(0, 7)' }}
-            />
-            <Tooltip isAnimationActive={false} />
-          </BarChart>
-        </ResponsiveContainer>
+        <GraphCard className={className}>
+          <GraphCardInner>
+            <GraphCardTitle>
+              <SSelect
+                id="projectFilter"
+                onChange={onResourceByProjectChange}
+                value={currentResourceByProject}
+                options={resourceOptions}
+                clearable={false}
+                borderColor="#EAEAEA"
+              />
+              <FormattedMessage {...messages.byProjectTitle} />
+            </GraphCardTitle>
+            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+              <BarChart data={serie} layout="vertical">
+                <Bar
+                  dataKey="value"
+                  name={unitName}
+                  fill={theme.chartFill}
+                  label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={150}
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  tickLine={false}
+                />
+                <XAxis
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  type="number"
+                  tick={{ transform: 'translate(0, 7)' }}
+                />
+                <Tooltip isAnimationActive={false} />
+              </BarChart>
+            </ResponsiveContainer>
+          </GraphCardInner>
+        </GraphCard>
       );
     }
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartDataByProject as any) as any));
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByProject as any) as any));
