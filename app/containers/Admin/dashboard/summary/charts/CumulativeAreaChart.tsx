@@ -8,7 +8,7 @@ import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'rec
 import messages from '../../messages';
 
 // components
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../../components/EmptyGraph';
 import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 type State = {

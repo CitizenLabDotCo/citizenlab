@@ -8,7 +8,7 @@ import { map, sortBy } from 'lodash-es';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { GraphCard, GraphCardInner, GraphCardTitleWithFilter } from '../..';
 import Select from 'components/UI/Select';
-import EmptyGraph from './EmptyGraph';
+import EmptyGraph from '../../components/EmptyGraph';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -31,7 +31,7 @@ import messages from '../../messages';
 
 // typings
 import { IOption } from 'typings';
-import { IResource } from '../../summary';
+import { IResource } from '..';
 
 const SSelect = styled(Select)`
   flex: 1;
