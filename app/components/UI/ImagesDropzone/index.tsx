@@ -83,9 +83,7 @@ const DropzoneContent = styled.div`
 const StyledDropzone = styled(Dropzone)`
   box-sizing: border-box;
   border-radius: 5px;
-  border-color: #ccc;
-  border-width: 1px;
-  border-style: dashed;
+  border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
   background: #fff;
@@ -93,33 +91,6 @@ const StyledDropzone = styled(Dropzone)`
 
   &.rounded {
     border-radius: 50%;
-  }
-
-  &.canDrop {
-    border-color: #006400;
-
-    ${DropzonePlaceholderText},
-    ${DropzoneImagesRemaining} {
-      color: inherit;
-    }
-
-    ${DropzonePlaceholderIcon} {
-      fill: inherit;
-    }
-  }
-
-  &.cannotDrop {
-    cursor: no-drop !important;
-    border-color: #8b0000;
-
-    ${DropzonePlaceholderText},
-    ${DropzoneImagesRemaining} {
-      color: #ccc;
-    }
-
-    ${DropzonePlaceholderIcon} {
-      fill: #ccc;
-    }
   }
 
   ${(props: any) => props.disabled ? css`
@@ -139,15 +110,15 @@ const StyledDropzone = styled(Dropzone)`
     cursor: pointer !important;
 
     &:hover {
-      border-color: inherit;
+      border-color: #000;
 
       ${DropzonePlaceholderText},
       ${DropzoneImagesRemaining} {
-        color: inherit;
+        color: #000;
       }
 
       ${DropzonePlaceholderIcon} {
-        fill: inherit;
+        fill: #000;
       }
     }
   `}
@@ -476,8 +447,6 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
             className={`${this.props.imageRadius === '50%' && 'rounded'}`}
             accept={acceptedFileTypes}
             maxSize={maxImageFileSize}
-            activeClassName="canDrop"
-            rejectClassName="cannotDrop"
             disabled={processing || maxNumberOfImages === images.length}
             disablePreview={true}
             onDrop={this.onDrop}

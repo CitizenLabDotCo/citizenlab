@@ -188,7 +188,7 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme(
         props,
         color('lightGreyishBlue'),
-        color('label'),
+        darken(0.1, color('label')),
         'transparent',
         darken(0.05, color('lightGreyishBlue'))
       )}

@@ -125,7 +125,6 @@ const ProjectContent = styled.div`
   padding-bottom: 15px;
   margin-right: 40px;
   margin-left: 30px;
-  width: 100%;
 
   ${media.smallerThanMaxTablet`
     align-items: flex-start;
@@ -140,7 +139,6 @@ const ProjectContentInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
 
   ${media.smallerThanMaxTablet`
     align-items: center;
@@ -169,7 +167,6 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
-  width: 100%;
 `;
 
 const ProjectDescription = styled.div`
@@ -178,7 +175,7 @@ const ProjectDescription = styled.div`
   line-height: 24px;
   font-weight: 400;
   margin-top: 20px;
-  width: 100%;
+  hyphens: auto;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -235,7 +232,6 @@ const ProjectButtonWrapper = styled.div`
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
-    width: 100%;
     margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -323,9 +319,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <ProjectButton
               linkTo={projectUrl}
               text={<FormattedMessage {...messages.openProjectButton} />}
-              style="primary"
               size="2"
-              circularCorners={false}
+              style="primary"
             />
           </ProjectButtonWrapper>
 

@@ -277,12 +277,16 @@ class PBExpenses extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant } = this.props;
-    const { submitState, processing } = this.state;
+    const { locale, tenant, participationContextType, participationContextId, project, phase, basket, className } = this.props;
+    const { submitState, processing, dropdownOpened } = this.state;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const { participationContextType, participationContextId, project, phase, basket, className } = this.props;
-      const { dropdownOpened } = this.state;
+    if (!isNilOrError(locale) &&
+        !isNilOrError(tenant) &&
+        (
+          (participationContextType === 'Project' && !isNilOrError(project)) ||
+          (participationContextType === 'Phase' && !isNilOrError(phase))
+        )
+    ) {
       const currency = tenant.attributes.settings.core.currency;
       const spentBudget = (!isNilOrError(basket) ? basket.attributes.total_budget : 0);
       const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);

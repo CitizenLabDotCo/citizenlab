@@ -33,7 +33,13 @@ import { colors, media } from 'utils/styleUtils';
 const Container = styled.div``;
 
 const FirstRow = styled.div`
-  background: #f8f8f8;
+  background: #fafafa;
+`;
+
+const StyledTimeline = styled(Timeline)`
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 40px;
+  `}
 `;
 
 const SecondRow = styled.div`
@@ -43,10 +49,6 @@ const SecondRow = styled.div`
 
 const StyledPhaseAbout = styled(PhaseAbout)`
   margin-bottom: 50px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 50px;
-  `}
 `;
 
 const SecondRowContentContainer = styled(ContentContainer)`
@@ -58,13 +60,12 @@ const StyledPBExpenses = styled(PBExpenses)`
 `;
 
 const StyledPhaseSurvey = styled(PhaseSurvey)`
-  margin-top: 50px;
   margin-bottom: 50px;
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 50px;
-  margin-bottom: 70px;
+  margin-bottom: 50px;
 `;
 
 interface InputProps {
@@ -99,6 +100,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
     const { selectedPhase } = this.state;
     const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
     const isPBPhase = (selectedPhase && selectedPhase.attributes.participation_method === 'budgeting');
+    const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
@@ -109,7 +111,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         <Container className={className}>
           <Header projectSlug={slug} phaseId={selectedPhaseId} />
           <FirstRow>
-            <Timeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+            <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
             <ProjectModeratorIndicator projectId={project.id} />
             <ContentContainer>
               {project.attributes.publication_status === 'archived' &&
@@ -122,15 +124,21 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                   participationContextType="Phase"
                 />
               }
-              <StyledPhaseSurvey phaseId={selectedPhaseId} />
+              <StyledPhaseSurvey
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
             </ContentContainer>
           </FirstRow>
-          <SecondRow>
-            <SecondRowContentContainer>
-              <StyledPhaseIdeas phaseId={selectedPhaseId} />
-            </SecondRowContentContainer>
-            <EventsPreview projectId={project.id} />
-          </SecondRow>
+
+          {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
+            <SecondRow>
+              <SecondRowContentContainer>
+                <StyledPhaseIdeas phaseId={selectedPhaseId} />
+              </SecondRowContentContainer>
+              <EventsPreview projectId={project.id} />
+            </SecondRow>
+          }
         </Container>
       );
     }

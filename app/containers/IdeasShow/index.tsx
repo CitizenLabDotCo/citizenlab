@@ -411,6 +411,7 @@ const IdeaBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};

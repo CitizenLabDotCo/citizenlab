@@ -20,25 +20,30 @@ const SurveyContainer = styled.div`
 
 export default withRouter((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>
-    {project => {
-      if (isNilOrError(project)) return null;
-
-      return (
-        <>
-          <Header projectSlug={props.params.slug} />
-          <ContentContainer>
-            <SurveyContainer>
-              {project &&
+    {(project) => {
+      if (
+        !isNilOrError(project) &&
+        project.attributes.participation_method === 'survey' &&
+        project.attributes.survey_embed_url &&
+        project.attributes.survey_service
+      ) {
+        return (
+          <>
+            <Header projectSlug={props.params.slug} />
+            <ContentContainer>
+              <SurveyContainer>
                 <Survey
                   projectId={project.id}
                   surveyService={project.attributes.survey_service}
                   surveyEmbedUrl={project.attributes.survey_embed_url}
                 />
-              }
-            </SurveyContainer>
-          </ContentContainer>
-        </>
-      );
+              </SurveyContainer>
+            </ContentContainer>
+          </>
+        );
+      }
+
+      return null;
     }}
   </GetProject>
 ));

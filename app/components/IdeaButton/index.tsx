@@ -22,6 +22,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
+const Container = styled.div``;
+
 const StyledIcon = styled(Icon)`
   height: 2rem;
   width: 2rem;
@@ -51,6 +53,7 @@ interface InputProps {
   size?: '1' | '2' | '3' | '4';
   fullWidth?: boolean;
   padding?: string;
+  className?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -67,11 +70,10 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { project, phase, authUser } = this.props;
-
+    const { project, phase, authUser, className } = this.props;
     const { show, enabled, disabledReason } = postingButtonState({
-      project: isNilOrError(project) ? null : project,
-      phaseContext: phase,
+      project,
+      phase,
       signedIn: !isNilOrError(authUser)
     });
 
@@ -85,33 +87,34 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
       fullWidth = (fullWidth || false);
 
       return (
-        <Tooltip
-          enabled={!enabled && !!disabledReason}
-          content={disabledReason ?
-            <TooltipWrapper>
-              <StyledIcon name="lock-outlined" />
-              <FormattedMessage
-                {...this.disabledMessages[disabledReason]}
-              />
-            </TooltipWrapper>
-          :
-            null
-          }
-          backgroundColor={colors.popoverDarkBg}
-          borderColor={colors.popoverDarkBg}
-          top="57px"
-        >
-          <Button
-            className={this.props['className']}
-            linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
-            style={style}
-            size={size}
-            padding={padding}
-            text={startAnIdeaText}
-            disabled={!enabled}
-            fullWidth={fullWidth}
-          />
-        </Tooltip>
+        <Container className={className}>
+          <Tooltip
+            enabled={!enabled && !!disabledReason}
+            content={disabledReason ?
+              <TooltipWrapper>
+                <StyledIcon name="lock-outlined" />
+                <FormattedMessage
+                  {...this.disabledMessages[disabledReason]}
+                />
+              </TooltipWrapper>
+            :
+              null
+            }
+            backgroundColor={colors.popoverDarkBg}
+            borderColor={colors.popoverDarkBg}
+            top="57px"
+          >
+            <Button
+              linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
+              style={style}
+              size={size}
+              padding={padding}
+              text={startAnIdeaText}
+              disabled={!enabled}
+              fullWidth={fullWidth}
+            />
+          </Tooltip>
+        </Container>
       );
     }
 

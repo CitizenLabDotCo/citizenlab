@@ -327,10 +327,19 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, locale, location, participationMethod, basket, intl: { formatMessage } } = this.props;
+    const { idea, ideaImage, ideaAuthor, tenant, locale, authUser, location, participationMethod, basket, intl: { formatMessage } } = this.props;
     const { showVotingDisabled, processing } = this.state;
 
-    if (!isNilOrError(location) && !isNilOrError(tenant) && !isNilOrError(locale) && !isNilOrError(idea)) {
+    if (
+      !isNilOrError(location) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(locale) &&
+      authUser !== undefined &&
+      !isNilOrError(idea) &&
+      ideaImage !== undefined &&
+      ideaAuthor !== undefined &&
+      basket !== undefined
+    ) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
@@ -349,6 +358,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
+
+      console.log('ideaCard render');
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
