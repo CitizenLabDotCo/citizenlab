@@ -7,8 +7,8 @@ import styled, { ThemeProvider } from 'styled-components';
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import FilterableBarChartDataByTopic from '../components/charts/FilterableBarChartDataByTopic';
-import FilterableBarChartDataByProject from '../components/charts/FilterableBarChartDataByProject';
+import FilterableBarChartResourceByTopic from '../components/charts/FilterableBarChartResourceByTopic';
+import FilterableBarChartResourceByProject from '../components/charts/FilterableBarChartResourceByProject';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
@@ -114,6 +114,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   onResourceByTopicChange = (option) => {
     this.setState({ currentResourceByTopic: option.value });
   }
+
   onResourceByProjectChange = (option) => {
     this.setState({ currentResourceByProject: option.value });
   }
@@ -274,27 +275,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     resolution={resolution}
                     {...this.state}
                   />
-                  <GraphCard className="dynamicHeight">
-                    <GraphCardInner>
-                      <GraphCardTitle>
-                        <SSelect
-                          id="projectFilter"
-                          onChange={this.onResourceByProjectChange}
-                          value={currentResourceByProject}
-                          options={this.resourceOptions}
-                          clearable={false}
-                          borderColor="#EAEAEA"
-                        />
-                        <FormattedMessage {...messages.byProjectTitle} />
-                      </GraphCardTitle>
-                      <FilterableBarChartDataByProject
-                        startAt={startAt}
-                        endAt={endAt}
-                        selectedResource={currentResourceByProject}
-                        {...this.state}
-                      />
-                    </GraphCardInner>
-                  </GraphCard>
+                  <FilterableBarChartResourceByProject
+                    className="dynamicHeight"
+                    onResourceByProjectChange={this.onResourceByProjectChange}
+                    currentResourceByProject={currentResourceByProject}
+                    resourceOptions={this.resourceOptions}
+                    startAt={startAt}
+                    endAt={endAt}
+                    selectedResource={currentResourceByProject}
+                    {...this.state}
+                  />
                 </Column>
                 <GraphCard className="halfWidth dynamicHeight">
                   <GraphCardInner>
@@ -309,7 +299,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                       />
                       <FormattedMessage {...messages.byTopicTitle} />
                     </GraphCardTitle>
-                    <FilterableBarChartDataByTopic
+                    <FilterableBarChartResourceByTopic
                       startAt={startAt}
                       endAt={endAt}
                       selectedResource={currentResourceByTopic}
