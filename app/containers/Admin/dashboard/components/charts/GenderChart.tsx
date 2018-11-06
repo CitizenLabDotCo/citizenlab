@@ -6,7 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 import { usersByGenderStream } from 'services/stats';
-import messages from '../messages';
+import messages from '../../messages';
 import { colors } from 'utils/styleUtils';
 import EmptyGraph from './EmptyGraph';
 

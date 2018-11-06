@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 const Container = styled.div``;
 

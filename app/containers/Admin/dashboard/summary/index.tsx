@@ -7,14 +7,14 @@ import styled, { ThemeProvider } from 'styled-components';
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
-import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
+import ResourceByTopicWithFilterChart from '../components/charts/ResourceByTopicWithFilterChart';
+import ResourceByProjectWithFilterChart from '../components/charts/ResourceByProjectWithFilterChart';
 import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
 import Select from 'components/UI/Select';
-import CumulativeAreaChart from '../components/CumulativeAreaChart';
-import BarChartByTime from '../components/BarChartByTime';
-import LineChartVotesByTime from '../components/LineChartVotesByTime';
+import CumulativeAreaChart from '../components/charts/CumulativeAreaChart';
+import BarChartByTime from '../components/charts/BarChartByTime';
+import LineChartVotesByTime from '../components/charts/LineChartVotesByTime';
 
 // typings
 import { IOption } from 'typings';

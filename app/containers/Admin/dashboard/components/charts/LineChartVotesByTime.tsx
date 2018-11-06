@@ -1,44 +1,44 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isNumber } from 'lodash-es';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { map, isNumber, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import messages from '../messages';
-
-// components
+import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
+import messages from '../../messages';
 import EmptyGraph from './EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../';
+import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 type State = {
   serie: {
-    name: string | number,
-    value: number,
+    date: string | number,
+    up: number,
+    down: number,
+    total: number,
     code: string
   }[] | null;
 };
 
 type Props = {
-  className?: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
-  graphTitleMessageKey: string;
+  className: string;
   startAt: string;
   endAt: string;
   resolution: 'month' | 'day';
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
-  stream: Function;
 };
 
-class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props: Props) {
     super(props as any);
     this.state = {
-      serie: null,
+      serie: null
     };
   }
 
@@ -49,7 +49,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter,
+      currentProjectFilter
     } = this.props;
 
     this.resubscribe(
@@ -58,8 +58,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter,
-    );
+      currentProjectFilter
+      );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -69,7 +69,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter,
+      currentProjectFilter
     } = this.props;
 
     if (startAt !== prevProps.startAt
@@ -85,7 +85,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
         resolution,
         currentGroupFilter,
         currentTopicFilter,
-        currentProjectFilter,
+        currentProjectFilter
       );
     }
   }
@@ -94,10 +94,14 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: { [key: string]: number }) => {
-    return map(serie, (value, key) => ({
-      value,
-      name: key,
+  convertToGraphFormat(serie: IVotesByTimeCumulative) {
+    const { up, down, total } = serie;
+
+    return map(total, (value, key) => ({
+      total: value,
+      down: down[key],
+      up: up[key],
+      date: key,
       code: key
     }));
   }
@@ -108,15 +112,13 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     resolution: 'month' | 'day',
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
-    currentProjectFilter: string | null,
+    currentProjectFilter: string | null
   ) {
-    const { stream } = this.props;
-
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = stream({
+    this.subscription = votesByTimeCumulativeStream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -126,7 +128,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
         topic: currentTopicFilter,
       }
     }).observable.subscribe((serie) => {
-      const convertedSerie = this.convertToGraphFormat(serie);
+      const validSerie = !isEmpty(serie.down) && !isEmpty(serie.up) && !isEmpty(serie.total);
+      const convertedSerie = validSerie ? this.convertToGraphFormat(serie) : null;
       this.setState({ serie: convertedSerie });
     });
   }
@@ -137,7 +140,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
 
     return formatDate(date, {
       day: (resolution === 'month' ? undefined : '2-digit'),
-      month: 'short',
+      month: 'short'
     });
   }
 
@@ -158,17 +161,17 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     } else if (serieChange < 0) {
       return `(${serieChange.toString()})`;
     }
-    return;
+    return null;
   }
 
   render() {
+    const { chartLabelSize, chartLabelColor, chartStroke, chartStrokeGreen, chartStrokeRed } = this.props['theme'];
     const { formatMessage } = this.props.intl;
-    const { graphTitleMessageKey, graphUnit, className } = this.props;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
-    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
-    const firstSerieValue = serie && serie[0].value;
-    const lastSerieValue = serie && serie[serie.length - 1].value;
+    const { className } = this.props;
+    const isEmpty = !serie || serie.every(item => (item.up === 0) && (item.down === 0) && (item.total === 0));
+    const firstSerieValue = serie && serie[0].total;
+    const lastSerieValue = serie && serie[serie.length - 1].total;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
@@ -177,7 +180,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
         {!isEmpty ?
           <GraphCardInner>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              <FormattedMessage {...messages.votesByTimeTitle} />
               <GraphCardFigureContainer>
                 <GraphCardFigure>
                   {lastSerieValue}
@@ -192,18 +195,31 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
               </GraphCardFigureContainer>
             </GraphCardTitle>
             <ResponsiveContainer>
-              <AreaChart data={serie}>
-                <Area
+              <LineChart data={serie} margin={{ right: 40 }}>
+                <CartesianGrid strokeDasharray="5 5" />
+                <Line
                   type="monotone"
-                  dataKey="value"
-                  name={formatMessage(messages[`numberOf${graphUnit}`])}
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
-                  fill={chartFill}
-                  fillOpacity={1}
+                  stroke={chartStrokeGreen}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="down"
+                  name={formatMessage(messages.numberOfVotesDown)}
+                  dot={false}
+                  stroke={chartStrokeRed}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="total"
+                  name={formatMessage(messages.numberOfVotesTotal)}
+                  dot={false}
                   stroke={chartStroke}
                 />
                 <XAxis
-                  dataKey="name"
+                  dataKey="date"
                   interval="preserveStartEnd"
                   stroke={chartLabelColor}
                   fontSize={chartLabelSize}
@@ -218,15 +234,20 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-              </AreaChart>
+                <Legend
+                  wrapperStyle={{
+                    paddingTop: '20px'
+                  }}
+                />
+              </LineChart>
             </ResponsiveContainer>
           </GraphCardInner>
-        :
-          <EmptyGraph unit={graphUnit} />
+          :
+          <EmptyGraph unit="Votes" />
         }
       </GraphCard>
     );
   }
 }
 
-export default injectIntl<Props>(withTheme(CumulativeAreaChart as any) as any);
+export default injectIntl<Props>(withTheme(LineChartVotesByTime as any) as any);
