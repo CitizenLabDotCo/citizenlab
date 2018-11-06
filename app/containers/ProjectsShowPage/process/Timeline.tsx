@@ -56,10 +56,6 @@ const ContainerInner = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  /*
-  height: 0; // For IE11, which has trouble with vertical centering without a set height
-  min-height: 70px;
-  */
   background-color: #fff;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
@@ -88,9 +84,6 @@ const HeaderRow = styled.div`
 const HeaderFirstRow = HeaderRow.extend``;
 
 const HeaderSecondRow = HeaderRow.extend`
-  padding-top: 15px;
-  padding-bottom: 10px;
-
   ${media.biggerThanMinTablet`
     display: none;
   `}
@@ -207,12 +200,16 @@ const IdeaButtonDesktop: any = styled(IdeaButton)`
   `}
 `;
 
-const MobilePhaseNavigation = styled.div`
-  display: flex;
+const IdeaButtonMobile = styled(IdeaButton)`
+  flex: 1;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 10px;
+`;
 
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
+const PhaseNavigation = styled.div`
+  display: flex;
+  margin-left: 20px;
 `;
 
 const PhaseButton = styled(Button)`
@@ -222,18 +219,18 @@ const PhaseButton = styled(Button)`
 `;
 
 const PreviousPhaseButton = PhaseButton.extend`
-  margin-right: 9px;
+  margin-right: 8px;
 `;
 
 const NextPhaseButton = PhaseButton.extend``;
 
 const Phases = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1100px;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 60px;
-  padding-bottom: 40px;
+  padding-bottom: 50px;
   margin: 0;
   margin-left: auto;
   margin-right: auto;
@@ -350,6 +347,7 @@ const PhaseContainer: any = styled.div`
 type Props = {
   projectId: string
   onPhaseSelected: (phase: IPhaseData | null) => void;
+  className?: string;
 };
 
 type State = {
@@ -482,7 +480,7 @@ export default class Timeline extends PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
+    const { className } = this.props;
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
@@ -558,7 +556,7 @@ export default class Timeline extends PureComponent<Props, State> {
                     phaseId={selectedPhaseId}
                   />
 
-                  <MobilePhaseNavigation>
+                  <PhaseNavigation>
                     <PreviousPhaseButton
                       onClick={this.goToPreviousPhase}
                       icon="chevron-left"
@@ -573,12 +571,12 @@ export default class Timeline extends PureComponent<Props, State> {
                       padding="10px 6px"
                       disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
                     />
-                  </MobilePhaseNavigation>
+                  </PhaseNavigation>
                 </HeaderRightSection>
               </HeaderFirstRow>
 
               <HeaderSecondRow>
-                <IdeaButton
+                <IdeaButtonMobile
                   size="1"
                   projectId={this.props.projectId}
                   phaseId={selectedPhaseId || undefined}

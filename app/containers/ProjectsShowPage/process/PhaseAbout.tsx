@@ -7,6 +7,7 @@ import { isEmpty } from 'lodash-es';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
@@ -18,6 +19,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
 import T from 'components/T';
+import { darken } from 'polished';
 
 const Container = styled.div`
   border-radius: 5px;
@@ -34,11 +36,23 @@ const InformationTitle = styled.h2`
 const InformationBody = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.large}px;
+  line-height: 23px;
 
-  & span > p {
-    margin-bottom: 0;
-    line-height: ${fontSizes.xxl}px;
+  p {
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
+    hyphens: auto;
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
+    }
   }
 
   strong {
@@ -57,19 +71,52 @@ interface InputProps {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   phase: GetPhaseChildProps;
   phaseFiles: GetResourceFilesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  hasAboutText: boolean;
+}
 
 class PhaseAbout extends PureComponent<Props, State> {
-  render() {
-    const { phase, phaseFiles } = this.props;
 
-    if (!isNilOrError(phase)) {
+  constructor(props) {
+    super(props);
+    this.state = {
+      hasAboutText: false
+    };
+  }
+
+  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
+    let hasAboutText = false;
+    const { locale, phase } = nextProps;
+    const hasText = (html: string | null | undefined) => {
+      if (html) {
+        const span = document.createElement('span');
+        span.innerHTML = html;
+        const content = (span.textContent || span.innerText);
+        return !isEmpty(content);
+      }
+
+      return false;
+    };
+
+    if (!isNilOrError(locale) && !isNilOrError(phase) && phase.attributes.description_multiloc[locale]) {
+      hasAboutText = hasText(phase.attributes.description_multiloc[locale]);
+    }
+
+    return { hasAboutText };
+  }
+
+  render() {
+    const { locale, phase, phaseFiles } = this.props;
+    const { hasAboutText } = this.state;
+
+    if (!isNilOrError(locale) && !isNilOrError(phase) && hasAboutText) {
       return (
         <Container className={this.props['className']}>
           <InformationTitle>
@@ -90,6 +137,7 @@ class PhaseAbout extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
   phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
 });

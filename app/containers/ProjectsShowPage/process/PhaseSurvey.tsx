@@ -9,7 +9,9 @@ import Survey from './survey';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 interface InputProps {
+  projectId: string;
   phaseId: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -22,12 +24,19 @@ interface State {}
 
 class PhaseSurvey extends PureComponent<Props, State> {
   render() {
-    const { phase } = this.props;
+    const { projectId, phase, className } = this.props;
 
-    if (!isNilOrError(phase) && phase.attributes.participation_method === 'survey') {
+    if (
+      !isNilOrError(phase) &&
+      phase.attributes.participation_method === 'survey' &&
+      phase.attributes.survey_embed_url &&
+      phase.attributes.survey_service
+    ) {
       return (
         <Survey
-          className={this.props['className']}
+          className={className}
+          projectId={projectId}
+          phaseId={phase.id}
           surveyEmbedUrl={phase.attributes.survey_embed_url}
           surveyService={phase.attributes.survey_service}
         />

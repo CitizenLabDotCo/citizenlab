@@ -1,6 +1,8 @@
-import { IProjectData, PostingDisabledReasons } from './projects';
-import { IPhaseData } from './phases';
+import { PostingDisabledReasons } from './projects';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { GetProjectChildProps } from 'resources/GetProject';
+import { GetPhaseChildProps } from 'resources/GetPhase';
+import { isNilOrError } from 'utils/helperUtils';
 
 export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'postingDisabled' | 'projectInactive' | 'notActivePhase' | 'futureEnabled';
 
@@ -11,8 +13,8 @@ type ButtonStateResponse  = {
 };
 
 interface PostingButtonStateArg {
-  project?: IProjectData | null;
-  phaseContext?: IPhaseData | null;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
   signedIn: boolean;
 }
 
@@ -32,28 +34,28 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
 /** Should we show and/or disable the idea posting button in the given context. And with what message?
  * @param context
  *  project: The project context we are posting to.
- *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
+ *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  signedIn: Whether the user is currently authenticated
  */
-export const postingButtonState = ({ project, phaseContext, signedIn }: PostingButtonStateArg): ButtonStateResponse => {
-  if (project && phaseContext) {
-    const inCurrentPhase = (pastPresentOrFuture([phaseContext.attributes.start_at, phaseContext.attributes.end_at]) === 'present');
+export const postingButtonState = ({ project, phase, signedIn }: PostingButtonStateArg) => {
+  if (!isNilOrError(project) && !isNilOrError(phase)) {
+    const inCurrentPhase = (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
     const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
 
     if (inCurrentPhase) {
       return {
-        show: phaseContext.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+        show: phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
         enabled: project.relationships.action_descriptor.data.posting.enabled,
         disabledReason: disabledReason(disabled_reason, !!signedIn, future_enabled),
       };
     } else { // if not in current phase
       return {
-        show: phaseContext.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+        show: phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
         enabled: false,
         disabledReason: 'notActivePhase',
       };
     }
-  } else if (project && !phaseContext) { // if not in phase context
+  } else if (!isNilOrError(project) && isNilOrError(phase)) { // if not in phase context
     const enabled = project.relationships.action_descriptor.data.posting.enabled;
     const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
     return {

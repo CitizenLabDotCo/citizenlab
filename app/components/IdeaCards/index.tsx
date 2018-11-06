@@ -387,13 +387,12 @@ class IdeaCards extends PureComponent<Props, State> {
           <LoadMoreButtonWrapper>
             <LoadMoreButton
               onClick={this.loadMore}
-              style="secondary"
               size="2"
+              style="secondary"
               text={<FormattedMessage {...messages.loadMore} />}
               processing={loadingMore}
-              circularCorners={false}
               fullWidth={true}
-              height="60px"
+              height="58px"
             />
           </LoadMoreButtonWrapper>
         }

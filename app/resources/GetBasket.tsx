@@ -1,7 +1,7 @@
 import React from 'react';
 import { isBoolean, isString } from 'lodash-es';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
+import { BehaviorSubject, Subscription, of } from 'rxjs';
+import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { basketByIdStream, IBasketData } from 'services/baskets';
 import { isNilOrError } from 'utils/helperUtils';
@@ -50,8 +50,13 @@ export default class GetBasket extends React.Component<Props, State> {
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ basket: undefined })),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }: { id: string }) => basketByIdStream(id, { cacheStream }).observable)
+        switchMap(({ id }) => {
+          if (isString(id)) {
+            return basketByIdStream(id, { cacheStream }).observable;
+          }
+
+          return of(null);
+        })
       )
       .subscribe((basket) => this.setState({ basket: !isNilOrError(basket) ? basket.data : basket }))
     ];

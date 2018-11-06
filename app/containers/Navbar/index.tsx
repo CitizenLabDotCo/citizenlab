@@ -259,18 +259,15 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  a,
-  button {
+  a.Button {
+    border: solid 2px ${colors.separation} !important;
+    padding-left: 18px;
+    padding-right: 18px;
+
     &:hover,
     &:focus {
       border-color: ${darken(0.2, colors.separation)} !important;
     }
-  }
-
-  .Button {
-    border: solid 2px ${colors.separation} !important;
-    padding-left: 18px;
-    padding-right: 18px;
 
     ${media.smallerThanMinTablet`
       padding-left: 10px;
