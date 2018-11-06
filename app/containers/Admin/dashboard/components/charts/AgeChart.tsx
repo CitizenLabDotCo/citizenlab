@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { usersByBirthyearStream, IUsersByBirthyear } from 'services/stats';
-import messages from '../messages';
+import messages from '../../messages';
 import EmptyGraph from './EmptyGraph';
 
 type State = {

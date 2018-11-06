@@ -20,8 +20,8 @@ import {
 } from '../';
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import GenderChart from '../components/GenderChart';
-import AgeChart from '../components/AgeChart';
+import GenderChart from '../components/charts/GenderChart';
+import AgeChart from '../components/charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
 
 // i18n
