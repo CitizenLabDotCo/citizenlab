@@ -3,10 +3,6 @@ class ClusteringService
   def build_structure levels, idea_scope=Idea, options={}
     drop_empty = options[:drop_empty] == false ? false : true
     options = {drop_empty: drop_empty}
-    # if levels.include? 'clustering'
-    #   dump = NLP::TenantDumpService.new.dump(Tenant.current)
-    #   NLP::API.new(ENV.fetch("CL2_NLP_HOST")).update_tenant dump
-    # end
     output = {
       type: "custom",
       id: SecureRandom.uuid,
