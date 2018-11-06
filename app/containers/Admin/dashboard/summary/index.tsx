@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment from 'moment';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 // components
 import TimeControl from '../components/TimeControl';
@@ -10,8 +10,7 @@ import IntervalControl from '../components/IntervalControl';
 import FilterableBarChartResourceByTopic from '../components/charts/FilterableBarChartResourceByTopic';
 import FilterableBarChartResourceByProject from '../components/charts/FilterableBarChartResourceByProject';
 import ChartFilters from '../components/ChartFilters';
-import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
-import Select from 'components/UI/Select';
+import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
 import CumulativeAreaChart from '../components/charts/CumulativeAreaChart';
 import BarChartByTime from '../components/charts/BarChartByTime';
 import LineChartVotesByTime from '../components/charts/LineChartVotesByTime';
@@ -21,7 +20,7 @@ import { IOption } from 'typings';
 
 // i18n
 import messages from '../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -37,14 +36,6 @@ import {
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
  } from 'services/stats';
-
-const SSelect = styled(Select)`
-  flex: 1;
-
-  & > * {
-    flex: 1;
-  }
-`;
 
 export type IResource = 'Ideas' | 'Comments' | 'Votes';
 
