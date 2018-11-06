@@ -11,6 +11,10 @@ import messages from '../../messages';
 import EmptyGraph from '../../components/EmptyGraph';
 import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
+import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
+
 type State = {
   serie: {
     name: string | number,
@@ -29,7 +33,7 @@ type Props = {
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
-  stream: Function;
+  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime | IIdeasByTime | ICommentsByTime>;
 };
 
 class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps, State> {
