@@ -178,7 +178,7 @@ describe ClusteringService do
       ]))
     end
 
-    it "successfully builds cluster structures by clustering level" do
+    pending "successfully builds cluster structures by clustering level" do
       i1 = create(:idea)
       i2 = create(:idea)
       i3 = create(:idea)
