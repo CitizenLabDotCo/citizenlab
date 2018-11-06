@@ -10,7 +10,11 @@ namespace :nlp do
   end
 
   task :dump_all_tenants_to_nlp, [] => [:environment] do |t, args|
-    DumpTenantJob.perform_later
+    api = NLP::API.new ENV.fetch("CL2_NLP_HOST")
+    Tenant.all.each do |tn|
+      DumpTenantJob.perform_later tn
+    end
+    
   end
 
 end
