@@ -286,27 +286,16 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                     {...this.state}
                   />
                 </Column>
-                <GraphCard className="halfWidth dynamicHeight">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <SSelect
-                        id="topicFilter"
-                        onChange={this.onResourceByTopicChange}
-                        value={currentResourceByTopic}
-                        options={this.resourceOptions}
-                        clearable={false}
-                        borderColor="#EAEAEA"
-                      />
-                      <FormattedMessage {...messages.byTopicTitle} />
-                    </GraphCardTitle>
-                    <FilterableBarChartResourceByTopic
-                      startAt={startAt}
-                      endAt={endAt}
-                      selectedResource={currentResourceByTopic}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
+                <FilterableBarChartResourceByTopic
+                  className="halfWidth dynamicHeight"
+                  onResourceByTopicChange={this.onResourceByTopicChange}
+                  currentResourceByTopic={currentResourceByTopic}
+                  resourceOptions={this.resourceOptions}
+                  startAt={startAt}
+                  endAt={endAt}
+                  selectedResource={currentResourceByTopic}
+                  {...this.state}
+                />
               </Row>
             </GraphsContainer>
           </ThemeProvider>
