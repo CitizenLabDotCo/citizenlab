@@ -7,6 +7,10 @@ import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
 
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
+import { IUsersByTime } from 'services/stats';
+
 // components
 import { GraphCard, GraphCardInner, GraphCardTitle } from '../..';
 import EmptyGraph from '../../components/EmptyGraph';
@@ -44,7 +48,7 @@ type Props = {
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
-  stream: Function;
+  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage: string;
 };
 
