@@ -213,7 +213,9 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
       currentResourceByProject,
       resourceOptions,
       selectedResource,
-      intl: { formatMessage },
+      intl: {
+        formatMessage
+      },
       currentProjectFilter
     } = this.props;
     const isEmpty = !serie || serie.every(item => item.value === 0);
