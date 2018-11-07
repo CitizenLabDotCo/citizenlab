@@ -17,10 +17,14 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
 
 const NoDataContainer = styled.div`
-  height: 100%;
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  // Needed to vertically center the text
+  // Reason being: we have a margin-bottom on the header,
+  // Which we want to keep when there's an actual graph
+  margin-top: -20px;
 `;
 
 const NoDataMessage = styled.span`
@@ -188,32 +192,30 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
+    console.log(serie);
     return (
       <GraphCard className={className}>
-        {!isEmpty ?
-          <GraphCardInner>
-            <GraphCardHeader>
-              <GraphCardTitle>
-                <FormattedMessage {...messages[graphTitleMessageKey]} />
-              </GraphCardTitle>
-              <GraphCardFigureContainer>
-                <GraphCardFigure>
-                  {lastSerieValue}
-                </GraphCardFigure>
-                <GraphCardFigureChange
-                  className={
-                    isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
-                  }
-                >
-                  {formattedSerieChange}
-                </GraphCardFigureChange>
-              </GraphCardFigureContainer>
-            </GraphCardHeader>
+        <GraphCardInner>
+          <GraphCardHeader>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+            </GraphCardTitle>
+            <GraphCardFigureContainer>
+              <GraphCardFigure>
+                {lastSerieValue}
+              </GraphCardFigure>
+              <GraphCardFigureChange
+                className={
+                  isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
+                }
+              >
+                {formattedSerieChange}
+              </GraphCardFigureChange>
+            </GraphCardFigureContainer>
+          </GraphCardHeader>
+          {!isEmpty ?
             <ResponsiveContainer>
-              <NoDataContainer>
-                <NoDataMessage>This data is not available for the current selection.</NoDataMessage>
-              </NoDataContainer>
-               {/* <AreaChart data={serie}>
+              <AreaChart data={serie} margin={{ right: 40 }}>
                 <Area
                   type="monotone"
                   dataKey="value"
@@ -239,12 +241,14 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-              </AreaChart> */}
+              </AreaChart>
             </ResponsiveContainer>
-          </GraphCardInner>
-        :
-          <EmptyGraph unit={graphUnit} />
-        }
+            :
+            <NoDataContainer>
+              <NoDataMessage>This data is not available for the current selection.</NoDataMessage>
+            </NoDataContainer>
+          }
+        </GraphCardInner>
       </GraphCard>
     );
   }
