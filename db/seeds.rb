@@ -225,9 +225,9 @@ admin_koen = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.apply_template('base')
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-  User.create!(admin_koen)
+  TenantTemplateService.new.apply_template 'base'
+  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  User.create! admin_koen
 end
 
 
@@ -271,9 +271,9 @@ if Apartment::Tenant.current == 'localhost'
     admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
-  TenantTemplateService.new.apply_template('base')
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-  User.create!(admin_koen)
+  TenantTemplateService.new.apply_template 'base'
+  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  User.create! admin_koen
 
   if SEED_SIZE != 'empty'
     num_users.times do 
@@ -487,7 +487,6 @@ if Apartment::Tenant.current == 'localhost'
       )
     end
 
-    PermissionsService.new.update_permissions_for_current_tenant
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
       permitted_by = ['groups', 'admins_moderators'].shuffle.first
       permission.permitted_by = permitted_by

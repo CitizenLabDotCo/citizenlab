@@ -1153,30 +1153,18 @@ models:
       time: *83
   project:
   - &96
-    title_multiloc:
-      fr-BE: Boîte à idées
-    description_multiloc:
-      fr-BE: Ces idées ne sont pas liées à un projet.
-    remote_header_bg_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project/header_bg/fed9493a-02e0-4390-9e4d-9bcfd5a4246c/Idea_cover_qdrwa6.jpg
-    description_preview_multiloc: {}
-    presentation_mode: card
-    participation_method: ideation
-    process_type: continuous
+    title_multiloc: projects.open_idea_project_title
+    description_multiloc: projects.open_idea_project_description
+    description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
-    publication_status: draft
-    created_at: !ruby/object:ActiveSupport::TimeWithZone
-      utc: &84 2018-01-26 02:20:20.245952000 Z
-      zone: *2
-      time: *84
-    updated_at: !ruby/object:ActiveSupport::TimeWithZone
-      utc: &85 2018-02-16 10:12:55.592709000 Z
-      zone: *2
-      time: *85
+    presentation_mode: card
+    process_type: continuous
+    participation_method: ideation
     posting_enabled: true
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 10
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   - &97
     title_multiloc:
       fr-BE: Comment améliorer la mobilité dans votre ville
@@ -1358,7 +1346,7 @@ models:
     voting_limited_max: 10
   project_image:
   - project_ref: *96
-    remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/6b493484-3499-4c73-8e82-ad0516c6b2b0/open_idea_box_gaxtpy.png
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
     ordering: 
   - project_ref: *97
     remote_image_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/project_image/image/299b6b35-2d06-489d-91fd-c8a634929fa8/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a.png
@@ -4288,6 +4276,26 @@ models:
     voting_method: unlimited
     voting_limited_max: 
   event:
+  - project_ref: *96
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-03-26T18:00:00.1Z
+    end_at: 2019-03-26T20:00:00.1Z
+  - project_ref: *96
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-06-25T17:00:00.1Z
+    end_at: 2019-06-25T19:00:00.1Z
+  - project_ref: *96
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-09-24T17:00:00.1Z
+    end_at: 2019-09-24T19:00:00.1Z
+  - project_ref: *96
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-12-24T18:00:00.1Z
+    end_at: 2019-12-24T20:00:00.1Z
   - title_multiloc:
       fr-BE: Soirée officielle de présentation des projets du budget participatif
     description_multiloc:
