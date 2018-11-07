@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, isNumber, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
-import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
 import EmptyGraph from '../../components/EmptyGraph';
@@ -32,7 +32,7 @@ type Props = {
   currentTopicFilter: string | null;
 };
 
-class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -195,29 +195,8 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
               </GraphCardFigureContainer>
             </GraphCardTitle>
             <ResponsiveContainer>
-              <LineChart data={serie} margin={{ right: 40 }}>
+              <AreaChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
-                <Line
-                  type="monotone"
-                  dataKey="total"
-                  name={formatMessage(messages.numberOfVotesTotal)}
-                  dot={false}
-                  stroke={chartStroke}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="down"
-                  name={formatMessage(messages.numberOfVotesDown)}
-                  dot={false}
-                  stroke={chartStrokeRed}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="up"
-                  name={formatMessage(messages.numberOfVotesUp)}
-                  dot={false}
-                  stroke={chartStrokeGreen}
-                />
                 <XAxis
                   dataKey="date"
                   interval="preserveStartEnd"
@@ -234,12 +213,39 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
+                <Area
+                  type="monotone"
+                  dataKey="up"
+                  name={formatMessage(messages.numberOfVotesUp)}
+                  dot={false}
+                  fill={chartStrokeGreen}
+                  stroke={chartStrokeGreen}
+                  stackId={1}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="down"
+                  name={formatMessage(messages.numberOfVotesDown)}
+                  dot={false}
+                  fill={chartStrokeRed}
+                  stroke={chartStrokeRed}
+                  stackId={1}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="total"
+                  name={formatMessage(messages.numberOfVotesTotal)}
+                  dot={false}
+                  fill={chartStroke}
+                  stroke={chartStroke}
+                  stackId={1}
+                />
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px'
                   }}
                 />
-              </LineChart>
+              </AreaChart>
             </ResponsiveContainer>
           </GraphCardInner>
           :
@@ -250,4 +256,4 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 }
 
-export default injectIntl<Props>(withTheme(LineChartVotesByTime as any) as any);
+export default injectIntl<Props>(withTheme(AreaChartVotesByTime as any) as any);
