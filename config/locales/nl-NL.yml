@@ -80,9 +80,9 @@ nl:
     open_idea_project_description: >
       De ideeën die zich hier bevinden werden niet aan een project toegekend.
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Gemeenteraad
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives who gained 100 votes in less than 3 months, will be presented.</p><p>The council will then shed light on their perspective on each idea.</p>
+      <p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De raad geeft daarna feedback op elk idee.</p>
   custom_fields:
     gender: Geslacht
     birthyear: Geboortejaar
