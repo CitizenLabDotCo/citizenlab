@@ -294,6 +294,7 @@
   "app.containers.Admin.clusterViewer.fieldTitle": "Title",
   "app.containers.Admin.clusterViewer.fieldTopics": "Topics",
   "app.containers.Admin.clusterViewer.level_area": "Areas",
+  "app.containers.Admin.clusterViewer.level_clustering": "",
   "app.containers.Admin.clusterViewer.level_project": "Projects",
   "app.containers.Admin.clusterViewer.level_topic": "Topics",
   "app.containers.Admin.clusterViewer.relative": "Relative",
