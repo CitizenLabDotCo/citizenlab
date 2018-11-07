@@ -9,7 +9,6 @@ import messages from '../../messages';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import EmptyGraph from '../../components/EmptyGraph';
 import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
@@ -192,7 +191,6 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
-    console.log(serie);
     return (
       <GraphCard className={className}>
         <GraphCardInner>
