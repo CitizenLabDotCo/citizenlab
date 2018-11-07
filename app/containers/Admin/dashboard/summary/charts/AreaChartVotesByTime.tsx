@@ -6,7 +6,7 @@ import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianG
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
 import EmptyGraph from '../../components/EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -179,8 +179,10 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       <GraphCard className={className}>
         {!isEmpty ?
           <GraphCardInner>
-            <GraphCardTitle>
-              <FormattedMessage {...messages.votesByTimeTitle} />
+            <GraphCardHeader>
+              <GraphCardTitle>
+                <FormattedMessage {...messages.votesByTimeTitle} />
+              </GraphCardTitle>
               <GraphCardFigureContainer>
                 <GraphCardFigure>
                   {lastSerieValue}
@@ -193,7 +195,7 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   {formattedSerieChange}
                 </GraphCardFigureChange>
               </GraphCardFigureContainer>
-            </GraphCardTitle>
+            </GraphCardHeader>
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
