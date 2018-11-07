@@ -33,7 +33,7 @@ import { colors, media } from 'utils/styleUtils';
 const Container = styled.div``;
 
 const FirstRow = styled.div`
-  background: #fafafa;
+  background: #fff;
 `;
 
 const StyledTimeline = styled(Timeline)`
@@ -43,12 +43,11 @@ const StyledTimeline = styled(Timeline)`
 `;
 
 const SecondRow = styled.div`
-  background: #f4f3f3;
-  border-top: solid 1px ${colors.separation};
+  background: ${colors.background};
 `;
 
 const StyledPhaseAbout = styled(PhaseAbout)`
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 `;
 
 const SecondRowContentContainer = styled(ContentContainer)`
@@ -56,7 +55,7 @@ const SecondRowContentContainer = styled(ContentContainer)`
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
-  margin-bottom: -140px;
+  margin-bottom: -120px;
 `;
 
 const StyledPhaseSurvey = styled(PhaseSurvey)`
@@ -64,8 +63,8 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 70px;
+  margin-bottom: 70px;
 `;
 
 interface InputProps {

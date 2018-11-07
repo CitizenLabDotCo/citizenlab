@@ -23,8 +23,8 @@ import { darken } from 'polished';
 
 const Container = styled.div`
   border-radius: 5px;
-  background-color: #f1f2f3;
-  padding: 25px 30px 30px;
+  background-color: ${darken(0.01, colors.background)};
+  padding: 34px;
 `;
 
 const InformationTitle = styled.h2`
@@ -78,58 +78,31 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  hasAboutText: boolean;
-}
+interface State {}
 
 class PhaseAbout extends PureComponent<Props, State> {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      hasAboutText: false
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    let hasAboutText = false;
-    const { locale, phase } = nextProps;
-    const hasText = (html: string | null | undefined) => {
-      if (html) {
-        const span = document.createElement('span');
-        span.innerHTML = html;
-        const content = (span.textContent || span.innerText);
-        return !isEmpty(content);
-      }
-
-      return false;
-    };
-
-    if (!isNilOrError(locale) && !isNilOrError(phase) && phase.attributes.description_multiloc[locale]) {
-      hasAboutText = hasText(phase.attributes.description_multiloc[locale]);
-    }
-
-    return { hasAboutText };
-  }
-
   render() {
     const { locale, phase, phaseFiles } = this.props;
-    const { hasAboutText } = this.state;
 
-    if (!isNilOrError(locale) && !isNilOrError(phase) && hasAboutText) {
-      return (
-        <Container className={this.props['className']}>
-          <InformationTitle>
-            <FormattedMessage {...messages.aboutThisPhase} />
-          </InformationTitle>
-          <InformationBody>
-            <T value={phase.attributes.description_multiloc} supportHtml={true} />
-          </InformationBody>
-          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
-            <StyledFileAttachments files={phaseFiles} />
-          }
-        </Container>
-      );
+    if (!isNilOrError(locale) && !isNilOrError(phase)) {
+      const content = phase.attributes.description_multiloc[locale];
+      const contentIsEmpty = (!content || isEmpty(content) || content === '<p></p>' || content === '<p><br></p>');
+
+      if (!contentIsEmpty) {
+        return (
+          <Container className={this.props['className']}>
+            <InformationTitle>
+              <FormattedMessage {...messages.aboutThisPhase} />
+            </InformationTitle>
+            <InformationBody>
+              <T value={phase.attributes.description_multiloc} supportHtml={true} />
+            </InformationBody>
+            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
+              <StyledFileAttachments files={phaseFiles} />
+            }
+          </Container>
+        );
+      }
     }
 
     return null;

@@ -42,7 +42,7 @@ const ProjectNavbarWrapper = styled.nav`
     &::-webkit-scrollbar {
       display: none;
     }
-`}
+  `}
 
   ${media.smallerThanMaxTablet`
     top: 0;
@@ -104,22 +104,34 @@ const ProjectNavbarLink = styled(Link)`
   &:first-of-type {
     ${media.smallerThanMinTablet`
       margin-left: 20px;
-    `}
+    `};
   }
 
   &:last-of-type {
+    margin-right: 0px;
+
     ${media.smallerThanMinTablet`
-      padding-right: 20px;
-    `}
+      margin-right: 20px;
+    `};
   }
 `;
 
 const Spacer = styled.div`
+  height: 20px;
   flex: 1;
+
+  ${media.smallerThanMinTablet`
+    width: 1px;
+    flex: 0 0 1px;
+  `};
 `;
 
 const StyledPBNavbarButton = styled(PBNavbarButton)`
   margin-left: 40px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 interface InputProps {
@@ -243,15 +255,14 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   </ProjectNavbarLink>
                 }
 
+                <Spacer />
+
                 {/* PB basket button */}
                 {participationContextType && participationContextId &&
-                  <>
-                    <Spacer/>
-                    <StyledPBNavbarButton
-                      participationContextType={participationContextType}
-                      participationContextId={participationContextId}
-                    />
-                  </>
+                  <StyledPBNavbarButton
+                    participationContextType={participationContextType}
+                    participationContextId={participationContextId}
+                  />
                 }
               </ProjectNavbarItems>
             </StyledContentContainer>

@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -254,7 +255,11 @@ interface InputProps extends GetIdeasInputProps  {
   className?: string;
 }
 
-interface Props extends InputProps, GetIdeasChildProps {}
+interface DataProps {
+  ideas: GetIdeasChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedView: 'card' | 'map';
@@ -275,23 +280,23 @@ class IdeaCards extends PureComponent<Props, State> {
   }
 
   loadMore = () => {
-    this.props.onLoadMore();
+    this.props.ideas.onLoadMore();
   }
 
   handleSearchOnChange = (search: string) => {
     // track
-    this.props.onChangeSearchTerm(search);
+    this.props.ideas.onChangeSearchTerm(search);
   }
 
   handleSortOnChange = (sort: string) => {
-    this.props.onChangeSorting(sort);
+    this.props.ideas.onChangeSorting(sort);
   }
 
   handleTopicsOnChange = (topics: string[]) => {
-    this.props.onChangeTopics(topics);
+    this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: React.FormEvent<any>) => {
+  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -300,18 +305,21 @@ class IdeaCards extends PureComponent<Props, State> {
   render() {
     const { selectedView } = this.state;
     const {
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      basketId,
+      ideas,
+      className
+    } = this.props;
+    const {
       queryParameters,
       searchValue,
       ideasList,
       hasMore,
       querying,
-      loadingMore,
-      participationMethod,
-      participationContextId,
-      participationContextType,
-      basketId,
-      className
-    } = this.props;
+      loadingMore
+    } = ideas;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
@@ -405,13 +413,12 @@ class IdeaCards extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  const { showViewToggle, defaultView, ...getIdeasInputProps } = inputProps;
-  const props: GetIdeasInputProps = { ...getIdeasInputProps, type: 'load-more' };
+const Data = adopt<DataProps, InputProps>({
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
+});
 
-  return (
-    <GetIdeas {...props}>
-      {ideas => <IdeaCards {...inputProps} {...ideas} />}
-    </GetIdeas>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaCards {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -1,5 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get, includes } from 'lodash-es';
+import { get, isUndefined } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
@@ -11,9 +11,9 @@ import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
+import AssignBudgetControl from 'components/AssignBudgetControl';
 import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
-import Button from 'components/UI/Button';
 
 // resources
 import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
@@ -23,20 +23,14 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
-
-// services
-import { addBasket, updateBasket } from 'services/baskets';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import streams from 'utils/streams';
 
 // i18n
 import T from 'components/T';
 import { InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
@@ -115,18 +109,6 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
-const SeeIdeaButton = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  padding: 0;
-  padding-left: 14px;
-
-  &:hover {
-    color: #000;
-  }
 `;
 
 const Spacer = styled.div`
@@ -220,14 +202,12 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
-  basket: GetBasketChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
-  processing: boolean;
 }
 
 export const namespace = 'components/IdeaCard/index';
@@ -236,8 +216,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      showVotingDisabled: null,
-      processing: false
+      showVotingDisabled: null
     };
   }
 
@@ -273,72 +252,31 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
-  assignBudget = (isInBasket: boolean) => async (event: FormEvent<any>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const { idea, authUser, basket, participationMethod, participationContextId, participationContextType } = this.props;
-
-    if (participationMethod === 'budgeting' && participationContextId && participationContextType && !isNilOrError(idea) && !isNilOrError(authUser)) {
-      this.setState({ processing: true });
-
-      if (!isNilOrError(basket)) {
-        let newIdeas: string[] = [];
-
-        if (isInBasket) {
-          newIdeas = basket.relationships.ideas.data.filter((basketIdea) => {
-            return basketIdea.id !== idea.id;
-          }).map((basketIdea) => {
-            return basketIdea.id;
-          });
-        } else {
-          newIdeas = [
-            ...basket.relationships.ideas.data.map(basketIdea => basketIdea.id),
-            idea.id
-          ];
-        }
-
-        try {
-          await updateBasket(basket.id, {
-            user_id: authUser.id,
-            participation_context_id: participationContextId,
-            participation_context_type: participationContextType,
-            idea_ids: newIdeas
-          });
-        } catch (error) {
-          streams.fetchAllWith({ dataId: [basket.id] });
-          this.setState({ processing: false });
-        }
-      } else {
-        try {
-          await addBasket({
-            user_id: authUser.id,
-            participation_context_id: participationContextId,
-            participation_context_type: participationContextType,
-            idea_ids: [idea.id]
-          });
-        } catch (error) {
-          this.setState({ processing: false });
-        }
-      }
-
-      this.setState({ processing: false });
-    }
-  }
-
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, locale, authUser, location, participationMethod, basket, intl: { formatMessage } } = this.props;
-    const { showVotingDisabled, processing } = this.state;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      tenant,
+      locale,
+      authUser,
+      location,
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      basketId,
+      intl: { formatMessage }
+    } = this.props;
+    const { showVotingDisabled } = this.state;
 
     if (
       !isNilOrError(location) &&
       !isNilOrError(tenant) &&
       !isNilOrError(locale) &&
-      authUser !== undefined &&
+      !isUndefined(authUser) &&
       !isNilOrError(idea) &&
-      ideaImage !== undefined &&
-      ideaAuthor !== undefined &&
-      basket !== undefined
+      !isUndefined(ideaImage) &&
+      !isUndefined(ideaAuthor)
     ) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
@@ -346,11 +284,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
-      const hasBudget = !!idea.attributes.budget;
-      const hasPBContext = (participationMethod === 'budgeting');
-      const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
-      const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
-      const isInBasket = includes(basketIdeaIds, idea.id);
       const className = `${this.props['className']}
         e2e-idea-card
         ${idea.relationships.user_vote && idea.relationships.user_vote.data ? 'voted' : 'not-voted' }
@@ -359,7 +292,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
 
-      console.log('ideaCard render');
+      console.log(idea);
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
@@ -372,11 +305,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </IdeaImageContainer>
             }
 
-            {idea.attributes.budget && hasPBContext && hasBudget &&
+            {participationMethod === 'budgeting' && idea.attributes.budget &&
               <IdeaBudget>{getFormattedBudget(locale, idea.attributes.budget, tenant.attributes.settings.core.currency)}</IdeaBudget>
             }
 
-            <IdeaContent className={(ideaImageUrl === null && hasPBContext && hasBudget) ? 'extraTopPadding' : ''}>
+            <IdeaContent className={(ideaImageUrl === null && participationMethod === 'budgeting' && idea.attributes.budget) ? 'extraTopPadding' : ''}>
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
@@ -391,7 +324,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                {!hasBudget &&
+                {participationMethod !== 'budgeting' && !idea.attributes.budget &&
                   <VoteControl
                     ideaId={idea.id}
                     unauthenticatedVoteClick={this.unauthenticatedVoteClick}
@@ -400,24 +333,18 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 }
 
-                {hasBudget && hasPBContext &&
-                  <>
-                    <Button
-                      onClick={this.assignBudget(isInBasket)}
-                      processing={processing}
-                      bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
-                      disabled={budgetExceedsLimit && !isInBasket}
-                    >
-                      {!isInBasket ? (
-                        <FormattedMessage {...messages.assign} />
-                      ) : (
-                        <FormattedMessage {...messages.undo} />
-                      )}
-                    </Button>
-                    <SeeIdeaButton onClick={this.onCardClick}>
-                      <FormattedMessage {...messages.seeIdea} />
-                    </SeeIdeaButton>
-                  </>
+                {participationMethod === 'budgeting' &&
+                 idea.attributes.budget &&
+                 participationContextId &&
+                 participationContextType &&
+                  <AssignBudgetControl
+                    ideaId={idea.id}
+                    basketId={basketId}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    openIdea={this.onCardClick}
+                  />
                 }
 
                 <Spacer />
@@ -463,8 +390,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
-  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);
