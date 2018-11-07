@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
+import { Moment } from 'moment';
 
 // components
+import Dropdown from 'components/UI/Dropdown';
+import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -10,140 +13,90 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  background: ${colors.adminContentBackground};
-  border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
-  overflow: hidden;
 `;
 
-const StyledIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  fill: ${colors.adminSecondaryTextColor};
-`;
-
-const PrevIcon = StyledIcon.extend``;
-
-const NextIcon = StyledIcon.extend`
-  transform: rotate(180deg);
-`;
-
-const TimeButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const DropdownContainer = styled.div`
+  position: relative;
   cursor: pointer;
-  outline: none;
-  padding: 1rem 1.5rem;
-
-  &:hover, &:focus {
-    background: ${rgba(colors.adminTextColor, .2)};
-
-    ${PrevIcon},
-    ${NextIcon} {
-      fill: ${colors.adminTextColor};
-    }
-  }
 `;
 
-const Separator = styled.div`
-  width: 1px;
-  background-color: ${colors.adminSeparation};
-`;
-
-const CurrentTime = styled.div`
-  min-width: 160px;
-  font-size: ${fontSizes.base}px;
-  text-transform: capitalize;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1.5rem;
+const DropdownItemIcon = styled(Icon)`
+  width: 11px;
+  height: 6px;
+  fill: ${colors.label};
+  margin-top: 1px;
+  margin-left: 4px;
 `;
 
 type Props  = {
-  value: number;
-  interval: 'weeks' | 'months' | 'years';
-  currentTime?: moment.Moment;
-  onChange: (arg: number) => void;
+  startAtMoment: Moment | null;
+  endAtMoment: Moment | null;
+  onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
 };
 
 type State  = {
-  currentTime: string | undefined;
+  dropdownOpened: boolean;
 };
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
-  static getDerivedStateFromProps(nextProps: Props & InjectedIntlProps, _prevState: State) {
-    const getCurrentTime = () => {
-      const { currentTime, interval } = nextProps;
-      const { formatDate } = nextProps.intl;
 
-      if (currentTime) {
-        const fromTime = currentTime;
-        const toTime = fromTime.clone().add(1, interval);
-
-        switch (interval) {
-          case 'weeks':
-            const from = formatDate(fromTime.toDate(), {
-              day: '2-digit',
-              weekday: 'short'
-            });
-            const to = formatDate(toTime.toDate(), {
-              day: '2-digit',
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-            });
-            return `${from} - ${to}`;
-          case 'months':
-            return formatDate(fromTime.toDate(), {
-              month: 'long',
-              year: 'numeric',
-            });
-          case 'years':
-            return formatDate(fromTime.toDate(), {
-              year: 'numeric',
-            });
-          default:
-            break;
-        }
-      }
-
-      return;
-    };
-
-    return {
-      currentTime: getCurrentTime()
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownOpened: false,
     };
   }
 
-  handlePrevious = () => {
-    this.props.onChange(this.props.value - 1);
+  toggleDropdown = () => {
+    this.setState({ dropdownOpened: !this.state.dropdownOpened });
   }
 
-  handleNext = () => {
-    this.props.onChange(this.props.value + 1);
+  handleDatesChange = ({ startDate, endDate }: {startDate: Moment | null, endDate: Moment | null}) => {
+    this.props.onChange(startDate, endDate);
   }
+
+  isOutsideRange = () => (false);
 
   render() {
+    const { dropdownOpened } = this.state;
+    const { startAtMoment, endAtMoment } = this.props;
+
     return (
       <Container>
-        <TimeButton onClick={this.handlePrevious}>
-          <NextIcon name="chevron-right" />
-        </TimeButton>
-        <Separator />
-        <CurrentTime>
-          {this.state.currentTime}
-        </CurrentTime>
-        <Separator />
-        <TimeButton onClick={this.handleNext}>
-          <PrevIcon name="chevron-right" />
-        </TimeButton>
+        <DropdownContainer>
+          <Button
+            style="text"
+            onClick={this.toggleDropdown}
+          >
+            Date range
+            <DropdownItemIcon name="dropdown" />
+          </Button>
+          <Dropdown
+            width="200px"
+            top="45px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={
+              <div>
+                Time options
+              </div>
+            }
+          />
+        </DropdownContainer>
+
+        <DateRangePicker
+          startDateId={'startAt'}
+          endDateId={'endAt'}
+          startDate={startAtMoment}
+          endDate={endAtMoment}
+          onDatesChange={this.handleDatesChange}
+          isOutsideRange={this.isOutsideRange}
+        />
       </Container>
     );
   }
