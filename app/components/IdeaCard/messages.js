@@ -34,16 +34,4 @@ export default defineMessages({
     id: 'app.components.IdeaCard.register',
     defaultMessage: 'Create an account',
   },
-  assign: {
-    id: 'app.components.IdeaCard.assign',
-    defaultMessage: 'Assign',
-  },
-  undo: {
-    id: 'app.components.IdeaCard.undo',
-    defaultMessage: 'Undo',
-  },
-  seeIdea: {
-    id: 'app.components.IdeaCard.seeIdea',
-    defaultMessage: 'See idea',
-  },
 });

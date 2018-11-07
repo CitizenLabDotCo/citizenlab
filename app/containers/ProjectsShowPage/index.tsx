@@ -33,6 +33,10 @@ const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
+  &.whiteBg {
+    background: #fff;
+  }
+
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
@@ -49,7 +53,6 @@ const Loading = styled.div`
 const Content = styled.div`
   flex: 1 0 auto;
   height: 100%;
-  background: ${colors.background};
 `;
 
 const ProjectNotFoundWrapper = styled.div`
@@ -86,11 +89,13 @@ class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, Stat
     const { slug } = this.props.params;
     const projectNotFound = isError(project);
     const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project) || isUndefined(phases) || isUndefined(events));
+    const currentPath = location.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
     return (
       <>
         <Meta projectSlug={slug} />
-        <Container>
+        <Container className={lastUrlSegment === 'process' ? 'whiteBg' : ''}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>

@@ -21,11 +21,12 @@ import adminMessages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const IdeasContainer = styled.div`
   padding-top: 50px;
   padding-bottom: 50px;
+  background: ${colors.background};
 `;
 
 const IdeasTitle = styled.h1`
