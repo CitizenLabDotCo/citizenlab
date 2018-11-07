@@ -6,7 +6,7 @@ import { map, sortBy } from 'lodash-es';
 
 // components
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { GraphCard, GraphCardInner, GraphCardTitleWithFilter } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
 import Select from 'components/UI/Select';
 import EmptyGraph from '../../components/EmptyGraph';
 
@@ -229,7 +229,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
         <GraphCardInner>
           {!isEmpty ?
             <>
-              <GraphCardTitleWithFilter>
+              <GraphCardHeaderWithFilter>
                 <SSelect
                   id="projectFilter"
                   onChange={onResourceByProjectChange}
@@ -239,7 +239,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
                   borderColor="#EAEAEA"
                 />
                 <FormattedMessage {...messages.byProjectTitle} />
-              </GraphCardTitleWithFilter>
+              </GraphCardHeaderWithFilter>
               <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
                 <BarChart data={serie} layout="vertical">
                   <Bar
