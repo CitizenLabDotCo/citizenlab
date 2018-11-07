@@ -12,7 +12,7 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime } from 'services/stats';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardTitle } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
 import EmptyGraph from '../../components/EmptyGraph';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
@@ -154,9 +154,11 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
       return (
         <GraphCard className={className}>
           <GraphCardInner>
-            <GraphCardTitle>
+            <GraphCardHeader>
               <TitleWithInfoIcon>
-                <FormattedMessage {...messages[graphTitleMessageKey]} />
+                <GraphCardTitle>
+                  <FormattedMessage {...messages[graphTitleMessageKey]} />
+                </GraphCardTitle>
                 {infoMessage && <Popup
                   basic
                   trigger={
@@ -168,7 +170,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                   position="top left"
                 />}
               </TitleWithInfoIcon>
-            </GraphCardTitle>
+            </GraphCardHeader>
 
             <ResponsiveContainer>
               <BarChart data={serie}>

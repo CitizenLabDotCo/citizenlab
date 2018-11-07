@@ -102,18 +102,21 @@ export const GraphCard = styled.div`
   }
 `;
 
-export const GraphCardTitle = styled.h3`
+export const GraphCardHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  padding-bottom: 20px;
 `;
 
-export const GraphCardTitleWithFilter = GraphCardTitle.extend`
+export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
   justify-content: center;
   font-size: ${fontSizes.base}px;
+`;
+
+export const GraphCardTitle = styled.h3`
+  margin-bottom: 0;
 `;
 
 export const GraphCardFigureContainer = styled.div`

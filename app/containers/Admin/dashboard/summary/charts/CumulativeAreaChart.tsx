@@ -3,17 +3,29 @@ import { Subscription } from 'rxjs';
 import { map, isNumber } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
 import EmptyGraph from '../../components/EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
+
+const NoDataContainer = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NoDataMessage = styled.span`
+  font-size: ${fontSizes.base}px;
+`;
 
 type State = {
   serie: {
@@ -180,8 +192,10 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
       <GraphCard className={className}>
         {!isEmpty ?
           <GraphCardInner>
-            <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+            <GraphCardHeader>
+              <GraphCardTitle>
+                <FormattedMessage {...messages[graphTitleMessageKey]} />
+              </GraphCardTitle>
               <GraphCardFigureContainer>
                 <GraphCardFigure>
                   {lastSerieValue}
@@ -194,9 +208,12 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                   {formattedSerieChange}
                 </GraphCardFigureChange>
               </GraphCardFigureContainer>
-            </GraphCardTitle>
+            </GraphCardHeader>
             <ResponsiveContainer>
-              <AreaChart data={serie}>
+              <NoDataContainer>
+                <NoDataMessage>This data is not available for the current selection.</NoDataMessage>
+              </NoDataContainer>
+               {/* <AreaChart data={serie}>
                 <Area
                   type="monotone"
                   dataKey="value"
@@ -222,7 +239,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-              </AreaChart>
+              </AreaChart> */}
             </ResponsiveContainer>
           </GraphCardInner>
         :
