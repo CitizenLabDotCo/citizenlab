@@ -18,7 +18,7 @@ describe "seedfile", slow_test: true do
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
       expect(Phase.count).to be > 0
-      expect(Event.count).to be > 0
+      expect(Event.count).to be >= 4
       expect(Idea.count).to be > 0
       expect(IdeaImage.count).to be > 0
       expect(ProjectImage.count).to be > 0
@@ -39,7 +39,7 @@ describe "seedfile", slow_test: true do
       expect(Area.count).to be 0
       expect(Project.count).to be 1
       expect(Phase.count).to be 0
-      expect(Event.count).to be 0
+      expect(Event.count).to be 4
       expect(Idea.count).to be 0
       expect(Comment.count).to be 0
       expect(Group.count).to be 0
