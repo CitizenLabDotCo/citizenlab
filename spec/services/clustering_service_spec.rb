@@ -178,6 +178,50 @@ describe ClusteringService do
       ]))
     end
 
+    pending "successfully builds cluster structures by clustering level" do
+      i1 = create(:idea)
+      i2 = create(:idea)
+      i3 = create(:idea)
+      stub_request(:get, "#{ENV.fetch("CL2_NLP_HOST")}/v1/tenants/#{Tenant.current.id}/nl/ideas/clustering?idea_ids%5B%5D=#{i1.id}&idea_ids%5B%5D=#{i2.id}&idea_ids%5B%5D=#{i3.id}").
+        to_return(
+          status: 200,
+          headers: {'Content-Type' => 'application/json'},
+          body: {data: {items: [
+            {'id' => i1.id, 'cluster' => 0},
+            {'id' => i2.id, 'cluster' => 1},
+            {'id' => i3.id, 'cluster' => 0}
+        ]}}.to_json)
+      
+      structure = service.build_structure(['clustering'])[:children]
+      expect(order_children_rec(structure)).to match(order_children_rec([
+        {
+          type: "custom",
+          id: "0",
+          children: [
+            {
+              type: "idea",
+              id: i1.id
+            },
+            {
+              type: "idea",
+              id: i3.id
+            }
+          ]
+        },
+        {
+          type: "custom",
+          id: "1",
+          children: [
+            {
+              type: "idea",
+              id: i2.id
+            }
+          ]
+        }
+      ]))
+      expect(build(:clustering, structure: {type: 'custom', id: 'test', children: structure})).to be_valid
+    end
+
     it "successfully builds cluster structures for 2 or more levels" do
       p1, p2 = create_list(:project,2)
       t1, t2 = create_list(:topic, 2)

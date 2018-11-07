@@ -23,7 +23,7 @@ class Permission < ApplicationRecord
       moderating_permissions_ids = where(permittable_id: moderating_context_ids).ids
       group_permission_ids = joins(:groups_permissions)
         .where(permitted_by: 'groups')
-        .where('groups_permissions.group_id = ?', user.group_ids).ids
+        .where(groups_permissions: {group_id: user.group_ids}).ids
       where(id: (permissions_for_everyone_ids + moderating_permissions_ids + group_permission_ids).uniq)
     else
       where(permitted_by: 'everyone')

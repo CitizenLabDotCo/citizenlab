@@ -54,6 +54,7 @@ end
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'rubyXL'
+  gem 'webmock', '~> 3.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -92,7 +93,7 @@ gem 'omniauth' # , '~> 1.7.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-# gem 'omniauth-mydigipass', github: 'vasco-data-security/omniauth-mydigipass', branch: 'oauth-eid-specification'
+gem 'omniauth-azure-activedirectory'
 gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
@@ -104,3 +105,4 @@ gem 'mailgun-ruby'
 gem 'public_api', path: 'engines/public_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'admin_api', path: 'engines/admin_api'
+gem 'nlp', path: 'engines/nlp'
