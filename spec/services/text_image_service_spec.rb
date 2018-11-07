@@ -77,7 +77,7 @@ describe TextImageService do
 
     it "replaces an img tag that has an external URL as a src with a new URL" do
       input = <<~HTML
-        <img src="#{url_from_url}">
+        <img src="#{external_url}">
       HTML
       output = <<~HTML
         <img src="#{url_from_url}">
