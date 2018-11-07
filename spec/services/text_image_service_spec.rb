@@ -40,6 +40,7 @@ describe TextImageService do
   describe "swap_data_images_text" do
     let(:url_from_base64) { "#{FrontendService.new.home_url}/from/base64/image.jpg" }
     let(:url_from_url) { "#{FrontendService.new.home_url}/from/url/image.jpg" }
+    let(:external_url) { "https://i.pinimg.com/originals/f9/08/de/f908deb0fbac29cd7445e42c15d674e2.jpg" }
     let(:image_url_builder) { -> (image_data, image_type) { 
       case image_type
       when :base64
@@ -74,11 +75,27 @@ describe TextImageService do
       expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
     end
 
-    it "replaces an img tag that has a URL as a src with a new URL" do
+    it "replaces an img tag that has an external URL as a src with a new URL" do
       input = <<~HTML
         <img src="#{url_from_url}">
       HTML
-      expect(service.swap_data_images_text(input, &image_url_builder)).to eq input
+      output = <<~HTML
+        <img src="#{url_from_url}">
+      HTML
+      expect(service.swap_data_images_text(input, &image_url_builder)).to eq output
+    end
+
+    it "does not replace an image tag of an image that has already been processed" do
+      input = <<~HTML
+        <img src="#{external_url}">
+      HTML
+      output = <<~HTML
+        <img src="#{url_from_url}">
+      HTML
+      res1 = service.swap_data_images_text input, &image_url_builder
+      expect(res1).to eq output
+      res2 = service.swap_data_images_text res1, &image_url_builder
+      expect(res2).to eq output
     end
 
     it "replaces a base64 PNG data src on an img with a URL" do
