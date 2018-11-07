@@ -644,6 +644,8 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "crwdns18101:0crwdne18101:0",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "crwdns18214:0crwdne18214:0",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "crwdns18103:0crwdne18103:0",
+  "app.containers.AdminPage.widgets.copied": "crwdns19694:0crwdne19694:0",
+  "app.containers.AdminPage.widgets.copyToClipboard": "crwdns19696:0crwdne19696:0",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "crwdns19322:0crwdne19322:0",
   "app.containers.AdminPage.widgets.fieldAccentColor": "crwdns19323:0crwdne19323:0",
   "app.containers.AdminPage.widgets.fieldBackgroundColor": "crwdns19324:0crwdne19324:0",
