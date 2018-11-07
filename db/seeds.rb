@@ -99,6 +99,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         timezone: "Europe/Brussels",
         color_main: Faker::Color.hex_color,
       },
+      password_login: {
+        allowed: true,
+        enabled: true,
+      },
       facebook_login: {
         allowed: true,
         enabled: true,
@@ -111,13 +115,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
         client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
       },
-      # mydigipass_login: {
-      #   allowed: true,
-      #   enabled: true,
-      #   client_id: 'a76piarjfjbvwnukobjdzz07d',
-      #   client_secret: '65xg35xpa84p14cgntyg0279k',
-      #   require_eid: false
-      # },
       pages: {
         allowed: true, 
         enabled: true

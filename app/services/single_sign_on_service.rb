@@ -47,6 +47,14 @@ class SingleSignOnService
     user_attrs
   end
 
+  def azureactivedirectory_profile_to_user_attrs auth
+    {
+      locale: Tenant.current.closest_locale_to(auth.extra.raw_info.locale)
+    }
+  end
+
+  private
+
   def image_available? img_url_s
     img_url = URI.parse(img_url_s)
     req = Net::HTTP.new(img_url.host, img_url.port)
@@ -55,10 +63,6 @@ class SingleSignOnService
     res.code != '404'
   end
 
-  def mydigipass_profile_to_user_attrs auth
-    user_attrs = {}
 
-    user_attrs
-  end
 
 end
