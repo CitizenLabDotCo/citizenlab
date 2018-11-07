@@ -67,7 +67,7 @@ export const GraphCardInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 40px 20px;
   position: absolute;
   top: 0;
   left: 0;
@@ -108,6 +108,7 @@ export const GraphCardHeader = styled.div`
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
+  padding: 0 20px 40px;
 `;
 
 export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
