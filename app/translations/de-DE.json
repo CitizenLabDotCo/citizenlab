@@ -644,6 +644,8 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Etwas ging schief, bitte versuchen Sie es später nochmal.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
+  "app.containers.AdminPage.widgets.copied": "Copied to clipboard",
+  "app.containers.AdminPage.widgets.copyToClipboard": "Copy to clipboard",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "HTML-Code exportieren",
   "app.containers.AdminPage.widgets.fieldAccentColor": "Akzentfarbe",
   "app.containers.AdminPage.widgets.fieldBackgroundColor": "Widget-Hintergrundfarbe",

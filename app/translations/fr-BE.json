@@ -644,6 +644,8 @@
   "app.containers.AdminPage.groups.permissions.saveErrorMessage": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.AdminPage.groups.permissions.saveSuccess": "Enregistré !",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Vos modifications ont été enregistrées.",
+  "app.containers.AdminPage.widgets.copied": "Copié",
+  "app.containers.AdminPage.widgets.copyToClipboard": "Copier",
   "app.containers.AdminPage.widgets.exportHtmlCodeButton": "Exportation de code HTML",
   "app.containers.AdminPage.widgets.fieldAccentColor": "Couleur des accents",
   "app.containers.AdminPage.widgets.fieldBackgroundColor": "Couleur d’arrière-plan du widget",

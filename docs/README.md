@@ -1,5 +1,10 @@
 # Changelog
 
+## 2018-11-07
+
+### Fixed
+- The widget HTML snippet can be copied again
+
 ## 2018-11-05
 
 ### Fixed
