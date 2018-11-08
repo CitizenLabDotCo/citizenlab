@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -8,8 +8,9 @@ import Icon from 'components/UI/Icon';
 import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
@@ -45,6 +46,21 @@ type State  = {
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
+  presets = [
+    {
+      id: 'previous30Days',
+      label: <FormattedMessage {...messages.previous30Days} />,
+      startAt: (now: Moment) => now.add(-30, 'd'),
+      endAt: (now: Moment) => now,
+    },
+    {
+      id: 'previous90Days',
+      label: <FormattedMessage {...messages.previous90Days} />,
+      startAt: (now: Moment) => now.add(-90, 'd'),
+      endAt: (now: Moment) => now,
+    },
+  ];
+
   constructor(props) {
     super(props);
     this.state = {
@@ -62,9 +78,24 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   isOutsideRange = () => (false);
 
+  findActivePreset = () => {
+    const { startAtMoment, endAtMoment } = this.props;
+    if (!startAtMoment || !endAtMoment) return null;
+    const now = moment();
+    return this.presets.find(preset => {
+      return preset.startAt(now).isSame(startAtMoment, 'day') && preset.endAt(now).isSame(endAtMoment, 'day');
+    });
+  }
+
+  handlePresetClick = (preset) => () => {
+    const now = moment();
+    this.props.onChange(preset.startAt(now), preset.endAt(now));
+  }
+
   render() {
     const { dropdownOpened } = this.state;
     const { startAtMoment, endAtMoment } = this.props;
+    const activePreset = this.findActivePreset();
 
     return (
       <Container>
@@ -73,7 +104,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             style="text"
             onClick={this.toggleDropdown}
           >
-            Date range
+            {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
             <DropdownItemIcon name="dropdown" />
           </Button>
           <Dropdown
@@ -83,7 +114,12 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             onClickOutside={this.toggleDropdown}
             content={
               <div>
-                Time options
+                {this.presets.map(preset => (
+                  <div key={preset.id} onClick={this.handlePresetClick(preset)} role="navigation">
+                    {preset.label}
+                    {activePreset && activePreset.id === preset.id && '*'}
+                  </div>
+                ))}
               </div>
             }
           />

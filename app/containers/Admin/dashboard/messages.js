@@ -225,4 +225,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
     defaultMessage: 'Topics',
   },
+  previous30Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous30Days',
+    defaultMessage: 'Previous 30 days',
+  },
+  previous90Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous90Days',
+    defaultMessage: 'Previous 90 days',
+  },
+  customDateRange: {
+    id: 'app.containers.AdminPage.DashboardPage.customDateRange',
+    defaultMessage: 'Custom',
+  },
 });
