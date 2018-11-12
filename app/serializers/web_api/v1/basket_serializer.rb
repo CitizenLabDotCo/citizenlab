@@ -8,7 +8,8 @@ class WebApi::V1::BasketSerializer < ActiveModel::Serializer
 
 
   def ideas
-  	Idea.find object.baskets_ideas.order(created_at: :desc).left_outer_joins(:idea).pluck(:idea_id)
+    # object.ideas.joins(:baskets_ideas).where(baskets_ideas: {basket_id: object.id}).order('baskets_ideas.created_at DESC')
+    object.ideas.order('baskets_ideas.created_at DESC')
   end
 
 end
