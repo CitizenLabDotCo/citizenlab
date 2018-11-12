@@ -23,5 +23,12 @@ export function returnFileSize(number) {
 }
 
 export function getFormattedBudget(locale: Locale, budget: number, currency: string) {
-  return new Intl.NumberFormat(locale, { currency, style: 'currency', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(budget);
+  return new Intl.NumberFormat(locale, {
+    currency,
+    localeMatcher: 'best fit',
+    style: 'currency',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(budget);
 }

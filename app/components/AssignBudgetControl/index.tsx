@@ -5,6 +5,7 @@ import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 
 // services
 import { addBasket, updateBasket } from 'services/baskets';
@@ -41,30 +42,58 @@ const IdeaPageContainer = styled.div`
   align-items: stretch;
 `;
 
-const Budget = styled.div`
+const BudgetBox = styled.div`
   width: 100%;
   height: 95px;
-  color: ${colors.adminSecondaryTextColor};
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin-bottom: 5px;
+  position: relative;
+  border-radius: 5px;
   background: ${colors.background};
   border: solid 1px ${colors.separation};
 `;
 
-const SeeIdeaButton = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  padding: 0;
-  padding-left: 14px;
+const Budget = styled.div`
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
+`;
 
-  &:hover {
-    color: #000;
-  }
+const BudgetBoxAssigned = styled.div`
+  /*
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  bottom: 10px;
+  */
+
+  margin-top: 12px;
+`;
+
+const IdeaCardButton = styled(Button)`
+  margin-right: 10px;
+`;
+
+const AssignedLabel = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const AssignedIcon = styled(Icon)`
+  height: 12px;
+  fill: ${colors.clGreenSuccess};
+  margin-right: 4px;
+`;
+
+const AssignedText = styled.div`
+  color: ${colors.clGreenSuccess};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  hyphens: auto;
 `;
 
 interface InputProps {
@@ -103,14 +132,9 @@ class AssignBudgetControl extends PureComponent<Props, State> {
   }
 
   isDisabled = () => {
-    const { ideaId, participationContextType, basket, project, phase } = this.props;
-    const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
-    const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
-    const isInBasket = includes(basketIdeaIds, ideaId);
+    const { participationContextType, project, phase } = this.props;
 
-    if (budgetExceedsLimit && !isInBasket) {
-      return true;
-    } else if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
+    if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
       return false;
     } else if (participationContextType === 'Project' && !isNilOrError(project) && project.attributes.publication_status !== 'archived') {
       return false;
@@ -126,6 +150,11 @@ class AssignBudgetControl extends PureComponent<Props, State> {
     const { ideaId, idea, authUser, basket, participationContextId, participationContextType, unauthenticatedVoteClick } = this.props;
     const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
     const isInBasket = includes(basketIdeaIds, ideaId);
+    const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+    const done = async () => {
+      await timeout(200);
+      this.setState({ processing: false });
+    };
 
     if (!authUser) {
       unauthenticatedVoteClick && unauthenticatedVoteClick();
@@ -157,22 +186,17 @@ class AssignBudgetControl extends PureComponent<Props, State> {
           });
         } catch (error) {
           streams.fetchAllWith({ dataId: [basket.id] });
-          this.setState({ processing: false });
         }
       } else {
-        try {
-          await addBasket({
-            user_id: authUser.id,
-            participation_context_id: participationContextId,
-            participation_context_type: participationContextType,
-            idea_ids: [idea.id]
-          });
-        } catch (error) {
-          this.setState({ processing: false });
-        }
+        await addBasket({
+          user_id: authUser.id,
+          participation_context_id: participationContextId,
+          participation_context_type: participationContextType,
+          idea_ids: [idea.id]
+        });
       }
 
-      this.setState({ processing: false });
+      await done();
     }
   }
 
@@ -184,25 +208,35 @@ class AssignBudgetControl extends PureComponent<Props, State> {
     const { processing } = this.state;
     const { view, ideaId, authUser, locale, tenant, idea, basket, className } = this.props;
 
-    if (!isUndefined(authUser) &&
-        !isNilOrError(locale) &&
-        !isNilOrError(tenant) &&
-        !isNilOrError(idea) &&
-        !isUndefined(basket) &&
-        idea.attributes.budget
+    if (
+      !isUndefined(authUser) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(idea) &&
+      !isUndefined(basket) &&
+      idea.attributes.budget
     ) {
       const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
       const isInBasket = includes(basketIdeaIds, ideaId);
       const disabled = this.isDisabled();
       const formattedBudget = getFormattedBudget(locale, idea.attributes.budget, tenant.attributes.settings.core.currency);
 
+      const assignedLabel = (
+        <AssignedLabel>
+          <AssignedIcon name="checkmark" />
+          <AssignedText>
+            <FormattedMessage {...messages.assigned} />
+          </AssignedText>
+        </AssignedLabel>
+      )
+
       if (view === 'ideaCard') {
         return (
           <IdeaCardContainer className={className}>
-            <Button
+            <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
-              bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
+              bgColor={isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor}
               disabled={disabled}
             >
               {!isInBasket ? (
@@ -210,22 +244,32 @@ class AssignBudgetControl extends PureComponent<Props, State> {
               ) : (
                 <FormattedMessage {...messages.undo} />
               )}
-            </Button>
+            </IdeaCardButton>
+
+            {isInBasket && !processing && assignedLabel}
+
+            {/*
             <SeeIdeaButton onClick={this.onCardClick}>
               <FormattedMessage {...messages.seeIdea} />
             </SeeIdeaButton>
+            */}
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
         return (
           <IdeaPageContainer className={className}>
-            <Budget>
-              <span>{formattedBudget}</span>
-            </Budget>
+            <BudgetBox>
+              <Budget>{formattedBudget}</Budget>
+              {isInBasket && !processing &&
+                <BudgetBoxAssigned>
+                  {assignedLabel}
+                </BudgetBoxAssigned>
+              }
+            </BudgetBox>
             <Button
               onClick={this.assignBudget}
               processing={processing}
-              bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
+              bgColor={isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor}
               disabled={disabled}
               fullWidth={true}
             >

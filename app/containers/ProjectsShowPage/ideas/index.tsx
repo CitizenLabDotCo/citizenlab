@@ -76,6 +76,9 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
                   sort="trending"
                   pageSize={12}
                   projectId={project.id}
+                  participationMethod={project.attributes.participation_method}
+                  participationContextId={project.id}
+                  participationContextType="Project"
                   showViewToggle={true}
                   defaultView={(project.attributes.presentation_mode || null)}
                 />

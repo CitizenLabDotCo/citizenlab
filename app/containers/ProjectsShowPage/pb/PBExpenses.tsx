@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
-import { get, round } from 'lodash-es';
+import { get, round, isUndefined, isNil } from 'lodash-es';
 import moment from 'moment';
 
 // services
@@ -83,6 +83,7 @@ const Budget = styled.div`
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const BudgetLabel = styled.span`
@@ -158,10 +159,8 @@ const Footer = styled.div`
 `;
 
 const Budgets = styled.div`
-  ${media.smallerThanMinTablet`
-    display: flex;
-    flex-direction: column;
-  `}
+  display: flex;
+  flex-direction: column;
 `;
 
 const TotalBudgetDesktop = Budget.extend`
@@ -250,7 +249,7 @@ class PBExpenses extends PureComponent<Props, State> {
     const prevSubmittedAt = get(prevProps, 'basket.attributes.submitted_at', null);
     const submittedAt = get(basket, 'attributes.submitted_at', null);
 
-    if ((prevProps.basket !== basket) && (prevSubmittedAt === submittedAt)) {
+    if (!isUndefined(prevProps.basket) && !isNil(this.props.basket) && prevProps.basket !== basket && prevSubmittedAt === submittedAt) {
       this.setState({ submitState: 'dirty' });
     }
   }
@@ -360,7 +359,7 @@ class PBExpenses extends PureComponent<Props, State> {
             </ProgressBar>
 
             <Footer>
-              <Budgets />
+              <Budgets>
                 <Budget>
                   <BudgetLabel>
                     <FormattedMessage {...messages.spentBudget} />:
@@ -377,7 +376,7 @@ class PBExpenses extends PureComponent<Props, State> {
                     {getFormattedBudget(locale, totalBudget, currency)}
                   </BudgetAmount>
                 </TotalBudgetMobile>
-              <Budgets />
+              </Budgets>
               <Spacer />
               <Buttons>
                 <ManageBudgetWrapper>
@@ -396,6 +395,8 @@ class PBExpenses extends PureComponent<Props, State> {
                   <DropdownWrapper>
                     <Dropdown
                       top="10px"
+                      mobileWidth="300px"
+                      mobileLeft="-5px"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}
                       content={
@@ -413,7 +414,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   icon="submit"
                   iconPos="right"
                   bgColor={colors.adminTextColor}
-                  disabled={submitState === 'clean' || progress === 0 || budgetExceedsLimit}
+                  disabled={submitState === 'clean' || budgetExceedsLimit}
                   processing={processing}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />
