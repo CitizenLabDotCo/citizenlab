@@ -43,7 +43,7 @@ export const GraphsContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-export const Line = styled.div`
+export const Row = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 20px;
@@ -67,7 +67,7 @@ export const GraphCardInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 40px 20px;
   position: absolute;
   top: 0;
   left: 0;
@@ -102,12 +102,22 @@ export const GraphCard = styled.div`
   }
 `;
 
-export const GraphCardTitle = styled.h3`
+export const GraphCardHeader = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  justify-content: space-between;
-  padding-bottom: 20px;
+  padding: 0 20px 40px;
+`;
+
+export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
+  justify-content: center;
+  font-size: ${fontSizes.base}px;
+`;
+
+export const GraphCardTitle = styled.h3`
+  margin-bottom: 0;
 `;
 
 export const GraphCardFigureContainer = styled.div`
@@ -116,9 +126,20 @@ export const GraphCardFigureContainer = styled.div`
 
 export const GraphCardFigure = styled.span`
   margin-right: 5px;
+  font-weight: bold;
 `;
 
-export const GraphCardFigureChange = styled.span``;
+export const GraphCardFigureChange = styled.span`
+  font-size: ${fontSizes.base}px;
+
+  &.increase {
+    color: ${colors.clGreenSuccess};
+  }
+
+  &.decrease {
+    color: ${colors.clRedError};
+  }
+`;
 
 interface Props {
   authUser: GetAuthUserChildProps;

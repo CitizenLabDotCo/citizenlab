@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
     defaultMessage: 'No users',
   },
+  emptyActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.emptyActiveUsers',
+    defaultMessage: 'No active users',
+  },
   emptyIdeas: {
     id: 'app.containers.AdminPage.DashboardPage.emptyIdeas',
     defaultMessage: 'No ideas',
@@ -39,20 +43,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyVotes',
     defaultMessage: 'No votes',
   },
-  registeredUsersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.registeredUsersByTimeTitle',
-    defaultMessage: 'Users',
-  },
-  numberOfUers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfUers',
+  numberOfUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfUsers',
     defaultMessage: 'Users',
   },
   activeUsersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
-    defaultMessage: 'Active Users',
+    defaultMessage: 'Active users',
   },
-  numberOfActiveUers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUers',
+  activeUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+    defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
+  },
+  numberOfActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUsers',
     defaultMessage: 'Active users',
   },
   commentsByTimeTitle: {
@@ -69,15 +73,15 @@ export default defineMessages({
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
-    defaultMessage: 'Up Votes',
+    defaultMessage: 'Upvotes',
   },
   numberOfVotesDown: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesDown',
-    defaultMessage: 'Down Votes',
+    defaultMessage: 'Downvotes',
   },
   numberOfVotesTotal: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
-    defaultMessage: 'Total Votes',
+    defaultMessage: 'Total votes',
   },
   numberOfIdeas: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
@@ -97,11 +101,11 @@ export default defineMessages({
   },
   byTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
-    defaultMessage: 'by Topic',
+    defaultMessage: 'by topic',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
-    defaultMessage: 'by Project',
+    defaultMessage: 'by project',
   },
   resourceByTopicDifference: {
     id: 'app.containers.AdminPage.DashboardPage.resourceByTopicDifference',
@@ -151,11 +155,11 @@ export default defineMessages({
   },
   ideasByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
-    defaultMessage: 'Ideas over time',
+    defaultMessage: 'Ideas',
   },
   usersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
-    defaultMessage: 'Registrations over time',
+    defaultMessage: 'Users',
   },
   ideasByTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',

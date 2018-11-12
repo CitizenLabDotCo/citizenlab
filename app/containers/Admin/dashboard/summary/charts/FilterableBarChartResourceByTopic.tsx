@@ -2,19 +2,43 @@ import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import localize, { InjectedLocalized } from 'utils/localize';
-import { ideasByTopicStream, IIdeasByTopic, commentsByTopicStream, ICommentsByTopic, votesByTopicStream, IVotesByTopic } from 'services/stats';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
-import EmptyGraph from './EmptyGraph';
+import {
+  ideasByTopicStream,
+  IIdeasByTopic,
+  commentsByTopicStream,
+  ICommentsByTopic,
+  votesByTopicStream,
+  IVotesByTopic
+} from 'services/stats';
 
-import { IResource } from '../summary';
+// i18n
+import messages from '../../messages';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import localize, { InjectedLocalized } from 'utils/localize';
+
+// components
+import { GraphCard, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
+import EmptyGraph from '../../components/EmptyGraph';
+import Select from 'components/UI/Select';
+
+// typings
+import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
+const SSelect = styled(Select)`
+  flex: 1;
+  max-width: 50%;
+  margin-right: 10px;
+`;
+
 interface Props {
+  className: string;
+  onResourceByTopicChange: (option: IOption) => void;
+  currentResourceByTopic: IResource;
+  resourceOptions: IOption[];
   startAt: string;
   endAt: string;
   currentProjectFilter: string | null;
@@ -28,7 +52,7 @@ interface State {
   serie: IGraphFormat | null;
 }
 
-class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   startAt$: BehaviorSubject<string | null>;
   endAt$: BehaviorSubject<string | null>;
   currentGroupFilter$: BehaviorSubject<string | null>;
@@ -178,48 +202,74 @@ class ResourceByTopicWithFilterChart extends PureComponent<Props & InjectedLocal
   render() {
     const theme = this.props['theme'];
     const { serie } = this.state;
-    const { selectedResource, intl: { formatMessage }, currentTopicFilter } = this.props;
+    const {
+      className,
+      onResourceByTopicChange,
+      currentResourceByTopic,
+      resourceOptions,
+      selectedResource,
+      intl: {
+        formatMessage
+      },
+      currentTopicFilter,
+
+    } = this.props;
     const isEmpty = !serie || serie.every(item => item.value === 0);
 
-    if (!isEmpty) {
-      const unitName = (currentTopicFilter && serie)
-        ? formatMessage(messages.resourceByTopicDifference, {
-          resourceName: formatMessage(messages[selectedResource]),
-          topic: serie[0].name
-        })
-        : formatMessage(messages[selectedResource]);
+    const unitName = (currentTopicFilter && serie)
+      ? formatMessage(messages.resourceByTopicDifference, {
+        resourceName: formatMessage(messages[selectedResource]),
+        topic: serie[0].name
+      })
+      : formatMessage(messages[selectedResource]);
 
-      return (
-        <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-          <BarChart data={serie} layout="vertical">
-            <Bar
-              dataKey="value"
-              name={unitName}
-              fill={theme.chartFill}
-              label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+    return (
+      <GraphCard className={className}>
+        <GraphCardInner>
+          <GraphCardHeaderWithFilter>
+            <SSelect
+              id="topicFilter"
+              onChange={onResourceByTopicChange}
+              value={currentResourceByTopic}
+              options={resourceOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
             />
-            <YAxis
-              dataKey="name"
-              type="category"
-              width={150}
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              tickLine={false}
-            />
-            <XAxis
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              type="number"
-              tick={{ transform: 'translate(0, 7)' }}
-            />
-            <Tooltip isAnimationActive={false} />
-          </BarChart>
-        </ResponsiveContainer>
-      );
-    } else {
-      return (<EmptyGraph unit={selectedResource} />);
-    }
+            <FormattedMessage {...messages.byTopicTitle} />
+          </GraphCardHeaderWithFilter>
+          <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+            {!isEmpty ?
+              <BarChart data={serie} layout="vertical">
+                <Bar
+                  dataKey="value"
+                  name={unitName}
+                  fill={theme.chartFill}
+                  label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                  barSize={20}
+                />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={150}
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  tickLine={false}
+                />
+                <XAxis
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  type="number"
+                  tick={{ transform: 'translate(0, 7)' }}
+                />
+                <Tooltip isAnimationActive={false} />
+              </BarChart>
+              : <EmptyGraph unit={selectedResource} />
+            }
+          </ResponsiveContainer>
+        </GraphCardInner>
+      </GraphCard>
+    );
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByTopicWithFilterChart as any) as any));
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByTopic as any) as any));

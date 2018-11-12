@@ -188,11 +188,9 @@ export function votesByTimeCumulativeStream(streamParams: IStreamParams | null =
   return streams.get<IVotesByTimeCumulative>({ apiEndpoint: `${apiEndpoint}/votes_by_time_cumulative`, ...streamParams });
 }
 
-
 export function votesByTopicStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByTopic>({ apiEndpoint: `${apiEndpoint}/votes_by_topic`, ...streamParams });
 }
-
 
 export function votesByProjectStream(streamParams: IStreamParams | null = null) {
   return streams.get<IVotesByProject>({ apiEndpoint: `${apiEndpoint}/votes_by_project`, ...streamParams });
