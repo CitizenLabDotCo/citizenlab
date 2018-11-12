@@ -1,13 +1,34 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map } from 'lodash-es';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { activeUsersByTimeStream } from 'services/stats';
-import messages from '../messages';
-import EmptyGraph from './EmptyGraph';
+import messages from '../../messages';
+
+// typings
+import { IStreamParams, IStream } from 'utils/streams';
+import { IUsersByTime } from 'services/stats';
+
+// components
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
+import EmptyGraph from '../../components/EmptyGraph';
+import { Popup } from 'semantic-ui-react';
+import Icon from 'components/UI/Icon';
+
+const TitleWithInfoIcon = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const InfoIcon = styled(Icon)`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 20px;
+  margin-left: 10px;
+`;
 
 type State = {
   serie: {
@@ -18,15 +39,20 @@ type State = {
 };
 
 type Props = {
-  startAt: string,
-  endAt: string,
+  className?: string;
+  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphTitleMessageKey: string;
+  startAt: string;
+  endAt: string;
   resolution: 'month' | 'day';
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
+  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
+  infoMessage: string;
 };
 
-class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -75,11 +101,13 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
     currentGroupFilter: string | null,
     currentTopicFilter: string | null
   ) {
+    const { stream } = this.props;
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = activeUsersByTimeStream({
+    this.subscription = stream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -117,44 +145,66 @@ class ActiveUsersByTimeChart extends React.PureComponent<Props & InjectedIntlPro
 
   render() {
     const { formatMessage } = this.props.intl;
+    const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
-    const { chartFill, chartLabelSize, chartLabelColor, barFill } = this.props['theme'];
+    const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
 
     if (!isEmpty) {
       return (
-        <ResponsiveContainer>
-          <BarChart data={serie}>
-            <Bar
-              dataKey="value"
-              name={formatMessage(messages.numberOfActiveUers)}
-              fill={chartFill}
-              label={{ fill: barFill, fontSize: chartLabelSize }}
-            />
-            <XAxis
-              dataKey="name"
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-              tick={{ transform: 'translate(0, 7)' }}
-              tickFormatter={this.formatTick}
-            />
-            <YAxis
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-            />
-            <Tooltip
-              isAnimationActive={false}
-              labelFormatter={this.formatLabel}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <GraphCard className={className}>
+          <GraphCardInner>
+            <GraphCardHeader>
+              <TitleWithInfoIcon>
+                <GraphCardTitle>
+                  <FormattedMessage {...messages[graphTitleMessageKey]} />
+                </GraphCardTitle>
+                {infoMessage && <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />}
+              </TitleWithInfoIcon>
+            </GraphCardHeader>
+
+            <ResponsiveContainer>
+              <BarChart data={serie}>
+                <Bar
+                  dataKey="value"
+                  name={formatMessage(messages[`numberOf${graphUnit}`])}
+                  fill={chartFill}
+                />
+                <XAxis
+                  dataKey="name"
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  tick={{ transform: 'translate(0, 7)' }}
+                  tickFormatter={this.formatTick}
+                />
+                <YAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                />
+                <Tooltip
+                  isAnimationActive={false}
+                  labelFormatter={this.formatLabel}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </GraphCardInner>
+        </GraphCard>
       );
     } else {
       return (
-        <EmptyGraph unit="Users" />
+        <EmptyGraph unit={graphUnit} />
       );
     }
   }
 }
 
-export default injectIntl<Props>(withTheme(ActiveUsersByTimeChart as any) as any);
+export default injectIntl<Props>(withTheme(BarChartByTime as any) as any);

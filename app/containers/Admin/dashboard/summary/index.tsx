@@ -2,28 +2,25 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import moment from 'moment';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 // components
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import IdeasByTimeChart from '../components/IdeasByTimeChart';
-import CommentsByTimeChart from '../components/CommentsByTimeChart';
-import VotesByTimeChart from '../components/VotesByTimeChart';
-import UsersByTimeChart from '../components/UsersByTimeChart';
-import ResourceByTopicWithFilterChart from '../components/ResourceByTopicWithFilterChart';
-import ResourceByProjectWithFilterChart from '../components/ResourceByProjectWithFilterChart';
-import ActiveUsersByTimeChart from '../components/ActiveUsersByTimeChart';
+import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
+import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
 import ChartFilters from '../components/ChartFilters';
-import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle, ControlBar, Column } from '../';
-import Select from 'components/UI/Select';
+import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
+import CumulativeAreaChart from './charts/CumulativeAreaChart';
+import BarChartByTime from './charts/BarChartByTime';
+import AreaChartVotesByTime from './charts/AreaChartVotesByTime';
 
 // typings
 import { IOption } from 'typings';
 
 // i18n
 import messages from '../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -33,14 +30,12 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
-
-const SSelect = styled(Select)`
-  flex: 1;
-
-  & > * {
-    flex: 1;
-  }
-`;
+import {
+  usersByTimeCumulativeStream,
+  activeUsersByTimeStream,
+  ideasByTimeCumulativeStream,
+  commentsByTimeCumulativeStream,
+ } from 'services/stats';
 
 export type IResource = 'Ideas' | 'Comments' | 'Votes';
 
@@ -132,6 +127,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   onResourceByTopicChange = (option) => {
     this.setState({ currentResourceByTopic: option.value });
   }
+
   onResourceByProjectChange = (option) => {
     this.setState({ currentResourceByProject: option.value });
   }
@@ -193,6 +189,8 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     const startAt = startAtMoment.toISOString();
     const endAt = endAtMoment.toISOString();
     const resolution = (interval === 'years' ? 'month' : 'day');
+    const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
+
     const { projects, projects: { projectsList } } = this.props;
 
     if (projects && !isNilOrError(projectsList)) {
@@ -232,121 +230,84 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
-              <Line>
-                <GraphCard className="first halfWidth">
-                    {/* <GraphCardTitle>
-                      <FormattedMessage {...messages.registeredUsersByTimeTitle} />
-                    </GraphCardTitle> */}
-                    <UsersByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                </GraphCard>
-                <GraphCard className="halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.activeUsersByTimeTitle} />
-                    </GraphCardTitle>
-                    <ActiveUsersByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-              </Line>
-              <Line>
-                <GraphCard className="first halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.ideasByTimeTitle} />
-                    </GraphCardTitle>
-                    <IdeasByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-                {/* <GraphCard className="halfWidth">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.commentsByTimeTitle} />
-                    </GraphCardTitle>
-                    <CommentsByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard> */}
-              </Line>
-              <Line>
+              <Row>
+                <CumulativeAreaChart
+                  className="first halfWidth"
+                  graphTitleMessageKey="usersByTimeTitle"
+                  graphUnit="Users"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={usersByTimeCumulativeStream}
+                  {...this.state}
+                />
+                <BarChartByTime
+                  className="halfWidth"
+                  graphUnit="ActiveUsers"
+                  graphTitleMessageKey="activeUsersByTimeTitle"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={activeUsersByTimeStream}
+                  infoMessage={infoMessage}
+                  {...this.state}
+                />
+              </Row>
+              <Row>
+                <CumulativeAreaChart
+                  className="first halfWidth"
+                  graphTitleMessageKey="ideasByTimeTitle"
+                  graphUnit="Ideas"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={ideasByTimeCumulativeStream}
+                  {...this.state}
+                />
+                <CumulativeAreaChart
+                  className="halfWidth"
+                  graphTitleMessageKey="commentsByTimeTitle"
+                  graphUnit="Comments"
+                  startAt={startAt}
+                  endAt={endAt}
+                  resolution={resolution}
+                  stream={commentsByTimeCumulativeStream}
+                  {...this.state}
+                />
+              </Row>
+              <Row>
                 <Column className="first">
-                <GraphCard className="colFirst">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <FormattedMessage {...messages.votesByTimeTitle} />
-                    </GraphCardTitle>
-                    <VotesByTimeChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      resolution={resolution}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-                <GraphCard className="dynamicHeight">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <SSelect
-                        id="projectFilter"
-                        onChange={this.onResourceByProjectChange}
-                        value={currentResourceByProject}
-                        options={this.resourceOptions}
-                        clearable={false}
-                        borderColor="#EAEAEA"
-                      />
-                      <FormattedMessage {...messages.byProjectTitle} />
-                    </GraphCardTitle>
-                    <ResourceByProjectWithFilterChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      selectedResource={currentResourceByProject}
-                      projectOptions={this.filterOptions.projectFilterOptions}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-              </Column>
-                <GraphCard className="halfWidth dynamicHeight">
-                  <GraphCardInner>
-                    <GraphCardTitle>
-                      <SSelect
-                        id="topicFilter"
-                        onChange={this.onResourceByTopicChange}
-                        value={currentResourceByTopic}
-                        options={this.resourceOptions}
-                        clearable={false}
-                        borderColor="#EAEAEA"
-                      />
-                      <FormattedMessage {...messages.byTopicTitle} />
-                    </GraphCardTitle>
-                    <ResourceByTopicWithFilterChart
-                      startAt={startAt}
-                      endAt={endAt}
-                      selectedResource={currentResourceByTopic}
-                      topicOptions={this.filterOptions.topicFilterOptions}
-                      {...this.state}
-                    />
-                  </GraphCardInner>
-                </GraphCard>
-              </Line>
+                  <AreaChartVotesByTime
+                    className="colFirst"
+                    startAt={startAt}
+                    endAt={endAt}
+                    resolution={resolution}
+                    {...this.state}
+                  />
+                  <FilterableBarChartResourceByProject
+                    className="dynamicHeight"
+                    projectOptions={this.filterOptions.projectFilterOptions}
+                    onResourceByProjectChange={this.onResourceByProjectChange}
+                    currentResourceByProject={currentResourceByProject}
+                    resourceOptions={this.resourceOptions}
+                    startAt={startAt}
+                    endAt={endAt}
+                    selectedResource={currentResourceByProject}
+                    {...this.state}
+                  />
+                </Column>
+                <FilterableBarChartResourceByTopic
+                  className="halfWidth dynamicHeight"
+                  topicOptions={this.filterOptions.topicFilterOptions}
+                  onResourceByTopicChange={this.onResourceByTopicChange}
+                  currentResourceByTopic={currentResourceByTopic}
+                  resourceOptions={this.resourceOptions}
+                  startAt={startAt}
+                  endAt={endAt}
+                  selectedResource={currentResourceByTopic}
+                  {...this.state}
+                />
+              </Row>
             </GraphsContainer>
           </ThemeProvider>
         </>

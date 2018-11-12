@@ -1,13 +1,15 @@
 // libraries
 import React, { PureComponent } from 'react';
 import { map, sortBy } from 'lodash-es';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-
-// styling
-import { withTheme } from 'styled-components';
 
 // components
-import EmptyGraph from './EmptyGraph';
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { GraphCard, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
+import Select from 'components/UI/Select';
+import EmptyGraph from '../../components/EmptyGraph';
+
+// styling
+import styled, { withTheme } from 'styled-components';
 
 // resources
 import GetResourcesByProject from './GetResourcesByProject';
@@ -19,18 +21,26 @@ import {
 
 // intl
 import localize, { InjectedLocalized } from 'utils/localize';
-import { injectIntl } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from '../../messages';
 
 // typings
 import { IOption } from 'typings';
-import { IResource } from '../summary';
 
-interface DataProps {
-  serie: IIdeasByProject | ICommentsByProject | IVotesByProject | null;
-}
+import { IResource } from '..';
+
+const SSelect = styled(Select)`
+  flex: 1;
+  max-width: 50%;
+  margin-right: 10px;
+`;
+
 interface InputProps {
+  className: string;
+  onResourceByProjectChange: (option: IOption) => void;
+  currentResourceByProject: IResource;
+  resourceOptions: IOption[];
   startAt: string;
   endAt: string;
   currentProjectFilter: string | null;
@@ -38,6 +48,9 @@ interface InputProps {
   currentTopicFilter: string | null;
   projectOptions: IOption[];
   selectedResource: IResource;
+}
+interface DataProps {
+  serie: IIdeasByProject | ICommentsByProject | IVotesByProject | null;
 }
 interface Props extends InputProps, DataProps { }
 
@@ -51,7 +64,7 @@ interface State {
   serie: IGraphFormat | null;
 }
 
-class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+class FilterableBarChartResourceByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -131,51 +144,76 @@ class ResourceByProjectWithFilterChart extends PureComponent<Props & InjectedLoc
 
   render() {
     const { serie } = this.state;
-    const { selectedResource, intl: { formatMessage }, currentProjectFilter } = this.props;
-    if (!serie || serie.every(item => item.value === 0)) {
-      return (<EmptyGraph unit={selectedResource} />);
+    const theme = this.props['theme'];
+    const {
+      className,
+      onResourceByProjectChange,
+      currentResourceByProject,
+      resourceOptions,
+      selectedResource,
+      intl: {
+        formatMessage
+      },
+      currentProjectFilter
+    } = this.props;
+    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const unitName = currentProjectFilter && serie
+      ? formatMessage(messages.resourceByProjectDifference, {
+        resourceName: formatMessage(messages[selectedResource]),
+        project: serie[0].name
+      })
+      : formatMessage(messages[selectedResource]);
 
-    } else {
-      const theme = this.props['theme'];
-      const unitName = currentProjectFilter
-        ? formatMessage(messages.resourceByProjectDifference, {
-          resourceName: formatMessage(messages[selectedResource]),
-          project: serie[0].name
-        })
-        : formatMessage(messages[selectedResource]);
-
-      return (
-        <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-          <BarChart data={serie} layout="vertical">
-            <Bar
-              dataKey="value"
-              name={unitName}
-              fill={theme.chartFill}
-              label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+    return (
+      <GraphCard className={className}>
+        <GraphCardInner>
+          <GraphCardHeaderWithFilter>
+            <SSelect
+              id="projectFilter"
+              onChange={onResourceByProjectChange}
+              value={currentResourceByProject}
+              options={resourceOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
             />
-            <YAxis
-              dataKey="name"
-              type="category"
-              width={150}
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              tickLine={false}
-            />
-            <XAxis
-              stroke={theme.chartLabelColor}
-              fontSize={theme.chartLabelSize}
-              type="number"
-              tick={{ transform: 'translate(0, 7)' }}
-            />
-            <Tooltip isAnimationActive={false} />
-          </BarChart>
-        </ResponsiveContainer>
-      );
-    }
+            <FormattedMessage {...messages.byProjectTitle} />
+          </GraphCardHeaderWithFilter>
+          {!isEmpty ?
+              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+                <BarChart data={serie} layout="vertical">
+                  <Bar
+                    dataKey="value"
+                    name={unitName}
+                    fill={theme.chartFill}
+                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                    barSize={20}
+                  />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={150}
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    tickLine={false}
+                  />
+                  <XAxis
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    type="number"
+                    tick={{ transform: 'translate(0, 7)' }}
+                  />
+                  <Tooltip isAnimationActive={false} />
+                </BarChart>
+              </ResponsiveContainer>
+            :
+            <EmptyGraph unit={selectedResource} />
+          }
+        </GraphCardInner>
+      </GraphCard>
+    );
   }
 }
-
-const ResourceByProjectWithFilterChartHoc = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(ResourceByProjectWithFilterChart as any) as any));
+const ResourceByProjectWithFilterChartHoc = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByProject as any) as any));
 
 export default (inputProps: InputProps) => (
   <GetResourcesByProject {...inputProps}>

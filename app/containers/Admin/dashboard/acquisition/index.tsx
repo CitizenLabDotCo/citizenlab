@@ -4,7 +4,7 @@ import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, Line, GraphCard, GraphCardInner, GraphCardTitle } from '../';
+import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle } from '../';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,7 +34,7 @@ export default class AquisitionDashboard extends PureComponent<Props, State> {
       <>
       <ThemeProvider theme={chartTheme}>
         <GraphsContainer>
-          <Line>
+          <Row>
             <GraphCard className="first halfWidth">
               <GraphCardInner>
                 <GraphCardTitle>
@@ -51,7 +51,7 @@ export default class AquisitionDashboard extends PureComponent<Props, State> {
 
               </GraphCardInner>
             </GraphCard>
-          </Line>
+          </Row>
         </GraphsContainer>
         </ThemeProvider>
       </>
