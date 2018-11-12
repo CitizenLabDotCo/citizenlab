@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AssignBudgetControl.assign": "Assign",
+  "app.components.AssignBudgetControl.assigned": "Assigned",
   "app.components.AssignBudgetControl.seeIdea": "See idea",
   "app.components.AssignBudgetControl.undo": "Undo",
   "app.components.ConsentManager.Banner.accept": "Accept",
