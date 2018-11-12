@@ -146,7 +146,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
-    const noData = serie && serie.every(item => isEmpty(item));
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
 
     return (

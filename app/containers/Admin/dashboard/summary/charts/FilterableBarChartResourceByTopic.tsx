@@ -205,7 +205,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       currentTopicFilter,
 
     } = this.props;
-    const noData = serie && serie.every(item => isEmpty(item));
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const unitName = (currentTopicFilter && serie)
       ? formatMessage(messages.resourceByTopicDifference, {
         resourceName: formatMessage(messages[selectedResource]),
