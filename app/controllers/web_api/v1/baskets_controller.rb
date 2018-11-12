@@ -10,7 +10,7 @@ class WebApi::V1::BasketsController < ApplicationController
     authorize @basket
 
     if @basket.save
-      SideFxAreaService.new.after_create @basket, current_user
+      SideFxBasketService.new.after_create @basket, current_user
       render json: @basket, status: :created
     else
       render json: { errors: @basket.errors.details }, status: :unprocessable_entity
