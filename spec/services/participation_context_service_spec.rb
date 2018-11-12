@@ -384,6 +384,82 @@ describe ParticipationContextService do
     end
   end
 
+  describe "budgeting_disabled_reasons" do
+
+    context "for timeline projects" do
+      it "returns nil when the idea is in the current phase and budgeting is allowed" do
+        project = create(:project_with_current_phase, with_permissions: true, phases_config: {
+          sequence: 'xxcxx'
+        }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        idea = create(:idea, project: project, phases: [project.phases[2]] )
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
+      end
+
+      it "returns `not_in_active_context` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of" do
+        project = create(:project_with_current_phase, with_permissions: true, phases_config: {
+          sequence: "xxcxx"
+        }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        idea = create(:idea, project: project, phases: [project.phases[1]])
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_in_active_context'
+      end
+
+      it "returns `not_permitted` when the idea is in the current phase and budgeting is not permitted" do
+        project = create(:project_with_current_phase, with_permissions: true,
+          current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        permission = service.get_participation_context(project).permissions.find_by(action: 'budgeting')
+        permission.update!(permitted_by: 'groups', 
+          group_ids: create_list(:group, 2).map(&:id)
+          )
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
+      end
+
+      it "returns 'not_in_active_context' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
+        project = create(:project_with_current_phase, with_permissions: true, 
+          current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
+        phase = project.phases[1]
+        permission = phase.permissions.find_by(action: 'budgeting')
+        if permission
+          permission.update!(permitted_by: 'groups', 
+            group_ids: create_list(:group, 2).map(&:id)
+            )
+        end
+        idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_in_active_context'
+      end
+
+      it "returns 'project_inactive' when the timeline is over" do
+        project = create(:project_with_past_phases, with_permissions: true)
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
+      end
+    end
+
+    context "continuous project" do
+      it "returns 'not_permitted' when budgeting is disabled in a continuous project" do
+        project = create(:continuous_budgeting_project, with_permissions: true)
+        permission = project.permissions.find_by(action: 'budgeting')
+        permission.update!(permitted_by: 'groups', 
+          group_ids: create_list(:group, 2).map(&:id)
+          )
+        idea = create(:idea, project: project)
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
+      end
+
+      it "returns nil when budgeting is permitted in a continuous project" do
+        project = create(:continuous_budgeting_project, with_permissions: true)
+        idea = create(:idea, project: project)
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
+      end
+
+      it "returns 'project_inactive' when the project is archived" do
+        project = create(:continuous_budgeting_project, publication_status: 'archived')
+        idea = create(:idea, project: project)
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
+      end
+    end
+  end
+
   describe "future_posting_enabled_phase" do
     it "returns the first upcoming phase that has posting enabled" do
       project = create(:project_with_current_phase, with_permissions: true, 

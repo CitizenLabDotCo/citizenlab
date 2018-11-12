@@ -53,6 +53,25 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.index ["project_id"], name: "index_areas_projects_on_project_id"
   end
 
+  create_table "baskets", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "submitted_at"
+    t.uuid "user_id"
+    t.uuid "participation_context_id"
+    t.string "participation_context_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_baskets_on_user_id"
+  end
+
+  create_table "baskets_ideas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "basket_id"
+    t.uuid "idea_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["basket_id"], name: "index_baskets_ideas_on_basket_id"
+    t.index ["idea_id"], name: "index_baskets_ideas_on_idea_id"
+  end
+
   create_table "clusterings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.jsonb "structure", default: {}
@@ -275,6 +294,8 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.integer "comments_count", default: 0, null: false
     t.uuid "idea_status_id"
     t.string "slug", null: false
+    t.integer "budget"
+    t.integer "baskets_count", default: 0, null: false
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -423,6 +444,7 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
+    t.integer "max_budget"
     t.index ["project_id"], name: "index_phases_on_project_id"
   end
 
@@ -468,6 +490,7 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.string "survey_embed_url"
     t.string "survey_service"
     t.integer "ordering"
+    t.integer "max_budget"
     t.index ["created_at"], name: "index_projects_on_created_at"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -570,6 +593,9 @@ ActiveRecord::Schema.define(version: 20181022092934) do
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_projects", "areas"
   add_foreign_key "areas_projects", "projects"
+  add_foreign_key "baskets", "users"
+  add_foreign_key "baskets_ideas", "baskets"
+  add_foreign_key "baskets_ideas", "ideas"
   add_foreign_key "comments", "ideas"
   add_foreign_key "comments", "users", column: "author_id"
   add_foreign_key "custom_field_options", "custom_fields"

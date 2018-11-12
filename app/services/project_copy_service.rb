@@ -26,7 +26,8 @@ class ProjectCopyService
                     'voting_method'                => project.voting_method,
                     'voting_limited_max'           => project.voting_limited_max,
                     'survey_embed_url'             => project.survey_embed_url,
-                    'survey_service'               => project.survey_service
+                    'survey_service'               => project.survey_service,
+                    'max_budget'                   => project.max_budget
                   }
     template = { 
       'models' => {
@@ -53,7 +54,8 @@ class ProjectCopyService
             'voting_method'        => p.voting_method,
             'voting_limited_max'   => p.voting_limited_max,
             'survey_embed_url'     => p.survey_embed_url,
-            'survey_service'       => p.survey_service
+            'survey_service'       => p.survey_service,
+            'max_budget'           => p.max_budget
           }
           phase_hashes[p.id] = h
           h
@@ -96,7 +98,7 @@ class ProjectCopyService
         'event_file' => project.events.map(&:event_files).flat_map { |efs|
            efs.map { |ef|
             {
-              'event_ref'        => event_hashes[ev.event_id],
+              'event_ref'        => event_hashes[ef.event_id],
               'remote_file_url'  => ef.file_url,
               'name'             => ef.name,
               'ordering'         => ef.ordering
