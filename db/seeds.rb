@@ -169,8 +169,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       granular_permissions: {
         enabled: true,
         allowed: true
-      }
-      ,
+      },
       participatory_budgeting: {
         enabled: true,
         allowed: true
