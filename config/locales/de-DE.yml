@@ -41,7 +41,7 @@ de:
     education_description: Bildung und Jugend
   pages:
     terms_and_conditions_title: Verwendungsbedingungen
-    terms_and_conditions_body: |2
+    terms_and_conditions_body: >
       <p>Diese Online-Engagement-Plattform soll möglichst vielen Menschen die Möglichkeit geben, über die Zukunft der Stadt oder Institution nachzudenken, die zusammen mit CitizenLab diese Plattform ins Leben gerufen hat. Diese Beiträge unterliegen einer Reihe von Regeln, um die Debatte offen und konstruktiv gestalten zu können. Nachfolgend empfehlen wir die allgemeinen Bedingungen unserer Plattform zu finden, da wir davon überzeugt sind, dass klare Regeln die beste Garantie für eine konstruktive Online-Community sind.</p>
             
             <p>Da CitizenLab das Feedback der Nutzer ihrer Plattform schätzt, sind Ihre Ideen uns sehr willkommen, um die Plattform weiter verbessern zu können. Sie können Ihre Vorschläge an support@citizenlab.co. senden.</p>
@@ -120,7 +120,7 @@ de:
             
             <p>Es ist daher untersagt, die Plattform und ihre Inhalte ohne Genehmigung zu vervielfältigen, zu verbreiten, zu modifizieren oder zu übertragen.</p>
     cookie_policy_title: Cookie-Richtlinie
-    cookie_policy_body: |2
+    cookie_policy_body: >
       <h3>Was sind Cookies</h3>
             <p>Wie bei fast allen professionellen Websites üblich, werden auf dieser Website Cookies verwendet. Dies
             sind winzige Dateien, die auf Ihren Computer heruntergeladen werden, um Ihr Benutzererlebnis zu verbessern. Diese Seite beschreibt, welche Informationen sie sammeln, wie wir sie verwenden und warum wir diese Cookies manchmal speichern müssen.
@@ -167,7 +167,7 @@ de:
             <p>E-Mail: <a href="mailto:support@citizenlab.co">support@citizenlab.co</a></p>
       
     privacy_policy_title: Datenschutzrichtlinie
-    privacy_policy_body: |2
+    privacy_policy_body: >
       <h1>Datenschutzbestimmungen - CitizenLab</h1>
             
             <p>Verantwortlich für die Verarbeitung der Daten und Inhaber
@@ -288,7 +288,13 @@ de:
     infopage_body: "Angaben gemäß § 5 TMG:\nCitizenLab (Hauptgeschäftsstelle), Cantersteen 12, 1000 Brüssel, Belgien, Europäische Union\n\nVertreten durch: Wietse Van Ransbeeck\n\n‍\n\nUmsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:\n\nCitizenLab NV, Meusegemstraat 105, 1861 Meise, Belgien, Europäische Union\n\nUSt.-Id-Nr: BE0638901287\n\n‍\n\nRegistereintrag:\n\nEingetragen im Handelsregister unter Register-Nr: HRB 638901287\n\nGericht: Handelsgericht Brüssel, Waterloolaan 70, 1000 Brüssel, Belgien, Europäische Union\n\n‍\n\nVerantwortlich für den Inhalt gem. § 55 Abs. 2 RStV:\n\nWietse Van Ransbeeck, Cantersteen 12, 1000 Brüssel, Belgien, Europäische Union\n\n‍\n\nBerufshaftpflichtversicherung: \n\nAXA, Zakenkantoor Bogaerts, Boechtstraat 15, 1860 Meise, Belgien, Europäische Union\n\nGeltungsbereich: Europaweit\n\nWir nehmen nicht an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil.\n\n‍\n\nKontakt:\n\nTelefon: +49 698 991 4888\n\nE-Mail: thomas.balbach@citizenlab.de\n\n‍\n\nHaftungsausschluss (Disclaimer)\nHaftung für Inhalte\nAls Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.\n\nHaftung für Links\nUnser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.\n\nUrheberrecht\nDie durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen."
   projects:
     open_idea_project_title: Offene Ideen-Box
-    open_idea_project_description: Die Ideen hier sind nicht mit einem Projekt verknüpft.
+    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Then post it here, gather support and get it on the political agenda!
+    open_idea_project_description: >
+      Die Ideen hier sind nicht mit einem Projekt verknüpft.
+  events:
+    council_meeting_title: Council Meeting
+    council_meeting_description: >
+      <p>During this council meeting, those citizen initiatives who gained 100 votes in less than 3 months, will be presented.</p><p>The council will then shed light on their perspective on each idea.</p>
   custom_fields:
     gender: Geschlecht
     birthyear: Geburtsjahr

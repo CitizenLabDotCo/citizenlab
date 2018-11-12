@@ -61,10 +61,11 @@ class XlsxService
           "published_at",
           "upvotes_count",
           "downvotes_count",
+          "url",
           "project",
           "topics",
           "areas",
-          "url"
+          "idea_status"
         ], style: header_style(s)
         ideas.each do |idea|
           sheet.add_row [
@@ -77,10 +78,11 @@ class XlsxService
             idea.published_at,
             idea.upvotes_count,
             idea.downvotes_count,
+            FrontendService.new.model_to_url(idea),
             @@multiloc_service.t(idea&.project&.title_multiloc),
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
-            FrontendService.new.model_to_url(idea)
+            @@multiloc_service.t(idea&.idea_status&.title_multiloc)
           ]
         end
         sheet.column_info[2].width = 65
