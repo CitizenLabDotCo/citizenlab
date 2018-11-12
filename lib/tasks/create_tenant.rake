@@ -64,6 +64,10 @@ namespace :cl2_back do
         password_login: {
           enabled: true,
           allowed: true
+        },
+        participatory_budgeting: {
+          enabled: true,
+          allowed: true
         }
       }
     })
