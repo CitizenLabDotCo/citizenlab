@@ -1,5 +1,7 @@
 // libraries
 import React, { PureComponent } from 'react';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy } from 'lodash-es';
 
 // components
@@ -12,10 +14,12 @@ import EmptyGraph from '../../components/EmptyGraph';
 import styled, { withTheme } from 'styled-components';
 
 // resources
-import GetResourcesByProject from './GetResourcesByProject';
 import {
+  ideasByProjectStream,
   IIdeasByProject,
+  commentsByProjectStream,
   ICommentsByProject,
+  votesByProjectStream,
   IVotesByProject
 } from 'services/stats';
 
@@ -27,7 +31,6 @@ import messages from '../../messages';
 
 // typings
 import { IOption } from 'typings';
-
 import { IResource } from '..';
 
 const SSelect = styled(Select)`
@@ -36,7 +39,7 @@ const SSelect = styled(Select)`
   margin-right: 10px;
 `;
 
-interface InputProps {
+interface Props {
   className: string;
   onResourceByProjectChange: (option: IOption) => void;
   currentResourceByProject: IResource;
@@ -46,13 +49,8 @@ interface InputProps {
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
-  projectOptions: IOption[];
   selectedResource: IResource;
 }
-interface DataProps {
-  serie: IIdeasByProject | ICommentsByProject | IVotesByProject | null;
-}
-interface Props extends InputProps, DataProps { }
 
 type IGraphFormat = {
   name: any,
@@ -65,38 +63,107 @@ interface State {
 }
 
 class FilterableBarChartResourceByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+  startAt$: BehaviorSubject<string | null>;
+  endAt$: BehaviorSubject<string | null>;
+  currentGroupFilter$: BehaviorSubject<string | null>;
+  currentTopicFilter$: BehaviorSubject<string | null>;
+  currentProjectFilter$: BehaviorSubject<string | null>;
+  selectedResource$: BehaviorSubject<IResource | null>;
+  subscriptions: Subscription[];
+
   constructor(props) {
     super(props);
     this.state = {
       serie: null,
     };
+    this.subscriptions = [];
+    this.startAt$ = new BehaviorSubject(null);
+    this.endAt$ = new BehaviorSubject(null);
+    this.selectedResource$ = new BehaviorSubject(null);
+    this.currentGroupFilter$ = new BehaviorSubject(null);
+    this.currentTopicFilter$ = new BehaviorSubject(null);
+    this.currentProjectFilter$ = new BehaviorSubject(null);
+  }
+
+  componentDidMount() {
+    this.startAt$.next(this.props.startAt);
+    this.endAt$.next(this.props.endAt);
+    this.selectedResource$.next(this.props.selectedResource);
+    this.currentGroupFilter$.next(this.props.currentGroupFilter);
+    this.currentTopicFilter$.next(this.props.currentTopicFilter);
+    this.currentProjectFilter$.next(this.props.currentProjectFilter);
+
+    this.subscriptions = [
+      combineLatest(
+        this.startAt$.pipe(
+          filter(startAt => startAt !== null)
+        ),
+        this.endAt$.pipe(
+          filter(endAt => endAt !== null)
+        ),
+        this.selectedResource$.pipe(
+          filter(endAt => endAt !== null)
+        ),
+        this.currentGroupFilter$,
+        this.currentProjectFilter$,
+        this.currentTopicFilter$
+      ).pipe(
+        switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentTopicFilter]) => {
+          const queryParameters = {
+            startAt,
+            endAt,
+            group: currentGroupFilter,
+            topic: currentTopicFilter,
+          };
+          if (selectedResource === 'Ideas') {
+            return ideasByProjectStream({
+              queryParameters
+            }).observable;
+          } else if (selectedResource === 'Comments') {
+            return commentsByProjectStream({
+              queryParameters
+            }).observable;
+          } else {
+            return votesByProjectStream({
+              queryParameters
+            }).observable;
+          }
+        })
+      ).subscribe((serie) => {
+        const convertedSerie = this.convertToGraphFormat(serie);
+        if (this.props.currentProjectFilter) {
+          this.setState({ serie: this.filterByProject(convertedSerie) });
+        } else { this.setState({ serie: convertedSerie }); }
+      })
+    ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.serie) {
-      if (this.props.serie !== prevProps.serie) {
-        if (this.props.currentProjectFilter) {
-          this.setState({
-            serie: this.filterByProject(this.convertToGraphFormat(this.props.serie))
-          });
-        } else {
-          this.setState({
-            serie: this.convertToGraphFormat(this.props.serie)
-          });
-        }
-      }
-      if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-        if (this.props.currentProjectFilter) {
-          this.setState({
-            serie: this.filterByProject(this.convertToGraphFormat(this.props.serie))
-          });
-        } else {
-          this.setState({
-            serie: this.convertToGraphFormat(this.props.serie)
-          });
-        }
-      }
+    if (this.props.startAt !== prevProps.startAt) {
+      this.startAt$.next(this.props.startAt);
     }
+
+    if (this.props.endAt !== prevProps.endAt) {
+      this.endAt$.next(this.props.endAt);
+    }
+    if (this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.currentGroupFilter$.next(this.props.currentGroupFilter);
+    }
+
+    if (this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
+      this.currentTopicFilter$.next(this.props.currentTopicFilter);
+    }
+    if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
+      this.currentProjectFilter$.next(this.props.currentProjectFilter);
+    }
+
+    if (this.props.selectedResource !== prevProps.selectedResource) {
+      this.selectedResource$.next(this.props.selectedResource);
+    }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   convertToGraphFormat = (serie: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
@@ -117,22 +184,15 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
 
   filterByProject = (serie: IGraphFormat | null) => {
     if (serie) {
-      const { currentProjectFilter, projectOptions, intl: { formatMessage } } = this.props;
+      const { currentProjectFilter } = this.props;
       const selectedProject = serie.find(item => item.code === currentProjectFilter);
       const selectedProjectCount = selectedProject ? selectedProject.value : 0;
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedProjectCount, ...rest };
       }).filter(item => item.code !== currentProjectFilter);
-      let projectName;
-      if (selectedProject) {
-        projectName = selectedProject.name;
-      } else {
-        const foundOption = projectOptions.find(option => option.value === currentProjectFilter);
-        projectName = foundOption ? foundOption.label : formatMessage(messages.selectedProject);
-      }
       filteredSerie.unshift({
-        name: projectName,
+        name: selectedProject ? selectedProject.name : 'selected project',
         value: 0,
         code: currentProjectFilter,
       });
@@ -143,8 +203,8 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
   }
 
   render() {
-    const { serie } = this.state;
     const theme = this.props['theme'];
+    const { serie } = this.state;
     const {
       className,
       onResourceByProjectChange,
@@ -167,18 +227,19 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
     return (
       <GraphCard className={className}>
         <GraphCardInner>
-          <GraphCardHeaderWithFilter>
-            <SSelect
-              id="projectFilter"
-              onChange={onResourceByProjectChange}
-              value={currentResourceByProject}
-              options={resourceOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
-            <FormattedMessage {...messages.byProjectTitle} />
-          </GraphCardHeaderWithFilter>
           {!isEmpty ?
+            <>
+              <GraphCardHeaderWithFilter>
+                <SSelect
+                  id="projectFilter"
+                  onChange={onResourceByProjectChange}
+                  value={currentResourceByProject}
+                  options={resourceOptions}
+                  clearable={false}
+                  borderColor="#EAEAEA"
+                />
+                <FormattedMessage {...messages.byProjectTitle} />
+              </GraphCardHeaderWithFilter>
               <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
                 <BarChart data={serie} layout="vertical">
                   <Bar
@@ -205,7 +266,8 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
                   <Tooltip isAnimationActive={false} />
                 </BarChart>
               </ResponsiveContainer>
-            :
+            </>
+          :
             <EmptyGraph unit={selectedResource} />
           }
         </GraphCardInner>
@@ -213,10 +275,5 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
     );
   }
 }
-const ResourceByProjectWithFilterChartHoc = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByProject as any) as any));
 
-export default (inputProps: InputProps) => (
-  <GetResourcesByProject {...inputProps}>
-    {serie => <ResourceByProjectWithFilterChartHoc {...inputProps} {...serie} />}
-  </GetResourcesByProject>
-);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByProject as any) as any));

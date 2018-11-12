@@ -1,7 +1,7 @@
 // libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
@@ -53,7 +53,8 @@ interface Props extends InputProps, DataProps { }
 
 interface State {
   interval: 'weeks' | 'months' | 'years';
-  intervalIndex: number;
+  startAtMoment: Moment | null;
+  endAtMoment: Moment | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -73,7 +74,8 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     super(props);
     this.state = {
       interval: 'months',
-      intervalIndex: 0,
+      startAtMoment: moment().startOf('month'),
+      endAtMoment: moment().endOf('month'),
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
@@ -104,12 +106,12 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     }
   }
 
-  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
-    this.setState({ interval, intervalIndex: 0 });
+  handleChangeInterval = (interval: 'weeks' | 'months' | 'years') => {
+    this.setState({ interval });
   }
 
-  changeIntervalIndex = (intervalIndex: number) => {
-    this.setState({ intervalIndex });
+  handleChangeTimeRange = (startAtMoment: Moment | null, endAtMoment: Moment | null) => {
+    this.setState({ startAtMoment, endAtMoment });
   }
 
   handleOnProjectFilter = (filter) => {
@@ -178,16 +180,15 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   render() {
     const {
       interval,
-      intervalIndex,
+      startAtMoment,
+      endAtMoment,
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
       currentResourceByProject,
       currentResourceByTopic } = this.state;
-    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
-    const endAtMoment = moment(startAtMoment).add(1, interval);
-    const startAt = startAtMoment.toISOString();
-    const endAt = endAtMoment.toISOString();
+    const startAt = startAtMoment && startAtMoment.toISOString();
+    const endAt = endAtMoment && endAtMoment.toISOString();
     const resolution = (interval === 'years' ? 'month' : 'day');
     const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
 
@@ -198,14 +199,13 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
         <>
           <ControlBar>
             <TimeControl
-              value={intervalIndex}
-              interval={interval}
-              onChange={this.changeIntervalIndex}
-              currentTime={startAtMoment}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              onChange={this.handleChangeTimeRange}
             />
             <IntervalControl
               value={interval}
-              onChange={this.changeInterval}
+              onChange={this.handleChangeInterval}
             />
           </ControlBar>
 
