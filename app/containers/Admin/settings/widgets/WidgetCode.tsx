@@ -1,12 +1,13 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { isNilOrError } from 'utils/helperUtils';
+import Button from 'components/UI/Button';
 
-const CodeSnippet = styled.code`
+const CodeSnippet = styled.textarea`
   word-wrap: break-word;
   font-family: 'Courier New', Courier, monospace;
   background-color: ${colors.lightGreyishBlue};
@@ -16,6 +17,7 @@ const CodeSnippet = styled.code`
   margin: 20px 0;
   width: 100%;
   min-height: 200px;
+  user-select: all;
 `;
 
 interface Props {
@@ -28,13 +30,35 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface State {}
-
+interface State {
+  copied: boolean;
+}
 class WidgetCode extends PureComponent<Props & DataProps, State> {
+  snippetRef = createRef<HTMLTextAreaElement>();
+  constructor(props: Props & DataProps) {
+    super(props);
+    this.state = {
+      copied: false,
+    };
+  }
+
+  handleFocus = event => {
+    event.target.select();
+  }
+
+  copy = (ref) => () => {
+    ref.current.select();
+    if (document.execCommand('copy')) {
+      this.setState({ copied: true });
+      setTimeout(() => this.setState({ copied: false }), 3000);
+      window.getSelection().removeAllRanges();
+    }
+  }
 
   render() {
     const { path, tenant, width, height } = this.props;
     if (isNilOrError(tenant)) return null;
+    const text = `<iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no" />`;
 
     return (
       <>
@@ -44,11 +68,18 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
         <p>
           <FormattedMessage {...messages.htmlCodeExplanation} />
         </p>
-        <CodeSnippet>
-          {`
-            <iframe src="https://${tenant.attributes.host}/widgets${path}" width="${width}" height="${height}" frameborder="0" scrolling="no" />
-          `}
-        </CodeSnippet>
+        <CodeSnippet
+          value={text}
+          readOnly
+          onFocus={this.handleFocus}
+          innerRef={this.snippetRef}
+        />
+        <Button onClick={this.copy(this.snippetRef)} style={this.state.copied ? 'success' : 'admin-dark'}>
+          {this.state.copied
+            ? <FormattedMessage {...messages.copied} />
+            : <FormattedMessage {...messages.copyToClipboard} />
+          }
+        </Button>
       </>
     );
   }

@@ -94,4 +94,8 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.level_area',
     defaultMessage: 'Areas',
   },
+  level_clustering: {
+    id: 'app.containers.Admin.clusterViewer.level_clustering',
+    defaultMessage: 'Clustering',
+  },
 });
