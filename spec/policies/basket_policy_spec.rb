@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe BasketPolicy do
   subject { BasketPolicy.new(user, basket) }
-  let(:basket) { create(:basket) }
+  let(:basket) { create(:basket, participation_context: create(:continuous_budgeting_project, with_permissions: true)) }
 
   context "for a visitor" do
     let(:user) { nil }
