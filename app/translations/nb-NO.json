@@ -645,6 +645,7 @@
   "app.containers.AdminPage.groups.permissions.members": "{antall, flertalling, =0 {No members} en {1 member} andre {{count} members}}",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "No permissions to configure, since the user can't do anything here",
   "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "Velg én eller flere grupper som kan få tilgang til dette prosjektet",
+  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Commenting",
   "app.containers.AdminPage.groups.permissions.permissionAction_posting": "Posting ideas",
   "app.containers.AdminPage.groups.permissions.permissionAction_taking_survey": "Taking the survey",

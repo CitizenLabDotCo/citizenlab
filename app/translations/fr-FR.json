@@ -645,6 +645,7 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Aucun membre} one {un membre} other {{count} membres}}",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "Pas d’autorisations pour configurer, car l’utilisateur ne peut pas faire n’importe quoi",
   "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "Sélectionnez un ou plusieurs groupes qui peuvent accéder à ce projet",
+  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Commenter",
   "app.containers.AdminPage.groups.permissions.permissionAction_posting": "Poster des idées",
   "app.containers.AdminPage.groups.permissions.permissionAction_taking_survey": "Répondre à une enquête",
