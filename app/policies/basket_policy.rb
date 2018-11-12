@@ -6,7 +6,7 @@ class BasketPolicy < ApplicationPolicy
       (record.user_id == user.id) &&
       check_budgeting_allowed(record, user)
     ) || 
-    user&.active_admin_or_moderator?(record.participation_context.project.id))
+    user&.active_admin_or_moderator?(record.participation_context.project.id)
   end
 
   def show?
