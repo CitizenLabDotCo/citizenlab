@@ -175,7 +175,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
             </NoDataContainer>
             :
             <ResponsiveContainer>
-              <BarChart data={serie}>
+              <BarChart data={serie} margin={{ right: 40 }}>
                 <Bar
                   dataKey="value"
                   name={formatMessage(messages[`numberOf${graphUnit}`])}
