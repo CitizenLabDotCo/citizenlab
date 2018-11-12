@@ -168,7 +168,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
-    const noData = serie && serie.every(item => isEmpty(item));
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const firstSerieValue = serie && serie[0].total;
     const lastSerieValue = serie && serie[serie.length - 1].total;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);

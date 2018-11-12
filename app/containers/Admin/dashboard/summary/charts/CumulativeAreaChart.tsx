@@ -169,7 +169,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { formatMessage } = this.props.intl;
     const { graphTitleMessageKey, graphUnit, className } = this.props;
     const { serie } = this.state;
-    const noData = serie && serie.every(item => isEmpty(item));
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
     const firstSerieValue = serie && serie[0].value;
     const lastSerieValue = serie && serie[serie.length - 1].value;
