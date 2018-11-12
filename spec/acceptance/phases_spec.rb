@@ -106,7 +106,7 @@ resource "Phases" do
         let(:start_at) { Time.now }
         let(:end_at) { Time.now + 4.days }
 
-        example_request "[error] Create an overlapping phase", document: false do
+        example_request "[error] Create an overlapping phase" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_overlapping_phases'}]
