@@ -20,6 +20,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { localeStream } from 'services/locale';
@@ -392,23 +393,23 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </label>
         </FormElement>
-
-        <HasPermission
-          item="ideas"
-          action="assignBudget"
-          context={{ projectId }}
-        >
-          <FormElement>
-            <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
-            <Input
-              id="budget"
-              value={String(budget)}
-              type="number"
-              onChange={this.handleBudgetOnChange}
-            />
-          </FormElement>
-        </HasPermission>
-
+        <FeatureFlag name="participatory_budgeting">
+          <HasPermission
+            item="ideas"
+            action="assignBudget"
+            context={{ projectId }}
+          >
+            <FormElement>
+              <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+              <Input
+                id="budget"
+                value={String(budget)}
+                type="number"
+                onChange={this.handleBudgetOnChange}
+              />
+            </FormElement>
+          </HasPermission>
+        </FeatureFlag>
         <FormElement>
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
