@@ -152,7 +152,7 @@ class ParticipationContextService
 
   def budgeting_disabled_reason idea, user
     context = get_participation_context idea.project
-    if context && !in_current_context? idea, context
+    if context && !in_current_context?(idea, context)
       BUDGETING_DISABLED_REASONS[:not_in_active_context]
     else
       budgeting_disabled_reason_in_context context, user
