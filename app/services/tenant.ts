@@ -68,6 +68,7 @@ export interface ITenantSettings {
   excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
+  participatory_budgeting: TenantFeature;
 }
 interface TenantMapSettings extends TenantFeature {
   map_center: {
