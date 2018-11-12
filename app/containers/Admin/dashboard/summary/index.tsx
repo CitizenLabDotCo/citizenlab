@@ -13,7 +13,7 @@ import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import BarChartByTime from './charts/BarChartByTime';
-import AreaChartVotesByTime from './charts/AreaChartVotesByTime';
+import LineChartVotesByTime from './charts/LineChartVotesByTime';
 
 // typings
 import { IOption } from 'typings';
@@ -259,7 +259,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               </Row>
               <Row>
                 <Column className="first">
-                  <AreaChartVotesByTime
+                  <LineChartVotesByTime
                     className="colFirst"
                     startAt={startAt}
                     endAt={endAt}

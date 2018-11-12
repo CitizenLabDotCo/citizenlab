@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, isNumber, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
@@ -31,7 +31,7 @@ type Props = {
   currentTopicFilter: string | null;
 };
 
-class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -200,7 +200,7 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
             </NoDataContainer>
             :
             <ResponsiveContainer>
-              <AreaChart data={serie} margin={{ right: 40 }}>
+              <LineChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
                 <XAxis
                   dataKey="date"
@@ -218,39 +218,36 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
-                <Area
+                <Line
                   type="monotone"
                   dataKey="up"
                   name={formatMessage(messages.numberOfVotesUp)}
                   dot={false}
                   fill={chartStrokeGreen}
                   stroke={chartStrokeGreen}
-                  stackId={1}
                 />
-                <Area
+                <Line
                   type="monotone"
                   dataKey="down"
                   name={formatMessage(messages.numberOfVotesDown)}
                   dot={false}
                   fill={chartStrokeRed}
                   stroke={chartStrokeRed}
-                  stackId={1}
                 />
-                <Area
+                <Line
                   type="monotone"
                   dataKey="total"
                   name={formatMessage(messages.numberOfVotesTotal)}
                   dot={false}
                   fill={chartStroke}
                   stroke={chartStroke}
-                  stackId={1}
                 />
                 <Legend
                   wrapperStyle={{
                     paddingTop: '20px'
                   }}
                 />
-              </AreaChart>
+              </LineChart>
             </ResponsiveContainer>
           }
         </GraphCardInner>
@@ -259,4 +256,4 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 }
 
-export default injectIntl<Props>(withTheme(AreaChartVotesByTime as any) as any);
+export default injectIntl<Props>(withTheme(LineChartVotesByTime as any) as any);
