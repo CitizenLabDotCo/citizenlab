@@ -356,7 +356,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const className = this.props['className'];
     const { projectId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { topics, title, description, selectedTopics, position, budget, imageFile, titleError, descriptionError } = this.state;
+    const { topics, pbContext, title, description, selectedTopics, position, budget, imageFile, titleError, descriptionError, budgetError } = this.state;
     const { ideaFiles } = this.state;
 
     return (
@@ -437,23 +437,26 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </label>
         </FormElement>
-        <FeatureFlag name="participatory_budgeting">
-          <HasPermission
-            item="ideas"
-            action="assignBudget"
-            context={{ projectId }}
-          >
-            <FormElement>
-              <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
-              <Input
-                id="budget"
-                value={String(budget)}
-                type="number"
-                onChange={this.handleBudgetOnChange}
-              />
-            </FormElement>
-          </HasPermission>
-        </FeatureFlag>
+        {pbContext &&
+          <FeatureFlag name="participatory_budgeting">
+            <HasPermission
+              item="ideas"
+              action="assignBudget"
+              context={{ projectId }}
+            >
+              <FormElement>
+                <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+                <Input
+                  id="budget"
+                  value={String(budget)}
+                  type="number"
+                  onChange={this.handleBudgetOnChange}
+                />
+                {budgetError && <Error text={budgetError} />}
+              </FormElement>
+            </HasPermission>
+          </FeatureFlag>
+        }
         <FormElement>
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
