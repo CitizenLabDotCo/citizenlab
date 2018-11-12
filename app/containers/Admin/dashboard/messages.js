@@ -123,6 +123,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
   },
+  previous30Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous30Days',
+    defaultMessage: 'Previous 30 days',
+  },
+  previousWeek: {
+    id: 'app.containers.AdminPage.DashboardPage.previousWeek',
+    defaultMessage: 'Previous week',
+  },
+  previous90Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous90Days',
+    defaultMessage: 'Previous 90 days',
+  },
+  previousYear: {
+    id: 'app.containers.AdminPage.DashboardPage.previousYear',
+    defaultMessage: 'Previous year',
+  },
+  allTime: {
+    id: 'app.containers.AdminPage.DashboardPage.allTime',
+    defaultMessage: 'All Time',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
@@ -173,17 +193,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.interval',
     defaultMessage: 'Interval',
   },
-  day: {
-    id: 'app.containers.AdminPage.DashboardPage.day',
-    defaultMessage: 'Day',
+  resolutionday: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
+    defaultMessage: ' in Days',
   },
-  week: {
-    id: 'app.containers.AdminPage.DashboardPage.week',
-    defaultMessage: 'Week',
+  resolutionweek: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
+    defaultMessage: 'in Weeks',
   },
-  month: {
-    id: 'app.containers.AdminPage.DashboardPage.month',
-    defaultMessage: 'Month',
+  resolutionmonth: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
+    defaultMessage: 'in Months',
   },
   year: {
     id: 'app.containers.AdminPage.DashboardPage.year',
@@ -232,14 +252,6 @@ export default defineMessages({
   topicFilterLabel: {
     id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
     defaultMessage: 'Topics',
-  },
-  previous30Days: {
-    id: 'app.containers.AdminPage.DashboardPage.previous30Days',
-    defaultMessage: 'Previous 30 days',
-  },
-  previous90Days: {
-    id: 'app.containers.AdminPage.DashboardPage.previous90Days',
-    defaultMessage: 'Previous 90 days',
   },
   customDateRange: {
     id: 'app.containers.AdminPage.DashboardPage.customDateRange',

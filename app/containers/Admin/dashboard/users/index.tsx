@@ -19,7 +19,7 @@ import {
   ControlBar
 } from '../';
 import TimeControl from '../components/TimeControl';
-import IntervalControl from '../components/IntervalControl';
+import ResolutionControl from '../components/ResolutionControl';
 import GenderChart from '../components/charts/GenderChart';
 import AgeChart from '../components/charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
@@ -105,7 +105,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
             onChange={this.changeIntervalIndex}
             currentTime={startAtMoment}
           />
-          <IntervalControl
+          <ResolutionControl
             value={interval}
             onChange={this.changeInterval}
           />

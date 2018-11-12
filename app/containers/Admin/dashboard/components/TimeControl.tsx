@@ -34,13 +34,13 @@ const DropdownItemIcon = styled(Icon)`
   margin-left: 4px;
 `;
 
-type Props  = {
-  startAtMoment: Moment | null;
+type Props = {
+  startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
-  onChange: (startAtMoment: Moment | null, endAtMoment: Moment | null) => void;
+  onChange: (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => void;
 };
 
-type State  = {
+type State = {
   dropdownOpened: boolean;
 };
 
@@ -48,16 +48,34 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   presets = [
     {
+      id: 'allTime',
+      label: <FormattedMessage {...messages.allTime} />,
+      endAt: () => moment(),
+      startAt: () => undefined,
+    },
+    {
+      id: 'previousWeek',
+      label: <FormattedMessage {...messages.previousWeek} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(7, 'd'),
+    },
+    {
       id: 'previous30Days',
       label: <FormattedMessage {...messages.previous30Days} />,
-      startAt: (now: Moment) => now.add(-30, 'd'),
-      endAt: (now: Moment) => now,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(30, 'd'),
     },
     {
       id: 'previous90Days',
       label: <FormattedMessage {...messages.previous90Days} />,
-      startAt: (now: Moment) => now.add(-90, 'd'),
-      endAt: (now: Moment) => now,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(90, 'd'),
+    },
+    {
+      id: 'previousYear',
+      label: <FormattedMessage {...messages.previousYear} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(1, 'y'),
     },
   ];
 
@@ -72,7 +90,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ dropdownOpened: !this.state.dropdownOpened });
   }
 
-  handleDatesChange = ({ startDate, endDate }: {startDate: Moment | null, endDate: Moment | null}) => {
+  handleDatesChange = ({ startDate, endDate }: { startDate: Moment | null, endDate: Moment | null }) => {
     this.props.onChange(startDate, endDate);
   }
 
@@ -80,16 +98,19 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   findActivePreset = () => {
     const { startAtMoment, endAtMoment } = this.props;
-    if (!startAtMoment || !endAtMoment) return null;
-    const now = moment();
+    if (!endAtMoment) return null;
     return this.presets.find(preset => {
-      return preset.startAt(now).isSame(startAtMoment, 'day') && preset.endAt(now).isSame(endAtMoment, 'day');
+      const startAt = preset.startAt();
+      if (startAt === undefined) {
+        return startAtMoment === undefined && preset.endAt().isSame(endAtMoment, 'day');
+      } else {
+        return !!startAtMoment && startAt.isSame(startAtMoment, 'day') && preset.endAt().isSame(endAtMoment, 'day');
+      }
     });
   }
 
   handlePresetClick = (preset) => () => {
-    const now = moment();
-    this.props.onChange(preset.startAt(now), preset.endAt(now));
+    this.props.onChange(preset.startAt(), preset.endAt());
   }
 
   render() {
@@ -128,7 +149,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
         <DateRangePicker
           startDateId={'startAt'}
           endDateId={'endAt'}
-          startDate={startAtMoment}
+          startDate={(startAtMoment === undefined) ? null : startAtMoment}
           endDate={endAtMoment}
           onDatesChange={this.handleDatesChange}
           isOutsideRange={this.isOutsideRange}

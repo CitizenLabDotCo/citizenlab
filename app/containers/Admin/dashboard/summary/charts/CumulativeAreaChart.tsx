@@ -9,6 +9,7 @@ import messages from '../../messages';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
+import { IResolution } from '../../components/ResolutionControl';
 import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
@@ -44,7 +45,7 @@ type Props = {
   graphTitleMessageKey: string;
   startAt: string;
   endAt: string;
-  resolution: 'month' | 'day';
+  resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -124,7 +125,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
   resubscribe(
     startAt: string,
     endAt: string,
-    resolution: 'month' | 'day',
+    resolution: IResolution,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
     currentProjectFilter: string | null,
@@ -186,8 +187,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
-    const firstSerieValue = serie && serie[0].value;
-    const lastSerieValue = serie && serie[serie.length - 1].value;
+    const firstSerieValue = serie && serie.length > 0 && serie[0].value;
+    const lastSerieValue = serie && serie.length > 0 && serie[serie.length - 1].value;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 

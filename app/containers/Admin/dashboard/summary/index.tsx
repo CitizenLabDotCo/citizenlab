@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 
 // components
 import TimeControl from '../components/TimeControl';
-import IntervalControl from '../components/IntervalControl';
+import ResolutionControl, { IResolution } from '../components/ResolutionControl';
 import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
 import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
 import ChartFilters from '../components/ChartFilters';
@@ -35,7 +35,7 @@ import {
   activeUsersByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
- } from 'services/stats';
+} from 'services/stats';
 
 export type IResource = 'Ideas' | 'Comments' | 'Votes';
 
@@ -52,8 +52,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  interval: 'weeks' | 'months' | 'years';
-  startAtMoment: Moment | null;
+  resolution: IResolution;
+  startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
@@ -73,9 +73,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
     super(props);
     this.state = {
-      interval: 'months',
-      startAtMoment: moment().startOf('month'),
-      endAtMoment: moment().endOf('month'),
+      resolution: 'month',
+      startAtMoment: undefined,
+      endAtMoment: moment(),
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
@@ -106,12 +106,15 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     }
   }
 
-  handleChangeInterval = (interval: 'weeks' | 'months' | 'years') => {
-    this.setState({ interval });
+  handleChangeResolution = (resolution: IResolution) => {
+    this.setState({ resolution });
   }
 
-  handleChangeTimeRange = (startAtMoment: Moment | null, endAtMoment: Moment | null) => {
-    this.setState({ startAtMoment, endAtMoment });
+  handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
+    const timeDiff = endAtMoment && startAtMoment && moment.duration(endAtMoment.diff(startAtMoment));
+    const resolution = timeDiff ? (timeDiff.asMonths() > 6 ? 'month' : timeDiff.asWeeks() > 4 ? 'week' : 'day')
+      : 'month';
+    this.setState({ startAtMoment, endAtMoment, resolution });
   }
 
   handleOnProjectFilter = (filter) => {
@@ -179,7 +182,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 
   render() {
     const {
-      interval,
+      resolution,
       startAtMoment,
       endAtMoment,
       currentProjectFilter,
@@ -189,7 +192,6 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       currentResourceByTopic } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
-    const resolution = (interval === 'years' ? 'month' : 'day');
     const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
 
     const { projects, projects: { projectsList } } = this.props;
@@ -203,9 +205,9 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               endAtMoment={endAtMoment}
               onChange={this.handleChangeTimeRange}
             />
-            <IntervalControl
-              value={interval}
-              onChange={this.handleChangeInterval}
+            <ResolutionControl
+              value={resolution}
+              onChange={this.handleChangeResolution}
             />
           </ControlBar>
 
@@ -318,15 +320,15 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}/>,
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />,
   groups: <GetGroups />,
   topics: <GetTopics />,
 });
 
-const DashboardPageSummaryWithHOCs =  localize<Props>(injectIntl(DashboardPageSummary));
+const DashboardPageSummaryWithHOCs = localize<Props>(injectIntl(DashboardPageSummary));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps =>  <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
