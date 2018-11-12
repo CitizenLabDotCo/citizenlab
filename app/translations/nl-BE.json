@@ -645,6 +645,7 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Geen leden} one {één lid} other {{count} leden}}",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "Geen machtigingen om te beheren, omdat de gebruiker hier niets kan doen",
   "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "Selecteer een of meer groepen die toegang hebben tot dit project",
+  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Reageren",
   "app.containers.AdminPage.groups.permissions.permissionAction_posting": "Ideeën posten",
   "app.containers.AdminPage.groups.permissions.permissionAction_taking_survey": "Deelnemen aan de enquête",

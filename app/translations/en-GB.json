@@ -645,6 +645,7 @@
   "app.containers.AdminPage.groups.permissions.members": "",
   "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "",
   "app.containers.AdminPage.groups.permissions.noSelectedGroupsMessage": "",
+  "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_posting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_taking_survey": "",
