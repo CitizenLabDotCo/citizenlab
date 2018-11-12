@@ -63,7 +63,7 @@ describe BasketPolicy do
     let!(:project) { create(:private_groups_continuous_budgeting_project, with_permissions: true)}
     let!(:basket) { create(:basket, user: user, participation_context: project) }
 
-    it { should permit(:show)    }
+    it { should     permit(:show)    }
     it { should_not permit(:create)  }
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
@@ -78,5 +78,20 @@ describe BasketPolicy do
     it { should permit(:create)  }
     it { should permit(:update)  }
     it { should permit(:destroy) }
+  end
+
+  context "for a mortal user who owns the basket in a project where budgeting is not permitted" do
+    let!(:user) { create(:user) }
+    let!(:project) { 
+      p = create(:continuous_budgeting_project, with_permissions: true) 
+      p.permissions.find_by(action: 'budgeting').update!(permitted_by: 'admins_moderators')
+      p
+    }
+    let!(:basket) { create(:basket, user: user, participation_context: project) }
+
+    it { should     permit(:show) }
+    it { should_not permit(:create) }
+    it { should_not permit(:update) }
+    it { should_not permit(:destroy) }
   end
 end

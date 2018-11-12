@@ -241,10 +241,12 @@ FactoryBot.define do
         end
       end
 
-      factory :private_groups_continuous_budgeting_project do
+      factory :private_groups_continuous_project do
         process_type 'continuous'
-        participation_method 'budgeting'
-        max_budget 10000
+        factory :private_groups_continuous_budgeting_project do
+          participation_method 'budgeting'
+          max_budget 10000
+        end
       end
     end
 
