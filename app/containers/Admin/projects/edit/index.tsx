@@ -21,7 +21,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 const StyledGoBackButton = styled(GoBackButton)`
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 30px;
 `;
 

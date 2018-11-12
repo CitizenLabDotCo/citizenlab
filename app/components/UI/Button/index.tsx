@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
@@ -9,8 +9,6 @@ import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
-    case '1':
-      return '17px';
     case '2':
       return '18px';
     case '3':
@@ -75,23 +73,32 @@ function setFillColor(color) {
 
 // Sets the button colors depending on Background color, optionally set the text/icon fill color and border color.
 function buttonTheme(
+  props: Props,
   bgColor: string,
   textColor: string,
   borderColor = 'transparent',
   bgHoverColor?: string | null,
-  textHoverColor?: string | null
+  textHoverColor?: string | null,
+  borderHoverColor?: string | null
 ) {
+  const finalBgColor = props.bgColor || bgColor;
+  const finalBgHoverColor = props.bgHoverColor || bgHoverColor;
+  const finalTextColor = props.textColor || textColor;
+  const finalTextHoverColor = props.textHoverColor || textHoverColor;
+  const finalBorderColor = props.borderColor || borderColor;
+  const finalBorderHoverColor = props.borderHoverColor || borderHoverColor;
+
   return `
     &:not(.disabled) {
-      ${setFillColor(textColor || readableColor(bgColor))}
-      background: ${bgColor};
-      border-color: ${borderColor};
+      ${setFillColor(finalTextColor || readableColor(finalBgColor))}
+      background: ${finalBgColor};
+      border-color: ${finalBorderColor};
 
       &:not(.processing):hover,
       &:not(.processing):focus {
-        ${bgColor !== 'transparent' && `background: ${bgHoverColor || darken(0.12, bgColor)};`}
-        ${bgColor === 'transparent' && textColor && (textHoverColor || setFillColor(darken(0.2, textColor)))}
-        ${bgColor === 'transparent' && borderColor !== 'transparent' && `border-color: ${darken(0.2, borderColor)};`}
+        ${finalBgColor !== ('transparent' || '#fff' || 'white') && `background: ${finalBgHoverColor || darken(0.12, finalBgColor)};`}
+        ${finalBgColor === ('transparent' || '#fff' || 'white') && finalTextColor && (finalTextHoverColor || setFillColor(darken(0.2, finalTextColor)))}
+        ${finalBgColor === ('transparent' || '#fff' || 'white') && finalBorderColor !== 'transparent' && `border-color: ${finalBorderHoverColor || darken(0.2, finalBorderColor)};`}
       }
     }
 
@@ -139,7 +146,7 @@ const Container: any = styled.div`
   button,
   a {
     align-items: center;
-    border: 1px solid transparent;
+    border: ${(props: any) => props.borderThickness || '1px'} solid transparent;
     border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
     height: ${(props: any) => props.height || 'auto'};
@@ -148,13 +155,11 @@ const Container: any = styled.div`
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
+    min-width: ${(props: any) => props.minWidth || 'auto'};
     width: ${(props: any) => props.width || '100%'};
     outline: none;
     &:not(.disabled) {
       cursor: pointer;
-    }
-    &.disabled {
-      pointer-events: none;
     }
     &.fullWidth {
       width: 100%;
@@ -172,40 +177,47 @@ const Container: any = styled.div`
       opacity: ${(props: any) => props.processing ? 0 : 1};
     }
     &.primary {
-      ${(props: any) => buttonTheme((props.theme.colorMain || 'e0e0e0'), '#fff')}
+      ${(props: any) => buttonTheme(props, props.theme.colorMain || 'e0e0e0', '#fff')}
     }
     &.primary-inverse {
-      ${(props: any) => buttonTheme('#fff', (props.theme.colorMain || 'e0e0e0'))}
+      ${(props: any) => buttonTheme(props, '#fff', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary {
-      ${buttonTheme(
-    color('lightGreyishBlue'),
-    color('label'),
-    'transparent',
-    darken(0.05, color('lightGreyishBlue'))
-  )}
+      ${(props: any) => buttonTheme(
+        props,
+        color('lightGreyishBlue'),
+        darken(0.1, color('label')),
+        'transparent',
+        darken(0.05, color('lightGreyishBlue'))
+      )}
     }
     &.primary-outlined {
-      ${(props: any) => buttonTheme('transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
+      ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
-      ${buttonTheme('transparent', color('label'), color('label'))}
+      ${(props: any) => buttonTheme(props, 'transparent', color('label'), color('label'))}
     }
     &.text {
-      ${(props: any) => buttonTheme('transparent', props.textColor || color('label'), undefined, undefined, props.textHoverColor)}
+      ${(props: any) => buttonTheme(props, 'transparent', color('label'))}
     }
     &.success {
-      ${buttonTheme(color('clGreenSuccessBackground'), color('clGreenSuccess'))}
+      ${(props: any) => buttonTheme(props, color('clGreenSuccessBackground'), color('clGreenSuccess'))}
     }
     &.cl-blue {
-      ${buttonTheme(color('clBlueDark'), 'white')}
+      ${(props: any) => buttonTheme(props, color('clBlueDark'), 'white')}
     }
     &.admin-dark {
-      ${buttonTheme(colors.adminTextColor, 'white')}
+      ${(props: any) => buttonTheme(props, colors.adminTextColor, 'white')}
     }
     &.delete {
-      ${buttonTheme(colors.clRedError, 'white')}
+      ${(props: any) => buttonTheme(props, colors.clRedError, 'white')}
     }
+  }
+  button.disabled {
+    cursor: not-allowed;
+  }
+  a.disabled {
+    pointer-events: none;
   }
 `;
 
@@ -244,7 +256,7 @@ type Props = {
   justify?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
   openInNewTab?: boolean;
-  onClick?: (arg: React.FormEvent<HTMLButtonElement>) => void;
+  onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
   padding?: string;
   processing?: boolean;
   setSubmitButtonRef?: (value: HTMLInputElement) => void;
@@ -253,19 +265,28 @@ type Props = {
   text?: string | JSX.Element;
   textColor?: string;
   textHoverColor?: string;
+  bgColor?: string;
+  bgHoverColor?: string;
+  borderColor?: string;
+  borderHoverColor?: string;
+  borderThickness?: string;
   theme?: object | undefined;
+  minWidth?: string;
   width?: string;
   type?: string;
 };
 
 type State = {};
 
-class Button extends React.PureComponent<Props, State> {
+class Button extends PureComponent<Props, State> {
 
-  handleOnClick = (event: React.FormEvent<HTMLButtonElement>) => {
+  handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
       event.preventDefault();
       this.props.onClick(event);
+    } else if (this.props.onClick && (this.props.disabled || this.props.processing)) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -297,10 +318,11 @@ class Button extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { size, type, text, form, textColor, textHoverColor, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
-    let { id, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
+    let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
+    size = (size || '1');
     style = (style || 'primary');
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
@@ -344,6 +366,12 @@ class Button extends React.PureComponent<Props, State> {
         className={`${className} ${buttonClassnames}`}
         textColor={textColor}
         textHoverColor={textHoverColor}
+        bgColor={bgColor}
+        bgHoverColor={bgHoverColor}
+        borderColor={borderColor}
+        borderHoverColor={borderHoverColor}
+        borderThickness={borderThickness}
+        minWidth={minWidth}
       >
         {linkTo ? (
           (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (

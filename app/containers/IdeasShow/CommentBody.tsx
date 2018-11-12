@@ -51,9 +51,11 @@ const CommentWrapper = styled.div`
 
     &:not(.mention){
       text-decoration: underline;
+      hyphens: auto;
 
       &:hover {
         text-decoration: underline;
+        color: ${darken(0.15, colors.clBlueDark)};
       }
     }
 

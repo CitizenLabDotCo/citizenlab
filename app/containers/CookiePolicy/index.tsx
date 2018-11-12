@@ -89,6 +89,7 @@ const PageDescription = styled.div`
     line-height: 33px;
     font-weight: 600;
   }
+
   h3 {
     padding-top: 20px;
     font-size: ${fontSizes.xl}px;
@@ -109,6 +110,7 @@ const PageDescription = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
