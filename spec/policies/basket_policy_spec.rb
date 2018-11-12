@@ -57,4 +57,26 @@ describe BasketPolicy do
     it { should_not permit(:update)  }
     it { should_not permit(:destroy) }
   end
+
+  context "for a user on a basket in a private groups project where she's not member of a manual group with access" do
+    let!(:user) { create(:user) }
+    let!(:project) { create(:private_groups_continuous_budgeting_project, with_permissions: true)}
+    let!(:basket) { create(:basket, user: user, participation_context: project) }
+
+    it { should permit(:show)    }
+    it { should_not permit(:create)  }
+    it { should_not permit(:update)  }
+    it { should_not permit(:destroy) }
+  end
+
+  context "for a user on a basket in a private groups project where she's a member of a manual group with access" do
+    let!(:user) { create(:user) }
+    let!(:project) { create(:private_groups_continuous_budgeting_project, user: user, with_permissions: true)}
+    let!(:basket) { create(:basket, user: user, participation_context: project) }
+
+    it { should permit(:show)    }
+    it { should permit(:create)  }
+    it { should permit(:update)  }
+    it { should permit(:destroy) }
+  end
 end
