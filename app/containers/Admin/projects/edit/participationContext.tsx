@@ -322,17 +322,24 @@ export default class ParticipationContext extends PureComponent<Props, State> {
               <Label>
                 <FormattedMessage {...messages.participationMethod} />
               </Label>
-              {['ideation', 'information'].map((method) => (
+              <Radio
+                onChange={this.handleParticipationMethodOnChange}
+                currentValue={participation_method}
+                value="ideation"
+                name="participationmethod"
+                id="participationmethod-ideation"
+                label={<FormattedMessage {...messages.ideation} />}
+              />
+              <FeatureFlag name="participatory_budgeting">
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
-                  value={method}
+                  value="budgeting"
                   name="participationmethod"
-                  id={`participationmethod-${method}`}
-                  label={<FormattedMessage {...messages[method]} />}
-                  key={method}
+                  id={'participationmethod-budgeting'}
+                  label={<FormattedMessage {...messages.participatoryBudgeting} />}
                 />
-              ))}
+              </FeatureFlag>
               <FeatureFlag name="surveys">
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
@@ -343,16 +350,14 @@ export default class ParticipationContext extends PureComponent<Props, State> {
                   label={<FormattedMessage {...messages.survey} />}
                 />
               </FeatureFlag>
-              {/* <FeatureFlag name="participatory_budgeting"> */}
-                <Radio
-                  onChange={this.handleParticipationMethodOnChange}
-                  currentValue={participation_method}
-                  value="budgeting"
-                  name="participationmethod"
-                  id={'participationmethod-budgeting'}
-                  label={<FormattedMessage {...messages.participatoryBudgeting} />}
-                />
-              {/* </FeatureFlag> */}
+              <Radio
+                onChange={this.handleParticipationMethodOnChange}
+                currentValue={participation_method}
+                value="information"
+                name="participationmethod"
+                id="participationmethod-information"
+                label={<FormattedMessage {...messages.information} />}
+              />
             </SectionField>
 
             {participation_method === 'budgeting' &&
