@@ -228,7 +228,7 @@ class AssignBudgetControl extends PureComponent<Props, State> {
             <FormattedMessage {...messages.assigned} />
           </AssignedText>
         </AssignedLabel>
-      )
+      );
 
       if (view === 'ideaCard') {
         return (

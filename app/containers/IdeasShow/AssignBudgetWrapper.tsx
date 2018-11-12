@@ -6,7 +6,6 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 // import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Unauthenticated from './Unauthenticated';
 
-
 interface Props {
   ideaId: string;
   basketId: string | null | undefined;
