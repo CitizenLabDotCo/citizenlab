@@ -82,7 +82,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
-        .includes(:author, :topics, :areas, :project)
+        .includes(:author, :topics, :areas, :project, :idea_status)
         .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
       @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?

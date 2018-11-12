@@ -657,6 +657,7 @@ models:
   - &76
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
+    description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
     presentation_mode: card
     process_type: continuous
@@ -665,7 +666,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   - &121
     title_multiloc:
       en-GB: Sit voluptas sint aliquid quia aut nihil eos.
@@ -4645,6 +4646,9 @@ models:
       zone: *8
       time: *489
     parent_ref: *490
+  project_image:
+  - project_ref: *76
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
   votes:
   - mode: down
     user_ref: *72
@@ -11069,6 +11073,26 @@ models:
     voting_method: unlimited
     voting_limited_max: 
   event:
+  - project_ref: *76
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-03-26T18:00:00.1Z
+    end_at: 2019-03-26T20:00:00.1Z
+  - project_ref: *76
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-06-25T17:00:00.1Z
+    end_at: 2019-06-25T19:00:00.1Z
+  - project_ref: *76
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-09-24T17:00:00.1Z
+    end_at: 2019-09-24T19:00:00.1Z
+  - project_ref: *76
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-12-24T18:00:00.1Z
+    end_at: 2019-12-24T20:00:00.1Z
   - title_multiloc:
       nl-BE: Illum dignissimos quia corrupti ut.
     description_multiloc:
