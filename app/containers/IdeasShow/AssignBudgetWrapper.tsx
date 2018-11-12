@@ -6,6 +6,7 @@ import AssignBudgetControl from 'components/AssignBudgetControl';
 // import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Unauthenticated from './Unauthenticated';
 
+
 interface Props {
   ideaId: string;
   basketId: string | null | undefined;
@@ -33,25 +34,28 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
     const { ideaId, basketId, participationContextId, participationContextType } = this.props;
     const { error } = this.state;
 
-    return (
-      <>
-        {!error &&
-          <AssignBudgetControl
-            view="ideaPage"
-            ideaId={ideaId}
-            basketId={basketId}
-            participationContextId={participationContextId}
-            participationContextType={participationContextType}
-            unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-          />
-        }
-        {error === 'unauthenticated' &&
-          <VotingPopContainer icon="lock-outlined">
-            <Unauthenticated />
-          </VotingPopContainer>
-        }
-      </>
-    );
+    if (!error) {
+      return (
+        <AssignBudgetControl
+          view="ideaPage"
+          ideaId={ideaId}
+          basketId={basketId}
+          participationContextId={participationContextId}
+          participationContextType={participationContextType}
+          unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+        />
+      );
+    }
+
+    if (error === 'unauthenticated') {
+      return (
+        <VotingPopContainer icon="lock-outlined">
+          <Unauthenticated />
+        </VotingPopContainer>
+      );
+    }
+
+    return null;
   }
 }
 

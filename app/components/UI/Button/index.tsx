@@ -155,13 +155,11 @@ const Container: any = styled.div`
     padding: ${(props: any) => props.padding || getPadding(props.size)};
     position: relative;
     transition: all 100ms ease-out;
+    min-width: ${(props: any) => props.minWidth || 'auto'};
     width: ${(props: any) => props.width || '100%'};
     outline: none;
     &:not(.disabled) {
       cursor: pointer;
-    }
-    &.disabled {
-      pointer-events: none;
     }
     &.fullWidth {
       width: 100%;
@@ -215,6 +213,12 @@ const Container: any = styled.div`
       ${(props: any) => buttonTheme(props, colors.clRedError, 'white')}
     }
   }
+  button.disabled {
+    cursor: not-allowed;
+  }
+  a.disabled {
+    pointer-events: none;
+  }
 `;
 
 const SpinnerWrapper = styled.div`
@@ -267,6 +271,7 @@ type Props = {
   borderHoverColor?: string;
   borderThickness?: string;
   theme?: object | undefined;
+  minWidth?: string;
   width?: string;
   type?: string;
 };
@@ -279,6 +284,9 @@ class Button extends PureComponent<Props, State> {
     if (this.props.onClick && !this.props.disabled && !this.props.processing) {
       event.preventDefault();
       this.props.onClick(event);
+    } else if (this.props.onClick && (this.props.disabled || this.props.processing)) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 
@@ -310,7 +318,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -363,6 +371,7 @@ class Button extends PureComponent<Props, State> {
         borderColor={borderColor}
         borderHoverColor={borderHoverColor}
         borderThickness={borderThickness}
+        minWidth={minWidth}
       >
         {linkTo ? (
           (typeof (linkTo === 'string') && (linkTo as string).startsWith('http')) ? (

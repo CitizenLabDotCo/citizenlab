@@ -791,13 +791,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const projectId = idea.data.relationships.project.data.id;
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const ideaUrl = location.href;
+      const auth = this.state.authUser;
+      const utmParams = auth ? {
+        source: 'share_idea',
+        campaign: 'share_content',
+        content: auth.data.id
+      } : {
+        source: 'share_idea',
+        campaign: 'share_content'
+      };
       const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
       const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
       const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
       const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
-
       let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextId: string | null = null;
+      let basketId: string | null = null;
 
       if (pbProject) {
         participationContextType = 'Project';
@@ -805,15 +815,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         participationContextType = 'Phase';
       }
 
-      let participationContextId: string | null = null;
-
       if (pbProject) {
         participationContextId = pbProject.data.id;
       } else if (pbPhase) {
         participationContextId = pbPhase.data.id;
       }
-
-      let basketId: string | null = null;
 
       if (participationContextType === 'Project') {
         basketId = (!isNilOrError(pbProject) ? get(pbProject.data.relationships.user_basket.data, 'id', null) : null);
@@ -821,16 +827,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         basketId = (!isNilOrError(pbPhase) ? get(pbPhase.data.relationships.user_basket.data, 'id', null) : null);
       }
 
-      const auth = this.state.authUser;
-      const utmParams = auth
-        ? {
-          source: 'share_idea',
-          campaign: 'share_content',
-          content: auth.data.id
-        } : {
-          source: 'share_idea',
-          campaign: 'share_content'
-        };
+      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)) && participationContextId && participationContextType);
 
       content = (
         <>
@@ -875,7 +873,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </StatusContainerMobile>
                 }
 
-                {!inModal &&
+                {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
                       ideaId={idea.data.id}
@@ -971,7 +969,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               <RightColumnDesktop>
                 <MetaContent>
 
-                  {(!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast) &&
+                  {showVoteControl &&
                     <>
                       <VoteLabel>
                         <FormattedMessage {...messages.voteOnThisIdea} />
@@ -985,7 +983,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     </>
                   }
 
-                  {pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)) && participationContextId && participationContextType &&
+                  {showBudgetControl && participationContextId && participationContextType &&
                     <AssignBudgetWrapper
                       ideaId={idea.data.id}
                       basketId={basketId}
