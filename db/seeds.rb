@@ -170,6 +170,11 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       }
+      ,
+      participatory_budgeting: {
+        enabled: true,
+        allowed: true
+      }
     }
   })
 
