@@ -97,7 +97,7 @@ en:
   events:
     council_meeting_title: Council Meeting
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives who gained 100 votes in less than 3 months, will be presented.</p><p>The council will then shed light on their perspective on each idea.</p>
+      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
   custom_fields:
     gender: Gender
     birthyear: Year of birth
