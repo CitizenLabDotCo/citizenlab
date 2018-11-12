@@ -8,6 +8,7 @@ import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import Checkbox from 'components/UI/Checkbox';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -142,20 +143,22 @@ export default class IdeaTable extends React.Component<Props, State> {
                 <FormattedMessage {...messages.down} />
               </SortableTableHeader>
             </Table.HeaderCell>
-            <Table.HeaderCell width={1}>
-              <SortableTableHeader
-                direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
-                onToggle={this.handleSortClick('baskets_count')}
-              >
-                <FormattedMessage {...messages.participatoryBudgettingPicks} />
-                &nbsp;
-                <Popup
-                  basic
-                  trigger={<Icon name="info circle" />}
-                  content={<FormattedMessage {...messages.basketsCountTooltip} />}
-                />
-              </SortableTableHeader>
-            </Table.HeaderCell>
+            <FeatureFlag name="participatory_budgeting">
+              <Table.HeaderCell width={1}>
+                <SortableTableHeader
+                  direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
+                  onToggle={this.handleSortClick('baskets_count')}
+                >
+                  <FormattedMessage {...messages.participatoryBudgettingPicks} />
+                  &nbsp;
+                  <Popup
+                    basic
+                    trigger={<Icon name="info circle" />}
+                    content={<FormattedMessage {...messages.basketsCountTooltip} />}
+                  />
+                </SortableTableHeader>
+              </Table.HeaderCell>
+            </FeatureFlag>
           </Table.Row>
         </Table.Header>
         <Table.Body>
