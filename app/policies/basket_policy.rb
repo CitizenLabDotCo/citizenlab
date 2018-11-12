@@ -22,19 +22,6 @@ class BasketPolicy < ApplicationPolicy
   end
 
 
-  def create?
-    pcs = ParticipationContextService.new 
-    record.draft? ||
-    user&.active_admin_or_moderator?(record.project_id) ||
-    (
-      user&.active? &&
-      record.author_id == user.id &&
-      !pcs.posting_disabled_reason(record.project, user) &&
-      ProjectPolicy.new(user, record.project).show?
-    )
-  end
-
-
   private
 
   def check_budgeting_allowed basket, user
