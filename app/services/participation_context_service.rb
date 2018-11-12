@@ -21,11 +21,18 @@ class ParticipationContextService
     not_in_active_context: 'not_in_active_context'
   }
 
+  BUDGETING_DISABLED_REASONS = {
+    project_inactive: 'project_inactive',
+    not_permitted: 'not_permitted',
+    not_in_active_context: 'not_in_active_context'
+  }
+
   TAKING_SURVEY_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
     not_survey: 'not_survey'
   }
+
 
   def initialize
     @memoized_votes_in_context = Hash.new{|hash,key| hash[key] = Hash.new}
@@ -143,6 +150,25 @@ class ParticipationContextService
     end
   end
 
+  def budgeting_disabled_reason idea, user
+    context = get_participation_context idea.project
+    if context && !in_current_context? idea, context
+      BUDGETING_DISABLED_REASONS[:not_in_active_context]
+    else
+      budgeting_disabled_reason_in_context context, user
+    end
+  end
+
+  def budgeting_disabled_reason_in_context context, user
+    if !context
+      BUDGETING_DISABLED_REASONS[:project_inactive]
+    elsif !context_permission(context, 'budgeting')&.granted_to?(user)
+      BUDGETING_DISABLED_REASONS[:not_permitted]
+    else
+      nil
+    end
+  end
+
   def future_posting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
@@ -161,6 +187,13 @@ class ParticipationContextService
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
       phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
+    end
+  end
+
+  def future_budgeting_enabled_phase project, user, time=Time.now
+    return nil if !project.timeline?
+    @timeline_service.future_phases(project, time).find do |phase|
+      context_permission(phase, 'budgeting')&.granted_to?(user)
     end
   end
 
