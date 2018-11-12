@@ -61,6 +61,11 @@ export interface IIdeaData {
           enabled: boolean,
           future_enabled: string | null,
           disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | null,
+        },
+        budgeting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'not_in_active_context' | 'not_permitted' | null,
         }
       }
     }
