@@ -369,12 +369,12 @@ export default class VoteControl extends PureComponent<Props, State> {
 
   onClickVote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
-    const { ideaId } = this.props;
+    const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
-      this.props.unauthenticatedVoteClick && this.props.unauthenticatedVoteClick();
+      unauthenticatedVoteClick && unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-        this.props.disabledVoteClick && this.props.disabledVoteClick();
+      disabledVoteClick && disabledVoteClick();
     } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);

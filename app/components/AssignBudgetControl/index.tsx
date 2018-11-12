@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -11,11 +11,16 @@ import { addBasket, updateBasket } from 'services/baskets';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // utils
 import streams from 'utils/streams';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,12 +30,29 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
-// typings
-import { ParticipationMethod } from 'services/participationContexts';
-
-const Container = styled.div`
+const IdeaCardContainer = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const IdeaPageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const Budget = styled.div`
+  width: 100%;
+  height: 95px;
+  color: ${colors.adminSecondaryTextColor};
+  font-size: ${fontSizes.large}px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  background: ${colors.background};
+  border: solid 1px ${colors.separation};
 `;
 
 const SeeIdeaButton = styled.div`
@@ -46,19 +68,24 @@ const SeeIdeaButton = styled.div`
 `;
 
 interface InputProps {
+  view: 'ideaCard' | 'ideaPage';
   ideaId: string;
   basketId: string | null | undefined;
-  participationMethod: ParticipationMethod;
   participationContextId: string;
   participationContextType: 'Phase' | 'Project';
-  openIdea: (event: FormEvent<any>) => void;
+  openIdea?: (event: FormEvent<any>) => void;
+  unauthenticatedVoteClick?: () => void;
   className?: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
   idea: GetIdeaChildProps;
   basket: GetBasketChildProps;
+  project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -75,15 +102,34 @@ class AssignBudgetControl extends PureComponent<Props, State> {
     };
   }
 
+  isDisabled = () => {
+    const { ideaId, participationContextType, basket, project, phase } = this.props;
+    const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
+    const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
+    const isInBasket = includes(basketIdeaIds, ideaId);
+
+    if (budgetExceedsLimit && !isInBasket) {
+      return true;
+    } else if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
+      return false;
+    } else if (participationContextType === 'Project' && !isNilOrError(project) && project.attributes.publication_status !== 'archived') {
+      return false;
+    }
+
+    return true;
+  }
+
   assignBudget = async (event: FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    const { ideaId, idea, authUser, basket, participationMethod, participationContextId, participationContextType } = this.props;
+    const { ideaId, idea, authUser, basket, participationContextId, participationContextType, unauthenticatedVoteClick } = this.props;
     const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
     const isInBasket = includes(basketIdeaIds, ideaId);
 
-    if (participationMethod === 'budgeting' && !isNilOrError(idea) && !isNilOrError(authUser)) {
+    if (!authUser) {
+      unauthenticatedVoteClick && unauthenticatedVoteClick();
+    } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
       this.setState({ processing: true });
 
       if (!isNilOrError(basket)) {
@@ -131,37 +177,67 @@ class AssignBudgetControl extends PureComponent<Props, State> {
   }
 
   onCardClick = (event: FormEvent<any>) => {
-    this.props.openIdea(event);
+    this.props.openIdea && this.props.openIdea(event);
   }
 
   render () {
     const { processing } = this.state;
-    const { ideaId, authUser, idea, basket, className } = this.props;
+    const { view, ideaId, authUser, locale, tenant, idea, basket, className } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(idea) && !isUndefined(basket)) {
-      const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
+    if (!isUndefined(authUser) &&
+        !isNilOrError(locale) &&
+        !isNilOrError(tenant) &&
+        !isNilOrError(idea) &&
+        !isUndefined(basket) &&
+        idea.attributes.budget
+    ) {
       const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
       const isInBasket = includes(basketIdeaIds, ideaId);
+      const disabled = this.isDisabled();
+      const formattedBudget = getFormattedBudget(locale, idea.attributes.budget, tenant.attributes.settings.core.currency);
 
-      return (
-        <Container className={className}>
-          <Button
-            onClick={this.assignBudget}
-            processing={processing}
-            bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
-            disabled={budgetExceedsLimit && !isInBasket}
-          >
-            {!isInBasket ? (
-              <FormattedMessage {...messages.assign} />
-            ) : (
-              <FormattedMessage {...messages.undo} />
-            )}
-          </Button>
-          <SeeIdeaButton onClick={this.onCardClick}>
-            <FormattedMessage {...messages.seeIdea} />
-          </SeeIdeaButton>
-        </Container>
-      );
+      if (view === 'ideaCard') {
+        return (
+          <IdeaCardContainer className={className}>
+            <Button
+              onClick={this.assignBudget}
+              processing={processing}
+              bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
+              disabled={disabled}
+            >
+              {!isInBasket ? (
+                <FormattedMessage {...messages.assign} />
+              ) : (
+                <FormattedMessage {...messages.undo} />
+              )}
+            </Button>
+            <SeeIdeaButton onClick={this.onCardClick}>
+              <FormattedMessage {...messages.seeIdea} />
+            </SeeIdeaButton>
+          </IdeaCardContainer>
+        );
+      } else if (view === 'ideaPage') {
+        return (
+          <IdeaPageContainer className={className}>
+            <Budget>
+              <span>{formattedBudget}</span>
+            </Budget>
+            <Button
+              onClick={this.assignBudget}
+              processing={processing}
+              bgColor={isInBasket ? colors.adminSecondaryTextColor : undefined}
+              disabled={disabled}
+              fullWidth={true}
+            >
+              {!isInBasket ? (
+                <FormattedMessage {...messages.assign} />
+              ) : (
+                <FormattedMessage {...messages.undo} />
+              )}
+            </Button>
+          </IdeaPageContainer>
+        );
+      }
     }
 
     return null;
@@ -170,8 +246,12 @@ class AssignBudgetControl extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>
+  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (

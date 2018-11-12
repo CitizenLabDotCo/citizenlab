@@ -6,19 +6,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'postingDisabled' | 'projectInactive' | 'notActivePhase' | 'futureEnabled';
 
-type ButtonStateResponse  = {
-  show: boolean;
-  enabled: boolean;
-  disabledReason?: DisabledReasons | null;
-};
-
 interface PostingButtonStateArg {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
   signedIn: boolean;
 }
 
-const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null) : DisabledReasons | null => {
+const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null) => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';

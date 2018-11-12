@@ -12,6 +12,7 @@ import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
+// import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
 
@@ -282,6 +283,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
+      const ideaBudget = idea.attributes.budget;
+      const tenantCurrency = tenant.attributes.settings.core.currency;
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const className = `${this.props['className']}
@@ -291,8 +294,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
         ${idea.attributes.comments_count > 0 ? 'e2e-has-comments' : ''}
         ${votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'}
       `;
-
-      console.log(idea);
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
@@ -305,11 +306,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </IdeaImageContainer>
             }
 
-            {participationMethod === 'budgeting' && idea.attributes.budget &&
-              <IdeaBudget>{getFormattedBudget(locale, idea.attributes.budget, tenant.attributes.settings.core.currency)}</IdeaBudget>
+            {participationMethod === 'budgeting' && ideaBudget &&
+              <IdeaBudget>{getFormattedBudget(locale, ideaBudget, tenantCurrency)}</IdeaBudget>
             }
 
-            <IdeaContent className={(ideaImageUrl === null && participationMethod === 'budgeting' && idea.attributes.budget) ? 'extraTopPadding' : ''}>
+            <IdeaContent className={(ideaImageUrl === null && participationMethod === 'budgeting' && ideaBudget) ? 'extraTopPadding' : ''}>
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
@@ -324,7 +325,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                {participationMethod !== 'budgeting' && !idea.attributes.budget &&
+                {participationMethod !== 'budgeting' &&
                   <VoteControl
                     ideaId={idea.id}
                     unauthenticatedVoteClick={this.unauthenticatedVoteClick}
@@ -333,17 +334,15 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   />
                 }
 
-                {participationMethod === 'budgeting' &&
-                 idea.attributes.budget &&
-                 participationContextId &&
-                 participationContextType &&
+                {participationMethod === 'budgeting' && ideaBudget && participationContextId && participationContextType &&
                   <AssignBudgetControl
+                    view="ideaCard"
                     ideaId={idea.id}
                     basketId={basketId}
-                    participationMethod={participationMethod}
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     openIdea={this.onCardClick}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                   />
                 }
 
@@ -364,7 +363,9 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </BottomBounceUp>
             }
 
-            {(showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId) &&
+            {showVotingDisabled === 'votingDisabled' &&
+             votingDescriptor &&
+             projectId &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled
