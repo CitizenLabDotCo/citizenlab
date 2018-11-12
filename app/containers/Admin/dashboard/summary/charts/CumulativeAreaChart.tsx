@@ -1,34 +1,18 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isNumber } from 'lodash-es';
+import { map, isNumber, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
-import { fontSizes } from 'utils/styleUtils';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
-
-const NoDataContainer = styled.div`
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // Needed to vertically center the text
-  // Reason being: we have a margin-bottom on the header,
-  // Which we want to keep when there's an actual graph
-  margin-top: -20px;
-`;
-
-const NoDataMessage = styled.span`
-  font-size: ${fontSizes.base}px;
-`;
 
 type State = {
   serie: {
@@ -184,7 +168,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { formatMessage } = this.props.intl;
     const { graphTitleMessageKey, graphUnit, className } = this.props;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const noData = serie && serie.every(item => isEmpty(item));
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
     const firstSerieValue = serie && serie[0].value;
     const lastSerieValue = serie && serie[serie.length - 1].value;
@@ -211,7 +195,11 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {!isEmpty ?
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
                 <Area
@@ -241,10 +229,6 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                 />
               </AreaChart>
             </ResponsiveContainer>
-            :
-            <NoDataContainer>
-              <NoDataMessage>This data is not available for the current selection.</NoDataMessage>
-            </NoDataContainer>
           }
         </GraphCardInner>
       </GraphCard>
