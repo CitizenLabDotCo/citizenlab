@@ -62,6 +62,18 @@ export const Column = styled.div`
   }
 `;
 
+export const NoDataContainer = styled.div`
+  font-size: ${fontSizes.base}px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // Needed to vertically center the text
+  // Reason being: we have a margin-bottom on the header,
+  // Which we want to keep when there's an actual graph
+  margin-top: -20px;
+`;
+
 export const GraphCardInner = styled.div`
   width: 100%;
   height: 100%;

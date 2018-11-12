@@ -115,6 +115,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.resourceByProjectDifference',
     defaultMessage: '{resourceName} difference with {project}',
   },
+  noData: {
+    id: 'app.containers.AdminPage.DashboardPage.noData',
+    defaultMessage: 'No data available with the current filters.',
+  },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
