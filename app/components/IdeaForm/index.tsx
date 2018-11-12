@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription, combineLatest, of, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
 import { has } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
@@ -26,7 +26,8 @@ import FeatureFlag from 'components/FeatureFlag';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
-import { IProjects, IProjectData } from 'services/projects';
+import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
+import { phasesStream, IPhases, IPhase, IPhaseData } from 'services/phases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -101,15 +102,17 @@ interface Props {
 
 interface State {
   topics: IOption[] | null;
+  pbContext: IProjectData | IPhaseData | null | undefined;
   projects: IOption[] | null;
   title: string;
+  titleError: string | JSX.Element | null;
   description: string;
+  descriptionError: string | JSX.Element | null;
   selectedTopics: IOption[] | null;
   budget: number | null;
+  budgetError: string | JSX.Element | null;
   position: string;
   imageFile: UploadFile[];
-  titleError: string | JSX.Element | null;
-  descriptionError: string | JSX.Element | null;
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
 }
@@ -123,15 +126,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     super(props as any);
     this.state = {
       topics: null,
+      pbContext: null,
       projects: null,
       title: '',
+      titleError: null,
       description: '',
+      descriptionError: null,
       selectedTopics: null,
       position: '',
       imageFile: [],
-      titleError: null,
-      descriptionError: null,
       budget: null,
+      budgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: []
     };
@@ -141,11 +146,30 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   componentDidMount() {
+    const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(
       map(currentTenant => currentTenant.data.attributes.settings.core.locales)
     );
     const topics$ = topicsStream().observable;
+    const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
+    const pbContext$: Observable<IProjectData | IPhaseData | null | undefined> = project$.pipe(
+      switchMap((project) => {
+        if (project) {
+          if (project.data.attributes.participation_method === 'budgeting') {
+            return of(project.data);
+          }
+
+          if (project.data.attributes.process_type === 'timeline') {
+            return phasesStream(project.data.id).observable.pipe(
+              map(phases => phases.data.find(phase => phase.attributes.participation_method === 'budgeting'))
+            );
+          }
+        }
+
+        return of(null)as Observable<any>;
+      })
+    );
 
     this.updateState();
 
@@ -153,9 +177,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       combineLatest(
         locale$,
         currentTenantLocales$,
-        topics$
-      ).subscribe(([locale, currentTenantLocales, topics]) => {
+        topics$,
+        pbContext$
+      ).subscribe(([locale, currentTenantLocales, topics, pbContext]) => {
+        console.log(pbContext);
         this.setState({
+          pbContext,
           topics: this.getOptions(topics, locale, currentTenantLocales)
         });
       }),
@@ -251,12 +278,25 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.descriptionElement = element;
   }
 
-  validate = (title: string | null, description: string) => {
+  validate = (title: string | null, description: string | null, budget: number | null) => {
+    const { pbContext } = this.state;
     const titleError = (!title ? <FormattedMessage {...messages.titleEmptyError} /> : null);
     const hasDescriptionError = (!description || description === '');
     const descriptionError = (hasDescriptionError ? this.props.intl.formatMessage(messages.descriptionEmptyError) : null);
+    const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
+    let budgetError: JSX.Element | null = null;
 
-    this.setState({ titleError, descriptionError });
+    if (pbContext) {
+      if (budget === null) {
+        budgetError = <FormattedMessage {...messages.noBudgetError} />;
+      }  else if (budget === 0) {
+        budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
+      } else if (pbMaxBudget && budget && budget > pbMaxBudget) {
+        budgetError = <FormattedMessage {...messages.budgetIsTooBig} />;
+      }
+    }
+
+    this.setState({ titleError, descriptionError, budgetError });
 
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
@@ -266,7 +306,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       setTimeout(() => this.descriptionElement.editor.root.focus(), 300);
     }
 
-    return (!titleError && !descriptionError);
+    if (!pbContext) {
+      return (!titleError && !descriptionError);
+    }
+
+    return (!titleError && !descriptionError && !budgetError);
   }
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
@@ -290,7 +334,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   handleOnSubmit = () => {
     const { title, description, selectedTopics, position, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
-    const formIsValid = this.validate(title, description);
+    const formIsValid = this.validate(title, description, budget);
 
     if (formIsValid) {
       const output: IIdeaFormOutput = {
