@@ -4,8 +4,9 @@ import { map, isNumber, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { AreaChart, CartesianGrid, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
+import { rgba } from 'polished';
 
 // components
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
@@ -202,12 +203,13 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
             :
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
+                <CartesianGrid strokeDasharray="5 5" />
                 <Area
                   type="monotone"
                   dataKey="value"
                   name={formatMessage(messages[`numberOf${graphUnit}`])}
                   dot={false}
-                  fill={chartFill}
+                  fill={rgba(chartFill, .25)}
                   fillOpacity={1}
                   stroke={chartStroke}
                 />
