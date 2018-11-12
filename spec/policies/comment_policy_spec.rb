@@ -91,7 +91,7 @@ describe CommentPolicy do
     end
   end
 
-  context "for a user on a comment on an idea in a private groups project where she's no member of a manual group with access" do
+  context "for a user on a comment on an idea in a private groups project where she's not member of a manual group with access" do
     let!(:user) { create(:user) }
     let!(:project) { create(:private_groups_continuous_project, with_permissions: true)}
     let!(:idea) { create(:idea, project: project) }
