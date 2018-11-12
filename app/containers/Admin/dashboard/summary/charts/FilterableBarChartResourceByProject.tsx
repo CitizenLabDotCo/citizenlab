@@ -2,13 +2,12 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-import { map, sortBy } from 'lodash-es';
+import { map, sortBy, isEmpty } from 'lodash-es';
 
 // components
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { GraphCard, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
+import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
 import Select from 'components/UI/Select';
-import EmptyGraph from '../../components/EmptyGraph';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -216,7 +215,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
       },
       currentProjectFilter
     } = this.props;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const noData = serie && serie.every(item => isEmpty(item));
     const unitName = currentProjectFilter && serie
       ? formatMessage(messages.resourceByProjectDifference, {
         resourceName: formatMessage(messages[selectedResource]),
@@ -227,48 +226,48 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
     return (
       <GraphCard className={className}>
         <GraphCardInner>
-          {!isEmpty ?
-            <>
-              <GraphCardHeaderWithFilter>
-                <SSelect
-                  id="projectFilter"
-                  onChange={onResourceByProjectChange}
-                  value={currentResourceByProject}
-                  options={resourceOptions}
-                  clearable={false}
-                  borderColor="#EAEAEA"
+          <GraphCardHeaderWithFilter>
+            <SSelect
+              id="projectFilter"
+              onChange={onResourceByProjectChange}
+              value={currentResourceByProject}
+              options={resourceOptions}
+              clearable={false}
+              borderColor="#EAEAEA"
+            />
+            <FormattedMessage {...messages.byProjectTitle} />
+          </GraphCardHeaderWithFilter>
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
+            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+              <BarChart data={serie} layout="vertical">
+                <Bar
+                  dataKey="value"
+                  name={unitName}
+                  fill={theme.chartFill}
+                  label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                  barSize={20}
                 />
-                <FormattedMessage {...messages.byProjectTitle} />
-              </GraphCardHeaderWithFilter>
-              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-                <BarChart data={serie} layout="vertical">
-                  <Bar
-                    dataKey="value"
-                    name={unitName}
-                    fill={theme.chartFill}
-                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-                    barSize={20}
-                  />
-                  <YAxis
-                    dataKey="name"
-                    type="category"
-                    width={150}
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    tickLine={false}
-                  />
-                  <XAxis
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    type="number"
-                    tick={{ transform: 'translate(0, 7)' }}
-                  />
-                  <Tooltip isAnimationActive={false} />
-                </BarChart>
-              </ResponsiveContainer>
-            </>
-          :
-            <EmptyGraph unit={selectedResource} />
+                <YAxis
+                  dataKey="name"
+                  type="category"
+                  width={150}
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  tickLine={false}
+                />
+                <XAxis
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  type="number"
+                  tick={{ transform: 'translate(0, 7)' }}
+                />
+                <Tooltip isAnimationActive={false} />
+              </BarChart>
+            </ResponsiveContainer>
           }
         </GraphCardInner>
       </GraphCard>
