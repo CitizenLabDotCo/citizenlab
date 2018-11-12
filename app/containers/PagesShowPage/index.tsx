@@ -69,8 +69,8 @@ const AttachmentsContainer = styled.div`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const PageContent = styled.div`
@@ -130,6 +130,7 @@ const PageDescription = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};

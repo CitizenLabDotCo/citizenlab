@@ -1,3 +1,5 @@
+import { Locale } from 'typings';
+
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
 }
@@ -18,4 +20,15 @@ export function returnFileSize(number) {
     return `${(number / 1048576).toFixed(1)} MB`;
   }
   return;
+}
+
+export function getFormattedBudget(locale: Locale, budget: number, currency: string) {
+  return new Intl.NumberFormat(locale, {
+    currency,
+    localeMatcher: 'best fit',
+    style: 'currency',
+    currencyDisplay: 'symbol',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(budget);
 }

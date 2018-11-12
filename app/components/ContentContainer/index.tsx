@@ -7,8 +7,8 @@ const Outer = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const Inner = styled.div`

@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-// router
-import Link from 'utils/cl-router/Link';
-
 // components
-import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
+import ProjectNavbar from './ProjectNavbar';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -29,57 +26,28 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMinTablet`
-    padding: 0;
+    height: 200px;
   `}
-
-  &.timeline {
-    ${media.smallerThanMinTablet`
-      height: 400px;
-      padding: 0;
-    `}
-  }
 `;
 
 const HeaderContent = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: space-between;
-
-  &.timeline {
-    margin-top: -40px;
-  }
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: -40px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
-  `}
-`;
-
-const HeaderContentLeft = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin-right: 30px;
-  max-width: 500px;
-`;
-
-const HeaderContentRight = styled.div`
-  ${media.biggerThanMinTablet`
-    display: flex;
-    align-items: center;
-    justify-content: right;
-  `}
-
-  ${media.smallerThanMinTablet`
-    margin-top: 20px;
+    margin-top: 0px;
   `}
 `;
 
@@ -94,8 +62,7 @@ const ArchivedLabel = styled.span`
   border-radius: 5px;
   padding: 6px 12px;
   background: rgba(255, 255, 255, .45);
-  /* margin-top: -30px; */
-  margin-bottom: 5px;
+  margin-top: 5px;
 `;
 
 const HeaderTitle = styled.div`
@@ -103,84 +70,15 @@ const HeaderTitle = styled.div`
   font-size: 42px;
   line-height: 52px;
   font-weight: 500;
-  text-align: left;
+  text-align: center;
   margin: 0;
   padding: 0;
-  width: 100%;
 
   ${media.smallerThanMinTablet`
     font-weight: 600;
     font-size: ${fontSizes.xxxl}px;
     line-height: 36px;
   `}
-`;
-
-const HeaderButtons = styled.div`
-  min-width: 220px;
-`;
-
-const HeaderButtonIconWrapper = styled.div`
-  width: 22px;
-  height: 17px;
-  margin-right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const HeaderButtonIcon = styled(Icon)`
-  fill: rgba(255, 255, 255, 0.6);
-  transition: fill 100ms ease-out;
-`;
-
-const HeaderButtonText = styled.div`
-  color: rgba(255, 255, 255, 0.6);
-  font-size: ${fontSizes.medium}px;
-  font-weight: 400;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 100ms ease-out;
-`;
-
-const HeaderButton = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 5px;
-  padding: 14px 22px;
-  margin-top: 7px;
-  margin-bottom: 7px;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.6);
-  border: solid 1px rgba(255, 255, 255, 0.2);
-  transition: all 100ms ease-out;
-
-  &.active {
-    background: #fff;
-    border-color: #fff;
-
-    ${HeaderButtonIcon} {
-      fill: #333;
-    }
-
-    ${HeaderButtonText} {
-      color: #333;
-    }
-  }
-
-  &:not(.active):hover {
-    text-decoration: none;
-    background: #000;
-    border-color: #fff;
-
-    ${HeaderButtonIcon} {
-      fill: #fff;
-    }
-
-    ${HeaderButtonText} {
-      color: #fff;
-    }
-  }
 `;
 
 const HeaderOverlay = styled.div`
@@ -207,6 +105,7 @@ const HeaderImage: any = styled.div`
 
 interface InputProps {
   projectSlug: string;
+  phaseId?: string | null;
 }
 
 interface DataProps {
@@ -218,109 +117,35 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectsShowPage extends React.PureComponent<Props, State> {
+class ProjectsShowPage extends PureComponent<Props, State> {
   render() {
-    const { project, events } = this.props;
+    const { projectSlug, phaseId, project } = this.props;
 
     if (!isNilOrError(project)) {
-      const className = this.props['className'];
-      const projectSlug = project.attributes.slug;
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
       const projectPublicationStatus = project.attributes.publication_status;
-      const hasEvents = (events && events.length > 0);
 
       return (
-        <Container className={`${className ? className : ''} ${projectType}`}>
-          <HeaderImage src={projectHeaderImageLarge} />
-          <HeaderOverlay />
-          <ContentContainer>
-            <HeaderContent className={projectType}>
-              <HeaderContentLeft>
+        <>
+          <ProjectNavbar projectSlug={projectSlug} phaseId={phaseId} />
+          <Container className={projectType}>
+            <HeaderImage src={projectHeaderImageLarge} />
+            <HeaderOverlay />
+            <ContentContainer>
+              <HeaderContent className={projectType}>
+                <HeaderTitle>
+                  <T value={project.attributes.title_multiloc} />
+                </HeaderTitle>
                 {projectPublicationStatus === 'archived' &&
                   <ArchivedLabel>
                     <FormattedMessage {...messages.archived} />
                   </ArchivedLabel>
                 }
-                <HeaderTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </HeaderTitle>
-              </HeaderContentLeft>
-
-              <HeaderContentRight>
-                <HeaderButtons>
-                  {project && project.attributes.process_type === 'timeline' &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/process`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="timeline" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navProcess} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  <HeaderButton
-                    to={`/projects/${projectSlug}/info`}
-                    activeClassName="active"
-                  >
-                    <HeaderButtonIconWrapper>
-                      <HeaderButtonIcon name="info2" />
-                    </HeaderButtonIconWrapper>
-                    <HeaderButtonText>
-                      <FormattedMessage {...messages.navInformation} />
-                    </HeaderButtonText>
-                  </HeaderButton>
-
-                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'ideation' &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/ideas`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="idea" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navIdeas} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  {project && project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'survey' &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/survey`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="survey" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navSurvey} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-
-                  {hasEvents &&
-                    <HeaderButton
-                      to={`/projects/${projectSlug}/events`}
-                      activeClassName="active"
-                    >
-                      <HeaderButtonIconWrapper>
-                        <HeaderButtonIcon name="calendar" />
-                      </HeaderButtonIconWrapper>
-                      <HeaderButtonText>
-                        <FormattedMessage {...messages.navEvents} />
-                      </HeaderButtonText>
-                    </HeaderButton>
-                  }
-                </HeaderButtons>
-              </HeaderContentRight>
-            </HeaderContent>
-          </ContentContainer>
-        </Container>
+              </HeaderContent>
+            </ContentContainer>
+          </Container>
+        </>
       );
     }
 

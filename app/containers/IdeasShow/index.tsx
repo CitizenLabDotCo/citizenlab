@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { has, isString, get, sortBy, last } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,12 +22,16 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
+import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
+import AssignBudgetWrapper from './AssignBudgetWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
-import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // services
 import { ideaByIdStream, IIdea } from 'services/ideas';
@@ -36,6 +40,7 @@ import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, IComments } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
+import { phaseStream, IPhase } from 'services/phases';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
@@ -125,8 +130,8 @@ const IdeaContainer = styled.div`
   padding: 0;
   padding-top: 60px;
   padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -411,6 +416,7 @@ const IdeaBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -583,6 +589,7 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
+  phases: IPhase[] | null;
   opened: boolean;
   loaded: boolean;
   showMap: boolean;
@@ -604,6 +611,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImage: null,
       ideaComments: null,
       project: null,
+      phases: null,
       opened: false,
       loaded: false,
       showMap: false,
@@ -645,6 +653,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
+          let phases$: Observable<IPhase[] | null> = of(null);
+
+          if (idea.data.attributes.budget && idea.data.relationships.phases && idea.data.relationships.phases.data.length > 0) {
+            phases$ = combineLatest(
+              idea.data.relationships.phases.data.map(phase => phaseStream(phase.id).observable)
+            );
+          }
 
           return combineLatest(
             authUser$,
@@ -652,12 +667,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             ideaAuthor$,
             ideaStatus$,
             project$,
+            phases$
           ).pipe(
-            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }))
+            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
-      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
+      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
+        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, phases, loaded: true });
       }),
 
       ideaId$.pipe(
@@ -758,7 +774,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   render() {
     const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions } = this.state;
     let content: JSX.Element | null = null;
 
     if (idea) {
@@ -775,17 +791,44 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const projectId = idea.data.relationships.project.data.id;
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const ideaUrl = location.href;
-
       const auth = this.state.authUser;
-      const utmParams = auth
-        ? {
-          source: 'share_idea',
-          campaign: 'share_content',
-          content: auth.data.id
-        } : {
-          source: 'share_idea',
-          campaign: 'share_content'
-        };
+      const utmParams = auth ? {
+        source: 'share_idea',
+        campaign: 'share_content',
+        content: auth.data.id
+      } : {
+        source: 'share_idea',
+        campaign: 'share_content'
+      };
+      const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
+      const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
+      let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextId: string | null = null;
+      let basketId: string | null = null;
+
+      if (pbProject) {
+        participationContextType = 'Project';
+      } else if (pbPhase) {
+        participationContextType = 'Phase';
+      }
+
+      if (pbProject) {
+        participationContextId = pbProject.data.id;
+      } else if (pbPhase) {
+        participationContextId = pbPhase.data.id;
+      }
+
+      if (participationContextType === 'Project') {
+        basketId = (!isNilOrError(pbProject) ? get(pbProject.data.relationships.user_basket.data, 'id', null) : null);
+      } else {
+        basketId = (!isNilOrError(pbPhase) ? get(pbPhase.data.relationships.user_basket.data, 'id', null) : null);
+      }
+
+      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)) && participationContextId && participationContextType);
 
       content = (
         <>
@@ -830,7 +873,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </StatusContainerMobile>
                 }
 
-                {!inModal &&
+                {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
                       ideaId={idea.data.id}
@@ -925,15 +968,29 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               <RightColumnDesktop>
                 <MetaContent>
-                  <VoteLabel>
-                    <FormattedMessage {...messages.voteOnThisIdea} />
-                  </VoteLabel>
 
-                  <VoteWrapper
-                    ideaId={idea.data.id}
-                    votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
-                    projectId={projectId}
-                  />
+                  {showVoteControl &&
+                    <>
+                      <VoteLabel>
+                        <FormattedMessage {...messages.voteOnThisIdea} />
+                      </VoteLabel>
+
+                      <VoteWrapper
+                        ideaId={idea.data.id}
+                        votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+                        projectId={projectId}
+                      />
+                    </>
+                  }
+
+                  {showBudgetControl && participationContextId && participationContextType &&
+                    <AssignBudgetWrapper
+                      ideaId={idea.data.id}
+                      basketId={basketId}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                    />
+                  }
 
                   {statusId &&
                     <StatusContainer>

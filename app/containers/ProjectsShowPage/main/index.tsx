@@ -11,7 +11,7 @@ import GetProject from 'resources/GetProject';
 
 export default withRouter((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>
-    {project => {
+    {(project) => {
       if (!isNilOrError(project)) {
         const redirectUrl = getProjectUrl(project);
 

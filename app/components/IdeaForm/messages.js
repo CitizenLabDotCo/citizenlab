@@ -61,4 +61,20 @@ export default defineMessages({
     id: 'app.container.IdeaForm.imageDropzonePlaceholder',
     defaultMessage: 'Drop your image here',
   },
+  budgetLabel: {
+    id: 'app.container.IdeaForm.budgetLabel',
+    defaultMessage: 'Budget',
+  },
+  noBudgetError: {
+    id: 'app.container.IdeaForm.noBudgetError',
+    defaultMessage: 'Please provide a budget',
+  },
+  budgetIsZeroError: {
+    id: 'app.container.IdeaForm.budgetIsZeroError',
+    defaultMessage: 'Please provide a budget larger than 0',
+  },
+  budgetIsTooBig: {
+    id: 'app.container.IdeaForm.budgetIsTooBig',
+    defaultMessage: `The provided budget is too big`,
+  },
 });
