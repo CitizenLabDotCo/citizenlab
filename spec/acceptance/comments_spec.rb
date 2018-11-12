@@ -168,7 +168,8 @@ resource "Comments" do
           @idea.save!
         end
 
-        example_request "Commenting should be enabled by default in a budgeting project", document: false do
+        example "Commenting should be enabled by default in a budgeting project", document: false do
+          do_request
           expect(response_status).to eq 201
         end
       end
