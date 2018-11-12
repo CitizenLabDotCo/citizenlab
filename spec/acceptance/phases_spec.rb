@@ -130,7 +130,8 @@ resource "Phases" do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
 
-        example_request "Create a participatory budgeting phase", document: false do
+        example "Create a participatory budgeting phase", document: false do
+          do_request
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
@@ -147,7 +148,8 @@ resource "Phases" do
         let(:participation_method) { 'budgeting' }
         let(:max_budget) { 420000 }
 
-        example_request "[error] Create multiple budgeting phases", document: false do
+        example "[error] Create multiple budgeting phases", document: false do
+          do_request
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
           expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
