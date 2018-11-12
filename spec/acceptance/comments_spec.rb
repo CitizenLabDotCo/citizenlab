@@ -157,9 +157,20 @@ resource "Comments" do
         end
         
         example_request "[error] Create a comment on an idea in an inactive project" do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :base)&.first&.dig(:error)).to eq ParticipationContextService::COMMENTING_DISABLED_REASONS[:project_inactive]
+          expect(response_status).to be >= 400
+        end
+      end
+
+      describe do
+        before do
+          project = create(:continuous_budgeting_project, with_permissions: true)
+          @idea.project = project
+          @idea.save!
+        end
+
+        example "Commenting should be enabled by default in a budgeting project", document: false do
+          do_request
+          expect(response_status).to eq 201
         end
       end
     end

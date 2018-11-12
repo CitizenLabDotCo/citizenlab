@@ -45,6 +45,10 @@ class WebApi::V1::IdeasController < ApplicationController
           @ideas.order_status(:asc)
         when "-status"
           @ideas.order_status(:desc)
+        when "baskets_count"
+          @ideas.order(baskets_count: :asc)
+        when "-baskets_count"
+          @ideas.order(baskets_count: :desc)
         when nil
           @ideas
         else
