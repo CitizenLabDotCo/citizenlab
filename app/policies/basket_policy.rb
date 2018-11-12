@@ -1,9 +1,9 @@
 class BasketPolicy < ApplicationPolicy
   def create?
-    pcs = ParticipationContextService.new 
     (
       user&.active? && 
       (record.user_id == user.id) &&
+      ProjectPolicy.new(user, record.participation_context.project).show? &&
       check_budgeting_allowed(record, user)
     ) || 
     user&.active_admin_or_moderator?(record.participation_context.project.id)
@@ -26,6 +26,6 @@ class BasketPolicy < ApplicationPolicy
 
   def check_budgeting_allowed basket, user
     pcs = ParticipationContextService.new
-    !pcs.budgeting_disabled_reason_in_context basket.participation_context, user
+    !pcs.budgeting_disabled_reason_in_context pcs.get_participation_context(basket.participation_context), user
   end
 end

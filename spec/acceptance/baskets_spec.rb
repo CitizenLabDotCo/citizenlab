@@ -10,8 +10,8 @@ resource "Baskets" do
 
     @user = create(:user)
     @ideas = create_list(:idea, 3)
-    create_list(:basket, 2)
-    @basket = create(:basket, ideas: @ideas, user: @user)
+    create_list(:basket, 2, participation_context: create(:continuous_budgeting_project, with_permissions: true))
+    @basket = create(:basket, ideas: @ideas, user: @user, participation_context: create(:continuous_budgeting_project, with_permissions: true))
   end
 
   get "web_api/v1/baskets/:basket_id" do
@@ -51,7 +51,7 @@ resource "Baskets" do
         header 'Authorization', "Bearer #{token}"
       end
 
-      let(:basket) { build(:basket, user: @user) }
+      let(:basket) { build(:basket, user: @user, participation_context: create(:continuous_budgeting_project, with_permissions: true)) }
       let(:user_id) { basket.user_id }
       let(:participation_context_id) { basket.participation_context_id }
       let(:participation_context_type) { basket.participation_context_type }
@@ -68,13 +68,11 @@ resource "Baskets" do
       example "[error] Create a basket in a survey" do
         do_request(
           basket: {
-            participation_context_id: create(:continuous_survey_project).id, 
+            participation_context_id: create(:continuous_survey_project, with_permissions: true).id, 
             participation_context_type: 'Project'
           }) 
 
-        expect(response_status).to eq 422
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:errors, :participation_context)).to eq [{error: 'is_not_budgeting'}]
+        expect(response_status).to be >= 400
       end
     end
   end
