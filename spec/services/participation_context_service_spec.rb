@@ -395,12 +395,12 @@ describe ParticipationContextService do
         expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
       end
 
-      it "returns nil when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of" do
+      it "returns `not_in_active_context` when the idea is not in the current phase, budgeting is allowed in the current phase and was allowed in the last phase the idea was part of" do
         project = create(:project_with_current_phase, with_permissions: true, phases_config: {
           sequence: "xxcxx"
         }, current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
         idea = create(:idea, project: project, phases: [project.phases[1]])
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to be_nil
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_in_active_context'
       end
 
       it "returns `not_permitted` when the idea is in the current phase and budgeting is not permitted" do
@@ -414,16 +414,18 @@ describe ParticipationContextService do
         expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
       end
 
-      it "returns 'not_permitted' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
+      it "returns 'not_in_active_context' when the idea is not in the current phase, budgeting is permitted but was not permitted in the last phase the idea was part of" do
         project = create(:project_with_current_phase, with_permissions: true, 
           current_phase_attrs: {participation_method: 'budgeting', max_budget: 10000})
         phase = project.phases[1]
         permission = phase.permissions.find_by(action: 'budgeting')
-        permission.update!(permitted_by: 'groups', 
-          group_ids: create_list(:group, 2).map(&:id)
-          )
+        if permission
+          permission.update!(permitted_by: 'groups', 
+            group_ids: create_list(:group, 2).map(&:id)
+            )
+        end
         idea = create(:idea, project: project, phases: [project.phases[0], project.phases[1]])
-        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_permitted'
+        expect(service.budgeting_disabled_reason(idea, create(:user))).to eq 'not_in_active_context'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
