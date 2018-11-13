@@ -27,10 +27,23 @@ import Select from 'components/UI/Select';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
+import { media } from 'utils/styleUtils';
+
 const SSelect = styled(Select)`
   flex: 1;
-  max-width: 50%;
-  margin-right: 10px;
+
+  ${media.smallerThan1280px`
+    width: 100%;
+  `}
+`;
+
+const GraphCardTitle = styled.h3`
+  margin: 0;
+  margin-right: 15px;
+
+  ${media.smallerThan1280px`
+    margin-bottom: 15px;
+  `}
 `;
 
 interface Props {
@@ -217,6 +230,9 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeaderWithFilter>
+            <GraphCardTitle>
+              <FormattedMessage {...messages.participationPerTopic} />
+            </GraphCardTitle>
             <SSelect
               id="topicFilter"
               onChange={onResourceByTopicChange}
@@ -225,7 +241,6 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
               clearable={false}
               borderColor="#EAEAEA"
             />
-            <FormattedMessage {...messages.byTopicTitle} />
           </GraphCardHeaderWithFilter>
           {noData ?
             <NoDataContainer>
