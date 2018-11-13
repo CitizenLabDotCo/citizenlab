@@ -9,7 +9,7 @@ end
 
 def time_series_parameters s
   time_boundary_parameters s
-  s.parameter :interval, "Either day, week, month, year"
+  s.parameter :interval, "Either day, week, month, year", required: true
 end
 
 def group_filter_parameter s
@@ -67,7 +67,18 @@ resource "Stats - Users" do
       topic_filter_parameter self
       parameter :project, "Project ID. Only return users that can access the given project.", required: false
 
-      context "with time filters only" do
+      describe "without time range filters" do
+        let(:interval) { 'day' }
+
+        example "without filters", document: false do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.values.inject(&:+)).to eq 11
+        end
+      end
+
+      describe "with time filters only" do
         let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
         let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
@@ -81,7 +92,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with project filter" do
+      describe "with project filter" do
         before do
           create_list(:admin, 2)
         end
@@ -99,7 +110,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with group filter" do
+      describe "with group filter" do
         before do
           @group1 = create(:group)
           @group2 = create(:group)
@@ -120,7 +131,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with topic filter" do
+      describe "with topic filter" do
         before do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
@@ -156,7 +167,7 @@ resource "Stats - Users" do
       topic_filter_parameter self
       parameter :project, "Project ID. Only return users that can access the given project.", required: false
 
-      context "with time filters only" do
+      describe "with time filters only" do
         let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
         let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
@@ -172,7 +183,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with project filter" do
+      describe "with project filter" do
         before do
           create_list(:admin, 4)
         end
@@ -192,7 +203,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with group filter" do
+      describe "with group filter" do
         before do
           @group1 = create(:group)
           @group2 = create(:group)
@@ -215,7 +226,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with topic filter" do
+      describe "with topic filter" do
         before do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
@@ -252,7 +263,7 @@ resource "Stats - Users" do
       group_filter_parameter self
       parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
-      context "with time filters only" do
+      describe "with time filters only" do
         before do
           travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
             user = create(:user)
@@ -277,7 +288,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with project filter" do
+      describe "with project filter" do
         before do
           @project = create(:project)
           @idea1 = create(:idea, project: @project)
@@ -300,7 +311,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with group filter" do
+      describe "with group filter" do
         before do
           @group1 = create(:group)
           @group2 = create(:group)
@@ -325,7 +336,7 @@ resource "Stats - Users" do
         end
       end
 
-      context "with topic filter" do
+      describe "with topic filter" do
         before do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
