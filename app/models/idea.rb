@@ -116,6 +116,10 @@ class Idea < ApplicationRecord
     upvotes_count - downvotes_count
   end
 
+  def baskets_count
+    baskets.count
+  end
+
   
   private
 
