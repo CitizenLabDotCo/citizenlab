@@ -543,6 +543,17 @@ const VoteControlMobile = styled.div`
   `}
 `;
 
+const AssignBudgetControlMobile = styled.div`
+  margin-top: 15px;
+  margin-bottom: 25px;
+  padding-top: 25px;
+  border-top: solid 1px ${colors.separation};
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -940,6 +951,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 <SeparatorRow />
+
+                {showBudgetControl && participationContextId && participationContextType &&
+                  <AssignBudgetControlMobile>
+                    <AssignBudgetWrapper
+                      ideaId={idea.data.id}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                    />
+                  </AssignBudgetControlMobile>
+                }
 
                 <SharingMobile
                   url={ideaUrl}
