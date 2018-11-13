@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { includes, isUndefined } from 'lodash-es';
+import { includes, isUndefined, get } from 'lodash-es';
 import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 
 // components
@@ -63,14 +63,6 @@ const Budget = styled.div`
 `;
 
 const BudgetBoxAssigned = styled.div`
-  /*
-  position: absolute;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-  bottom: 10px;
-  */
-
   margin-top: 12px;
 `;
 
@@ -99,7 +91,6 @@ const AssignedText = styled.div`
 interface InputProps {
   view: 'ideaCard' | 'ideaPage';
   ideaId: string;
-  basketId: string | null | undefined;
   participationContextId: string;
   participationContextType: 'Phase' | 'Project';
   openIdea?: (event: FormEvent<any>) => void;
@@ -247,12 +238,6 @@ class AssignBudgetControl extends PureComponent<Props, State> {
             </IdeaCardButton>
 
             {isInBasket && !processing && assignedLabel}
-
-            {/*
-            <SeeIdeaButton onClick={this.onCardClick}>
-              <FormattedMessage {...messages.seeIdea} />
-            </SeeIdeaButton>
-            */}
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
@@ -293,9 +278,19 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  basket: ({ basketId, render }) => <GetBasket id={basketId}>{render}</GetBasket>,
   project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  basket: ({ project, phase, participationContextType, render }) => {
+    let basketId: string | null = null;
+
+    if (participationContextType === 'Project') {
+      basketId = (!isNilOrError(project) ? get(project.relationships.user_basket.data, 'id', null) : null);
+    } else {
+      basketId = (!isNilOrError(phase) ? get(phase.relationships.user_basket.data, 'id', null) : null);
+    }
+
+    return <GetBasket id={basketId}>{render}</GetBasket>;
+  }
 });
 
 export default (inputProps: InputProps) => (

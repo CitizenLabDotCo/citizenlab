@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, isEmpty } from 'lodash-es';
+import { get, isEmpty, isUndefined } from 'lodash-es';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -132,7 +132,7 @@ class PBBasket extends PureComponent<Props, State> {
   render() {
     const { basket, ideaList, className } = this.props;
 
-    if (!isNilOrError(basket)) {
+    if (!isUndefined(basket)) {
       const ideas = (!isNilOrError(ideaList) ? ideaList.filter(idea => !isNilOrError(idea)) as IIdeaData[] : null);
 
       return (

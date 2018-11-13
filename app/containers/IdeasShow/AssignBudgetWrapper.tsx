@@ -8,7 +8,6 @@ import Unauthenticated from './Unauthenticated';
 
 interface Props {
   ideaId: string;
-  basketId: string | null | undefined;
   participationContextId: string;
   participationContextType: 'Phase' | 'Project';
 }
@@ -30,7 +29,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, basketId, participationContextId, participationContextType } = this.props;
+    const { ideaId, participationContextId, participationContextType } = this.props;
     const { error } = this.state;
 
     if (!error) {
@@ -38,7 +37,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
         <AssignBudgetControl
           view="ideaPage"
           ideaId={ideaId}
-          basketId={basketId}
           participationContextId={participationContextId}
           participationContextType={participationContextType}
           unauthenticatedVoteClick={this.unauthenticatedVoteClick}

@@ -90,15 +90,15 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
         <Container className={className}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
-            content={disabledReason ?
-              <TooltipWrapper>
-                <StyledIcon name="lock-outlined" />
-                <FormattedMessage
-                  {...this.disabledMessages[disabledReason]}
-                />
-              </TooltipWrapper>
-            :
-              null
+            content={
+              disabledReason ? (
+                <TooltipWrapper>
+                  <StyledIcon name="lock-outlined" />
+                  <FormattedMessage
+                    {...this.disabledMessages[disabledReason]}
+                  />
+                </TooltipWrapper>
+              ) : null
             }
             backgroundColor={colors.popoverDarkBg}
             borderColor={colors.popoverDarkBg}

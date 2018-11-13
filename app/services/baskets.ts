@@ -56,8 +56,10 @@ export function basketByIdStream(basketId: string, streamParams: IStreamParams |
   return streams.get<IBasket>({ apiEndpoint: `${apiEndpoint}/${basketId}`, ...streamParams });
 }
 
-export function addBasket(object: INewBasket) {
-  return streams.add<IBasket>(apiEndpoint, { basket: object });
+export async function addBasket(object: INewBasket) {
+  const basket = await streams.add<IBasket>(apiEndpoint, { basket: object });
+  await streams.fetchAllWith({ dataId: [object.participation_context_id] });
+  return basket;
 }
 
 export function updateBasket(basketId: string, object) {

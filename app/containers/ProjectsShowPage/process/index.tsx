@@ -34,6 +34,10 @@ const Container = styled.div``;
 
 const FirstRow = styled.div`
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    background: ${colors.background};
+  `}
 `;
 
 const StyledTimeline = styled(Timeline)`
@@ -48,6 +52,10 @@ const SecondRow = styled.div`
 
 const StyledPhaseAbout = styled(PhaseAbout)`
   margin-bottom: 70px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 50px;
+  `}
 `;
 
 const SecondRowContentContainer = styled(ContentContainer)`
@@ -65,6 +73,10 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 70px;
   margin-bottom: 70px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 interface InputProps {

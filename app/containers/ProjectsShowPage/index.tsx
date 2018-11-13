@@ -33,9 +33,11 @@ const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  &.whiteBg {
-    background: #fff;
-  }
+  ${media.biggerThanMaxTablet`
+    &.whiteBg {
+      background: #fff;
+    }
+  `}
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
