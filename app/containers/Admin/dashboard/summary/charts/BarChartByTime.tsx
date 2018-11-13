@@ -20,6 +20,7 @@ import Icon from 'components/UI/Icon';
 const TitleWithInfoIcon = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
 `;
 
 const InfoIcon = styled(Icon)`

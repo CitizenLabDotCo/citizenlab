@@ -24,7 +24,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
@@ -116,20 +116,28 @@ export const GraphCard = styled.div`
 
 export const GraphCardHeader = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  padding: 0 20px 40px;
+  margin-bottom: 60px;
+  padding: 0 20px;
 `;
 
 export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
-  justify-content: center;
-  font-size: ${fontSizes.base}px;
+  align-items: center;
+  margin-top: -10px;
+  margin-bottom: 40px;
+
+  ${media.smallerThan1280px`
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0px;
+  `}
 `;
 
 export const GraphCardTitle = styled.h3`
-  margin-bottom: 0;
+  height: 100%;
+  margin: 0;
 `;
 
 export const GraphCardFigureContainer = styled.div`
