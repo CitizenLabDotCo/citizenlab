@@ -17,14 +17,19 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
+import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 import { darken } from 'polished';
 
 const Container = styled.div`
   border-radius: 5px;
-  background-color: ${darken(0.01, colors.background)};
   padding: 34px;
+  background: ${darken(0.01, colors.background)};
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+    background: ${darken(0.04, colors.background)};
+  `}
 `;
 
 const InformationTitle = styled.h2`

@@ -32,6 +32,7 @@ import { phasesStream, IPhaseData } from 'services/phases';
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -102,7 +103,7 @@ interface Props {
 
 interface State {
   topics: IOption[] | null;
-  pbContext: IProjectData | IPhaseData | null | undefined;
+  pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
   titleError: string | JSX.Element | null;
@@ -153,7 +154,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     );
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
-    const pbContext$: Observable<IProjectData | IPhaseData | null | undefined> = project$.pipe(
+    const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
         if (project) {
           if (project.data.attributes.participation_method === 'budgeting') {
@@ -162,12 +163,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
           if (project.data.attributes.process_type === 'timeline') {
             return phasesStream(project.data.id).observable.pipe(
-              map(phases => phases.data.find(phase => phase.attributes.participation_method === 'budgeting'))
+              map((phases) => {
+                const pbPhase = phases.data.find(phase => phase.attributes.participation_method === 'budgeting');
+                return pbPhase || null;
+              })
             );
           }
         }
 
-        return of(null)as Observable<any>;
+        return of(null) as Observable<any>;
       })
     );
 
@@ -180,7 +184,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         topics$,
         pbContext$
       ).subscribe(([locale, currentTenantLocales, topics, pbContext]) => {
-        console.log(pbContext);
         this.setState({
           pbContext,
           topics: this.getOptions(topics, locale, currentTenantLocales)
@@ -267,7 +270,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleBudgetOnChange = (budget: string) => {
-    this.setState({ budget: Number(budget) });
+    this.setState({
+      budget: Number(budget),
+      budgetError: null
+    });
   }
 
   handleTitleInputSetRef = (element: HTMLInputElement) => {
@@ -287,7 +293,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     let budgetError: JSX.Element | null = null;
 
     if (pbContext) {
-      if (budget === null) {
+      if (budget === null && (pbContext.type === 'project' || (pbContext.type === 'phase' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
         budgetError = <FormattedMessage {...messages.noBudgetError} />;
       }  else if (budget === 0) {
         budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
@@ -448,11 +454,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
                 <Input
                   id="budget"
+                  error={budgetError}
                   value={String(budget)}
                   type="number"
                   onChange={this.handleBudgetOnChange}
                 />
-                {budgetError && <Error text={budgetError} />}
               </FormElement>
             </HasPermission>
           </FeatureFlag>

@@ -192,7 +192,6 @@ export interface InputProps {
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
-  basketId?: string | null;
 }
 
 interface DataProps {
@@ -265,7 +264,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       participationMethod,
       participationContextId,
       participationContextType,
-      basketId,
       intl: { formatMessage }
     } = this.props;
     const { showVotingDisabled } = this.state;
@@ -338,7 +336,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <AssignBudgetControl
                     view="ideaCard"
                     ideaId={idea.id}
-                    basketId={basketId}
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     openIdea={this.onCardClick}
