@@ -122,6 +122,9 @@ export default defineMessages({
   selectedTopic: {
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
+  noData: {
+    id: 'app.containers.AdminPage.DashboardPage.noData',
+    defaultMessage: 'No data available with the current filters.',
   },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
