@@ -46,4 +46,14 @@ RSpec.describe Basket, type: :model do
       expect(basket_idea).to be_invalid
     end
   end
+
+  context "basket_count" do
+    it "is properly updated after removing the idea from a basket" do
+      idea = create(:idea)
+      baskets = create_list(:basket, 3, ideas: [idea])
+      expect(idea.reload.baskets_count).to eq 3
+      baskets.first.update!(ideas: [])
+      expect(idea.reload.baskets_count).to eq 2
+    end
+  end
 end
