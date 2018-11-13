@@ -22,6 +22,10 @@ class WebApi::V1::BasketsController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         if new_idea_ids
+          # Remove and add ideas to the basket.
+          #
+          # The reason we don't simply update on idea_ids is
+          # to keep the counter correct.
           old_idea_ids = @basket.idea_ids
           ideas_to_add = new_idea_ids - old_idea_ids
           ideas_to_rmv = old_idea_ids - new_idea_ids
