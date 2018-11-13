@@ -19,19 +19,27 @@ class WebApi::V1::BasketsController < ApplicationController
 
   def update
     new_idea_ids = basket_params[:idea_ids]
-    if new_idea_ids
-      old_idea_ids = @basket.idea_ids
-      ideas_to_add = new_idea_ids - old_idea_ids
-      ideas_to_rmv = old_idea_ids - new_idea_ids
-      @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
-      ideas_to_add.each{ |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
-    end
-    @basket.assign_attributes basket_params.except(:idea_ids)
-    if @basket.save
+    begin
+      ActiveRecord::Base.transaction do
+        if new_idea_ids
+          old_idea_ids = @basket.idea_ids
+          ideas_to_add = new_idea_ids - old_idea_ids
+          ideas_to_rmv = old_idea_ids - new_idea_ids
+          @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
+          ideas_to_add.each{ |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
+        end
+        @basket.assign_attributes basket_params.except(:idea_ids)
+        raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save
+      end
       SideFxBasketService.new.after_update @basket, current_user
       render json: @basket, status: :ok
-    else
-      render json: { errors: @basket.errors.details }, status: :unprocessable_entity
+    rescue ClErrors::TransactionError => e
+      case e.error_key
+      when :unprocessable_basket
+        render json: { errors: @basket.errors.details }, status: :unprocessable_entity
+      else
+        raise e
+      end
     end
   end
 
