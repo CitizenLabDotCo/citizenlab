@@ -103,6 +103,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
     defaultMessage: 'by topic',
   },
+  participationPerProject: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
+    defaultMessage: 'Participation per project',
+  },
+  participationPerTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
+    defaultMessage: 'Participation per topic',
+  },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
     defaultMessage: 'by project',
