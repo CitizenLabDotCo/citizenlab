@@ -24,29 +24,32 @@ resource "Stats - Users" do
 
   explanation "The various stats endpoints can be used to show how certain properties of users."
 
+  let!(:now) { Time.now.in_time_zone(@timezone) }
+
   before do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
+    Tenant.update(created_at: now - 2.year)
     @timezone = Tenant.settings('core','timezone')
   end
 
   describe "not depending on custom fields" do
 
     before do
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.days) do
+      travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month - 1.days) do
         create(:user)
       end
       
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 10.days) do
+      travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month + 10.days) do
         create(:user)
         create(:user)
         create(:admin)
         create(:user)
         create(:invited_user)
       end
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 25.days) do
+      travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month + 25.days) do
         create_list(:user, 4)
       end
     end
@@ -79,8 +82,8 @@ resource "Stats - Users" do
       end
 
       describe "with time filters only" do
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
 
         example_request "Users by time" do
@@ -88,38 +91,47 @@ resource "Stats - Users" do
           json_response = json_parse(response_body)
           expect(json_response.size).to eq start_at.end_of_month.day
           expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 10
+          expect(json_response.values.inject(&:+)).to eq 9
         end
       end
 
       describe "with project filter" do
-        before do
-          create_list(:admin, 2)
-        end
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
-        let(:project) { create(:private_admins_project).id }
+        
+        before do
+          travel_to start_at + 5.day do
+            create_list(:admin, 2)
+            @project = create(:private_admins_project)
+          end
+        end
+
+        let(:project) { @project.id }
 
         example_request "Users by time filtered by project" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.size).to eq start_at.end_of_month.day
           expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 4
+          expect(json_response.values.inject(&:+)).to eq 3
         end
       end
 
       describe "with group filter" do
-        before do
-          @group1 = create(:group)
-          @group2 = create(:group)
-          @user1 = create(:user, manual_groups: [@group1])
-          @user2 = create(:user, manual_groups: [@group2])
-        end
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
+        
+        before do
+          travel_to start_at + 8.days do
+            @group1 = create(:group)
+            @group2 = create(:group)
+            @user1 = create(:user, manual_groups: [@group1])
+            @user2 = create(:user, manual_groups: [@group2])
+          end
+        end
+
         let(:group) { @group1.id }
 
         example_request "Users by time filtered by group" do
@@ -132,22 +144,25 @@ resource "Stats - Users" do
       end
 
       describe "with topic filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+        
         before do
-          @topic1 = create(:topic)
-          @topic2 = create(:topic)
-          @user1 = create(:user)
-          @user2 = create(:user)
-          @idea1 = create(:idea, author: @user1, topics: [@topic1])
-          @idea2 = create(:idea, topics: [@topic2])
-          @idea3 = create(:idea)
-          @comment1 = create(:comment, author: @user2, idea: @idea1)
-          @comment2 = create(:comment, idea: @idea2)
-          create(:vote, votable: @idea1)
+          travel_to start_at + 26.days do
+            @topic1 = create(:topic)
+            @topic2 = create(:topic)
+            @user1 = create(:user)
+            @user2 = create(:user)
+            @idea1 = create(:idea, author: @user1, topics: [@topic1])
+            @idea2 = create(:idea, topics: [@topic2])
+            @idea3 = create(:idea)
+            @comment1 = create(:comment, author: @user2, idea: @idea1)
+            @comment2 = create(:comment, idea: @idea2)
+            create(:vote, votable: @idea1)
+          end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
         let(:topic) { @topic1.id }
 
         example_request "Users by time filtered by topic" do
@@ -168,8 +183,8 @@ resource "Stats - Users" do
       parameter :project, "Project ID. Only return users that can access the given project.", required: false
 
       describe "with time filters only" do
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
 
         example_request "Users by time (cumulative)" do
@@ -179,18 +194,23 @@ resource "Stats - Users" do
           expect(json_response.values.map(&:class).uniq).to eq [Integer]
           # monotonically increasing
           expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 11
+          expect(json_response.values.last).to eq 10
         end
       end
 
       describe "with project filter" do
-        before do
-          create_list(:admin, 4)
-        end
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
-        let(:project) { create(:private_admins_project).id }
+
+        before do
+          travel_to start_at + 7.days do
+            create_list(:admin, 4)
+            @project = create(:private_admins_project)
+          end
+        end
+
+        let(:project) { @project.id }
 
         example_request "Users by time (cumulative) filtered by project" do
           expect(response_status).to eq 200
@@ -199,20 +219,24 @@ resource "Stats - Users" do
           expect(json_response.values.map(&:class).uniq).to eq [Integer]
           # monotonically increasing
           expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 6
+          expect(json_response.values.last).to eq 5
         end
       end
 
       describe "with group filter" do
-        before do
-          @group1 = create(:group)
-          @group2 = create(:group)
-          @user1 = create(:user, manual_groups: [@group1])
-          @user2 = create(:user, manual_groups: [@group2])
-        end
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
         let(:interval) { 'day' }
+
+        before do
+          travel_to start_at + 14.days do
+            @group1 = create(:group)
+            @group2 = create(:group)
+            @user1 = create(:user, manual_groups: [@group1])
+            @user2 = create(:user, manual_groups: [@group2])
+          end
+        end
+
         let(:group) { @group1.id }
 
         example_request "Users by time (cumulative) filtered by group" do
@@ -227,22 +251,25 @@ resource "Stats - Users" do
       end
 
       describe "with topic filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
         before do
-          @topic1 = create(:topic)
-          @topic2 = create(:topic)
-          @user1 = create(:user)
-          @user2 = create(:user)
-          @idea1 = create(:idea, author: @user1, topics: [@topic1])
-          @idea2 = create(:idea, topics: [@topic2])
-          @idea3 = create(:idea)
-          @comment1 = create(:comment, author: @user2, idea: @idea1)
-          @comment2 = create(:comment, idea: @idea2)
-          create(:vote, votable: @idea1)
+          travel_to start_at + 5.days do
+            @topic1 = create(:topic)
+            @topic2 = create(:topic)
+            @user1 = create(:user)
+            @user2 = create(:user)
+            @idea1 = create(:idea, author: @user1, topics: [@topic1])
+            @idea2 = create(:idea, topics: [@topic2])
+            @idea3 = create(:idea)
+            @comment1 = create(:comment, author: @user2, idea: @idea1)
+            @comment2 = create(:comment, idea: @idea2)
+            create(:vote, votable: @idea1)
+          end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
         let(:topic) { @topic1.id }
 
         example_request "Users by time (cumulative) filtered by topic" do
@@ -264,20 +291,21 @@ resource "Stats - Users" do
       parameter :project, "Project ID. Only return users that have participated in the given project.", required: false
 
       describe "with time filters only" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
         before do
-          travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 3.days) do
+          travel_to(start_at + 3.days) do
             user = create(:user)
             create_list(:activity, 2, user: user)
             create(:activity)
           end
-          travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 8.days) do
+          travel_to(start_at + 8.days) do
             create_list(:activity, 2)
           end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
 
         example_request "Active users by time" do
           expect(response_status).to eq 200
@@ -289,17 +317,20 @@ resource "Stats - Users" do
       end
 
       describe "with project filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
         before do
-          @project = create(:project)
-          @idea1 = create(:idea, project: @project)
-          create(:idea_published_activity, item: @idea1, user: @idea1.author)
-          @idea2 = create(:idea)
-          create(:idea_published_activity, item: @idea2, user: @idea2.author)
+          travel_to start_at + 18.days do
+            @project = create(:project)
+            @idea1 = create(:idea, project: @project)
+            create(:idea_published_activity, item: @idea1, user: @idea1.author)
+            @idea2 = create(:idea)
+            create(:idea_published_activity, item: @idea2, user: @idea2.author)
+          end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
         let(:project) { @project.id }
 
         example_request "Active users by time filtered by project" do
@@ -312,19 +343,22 @@ resource "Stats - Users" do
       end
 
       describe "with group filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
         before do
-          @group1 = create(:group)
-          @group2 = create(:group)
-          @user1 = create(:user, manual_groups: [@group1])
-          @user2 = create(:user, manual_groups: [@group2])
-          create(:activity, user: @user1)
-          create(:activity, user: @user2)
-          create(:activity)
+          travel_to start_at + 17.days do
+            @group1 = create(:group)
+            @group2 = create(:group)
+            @user1 = create(:user, manual_groups: [@group1])
+            @user2 = create(:user, manual_groups: [@group2])
+            create(:activity, user: @user1)
+            create(:activity, user: @user2)
+            create(:activity)
+          end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
         let(:group) { @group1.id }
 
         example_request "Active users by time filtered by group" do
@@ -337,24 +371,27 @@ resource "Stats - Users" do
       end
 
       describe "with topic filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+        let(:interval) { 'day' }
+
         before do
-          @topic1 = create(:topic)
-          @topic2 = create(:topic)
-          @user1 = create(:user)
-          @user2 = create(:user)
-          @idea1 = create(:idea, author: @user1, topics: [@topic1])
-          @idea2 = create(:idea, topics: [@topic2])
-          @idea3 = create(:idea)
-          @comment1 = create(:comment, author: @user2, idea: @idea1)
-          @comment2 = create(:comment, idea: @idea2)
-          create(:vote, votable: @idea1)
-          create(:activity, user: @user1)
-          create(:activity, user: @user2)
+          travel_to start_at + 3.weeks do
+            @topic1 = create(:topic)
+            @topic2 = create(:topic)
+            @user1 = create(:user)
+            @user2 = create(:user)
+            @idea1 = create(:idea, author: @user1, topics: [@topic1])
+            @idea2 = create(:idea, topics: [@topic2])
+            @idea3 = create(:idea)
+            @comment1 = create(:comment, author: @user2, idea: @idea1)
+            @comment2 = create(:comment, idea: @idea2)
+            create(:vote, votable: @idea1)
+            create(:activity, user: @user1)
+            create(:activity, user: @user2)
+          end
         end
 
-        let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-        let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
-        let(:interval) { 'day' }
         let(:topic) { @topic1.id }
 
         example_request "Active users by time filtered by topic" do
@@ -371,27 +408,30 @@ resource "Stats - Users" do
       time_boundary_parameters self
       group_filter_parameter self
 
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
       before do
-        @group = create(:group)
-        @u1 = create(:user)
-        create(:membership, user: @u1, group: @group)
-        @u2 = create(:user)
-        create(:membership, user: @u2, group: @group)
-        @u3 = create(:user)
-
-        create(:comment_created_activity, user: @u1)
-        create(:idea_upvoted_activity, user: @u1)
-        create(:idea_published_activity, user: @u2)
-        create(:idea_downvoted_activity, user: @u2)
-        create(:comment_created_activity, user: @u3)
-
-        travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.day) do
+        travel_to(start_at - 1.day) do
           create(:idea_published_activity, user: @u2)
+        end
+
+        travel_to start_at + 4.days do
+          @group = create(:group)
+          @u1 = create(:user)
+          create(:membership, user: @u1, group: @group)
+          @u2 = create(:user)
+          create(:membership, user: @u2, group: @group)
+          @u3 = create(:user)
+
+          create(:comment_created_activity, user: @u1)
+          create(:idea_upvoted_activity, user: @u1)
+          create(:idea_published_activity, user: @u2)
+          create(:idea_downvoted_activity, user: @u2)
+          create(:comment_created_activity, user: @u3)
         end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
       example_request "List 10 best user engagement scores" do
@@ -415,19 +455,21 @@ resource "Stats - Users" do
       travel_to(end_at + 1.day) { create(:user) }
     end
 
-    let (:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let (:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+    let (:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_year }
+    let (:end_at) { (now-1.year).in_time_zone(@timezone).end_of_year }
 
     get "web_api/v1/stats/users_by_gender" do
       time_boundary_parameters self
       group_filter_parameter self
 
       before do
-        create_list(:user, 2, gender: 'female')
-        create(:user, gender: 'unspecified')
-        @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
-        create(:user)
+        travel_to start_at + 16.days do
+          create_list(:user, 2, gender: 'female')
+          create(:user, gender: 'unspecified')
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user)
+        end
       end
 
       let(:group) { @group.id }
@@ -438,7 +480,7 @@ resource "Stats - Users" do
         expect(json_response).to match({
           female: 2,
           unspecified: 1,
-          _blank: 1,
+          _blank: 0,
         })
       end
     end
@@ -448,11 +490,13 @@ resource "Stats - Users" do
       group_filter_parameter self
 
       before do
-        create_list(:user, 2, birthyear: 1980)
-        create(:user, birthyear: 1976)
-        @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
-        create(:user, birthyear: 1980)
+        travel_to start_at + 16.days do
+          create_list(:user, 2, birthyear: 1980)
+          create(:user, birthyear: 1976)
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, birthyear: 1980)
+        end
       end
 
       let(:group) { @group.id }
@@ -463,7 +507,7 @@ resource "Stats - Users" do
         expect(json_response).to match({
           '1980': 2,
           '1976': 1,
-          _blank: 1,
+          _blank: 0,
         })
       end
     end
@@ -473,12 +517,14 @@ resource "Stats - Users" do
       group_filter_parameter self
 
       before do
-        @area1, @area2, @area3 = create_list(:area, 3)
-        create_list(:user, 2, domicile: @area1.id)
-        create(:user, domicile: @area2.id)
-        @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
-        create(:user, birthyear: 1980)
+        travel_to start_at + 16.days do
+          @area1, @area2, @area3 = create_list(:area, 3)
+          create_list(:user, 2, domicile: @area1.id)
+          create(:user, domicile: @area2.id)
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, birthyear: 1980)
+        end
       end
 
       let(:group) { @group.id }
@@ -494,7 +540,7 @@ resource "Stats - Users" do
           :data => {
             @area1.id.to_sym => 2,
             @area2.id.to_sym  => 1,
-            _blank: 1
+            _blank: 0
           }
         })
       end
@@ -505,11 +551,13 @@ resource "Stats - Users" do
       group_filter_parameter self
 
       before do
-        create_list(:user, 2, education: '3')
-        create(:user, education: '5')
-        @group = create(:group)
-        User.all.each{|u| create(:membership, user: u, group: @group)}
-        create(:user, education: '3')
+        travel_to start_at + 24.days do
+          create_list(:user, 2, education: '3')
+          create(:user, education: '5')
+          @group = create(:group)
+          User.all.each{|u| create(:membership, user: u, group: @group)}
+          create(:user, education: '3')
+        end
       end
 
       let(:group) { @group.id }
@@ -520,7 +568,7 @@ resource "Stats - Users" do
         expect(json_response).to match({
           '3': 2,
           '5': 1,
-          _blank: 1,
+          _blank: 0,
         })
       end
     end
@@ -538,10 +586,12 @@ resource "Stats - Users" do
             create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
           end
 
-          create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
-          create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => @option3.key})
+          travel_to(start_at + 4.days) do
+            create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => @option2.key}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => @option3.key})
+          end
 
           travel_to(end_at + 1.day) do
             create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
@@ -580,10 +630,12 @@ resource "Stats - Users" do
             create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
           end
 
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
-          create(:user, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+          travel_to(start_at + 6.days) do
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => [@option1.key, @option2.key]}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => [@option3.key]})
+          end
 
           travel_to(end_at + 1.day) do
             create(:user, custom_field_values: { @custom_field.key => [@option1.key]}, manual_groups: [@group])
@@ -618,9 +670,12 @@ resource "Stats - Users" do
           travel_to(start_at - 1.day) do
             create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
           end
-          create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
-          create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
-          create(:user, manual_groups: [@group])
+
+          travel_to(start_at + 24.days) do
+            create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
+            create(:user, custom_field_values: { @custom_field.key => false}, manual_groups: [@group])
+            create(:user, manual_groups: [@group])
+          end
 
           travel_to(end_at + 1.day) do
             create(:user, custom_field_values: { @custom_field.key => true}, manual_groups: [@group])
@@ -634,9 +689,11 @@ resource "Stats - Users" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response).to match({
-            true: 1,
-            false: 1,
-            _blank: 1
+            data: {
+              true: 1,
+              false: 1,
+              _blank: 1
+            }
           })
         end
       end
