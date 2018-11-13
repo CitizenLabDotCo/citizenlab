@@ -11,6 +11,7 @@ import Select from 'components/UI/Select';
 
 // styling
 import styled, { withTheme } from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // resources
 import {
@@ -34,8 +35,19 @@ import { IResource } from '..';
 
 const SSelect = styled(Select)`
   flex: 1;
-  max-width: 50%;
-  margin-right: 10px;
+
+  ${media.smallerThan1280px`
+    width: 100%;
+  `}
+`;
+
+const GraphCardTitle = styled.h3`
+  margin: 0;
+  margin-right: 15px;
+
+  ${media.smallerThan1280px`
+    margin-bottom: 15px;
+  `}
 `;
 
 interface Props {
@@ -227,6 +239,10 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeaderWithFilter>
+            <GraphCardTitle>
+              <FormattedMessage {...messages.participationPerProject} />
+
+            </GraphCardTitle>
             <SSelect
               id="projectFilter"
               onChange={onResourceByProjectChange}
@@ -235,7 +251,6 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
               clearable={false}
               borderColor="#EAEAEA"
             />
-            <FormattedMessage {...messages.byProjectTitle} />
           </GraphCardHeaderWithFilter>
           {noData ?
             <NoDataContainer>
