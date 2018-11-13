@@ -27,7 +27,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhases, IPhase, IPhaseData } from 'services/phases';
+import { phasesStream, IPhaseData } from 'services/phases';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
