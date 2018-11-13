@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent } from 'react';
+import  { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 
@@ -13,7 +13,7 @@ import {
 } from 'services/stats';
 
 // typings
-import { IResource } from '../summary';
+import { IResource } from '../';
 
 interface Props {
   startAt: string;

@@ -7,10 +7,9 @@ import { withTheme } from 'styled-components';
 import { AreaChart, CartesianGrid, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
 import { rgba } from 'polished';
-import { IResolution } from '../../components/ResolutionControl';
 
 // components
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
