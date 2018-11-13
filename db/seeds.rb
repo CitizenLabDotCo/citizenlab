@@ -97,6 +97,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
+        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
       },
       password_login: {
@@ -168,6 +169,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       granular_permissions: {
         enabled: true,
         allowed: true
+      },
+      participatory_budgeting: {
+        enabled: true,
+        allowed: true
       }
     }
   })
@@ -189,6 +194,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "fr-FR" => Faker::Address.city
         },
         timezone: "Europe/Brussels",
+        currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
       },
       facebook_login: {
@@ -225,9 +231,9 @@ admin_koen = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.apply_template('base')
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-  User.create!(admin_koen)
+  TenantTemplateService.new.apply_template 'base'
+  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  User.create! admin_koen
 end
 
 
@@ -271,21 +277,21 @@ if Apartment::Tenant.current == 'localhost'
     admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
-  TenantTemplateService.new.apply_template('base')
-  EmailCampaigns::AssureCampaignsService.new.assure_campaigns
-  User.create!(admin_koen)
+  TenantTemplateService.new.apply_template 'base'
+  SideFxTenantService.new.after_apply_template Tenant.current, nil
+  User.create! admin_koen
 
   if SEED_SIZE != 'empty'
     num_users.times do 
       gender = %w(male female unspecified)[rand(4)]
-        first_name = case gender
-        when 'male'
-          Faker::Name.male_first_name
-        when 'female'
-          Faker::Name.female_first_name
-        else
-          Faker::Name.first_name
-        end
+      first_name = case gender
+      when 'male'
+        Faker::Name.male_first_name
+      when 'female'
+        Faker::Name.female_first_name
+      else
+        Faker::Name.first_name
+      end
       last_name = Faker::Name.last_name
       has_last_name = (rand(5) > 0)
       User.create!({
@@ -359,7 +365,16 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+        has_budgeting_phase = false
         rand(8).times do
+          participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
+          if participation_method = 'budgeting'
+            if has_budgeting_phase
+              participation_method = 'ideation'
+            else
+              has_budgeting_phase = true
+            end
+          end
           start_at += 1.days
           phase = project.phases.create!({
             title_multiloc: {
@@ -386,6 +401,12 @@ if Apartment::Tenant.current == 'localhost'
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
               voting_limited_max: rand(15)+1,
+            })
+          end
+          if phase.budgeting?
+            phase.update!({
+              max_budget: (rand(1000000) + 100).round(-2)
+              # currency: [Faker::Currency.name, Faker::Currency.code, Faker::Currency.symbol, 'cheeseburgers'].shuffle.first
             })
           end
         end
@@ -420,6 +441,12 @@ if Apartment::Tenant.current == 'localhost'
     num_ideas.times do 
       created_at = Faker::Date.between(1.year.ago, Time.now)
       project = Project.offset(rand(Project.count)).first
+      phases = []
+      if project && project.timeline?
+        phases = project.phases.sample(rand(project.phases.count)).select do |phase| 
+          phase.ideation? || phase.budgeting?
+        end
+      end
       idea = Idea.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -428,12 +455,13 @@ if Apartment::Tenant.current == 'localhost'
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         author: User.offset(rand(User.count)).first,
         project: project,
-        phases: (project && project.timeline? && project.phases.sample(rand(project.phases.count)).select(&:ideation?)) || [],
+        phases: phases,
         publication_status: 'published',
         published_at: Faker::Date.between(created_at, Time.now),
         created_at: created_at,
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
-        location_description: rand(2) == 0 ? nil : Faker::Address.street_address
+        location_description: rand(2) == 0 ? nil : Faker::Address.street_address,
+        budget: rand(3) == 0 ? nil : (rand(10 ** (rand(3) + 2)) + 50).round(-1)
       })
 
       [0,0,1,1,2][rand(5)].times do |i|
@@ -455,6 +483,17 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       create_comment_tree(idea, nil)
+    end
+
+    Phase.where(participation_method: 'budgeting').each do |phase|
+      User.all.shuffle.take(rand(20)+1).each do |user|
+        chosen_ideas = phase.project.ideas.select{|i| i.budget}.shuffle.take(rand(10))
+        Basket.create!({
+          user: user,
+          participation_context: phase,
+          ideas: chosen_ideas
+        })
+      end
     end
 
     8.times do 
@@ -487,7 +526,6 @@ if Apartment::Tenant.current == 'localhost'
       )
     end
 
-    PermissionsService.new.update_permissions_for_current_tenant
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
       permitted_by = ['groups', 'admins_moderators'].shuffle.first
       permission.permitted_by = permitted_by

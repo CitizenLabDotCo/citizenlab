@@ -54,6 +54,7 @@ end
 group :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'rubyXL'
+  gem 'webmock', '~> 3.4'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
@@ -104,3 +105,4 @@ gem 'mailgun-ruby'
 gem 'public_api', path: 'engines/public_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'
 gem 'admin_api', path: 'engines/admin_api'
+gem 'nlp', path: 'engines/nlp'
