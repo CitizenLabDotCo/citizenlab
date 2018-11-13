@@ -29,11 +29,14 @@ resource "Stats - Ideas" do
 
   explanation "The various stats endpoints can be used to show certain properties of ideas."
 
+  let!(:now) { Time.now.in_time_zone(@timezone) }
+
   before do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
+    Tenant.update(created_at: now - 2.year)
     @timezone = Tenant.settings('core','timezone')
 
     @project1 = create(:project)
@@ -41,14 +44,14 @@ resource "Stats - Ideas" do
     @project3 = create(:project)
     @ideas_with_topics = []
     @ideas_with_areas = []
-    travel_to Time.now.in_time_zone(@timezone).beginning_of_year - 1.months do
+    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year - 1.months do
       create(:idea, project: @project3)
     end
-    travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 2.months do
+    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 2.months do
       @ideas_with_topics += create_list(:idea_with_topics, 2, project: @project1)
       @ideas_with_areas += create_list(:idea_with_areas, 3, project: @project2)
     end
-    travel_to Time.now.in_time_zone(@timezone).beginning_of_year + 5.months do
+    travel_to (now - 1.year).in_time_zone(@timezone).beginning_of_year + 5.months do
       @ideas_with_topics += create_list(:idea_with_topics, 3, project: @project1)
       @ideas_with_areas += create_list(:idea_with_areas, 2, project: @project2)
       create(:idea, project: @project3)
@@ -71,8 +74,8 @@ resource "Stats - Ideas" do
     group_filter_parameter self
 
     describe "with time filters only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       example_request "Ideas by topic" do
         expect(response_status).to eq 200
@@ -84,14 +87,17 @@ resource "Stats - Ideas" do
     end
 
     describe "with project filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
       before do
         @project = create(:project)
-        idea = create(:idea, project: @project, topics: [create(:topic)])
-        create(:idea)
+        travel_to start_at + 2.months do
+          idea = create(:idea, project: @project, topics: [create(:topic)])
+          create(:idea)
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
       let(:project) { @project.id }
 
       example_request "Ideas by topic filtered by project" do
@@ -102,13 +108,16 @@ resource "Stats - Ideas" do
     end
 
     describe "with group filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
       before do
-        @group = create(:group)
-        create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
+        travel_to start_at + 2.months do
+          @group = create(:group)
+          create(:idea_with_topics, topics_count: 2, author: create(:user, manual_groups: [@group]))
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
       let(:group) { @group.id }
 
       example_request "Ideas by topic filtered by group" do
@@ -125,8 +134,8 @@ resource "Stats - Ideas" do
     group_filter_parameter self
 
     describe "with time filters only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       example_request "Ideas by project" do
         expect(response_status).to eq 200
@@ -141,14 +150,17 @@ resource "Stats - Ideas" do
     end
 
     describe "with topic filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
       before do
-        idea = create(:idea_with_topics)
-        create(:idea)
-        @topic = idea.topics.first
+        travel_to start_at + 4.months do
+          idea = create(:idea_with_topics)
+          create(:idea)
+          @topic = idea.topics.first
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
       let(:topic) { @topic.id}
 
       example_request "Ideas by project filtered by topic" do
@@ -159,14 +171,18 @@ resource "Stats - Ideas" do
     end
 
     describe "with group filter" do
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
+
       before do
-        @group = create(:group)
-        user = create(:user, manual_groups: [@group])
-        idea = create(:idea, author: user)
-        create(:idea)
+        travel_to start_at + 8.months do
+          @group = create(:group)
+          user = create(:user, manual_groups: [@group])
+          idea = create(:idea, author: user)
+          create(:idea)
+        end
       end
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+
       let(:group) { @group.id }
 
       example_request "Ideas by project filtered by group" do
@@ -181,8 +197,8 @@ resource "Stats - Ideas" do
   get "web_api/v1/stats/ideas_by_area" do
     time_boundary_parameters self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
     example_request "Ideas by area" do
       expect(response_status).to eq 200
@@ -196,14 +212,14 @@ resource "Stats - Ideas" do
   get "web_api/v1/stats/ideas_by_time" do
     time_series_parameters self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+    let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+    let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
     let(:interval) { 'day' }
 
     example_request "Ideas by time (published_at)" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.size).to eq start_at.end_of_year.yday
+      expect(json_response.size).to eq end_at.yday
       expect(json_response.values.map(&:class).uniq).to eq [Integer]
       expect(json_response.values.inject(&:+)).to eq 11
     end
@@ -223,14 +239,14 @@ resource "Stats - Ideas" do
 
     describe "with time filters" do
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
       let(:interval) { 'day' }
 
       example_request "Ideas by time (published_at) cumulative" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_year.yday
+        expect(json_response.size).to eq end_at.yday
         expect(json_response.values.map(&:class).uniq).to eq [Integer]
         # monotonically increasing
         expect(json_response.values.uniq).to eq json_response.values.uniq.sort
