@@ -113,8 +113,8 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       ).pipe(
         switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentProjectFilter]) => {
           const queryParameters = {
-            startAt,
-            endAt,
+            start_at: startAt,
+            end_at: endAt,
             project: currentProjectFilter,
             group: currentGroupFilter,
           };
