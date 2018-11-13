@@ -32,11 +32,14 @@ resource "Stats - Votes" do
 
   explanation "The various stats endpoints can be used to show how certain properties of votes."
 
+  let!(:now) { Time.now.in_time_zone(@timezone) }
+
   before do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
+    Tenant.update(created_at: now - 3.month)
     @timezone = Tenant.settings('core','timezone')
   end
 
@@ -82,8 +85,8 @@ resource "Stats - Votes" do
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by birthyear" do
@@ -113,8 +116,8 @@ resource "Stats - Votes" do
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by domicile" do
@@ -142,8 +145,8 @@ resource "Stats - Votes" do
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by education" do
@@ -171,8 +174,8 @@ resource "Stats - Votes" do
       time_boundary_parameters self
       parameter :ideas, "Array of idea ids to get the stats for.", required: false
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by gender" do
@@ -206,8 +209,8 @@ resource "Stats - Votes" do
       parameter :custom_field, "The custom field id which should serve as dimensions of the stats.", required: true
 
       let(:custom_field) { @custom_field.id }
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_year }
       let(:ideas) { @ideas.map(&:id) }
 
       example_request "Votes by custom field" do
@@ -233,16 +236,36 @@ resource "Stats - Votes" do
       time_series_parameters self
       resource_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
 
-      example_request "Votes by time" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:up].values.inject(&:+)).to eq 6
-        expect(json_response[:down].values.inject(&:+)).to eq 2
-        expect(json_response[:total].values.inject(&:+)).to eq 8
+      describe "filtered by time" do
+        let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { now.in_time_zone(@timezone).end_of_week }
+
+        example_request "Votes by time" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.map{|mode, values| values.size}.uniq.first).to eq ((now.to_date-start_at.to_date).to_i+1)
+          expect(json_response[:up].values.inject(&:+)).to eq 6
+          expect(json_response[:down].values.inject(&:+)).to eq 2
+          expect(json_response[:total].values.inject(&:+)).to eq 8
+        end
+      end
+
+      describe "filtered by time outside of the tenant lifecycle" do
+        let(:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_week }
+        let(:end_at) { (now-1.year).in_time_zone(@timezone).end_of_week }
+
+        it "returns no results" do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to match({
+            up: {},
+            down: {},
+            total: {}
+          })
+        end
       end
     end
 
@@ -250,10 +273,10 @@ resource "Stats - Votes" do
       time_series_parameters self
       resource_parameter self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
       let(:interval) { 'day' }
-      let!(:vote_before) { travel_to(Time.now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
+      let!(:vote_before) { travel_to(now.in_time_zone(@timezone).beginning_of_week - 5.day){ create(:vote) }}
 
       example_request "Votes by time (cumulative)" do
         expect(response_status).to eq 200
@@ -272,8 +295,8 @@ resource "Stats - Votes" do
     group_filter_parameter self
 
     describe "with time filtering only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_week }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_week }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_week }
 
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
@@ -306,8 +329,8 @@ resource "Stats - Votes" do
         create(:vote, votable: create(:idea_with_topics))
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
       example_request "Votes by topic filtered by project" do
@@ -325,8 +348,8 @@ resource "Stats - Votes" do
         create(:vote, votable: create(:idea_with_topics))
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
       example_request "Votes by topic filtered by group" do
@@ -345,8 +368,8 @@ resource "Stats - Votes" do
     group_filter_parameter self
 
     describe "with time filtering only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
 
       let!(:project1) { create(:project) }
       let!(:project2) { create(:project) }
@@ -380,8 +403,8 @@ resource "Stats - Votes" do
         create(:vote, votable: idea2)
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
       example_request "Votes by project filtered by topic" do
@@ -400,8 +423,8 @@ resource "Stats - Votes" do
         create(:vote, votable: idea)
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
       example_request "Votes by project filtered by group" do
