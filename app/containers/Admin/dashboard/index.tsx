@@ -116,21 +116,27 @@ export const GraphCard = styled.div`
 
 export const GraphCardHeader = styled.div`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  padding: 0 20px 40px;
+  margin-bottom: 60px;
+  padding: 0 20px;
 `;
 
 export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
+  align-items: center;
+  margin-top: -10px;
+  margin-bottom: 40px;
+
   ${media.smallerThan1280px`
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 0px;
   `}
 `;
 
 export const GraphCardTitle = styled.h3`
+  height: 100%;
   margin: 0;
 `;
 
