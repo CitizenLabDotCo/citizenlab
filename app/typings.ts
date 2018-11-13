@@ -1,4 +1,3 @@
-import { ImageFile } from 'react-dropzone';
 import { appLocalePairs } from 'containers/App/constants';
 
 export interface IRelationship {
@@ -19,16 +18,12 @@ export interface ITheme {
   };
 }
 
-export interface ImageFile extends ImageFile {
-  base64?: string;
-  objectUrl?: string;
-}
-
 export interface UploadFile extends File {
   filename: string;
-  base64?: string;
+  base64: string;
   url: string;
   id?: string;
+  remote: boolean;
 }
 
 export interface IOption {

@@ -37,7 +37,7 @@ const FileDownloadLink = styled.a`
   color: ${colors.label};
   display: inline-block;
   margin-right: 10px;
-  word-break: break-all;
+  hyphens: auto;
   max-width: 70%;
 
   &:hover {

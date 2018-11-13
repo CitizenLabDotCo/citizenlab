@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { get, isUndefined } from 'lodash-es';
+import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
@@ -11,10 +11,16 @@ import Unauthenticated from 'components/IdeaCard/Unauthenticated';
 import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
+import AssignBudgetControl from 'components/AssignBudgetControl';
+// import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
 
 // resources
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImage, { GetIdeaImageChildProps } from 'resources/GetIdeaImage';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -34,6 +40,21 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
+import { ParticipationMethod } from 'services/participationContexts';
+
+const IdeaBudget = styled.div`
+  color: #FC3C2D;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
+  font-weight: 500;
+  padding: 10px 12px;
+  position: absolute;
+  top: 15px;
+  left: 19px;
+  border-radius: 5px;
+  border: solid 1px #FC3C2D;
+  background: #fff;
+`;
 
 const IdeaImageContainer: any = styled.div`
   width: 100%;
@@ -55,6 +76,10 @@ const IdeaContent = styled.div`
   flex-grow: 1;
   padding: 20px;
   padding-top: 15px;
+
+  &.extraTopPadding {
+    padding-top: 75px;
+  }
 `;
 
 const IdeaTitle: any = styled.h3`
@@ -164,9 +189,17 @@ const VotingDisabledWrapper = styled.div`
 
 export interface InputProps {
   ideaId: string;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: 'Phase' | 'Project' | null;
+  basketId?: string | null;
 }
 
 interface DataProps {
+  location: GetLocationChildProps;
+  tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   ideaImage: GetIdeaImageChildProps;
   ideaAuthor: GetUserChildProps;
@@ -184,11 +217,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      showVotingDisabled: null,
+      showVotingDisabled: null
     };
   }
 
-  onCardClick = (event: FormEvent<MouseEvent>) => {
+  onCardClick = (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { idea } = this.props;
@@ -221,17 +254,39 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, intl: { formatMessage } } = this.props;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      tenant,
+      locale,
+      authUser,
+      location,
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      basketId,
+      intl: { formatMessage }
+    } = this.props;
     const { showVotingDisabled } = this.state;
 
-    if (!isNilOrError(idea)) {
+    if (
+      !isNilOrError(location) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(locale) &&
+      !isUndefined(authUser) &&
+      !isNilOrError(idea) &&
+      !isUndefined(ideaImage) &&
+      !isUndefined(ideaAuthor)
+    ) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const projectId = idea.relationships.project.data.id;
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
+      const ideaBudget = idea.attributes.budget;
+      const tenantCurrency = tenant.attributes.settings.core.currency;
       const commentingDescriptor = (idea.relationships.action_descriptor.data.commenting || null);
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
-
       const className = `${this.props['className']}
         e2e-idea-card
         ${idea.relationships.user_vote && idea.relationships.user_vote.data ? 'voted' : 'not-voted' }
@@ -251,7 +306,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </IdeaImageContainer>
             }
 
-            <IdeaContent>
+            {participationMethod === 'budgeting' && ideaBudget &&
+              <IdeaBudget>{getFormattedBudget(locale, ideaBudget, tenantCurrency)}</IdeaBudget>
+            }
+
+            <IdeaContent className={(ideaImageUrl === null && participationMethod === 'budgeting' && ideaBudget) ? 'extraTopPadding' : ''}>
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
@@ -266,13 +325,29 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             {!showVotingDisabled &&
               <Footer>
-                <VoteControl
-                  ideaId={idea.id}
-                  unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-                  disabledVoteClick={this.disabledVoteClick}
-                  size="2"
-                />
+                {participationMethod !== 'budgeting' &&
+                  <VoteControl
+                    ideaId={idea.id}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    disabledVoteClick={this.disabledVoteClick}
+                    size="2"
+                  />
+                }
+
+                {participationMethod === 'budgeting' && ideaBudget && participationContextId && participationContextType &&
+                  <AssignBudgetControl
+                    view="ideaCard"
+                    ideaId={idea.id}
+                    basketId={basketId}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                    openIdea={this.onCardClick}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  />
+                }
+
                 <Spacer />
+
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
                   <CommentCount>
@@ -288,7 +363,9 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </BottomBounceUp>
             }
 
-            {(showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId) &&
+            {showVotingDisabled === 'votingDisabled' &&
+             votingDescriptor &&
+             projectId &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled
@@ -308,9 +385,13 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  location: <GetLocation />,
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={!isNilOrError(idea) ? get(idea.relationships.idea_images.data[0], 'id', null) : null}>{render}</GetIdeaImage>,
-  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>,
+  ideaAuthor: ({ idea, render }) => <GetUser id={!isNilOrError(idea) ? get(idea.relationships.author.data, 'id', null) : null}>{render}</GetUser>
 });
 
 const IdeaCardWithHoC = injectIntl(IdeaCard);

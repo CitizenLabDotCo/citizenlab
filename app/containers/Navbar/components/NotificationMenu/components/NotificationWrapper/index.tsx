@@ -1,15 +1,12 @@
 import React from 'react';
 import Link from 'utils/cl-router/Link';
-
 import { FormattedRelative } from 'react-intl';
-
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-
 import Icon from 'components/UI/Icon';
-
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../../../tracks';
+import { darken } from 'polished';
 
 const Container = styled(Link)`
   padding: 10px 0px;
@@ -21,7 +18,7 @@ const Container = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${colors.clGreyHover};
+    color: ${colors.text};
     background-color: ${colors.clDropdownHoverBackground};
   }
 `;
@@ -50,15 +47,16 @@ const Message = styled.div`
   font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
   padding-bottom: 3px;
 
-    a {
-      color: ${(props) => props.theme.colors.clBlueDark}
+  a {
+    color: ${colors.clBlueDark};
+    text-decoration: none;
+    hyphens: auto;
 
-      :hover,
-      :focus {
-        color: ${colors.clBlueDarker};
-        text-decoration: underline;
-      }
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+      text-decoration: underline;
     }
+  }
 
 ` as any;
 

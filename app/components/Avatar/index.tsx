@@ -36,7 +36,6 @@ const Container: any = styled.div`
 `;
 
 const AvatarImage: any = styled.img`
-  flex: 0 0 ${(props: any) => props.pxSize};
   width: ${(props: any) => props.pxSize};
   height: ${(props: any) => props.pxSize};
   border-radius: 50%;

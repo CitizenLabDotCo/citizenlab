@@ -47,7 +47,7 @@ export interface FormValues {
 class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
   levelsOptionList = () => (
-    ['project', 'topic', 'area'].map(level => ({
+    ['project', 'topic', 'area', 'clustering'].map(level => ({
       label: this.props.intl.formatMessage(messages[`level_${level}`]),
       value: level,
     }))

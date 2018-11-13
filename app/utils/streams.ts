@@ -1,6 +1,6 @@
 import { Observer, Observable, Subscription, from, of } from 'rxjs';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { includes, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union } from 'lodash-es';
+import { includes, flatten, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
@@ -404,7 +404,7 @@ class Streams {
 
       union(
         this.streamIdsByDataIdWithoutQuery[dataId],
-        this.streamIdsByDataIdWithQuery[dataId]
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
       ).forEach((streamId) => {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
@@ -445,7 +445,7 @@ class Streams {
 
       union(
         this.streamIdsByDataIdWithoutQuery[dataId],
-        this.streamIdsByDataIdWithQuery[dataId]
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
       ).forEach((streamId) => {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
@@ -483,27 +483,30 @@ class Streams {
     }
   }
 
-  async fetchAllStreamsWithEndpoint(apiEndpoint: string) {
+  async fetchAllWith({
+    dataId,
+    apiEndpoint,
+    onlyFetchActiveStreams
+  }: {
+    dataId?: string[],
+    apiEndpoint?: string[],
+    onlyFetchActiveStreams?: boolean
+  }) {
+    const keys = [
+      ...(dataId || []),
+      ...(apiEndpoint || [])
+    ];
     const promises: Promise<any>[] = [];
 
-    union(
-      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
-      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
+    uniq(
+      flatten(keys.map((key) => [
+        ...(this.streamIdsByDataIdWithQuery[key] || []),
+        ...(this.streamIdsByDataIdWithoutQuery[key] || []),
+        ...(this.streamIdsByApiEndPointWithQuery[key] || []),
+        ...(this.streamIdsByApiEndPointWithoutQuery[key] || [])
+      ]))
     ).forEach((streamId) => {
-      promises.push(this.streams[streamId].fetch());
-    });
-
-    return await Promise.all(promises);
-  }
-
-  async fetchAllActiveStreamsWithEndpoint(apiEndpoint: string) {
-    const promises: Promise<any>[] = [];
-
-    union(
-      this.streamIdsByApiEndPointWithQuery[apiEndpoint],
-      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint]
-    ).forEach((streamId) => {
-      if (this.isActiveStream(streamId)) {
+      if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
       }
     });

@@ -116,8 +116,12 @@ export function updateCampaign(campaignId: string, campaignData: CampaignUpdate)
 
 export async function sendCampaign(campaignId: string) {
   const stream =  await streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send`, {});
-  await streams.fetchAllStreamsWithEndpoint(`${apiEndpoint}/${campaignId}`);
-  await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/campaigns`);
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${apiEndpoint}/${campaignId}`,
+      `${API_PATH}/campaigns`
+    ]
+  });
   return stream;
 }
 
