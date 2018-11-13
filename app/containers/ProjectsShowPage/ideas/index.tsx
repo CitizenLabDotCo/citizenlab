@@ -21,11 +21,12 @@ import adminMessages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const IdeasContainer = styled.div`
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background: ${colors.background};
 `;
 
 const IdeasTitle = styled.h1`
@@ -75,6 +76,9 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
                   sort="trending"
                   pageSize={12}
                   projectId={project.id}
+                  participationMethod={project.attributes.participation_method}
+                  participationContextId={project.id}
+                  participationContextType="Project"
                   showViewToggle={true}
                   defaultView={(project.attributes.presentation_mode || null)}
                 />

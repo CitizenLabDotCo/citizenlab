@@ -1,7 +1,7 @@
 import React from 'react';
 import { isString } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
-import { distinctUntilChanged, switchMap, tap, filter, map } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { projectFilesStream, IProjectFiles } from 'services/projectFiles';
 import { phaseFilesStream, IPhaseFiles } from 'services/phaseFiles';
@@ -71,14 +71,7 @@ export default class GetResourceFileObjects extends React.Component<Props, State
         switchMap((files) => {
           if (files && files.data && files.data.length > 0) {
             return combineLatest(
-              files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url).pipe(
-                map(fileObj => {
-                  fileObj['filename'] = file.attributes.name;
-                  fileObj['id'] = file.id;
-                  fileObj['url'] = file.attributes.file.url;
-                  return fileObj;
-                })
-              ))
+              files.data.map(file => convertUrlToUploadFileObservable(file.attributes.file.url, file.id, file.attributes.name))
             );
           }
 

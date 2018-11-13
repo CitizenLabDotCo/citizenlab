@@ -93,7 +93,7 @@ const Container = styled.div`
     }
 
     &.email {
-      background: colors.emailBg;
+      background: ${colors.emailBg};
       color: ${colors.emailText};
 
       ${StyledIcon} {

@@ -135,10 +135,6 @@ const HeaderTitle: any = styled.h1`
   line-height: 58px;
   font-weight: 600;
   text-align: center;
-  white-space: normal;
-  word-break: normal;
-  word-wrap: normal;
-  overflow-wrap: normal;
   margin: 0;
   padding: 0;
 
@@ -160,10 +156,6 @@ const HeaderSubtitle: any = styled.h2`
   font-size: ${fontSizes.xxl}px;
   line-height: 26px;
   font-weight: 300;
-  white-space: normal;
-  word-break: normal;
-  word-wrap: normal;
-  overflow-wrap: normal;
   hyphens: auto;
   max-width: 980px;
   text-align: center;
@@ -309,7 +301,10 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
 
             if (ideaParams.publish === 'true') {
               await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
-              streams.fetchAllStreamsWithEndpoint(`${API_PATH}/ideas`);
+              streams.fetchAllWith({
+                dataId: [ideaParams.id],
+                apiEndpoint: [`${API_PATH}/ideas`]
+              });
             }
           }
 

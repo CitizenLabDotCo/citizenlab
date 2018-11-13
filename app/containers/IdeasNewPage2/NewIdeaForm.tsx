@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // components
@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
-import { IOption, ImageFile } from 'typings';
+import { IOption, UploadFile } from 'typings';
 
 // style
 import { media, fontSizes } from 'utils/styleUtils';
@@ -30,8 +30,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-bottom: 100px;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
   margin-left: auto;
   margin-right: auto;
 
@@ -76,34 +76,35 @@ const MobileButton = styled.div`
 
 interface Props {
   onSubmit: () => void;
+  projectId: string;
 }
 
 interface GlobalState {
   title: string | null;
   description: string | null;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
+  budget: number | null;
   position: string;
-  imageFile: ImageFile[] | null;
+  imageFile: UploadFile[];
   submitError: boolean;
   processing: boolean;
 }
 
 interface State extends GlobalState {}
 
-export default class NewIdeaForm extends React.PureComponent<Props, State> {
+export default class NewIdeaForm extends PureComponent<Props, State> {
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       title: null,
       description: null,
       selectedTopics: null,
-      selectedProject: null,
+      budget: null,
       position: '',
-      imageFile: null,
+      imageFile: [],
       submitError: false,
       processing: false
     };
@@ -119,7 +120,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         title,
         description,
         selectedTopics,
-        selectedProject,
+        budget,
         position,
         imageFile,
         submitError,
@@ -129,7 +130,7 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
           title,
           description,
           selectedTopics,
-          selectedProject,
+          budget,
           position,
           imageFile,
           submitError,
@@ -151,16 +152,17 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { imageFile: oldImageFile } = await this.globalState.get();
-    const { title, description, selectedTopics, selectedProject, position, imageFile, localIdeaFiles } = ideaFormOutput;
+    const { title, description, selectedTopics, budget, position, imageFile, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const oldBase64Image = (oldImageFile && oldImageFile.length > 0 && oldImageFile[0].base64 ? oldImageFile[0].base64 : null);
     const newBase64Image = (imageFile && imageFile.length > 0 && imageFile[0].base64 ? imageFile[0].base64 : null);
     const imageChanged = (oldBase64Image !== newBase64Image);
-    this.globalState.set({ title, description, selectedTopics, selectedProject, position, imageFile, imageChanged, localIdeaFiles });
+    this.globalState.set({ title, description, selectedTopics, budget, position, imageFile, imageChanged, ideaFiles, ideaFilesToRemove });
     this.props.onSubmit();
   }
 
   render() {
-    const { title, description, selectedTopics, selectedProject, position, imageFile, submitError, processing } = this.state;
+    const { title, description, selectedTopics, budget, position, imageFile, submitError, processing } = this.state;
+    const { projectId } = this.props;
     const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
     return (
@@ -170,10 +172,11 @@ export default class NewIdeaForm extends React.PureComponent<Props, State> {
         </Title>
 
         <IdeaForm
+          projectId={projectId}
           title={title}
           description={description}
           selectedTopics={selectedTopics}
-          selectedProject={selectedProject}
+          budget={budget}
           position={position}
           imageFile={imageFile}
           onSubmit={this.handleIdeaFormOutput}

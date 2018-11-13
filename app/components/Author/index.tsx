@@ -40,12 +40,13 @@ const AuthorMeta = styled.div`
   margin-left: 7px;
 `;
 
-const AuthorNameContainer: any = styled.div `
+const AuthorNameContainer = styled.div `
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
   font-weight: 400;
   text-decoration: none;
+  hyphens: manual;
 `;
 
 const AuthorNameLink = styled(Link)`
