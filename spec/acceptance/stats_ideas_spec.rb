@@ -212,18 +212,31 @@ resource "Stats - Ideas" do
   get "web_api/v1/stats/ideas_by_time_cumulative" do
     time_series_parameters self
 
-    let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
-    let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
-    let(:interval) { 'day' }
+    describe "without time filters" do
+      let(:interval) { 'day' }
 
-    example_request "Ideas by time (published_at) cumulative" do
-      expect(response_status).to eq 200
-      json_response = json_parse(response_body)
-      expect(json_response.size).to eq start_at.end_of_year.yday
-      expect(json_response.values.map(&:class).uniq).to eq [Integer]
-      # monotonically increasing
-      expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-      expect(json_response.values.last).to eq Idea.published.count
+      example "Ideas by time (published_at) cumulative without time filters", document: false do
+        do_request
+        expect(response_status).to eq 200
+      end
     end
-  end
+
+    describe "with time filters" do
+
+      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_year }
+      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_year }
+      let(:interval) { 'day' }
+
+      example_request "Ideas by time (published_at) cumulative" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.size).to eq start_at.end_of_year.yday
+        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        # monotonically increasing
+        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+        expect(json_response.values.last).to eq Idea.published.count
+      end
+    end
+
+    end
 end

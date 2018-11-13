@@ -29,14 +29,18 @@ resource "Stats - Comments" do
 
   explanation "The various stats endpoints can be used to show certain properties of comments."
 
+  let!(:now) { Time.now.in_time_zone(@timezone) }
+
   before do
     @current_user = create(:admin)
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
+    Tenant.update(created_at: now - 3.month)
     create(:comment, publication_status: 'deleted')
   end
+
 
   get "web_api/v1/stats/comments_count" do
     time_boundary_parameters self
@@ -50,17 +54,17 @@ resource "Stats - Comments" do
 
   context "with activity over time" do
     before do
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month - 1.day) do
+      travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month - 1.day) do
         create(:comment)
       end
-      travel_to(Time.now.in_time_zone(@timezone).beginning_of_month + 1.day) do
+      travel_to((now-1.month).in_time_zone(@timezone).beginning_of_month + 1.day) do
         create_list(:comment, 3)
       end
 
-      travel_to(Time.now.in_time_zone(@timezone).end_of_month - 1.day) do
+      travel_to((now-1.month).in_time_zone(@timezone).end_of_month - 1.day) do
         create_list(:comment, 2)
       end
-      travel_to(Time.now.in_time_zone(@timezone).end_of_month + 1.day) do
+      travel_to((now-1.month).in_time_zone(@timezone).end_of_month + 1.day) do
         create(:comment)
       end
     end
@@ -68,33 +72,62 @@ resource "Stats - Comments" do
     get "web_api/v1/stats/comments_by_time" do
       time_series_parameters self
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
-      example_request "Comments by time" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.inject(&:+)).to eq 5
+      describe "with time filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+        example_request "Comments by time" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.in_time_zone(@timezone).end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.inject(&:+)).to eq 5
+        end
+      end
+
+      describe "with time filter outside of platform lifetime" do
+        let(:start_at) { now - 1.year }
+        let(:end_at) { now - 1.year + 1.day}
+
+        it "returns no entries" do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({})
+        end
       end
     end
 
     get "web_api/v1/stats/comments_by_time_cumulative" do
       time_series_parameters self
-
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:interval) { 'day' }
 
-      example_request "Comments by time (cumulative)" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.size).to eq start_at.end_of_month.day
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq 6
+      describe "with time filter" do
+        let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+        let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+        example_request "Comments by time (cumulative)" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.size).to eq start_at.in_time_zone(@timezone).end_of_month.day
+          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
+          expect(json_response.values.last).to eq 6
+        end
+      end
+
+      describe "with time filter outside of platform lifetime" do
+        let(:start_at) { now - 1.year }
+        let(:end_at) { now - 1.year + 1.day}
+
+        it "returns no entries" do
+          do_request
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response).to eq({})
+        end
       end
     end
   end
@@ -105,44 +138,59 @@ resource "Stats - Comments" do
     project_filter_parameter self
     group_filter_parameter self
 
-    describe "with time filtering only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+    describe "without time filters" do
 
-      let!(:topic1) { create(:topic) }
-      let!(:topic2) { create(:topic) }
-      let!(:topic3) { create(:topic) }
-      let!(:idea1) { create(:idea, topics: [topic1])}
-      let!(:idea2) { create(:idea, topics: [topic2])}
-      let!(:idea3) { create(:idea, topics: [topic1, topic2])}
-      let!(:idea4) { create(:idea)}
-      let!(:comment1) { create(:comment, idea: idea1) }
-      let!(:comment2) { create(:comment, idea: idea1) }
-      let!(:comment3) { create(:comment, idea: idea2) }
-      let!(:comment4) { create(:comment, idea: idea3) }
+      example "Comments by topic", document: false do
+        do_request
+        expect(response_status).to eq 200
+      end
+    end
+
+    describe "with time filtering only" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
+      before do
+        travel_to start_at + 1.day do
+          @topic1 = create(:topic)
+          @topic2 = create(:topic)
+          topic3 = create(:topic)
+          idea1 = create(:idea, topics: [@topic1])
+          idea2 = create(:idea, topics: [@topic2])
+          idea3 = create(:idea, topics: [@topic1, @topic2])
+          idea4 = create(:idea)
+          comment1 = create(:comment, idea: idea1)
+          comment2 = create(:comment, idea: idea1)
+          comment3 = create(:comment, idea: idea2)
+          comment4 = create(:comment, idea: idea3)
+        end
+        comment5 = create(:comment)
+      end
 
       example_request "Comments by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].stringify_keys).to match({
-          topic1.id => 3,
-          topic2.id => 2
+          @topic1.id => 3,
+          @topic2.id => 2
         })
-        expect(json_response[:topics].keys.map(&:to_s)).to match_array [topic1.id, topic2.id]
+        expect(json_response[:topics].keys.map(&:to_s)).to match_array [@topic1.id, @topic2.id]
       end
 
     end
 
     describe "filtered by project" do
       before do
-        @project = create(:project)
-        idea = create(:idea_with_topics, topics_count: 2, project: @project)
-        create(:comment, idea: idea)
-        create(:comment, idea: create(:idea_with_topics))
+        travel_to start_at + 5.day do
+          @project = create(:project)
+          idea = create(:idea_with_topics, topics_count: 2, project: @project)
+          create(:comment, idea: idea)
+          create(:comment, idea: create(:idea_with_topics))
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
       let(:project) { @project.id }
 
       example_request "Comments by topic filtered by project" do
@@ -153,15 +201,18 @@ resource "Stats - Comments" do
     end
 
     describe "filtered by group" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
       before do
-        @group = create(:group)
-        idea = create(:idea_with_topics, topics_count: 2)
-        create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
-        create(:comment, idea: create(:idea_with_topics))
+        travel_to start_at + 3.day do
+          @group = create(:group)
+          idea = create(:idea_with_topics, topics_count: 2)
+          create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, idea: create(:idea_with_topics))
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
       example_request "Comments by topic filtered by group" do
@@ -179,43 +230,50 @@ resource "Stats - Comments" do
     group_filter_parameter self
 
     describe "with time filtering only" do
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
-      let!(:project1) { create(:project) }
-      let!(:project2) { create(:project) }
-      let!(:idea1) { create(:idea, project: project1) }
-      let!(:idea2) { create(:idea, project: project1) }
-      let!(:idea3) { create(:idea, project: project2) }
-      let!(:idea4) { create(:idea) }
-      let!(:comment1) { create(:comment, idea: idea1) }
-      let!(:comment2) { create(:comment, idea: idea1) }
-      let!(:comment3) { create(:comment, idea: idea2) }
-      let!(:comment4) { create(:comment, idea: idea3) }
+      before do
+        travel_to start_at + 14.day do
+          @project1 = create(:project)
+          @project2 = create(:project)
+          idea1 = create(:idea, project: @project1)
+          idea2 = create(:idea, project: @project1)
+          idea3 = create(:idea, project: @project2)
+          idea4 = create(:idea)
+          comment1 = create(:comment, idea: idea1)
+          comment2 = create(:comment, idea: idea1)
+          comment3 = create(:comment, idea: idea2)
+          comment4 = create(:comment, idea: idea3)
+        end
+      end
 
       example_request "Comments by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].stringify_keys).to match({
-          project1.id => 3,
-          project2.id => 1
+          @project1.id => 3,
+          @project2.id => 1
         })
-        expect(json_response[:projects].keys.map(&:to_s)).to match_array [project1.id, project2.id]
+        expect(json_response[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
       end
 
     end
 
     describe "filtered by topic" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
       before do
-        @topic = create(:topic)
-        idea1 = create(:idea, topics: [@topic])
-        idea2 = create(:idea_with_topics)
-        create(:comment, idea: idea1)
-        create(:comment, idea: idea2)
+        travel_to start_at + 17.day do
+          @topic = create(:topic)
+          idea1 = create(:idea, topics: [@topic])
+          idea2 = create(:idea_with_topics)
+          create(:comment, idea: idea1)
+          create(:comment, idea: idea2)
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:topic) { @topic.id }
 
       example_request "Comments by project filtered by topic" do
@@ -226,16 +284,19 @@ resource "Stats - Comments" do
     end
 
     describe "filtered by group" do
+      let(:start_at) { (now-1.month).in_time_zone(@timezone).beginning_of_month }
+      let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
+
       before do
-        @group = create(:group)
-        project = create(:project)
-        idea = create(:idea, project: project)
-        create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
-        create(:comment, idea: idea)
+        travel_to start_at + 12.day do
+          @group = create(:group)
+          project = create(:project)
+          idea = create(:idea, project: project)
+          create(:comment, idea: idea, author: create(:user, manual_groups: [@group]))
+          create(:comment, idea: idea)
+        end
       end
 
-      let(:start_at) { Time.now.in_time_zone(@timezone).beginning_of_month }
-      let(:end_at) { Time.now.in_time_zone(@timezone).end_of_month }
       let(:group) { @group.id }
 
       example_request "Comments by project filtered by group" do

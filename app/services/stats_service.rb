@@ -1,6 +1,10 @@
 class StatsService
 
   def group_by_time resource, field, start_at, end_at, interval
+    # group_by_x doesn't properly support infinite values
+    # simplified_start_at =  start_at == -Float::INFINITY ? Time.new(2000) : start_at
+    # simplified_end_at = end_at == Float::INFINITY ? Time.new(2099) : end_at
+    
     resource.send("group_by_#{interval}",
       field, 
       range: start_at..end_at,

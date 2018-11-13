@@ -1,6 +1,15 @@
 class WebApi::V1::StatsController < ApplicationController
 
   before_action :do_authorize, :parse_time_boundaries
+  before_action :render_no_data, only: [
+    :users_by_time,
+    :users_by_time_cumulative,
+    :active_users_by_time,
+    :ideas_by_time,
+    :ideas_by_time_cumulative,
+    :comments_by_time,
+    :comments_by_time_cumulative,
+  ]
 
   @@stats_service = StatsService.new
 
@@ -204,7 +213,7 @@ class WebApi::V1::StatsController < ApplicationController
         .order("custom_field_values->'#{@custom_field.key}'")
         .count
       serie['_blank'] = serie.delete(nil) || 0
-      render json:  serie
+      render json: {data: serie}
     else
       head :not_implemented
     end
@@ -230,12 +239,6 @@ class WebApi::V1::StatsController < ApplicationController
       .order("sum_score DESC")
       .limit(10)
 
-    # data = serie.map{|r| [r.user_id, r.sum_score]}.to_h
-    # users = User
-    #   .where(id: data.keys)
-    #   .select(:id, :first_name, :last_name, :avatar)
-    #   .group_by(&:id)
-    # # render json: {data: data, users: users}
     render json: serie, each_serializer: EngagementScoreSerializer, include: [:user]
   end
 
@@ -437,6 +440,11 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_time
+    if @no_data
+      render json: {up:{}, down: {}, total: {}}
+      return
+    end
+
     serie = @@stats_service.group_by_time(
       votes_by_resource.group(:mode),
       'created_at',
@@ -448,6 +456,11 @@ class WebApi::V1::StatsController < ApplicationController
   end
 
   def votes_by_time_cumulative
+    if @no_data
+      render json: {up:{}, down: {}, total: {}}
+      return
+    end
+
     serie = @@stats_service.group_by_time_cumulative(
       votes_by_resource.group(:mode),
       'created_at',
@@ -508,9 +521,30 @@ class WebApi::V1::StatsController < ApplicationController
 
   private
 
+  # Some by_time queries will always return data with 0 values, so we need to
+  # actively override them when we know there really is no data
+  def render_no_data
+    if @no_data
+      render json: {}
+    end
+  end
+
+  def range_intersection r1, r2
+    ([r1.begin, r2.begin].max)..([r1.end, r2.end].min)
+  end
+
   def parse_time_boundaries
-    @start_at =  params[:start_at] || -Float::INFINITY
-    @end_at = params[:end_at] || Float::INFINITY
+    platform_range = Tenant.current.created_at..Time.now
+    requested_range = (params[:start_at] || platform_range.begin)..(params[:end_at] || platform_range.end)
+    if requested_range.overlaps?(platform_range)
+      range = range_intersection(platform_range, requested_range)
+      @start_at = range.begin
+      @end_at = range.end
+    else
+      @no_data = true
+      @start_at = Time.now
+      @end_at = Time.now
+    end
   end
 
   def votes_by_resource
