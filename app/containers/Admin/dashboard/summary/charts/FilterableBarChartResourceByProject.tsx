@@ -43,8 +43,8 @@ interface Props {
   onResourceByProjectChange: (option: IOption) => void;
   currentResourceByProject: IResource;
   resourceOptions: IOption[];
-  startAt: string;
-  endAt: string;
+  startAt: string | null | undefined;
+  endAt: string | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -62,7 +62,7 @@ interface State {
 }
 
 class FilterableBarChartResourceByProject extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  startAt$: BehaviorSubject<string | null>;
+  startAt$: BehaviorSubject<string | null | undefined>;
   endAt$: BehaviorSubject<string | null>;
   currentGroupFilter$: BehaviorSubject<string | null>;
   currentTopicFilter$: BehaviorSubject<string | null>;

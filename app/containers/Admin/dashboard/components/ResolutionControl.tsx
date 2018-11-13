@@ -4,6 +4,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import { IResolution } from '..';
 
 const Container = styled.div`
   display: flex;
@@ -35,8 +36,6 @@ const ResolutionButton = styled.button`
     background: ${rgba(colors.adminTextColor, .2)};
   }
 `;
-
-export type IResolution = 'day' | 'week' | 'month';
 
 type Props = {
   value: IResolution;

@@ -12,7 +12,7 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime } from 'services/stats';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, IResolution } from '../..';
 import EmptyGraph from '../../components/EmptyGraph';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
@@ -42,9 +42,9 @@ type Props = {
   className?: string;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
-  startAt: string;
-  endAt: string;
-  resolution: 'month' | 'day';
+  startAt: string | null | undefined;
+  endAt: string | null;
+  resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -94,9 +94,9 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
-    resolution: 'month' | 'day',
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
     currentProjectFilter: string | null,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null

@@ -28,8 +28,8 @@ type Props = {
   className?: string;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
-  startAt: string;
-  endAt: string;
+  startAt: string | null | undefined;
+  endAt: string | null;
   resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
@@ -108,8 +108,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
+    startAt: string | null | undefined,
+    endAt: string | null,
     resolution: IResolution,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,

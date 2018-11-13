@@ -153,6 +153,8 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
+export type IResolution = 'day' | 'week' | 'month';
+
 interface Props {
   authUser: GetAuthUserChildProps;
 }
