@@ -25,6 +25,11 @@ const DropdownContainer = styled.div`
   position: relative;
   cursor: pointer;
 `;
+const StyledButton = styled(Button)`
+  button {
+    padding-left: 0;
+  }
+`;
 
 const DropdownItemIcon = styled(Icon)`
   width: 11px;
@@ -32,6 +37,24 @@ const DropdownItemIcon = styled(Icon)`
   fill: ${colors.label};
   margin-top: 1px;
   margin-left: 4px;
+`;
+
+const DropdownListItem = styled.button`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 80ms ease-out;
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${colors.clDropdownHoverBackground};
+  }
 `;
 
 type Props = {
@@ -121,13 +144,13 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container>
         <DropdownContainer>
-          <Button
+          <StyledButton
             style="text"
             onClick={this.toggleDropdown}
           >
             {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
             <DropdownItemIcon name="dropdown" />
-          </Button>
+          </StyledButton>
           <Dropdown
             width="200px"
             top="45px"
@@ -136,10 +159,14 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             content={
               <div>
                 {this.presets.map(preset => (
-                  <div key={preset.id} onClick={this.handlePresetClick(preset)} role="navigation">
+                  <DropdownListItem
+                    key={preset.id}
+                    onClick={this.handlePresetClick(preset)}
+                    role="navigation"
+                    className={activePreset && activePreset.id === preset.id ? 'selected' : ''}
+                  >
                     {preset.label}
-                    {activePreset && activePreset.id === preset.id && '*'}
-                  </div>
+                  </DropdownListItem>
                 ))}
               </div>
             }

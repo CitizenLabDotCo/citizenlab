@@ -6,11 +6,11 @@ import { ThemeProvider } from 'styled-components';
 
 // components
 import TimeControl from '../components/TimeControl';
-import ResolutionControl, { IResolution } from '../components/ResolutionControl';
+import ResolutionControl from '../components/ResolutionControl';
 import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
 import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
 import ChartFilters from '../components/ChartFilters';
-import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
+import { chartTheme, GraphsContainer, Row, ControlBar, Column, IResolution } from '../';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import BarChartByTime from './charts/BarChartByTime';
 import AreaChartVotesByTime from './charts/AreaChartVotesByTime';
@@ -288,7 +288,6 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                   />
                   <FilterableBarChartResourceByProject
                     className="dynamicHeight"
-                    projectOptions={this.filterOptions.projectFilterOptions}
                     onResourceByProjectChange={this.onResourceByProjectChange}
                     currentResourceByProject={currentResourceByProject}
                     resourceOptions={this.resourceOptions}
