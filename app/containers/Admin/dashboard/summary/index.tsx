@@ -18,6 +18,10 @@ import LineChartVotesByTime from './charts/LineChartVotesByTime';
 // typings
 import { IOption } from 'typings';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
+
 // i18n
 import messages from '../messages';
 import { injectIntl } from 'utils/cl-intl';
@@ -61,7 +65,14 @@ interface State {
   currentResourceByProject: IResource;
 }
 
-class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+interface Tracks {
+  trackFilterOnGroup: Function;
+  trackFilterOnProject: Function;
+  trackFilterOnTopic: Function;
+  trackResourceChange: Function;
+}
+
+class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
   resourceOptions: IOption[];
   filterOptions: {
     projectFilterOptions: IOption[],
@@ -69,7 +80,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
     topicFilterOptions: IOption[]
   };
 
-  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
     super(props);
     this.state = {
       interval: 'months',
@@ -113,22 +124,27 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   }
 
   handleOnProjectFilter = (filter) => {
+    this.props.trackFilterOnProject({ extra: { project: filter } });
     this.setState({ currentProjectFilter: filter.value });
   }
 
   handleOnGroupFilter = (filter) => {
+    this.props.trackFilterOnGroup({ extra: { group: filter } });
     this.setState({ currentGroupFilter: filter.value });
   }
 
   handleOnTopicFilter = (filter) => {
+    this.props.trackFilterOnTopic({ extra: { topic: filter } });
     this.setState({ currentTopicFilter: filter.value });
   }
 
   onResourceByTopicChange = (option) => {
+    this.props.trackResourceChange({ extra: { newResource: option, graph: 'resourceByTopic' } });
     this.setState({ currentResourceByTopic: option.value });
   }
 
   onResourceByProjectChange = (option) => {
+    this.props.trackResourceChange({ extra: { newResource: option, graph: 'resourceByProject' } });
     this.setState({ currentResourceByProject: option.value });
   }
 
@@ -322,7 +338,12 @@ const Data = adopt<DataProps, InputProps>({
   topics: <GetTopics />,
 });
 
-const DashboardPageSummaryWithHOCs =  localize<Props>(injectIntl(DashboardPageSummary));
+const DashboardPageSummaryWithHOCs =  injectTracks<Props>({
+  trackFilterOnGroup: tracks.filteredOnGroup,
+  trackFilterOnProject: tracks.filteredOnProject,
+  trackFilterOnTopic: tracks.filteredOnTopic,
+  trackResourceChange: tracks.choseResource,
+})(localize<Props & Tracks>(injectIntl(DashboardPageSummary)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

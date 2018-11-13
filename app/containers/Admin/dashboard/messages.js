@@ -3,7 +3,9 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   //NEW MESSAGES
@@ -130,6 +132,7 @@ export default defineMessages({
   selectedTopic: {
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
+  },
   noData: {
     id: 'app.containers.AdminPage.DashboardPage.noData',
     defaultMessage: 'No data available with the current filters.',
