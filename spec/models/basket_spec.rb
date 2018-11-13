@@ -52,6 +52,8 @@ RSpec.describe Basket, type: :model do
       idea = create(:idea)
       baskets = create_list(:basket, 3, ideas: [idea])
       expect(idea.reload.baskets_count).to eq 3
+      baskets.first.update!(ideas: [idea, create(:idea)])
+      expect(idea.reload.baskets_count).to eq 4
       baskets.first.update!(ideas: [])
       expect(idea.reload.baskets_count).to eq 2
     end
