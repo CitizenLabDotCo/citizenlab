@@ -19,6 +19,7 @@ import { colors } from 'utils/styleUtils';
 const Container = styled.div`
   display: flex;
   border-radius: 5px;
+  align-items: center;
 `;
 
 const DropdownContainer = styled.div`
@@ -68,7 +69,6 @@ type State = {
 };
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
-
   presets = [
     {
       id: 'allTime',
@@ -157,7 +157,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={
-              <div>
+              <>
                 {this.presets.map(preset => (
                   <DropdownListItem
                     key={preset.id}
@@ -168,7 +168,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
                     {preset.label}
                   </DropdownListItem>
                 ))}
-              </div>
+              </>
             }
           />
         </DropdownContainer>
