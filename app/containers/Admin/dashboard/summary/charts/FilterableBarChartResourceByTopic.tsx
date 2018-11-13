@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
-import { map, sortBy } from 'lodash-es';
+import { map, sortBy, isEmpty } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import {
@@ -20,8 +20,7 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
-import EmptyGraph from '../../components/EmptyGraph';
+import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
 import Select from 'components/UI/Select';
 
 // typings
@@ -214,8 +213,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       currentTopicFilter,
 
     } = this.props;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
-
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const unitName = (currentTopicFilter && serie)
       ? formatMessage(messages.resourceByTopicDifference, {
         resourceName: formatMessage(messages[selectedResource]),
@@ -237,8 +235,12 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
             />
             <FormattedMessage {...messages.byTopicTitle} />
           </GraphCardHeaderWithFilter>
-          <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-            {!isEmpty ?
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
+            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
               <BarChart data={serie} layout="vertical">
                 <Bar
                   dataKey="value"
@@ -263,9 +265,8 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
                 />
                 <Tooltip isAnimationActive={false} />
               </BarChart>
-              : <EmptyGraph unit={selectedResource} />
-            }
-          </ResponsiveContainer>
+            </ResponsiveContainer>
+          }
         </GraphCardInner>
       </GraphCard>
     );
