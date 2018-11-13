@@ -12,6 +12,7 @@ import Select from 'components/UI/Select';
 // styling
 import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 // resources
 import {
@@ -215,6 +216,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
 
   render() {
     const theme = this.props['theme'];
+    const { chartFill } = theme;
     const { serie } = this.state;
     const {
       className,
@@ -234,6 +236,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
         project: serie[0].name
       })
       : formatMessage(messages[selectedResource]);
+    const barHoverColor = rgba(chartFill, .25);
 
     return (
       <GraphCard className={className}>
@@ -241,7 +244,6 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
           <GraphCardHeaderWithFilter>
             <GraphCardTitle>
               <FormattedMessage {...messages.participationPerProject} />
-
             </GraphCardTitle>
             <SSelect
               id="projectFilter"
@@ -280,7 +282,10 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
                   type="number"
                   tick={{ transform: 'translate(0, 7)' }}
                 />
-                <Tooltip isAnimationActive={false} />
+                <Tooltip
+                  isAnimationActive={false}
+                  cursor={{ fill: barHoverColor }}
+                />
               </BarChart>
             </ResponsiveContainer>
           }
