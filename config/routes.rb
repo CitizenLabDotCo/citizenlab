@@ -142,6 +142,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
+      resources :baskets, except: [:index]
       resources :clusterings
 
       match 'manifest.json', to: 'manifest#show', via: :get

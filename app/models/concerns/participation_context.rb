@@ -3,14 +3,15 @@ require 'active_support/concern'
 module ParticipationContext
   extend ActiveSupport::Concern
 
-  PARTICIPATION_METHODS = %w(information ideation survey)
+  PARTICIPATION_METHODS = %w(information ideation survey budgeting)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
   SURVEY_SERVICES = %w(typeform survey_monkey)
 
   included do
+    has_many :baskets, as: :participation_context, dependent: :destroy
     has_many :permissions, as: :permittable, dependent: :destroy
-    
+
     # for timeline projects, the phases are the participation contexts, so nothing applies
     with_options unless: :is_timeline_project? do
       validates :participation_method, presence: true, inclusion: {in: PARTICIPATION_METHODS}
@@ -35,6 +36,15 @@ module ParticipationContext
           message: "Not a valid SurveyMonkey embed URL"
         }
       end
+      with_options if: :budgeting? do |budgeting|
+        budgeting.validates :max_budget, presence: true
+        budgeting.validates :posting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :commenting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :voting_enabled, inclusion: {in: [true, false]}
+        budgeting.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
+        budgeting.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
+        budgeting.validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
+      end
 
       before_validation :set_participation_method, on: :create
       before_validation :set_presentation_mode, on: :create
@@ -55,6 +65,14 @@ module ParticipationContext
 
   def survey?
     self.participation_method == 'survey'
+  end
+
+  def budgeting?
+    self.participation_method == 'budgeting'
+  end
+
+  def can_contain_ideas?
+    ideation? || budgeting?
   end
 
   def voting_limited?

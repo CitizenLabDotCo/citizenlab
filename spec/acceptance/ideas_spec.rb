@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
     example_request "List all published ideas (default behaviour)" do
@@ -167,6 +167,17 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
+    example "List all ideas sorted by baskets count", document: false do
+      u = create(:user)
+      i1 = create(:idea)
+      baskets = create_list(:basket, 3, ideas: [i1])
+
+      do_request sort: "-baskets_count"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
       idea = vote.votable
@@ -279,12 +290,15 @@ resource "Ideas" do
 
 
   get "web_api/v1/ideas/:id" do
-    let(:id) {@ideas.first.id}
+    let(:idea) {@ideas.first}
+    let!(:baskets) {create_list(:basket, 2, ideas: [idea])}
+    let(:id) {idea.id}
 
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @ideas.first.id
+      expect(json_response.dig(:data, :id)).to eq idea.id
+      expect(json_response.dig(:data, :attributes, :baskets_count)).to eq baskets.size
     end
   end
 
@@ -324,6 +338,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -481,6 +496,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -542,6 +558,18 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq @idea.idea_status_id
       end
     end
+
+    describe do
+      let(:budget) { 1800 }
+
+      example "Change the participatory budget as a non-admin does not work", document: false do
+        previous_value = @idea.budget
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:budget)).to eq previous_value
+      end
+    end
     
     context "when admin" do
       before do
@@ -573,6 +601,16 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
+        end
+      end
+
+      describe do
+        let(:budget) { 1800 }
+
+        example_request "Change the participatory budget (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:budget)).to eq budget
         end
       end
     end
