@@ -320,7 +320,11 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />,
+  projects: (
+    <GetProjects
+      publicationStatuses={['draft', 'published', 'archived']}
+      filterCanModerate={true}
+    />),
   groups: <GetGroups />,
   topics: <GetTopics />,
 });

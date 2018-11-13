@@ -3,7 +3,9 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   //NEW MESSAGES
@@ -142,6 +144,10 @@ export default defineMessages({
   allTime: {
     id: 'app.containers.AdminPage.DashboardPage.allTime',
     defaultMessage: 'All Time',
+  },
+  noData: {
+    id: 'app.containers.AdminPage.DashboardPage.noData',
+    defaultMessage: 'No data available with the current filters.',
   },
   //OLD MESSAGES CONFIRMED STILL IN USE
   helmetTitle: {
