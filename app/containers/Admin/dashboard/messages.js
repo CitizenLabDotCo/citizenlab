@@ -251,10 +251,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfRegistrations',
     defaultMessage: '#registrations',
   },
-  numberOfIdeas: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
-    defaultMessage: '#ideas',
-  },
   tryOutInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
     defaultMessage: 'Try out {insightsLink}, our new beta feature',
