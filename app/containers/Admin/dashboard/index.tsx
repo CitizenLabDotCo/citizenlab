@@ -63,15 +63,15 @@ export const Column = styled.div`
 `;
 
 export const NoDataContainer = styled.div`
-  font-size: ${fontSizes.base}px;
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 150px;
+  font-size: ${fontSizes.base}px;
   // Needed to vertically center the text
   // Reason being: we have a margin-bottom on the header,
   // Which we want to keep when there's an actual graph
-  margin-top: -20px;
+  padding: 20px;
 `;
 
 export const GraphCardInner = styled.div`
@@ -79,10 +79,10 @@ export const GraphCardInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 35px;
   p {
       font-size: ${fontSizes.base}px;
       flex-grow: 1;
@@ -96,7 +96,6 @@ export const GraphCard = styled.div`
   width: 100%;
   height: 350px;
   display: flex;
-  position: relative;
   border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
   background: ${colors.adminContentBackground};
@@ -123,17 +122,16 @@ export const GraphCard = styled.div`
 
 export const GraphCardHeader = styled.div`
   display: flex;
+  flex-basis: 25%;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   padding: 0 20px;
 `;
 
-export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
+export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
-  margin-top: -10px;
-  margin-bottom: 40px;
 
   ${media.smallerThan1280px`
     flex-direction: column;
@@ -143,12 +141,14 @@ export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
 `;
 
 export const GraphCardTitle = styled.h3`
-  height: 100%;
+  display: flex;
+  align-items: center;
   margin: 0;
 `;
 
 export const GraphCardFigureContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const GraphCardFigure = styled.span`
