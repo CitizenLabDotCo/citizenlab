@@ -136,6 +136,8 @@ export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
 `;
 
 export const GraphCardTitle = styled.h3`
+  display: flex;
+  align-items: center;
   height: 100%;
   margin: 0;
 `;

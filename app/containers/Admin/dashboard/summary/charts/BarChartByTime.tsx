@@ -16,17 +16,11 @@ import { IUsersByTime } from 'services/stats';
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
-
-const TitleWithInfoIcon = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
 
 const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
+  height: 20px;
   cursor: pointer;
   width: 20px;
   margin-left: 10px;
@@ -157,21 +151,21 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <TitleWithInfoIcon>
-              <GraphCardTitle>
-                <FormattedMessage {...messages[graphTitleMessageKey]} />
-              </GraphCardTitle>
-              {infoMessage && <Popup
-                basic
-                trigger={
-                  <div>
-                    <InfoIcon name="info" />
-                  </div>
-                }
-                content={infoMessage}
-                position="top left"
-              />}
-            </TitleWithInfoIcon>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {infoMessage &&
+                <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />
+              }
+            </GraphCardTitle>
           </GraphCardHeader>
           {noData ?
             <NoDataContainer>
