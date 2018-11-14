@@ -315,6 +315,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
                     resourceOptions={this.resourceOptions}
+                    projectOptions={this.filterOptions.projectFilterOptions}
                     startAt={startAt}
                     endAt={endAt}
                     selectedResource={currentResourceByProject}

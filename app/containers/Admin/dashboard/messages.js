@@ -113,13 +113,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
   },
-  participationComparison: {
-    id: 'app.containers.AdminPage.DashboardPage.participationComparison',
-    defaultMessage: 'Participation difference with {topicName}',
+  participationPerProjectComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerProjectComparison',
+    defaultMessage: 'Participation difference with project {projectName}',
+  },
+  participationPerTopicComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerTopicComparison',
+    defaultMessage: 'Participation difference with topic {topicName}',
   },
   totalCountTopic: {
     id: 'app.containers.AdminPage.DashboardPage.totalCountTopic',
-    defaultMessage: '{unitName} total in selected topic : {totalCount}',
+    defaultMessage: '{selectedResourceName} total in {topicName} topic : {totalCount}',
+  },
+  totalCountProject: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCountProject',
+    defaultMessage: '{selectedResourceName} total in {projectName} project : {totalCount}',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
