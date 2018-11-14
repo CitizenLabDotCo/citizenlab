@@ -90,7 +90,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
   componentDidUpdate(prevProps) {
     if (prevProps.serie !== this.props.serie
       || this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
-        if (!this.props.currentTopicFilter) { this.setState({ topicName: null, totalCount: null }); }
+      if (!this.props.currentTopicFilter) { this.setState({ topicName: null, totalCount: null }); }
       this.setConvertedSerieToState();
     }
   }
@@ -142,7 +142,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
 
   render() {
     const theme = this.props['theme'];
-    const { serie, topicName, totalCount } = this.state;
+    const { serie, totalCount, topicName } = this.state;
     const { chartFill } = theme;
     const {
       className,
@@ -156,13 +156,14 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
       currentTopicFilter,
 
     } = this.props;
-    const noData = (serie && serie.every(item => isEmpty(item))) || false;
-    const unitName = (currentTopicFilter && serie && serie.length > 0)
+    const selectedResourceName = formatMessage(messages[selectedResource]);
+    const noData = (serie && (serie.every(item => isEmpty(item)) || serie.length <= 0)) || false;
+    const unitName = (currentTopicFilter && serie && !noData)
       ? formatMessage(messages.resourceByTopicDifference, {
-        resourceName: formatMessage(messages[selectedResource]),
-        topic: serie[0].name
+        resourceName: selectedResourceName,
+        topic: topicName
       })
-      : formatMessage(messages[selectedResource]);
+      : selectedResourceName;
     const barHoverColor = rgba(chartFill, .25);
 
     return (
@@ -170,9 +171,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
         <GraphCardInner>
           <GraphCardHeaderWithFilter>
             <GraphCardTitle>
-              {currentTopicFilter
-                ? <FormattedMessage {...messages.participationComparison} values={{ topicName }} />
-                : <FormattedMessage {...messages.participationPerTopic} />}
+              <FormattedMessage {...messages.participationPerTopic} />
             </GraphCardTitle>
             <SSelect
               id="topicFilter"
@@ -185,41 +184,43 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
           </GraphCardHeaderWithFilter>
           {noData ?
             <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
+              {currentTopicFilter ?
+                <FormattedMessage {...messages.totalCountTopic} values={{ totalCount, topicName, selectedResourceName }} />
+                : <FormattedMessage {...messages.noData} />}
             </NoDataContainer>
             :
             <>
-            {currentTopicFilter && <FormattedMessage {...messages.totalCountTopic} values={{ totalCount, unitName }} />}
-            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-              <BarChart data={serie} layout="vertical">
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={theme.chartFill}
-                  label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-                  barSize={20}
-                />
-                <YAxis
-                  dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  tickLine={false}
-                />
-                <XAxis
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </>
+              {currentTopicFilter && <FormattedMessage tagName="p" {...messages.totalCountTopic} values={{ totalCount, topicName, selectedResourceName }} />}
+              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+                <BarChart data={serie} layout="vertical">
+                  <Bar
+                    dataKey="value"
+                    name={unitName}
+                    fill={theme.chartFill}
+                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                    barSize={20}
+                  />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={150}
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    tickLine={false}
+                  />
+                  <XAxis
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    type="number"
+                    tick={{ transform: 'translate(0, 7)' }}
+                  />
+                  <Tooltip
+                    isAnimationActive={false}
+                    cursor={{ fill: barHoverColor }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </>
           }
         </GraphCardInner>
       </GraphCard>

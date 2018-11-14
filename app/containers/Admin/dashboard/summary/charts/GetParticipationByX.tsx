@@ -1,5 +1,5 @@
 // libraries
-import React, { PureComponent } from 'react';
+import { PureComponent } from 'react';
 import { Subscription, Observable } from 'rxjs';
 
 import {

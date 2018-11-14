@@ -83,6 +83,13 @@ export const GraphCardInner = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  p {
+      font-size: ${fontSizes.base}px;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
 `;
 
 export const GraphCard = styled.div`
@@ -222,19 +229,19 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
       } else if (isProjectModerator({ data: authUser })) {
         return (
           <>
-          <FeatureFlag name={'clustering'}>
-            <StyledWarning
-              text={
-                <FormattedMessage
-                  {...messages.tryOutInsights}
-                  values={{
-                    insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                  }}
-                />
-              }
-            />
-          </FeatureFlag>
-          <Summary onlyModerator />
+            <FeatureFlag name={'clustering'}>
+              <StyledWarning
+                text={
+                  <FormattedMessage
+                    {...messages.tryOutInsights}
+                    values={{
+                      insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                    }}
+                  />
+                }
+              />
+            </FeatureFlag>
+            <Summary onlyModerator />
           </>
         );
       }
