@@ -179,15 +179,16 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
   }
 
   convertToGraphFormat = (serie: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
-    if (serie) {
-      const { data, projects } = serie;
-      const { localize } = this.props;
+    const { data, projects } = serie;
+    const { localize } = this.props;
 
-      const mapped = map(data, (count: number, projectId: string) => ({
-        name: localize(projects[projectId].title_multiloc),
-        value: count,
-        code: projectId,
-      }));
+    const mapped = map(data, (count: number, projectId: string) => ({
+      name: localize(projects[projectId].title_multiloc),
+      value: count,
+      code: projectId,
+    }));
+
+    if (mapped.length > 0) {
       return sortBy(mapped, 'name');
     }
 
@@ -203,11 +204,15 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
         const { value, ...rest } = item;
         return { value: value - selectedProjectCount, ...rest };
       }).filter(item => item.code !== currentProjectFilter);
-      filteredSerie.unshift({
-        name: selectedProject ? selectedProject.name : 'selected project',
-        value: 0,
-        code: currentProjectFilter,
-      });
+
+      if (filteredSerie.length > 0) {
+        filteredSerie.unshift({
+          name: selectedProject ? selectedProject.name : 'selected project',
+          value: 0,
+          code: currentProjectFilter,
+        });
+      }
+
       return filteredSerie;
     }
 
@@ -230,7 +235,7 @@ class FilterableBarChartResourceByProject extends PureComponent<Props & Injected
       currentProjectFilter
     } = this.props;
     const noData = (serie && serie.every(item => isEmpty(item))) || false;
-    const unitName = currentProjectFilter && serie
+    const unitName = (currentProjectFilter && serie)
       ? formatMessage(messages.resourceByProjectDifference, {
         resourceName: formatMessage(messages[selectedResource]),
         project: serie[0].name
