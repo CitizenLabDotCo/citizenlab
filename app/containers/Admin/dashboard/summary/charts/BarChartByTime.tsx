@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash-es';
+import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
@@ -13,8 +13,7 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime } from 'services/stats';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
-import EmptyGraph from '../../components/EmptyGraph';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer } from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
@@ -150,32 +149,35 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
     const barHoverColor = rgba(chartFill, .25);
 
-    if (!isEmpty) {
-      return (
-        <GraphCard className={className}>
-          <GraphCardInner>
-            <GraphCardHeader>
-              <TitleWithInfoIcon>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages[graphTitleMessageKey]} />
-                </GraphCardTitle>
-                {infoMessage && <Popup
-                  basic
-                  trigger={
-                    <div>
-                      <InfoIcon name="info" />
-                    </div>
-                  }
-                  content={infoMessage}
-                  position="top left"
-                />}
-              </TitleWithInfoIcon>
-            </GraphCardHeader>
-
+    return (
+      <GraphCard className={className}>
+        <GraphCardInner>
+          <GraphCardHeader>
+            <TitleWithInfoIcon>
+              <GraphCardTitle>
+                <FormattedMessage {...messages[graphTitleMessageKey]} />
+              </GraphCardTitle>
+              {infoMessage && <Popup
+                basic
+                trigger={
+                  <div>
+                    <InfoIcon name="info" />
+                  </div>
+                }
+                content={infoMessage}
+                position="top left"
+              />}
+            </TitleWithInfoIcon>
+          </GraphCardHeader>
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
             <ResponsiveContainer>
               <BarChart data={serie}>
                 <Bar
@@ -202,15 +204,10 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                   }}
                 />
               </BarChart>
-            </ResponsiveContainer>
-          </GraphCardInner>
-        </GraphCard>
-      );
-    } else {
-      return (
-        <EmptyGraph unit={graphUnit} />
-      );
-    }
+            </ResponsiveContainer>}
+        </GraphCardInner>
+      </GraphCard>
+    );
   }
 }
 

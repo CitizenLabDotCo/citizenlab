@@ -1,14 +1,15 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { range, forOwn, get } from 'lodash-es';
+import { range, forOwn, get, isEmpty } from 'lodash-es';
 import moment from 'moment';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { usersByBirthyearStream, IUsersByBirthyear } from 'services/stats';
+import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
+import { IStreamParams, IStream } from 'utils/streams';
+import { IUsersByBirthyear } from 'services/stats';
 import messages from '../../messages';
-import EmptyGraph from '../EmptyGraph';
 
 type State = {
   serie: {
@@ -22,9 +23,13 @@ type Props = {
   startAt: string,
   endAt: string,
   currentGroupFilter: string | null,
+  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphTitleMessageKey: string;
+  className: string;
+  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByBirthyear>;
 };
 
-class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props) {
@@ -88,7 +93,7 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = usersByBirthyearStream({
+    this.subscription = this.props.stream({
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
@@ -102,40 +107,49 @@ class AgeChart extends React.PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { chartFill, barFill, chartLabelSize, chartLabelColor } = this.props['theme'];
+    const { className, graphTitleMessageKey } = this.props;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
 
-    if (!isEmpty) {
-      return (
-        <ResponsiveContainer>
-          <BarChart data={this.state.serie} margin={{ right: 40 }}>
-            <Bar
-              dataKey="value"
-              name="name"
-              fill={chartFill}
-              label={{ fill: barFill, fontSize: chartLabelSize }}
-            />
-            <XAxis
-              dataKey="name"
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-              tick={{ transform: 'translate(0, 7)' }}
-            />
-            <YAxis
-              stroke={chartLabelColor}
-              fontSize={chartLabelSize}
-            />
-            <Tooltip isAnimationActive={false} />
+    return (
+      <GraphCard className={className}>
+        <GraphCardInner>
+          <GraphCardHeader>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+            </GraphCardTitle>
+          </GraphCardHeader>
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
+            <ResponsiveContainer>
+              <BarChart data={this.state.serie} margin={{ right: 40 }}>
+                <Bar
+                  dataKey="value"
+                  name="name"
+                  fill={chartFill}
+                  label={{ fill: barFill, fontSize: chartLabelSize }}
+                />
+                <XAxis
+                  dataKey="name"
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                  tick={{ transform: 'translate(0, 7)' }}
+                />
+                <YAxis
+                  stroke={chartLabelColor}
+                  fontSize={chartLabelSize}
+                />
+                <Tooltip isAnimationActive={false} />
 
-          </BarChart>
-        </ResponsiveContainer>
-      );
-    } else {
-      return (
-        <EmptyGraph unit="Users"/>
-      );
-    }
+              </BarChart>
+            </ResponsiveContainer>}
+        </GraphCardInner>
+      </GraphCard>
+    );
   }
 }
 
-export default injectIntl<Props>(withTheme(AgeChart as any) as any);
+export default injectIntl<Props>(withTheme(BarChartByCategory as any) as any);

@@ -7,6 +7,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import { usersByGenderStream, usersByBirthyearStream } from 'services/stats';
 
 // components
 import {
@@ -20,8 +21,8 @@ import {
 } from '../';
 import TimeControl from '../components/TimeControl';
 import IntervalControl from '../components/IntervalControl';
-import GenderChart from '../components/charts/GenderChart';
-import AgeChart from '../components/charts/AgeChart';
+import PieChartByCategory from './charts/PieChartByCategory';
+import BarChartByCategory from './charts/BarChartByCategory';
 import ChartFilters from '../components/ChartFilters';
 
 // i18n
@@ -48,7 +49,7 @@ interface DataProps {
   groups: GetGroupsChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends DataProps { }
 
 interface Tracks {
   trackFilterOnGroup: Function;
@@ -146,22 +147,24 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
             <Row>
-              <GraphCard className="first halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByGenderTitle} />
-                  </GraphCardTitle>
-                  <GenderChart startAt={startAt} endAt={endAt} currentGroupFilter={currentGroupFilter} />
-                </GraphCardInner>
-              </GraphCard>
-              <GraphCard className="halfWidth">
-                <GraphCardInner>
-                  <GraphCardTitle>
-                    <FormattedMessage {...messages.usersByAgeTitle} />
-                  </GraphCardTitle>
-                  <AgeChart startAt={startAt} endAt={endAt} currentGroupFilter={currentGroupFilter} />
-                </GraphCardInner>
-              </GraphCard>
+              <PieChartByCategory
+                className="first halfWidth"
+                graphUnit="Users"
+                graphTitleMessageKey="usersByGenderTitle"
+                stream={usersByGenderStream}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+              />
+              <BarChartByCategory
+                className="halfWidth"
+                graphTitleMessageKey="usersByAgeTitle"
+                graphUnit="Users"
+                stream={usersByBirthyearStream}
+                startAt={startAt}
+                endAt={endAt}
+                currentGroupFilter={currentGroupFilter}
+              />
             </Row>
           </GraphsContainer>
         </ThemeProvider>
@@ -175,7 +178,7 @@ const Data = adopt<DataProps, {}>({
 });
 
 const UsersDashBoardWithHOCs = injectTracks<Props>({
-    trackFilterOnGroup: tracks.filteredOnGroup,
+  trackFilterOnGroup: tracks.filteredOnGroup,
 })(localize<Props & Tracks>(UsersDashboard));
 
 export default () => (

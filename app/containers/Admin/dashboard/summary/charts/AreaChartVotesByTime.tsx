@@ -5,8 +5,7 @@ import { withTheme } from 'styled-components';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
-import EmptyGraph from '../../components/EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -59,7 +58,7 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       currentGroupFilter,
       currentTopicFilter,
       currentProjectFilter
-      );
+    );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -169,7 +168,7 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
-    const isEmpty = !serie || serie.every(item => (item.up === 0) && (item.down === 0) && (item.total === 0));
+    const noData = !serie || serie.every(item => (item.up === 0) && (item.down === 0) && (item.total === 0));
     const firstSerieValue = serie && serie[0].total;
     const lastSerieValue = serie && serie[serie.length - 1].total;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
@@ -177,25 +176,29 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
 
     return (
       <GraphCard className={className}>
-        {!isEmpty ?
-          <GraphCardInner>
-            <GraphCardHeader>
-              <GraphCardTitle>
-                <FormattedMessage {...messages.votesByTimeTitle} />
-              </GraphCardTitle>
-              <GraphCardFigureContainer>
-                <GraphCardFigure>
-                  {lastSerieValue}
-                </GraphCardFigure>
-                <GraphCardFigureChange
-                  className={
-                    isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
-                  }
-                >
-                  {formattedSerieChange}
-                </GraphCardFigureChange>
-              </GraphCardFigureContainer>
-            </GraphCardHeader>
+        <GraphCardInner>
+          <GraphCardHeader>
+            <GraphCardTitle>
+              <FormattedMessage {...messages.votesByTimeTitle} />
+            </GraphCardTitle>
+            <GraphCardFigureContainer>
+              <GraphCardFigure>
+                {lastSerieValue}
+              </GraphCardFigure>
+              <GraphCardFigureChange
+                className={
+                  isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
+                }
+              >
+                {formattedSerieChange}
+              </GraphCardFigureChange>
+            </GraphCardFigureContainer>
+          </GraphCardHeader>
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
             <ResponsiveContainer>
               <AreaChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
@@ -248,11 +251,8 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   }}
                 />
               </AreaChart>
-            </ResponsiveContainer>
-          </GraphCardInner>
-          :
-          <EmptyGraph unit="Votes" />
-        }
+            </ResponsiveContainer>}
+        </GraphCardInner>
       </GraphCard>
     );
   }
