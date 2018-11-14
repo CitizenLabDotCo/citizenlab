@@ -67,7 +67,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
 
   componentDidMount() {
     const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
-    this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
+    this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -80,7 +80,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
       || currentTopicFilter !== prevProps.currentTopicFilter
       || currentProjectFilter !== prevProps.currentProjectFilter
     ) {
-      this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
+      this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
     }
   }
 
