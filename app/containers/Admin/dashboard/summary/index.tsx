@@ -5,18 +5,22 @@ import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import TimeControl from '../components/TimeControl';
-import IntervalControl from '../components/IntervalControl';
-import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
-import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
-import ChartFilters from '../components/ChartFilters';
 import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
-import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import BarChartByTime from './charts/BarChartByTime';
+import ChartFilters from '../components/ChartFilters';
+import CumulativeAreaChart from './charts/CumulativeAreaChart';
+import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
+import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
+import IntervalControl from '../components/IntervalControl';
 import LineChartVotesByTime from './charts/LineChartVotesByTime';
+import TimeControl from '../components/TimeControl';
 
 // typings
 import { IOption } from 'typings';
+
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
 
 // i18n
 import messages from '../messages';
@@ -35,7 +39,7 @@ import {
   activeUsersByTimeStream,
   ideasByTimeCumulativeStream,
   commentsByTimeCumulativeStream,
- } from 'services/stats';
+} from 'services/stats';
 
 export type IResource = 'Ideas' | 'Comments' | 'Votes';
 
@@ -61,10 +65,24 @@ interface State {
   currentResourceByProject: IResource;
 }
 
-class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
-  resourceOptions: IOption[];
+interface Tracks {
+  trackFilterOnGroup: Function;
+  trackFilterOnProject: Function;
+  trackFilterOnTopic: Function;
+  trackResourceChange: Function;
+}
 
-  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
+interface PropsHithHoCs extends Props, InjectedIntlProps, InjectedLocalized, Tracks { }
+
+class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
+  resourceOptions: IOption[];
+  filterOptions: {
+    projectFilterOptions: IOption[],
+    groupFilterOptions: IOption[],
+    topicFilterOptions: IOption[]
+  };
+
+  constructor(props: PropsHithHoCs) {
     super(props);
     this.state = {
       interval: 'months',
@@ -80,6 +98,23 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       { value: 'Comments', label: props.intl.formatMessage(messages['Comments']) },
       { value: 'Votes', label: props.intl.formatMessage(messages['Votes']) }
     ];
+    this.filterOptions = {
+      projectFilterOptions: this.generateFilterOptions('project'),
+      groupFilterOptions: this.generateFilterOptions('group'),
+      topicFilterOptions: this.generateFilterOptions('topic')
+    };
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.projects !== prevProps.projects) {
+      this.filterOptions.projectFilterOptions = this.generateFilterOptions('project');
+    }
+    if (this.props.topics !== prevProps.topics) {
+      this.filterOptions.topicFilterOptions = this.generateFilterOptions('topic');
+    }
+    if (this.props.groups !== prevProps.groups) {
+      this.filterOptions.groupFilterOptions = this.generateFilterOptions('group');
+    }
   }
 
   changeInterval = (interval: 'weeks' | 'months' | 'years') => {
@@ -91,22 +126,33 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
   }
 
   handleOnProjectFilter = (filter) => {
+    this.props.trackFilterOnProject({ extra: { project: filter } });
     this.setState({ currentProjectFilter: filter.value });
   }
 
   handleOnGroupFilter = (filter) => {
+    this.props.trackFilterOnGroup({ extra: { group: filter } });
     this.setState({ currentGroupFilter: filter.value });
   }
 
   handleOnTopicFilter = (filter) => {
+    this.props.trackFilterOnTopic({ extra: { topic: filter } });
     this.setState({ currentTopicFilter: filter.value });
   }
 
   onResourceByTopicChange = (option) => {
+    this.props.trackResourceChange({
+      extra:
+        { newResource: option, graph: 'resourceByTopic' }
+    });
     this.setState({ currentResourceByTopic: option.value });
   }
 
   onResourceByProjectChange = (option) => {
+    this.props.trackResourceChange({
+      extra:
+        { newResource: option, graph: 'resourceByProject' }
+    });
     this.setState({ currentResourceByProject: option.value });
   }
 
@@ -140,12 +186,13 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
       }
     } else if (filter === 'topic') {
       if (!isNilOrError(topics)) {
-        filterOptions = topics.filter(topic => !isNilOrError(topic)).map((topic: ITopicData) => {
-          return {
-            value: topic.id,
-            label: localize(topic.attributes.title_multiloc),
-          };
-        });
+        filterOptions = topics.filter(topic =>
+          !isNilOrError(topic)).map((topic: ITopicData) => {
+            return {
+              value: topic.id,
+              label: localize(topic.attributes.title_multiloc),
+            };
+          });
       }
     }
 
@@ -198,11 +245,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
               currentGroupFilter,
               currentTopicFilter
             }}
-            filterOptions={{
-              projectFilterOptions: this.generateFilterOptions('project'),
-              groupFilterOptions: this.generateFilterOptions('group'),
-              topicFilterOptions: this.generateFilterOptions('topic')
-            }}
+            filterOptions={this.filterOptions}
             onFilter={{
               onProjectFilter: this.handleOnProjectFilter,
               onGroupFilter: this.handleOnGroupFilter,
@@ -269,7 +312,6 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                   <FilterableBarChartResourceByProject
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
-                    currentResourceByProject={currentResourceByProject}
                     resourceOptions={this.resourceOptions}
                     startAt={startAt}
                     endAt={endAt}
@@ -279,6 +321,7 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
                 </Column>
                 <FilterableBarChartResourceByTopic
                   className="halfWidth dynamicHeight"
+                  topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
                   currentResourceByTopic={currentResourceByTopic}
                   resourceOptions={this.resourceOptions}
@@ -298,15 +341,24 @@ class DashboardPageSummary extends PureComponent<Props & InjectedIntlProps & Inj
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}/>,
+  projects: (
+    <GetProjects
+      publicationStatuses={['draft', 'published', 'archived']}
+      filterCanModerate={true}
+    />),
   groups: <GetGroups />,
   topics: <GetTopics />,
 });
 
-const DashboardPageSummaryWithHOCs =  localize<Props>(injectIntl(DashboardPageSummary));
+const DashboardPageSummaryWithHOCs = injectTracks<Props>({
+  trackFilterOnGroup: tracks.filteredOnGroup,
+  trackFilterOnProject: tracks.filteredOnProject,
+  trackFilterOnTopic: tracks.filteredOnTopic,
+  trackResourceChange: tracks.choseResource,
+})(localize<Props & Tracks>(injectIntl(DashboardPageSummary)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps =>  <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

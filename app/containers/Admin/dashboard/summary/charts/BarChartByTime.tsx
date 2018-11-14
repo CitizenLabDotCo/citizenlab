@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isEmpty } from 'lodash-es';
+import { map } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
@@ -13,7 +13,7 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime } from 'services/stats';
 
 // components
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../..';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer } from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 
@@ -143,7 +143,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
-    const noData = (serie && serie.every(item => isEmpty(item))) || false;
+    const noData = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
     const barHoverColor = rgba(chartFill, .25);
 
@@ -173,7 +173,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
             </NoDataContainer>
             :
             <ResponsiveContainer>
-              <BarChart data={serie} margin={{ right: 40 }}>
+              <BarChart data={serie}>
                 <Bar
                   dataKey="value"
                   name={formatMessage(messages[`numberOf${graphUnit}`])}

@@ -3,7 +3,9 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   //NEW MESSAGES
@@ -111,6 +113,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
   },
+  participationComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationComparison',
+    defaultMessage: 'Participation difference with {topicName}',
+  },
+  totalCountTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCountTopic',
+    defaultMessage: '{unitName} total in selected topic : {totalCount}',
+  },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
     defaultMessage: 'by project',
@@ -122,6 +132,14 @@ export default defineMessages({
   resourceByProjectDifference: {
     id: 'app.containers.AdminPage.DashboardPage.resourceByProjectDifference',
     defaultMessage: '{resourceName} difference with {project}',
+  },
+  selectedProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedProject',
+    defaultMessage: 'current project filter',
+  },
+  selectedTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
+    defaultMessage: 'current topic filter',
   },
   noData: {
     id: 'app.containers.AdminPage.DashboardPage.noData',
