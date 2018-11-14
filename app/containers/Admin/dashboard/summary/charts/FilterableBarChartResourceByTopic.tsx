@@ -96,7 +96,8 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
   }
 
   setConvertedSerieToState() {
-    const convertedSerie = this.convertToGraphFormat(this.props.serie);
+    const { serie } = this.props;
+    const convertedSerie = serie && this.convertToGraphFormat(this.props.serie);
     if (this.props.currentTopicFilter) {
       this.setState({ serie: this.filterByTopic(convertedSerie) });
     } else { this.setState({ serie: convertedSerie }); }
@@ -185,7 +186,10 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
           {noData ?
             <NoDataContainer>
               {currentTopicFilter ?
-                <FormattedMessage {...messages.totalCountTopic} values={{ totalCount, topicName, selectedResourceName }} />
+                <FormattedMessage
+                  {...messages.totalCountTopic}
+                  values={{ totalCount, topicName, selectedResourceName }}
+                />
                 : <FormattedMessage {...messages.noData} />}
             </NoDataContainer>
             :

@@ -99,7 +99,8 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
   }
 
   setConvertedSerieToState() {
-    const convertedSerie = this.convertToGraphFormat(this.props.serie);
+    const { serie } = this.props;
+    const convertedSerie = serie && this.convertToGraphFormat(this.props.serie);
     if (this.props.currentProjectFilter) {
       this.setState({ serie: this.filterByProject(convertedSerie) });
     } else { this.setState({ serie: convertedSerie }); }
