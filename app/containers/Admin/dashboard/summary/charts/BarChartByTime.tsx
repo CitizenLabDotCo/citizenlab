@@ -6,6 +6,7 @@ import { InjectedIntlProps } from 'react-intl';
 import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
+import { rgba } from 'polished';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -16,6 +17,7 @@ import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle } from '../.
 import EmptyGraph from '../../components/EmptyGraph';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
+import { colors } from 'utils/styleUtils';
 
 const TitleWithInfoIcon = styled.div`
   display: flex;
@@ -150,6 +152,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { serie } = this.state;
     const isEmpty = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
+    const barHoverColor = rgba(chartFill, .25);
 
     if (!isEmpty) {
       return (
@@ -194,6 +197,9 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
+                  cursor={{
+                    fill: barHoverColor,
+                  }}
                 />
               </BarChart>
             </ResponsiveContainer>

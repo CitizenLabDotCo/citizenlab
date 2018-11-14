@@ -23,7 +23,7 @@ export default defineMessages({
   },
   viewPublicResource: {
     id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
-    defaultMessage: 'Dashboards',
+    defaultMessage: 'Dashboard',
   },
   emptyUsers: {
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
