@@ -241,4 +241,8 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     end
   end
 
+  def do_authorize
+    authorize :stat_user
+  end
+
 end

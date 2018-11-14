@@ -28,8 +28,4 @@ class WebApi::V1::StatsController < ApplicationController
     false
   end
 
-  def do_authorize
-    authorize :stat
-  end
-
 end
