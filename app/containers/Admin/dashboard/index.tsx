@@ -79,17 +79,16 @@ export const GraphCardInner = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 40px 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 35px;
 `;
 
 export const GraphCard = styled.div`
   width: 100%;
   height: 350px;
   display: flex;
-  position: relative;
   border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
   background: ${colors.adminContentBackground};
@@ -116,17 +115,16 @@ export const GraphCard = styled.div`
 
 export const GraphCardHeader = styled.div`
   display: flex;
+  flex-basis: 25%;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   padding: 0 20px;
 `;
 
 export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
   align-items: center;
-  margin-top: -10px;
-  margin-bottom: 40px;
 
   ${media.smallerThan1280px`
     flex-direction: column;
@@ -138,12 +136,12 @@ export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
 export const GraphCardTitle = styled.h3`
   display: flex;
   align-items: center;
-  height: 100%;
   margin: 0;
 `;
 
 export const GraphCardFigureContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 export const GraphCardFigure = styled.span`
