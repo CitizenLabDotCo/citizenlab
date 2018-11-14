@@ -23,7 +23,7 @@ export default defineMessages({
   },
   viewPublicResource: {
     id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
-    defaultMessage: 'Dashboards',
+    defaultMessage: 'Dashboard',
   },
   emptyUsers: {
     id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
@@ -104,6 +104,22 @@ export default defineMessages({
   byTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
     defaultMessage: 'by topic',
+  },
+  participationPerProject: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
+    defaultMessage: 'Participation per project',
+  },
+  participationPerTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
+    defaultMessage: 'Participation per topic',
+  },
+  participationComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationComparison',
+    defaultMessage: 'Participation difference with {topicName}',
+  },
+  totalCountTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCountTopic',
+    defaultMessage: '{unitName} total in selected topic : {totalCount}',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',

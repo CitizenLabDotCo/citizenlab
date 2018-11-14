@@ -1,15 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy, isEmpty } from 'lodash-es';
-import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+
+// resources
+import GetParticipationByX from './GetParticipationByX';
 import {
-  ideasByTopicStream,
   IIdeasByTopic,
-  commentsByTopicStream,
   ICommentsByTopic,
-  votesByTopicStream,
   IVotesByTopic
 } from 'services/stats';
 
@@ -27,13 +24,32 @@ import Select from 'components/UI/Select';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
+// styling
+import { media } from 'utils/styleUtils';
+import { rgba } from 'polished';
+import styled, { withTheme } from 'styled-components';
+
 const SSelect = styled(Select)`
   flex: 1;
-  max-width: 50%;
-  margin-right: 10px;
+
+  ${media.smallerThan1280px`
+    width: 100%;
+  `}
 `;
 
-interface Props {
+const GraphCardTitle = styled.h3`
+  margin: 0;
+  margin-right: 15px;
+
+  ${media.smallerThan1280px`
+    margin-bottom: 15px;
+  `}
+`;
+interface DataProps {
+  serie: IVotesByTopic | ICommentsByTopic | IIdeasByTopic;
+}
+
+interface InputProps {
   className: string;
   onResourceByTopicChange: (option: IOption) => void;
   currentResourceByTopic: IResource;
@@ -47,112 +63,43 @@ interface Props {
   selectedResource: IResource;
 }
 
+interface Props extends InputProps, DataProps { }
+
 interface State {
   serie: IGraphFormat | null;
+  totalCount: number | null;
+  topicName: string | null;
 }
 
-class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  startAt$: BehaviorSubject<string | null | undefined>;
-  endAt$: BehaviorSubject<string | null>;
-  currentGroupFilter$: BehaviorSubject<string | null>;
-  currentTopicFilter$: BehaviorSubject<string | null>;
-  currentProjectFilter$: BehaviorSubject<string | null>;
-  selectedResource$: BehaviorSubject<IResource | null>;
-  subscriptions: Subscription[];
+interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
+class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, State> {
   constructor(props) {
     super(props);
     this.state = {
       serie: null,
+      totalCount: null,
+      topicName: null,
     };
-    this.subscriptions = [];
-    this.startAt$ = new BehaviorSubject(null);
-    this.endAt$ = new BehaviorSubject(null);
-    this.selectedResource$ = new BehaviorSubject(null);
-    this.currentGroupFilter$ = new BehaviorSubject(null);
-    this.currentTopicFilter$ = new BehaviorSubject(null);
-    this.currentProjectFilter$ = new BehaviorSubject(null);
   }
 
   componentDidMount() {
-    this.startAt$.next(this.props.startAt);
-    this.endAt$.next(this.props.endAt);
-    this.selectedResource$.next(this.props.selectedResource);
-    this.currentGroupFilter$.next(this.props.currentGroupFilter);
-    this.currentTopicFilter$.next(this.props.currentTopicFilter);
-    this.currentProjectFilter$.next(this.props.currentProjectFilter);
-
-    this.subscriptions = [
-      combineLatest(
-        this.startAt$.pipe(
-          filter(startAt => startAt !== null)
-        ),
-        this.endAt$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.selectedResource$.pipe(
-          filter(endAt => endAt !== null)
-        ),
-        this.currentGroupFilter$,
-        this.currentProjectFilter$,
-        this.currentTopicFilter$
-      ).pipe(
-        switchMap(([startAt, endAt, selectedResource, currentGroupFilter, currentProjectFilter]) => {
-          const queryParameters = {
-            startAt,
-            endAt,
-            project: currentProjectFilter,
-            group: currentGroupFilter,
-          };
-          if (selectedResource === 'Ideas') {
-            return ideasByTopicStream({
-              queryParameters
-            }).observable;
-          } else if (selectedResource === 'Comments') {
-            return commentsByTopicStream({
-              queryParameters
-            }).observable;
-          } else {
-            return votesByTopicStream({
-              queryParameters
-            }).observable;
-          }
-        })
-      ).subscribe((serie) => {
-        const convertedSerie = this.convertToGraphFormat(serie);
-        if (this.props.currentTopicFilter) {
-          this.setState({ serie: this.filterByTopic(convertedSerie) });
-        } else { this.setState({ serie: convertedSerie }); }
-      })
-    ];
+    this.setConvertedSerieToState();
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt) {
-      this.startAt$.next(this.props.startAt);
-    }
-
-    if (this.props.endAt !== prevProps.endAt) {
-      this.endAt$.next(this.props.endAt);
-    }
-    if (this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
-      this.currentGroupFilter$.next(this.props.currentGroupFilter);
-    }
-
-    if (this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
-      this.currentTopicFilter$.next(this.props.currentTopicFilter);
-    }
-    if (this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.currentProjectFilter$.next(this.props.currentProjectFilter);
-    }
-
-    if (this.props.selectedResource !== prevProps.selectedResource) {
-      this.selectedResource$.next(this.props.selectedResource);
+  componentDidUpdate(prevProps) {
+    if (prevProps.serie !== this.props.serie
+      || this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
+        if (!this.props.currentTopicFilter) { this.setState({ topicName: null, totalCount: null }); }
+      this.setConvertedSerieToState();
     }
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  setConvertedSerieToState() {
+    const convertedSerie = this.convertToGraphFormat(this.props.serie);
+    if (this.props.currentTopicFilter) {
+      this.setState({ serie: this.filterByTopic(convertedSerie) });
+    } else { this.setState({ serie: convertedSerie }); }
   }
 
   convertToGraphFormat = (serie: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
@@ -176,22 +123,17 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
       const { currentTopicFilter, topicOptions, intl: { formatMessage } } = this.props;
       const selectedTopic = serie.find(item => item.code === currentTopicFilter);
       const selectedTopicCount = selectedTopic ? selectedTopic.value : 0;
+      this.setState({ totalCount: selectedTopicCount });
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedTopicCount, ...rest };
       }).filter(item => item.code !== currentTopicFilter);
-      let topicName;
       if (selectedTopic) {
-        topicName = selectedTopic.name;
+        this.setState({ topicName: selectedTopic.name });
       } else {
         const foundOption = topicOptions.find(option => option.value === currentTopicFilter);
-        topicName = foundOption ? foundOption.label : formatMessage(messages.selectedTopic);
+        this.setState({ topicName: foundOption ? foundOption.label : formatMessage(messages.selectedTopic) });
       }
-      filteredSerie.unshift({
-        name: topicName,
-        value: 0,
-        code: currentTopicFilter,
-      });
       return filteredSerie;
     }
 
@@ -200,7 +142,9 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
 
   render() {
     const theme = this.props['theme'];
-    const { serie } = this.state;
+    const { serie, topicName, totalCount } = this.state;
+    console.log(serie);
+    const { chartFill } = theme;
     const {
       className,
       onResourceByTopicChange,
@@ -214,17 +158,23 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
 
     } = this.props;
     const noData = (serie && serie.every(item => isEmpty(item))) || false;
-    const unitName = (currentTopicFilter && serie)
+    const unitName = (currentTopicFilter && serie && serie.length > 0)
       ? formatMessage(messages.resourceByTopicDifference, {
         resourceName: formatMessage(messages[selectedResource]),
         topic: serie[0].name
       })
       : formatMessage(messages[selectedResource]);
+    const barHoverColor = rgba(chartFill, .25);
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeaderWithFilter>
+            <GraphCardTitle>
+              {currentTopicFilter
+                ? <FormattedMessage {...messages.participationComparison} values={{ topicName }} />
+                : <FormattedMessage {...messages.participationPerTopic} />}
+            </GraphCardTitle>
             <SSelect
               id="topicFilter"
               onChange={onResourceByTopicChange}
@@ -233,13 +183,14 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
               clearable={false}
               borderColor="#EAEAEA"
             />
-            <FormattedMessage {...messages.byTopicTitle} />
           </GraphCardHeaderWithFilter>
           {noData ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
+            <>
+            {currentTopicFilter && <FormattedMessage {...messages.totalCountTopic} values={{ totalCount, unitName }} />}
             <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
               <BarChart data={serie} layout="vertical">
                 <Bar
@@ -263,9 +214,13 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
                   type="number"
                   tick={{ transform: 'translate(0, 7)' }}
                 />
-                <Tooltip isAnimationActive={false} />
+                <Tooltip
+                  isAnimationActive={false}
+                  cursor={{ fill: barHoverColor }}
+                />
               </BarChart>
             </ResponsiveContainer>
+          </>
           }
         </GraphCardInner>
       </GraphCard>
@@ -273,4 +228,9 @@ class FilterableBarChartResourceByTopic extends PureComponent<Props & InjectedLo
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByTopic as any) as any));
+const BarChartWithHocs = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByTopic as any) as any));
+export default (inputProps: InputProps) => (
+  <GetParticipationByX {...inputProps} type="ByTopic">
+    {serie => <BarChartWithHocs {...serie} {...inputProps} />}
+  </GetParticipationByX>
+);

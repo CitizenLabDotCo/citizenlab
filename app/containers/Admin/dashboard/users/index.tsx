@@ -29,6 +29,10 @@ import ChartFilters from '../components/ChartFilters';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
+
 // typings
 import { IOption } from 'typings';
 
@@ -48,8 +52,12 @@ interface DataProps {
 
 interface Props extends DataProps { }
 
-class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
-  constructor(props: Props & InjectedLocalized) {
+interface Tracks {
+  trackFilterOnGroup: Function;
+}
+
+class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, State> {
+  constructor(props: Props & InjectedLocalized & Tracks) {
     super(props);
     this.state = {
       resolution: 'month',
@@ -71,6 +79,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized, State> {
   }
 
   handleOnGroupFilter = (filter) => {
+    this.props.trackFilterOnGroup({ extra: { group: filter } });
     this.setState({ currentGroupFilter: filter.value });
   }
 
@@ -168,7 +177,9 @@ const Data = adopt<DataProps, {}>({
   groups: <GetGroups />
 });
 
-const UsersDashBoardWithHOCs = localize<Props>(UsersDashboard);
+const UsersDashBoardWithHOCs = injectTracks<Props>({
+    trackFilterOnGroup: tracks.filteredOnGroup,
+})(localize<Props & Tracks>(UsersDashboard));
 
 export default () => (
   <Data>
