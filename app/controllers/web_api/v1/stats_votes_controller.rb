@@ -202,4 +202,8 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end.to_h
   end
 
+  def do_authorize
+    authorize :stat_vote
+  end
+
 end

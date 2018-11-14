@@ -87,4 +87,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     end
   end
 
+  def do_authorize
+    authorize :stat_comment
+  end
 end

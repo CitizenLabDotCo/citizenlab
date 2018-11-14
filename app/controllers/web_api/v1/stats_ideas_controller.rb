@@ -95,4 +95,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     end
   end
 
+  def do_authorize
+    authorize :stat_idea
+  end
 end
