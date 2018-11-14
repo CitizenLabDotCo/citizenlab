@@ -9,7 +9,7 @@ end
 
 def time_series_parameters s
   time_boundary_parameters s
-  s.parameter :interval, "Either day, week, month, year"
+  s.parameter :interval, "Either day, week, month, year", required: true
 end
 
 def project_filter_parameter s
@@ -59,7 +59,7 @@ resource "Stats - Votes" do
       json_response = json_parse(response_body)
       expect(json_response.dig(:up)).to eq 6
       expect(json_response.dig(:down)).to eq 2
-      expect(json_response.dig(:count)).to eq Vote.count-1
+      expect(json_response.dig(:total)).to eq Vote.count-1
     end
   end
 
@@ -93,9 +93,11 @@ resource "Stats - Votes" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1}, 
-          down: {:"1984" => 1, :"1992" => 1}, 
-          total: {:"1984" => 3, :"1992" => 2, :"_blank" => 1}
+          series: {
+            up: {:"1984" => 2, :"1992" => 1, :"_blank" => 1}, 
+            down: {:"1984" => 1, :"1992" => 1}, 
+            total: {:"1984" => 3, :"1992" => 2, :"_blank" => 1}
+          }
         })
       end
     end
@@ -124,9 +126,11 @@ resource "Stats - Votes" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1}, 
-          down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1}, 
-          total: {@eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1}
+          series: {
+            up: {@eversem.to_sym => 2, @wolvertem.to_sym => 1, :"_blank" => 1}, 
+            down: {@eversem.to_sym => 1, @wolvertem.to_sym => 1}, 
+            total: {@eversem.to_sym => 3, @wolvertem.to_sym => 2, :"_blank" => 1}
+          }
         })
       end
     end
@@ -153,9 +157,11 @@ resource "Stats - Votes" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {:"2" => 2, :"7" => 1, :"_blank" => 1}, 
-          down: {:"2" => 1, :"7" => 1}, 
-          total: {:"2" => 3, :"7" => 2, :"_blank" => 1}
+          series: {
+            up: {:"2" => 2, :"7" => 1, :"_blank" => 1}, 
+            down: {:"2" => 1, :"7" => 1}, 
+            total: {:"2" => 3, :"7" => 2, :"_blank" => 1}
+          }
         })
       end
     end
@@ -182,9 +188,11 @@ resource "Stats - Votes" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {:"female" => 2, :"male" => 1, :"_blank" => 1}, 
-          down: {:"female" => 1, :"male" => 1}, 
-          total: {:"female" => 3, :"male" => 2, :"_blank" => 1}
+          series: {
+            up: {:"female" => 2, :"male" => 1, :"_blank" => 1}, 
+            down: {:"female" => 1, :"male" => 1}, 
+            total: {:"female" => 3, :"male" => 2, :"_blank" => 1}
+          }
         })
       end
     end
@@ -217,9 +225,11 @@ resource "Stats - Votes" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1}, 
-          down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1}, 
-          total: {@opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1}
+          series: {
+            up: {@opt1.key.to_sym => 2, @opt2.key.to_sym => 1, :"_blank" => 1}, 
+            down: {@opt1.key.to_sym => 1, @opt2.key.to_sym => 1, @opt3.key.to_sym => 1}, 
+            total: {@opt1.key.to_sym => 3, @opt2.key.to_sym => 2, @opt3.key.to_sym => 1, :"_blank" => 1}
+          }
         })
       end
     end
@@ -246,9 +256,9 @@ resource "Stats - Votes" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.map{|mode, values| values.size}.uniq.first).to eq ((now.to_date-start_at.to_date).to_i+1)
-          expect(json_response[:up].values.inject(&:+)).to eq 6
-          expect(json_response[:down].values.inject(&:+)).to eq 2
-          expect(json_response[:total].values.inject(&:+)).to eq 8
+          expect(json_response[:series][:up].values.inject(&:+)).to eq 6
+          expect(json_response[:series][:down].values.inject(&:+)).to eq 2
+          expect(json_response[:series][:total].values.inject(&:+)).to eq 8
         end
       end
 
@@ -261,9 +271,11 @@ resource "Stats - Votes" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response).to match({
-            up: {},
-            down: {},
-            total: {}
+            series: {
+              up: {},
+              down: {},
+              total: {}
+            }
           })
         end
       end
@@ -281,9 +293,9 @@ resource "Stats - Votes" do
       example_request "Votes by time (cumulative)" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:up].values.last).to eq 7
-        expect(json_response[:down].values.last).to eq 2
-        expect(json_response[:total].values.last).to eq 9
+        expect(json_response[:series][:up].values.last).to eq 7
+        expect(json_response[:series][:down].values.last).to eq 2
+        expect(json_response[:series][:total].values.last).to eq 9
       end
     end
   end
@@ -313,7 +325,7 @@ resource "Stats - Votes" do
       example_request "Votes by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].stringify_keys).to match({
+        expect(json_response[:series][:total].stringify_keys).to match({
           topic1.id => 3,
           topic2.id => 2
         })
@@ -336,7 +348,7 @@ resource "Stats - Votes" do
       example_request "Votes by topic filtered by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:total].values.inject(&:+)).to eq 2
       end
     end
 
@@ -355,7 +367,7 @@ resource "Stats - Votes" do
       example_request "Votes by topic filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:total].values.inject(&:+)).to eq 2
       end
     end
   end
@@ -385,7 +397,7 @@ resource "Stats - Votes" do
       example_request "Votes by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].stringify_keys).to match({
+        expect(json_response[:series][:total].stringify_keys).to match({
           project1.id => 3,
           project2.id => 1
         })
@@ -410,7 +422,7 @@ resource "Stats - Votes" do
       example_request "Votes by project filtered by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:total].values.inject(&:+)).to eq 1
       end
     end
 
@@ -430,7 +442,7 @@ resource "Stats - Votes" do
       example_request "Votes by project filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:total].values.inject(&:+)).to eq 1
       end
     end
 

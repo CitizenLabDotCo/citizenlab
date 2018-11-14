@@ -147,16 +147,18 @@ Rails.application.routes.draw do
           get 'comments_by_project'
         end
 
-        get 'votes_count'
-        get 'votes_by_birthyear'
-        get 'votes_by_education'
-        get 'votes_by_domicile'
-        get 'votes_by_gender'
-        get 'votes_by_custom_field'
-        get 'votes_by_time'
-        get 'votes_by_time_cumulative'
-        get 'votes_by_topic'
-        get 'votes_by_project'
+        with_options controller: 'stats_votes' do
+          get 'votes_count'
+          get 'votes_by_birthyear'
+          get 'votes_by_education'
+          get 'votes_by_domicile'
+          get 'votes_by_gender'
+          get 'votes_by_custom_field'
+          get 'votes_by_time'
+          get 'votes_by_time_cumulative'
+          get 'votes_by_topic'
+          get 'votes_by_project'
+        end
       end
 
       scope 'mentions', controller: 'mentions' do
