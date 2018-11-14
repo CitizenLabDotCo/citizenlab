@@ -81,9 +81,8 @@ resource "Stats - Comments" do
         example_request "Comments by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 5
+          expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
+          expect(json_response[:series][:comments].values.inject(&:+)).to eq 5
         end
       end
 
@@ -95,7 +94,7 @@ resource "Stats - Comments" do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response).to eq({})
+          expect(json_response).to eq({series: {comments: {}}})
         end
       end
     end
@@ -111,10 +110,9 @@ resource "Stats - Comments" do
         example_request "Comments by time (cumulative)" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.in_time_zone(@timezone).end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 6
+          expect(json_response[:series][:comments].size).to eq start_at.in_time_zone(@timezone).end_of_month.day
+          expect(json_response[:series][:comments].values.uniq).to eq json_response[:series][:comments].values.uniq.sort
+          expect(json_response[:series][:comments].values.last).to eq 6
         end
       end
 
@@ -126,7 +124,7 @@ resource "Stats - Comments" do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response).to eq({})
+          expect(json_response).to eq({series: { comments: {} }})
         end
       end
     end
@@ -170,7 +168,7 @@ resource "Stats - Comments" do
       example_request "Comments by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].stringify_keys).to match({
+        expect(json_response[:series][:comments].stringify_keys).to match({
           @topic1.id => 3,
           @topic2.id => 2
         })
@@ -196,7 +194,7 @@ resource "Stats - Comments" do
       example_request "Comments by topic filtered by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
       end
     end
 
@@ -218,7 +216,7 @@ resource "Stats - Comments" do
       example_request "Comments by topic filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:comments].values.inject(&:+)).to eq 2
       end
     end
     
@@ -251,7 +249,7 @@ resource "Stats - Comments" do
       example_request "Comments by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].stringify_keys).to match({
+        expect(json_response[:series][:comments].stringify_keys).to match({
           @project1.id => 3,
           @project2.id => 1
         })
@@ -279,7 +277,7 @@ resource "Stats - Comments" do
       example_request "Comments by project filtered by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
       end
     end
 
@@ -302,7 +300,7 @@ resource "Stats - Comments" do
       example_request "Comments by project filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:comments].values.inject(&:+)).to eq 1
       end
     end
 
