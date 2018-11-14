@@ -1,8 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
 import { map, sortBy, isEmpty } from 'lodash-es';
-import styled, { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
 // resources
@@ -27,7 +24,10 @@ import Select from 'components/UI/Select';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
+// styling
 import { media } from 'utils/styleUtils';
+import { rgba } from 'polished';
+import styled, { withTheme } from 'styled-components';
 
 const SSelect = styled(Select)`
   flex: 1;
@@ -143,6 +143,8 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
   render() {
     const theme = this.props['theme'];
     const { serie, topicName, totalCount } = this.state;
+    console.log(serie);
+    const { chartFill } = theme;
     const {
       className,
       onResourceByTopicChange,
@@ -156,12 +158,14 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
 
     } = this.props;
     const noData = (serie && serie.every(item => isEmpty(item))) || false;
-    const unitName = (currentTopicFilter && serie)
+    const unitName = (currentTopicFilter && serie && serie.length > 0)
       ? formatMessage(messages.resourceByTopicDifference, {
         resourceName: formatMessage(messages[selectedResource]),
         topic: serie[0].name
       })
       : formatMessage(messages[selectedResource]);
+    const barHoverColor = rgba(chartFill, .25);
+
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -210,7 +214,10 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
                   type="number"
                   tick={{ transform: 'translate(0, 7)' }}
                 />
-                <Tooltip isAnimationActive={false} />
+                <Tooltip
+                  isAnimationActive={false}
+                  cursor={{ fill: barHoverColor }}
+                />
               </BarChart>
             </ResponsiveContainer>
           </>
