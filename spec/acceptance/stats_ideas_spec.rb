@@ -9,7 +9,7 @@ end
 
 def time_series_parameters s
   time_boundary_parameters s
-  s.parameter :interval, "Either day, week, month, year"
+  s.parameter :interval, "Either day, week, month, year", required: true
 end
 
 def project_filter_parameter s
@@ -81,8 +81,8 @@ resource "Stats - Ideas" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expected_topics = @ideas_with_topics.flat_map{|i| i.ideas_topics.map(&:topic_id)}.uniq
-        expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
-        expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+        expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_topics).to eq []
+        expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
     end
 
@@ -103,7 +103,7 @@ resource "Stats - Ideas" do
       example_request "Ideas by topic filtered by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
       end
     end
 
@@ -123,7 +123,7 @@ resource "Stats - Ideas" do
       example_request "Ideas by topic filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 2
+        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 2
       end
     end
   end
@@ -140,7 +140,7 @@ resource "Stats - Ideas" do
       example_request "Ideas by project" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].stringify_keys).to match({
+        expect(json_response[:series][:ideas].stringify_keys).to match({
           @project1.id => 5,
           @project2.id => 5,
           @project3.id => 1
@@ -166,7 +166,7 @@ resource "Stats - Ideas" do
       example_request "Ideas by project filtered by topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
       end
     end
 
@@ -188,7 +188,7 @@ resource "Stats - Ideas" do
       example_request "Ideas by project filtered by group" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:data].values.inject(&:+)).to eq 1
+        expect(json_response[:series][:ideas].values.inject(&:+)).to eq 1
       end
     end
 
@@ -204,8 +204,8 @@ resource "Stats - Ideas" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expected_areas = @ideas_with_areas.flat_map{|i| i.areas_ideas.map(&:area_id)}.uniq
-      expect(json_response[:data].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
-      expect(json_response[:data].values.map(&:class).uniq).to eq [Integer]
+      expect(json_response[:series][:ideas].keys.map(&:to_s).compact.uniq - expected_areas).to eq []
+      expect(json_response[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
     end
   end
 
@@ -219,9 +219,8 @@ resource "Stats - Ideas" do
     example_request "Ideas by time (published_at)" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.size).to eq end_at.yday
-      expect(json_response.values.map(&:class).uniq).to eq [Integer]
-      expect(json_response.values.inject(&:+)).to eq 11
+      expect(json_response[:series][:ideas].size).to eq end_at.yday
+      expect(json_response[:series][:ideas].values.inject(&:+)).to eq 11
     end
   end
 
@@ -246,11 +245,10 @@ resource "Stats - Ideas" do
       example_request "Ideas by time (published_at) cumulative" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.size).to eq end_at.yday
-        expect(json_response.values.map(&:class).uniq).to eq [Integer]
+        expect(json_response[:series][:ideas].size).to eq end_at.yday
         # monotonically increasing
-        expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-        expect(json_response.values.last).to eq Idea.published.count
+        expect(json_response[:series][:ideas].values.uniq).to eq json_response[:series][:ideas].values.uniq.sort
+        expect(json_response[:series][:ideas].values.last).to eq Idea.published.count
       end
     end
 

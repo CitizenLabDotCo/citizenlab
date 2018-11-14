@@ -130,12 +130,14 @@ Rails.application.routes.draw do
           get 'users_engagement_scores'
         end
 
-        get 'ideas_count'
-        get 'ideas_by_time'
-        get 'ideas_by_time_cumulative'
-        get 'ideas_by_topic'
-        get 'ideas_by_project'
-        get 'ideas_by_area'
+        with_options controller: 'stats_ideas' do
+          get 'ideas_count'
+          get 'ideas_by_time'
+          get 'ideas_by_time_cumulative'
+          get 'ideas_by_topic'
+          get 'ideas_by_project'
+          get 'ideas_by_area'
+        end
 
         with_options controller: 'stats_comments' do
           get 'comments_count'
@@ -144,7 +146,7 @@ Rails.application.routes.draw do
           get 'comments_by_topic'
           get 'comments_by_project'
         end
-        
+
         get 'votes_count'
         get 'votes_by_birthyear'
         get 'votes_by_education'
