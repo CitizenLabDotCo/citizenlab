@@ -13,21 +13,14 @@ import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime } from 'services/stats';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, IResolution } from '../..';
-import EmptyGraph from '../../components/EmptyGraph';
+import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer , IResolution } from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
-
-const TitleWithInfoIcon = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
 
 const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
+  height: 20px;
   cursor: pointer;
   width: 20px;
   margin-left: 10px;
@@ -67,7 +60,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
 
   componentDidMount() {
     const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
-    this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
+    this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -80,7 +73,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
       || currentTopicFilter !== prevProps.currentTopicFilter
       || currentProjectFilter !== prevProps.currentProjectFilter
     ) {
-      this.resubscribe(startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter);
+      this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
     }
   }
 
@@ -150,20 +143,18 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
     const { serie } = this.state;
-    const isEmpty = !serie || serie.every(item => item.value === 0);
+    const noData = !serie || serie.every(item => item.value === 0);
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
     const barHoverColor = rgba(chartFill, .25);
 
-    if (!isEmpty) {
-      return (
-        <GraphCard className={className}>
-          <GraphCardInner>
-            <GraphCardHeader>
-              <TitleWithInfoIcon>
-                <GraphCardTitle>
-                  <FormattedMessage {...messages[graphTitleMessageKey]} />
-                </GraphCardTitle>
-                {infoMessage && <Popup
+    return (
+      <GraphCard className={className}>
+        <GraphCardInner>
+          <GraphCardHeader>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {infoMessage &&
+                <Popup
                   basic
                   trigger={
                     <div>
@@ -172,10 +163,15 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                   }
                   content={infoMessage}
                   position="top left"
-                />}
-              </TitleWithInfoIcon>
-            </GraphCardHeader>
-
+                />
+              }
+            </GraphCardTitle>
+          </GraphCardHeader>
+          {noData ?
+            <NoDataContainer>
+              <FormattedMessage {...messages.noData} />
+            </NoDataContainer>
+            :
             <ResponsiveContainer>
               <BarChart data={serie}>
                 <Bar
@@ -200,14 +196,10 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                 />
               </BarChart>
             </ResponsiveContainer>
-          </GraphCardInner>
-        </GraphCard>
-      );
-    } else {
-      return (
-        <EmptyGraph unit={graphUnit} />
-      );
-    }
+          }
+        </GraphCardInner>
+      </GraphCard>
+    );
   }
 }
 
