@@ -77,7 +77,7 @@ resource "Stats - Users" do
           do_request
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.values.inject(&:+)).to eq 11
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 11
         end
       end
 
@@ -89,9 +89,8 @@ resource "Stats - Users" do
         example_request "Users by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 9
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 9
         end
       end
 
@@ -112,9 +111,8 @@ resource "Stats - Users" do
         example_request "Users by time filtered by project" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 3
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 3
         end
       end
 
@@ -137,9 +135,8 @@ resource "Stats - Users" do
         example_request "Users by time filtered by group" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 1
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 1
         end
       end
 
@@ -168,9 +165,8 @@ resource "Stats - Users" do
         example_request "Users by time filtered by topic" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 3
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 3
         end
       end
 
@@ -190,11 +186,10 @@ resource "Stats - Users" do
         example_request "Users by time (cumulative)" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
           # monotonically increasing
-          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 10
+          expect(json_response[:series][:users].values.uniq).to eq json_response[:series][:users].values.uniq.sort
+          expect(json_response[:series][:users].values.last).to eq 10
         end
       end
 
@@ -215,11 +210,10 @@ resource "Stats - Users" do
         example_request "Users by time (cumulative) filtered by project" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
           # monotonically increasing
-          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 5
+          expect(json_response[:series][:users].values.uniq).to eq json_response[:series][:users].values.uniq.sort
+          expect(json_response[:series][:users].values.last).to eq 5
         end
       end
 
@@ -242,11 +236,10 @@ resource "Stats - Users" do
         example_request "Users by time (cumulative) filtered by group" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
           # monotonically increasing
-          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 1
+          expect(json_response[:series][:users].values.uniq).to eq json_response[:series][:users].values.uniq.sort
+          expect(json_response[:series][:users].values.last).to eq 1
         end
       end
 
@@ -275,11 +268,10 @@ resource "Stats - Users" do
         example_request "Users by time (cumulative) filtered by topic" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
           # monotonically increasing
-          expect(json_response.values.uniq).to eq json_response.values.uniq.sort
-          expect(json_response.values.last).to eq 3
+          expect(json_response[:series][:users].values.uniq).to eq json_response[:series][:users].values.uniq.sort
+          expect(json_response[:series][:users].values.last).to eq 3
         end
       end
     end
@@ -310,9 +302,8 @@ resource "Stats - Users" do
         example_request "Active users by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 4
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 4
         end
       end
 
@@ -336,9 +327,8 @@ resource "Stats - Users" do
         example_request "Active users by time filtered by project" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 1
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 1
         end
       end
 
@@ -364,9 +354,9 @@ resource "Stats - Users" do
         example_request "Active users by time filtered by group" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 1
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 1
         end
       end
 
@@ -397,9 +387,9 @@ resource "Stats - Users" do
         example_request "Active users by time filtered by topic" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.size).to eq start_at.end_of_month.day
-          expect(json_response.values.map(&:class).uniq).to eq [Integer]
-          expect(json_response.values.inject(&:+)).to eq 2
+          expect(json_response[:series][:users].size).to eq start_at.end_of_month.day
+          expect(json_response[:series][:users].values.map(&:class).uniq).to eq [Integer]
+          expect(json_response[:series][:users].values.inject(&:+)).to eq 2
         end
       end
     end
@@ -478,9 +468,13 @@ resource "Stats - Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          female: 2,
-          unspecified: 1,
-          _blank: 0,
+          series: {
+            users: {
+              female: 2,
+              unspecified: 1,
+              _blank: 0,
+            }
+          }
         })
       end
     end
@@ -505,9 +499,13 @@ resource "Stats - Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          '1980': 2,
-          '1976': 1,
-          _blank: 0,
+          series: {
+            users: {
+              '1980': 2,
+              '1976': 1,
+              _blank: 0,
+            }
+          }
         })
       end
     end
@@ -533,14 +531,16 @@ resource "Stats - Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          :areas => {
+          areas: {
             @area1.id.to_sym => { title_multiloc: @area1.title_multiloc.symbolize_keys },
             @area2.id.to_sym => { title_multiloc: @area2.title_multiloc.symbolize_keys }
           },
-          :data => {
-            @area1.id.to_sym => 2,
-            @area2.id.to_sym  => 1,
-            _blank: 0
+          series: {
+            users: {
+              @area1.id.to_sym => 2,
+              @area2.id.to_sym  => 1,
+              _blank: 0
+            }
           }
         })
       end
@@ -566,9 +566,13 @@ resource "Stats - Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response).to match({
-          '3': 2,
-          '5': 1,
-          _blank: 0,
+          series: {
+            users: {
+              '3': 2,
+              '5': 1,
+              _blank: 0,
+            }
+          }
         })
       end
     end
@@ -610,10 +614,12 @@ resource "Stats - Users" do
               @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
               @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
             },
-            data: {
-              @option1.key.to_sym => 1,
-              @option2.key.to_sym => 1,
-              _blank: 1
+            series: {
+              users: {
+                @option1.key.to_sym => 1,
+                @option2.key.to_sym => 1,
+                _blank: 1
+              }
             }
           })
         end
@@ -654,10 +660,12 @@ resource "Stats - Users" do
               @option1.key.to_sym => { title_multiloc: @option1.title_multiloc.symbolize_keys },
               @option2.key.to_sym => { title_multiloc: @option2.title_multiloc.symbolize_keys },
             },
-            data: {
-              @option1.key.to_sym => 2,
-              @option2.key.to_sym => 1,
-              _blank: 1
+            series: {
+              users: {
+                @option1.key.to_sym => 2,
+                @option2.key.to_sym => 1,
+                _blank: 1
+              }
             }
           })
         end
@@ -689,10 +697,12 @@ resource "Stats - Users" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response).to match({
-            data: {
-              true: 1,
-              false: 1,
-              _blank: 1
+            series: {
+              users: {
+                true: 1,
+                false: 1,
+                _blank: 1
+              }
             }
           })
         end

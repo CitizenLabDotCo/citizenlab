@@ -9,7 +9,7 @@ end
 
 def time_series_parameters s
   time_boundary_parameters s
-  s.parameter :interval, "Either day, week, month, year"
+  s.parameter :interval, "Either day, week, month, year", required: true
 end
 
 def project_filter_parameter s
