@@ -63,15 +63,15 @@ export const Column = styled.div`
 `;
 
 export const NoDataContainer = styled.div`
-  font-size: ${fontSizes.base}px;
-  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 150px;
+  font-size: ${fontSizes.base}px;
   // Needed to vertically center the text
   // Reason being: we have a margin-bottom on the header,
   // Which we want to keep when there's an actual graph
-  margin-top: -20px;
+  padding: 20px;
 `;
 
 export const GraphCardInner = styled.div`
@@ -123,7 +123,7 @@ export const GraphCardHeader = styled.div`
   padding: 0 20px;
 `;
 
-export const GraphCardHeaderWithFilter = GraphCardHeader.extend`
+export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
 
   ${media.smallerThan1280px`
