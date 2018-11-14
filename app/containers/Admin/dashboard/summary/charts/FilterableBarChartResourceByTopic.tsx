@@ -143,7 +143,6 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, Sta
   render() {
     const theme = this.props['theme'];
     const { serie, topicName, totalCount } = this.state;
-    console.log(serie);
     const { chartFill } = theme;
     const {
       className,

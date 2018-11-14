@@ -90,23 +90,23 @@ export default class GetResourcesByProject extends PureComponent<Props, State> {
       currentProjectFilter,
       type } = this.props;
 
-      if (startAt !== prevProps.startAt
-        || endAt !== prevProps.endAt
-        || selectedResource !== prevProps.selectedResource
-        || currentGroupFilter !== prevProps.currentGroupFilter
-        || currentTopicFilter !== prevProps.currentTopicFilter
-        || currentProjectFilter !== prevProps.currentProjectFilter
-      ) {
-        this.resubscribe(
-          startAt,
-          endAt,
-          selectedResource,
-          currentGroupFilter,
-          currentTopicFilter,
-          currentProjectFilter,
-          type
-        );
-      }
+    if (startAt !== prevProps.startAt
+      || endAt !== prevProps.endAt
+      || selectedResource !== prevProps.selectedResource
+      || currentGroupFilter !== prevProps.currentGroupFilter
+      || currentTopicFilter !== prevProps.currentTopicFilter
+      || currentProjectFilter !== prevProps.currentProjectFilter
+    ) {
+      this.resubscribe(
+        startAt,
+        endAt,
+        selectedResource,
+        currentGroupFilter,
+        currentTopicFilter,
+        currentProjectFilter,
+        type
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -114,8 +114,8 @@ export default class GetResourcesByProject extends PureComponent<Props, State> {
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
+    startAt: string | null | undefined,
+    endAt: string | null,
     selectedResource: IResource,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
