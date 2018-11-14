@@ -117,22 +117,26 @@ Rails.application.routes.draw do
       end
 
       scope 'stats', controller: 'stats' do
-        get 'users_count'
-        get 'users_by_time'
-        get 'users_by_time_cumulative'
-        get 'active_users_by_time'
-        get 'users_by_gender'
-        get 'users_by_birthyear'
-        get 'users_by_domicile'
-        get 'users_by_education'
-        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field
-        get 'users_engagement_scores'
+        with_options controller: 'stats_users' do
+          get 'users_count'
+          get 'users_by_time'
+          get 'users_by_time_cumulative'
+          get 'active_users_by_time'
+          get 'users_by_gender'
+          get 'users_by_birthyear'
+          get 'users_by_domicile'
+          get 'users_by_education'
+          get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field
+          get 'users_engagement_scores'
+        end
+
         get 'ideas_count'
         get 'ideas_by_time'
         get 'ideas_by_time_cumulative'
         get 'ideas_by_topic'
         get 'ideas_by_project'
         get 'ideas_by_area'
+
         with_options controller: 'stats_comments' do
           get 'comments_count'
           get 'comments_by_time'
@@ -140,6 +144,7 @@ Rails.application.routes.draw do
           get 'comments_by_topic'
           get 'comments_by_project'
         end
+        
         get 'votes_count'
         get 'votes_by_birthyear'
         get 'votes_by_education'
