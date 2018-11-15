@@ -4,13 +4,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
+import { IResolution } from '..';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const IntervalButton = styled.button`
+const ResolutionButton = styled.button`
   font-size: ${fontSizes.base}px;
   padding: 1rem 1.5rem;
   background: ${colors.adminContentBackground};
@@ -37,29 +38,29 @@ const IntervalButton = styled.button`
 `;
 
 type Props = {
-  value: 'weeks' | 'months' | 'years';
-  onChange: (arg: 'weeks' | 'months' | 'years') => void;
+  value: IResolution;
+  onChange: (arg: IResolution) => void;
 };
 
-export default class IntervalControl extends React.PureComponent<Props> {
-  change = (interval: 'weeks' | 'months' | 'years') => () => {
-    this.props.onChange(interval);
+export default class ResolutionControl extends React.PureComponent<Props> {
+  change = (resolution: IResolution) => () => {
+    this.props.onChange(resolution);
   }
 
   render() {
     const { value } = this.props;
-    const intervals: ['weeks', 'months', 'years'] = ['weeks', 'months', 'years'];
+    const resOptions: IResolution[] = ['day', 'week', 'month'];
 
     return (
       <Container>
-        {intervals.map((interval) =>
-          <IntervalButton
-            key={interval}
-            className={`${value === interval && 'active'}`}
-            onClick={this.change(interval)}
+        {resOptions.map(resolution =>
+          <ResolutionButton
+            key={resolution}
+            className={`${value === resolution && 'active'}`}
+            onClick={this.change(resolution)}
           >
-            <FormattedMessage {...messages[interval.substring(0, interval.length - 1)]} />
-          </IntervalButton>
+            <FormattedMessage {...messages[`resolution${resolution}`]} />
+          </ResolutionButton>
         )}
       </Container>
     );

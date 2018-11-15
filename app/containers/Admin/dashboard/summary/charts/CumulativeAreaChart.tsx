@@ -9,7 +9,7 @@ import messages from '../../messages';
 import { rgba } from 'polished';
 
 // components
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -27,9 +27,9 @@ type Props = {
   className?: string;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
-  startAt: string;
-  endAt: string;
-  resolution: 'month' | 'day';
+  startAt: string | null | undefined;
+  endAt: string | null;
+  resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -107,9 +107,9 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
-    resolution: 'month' | 'day',
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
     currentProjectFilter: string | null,
@@ -169,10 +169,10 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { formatMessage } = this.props.intl;
     const { graphTitleMessageKey, graphUnit, className } = this.props;
     const { serie } = this.state;
-    const noData = (serie && serie.every(item => isEmpty(item))) || false;
+    const noData = !serie || serie && (serie.length === 0 || serie.every(item => isEmpty(item)));
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
-    const firstSerieValue = serie && serie.length > 0 && serie[0].value;
-    const lastSerieValue = serie && serie.length > 0  && serie[serie.length - 1].value;
+    const firstSerieValue = !noData && serie && serie[0].value;
+    const lastSerieValue = !noData && serie && serie[serie.length - 1].value;
     const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
     const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
 
