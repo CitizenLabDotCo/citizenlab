@@ -5,11 +5,11 @@ import { Multiloc } from 'typings';
 const apiEndpoint = `${API_PATH}/stats`;
 
 // Ideas
-export interface IIdeasByTime{
+export interface IIdeasByTime {
   [key: string]: number;
 }
 
-export interface IIdeasByTopic{
+export interface IIdeasByTopic {
   data: {
     [key: string]: number;
   };
@@ -20,7 +20,7 @@ export interface IIdeasByTopic{
   };
 }
 
-export interface IIdeasByProject{
+export interface IIdeasByProject {
   data: {
     [key: string]: number;
   };
@@ -56,11 +56,11 @@ export interface IUsersCount {
   count: number;
 }
 
-export interface IUsersByBirthyear{
+export interface IUsersByBirthyear {
   [key: string]: number;
 }
 
-export interface IUsersByTime{
+export interface IUsersByTime {
   [key: string]: number;
 }
 
@@ -89,11 +89,11 @@ export function activeUsersByTimeStream(streamParams: IStreamParams | null = nul
 }
 
 // Comments
-export interface ICommentsByTime{
+export interface ICommentsByTime {
   [key: string]: number;
 }
 
-export interface ICommentsByTopic{
+export interface ICommentsByTopic {
   data: {
     [key: string]: number;
   };
@@ -104,7 +104,7 @@ export interface ICommentsByTopic{
   };
 }
 
-export interface ICommentsByProject{
+export interface ICommentsByProject {
   data: {
     [key: string]: number;
   };
@@ -131,7 +131,7 @@ export function commentsByProjectStream(streamParams: IStreamParams | null = nul
 export interface IVotesByTime{
   [key: string]: number;
 }
-export interface IVotesByTopic{
+export interface IVotesByTopic {
   data: {
     [key: string]: number;
   };
@@ -142,7 +142,7 @@ export interface IVotesByTopic{
   };
 }
 
-export interface IVotesByProject{
+export interface IVotesByProject {
   data: {
     [key: string]: number;
   };
