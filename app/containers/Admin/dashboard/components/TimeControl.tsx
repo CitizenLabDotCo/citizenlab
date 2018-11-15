@@ -1,149 +1,186 @@
 import React, { PureComponent } from 'react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 // components
+import Dropdown from 'components/UI/Dropdown';
+import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  background: ${colors.adminContentBackground};
-  border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
-  overflow: hidden;
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  fill: ${colors.adminSecondaryTextColor};
-`;
-
-const PrevIcon = StyledIcon.extend``;
-
-const NextIcon = StyledIcon.extend`
-  transform: rotate(180deg);
-`;
-
-const TimeButton = styled.button`
-  display: flex;
   align-items: center;
-  justify-content: center;
+`;
+
+const DropdownContainer = styled.div`
+  position: relative;
   cursor: pointer;
-  outline: none;
-  padding: 1rem 1.5rem;
-
-  &:hover, &:focus {
-    background: ${rgba(colors.adminTextColor, .2)};
-
-    ${PrevIcon},
-    ${NextIcon} {
-      fill: ${colors.adminTextColor};
-    }
+`;
+const StyledButton = styled(Button)`
+  button {
+    padding-left: 0;
   }
 `;
 
-const Separator = styled.div`
-  width: 1px;
-  background-color: ${colors.adminSeparation};
+const DropdownItemIcon = styled(Icon)`
+  width: 11px;
+  height: 6px;
+  fill: ${colors.label};
+  margin-top: 1px;
+  margin-left: 4px;
 `;
 
-const CurrentTime = styled.div`
-  min-width: 160px;
-  font-size: ${fontSizes.base}px;
-  text-transform: capitalize;
+const DropdownListItem = styled.button`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 1.5rem;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 80ms ease-out;
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${colors.clDropdownHoverBackground};
+  }
 `;
 
-type Props  = {
-  value: number;
-  interval: 'weeks' | 'months' | 'years';
-  currentTime?: moment.Moment;
-  onChange: (arg: number) => void;
+type Props = {
+  startAtMoment?: Moment | null;
+  endAtMoment: Moment | null;
+  onChange: (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => void;
 };
 
-type State  = {
-  currentTime: string | undefined;
+type State = {
+  dropdownOpened: boolean;
 };
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
-  static getDerivedStateFromProps(nextProps: Props & InjectedIntlProps, _prevState: State) {
-    const getCurrentTime = () => {
-      const { currentTime, interval } = nextProps;
-      const { formatDate } = nextProps.intl;
+  private presets = [
+    {
+      id: 'allTime',
+      label: <FormattedMessage {...messages.allTime} />,
+      endAt: () => moment(),
+      startAt: () => undefined,
+    },
+    {
+      id: 'previousWeek',
+      label: <FormattedMessage {...messages.previousWeek} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(7, 'd'),
+    },
+    {
+      id: 'previous30Days',
+      label: <FormattedMessage {...messages.previous30Days} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(30, 'd'),
+    },
+    {
+      id: 'previous90Days',
+      label: <FormattedMessage {...messages.previous90Days} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(90, 'd'),
+    },
+    {
+      id: 'previousYear',
+      label: <FormattedMessage {...messages.previousYear} />,
+      endAt: () => moment(),
+      startAt: () => moment().subtract(1, 'y'),
+    },
+  ];
 
-      if (currentTime) {
-        const fromTime = currentTime;
-        const toTime = fromTime.clone().add(1, interval);
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownOpened: false,
+    };
+  }
 
-        switch (interval) {
-          case 'weeks':
-            const from = formatDate(fromTime.toDate(), {
-              day: '2-digit',
-              weekday: 'short'
-            });
-            const to = formatDate(toTime.toDate(), {
-              day: '2-digit',
-              weekday: 'short',
-              year: 'numeric',
-              month: 'short',
-            });
-            return `${from} - ${to}`;
-          case 'months':
-            return formatDate(fromTime.toDate(), {
-              month: 'long',
-              year: 'numeric',
-            });
-          case 'years':
-            return formatDate(fromTime.toDate(), {
-              year: 'numeric',
-            });
-          default:
-            break;
-        }
+  toggleDropdown = () => {
+    this.setState({ dropdownOpened: !this.state.dropdownOpened });
+  }
+
+  handleDatesChange = ({ startDate, endDate }: { startDate: Moment | null, endDate: Moment | null }) => {
+    this.props.onChange(startDate, endDate);
+  }
+
+  isOutsideRange = () => (false);
+
+  findActivePreset = () => {
+    const { startAtMoment, endAtMoment } = this.props;
+    if (!endAtMoment) return null;
+    return this.presets.find(preset => {
+      const startAt = preset.startAt();
+      if (startAt === undefined) {
+        return startAtMoment === undefined && preset.endAt().isSame(endAtMoment, 'day');
+      } else {
+        return !!startAtMoment && startAt.isSame(startAtMoment, 'day') && preset.endAt().isSame(endAtMoment, 'day');
       }
-
-      return;
-    };
-
-    return {
-      currentTime: getCurrentTime()
-    };
+    });
   }
 
-  handlePrevious = () => {
-    this.props.onChange(this.props.value - 1);
-  }
-
-  handleNext = () => {
-    this.props.onChange(this.props.value + 1);
+  handlePresetClick = (preset) => () => {
+    this.props.onChange(preset.startAt(), preset.endAt());
   }
 
   render() {
+    const { dropdownOpened } = this.state;
+    const { startAtMoment, endAtMoment } = this.props;
+    const activePreset = this.findActivePreset();
+
     return (
       <Container>
-        <TimeButton onClick={this.handlePrevious}>
-          <NextIcon name="chevron-right" />
-        </TimeButton>
-        <Separator />
-        <CurrentTime>
-          {this.state.currentTime}
-        </CurrentTime>
-        <Separator />
-        <TimeButton onClick={this.handleNext}>
-          <PrevIcon name="chevron-right" />
-        </TimeButton>
+        <DropdownContainer>
+          <StyledButton
+            style="text"
+            onClick={this.toggleDropdown}
+          >
+            {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
+            <DropdownItemIcon name="dropdown" />
+          </StyledButton>
+          <Dropdown
+            width="200px"
+            top="45px"
+            opened={dropdownOpened}
+            onClickOutside={this.toggleDropdown}
+            content={
+              <>
+                {this.presets.map(preset => (
+                  <DropdownListItem
+                    key={preset.id}
+                    onClick={this.handlePresetClick(preset)}
+                    role="navigation"
+                    className={activePreset && activePreset.id === preset.id ? 'selected' : ''}
+                  >
+                    {preset.label}
+                  </DropdownListItem>
+                ))}
+              </>
+            }
+          />
+        </DropdownContainer>
+
+        <DateRangePicker
+          startDateId={'startAt'}
+          endDateId={'endAt'}
+          startDate={(startAtMoment === undefined) ? null : startAtMoment}
+          endDate={endAtMoment}
+          onDatesChange={this.handleDatesChange}
+          isOutsideRange={this.isOutsideRange}
+        />
       </Container>
     );
   }
