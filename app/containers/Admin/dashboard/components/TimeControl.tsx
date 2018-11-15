@@ -69,7 +69,7 @@ type State = {
 };
 
 class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
-  presets = [
+  private presets = [
     {
       id: 'allTime',
       label: <FormattedMessage {...messages.allTime} />,

@@ -88,7 +88,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.state = {
       resolution: 'month',
       startAtMoment: undefined,
-      endAtMoment: moment(),
+      endAtMoment: null,
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
@@ -105,6 +105,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions: this.generateFilterOptions('group'),
       topicFilterOptions: this.generateFilterOptions('topic')
     };
+  }
+
+  compoenentWillMount() {
+    this.setState({ endAtMoment: moment() });
   }
 
   componentDidUpdate(prevProps: Props) {
