@@ -226,8 +226,8 @@ export default class VoteControl extends PureComponent<Props, State> {
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       idea: null,
       project: null,

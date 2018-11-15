@@ -31,7 +31,7 @@ const ProjectLink = styled.span`
 
 interface InputProps {
   projectId: string;
-  votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
+  budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'];
 }
 
 interface DataProps {
@@ -45,21 +45,17 @@ interface State {}
 class AssignBudgetDisabled extends PureComponent<Props, State> {
 
   reasonToMessage = () => {
-    const { disabled_reason, future_enabled } = this.props.votingDescriptor;
+    const { disabled_reason } = this.props.budgetingDescriptor;
 
     if (disabled_reason === 'project_inactive') {
       return messages.votingDisabledProjectInactive;
-    } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-      return messages.votingDisabledPossibleLater;
-    } else if (disabled_reason === 'voting_limited_max_reached') {
-      return messages.votingDisabledMaxReached;
     } else if (disabled_reason === 'not_in_active_context') {
       return messages.votingDisabledNotInActiveContext;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
     }
 
-    return messages.votingDisabledForProject;
+    return messages.votingDisabledNotPermitted;
   }
 
   handleProjectLinkClick = (event: FormEvent<any>) => {
@@ -74,7 +70,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   }
 
   render() {
-    const { votingDescriptor, project } = this.props;
+    const { budgetingDescriptor, project } = this.props;
     const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
 
@@ -83,7 +79,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
         <FormattedMessage
           {...message}
           values={{
-            enabledFromDate: votingDescriptor.future_enabled && <FormattedDate value={votingDescriptor.future_enabled} />,
+            enabledFromDate: budgetingDescriptor.future_enabled && <FormattedDate value={budgetingDescriptor.future_enabled} />,
             projectName:
               <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
                 <T value={projectTitle} />

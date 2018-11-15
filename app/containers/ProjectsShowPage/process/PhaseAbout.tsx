@@ -52,6 +52,10 @@ const InformationBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
     hyphens: auto;
 
     &:hover {

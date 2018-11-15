@@ -86,7 +86,7 @@ const StyledDropzone = styled(Dropzone)`
   border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
-  background: #fff;
+  background: transparent;
   transition: all 100ms ease-out;
 
   &.rounded {

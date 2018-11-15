@@ -24,7 +24,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream } from 'services/tenant';
+import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
@@ -102,6 +102,7 @@ interface Props {
 }
 
 interface State {
+  tenant: ITenant | null;
   topics: IOption[] | null;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
@@ -123,9 +124,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   titleInputElement: HTMLInputElement | null;
   descriptionElement: any;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
+      tenant: null,
       topics: null,
       pbContext: null,
       projects: null,
@@ -149,9 +151,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   componentDidMount() {
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
-    const currentTenantLocales$ = currentTenantStream().observable.pipe(
-      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
-    );
+    const tenant$ = currentTenantStream().observable;
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
@@ -180,13 +180,16 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.subscriptions = [
       combineLatest(
         locale$,
-        currentTenantLocales$,
+        tenant$,
         topics$,
         pbContext$
-      ).subscribe(([locale, currentTenantLocales, topics, pbContext]) => {
+      ).subscribe(([locale, tenant, topics, pbContext]) => {
+        const tenantLocales = tenant.data.attributes.settings.core.locales;
+
         this.setState({
+          tenant,
           pbContext,
-          topics: this.getOptions(topics, locale, currentTenantLocales)
+          topics: this.getOptions(topics, locale, tenantLocales)
         });
       }),
 
@@ -362,8 +365,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const className = this.props['className'];
     const { projectId } = this.props;
     const { formatMessage } = this.props.intl;
-    const { topics, pbContext, title, description, selectedTopics, position, budget, imageFile, titleError, descriptionError, budgetError } = this.state;
+    const { tenant, topics, pbContext, title, description, selectedTopics, position, budget, imageFile, titleError, descriptionError, budgetError } = this.state;
     const { ideaFiles } = this.state;
+    const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
     return (
       <Form id="idea-form" className={className}>
@@ -451,7 +455,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               context={{ projectId }}
             >
               <FormElement>
-                <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} /><StyledIcon name="admin" /></>} htmlFor="budget" />
+                <LabelWithIcon value={<><FormattedMessage {...messages.budgetLabel} values={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }} /><StyledIcon name="admin" /></>} htmlFor="budget" />
                 <Input
                   id="budget"
                   error={budgetError}
