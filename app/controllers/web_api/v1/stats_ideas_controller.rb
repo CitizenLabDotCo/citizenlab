@@ -6,16 +6,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   ]
 
   def ideas_count
-    count = Idea
+    count = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
-      .published
       .count
       
     render json: { count: count }
   end
 
   def ideas_by_topic
-    ideas = Idea.published
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = ideas.where(project_id: params[:project]) if params[:project]
     if params[:group]
@@ -35,7 +34,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_project
-    ideas = Idea.published
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
 
     ideas = ideas.with_some_topics([params[:topic]]) if params[:topic]
     if params[:group]
@@ -54,7 +53,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   end
 
   def ideas_by_area
-    serie = Idea
+    serie = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
       .joins(:areas_ideas)
       .group("areas_ideas.area_id")
@@ -66,7 +65,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_time
     serie = @@stats_service.group_by_time(
-      Idea,
+      StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve,
       'published_at',
       @start_at,
       @end_at,
@@ -77,7 +76,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_time_cumulative
     serie = @@stats_service.group_by_time_cumulative(
-      Idea,
+      StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve,
       'published_at',
       @start_at,
       @end_at,
