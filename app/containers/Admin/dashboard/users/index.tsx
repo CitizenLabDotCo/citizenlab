@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 import { adopt } from 'react-adopt';
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -17,12 +17,13 @@ import {
   GraphCard,
   GraphCardInner,
   GraphCardTitle,
-  ControlBar
+  ControlBar,
+  IResolution
 } from '../';
 import TimeControl from '../components/TimeControl';
-import IntervalControl from '../components/IntervalControl';
-import PieChartByCategory from './charts/PieChartByCategory';
+import ResolutionControl from '../components/ResolutionControl';
 import BarChartByCategory from './charts/BarChartByCategory';
+import PieChartByCategory from './charts/PieChartByCategory';
 import ChartFilters from '../components/ChartFilters';
 
 // i18n
@@ -40,8 +41,9 @@ import { IOption } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
-  interval: 'weeks' | 'months' | 'years';
-  intervalIndex: number;
+  resolution: IResolution;
+  startAtMoment?: Moment | null;
+  endAtMoment: Moment | null;
   currentGroupFilter: string | null;
 }
 
@@ -59,18 +61,22 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
   constructor(props: Props & InjectedLocalized & Tracks) {
     super(props);
     this.state = {
-      interval: 'months',
-      intervalIndex: 0,
+      resolution: 'month',
+      startAtMoment: undefined,
+      endAtMoment: moment(),
       currentGroupFilter: null
     };
   }
 
-  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
-    this.setState({ interval, intervalIndex: 0 });
+  changeResolution = (resolution: IResolution) => {
+    this.setState({ resolution });
   }
 
-  changeIntervalIndex = (intervalIndex: number) => {
-    this.setState({ intervalIndex });
+  handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
+    const timeDiff = endAtMoment && startAtMoment && moment.duration(endAtMoment.diff(startAtMoment));
+    const resolution = timeDiff ? (timeDiff.asMonths() > 6 ? 'month' : timeDiff.asWeeks() > 4 ? 'week' : 'day')
+      : 'month';
+    this.setState({ startAtMoment, endAtMoment, resolution });
   }
 
   handleOnGroupFilter = (filter) => {
@@ -100,24 +106,21 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
   }
 
   render() {
-    const { interval, intervalIndex, currentGroupFilter } = this.state;
-    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
-    const endAtMoment = moment(startAtMoment).add(1, interval);
-    const startAt = startAtMoment.toISOString();
-    const endAt = endAtMoment.toISOString();
+    const { resolution, currentGroupFilter, endAtMoment, startAtMoment } = this.state;
+    const startAt = startAtMoment && startAtMoment.toISOString();
+    const endAt = endAtMoment && endAtMoment.toISOString();
 
     return (
       <>
         <ControlBar>
           <TimeControl
-            value={intervalIndex}
-            interval={interval}
-            onChange={this.changeIntervalIndex}
-            currentTime={startAtMoment}
+            startAtMoment={startAtMoment}
+            endAtMoment={endAtMoment}
+            onChange={this.handleChangeTimeRange}
           />
-          <IntervalControl
-            value={interval}
-            onChange={this.changeInterval}
+          <ResolutionControl
+            value={resolution}
+            onChange={this.changeResolution}
           />
         </ControlBar>
 
