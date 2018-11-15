@@ -3,7 +3,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   before_action :render_no_data, only: [:comments_by_time, :comments_by_time_cumulative]
 
   def comments_count
-    count = Comment.published
+    count = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
       .where(created_at: @start_at..@end_at)
       .published
       .count
@@ -13,8 +13,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time
     serie = @@stats_service.group_by_time(
-      Comment.published,
-      'created_at',
+      StatCommentPolicy::Scope.new(current_user, Comment.published).resolve,
+      'comments.created_at',
       @start_at,
       @end_at,
       params[:interval]
@@ -24,8 +24,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_time_cumulative
     serie = @@stats_service.group_by_time_cumulative(
-      Comment.published,
-      'created_at',
+      StatCommentPolicy::Scope.new(current_user, Comment.published).resolve,
+      'comments.created_at',
       @start_at,
       @end_at,
       params[:interval]
@@ -34,7 +34,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_topic
-    comments = Comment.published
+    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
 
     if params[:project]
       comments = comments.joins(:idea).where(ideas: {project_id: params[:project]})
@@ -56,7 +56,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_project
-    comments = Comment.published
+    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
 
     if params[:topic]
       comments = comments
