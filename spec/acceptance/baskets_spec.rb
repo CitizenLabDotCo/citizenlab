@@ -101,6 +101,22 @@ resource "Baskets" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
       end
+
+      describe "'baskets_count' stay up to date after removing an idea from the basket" do
+        before do
+          @trolley = create_list(:basket, 3, ideas: [idea], participation_context: create(:continuous_budgeting_project, with_permissions: true)).first
+          @trolley.update(user: @user)
+        end
+
+        let(:idea) { create(:idea) }
+        let(:idea_ids) { [] }
+        let(:basket_id) { @trolley.id }
+
+        example '', document: false do
+          do_request
+          expect(idea.reload.baskets_count).to eq 2
+        end
+      end
     end
   end
 
