@@ -53,12 +53,13 @@ interface InputProps {
   className: string;
   onResourceByProjectChange: (option: IOption) => void;
   resourceOptions: IOption[];
-  startAt: string;
-  endAt: string;
+  startAt: string | null | undefined;
+  endAt: string | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
   selectedResource: IResource;
+  projectOptions: IOption[];
 }
 interface Props extends InputProps, DataProps { }
 
@@ -70,6 +71,8 @@ type IGraphFormat = {
 
 interface State {
   serie: IGraphFormat | null;
+  totalCount: number | null;
+  projectName: string | null;
 }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
@@ -79,6 +82,8 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
     super(props);
     this.state = {
       serie: null,
+      totalCount: null,
+      projectName: null,
     };
   }
 
@@ -94,7 +99,8 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
   }
 
   setConvertedSerieToState() {
-    const convertedSerie = this.convertToGraphFormat(this.props.serie);
+    const { serie } = this.props;
+    const convertedSerie = serie && this.convertToGraphFormat(this.props.serie);
     if (this.props.currentProjectFilter) {
       this.setState({ serie: this.filterByProject(convertedSerie) });
     } else { this.setState({ serie: convertedSerie }); }
@@ -121,22 +127,20 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
 
   filterByProject = (serie: IGraphFormat | null) => {
     if (serie) {
-      const { currentProjectFilter } = this.props;
+      const { currentProjectFilter, projectOptions, intl: { formatMessage } } = this.props;
       const selectedProject = serie.find(item => item.code === currentProjectFilter);
       const selectedProjectCount = selectedProject ? selectedProject.value : 0;
+      this.setState({ totalCount: selectedProjectCount });
+      if (selectedProject) {
+        this.setState({ projectName: selectedProject.name });
+      } else {
+        const foundOption = projectOptions.find(option => option.value === currentProjectFilter);
+        this.setState({ projectName: foundOption ? foundOption.label : formatMessage(messages.selectedProject) });
+      }
       const filteredSerie = serie.map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedProjectCount, ...rest };
       }).filter(item => item.code !== currentProjectFilter);
-
-      if (filteredSerie.length > 0) {
-        filteredSerie.unshift({
-          name: selectedProject ? selectedProject.name : 'selected project',
-          value: 0,
-          code: currentProjectFilter,
-        });
-      }
-
       return filteredSerie;
     }
 
@@ -146,7 +150,7 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
   render() {
     const theme = this.props['theme'];
     const { chartFill } = theme;
-    const { serie } = this.state;
+    const { serie, totalCount, projectName } = this.state;
     const {
       className,
       onResourceByProjectChange,
@@ -157,13 +161,14 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
       },
       currentProjectFilter
     } = this.props;
-    const noData = (serie && serie.every(item => isEmpty(item))) || false;
-    const unitName = (currentProjectFilter && serie)
+    const noData = (serie && (serie.every(item => isEmpty(item)) || serie.length <= 0)) || false;
+    const selectedResourceName = formatMessage(messages[selectedResource]);
+    const unitName = (currentProjectFilter && serie && !noData)
       ? formatMessage(messages.resourceByProjectDifference, {
-        resourceName: formatMessage(messages[selectedResource]),
-        project: serie[0].name
+        resourceName: selectedResourceName,
+        project: projectName
       })
-      : formatMessage(messages[selectedResource]);
+      : selectedResourceName;
     const barHoverColor = rgba(chartFill, .25);
 
     return (
@@ -184,38 +189,43 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, S
           </GraphCardHeaderWithFilter>
           {noData ?
             <NoDataContainer>
-              <FormattedMessage {...messages.noData} />
+              {currentProjectFilter ?
+                <FormattedMessage {...messages.totalCountProject} values={{ totalCount, projectName, selectedResourceName }} />
+                : <FormattedMessage {...messages.noData} />}
             </NoDataContainer>
             :
-            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-              <BarChart data={serie} layout="vertical">
-                <Bar
-                  dataKey="value"
-                  name={unitName}
-                  fill={theme.chartFill}
-                  label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-                  barSize={20}
-                />
-                <YAxis
-                  dataKey="name"
-                  type="category"
-                  width={150}
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  tickLine={false}
-                />
-                <XAxis
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <>
+              {currentProjectFilter && <FormattedMessage tagName="p" {...messages.totalCountProject} values={{ totalCount, projectName, selectedResourceName }} />}
+              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+                <BarChart data={serie} layout="vertical">
+                  <Bar
+                    dataKey="value"
+                    name={unitName}
+                    fill={theme.chartFill}
+                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                    barSize={20}
+                  />
+                  <YAxis
+                    dataKey="name"
+                    type="category"
+                    width={150}
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    tickLine={false}
+                  />
+                  <XAxis
+                    stroke={theme.chartLabelColor}
+                    fontSize={theme.chartLabelSize}
+                    type="number"
+                    tick={{ transform: 'translate(0, 7)' }}
+                  />
+                  <Tooltip
+                    isAnimationActive={false}
+                    cursor={{ fill: barHoverColor }}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </>
           }
         </GraphCardInner>
       </GraphCard>

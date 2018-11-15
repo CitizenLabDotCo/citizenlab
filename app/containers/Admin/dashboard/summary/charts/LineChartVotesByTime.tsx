@@ -5,7 +5,7 @@ import { withTheme } from 'styled-components';
 import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -23,9 +23,9 @@ type State = {
 
 type Props = {
   className: string;
-  startAt: string;
-  endAt: string;
-  resolution: 'month' | 'day';
+  startAt: string | null | undefined;
+  endAt: string | null;
+  resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -106,9 +106,9 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
-    resolution: 'month' | 'day',
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
     currentProjectFilter: string | null

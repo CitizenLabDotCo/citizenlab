@@ -6,7 +6,7 @@ import { AreaChart, Area, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianG
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
 import messages from '../../messages';
 import EmptyGraph from '../../components/EmptyGraph';
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import { IResolution, GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -24,9 +24,9 @@ type State = {
 
 type Props = {
   className: string;
-  startAt: string;
-  endAt: string;
-  resolution: 'month' | 'day';
+  startAt: string | null | undefined;
+  endAt: string | null;
+  resolution: IResolution;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -107,9 +107,9 @@ class AreaChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 
   resubscribe(
-    startAt: string,
-    endAt: string,
-    resolution: 'month' | 'day',
+    startAt: string | null | undefined,
+    endAt: string | null,
+    resolution: IResolution,
     currentGroupFilter: string | null,
     currentTopicFilter: string | null,
     currentProjectFilter: string | null

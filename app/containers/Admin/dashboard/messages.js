@@ -113,13 +113,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
   },
-  participationComparison: {
-    id: 'app.containers.AdminPage.DashboardPage.participationComparison',
-    defaultMessage: 'Participation difference with {topicName}',
+  participationPerProjectComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerProjectComparison',
+    defaultMessage: 'Participation difference with project {projectName}',
+  },
+  participationPerTopicComparison: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerTopicComparison',
+    defaultMessage: 'Participation difference with topic {topicName}',
   },
   totalCountTopic: {
     id: 'app.containers.AdminPage.DashboardPage.totalCountTopic',
-    defaultMessage: '{unitName} total in selected topic : {totalCount}',
+    defaultMessage: '{selectedResourceName} total in {topicName} topic : {totalCount}',
+  },
+  totalCountProject: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCountProject',
+    defaultMessage: '{selectedResourceName} total in {projectName} project : {totalCount}',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
@@ -140,6 +148,26 @@ export default defineMessages({
   selectedTopic: {
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
     defaultMessage: 'current topic filter',
+  },
+  previous30Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous30Days',
+    defaultMessage: 'Previous 30 days',
+  },
+  previousWeek: {
+    id: 'app.containers.AdminPage.DashboardPage.previousWeek',
+    defaultMessage: 'Previous week',
+  },
+  previous90Days: {
+    id: 'app.containers.AdminPage.DashboardPage.previous90Days',
+    defaultMessage: 'Previous 90 days',
+  },
+  previousYear: {
+    id: 'app.containers.AdminPage.DashboardPage.previousYear',
+    defaultMessage: 'Previous year',
+  },
+  allTime: {
+    id: 'app.containers.AdminPage.DashboardPage.allTime',
+    defaultMessage: 'All Time',
   },
   noData: {
     id: 'app.containers.AdminPage.DashboardPage.noData',
@@ -195,17 +223,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.interval',
     defaultMessage: 'Interval',
   },
-  day: {
-    id: 'app.containers.AdminPage.DashboardPage.day',
-    defaultMessage: 'Day',
+  resolutionday: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
+    defaultMessage: ' in Days',
   },
-  week: {
-    id: 'app.containers.AdminPage.DashboardPage.week',
-    defaultMessage: 'Week',
+  resolutionweek: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
+    defaultMessage: 'in Weeks',
   },
-  month: {
-    id: 'app.containers.AdminPage.DashboardPage.month',
-    defaultMessage: 'Month',
+  resolutionmonth: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
+    defaultMessage: 'in Months',
   },
   year: {
     id: 'app.containers.AdminPage.DashboardPage.year',
@@ -231,10 +259,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfRegistrations',
     defaultMessage: '#registrations',
   },
-  numberOfIdeas: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
-    defaultMessage: '#ideas',
-  },
   tryOutInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
     defaultMessage: 'Try out {insightsLink}, our new beta feature',
@@ -254,5 +278,9 @@ export default defineMessages({
   topicFilterLabel: {
     id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
     defaultMessage: 'Topics',
+  },
+  customDateRange: {
+    id: 'app.containers.AdminPage.DashboardPage.customDateRange',
+    defaultMessage: 'Custom',
   },
 });
