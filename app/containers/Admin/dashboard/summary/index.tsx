@@ -88,7 +88,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.state = {
       resolution: 'month',
       startAtMoment: undefined,
-      endAtMoment: null,
+      endAtMoment: moment(),
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
@@ -105,10 +105,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions: this.generateFilterOptions('group'),
       topicFilterOptions: this.generateFilterOptions('topic')
     };
-  }
-
-  compoenentWillMount() {
-    this.setState({ endAtMoment: moment() });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -272,6 +268,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
+                {/**
                 <BarChartByTime
                   className="halfWidth"
                   graphUnit="ActiveUsers"
@@ -337,6 +334,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   selectedResource={currentResourceByTopic}
                   {...this.state}
                 />
+                  **/}
               </Row>
             </GraphsContainer>
           </ThemeProvider>
