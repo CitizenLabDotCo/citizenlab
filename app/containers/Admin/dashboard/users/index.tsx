@@ -7,23 +7,20 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import { usersByGenderStream, usersByBirthyearStream } from 'services/stats';
+import { usersByGenderStream } from 'services/stats';
 
 // components
 import {
   chartTheme,
   GraphsContainer,
   Row,
-  GraphCard,
-  GraphCardInner,
-  GraphCardTitle,
   ControlBar,
-  IResolution
+    IResolution
 } from '../';
 import TimeControl from '../components/TimeControl';
 import ResolutionControl from '../components/ResolutionControl';
-import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
+import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
 
 // i18n
@@ -159,11 +156,8 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
                 endAt={endAt}
                 currentGroupFilter={currentGroupFilter}
               />
-              <BarChartByCategory
+              <AgeChart
                 className="halfWidth"
-                graphTitleMessageKey="usersByAgeTitle"
-                graphUnit="Users"
-                stream={usersByBirthyearStream}
                 startAt={startAt}
                 endAt={endAt}
                 currentGroupFilter={currentGroupFilter}
