@@ -1,7 +1,7 @@
 class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
 
   def votes_count
-    count = votes_by_resource
+    count = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(created_at: @start_at..@end_at)
       .group(:mode)
       .count
@@ -40,8 +40,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
 
     serie = @@stats_service.group_by_time(
-      votes_by_resource.group(:mode),
-      'created_at',
+      StatVotePolicy::Scope.new(current_user, Vote).resolve
+      .group(:mode),
+      'votes.created_at',
       @start_at,
       @end_at,
       params[:interval]
@@ -56,8 +57,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     end
 
     serie = @@stats_service.group_by_time_cumulative(
-      votes_by_resource.group(:mode),
-      'created_at',
+      StatVotePolicy::Scope.new(current_user, Vote).resolve
+      .group(:mode),
+      'votes.created_at',
       @start_at,
       @end_at,
       params[:interval]
@@ -66,7 +68,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_topic
-    votes = Vote
+    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
 
@@ -90,7 +92,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_project
-    votes = Vote
+    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
 
@@ -136,7 +138,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   def votes_by_custom_field_key key, filter_params, normalization='absolute'
-    serie = Vote
+    serie = StatVotePolicy::Scope.new(current_user, Vote).resolve
       .where(votable_type: 'Idea')
       .where(created_at: @start_at..@end_at)
       .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
@@ -166,14 +168,6 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
     else
       data
     end
-  end
-
-  def votes_by_resource
-    votes = Vote
-    if ['Idea', 'Comment'].include? params[:resource]
-      votes = votes.where(votable_type: params[:resource])
-    end
-    votes
   end
 
   def double_grouped_by_to_nested_hashes serie

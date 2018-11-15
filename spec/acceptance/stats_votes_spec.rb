@@ -24,10 +24,6 @@ def topic_filter_parameter s
   s.parameter :topic, "Topic ID. Only count votes on ideas that have the given topic assigned", required: false
 end
 
-def resource_parameter s
-  s.parameter :resource, "Either Idea or Comment. If not provided, all votes are taken.", required: false
-end
-
 resource "Stats - Votes" do
 
   explanation "The various stats endpoints can be used to show how certain properties of votes."
@@ -45,7 +41,6 @@ resource "Stats - Votes" do
 
   get "web_api/v1/stats/votes_count" do
     time_boundary_parameters self
-    resource_parameter self
 
     before do
       create_list(:vote, 6)
@@ -53,13 +48,12 @@ resource "Stats - Votes" do
     end
 
     example "Count all votes" do
-      create(:vote, votable: create(:comment))
-      do_request resource: 'Idea'
+      do_request
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:up)).to eq 6
       expect(json_response.dig(:down)).to eq 2
-      expect(json_response.dig(:total)).to eq Vote.count-1
+      expect(json_response.dig(:total)).to eq 8
     end
   end
 
@@ -244,7 +238,6 @@ resource "Stats - Votes" do
 
     get "web_api/v1/stats/votes_by_time" do
       time_series_parameters self
-      resource_parameter self
 
       let(:interval) { 'day' }
 
@@ -255,7 +248,7 @@ resource "Stats - Votes" do
         example_request "Votes by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response.map{|mode, values| values.size}.uniq.first).to eq ((now.to_date-start_at.to_date).to_i+1)
+          expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.to_date-start_at.to_date).to_i+1)
           expect(json_response[:series][:up].values.inject(&:+)).to eq 6
           expect(json_response[:series][:down].values.inject(&:+)).to eq 2
           expect(json_response[:series][:total].values.inject(&:+)).to eq 8
@@ -283,7 +276,6 @@ resource "Stats - Votes" do
 
     get "web_api/v1/stats/votes_by_time_cumulative" do
       time_series_parameters self
-      resource_parameter self
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_week }
       let(:end_at) { now.in_time_zone(@timezone).end_of_week }
