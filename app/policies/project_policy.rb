@@ -12,7 +12,7 @@ class ProjectPolicy < ApplicationPolicy
         scope.all
       else
         normal_user_result = scope.where(publication_status: ['published', 'archived'])
-        if user && user.roles.select{|role| role['type'] == 'project_moderator'}.present?
+        if user&.project_moderator?
           Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
         elsif user
           filter_for_normal_user normal_user_result, user
