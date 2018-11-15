@@ -45,19 +45,23 @@ docker-compose run --rm web /bin/bash
 
 After a git pull, when there are changes in the application, some changes might affect the database model or update the seed data.
 
+This is a fail-safe step process you can apply to handle any update:
 
-```
-docker-compose run --rm --user "$(id -u):$(id -g)" web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
-```
-
-Mac or Windows:
-
-```
-docker-compose run --rm web bash -c "sleep 5 && bundle exec rake db:reset RAILS_ENV=development"
+```bash
+docker-compose down
+docker-compose build web
+docker-compose run --rm web bundle exec rake db:reset
+docker-compose up
 ```
 
-Afterwards you can run the normal `docker-compose up --build`
+On Linux, you need to add `--user "$(id -u):$(id -g)"` to all `docker-compose run` commands. This is not required on Mac or Windows.
 
+To save some time, often it is not necessary to run the 2nd time consuming command `docker-compose build web`. This is only required when libraries have been updated, indicated by a change in the `Gemfile.lock` file.
+
+The 3rd step is also not always required. It is needed when
+
+- The database structure has changed, indicated by an update to `db/schema.rb`
+- The test data, aka seed data, has changed, indicated by an update to `db/seeds.rb`
 
 ## Testing
 
