@@ -1,17 +1,17 @@
 // libraries
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, Row, ControlBar, Column } from '../';
+import { chartTheme, GraphsContainer, Row, ControlBar, Column, IResolution } from '../';
 import BarChartByTime from './charts/BarChartByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
 import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
-import IntervalControl from '../components/IntervalControl';
+import ResolutionControl from '../components/ResolutionControl';
 import LineChartVotesByTime from './charts/LineChartVotesByTime';
 import TimeControl from '../components/TimeControl';
 
@@ -56,8 +56,9 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  interval: 'weeks' | 'months' | 'years';
-  intervalIndex: number;
+  resolution: IResolution;
+  startAtMoment?: Moment | null | undefined;
+  endAtMoment: Moment | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
@@ -85,8 +86,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   constructor(props: PropsHithHoCs) {
     super(props);
     this.state = {
-      interval: 'months',
-      intervalIndex: 0,
+      resolution: 'month',
+      startAtMoment: undefined,
+      endAtMoment: null,
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
@@ -105,6 +107,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     };
   }
 
+  compoenentWillMount() {
+    this.setState({ endAtMoment: moment() });
+  }
+
   componentDidUpdate(prevProps: Props) {
     if (this.props.projects !== prevProps.projects) {
       this.filterOptions.projectFilterOptions = this.generateFilterOptions('project');
@@ -117,12 +123,15 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     }
   }
 
-  changeInterval = (interval: 'weeks' | 'months' | 'years') => {
-    this.setState({ interval, intervalIndex: 0 });
+  handleChangeResolution = (resolution: IResolution) => {
+    this.setState({ resolution });
   }
 
-  changeIntervalIndex = (intervalIndex: number) => {
-    this.setState({ intervalIndex });
+  handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
+    const timeDiff = endAtMoment && startAtMoment && moment.duration(endAtMoment.diff(startAtMoment));
+    const resolution = timeDiff ? (timeDiff.asMonths() > 6 ? 'month' : timeDiff.asWeeks() > 4 ? 'week' : 'day')
+      : 'month';
+    this.setState({ startAtMoment, endAtMoment, resolution });
   }
 
   handleOnProjectFilter = (filter) => {
@@ -202,18 +211,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   render() {
     const {
-      interval,
-      intervalIndex,
+      resolution,
+      startAtMoment,
+      endAtMoment,
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
       currentResourceByProject,
       currentResourceByTopic } = this.state;
-    const startAtMoment = moment().startOf(interval).add(intervalIndex, interval);
-    const endAtMoment = moment(startAtMoment).add(1, interval);
-    const startAt = startAtMoment.toISOString();
-    const endAt = endAtMoment.toISOString();
-    const resolution = (interval === 'years' ? 'month' : 'day');
+    const startAt = startAtMoment && startAtMoment.toISOString();
+    const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
 
     const { projects, projects: { projectsList } } = this.props;
@@ -223,14 +230,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
         <>
           <ControlBar>
             <TimeControl
-              value={intervalIndex}
-              interval={interval}
-              onChange={this.changeIntervalIndex}
-              currentTime={startAtMoment}
+              startAtMoment={startAtMoment}
+              endAtMoment={endAtMoment}
+              onChange={this.handleChangeTimeRange}
             />
-            <IntervalControl
-              value={interval}
-              onChange={this.changeInterval}
+            <ResolutionControl
+              value={resolution}
+              onChange={this.handleChangeResolution}
             />
           </ControlBar>
 
@@ -313,6 +319,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
                     resourceOptions={this.resourceOptions}
+                    projectOptions={this.filterOptions.projectFilterOptions}
                     startAt={startAt}
                     endAt={endAt}
                     selectedResource={currentResourceByProject}

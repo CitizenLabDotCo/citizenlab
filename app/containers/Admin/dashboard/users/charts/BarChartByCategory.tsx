@@ -20,8 +20,8 @@ type State = {
 };
 
 type Props = {
-  startAt: string,
-  endAt: string,
+  startAt?: string | null,
+  endAt: string | null,
   currentGroupFilter: string | null,
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
