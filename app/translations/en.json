@@ -219,7 +219,7 @@
   "app.components.avatar.noAvatarAltText": "Default avatar icon for people without a custom one",
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
-  "app.container.IdeaForm.budgetLabel": "Budget",
+  "app.container.IdeaForm.budgetLabel": "Budget (in {currency}, max. {maxBudget})",
   "app.container.IdeaForm.imageDropzonePlaceholder": "Drop your image here",
   "app.container.IdeaForm.noBudgetError": "Please provide a budget",
   "app.containers.Admin.Campaigns.campaignFrom": "From:",

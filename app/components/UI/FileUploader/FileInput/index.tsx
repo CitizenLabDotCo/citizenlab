@@ -38,7 +38,7 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
   color: ${colors.label};
-  background: #fff;
+  background: transparent;
 
   &:hover {
     color: #000;

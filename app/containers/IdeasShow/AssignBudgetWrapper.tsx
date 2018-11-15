@@ -24,7 +24,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
     };
   }
 
-  unauthenticatedVoteClick = () => {
+  unauthenticatedAssignBudgetClick = () => {
     this.setState({ error: 'unauthenticated' });
   }
 
@@ -39,7 +39,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
           ideaId={ideaId}
           participationContextId={participationContextId}
           participationContextType={participationContextType}
-          unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+          unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
         />
       );
     }

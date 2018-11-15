@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { get, round, isUndefined, isNil } from 'lodash-es';
 import moment from 'moment';
 
@@ -22,6 +22,7 @@ import PBBasket from './PBBasket';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedNumber } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -69,7 +70,7 @@ const Title = styled.h1`
 `;
 
 const TitleIcon = styled(Icon)`
-  height: 20px;
+  height: 18px;
   margin-right: 10px;
 `;
 
@@ -139,7 +140,7 @@ const ProgressBarOverlay: any = styled.div`
 const ProgressBarPercentage = styled.span`
   color: #fff;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
 
   &.hidden {
     display: none;
@@ -258,20 +259,14 @@ class PBExpenses extends PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  handleSubmitExpensesOnClick = () => {
+  handleSubmitExpensesOnClick = async () => {
     const { basket } = this.props;
-    const now = moment().format();
 
     if (!isNilOrError(basket)) {
+      const now = moment().format();
       this.setState({ processing: true });
-
-      updateBasket(basket.id, {
-        submitted_at: now
-      }).then(() => {
-        this.setState({ submitState: 'clean', processing: false });
-      }).catch((_error) => {
-        this.setState({ submitState: 'clean', processing: false });
-      });
+      await updateBasket(basket.id, { submitted_at: now });
+      this.setState({ submitState: 'clean', processing: false });
     }
   }
 
@@ -344,7 +339,13 @@ class PBExpenses extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
                 <BudgetAmount>
-                  {getFormattedBudget(locale, totalBudget, currency)}
+                  <FormattedNumber
+                    value={totalBudget}
+                    style="currency"
+                    currency={currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
                 </BudgetAmount>
               </TotalBudgetDesktop>
             </Header>
@@ -365,7 +366,13 @@ class PBExpenses extends PureComponent<Props, State> {
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
-                    {getFormattedBudget(locale, spentBudget, currency)}
+                    <FormattedNumber
+                      value={spentBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
                   </BudgetAmount>
                 </Budget>
                 <TotalBudgetMobile>
@@ -373,7 +380,13 @@ class PBExpenses extends PureComponent<Props, State> {
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
                   <BudgetAmount>
-                    {getFormattedBudget(locale, totalBudget, currency)}
+                    <FormattedNumber
+                      value={totalBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
                   </BudgetAmount>
                 </TotalBudgetMobile>
               </Budgets>
@@ -395,7 +408,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   <DropdownWrapper>
                     <Dropdown
                       top="10px"
-                      mobileWidth="300px"
+                      mobileWidth="250px"
                       mobileLeft="-5px"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}

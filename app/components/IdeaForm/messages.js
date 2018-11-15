@@ -63,7 +63,7 @@ export default defineMessages({
   },
   budgetLabel: {
     id: 'app.container.IdeaForm.budgetLabel',
-    defaultMessage: 'Budget',
+    defaultMessage: 'Budget (in {currency}, max. {maxBudget})',
   },
   noBudgetError: {
     id: 'app.container.IdeaForm.noBudgetError',

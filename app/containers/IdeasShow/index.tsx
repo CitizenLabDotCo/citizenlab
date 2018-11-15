@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get, sortBy, last } from 'lodash-es';
+import { has, isString, sortBy, last } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
@@ -37,7 +37,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
-import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, IComments } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
@@ -416,6 +415,10 @@ const IdeaBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
     hyphens: auto;
 
     &:hover {
@@ -659,10 +662,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId: string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
-          const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
           let phases$: Observable<IPhase[] | null> = of(null);
 
@@ -676,11 +677,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             authUser$,
             ideaImage$,
             ideaAuthor$,
-            ideaStatus$,
             project$,
             phases$
           ).pipe(
-            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
+            map(([authUser, ideaImage, ideaAuthor, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
       ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
