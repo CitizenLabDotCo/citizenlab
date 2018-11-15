@@ -1,5 +1,9 @@
 class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
 
+  # class StatUserQuery < OpenStruct
+  #   attr_accesor :group, :project, :topic, :start_at, :end_at
+  # end
+
   before_action :render_no_data, only: [
     :users_by_time,
     :users_by_time_cumulative,
@@ -15,7 +19,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time
-    users_scope = User.active
+    users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
       project = Project.find(params[:project])
@@ -28,7 +32,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     end
 
     if params[:topic]
-      users_scope = StatsService.new.filter_users_by_topic(users_scope, params[:topic])
+      users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
     end
 
     serie = @@stats_service.group_by_time(
@@ -42,7 +46,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_time_cumulative
-    users_scope = User.active
+    users_scope = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:project]
       project = Project.find(params[:project])
@@ -55,7 +59,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     end
 
     if params[:topic]
-      users_scope = StatsService.new.filter_users_by_topic(users_scope, params[:topic])
+      users_scope = @@stats_service.filter_users_by_topic(users_scope, params[:topic])
     end
 
     serie = @@stats_service.group_by_time_cumulative(
@@ -69,7 +73,9 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def active_users_by_time
-    activities_scope = Activity.select(:user_id).distinct
+    activities_scope = Activity
+      .select(:user_id).distinct
+      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
 
     if params[:project]
       ps = ParticipantsService.new
@@ -84,7 +90,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     end
 
     if params[:topic]
-      users_scope = StatsService.new.filter_users_by_topic(User, params[:topic])
+      users_scope = @@stats_service.filter_users_by_topic(User, params[:topic])
       activities_scope = activities_scope.where(user_id: users_scope)
     end
 
@@ -99,7 +105,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_gender
-    users = User.active
+    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
       group = Group.find(params[:group])
@@ -116,7 +122,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_birthyear
-    users = User.active
+    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
       group = Group.find(params[:group])
@@ -133,7 +139,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_domicile
-    users = User.active
+    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
       group = Group.find(params[:group])
@@ -151,7 +157,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_education
-    users = User.active
+    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     if params[:group]
       group = Group.find(params[:group])
@@ -168,7 +174,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_by_custom_field
-    users = User.active
+    users = StatUserPolicy::Scope.new(current_user, User.active).resolve
 
     @custom_field = CustomField.find(params[:custom_field_id])
 
@@ -211,8 +217,9 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
   end
 
   def users_engagement_scores
-    activities = Activity
     ps = ParticipantsService.new
+    activities = Activity
+      .where(user_id: StatUserPolicy::Scope.new(current_user, User.active).resolve)
 
     if params[:group]
       group = Group.find(params[:group])
