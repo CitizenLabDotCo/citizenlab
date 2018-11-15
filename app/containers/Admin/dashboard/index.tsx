@@ -83,6 +83,13 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
+  p {
+      font-size: ${fontSizes.base}px;
+      flex-grow: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
 `;
 
 export const GraphCard = styled.div`
@@ -161,6 +168,8 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
+export type IResolution = 'day' | 'week' | 'month';
+
 interface Props {
   authUser: GetAuthUserChildProps;
 }
@@ -220,19 +229,19 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
       } else if (isProjectModerator({ data: authUser })) {
         return (
           <>
-          <FeatureFlag name={'clustering'}>
-            <StyledWarning
-              text={
-                <FormattedMessage
-                  {...messages.tryOutInsights}
-                  values={{
-                    insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                  }}
-                />
-              }
-            />
-          </FeatureFlag>
-          <Summary onlyModerator />
+            <FeatureFlag name={'clustering'}>
+              <StyledWarning
+                text={
+                  <FormattedMessage
+                    {...messages.tryOutInsights}
+                    values={{
+                      insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
+                    }}
+                  />
+                }
+              />
+            </FeatureFlag>
+            <Summary onlyModerator />
           </>
         );
       }
