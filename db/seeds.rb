@@ -116,6 +116,13 @@ if ['public','example_org'].include? Apartment::Tenant.current
         client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
         client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
       },
+      franceconnect_login: {
+        allowed: true, 
+        enabled: true,
+        environment: 'integration',
+        identifier: '0b8ba0f9a23f16bcbd86c783b2a41fd0cef0ea968e253734de71f641e0e66057',
+        secret: '60ffb1156c02cda0b6ff0089e6ca4efc5d28dd6174a62c3a413640b899f0e3ae'
+      },
       pages: {
         allowed: true, 
         enabled: true
