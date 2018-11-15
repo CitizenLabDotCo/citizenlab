@@ -5,13 +5,19 @@ import { Multiloc } from 'typings';
 const apiEndpoint = `${API_PATH}/stats`;
 
 // Ideas
-export interface IIdeasByTime{
-  [key: string]: number;
+export interface IIdeasByTime {
+  series: {
+    ideas: {
+      [key: string]: number;
+    }
+  };
 }
 
-export interface IIdeasByTopic{
-  data: {
-    [key: string]: number;
+export interface IIdeasByTopic {
+  series: {
+    ideas: {
+      [key: string]: number;
+    }
   };
   topics: {
     [key: string]: {
@@ -20,9 +26,11 @@ export interface IIdeasByTopic{
   };
 }
 
-export interface IIdeasByProject{
-  data: {
-    [key: string]: number;
+export interface IIdeasByProject {
+  series: {
+    ideas: {
+      [key: string]: number;
+    }
   };
   projects: {
     [key: string]: {
@@ -49,19 +57,31 @@ export function ideasByProjectStream(streamParams: IStreamParams | null = null) 
 
 // Users
 export interface IUsersByGender {
-  [key: string]: number;
+  series: {
+    users: {
+      [key: string]: number;
+    }
+  };
 }
 
 export interface IUsersCount {
   count: number;
 }
 
-export interface IUsersByBirthyear{
-  [key: string]: number;
+export interface IUsersByBirthyear {
+  series: {
+    users: {
+      [key: string]: number;
+    }
+  };
 }
 
-export interface IUsersByTime{
-  [key: string]: number;
+export interface IUsersByTime {
+  series: {
+    users: {
+      [key: string]: number;
+    }
+  };
 }
 
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
@@ -89,13 +109,19 @@ export function activeUsersByTimeStream(streamParams: IStreamParams | null = nul
 }
 
 // Comments
-export interface ICommentsByTime{
-  [key: string]: number;
+export interface ICommentsByTime {
+  series: {
+    comments: {
+      [key: string]: number;
+    }
+  };
 }
 
-export interface ICommentsByTopic{
-  data: {
-    [key: string]: number;
+export interface ICommentsByTopic {
+  series: {
+    comments: {
+      [key: string]: number;
+    }
   };
   topics: {
     [key: string]: {
@@ -104,9 +130,11 @@ export interface ICommentsByTopic{
   };
 }
 
-export interface ICommentsByProject{
-  data: {
-    [key: string]: number;
+export interface ICommentsByProject {
+  series: {
+    comments: {
+      [key: string]: number;
+    }
   };
   projects: {
     [key: string]: {
@@ -128,12 +156,19 @@ export function commentsByProjectStream(streamParams: IStreamParams | null = nul
 }
 
 // Votes
-export interface IVotesByTime{
-  [key: string]: number;
+export interface IVotesByTime {
+  series: {
+    votes: {
+      [key: string]: number;
+    }
+  };
 }
-export interface IVotesByTopic{
-  data: {
-    [key: string]: number;
+
+export interface IVotesByTopic {
+  series: {
+    votes: {
+      [key: string]: number;
+    }
   };
   topics: {
     [key: string]: {
@@ -142,9 +177,11 @@ export interface IVotesByTopic{
   };
 }
 
-export interface IVotesByProject{
-  data: {
-    [key: string]: number;
+export interface IVotesByProject {
+  series: {
+    votes: {
+      [key: string]: number;
+    }
   };
   projects: {
     [key: string]: {
@@ -154,34 +191,42 @@ export interface IVotesByProject{
 }
 
 interface IGenderCounts {
-  male: number;
-  female: number;
-  unspecified: number;
-  _blank: number;
+  male?: number;
+  female?: number;
+  unspecified?: number;
+  _blank?: number;
 }
 
 export interface IVotesByGender {
-  up: IGenderCounts;
-  down: IGenderCounts;
-  total: IGenderCounts;
+  series: {
+    up: IGenderCounts;
+    down: IGenderCounts;
+    total: IGenderCounts;
+  };
 }
 
 export interface IVotesByTimeCumulative {
-  up: {[key: string]: number};
-  down: {[key: string]: number};
-  total: {[key: string]: number};
+  series: {
+    up: { [key: string]: number };
+    down: { [key: string]: number };
+    total: { [key: string]: number };
+  };
 }
 
 export interface IVotesByBirthyear {
-  up: { [key: number]: number };
-  down: { [key: number]: number };
-  total: { [key: number]: number };
+  series: {
+    up: { [key: number]: number };
+    down: { [key: number]: number };
+    total: { [key: number]: number };
+  };
 }
 
 export interface IVotesByDomicile {
-  up: { [key: string]: number };
-  down: { [key: string]: number };
-  total: { [key: string]: number };
+  series: {
+    up: { [key: string]: number };
+    down: { [key: string]: number };
+    total: { [key: string]: number };
+  };
 }
 
 export function votesByTimeCumulativeStream(streamParams: IStreamParams | null = null) {
