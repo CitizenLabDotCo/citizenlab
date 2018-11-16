@@ -125,7 +125,7 @@ export type UtmParams = {
 };
 
 interface InputProps {
-  location?: string;
+  location?: 'modal';
   className?: string;
   url: string;
   twitterMessage: string;
