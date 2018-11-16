@@ -190,7 +190,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
               />}
             </TitleWithInfoIcon>
           </GraphCardHeader>
-          {serie ?
+          {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>

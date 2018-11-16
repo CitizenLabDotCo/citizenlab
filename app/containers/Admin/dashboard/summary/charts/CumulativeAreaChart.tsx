@@ -178,14 +178,14 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
       return {
         totalNumber: lastSerieValue,
         formattedSerieChange: this.formatSerieChange(serieChange),
-        variationSign: serieChange >= 0 ? 'increase' : 'decrease'
+        typeOfChange: serieChange >= 0 ? 'increase' : 'decrease'
       };
     }
 
     return {
       totalNumber: null,
       formattedSerieChange: null,
-      variationSign: ''
+      typeOfChange: ''
     };
   }
 
@@ -198,7 +198,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const {
       totalNumber,
       formattedSerieChange,
-      variationSign
+      typeOfChange
     } = formattedNumbers;
 
     return (
@@ -213,13 +213,13 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                 {totalNumber}
               </GraphCardFigure>
               <GraphCardFigureChange
-                className={variationSign}
+                className={typeOfChange}
               >
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {serie ?
+          {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
