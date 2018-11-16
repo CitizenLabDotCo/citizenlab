@@ -39,6 +39,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // logos
 const googleLogo = require('components/SignUp/Footer/svg/google.svg') as string;
 const facebookLogo = require('components/SignUp/Footer/svg/facebook.svg') as string;
+const franceconnectLogo = require('components/SignUp/Footer/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   flex: 1;
@@ -71,11 +72,11 @@ const FormElement = styled.div`
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
-      color: ${colors.label}
+      color: ${colors.label};
     }
 
     &:focus::placeholder {
-      color #aaa
+      color: #aaa;
     }
   }
 `;
@@ -185,6 +186,11 @@ const SocialSignInButton = styled.div`
   ${media.largePhone`
     height: 90px;
   `}
+
+  &.franceconnect:hover,
+  &.franceconnect.active {
+    border-color: #0e4fa1;
+  }
 
   &.google:hover,
   &.google.active {
@@ -341,7 +347,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
@@ -455,6 +461,15 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       />
                     </AzureAdSignInButton>
                   </FeatureFlag>
+                <FeatureFlag name="franceconnect_login">
+                  <SocialSignInButton className="franceconnect" onClick={this.handleOnSSOClick('franceconnect')}>
+                    <img
+                      src={franceconnectLogo}
+                      height="45px"
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                    />
+                  </SocialSignInButton>
+                </FeatureFlag>
                   <FeatureFlag name="google_login">
                     <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
                       <img
