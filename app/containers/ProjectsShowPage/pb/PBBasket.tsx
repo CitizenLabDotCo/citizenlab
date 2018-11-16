@@ -23,6 +23,9 @@ import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
 
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
@@ -155,10 +158,15 @@ class PBBasket extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, basket, ideaList, className } = this.props;
+    const { tenant, basket, phase, ideaList, participationContextType, className } = this.props;
 
     if (!isNilOrError(tenant) && !isUndefined(basket)) {
       const ideas = (!isNilOrError(ideaList) ? ideaList.filter(idea => !isNilOrError(idea)) as IIdeaData[] : null);
+      let budgetingDisabled = false;
+
+      if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) !== 'present') {
+        budgetingDisabled = true;
+      }
 
       return (
         <Container className={className}>
@@ -182,15 +190,12 @@ class PBBasket extends PureComponent<Props, State> {
                     />
                   </IdeaBudget>
                 }
-                {/*
-                <IdeaAuthor>
-                  <FormattedMessage {...messages.byAuthor} values={{ authorName: idea.attributes.author_name }} />
-                </IdeaAuthor>
-                */}
               </DropdownListItemContent>
-              <RemoveIconWrapper onClick={this.removeIdeaFromBasket(idea.id)}>
-                <RemoveIcon name="remove" />
-              </RemoveIconWrapper>
+              {!budgetingDisabled &&
+                <RemoveIconWrapper onClick={this.removeIdeaFromBasket(idea.id)}>
+                  <RemoveIcon name="remove" />
+                </RemoveIconWrapper>
+              }
             </DropdownListItem>
           ))}
 

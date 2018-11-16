@@ -152,11 +152,9 @@ class AssignBudgetControl extends PureComponent<Props, State> {
     if (!authUser) {
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
-      const budgetingEnabled = idea.relationships.action_descriptor.data.budgeting.enabled;
-      // const budgetingDisabledReason = idea.relationships.action_descriptor.data.budgeting.disabled_reason;
-      // const budgetingFutureEnabled = idea.relationships.action_descriptor.data.budgeting.future_enabled;
+      const budgetingEnabled = get(idea.relationships.action_descriptor.data.budgeting, 'enabled', null);
 
-      if (!budgetingEnabled) {
+      if (budgetingEnabled === false) {
         disabledAssignBudgetClick && disabledAssignBudgetClick();
       } else {
         this.setState({ processing: true });
@@ -227,8 +225,8 @@ class AssignBudgetControl extends PureComponent<Props, State> {
             <IdeaCardButton
               onClick={this.assignBudget}
               processing={processing}
-              bgColor={isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor}
-              disabled={disabled}
+              bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
+              bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               icon={!isInBasket ? 'add' : 'remove'}
             >
               {!isInBasket ? (
@@ -266,8 +264,8 @@ class AssignBudgetControl extends PureComponent<Props, State> {
             <Button
               onClick={this.assignBudget}
               processing={processing}
-              bgColor={isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor}
-              disabled={disabled}
+              bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
+              bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
               fullWidth={true}
               icon={!isInBasket ? 'add' : 'remove'}
             >
