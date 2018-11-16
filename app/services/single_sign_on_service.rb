@@ -58,7 +58,7 @@ class SingleSignOnService
     {
       gender: auth.extra.raw_info.gender,
       locale: Tenant.current.closest_locale_to('fr-FR'),
-      birthyear: Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil,
+      birthyear: (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
     }
   end
 
