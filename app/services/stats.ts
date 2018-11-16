@@ -4,6 +4,8 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/stats`;
 
+export type IResourceByTime = IIdeasByTime | IUsersByTime | ICommentsByTime;
+
 // Ideas
 export interface IIdeasByTime {
   series: {
