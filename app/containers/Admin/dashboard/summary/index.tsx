@@ -268,9 +268,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
-                {/* <BarChartByTime
+                <BarChartByTime
                   className="halfWidth"
-                  graphUnit="ActiveUsers"
+                  graphUnit="users"
+                  graphUnitMessageKey="activeUsers"
                   graphTitleMessageKey="activeUsersByTimeTitle"
                   startAt={startAt}
                   endAt={endAt}
@@ -278,7 +279,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   stream={activeUsersByTimeStream}
                   infoMessage={infoMessage}
                   {...this.state}
-                /> */}
+                />
               </Row>
               <Row>
                 <CumulativeAreaChart

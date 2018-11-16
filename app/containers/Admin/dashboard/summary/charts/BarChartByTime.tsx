@@ -10,7 +10,8 @@ import { rgba } from 'polished';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByTime } from 'services/stats';
+import { IResourceByTime, IUsersByTime } from 'services/stats';
+import { IGraphFormat } from 'typings';
 
 // components
 import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer , IResolution } from '../..';
@@ -33,16 +34,13 @@ const InfoIcon = styled(Icon)`
 `;
 
 type State = {
-  serie: {
-    name: string | number,
-    value: number,
-    code: string
-  }[] | null;
+  serie: IGraphFormat | null;
 };
 
 type Props = {
   className?: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: 'users';
+  graphUnitMessageKey: 'activeUsers',
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -65,8 +63,22 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   componentDidMount() {
-    const { startAt, endAt, resolution, currentGroupFilter, currentTopicFilter, currentProjectFilter } = this.props;
-    this.resubscribe(startAt, endAt, resolution, currentProjectFilter, currentGroupFilter, currentTopicFilter);
+    const {
+      startAt,
+      endAt,
+      resolution,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter
+    } = this.props;
+    this.resubscribe(
+      startAt,
+      endAt,
+      resolution,
+      currentProjectFilter,
+      currentGroupFilter,
+      currentTopicFilter
+    );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -87,12 +99,18 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: { [key: string]: number }) => {
-    return map(serie, (value, key) => ({
-      value,
-      name: key,
-      code: key
-    }));
+  convertToGraphFormat = (data: IResourceByTime) => {
+    const { graphUnit } = this.props;
+
+    if (!isEmpty(data.series[graphUnit])) {
+      return map(data.series[graphUnit], (value, key) => ({
+        value,
+        name: key,
+        code: key
+      }));
+    }
+
+    return null;
   }
 
   resubscribe(
@@ -147,9 +165,8 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { className, graphTitleMessageKey, graphUnit, infoMessage } = this.props;
+    const { className, graphTitleMessageKey, graphUnitMessageKey, infoMessage } = this.props;
     const { serie } = this.state;
-    const noData = (serie && serie.every(item => isEmpty(item))) || false;
     const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
     const barHoverColor = rgba(chartFill, .25);
 
@@ -173,7 +190,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
               />}
             </TitleWithInfoIcon>
           </GraphCardHeader>
-          {noData ?
+          {serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
@@ -182,7 +199,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
               <BarChart data={serie}>
                 <Bar
                   dataKey="value"
-                  name={formatMessage(messages[`numberOf${graphUnit}`])}
+                  name={formatMessage(messages[graphUnitMessageKey])}
                   fill={chartFill}
                 />
                 <XAxis
@@ -199,6 +216,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
+                  cursor={{ fill: barHoverColor }}
                 />
               </BarChart>
             </ResponsiveContainer>}
