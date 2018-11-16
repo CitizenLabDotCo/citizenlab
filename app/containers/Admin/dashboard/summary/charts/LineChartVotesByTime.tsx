@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isNumber, isEmpty } from 'lodash-es';
+import { map, isEmpty } from 'lodash-es';
 import { withTheme } from 'styled-components';
 import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
@@ -11,14 +11,16 @@ import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeade
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
+type IVotesInGraphFormat = {
+  date: string | number,
+  up: number,
+  down: number,
+  total: number,
+  code: string
+}[];
+
 type State = {
-  serie: {
-    date: string | number,
-    up: number,
-    down: number,
-    total: number,
-    code: string
-  }[] | null;
+  serie: IVotesInGraphFormat | null;
 };
 
 type Props = {
@@ -93,16 +95,20 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat(serie: IVotesByTimeCumulative) {
-    const { up, down, total } = serie;
+  convertToGraphFormat(data: IVotesByTimeCumulative) {
+    const { up, down, total } = data.series;
 
-    return map(total, (value, key) => ({
-      total: value,
-      down: down[key],
-      up: up[key],
-      date: key,
-      code: key
-    }));
+    if (!isEmpty(total)) {
+      return map(total, (value, key) => ({
+        total: value,
+        down: down[key],
+        up: up[key],
+        date: key,
+        code: key
+      }));
+    }
+
+    return null;
   }
 
   resubscribe(
@@ -127,8 +133,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
         topic: currentTopicFilter,
       }
     }).observable.subscribe((serie) => {
-      const validSerie = !isEmpty(serie.down) && !isEmpty(serie.up) && !isEmpty(serie.total);
-      const convertedSerie = validSerie ? this.convertToGraphFormat(serie) : null;
+      const convertedSerie = this.convertToGraphFormat(serie);
       this.setState({ serie: convertedSerie });
     });
   }
@@ -163,16 +168,33 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     return null;
   }
 
+  getFormattedNumbers(serie: IVotesInGraphFormat | null) {
+    if (serie) {
+      const firstSerieValue = serie && serie[0].total;
+      const lastSerieValue = serie && serie[serie.length - 1].total;
+      const serieChange = lastSerieValue - firstSerieValue;
+
+      return {
+        totalNumber: lastSerieValue,
+        formattedSerieChange: this.formatSerieChange(serieChange),
+        typeOfChange: serieChange >= 0 ? 'increase' : 'decrease'
+      };
+    }
+
+    return {
+      totalNumber: null,
+      formattedSerieChange: null,
+      typeOfChange: ''
+    };
+  }
+
   render() {
     const { chartLabelSize, chartLabelColor, chartStroke, chartStrokeGreen, chartStrokeRed } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
-    const noData = !serie;
-    const firstSerieValue = serie && serie[0].total;
-    const lastSerieValue = serie && serie[serie.length - 1].total;
-    const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
-    const formattedSerieChange = isNumber(serieChange) ? this.formatSerieChange(serieChange) : null;
+    const formattedNumbers = this.getFormattedNumbers(serie);
+    const { totalNumber, formattedSerieChange, typeOfChange } = formattedNumbers;
 
     return (
       <GraphCard className={className}>
@@ -183,18 +205,16 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
             </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>
-                {lastSerieValue}
+                {totalNumber}
               </GraphCardFigure>
               <GraphCardFigureChange
-                className={
-                  isNumber(serieChange) && serieChange > 0 ? 'increase' : 'decrease'
-                }
+                className={typeOfChange}
               >
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {noData ?
+          {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
