@@ -34,20 +34,16 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
       'fcp.integ01.dev-franceconnect.fr'
     when "production"
       'app.franceconnect.gouv.fr'
-    else
-      'app.franceconnect.gouv.fr'
     end 
 
     options = env['omniauth.strategy'].options
-    # options[:scope] = ["openid", "profile", "email", "address"],
-    # options[:scope] = "openid,profile,email,address",
-    options[:scope] = "openid profile email address",
-    options[:response_type] = :code,
-    options[:state] = true, # Requis par France connect
-    options[:nonce] = true, # Requis par France connect
+    options[:scope] = [:openid, :profile, :email, :address]
+    options[:response_type] = :code
+    options[:state] = true # Requis par France connect
+    options[:nonce] = true # Requis par France connect
     options[:issuer] = "https://#{host}" # L'environnement d'intégration utilise à présent 'https'
-    options[:client_auth_method] = 'Custom', # France connect n'utilise pas l'authent "BASIC".
-    options[:client_signing_alg] = :HS256,   # Format de hashage France Connect
+    options[:client_auth_method] = 'Custom' # France connect n'utilise pas l'authent "BASIC".
+    options[:client_signing_alg] = :HS256   # Format de hashage France Connect
     options[:client_options] = {
       identifier: Tenant.settings("franceconnect_login", "identifier"),
       secret: Tenant.settings("franceconnect_login", "secret"),
