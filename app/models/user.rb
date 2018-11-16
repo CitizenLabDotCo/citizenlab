@@ -72,8 +72,28 @@ class User < ApplicationRecord
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
-  scope :project_moderators, -> (project_id) {
-    where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+  scope :not_admin, -> {
+    where.not("roles @> '[{\"type\":\"admin\"}]'")
+  }
+
+  scope :project_moderator, -> (project_id=nil) {
+    if project_id
+      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+    else
+      where("roles @> '[{\"type\":\"project_moderator\"}]'")
+    end
+  }
+
+  scope :not_project_moderator, -> {
+    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
+  }
+
+  scope :normal_user, -> {
+    where("roles = '[]'::jsonb")
+  }
+
+  scope :not_normal_user, -> {
+    where.not("roles = '[]'::jsonb")
   }
 
   scope :active, -> {
