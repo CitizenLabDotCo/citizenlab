@@ -96,9 +96,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentResourceByProject: 'Ideas'
     };
     this.resourceOptions = [
-      { value: 'Ideas', label: props.intl.formatMessage(messages['Ideas']) },
-      { value: 'Comments', label: props.intl.formatMessage(messages['Comments']) },
-      { value: 'Votes', label: props.intl.formatMessage(messages['Votes']) }
+      { value: 'Ideas', label: props.intl.formatMessage(messages['ideas']) },
+      { value: 'Comments', label: props.intl.formatMessage(messages['comments']) },
+      { value: 'Votes', label: props.intl.formatMessage(messages['votes']) }
     ];
     this.filterOptions = {
       projectFilterOptions: this.generateFilterOptions('project'),
@@ -261,15 +261,14 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <CumulativeAreaChart
                   className="first halfWidth"
                   graphTitleMessageKey="usersByTimeTitle"
-                  graphUnit="Users"
+                  graphUnit="users"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
                   stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
-                {/**
-                <BarChartByTime
+                {/* <BarChartByTime
                   className="halfWidth"
                   graphUnit="ActiveUsers"
                   graphTitleMessageKey="activeUsersByTimeTitle"
@@ -279,13 +278,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   stream={activeUsersByTimeStream}
                   infoMessage={infoMessage}
                   {...this.state}
-                />
+                /> */}
               </Row>
               <Row>
                 <CumulativeAreaChart
                   className="first halfWidth"
                   graphTitleMessageKey="ideasByTimeTitle"
-                  graphUnit="Ideas"
+                  graphUnit="ideas"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
@@ -295,7 +294,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <CumulativeAreaChart
                   className="halfWidth"
                   graphTitleMessageKey="commentsByTimeTitle"
-                  graphUnit="Comments"
+                  graphUnit="comments"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
@@ -303,7 +302,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   {...this.state}
                 />
               </Row>
-              <Row>
+              {/* <Row>
                 <Column className="first">
                   <LineChartVotesByTime
                     className="colFirst"
@@ -334,8 +333,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   selectedResource={currentResourceByTopic}
                   {...this.state}
                 />
-                  **/}
-              </Row>
+              </Row> */}
             </GraphsContainer>
           </ThemeProvider>
         </>
