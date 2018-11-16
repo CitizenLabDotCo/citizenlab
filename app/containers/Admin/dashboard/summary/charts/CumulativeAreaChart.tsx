@@ -27,7 +27,7 @@ type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 
 type Props = {
   className?: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: 'users' | 'ideas' | 'comments';
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -100,8 +100,9 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (data: IUsersByTime) => {
-    return map(data.series.users, (value, key) => ({
+  convertToGraphFormat = (data: IResourceByTime) => {
+    const { graphUnit } = this.props;
+    return map(data.series[graphUnit], (value, key) => ({
       value,
       name: key,
       code: key
@@ -168,7 +169,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   isSerieEmpty(serie) {
-    return !serie || (serie && (serie.lengh === 0 || serie.every(item => isEmpty(item))));
+    return !serie || (serie && (serie.length === 0 || serie.every(item => isEmpty(item))));
   }
 
   getFormattedAmounts(serie) {
@@ -197,9 +198,11 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { serie } = this.state;
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
     const noData = this.isSerieEmpty(serie);
-    const { totalAmount,
-    formattedSerieChange,
-    variationSign } = this.getFormattedAmounts(serie);
+    const {
+      totalAmount,
+      formattedSerieChange,
+      variationSign
+    } = this.getFormattedAmounts(serie);
 
     return (
       <GraphCard className={className}>
@@ -230,7 +233,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                 <Area
                   type="monotone"
                   dataKey="value"
-                  name={formatMessage(messages[`numberOf${graphUnit}`])}
+                  name={formatMessage(messages[graphUnit])}
                   dot={false}
                   fill={rgba(chartFill, .25)}
                   fillOpacity={1}
