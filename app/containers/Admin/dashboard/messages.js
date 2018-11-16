@@ -77,6 +77,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.Users',
     defaultMessage: 'Users',
   },
+  activeUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
+    defaultMessage: 'Active users',
+  },
   ideas: {
     id: 'app.containers.AdminPage.DashboardPage.Ideas',
     defaultMessage: 'Ideas',
