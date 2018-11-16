@@ -31,6 +31,7 @@ import { darken } from 'polished';
 // logos
 const googleLogoUrl = require('./svg/google.svg') as string;
 const facebookLogoUrl = require('./svg/facebook.svg') as string;
+const franceconnectLogoUrl = require('./svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   width: 100%;
@@ -95,7 +96,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
+  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory'  | 'franceconnect' | null;
   socialLoginTaCAccepted: boolean;
   socialLoginUrlParameter: string;
 }
@@ -133,11 +134,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     this.setState(state => ({ socialLoginClicked: (state.socialLoginClicked === provider && !state.socialLoginTaCAccepted ? null : provider) }));
   }
 
-  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     this.setState({ socialLoginTaCAccepted: true });
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
@@ -177,6 +178,18 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     socialLoginTaCAccepted={socialLoginTaCAccepted}
                     onClick={this.handleOnSSOClick('azureactivedirectory')}
                     onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                  />
+                </FeatureFlag>
+                <FeatureFlag name="franceconnect_login">
+                  <SignUpButton
+                    logoUrl={franceconnectLogoUrl}
+                    logoHeight="45px"
+                    loginProvider="franceconnect"
+                    socialLoginClicked={socialLoginClicked}
+                    loginMechanismName="France Connect"
+                    socialLoginTaCAccepted={socialLoginTaCAccepted}
+                    onClick={this.handleOnSSOClick('franceconnect')}
+                    onAcceptToC={this.handleSocialLoginAcceptTaC('franceconnect')}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
