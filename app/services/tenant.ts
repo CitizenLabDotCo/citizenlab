@@ -23,6 +23,7 @@ export interface ITenantSettings {
     header_slogan: Multiloc | null;
     meta_title: Multiloc | null;
     meta_description: Multiloc | null;
+    signup_helper_text: Multiloc | null;
     color_main: string | null;
     color_menu_bg: string | null;
     currency: string;
