@@ -214,6 +214,7 @@ interface DataProps {
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
   azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -361,10 +362,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
-      azureAdLoginEnabled
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
+    const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
     const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
@@ -432,11 +434,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               </PasswordLogin>
             }
 
-            {passwordLoginEnabled && socialLoginEnabled &&
+            {passwordLoginEnabled && externalLoginEnabled &&
               <Separator />
             }
 
-            {socialLoginEnabled &&
+            {externalLoginEnabled &&
               <Footer>
                 {(passwordLoginEnabled &&
                   <SocialLoginText>
@@ -495,6 +497,7 @@ const Data = adopt<DataProps, {}>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 export default (inputProps: InputProps) => (
