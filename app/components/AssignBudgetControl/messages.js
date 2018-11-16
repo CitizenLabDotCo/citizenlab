@@ -17,17 +17,16 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.assigned',
     defaultMessage: 'Assigned',
   },
-  budgetingDisabledProjectInactive: {
-    id: 'app.components.VoteControl.budgetingDisabledProjectInactive',
-    defaultMessage: 'You can no longer or not yet assign budgets on ideas in {projectName}',
+  budgetingDisabled: {
+    id: 'app.components.VoteControl.budgetingDisabled',
+    defaultMessage: `Sorry. Assigning a budget to this idea is no longer possible.`,
   },
-  budgetingDisabledNotInActiveContext: {
-    id: 'app.components.VoteControl.budgetingDisabledNotInActiveContext',
-    defaultMessage: 'This idea is no longer or not yet considered in {projectName}',
+  budgetingDisabledFutureEnabled: {
+    id: 'app.components.VoteControl.budgetingDisabledFutureEnabled',
+    defaultMessage: `Sorry. Assigning a budget to this idea is currently not yet possible. It will be enabled starting from {enabledFromDate}.`,
   },
   budgetingDisabledNotPermitted: {
     id: 'app.components.VoteControl.budgetingDisabledNotPermitted',
-    defaultMessage: 'Unfortunately, you don\'t have the rights to assign a budget for this idea',
+    defaultMessage: `Sorry. You don't have the permission to assign a budget to this idea.`,
   },
-
 });

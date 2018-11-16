@@ -39,6 +39,10 @@ const InnerContainer = styled.div`
   border-radius: 5px;
   border: solid 1px ${colors.separation};
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+  `}
 `;
 
 const Header = styled.div`
@@ -231,7 +235,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
-  submitState: 'clean' | 'dirty';
+  submitState: 'clean' | 'dirty' | 'submitted';
   processing: boolean;
 }
 
@@ -266,7 +270,7 @@ class PBExpenses extends PureComponent<Props, State> {
       const now = moment().format();
       this.setState({ processing: true });
       await updateBasket(basket.id, { submitted_at: now });
-      this.setState({ submitState: 'clean', processing: false });
+      this.setState({ submitState: 'submitted', processing: false });
     }
   }
 
@@ -287,7 +291,7 @@ class PBExpenses extends PureComponent<Props, State> {
       const submittedAt = (!isNilOrError(basket) ? basket.attributes.submitted_at : null);
       let totalBudget = 0;
       let progress = 0;
-      let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let validationStatus: 'notValidated' | 'previouslyValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
       let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'Project' && !isNilOrError(project)) {
@@ -303,10 +307,12 @@ class PBExpenses extends PureComponent<Props, State> {
       if (budgetExceedsLimit) {
         validationStatus = 'validationError';
       } else if (submittedAt && submitState === 'clean' && !budgetExceedsLimit && spentBudget > 0) {
+        validationStatus = 'previouslyValidated';
+      } else if (submittedAt && submitState === 'submitted' && !budgetExceedsLimit && spentBudget > 0) {
         validationStatus = 'validationSuccess';
       }
 
-      if (validationStatus === 'validationSuccess' && submitState === 'clean') {
+      if (validationStatus === 'validationSuccess') {
         progressBarColor = 'green';
       } else if (budgetExceedsLimit) {
         progressBarColor = 'red';
@@ -317,7 +323,7 @@ class PBExpenses extends PureComponent<Props, State> {
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
-                {validationStatus === 'notValidated' &&
+                {(validationStatus === 'notValidated' || validationStatus === 'previouslyValidated') &&
                   <FormattedMessage {...messages.yourExpenses} />
                 }
                 {validationStatus === 'validationError' &&
@@ -427,7 +433,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   icon="submit"
                   iconPos="right"
                   bgColor={colors.adminTextColor}
-                  disabled={submitState === 'clean' || budgetExceedsLimit}
+                  disabled={submitState === 'clean' || validationStatus === 'validationSuccess' || budgetExceedsLimit}
                   processing={processing}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />

@@ -1,8 +1,8 @@
 import React, { PureComponent, FormEvent } from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
-import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { IIdeaData } from 'services/ideas';
@@ -45,17 +45,15 @@ interface State {}
 class AssignBudgetDisabled extends PureComponent<Props, State> {
 
   reasonToMessage = () => {
-    const { disabled_reason } = this.props.budgetingDescriptor;
+    const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
 
-    if (disabled_reason === 'project_inactive') {
-      return messages.votingDisabledProjectInactive;
-    } else if (disabled_reason === 'not_in_active_context') {
-      return messages.votingDisabledNotInActiveContext;
+    if (disabled_reason && future_enabled) {
+      return messages.budgetingDisabledFutureEnabled;
     } else if (disabled_reason === 'not_permitted') {
-      return messages.votingDisabledNotPermitted;
+      return messages.budgetingDisabledNotPermitted;
     }
 
-    return messages.votingDisabledNotPermitted;
+    return messages.budgetingDisabled;
   }
 
   handleProjectLinkClick = (event: FormEvent<any>) => {
@@ -73,13 +71,14 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     const { budgetingDescriptor, project } = this.props;
     const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
+    const enabledFromDate = (budgetingDescriptor.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
 
     return (
       <Container>
         <FormattedMessage
           {...message}
           values={{
-            enabledFromDate: budgetingDescriptor.future_enabled && <FormattedDate value={budgetingDescriptor.future_enabled} />,
+            enabledFromDate,
             projectName:
               <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
                 <T value={projectTitle} />

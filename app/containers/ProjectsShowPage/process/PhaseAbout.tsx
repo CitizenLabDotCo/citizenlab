@@ -24,11 +24,12 @@ import { darken } from 'polished';
 const Container = styled.div`
   border-radius: 5px;
   padding: 34px;
-  background: ${darken(0.01, colors.background)};
+  background: ${darken(0.005, colors.background)};
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
-    background: ${darken(0.04, colors.background)};
+    background: ${darken(0.025, colors.background)};
+    border: solid 1px ${darken(0.08, colors.background)};
   `}
 `;
 

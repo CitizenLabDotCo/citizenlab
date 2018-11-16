@@ -171,7 +171,7 @@ class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & 
             <StyledAuthor
               authorId={authUser.id}
               message={messages.author}
-              size="42px"
+              size="40px"
             />
 
             <label htmlFor="submit-comment">

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last } from 'lodash-es';
+import { has, isString, sortBy, last, get } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
@@ -818,6 +818,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
       const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+      const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
 
@@ -894,7 +895,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="42px"
+                      size="40px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>
@@ -952,12 +953,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <SeparatorRow />
 
-                {showBudgetControl && participationContextId && participationContextType &&
+                {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
                       ideaId={idea.data.id}
+                      projectId={projectId}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
                     />
                   </AssignBudgetControlMobile>
                 }
@@ -996,11 +999,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     </>
                   }
 
-                  {showBudgetControl && participationContextId && participationContextType &&
+                  {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                     <AssignBudgetWrapper
                       ideaId={idea.data.id}
+                      projectId={projectId}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
                     />
                   }
 
