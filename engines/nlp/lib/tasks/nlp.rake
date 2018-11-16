@@ -15,4 +15,15 @@ namespace :nlp do
     end
   end
 
+  task :geotag_ideas, [:host] => [:environment] do |t, args|
+    tenant = Tenant.find_by_host args[:host]
+    api = NLP::API.new ENV.fetch("CL2_NLP_HOST")
+    resp = api.ideas_geotagging tenant.id, 'nl' # tenant.settings.dig('core', 'locales').first[0...2]
+    Apartment::Tenant.switch(tenant.schema_name) do
+      JSON.parse(resp.body)['data'].each do |id, geo|
+        Idea.find(id).update!(location_point: "Point(#{geo['lon']} #{geo['lat']})")
+      end
+    end
+  end
+
 end
