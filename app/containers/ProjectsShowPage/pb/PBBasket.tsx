@@ -23,6 +23,10 @@ import { darken } from 'polished';
 import Icon from 'components/UI/Icon';
 import T from 'components/T';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
@@ -135,12 +139,17 @@ interface DataProps {
   ideaList: GetIdeaListChildProps;
 }
 
+interface Tracks {
+  ideaRemovedFromBasket: () => void;
+  ideaAddedToBasket: () => void;
+}
+
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PBBasket extends PureComponent<Props, State> {
-  removeIdeaFromBasket = (ideaIdToRemove: string) => (event: FormEvent<any>) => {
+class PBBasket extends PureComponent<Props & Tracks, State> {
+  ideaRemovedFromBasket = (ideaIdToRemove: string) => async (event: FormEvent<any>) => {
     event.preventDefault();
 
     const { authUser, basket, participationContextId, participationContextType } = this.props;
@@ -148,13 +157,15 @@ class PBBasket extends PureComponent<Props, State> {
     if (!isNilOrError(basket) && !isNilOrError(authUser) && participationContextId) {
       const newIdeas = basket.relationships.ideas.data.filter(idea => idea.id !== ideaIdToRemove).map(idea => idea.id);
 
-      updateBasket(basket.id, {
+      await updateBasket(basket.id, {
         user_id: authUser.id,
         participation_context_id: participationContextId,
         participation_context_type: participationContextType,
         idea_ids: newIdeas,
         submitted_at: null
       });
+
+      this.props.ideaRemovedFromBasket();
     }
   }
 
@@ -193,7 +204,7 @@ class PBBasket extends PureComponent<Props, State> {
                 }
               </DropdownListItemContent>
               {!budgetingDisabled &&
-                <RemoveIconWrapper onClick={this.removeIdeaFromBasket(idea.id)}>
+                <RemoveIconWrapper onClick={this.ideaRemovedFromBasket(idea.id)}>
                   <RemoveIcon name="remove" />
                 </RemoveIconWrapper>
               }
@@ -242,8 +253,13 @@ const Data = adopt<DataProps, InputProps>({
   ideaList: ({ basket, render }) => <GetIdeaList ids={!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : null} >{render}</GetIdeaList>
 });
 
+const PBBasketWithHoCs = injectTracks<Props>({
+  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+  ideaAddedToBasket: tracks.ideaAddedToBasket
+})(PBBasket);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PBBasket {...inputProps} {...dataProps} />}
+    {dataProps => <PBBasketWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

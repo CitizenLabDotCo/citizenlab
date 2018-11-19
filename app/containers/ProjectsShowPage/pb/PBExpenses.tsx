@@ -20,6 +20,10 @@ import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
 import PBBasket from './PBBasket';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
@@ -231,6 +235,13 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
+interface Tracks {
+  ideaRemovedFromBasket: () => void;
+  ideaAddedToBasket: () => void;
+  basketSubmitted: () => void;
+  expensesDropdownOpened: () => void;
+}
+
 interface Props extends InputProps, DataProps {}
 
 interface State {
@@ -238,7 +249,7 @@ interface State {
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<Props, State> {
+class PBExpenses extends PureComponent<Props & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -248,7 +259,13 @@ class PBExpenses extends PureComponent<Props, State> {
   }
 
   toggleExpensesDropdown = () => {
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
+    this.setState(({ dropdownOpened }) => {
+      if (!dropdownOpened) {
+        this.props.expensesDropdownOpened();
+      }
+
+      return { dropdownOpened: !dropdownOpened };
+    });
   }
 
   handleSubmitExpensesOnClick = async () => {
@@ -258,6 +275,7 @@ class PBExpenses extends PureComponent<Props, State> {
       const now = moment().format();
       this.setState({ processing: true });
       await updateBasket(basket.id, { submitted_at: now });
+      this.props.basketSubmitted();
       this.setState({ processing: false });
     }
   }
@@ -453,8 +471,15 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
+const PBExpensesWithHoCs = injectTracks<Props>({
+  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+  ideaAddedToBasket: tracks.ideaAddedToBasket,
+  basketSubmitted: tracks.basketSubmitted,
+  expensesDropdownOpened: tracks.expensesDropdownOpened
+})(PBExpenses);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PBExpenses {...inputProps} {...dataProps} />}
+    {dataProps => <PBExpensesWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

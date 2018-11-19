@@ -19,6 +19,10 @@ import GetBasket, { GetBasketChildProps } from 'resources/GetBasket';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from 'containers/ProjectsShowPage/pb/tracks';
+
 // utils
 import streams from 'utils/streams';
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -110,13 +114,22 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
+interface Tracks {
+  basketCreated: () => void;
+  ideaRemovedFromBasket: () => void;
+  ideaAddedToBasket: () => void;
+  basketSubmitted: () => void;
+  unauthenticatedAssignClick: () => void;
+  disabledAssignClick: () => void;
+}
+
 interface Props extends DataProps, InputProps {}
 
 interface State {
   processing: boolean;
 }
 
-class AssignBudgetControl extends PureComponent<Props, State> {
+class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -151,11 +164,13 @@ class AssignBudgetControl extends PureComponent<Props, State> {
 
     if (!authUser) {
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
+      this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
       const budgetingEnabled = get(idea.relationships.action_descriptor.data.budgeting, 'enabled', null);
 
       if (budgetingEnabled === false) {
         disabledAssignBudgetClick && disabledAssignBudgetClick();
+        this.props.disabledAssignClick();
       } else {
         this.setState({ processing: true });
 
@@ -183,6 +198,7 @@ class AssignBudgetControl extends PureComponent<Props, State> {
               idea_ids: newIdeas,
               submitted_at: null
             });
+            this.props.ideaAddedToBasket();
           } catch (error) {
             streams.fetchAllWith({ dataId: [basket.id] });
           }
@@ -193,6 +209,7 @@ class AssignBudgetControl extends PureComponent<Props, State> {
             participation_context_type: participationContextType,
             idea_ids: [idea.id]
           });
+          this.props.basketCreated();
         }
 
         await done();
@@ -305,8 +322,17 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
+const AssignBudgetControlWithHoCs = injectTracks<Props>({
+  basketCreated: tracks.basketCreated,
+  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+  ideaAddedToBasket: tracks.ideaAddedToBasket,
+  basketSubmitted: tracks.basketSubmitted,
+  unauthenticatedAssignClick: tracks.unauthenticatedAssignClick,
+  disabledAssignClick: tracks.disabledAssignClick
+})(AssignBudgetControl);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AssignBudgetControl {...inputProps} {...dataProps} />}
+    {dataProps => <AssignBudgetControlWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

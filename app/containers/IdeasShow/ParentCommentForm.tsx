@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -87,7 +87,7 @@ interface State {
   errorMessage: string | null;
 }
 
-class ParentCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
+class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
