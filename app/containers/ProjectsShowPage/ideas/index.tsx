@@ -22,7 +22,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: ${colors.background};
@@ -34,11 +34,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
-  /* margin-top: 50px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 30px;
-  `} */
+  margin-bottom: 60px;
 `;
 
 const IdeasTitle = styled.h1`
@@ -46,7 +42,6 @@ const IdeasTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 35px;
   font-weight: 600;
-  margin-top: 40px;
   margin-bottom: 30px;
 `;
 
