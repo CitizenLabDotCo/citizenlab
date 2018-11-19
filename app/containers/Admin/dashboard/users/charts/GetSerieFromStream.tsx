@@ -3,7 +3,12 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByBirthyear } from 'services/stats';
+import {
+  IUsersByBirthyear,
+  IIdeasByTopic,
+  ICommentsByTopic,
+  IVotesByTopic
+} from 'services/stats';
 
 export type IGraphFormat = {
   name: string | number,
@@ -19,12 +24,13 @@ type children = (renderProps: {
   serie: IGraphFormat | null | undefined;
 }) => JSX.Element | null;
 
-type IResourceByX = IUsersByBirthyear;
+type IResourceByX = IUsersByBirthyear | IIdeasByTopic | ICommentsByTopic | IVotesByTopic;
 
 interface QueryProps {
-  startAt: string | undefined;
-  endAt: string;
-  currentGroupFilter: string | null;
+  startAt: string | undefined | null;
+  endAt: string | null;
+  currentGroupFilter?: string | null;
+  currentProjectFilter?: string | null;
 }
 
 interface Props extends QueryProps {
@@ -44,36 +50,40 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   }
 
   componentDidMount() {
-    const { startAt, endAt, currentGroupFilter, stream } = this.props;
+    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream, convertToGraphFormat } = this.props;
 
-    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter });
+    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter, currentProjectFilter });
 
     this.subscriptions = [
       this.queryProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ startAt, endAt, currentGroupFilter }) => stream({ queryParameters: {
-          start_at: startAt,
-          end_at: endAt,
-          group: currentGroupFilter
-        }}).observable))
+        switchMap(({ startAt, endAt, currentGroupFilter, currentProjectFilter }) => stream({
+          queryParameters: {
+            start_at: startAt,
+            end_at: endAt,
+            group: currentGroupFilter,
+            project: currentProjectFilter
+          }
+        }).observable))
         .subscribe((serie) => {
-          const convertedSerie = serie && this.props.convertToGraphFormat(serie);
+          const convertedSerie = serie && convertToGraphFormat(serie);
           this.setState({ serie: convertedSerie });
         })
     ];
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { startAt, endAt, currentGroupFilter } = this.props;
+  componentDidUpdate(prevProps: QueryProps) {
+    const { startAt, endAt, currentGroupFilter, currentProjectFilter } = this.props;
     if (this.props.startAt !== prevProps.startAt
       || this.props.endAt !== prevProps.endAt
-      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
-        this.queryProps$.next({ startAt, endAt, currentGroupFilter });
+      || this.props.currentGroupFilter !== prevProps.currentGroupFilter
+      || this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
+      this.queryProps$.next({ startAt, endAt, currentGroupFilter, currentProjectFilter });
     }
   }
 
   componentWillUnmount() {
-      this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {

@@ -41,7 +41,7 @@ import {
   commentsByTimeCumulativeStream,
 } from 'services/stats';
 
-export type IResource = 'Ideas' | 'Comments' | 'Votes';
+export type IResource = 'ideas' | 'comments' | 'votes';
 
 interface InputProps {
   onlyModerator?: boolean;
@@ -92,13 +92,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
-      currentResourceByTopic: 'Ideas',
-      currentResourceByProject: 'Ideas'
+      currentResourceByTopic: 'ideas',
+      currentResourceByProject: 'ideas'
     };
     this.resourceOptions = [
-      { value: 'Ideas', label: props.intl.formatMessage(messages['Ideas']) },
-      { value: 'Comments', label: props.intl.formatMessage(messages['Comments']) },
-      { value: 'Votes', label: props.intl.formatMessage(messages['Votes']) }
+      { value: 'ideas', label: props.intl.formatMessage(messages['ideas']) },
+      { value: 'comments', label: props.intl.formatMessage(messages['comments']) },
+      { value: 'votes', label: props.intl.formatMessage(messages['votes']) }
     ];
     this.filterOptions = {
       projectFilterOptions: this.generateFilterOptions('project'),
@@ -323,6 +323,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     {...this.state}
                   />
                 </Column>
+                  **/}
                 <FilterableBarChartResourceByTopic
                   className="halfWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
@@ -334,7 +335,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   selectedResource={currentResourceByTopic}
                   {...this.state}
                 />
-                  **/}
+
               </Row>
             </GraphsContainer>
           </ThemeProvider>
