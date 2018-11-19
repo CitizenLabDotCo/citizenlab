@@ -261,17 +261,17 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <CumulativeAreaChart
                   className="first halfWidth"
                   graphTitleMessageKey="usersByTimeTitle"
-                  graphUnit="Users"
+                  graphUnit="users"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
                   stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
-                {/**
                 <BarChartByTime
                   className="halfWidth"
-                  graphUnit="ActiveUsers"
+                  graphUnit="users"
+                  graphUnitMessageKey="activeUsers"
                   graphTitleMessageKey="activeUsersByTimeTitle"
                   startAt={startAt}
                   endAt={endAt}
@@ -285,7 +285,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <CumulativeAreaChart
                   className="first halfWidth"
                   graphTitleMessageKey="ideasByTimeTitle"
-                  graphUnit="Ideas"
+                  graphUnit="ideas"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
@@ -295,7 +295,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 <CumulativeAreaChart
                   className="halfWidth"
                   graphTitleMessageKey="commentsByTimeTitle"
-                  graphUnit="Comments"
+                  graphUnit="comments"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
@@ -304,6 +304,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Row>
               <Row>
+                <Column className="first">
                   <LineChartVotesByTime
                     className="colFirst"
                     startAt={startAt}
@@ -311,8 +312,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     resolution={resolution}
                     {...this.state}
                   />
-                      **/}
-                <Column className="first">
+
                   <FilterableBarChartResourceByProject
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
@@ -327,13 +327,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   className="halfWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
-                  currentResourceByTopic={currentResourceByTopic}
                   resourceOptions={this.resourceOptions}
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
                 />
-
               </Row>
             </GraphsContainer>
           </ThemeProvider>

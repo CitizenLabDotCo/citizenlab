@@ -91,7 +91,6 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
       convertSerie,
       serie
     } = this.props;
-    console.log(convertSerie);
     const selectedResourceName = currentSelectedResource && formatMessage(messages[currentSelectedResource]);
     const { convertedSerie, selectedCount, selectedName } = convertSerie(serie);
     const unitName = (currentFilter && serie)
