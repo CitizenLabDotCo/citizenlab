@@ -385,9 +385,9 @@ export default class VoteControl extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-	votingAnimationDone = () => {
-		this.setState({ votingAnimation: null });
-	}
+  votingAnimationDone = () => {
+    this.setState({ votingAnimation: null });
+  }
 
   onClickUpvote = (event) => {
     event.preventDefault();
