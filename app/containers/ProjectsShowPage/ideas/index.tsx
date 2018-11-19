@@ -9,7 +9,7 @@ import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // resources
 import GetProject from 'resources/GetProject';
@@ -17,7 +17,6 @@ import GetProject from 'resources/GetProject';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import adminMessages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
@@ -38,10 +37,6 @@ const IdeasTitle = styled.h1`
   margin-bottom: 30px;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
-`;
-
 interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
@@ -57,15 +52,8 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
         return (
           <>
             <Header projectSlug={props.params.slug} />
-
             <ProjectModeratorIndicator projectId={project.id} />
-
-            {project.attributes.publication_status === 'archived' &&
-              <StyledContentContainer>
-                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
-              </StyledContentContainer>
-            }
-
+            <ProjectArchivedIndicator projectId={project.id} />
             <IdeasContainer>
               <ContentContainer>
                 <IdeasTitle>

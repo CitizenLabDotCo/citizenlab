@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { get, round, isUndefined, isNil } from 'lodash-es';
+import { get, round } from 'lodash-es';
 import moment from 'moment';
 
 // services
@@ -235,7 +235,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
-  submitState: 'clean' | 'dirty' | 'submitted';
   processing: boolean;
 }
 
@@ -244,19 +243,8 @@ class PBExpenses extends PureComponent<Props, State> {
     super(props);
     this.state = {
       dropdownOpened: false,
-      submitState: 'clean',
       processing: false
     };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { basket } = this.props;
-    const prevSubmittedAt = get(prevProps, 'basket.attributes.submitted_at', null);
-    const submittedAt = get(basket, 'attributes.submitted_at', null);
-
-    if (!isUndefined(prevProps.basket) && !isNil(this.props.basket) && prevProps.basket !== basket && prevSubmittedAt === submittedAt) {
-      this.setState({ submitState: 'dirty' });
-    }
   }
 
   toggleExpensesDropdown = () => {
@@ -270,13 +258,13 @@ class PBExpenses extends PureComponent<Props, State> {
       const now = moment().format();
       this.setState({ processing: true });
       await updateBasket(basket.id, { submitted_at: now });
-      this.setState({ submitState: 'submitted', processing: false });
+      this.setState({ processing: false });
     }
   }
 
   render() {
     const { locale, tenant, participationContextType, participationContextId, project, phase, basket, className } = this.props;
-    const { submitState, processing, dropdownOpened } = this.state;
+    const { processing, dropdownOpened } = this.state;
 
     if (!isNilOrError(locale) &&
         !isNilOrError(tenant) &&
@@ -291,7 +279,7 @@ class PBExpenses extends PureComponent<Props, State> {
       const submittedAt = (!isNilOrError(basket) ? basket.attributes.submitted_at : null);
       let totalBudget = 0;
       let progress = 0;
-      let validationStatus: 'notValidated' | 'previouslyValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
       let progressBarColor: 'green' | 'red' | '' = '';
 
       if (participationContextType === 'Project' && !isNilOrError(project)) {
@@ -306,9 +294,7 @@ class PBExpenses extends PureComponent<Props, State> {
 
       if (budgetExceedsLimit) {
         validationStatus = 'validationError';
-      } else if (submittedAt && submitState === 'clean' && !budgetExceedsLimit && spentBudget > 0) {
-        validationStatus = 'previouslyValidated';
-      } else if (submittedAt && submitState === 'submitted' && !budgetExceedsLimit && spentBudget > 0) {
+      } else if (submittedAt && spentBudget > 0) {
         validationStatus = 'validationSuccess';
       }
 
@@ -323,7 +309,7 @@ class PBExpenses extends PureComponent<Props, State> {
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
-                {(validationStatus === 'notValidated' || validationStatus === 'previouslyValidated') &&
+                {validationStatus === 'notValidated' &&
                   <FormattedMessage {...messages.yourExpenses} />
                 }
                 {validationStatus === 'validationError' &&
@@ -433,7 +419,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   icon="submit"
                   iconPos="right"
                   bgColor={colors.adminTextColor}
-                  disabled={submitState === 'clean' || validationStatus === 'validationSuccess' || budgetExceedsLimit}
+                  disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}
                   processing={processing}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />

@@ -181,14 +181,17 @@ const IdeaContainerInner = styled.div`
   background: #fff;
   border: solid 1px ${colors.separation};
   position: relative;
+  overflow: hidden;
 `;
 
 const VotingDisabledWrapper = styled.div`
   padding: 22px;
+  padding-top: 28px;
 `;
 
 const AssignBudgetDisabledWrapper = styled.div`
   padding: 22px;
+  padding-top: 28px;
 `;
 
 export interface InputProps {
