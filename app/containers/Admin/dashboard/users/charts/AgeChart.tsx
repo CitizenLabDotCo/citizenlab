@@ -16,7 +16,7 @@ interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | null;
-  className: string;
+  className?: string;
 }
 
 const AgeChart = (props: Props & InjectedIntlProps) => {
@@ -54,7 +54,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
   return (
     <BarChartByCategory
       {...props}
-      graphTitleMessageKey="usersByAgeTitle"
+      graphTitleString={props.intl.formatMessage(messages.usersByAgeTitle)}
       graphUnit="Users"
       stream={usersByBirthyearStream}
       convertToGraphFormat={convertToGraphFormat}

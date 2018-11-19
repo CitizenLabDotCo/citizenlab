@@ -34,7 +34,8 @@ interface QueryProps {
   endAt: string | null;
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
-  stream: (streamParams?: IStreamParams | null) => IStream<IResourceByX>;
+  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<IResourceByX>;
+  customId?: string;
 }
 
 interface Props extends QueryProps {
@@ -53,8 +54,7 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   }
 
   componentDidMount() {
-    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream, convertToGraphFormat } = this.props;
-
+    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream, convertToGraphFormat, customId } = this.props;
     this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream });
 
     this.subscriptions = [
@@ -67,7 +67,7 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
             group: currentGroupFilter,
             project: currentProjectFilter
           }
-        }).observable))
+        }, customId).observable))
         .subscribe((serie) => {
           const convertedSerie = serie && convertToGraphFormat(serie);
           this.setState({ serie: convertedSerie });

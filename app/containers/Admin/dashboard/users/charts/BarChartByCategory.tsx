@@ -7,7 +7,7 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
 import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByBirthyear } from 'services/stats';
+import { IUsersByBirthyear, IUsersByRegistrationField } from 'services/stats';
 import messages from '../../messages';
 import { rgba } from 'polished';
 
@@ -22,17 +22,15 @@ interface DataProps {
 }
 
 interface InputProps {
-  // for data loading
-  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByBirthyear>;
+  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<IUsersByBirthyear | IUsersByRegistrationField>;
   convertToGraphFormat: (IUsersByBirthyear) => IGraphFormat;
-  startAt: string;
-  endAt: string;
+  startAt: string | null | undefined;
+  endAt: string | null;
   currentGroupFilter: string | null;
-
-  // for presentation purposes
-  graphTitleMessageKey: string;
+  graphTitleString: string;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
-  className: string;
+  className?: string;
+  customId?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -40,7 +38,7 @@ interface Props extends InputProps, DataProps {}
 class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { chartFill, barFill, chartLabelSize, chartLabelColor } = this.props['theme'];
-    const { className, graphTitleMessageKey, serie } = this.props;
+    const { className, graphTitleString, serie } = this.props;
     const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
     const barHoverColor = rgba(chartFill, .25);
 
@@ -49,7 +47,7 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {graphTitleString}
             </GraphCardTitle>
           </GraphCardHeader>
           {noData ?

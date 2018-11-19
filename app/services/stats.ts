@@ -85,6 +85,18 @@ export interface IUsersByTime {
     }
   };
 }
+export interface IUsersByRegistrationField {
+  series: {
+    users: {
+      [key: string]: number;
+    }
+  };
+  options: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
 
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
@@ -108,6 +120,11 @@ export function usersByTimeCumulativeStream(streamParams: IStreamParams | null =
 
 export function activeUsersByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/active_users_by_time`, ...streamParams });
+}
+
+export function usersByRegFieldStream(streamParams: IStreamParams | null = null, customFieldId: string) {
+  console.log(streamParams, customFieldId);
+  return streams.get<IUsersByRegistrationField>({ apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`, ...streamParams });
 }
 
 // Comments

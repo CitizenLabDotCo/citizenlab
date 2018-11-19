@@ -15,13 +15,14 @@ import {
   GraphsContainer,
   Row,
   ControlBar,
-    IResolution
+  IResolution
 } from '../';
 import TimeControl from '../components/TimeControl';
 import ResolutionControl from '../components/ResolutionControl';
 import UsersByGenderChart from './charts/UsersByGenderChart';
 import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
+import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -163,6 +164,11 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
                 currentGroupFilter={currentGroupFilter}
               />
             </Row>
+            <RegistrationFieldsToGraphs
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+            />
           </GraphsContainer>
         </ThemeProvider>
       </>
