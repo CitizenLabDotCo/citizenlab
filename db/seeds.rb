@@ -85,6 +85,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
     header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+    created_at: Faker::Date.between(Time.now - 1.year, Time.now),
     settings: {
       core: {
         allowed: true,
@@ -180,6 +181,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
     host: 'empty.localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
     header_bg: Rails.root.join("spec/fixtures/header.jpg").open,
+    created_at: Faker::Date.between(Time.now - 1.year, Time.now),
     settings: {
       core: {
         allowed: true,
@@ -305,7 +307,7 @@ if Apartment::Tenant.current == 'localhost'
         avatar: (rand(3) == 0) ? generate_avatar(gender) : nil,
         domicile: rand(2) == 0 ? nil : Area.offset(rand(Area.count)).first.id,
         custom_field_values: rand(2) == 0 ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key},
-        registration_completed_at: Time.now
+        registration_completed_at: Faker::Date.between(Tenant.current.created_at, Time.now)
       })
     end
 
@@ -361,7 +363,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       if project.timeline?
-        start_at = Faker::Date.between(6.months.ago, 1.month.from_now)
+        start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
         rand(8).times do
           start_at += 1.days
           phase = project.phases.create!({
@@ -395,7 +397,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       rand(5).times do
-        start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+        start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
         event = project.events.create!({
           title_multiloc: create_for_some_locales{Faker::Lorem.sentence},
           description_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -421,7 +423,7 @@ if Apartment::Tenant.current == 'localhost'
     MAP_OFFSET = 0.1
 
     num_ideas.times do 
-      created_at = Faker::Date.between(1.year.ago, Time.now)
+      created_at = Faker::Date.between(Tenant.current.created_at, Time.now)
       project = Project.offset(rand(Project.count)).first
       idea = Idea.create!({
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
