@@ -88,7 +88,7 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
     return (
       <Container>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.url} download={file.filename}>
+        <FileDownloadLink href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
           {file.filename}
         </FileDownloadLink>
         <FileSize>({returnFileSize(file.size)})</FileSize>

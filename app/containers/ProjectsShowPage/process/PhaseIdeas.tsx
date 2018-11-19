@@ -18,9 +18,9 @@ const StyledIdeaCards = styled(IdeaCards)`
   &.budgeting {
     margin-top: 200px;
 
-  ${media.smallerThanMaxTablet`
-    margin-top: 180px;
-  `}
+    ${media.smallerThanMaxTablet`
+      margin-top: 180px;
+    `}
   }
 `;
 

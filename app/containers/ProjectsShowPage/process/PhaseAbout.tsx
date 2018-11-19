@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 import { darken } from 'polished';
+import { isUndefined } from 'util';
 
 const Container = styled.div`
   border-radius: 5px;
@@ -28,8 +29,7 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
-    background: ${darken(0.025, colors.background)};
-    border: solid 1px ${darken(0.08, colors.background)};
+    background: ${darken(0.028, colors.background)};
   `}
 `;
 
@@ -74,10 +74,12 @@ const InformationBody = styled.div`
 
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
+  max-width: 520px;
 `;
 
 interface InputProps {
   phaseId: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -92,15 +94,15 @@ interface State {}
 
 class PhaseAbout extends PureComponent<Props, State> {
   render() {
-    const { locale, phase, phaseFiles } = this.props;
+    const { locale, phase, phaseFiles, className } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(phase)) {
+    if (!isNilOrError(locale) && !isNilOrError(phase) && !isUndefined(phaseFiles)) {
       const content = phase.attributes.description_multiloc[locale];
       const contentIsEmpty = (!content || isEmpty(content) || content === '<p></p>' || content === '<p><br></p>');
 
-      if (!contentIsEmpty) {
+      if (!contentIsEmpty || !isEmpty(phaseFiles)) {
         return (
-          <Container className={this.props['className']}>
+          <Container className={className}>
             <InformationTitle>
               <FormattedMessage {...messages.aboutThisPhase} />
             </InformationTitle>

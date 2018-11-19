@@ -62,7 +62,7 @@ const ArchivedLabel = styled.span`
   border-radius: 5px;
   padding: 6px 12px;
   background: rgba(255, 255, 255, .45);
-  margin-top: 5px;
+  margin-top: 15px;
 `;
 
 const HeaderTitle = styled.div`
