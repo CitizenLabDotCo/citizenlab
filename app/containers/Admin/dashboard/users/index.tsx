@@ -15,7 +15,9 @@ import {
   GraphsContainer,
   Row,
   ControlBar,
-  IResolution
+  IResolution,
+  FlexFlowContainer,
+  FlexItem
 } from '../';
 import TimeControl from '../components/TimeControl';
 import ResolutionControl from '../components/ResolutionControl';
@@ -167,20 +169,20 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
                 currentGroupFilter={currentGroupFilter}
               />
             </Row>
-            <RegistrationFieldsToGraphs
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-            />
-            <Row>
-              <MostActiveUsersChart
-                currentGroupFilter={currentGroupFilter}
+            <FlexFlowContainer>
+              <RegistrationFieldsToGraphs
                 startAt={startAt}
                 endAt={endAt}
-                infoMessage={infoMessage}
-                className="halfWidth dynamicHeight"
+                currentGroupFilter={currentGroupFilter}
               />
-            </Row>
+                <MostActiveUsersChart
+                  currentGroupFilter={currentGroupFilter}
+                  startAt={startAt}
+                  endAt={endAt}
+                  infoMessage={infoMessage}
+                  className="halfWidth dynamicHeight"
+                />
+            </FlexFlowContainer>
           </GraphsContainer>
         </ThemeProvider>
       </>

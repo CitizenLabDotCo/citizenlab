@@ -15,6 +15,7 @@ import PieChartByCategory from './charts/PieChartByCategory';
 // components
 import {
   Row,
+  Column
 } from '../';
 
 import messages from '../messages';
@@ -49,11 +50,14 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { customFields, localize, startAt, endAt, currentGroupFilter } = this.props;
-    const graphsArray = customFields && customFields.map((field, index) => {
+    if (!customFields) {
+      return null;
+    }
+    return customFields.map((field, index) => {
       if (field.attributes.input_type === 'checkbox') {
         return (
           <PieChartByCategory
-            className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
+            className="halfWidth"
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
@@ -68,7 +72,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
       }
       return (
         <BarChartByCategory
-          className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
+          className="halfWidth"
           startAt={startAt}
           endAt={endAt}
           currentGroupFilter={currentGroupFilter}
@@ -81,22 +85,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
         />
       );
     });
-
-    if (graphsArray) {
-      console.log(graphsArray);
-      return graphsArray.filter((_, index) => index % 2 === 1 || index === graphsArray.length - 1).map((_, index) => {
-        console.log(graphsArray);
-        return (
-          <Row key={index}>
-            {graphsArray[index * 2]}
-            {graphsArray[index * 2 + 1]}
-          </Row>
-        );
-      });
-    }
-    return null;
   }
-
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs));
