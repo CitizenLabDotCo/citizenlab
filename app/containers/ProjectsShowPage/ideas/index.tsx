@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -10,9 +11,10 @@ import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
+import PBExpenses from '../pb/PBExpenses';
 
 // resources
-import GetProject from 'resources/GetProject';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,12 +22,23 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
-const IdeasContainer = styled.div`
+const Container = styled.div`
+  background: ${colors.background};
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 50px;
-  background: ${colors.background};
+`;
+
+const StyledPBExpenses = styled(PBExpenses)`
+  /* margin-top: 50px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 30px;
+  `} */
 `;
 
 const IdeasTitle = styled.h1`
@@ -37,48 +50,73 @@ const IdeasTitle = styled.h1`
   margin-bottom: 30px;
 `;
 
-interface InputProps {}
+interface InputProps {
+  className?: string;
+}
 
-export default withRouter<InputProps>((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
-    {project => {
-      if (!isNilOrError(project)) {
+interface DataProps {
+  project: GetProjectChildProps;
+}
 
-        if (project.attributes.process_type !== 'continuous') {
-          // redirect
-          clHistory.push(`/projects/${props.params.slug}`);
-        }
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
+
+  render () {
+    const { project, params, className } = this.props;
+
+    if (!isNilOrError(project)) {
+      if (project.attributes.process_type !== 'continuous') {
+        // redirect
+        clHistory.push(`/projects/${params.slug}`);
+      } else {
+        const isPBProject = (project.attributes.participation_method === 'budgeting');
 
         return (
-          <>
-            <Header projectSlug={props.params.slug} />
+          <Container className={className}>
+            <Header projectSlug={params.slug} />
             <ProjectModeratorIndicator projectId={project.id} />
             <ProjectArchivedIndicator projectId={project.id} />
-            <IdeasContainer>
-              <ContentContainer>
-                <IdeasTitle>
-                  <FormattedMessage {...messages.navIdeas} />
-                </IdeasTitle>
-                <IdeaCards
-                  type="load-more"
-                  sort="trending"
-                  pageSize={12}
-                  projectId={project.id}
-                  participationMethod={project.attributes.participation_method}
+            <StyledContentContainer>
+              {isPBProject &&
+                <StyledPBExpenses
                   participationContextId={project.id}
                   participationContextType="Project"
-                  showViewToggle={true}
-                  defaultView={(project.attributes.presentation_mode || null)}
                 />
-              </ContentContainer>
-            </IdeasContainer>
-
+              }
+              <IdeasTitle>
+                <FormattedMessage {...messages.navIdeas} />
+              </IdeasTitle>
+              <IdeaCards
+                type="load-more"
+                sort="trending"
+                pageSize={12}
+                projectId={project.id}
+                participationMethod={project.attributes.participation_method}
+                participationContextId={project.id}
+                participationContextType="Project"
+                showViewToggle={true}
+                defaultView={(project.attributes.presentation_mode || null)}
+              />
+            </StyledContentContainer>
             <EventsPreview projectId={project.id} />
-          </>
+          </Container>
         );
       }
+    }
 
-      return null;
-    }}
-  </GetProject>
+    return null;
+  }
+}
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+  </Data>
 ));
