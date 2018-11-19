@@ -1,13 +1,15 @@
 import React, { PureComponent } from 'react';
-import { map, sortBy, isEmpty } from 'lodash-es';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { map, sortBy } from 'lodash-es';
 
+import FilterableBarChart from './FilterableBarChart';
 // resources
-import GetParticipationByX from './GetParticipationByX';
 import {
   IIdeasByTopic,
+  ideasByTopicStream,
   ICommentsByTopic,
-  IVotesByTopic
+  commentsByTopicStream,
+  IVotesByTopic,
+  votesByTopicStream
 } from 'services/stats';
 
 // i18n
@@ -16,225 +18,91 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
-// components
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
-import Select from 'components/UI/Select';
-
 // typings
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
-// styling
-import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
-import styled, { withTheme } from 'styled-components';
-
-const SSelect = styled(Select)`
-  flex: 1;
-
-  ${media.smallerThan1280px`
-    width: 100%;
-  `}
-`;
-
-const GraphCardTitle = styled.h3`
-  margin: 0;
-  margin-right: 15px;
-
-  ${media.smallerThan1280px`
-    margin-bottom: 15px;
-  `}
-`;
-interface DataProps {
-  serie: IVotesByTopic | ICommentsByTopic | IIdeasByTopic;
-}
-
-interface InputProps {
-  className: string;
-  onResourceByTopicChange: (option: IOption) => void;
-  currentResourceByTopic: IResource;
-  resourceOptions: IOption[];
+interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
   currentProjectFilter: string | null;
   currentGroupFilter: string | null;
+}
+
+interface InputProps {
   currentTopicFilter: string | null;
+  className: string;
+  onResourceByTopicChange: (option: IOption) => void;
+  currentResourceByTopic: IResource;
+  resourceOptions: IOption[];
   topicOptions: IOption[];
-  selectedResource: IResource;
 }
 
-interface Props extends InputProps, DataProps { }
-
-interface State {
-  serie: IGraphFormat | null;
-  totalCount: number | null;
-  topicName: string | null;
-}
+interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      serie: null,
-      totalCount: null,
-      topicName: null,
-    };
+class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
+  convertToGraphFormat = (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
+    const { series, topics } = data;
+    const { localize, currentResourceByTopic } = this.props;
+
+    const mapped = map(series[currentResourceByTopic], (count: number, topicId: string) => ({
+      name: localize(topics[topicId].title_multiloc) as string,
+      value: count as number,
+      code: topicId as string,
+    }));
+    const res = sortBy(mapped, 'name');
+    return res.length > 0 ? res : null;
   }
 
-  componentDidMount() {
-    this.setConvertedSerieToState();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.serie !== this.props.serie
-      || this.props.currentTopicFilter !== prevProps.currentTopicFilter) {
-      if (!this.props.currentTopicFilter) { this.setState({ topicName: null, totalCount: null }); }
-      this.setConvertedSerieToState();
-    }
-  }
-
-  setConvertedSerieToState() {
-    const { serie } = this.props;
-    const convertedSerie = serie && this.convertToGraphFormat(this.props.serie);
-    if (this.props.currentTopicFilter) {
-      this.setState({ serie: this.filterByTopic(convertedSerie) });
-    } else { this.setState({ serie: convertedSerie }); }
-  }
-
-  convertToGraphFormat = (serie: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
-    if (serie) {
-      const { data, topics } = serie;
-      const { localize } = this.props;
-
-      const mapped = map(data, (count: number, topicId: string) => ({
-        name: localize(topics[topicId].title_multiloc),
-        value: count,
-        code: topicId,
-      }));
-      return sortBy(mapped, 'name');
-    }
-
-    return null;
-  }
-
-  filterByTopic = (serie: IGraphFormat | null) => {
-    if (serie) {
-      const { currentTopicFilter, topicOptions, intl: { formatMessage } } = this.props;
+  convertSerie = (serie: IGraphFormat | null) => {
+    const { currentTopicFilter, currentResourceByTopic, topicOptions, intl: { formatMessage } } = this.props;
+    if (serie && currentResourceByTopic) {
       const selectedTopic = serie.find(item => item.code === currentTopicFilter);
-      const selectedTopicCount = selectedTopic ? selectedTopic.value : 0;
-      this.setState({ totalCount: selectedTopicCount });
-      const filteredSerie = serie.map(item => {
-        const { value, ...rest } = item;
-        return { value: value - selectedTopicCount, ...rest };
-      }).filter(item => item.code !== currentTopicFilter);
+      const selectedCount = selectedTopic ? selectedTopic.value : 0;
+
+      let selectedName;
       if (selectedTopic) {
-        this.setState({ topicName: selectedTopic.name });
+        selectedName = selectedTopic.name;
       } else {
         const foundOption = topicOptions.find(option => option.value === currentTopicFilter);
-        this.setState({ topicName: foundOption ? foundOption.label : formatMessage(messages.selectedTopic) });
+        selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedTopic);
       }
-      return filteredSerie;
-    }
 
-    return null;
+      const convertedSerie = serie.map(item => {
+        const { value, ...rest } = item;
+        return { value: value - selectedCount, ...rest };
+      }).filter(item => item.code !== currentTopicFilter);
+
+      return { convertedSerie, selectedCount, selectedName };
+    }
+    return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
+  }
+
+  getCurrentStream(currentResourceByTopic) {
+    if (currentResourceByTopic === 'ideas') {
+      return ideasByTopicStream;
+    } else if (currentResourceByTopic === 'comments') {
+      return commentsByTopicStream;
+    } else {
+      return votesByTopicStream;
+    }
   }
 
   render() {
-    const theme = this.props['theme'];
-    const { serie, totalCount, topicName } = this.state;
-    const { chartFill } = theme;
-    const {
-      className,
-      onResourceByTopicChange,
-      currentResourceByTopic,
-      resourceOptions,
-      selectedResource,
-      intl: {
-        formatMessage
-      },
-      currentTopicFilter,
-
-    } = this.props;
-    const selectedResourceName = formatMessage(messages[selectedResource]);
-    const noData = (serie && (serie.every(item => isEmpty(item)) || serie.length <= 0)) || false;
-    const unitName = (currentTopicFilter && serie && !noData)
-      ? formatMessage(messages.resourceByTopicDifference, {
-        resourceName: selectedResourceName,
-        topic: topicName
-      })
-      : selectedResourceName;
-    const barHoverColor = rgba(chartFill, .25);
-
+    const { currentResourceByTopic, currentTopicFilter } = this.props;
     return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeaderWithFilter>
-            <GraphCardTitle>
-              <FormattedMessage {...messages.participationPerTopic} />
-            </GraphCardTitle>
-            <SSelect
-              id="topicFilter"
-              onChange={onResourceByTopicChange}
-              value={currentResourceByTopic}
-              options={resourceOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
-          </GraphCardHeaderWithFilter>
-          {noData ?
-            <NoDataContainer>
-              {currentTopicFilter ?
-                <FormattedMessage
-                  {...messages.totalCountTopic}
-                  values={{ totalCount, topicName, selectedResourceName }}
-                />
-                : <FormattedMessage {...messages.noData} />}
-            </NoDataContainer>
-            :
-            <>
-              {currentTopicFilter && <FormattedMessage tagName="p" {...messages.totalCountTopic} values={{ totalCount, topicName, selectedResourceName }} />}
-              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-                <BarChart data={serie} layout="vertical">
-                  <Bar
-                    dataKey="value"
-                    name={unitName}
-                    fill={theme.chartFill}
-                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-                    barSize={20}
-                  />
-                  <YAxis
-                    dataKey="name"
-                    type="category"
-                    width={150}
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    tickLine={false}
-                  />
-                  <XAxis
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    type="number"
-                    tick={{ transform: 'translate(0, 7)' }}
-                  />
-                  <Tooltip
-                    isAnimationActive={false}
-                    cursor={{ fill: barHoverColor }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </>
-          }
-        </GraphCardInner>
-      </GraphCard>
+      <FilterableBarChart
+        {...this.props}
+        stream={this.getCurrentStream(currentResourceByTopic)}
+        convertToGraphFormat={this.convertToGraphFormat}
+        convertSerie={this.convertSerie}
+        currentFilter={currentTopicFilter}
+        graphTitleMessageKey="participationPerTopic"
+      />
     );
   }
 }
 
-const BarChartWithHocs = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByTopic as any) as any));
-export default (inputProps: InputProps) => (
-  <GetParticipationByX {...inputProps} type="ByTopic">
-    {serie => <BarChartWithHocs {...serie} {...inputProps} />}
-  </GetParticipationByX>
-);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(FilterableBarChartResourceByTopic as any) as any);
