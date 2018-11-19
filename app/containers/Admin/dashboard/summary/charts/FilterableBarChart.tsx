@@ -7,7 +7,7 @@ import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recha
 import { IStreamParams, IStream } from 'utils/streams';
 import messages from '../../messages';
 import { rgba } from 'polished';
-import GetSerieFromStream from '../../users/charts/GetSerieFromStream';
+import GetSerieFromStream from 'resources/GetSerieFromStream';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
