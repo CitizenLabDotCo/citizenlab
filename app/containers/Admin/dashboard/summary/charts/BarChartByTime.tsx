@@ -19,12 +19,6 @@ import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 import { colors } from 'utils/styleUtils';
 
-const TitleWithInfoIcon = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-`;
-
 const InfoIcon = styled(Icon)`
   display: flex;
   align-items: center;
@@ -49,7 +43,7 @@ type Props = {
   currentGroupFilter: string | null;
   currentTopicFilter: string | null;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
-  infoMessage: string;
+  infoMessage?: string;
 };
 
 class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -174,21 +168,19 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-            <TitleWithInfoIcon>
               <GraphCardTitle>
                 <FormattedMessage {...messages[graphTitleMessageKey]} />
+                {infoMessage && <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />}
               </GraphCardTitle>
-              {infoMessage && <Popup
-                basic
-                trigger={
-                  <div>
-                    <InfoIcon name="info" />
-                  </div>
-                }
-                content={infoMessage}
-                position="top left"
-              />}
-            </TitleWithInfoIcon>
           </GraphCardHeader>
           {!serie ?
             <NoDataContainer>
