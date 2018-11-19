@@ -19,7 +19,7 @@ import {
 } from '../';
 import TimeControl from '../components/TimeControl';
 import ResolutionControl from '../components/ResolutionControl';
-import PieChartByCategory from './charts/PieChartByCategory';
+import UsersByGenderChart from './charts/UsersByGenderChart';
 import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
 
@@ -147,7 +147,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
             <Row>
-              <PieChartByCategory
+              <UsersByGenderChart
                 className="first halfWidth"
                 graphUnit="Users"
                 graphTitleMessageKey="usersByGenderTitle"
