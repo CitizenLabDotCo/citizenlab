@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
     defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
   },
+  top10activeUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+    defaultMessage: 'To be determined.',
+  },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
@@ -92,6 +96,10 @@ export default defineMessages({
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
+  },
+  mostActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
+    defaultMessage: 'Most active users',
   },
   byTopicTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',

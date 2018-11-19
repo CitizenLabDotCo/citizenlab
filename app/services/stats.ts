@@ -98,6 +98,22 @@ export interface IUsersByRegistrationField {
   };
 }
 
+export interface IUserEngagementScores {
+  id: string;
+  type: string;
+  attributes: {
+    sum_score: number;
+  };
+  relationships: {
+    user: {
+      data: {
+        id: string;
+        type: 'users';
+      }
+    }
+  };
+}
+
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
@@ -124,6 +140,10 @@ export function activeUsersByTimeStream(streamParams: IStreamParams | null = nul
 
 export function usersByRegFieldStream(streamParams: IStreamParams | null = null, customFieldId: string) {
   return streams.get<IUsersByRegistrationField>({ apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`, ...streamParams });
+}
+
+export function userEngagementScoresStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUserEngagementScores>({ apiEndpoint: `${apiEndpoint}/users_engagement_scores`, ...streamParams });
 }
 
 // Comments

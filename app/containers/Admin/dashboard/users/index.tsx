@@ -23,10 +23,12 @@ import UsersByGenderChart from './charts/UsersByGenderChart';
 import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
+import MostActiveUsersChart from './charts/MostActiveUsersChart';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { InjectedIntlProps } from 'react-intl';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -55,9 +57,9 @@ interface Tracks {
   trackFilterOnGroup: Function;
 }
 
-class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, State> {
-  constructor(props: Props & InjectedLocalized & Tracks) {
-    super(props);
+class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+  constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
+    super(props as any);
     this.state = {
       resolution: 'month',
       startAtMoment: undefined,
@@ -107,6 +109,7 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
     const { resolution, currentGroupFilter, endAtMoment, startAtMoment } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
+    const infoMessage = this.props.intl.formatMessage(messages.top10activeUsersDescription);
 
     return (
       <>
@@ -169,6 +172,15 @@ class UsersDashboard extends PureComponent<Props & InjectedLocalized & Tracks, S
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
             />
+            <Row>
+              <MostActiveUsersChart
+                currentGroupFilter={currentGroupFilter}
+                startAt={startAt}
+                endAt={endAt}
+                infoMessage={infoMessage}
+                className="halfWidth dynamicHeight"
+              />
+            </Row>
           </GraphsContainer>
         </ThemeProvider>
       </>
@@ -180,9 +192,9 @@ const Data = adopt<DataProps, {}>({
   groups: <GetGroups />
 });
 
-const UsersDashBoardWithHOCs = injectTracks<Props>({
+const UsersDashBoardWithHOCs = injectIntl(injectTracks<Props>({
   trackFilterOnGroup: tracks.filteredOnGroup,
-})(localize<Props & Tracks>(UsersDashboard));
+})(localize<Props & Tracks>(UsersDashboard)));
 
 export default () => (
   <Data>
