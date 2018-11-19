@@ -10,6 +10,7 @@ import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats
 import localize, { InjectedLocalized } from 'utils/localize';
 
 import BarChartByCategory from './charts/BarChartByCategory';
+import PieChartByCategory from './charts/PieChartByCategory';
 
 // components
 import {
@@ -39,7 +40,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
 
       return ({
         value,
-        name: options[key] ? this.props.localize(options[key].title_multiloc) : this.props.intl.formatMessage(messages[key]),
+        name: options && options[key] ? this.props.localize(options[key].title_multiloc) : this.props.intl.formatMessage(messages[key]),
         code: key,
       });
     });
@@ -49,9 +50,25 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
   render() {
     const { customFields, localize, startAt, endAt, currentGroupFilter } = this.props;
     const graphsArray = customFields && customFields.map((field, index) => {
+      if (field.attributes.input_type === 'checkbox') {
+        return (
+          <PieChartByCategory
+            className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
+            startAt={startAt}
+            endAt={endAt}
+            currentGroupFilter={currentGroupFilter}
+            key={index}
+            graphTitleString={localize(field.attributes.title_multiloc)}
+            stream={usersByRegFieldStream}
+            graphUnit="Users"
+            convertToGraphFormat={this.convertToGraphFormat}
+            customId={field.id}
+          />
+        );
+      }
       return (
         <BarChartByCategory
-          className={`${(index % 2 === 1) && 'first'} halfWidth`}
+          className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
           startAt={startAt}
           endAt={endAt}
           currentGroupFilter={currentGroupFilter}
@@ -66,11 +83,13 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
     });
 
     if (graphsArray) {
-      return graphsArray.filter((_, index) => index % 2 === 1).map((item, index) => {
+      console.log(graphsArray);
+      return graphsArray.filter((_, index) => index % 2 === 1 || index === graphsArray.length - 1).map((_, index) => {
+        console.log(graphsArray);
         return (
           <Row key={index}>
-            {item}
-            {graphsArray.length >= index * 2 && graphsArray[index * 2]}
+            {graphsArray[index * 2]}
+            {graphsArray[index * 2 + 1]}
           </Row>
         );
       });

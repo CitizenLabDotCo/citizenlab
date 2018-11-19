@@ -123,7 +123,6 @@ export function activeUsersByTimeStream(streamParams: IStreamParams | null = nul
 }
 
 export function usersByRegFieldStream(streamParams: IStreamParams | null = null, customFieldId: string) {
-  console.log(streamParams, customFieldId);
   return streams.get<IUsersByRegistrationField>({ apiEndpoint: `${apiEndpoint}/users_by_custom_field/${customFieldId}`, ...streamParams });
 }
 
