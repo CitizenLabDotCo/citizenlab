@@ -5,7 +5,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
-import GetSerieFromStream from './GetSerieFromStream';
+import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByBirthyear } from 'services/stats';
 import messages from '../../messages';

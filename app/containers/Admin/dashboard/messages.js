@@ -86,15 +86,15 @@ export default defineMessages({
     defaultMessage: 'Active users',
   },
   ideas: {
-    id: 'app.containers.AdminPage.DashboardPage.Ideas',
+    id: 'app.containers.AdminPage.DashboardPage.ideas',
     defaultMessage: 'Ideas',
   },
   votes: {
-    id: 'app.containers.AdminPage.DashboardPage.Votes',
+    id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
   comments: {
-    id: 'app.containers.AdminPage.DashboardPage.Comments',
+    id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
   },
   mostActiveUsers: {
@@ -121,25 +121,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopicComparison',
     defaultMessage: 'Participation difference with topic {topicName}',
   },
-  totalCountTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCountTopic',
-    defaultMessage: '{selectedResourceName} total in {topicName} topic : {totalCount}',
-  },
-  totalCountProject: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCountProject',
-    defaultMessage: '{selectedResourceName} total in {projectName} project : {totalCount}',
+  totalCount: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCount',
+    defaultMessage: '{selectedResourceName} total in {selectedName} : {selectedCount}',
   },
   byProjectTitle: {
     id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
     defaultMessage: 'by project',
   },
-  resourceByTopicDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByTopicDifference',
-    defaultMessage: '{resourceName} difference with {topic}',
-  },
-  resourceByProjectDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByProjectDifference',
-    defaultMessage: '{resourceName} difference with {project}',
+  resourceByDifference: {
+    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
+    defaultMessage: '{selectedResourceName} difference with {selectedName}',
   },
   selectedProject: {
     id: 'app.containers.AdminPage.DashboardPage.selectedProject',
