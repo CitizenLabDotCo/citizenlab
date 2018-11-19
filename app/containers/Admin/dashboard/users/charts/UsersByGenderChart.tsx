@@ -17,8 +17,8 @@ type State = {
 };
 
 interface Props {
-  startAt: string;
-  endAt: string;
+  startAt: string | undefined | null;
+  endAt: string | null;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
   currentGroupFilter: string | null;
@@ -33,7 +33,7 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State> {
+class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -59,12 +59,13 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: { [key: string]: number }) => {
-    return map(serie, (value, key) => ({
+  convertToGraphFormat = (data: IUsersByGender) => {
+    const res =  map(data.series.users, (value, key) => ({
       value,
       name: this.props.intl.formatMessage(messages[key]),
       code: key,
     }));
+    return res.length > 0 ? res : null;
   }
 
   resubscribe(
@@ -88,7 +89,6 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
     const { colorMain } = this.props['theme'];
     const { className, graphTitleMessageKey } = this.props;
     const { serie } = this.state;
-    const noData = !serie || serie.every(item => item.value === 0);
 
     return (
       <GraphCard className={className}>
@@ -98,7 +98,7 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
               <FormattedMessage {...messages[graphTitleMessageKey]} />
             </GraphCardTitle>
           </GraphCardHeader>
-          {noData ?
+          {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
@@ -114,7 +114,7 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
                   fill={colorMain}
                   label={{ fill: colors.adminTextColor, fontSize: '14px' }}
                 >
-                  {serie && serie.map((entry, index) => (
+                  {serie.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
                   ))}
                 </Pie>
@@ -128,4 +128,4 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(withTheme(PieChartByCategory as any) as any);
+export default injectIntl<Props>(withTheme(UsersByGenderChart as any) as any);

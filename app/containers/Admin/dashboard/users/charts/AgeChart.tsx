@@ -13,8 +13,8 @@ import BarChartByCategory from './BarChartByCategory';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  startAt: string;
-  endAt: string;
+  startAt: string | null | undefined;
+  endAt: string | null;
   currentGroupFilter: string | null;
   className: string;
 }

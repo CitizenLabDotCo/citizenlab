@@ -41,7 +41,7 @@ import {
   commentsByTimeCumulativeStream,
 } from 'services/stats';
 
-export type IResource = 'Ideas' | 'Comments' | 'Votes';
+export type IResource = 'ideas' | 'comments' | 'votes';
 
 interface InputProps {
   onlyModerator?: boolean;
@@ -92,13 +92,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter: null,
       currentGroupFilter: null,
       currentTopicFilter: null,
-      currentResourceByTopic: 'Ideas',
-      currentResourceByProject: 'Ideas'
+      currentResourceByTopic: 'ideas',
+      currentResourceByProject: 'ideas'
     };
     this.resourceOptions = [
-      { value: 'Ideas', label: props.intl.formatMessage(messages['ideas']) },
-      { value: 'Comments', label: props.intl.formatMessage(messages['comments']) },
-      { value: 'Votes', label: props.intl.formatMessage(messages['votes']) }
+      { value: 'ideas', label: props.intl.formatMessage(messages['ideas']) },
+      { value: 'comments', label: props.intl.formatMessage(messages['comments']) },
+      { value: 'votes', label: props.intl.formatMessage(messages['votes']) }
     ];
     this.filterOptions = {
       projectFilterOptions: this.generateFilterOptions('project'),
@@ -312,28 +312,26 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     resolution={resolution}
                     {...this.state}
                   />
-                  {/* <FilterableBarChartResourceByProject
+
+                  <FilterableBarChartResourceByProject
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
                     resourceOptions={this.resourceOptions}
                     projectOptions={this.filterOptions.projectFilterOptions}
                     startAt={startAt}
                     endAt={endAt}
-                    selectedResource={currentResourceByProject}
                     {...this.state}
-                  /> */}
+                  />
                 </Column>
-                {/* <FilterableBarChartResourceByTopic
+                <FilterableBarChartResourceByTopic
                   className="halfWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
-                  currentResourceByTopic={currentResourceByTopic}
                   resourceOptions={this.resourceOptions}
                   startAt={startAt}
                   endAt={endAt}
-                  selectedResource={currentResourceByTopic}
                   {...this.state}
-                /> */}
+                />
               </Row>
             </GraphsContainer>
           </ThemeProvider>
