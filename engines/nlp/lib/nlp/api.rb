@@ -45,9 +45,9 @@ module NLP
       )
     end
 
-    def ideas_geotagging tenant_id, locale
+    def idea_geotagging tenant_id, locale, idea_id
       self.class.get(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/geotagging"
+        "/v1/tenants/#{tenant_id}/#{locale}/ideas/#{idea_id}/geotagging"
       )
     end
 
