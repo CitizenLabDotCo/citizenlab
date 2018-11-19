@@ -5,7 +5,6 @@ import { map, sortBy } from 'lodash-es';
 // components
 import FilterableBarChart from './FilterableBarChart';
 
-
 // resources
 import {
   IIdeasByProject,
@@ -18,7 +17,7 @@ import {
 
 // intl
 import localize, { InjectedLocalized } from 'utils/localize';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 

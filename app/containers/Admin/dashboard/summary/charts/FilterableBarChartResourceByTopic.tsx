@@ -15,7 +15,7 @@ import {
 
 // i18n
 import messages from '../../messages';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
