@@ -45,7 +45,7 @@ export interface INewBasket {
   participation_context_id: string;
   participation_context_type: 'Project' | 'Phase';
   idea_ids?: string[];
-  submitted_at?: string;
+  submitted_at?: string | null;
 }
 
 export function basketsStream(streamParams: IStreamParams | null = null) {
@@ -62,7 +62,7 @@ export async function addBasket(object: INewBasket) {
   return basket;
 }
 
-export function updateBasket(basketId: string, object) {
+export function updateBasket(basketId: string, object: Partial<INewBasket>) {
   return streams.update<IBasket>(`${apiEndpoint}/${basketId}`, basketId, { basket: object });
 }
 

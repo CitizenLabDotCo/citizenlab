@@ -13,7 +13,7 @@ import PhaseSurvey from './PhaseSurvey';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
 // services
@@ -21,10 +21,6 @@ import { IPhaseData } from 'services/phases';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
@@ -124,10 +120,8 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
           <FirstRow>
             <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
             <ProjectModeratorIndicator projectId={project.id} />
+            <ProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
-              {project.attributes.publication_status === 'archived' &&
-                <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-              }
               <StyledPhaseAbout phaseId={selectedPhaseId} />
               {isPBPhase &&
                 <StyledPBExpenses

@@ -180,7 +180,8 @@ class AssignBudgetControl extends PureComponent<Props, State> {
               user_id: authUser.id,
               participation_context_id: participationContextId,
               participation_context_type: participationContextType,
-              idea_ids: newIdeas
+              idea_ids: newIdeas,
+              submitted_at: null
             });
           } catch (error) {
             streams.fetchAllWith({ dataId: [basket.id] });

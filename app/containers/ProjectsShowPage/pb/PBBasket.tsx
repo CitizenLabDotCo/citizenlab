@@ -145,14 +145,15 @@ class PBBasket extends PureComponent<Props, State> {
 
     const { authUser, basket, participationContextId, participationContextType } = this.props;
 
-    if (!isNilOrError(basket) && !isNilOrError(authUser)) {
+    if (!isNilOrError(basket) && !isNilOrError(authUser) && participationContextId) {
       const newIdeas = basket.relationships.ideas.data.filter(idea => idea.id !== ideaIdToRemove).map(idea => idea.id);
 
       updateBasket(basket.id, {
         user_id: authUser.id,
         participation_context_id: participationContextId,
         participation_context_type: participationContextType,
-        idea_ids: newIdeas
+        idea_ids: newIdeas,
+        submitted_at: null
       });
     }
   }
