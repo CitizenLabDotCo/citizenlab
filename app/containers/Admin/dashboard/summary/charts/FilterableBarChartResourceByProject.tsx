@@ -1,24 +1,20 @@
 // libraries
 import React, { PureComponent } from 'react';
-import { map, sortBy, isEmpty } from 'lodash-es';
+import { map, sortBy } from 'lodash-es';
 
 // components
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
-import Select from 'components/UI/Select';
+import FilterableBarChart from './FilterableBarChart';
 
-// styling
-import styled, { withTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // resources
 import {
   IIdeasByProject,
+  ideasByProjectStream,
   ICommentsByProject,
-  IVotesByProject
+  commentsByProjectStream,
+  IVotesByProject,
+  votesByProjectStream
 } from 'services/stats';
-import GetParticipationByX from './GetParticipationByX';
 
 // intl
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -27,216 +23,91 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
-import { IOption } from 'typings';
+import { IOption, IGraphFormat } from 'typings';
 import { IResource } from '..';
 
-const SSelect = styled(Select)`
-  flex: 1;
-
-  ${media.smallerThan1280px`
-    width: 100%;
-  `}
-`;
-
-const GraphCardTitle = styled.h3`
-  margin: 0;
-  margin-right: 15px;
-
-  ${media.smallerThan1280px`
-    margin-bottom: 15px;
-  `}
-`;
-interface DataProps {
-  serie: IVotesByProject | ICommentsByProject | IIdeasByProject;
-}
-interface InputProps {
-  className: string;
-  onResourceByProjectChange: (option: IOption) => void;
-  resourceOptions: IOption[];
+interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
   currentTopicFilter: string | null;
-  selectedResource: IResource;
+  currentGroupFilter: string | null;
+}
+
+interface InputProps {
+  currentProjectFilter: string | null;
+  className: string;
+  onResourceByProjectChange: (option: IOption) => void;
+  currentResourceByProject: IResource;
+  resourceOptions: IOption[];
   projectOptions: IOption[];
 }
-interface Props extends InputProps, DataProps { }
-
-type IGraphFormat = {
-  name: any,
-  value: any,
-  code: any
-}[];
-
-interface State {
-  serie: IGraphFormat | null;
-  totalCount: number | null;
-  projectName: string | null;
-}
+interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs, State> {
-  constructor(props: PropsWithHoCs) {
-    super(props);
-    this.state = {
-      serie: null,
-      totalCount: null,
-      projectName: null,
-    };
+class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs> {
+  convertToGraphFormat = (data: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
+    const { series, projects } = data;
+    const { localize, currentResourceByProject } = this.props;
+
+    const mapped = map(series[currentResourceByProject], (count: number, projectId: string) => ({
+      name: localize(projects[projectId].title_multiloc) as string,
+      value: count as number,
+      code: projectId as string,
+    }));
+    const res = sortBy(mapped, 'name');
+    return res.length > 0 ? res : null;
   }
 
-  componentDidMount() {
-    this.setConvertedSerieToState();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.serie !== this.props.serie
-      || this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.setConvertedSerieToState();
-    }
-  }
-
-  setConvertedSerieToState() {
-    const { serie } = this.props;
-    const convertedSerie = serie && this.convertToGraphFormat(this.props.serie);
-    if (this.props.currentProjectFilter) {
-      this.setState({ serie: this.filterByProject(convertedSerie) });
-    } else { this.setState({ serie: convertedSerie }); }
-  }
-
-  convertToGraphFormat = (serie: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
-   const { localize } = this.props;
-
-    if (serie) {
-      const { data, projects } = serie;
-      const mapped = map(data, (count: number, projectId: string) => ({
-        name: localize(projects[projectId].title_multiloc),
-        value: count,
-        code: projectId,
-      }));
-
-      if (mapped.length > 0) {
-        return sortBy(mapped, 'name');
-      }
-    }
-
-    return null;
-  }
-
-  filterByProject = (serie: IGraphFormat | null) => {
-    if (serie) {
-      const { currentProjectFilter, projectOptions, intl: { formatMessage } } = this.props;
+  convertSerie = (serie: IGraphFormat | null) => {
+    const { currentProjectFilter, currentResourceByProject, projectOptions, intl: { formatMessage } } = this.props;
+    if (serie && currentResourceByProject) {
       const selectedProject = serie.find(item => item.code === currentProjectFilter);
-      const selectedProjectCount = selectedProject ? selectedProject.value : 0;
-      this.setState({ totalCount: selectedProjectCount });
+      const selectedCount = selectedProject ? selectedProject.value : 0;
+
+      let selectedName;
       if (selectedProject) {
-        this.setState({ projectName: selectedProject.name });
+        selectedName = selectedProject.name;
       } else {
         const foundOption = projectOptions.find(option => option.value === currentProjectFilter);
-        this.setState({ projectName: foundOption ? foundOption.label : formatMessage(messages.selectedProject) });
+        selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedProject);
       }
-      const filteredSerie = serie.map(item => {
-        const { value, ...rest } = item;
-        return { value: value - selectedProjectCount, ...rest };
-      }).filter(item => item.code !== currentProjectFilter);
-      return filteredSerie;
-    }
 
-    return null;
+      const convertedSerie = serie.map(item => {
+        const { value, ...rest } = item;
+        return { value: value - selectedCount, ...rest };
+      }).filter(item => item.code !== currentProjectFilter);
+
+      return { convertedSerie, selectedCount, selectedName };
+    }
+    return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
+  }
+
+  getCurrentStream(currentResourceByProject) {
+    if (currentResourceByProject === 'ideas') {
+      return ideasByProjectStream;
+    } else if (currentResourceByProject === 'comments') {
+      return commentsByProjectStream;
+    } else {
+      return votesByProjectStream;
+    }
   }
 
   render() {
-    const theme = this.props['theme'];
-    const { chartFill } = theme;
-    const { serie, totalCount, projectName } = this.state;
-    const {
-      className,
-      onResourceByProjectChange,
-      resourceOptions,
-      selectedResource,
-      intl: {
-        formatMessage
-      },
-      currentProjectFilter
-    } = this.props;
-    const noData = (serie && (serie.every(item => isEmpty(item)) || serie.length <= 0)) || false;
-    const selectedResourceName = formatMessage(messages[selectedResource]);
-    const unitName = (currentProjectFilter && serie && !noData)
-      ? formatMessage(messages.resourceByProjectDifference, {
-        resourceName: selectedResourceName,
-        project: projectName
-      })
-      : selectedResourceName;
-    const barHoverColor = rgba(chartFill, .25);
-
+    const { currentResourceByProject, currentProjectFilter, onResourceByProjectChange } = this.props;
     return (
-      <GraphCard className={className}>
-        <GraphCardInner>
-          <GraphCardHeaderWithFilter>
-            <GraphCardTitle>
-              <FormattedMessage {...messages.participationPerProject} />
-            </GraphCardTitle>
-            <SSelect
-              id="projectFilter"
-              onChange={onResourceByProjectChange}
-              value={selectedResource}
-              options={resourceOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
-          </GraphCardHeaderWithFilter>
-          {noData ?
-            <NoDataContainer>
-              {currentProjectFilter ?
-                <FormattedMessage {...messages.totalCountProject} values={{ totalCount, projectName, selectedResourceName }} />
-                : <FormattedMessage {...messages.noData} />}
-            </NoDataContainer>
-            :
-            <>
-              {currentProjectFilter && <FormattedMessage tagName="p" {...messages.totalCountProject} values={{ totalCount, projectName, selectedResourceName }} />}
-              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-                <BarChart data={serie} layout="vertical">
-                  <Bar
-                    dataKey="value"
-                    name={unitName}
-                    fill={theme.chartFill}
-                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
-                    barSize={20}
-                  />
-                  <YAxis
-                    dataKey="name"
-                    type="category"
-                    width={150}
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    tickLine={false}
-                  />
-                  <XAxis
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
-                    type="number"
-                    tick={{ transform: 'translate(0, 7)' }}
-                  />
-                  <Tooltip
-                    isAnimationActive={false}
-                    cursor={{ fill: barHoverColor }}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </>
-          }
-        </GraphCardInner>
-      </GraphCard>
+      <FilterableBarChart
+        {...this.props}
+        onResourceByXChange={onResourceByProjectChange}
+        currentSelectedResource={currentResourceByProject}
+        stream={this.getCurrentStream(currentResourceByProject)}
+        convertToGraphFormat={this.convertToGraphFormat}
+        convertSerie={this.convertSerie}
+        currentFilter={currentProjectFilter}
+        graphTitleMessageKey="participationPerProject"
+      />
     );
   }
 }
 
-const BarChartWithHocs = localize<Props>(injectIntl<Props & InjectedLocalized>(withTheme(FilterableBarChartResourceByProject as any) as any));
-
-export default (inputProps: InputProps) => (
-  <GetParticipationByX {...inputProps} type="ByProject">
-    {serie => <BarChartWithHocs {...serie} {...inputProps} />}
-  </GetParticipationByX>
-);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(FilterableBarChartResourceByProject as any) as any);

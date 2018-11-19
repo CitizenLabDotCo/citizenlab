@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { map, sortBy } from 'lodash-es';
 
 import FilterableBarChart from './FilterableBarChart';
+
 // resources
 import {
   IIdeasByTopic,
@@ -91,10 +92,12 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
   }
 
   render() {
-    const { currentResourceByTopic, currentTopicFilter } = this.props;
+    const { currentResourceByTopic, currentTopicFilter, onResourceByTopicChange } = this.props;
     return (
       <FilterableBarChart
         {...this.props}
+        onResourceByXChange={onResourceByTopicChange}
+        currentSelectedResource={currentResourceByTopic}
         stream={this.getCurrentStream(currentResourceByTopic)}
         convertToGraphFormat={this.convertToGraphFormat}
         convertSerie={this.convertSerie}

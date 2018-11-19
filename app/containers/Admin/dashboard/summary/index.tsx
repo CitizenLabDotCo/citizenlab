@@ -304,7 +304,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Row>
               <Row>
-                <Column className="first">
                   <LineChartVotesByTime
                     className="colFirst"
                     startAt={startAt}
@@ -312,6 +311,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     resolution={resolution}
                     {...this.state}
                   />
+                      **/}
+                <Column className="first">
                   <FilterableBarChartResourceByProject
                     className="dynamicHeight"
                     onResourceByProjectChange={this.onResourceByProjectChange}
@@ -319,11 +320,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                     projectOptions={this.filterOptions.projectFilterOptions}
                     startAt={startAt}
                     endAt={endAt}
-                    selectedResource={currentResourceByProject}
                     {...this.state}
                   />
                 </Column>
-                  **/}
                 <FilterableBarChartResourceByTopic
                   className="halfWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
@@ -332,7 +331,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   resourceOptions={this.resourceOptions}
                   startAt={startAt}
                   endAt={endAt}
-                  selectedResource={currentResourceByTopic}
                   {...this.state}
                 />
 

@@ -7,7 +7,10 @@ import {
   IUsersByBirthyear,
   IIdeasByTopic,
   ICommentsByTopic,
-  IVotesByTopic
+  IVotesByTopic,
+  IIdeasByProject,
+  ICommentsByProject,
+  IVotesByProject
 } from 'services/stats';
 
 export type IGraphFormat = {
@@ -24,7 +27,7 @@ type children = (renderProps: {
   serie: IGraphFormat | null | undefined;
 }) => JSX.Element | null;
 
-type IResourceByX = IUsersByBirthyear | IIdeasByTopic | ICommentsByTopic | IVotesByTopic;
+type IResourceByX = IUsersByBirthyear | IIdeasByTopic | ICommentsByTopic | IVotesByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject;
 
 interface QueryProps {
   startAt: string | undefined | null;
