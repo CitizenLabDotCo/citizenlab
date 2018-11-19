@@ -36,6 +36,15 @@ export const ControlBar = styled.div`
   margin-bottom: 30px;
 `;
 
+export const FlexFlowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const FlexItem = styled.div`
+  width: 50%;
+`;
+
 export const GraphsContainer = styled.div`
   display: flex;
   flex-direction: column;
