@@ -1,6 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
-import { map, isNumber, isEmpty } from 'lodash-es';
+import { map, isEmpty } from 'lodash-es';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { withTheme } from 'styled-components';
@@ -14,20 +14,16 @@ import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeade
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
-
+import { IGraphFormat } from 'typings';
 type State = {
-  serie: {
-    name: string | number,
-    value: number,
-    code: string
-  }[] | null;
+  serie: IGraphFormat | null;
 };
 
 type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 
 type Props = {
   className?: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: 'users' | 'ideas' | 'comments';
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -100,12 +96,18 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (data: IUsersByTime) => {
-    return map(data.series.users, (value, key) => ({
-      value,
-      name: key,
-      code: key
-    }));
+  convertToGraphFormat = (data: IResourceByTime) => {
+    const { graphUnit } = this.props;
+
+    if (!isEmpty(data.series[graphUnit])) {
+      return map(data.series[graphUnit], (value, key) => ({
+        value,
+        name: key,
+        code: key
+      }));
+    }
+
+    return null;
   }
 
   resubscribe(
@@ -167,28 +169,24 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     return;
   }
 
-  isSerieEmpty(serie) {
-    return !serie || (serie && (serie.lengh === 0 || serie.every(item => isEmpty(item))));
-  }
-
-  getFormattedAmounts(serie) {
-    if (!this.isSerieEmpty(serie)) {
+  getFormattedNumbers(serie: IGraphFormat | null) {
+    if (serie) {
       const firstSerieValue = serie[0].value;
       const lastSerieValue = serie[serie.length - 1].value;
-      const serieChange = isNumber(firstSerieValue) && isNumber(lastSerieValue) && (lastSerieValue - firstSerieValue);
-      if (isNumber(serieChange)) {
-        return ({
-          totalAmount: lastSerieValue,
-          formattedSerieChange: this.formatSerieChange(serieChange),
-          variationSign: serieChange >= 0 ? 'increase' : 'decrease'
-        });
-      }
+      const serieChange = lastSerieValue - firstSerieValue;
+
+      return {
+        totalNumber: lastSerieValue,
+        formattedSerieChange: this.formatSerieChange(serieChange),
+        typeOfChange: serieChange >= 0 ? 'increase' : 'decrease'
+      };
     }
-    return ({
-      totalAmount: null,
+
+    return {
+      totalNumber: null,
       formattedSerieChange: null,
-      variationSign: ''
-    });
+      typeOfChange: ''
+    };
   }
 
   render() {
@@ -196,10 +194,12 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
     const { graphTitleMessageKey, graphUnit, className } = this.props;
     const { serie } = this.state;
     const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
-    const noData = this.isSerieEmpty(serie);
-    const { totalAmount,
-    formattedSerieChange,
-    variationSign } = this.getFormattedAmounts(serie);
+    const formattedNumbers = this.getFormattedNumbers(serie);
+    const {
+      totalNumber,
+      formattedSerieChange,
+      typeOfChange
+    } = formattedNumbers;
 
     return (
       <GraphCard className={className}>
@@ -210,16 +210,16 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
             </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>
-                {totalAmount}
+                {totalNumber}
               </GraphCardFigure>
               <GraphCardFigureChange
-                className={variationSign}
+                className={typeOfChange}
               >
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {noData ?
+          {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
@@ -230,7 +230,7 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                 <Area
                   type="monotone"
                   dataKey="value"
-                  name={formatMessage(messages[`numberOf${graphUnit}`])}
+                  name={formatMessage(messages[graphUnit])}
                   dot={false}
                   fill={rgba(chartFill, .25)}
                   fillOpacity={1}

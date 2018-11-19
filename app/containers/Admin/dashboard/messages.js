@@ -45,10 +45,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.emptyVotes',
     defaultMessage: 'No votes',
   },
-  numberOfUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfUsers',
-    defaultMessage: 'Users',
-  },
   activeUsersByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
     defaultMessage: 'Active users',
@@ -57,16 +53,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
     defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
   },
-  numberOfActiveUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfActiveUsers',
-    defaultMessage: 'Active users',
-  },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
-    defaultMessage: 'Comments',
-  },
-  numberOfComments: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfComments',
     defaultMessage: 'Comments',
   },
   votesByTimeTitle: {
@@ -85,9 +73,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
     defaultMessage: 'Total votes',
   },
-  numberOfIdeas: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfIdeas',
-    defaultMessage: 'Ideas',
+  users: {
+    id: 'app.containers.AdminPage.DashboardPage.Users',
+    defaultMessage: 'Users',
+  },
+  activeUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
+    defaultMessage: 'Active users',
   },
   ideas: {
     id: 'app.containers.AdminPage.DashboardPage.ideas',
@@ -247,10 +239,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
   },
-  numberOfRegistrations: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfRegistrations',
-    defaultMessage: '#registrations',
-  },
+
   tryOutInsights: {
     id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
     defaultMessage: 'Try out {insightsLink}, our new beta feature',
