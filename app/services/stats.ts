@@ -86,6 +86,22 @@ export interface IUsersByTime {
   };
 }
 
+export interface IUserEngagementScores {
+  id: string;
+  type: string;
+  attributes: {
+    sum_score: number;
+  };
+  relationships: {
+    user: {
+      data: {
+        id: string;
+        type: 'users';
+      }
+    }
+  };
+}
+
 export function usersByGenderStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByGender>({ apiEndpoint: `${apiEndpoint}/users_by_gender`, ...streamParams });
 }
@@ -108,6 +124,10 @@ export function usersByTimeCumulativeStream(streamParams: IStreamParams | null =
 
 export function activeUsersByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByTime>({ apiEndpoint: `${apiEndpoint}/active_users_by_time`, ...streamParams });
+}
+
+export function userEngagementScoresStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUserEngagementScores>({ apiEndpoint: `${apiEndpoint}/users_engagement_scores`, ...streamParams });
 }
 
 // Comments
