@@ -117,7 +117,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .group("custom_field_values->'gender'")
       .order("custom_field_values->'gender'")
       .count
-    serie['_blank'] = serie.delete(nil) || 0
+    serie['_blank'] = serie.delete(nil) if serie.key?(nil)
     render json: {series: {users: serie}}
   end
 
@@ -134,7 +134,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .group("custom_field_values->'birthyear'")
       .order("custom_field_values->'birthyear'")
       .count
-    serie['_blank'] = serie.delete(nil) || 0
+    serie['_blank'] = serie.delete(nil) if serie.key?(nil)
     render json: {series: {users: serie}}
   end
 
@@ -151,7 +151,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .group("custom_field_values->'domicile'")
       .order("custom_field_values->'domicile'")
       .count
-    serie['_blank'] = serie.delete(nil) || 0
+    serie['_blank'] = serie.delete(nil) if serie.key?(nil)
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
     render json: {series: {users: serie}, areas: areas.map{|a| [a.id, a.attributes.except('id')]}.to_h}
   end
@@ -169,7 +169,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       .group("custom_field_values->'education'")
       .order("custom_field_values->'education'")
       .count
-    serie['_blank'] = serie.delete(nil) || 0
+    serie['_blank'] = serie.delete(nil) if serie.key?(nil)
     render json: {series: {users: serie}}
   end
 
@@ -190,7 +190,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .group("custom_field_values->'#{@custom_field.key}'")
         .order("custom_field_values->'#{@custom_field.key}'")
         .count
-      serie['_blank'] = serie.delete(nil) || 0
+      serie['_blank'] = serie.delete(nil) if serie.key?(nil)
       options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     when 'multiselect'
@@ -200,7 +200,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .group("cfv.field_value")
         .order("cfv.field_value")
         .count
-      serie['_blank'] = serie.delete(nil) || 0
+      serie['_blank'] = serie.delete(nil) if serie.key?(nil)
       options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     when 'checkbox'
@@ -209,7 +209,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .group("custom_field_values->'#{@custom_field.key}'")
         .order("custom_field_values->'#{@custom_field.key}'")
         .count
-      serie['_blank'] = serie.delete(nil) || 0
+      serie['_blank'] = serie.delete(nil) if serie.key?(nil)
       render json: {series: {users: serie}}
     else
       head :not_implemented
