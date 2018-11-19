@@ -17,8 +17,8 @@ type State = {
 };
 
 interface Props {
-  startAt: string;
-  endAt: string;
+  startAt: string | undefined | null;
+  endAt: string | null;
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
   currentGroupFilter: string | null;
@@ -33,7 +33,7 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State> {
+class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -128,4 +128,4 @@ class PieChartByCategory extends PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(withTheme(PieChartByCategory as any) as any);
+export default injectIntl<Props>(withTheme(UsersByGenderChart as any) as any);
