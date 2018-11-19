@@ -181,7 +181,7 @@ export interface IVotesByTopic {
 
 export interface IVotesByProject {
   series: {
-    votes: {
+    total: {
       [key: string]: number;
     }
   };
