@@ -47,8 +47,9 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
   convertToGraphFormat = (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
     const { series, topics } = data;
     const { localize, currentResourceByTopic } = this.props;
+    const dataKey = currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
 
-    const mapped = map(series[currentResourceByTopic], (count: number, topicId: string) => ({
+    const mapped = map(series[dataKey], (count: number, topicId: string) => ({
       name: localize(topics[topicId].title_multiloc) as string,
       value: count as number,
       code: topicId as string,

@@ -34,10 +34,10 @@ interface QueryProps {
   endAt: string | null;
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
+  stream: (streamParams?: IStreamParams | null) => IStream<IResourceByX>;
 }
 
 interface Props extends QueryProps {
-  stream: (streamParams?: IStreamParams | null) => IStream<IResourceByX>;
   convertToGraphFormat: (IResourceByX) => IGraphFormat;
 }
 
@@ -55,12 +55,12 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   componentDidMount() {
     const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream, convertToGraphFormat } = this.props;
 
-    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter, currentProjectFilter });
+    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream });
 
     this.subscriptions = [
       this.queryProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ startAt, endAt, currentGroupFilter, currentProjectFilter }) => stream({
+        switchMap(({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream }) => stream({
           queryParameters: {
             start_at: startAt,
             end_at: endAt,
@@ -76,12 +76,13 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   }
 
   componentDidUpdate(prevProps: QueryProps) {
-    const { startAt, endAt, currentGroupFilter, currentProjectFilter } = this.props;
+    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream } = this.props;
     if (this.props.startAt !== prevProps.startAt
       || this.props.endAt !== prevProps.endAt
+      || this.props.stream !== prevProps.stream
       || this.props.currentGroupFilter !== prevProps.currentGroupFilter
       || this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.queryProps$.next({ startAt, endAt, currentGroupFilter, currentProjectFilter });
+      this.queryProps$.next({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream });
     }
   }
 
