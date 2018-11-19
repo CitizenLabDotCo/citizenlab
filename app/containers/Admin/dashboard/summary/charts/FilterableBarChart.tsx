@@ -11,7 +11,10 @@ import GetSerieFromStream from '../../users/charts/GetSerieFromStream';
 import {
   IIdeasByTopic,
   ICommentsByTopic,
-  IVotesByTopic
+  IVotesByTopic,
+  IIdeasByProject,
+  ICommentsByProject,
+  IVotesByProject,
 } from 'services/stats';
 
 // typings
@@ -55,8 +58,8 @@ interface QueryProps {
   currentProjectFilter?: string | null;
   currentGroupFilter?: string | null;
   currentTopicFilter?: string | null;
-  stream: (streamParams?: IStreamParams | null) => IStream<IIdeasByTopic | IVotesByTopic | ICommentsByTopic>;
-  convertToGraphFormat: (resource: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => IGraphFormat | null;
+  stream: (streamParams?: IStreamParams | null) => IStream<IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject>;
+  convertToGraphFormat: (resource: IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject) => IGraphFormat | null;
   currentFilter: string | null;
   graphTitleMessageKey: string;
 }
@@ -64,10 +67,9 @@ interface QueryProps {
 interface InputProps extends QueryProps {
   convertSerie: (serie: IGraphFormat | null) => { convertedSerie: IGraphFormat | null, selectedCount: any, selectedName: any };
   className?: string;
-  onResourceByTopicChange: (option: IOption) => void;
-  currentResourceByTopic: IResource;
+  onResourceByXChange: (option: IOption) => void;
+  currentSelectedResource: IResource;
   resourceOptions: IOption[];
-  topicOptions: IOption[];
 }
 
 interface Props extends InputProps, DataProps { }
@@ -78,8 +80,8 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
     const { chartFill } = theme;
     const {
       className,
-      onResourceByTopicChange,
-      currentResourceByTopic,
+      onResourceByXChange,
+      currentSelectedResource,
       resourceOptions,
       intl: {
         formatMessage
@@ -90,7 +92,7 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
       serie
     } = this.props;
     console.log(convertSerie);
-    const selectedResourceName = currentResourceByTopic && formatMessage(messages[currentResourceByTopic]);
+    const selectedResourceName = currentSelectedResource && formatMessage(messages[currentSelectedResource]);
     const { convertedSerie, selectedCount, selectedName } = convertSerie(serie);
     const unitName = (currentFilter && serie)
       ? formatMessage(messages.resourceByDifference, {
@@ -108,8 +110,8 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
             </GraphCardTitle>
             <SSelect
               id="topicFilter"
-              onChange={onResourceByTopicChange}
-              value={currentResourceByTopic}
+              onChange={onResourceByXChange}
+              value={currentSelectedResource}
               options={resourceOptions}
               clearable={false}
               borderColor="#EAEAEA"
