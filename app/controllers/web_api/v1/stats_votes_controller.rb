@@ -39,9 +39,16 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       return
     end
 
+    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
+      .where(votable_type: 'Idea')
+      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+
+    votes = apply_group_filter(votes)
+    votes = apply_project_filter(votes)
+    votes = apply_topic_filter(votes)
+
     serie = @@stats_service.group_by_time(
-      StatVotePolicy::Scope.new(current_user, Vote).resolve
-      .group(:mode),
+      votes.group(:mode),
       'votes.created_at',
       @start_at,
       @end_at,
@@ -56,9 +63,16 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       return
     end
 
+    votes = StatVotePolicy::Scope.new(current_user, Vote).resolve
+      .where(votable_type: 'Idea')
+      .joins("JOIN ideas ON ideas.id = votes.votable_id")
+
+    votes = apply_group_filter(votes)
+    votes = apply_project_filter(votes)
+    votes = apply_topic_filter(votes)
+
     serie = @@stats_service.group_by_time_cumulative(
-      StatVotePolicy::Scope.new(current_user, Vote).resolve
-      .group(:mode),
+      votes.group(:mode),
       'votes.created_at',
       @start_at,
       @end_at,
@@ -72,14 +86,8 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
 
-    if params[:project]
-      votes = votes.where(ideas: {project_id: params[:project]})
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      votes = votes.where(user_id: group.members)
-    end
+    votes = apply_group_filter(votes)
+    votes = apply_project_filter(votes)
 
     serie = votes
       .where(created_at: @start_at..@end_at)
@@ -96,16 +104,9 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .where(votable_type: 'Idea')
       .joins("JOIN ideas ON ideas.id = votes.votable_id")
 
-    if params[:topic]
-      votes = votes
-        .joins("JOIN ideas_topics ON ideas.id = ideas_topics.idea_id")
-        .where(ideas_topics: {topic_id: params[:topic]})
-    end
+    votes = apply_group_filter(votes)
+    votes = apply_topic_filter(votes)
 
-    if params[:group]
-      group = Group.find(params[:group])
-      votes = votes.where(user_id: group.members)
-    end
     serie = votes
       .where(created_at: @start_at..@end_at)
       .group("ideas.project_id")
@@ -116,6 +117,33 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
   end
 
   private 
+
+  def apply_group_filter votes
+    if params[:group]
+      group = Group.find(params[:group])
+      votes.where(user_id: group.members)
+    else
+      votes
+    end
+  end
+
+  def apply_project_filter votes
+    if params[:project]
+      votes.where(ideas: {project_id: params[:project]})
+    else
+      votes
+    end
+  end
+
+  def apply_topic_filter votes
+    if params[:topic]
+      votes
+        .joins("JOIN ideas_topics ON ideas.id = ideas_topics.idea_id")
+        .where(ideas_topics: {topic_id: params[:topic]})
+    else
+      votes
+    end
+  end
 
   def apply_idea_filters ideas, filter_params
     ideas = ideas.where(id: filter_params[:ideas]) if filter_params[:ideas].present?
