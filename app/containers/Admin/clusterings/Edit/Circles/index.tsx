@@ -60,13 +60,15 @@ class Circles extends PureComponent<Props, State> {
     window.addEventListener('resize', this.calculateNodePositions);
     window.addEventListener('keydown', this.handleOnKeyDown);
     window.addEventListener('keyup', this.handleOnKeyUp);
+    window.addEventListener('contextmenu', this.handleContextMenu, false);
     this.calculateNodePositions();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.calculateNodePositions);
-    window.addEventListener('keydown', this.handleOnKeyDown);
-    window.addEventListener('keyup', this.handleOnKeyUp);
+    window.removeEventListener('keydown', this.handleOnKeyDown);
+    window.removeEventListener('keyup', this.handleOnKeyUp);
+    window.removeEventListener('contextmenu', this.handleContextMenu);
   }
 
   calculateNodePositions = () => {
@@ -96,14 +98,22 @@ class Circles extends PureComponent<Props, State> {
   }
 
   handleOnClickNode = (node: D3Node, event: MouseEvent) => {
-    event.preventDefault();
-
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
     } else if (this.state.ctrlKeyPressed) {
       this.props.onCtrlClickNode(node.data);
     } else {
       this.props.onClickNode(node.data);
+    }
+  }
+
+  handleContextMenu = (event: Event) => {
+    event.preventDefault();
+
+    this.setState({ ctrlKeyPressed: true });
+
+    if (this.state.hoveredNode) {
+      this.props.onCtrlClickNode(this.state.hoveredNode.data);
     }
   }
 
