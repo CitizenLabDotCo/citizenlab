@@ -85,16 +85,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   constructor(props: PropsHithHoCs) {
     super(props);
-    this.state = {
-      resolution: 'month',
-      startAtMoment: undefined,
-      endAtMoment: moment(),
-      currentProjectFilter: null,
-      currentGroupFilter: null,
-      currentTopicFilter: null,
-      currentResourceByTopic: 'ideas',
-      currentResourceByProject: 'ideas'
-    };
+    const { onlyModerator, projects: { projectsList } } = props;
     this.resourceOptions = [
       { value: 'ideas', label: props.intl.formatMessage(messages['ideas']) },
       { value: 'comments', label: props.intl.formatMessage(messages['comments']) },
@@ -105,16 +96,32 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groupFilterOptions: this.generateFilterOptions('group'),
       topicFilterOptions: this.generateFilterOptions('topic')
     };
+    this.state = {
+      resolution: 'month',
+      startAtMoment: undefined,
+      endAtMoment: moment(),
+      currentProjectFilter: onlyModerator
+        ? (projectsList && projectsList.length > 0 ? projectsList[0].id : null)
+        : null,
+      currentGroupFilter: null,
+      currentTopicFilter: null,
+      currentResourceByTopic: 'ideas',
+      currentResourceByProject: 'ideas'
+    };
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.projects !== prevProps.projects) {
+    const { projects, projects: { projectsList } , topics, groups, onlyModerator } = this.props;
+    if (projects !== prevProps.projects) {
       this.filterOptions.projectFilterOptions = this.generateFilterOptions('project');
+      if (onlyModerator && this.state.currentProjectFilter === null) {
+        this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : null) });
+      }
     }
-    if (this.props.topics !== prevProps.topics) {
+    if (topics !== prevProps.topics) {
       this.filterOptions.topicFilterOptions = this.generateFilterOptions('topic');
     }
-    if (this.props.groups !== prevProps.groups) {
+    if (groups !== prevProps.groups) {
       this.filterOptions.groupFilterOptions = this.generateFilterOptions('group');
     }
   }
@@ -167,7 +174,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       groups,
       groups: { groupsList },
       topics,
-      localize } = this.props;
+      localize,
+      onlyModerator } = this.props;
 
     let filterOptions: IOption[] = [];
 
@@ -201,7 +209,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       }
     }
 
-    filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
+    if (filter !== 'project' || !onlyModerator) {
+      filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
+    }
     return filterOptions;
   }
 
