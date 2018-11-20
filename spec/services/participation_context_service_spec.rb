@@ -61,7 +61,7 @@ describe ParticipationContextService do
       expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_permitted'
     end
 
-    it "return `not_ideation` when we're not in an ideation context" do
+    it "returns `not_ideation` when we're not in an ideation context" do
       project = create(:project_with_current_phase, 
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'information'}
@@ -69,7 +69,7 @@ describe ParticipationContextService do
       expect(service.posting_disabled_reason(project, create(:user))).to eq 'not_ideation'
     end
 
-    it "return `not_ideation` when we're in a participatory budgeting context" do
+    it "returns `not_ideation` when we're in a participatory budgeting context" do
       project = create(:project_with_current_phase, 
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
@@ -151,7 +151,7 @@ describe ParticipationContextService do
         expect(service.commenting_disabled_reason(idea, create(:user))).to eq 'project_inactive'
       end
 
-      it "return nil when we're in a participatory budgeting context" do
+      it "returns nil when we're in a participatory budgeting context" do
       project = create(:project_with_current_phase, 
         with_permissions: true, 
         current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
@@ -245,7 +245,7 @@ describe ParticipationContextService do
         expect(service.voting_disabled_reason(idea, user)).to eq reasons[:project_inactive]
       end
 
-      it "return `not_ideation` when we're in a participatory budgeting context" do
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
         project = create(:project_with_current_phase, 
           with_permissions: true, 
           current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
@@ -334,6 +334,15 @@ describe ParticipationContextService do
         project = create(:project_with_past_phases, with_permissions: true)
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq reasons[:project_inactive]
+      end
+
+      it "returns `not_ideation` when we're in a participatory budgeting context" do
+        project = create(:project_with_current_phase, 
+          with_permissions: true, 
+          current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
+          )
+        idea = create(:idea, project: project, phases: project.phases)
+        expect(service.cancelling_votes_disabled_reason(idea, idea.author)).to eq 'not_ideation'
       end
     end
 

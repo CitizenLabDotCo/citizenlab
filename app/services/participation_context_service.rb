@@ -15,6 +15,7 @@ class ParticipationContextService
 
   VOTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
     voting_limited_max_reached: 'voting_limited_max_reached',
@@ -105,6 +106,8 @@ class ParticipationContextService
     context = get_participation_context idea.project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.ideation?
+      VOTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:not_in_active_context]
     elsif !context.voting_enabled
@@ -126,6 +129,8 @@ class ParticipationContextService
     context = get_participation_context idea.project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.ideation?
+      VOTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
       VOTING_DISABLED_REASONS[:not_in_active_context]
     elsif !context.voting_enabled
