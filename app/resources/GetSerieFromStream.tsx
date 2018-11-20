@@ -1,7 +1,12 @@
-import React from 'react';
+// libraries
+import { PureComponent } from 'react';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+
+// utils
 import shallowCompare from 'utils/shallowCompare';
+
+// typings
 import { IStreamParams, IStream } from 'utils/streams';
 import {
   IUsersByBirthyear,
@@ -12,12 +17,7 @@ import {
   ICommentsByProject,
   IVotesByProject
 } from 'services/stats';
-
-export type IGraphFormat = {
-  name: string | number,
-  value: number,
-  code: string
-}[] | null;
+import { IGraphFormat } from 'typings';
 
 interface State {
   serie: IGraphFormat | null | undefined;
@@ -27,22 +27,29 @@ type children = (renderProps: {
   serie: IGraphFormat | null | undefined;
 }) => JSX.Element | null;
 
-type IResourceByX = IUsersByBirthyear | IIdeasByTopic | ICommentsByTopic | IVotesByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject;
+type ISupportedDataType = IUsersByBirthyear
+  | IIdeasByTopic
+  | ICommentsByTopic
+  | IVotesByTopic
+  | IIdeasByProject
+  | IVotesByProject
+  | ICommentsByProject;
 
 interface QueryProps {
   startAt: string | undefined | null;
   endAt: string | null;
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
-  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<IResourceByX>;
+  currentTopicFilter?: string | null;
+  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<ISupportedDataType>;
   customId?: string;
 }
 
 interface Props extends QueryProps {
-  convertToGraphFormat: (IResourceByX) => IGraphFormat;
+  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
 }
 
-export default class GetSerieFromStream extends React.PureComponent<Props, State> {
+export default class GetSerieFromStream extends PureComponent<Props, State> {
   private queryProps$: BehaviorSubject<QueryProps>;
   private subscriptions: Subscription[];
 
@@ -54,20 +61,42 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   }
 
   componentDidMount() {
-    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream, convertToGraphFormat, customId } = this.props;
-    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream });
+    const {
+      startAt,
+      endAt,
+      currentGroupFilter,
+      currentProjectFilter,
+      currentTopicFilter,
+      stream,
+      convertToGraphFormat,
+      customId } = this.props;
+
+    this.queryProps$ = new BehaviorSubject({
+      startAt,
+      endAt,
+      currentGroupFilter,
+      currentProjectFilter,
+      currentTopicFilter,
+      stream
+    });
 
     this.subscriptions = [
       this.queryProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream }) => stream({
-          queryParameters: {
-            start_at: startAt,
-            end_at: endAt,
-            group: currentGroupFilter,
-            project: currentProjectFilter
-          }
-        }, customId).observable))
+        switchMap(({ startAt,
+          endAt,
+          currentGroupFilter,
+          currentProjectFilter,
+          currentTopicFilter,
+          stream }) => stream({
+            queryParameters: {
+              start_at: startAt,
+              end_at: endAt,
+              group: currentGroupFilter,
+              project: currentProjectFilter,
+              topic: currentTopicFilter
+            }
+          }, customId).observable))
         .subscribe((serie) => {
           const convertedSerie = serie && convertToGraphFormat(serie);
           this.setState({ serie: convertedSerie });
@@ -76,13 +105,28 @@ export default class GetSerieFromStream extends React.PureComponent<Props, State
   }
 
   componentDidUpdate(prevProps: QueryProps) {
-    const { startAt, endAt, currentGroupFilter, currentProjectFilter, stream } = this.props;
-    if (this.props.startAt !== prevProps.startAt
-      || this.props.endAt !== prevProps.endAt
-      || this.props.stream !== prevProps.stream
-      || this.props.currentGroupFilter !== prevProps.currentGroupFilter
-      || this.props.currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.queryProps$.next({ startAt, endAt, currentGroupFilter, currentProjectFilter, stream });
+    const {
+      startAt,
+      endAt,
+      currentGroupFilter,
+      currentProjectFilter,
+      currentTopicFilter,
+      stream,
+    } = this.props;
+    if (startAt !== prevProps.startAt
+      || endAt !== prevProps.endAt
+      || stream !== prevProps.stream
+      || currentGroupFilter !== prevProps.currentGroupFilter
+      || currentTopicFilter !== prevProps.currentTopicFilter
+      || currentProjectFilter !== prevProps.currentProjectFilter) {
+      this.queryProps$.next({
+        startAt,
+        endAt,
+        currentGroupFilter,
+        currentTopicFilter,
+        currentProjectFilter,
+        stream
+      });
     }
   }
 
