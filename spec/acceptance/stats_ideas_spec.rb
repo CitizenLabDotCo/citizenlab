@@ -196,6 +196,9 @@ resource "Stats - Ideas" do
 
   get "web_api/v1/stats/ideas_by_area" do
     time_boundary_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
 
     let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
     let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
@@ -211,6 +214,9 @@ resource "Stats - Ideas" do
 
   get "web_api/v1/stats/ideas_by_time" do
     time_series_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
 
     let(:start_at) { (now - 1.year).in_time_zone(@timezone).beginning_of_year }
     let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
@@ -226,6 +232,9 @@ resource "Stats - Ideas" do
 
   get "web_api/v1/stats/ideas_by_time_cumulative" do
     time_series_parameters self
+    project_filter_parameter self
+    topic_filter_parameter self
+    group_filter_parameter self
 
     describe "without time filters" do
       let(:interval) { 'day' }
@@ -252,5 +261,5 @@ resource "Stats - Ideas" do
       end
     end
 
-    end
+  end
 end

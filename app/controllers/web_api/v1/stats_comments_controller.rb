@@ -12,8 +12,14 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_time
+    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
+
+    comments = apply_project_filter(comments)
+    comments = apply_topic_filter(comments)
+    comments = apply_group_filter(comments)
+    
     serie = @@stats_service.group_by_time(
-      StatCommentPolicy::Scope.new(current_user, Comment.published).resolve,
+      comments,
       'comments.created_at',
       @start_at,
       @end_at,
@@ -23,8 +29,14 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def comments_by_time_cumulative
+    comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
+
+    comments = apply_project_filter(comments)
+    comments = apply_topic_filter(comments)
+    comments = apply_group_filter(comments)
+    
     serie = @@stats_service.group_by_time_cumulative(
-      StatCommentPolicy::Scope.new(current_user, Comment.published).resolve,
+      comments,
       'comments.created_at',
       @start_at,
       @end_at,
@@ -36,14 +48,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_topic
     comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
 
-    if params[:project]
-      comments = comments.joins(:idea).where(ideas: {project_id: params[:project]})
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      comments = comments.where(author_id: group.members)
-    end
+    comments = apply_project_filter(comments)
+    comments = apply_group_filter(comments)
 
     serie = comments
       .where(created_at: @start_at..@end_at)
@@ -58,16 +64,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   def comments_by_project
     comments = StatCommentPolicy::Scope.new(current_user, Comment.published).resolve
 
-    if params[:topic]
-      comments = comments
-        .joins(idea: :ideas_topics)
-        .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
-    end
-
-    if params[:group]
-      group = Group.find(params[:group])
-      comments = comments.where(author_id: group.members)
-    end
+    comments = apply_topic_filter(comments)
+    comments = apply_group_filter(comments)
 
     serie = comments
       .where(created_at: @start_at..@end_at)
@@ -80,6 +78,33 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   private
+
+  def apply_project_filter comments
+    if params[:project]
+      comments.joins(:idea).where(ideas: {project_id: params[:project]})
+    else
+      comments
+    end
+  end
+
+  def apply_topic_filter comments
+    if params[:topic]
+      comments
+        .joins(idea: :ideas_topics)
+        .where(ideas: {ideas_topics: {topic_id: params[:topic]}})
+    else
+      comments
+    end
+  end
+
+  def apply_group_filter comments
+    if params[:group]
+      group = Group.find(params[:group])
+      comments.where(author_id: group.members)
+    else
+      comments
+    end
+  end
 
   def render_no_data
     if @no_data

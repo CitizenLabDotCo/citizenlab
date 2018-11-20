@@ -71,6 +71,9 @@ resource "Stats - Comments" do
 
     get "web_api/v1/stats/comments_by_time" do
       time_series_parameters self
+      project_filter_parameter self
+      group_filter_parameter self
+      topic_filter_parameter self
 
       let(:interval) { 'day' }
 
@@ -101,6 +104,10 @@ resource "Stats - Comments" do
 
     get "web_api/v1/stats/comments_by_time_cumulative" do
       time_series_parameters self
+      project_filter_parameter self
+      group_filter_parameter self
+      topic_filter_parameter self
+      
       let(:interval) { 'day' }
 
       describe "with time filter" do
