@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get, sortBy, last } from 'lodash-es';
+import { has, isString, sortBy, last, get } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
@@ -37,7 +37,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ideaByIdStream, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
-import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, IComments } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
@@ -416,6 +415,10 @@ const IdeaBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
     hyphens: auto;
 
     &:hover {
@@ -543,6 +546,17 @@ const VoteControlMobile = styled.div`
   `}
 `;
 
+const AssignBudgetControlMobile = styled.div`
+  margin-top: 15px;
+  margin-bottom: 25px;
+  padding-top: 25px;
+  border-top: solid 1px ${colors.separation};
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -648,10 +662,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId: string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
-          const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
           let phases$: Observable<IPhase[] | null> = of(null);
 
@@ -665,11 +677,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             authUser$,
             ideaImage$,
             ideaAuthor$,
-            ideaStatus$,
             project$,
             phases$
           ).pipe(
-            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
+            map(([authUser, ideaImage, ideaAuthor, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
       ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
@@ -805,9 +816,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
       const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
+      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+      const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
-      let basketId: string | null = null;
 
       if (pbProject) {
         participationContextType = 'Project';
@@ -820,15 +833,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       } else if (pbPhase) {
         participationContextId = pbPhase.data.id;
       }
-
-      if (participationContextType === 'Project') {
-        basketId = (!isNilOrError(pbProject) ? get(pbProject.data.relationships.user_basket.data, 'id', null) : null);
-      } else {
-        basketId = (!isNilOrError(pbPhase) ? get(pbPhase.data.relationships.user_basket.data, 'id', null) : null);
-      }
-
-      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)) && participationContextId && participationContextType);
 
       content = (
         <>
@@ -891,7 +895,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="42px"
+                      size="40px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>
@@ -949,6 +953,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <SeparatorRow />
 
+                {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                  <AssignBudgetControlMobile>
+                    <AssignBudgetWrapper
+                      ideaId={idea.data.id}
+                      projectId={projectId}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
+                    />
+                  </AssignBudgetControlMobile>
+                }
+
                 <SharingMobile
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
@@ -983,12 +999,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     </>
                   }
 
-                  {showBudgetControl && participationContextId && participationContextType &&
+                  {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                     <AssignBudgetWrapper
                       ideaId={idea.data.id}
-                      basketId={basketId}
+                      projectId={projectId}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
                     />
                   }
 

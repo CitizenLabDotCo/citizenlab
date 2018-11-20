@@ -168,5 +168,9 @@ export default defineMessages({
   noExpenses: {
     id: 'app.containers.Projects.noExpenses',
     defaultMessage: `You don't have any expenses yet`,
+  },
+  byAuthor: {
+    id: 'app.containers.Projects.byAuthor',
+    defaultMessage: `by {authorName}`,
   }
 });

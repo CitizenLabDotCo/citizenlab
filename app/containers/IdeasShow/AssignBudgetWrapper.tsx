@@ -3,18 +3,22 @@ import React, { PureComponent } from 'react';
 // components
 import VotingPopContainer from './VotingPopContainer';
 import AssignBudgetControl from 'components/AssignBudgetControl';
-// import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
+import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Unauthenticated from './Unauthenticated';
+
+// services
+import { IIdeaData } from 'services/ideas';
 
 interface Props {
   ideaId: string;
-  basketId: string | null | undefined;
+  projectId: string;
   participationContextId: string;
   participationContextType: 'Phase' | 'Project';
+  budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'];
 }
 
 interface State {
-  error: 'unauthenticated' | null;
+  error: 'unauthenticated' | 'budgetingDisabled' | null;
 }
 
 class AssignBudgetWrapper extends PureComponent<Props, State> {
@@ -25,12 +29,16 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
     };
   }
 
-  unauthenticatedVoteClick = () => {
+  unauthenticatedAssignBudgetClick = () => {
     this.setState({ error: 'unauthenticated' });
   }
 
+  disabledBudgetingClick = () => {
+    this.setState({ error: 'budgetingDisabled' });
+  }
+
   render() {
-    const { ideaId, basketId, participationContextId, participationContextType } = this.props;
+    const { ideaId, projectId, participationContextId, participationContextType, budgetingDescriptor } = this.props;
     const { error } = this.state;
 
     if (!error) {
@@ -38,11 +46,22 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
         <AssignBudgetControl
           view="ideaPage"
           ideaId={ideaId}
-          basketId={basketId}
           participationContextId={participationContextId}
           participationContextType={participationContextType}
-          unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+          unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
+          disabledAssignBudgetClick={this.disabledBudgetingClick}
         />
+      );
+    }
+
+    if (error === 'budgetingDisabled') {
+      return (
+        <VotingPopContainer icon="lock-outlined">
+          <AssignBudgetDisabled
+            budgetingDescriptor={budgetingDescriptor}
+            projectId={projectId}
+          />
+        </VotingPopContainer>
       );
     }
 

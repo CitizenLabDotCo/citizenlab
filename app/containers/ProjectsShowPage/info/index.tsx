@@ -8,21 +8,10 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // resources
 import GetProject from 'resources/GetProject';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../Admin/pages/messages';
-
-// style
-import styled from 'styled-components';
-
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
-`;
 
 interface InputProps {}
 
@@ -34,19 +23,11 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
       return (
         <>
           <Header projectSlug={props.params.slug} />
-
           <ProjectModeratorIndicator projectId={project.id} />
-
-          {project.attributes.publication_status === 'archived' &&
-            <StyledContentContainer>
-              <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-            </StyledContentContainer>
-          }
-
+          <ProjectArchivedIndicator projectId={project.id} />
           <ContentContainer>
             <ProjectInfo projectId={project.id} />
           </ContentContainer>
-
           <EventsPreview projectId={project.id} />
         </>
       );

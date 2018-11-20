@@ -17,14 +17,20 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { quillEditedContent, fontSizes, colors } from 'utils/styleUtils';
+import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 import { darken } from 'polished';
+import { isUndefined } from 'util';
 
 const Container = styled.div`
   border-radius: 5px;
-  background-color: ${darken(0.01, colors.background)};
-  padding: 34px;
+  padding: 32px;
+  background: ${darken(0.006, colors.background)};
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+    background: ${darken(0.028, colors.background)};
+  `}
 `;
 
 const InformationTitle = styled.h2`
@@ -47,6 +53,10 @@ const InformationBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
     hyphens: auto;
 
     &:hover {
@@ -64,10 +74,12 @@ const InformationBody = styled.div`
 
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
+  max-width: 520px;
 `;
 
 interface InputProps {
   phaseId: string | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -82,15 +94,15 @@ interface State {}
 
 class PhaseAbout extends PureComponent<Props, State> {
   render() {
-    const { locale, phase, phaseFiles } = this.props;
+    const { locale, phase, phaseFiles, className } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(phase)) {
+    if (!isNilOrError(locale) && !isNilOrError(phase) && !isUndefined(phaseFiles)) {
       const content = phase.attributes.description_multiloc[locale];
       const contentIsEmpty = (!content || isEmpty(content) || content === '<p></p>' || content === '<p><br></p>');
 
-      if (!contentIsEmpty) {
+      if (!contentIsEmpty || !isEmpty(phaseFiles)) {
         return (
-          <Container className={this.props['className']}>
+          <Container className={className}>
             <InformationTitle>
               <FormattedMessage {...messages.aboutThisPhase} />
             </InformationTitle>

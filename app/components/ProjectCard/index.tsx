@@ -150,14 +150,13 @@ const ArchivedLabel = styled.span`
   flex-shrink: 1;
   display: flex;
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.xs}px;
   font-weight: 500;
   text-transform: uppercase;
   border-radius: 5px;
   padding: 6px 12px;
   background: #e1e3e7;
-  /* margin-top: -30px; */
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 `;
 
 const ProjectTitle = styled.h3`
