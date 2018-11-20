@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { get, isUndefined } from 'lodash-es';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
@@ -12,7 +12,7 @@ import BottomBounceUp from './BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
-// import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
+import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
 
@@ -30,7 +30,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
@@ -53,7 +53,7 @@ const IdeaBudget = styled.div`
   left: 19px;
   border-radius: 5px;
   border: solid 1px #FC3C2D;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.9);
 `;
 
 const IdeaImageContainer: any = styled.div`
@@ -98,7 +98,7 @@ const IdeaTitle: any = styled.h3`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
 `;
 
 const Footer = styled.div`
@@ -142,7 +142,7 @@ const CommentInfo = styled.div`
 
 const IdeaContainer = styled(Link)`
   width: 100%;
-  height: 365px;
+  height: 375px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;
@@ -181,10 +181,17 @@ const IdeaContainerInner = styled.div`
   background: #fff;
   border: solid 1px ${colors.separation};
   position: relative;
+  overflow: hidden;
 `;
 
 const VotingDisabledWrapper = styled.div`
   padding: 22px;
+  padding-top: 28px;
+`;
+
+const AssignBudgetDisabledWrapper = styled.div`
+  padding: 22px;
+  padding-top: 28px;
 `;
 
 export interface InputProps {
@@ -192,7 +199,6 @@ export interface InputProps {
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
-  basketId?: string | null;
 }
 
 interface DataProps {
@@ -209,6 +215,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
+  showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
 export const namespace = 'components/IdeaCard/index';
@@ -217,7 +224,8 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      showVotingDisabled: null
+      showVotingDisabled: null,
+      showAssignBudgetDisabled: null
     };
   }
 
@@ -253,6 +261,14 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
 
+  unauthenticatedAssignBudgetClick = () => {
+    this.setState({ showAssignBudgetDisabled: 'unauthenticated' });
+  }
+
+  disabledAssignBudgetClick = () => {
+    this.setState({ showAssignBudgetDisabled: 'assignBudgetDisabled' });
+  }
+
   render() {
     const {
       idea,
@@ -265,10 +281,9 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       participationMethod,
       participationContextId,
       participationContextType,
-      basketId,
       intl: { formatMessage }
     } = this.props;
-    const { showVotingDisabled } = this.state;
+    const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
       !isNilOrError(location) &&
@@ -281,6 +296,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     ) {
       const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
+      const budgetingDescriptor = get(idea.relationships.action_descriptor.data, 'budgeting', null);
       const projectId = idea.relationships.project.data.id;
       const ideaAuthorId = (!isNilOrError(ideaAuthor) ? ideaAuthor.id : null);
       const ideaBudget = idea.attributes.budget;
@@ -307,7 +323,15 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
             }
 
             {participationMethod === 'budgeting' && ideaBudget &&
-              <IdeaBudget>{getFormattedBudget(locale, ideaBudget, tenantCurrency)}</IdeaBudget>
+              <IdeaBudget>
+                <FormattedNumber
+                  value={ideaBudget}
+                  style="currency"
+                  currency={tenantCurrency}
+                  minimumFractionDigits={0}
+                  maximumFractionDigits={0}
+                />
+              </IdeaBudget>
             }
 
             <IdeaContent className={(ideaImageUrl === null && participationMethod === 'budgeting' && ideaBudget) ? 'extraTopPadding' : ''}>
@@ -338,11 +362,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                   <AssignBudgetControl
                     view="ideaCard"
                     ideaId={idea.id}
-                    basketId={basketId}
                     participationContextId={participationContextId}
                     participationContextType={participationContextType}
                     openIdea={this.onCardClick}
-                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                    unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
+                    disabledAssignBudgetClick={this.disabledAssignBudgetClick}
                   />
                 }
 
@@ -357,15 +381,13 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               </Footer>
             }
 
-            {showVotingDisabled === 'unauthenticated' &&
+            {(showVotingDisabled === 'unauthenticated' || showAssignBudgetDisabled === 'unauthenticated') &&
               <BottomBounceUp icon="lock-outlined">
                 <Unauthenticated />
               </BottomBounceUp>
             }
 
-            {showVotingDisabled === 'votingDisabled' &&
-             votingDescriptor &&
-             projectId &&
+            {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
               <BottomBounceUp icon="lock-outlined">
                 <VotingDisabledWrapper>
                   <VotingDisabled
@@ -373,6 +395,17 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                     projectId={projectId}
                   />
                 </VotingDisabledWrapper>
+              </BottomBounceUp>
+            }
+
+            {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId &&
+              <BottomBounceUp icon="lock-outlined">
+                <AssignBudgetDisabledWrapper>
+                  <AssignBudgetDisabled
+                    budgetingDescriptor={budgetingDescriptor}
+                    projectId={projectId}
+                  />
+                </AssignBudgetDisabledWrapper>
               </BottomBounceUp>
             }
           </IdeaContainerInner>

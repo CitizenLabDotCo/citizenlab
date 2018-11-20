@@ -8,12 +8,11 @@ import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import adminMessages from '../../Admin/pages/messages';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -56,10 +55,6 @@ const NoEvents = styled.div`
   line-height: 26px;
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
-`;
-
 interface InputProps {}
 
 interface DataProps {
@@ -95,13 +90,10 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
             <Header projectSlug={slug} />
 
             {!isNilOrError(project) &&
-              <ProjectModeratorIndicator projectId={project.id} />
-            }
-
-            {!isNilOrError(project) && project.attributes.publication_status === 'archived' &&
-              <StyledContentContainer>
-                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
-              </StyledContentContainer>
+              <>
+                <ProjectModeratorIndicator projectId={project.id} />
+                <ProjectArchivedIndicator projectId={project.id} />
+              </>
             }
 
             <EventsContainer>

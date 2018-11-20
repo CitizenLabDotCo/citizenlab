@@ -30,7 +30,6 @@ const Input = styled.input`
 
 const Label = styled.label`
   display: flex;
-  /* max-width: 520px; */
   align-items: center;
   cursor: pointer;
   border: 1px dashed ${colors.label};
@@ -38,7 +37,7 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
   color: ${colors.label};
-  background: #fff;
+  background: transparent;
 
   &:hover {
     color: #000;

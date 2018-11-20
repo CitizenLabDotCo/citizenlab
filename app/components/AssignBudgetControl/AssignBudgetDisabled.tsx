@@ -1,8 +1,8 @@
 import React, { PureComponent, FormEvent } from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
-import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import { IIdeaData } from 'services/ideas';
@@ -31,7 +31,7 @@ const ProjectLink = styled.span`
 
 interface InputProps {
   projectId: string;
-  votingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['voting'];
+  budgetingDescriptor: IIdeaData['relationships']['action_descriptor']['data']['budgeting'];
 }
 
 interface DataProps {
@@ -45,21 +45,15 @@ interface State {}
 class AssignBudgetDisabled extends PureComponent<Props, State> {
 
   reasonToMessage = () => {
-    const { disabled_reason, future_enabled } = this.props.votingDescriptor;
+    const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
 
-    if (disabled_reason === 'project_inactive') {
-      return messages.votingDisabledProjectInactive;
-    } else if (disabled_reason === 'voting_disabled' && future_enabled) {
-      return messages.votingDisabledPossibleLater;
-    } else if (disabled_reason === 'voting_limited_max_reached') {
-      return messages.votingDisabledMaxReached;
-    } else if (disabled_reason === 'not_in_active_context') {
-      return messages.votingDisabledNotInActiveContext;
+    if (disabled_reason && future_enabled) {
+      return messages.budgetingDisabledFutureEnabled;
     } else if (disabled_reason === 'not_permitted') {
-      return messages.votingDisabledNotPermitted;
+      return messages.budgetingDisabledNotPermitted;
     }
 
-    return messages.votingDisabledForProject;
+    return messages.budgetingDisabled;
   }
 
   handleProjectLinkClick = (event: FormEvent<any>) => {
@@ -74,16 +68,17 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   }
 
   render() {
-    const { votingDescriptor, project } = this.props;
+    const { budgetingDescriptor, project } = this.props;
     const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
     const message = this.reasonToMessage();
+    const enabledFromDate = (budgetingDescriptor.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
 
     return (
       <Container>
         <FormattedMessage
           {...message}
           values={{
-            enabledFromDate: votingDescriptor.future_enabled && <FormattedDate value={votingDescriptor.future_enabled} />,
+            enabledFromDate,
             projectName:
               <ProjectLink onClick={this.handleProjectLinkClick} role="navigation">
                 <T value={projectTitle} />

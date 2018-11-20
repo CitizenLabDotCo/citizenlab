@@ -284,6 +284,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 const LoginLink = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   padding: 0;
 

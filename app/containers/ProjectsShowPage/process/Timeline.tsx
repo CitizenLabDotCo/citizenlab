@@ -489,6 +489,8 @@ export default class Timeline extends PureComponent<Props, State> {
       const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
       const selectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL') : null);
       const selectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL') : null);
+      const mobileSelectedPhaseStart = (selectedPhase ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('ll') : null);
+      const mobileSelectedPhaseEnd = (selectedPhase ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('ll') : null);
       const selectedPhaseTitle = (selectedPhase ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
@@ -516,15 +518,15 @@ export default class Timeline extends PureComponent<Props, State> {
                       </HeaderTitle>
                       <MobileDate>
                         {phaseStatus === 'past' && (
-                          <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                          <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
                         )}
 
                         {phaseStatus === 'present' && (
-                          <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                          <FormattedMessage {...messages.endsOn} values={{ date: mobileSelectedPhaseEnd }} />
                         )}
 
                         {phaseStatus === 'future' && (
-                          <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                          <FormattedMessage {...messages.startsOn} values={{ date: mobileSelectedPhaseStart }} />
                         )}
                       </MobileDate>
                     </HeaderTitleWrapper>
@@ -551,7 +553,6 @@ export default class Timeline extends PureComponent<Props, State> {
                   </HeaderDate>
 
                   <IdeaButtonDesktop
-                    size="1"
                     projectId={this.props.projectId}
                     phaseId={selectedPhaseId}
                   />
@@ -577,7 +578,6 @@ export default class Timeline extends PureComponent<Props, State> {
 
               <HeaderSecondRow>
                 <IdeaButtonMobile
-                  size="1"
                   projectId={this.props.projectId}
                   phaseId={selectedPhaseId || undefined}
                   fullWidth={true}

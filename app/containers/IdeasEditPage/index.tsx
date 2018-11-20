@@ -315,7 +315,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
             <ButtonWrapper>
               <SaveButton
-                size="2"
                 processing={processing}
                 text={<FormattedMessage {...messages.save} />}
                 onClick={this.handleOnSaveButtonClick}

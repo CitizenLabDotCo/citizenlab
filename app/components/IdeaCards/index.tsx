@@ -251,7 +251,6 @@ interface InputProps extends GetIdeasInputProps  {
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
-  basketId?: string | null;
   className?: string;
 }
 
@@ -308,7 +307,6 @@ class IdeaCards extends PureComponent<Props, State> {
       participationMethod,
       participationContextId,
       participationContextType,
-      basketId,
       ideas,
       className
     } = this.props;
@@ -385,7 +383,6 @@ class IdeaCards extends PureComponent<Props, State> {
                 participationMethod={participationMethod}
                 participationContextId={participationContextId}
                 participationContextType={participationContextType}
-                basketId={basketId}
               />
             ))}
           </IdeasList>

@@ -201,7 +201,7 @@ const IdeasStyledContentContainer = StyledContentContainer.extend`
 const Section = styled.div`
   width: 100%;
   padding-top: 100px;
-  padding-bottom: 100px;
+  padding-bottom: 110px;
 
   ${media.smallerThanMinTablet`
     padding-top: 60px;
@@ -212,7 +212,7 @@ const Section = styled.div`
 const ProjectSection = Section.extend`
   padding-top: 0px;
   margin-top: -80px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`
     margin-top: -130px;
