@@ -272,7 +272,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       }),
 
       globalState$.subscribe((globalState) => {
-        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '') });
+        this.setState({
+          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
+        });
       })
     ];
   }

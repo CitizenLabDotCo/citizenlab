@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get } from 'lodash-es';
+import { has, isString, sortBy, last, get, isEmpty } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
@@ -29,12 +29,16 @@ import ParentCommentForm from './ParentCommentForm';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
+import IdeaSharingModalContent from './IdeaSharingModalContent';
+import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 // services
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
 import { commentsForIdeaStream, IComments } from 'services/comments';
@@ -609,6 +613,7 @@ type State = {
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
+  ideaIdForSocialSharing: string | null;
 };
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
@@ -616,7 +621,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
+  constructor(props) {
     super(props);
     const initialState = {
       authUser: null,
@@ -630,7 +635,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       loaded: false,
       showMap: false,
       spamModalVisible: false,
-      moreActions: []
+      moreActions: [],
+      ideaIdForSocialSharing: null
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -646,8 +652,35 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       filter<string>(ideaId => isString(ideaId))
     );
     const authUser$ = authUserStream().observable;
+    const query = clHistory.getCurrentLocation().query;
+    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
+    const newIdea$ = urlHasNewIdeaQueryParam ? of({
+      id: get(query, 'new_idea_id'),
+      publish: get(query, 'publish')
+    }) : of(null);
 
     this.subscriptions = [
+      combineLatest(
+        authUser$,
+        newIdea$
+      ).subscribe(async ([authUser, newIdea]) => {
+        if (newIdea && isString(newIdea.id) && !isEmpty(newIdea.id)) {
+          if (authUser) {
+            setTimeout(() => {
+              this.setState({ ideaIdForSocialSharing: newIdea.id });
+            }, 2000);
+
+            if (newIdea.publish === 'true') {
+              await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
+              streams.fetchAllWith({ dataId: [newIdea.id], apiEndpoint: [`${API_PATH}/ideas`] });
+              console.log('published');
+            }
+          }
+
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }),
+
       this.ideaId$.pipe(
         distinctUntilChanged(),
         filter(ideaId => !ideaId)
@@ -783,9 +816,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     clHistory.push('/sign-in');
   }
 
+  closeIdeaSocialSharingModal = () => {
+    this.setState({ ideaIdForSocialSharing: null });
+  }
+
   render() {
     const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions } = this.state;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
     let content: JSX.Element | null = null;
 
     if (idea) {
@@ -1104,6 +1141,21 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             {content}
           </Container>
         </CSSTransition>
+
+        <FeatureFlag name="ideaflow_social_sharing">
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            fixedHeight={false}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+            label={formatMessage(messages.modalShareLabel)}
+          >
+            {ideaIdForSocialSharing &&
+              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+            }
+          </Modal>
+        </FeatureFlag>
       </>
     );
   }

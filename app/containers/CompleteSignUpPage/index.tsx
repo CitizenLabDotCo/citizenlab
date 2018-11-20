@@ -108,11 +108,17 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
   redirectToLandingPage = () => {
     const { location, authUser, idea } = this.props;
     const authError = includes(location.pathname, 'authentication-error');
-    const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
+    let ideaToPublishId: string | null = null;
+    let ideaToPublishSlug: string | null = null;
+
+    if (!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') {
+      ideaToPublishId = idea.id;
+      ideaToPublishSlug = idea.attributes.slug;
+    }
 
     clHistory.push({
-      pathname: '/',
-      search: (ideaToPublishId ? `?new_idea_id=${ideaToPublishId}&publish=true` : undefined)
+      pathname: `/ideas/${ideaToPublishSlug}`,
+      search: ((ideaToPublishId && ideaToPublishSlug) ? `?new_idea_id=${ideaToPublishId}&new_idea_slug=${ideaToPublishSlug}&publish=true` : undefined)
     });
   }
 

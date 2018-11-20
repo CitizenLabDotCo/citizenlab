@@ -1,12 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-import { has, get, isString, isEmpty } from 'lodash-es';
+import { get } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -14,14 +10,7 @@ import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
-import Modal from 'components/UI/Modal';
-import IdeaSharingModalContent from './IdeaSharingModalContent';
-import FeatureFlag from 'components/FeatureFlag';
 import IdeaButton from 'components/IdeaButton';
-
-// services
-import { authUserStream } from 'services/auth';
-import { updateIdea } from 'services/ideas';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -34,10 +23,9 @@ import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
-import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -267,55 +255,21 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  ideaIdForSocialSharing: string | null;
-}
+interface State {}
 
-class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props & InjectedIntlProps) {
-    super(props);
-    this.state = {
-      ideaIdForSocialSharing: null
-    };
-  }
-
+class LandingPage extends PureComponent<Props, State> {
   componentDidMount() {
     const query = clHistory.getCurrentLocation().query;
-    const authUser$ = authUserStream().observable;
-    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
-    const ideaParams$ = urlHasNewIdeaQueryParam ? of({
-      id: get(query, 'new_idea_id'),
-      publish: get(query, 'publish')
-    }).pipe(delay(200)) : of(null);
+    const newIdeaId = get(query, 'new_idea_id');
+    const newIdeaSlug = get(query, 'new_idea_slug');
+    const publish = get(query, 'publish');
 
-    this.subscriptions = [
-      combineLatest(
-        authUser$,
-        ideaParams$
-      ).subscribe(async ([authUser, ideaParams]) => {
-        if (ideaParams && isString(ideaParams.id) && !isEmpty(ideaParams.id)) {
-          if (authUser) {
-            this.setState({ ideaIdForSocialSharing: ideaParams.id });
-
-            if (ideaParams.publish === 'true') {
-              await updateIdea(ideaParams.id, { author_id: authUser.data.id, publication_status: 'published' });
-              streams.fetchAllWith({
-                dataId: [ideaParams.id],
-                apiEndpoint: [`${API_PATH}/ideas`]
-              });
-            }
-          }
-
-          window.history.replaceState(null, '', window.location.pathname);
-        }
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    if (newIdeaId && newIdeaSlug) {
+      clHistory.push({
+        pathname: `/ideas/${newIdeaSlug}`,
+        search: `?new_idea_id=${newIdeaId}&new_idea_slug=${newIdeaSlug}&publish=${publish}`
+      });
+    }
   }
 
   goToIdeasPage = () => {
@@ -335,13 +289,8 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
     clHistory.push('/sign-up');
   }
 
-  closeIdeaSocialSharingModal = () => {
-    this.setState({ ideaIdForSocialSharing: null });
-  }
-
   render() {
-    const { ideaIdForSocialSharing } = this.state;
-    const { locale, tenant, projects, authUser, intl } = this.props;
+    const { locale, tenant, projects, authUser } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -356,6 +305,7 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
+
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
@@ -424,21 +374,6 @@ class LandingPage extends React.PureComponent<Props & InjectedIntlProps, State> 
               <Footer />
             </Content>
           </Container>
-
-          <FeatureFlag name="ideaflow_social_sharing">
-            <Modal
-              opened={!!ideaIdForSocialSharing}
-              close={this.closeIdeaSocialSharingModal}
-              fixedHeight={false}
-              hasSkipButton={true}
-              skipText={<FormattedMessage {...messages.skipSharing} />}
-              label={intl.formatMessage(messages.modalShareLabel)}
-            >
-              {ideaIdForSocialSharing &&
-                <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
-              }
-            </Modal>
-          </FeatureFlag>
         </>
       );
     }
@@ -454,10 +389,8 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />
 });
 
-const LandingPageWithHoc = injectIntl<InputProps & DataProps>(LandingPage);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <LandingPageWithHoc {...inputProps} {...dataProps} />}
+    {dataProps => <LandingPage {...inputProps} {...dataProps} />}
   </Data>
 );
