@@ -83,9 +83,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
     });
 
     if (graphsArray) {
-      console.log(graphsArray);
       return graphsArray.filter((_, index) => index % 2 === 1 || index === graphsArray.length - 1).map((_, index) => {
-        console.log(graphsArray);
         return (
           <Row key={index}>
             {graphsArray[index * 2]}
