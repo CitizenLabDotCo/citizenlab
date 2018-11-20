@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import { map } from 'lodash-es';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import T from 'components/T';
 
 import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats';
 
@@ -12,16 +11,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
 
-// components
-import {
-  Row,
-  Column,
-  FlexItem
-} from '../';
-
 import messages from '../messages';
-
-import styled from 'styled-components';
 
 interface InputProps {
   currentGroupFilter: string | null;

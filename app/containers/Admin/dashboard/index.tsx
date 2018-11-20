@@ -41,6 +41,10 @@ export const GraphsContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   margin: 20px -10px;
+  @media print {
+    flex-direction: column;
+    position: relative
+  }
 `;
 
 export const Column = styled.div`
@@ -50,6 +54,10 @@ export const Column = styled.div`
   flex-direction: column;
   &.first {
     margin-right: 20px;
+  }
+  @media print {
+    position: relative;
+    width: 100%;
   }
 `;
 
@@ -83,6 +91,14 @@ export const GraphCardInner = styled.div`
     justify-content: center;
     align-items: center;
   }
+  @media print {
+    position: relative;
+    page-break-before: always;
+    page-break-inside: avoid;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
+  }
 `;
 
 export const GraphCard = styled.div`
@@ -103,6 +119,19 @@ export const GraphCard = styled.div`
   &.fullWidth {
     width: 100%;
   }
+  @media print {
+    position: relative;
+    display: block;
+    page-break-before: always;
+    page-break-inside: avoid;
+
+  }
+  @media print and (orientation: portrait) {
+    width: 100%;
+  }
+  @media print and (orientation: landscape) {
+    width: 50%;
+  }
 `;
 
 export const GraphCardHeader = styled.div`
@@ -113,6 +142,16 @@ export const GraphCardHeader = styled.div`
   font-weight: 400;
   margin-bottom: 20px;
   padding: 0 20px;
+  @media print {
+    display: block;
+    justify-content: flex-start;
+    page-break-after: avoid;
+    page-break-before: always;
+    page-break-inside: avoid;
+    h3 {
+      margin-right: 20px;
+    }
+  }
 `;
 
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`

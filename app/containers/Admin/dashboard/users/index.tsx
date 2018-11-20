@@ -13,11 +13,8 @@ import { usersByGenderStream } from 'services/stats';
 import {
   chartTheme,
   GraphsContainer,
-  Row,
   ControlBar,
   IResolution,
-  FlexFlowContainer,
-  FlexItem
 } from '../';
 import TimeControl from '../components/TimeControl';
 import ResolutionControl from '../components/ResolutionControl';
@@ -43,7 +40,6 @@ import { IOption } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface State {
-  resolution: IResolution;
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
   currentGroupFilter: string | null;
@@ -63,22 +59,14 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
   constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
     super(props as any);
     this.state = {
-      resolution: 'month',
       startAtMoment: undefined,
       endAtMoment: moment(),
       currentGroupFilter: null
     };
   }
 
-  changeResolution = (resolution: IResolution) => {
-    this.setState({ resolution });
-  }
-
   handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
-    const timeDiff = endAtMoment && startAtMoment && moment.duration(endAtMoment.diff(startAtMoment));
-    const resolution = timeDiff ? (timeDiff.asMonths() > 6 ? 'month' : timeDiff.asWeeks() > 4 ? 'week' : 'day')
-      : 'month';
-    this.setState({ startAtMoment, endAtMoment, resolution });
+    this.setState({ startAtMoment, endAtMoment });
   }
 
   handleOnGroupFilter = (filter) => {
@@ -108,7 +96,7 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
   }
 
   render() {
-    const { resolution, currentGroupFilter, endAtMoment, startAtMoment } = this.state;
+    const { currentGroupFilter, endAtMoment, startAtMoment } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(messages.top10activeUsersDescription);
@@ -120,10 +108,6 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
             startAtMoment={startAtMoment}
             endAtMoment={endAtMoment}
             onChange={this.handleChangeTimeRange}
-          />
-          <ResolutionControl
-            value={resolution}
-            onChange={this.changeResolution}
           />
         </ControlBar>
 

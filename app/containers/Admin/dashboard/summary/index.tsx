@@ -5,7 +5,7 @@ import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, Row, ControlBar, Column, IResolution } from '../';
+import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '../';
 import BarChartByTime from './charts/BarChartByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
@@ -213,8 +213,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
-      currentResourceByProject,
-      currentResourceByTopic } = this.state;
+    } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
@@ -314,16 +313,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Column>
               <Column>
-              <FilterableBarChartResourceByTopic
-                className="fullWidth dynamicHeight"
-                topicOptions={this.filterOptions.topicFilterOptions}
-                onResourceByTopicChange={this.onResourceByTopicChange}
-                resourceOptions={this.resourceOptions}
-                startAt={startAt}
-                endAt={endAt}
-                {...this.state}
-              />
-            </Column>
+                <FilterableBarChartResourceByTopic
+                  className="fullWidth dynamicHeight"
+                  topicOptions={this.filterOptions.topicFilterOptions}
+                  onResourceByTopicChange={this.onResourceByTopicChange}
+                  resourceOptions={this.resourceOptions}
+                  startAt={startAt}
+                  endAt={endAt}
+                  {...this.state}
+                />
+              </Column>
             </GraphsContainer>
           </ThemeProvider>
         </>

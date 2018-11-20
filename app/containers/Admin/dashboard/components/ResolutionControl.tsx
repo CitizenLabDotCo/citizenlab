@@ -35,6 +35,12 @@ const ResolutionButton = styled.button`
   &:hover, &:focus {
     background: ${rgba(colors.adminTextColor, .2)};
   }
+
+  @media print {
+    &.active {
+      background: ${rgba(colors.adminTextColor, .1)} !important;
+    }
+  }
 `;
 
 type Props = {
