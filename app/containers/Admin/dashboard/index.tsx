@@ -41,9 +41,11 @@ export const GraphsContainer = styled.div`
   flex-wrap: wrap;
   flex-direction: row;
   margin: 20px -10px;
+  background: inherit;
   @media print {
     flex-direction: column;
-    position: relative
+    position: relative;
+    align-items: center;
   }
 `;
 
@@ -84,6 +86,7 @@ export const GraphCardInner = styled.div`
   padding-bottom: 35px;
   border: solid 1px ${colors.adminBorder};
   border-radius: 5px;
+  background: ${colors.adminContentBackground};
   p {
     font-size: ${fontSizes.base}px;
     flex-grow: 1;
@@ -93,7 +96,7 @@ export const GraphCardInner = styled.div`
   }
   @media print {
     position: relative;
-    page-break-before: always;
+    display: block;
     page-break-inside: avoid;
     width: 100%;
     padding: 0 10px;
@@ -105,7 +108,6 @@ export const GraphCard = styled.div`
   padding: 10px;
   height: 350px;
   display: flex;
-  background: ${colors.adminContentBackground};
   width: 50%;
 
   &.dynamicHeight {
@@ -124,7 +126,7 @@ export const GraphCard = styled.div`
     display: block;
     page-break-before: always;
     page-break-inside: avoid;
-
+    height: 400px;
   }
   @media print and (orientation: portrait) {
     width: 100%;
@@ -218,7 +220,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
     const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin' },
       { label: formatMessage(messages.tabUsers), url: '/admin/dashboard-users' },
-      { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' }
+    //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' } TODO
     ];
     const resource = {
       title: formatMessage(messages.viewPublicResource)
