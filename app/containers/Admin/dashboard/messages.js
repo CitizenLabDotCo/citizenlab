@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
     defaultMessage: 'To be determined.',
   },
+  userActivityScore: {
+    id: 'app.containers.AdminPage.DashboardPage.userScore',
+    defaultMessage: 'User activity score',
+  },
   commentsByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',

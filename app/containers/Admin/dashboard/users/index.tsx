@@ -25,7 +25,7 @@ import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersChart from './charts/MostActiveUsersChart';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -159,6 +159,7 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
               startAt={startAt}
               endAt={endAt}
               infoMessage={infoMessage}
+              className="dynamicHeight"
             />
           </GraphsContainer>
         </ThemeProvider>

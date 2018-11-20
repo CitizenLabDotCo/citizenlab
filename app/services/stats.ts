@@ -99,6 +99,10 @@ export interface IUsersByRegistrationField {
 }
 
 export interface IUserEngagementScores {
+  data: IUserEngagementScore[];
+}
+
+export interface IUserEngagementScore {
   id: string;
   type: string;
   attributes: {
