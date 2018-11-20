@@ -152,37 +152,30 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <Row>
-              <UsersByGenderChart
-                className="first halfWidth"
-                graphUnit="Users"
-                graphTitleMessageKey="usersByGenderTitle"
-                stream={usersByGenderStream}
-                startAt={startAt}
-                endAt={endAt}
-                currentGroupFilter={currentGroupFilter}
-              />
-              <AgeChart
-                className="halfWidth"
-                startAt={startAt}
-                endAt={endAt}
-                currentGroupFilter={currentGroupFilter}
-              />
-            </Row>
-            <FlexFlowContainer>
-              <RegistrationFieldsToGraphs
-                startAt={startAt}
-                endAt={endAt}
-                currentGroupFilter={currentGroupFilter}
-              />
-                <MostActiveUsersChart
-                  currentGroupFilter={currentGroupFilter}
-                  startAt={startAt}
-                  endAt={endAt}
-                  infoMessage={infoMessage}
-                  className="halfWidth dynamicHeight"
-                />
-            </FlexFlowContainer>
+            <UsersByGenderChart
+              graphUnit="Users"
+              graphTitleMessageKey="usersByGenderTitle"
+              stream={usersByGenderStream}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+            />
+            <AgeChart
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+            />
+            <RegistrationFieldsToGraphs
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+            />
+            <MostActiveUsersChart
+              currentGroupFilter={currentGroupFilter}
+              startAt={startAt}
+              endAt={endAt}
+              infoMessage={infoMessage}
+            />
           </GraphsContainer>
         </ThemeProvider>
       </>
