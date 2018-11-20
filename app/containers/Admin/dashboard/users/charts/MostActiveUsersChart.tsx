@@ -27,6 +27,11 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
+const UserScore = styled<any, 'div'>('div')`
+  background-color: pink;
+  width: ${props => props.value}px;
+`;
+
 interface Props {
   className?: string;
   infoMessage?: string;
@@ -71,7 +76,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
   convertToGraphFormat = (serie: IUserEngagementScore[]) => {
     return serie.map(userEngagementScore => ({
       value: userEngagementScore.attributes.sum_score,
-      userId: userEngagementScore.relationships.user.data.id
+      userId: userEngagementScore.relationships.user.data.id,
     }));
   }
 
@@ -126,36 +131,46 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-              <BarChart data={serie} layout="vertical" margin={{ left: 150 }}>
-                <Bar
-                  dataKey="value"
-                  name={formatMessage(messages.userActivityScore)}
-                  fill={chartFill}
-                  label={{ fill: barFill, fontSize: chartLabelSize }}
-                  barSize={20}
-                />
-                <YAxis
-                  dataKey="userId"
-                  type="category"
-                  width={150}
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  tickLine={false}
-
-                />
-                <XAxis
-                  stroke={theme.chartLabelColor}
-                  fontSize={theme.chartLabelSize}
-                  type="number"
-                  tick={{ transform: 'translate(0, 7)' }}
-                />
-                <Tooltip
-                  isAnimationActive={false}
-                  cursor={{ fill: barHoverColor }}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            <div>
+              <ul>
+                {serie.map((item, i) => {
+                  return <li key={i}>
+                    <UserScore value={item.value}>
+                      {item.value}
+                    </UserScore>
+                  </li>;
+                })}
+              </ul>
+            </div>
+            // <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+            //   <BarChart data={serie} layout="vertical" margin={{ left: 150 }}>
+            //     <Bar
+            //       dataKey="value"
+            //       name={formatMessage(messages.userActivityScore)}
+            //       fill={chartFill}
+            //       label={{ fill: barFill, fontSize: chartLabelSize }}
+            //       barSize={20}
+            //     />
+            //     <YAxis
+            //       dataKey="userId"
+            //       type="category"
+            //       width={150}
+            //       stroke={theme.chartLabelColor}
+            //       fontSize={theme.chartLabelSize}
+            //       tickLine={false}
+            //     />
+            //     <XAxis
+            //       stroke={theme.chartLabelColor}
+            //       fontSize={theme.chartLabelSize}
+            //       type="number"
+            //       tick={{ transform: 'translate(0, 7)' }}
+            //     />
+            //     <Tooltip
+            //       isAnimationActive={false}
+            //       cursor={{ fill: barHoverColor }}
+            //     />
+            //   </BarChart>
+            // </ResponsiveContainer>
           }
         </GraphCardInner>
       </GraphCard>
