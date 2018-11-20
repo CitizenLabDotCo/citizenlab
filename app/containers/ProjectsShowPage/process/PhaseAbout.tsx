@@ -24,8 +24,8 @@ import { isUndefined } from 'util';
 
 const Container = styled.div`
   border-radius: 5px;
-  padding: 34px;
-  background: ${darken(0.005, colors.background)};
+  padding: 32px;
+  background: ${darken(0.006, colors.background)};
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
