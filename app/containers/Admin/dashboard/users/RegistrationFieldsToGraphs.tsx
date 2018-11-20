@@ -15,7 +15,8 @@ import PieChartByCategory from './charts/PieChartByCategory';
 // components
 import {
   Row,
-  Column
+  Column,
+  FlexItem
 } from '../';
 
 import messages from '../messages';
@@ -54,41 +55,43 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
       return null;
     }
     return customFields.map((field, index) => {
+      if (field.attributes.key === 'gender') {
+        return null;
+      }
       if (field.attributes.input_type === 'checkbox') {
         return (
-          <PieChartByCategory
-            className="halfWidth"
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            key={index}
-            graphTitleString={localize(field.attributes.title_multiloc)}
-            stream={usersByRegFieldStream}
-            graphUnit="Users"
-            convertToGraphFormat={this.convertToGraphFormat}
-            customId={field.id}
-          />
+            <PieChartByCategory
+              startAt={startAt}
+              endAt={endAt}
+              key={index}
+              currentGroupFilter={currentGroupFilter}
+              graphTitleString={localize(field.attributes.title_multiloc)}
+              stream={usersByRegFieldStream}
+              graphUnit="users"
+              convertToGraphFormat={this.convertToGraphFormat}
+              customId={field.id}
+            />
         );
       }
       return (
-        <BarChartByCategory
-          className="halfWidth"
-          startAt={startAt}
-          endAt={endAt}
-          currentGroupFilter={currentGroupFilter}
-          key={index}
-          graphTitleString={localize(field.attributes.title_multiloc)}
-          stream={usersByRegFieldStream}
-          graphUnit="Users"
-          convertToGraphFormat={this.convertToGraphFormat}
-          customId={field.id}
-        />
+          <BarChartByCategory
+            startAt={startAt}
+            endAt={endAt}
+            key={index}
+            currentGroupFilter={currentGroupFilter}
+            graphTitleString={localize(field.attributes.title_multiloc)}
+            stream={usersByRegFieldStream}
+            graphUnit="users"
+            convertToGraphFormat={this.convertToGraphFormat}
+            customId={field.id}
+          />
       );
     });
   }
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs));
+
 export default (inputProps: InputProps) => (
   <GetCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
     {customFields => <RegistrationFieldsToGraphsWithHoCs {...inputProps} customFields={customFields} />}

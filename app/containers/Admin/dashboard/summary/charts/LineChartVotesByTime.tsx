@@ -24,7 +24,7 @@ type State = {
 };
 
 type Props = {
-  className: string;
+  className?: string;
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;

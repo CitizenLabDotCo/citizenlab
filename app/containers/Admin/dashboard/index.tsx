@@ -36,31 +36,13 @@ export const ControlBar = styled.div`
   margin-bottom: 30px;
 `;
 
-export const FlexFlowContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-export const FlexItem = styled.div`
-  width: 50%;
-`;
-
 export const GraphsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin: 20px -10px;
 `;
 
-export const Row = styled.div`
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-`;
 export const Column = styled.div`
   width: 50%;
   display: flex;
@@ -92,22 +74,23 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
+  border: solid 1px ${colors.adminBorder};
+  border-radius: 5px;
   p {
-      font-size: ${fontSizes.base}px;
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    font-size: ${fontSizes.base}px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
 export const GraphCard = styled.div`
-  width: 100%;
+  padding: 10px;
   height: 350px;
   display: flex;
-  border: solid 1px ${colors.adminBorder};
-  border-radius: 5px;
   background: ${colors.adminContentBackground};
+  width: 50%;
 
   &.dynamicHeight {
     height: auto;
@@ -117,15 +100,8 @@ export const GraphCard = styled.div`
     }
   }
 
-  &.first {
-    margin-right: 20px;
-  }
-  &.colFirst {
-    margin-bottom: 20px;
-  }
-
-  &.halfWidth {
-    width: 50%;
+  &.fullWidth {
+    width: 100%;
   }
 `;
 
