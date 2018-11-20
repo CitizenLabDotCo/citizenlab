@@ -103,7 +103,6 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
     const { chartFill, barFill, chartLabelSize } = theme;
     const barHoverColor = rgba(chartFill, .25);
 
-    console.log(serie);
     return (
       <GraphCard className={className}>
         <GraphCardInner>

@@ -5,7 +5,7 @@ import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, Row, ControlBar, Column, IResolution } from '../';
+import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '../';
 import BarChartByTime from './charts/BarChartByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
@@ -213,8 +213,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
-      currentResourceByProject,
-      currentResourceByTopic } = this.state;
+    } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
     const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
@@ -257,74 +256,65 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
           <ThemeProvider theme={chartTheme}>
             <GraphsContainer>
-              <Row>
-                <CumulativeAreaChart
-                  className="first halfWidth"
-                  graphTitleMessageKey="usersByTimeTitle"
-                  graphUnit="users"
+              <CumulativeAreaChart
+                graphTitleMessageKey="usersByTimeTitle"
+                graphUnit="users"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                stream={usersByTimeCumulativeStream}
+                {...this.state}
+              />
+              <BarChartByTime
+                graphUnit="users"
+                graphUnitMessageKey="activeUsers"
+                graphTitleMessageKey="activeUsersByTimeTitle"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                stream={activeUsersByTimeStream}
+                infoMessage={infoMessage}
+                {...this.state}
+              />
+              <CumulativeAreaChart
+                graphTitleMessageKey="ideasByTimeTitle"
+                graphUnit="ideas"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                stream={ideasByTimeCumulativeStream}
+                {...this.state}
+              />
+              <CumulativeAreaChart
+                graphTitleMessageKey="commentsByTimeTitle"
+                graphUnit="comments"
+                startAt={startAt}
+                endAt={endAt}
+                resolution={resolution}
+                stream={commentsByTimeCumulativeStream}
+                {...this.state}
+              />
+              <Column>
+                <LineChartVotesByTime
+                  className="fullWidth"
                   startAt={startAt}
                   endAt={endAt}
                   resolution={resolution}
-                  stream={usersByTimeCumulativeStream}
                   {...this.state}
                 />
-                <BarChartByTime
-                  className="halfWidth"
-                  graphUnit="users"
-                  graphUnitMessageKey="activeUsers"
-                  graphTitleMessageKey="activeUsersByTimeTitle"
+                <FilterableBarChartResourceByProject
+                  className="dynamicHeight fullWidth"
+                  onResourceByProjectChange={this.onResourceByProjectChange}
+                  resourceOptions={this.resourceOptions}
+                  projectOptions={this.filterOptions.projectFilterOptions}
                   startAt={startAt}
                   endAt={endAt}
-                  resolution={resolution}
-                  stream={activeUsersByTimeStream}
-                  infoMessage={infoMessage}
                   {...this.state}
                 />
-              </Row>
-              <Row>
-                <CumulativeAreaChart
-                  className="first halfWidth"
-                  graphTitleMessageKey="ideasByTimeTitle"
-                  graphUnit="ideas"
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  stream={ideasByTimeCumulativeStream}
-                  {...this.state}
-                />
-                <CumulativeAreaChart
-                  className="halfWidth"
-                  graphTitleMessageKey="commentsByTimeTitle"
-                  graphUnit="comments"
-                  startAt={startAt}
-                  endAt={endAt}
-                  resolution={resolution}
-                  stream={commentsByTimeCumulativeStream}
-                  {...this.state}
-                />
-              </Row>
-              <Row>
-                <Column className="first">
-                  <LineChartVotesByTime
-                    className="colFirst"
-                    startAt={startAt}
-                    endAt={endAt}
-                    resolution={resolution}
-                    {...this.state}
-                  />
-
-                  <FilterableBarChartResourceByProject
-                    className="dynamicHeight"
-                    onResourceByProjectChange={this.onResourceByProjectChange}
-                    resourceOptions={this.resourceOptions}
-                    projectOptions={this.filterOptions.projectFilterOptions}
-                    startAt={startAt}
-                    endAt={endAt}
-                    {...this.state}
-                  />
-                </Column>
+              </Column>
+              <Column>
                 <FilterableBarChartResourceByTopic
-                  className="halfWidth dynamicHeight"
+                  className="fullWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
                   resourceOptions={this.resourceOptions}
@@ -332,7 +322,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   endAt={endAt}
                   {...this.state}
                 />
-              </Row>
+              </Column>
             </GraphsContainer>
           </ThemeProvider>
         </>

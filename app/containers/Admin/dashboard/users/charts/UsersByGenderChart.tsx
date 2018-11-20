@@ -22,7 +22,7 @@ interface Props {
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
   currentGroupFilter: string | null;
-  className: string;
+  className?: string;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByGender>;
 }
 

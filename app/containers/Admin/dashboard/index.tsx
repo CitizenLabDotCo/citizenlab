@@ -38,20 +38,15 @@ export const ControlBar = styled.div`
 
 export const GraphsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  margin-top: 30px;
-  margin-bottom: 30px;
-`;
-
-export const Row = styled.div`
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 20px;
-
-  &.last {
-    margin-bottom: 0px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin: 20px -10px;
+  @media print {
+    flex-direction: column;
+    position: relative
   }
 `;
+
 export const Column = styled.div`
   width: 50%;
   display: flex;
@@ -59,6 +54,10 @@ export const Column = styled.div`
   flex-direction: column;
   &.first {
     margin-right: 20px;
+  }
+  @media print {
+    position: relative;
+    width: 100%;
   }
 `;
 
@@ -83,22 +82,31 @@ export const GraphCardInner = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   padding-bottom: 35px;
+  border: solid 1px ${colors.adminBorder};
+  border-radius: 5px;
   p {
-      font-size: ${fontSizes.base}px;
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    font-size: ${fontSizes.base}px;
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media print {
+    position: relative;
+    page-break-before: always;
+    page-break-inside: avoid;
+    width: 100%;
+    padding: 0 10px;
+    border: none;
   }
 `;
 
 export const GraphCard = styled.div`
-  width: 100%;
+  padding: 10px;
   height: 350px;
   display: flex;
-  border: solid 1px ${colors.adminBorder};
-  border-radius: 5px;
   background: ${colors.adminContentBackground};
+  width: 50%;
 
   &.dynamicHeight {
     height: auto;
@@ -108,14 +116,20 @@ export const GraphCard = styled.div`
     }
   }
 
-  &.first {
-    margin-right: 20px;
+  &.fullWidth {
+    width: 100%;
   }
-  &.colFirst {
-    margin-bottom: 20px;
-  }
+  @media print {
+    position: relative;
+    display: block;
+    page-break-before: always;
+    page-break-inside: avoid;
 
-  &.halfWidth {
+  }
+  @media print and (orientation: portrait) {
+    width: 100%;
+  }
+  @media print and (orientation: landscape) {
     width: 50%;
   }
 `;
@@ -128,6 +142,16 @@ export const GraphCardHeader = styled.div`
   font-weight: 400;
   margin-bottom: 20px;
   padding: 0 20px;
+  @media print {
+    display: block;
+    justify-content: flex-start;
+    page-break-after: avoid;
+    page-break-before: always;
+    page-break-inside: avoid;
+    h3 {
+      margin-right: 20px;
+    }
+  }
 `;
 
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`

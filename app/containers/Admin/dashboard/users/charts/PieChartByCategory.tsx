@@ -37,7 +37,7 @@ interface InputProps {
   endAt: string | null;
   currentGroupFilter: string | null;
   graphTitleString: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: 'ActiveUsers' | 'users' | 'Ideas' | 'Comments' | 'Votes';
   className?: string;
   customId?: string;
 }
@@ -73,7 +73,7 @@ class PieChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
                   fill={colorMain}
                   label={{ fill: colors.adminTextColor, fontSize: '14px' }}
                 >
-                  {serie.map((entry, index) => (
+                  {serie.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={labelColors[index]} />
                   ))}
                 </Pie>

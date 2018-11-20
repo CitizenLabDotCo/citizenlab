@@ -23,6 +23,9 @@ const ResourceHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 30px;
+  @media print {
+    margin-bottom: 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -40,6 +43,11 @@ const TabbedNav = styled.nav`
   display: flex;
   border: 1px solid ${color('separation')};
   border-bottom: 1px solid transparent;
+  @media print {
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+  }
 `;
 
 const Tab = styled.li`
@@ -84,6 +92,11 @@ const ChildWrapper = styled.div`
   background: ${color('adminContentBackground')};
   margin-bottom: 2rem;
   padding: 3rem;
+  @media print {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 export type TabProps = {
