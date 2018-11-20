@@ -128,11 +128,10 @@ const Vote: any = styled.div`
 
 const Upvote = Vote.extend`
   margin-right: 12px;
-  margin-right: 8px;
 
   &:not(.enabled) {
     ${VoteCount} {
-      margin-right: 10px;
+      margin-right: 14px;
     }
   }
 

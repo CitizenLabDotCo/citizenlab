@@ -98,7 +98,7 @@ const IdeaTitle: any = styled.h3`
   -webkit-line-clamp: 3;
   line-height: 26px;
   max-height: 78px;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
 `;
 
 const Footer = styled.div`
@@ -142,7 +142,7 @@ const CommentInfo = styled.div`
 
 const IdeaContainer = styled(Link)`
   width: 100%;
-  height: 365px;
+  height: 375px;
   margin-bottom: 24px;
   cursor: pointer;
   position: relative;

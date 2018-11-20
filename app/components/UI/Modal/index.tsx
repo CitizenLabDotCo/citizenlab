@@ -75,13 +75,16 @@ const CloseButton = styled.button`
   cursor: pointer;
   top: 20px;
   right: 20px;
+  outline: none;
 
   ${media.smallerThanMaxTablet`
     top: 10px;
     right: 10px;
   `}
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     svg {
       fill: ${colors.clBlueDark};
     }
