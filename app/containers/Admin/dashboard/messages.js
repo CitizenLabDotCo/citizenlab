@@ -82,7 +82,7 @@ export default defineMessages({
     defaultMessage: 'Total votes',
   },
   users: {
-    id: 'app.containers.AdminPage.DashboardPage.Users',
+    id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
   },
   activeUsers: {

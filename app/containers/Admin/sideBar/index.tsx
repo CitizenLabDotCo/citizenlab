@@ -29,6 +29,9 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 const Menu = styled.div`
   flex: 0 0 auto;
   width: 260px;
+  @media print {
+    display: none;
+  }
 `;
 
 const MenuInner = styled.nav`

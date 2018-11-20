@@ -55,7 +55,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
     <BarChartByCategory
       {...props}
       graphTitleString={props.intl.formatMessage(messages.usersByAgeTitle)}
-      graphUnit="Users"
+      graphUnit="users"
       stream={usersByBirthyearStream}
       convertToGraphFormat={convertToGraphFormat}
     />

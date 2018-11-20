@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import { map } from 'lodash-es';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import T from 'components/T';
 
 import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats';
 
@@ -12,14 +11,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
 
-// components
-import {
-  Row,
-} from '../';
-
 import messages from '../messages';
-
-import styled from 'styled-components';
 
 interface InputProps {
   currentGroupFilter: string | null;
@@ -49,55 +41,47 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { customFields, localize, startAt, endAt, currentGroupFilter } = this.props;
-    const graphsArray = customFields && customFields.map((field, index) => {
+    if (!customFields) {
+      return null;
+    }
+    return customFields.map((field, index) => {
+      if (field.attributes.key === 'gender') {
+        return null;
+      }
       if (field.attributes.input_type === 'checkbox') {
         return (
-          <PieChartByCategory
-            className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
-            startAt={startAt}
-            endAt={endAt}
-            currentGroupFilter={currentGroupFilter}
-            key={index}
-            graphTitleString={localize(field.attributes.title_multiloc)}
-            stream={usersByRegFieldStream}
-            graphUnit="Users"
-            convertToGraphFormat={this.convertToGraphFormat}
-            customId={field.id}
-          />
+            <PieChartByCategory
+              startAt={startAt}
+              endAt={endAt}
+              key={index}
+              currentGroupFilter={currentGroupFilter}
+              graphTitleString={localize(field.attributes.title_multiloc)}
+              stream={usersByRegFieldStream}
+              graphUnit="users"
+              convertToGraphFormat={this.convertToGraphFormat}
+              customId={field.id}
+            />
         );
       }
       return (
-        <BarChartByCategory
-          className={(index === customFields.length - 1) ? '' :`${(index % 2 === 0) && 'first'} halfWidth`}
-          startAt={startAt}
-          endAt={endAt}
-          currentGroupFilter={currentGroupFilter}
-          key={index}
-          graphTitleString={localize(field.attributes.title_multiloc)}
-          stream={usersByRegFieldStream}
-          graphUnit="Users"
-          convertToGraphFormat={this.convertToGraphFormat}
-          customId={field.id}
-        />
+          <BarChartByCategory
+            startAt={startAt}
+            endAt={endAt}
+            key={index}
+            currentGroupFilter={currentGroupFilter}
+            graphTitleString={localize(field.attributes.title_multiloc)}
+            stream={usersByRegFieldStream}
+            graphUnit="users"
+            convertToGraphFormat={this.convertToGraphFormat}
+            customId={field.id}
+          />
       );
     });
-
-    if (graphsArray) {
-      return graphsArray.filter((_, index) => index % 2 === 1 || index === graphsArray.length - 1).map((_, index) => {
-        return (
-          <Row key={index}>
-            {graphsArray[index * 2]}
-            {graphsArray[index * 2 + 1]}
-          </Row>
-        );
-      });
-    }
-    return null;
   }
-
 }
 
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs));
+
 export default (inputProps: InputProps) => (
   <GetCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
     {customFields => <RegistrationFieldsToGraphsWithHoCs {...inputProps} customFields={customFields} />}

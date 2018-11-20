@@ -24,6 +24,9 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
+  @media print {
+    display: none;
+  }
 `;
 
 const NavigationIconWrapper = styled.div`

@@ -51,6 +51,10 @@ const RightColumn = styled.div`
     padding: 0;
     max-width: none;
   }
+  @media print {
+    padding: 0;
+    max-width: none,
+  }
 `;
 
 type Props = {};

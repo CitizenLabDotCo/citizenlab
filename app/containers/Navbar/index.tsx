@@ -64,6 +64,10 @@ const Container = styled.div`
     padding-left: 15px;
     padding-right: 15px;
   `}
+
+  @media print {
+    display: none;
+  }
 `;
 
 const Left = styled.div`

@@ -28,7 +28,7 @@ interface InputProps {
   endAt: string | null;
   currentGroupFilter: string | null;
   graphTitleString: string;
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: 'ActiveUsers' | 'users' | 'Ideas' | 'Comments' | 'Votes';
   className?: string;
   customId?: string;
 }
@@ -38,9 +38,10 @@ interface Props extends InputProps, DataProps {}
 class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { chartFill, barFill, chartLabelSize, chartLabelColor } = this.props['theme'];
-    const { className, graphTitleString, serie } = this.props;
+    const { className, graphTitleString, serie, intl: { formatMessage }, graphUnit } = this.props;
     const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
     const barHoverColor = rgba(chartFill, .25);
+    const unitName = formatMessage(messages[graphUnit]);
 
     return (
       <GraphCard className={className}>
@@ -59,7 +60,7 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
               <BarChart data={serie} margin={{ right: 40 }}>
                 <Bar
                   dataKey="value"
-                  name="name"
+                  name={unitName}
                   fill={chartFill}
                   label={{ fill: barFill, fontSize: chartLabelSize }}
                 />
