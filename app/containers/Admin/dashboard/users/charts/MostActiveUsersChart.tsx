@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { map } from 'lodash-es';
+
 // components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
-import { ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 
@@ -14,9 +14,10 @@ import messages from '../../messages';
 
 // styles
 import styled, { withTheme } from 'styled-components';
+import { rgba } from 'polished';
 
 // services
-import { userEngagementScoresStream, IUserEngagementScores } from 'services/stats';
+import { userEngagementScoresStream, IUserEngagementScore } from 'services/stats';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -35,7 +36,10 @@ interface Props {
 }
 
 interface State {
-  serie: IUserEngagementScores[] | null;
+  serie: {
+    value: number;
+    userId: string;
+  }[] | null;
 }
 
 class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, State> {
@@ -64,18 +68,18 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: { [key: string]: number }) => {
-    return map(serie, (value, key) => ({
-      value,
-      name: this.props.intl.formatMessage(messages[key]),
-      code: key,
+  convertToGraphFormat = (serie: IUserEngagementScore[]) => {
+    return serie.map(userEngagementScore => ({
+      value: userEngagementScore.attributes.sum_score,
+      userId: userEngagementScore.relationships.user.data.id
     }));
   }
 
   resubscribe(
     startAt = this.props.startAt,
     endAt = this.props.endAt,
-    currentGroupFilter = this.props.currentGroupFilter) {
+    currentGroupFilter = this.props.currentGroupFilter
+  ) {
     if (this.subscription) this.subscription.unsubscribe();
 
     this.subscription = userEngagementScoresStream({
@@ -84,16 +88,20 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
         end_at: endAt,
         group: currentGroupFilter
       },
-    }).observable.subscribe((serie) => {
-      console.log(serie);
-      // this.setState({ serie: this.convertToGraphFormat(serie) });
+    }).observable.subscribe((stream) => {
+      const serie = stream.data;
+      const convertedSerie = this.convertToGraphFormat(serie);
+      this.setState({ serie: convertedSerie });
     });
   }
 
   render() {
-    const { colorMain } = this.props['theme'];
     const { className, infoMessage } = this.props;
+    const { formatMessage } = this.props.intl;
     const { serie } = this.state;
+    const theme = this.props['theme'];
+    const { chartFill, barFill, chartLabelSize } = theme;
+    const barHoverColor = rgba(chartFill, .25);
 
     return (
       <GraphCard className={className}>
@@ -118,8 +126,35 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <ResponsiveContainer>
-              Test
+            <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
+              <BarChart data={serie} layout="vertical" margin={{ left: 150 }}>
+                <Bar
+                  dataKey="value"
+                  name={formatMessage(messages.userActivityScore)}
+                  fill={chartFill}
+                  label={{ fill: barFill, fontSize: chartLabelSize }}
+                  barSize={20}
+                />
+                <YAxis
+                  dataKey="userId"
+                  type="category"
+                  width={150}
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  tickLine={false}
+
+                />
+                <XAxis
+                  stroke={theme.chartLabelColor}
+                  fontSize={theme.chartLabelSize}
+                  type="number"
+                  tick={{ transform: 'translate(0, 7)' }}
+                />
+                <Tooltip
+                  isAnimationActive={false}
+                  cursor={{ fill: barHoverColor }}
+                />
+              </BarChart>
             </ResponsiveContainer>
           }
         </GraphCardInner>
