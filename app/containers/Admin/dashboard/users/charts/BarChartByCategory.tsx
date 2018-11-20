@@ -1,46 +1,71 @@
+// libraries
 import React from 'react';
 import { isEmpty } from 'lodash-es';
+
+// intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
+// styling
 import { withTheme } from 'styled-components';
+
+// components
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
+import {
+  IGraphUnit,
+  NoDataContainer,
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCard,
+  GraphCardInner
+} from '../..';
+
+// resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
+
+// types
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByBirthyear, IUsersByRegistrationField } from 'services/stats';
-import messages from '../../messages';
-import { rgba } from 'polished';
-
-export type IGraphFormat = {
-    name: string | number,
-    value: number,
-    code: string
-  }[] | null;
+import { IGraphFormat } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
 }
 
+type ISupportedDataType = IUsersByBirthyear | IUsersByRegistrationField;
+
 interface InputProps {
-  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<IUsersByBirthyear | IUsersByRegistrationField>;
-  convertToGraphFormat: (IUsersByBirthyear) => IGraphFormat;
+  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<ISupportedDataType>;
+  convertToGraphFormat: (data: ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
   currentGroupFilter: string | null;
   graphTitleString: string;
-  graphUnit: 'ActiveUsers' | 'users' | 'Ideas' | 'Comments' | 'Votes';
+  graphUnit: IGraphUnit;
   className?: string;
   customId?: string;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
-    const { chartFill, barFill, chartLabelSize, chartLabelColor } = this.props['theme'];
-    const { className, graphTitleString, serie, intl: { formatMessage }, graphUnit } = this.props;
+    const {
+      chartFill,
+      barFill,
+      chartLabelSize,
+      chartLabelColor,
+      barHoverColor,
+      animationBegin,
+      animationDuration } = this.props['theme'];
+    const {
+      className,
+      graphTitleString,
+      serie,
+      intl: { formatMessage },
+      graphUnit } = this.props;
     const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
-    const barHoverColor = rgba(chartFill, .25);
     const unitName = formatMessage(messages[graphUnit]);
 
     return (
@@ -63,6 +88,8 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
                   name={unitName}
                   fill={chartFill}
                   label={{ fill: barFill, fontSize: chartLabelSize }}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
                 <XAxis
                   dataKey="name"

@@ -1,14 +1,14 @@
 // libraries
 import React, { PureComponent } from 'react';
-import moment from 'moment';
+// import moment from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, Row, GraphCard, GraphCardInner, GraphCardTitle } from '../';
+import { chartTheme, GraphsContainer, GraphCard, GraphCardInner, GraphCardTitle } from '../';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+// import { FormattedMessage } from 'utils/cl-intl';
+// import messages from '../messages';
 
 interface State {
   interval: 'weeks' | 'months' | 'years';
@@ -32,9 +32,8 @@ export default class AquisitionDashboard extends PureComponent<Props, State> {
 
     return (
       <>
-      <ThemeProvider theme={chartTheme}>
-        <GraphsContainer>
-          <Row>
+        <ThemeProvider theme={chartTheme}>
+          <GraphsContainer>
             <GraphCard className="first halfWidth">
               <GraphCardInner>
                 <GraphCardTitle>
@@ -51,8 +50,7 @@ export default class AquisitionDashboard extends PureComponent<Props, State> {
 
               </GraphCardInner>
             </GraphCard>
-          </Row>
-        </GraphsContainer>
+          </GraphsContainer>
         </ThemeProvider>
       </>
     );

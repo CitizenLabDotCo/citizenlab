@@ -1,14 +1,19 @@
+// Libraries
 import React from 'react';
 import { range, forOwn, get } from 'lodash-es';
 import moment from 'moment';
+
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
+
 // services
 import { IUsersByBirthyear, usersByBirthyearStream } from 'services/stats';
+
 // components
 import BarChartByCategory from './BarChartByCategory';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 

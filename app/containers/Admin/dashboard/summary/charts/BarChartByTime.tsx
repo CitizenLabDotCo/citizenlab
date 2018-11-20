@@ -1,12 +1,12 @@
+// libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
+
+// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import styled, { withTheme } from 'styled-components';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
-import { rgba } from 'polished';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
@@ -14,10 +14,21 @@ import { IResourceByTime, IUsersByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
 // components
-import { GraphCard, GraphCardInner, GraphCardHeader, GraphCardTitle, NoDataContainer , IResolution } from '../..';
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import {
+  IGraphUnit,
+  GraphCard,
+  GraphCardInner,
+  GraphCardHeader,
+  GraphCardTitle,
+  NoDataContainer,
+  IResolution
+} from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
-import { colors } from 'utils/styleUtils';
+
+// styling
+import styled, { withTheme } from 'styled-components';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -27,13 +38,22 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
+const StyledResponsiveContainer = styled(ResponsiveContainer)`
+  .recharts-wrapper {
+    margin: -10px;
+    @media print {
+      margin: 0 auto;
+    }
+  }
+`;
+
 type State = {
   serie: IGraphFormat | null;
 };
 
 type Props = {
   className?: string;
-  graphUnit: 'users';
+  graphUnit: IGraphUnit;
   graphUnitMessageKey: 'activeUsers',
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
@@ -161,38 +181,44 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
     const { formatMessage } = this.props.intl;
     const { className, graphTitleMessageKey, graphUnitMessageKey, infoMessage } = this.props;
     const { serie } = this.state;
-    const { chartFill, chartLabelSize, chartLabelColor } = this.props['theme'];
-    const barHoverColor = rgba(chartFill, .25);
+    const { chartFill,
+      chartLabelSize,
+      chartLabelColor,
+      barHoverColor,
+      animationBegin,
+      animationDuration } = this.props['theme'];
 
     return (
       <GraphCard className={className}>
         <GraphCardInner>
           <GraphCardHeader>
-              <GraphCardTitle>
-                <FormattedMessage {...messages[graphTitleMessageKey]} />
-                {infoMessage && <Popup
-                  basic
-                  trigger={
-                    <div>
-                      <InfoIcon name="info" />
-                    </div>
-                  }
-                  content={infoMessage}
-                  position="top left"
-                />}
-              </GraphCardTitle>
+            <GraphCardTitle>
+              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              {infoMessage && <Popup
+                basic
+                trigger={
+                  <div>
+                    <InfoIcon name="info" />
+                  </div>
+                }
+                content={infoMessage}
+                position="top left"
+              />}
+            </GraphCardTitle>
           </GraphCardHeader>
           {!serie ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <ResponsiveContainer>
+            <StyledResponsiveContainer>
               <BarChart data={serie}>
                 <Bar
                   dataKey="value"
                   name={formatMessage(messages[graphUnitMessageKey])}
                   fill={chartFill}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
                 <XAxis
                   dataKey="name"
@@ -211,7 +237,7 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
                   cursor={{ fill: barHoverColor }}
                 />
               </BarChart>
-            </ResponsiveContainer>}
+            </StyledResponsiveContainer>}
         </GraphCardInner>
       </GraphCard>
     );

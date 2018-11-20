@@ -25,6 +25,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
@@ -194,6 +195,8 @@ export const GraphCardFigureChange = styled.span`
   }
 `;
 
+export type IGraphUnit = 'users' | 'ideas' | 'comments';
+
 export type IResolution = 'day' | 'week' | 'month';
 
 interface Props {
@@ -208,7 +211,10 @@ export const chartTheme = (theme) => {
     chartFill: colors.clIconAccent,
     barFill: colors.adminContentBackground,
     chartLabelColor: colors.adminSecondaryTextColor,
-    chartLabelSize: 13
+    barHoverColor: rgba(colors.clIconAccent, .25),
+    chartLabelSize: 13,
+    animationBegin: 50,
+    animationDuration: 500
   };
 };
 
@@ -220,7 +226,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
     const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin' },
       { label: formatMessage(messages.tabUsers), url: '/admin/dashboard-users' },
-    //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' } TODO
+      //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard-acquisition' } TODO
     ];
     const resource = {
       title: formatMessage(messages.viewPublicResource)

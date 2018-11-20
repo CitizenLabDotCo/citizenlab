@@ -1,27 +1,20 @@
+// libraries
 import React, { PureComponent } from 'react';
+
+// intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
+// styling
 import styled, { withTheme } from 'styled-components';
 import { media } from 'utils/styleUtils';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { IStreamParams, IStream } from 'utils/streams';
-import messages from '../../messages';
-import { rgba } from 'polished';
-import GetSerieFromStream from 'resources/GetSerieFromStream';
-import {
-  IIdeasByTopic,
-  ICommentsByTopic,
-  IVotesByTopic,
-  IIdeasByProject,
-  ICommentsByProject,
-  IVotesByProject,
-} from 'services/stats';
 
-// typings
-import { IResource } from '..';
-import { IGraphFormat, IOption } from 'typings';
+// resource
+import GetSerieFromStream from 'resources/GetSerieFromStream';
 
 // components
+import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
 import Select from 'components/UI/Select';
 
@@ -42,11 +35,18 @@ const GraphCardTitle = styled.h3`
   `}
 `;
 
-export type IGraphFormat = {
-  name: string | number,
-  value: number,
-  code: string
-}[] | null;
+// typings
+import {
+  IIdeasByTopic,
+  ICommentsByTopic,
+  IVotesByTopic,
+  IIdeasByProject,
+  ICommentsByProject,
+  IVotesByProject,
+} from 'services/stats';
+import { IStreamParams, IStream } from 'utils/streams';
+import { IResource } from '..';
+import { IGraphFormat, IOption } from 'typings';
 
 interface DataProps {
   serie: IGraphFormat;
@@ -74,10 +74,15 @@ interface InputProps extends QueryProps {
 
 interface Props extends InputProps, DataProps { }
 
-class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
+class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   render() {
-    const theme = this.props['theme'];
-    const { chartFill } = theme;
+    const { chartFill,
+      barHoverColor,
+      chartLabelSize,
+      chartLabelColor,
+      barFill,
+      animationBegin,
+      animationDuration } = this.props['theme'];
     const {
       className,
       onResourceByXChange,
@@ -99,7 +104,6 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
         selectedName
       })
       : selectedResourceName;
-    const barHoverColor = rgba(chartFill, .25);
     return (
       <GraphCard className={className}>
         <GraphCardInner>
@@ -118,7 +122,7 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
           </GraphCardHeaderWithFilter>
           {!serie ?
             <NoDataContainer>
-              {currentFilter ?
+              {currentFilter && selectedCount ?
                 <FormattedMessage
                   {...messages.totalCount}
                   values={{ selectedCount, selectedName, selectedResourceName }}
@@ -129,26 +133,28 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
             :
             <>
               {currentFilter && <FormattedMessage tagName="p" {...messages.totalCount} values={{ selectedCount, selectedName, selectedResourceName }} />}
-              <ResponsiveContainer width="100%" height={serie && (serie.length * 50)} >
+              <ResponsiveContainer height={serie.length * 50} >
                 <BarChart data={convertedSerie} layout="vertical">
                   <Bar
                     dataKey="value"
                     name={unitName}
-                    fill={theme.chartFill}
-                    label={{ fill: theme.barFill, fontSize: theme.chartLabelSize }}
+                    fill={chartFill}
+                    label={{ fill: barFill, fontSize: chartLabelSize }}
                     barSize={20}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
                   />
                   <YAxis
                     dataKey="name"
                     type="category"
                     width={150}
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
+                    stroke={chartLabelColor}
+                    fontSize={chartLabelSize}
                     tickLine={false}
                   />
                   <XAxis
-                    stroke={theme.chartLabelColor}
-                    fontSize={theme.chartLabelSize}
+                    stroke={chartLabelColor}
+                    fontSize={chartLabelSize}
                     type="number"
                     tick={{ transform: 'translate(0, 7)' }}
                   />
@@ -157,7 +163,7 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
                     cursor={{ fill: barHoverColor }}
                   />
                 </BarChart>
-              </ResponsiveContainer >
+              </ResponsiveContainer>
             </>
           }
         </GraphCardInner>
@@ -166,10 +172,10 @@ class FilterableBarChart extends PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-const FilterableBarChartWithHoCs = injectIntl<Props>(withTheme(FilterableBarChart as any) as any);
+const SelectableResourceChartWithHoCs = injectIntl<Props>(withTheme(SelectableResourceChart as any) as any);
 
 export default (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
-    {serie => <FilterableBarChartWithHoCs {...serie} {...inputProps} />}
+    {serie => <SelectableResourceChartWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );

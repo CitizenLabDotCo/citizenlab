@@ -1,13 +1,20 @@
+// libraries
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
+
+// styling
 import { withTheme } from 'styled-components';
-import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
+
+// services
 import { votesByTimeCumulativeStream, IVotesByTimeCumulative } from 'services/stats';
-import messages from '../../messages';
+
+// components
+import { LineChart, Line, Tooltip, XAxis, YAxis, ResponsiveContainer, CartesianGrid, Legend } from 'recharts';
 import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
 
 // i18n
+import messages from '../../messages';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -60,7 +67,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       currentGroupFilter,
       currentTopicFilter,
       currentProjectFilter
-      );
+    );
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -189,7 +196,13 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 
   render() {
-    const { chartLabelSize, chartLabelColor, chartStroke, chartStrokeGreen, chartStrokeRed } = this.props['theme'];
+    const { chartLabelSize,
+      chartLabelColor,
+      chartStroke,
+      chartStrokeGreen,
+      chartStrokeRed,
+      animationBegin,
+      animationDuration } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;
@@ -245,6 +258,8 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
                   dot={false}
                   fill={chartStrokeGreen}
                   stroke={chartStrokeGreen}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
                 <Line
                   type="monotone"

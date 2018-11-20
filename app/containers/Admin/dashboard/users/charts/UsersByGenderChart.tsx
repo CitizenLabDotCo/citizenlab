@@ -1,29 +1,41 @@
+// libraries
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { map } from 'lodash-es';
+
+// utils
+import shallowCompare from 'utils/shallowCompare';
+
+// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
+// styling
 import { withTheme } from 'styled-components';
+
+// components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
-import messages from '../../messages';
-import { colors } from 'utils/styleUtils';
-// typings
-import { IStreamParams, IStream } from 'utils/streams';
-import { IUsersByGender } from 'services/stats';
+
+// services
+import { usersByGenderStream, IUsersByGender } from 'services/stats';
 
 type State = {
   serie: { name: string, value: number, code: string }[] | null;
 };
 
-interface Props {
+interface QueryProps {
   startAt: string | undefined | null;
   endAt: string | null;
+  currentGroupFilter: string | null;
+}
+
+interface Props extends QueryProps {
   graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
   graphTitleMessageKey: string;
-  currentGroupFilter: string | null;
   className?: string;
-  stream: (streamParams?: IStreamParams | null) => IStream<IUsersByGender>;
 }
 
 const labelColors = {
@@ -34,7 +46,8 @@ const labelColors = {
 };
 
 class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State> {
-  subscription: Subscription;
+  private subscriptions: Subscription[];
+  private queryProps$: BehaviorSubject<QueryProps>;
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
@@ -44,23 +57,51 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
   }
 
   componentDidMount() {
-    this.resubscribe();
+    const {
+      startAt,
+      endAt,
+      currentGroupFilter,
+    } = this.props;
+
+    this.queryProps$ = new BehaviorSubject({ startAt, endAt, currentGroupFilter });
+
+    this.subscriptions = [
+      this.queryProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        switchMap(({ startAt, endAt, currentGroupFilter }) => usersByGenderStream({
+          queryParameters: {
+            start_at: startAt,
+            end_at: endAt,
+            group: currentGroupFilter,
+          }
+        }).observable))
+        .subscribe((serie) => {
+          const convertedSerie = serie && this.convertToGraphFormat(serie);
+          this.setState({ serie: convertedSerie });
+        })
+    ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt
-      || this.props.endAt !== prevProps.endAt
-      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
-      this.resubscribe(this.props.startAt, this.props.endAt, this.props.currentGroupFilter);
+    const {
+      startAt,
+      endAt,
+      currentGroupFilter,
+    } = this.props;
+
+    if (startAt !== prevProps.startAt
+      || endAt !== prevProps.endAt
+      || currentGroupFilter !== prevProps.currentGroupFilter) {
+      this.queryProps$.next({ startAt, endAt, currentGroupFilter });
     }
   }
 
   componentWillUnmount() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   convertToGraphFormat = (data: IUsersByGender) => {
-    const res =  map(data.series.users, (value, key) => ({
+    const res = map(data.series.users, (value, key) => ({
       value,
       name: this.props.intl.formatMessage(messages[key]),
       code: key,
@@ -68,25 +109,8 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
     return res.length > 0 ? res : null;
   }
 
-  resubscribe(
-    startAt = this.props.startAt,
-    endAt = this.props.endAt,
-    currentGroupFilter = this.props.currentGroupFilter) {
-    if (this.subscription) this.subscription.unsubscribe();
-
-    this.subscription = this.props.stream({
-      queryParameters: {
-        start_at: startAt,
-        end_at: endAt,
-        group: currentGroupFilter
-      },
-    }).observable.subscribe((serie) => {
-      this.setState({ serie: this.convertToGraphFormat(serie) });
-    });
-  }
-
   render() {
-    const { colorMain } = this.props['theme'];
+    const { colorMain, chartLabelSize, chartLabelColor, animationDuration, animationBegin } = this.props['theme'];
     const { className, graphTitleMessageKey } = this.props;
     const { serie } = this.state;
 
@@ -107,12 +131,13 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
               <PieChart>
                 <Pie
                   isAnimationActive={true}
-                  animationDuration={200}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                   data={serie}
                   dataKey="value"
                   innerRadius={60}
                   fill={colorMain}
-                  label={{ fill: colors.adminTextColor, fontSize: '14px' }}
+                  label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
                 >
                   {serie.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
