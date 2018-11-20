@@ -50,6 +50,7 @@ def create_comment_tree(idea, parent, depth=0)
       parent: parent,
       created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
     })
+    LogActivityJob.perform_later(c, 'created', c.author, c.created_at.to_i)
     MakeNotificationsJob.perform_now(Activity.new(item: c, action: 'created', user: c.author, acted_at: Time.now))
     create_comment_tree(idea, c, depth+1)
   end
@@ -112,13 +113,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
         client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
       },
-      # mydigipass_login: {
-      #   allowed: true,
-      #   enabled: true,
-      #   client_id: 'a76piarjfjbvwnukobjdzz07d',
-      #   client_secret: '65xg35xpa84p14cgntyg0279k',
-      #   require_eid: false
-      # },
       pages: {
         allowed: true, 
         enabled: true
@@ -440,6 +434,8 @@ if Apartment::Tenant.current == 'localhost'
         location_point: rand(3) == 0 ? nil : "POINT(#{MAP_CENTER[1]+((rand()*2-1)*MAP_OFFSET)} #{MAP_CENTER[0]+((rand()*2-1)*MAP_OFFSET)})",
         location_description: rand(2) == 0 ? nil : Faker::Address.street_address
       })
+
+      LogActivityJob.perform_later(idea, 'created', idea.author, idea.created_at.to_i)
 
       [0,0,1,1,2][rand(5)].times do |i|
         idea.idea_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
