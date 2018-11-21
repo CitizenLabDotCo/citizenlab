@@ -228,7 +228,7 @@ export default defineMessages({
   },
   top10activeUsersDescription: {
     id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
-    defaultMessage: 'To be determined.',
+    defaultMessage: "A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
   },
   mostActiveUsers: {
     id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
@@ -237,5 +237,9 @@ export default defineMessages({
   userActivityScore: {
     id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
     defaultMessage: 'User activity score',
+  },
+  deletedUser: {
+    id: 'app.containers.AdminPage.DashboardPage.deletedUser',
+    defaultMessage: 'Deleted user',
   },
 });

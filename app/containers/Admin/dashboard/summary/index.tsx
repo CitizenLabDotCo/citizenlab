@@ -6,7 +6,7 @@ import { ThemeProvider } from 'styled-components';
 
 // components
 import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '../';
-import BarChartByTime from './charts/BarChartByTime';
+import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
 import SelectableResourceByProject from './charts/SelectableResourceByProject';
@@ -292,7 +292,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 stream={usersByTimeCumulativeStream}
                 {...this.state}
               />
-              <BarChartByTime
+              <BarChartActiveUsersByTime
                 graphUnit="users"
                 graphUnitMessageKey="activeUsers"
                 graphTitleMessageKey="activeUsersByTimeTitle"

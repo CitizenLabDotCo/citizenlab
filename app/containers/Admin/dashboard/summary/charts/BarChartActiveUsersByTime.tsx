@@ -35,12 +35,12 @@ const InfoIcon = styled(Icon)`
   align-items: center;
   cursor: pointer;
   width: 20px;
+  height: 22px;
   margin-left: 10px;
 `;
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
-    margin: -10px;
     @media print {
       margin: 0 auto;
     }
@@ -66,7 +66,7 @@ type Props = {
   infoMessage?: string;
 };
 
-class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -244,4 +244,4 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-export default injectIntl<Props>(withTheme(BarChartByTime as any) as any);
+export default injectIntl<Props>(withTheme(BarChartActiveUsersByTime as any) as any);
