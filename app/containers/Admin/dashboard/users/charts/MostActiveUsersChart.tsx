@@ -31,6 +31,7 @@ const InfoIcon = styled(Icon)`
   align-items: center;
   cursor: pointer;
   width: 20px;
+  height: 22px;
   margin-left: 10px;
 `;
 
@@ -50,10 +51,12 @@ const User = styled.div`
   display: flex;
   flex-basis: 100%;
   max-width: 50%;
+  min-width: 50%;
   align-items: center;
 
   ${media.smallerThan1280px`
     max-width: 70%;
+    min-width: 70%;
   `}
 `;
 

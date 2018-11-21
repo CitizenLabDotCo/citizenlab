@@ -35,12 +35,12 @@ const InfoIcon = styled(Icon)`
   align-items: center;
   cursor: pointer;
   width: 20px;
+  height: 22px;
   margin-left: 10px;
 `;
 
 const StyledResponsiveContainer = styled(ResponsiveContainer)`
   .recharts-wrapper {
-    margin: -10px;
     @media print {
       margin: 0 auto;
     }
