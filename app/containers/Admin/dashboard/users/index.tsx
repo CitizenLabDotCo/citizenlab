@@ -132,6 +132,13 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
+            <MostActiveUsersChart
+              currentGroupFilter={currentGroupFilter}
+              startAt={startAt}
+              endAt={endAt}
+              infoMessage={infoMessage}
+              className="dynamicHeight"
+            />
             <UsersByGenderChart
               graphUnit="Users"
               graphTitleMessageKey="usersByGenderTitle"
@@ -148,13 +155,6 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}
-            />
-            <MostActiveUsersChart
-              currentGroupFilter={currentGroupFilter}
-              startAt={startAt}
-              endAt={endAt}
-              infoMessage={infoMessage}
-              className="dynamicHeight"
             />
           </GraphsContainer>
         </ThemeProvider>
