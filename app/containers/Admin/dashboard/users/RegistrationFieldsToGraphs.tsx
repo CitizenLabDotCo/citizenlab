@@ -8,7 +8,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats';
-import { isBuiltInField } from 'services/userCustomFields';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -110,6 +109,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
           );
         }
       }
+      return null;
     });
   }
 }
