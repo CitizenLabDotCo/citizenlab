@@ -125,6 +125,22 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_admin',
     defaultMessage: 'is not an admin',
   },
+  predicate_is_project_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
+    defaultMessage: 'is a moderator',
+  },
+  predicate_not_is_project_moderator: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
+    defaultMessage: 'is not a moderator',
+  },
+  predicate_is_normal_user: {
+    id: 'app.components.admin.UserFilterConditions.predicate_is_normal_user',
+    defaultMessage: 'is a normal user',
+  },
+  predicate_not_is_normal_user: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
+    defaultMessage: 'is not a normal user',
+  },
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',
     defaultMessage: 'Attribute',

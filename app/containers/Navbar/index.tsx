@@ -45,8 +45,8 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: fixed;
   top: 0;
   background: #fff;
@@ -59,11 +59,6 @@ const Container = styled.div`
       top: auto;
     `}
   }
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
 `;
 
 const Left = styled.div`
@@ -111,8 +106,8 @@ const NavigationItems = styled.div`
 
 const NavigationItem = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
-  line-height: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   align-items: center;
@@ -147,9 +142,9 @@ const NavigationDropdown = styled.div`
 const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: ${fontSizes.medium}px;
+  line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,7 +179,7 @@ const NavigationDropdownItemIcon = styled(Icon)`
 
 const ProjectsListItem = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 22px;
   text-decoration: none;
@@ -210,7 +205,7 @@ const ProjectsListItem = styled(Link)`
 const ProjectsListFooter = styled(Link)`
   width: 100%;
   color: #fff;
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-align: center;
   text-decoration: none;
@@ -233,10 +228,6 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
 `;
 
 const RightItem: any = styled.div`
@@ -268,18 +259,15 @@ const RightItem: any = styled.div`
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`
-  a,
-  button {
+  a.Button {
+    border: solid 2px ${colors.separation} !important;
+    padding-left: 18px;
+    padding-right: 18px;
+
     &:hover,
     &:focus {
       border-color: ${darken(0.2, colors.separation)} !important;
     }
-  }
-
-  .Button {
-    border: solid 2px ${colors.separation} !important;
-    padding-left: 18px;
-    padding-right: 18px;
 
     ${media.smallerThanMinTablet`
       padding-left: 10px;
@@ -288,19 +276,20 @@ const StyledIdeaButton = styled(IdeaButton)`
   }
 
   .buttonText {
-    font-size: ${fontSizes.medium}px !important;
+    font-size: ${fontSizes.base}px !important;
     color: ${(props) => props.theme.colorMain};
   }
 `;
 
 const LoginLink = styled(Link)`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   padding: 0;
 
   &:hover {
-    color: ${colors.clGreyHover};
+    color: ${colors.text};
   }
 `;
 
@@ -423,12 +412,12 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-              <RightItem className="addIdea" loggedIn={authUser !== null}>
-                <StyledIdeaButton style="secondary-outlined" size="1" />
-              </RightItem>
+            <RightItem className="addIdea" loggedIn={authUser !== null}>
+              <StyledIdeaButton style="secondary-outlined" size="1" />
+            </RightItem>
 
             {!authUser &&
-              <RightItem>
+              <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
                   <FormattedMessage {...messages.login} />
                 </LoginLink>
@@ -452,7 +441,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 <LanguageSelector />
               </RightItem>
             }
-
           </Right>
         </Container>
       </>

@@ -24,8 +24,8 @@ const ButtonBarInner = styled.div`
   max-width: 600px;
   display: flex;
   align-items: center;
-  padding-right: 30px;
-  padding-left: 30px;
+  padding-right: 20px;
+  padding-left: 20px;
 
   .Button {
     margin-right: 10px;

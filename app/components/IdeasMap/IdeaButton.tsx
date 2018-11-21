@@ -74,7 +74,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
     const { show, enabled, disabledReason } = postingButtonState({
       project,
-      phaseContext: phase,
+      phase,
       signedIn: !isNilOrError(authUser)
     });
 

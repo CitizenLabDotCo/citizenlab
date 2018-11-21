@@ -13,11 +13,12 @@ const Container = styled.div`
 
 interface Props {
   files: IProjectFileData[] | IPhaseFileData[] | IEventFileData[] | IPageFileData[] | IIdeaFileData[];
+  className?: string;
 }
 
-const FileAttachments = ({ files }: Props) => {
+const FileAttachments = ({ files, className }: Props) => {
   return (
-    <Container>
+    <Container className={className}>
       {Array.isArray(files) && files.map(file => (
         <FileDisplay
           key={file.id}

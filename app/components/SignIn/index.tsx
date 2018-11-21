@@ -39,6 +39,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 // logos
 const googleLogo = require('components/SignUp/Footer/svg/google.svg') as string;
 const facebookLogo = require('components/SignUp/Footer/svg/facebook.svg') as string;
+const franceconnectLogo = require('components/SignUp/Footer/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   flex: 1;
@@ -71,11 +72,11 @@ const FormElement = styled.div`
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
-      color: ${colors.label}
+      color: ${colors.label};
     }
 
     &:focus::placeholder {
-      color #aaa
+      color: #aaa;
     }
   }
 `;
@@ -186,6 +187,11 @@ const SocialSignInButton = styled.div`
     height: 90px;
   `}
 
+  &.franceconnect:hover,
+  &.franceconnect.active {
+    border-color: #0e4fa1;
+  }
+
   &.google:hover,
   &.google.active {
     border-color: #2a81f4;
@@ -214,6 +220,7 @@ interface DataProps {
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
   azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -265,7 +272,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       }),
 
       globalState$.subscribe((globalState) => {
-        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '') });
+        this.setState({
+          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
+        });
       })
     ];
   }
@@ -340,7 +349,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
@@ -361,10 +370,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordLoginEnabled,
       googleLoginEnabled,
       facebookLoginEnabled,
-      azureAdLoginEnabled
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
     } = this.props;
     const { formatMessage } = this.props.intl;
-    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
+    const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
     const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
     const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
@@ -432,11 +442,11 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
               </PasswordLogin>
             }
 
-            {passwordLoginEnabled && socialLoginEnabled &&
+            {passwordLoginEnabled && externalLoginEnabled &&
               <Separator />
             }
 
-            {socialLoginEnabled &&
+            {externalLoginEnabled &&
               <Footer>
                 {(passwordLoginEnabled &&
                   <SocialLoginText>
@@ -453,6 +463,15 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                       />
                     </AzureAdSignInButton>
                   </FeatureFlag>
+                <FeatureFlag name="franceconnect_login">
+                  <SocialSignInButton className="franceconnect" onClick={this.handleOnSSOClick('franceconnect')}>
+                    <img
+                      src={franceconnectLogo}
+                      height="45px"
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                    />
+                  </SocialSignInButton>
+                </FeatureFlag>
                   <FeatureFlag name="google_login">
                     <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
                       <img
@@ -495,6 +514,7 @@ const Data = adopt<DataProps, {}>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 export default (inputProps: InputProps) => (

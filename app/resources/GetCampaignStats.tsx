@@ -42,8 +42,7 @@ export default class GetCampaignStats extends React.Component<Props, State> {
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         filter(({ campaignId }) => isString(campaignId)),
         switchMap(({ campaignId }) => getCampaignStats(campaignId).observable)
-      )
-        .subscribe((stats) => this.setState({ stats }))
+      ).subscribe((stats) => this.setState({ stats }))
     ];
   }
 
