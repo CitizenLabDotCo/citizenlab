@@ -56,6 +56,7 @@ resource "Phases" do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
       end
@@ -98,6 +99,21 @@ resource "Phases" do
       end
 
       describe do
+        before do
+          @project.phases.each(&:destroy!)
+          create(:phase, project: @project, start_at: Time.now - 2.days, end_at: Time.now + 2.days)
+        end
+        let(:start_at) { Time.now }
+        let(:end_at) { Time.now + 4.days }
+
+        example_request "[error] Create an overlapping phase" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_overlapping_phases'}]
+        end
+      end
+
+      describe do
         let(:participation_method) { 'survey' }
         let(:survey_embed_url) { 'https://citizenlabco.typeform.com/to/StrNJP' }
         let(:survey_service) { 'typeform' }
@@ -107,6 +123,36 @@ resource "Phases" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:survey_embed_url)).to eq survey_embed_url
           expect(json_response.dig(:data,:attributes,:survey_service)).to eq survey_service
+        end
+      end
+
+      describe do
+        let(:participation_method) { 'budgeting' }
+        let(:max_budget) { 420000 }
+
+        example "Create a participatory budgeting phase", document: false do
+          do_request
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:max_budget)).to eq max_budget
+        end
+      end
+
+      describe do
+        before do
+          @project.phases.first.update(
+            participation_method: 'budgeting',
+            max_budget: 30000
+            )
+        end
+        let(:participation_method) { 'budgeting' }
+        let(:max_budget) { 420000 }
+
+        example "[error] Create multiple budgeting phases", document: false do
+          do_request
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
         end
       end
     end
@@ -125,6 +171,7 @@ resource "Phases" do
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{ParticipationContext::SURVEY_SERVICES.join(",")}", required: false
+        parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
       end

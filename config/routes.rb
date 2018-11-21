@@ -165,6 +165,7 @@ Rails.application.routes.draw do
         get 'users'
       end
 
+      resources :baskets, except: [:index]
       resources :clusterings
 
       match 'manifest.json', to: 'manifest#show', via: :get
@@ -175,7 +176,9 @@ Rails.application.routes.draw do
   end
 
   get '/auth/:provider/callback', to: 'omniauth_callback#create'
+  post '/auth/:provider/callback', to: 'omniauth_callback#create'
   get '/auth/failure', to: 'omniauth_callback#failure'
+  post '/auth/failure', to: 'omniauth_callback#failure'
 
 
   mount PublicApi::Engine => "/api", as: 'public_api'

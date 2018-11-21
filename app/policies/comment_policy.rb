@@ -14,7 +14,13 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
+    (
+      user&.active? && 
+      (record.author_id == user.id) &&
+      ProjectPolicy.new(user, record.project).show? &&
+      check_commenting_allowed(record, user)
+    ) || 
+    user&.active_admin_or_moderator?(record.project.id)
   end
 
   def show?
@@ -22,11 +28,11 @@ class CommentPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
+    create?
   end
 
   def mark_as_deleted?
-    user&.active? && (record.author_id == user.id || user.admin? || user.project_moderator?(record.idea.project_id))
+    update?
   end
 
   def destroy?
@@ -41,5 +47,12 @@ class CommentPolicy < ApplicationPolicy
     attrs
   end
 
+
+  private
+
+  def check_commenting_allowed comment, user
+    pcs = ParticipationContextService.new
+    !pcs.commenting_disabled_reason comment.idea, user
+  end
 
 end

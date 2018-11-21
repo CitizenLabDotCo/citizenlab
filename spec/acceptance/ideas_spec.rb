@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
 
     example_request "List all published ideas (default behaviour)" do
@@ -167,6 +167,17 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
+    example "List all ideas sorted by baskets count", document: false do
+      u = create(:user)
+      i1 = create(:idea)
+      baskets = create_list(:basket, 3, ideas: [i1])
+
+      do_request sort: "-baskets_count"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
       idea = vote.votable
@@ -240,20 +251,54 @@ resource "Ideas" do
 
   get "web_api/v1/ideas/as_xlsx" do
     parameter :project, 'Filter by project', required: false
+    parameter :ideas, 'Filter by a given list of idea ids', required: false
 
     example_request "XLSX export" do
       expect(status).to eq 200
+    end
+
+    describe do
+      before do 
+        @project = create(:project)
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 3
+        @selected_ideas.each do |idea|
+          idea.update! project: @project
+        end
+      end
+      let(:project) { @project.id }
+
+      example_request 'XLSX export by project' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
+    end
+
+    describe do
+      before do 
+        @selected_ideas = @ideas.select(&:published?).shuffle.take 2
+      end
+      let(:ideas) { @selected_ideas.map(&:id) }
+      
+      example_request 'XLSX export by idea ids' do
+        expect(status).to eq 200
+        worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
     end
   end
 
 
   get "web_api/v1/ideas/:id" do
-    let(:id) {@ideas.first.id}
+    let(:idea) {@ideas.first}
+    let!(:baskets) {create_list(:basket, 2, ideas: [idea])}
+    let(:id) {idea.id}
 
     example_request "Get one idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq @ideas.first.id
+      expect(json_response.dig(:data, :id)).to eq idea.id
+      expect(json_response.dig(:data, :attributes, :baskets_count)).to eq baskets.size
     end
   end
 
@@ -293,6 +338,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -339,7 +385,7 @@ resource "Ideas" do
       let(:title_multiloc) { {'en' => 'I have a fantastic Idea but with a superduper extremely long title so someone should do something about this or else it may look bad in the UI and no one would read it anyways'} } # { idea.title_multiloc }
       let(:body_multiloc) { idea.body_multiloc }
 
-      example_request "[error] Create an idea with too long title", document: false do
+      example_request "[error] Create an idea with too long title" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :title_multiloc)).to eq [{error: 'too_long'}]
@@ -349,7 +395,7 @@ resource "Ideas" do
     describe do
       let(:publication_status) { "fake_status" }
 
-      example_request "[error] Creating an invalid idea", document: false do
+      example_request "[error] Creating an invalid idea" do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
         expect(json_response.dig(:errors, :publication_status)).to eq [{error: 'inclusion', value: 'fake_status'}]
@@ -371,7 +417,7 @@ resource "Ideas" do
     describe do
       let(:project_id) { nil }
       
-      example_request "[error] Create an idea without a project", document: false do
+      example_request "[error] Create an idea without a project" do
         expect(response_status).to be >= 400
       end
     end
@@ -381,7 +427,7 @@ resource "Ideas" do
         permission = project.permissions.where(action: 'posting').first
         permission.update!(permitted_by: 'groups', groups: create_list(:group, 2))
       end
-      example_request "[error] Create an idea in a project with groups posting permission", document: false do
+      example_request "[error] Create an idea in a project with groups posting permission" do
         expect(response_status).to eq 401
       end
     end
@@ -395,7 +441,7 @@ resource "Ideas" do
         g.save!
         permission.update!(permitted_by: 'groups', groups: groups)
       end
-      example_request "Create an idea in a project with groups posting permission", document: false do
+      example_request "Create an idea in a project with groups posting permission" do
         expect(response_status).to eq 201
       end
     end
@@ -411,7 +457,7 @@ resource "Ideas" do
         let(:project) { create(:project_with_current_phase, with_permissions: true, phases_config: {sequence: "xxcx"}) }
         let(:phase_ids) { project.phases.shuffle.take(2).map(&:id) }
 
-        example_request "Creating an idea in specific phases", document: false do
+        example_request "Creating an idea in specific phases" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
@@ -450,6 +496,7 @@ resource "Ideas" do
       parameter :area_ids, "Array of ids of the associated areas"
       parameter :location_point_geojson, "A GeoJSON point that situates the location the idea applies to"
       parameter :location_description, "A human readable description of the location the idea applies to"
+      parameter :budget, "The budget needed to realize the idea, as determined by the city"
     end
     ValidationErrorHelper.new.error_fields(self, Idea)
     response_field :ideas_phases, "Array containing objects with signature { error: 'invalid' }", scope: :errors
@@ -511,6 +558,18 @@ resource "Ideas" do
         expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq @idea.idea_status_id
       end
     end
+
+    describe do
+      let(:budget) { 1800 }
+
+      example "Change the participatory budget as a non-admin does not work", document: false do
+        previous_value = @idea.budget
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:budget)).to eq previous_value
+      end
+    end
     
     context "when admin" do
       before do
@@ -544,6 +603,16 @@ resource "Ideas" do
           expect(json_response.dig(:data,:relationships,:phases,:data).map{|d| d[:id]}).to match_array phase_ids
         end
       end
+
+      describe do
+        let(:budget) { 1800 }
+
+        example_request "Change the participatory budget (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:budget)).to eq budget
+        end
+      end
     end
 
     context "when moderator" do
@@ -556,7 +625,7 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (as a moderator)", document: false do
+        example_request "Change the idea status (as a moderator)" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
@@ -574,7 +643,7 @@ resource "Ideas" do
       describe do
         let(:idea_status_id) { create(:idea_status).id }
 
-        example_request "Change the idea status (unauthorized)", document: false do
+        example_request "Change the idea status (unauthorized)" do
           expect(status).to eq 401
         end
       end
@@ -591,7 +660,7 @@ resource "Ideas" do
     let(:id) { @idea.id }
     let(:publication_status) { 'published' }
 
-    example_request "Change the publication status", document: false do
+    example_request "Change the publication status" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data,:attributes,:publication_status)).to eq "published"

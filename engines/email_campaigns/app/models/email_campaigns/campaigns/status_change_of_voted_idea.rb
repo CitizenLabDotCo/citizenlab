@@ -2,8 +2,10 @@ module EmailCampaigns
   class Campaigns::StatusChangeOfVotedIdea < Campaign
     include ActivityTriggerable
     include RecipientConfigurable
+    include Disableable
 
     recipient_filter :filter_recipient
+
 
     def activity_triggers
       {'Idea' => {'changed_status' => true}}
@@ -41,6 +43,13 @@ module EmailCampaigns
           }
         }
       }]
+    end
+
+
+    protected
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
     end
   end
 end

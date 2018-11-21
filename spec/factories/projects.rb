@@ -240,6 +240,14 @@ FactoryBot.define do
           end
         end
       end
+
+      factory :private_groups_continuous_project do
+        process_type 'continuous'
+        factory :private_groups_continuous_budgeting_project do
+          participation_method 'budgeting'
+          max_budget 10000
+        end
+      end
     end
 
     factory :continuous_project do
@@ -254,6 +262,12 @@ FactoryBot.define do
       participation_method 'survey'
       survey_service 'typeform'
       survey_embed_url "https://citizenlabco.typeform.com/to/HKGaPV"
+    end
+
+    factory :continuous_budgeting_project do
+      process_type 'continuous'
+      participation_method 'budgeting'
+      max_budget 10000
     end
 
   end

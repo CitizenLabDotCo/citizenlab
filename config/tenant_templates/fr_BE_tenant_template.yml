@@ -122,6 +122,7 @@ models:
   - &5
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
+    description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
     presentation_mode: card
     process_type: continuous
@@ -130,7 +131,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    remote_header_bg_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516809200/Idea_cover_qdrwa6.jpg
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   - &6
     title_multiloc:
       fr-BE: Comment améliorer la mobilité dans votre ville
@@ -186,7 +187,7 @@ models:
         Ainsi, comment rendre la culture plus accessible à tous?</p>\n"
     remote_header_bg_url: 
   project_image:
-  - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1516925813/open_idea_box_gaxtpy.png
+  - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
     project_ref: *5
   - remote_image_url: http://res.cloudinary.com/citizenlabco/image/upload/v1515512629/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_l9du3f.png
     project_ref: *6
@@ -2250,6 +2251,26 @@ models:
     idea_ref: 
     parent_ref: 
   event:
+  - project_ref: *5
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-03-26T18:00:00.1Z
+    end_at: 2019-03-26T20:00:00.1Z
+  - project_ref: *5
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-06-25T17:00:00.1Z
+    end_at: 2019-06-25T19:00:00.1Z
+  - project_ref: *5
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-09-24T17:00:00.1Z
+    end_at: 2019-09-24T19:00:00.1Z
+  - project_ref: *5
+    title_multiloc: events.council_meeting_title
+    description_multiloc: events.council_meeting_description
+    start_at: 2019-12-24T18:00:00.1Z
+    end_at: 2019-12-24T20:00:00.1Z
   - title_multiloc:
       fr-BE: Fête du vélo
       fr-FR: Fête du vélo
