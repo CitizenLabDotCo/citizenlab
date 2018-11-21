@@ -1,36 +1,26 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
 import Select from 'components/UI/Select';
-import Label from 'components/UI/Label';
+import { HiddenLabel } from 'utils/accessibility';
 
 // typings
 import { IOption } from 'typings';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
   display: flex;
   width: 100%;
-
-  & > * {
-    flex: 1;
-  }
+  justify-content: space-between;
 `;
 
 const FilterContainer = styled.div`
-  margin-right: 10px;
-
-  &:last-of-type {
-    margin-right: 0;
-  }
+  width: 32%;
 `;
-
-const FilterSelector = styled(Select)``;
 
 interface Props {
   configuration: {
@@ -55,14 +45,7 @@ interface Props {
   };
 }
 
-interface State {}
-
-class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State> {
-
-  constructor(props: Props & InjectedIntlProps) {
-    super(props);
-  }
-
+export default class ChartFilters extends PureComponent<Props> {
   render() {
     const {
       configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
@@ -71,58 +54,56 @@ class ChartFilters extends React.PureComponent<Props & InjectedIntlProps, State>
       onFilter: { onProjectFilter, onGroupFilter, onTopicFilter }
     } = this.props;
 
-    return(
+    return (
       <Container>
         {showProjectFilter && onProjectFilter &&
           <FilterContainer>
-            <Label htmlFor="projectFilter">
-              <FormattedMessage {...messages.projectFilterLabel} />
-            </Label>
-            <FilterSelector
-              id="projectFilter"
-              onChange={onProjectFilter}
-              value={currentProjectFilter || ''}
-              options={projectFilterOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
+            <HiddenLabel>
+              <FormattedMessage className="label-text" {...messages.hiddenLabelProjectFilter} />
+              <Select
+                id="projectFilter"
+                onChange={onProjectFilter}
+                value={currentProjectFilter || ''}
+                options={projectFilterOptions}
+                clearable={false}
+                borderColor="#EAEAEA"
+              />
+            </HiddenLabel>
           </FilterContainer>
         }
 
         {showGroupFilter && onGroupFilter &&
           <FilterContainer>
-            <Label htmlFor="groupFilter">
-              <FormattedMessage {...messages.groupFilterLabel} />
-            </Label>
-            <FilterSelector
-              id="groupFilter"
-              onChange={onGroupFilter}
-              value={currentGroupFilter || ''}
-              options={groupFilterOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
+            <HiddenLabel>
+              <FormattedMessage {...messages.hiddenLabelGroupFilter} />
+              <Select
+                id="groupFilter"
+                onChange={onGroupFilter}
+                value={currentGroupFilter || ''}
+                options={groupFilterOptions}
+                clearable={false}
+                borderColor="#EAEAEA"
+              />
+            </HiddenLabel >
           </FilterContainer>
         }
 
         {showTopicFilter && onTopicFilter &&
           <FilterContainer>
-            <Label htmlFor="topicFilter">
-              <FormattedMessage {...messages.topicFilterLabel} />
-            </Label>
-            <FilterSelector
-              id="topicFilter"
-              onChange={onTopicFilter}
-              value={currentTopicFilter || ''}
-              options={topicFilterOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
+            <HiddenLabel>
+              <FormattedMessage {...messages.hiddenLabelTopicFilter} />
+              <Select
+                id="topicFilter"
+                onChange={onTopicFilter}
+                value={currentTopicFilter || ''}
+                options={topicFilterOptions}
+                clearable={false}
+                borderColor="#EAEAEA"
+              />
+            </HiddenLabel>
           </FilterContainer>
         }
       </Container>
     );
   }
 }
-
-export default injectIntl<Props>(ChartFilters);

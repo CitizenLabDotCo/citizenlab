@@ -17,13 +17,13 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
 import Select from 'components/UI/Select';
+import { HiddenLabel } from 'utils/accessibility';
 
 const SSelect = styled(Select)`
   flex: 1;
-
-  ${media.smallerThan1280px`
-    width: 100%;
-  `}
+`;
+const SHiddenLabel = styled(HiddenLabel)`
+  flex: 1;
 `;
 
 const GraphCardTitle = styled.h3`
@@ -52,16 +52,18 @@ interface DataProps {
   serie: IGraphFormat;
 }
 
+type ISupportedData = IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject;
+
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
   currentProjectFilter?: string | null;
   currentGroupFilter?: string | null;
   currentTopicFilter?: string | null;
-  stream: (streamParams?: IStreamParams | null) => IStream<IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject>;
-  convertToGraphFormat: (resource: IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasByProject | IVotesByProject | ICommentsByProject) => IGraphFormat | null;
+  stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
+  convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
   currentFilter: string | null;
-  graphTitleMessageKey: string;
+  byWhat: 'Topic' | 'Project';
 }
 
 interface InputProps extends QueryProps {
@@ -92,7 +94,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
         formatMessage
       },
       currentFilter,
-      graphTitleMessageKey,
+      byWhat,
       convertSerie,
       serie
     } = this.props;
@@ -109,16 +111,19 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
         <GraphCardInner>
           <GraphCardHeaderWithFilter>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              <FormattedMessage {...messages[`participationPer${byWhat}`]} />
             </GraphCardTitle>
-            <SSelect
-              id="topicFilter"
-              onChange={onResourceByXChange}
-              value={currentSelectedResource}
-              options={resourceOptions}
-              clearable={false}
-              borderColor="#EAEAEA"
-            />
+            <SHiddenLabel>
+              <FormattedMessage {...messages[`hiddelLabelPickResourceBy${byWhat}`]} />
+              <SSelect
+                id={`select${byWhat}`}
+                onChange={onResourceByXChange}
+                value={currentSelectedResource}
+                options={resourceOptions}
+                clearable={false}
+                borderColor="#EAEAEA"
+              />
+            </SHiddenLabel>
           </GraphCardHeaderWithFilter>
           {!serie ?
             <NoDataContainer>

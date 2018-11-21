@@ -74,7 +74,8 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
     const {
       groups,
       groups: { groupsList },
-      localize } = this.props;
+      localize,
+      intl: { formatMessage } } = this.props;
 
     let filterOptions: IOption[] = [];
 
@@ -87,7 +88,7 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
       ));
     }
 
-    return [{ value: '', label: 'All' }, ...filterOptions];
+    return [{ value: '', label: formatMessage(messages.allGroups) }, ...filterOptions];
   }
 
   render() {

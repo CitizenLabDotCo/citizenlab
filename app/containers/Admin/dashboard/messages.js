@@ -62,6 +62,31 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.noData',
     defaultMessage: 'No data available with the current filters.',
   },
+  // Filter Controls
+  allGroups: {
+    id: 'app.containers.AdminPage.DashboardPage.allGroups',
+    defaultMessage: 'All Groups',
+  },
+  hiddenLabelGroupFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelGroupFilter',
+    defaultMessage: 'Pick group filter',
+  },
+  allProjects: {
+    id: 'app.containers.AdminPage.DashboardPage.allProjects',
+    defaultMessage: 'All Projects',
+  },
+  hiddenLabelProjectFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelProjectFilter',
+    defaultMessage: 'Pick project filter',
+  },
+  allTopics: {
+    id: 'app.containers.AdminPage.DashboardPage.allTopics',
+    defaultMessage: 'All Topics',
+  },
+  hiddenLabelTopicFilter: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddenLabelTopicFilter',
+    defaultMessage: 'Pick topic filter',
+  },
   // Time and Resolution Controls
   resolutionday: {
     id: 'app.containers.AdminPage.DashboardPage.resolutionday',
@@ -144,6 +169,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
     defaultMessage: 'Participation per project',
   },
+  hiddelLabelPickResourceByProject: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByProject',
+    defaultMessage: 'Pick resource to show by project',
+  },
   selectedProject: {
     id: 'app.containers.AdminPage.DashboardPage.selectedProject',
     defaultMessage: 'current project filter',
@@ -151,6 +180,10 @@ export default defineMessages({
   participationPerTopic: {
     id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
     defaultMessage: 'Participation per topic',
+  },
+  hiddelLabelPickResourceByTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.hiddelLabelPickResourceByTopic',
+    defaultMessage: 'Pick resource to show by topic',
   },
   selectedTopic: {
     id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
@@ -204,18 +237,5 @@ export default defineMessages({
   userActivityScore: {
     id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
     defaultMessage: 'User activity score',
-  },
-  //OLD MESSAGES
-  projectFilterLabel: {
-    id: 'app.containers.AdminPage.DashboardPage.projectFilterLabel',
-    defaultMessage: 'Projects',
-  },
-  groupFilterLabel: {
-    id: 'app.containers.AdminPage.DashboardPage.groupFilterLabel',
-    defaultMessage: 'Groups',
-  },
-  topicFilterLabel: {
-    id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
-    defaultMessage: 'Topics',
   },
 });

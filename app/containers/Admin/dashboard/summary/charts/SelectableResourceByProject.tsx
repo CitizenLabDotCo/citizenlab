@@ -103,7 +103,7 @@ class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
         convertToGraphFormat={this.convertToGraphFormat}
         convertSerie={this.convertSerie}
         currentFilter={currentProjectFilter}
-        graphTitleMessageKey="participationPerProject"
+        byWhat="Project"
       />
     );
   }

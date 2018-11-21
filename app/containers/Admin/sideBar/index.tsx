@@ -249,7 +249,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
     return (
       <Menu>
-        <MenuInner role="navigation">
+        <MenuInner>
           {navItems.map((route) => {
             if (route.id === 'initiatieven') {
               if (pathname.match(/^\/nl-/)) {

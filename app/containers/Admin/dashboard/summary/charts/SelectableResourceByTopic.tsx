@@ -104,7 +104,7 @@ class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
         convertToGraphFormat={this.convertToGraphFormat}
         convertSerie={this.convertSerie}
         currentFilter={currentTopicFilter}
-        graphTitleMessageKey="participationPerTopic"
+        byWhat="Topic"
       />
     );
   }
