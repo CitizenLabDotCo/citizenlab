@@ -62,6 +62,7 @@ const UserImage = styled(Avatar)`
 `;
 
 const UserName = styled(Link)`
+  color: ${colors.label};
   margin-right: 10px;
 `;
 
