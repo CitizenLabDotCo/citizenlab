@@ -153,6 +153,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
         className={`e2e-filter-selector-${this.props.name} ${className}`}
       >
         <Title
+          key={this.baseID}
           title={currentTitle}
           opened={opened}
           onClick={this.toggleExpanded}

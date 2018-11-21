@@ -1,11 +1,10 @@
-import React, { Component, createRef } from 'react';
+import React, { PureComponent, createRef, FormEvent, KeyboardEvent } from 'react';
 import { getBase64FromFile, createObjectUrl } from 'utils/imageTools';
 import { UploadFile } from 'typings';
 
 // i18n
 import messages from '../messages';
-import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
@@ -31,7 +30,6 @@ const Input = styled.input`
 
 const Label = styled.label`
   display: flex;
-  max-width: 520px;
   align-items: center;
   cursor: pointer;
   border: 1px dashed ${colors.label};
@@ -39,23 +37,30 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;
   color: ${colors.label};
+  background: transparent;
 
   &:hover {
-    text-decoration: underline;
+    color: #000;
+    border-color: #000;
+
+    ${StyledIcon} {
+      fill: #000;
+    }
   }
 `;
 
 interface Props {
   onAdd: (file: UploadFile) => void;
+  className?: string;
 }
 
-class FileInput extends Component<InjectedIntlProps &Props> {
+export default class FileInput extends PureComponent<Props> {
   private fileInput = createRef<HTMLInputElement>();
 
-  onClick = (e) => {
+  onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
-    e.target.value = null;
+    event.currentTarget.value = null;
   }
 
   onChange = () => {
@@ -64,16 +69,17 @@ class FileInput extends Component<InjectedIntlProps &Props> {
     if (current && current.files && current.files.length > 0) {
       const file = current.files[0] as UploadFile;
 
-      getBase64FromFile(file).then(res => {
+      getBase64FromFile(file).then((res) => {
         file.filename = file.name;
         file.base64 = res;
         file.url = createObjectUrl(file);
+        file.remote = false;
         this.props.onAdd(file);
       });
     }
   }
 
-  handleKeyPress = (event) => {
+  handleKeyPress = (event: KeyboardEvent<any>) => {
     const fileInput = this.fileInput.current;
 
     if (fileInput && event.key === 'Enter') {
@@ -82,8 +88,10 @@ class FileInput extends Component<InjectedIntlProps &Props> {
   }
 
   render() {
+    const { className } = this.props;
+
     return (
-      <Container>
+      <Container className={className}>
         <Input
           id="project-attachment-uploader"
           onChange={this.onChange}
@@ -107,5 +115,3 @@ class FileInput extends Component<InjectedIntlProps &Props> {
     );
   }
 }
-
-export default injectIntl<Props>(FileInput);

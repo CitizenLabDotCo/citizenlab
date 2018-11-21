@@ -7,6 +7,7 @@ interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'|'co
   /** whether the tooltip should be active at all. NOT it's opened state */
   enabled: boolean;
   content: PopoverProps['content'] | null;
+  className?: string;
 }
 
 interface State {
@@ -42,7 +43,7 @@ export default class Tooltip extends PureComponent<Props, State> {
 
     render() {
       const { opened } = this.state;
-      const { enabled, children, content } = this.props;
+      const { enabled, children, content, className } = this.props;
       const passthroughProps = omit(this.props, ['dropdownOpened', 'onClickOutside']);
 
       if (!enabled) {
@@ -55,6 +56,7 @@ export default class Tooltip extends PureComponent<Props, State> {
 
       return (
         <div
+          className={className}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           onClick={this.handleOnClick}

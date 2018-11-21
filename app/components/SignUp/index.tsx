@@ -20,8 +20,11 @@ import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resource
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { hasCustomFields } from 'utils/customFields';
+import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 
 // i18n
+import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -101,6 +104,14 @@ const Title = styled.h1`
   margin-bottom: 35px;
 `;
 
+const SignupHelperText = styled.p`
+  color: ${(props) => props.theme.colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: 20px;
+  padding-bottom: 20px;
+`;
+
 interface InputProps {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
@@ -160,6 +171,8 @@ class SignUp extends React.PureComponent<Props, State> {
     const { visibleStep } = this.state;
     const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
 
+    const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
+
     return (
       <Container>
         <ContainerInner>
@@ -174,6 +187,11 @@ class SignUp extends React.PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
+                  {signupHelperText && !isEmpty(signupHelperText) &&
+                    <SignupHelperText>
+                      <T value={signupHelperText} supportHtml />
+                    </SignupHelperText>
+                  }
                   <FeatureFlag name="password_login">
                     <Step1
                       isInvitation={isInvitation}

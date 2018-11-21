@@ -55,8 +55,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 0;
-    padding: 11px 12px;
+    margin: 6px 0;
+    padding: 12px 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
@@ -93,7 +93,7 @@ const Container = styled.div`
     }
 
     &.email {
-      background: colors.emailBg;
+      background: ${colors.emailBg};
       color: ${colors.emailText};
 
       ${StyledIcon} {
@@ -101,7 +101,7 @@ const Container = styled.div`
       }
 
       &:hover {
-        background: ${(darken(0.15, colors.emailBg))};
+        background: ${(darken(0.1, colors.emailBg))};
       }
     }
   }

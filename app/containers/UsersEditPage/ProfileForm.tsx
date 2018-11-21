@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
-import { isEqual, isEmpty, get } from 'lodash-es';
+import { isEqual, isEmpty } from 'lodash-es';
 
 // services
 import { IAreaData } from 'services/areas';
@@ -19,7 +19,7 @@ import { hasCustomFields } from 'utils/customFields';
 import LabelWithTooltip from './LabelWithTooltip';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
@@ -40,7 +40,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { hideVisually } from 'polished';
 
 // typings
-import { IOption, ImageFile, CLErrorsJSON } from 'typings';
+import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
@@ -54,7 +54,7 @@ interface InputProps {
 }
 
 interface State {
-  avatar: ImageFile[] | null;
+  avatar: UploadFile[] | null;
   hasCustomFields: boolean;
   localeOptions: IOption[];
   customFieldsFormData: any;
@@ -96,8 +96,12 @@ class ProfileForm extends PureComponent<Props, State> {
         customFieldsSchemaForUsersStream$
       ).pipe(
         switchMap(([user, locale, customFieldsSchema]) => {
-          const avatarUrl = get(user, 'attributes.avatar.medium', null) as string | null;
-          return (avatarUrl ? convertUrlToFileObservable(avatarUrl) : of(null)).pipe(map(avatar => ({ user, avatar, locale, customFieldsSchema })));
+          const avatarUrl = user.attributes.avatar.medium;
+          const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl, null, null) : of(null));
+
+          return avatar$.pipe(
+            map(avatar => ({ user, avatar, locale, customFieldsSchema }))
+          );
         })
       ).subscribe(({ user, avatar, locale, customFieldsSchema }) => {
         this.setState({
@@ -212,16 +216,9 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched(fieldName);
     };
 
-    const handleAvatarOnAdd = (newAvatar: ImageFile) => {
+    const handleAvatarOnAdd = (newAvatar: UploadFile) => {
       this.setState(() => ({ avatar: [newAvatar] }));
       setFieldValue('avatar', newAvatar.base64);
-      setFieldTouched('avatar');
-    };
-
-    const handleAvatarOnUpdate = (updatedAvatar: ImageFile[]) => {
-      const avatar = (updatedAvatar && updatedAvatar.length > 0 ? updatedAvatar : null);
-      this.setState({ avatar });
-      setFieldValue('avatar', updatedAvatar[0].base64);
       setFieldTouched('avatar');
     };
 
@@ -252,7 +249,6 @@ class ProfileForm extends PureComponent<Props, State> {
                 maxImageFileSize={5000000}
                 maxNumberOfImages={1}
                 onAdd={handleAvatarOnAdd}
-                onUpdate={handleAvatarOnUpdate}
                 onRemove={handleAvatarOnRemove}
                 imageRadius="50%"
               />

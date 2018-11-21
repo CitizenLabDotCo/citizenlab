@@ -20,7 +20,7 @@ import Button from 'components/UI/Button';
 
 const ResourceHeader = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
 `;
@@ -30,6 +30,7 @@ const Title = styled.h1`
   line-height: 40px;
   font-weight: 600;
   margin: 0;
+  margin-right: 15px;
   padding: 0;
 `;
 

@@ -20,6 +20,7 @@ import TopicsSelector from './TopicsSelector';
 import ProjectSelector from './ProjectSelector';
 import StatusSelector from './StatusSelector';
 import Checkbox from 'components/UI/Checkbox';
+import FeatureFlag from 'components/FeatureFlag';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -146,10 +147,16 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             <Icon name="thumbs down" />
             {attrs.downvotes_count}
           </Table.Cell>
+          <FeatureFlag name="participatory_budgeting">
+            <Table.Cell singleLine>
+              <Icon name="euro sign" />
+              {attrs.baskets_count}
+            </Table.Cell>
+          </FeatureFlag>
         </WrappedRow>
         <Table.Row active={selected} onClick={this.onClickRow}>
           <Table.Cell as={FilterCell} collapsing={true} />
-          <Table.Cell colSpan={5} as={FilterCell}>
+          <Table.Cell colSpan={6} as={FilterCell}>
             {activeFilterMenu === 'phases' &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}

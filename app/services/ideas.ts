@@ -16,8 +16,10 @@ export interface IIdeaData {
     upvotes_count: number;
     downvotes_count: number;
     comments_count: number;
+    baskets_count: number;
     location_point_geojson: GeoJSON.Point;
     location_description: string;
+    budget: number | null;
     created_at: string;
     updated_at: string;
     published_at: string;
@@ -59,6 +61,11 @@ export interface IIdeaData {
           enabled: boolean,
           future_enabled: string | null,
           disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | null,
+        },
+        budgeting: {
+          enabled: boolean,
+          future_enabled: string | null,
+          disabled_reason: 'project_inactive' | 'not_in_active_context' | 'not_permitted' | null,
         }
       }
     }
@@ -107,6 +114,7 @@ export interface IIdeaAdd {
   phase_ids?: string[] | null;
   location_point_geojson: GeoJSON.Point | null;
   location_description: string | null;
+  budget: number | null;
 }
 
 export function ideaByIdStream(ideaId: string) {

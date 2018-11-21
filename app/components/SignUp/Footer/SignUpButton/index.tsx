@@ -34,6 +34,11 @@ const SignUpButtonWrapper = styled.button`
     border-color: #000;
   }
 
+  &.franceconnect:hover,
+  &.franceconnect:active {
+    border-color: #0e4fa1;
+  }
+
   &.google:hover,
   &.google.active {
     border-color: #2a81f4;
@@ -101,8 +106,8 @@ export const SignUpButtonInner = styled.div`
 interface Props {
   logoUrl: string;
   logoHeight: string;
-  loginProvider: 'google' | 'facebook' | 'azureactivedirectory';
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
+  loginProvider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
+  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect' | null;
   loginMechanismName: string;
   socialLoginTaCAccepted: boolean;
   onClick: () => void;
