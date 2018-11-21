@@ -97,10 +97,6 @@ export default defineMessages({
     id: 'app.containers.Projects.displayCards',
     defaultMessage: 'Card view',
   },
-  aboutThisPhase: {
-    id: 'app.containers.Projects.aboutThisPhase',
-    defaultMessage: 'About this phase',
-  },
   ideasTitle: {
     id: 'app.containers.Projects.ideasTitle',
     defaultMessage: 'Ideas',
