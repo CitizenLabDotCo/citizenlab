@@ -85,6 +85,7 @@ export interface IUsersByTime {
     }
   };
 }
+
 export interface IUsersByRegistrationField {
   series: {
     users: {
@@ -97,6 +98,7 @@ export interface IUsersByRegistrationField {
     }
   };
 }
+
 export interface IUsersByDomicile {
   series: {
     users: {
