@@ -7,17 +7,14 @@ import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
-import { usersByGenderStream } from 'services/stats';
 
 // components
 import {
   chartTheme,
   GraphsContainer,
   ControlBar,
-  IResolution,
 } from '../';
 import TimeControl from '../components/TimeControl';
-import ResolutionControl from '../components/ResolutionControl';
 import UsersByGenderChart from './charts/UsersByGenderChart';
 import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
@@ -91,8 +88,7 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
       ));
     }
 
-    filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
-    return filterOptions;
+    return [{ value: '', label: 'All' }, ...filterOptions];
   }
 
   render() {
@@ -139,7 +135,6 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
             <UsersByGenderChart
               graphUnit="Users"
               graphTitleMessageKey="usersByGenderTitle"
-              stream={usersByGenderStream}
               startAt={startAt}
               endAt={endAt}
               currentGroupFilter={currentGroupFilter}

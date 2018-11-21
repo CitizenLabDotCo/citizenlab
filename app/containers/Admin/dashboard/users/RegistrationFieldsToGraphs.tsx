@@ -1,17 +1,22 @@
+// libraries
 import React, { PureComponent } from 'react';
 import { map } from 'lodash-es';
-import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
 
+// resources
+import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+
+// services
 import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats';
 
+// intl
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
+import messages from '../messages';
 
+// components
 import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
-
-import messages from '../messages';
 
 interface InputProps {
   currentGroupFilter: string | null;
@@ -32,7 +37,12 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
 
       return ({
         value,
-        name: options && options[key] ? this.props.localize(options[key].title_multiloc) : this.props.intl.formatMessage(messages[key]),
+        name: options && options[key]
+          ? this.props.localize(options[key].title_multiloc)
+          : (key === '_blank'
+            ? this.props.intl.formatMessage(messages[key])
+            : key
+          ),
         code: key,
       });
     });
@@ -50,31 +60,31 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
       }
       if (field.attributes.input_type === 'checkbox') {
         return (
-            <PieChartByCategory
-              startAt={startAt}
-              endAt={endAt}
-              key={index}
-              currentGroupFilter={currentGroupFilter}
-              graphTitleString={localize(field.attributes.title_multiloc)}
-              stream={usersByRegFieldStream}
-              graphUnit="users"
-              convertToGraphFormat={this.convertToGraphFormat}
-              customId={field.id}
-            />
-        );
-      }
-      return (
-          <BarChartByCategory
+          <PieChartByCategory
+            key={index}
             startAt={startAt}
             endAt={endAt}
-            key={index}
             currentGroupFilter={currentGroupFilter}
+            convertToGraphFormat={this.convertToGraphFormat}
             graphTitleString={localize(field.attributes.title_multiloc)}
             stream={usersByRegFieldStream}
             graphUnit="users"
-            convertToGraphFormat={this.convertToGraphFormat}
             customId={field.id}
           />
+        );
+      }
+      return (
+        <BarChartByCategory
+          key={index}
+          startAt={startAt}
+          endAt={endAt}
+          currentGroupFilter={currentGroupFilter}
+          convertToGraphFormat={this.convertToGraphFormat}
+          graphTitleString={localize(field.attributes.title_multiloc)}
+          stream={usersByRegFieldStream}
+          graphUnit="users"
+          customId={field.id}
+        />
       );
     });
   }

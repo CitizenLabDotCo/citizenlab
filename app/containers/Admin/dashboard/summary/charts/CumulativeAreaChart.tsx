@@ -1,20 +1,45 @@
-import React from 'react';
+// libraries
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { map, isEmpty } from 'lodash-es';
+
+// intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import { withTheme } from 'styled-components';
-import { AreaChart, CartesianGrid, Area, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import messages from '../../messages';
+
+// styling
+import { withTheme } from 'styled-components';
 import { rgba } from 'polished';
 
 // components
-import { IResolution, GraphCard, NoDataContainer, GraphCardInner, GraphCardHeader, GraphCardTitle, GraphCardFigureContainer, GraphCardFigure, GraphCardFigureChange } from '../..';
+import {
+  AreaChart,
+  CartesianGrid,
+  Area,
+  Tooltip,
+  XAxis,
+  YAxis,
+  ResponsiveContainer
+} from 'recharts';
+import {
+  IGraphUnit,
+  IResolution,
+  GraphCard,
+  NoDataContainer,
+  GraphCardInner,
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCardFigureContainer,
+  GraphCardFigure,
+  GraphCardFigureChange
+} from '../..';
 
 // typings
 import { IStreamParams, IStream } from 'utils/streams';
 import { IUsersByTime, IIdeasByTime, ICommentsByTime } from 'services/stats';
 import { IGraphFormat } from 'typings';
+
 type State = {
   serie: IGraphFormat | null;
 };
@@ -23,7 +48,7 @@ type IResourceByTime = IUsersByTime | IIdeasByTime | ICommentsByTime;
 
 type Props = {
   className?: string;
-  graphUnit: 'users' | 'ideas' | 'comments';
+  graphUnit: IGraphUnit;
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
@@ -34,7 +59,7 @@ type Props = {
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
 };
 
-class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps, State> {
+class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -190,10 +215,18 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
-    const { graphTitleMessageKey, graphUnit, className } = this.props;
+    const {
+      graphTitleMessageKey,
+      graphUnit,
+      className,
+      intl: { formatMessage } } = this.props;
     const { serie } = this.state;
-    const { chartFill, chartLabelSize, chartLabelColor, chartStroke } = this.props['theme'];
+    const { chartFill,
+      chartLabelSize,
+      chartLabelColor,
+      chartStroke,
+      animationBegin,
+      animationDuration } = this.props['theme'];
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
       totalNumber,
@@ -225,7 +258,10 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
             </NoDataContainer>
             :
             <ResponsiveContainer>
-              <AreaChart data={serie} margin={{ right: 40 }}>
+              <AreaChart
+                data={serie}
+                margin={{ right: 40 }}
+              >
                 <CartesianGrid strokeDasharray="5 5" />
                 <Area
                   type="monotone"
@@ -235,6 +271,8 @@ class CumulativeAreaChart extends React.PureComponent<Props & InjectedIntlProps,
                   fill={rgba(chartFill, .25)}
                   fillOpacity={1}
                   stroke={chartStroke}
+                  animationDuration={animationDuration}
+                  animationBegin={animationBegin}
                 />
                 <XAxis
                   dataKey="name"
