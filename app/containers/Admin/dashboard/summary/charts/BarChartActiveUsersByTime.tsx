@@ -66,7 +66,7 @@ type Props = {
   infoMessage?: string;
 };
 
-class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
+class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -244,4 +244,4 @@ class BarChartByTime extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-export default injectIntl<Props>(withTheme(BarChartByTime as any) as any);
+export default injectIntl<Props>(withTheme(BarChartActiveUsersByTime as any) as any);
