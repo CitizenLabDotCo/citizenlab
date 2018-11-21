@@ -18,7 +18,7 @@ import messages from '../../messages';
 // styles
 import styled, { withTheme } from 'styled-components';
 import { rgba } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // services
 import { userEngagementScoresStream, IUserEngagementScore } from 'services/stats';
@@ -51,6 +51,10 @@ const User = styled.div`
   flex-basis: 100%;
   max-width: 50%;
   align-items: center;
+
+  ${media.smallerThan1280px`
+    max-width: 70%;
+  `}
 `;
 
 const UserImage = styled(Avatar)`
@@ -79,6 +83,10 @@ const UserScore = styled<any, 'div'>('div')`
     background-color: ${props => props.hoverColor};
     color: ${props => props.theme.chartFill};
   }
+
+  ${media.smallerThan1280px`
+    width: ${props => props.value * 4}px;
+  `}
 `;
 
 interface Props {
@@ -193,7 +201,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               {serie.map((item) => (
                 <UserListItem key={item.userId}>
                   <User>
-                    <UserImage size="28px"  userId={item.userId} />
+                    <UserImage size="28px" userId={item.userId} />
                     <GetUser id={item.userId}>
                       {user => {
                         const firstName: string = get(user, 'attributes.first_name', '');
