@@ -19,6 +19,7 @@ export interface IIdeasNewPageGlobalState {
   submitError: boolean;
   processing: boolean;
   ideaId: string | null;
+  ideaSlug: string | null;
   imageFile: UploadFile[];
   imageId: string | null;
   imageChanged: boolean;
