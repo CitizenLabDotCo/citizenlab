@@ -205,6 +205,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
     defaultMessage: 'User activity score',
   },
+  deletedUser: {
+    id: 'app.containers.AdminPage.DashboardPage.deletedUser',
+    defaultMessage: 'Deleted user',
+  },
   //OLD MESSAGES
   projectFilterLabel: {
     id: 'app.containers.AdminPage.DashboardPage.projectFilterLabel',
