@@ -9,8 +9,8 @@ import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '..
 import BarChartByTime from './charts/BarChartByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
-import FilterableBarChartResourceByProject from './charts/FilterableBarChartResourceByProject';
-import FilterableBarChartResourceByTopic from './charts/FilterableBarChartResourceByTopic';
+import SelectableResourceByProject from './charts/SelectableResourceByProject';
+import SelectableResourceByTopic from './charts/SelectableResourceByTopic';
 import ResolutionControl from '../components/ResolutionControl';
 import LineChartVotesByTime from './charts/LineChartVotesByTime';
 import TimeControl from '../components/TimeControl';
@@ -85,37 +85,44 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   constructor(props: PropsHithHoCs) {
     super(props);
-    this.state = {
-      resolution: 'month',
-      startAtMoment: undefined,
-      endAtMoment: moment(),
-      currentProjectFilter: null,
-      currentGroupFilter: null,
-      currentTopicFilter: null,
-      currentResourceByTopic: 'ideas',
-      currentResourceByProject: 'ideas'
-    };
+    const { onlyModerator, projects: { projectsList } } = props;
     this.resourceOptions = [
       { value: 'ideas', label: props.intl.formatMessage(messages['ideas']) },
       { value: 'comments', label: props.intl.formatMessage(messages['comments']) },
       { value: 'votes', label: props.intl.formatMessage(messages['votes']) }
     ];
     this.filterOptions = {
-      projectFilterOptions: this.generateFilterOptions('project'),
-      groupFilterOptions: this.generateFilterOptions('group'),
-      topicFilterOptions: this.generateFilterOptions('topic')
+      projectFilterOptions: this.generateProjectOptions(),
+      groupFilterOptions: this.generateGroupsOptions(),
+      topicFilterOptions: this.generateTopicOptions()
+    };
+    this.state = {
+      resolution: 'month',
+      startAtMoment: undefined,
+      endAtMoment: moment(),
+      currentProjectFilter: onlyModerator
+        ? (projectsList && projectsList.length > 0 ? projectsList[0].id : null)
+        : null,
+      currentGroupFilter: null,
+      currentTopicFilter: null,
+      currentResourceByTopic: 'ideas',
+      currentResourceByProject: 'ideas'
     };
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.projects !== prevProps.projects) {
-      this.filterOptions.projectFilterOptions = this.generateFilterOptions('project');
+    const { projects, projects: { projectsList }, topics, groups, onlyModerator } = this.props;
+    if (projects !== prevProps.projects) {
+      this.filterOptions.projectFilterOptions = this.generateProjectOptions();
+      if (onlyModerator && this.state.currentProjectFilter === null) {
+        this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : null) });
+      }
     }
-    if (this.props.topics !== prevProps.topics) {
-      this.filterOptions.topicFilterOptions = this.generateFilterOptions('topic');
+    if (topics !== prevProps.topics) {
+      this.filterOptions.topicFilterOptions = this.generateTopicOptions();
     }
-    if (this.props.groups !== prevProps.groups) {
-      this.filterOptions.groupFilterOptions = this.generateFilterOptions('group');
+    if (groups !== prevProps.groups) {
+      this.filterOptions.groupFilterOptions = this.generateGroupsOptions();
     }
   }
 
@@ -161,48 +168,65 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.setState({ currentResourceByProject: option.value });
   }
 
-  generateFilterOptions = (filter: 'project' | 'group' | 'topic') => {
+  generateProjectOptions = () => {
     const { projects,
       projects: { projectsList },
+      localize,
+      onlyModerator } = this.props;
+
+    let filterOptions: IOption[] = [];
+
+    if (!isNilOrError(projects) && projectsList) {
+      filterOptions = projectsList.map((project) => (
+        {
+          value: project.id,
+          label: localize(project.attributes.title_multiloc),
+        }
+      ));
+    }
+
+    if (!onlyModerator) {
+      filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
+    }
+    return filterOptions;
+  }
+
+  generateGroupsOptions = () => {
+    const {
       groups,
       groups: { groupsList },
-      topics,
       localize } = this.props;
 
     let filterOptions: IOption[] = [];
 
-    if (filter === 'project') {
-      if (!isNilOrError(projects) && projectsList) {
-        filterOptions = projectsList.map((project) => (
-          {
-            value: project.id,
-            label: localize(project.attributes.title_multiloc),
-          }
-        ));
-      }
-    } else if (filter === 'group') {
-      if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
-        filterOptions = groupsList.map((group) => (
-          {
-            value: group.id,
-            label: localize(group.attributes.title_multiloc)
-          }
-        ));
-      }
-    } else if (filter === 'topic') {
-      if (!isNilOrError(topics)) {
-        filterOptions = topics.filter(topic =>
-          !isNilOrError(topic)).map((topic: ITopicData) => {
-            return {
-              value: topic.id,
-              label: localize(topic.attributes.title_multiloc),
-            };
-          });
-      }
+    if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
+      filterOptions = groupsList.map((group) => (
+        {
+          value: group.id,
+          label: localize(group.attributes.title_multiloc)
+        }
+      ));
     }
 
-    filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
-    return filterOptions;
+    return [{ value: '', label: 'All' }, ...filterOptions];
+  }
+
+  generateTopicOptions = () => {
+    const { topics, localize } = this.props;
+
+    let filterOptions: IOption[] = [];
+
+    if (!isNilOrError(topics)) {
+      filterOptions = topics.filter(topic =>
+        !isNilOrError(topic)).map((topic: ITopicData) => {
+          return {
+            value: topic.id,
+            label: localize(topic.attributes.title_multiloc),
+          };
+        });
+    }
+
+    return [{ value: '', label: 'All' }, ...filterOptions];
   }
 
   render() {
@@ -302,7 +326,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   resolution={resolution}
                   {...this.state}
                 />
-                <FilterableBarChartResourceByProject
+                <SelectableResourceByProject
                   className="dynamicHeight fullWidth"
                   onResourceByProjectChange={this.onResourceByProjectChange}
                   resourceOptions={this.resourceOptions}
@@ -313,7 +337,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Column>
               <Column>
-                <FilterableBarChartResourceByTopic
+                <SelectableResourceByTopic
                   className="fullWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}

@@ -38,7 +38,7 @@ const ResolutionButton = styled.button`
 
   @media print {
     &.active {
-      background: ${rgba(colors.adminTextColor, .1)} !important;
+      font-weight: 800;
     }
   }
 `;

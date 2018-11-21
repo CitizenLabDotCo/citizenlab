@@ -15,9 +15,9 @@ export default () => ({
       path: 'dashboard-users',
       getComponent: loadAndRender(import('./users')),
     },
-    {
+  /* TODO {
       path: 'dashboard-acquisition',
       getComponent: loadAndRender(import('./acquisition')),
-    },
+    },*/
   ],
 });

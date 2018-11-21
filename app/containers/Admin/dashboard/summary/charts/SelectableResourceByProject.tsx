@@ -3,17 +3,7 @@ import React, { PureComponent } from 'react';
 import { map, sortBy } from 'lodash-es';
 
 // components
-import FilterableBarChart from './FilterableBarChart';
-
-// resources
-import {
-  IIdeasByProject,
-  ideasByProjectStream,
-  ICommentsByProject,
-  commentsByProjectStream,
-  IVotesByProject,
-  votesByProjectStream
-} from 'services/stats';
+import SelectableResourceChart from './SelectableResourceChart';
 
 // intl
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -22,6 +12,14 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // typings
+import {
+IIdeasByProject,
+ideasByProjectStream,
+ICommentsByProject,
+commentsByProjectStream,
+IVotesByProject,
+votesByProjectStream
+} from 'services/stats';
 import { IOption, IGraphFormat } from 'typings';
 import { IResource } from '..';
 
@@ -40,11 +38,12 @@ interface InputProps {
   resourceOptions: IOption[];
   projectOptions: IOption[];
 }
+
 interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs> {
+class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
   convertToGraphFormat = (data: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
     const { series, projects } = data;
     const { localize, currentResourceByProject } = this.props;
@@ -96,7 +95,7 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs> {
   render() {
     const { currentResourceByProject, currentProjectFilter, onResourceByProjectChange } = this.props;
     return (
-      <FilterableBarChart
+      <SelectableResourceChart
         {...this.props}
         onResourceByXChange={onResourceByProjectChange}
         currentSelectedResource={currentResourceByProject}
@@ -110,4 +109,4 @@ class FilterableBarChartResourceByProject extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(FilterableBarChartResourceByProject as any) as any);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByProject as any) as any);

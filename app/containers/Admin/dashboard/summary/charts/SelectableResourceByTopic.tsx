@@ -1,17 +1,9 @@
+// libraries
 import React, { PureComponent } from 'react';
 import { map, sortBy } from 'lodash-es';
 
-import FilterableBarChart from './FilterableBarChart';
-
-// resources
-import {
-  IIdeasByTopic,
-  ideasByTopicStream,
-  ICommentsByTopic,
-  commentsByTopicStream,
-  IVotesByTopic,
-  votesByTopicStream
-} from 'services/stats';
+// components
+import SelectableResourceChart from './SelectableResourceChart';
 
 // i18n
 import messages from '../../messages';
@@ -20,6 +12,14 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // typings
+import {
+  IIdeasByTopic,
+  ideasByTopicStream,
+  ICommentsByTopic,
+  commentsByTopicStream,
+  IVotesByTopic,
+  votesByTopicStream
+} from 'services/stats';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
 
@@ -43,7 +43,8 @@ interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
+class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
+
   convertToGraphFormat = (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
     const { series, topics } = data;
     const { localize, currentResourceByTopic } = this.props;
@@ -95,7 +96,7 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
   render() {
     const { currentResourceByTopic, currentTopicFilter, onResourceByTopicChange } = this.props;
     return (
-      <FilterableBarChart
+      <SelectableResourceChart
         {...this.props}
         onResourceByXChange={onResourceByTopicChange}
         currentSelectedResource={currentResourceByTopic}
@@ -109,4 +110,4 @@ class FilterableBarChartResourceByTopic extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(FilterableBarChartResourceByTopic as any) as any);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByTopic as any) as any);
