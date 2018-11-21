@@ -912,7 +912,6 @@
   "app.containers.ProjectInfo.imageAltText": "Projektbillede {index}",
   "app.containers.ProjectInfo.projectAttachments": "Vedhæftede filer",
   "app.containers.ProjectInfo.twitterMessage": "{title} : del dine ideer på",
-  "app.containers.Projects.aboutThisPhase": "Om denne fase",
   "app.containers.Projects.allEvents": "Alle begivenheder",
   "app.containers.Projects.archived": "Arkiveret",
   "app.containers.Projects.budgetExceeded": "Your expenses exceed the total assignable budget",
