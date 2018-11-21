@@ -8,7 +8,7 @@ import {
 } from 'react-intl';
 
 export default defineMessages({
-  //NEW MESSAGES
+  // Index
   tabSummary: {
     id: 'app.containers.AdminPage.DashboardPage.tabSummary',
     defaultMessage: 'Summary',
@@ -25,69 +25,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
     defaultMessage: 'Dashboard',
   },
-  emptyUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.emptyUsers',
-    defaultMessage: 'No users',
+  helmetTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
+    defaultMessage: 'Admin dashboard page',
   },
-  emptyActiveUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.emptyActiveUsers',
-    defaultMessage: 'No active users',
+  helmetDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
+    defaultMessage: 'Dashboard for activities on the platform',
   },
-  emptyIdeas: {
-    id: 'app.containers.AdminPage.DashboardPage.emptyIdeas',
-    defaultMessage: 'No ideas',
+  tryOutInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
+    defaultMessage: 'Try out {insightsLink}, our new beta feature',
   },
-  emptyComments: {
-    id: 'app.containers.AdminPage.DashboardPage.emptyComments',
-    defaultMessage: 'No comments',
+  insightsLinkText: {
+    id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
+    defaultMessage: 'insights',
   },
-  emptyVotes: {
-    id: 'app.containers.AdminPage.DashboardPage.emptyVotes',
-    defaultMessage: 'No votes',
-  },
-  activeUsersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
-    defaultMessage: 'Active users',
-  },
-  activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
-    defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
-  },
-  top10activeUsersDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
-    defaultMessage: 'To be determined.',
-  },
-  userActivityScore: {
-    id: 'app.containers.AdminPage.DashboardPage.userScore',
-    defaultMessage: 'User activity score',
-  },
-  commentsByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
-    defaultMessage: 'Comments',
-  },
-  votesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.votesByTimeTitle',
-    defaultMessage: 'Votes',
-  },
-  numberOfVotesUp: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
-    defaultMessage: 'Upvotes',
-  },
-  numberOfVotesDown: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesDown',
-    defaultMessage: 'Downvotes',
-  },
-  numberOfVotesTotal: {
-    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
-    defaultMessage: 'Total votes',
-  },
+  // All tabs
   users: {
     id: 'app.containers.AdminPage.DashboardPage.users',
     defaultMessage: 'Users',
-  },
-  activeUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
-    defaultMessage: 'Active users',
   },
   ideas: {
     id: 'app.containers.AdminPage.DashboardPage.ideas',
@@ -101,49 +58,26 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
   },
-  mostActiveUsers: {
-    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
-    defaultMessage: 'Most active users',
+  noData: {
+    id: 'app.containers.AdminPage.DashboardPage.noData',
+    defaultMessage: 'No data available with the current filters.',
   },
-  byTopicTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.byTopicTitle',
-    defaultMessage: 'by topic',
+  // Time and Resolution Controls
+  resolutionday: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
+    defaultMessage: 'in Days',
   },
-  participationPerProject: {
-    id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
-    defaultMessage: 'Participation per project',
+  resolutionweek: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
+    defaultMessage: 'in Weeks',
   },
-  participationPerTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
-    defaultMessage: 'Participation per topic',
+  resolutionmonth: {
+    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
+    defaultMessage: 'in Months',
   },
-  participationPerProjectComparison: {
-    id: 'app.containers.AdminPage.DashboardPage.participationPerProjectComparison',
-    defaultMessage: 'Participation difference with project {projectName}',
-  },
-  participationPerTopicComparison: {
-    id: 'app.containers.AdminPage.DashboardPage.participationPerTopicComparison',
-    defaultMessage: 'Participation difference with topic {topicName}',
-  },
-  totalCount: {
-    id: 'app.containers.AdminPage.DashboardPage.totalCount',
-    defaultMessage: '{selectedResourceName} total in {selectedName} : {selectedCount}',
-  },
-  byProjectTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.byProjectTitle',
-    defaultMessage: 'by project',
-  },
-  resourceByDifference: {
-    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
-    defaultMessage: '{selectedResourceName} difference with {selectedName}',
-  },
-  selectedProject: {
-    id: 'app.containers.AdminPage.DashboardPage.selectedProject',
-    defaultMessage: 'current project filter',
-  },
-  selectedTopic: {
-    id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
-    defaultMessage: 'current topic filter',
+  customDateRange: {
+    id: 'app.containers.AdminPage.DashboardPage.customDateRange',
+    defaultMessage: 'Custom',
   },
   previous30Days: {
     id: 'app.containers.AdminPage.DashboardPage.previous30Days',
@@ -165,75 +99,83 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.allTime',
     defaultMessage: 'All Time',
   },
-  noData: {
-    id: 'app.containers.AdminPage.DashboardPage.noData',
-    defaultMessage: 'No data available with the current filters.',
+  // Summary Graphs
+  usersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
+    defaultMessage: 'Users',
   },
-  //OLD MESSAGES CONFIRMED STILL IN USE
-  helmetTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
-    defaultMessage: 'Admin dashboard page',
+  activeUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsers',
+    defaultMessage: 'Active users',
   },
-  helmetDescription: {
-    id: 'app.containers.AdminPage.DashboardPage.helmetDescription',
-    defaultMessage: 'Dashboard for activities on the platform',
+  activeUsersByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsersByTimeTitle',
+    defaultMessage: 'Active users',
   },
-  //OLD MESSAGES
-  loading: {
-    id: 'app.containers.AdminPage.DashboardPage.loading',
-    defaultMessage: 'Loading...',
-  },
-  loadError: {
-    id: 'app.containers.AdminPage.DashboardPage.loadError',
-    defaultMessage: 'Couldn\' load data',
-  },
-  usersOverTime: {
-    id: 'app.containers.AdminPage.DashboardPage.usersOverTime',
-    defaultMessage: 'Users over time',
-  },
-  usersByGenderTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.usersByGenderTitle',
-    defaultMessage: 'Users by gender',
-  },
-  usersByAgeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
-    defaultMessage: 'Users by age',
+  activeUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.activeUsersDescription',
+    defaultMessage: 'The number of users that either voted, commented or posted an idea on a given day.',
   },
   ideasByTimeTitle: {
     id: 'app.containers.AdminPage.DashboardPage.ideasByTimeTitle',
     defaultMessage: 'Ideas',
   },
-  usersByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.usersByTimeTitle',
-    defaultMessage: 'Users',
+  commentsByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
+    defaultMessage: 'Comments',
   },
-  ideasByTopicTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByTopicTitle',
-    defaultMessage: 'Ideas by topic',
+  votesByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.votesByTimeTitle',
+    defaultMessage: 'Votes',
   },
-  ideasByArea: {
-    id: 'app.containers.AdminPage.DashboardPage.ideasByArea',
-    defaultMessage: 'Ideas by area',
+  numberOfVotesUp: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',
+    defaultMessage: 'Upvotes',
   },
-  interval: {
-    id: 'app.containers.AdminPage.DashboardPage.interval',
-    defaultMessage: 'Interval',
+  numberOfVotesDown: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesDown',
+    defaultMessage: 'Downvotes',
   },
-  resolutionday: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionday',
-    defaultMessage: ' in Days',
+  numberOfVotesTotal: {
+    id: 'app.containers.AdminPage.DashboardPage.numberOfVotesTotal',
+    defaultMessage: 'Total votes',
   },
-  resolutionweek: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionweek',
-    defaultMessage: 'in Weeks',
+  participationPerProject: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerProject',
+    defaultMessage: 'Participation per project',
   },
-  resolutionmonth: {
-    id: 'app.containers.AdminPage.DashboardPage.resolutionmonth',
-    defaultMessage: 'in Months',
+  selectedProject: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedProject',
+    defaultMessage: 'current project filter',
   },
-  year: {
-    id: 'app.containers.AdminPage.DashboardPage.year',
-    defaultMessage: 'Year',
+  participationPerTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.participationPerTopic',
+    defaultMessage: 'Participation per topic',
+  },
+  selectedTopic: {
+    id: 'app.containers.AdminPage.DashboardPage.selectedTopic',
+    defaultMessage: 'current topic filter',
+  },
+  totalCount: {
+    id: 'app.containers.AdminPage.DashboardPage.totalCount',
+    defaultMessage: '{selectedResourceName} total in {selectedName} : {selectedCount}',
+  },
+  resourceByDifference: {
+    id: 'app.containers.AdminPage.DashboardPage.resourceByDifference',
+    defaultMessage: '{selectedResourceName} difference with {selectedName}',
+  },
+  // Users Charts
+  usersByAgeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByAgeTitle',
+    defaultMessage: 'Users by age',
+  },
+  usersByDomicileTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByDomicileTitle',
+    defaultMessage: 'Users by domicile',
+  },
+  usersByGenderTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.usersByGenderTitle',
+    defaultMessage: 'Users by gender',
   },
   male: {
     id: 'app.containers.AdminPage.DashboardPage.male',
@@ -251,15 +193,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage._blank',
     defaultMessage: 'unknown',
   },
-
-  tryOutInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.tryOutInsights',
-    defaultMessage: 'Try out {insightsLink}, our new beta feature',
+  top10activeUsersDescription: {
+    id: 'app.containers.AdminPage.DashboardPage.top10activeUsersDescription',
+    defaultMessage: 'To be determined.',
   },
-  insightsLinkText: {
-    id: 'app.containers.AdminPage.DashboardPage.insightsLinkText',
-    defaultMessage: 'insights',
+  mostActiveUsers: {
+    id: 'app.containers.AdminPage.DashboardPage.mostActiveUsers',
+    defaultMessage: 'Most active users',
   },
+  userActivityScore: {
+    id: 'app.containers.AdminPage.DashboardPage.userActivityScore',
+    defaultMessage: 'User activity score',
+  },
+  //OLD MESSAGES
   projectFilterLabel: {
     id: 'app.containers.AdminPage.DashboardPage.projectFilterLabel',
     defaultMessage: 'Projects',
@@ -271,9 +217,5 @@ export default defineMessages({
   topicFilterLabel: {
     id: 'app.containers.AdminPage.DashboardPage.topicFilterLabel',
     defaultMessage: 'Topics',
-  },
-  customDateRange: {
-    id: 'app.containers.AdminPage.DashboardPage.customDateRange',
-    defaultMessage: 'Custom',
   },
 });

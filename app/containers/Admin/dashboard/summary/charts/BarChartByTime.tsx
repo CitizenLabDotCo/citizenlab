@@ -54,7 +54,7 @@ type State = {
 type Props = {
   className?: string;
   graphUnit: IGraphUnit;
-  graphUnitMessageKey: 'activeUsers',
+  graphUnitMessageKey: string,
   graphTitleMessageKey: string;
   startAt: string | null | undefined;
   endAt: string | null;
