@@ -144,6 +144,16 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
+  formatName = (firstName: string, lastName: string) => {
+    let fullName = `${firstName} ${lastName}`;
+
+    if (fullName.length > 20) {
+      fullName = `${fullName.slice(0, 22)}...`;
+    }
+
+    return fullName;
+  }
+
   render() {
     const { className, infoMessage } = this.props;
     const { formatMessage } = this.props.intl;
@@ -184,10 +194,11 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
                       {user => {
                         const firstName: string = get(user, 'attributes.first_name', '');
                         const lastName: string = get(user, 'attributes.last_name', '');
+                        const fullName = this.formatName(firstName, lastName);
 
                         return !isNilOrError(user) ?
                           <UserName to={`/profile/${user.attributes.slug}`}>
-                            {`${firstName} ${lastName}`}
+                            {fullName}
                           </UserName>
                         :
                           <UserName to={'/'}>
