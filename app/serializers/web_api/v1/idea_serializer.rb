@@ -1,6 +1,6 @@
 class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
-  attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at
+  attributes :id, :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :location_point_geojson, :location_description, :created_at, :updated_at, :published_at, :budget, :baskets_count
 
   has_many :topics
   has_many :areas
@@ -16,6 +16,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
   end
 
   has_one :action_descriptor
+
 
   def location_point_geojson
     RGeo::GeoJSON.encode(object.location_point)
@@ -38,6 +39,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object, current_user)
     voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, current_user)
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user)
+    budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason(object, current_user)
     {
       voting: {
         enabled: !voting_disabled_reason,
@@ -49,6 +51,11 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
         enabled: !commenting_disabled_reason,
         disabled_reason: commenting_disabled_reason,
         future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object.project, current_user)&.start_at
+      },
+      budgeting: {
+        enabled: !budgeting_disabled_reason,
+        disabled_reason: budgeting_disabled_reason,
+        future_enabled: budgeting_disabled_reason && @participation_context_service.future_budgeting_enabled_phase(object.project, current_user)&.start_at
       }
     }
   end

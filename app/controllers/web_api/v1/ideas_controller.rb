@@ -45,6 +45,10 @@ class WebApi::V1::IdeasController < ApplicationController
           @ideas.order_status(:asc)
         when "-status"
           @ideas.order_status(:desc)
+        when "baskets_count"
+          @ideas.order(baskets_count: :asc)
+        when "-baskets_count"
+          @ideas.order(baskets_count: :desc)
         when nil
           @ideas
         else
@@ -78,9 +82,10 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
-        .includes(:author, :topics, :areas, :project)
+        .includes(:author, :topics, :areas, :project, :idea_status)
         .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
+      @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?
       xlsx = XlsxService.new.generate_ideas_xlsx @ideas
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'ideas.xlsx'
     end

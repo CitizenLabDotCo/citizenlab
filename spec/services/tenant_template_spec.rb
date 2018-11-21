@@ -35,6 +35,7 @@ describe TenantTemplateService do
               }.to_h,
               timezone: "Europe/Brussels",
               color_main: Faker::Color.hex_color,
+              currency: 'EUR'
             },
             facebook_login: {
               allowed: true,
@@ -66,7 +67,6 @@ describe TenantTemplateService do
       lea = User.find_by(email: 'princesslea@gmail.com')
       expect(lea).to be_present
       expect(lea.last_name).to eq('Skywalker')
-      expect(lea.avatar).to be_present
       expect(Comment.count).to be 3
       cs = Comment.all.select { |c| c.body_multiloc['en'].include? 'never seen you riding a bicycle' }
       expect(cs.size).to be 1

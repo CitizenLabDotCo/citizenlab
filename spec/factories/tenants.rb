@@ -17,6 +17,7 @@ FactoryBot.define do
             "fr-FR" => Faker::Address.city
           },
           "timezone" => "Europe/Brussels",
+          "currency" => "EUR",
           "locales" => ["en","nl-BE","fr-FR"],
           "color_main" => "#335533"
         }
@@ -41,6 +42,7 @@ FactoryBot.define do
           "lifecycle_stage": "active",
           "locales" => ["en","fr-FR","nl-NL"],
           "timezone" => "Europe/Brussels",
+          "currency" => "EUR",
           "color_main" => "#335533"
         }
       }
