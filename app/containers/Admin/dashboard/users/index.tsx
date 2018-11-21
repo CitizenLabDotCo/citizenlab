@@ -15,11 +15,10 @@ import {
   ControlBar,
 } from '../';
 import TimeControl from '../components/TimeControl';
-import UsersByGenderChart from './charts/UsersByGenderChart';
-import AgeChart from './charts/AgeChart';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
 import MostActiveUsersChart from './charts/MostActiveUsersChart';
+import AgeChart from './charts/AgeChart';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -132,13 +131,6 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <UsersByGenderChart
-              graphUnit="Users"
-              graphTitleMessageKey="usersByGenderTitle"
-              startAt={startAt}
-              endAt={endAt}
-              currentGroupFilter={currentGroupFilter}
-            />
             <AgeChart
               startAt={startAt}
               endAt={endAt}

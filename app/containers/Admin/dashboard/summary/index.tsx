@@ -85,11 +85,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   constructor(props: PropsHithHoCs) {
     super(props);
-    const { onlyModerator, projects: { projectsList } } = props;
+    const { onlyModerator, projects: { projectsList }, intl: { formatMessage } } = props;
     this.resourceOptions = [
-      { value: 'ideas', label: props.intl.formatMessage(messages['ideas']) },
-      { value: 'comments', label: props.intl.formatMessage(messages['comments']) },
-      { value: 'votes', label: props.intl.formatMessage(messages['votes']) }
+      { value: 'ideas', label: formatMessage(messages.ideas) },
+      { value: 'comments', label: formatMessage(messages.comments) },
+      { value: 'votes', label: formatMessage(messages.votes) }
     ];
     this.filterOptions = {
       projectFilterOptions: this.generateProjectOptions(),
@@ -240,9 +240,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
-    const infoMessage = this.props.intl.formatMessage(messages.activeUsersDescription);
 
-    const { projects, projects: { projectsList } } = this.props;
+    const { projects, projects: { projectsList }, intl: { formatMessage } } = this.props;
+
+    const infoMessage = formatMessage(messages.activeUsersDescription);
 
     if (projects && !isNilOrError(projectsList)) {
       return (

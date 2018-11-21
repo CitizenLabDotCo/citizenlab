@@ -97,6 +97,18 @@ export interface IUsersByRegistrationField {
     }
   };
 }
+export interface IUsersByDomicile {
+  series: {
+    users: {
+      [key: string]: number;
+    }
+  };
+  areas: {
+    [key: string]: {
+      title_multiloc: Multiloc
+    }
+  };
+}
 
 export interface IUserEngagementScores {
   data: IUserEngagementScore[];
@@ -128,6 +140,10 @@ export function usersCount(streamParams: IStreamParams | null = null) {
 
 export function usersByBirthyearStream(streamParams: IStreamParams | null = null) {
   return streams.get<IUsersByBirthyear>({ apiEndpoint: `${apiEndpoint}/users_by_birthyear`, ...streamParams });
+}
+
+export function usersByDomicileStream(streamParams: IStreamParams | null = null) {
+  return streams.get<IUsersByDomicile>({ apiEndpoint: `${apiEndpoint}/users_by_domicile`, ...streamParams });
 }
 
 export function usersByTimeStream(streamParams: IStreamParams | null = null) {
