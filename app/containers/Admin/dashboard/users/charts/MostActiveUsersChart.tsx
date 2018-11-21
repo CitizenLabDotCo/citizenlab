@@ -74,6 +74,11 @@ const UserScore = styled<any, 'div'>('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background-color: ${props => props.hoverColor};
+    color: ${props => props.theme.chartFill};
+  }
 `;
 
 interface Props {
@@ -156,10 +161,9 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const { className, infoMessage } = this.props;
-    const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const theme = this.props['theme'];
-    const { chartFill, barFill, chartLabelSize } = theme;
+    const { chartFill } = theme;
     const barHoverColor = rgba(chartFill, .25);
 
     return (
@@ -208,7 +212,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
                       }
                     </GetUser>
                   </User>
-                  <UserScore value={item.value}>
+                  <UserScore hoverColor={barHoverColor} value={item.value}>
                     <span>{item.value}</span>
                   </UserScore>
                 </UserListItem>
