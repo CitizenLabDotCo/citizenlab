@@ -368,9 +368,10 @@ if Apartment::Tenant.current == 'localhost'
 
       if project.timeline?
         start_at = Faker::Date.between(Tenant.current.created_at, 1.year.from_now)
+        has_budgeting_phase = false
         rand(8).times do
           participation_method = ['ideation', 'information', 'ideation', 'budgeting', 'ideation'].shuffle.first
-          if participation_method = 'budgeting'
+          if participation_method == 'budgeting'
             if has_budgeting_phase
               participation_method = 'ideation'
             else
