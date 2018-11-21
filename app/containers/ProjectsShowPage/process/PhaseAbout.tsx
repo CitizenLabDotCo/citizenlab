@@ -103,9 +103,6 @@ class PhaseAbout extends PureComponent<Props, State> {
       if (!contentIsEmpty || !isEmpty(phaseFiles)) {
         return (
           <Container className={className}>
-            <InformationTitle>
-              <FormattedMessage {...messages.aboutThisPhase} />
-            </InformationTitle>
             <InformationBody>
               <T value={phase.attributes.description_multiloc} supportHtml={true} />
             </InformationBody>
