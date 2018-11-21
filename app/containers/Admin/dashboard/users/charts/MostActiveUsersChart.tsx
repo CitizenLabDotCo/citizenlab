@@ -18,7 +18,7 @@ import messages from '../../messages';
 // styles
 import styled, { withTheme } from 'styled-components';
 import { rgba } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 
 // services
 import { userEngagementScoresStream, IUserEngagementScore } from 'services/stats';
@@ -31,12 +31,14 @@ const InfoIcon = styled(Icon)`
   align-items: center;
   cursor: pointer;
   width: 20px;
+  height: 22px;
   margin-left: 10px;
 `;
 
 const UserList = styled.ul`
   list-style: none;
-  padding: 20px;
+  margin: 0;
+  padding: 0 20px;
 `;
 
 const UserListItem = styled.li`
@@ -49,7 +51,13 @@ const User = styled.div`
   display: flex;
   flex-basis: 100%;
   max-width: 50%;
+  min-width: 50%;
   align-items: center;
+
+  ${media.smallerThan1280px`
+    max-width: 70%;
+    min-width: 70%;
+  `}
 `;
 
 const UserImage = styled(Avatar)`
@@ -61,6 +69,7 @@ const UserImage = styled(Avatar)`
 `;
 
 const UserName = styled(Link)`
+  color: ${colors.label};
   margin-right: 10px;
 `;
 
@@ -72,6 +81,15 @@ const UserScore = styled<any, 'div'>('div')`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    background-color: ${props => props.hoverColor};
+    color: ${props => props.theme.chartFill};
+  }
+
+  ${media.smallerThan1280px`
+    width: ${props => props.value * 4}px;
+  `}
 `;
 
 interface Props {
@@ -142,12 +160,21 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
+  formatName = (firstName: string, lastName: string) => {
+    let fullName = `${firstName} ${lastName}`;
+
+    if (fullName.length > 20) {
+      fullName = `${fullName.slice(0, 22)}...`;
+    }
+
+    return fullName;
+  }
+
   render() {
     const { className, infoMessage } = this.props;
-    const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const theme = this.props['theme'];
-    const { chartFill, barFill, chartLabelSize } = theme;
+    const { chartFill } = theme;
     const barHoverColor = rgba(chartFill, .25);
 
     return (
@@ -177,15 +204,16 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               {serie.map((item) => (
                 <UserListItem key={item.userId}>
                   <User>
-                    <UserImage size="28px"  userId={item.userId} />
+                    <UserImage size="28px" userId={item.userId} />
                     <GetUser id={item.userId}>
                       {user => {
                         const firstName: string = get(user, 'attributes.first_name', '');
                         const lastName: string = get(user, 'attributes.last_name', '');
+                        const fullName = this.formatName(firstName, lastName);
 
                         return !isNilOrError(user) ?
                           <UserName to={`/profile/${user.attributes.slug}`}>
-                            {`${firstName} ${lastName}`}
+                            {fullName}
                           </UserName>
                         :
                           <UserName to={'/'}>
@@ -195,7 +223,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
                       }
                     </GetUser>
                   </User>
-                  <UserScore value={item.value}>
+                  <UserScore hoverColor={barHoverColor} value={item.value}>
                     <span>{item.value}</span>
                   </UserScore>
                 </UserListItem>

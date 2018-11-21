@@ -139,12 +139,13 @@ export const GraphCard = styled.div`
 
 export const GraphCardHeader = styled.div`
   display: flex;
-  flex-basis: 25%;
+  min-height: 64px;
+  align-items: center;
   justify-content: space-between;
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   margin-bottom: 20px;
-  padding: 0 20px;
+  padding: 20px;
   @media print {
     display: block;
     justify-content: flex-start;
