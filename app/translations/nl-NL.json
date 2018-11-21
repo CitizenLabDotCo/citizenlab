@@ -912,7 +912,6 @@
   "app.containers.ProjectInfo.imageAltText": "Project afbeelding {index}",
   "app.containers.ProjectInfo.projectAttachments": "Bijlagen",
   "app.containers.ProjectInfo.twitterMessage": "{title} : deel je ideeën op",
-  "app.containers.Projects.aboutThisPhase": "Over deze fase",
   "app.containers.Projects.allEvents": "Alle activiteiten",
   "app.containers.Projects.archived": "Gearchiveerd",
   "app.containers.Projects.budgetExceeded": "Je uitgaven overstijgen het totaal te besteden bedrag",
