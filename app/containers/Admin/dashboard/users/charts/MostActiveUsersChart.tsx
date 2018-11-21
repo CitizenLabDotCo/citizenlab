@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import { get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import Link from 'utils/cl-router/Link';
 
 // components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
-import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
+import Avatar from 'components/Avatar';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -15,9 +18,13 @@ import messages from '../../messages';
 // styles
 import styled, { withTheme } from 'styled-components';
 import { rgba } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 // services
 import { userEngagementScoresStream, IUserEngagementScore } from 'services/stats';
+
+// resources
+import GetUser from 'resources/GetUser';
 
 const InfoIcon = styled(Icon)`
   display: flex;
@@ -27,9 +34,44 @@ const InfoIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
+const UserList = styled.ul`
+  list-style: none;
+  padding: 20px;
+`;
+
+const UserListItem = styled.li`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const User = styled.div`
+  display: flex;
+  flex-basis: 100%;
+  max-width: 50%;
+  align-items: center;
+`;
+
+const UserImage = styled(Avatar)`
+  margin-right: 10px;
+
+  svg {
+    fill: ${colors.label};
+  }
+`;
+
+const UserName = styled(Link)`
+  margin-right: 10px;
+`;
+
 const UserScore = styled<any, 'div'>('div')`
-  background-color: pink;
-  width: ${props => props.value}px;
+  background-color: ${props => props.theme.chartFill};
+  width: ${props => props.value * 8}px;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 interface Props {
@@ -131,46 +173,34 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <div>
-              <ul>
-                {serie.map((item, i) => {
-                  return <li key={i}>
-                    <UserScore value={item.value}>
-                      {item.value}
-                    </UserScore>
-                  </li>;
-                })}
-              </ul>
-            </div>
-            // <ResponsiveContainer width="100%" height={serie && (serie.length * 50)}>
-            //   <BarChart data={serie} layout="vertical" margin={{ left: 150 }}>
-            //     <Bar
-            //       dataKey="value"
-            //       name={formatMessage(messages.userActivityScore)}
-            //       fill={chartFill}
-            //       label={{ fill: barFill, fontSize: chartLabelSize }}
-            //       barSize={20}
-            //     />
-            //     <YAxis
-            //       dataKey="userId"
-            //       type="category"
-            //       width={150}
-            //       stroke={theme.chartLabelColor}
-            //       fontSize={theme.chartLabelSize}
-            //       tickLine={false}
-            //     />
-            //     <XAxis
-            //       stroke={theme.chartLabelColor}
-            //       fontSize={theme.chartLabelSize}
-            //       type="number"
-            //       tick={{ transform: 'translate(0, 7)' }}
-            //     />
-            //     <Tooltip
-            //       isAnimationActive={false}
-            //       cursor={{ fill: barHoverColor }}
-            //     />
-            //   </BarChart>
-            // </ResponsiveContainer>
+            <UserList>
+              {serie.map((item) => (
+                <UserListItem key={item.userId}>
+                  <User>
+                    <UserImage size="28px"  userId={item.userId} />
+                    <GetUser id={item.userId}>
+                      {user => {
+                        const firstName: string = get(user, 'attributes.first_name', '');
+                        const lastName: string = get(user, 'attributes.last_name', '');
+
+                        return !isNilOrError(user) ?
+                          <UserName to={`/profile/${user.attributes.slug}`}>
+                            {`${firstName} ${lastName}`}
+                          </UserName>
+                        :
+                          <UserName to={'/'}>
+                            <FormattedMessage {...messages.deletedUser} />
+                          </UserName>;
+                        }
+                      }
+                    </GetUser>
+                  </User>
+                  <UserScore value={item.value}>
+                    <span>{item.value}</span>
+                  </UserScore>
+                </UserListItem>
+              ))}
+            </UserList>
           }
         </GraphCardInner>
       </GraphCard>
