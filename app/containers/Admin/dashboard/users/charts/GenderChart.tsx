@@ -33,8 +33,6 @@ interface QueryProps {
 }
 
 interface Props extends QueryProps {
-  graphUnit: 'ActiveUsers' | 'Users' | 'Ideas' | 'Comments' | 'Votes';
-  graphTitleMessageKey: string;
   className?: string;
 }
 
@@ -45,7 +43,7 @@ const labelColors = {
   _blank: '#C0C2CE',
 };
 
-class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State> {
+class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   private subscriptions: Subscription[];
   private queryProps$: BehaviorSubject<QueryProps>;
 
@@ -111,7 +109,7 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
 
   render() {
     const { colorMain, chartLabelSize, chartLabelColor, animationDuration, animationBegin } = this.props['theme'];
-    const { className, graphTitleMessageKey } = this.props;
+    const { className } = this.props;
     const { serie } = this.state;
 
     return (
@@ -119,7 +117,7 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages[graphTitleMessageKey]} />
+              <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
           </GraphCardHeader>
           {!serie ?
@@ -153,4 +151,4 @@ class UsersByGenderChart extends PureComponent<Props & InjectedIntlProps, State>
   }
 }
 
-export default injectIntl<Props>(withTheme(UsersByGenderChart as any) as any);
+export default injectIntl<Props>(withTheme(GenderChart as any) as any);

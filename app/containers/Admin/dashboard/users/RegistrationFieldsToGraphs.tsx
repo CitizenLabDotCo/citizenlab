@@ -4,9 +4,11 @@ import { map } from 'lodash-es';
 
 // resources
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { usersByRegFieldStream, IUsersByRegistrationField } from 'services/stats';
+import { isBuiltInField } from 'services/userCustomFields';
 
 // intl
 import { injectIntl } from 'utils/cl-intl';
@@ -17,6 +19,8 @@ import messages from '../messages';
 // components
 import BarChartByCategory from './charts/BarChartByCategory';
 import PieChartByCategory from './charts/PieChartByCategory';
+import AreaChart from './charts/AreaChart';
+import GenderChart from './charts/GenderChart';
 
 interface InputProps {
   currentGroupFilter: string | null;
@@ -51,41 +55,61 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { customFields, localize, startAt, endAt, currentGroupFilter } = this.props;
-    if (!customFields) {
+    if (isNilOrError(customFields)) {
       return null;
     }
     return customFields.map((field, index) => {
-      if (field.attributes.key === 'gender') {
-        return null;
-      }
-      if (field.attributes.input_type === 'checkbox') {
+      if (field.attributes.code === 'gender') {
         return (
-          <PieChartByCategory
+          <GenderChart
             key={index}
             startAt={startAt}
             endAt={endAt}
             currentGroupFilter={currentGroupFilter}
-            convertToGraphFormat={this.convertToGraphFormat}
-            graphTitleString={localize(field.attributes.title_multiloc)}
-            stream={usersByRegFieldStream}
-            graphUnit="users"
-            customId={field.id}
           />
         );
       }
-      return (
-        <BarChartByCategory
-          key={index}
-          startAt={startAt}
-          endAt={endAt}
-          currentGroupFilter={currentGroupFilter}
-          convertToGraphFormat={this.convertToGraphFormat}
-          graphTitleString={localize(field.attributes.title_multiloc)}
-          stream={usersByRegFieldStream}
-          graphUnit="users"
-          customId={field.id}
-        />
-      );
+      if (field.attributes.code === 'domicile') {
+        return (
+          <AreaChart
+            key={index}
+            startAt={startAt}
+            endAt={endAt}
+            currentGroupFilter={currentGroupFilter}
+          />
+        );
+      }
+      if (field.attributes.enabled) {
+        if (field.attributes.input_type === 'checkbox') {
+          return (
+            <PieChartByCategory
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              convertToGraphFormat={this.convertToGraphFormat}
+              graphTitleString={localize(field.attributes.title_multiloc)}
+              stream={usersByRegFieldStream}
+              graphUnit="users"
+              customId={field.id}
+            />
+          );
+        } else {
+          return (
+            <BarChartByCategory
+              key={index}
+              startAt={startAt}
+              endAt={endAt}
+              currentGroupFilter={currentGroupFilter}
+              convertToGraphFormat={this.convertToGraphFormat}
+              graphTitleString={localize(field.attributes.title_multiloc)}
+              stream={usersByRegFieldStream}
+              graphUnit="users"
+              customId={field.id}
+            />
+          );
+        }
+      }
     });
   }
 }

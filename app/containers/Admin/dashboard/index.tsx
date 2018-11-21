@@ -260,21 +260,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
         );
       } else if (isProjectModerator({ data: authUser })) {
         return (
-          <>
-            <FeatureFlag name={'clustering'}>
-              <StyledWarning
-                text={
-                  <FormattedMessage
-                    {...messages.tryOutInsights}
-                    values={{
-                      insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                    }}
-                  />
-                }
-              />
-            </FeatureFlag>
-            <Summary onlyModerator />
-          </>
+          <Summary onlyModerator />
         );
       }
     }
