@@ -36,7 +36,8 @@ const InfoIcon = styled(Icon)`
 
 const UserList = styled.ul`
   list-style: none;
-  padding: 20px;
+  margin: 0;
+  padding: 0 20px;
 `;
 
 const UserListItem = styled.li`
