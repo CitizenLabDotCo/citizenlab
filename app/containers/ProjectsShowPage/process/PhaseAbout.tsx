@@ -11,10 +11,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-
 // style
 import styled from 'styled-components';
 import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
@@ -31,12 +27,6 @@ const Container = styled.div`
     padding: 20px;
     background: ${darken(0.028, colors.background)};
   `}
-`;
-
-const InformationTitle = styled.h2`
-  color: #333;
-  font-size: ${fontSizes.large}px;
-  font-weight: 600;
 `;
 
 const InformationBody = styled.div`
