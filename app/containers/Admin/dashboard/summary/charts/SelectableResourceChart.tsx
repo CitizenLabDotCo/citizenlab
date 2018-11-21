@@ -19,11 +19,11 @@ import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter }
 import Select from 'components/UI/Select';
 import { HiddenLabel } from 'utils/accessibility';
 
-const SSelect = styled(Select)`
-  flex: 1;
-`;
 const SHiddenLabel = styled(HiddenLabel)`
   flex: 1;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
 `;
 
 const GraphCardTitle = styled.h3`
@@ -115,7 +115,7 @@ class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
             </GraphCardTitle>
             <SHiddenLabel>
               <FormattedMessage {...messages[`hiddelLabelPickResourceBy${byWhat}`]} />
-              <SSelect
+              <Select
                 id={`select${byWhat}`}
                 onChange={onResourceByXChange}
                 value={currentSelectedResource}
