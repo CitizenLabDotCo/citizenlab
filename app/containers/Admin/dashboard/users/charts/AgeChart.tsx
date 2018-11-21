@@ -31,7 +31,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
       return [
         ...range(0, 100, 10).map((minAge) => {
           let numberOfUsers = 0;
-          const maxAge = (minAge + 10);
+          const maxAge = (minAge + 9);
 
           forOwn(data.series.users, (userCount, birthYear) => {
             const age = currentYear - parseInt(birthYear, 10);
