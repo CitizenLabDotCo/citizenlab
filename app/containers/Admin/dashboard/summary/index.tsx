@@ -172,7 +172,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     const { projects,
       projects: { projectsList },
       localize,
-      onlyModerator } = this.props;
+      onlyModerator,
+      intl: { formatMessage } } = this.props;
 
     let filterOptions: IOption[] = [];
 
@@ -186,7 +187,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     }
 
     if (!onlyModerator) {
-      filterOptions = [{ value: '', label: 'All' }, ...filterOptions];
+      filterOptions = [{ value: '', label: formatMessage(messages.allProjects) }, ...filterOptions];
     }
     return filterOptions;
   }
@@ -195,6 +196,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     const {
       groups,
       groups: { groupsList },
+      intl: { formatMessage },
       localize } = this.props;
 
     let filterOptions: IOption[] = [];
@@ -208,11 +210,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       ));
     }
 
-    return [{ value: '', label: 'All' }, ...filterOptions];
+    return [{ value: '', label: formatMessage(messages.allGroups) }, ...filterOptions];
   }
 
   generateTopicOptions = () => {
-    const { topics, localize } = this.props;
+    const { topics, localize, intl: { formatMessage } } = this.props;
 
     let filterOptions: IOption[] = [];
 
@@ -226,7 +228,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
         });
     }
 
-    return [{ value: '', label: 'All' }, ...filterOptions];
+    return [{ value: '', label: formatMessage(messages.allTopics) }, ...filterOptions];
   }
 
   render() {

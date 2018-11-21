@@ -50,7 +50,7 @@ const TabbedNav = styled.nav`
   }
 `;
 
-const Tab = styled.li`
+const Tab = styled.div`
   list-style: none;
   cursor: pointer;
   display: flex;
