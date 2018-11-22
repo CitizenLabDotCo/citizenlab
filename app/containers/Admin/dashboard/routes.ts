@@ -2,15 +2,12 @@ import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
   name: 'Admin dashboard',
+  path: '',
   getComponent: loadAndRender(import('./')),
   indexRoute: {
     getComponent: loadAndRender(import('./summary')),
   },
   childRoutes: [
-    {
-      path: '',
-      getComponent: loadAndRender(import('./summary')),
-    },
     {
       path: 'dashboard-users',
       getComponent: loadAndRender(import('./users')),
