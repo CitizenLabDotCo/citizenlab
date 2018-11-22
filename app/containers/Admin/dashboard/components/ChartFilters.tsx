@@ -28,30 +28,28 @@ interface Props {
     showGroupFilter: boolean;
     showTopicFilter: boolean;
   };
-  filters: {
-    currentProjectFilter: string | null;
-    currentGroupFilter: string | null;
-    currentTopicFilter: string | null;
-  };
-  filterOptions: {
-    projectFilterOptions: IOption[] | null;
-    groupFilterOptions: IOption[] | null;
-    topicFilterOptions: IOption[] | null;
-  };
-  onFilter: {
-    onProjectFilter: ((filter: IOption) => void) | null;
-    onGroupFilter: ((filter: IOption) => void) | null;
-    onTopicFilter: ((filter: IOption) => void) | null;
-  };
+
+  currentProjectFilter: string | null;
+  currentGroupFilter: string | null;
+  currentTopicFilter: string | null;
+
+  projectFilterOptions: IOption[] | null;
+  groupFilterOptions: IOption[] | null;
+  topicFilterOptions: IOption[] | null;
+
+  onProjectFilter: ((filter: IOption) => void) | null;
+  onGroupFilter: ((filter: IOption) => void) | null;
+  onTopicFilter: ((filter: IOption) => void) | null;
+
 }
 
 export default class ChartFilters extends PureComponent<Props> {
   render() {
     const {
       configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
-      filters: { currentProjectFilter, currentGroupFilter, currentTopicFilter },
-      filterOptions: { projectFilterOptions, groupFilterOptions, topicFilterOptions },
-      onFilter: { onProjectFilter, onGroupFilter, onTopicFilter }
+      currentProjectFilter, currentGroupFilter, currentTopicFilter,
+      projectFilterOptions, groupFilterOptions, topicFilterOptions,
+      onProjectFilter, onGroupFilter, onTopicFilter
     } = this.props;
 
     return (
