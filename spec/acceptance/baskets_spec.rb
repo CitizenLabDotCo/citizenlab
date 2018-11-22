@@ -108,7 +108,7 @@ resource "Baskets" do
       example "'baskets_count' is not updated when adding/removing the idea to an unsubmitted basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea], submitted_at: Time.now)
-        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
+        SideFxBasketService.new.update_basket_counts
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {idea_ids: [create(:idea).id], submitted_at: nil}
@@ -118,7 +118,7 @@ resource "Baskets" do
       example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea])
-        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
+        SideFxBasketService.new.update_basket_counts
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {idea_ids: [create(:idea).id], submitted_at: Time.now}
@@ -128,7 +128,7 @@ resource "Baskets" do
       example "'baskets_count' is updated when submitting a basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea], submitted_at: nil)
-        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
+        SideFxBasketService.new.update_basket_counts
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {submitted_at: Time.now}
@@ -138,7 +138,7 @@ resource "Baskets" do
       example "'baskets_count' is updated when unsubmitting a basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea], submitted_at: Time.now)
-        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
+        SideFxBasketService.new.update_basket_counts
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {submitted_at: nil, ideas: []}
