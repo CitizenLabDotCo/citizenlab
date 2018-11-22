@@ -180,11 +180,18 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
       const firstSerieValue = serie && serie[0].total;
       const lastSerieValue = serie && serie[serie.length - 1].total;
       const serieChange = lastSerieValue - firstSerieValue;
+      let typeOfChange: 'increase' | 'decrease' | '' = '';
+
+      if (serieChange > 0) {
+        typeOfChange = 'increase';
+      } else if (serieChange < 0) {
+        typeOfChange = 'decrease';
+      }
 
       return {
+        typeOfChange,
         totalNumber: lastSerieValue,
         formattedSerieChange: this.formatSerieChange(serieChange),
-        typeOfChange: serieChange >= 0 ? 'increase' : 'decrease'
       };
     }
 
