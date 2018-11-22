@@ -48,10 +48,26 @@ interface Props {
 export default class ChartFilters extends PureComponent<Props> {
   render() {
     const {
-      configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
-      filters: { currentProjectFilter, currentGroupFilter, currentTopicFilter },
-      filterOptions: { projectFilterOptions, groupFilterOptions, topicFilterOptions },
-      onFilter: { onProjectFilter, onGroupFilter, onTopicFilter }
+      configuration: {
+        showProjectFilter,
+        showGroupFilter,
+        showTopicFilter
+      },
+      filters: {
+        currentProjectFilter,
+        currentGroupFilter,
+        currentTopicFilter
+      },
+      filterOptions: {
+        projectFilterOptions,
+        groupFilterOptions,
+        topicFilterOptions
+      },
+      onFilter: {
+        onProjectFilter,
+        onGroupFilter,
+        onTopicFilter
+      }
     } = this.props;
 
     return (

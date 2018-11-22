@@ -112,15 +112,18 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   componentDidUpdate(prevProps: Props) {
     const { projects, projects: { projectsList }, topics, groups, onlyModerator } = this.props;
+
     if (projects !== prevProps.projects) {
       this.filterOptions.projectFilterOptions = this.generateProjectOptions();
       if (onlyModerator && this.state.currentProjectFilter === null) {
         this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : null) });
       }
     }
+
     if (topics !== prevProps.topics) {
       this.filterOptions.topicFilterOptions = this.generateTopicOptions();
     }
+
     if (groups !== prevProps.groups) {
       this.filterOptions.groupFilterOptions = this.generateGroupsOptions();
     }
@@ -169,12 +172,15 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   }
 
   generateProjectOptions = () => {
-    const { projects,
+    const {
+      projects,
       projects: { projectsList },
       localize,
       onlyModerator,
-      intl: { formatMessage } } = this.props;
-
+      intl: {
+        formatMessage
+      }
+    } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(projects) && projectsList) {
@@ -189,15 +195,21 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     if (!onlyModerator) {
       filterOptions = [{ value: '', label: formatMessage(messages.allProjects) }, ...filterOptions];
     }
+
     return filterOptions;
   }
 
   generateGroupsOptions = () => {
     const {
       groups,
-      groups: { groupsList },
-      intl: { formatMessage },
-      localize } = this.props;
+      groups: {
+        groupsList
+      },
+      intl: {
+        formatMessage
+      },
+      localize
+    } = this.props;
 
     let filterOptions: IOption[] = [];
 
@@ -214,7 +226,13 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   }
 
   generateTopicOptions = () => {
-    const { topics, localize, intl: { formatMessage } } = this.props;
+    const {
+      topics,
+      localize,
+      intl: {
+        formatMessage
+      }
+    } = this.props;
 
     let filterOptions: IOption[] = [];
 
