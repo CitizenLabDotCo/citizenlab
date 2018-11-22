@@ -14,11 +14,11 @@ export const isAdmin = (user?: IUser | null | undefined | Error)  => {
   return false;
 };
 
-export const isModerator = (user?: IUser) => {
+export const isModerator = (user?: IUser | null) => {
   return !!user && hasRole(user, 'project_moderator');
 };
 
-export const isProjectModerator = (user?: IUser, projectId?: IProjectData['id'] | null) => {
+export const isProjectModerator = (user?: IUser | null, projectId?: IProjectData['id'] | null) => {
   return isModerator(user) && (
     !projectId ||
     !!(user && projectId && user.data.attributes.roles && user.data.attributes.roles.find((r) => r.project_id === projectId))
