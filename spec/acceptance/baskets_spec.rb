@@ -112,7 +112,7 @@ resource "Baskets" do
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {idea_ids: [create(:idea).id], submitted_at: nil}
-        expect(idea.reload.baskets_count).to eq old_baskets_count 
+        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
       end
 
       example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
@@ -142,7 +142,7 @@ resource "Baskets" do
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {submitted_at: nil, ideas: []}
-        expect(idea.reload.baskets_count).to eq old_baskets_count
+        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
       end
 
       describe "'baskets_count' stay up to date after removing an idea from the basket" do
