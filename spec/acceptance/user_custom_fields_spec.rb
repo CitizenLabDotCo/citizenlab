@@ -16,11 +16,29 @@ resource "User Custom Fields" do
       parameter :number, "Page number"
       parameter :size, "Number of custom fields per page"
     end
+
+    parameter :input_types, "Array of input types. Only return custom fields for the given types. Allowed values: #{CustomField::INPUT_TYPES.join(", ")}", required: false
     
     example_request "List all custom fields" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
+    end
+
+    describe "do filter on input types" do
+      before do
+        create(:custom_field_multiselect)
+        create(:custom_field_checkbox)
+        create(:custom_field_date)
+      end
+
+      let(:input_types) { ['multiselect', 'checkbox'] }
+
+      example_request "List custom fields filtered by input types" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+      end
     end
   end
 

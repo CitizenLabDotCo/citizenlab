@@ -6,6 +6,9 @@ class WebApi::V1::CustomFieldsController < ApplicationController
     @custom_fields = policy_scope(CustomField)
       .where(resource_type: @resource_type)
       .order(:ordering)
+
+    @custom_fields = @custom_fields.where(input_type: params[:input_types]) if params[:input_types]
+  
     render json: @custom_fields
   end
 
