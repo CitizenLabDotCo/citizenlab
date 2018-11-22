@@ -17,7 +17,7 @@ import {
 import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
-import MostActiveUsersChart from './charts/MostActiveUsersChart';
+import MostActiveUsersList from './charts/MostActiveUsersList';
 import AgeChart from './charts/AgeChart';
 
 // i18n
@@ -132,7 +132,7 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
 
         <ThemeProvider theme={chartTheme}>
           <GraphsContainer>
-            <MostActiveUsersChart
+            <MostActiveUsersList
               currentGroupFilter={currentGroupFilter}
               startAt={startAt}
               endAt={endAt}
