@@ -97,4 +97,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.engagementWarning',
     defaultMessage: 'Apply these restrictions carefully, as higher barriers lead to lower engagement.',
   },
+  pendingInvitation: {
+    id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
+    defaultMessage: 'Pending invitation',
+  },
+  unknownName: {
+    id: 'app.containers.AdminPage.groups.permissions.unknownName',
+    defaultMessage: 'Unknown name',
+  },
+  moderatorDeletionConfirmation: {
+    id: 'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
+    defaultMessage: 'Are you sure?',
+  },
+  deleteModeratorLabel: {
+    id: 'app.containers.AdminPage.groups.permissions.deleteModeratorLabel',
+    defaultMessage: 'Delete',
+  },
+  moderatorsNotFound: {
+    id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
+    defaultMessage: 'Moderators not found',
+  },
 });
