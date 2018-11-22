@@ -114,7 +114,11 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   moderatorsNotFound: {
+<<<<<<< HEAD
     id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
+=======
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsNotFound',
+>>>>>>> 429db62d806da6b0398e99488ca8f9ad3d6a58c7
     defaultMessage: 'Moderators not found',
   },
 });
