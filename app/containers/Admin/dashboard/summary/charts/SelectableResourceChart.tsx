@@ -78,13 +78,15 @@ interface Props extends InputProps, DataProps { }
 
 class SelectableResourceChart extends PureComponent<Props & InjectedIntlProps> {
   render() {
-    const { chartFill,
+    const {
+      chartFill,
       barHoverColor,
       chartLabelSize,
       chartLabelColor,
       barFill,
       animationBegin,
-      animationDuration } = this.props['theme'];
+      animationDuration
+    } = this.props['theme'];
     const {
       className,
       onResourceByXChange,

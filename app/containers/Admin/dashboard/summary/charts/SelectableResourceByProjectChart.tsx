@@ -13,12 +13,12 @@ import messages from '../../messages';
 
 // typings
 import {
-IIdeasByProject,
-ideasByProjectStream,
-ICommentsByProject,
-commentsByProjectStream,
-IVotesByProject,
-votesByProjectStream
+  IIdeasByProject,
+  ideasByProjectStream,
+  ICommentsByProject,
+  commentsByProjectStream,
+  IVotesByProject,
+  votesByProjectStream
 } from 'services/stats';
 import { IOption, IGraphFormat } from 'typings';
 import { IResource } from '..';
@@ -43,7 +43,7 @@ interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
+class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
   convertToGraphFormat = (data: IIdeasByProject | IVotesByProject | ICommentsByProject) => {
     const { series, projects } = data;
     const { localize, currentResourceByProject } = this.props;
@@ -55,11 +55,20 @@ class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
       code: projectId as string,
     }));
     const res = sortBy(mapped, 'name');
+
     return res.length > 0 ? res : null;
   }
 
   convertSerie = (serie: IGraphFormat | null) => {
-    const { currentProjectFilter, currentResourceByProject, projectOptions, intl: { formatMessage } } = this.props;
+    const {
+      currentProjectFilter,
+      currentResourceByProject,
+      projectOptions,
+      intl: {
+        formatMessage
+      }
+    } = this.props;
+
     if (serie && currentResourceByProject) {
       const selectedProject = serie.find(item => item.code === currentProjectFilter);
       const selectedCount = selectedProject ? selectedProject.value : 0;
@@ -72,13 +81,16 @@ class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
         selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedProject);
       }
 
-      const convertedSerie = serie.map(item => {
+      const convertedSerie = serie
+      .filter(item => item.code !== currentProjectFilter)
+      .map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedCount, ...rest };
-      }).filter(item => item.code !== currentProjectFilter);
+      });
 
       return { convertedSerie, selectedCount, selectedName };
     }
+
     return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
   }
 
@@ -93,7 +105,12 @@ class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
   }
 
   render() {
-    const { currentResourceByProject, currentProjectFilter, onResourceByProjectChange } = this.props;
+    const {
+      currentResourceByProject,
+      currentProjectFilter,
+      onResourceByProjectChange
+    } = this.props;
+
     return (
       <SelectableResourceChart
         {...this.props}
@@ -109,4 +126,4 @@ class SelectableResourceByProject extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByProject as any) as any);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByProjectChart as any) as any);
