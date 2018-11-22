@@ -13,7 +13,7 @@ import PhaseSurvey from './PhaseSurvey';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
 // services
@@ -21,10 +21,6 @@ import { IPhaseData } from 'services/phases';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../Admin/pages/messages';
 
 // style
 import styled from 'styled-components';
@@ -34,6 +30,10 @@ const Container = styled.div``;
 
 const FirstRow = styled.div`
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    background: ${colors.background};
+  `}
 `;
 
 const StyledTimeline = styled(Timeline)`
@@ -48,6 +48,10 @@ const SecondRow = styled.div`
 
 const StyledPhaseAbout = styled(PhaseAbout)`
   margin-bottom: 70px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 50px;
+  `}
 `;
 
 const SecondRowContentContainer = styled(ContentContainer)`
@@ -63,8 +67,12 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
-  margin-top: 70px;
-  margin-bottom: 70px;
+  margin-top: 80px;
+  margin-bottom: 80px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
 `;
 
 interface InputProps {
@@ -112,10 +120,8 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
           <FirstRow>
             <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
             <ProjectModeratorIndicator projectId={project.id} />
+            <ProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
-              {project.attributes.publication_status === 'archived' &&
-                <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-              }
               <StyledPhaseAbout phaseId={selectedPhaseId} />
               {isPBPhase &&
                 <StyledPBExpenses

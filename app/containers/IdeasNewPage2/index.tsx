@@ -186,6 +186,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
       submitError: false,
       processing: false,
       ideaId: null,
+      ideaSlug: null,
       imageFile: [],
       imageId: null,
       imageChanged: false,
@@ -275,6 +276,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
       this.globalState.set({
         ideaId: idea.data.id,
+        ideaSlug: idea.data.attributes.slug,
         imageId: (ideaImage ? ideaImage.data.id : null),
         imageChanged: false
       });
@@ -292,11 +294,11 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
     if (!isNilOrError(authUser)) {
       try {
-        const ideaResponse = await this.postIdeaAndIdeaImage('published', authUser.id);
+        const newIdea = await this.postIdeaAndIdeaImage('published', authUser.id);
 
         clHistory.push({
-          pathname: '/',
-          search: `?new_idea_id=${ideaResponse.data.id}&publish=false`
+          pathname: `/ideas/${newIdea.data.attributes.slug}`,
+          search: `?new_idea_id=${newIdea.data.id}&new_idea_slug=${newIdea.data.attributes.slug}&publish=false`
         });
       } catch (error) {
         this.globalState.set({ processing: false, submitError: true });
@@ -326,8 +328,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
       if (idea) {
         clHistory.push({
-          pathname: '/',
-          search: `?new_idea_id=${idea.data.id}&publish=false`
+          pathname: `/ideas/${idea.data.attributes.slug}`,
+          search: `?new_idea_id=${idea.data.id}&new_idea_slug=${idea.data.attributes.slug}&publish=false`
         });
       }
     }

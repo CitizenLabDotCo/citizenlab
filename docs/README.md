@@ -1,5 +1,30 @@
 # Changelog
 
+## 2018-11-22
+
+### Fixed
+- In the clustering prototype, comparing clusters using the CTRL key now also works on Mac
+- Widget HTML code can now be copied again
+- Long consequent lines of text now get broken up in multiple lines on the idea page
+- Admin pages are no longer accessible for normal users
+- Reduced problems with edge cases for uploading images and attachments
+
+### Added
+- Participatory budgeting (PB)
+  - A new participation method in continuous and timeline projects
+  - Admins and moderators can set budget on ideas and a maximum budget on the PB phase
+  - Citizens can fill their basket with ideas, until they hit the limit
+  - Citizens can submit their basket when they're done
+  - Admins and moderators can process the results through the idea manager and excel export
+- Social sharing through the modal is now separately trackable from sharing through the idea page
+- The ideas excel export now contains the idea status
+- A new smart group rule allows for filtering on project moderators and normal users
+
+### Changed
+- Project navigation is now shown in new navigation bar on top
+- The content of the 'Open idea project' for new tenants has changed
+- After posting an idea, the user is redirected towards the idea page of the new idea, instead of the landing page
+
 ## 2018-11-07
 
 ### Fixed

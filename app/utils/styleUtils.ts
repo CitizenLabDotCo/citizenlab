@@ -156,7 +156,7 @@ export const colors = {
 
   adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
-  adminSecondaryTextColor: '#84939E',
+  adminSecondaryTextColor: '#596B7A',
 
   adminBorder: '#EAEAEA',
   adminSeparation: '#EAEAEA',
@@ -173,7 +173,10 @@ export const colors = {
   facebookMessenger: '#0084ff',
   twitter: '#1ea4f2',
   emailText: '#004d6c',
-  emailBg: '#e6ebec'
+  emailBg: '#e6ebec',
+
+  // buttons
+  disabledPrimaryButtonBg: '#d0d0d0'
 };
 
 export function color(name: keyof typeof colors) {

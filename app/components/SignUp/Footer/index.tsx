@@ -31,6 +31,7 @@ import { darken } from 'polished';
 // logos
 const googleLogoUrl = require('./svg/google.svg') as string;
 const facebookLogoUrl = require('./svg/facebook.svg') as string;
+const franceconnectLogoUrl = require('./svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   width: 100%;
@@ -90,12 +91,13 @@ interface DataProps {
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
   azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory' | null;
+  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory'  | 'franceconnect' | null;
   socialLoginTaCAccepted: boolean;
   socialLoginUrlParameter: string;
 }
@@ -119,7 +121,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions = [
       globalState$.subscribe((globalState) => {
         this.setState({
-          socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '')
+          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
         });
       })
     ];
@@ -133,26 +135,32 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     this.setState(state => ({ socialLoginClicked: (state.socialLoginClicked === provider && !state.socialLoginTaCAccepted ? null : provider) }));
   }
 
-  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory') => () => {
+  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     this.setState({ socialLoginTaCAccepted: true });
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
     }, 200);
   }
 
+  externalLoginsCount = () => {
+    const { googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const logins = [googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled];
+    return logins.reduce((count, method) => count + (method ? 1 : 0), 0);
+  }
+
   render() {
     const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
-    const { tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled } = this.props;
+    const { tenant, passwordLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
-    const socialLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled);
+    const externalLoginsCount = this.externalLoginsCount();
     const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
-    const tenantLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
+    const AzureLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
 
-    if (socialLoginEnabled) {
+    if (externalLoginsCount > 0) {
       return (
         <>
           {passwordLoginEnabled &&
@@ -173,10 +181,22 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     logoHeight="25px"
                     loginProvider="azureactivedirectory"
                     socialLoginClicked={socialLoginClicked}
-                    loginMechanismName={tenantLoginMechanismName}
+                    loginMechanismName={AzureLoginMechanismName}
                     socialLoginTaCAccepted={socialLoginTaCAccepted}
                     onClick={this.handleOnSSOClick('azureactivedirectory')}
                     onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                  />
+                </FeatureFlag>
+                <FeatureFlag name="franceconnect_login">
+                  <SignUpButton
+                    logoUrl={franceconnectLogoUrl}
+                    logoHeight="45px"
+                    loginProvider="franceconnect"
+                    socialLoginClicked={socialLoginClicked}
+                    loginMechanismName="France Connect"
+                    socialLoginTaCAccepted={socialLoginTaCAccepted}
+                    onClick={this.handleOnSSOClick('franceconnect')}
+                    onAcceptToC={this.handleSocialLoginAcceptTaC('franceconnect')}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
@@ -204,7 +224,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   />
                 </FeatureFlag>
               </SocialSignUpButtons>
-
               {!passwordLoginEnabled &&
                 <AlreadyHaveAnAccount to="/sign-in">
                   <FormattedMessage {...messages.alreadyHaveAnAccount} />
@@ -227,6 +246,7 @@ const Data = adopt<DataProps, {}>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
 });
 
 export default (inputProps: InputProps) => (

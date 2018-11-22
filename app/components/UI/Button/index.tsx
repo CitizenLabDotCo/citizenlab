@@ -103,7 +103,7 @@ function buttonTheme(
     }
 
     &.disabled {
-      background: #d0d0d0;
+      background: ${colors.disabledPrimaryButtonBg};
       ${setFillColor('#fff')}
     }
   `;

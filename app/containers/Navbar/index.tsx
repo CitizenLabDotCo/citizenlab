@@ -59,6 +59,15 @@ const Container = styled.div`
       top: auto;
     `}
   }
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
+
+  @media print {
+    display: none;
+  }
 `;
 
 const Left = styled.div`
@@ -284,6 +293,7 @@ const StyledIdeaButton = styled(IdeaButton)`
 const LoginLink = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   font-weight: 400;
   padding: 0;
 

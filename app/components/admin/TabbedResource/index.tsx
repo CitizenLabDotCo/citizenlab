@@ -23,6 +23,9 @@ const ResourceHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
+  @media print {
+    margin-bottom: 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -41,9 +44,14 @@ const TabbedNav = styled.nav`
   display: flex;
   border: 1px solid ${color('separation')};
   border-bottom: 1px solid transparent;
+  @media print {
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+  }
 `;
 
-const Tab = styled.li`
+const Tab = styled.div`
   list-style: none;
   cursor: pointer;
   display: flex;
@@ -85,6 +93,11 @@ const ChildWrapper = styled.div`
   background: ${color('adminContentBackground')};
   margin-bottom: 2rem;
   padding: 3rem;
+  @media print {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 export type TabProps = {
@@ -153,7 +166,7 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
-              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})`);
+              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})(\/)?$`);
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>

@@ -128,11 +128,10 @@ const Vote: any = styled.div`
 
 const Upvote = Vote.extend`
   margin-right: 12px;
-  margin-right: 8px;
 
   &:not(.enabled) {
     ${VoteCount} {
-      margin-right: 10px;
+      margin-right: 14px;
     }
   }
 
@@ -226,8 +225,8 @@ export default class VoteControl extends PureComponent<Props, State> {
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       idea: null,
       project: null,
@@ -385,9 +384,9 @@ export default class VoteControl extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-	votingAnimationDone = () => {
-		this.setState({ votingAnimation: null });
-	}
+  votingAnimationDone = () => {
+    this.setState({ votingAnimation: null });
+  }
 
   onClickUpvote = (event) => {
     event.preventDefault();

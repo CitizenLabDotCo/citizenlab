@@ -38,13 +38,13 @@ export const postingButtonState = ({ project, phase, signedIn }: PostingButtonSt
 
     if (inCurrentPhase) {
       return {
-        show: phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+        show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
         enabled: project.relationships.action_descriptor.data.posting.enabled,
         disabledReason: disabledReason(disabled_reason, !!signedIn, future_enabled),
       };
     } else { // if not in current phase
       return {
-        show: phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+        show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
         enabled: false,
         disabledReason: 'notActivePhase',
       };
@@ -52,9 +52,10 @@ export const postingButtonState = ({ project, phase, signedIn }: PostingButtonSt
   } else if (!isNilOrError(project) && isNilOrError(phase)) { // if not in phase context
     const enabled = project.relationships.action_descriptor.data.posting.enabled;
     const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
+
     return {
       enabled,
-      show: project.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+      show: project.attributes.participation_method === 'ideation' && project.attributes.posting_enabled && disabled_reason !== 'not_ideation',
       disabledReason: enabled ? undefined : disabledReason(disabled_reason, !!signedIn, future_enabled),
     };
   } else { // if !project

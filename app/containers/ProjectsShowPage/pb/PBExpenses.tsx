@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError, getFormattedBudget } from 'utils/helperUtils';
-import { get, round, isUndefined, isNil } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+import { get, round } from 'lodash-es';
 import moment from 'moment';
 
 // services
@@ -20,8 +20,13 @@ import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
 import PBBasket from './PBBasket';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedNumber } from 'react-intl';
 import messages from '../messages';
 
 // styling
@@ -38,6 +43,10 @@ const InnerContainer = styled.div`
   border-radius: 5px;
   border: solid 1px ${colors.separation};
   background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+  `}
 `;
 
 const Header = styled.div`
@@ -69,7 +78,7 @@ const Title = styled.h1`
 `;
 
 const TitleIcon = styled(Icon)`
-  height: 20px;
+  height: 18px;
   margin-right: 10px;
 `;
 
@@ -139,7 +148,7 @@ const ProgressBarOverlay: any = styled.div`
 const ProgressBarPercentage = styled.span`
   color: #fff;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
 
   &.hidden {
     display: none;
@@ -226,58 +235,54 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
+interface Tracks {
+  ideaRemovedFromBasket: () => void;
+  ideaAddedToBasket: () => void;
+  basketSubmitted: () => void;
+  expensesDropdownOpened: () => void;
+}
+
 interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
-  submitState: 'clean' | 'dirty';
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<Props, State> {
+class PBExpenses extends PureComponent<Props & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
       dropdownOpened: false,
-      submitState: 'clean',
       processing: false
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { basket } = this.props;
-    const prevSubmittedAt = get(prevProps, 'basket.attributes.submitted_at', null);
-    const submittedAt = get(basket, 'attributes.submitted_at', null);
-
-    if (!isUndefined(prevProps.basket) && !isNil(this.props.basket) && prevProps.basket !== basket && prevSubmittedAt === submittedAt) {
-      this.setState({ submitState: 'dirty' });
-    }
-  }
-
   toggleExpensesDropdown = () => {
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
+    this.setState(({ dropdownOpened }) => {
+      if (!dropdownOpened) {
+        this.props.expensesDropdownOpened();
+      }
+
+      return { dropdownOpened: !dropdownOpened };
+    });
   }
 
-  handleSubmitExpensesOnClick = () => {
+  handleSubmitExpensesOnClick = async () => {
     const { basket } = this.props;
-    const now = moment().format();
 
     if (!isNilOrError(basket)) {
+      const now = moment().format();
       this.setState({ processing: true });
-
-      updateBasket(basket.id, {
-        submitted_at: now
-      }).then(() => {
-        this.setState({ submitState: 'clean', processing: false });
-      }).catch((_error) => {
-        this.setState({ submitState: 'clean', processing: false });
-      });
+      await updateBasket(basket.id, { submitted_at: now });
+      this.props.basketSubmitted();
+      this.setState({ processing: false });
     }
   }
 
   render() {
     const { locale, tenant, participationContextType, participationContextId, project, phase, basket, className } = this.props;
-    const { submitState, processing, dropdownOpened } = this.state;
+    const { processing, dropdownOpened } = this.state;
 
     if (!isNilOrError(locale) &&
         !isNilOrError(tenant) &&
@@ -307,11 +312,11 @@ class PBExpenses extends PureComponent<Props, State> {
 
       if (budgetExceedsLimit) {
         validationStatus = 'validationError';
-      } else if (submittedAt && submitState === 'clean' && !budgetExceedsLimit && spentBudget > 0) {
+      } else if (submittedAt && spentBudget > 0) {
         validationStatus = 'validationSuccess';
       }
 
-      if (validationStatus === 'validationSuccess' && submitState === 'clean') {
+      if (validationStatus === 'validationSuccess') {
         progressBarColor = 'green';
       } else if (budgetExceedsLimit) {
         progressBarColor = 'red';
@@ -344,7 +349,13 @@ class PBExpenses extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
                 <BudgetAmount>
-                  {getFormattedBudget(locale, totalBudget, currency)}
+                  <FormattedNumber
+                    value={totalBudget}
+                    style="currency"
+                    currency={currency}
+                    minimumFractionDigits={0}
+                    maximumFractionDigits={0}
+                  />
                 </BudgetAmount>
               </TotalBudgetDesktop>
             </Header>
@@ -365,7 +376,13 @@ class PBExpenses extends PureComponent<Props, State> {
                     <FormattedMessage {...messages.spentBudget} />:
                   </BudgetLabel>
                   <BudgetAmount className={progressBarColor}>
-                    {getFormattedBudget(locale, spentBudget, currency)}
+                    <FormattedNumber
+                      value={spentBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
                   </BudgetAmount>
                 </Budget>
                 <TotalBudgetMobile>
@@ -373,7 +390,13 @@ class PBExpenses extends PureComponent<Props, State> {
                     <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
                   <BudgetAmount>
-                    {getFormattedBudget(locale, totalBudget, currency)}
+                    <FormattedNumber
+                      value={totalBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
                   </BudgetAmount>
                 </TotalBudgetMobile>
               </Budgets>
@@ -395,7 +418,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   <DropdownWrapper>
                     <Dropdown
                       top="10px"
-                      mobileWidth="300px"
+                      mobileWidth="250px"
                       mobileLeft="-5px"
                       opened={dropdownOpened}
                       onClickOutside={this.toggleExpensesDropdown}
@@ -414,7 +437,7 @@ class PBExpenses extends PureComponent<Props, State> {
                   icon="submit"
                   iconPos="right"
                   bgColor={colors.adminTextColor}
-                  disabled={submitState === 'clean' || budgetExceedsLimit}
+                  disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}
                   processing={processing}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />
@@ -448,8 +471,15 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
+const PBExpensesWithHoCs = injectTracks<Props>({
+  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+  ideaAddedToBasket: tracks.ideaAddedToBasket,
+  basketSubmitted: tracks.basketSubmitted,
+  expensesDropdownOpened: tracks.expensesDropdownOpened
+})(PBExpenses);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PBExpenses {...inputProps} {...dataProps} />}
+    {dataProps => <PBExpensesWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
