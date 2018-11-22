@@ -113,21 +113,18 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
             showGroupFilter: true,
             showTopicFilter: false
           }}
-          filters={{
-            currentGroupFilter,
-            currentProjectFilter: null,
-            currentTopicFilter: null
-          }}
-          filterOptions={{
-            projectFilterOptions: null,
-            groupFilterOptions: this.generateGroupFilterOptions(),
-            topicFilterOptions: null,
-          }}
-          onFilter={{
-            onProjectFilter: null,
-            onGroupFilter: this.handleOnGroupFilter,
-            onTopicFilter: null,
-          }}
+
+          currentProjectFilter={null}
+          currentGroupFilter={currentGroupFilter}
+          currentTopicFilter={null}
+
+          projectFilterOptions={null}
+          groupFilterOptions={this.generateGroupFilterOptions()}
+          topicFilterOptions={null}
+
+          onProjectFilter={null}
+          onGroupFilter={this.handleOnGroupFilter}
+          onTopicFilter={null}
         />
 
         <ThemeProvider theme={chartTheme}>
