@@ -94,12 +94,72 @@ resource "Baskets" do
       end
 
       let(:basket_id) { @basket.id }
-      let(:idea_ids) { create_list(:idea, 3).map(&:id) }
 
-      example_request "Update a basket" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
+      describe '' do
+        let(:idea_ids) { create_list(:idea, 3).map(&:id) }
+
+        example_request "Update a basket" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
+        end
+      end
+
+      example "'baskets_count' is not updated when adding/removing the idea to an unsubmitted basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea], submitted_at: Time.now)
+        SideFxBasketService.new.update_basket_counts
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {idea_ids: [create(:idea).id], submitted_at: nil}
+        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
+      end
+
+      example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea])
+        SideFxBasketService.new.update_basket_counts
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {idea_ids: [create(:idea).id], submitted_at: Time.now}
+        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
+      end
+
+      example "'baskets_count' is updated when submitting a basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea], submitted_at: nil)
+        SideFxBasketService.new.update_basket_counts
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {submitted_at: Time.now}
+        expect(idea.reload.baskets_count).to eq (old_baskets_count + 1)
+      end
+
+      example "'baskets_count' is updated when unsubmitting a basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea], submitted_at: Time.now)
+        SideFxBasketService.new.update_basket_counts
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {submitted_at: nil, ideas: []}
+        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
+      end
+
+      describe "'baskets_count' stay up to date after removing an idea from the basket" do
+        before do
+          @trolley = create_list(:basket, 3, ideas: [idea], participation_context: create(:continuous_budgeting_project, with_permissions: true)).first
+          @trolley.update(user: @user)
+        end
+
+        let(:idea) { create(:idea) }
+        let(:idea_ids) { [] }
+        let(:basket_id) { @trolley.id }
+        let(:submitted_at) { Time.now }
+
+        example '', document: false do
+          do_request
+          expect(idea.reload.baskets_count).to eq 2
+        end
       end
     end
   end

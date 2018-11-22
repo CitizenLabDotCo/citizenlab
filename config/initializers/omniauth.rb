@@ -25,6 +25,40 @@ AZURE_AD_SETUP_PROC = lambda do |env|
   end
 end
 
+FRANCECONNECT_SETUP_PROC = lambda do |env|
+  tenant = Tenant.current
+  if tenant.has_feature('franceconnect_login')
+
+    host = case Tenant.settings("franceconnect_login", "environment")
+    when "integration"
+      'fcp.integ01.dev-franceconnect.fr'
+    when "production"
+      'app.franceconnect.gouv.fr'
+    end 
+
+    options = env['omniauth.strategy'].options
+    options[:scope] = [:openid, :profile, :email, :address]
+    options[:response_type] = :code
+    options[:state] = true # Requis par France connect
+    options[:nonce] = true # Requis par France connect
+    options[:issuer] = "https://#{host}" # L'environnement d'intégration utilise à présent 'https'
+    options[:client_auth_method] = 'Custom' # France connect n'utilise pas l'authent "BASIC".
+    options[:client_signing_alg] = :HS256   # Format de hashage France Connect
+    options[:client_options] = {
+      identifier: Tenant.settings("franceconnect_login", "identifier"),
+      secret: Tenant.settings("franceconnect_login", "secret"),
+      port: 443,
+      scheme: 'https',
+      host: host,
+      redirect_uri: "#{tenant.base_backend_uri}/auth/franceconnect/callback",
+      authorization_endpoint: '/api/v1/authorize',
+      token_endpoint: '/api/v1/token',
+      userinfo_endpoint: '/api/v1/userinfo'
+    }
+
+  end
+end
+
 
 # TWITTER_SETUP_PROC = lambda do |env|
 #   tenant = Tenant.current
@@ -39,6 +73,8 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, :setup => FACEBOOK_SETUP_PROC
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
   provider :azure_activedirectory, :setup => AZURE_AD_SETUP_PROC
+  provider :openid_connect, :setup => FRANCECONNECT_SETUP_PROC, name: 'franceconnect'
+
   # provider :twitter, :setup => TWITTER_SETUP_PROC
 end
 

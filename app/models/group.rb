@@ -88,7 +88,7 @@ class Group < ApplicationRecord
     if manual?
       user_ids
     else
-      SmartGroupsService.new.filter(User, rules).pluck(:id)
+      SmartGroupsService.new.filter(User, rules).ids
     end
   end
 
