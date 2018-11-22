@@ -186,12 +186,12 @@ class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State
   }
 
   formatSerieChange = (serieChange: number) => {
-    if (serieChange >= 0) {
+    if (serieChange > 0) {
       return `(+${serieChange.toString()})`;
     } else if (serieChange < 0) {
       return `(${serieChange.toString()})`;
     }
-    return;
+    return null;
   }
 
   getFormattedNumbers(serie: IGraphFormat | null) {
@@ -199,11 +199,18 @@ class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State
       const firstSerieValue = serie[0].value;
       const lastSerieValue = serie[serie.length - 1].value;
       const serieChange = lastSerieValue - firstSerieValue;
+      let typeOfChange: 'increase' | 'decrease' | '' = '';
+
+      if (serieChange > 0) {
+        typeOfChange = 'increase';
+      } else if (serieChange < 0) {
+        typeOfChange = 'decrease';
+      }
 
       return {
+        typeOfChange,
         totalNumber: lastSerieValue,
         formattedSerieChange: this.formatSerieChange(serieChange),
-        typeOfChange: serieChange >= 0 ? 'increase' : 'decrease'
       };
     }
 
