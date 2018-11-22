@@ -33,9 +33,17 @@ class WebApi::V1::BasketsController < ApplicationController
           @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
           ideas_to_add.each{ |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
         end
-        # @basket.baskets_ideas.each(&:counter_culture_fix_counts) 
-        BasketsIdea.counter_culture_fix_counts if basket_params.keys.include?(:submitted_at)
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save
+        if basket_params[:submitted_at]
+          baskets_counts = BasketsIdea
+            .left_outer_joins(:basket).where.not(baskets: {submitted_at: nil})
+            .group(:idea_id).count
+          update_hash = baskets_counts.map do |id, count|
+            [id, {baskets_count: count}]
+          end.to_h
+          Idea.update(update_hash.keys, update_hash.values)
+          (Idea.ids - baskets_counts.keys).each{ |idea_id| Idea.find(idea_id).update!(baskets_count: 0) }
+        end 
       end
       SideFxBasketService.new.after_update @basket, current_user
       render json: @basket, status: :ok

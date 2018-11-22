@@ -94,38 +94,41 @@ resource "Baskets" do
       end
 
       let(:basket_id) { @basket.id }
-      let(:idea_ids) { create_list(:idea, 3).map(&:id) }
 
-      example_request "Update a basket" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
+      describe '' do
+        let(:idea_ids) { create_list(:idea, 3).map(&:id) }
+
+        example_request "Update a basket" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
+        end
       end
 
       example "'baskets_count' is not updated when adding/removing the idea to an unsubmitted basket", document: false do
         idea = create(:idea)
-        @basket.update!(ideas: [idea])
-        BasketsIdea.counter_culture_fix_counts
+        @basket.update!(ideas: [idea], submitted_at: Time.now)
+        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
         old_baskets_count = idea.reload.baskets_count
 
-        do_request basket: {idea_ids: idea_ids, submitted_at: nil}
+        do_request basket: {idea_ids: [create(:idea).id], submitted_at: nil}
         expect(idea.reload.baskets_count).to eq old_baskets_count 
       end
 
       example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea])
-        BasketsIdea.counter_culture_fix_counts
+        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
         old_baskets_count = idea.reload.baskets_count
 
-        do_request basket: {idea_ids: idea_ids, submitted_at: Time.now}
+        do_request basket: {idea_ids: [create(:idea).id], submitted_at: Time.now}
         expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
       end
 
       example "'baskets_count' is updated when submitting a basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea], submitted_at: nil)
-        BasketsIdea.counter_culture_fix_counts
+        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
         old_baskets_count = idea.reload.baskets_count
 
         do_request basket: {submitted_at: Time.now}
@@ -135,11 +138,11 @@ resource "Baskets" do
       example "'baskets_count' is updated when unsubmitting a basket", document: false do
         idea = create(:idea)
         @basket.update!(ideas: [idea], submitted_at: Time.now)
-        BasketsIdea.counter_culture_fix_counts
+        idea.update!(baskets_count: BasketsIdea.left_outer_joins(:basket).where.not(baskets: {submitted_at: nil}).where(idea_id: idea.id).count)
         old_baskets_count = idea.reload.baskets_count
 
-        do_request basket: {submitted_at: nil}
-        expect(idea.reload.baskets_count).to eq (old_baskets_count - 1)
+        do_request basket: {submitted_at: nil, ideas: []}
+        expect(idea.reload.baskets_count).to eq old_baskets_count
       end
 
       describe "'baskets_count' stay up to date after removing an idea from the basket" do
