@@ -43,7 +43,7 @@ interface Props extends InputProps, QueryProps { }
 
 interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
 
-class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
+class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
 
   convertToGraphFormat = (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
     const { series, topics } = data;
@@ -127,4 +127,4 @@ class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByTopic as any) as any);
+export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByTopicChart as any) as any);

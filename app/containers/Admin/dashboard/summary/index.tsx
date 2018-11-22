@@ -9,8 +9,8 @@ import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '..
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
-import SelectableResourceByProject from './charts/SelectableResourceByProject';
-import SelectableResourceByTopic from './charts/SelectableResourceByTopic';
+import SelectableResourceByProjectChart from './charts/SelectableResourceByProjectChart';
+import SelectableResourceByTopicChart from './charts/SelectableResourceByTopicChart';
 import ResolutionControl from '../components/ResolutionControl';
 import LineChartVotesByTime from './charts/LineChartVotesByTime';
 import TimeControl from '../components/TimeControl';
@@ -329,7 +329,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   resolution={resolution}
                   {...this.state}
                 />
-                <SelectableResourceByProject
+                <SelectableResourceByProjectChart
                   className="dynamicHeight fullWidth"
                   onResourceByProjectChange={this.onResourceByProjectChange}
                   resourceOptions={this.resourceOptions}
@@ -340,7 +340,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 />
               </Column>
               <Column>
-                <SelectableResourceByTopic
+                <SelectableResourceByTopicChart
                   className="fullWidth dynamicHeight"
                   topicOptions={this.filterOptions.topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
