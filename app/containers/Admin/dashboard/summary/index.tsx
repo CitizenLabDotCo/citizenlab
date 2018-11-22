@@ -269,7 +269,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
 
-            projectFilterOptions={this.state.projectFilterOptions}
+            projectFilterOptions={projectFilterOptions}
             groupFilterOptions={this.groupFilterOptions}
             topicFilterOptions={this.topicFilterOptions}
 
