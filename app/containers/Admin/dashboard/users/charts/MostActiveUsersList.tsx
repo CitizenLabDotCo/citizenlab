@@ -108,7 +108,7 @@ interface State {
   engagementScoreList: IUserEngagementScore[] | null;
 }
 
-class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, State> {
+class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -236,4 +236,4 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-export default injectIntl<Props>(withTheme(MostActiveUsersChart as any) as any);
+export default injectIntl<Props>(withTheme(MostActiveUsersList as any) as any);
