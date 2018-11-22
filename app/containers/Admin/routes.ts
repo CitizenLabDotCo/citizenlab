@@ -38,6 +38,7 @@ export default () => ({
   onEnter: isUserAuthorized,
   indexRoute: dashboardRoutes(),
   childRoutes: [
+    dashboardRoutes(),
     ideasRoutes(),
     usersRoutes(),
     projectsRoutes(),
