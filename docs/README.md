@@ -6,7 +6,8 @@
 - In the clustering prototype, comparing clusters using the CTRL key now also works on Mac
 - Widget HTML code can now be copied again
 - Long consequent lines of text now get broken up in multiple lines on the idea page
-- 
+- Unauthorized access to admin panel get redirected to sign-up, and disconnecting from admin panel redirects to landing page.
+
 ### Added
 - Participatory budgeting (PB)
   - A new participation method in continuous and timeline projects
