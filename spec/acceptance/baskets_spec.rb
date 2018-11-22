@@ -102,6 +102,24 @@ resource "Baskets" do
         expect(json_response.dig(:data, :relationships, :ideas, :data).map{|h| h[:id]}).to match_array idea_ids
       end
 
+      example "'baskets_count' is not updated when adding/removing the idea to an unsubmitted basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea])
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {idea_ids: idea_ids, submitted_at: nil}
+        expect(idea.reload.baskets_count).to eq old_baskets_count 
+      end
+
+      example "'baskets_count' is updated when adding/removing the idea to a submitted basket", document: false do
+        idea = create(:idea)
+        @basket.update!(ideas: [idea])
+        old_baskets_count = idea.reload.baskets_count
+
+        do_request basket: {idea_ids: idea_ids, submitted_at: Time.now}
+        expect(idea.reload.baskets_count).not_to eq old_baskets_count 
+      end
+
       describe "'baskets_count' stay up to date after removing an idea from the basket" do
         before do
           @trolley = create_list(:basket, 3, ideas: [idea], participation_context: create(:continuous_budgeting_project, with_permissions: true)).first
@@ -111,6 +129,7 @@ resource "Baskets" do
         let(:idea) { create(:idea) }
         let(:idea_ids) { [] }
         let(:basket_id) { @trolley.id }
+        let(:submitted_at) { Time.now }
 
         example '', document: false do
           do_request

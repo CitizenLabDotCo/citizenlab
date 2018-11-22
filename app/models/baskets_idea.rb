@@ -1,7 +1,9 @@
 class BasketsIdea < ApplicationRecord
   belongs_to :basket
   belongs_to :idea
-  counter_culture :idea, column_name: 'baskets_count'
+  counter_culture :idea, column_name: proc { |basket_idea|
+    basket_idea.basket.submitted_at ? 'baskets_count' : nil
+  }
 
   validates :idea, :basket, presence: true
   validate :idea_with_budget

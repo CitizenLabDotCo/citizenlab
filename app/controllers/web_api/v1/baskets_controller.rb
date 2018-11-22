@@ -21,6 +21,7 @@ class WebApi::V1::BasketsController < ApplicationController
     new_idea_ids = basket_params[:idea_ids]
     begin
       ActiveRecord::Base.transaction do
+        @basket.assign_attributes basket_params.except(:idea_ids)
         if new_idea_ids
           # Remove and add ideas to the basket.
           #
@@ -32,7 +33,6 @@ class WebApi::V1::BasketsController < ApplicationController
           @basket.baskets_ideas.where(idea_id: ideas_to_rmv).each(&:destroy!)
           ideas_to_add.each{ |idea_id| @basket.baskets_ideas.create!(idea_id: idea_id) }
         end
-        @basket.assign_attributes basket_params.except(:idea_ids)
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save
       end
       SideFxBasketService.new.after_update @basket, current_user
