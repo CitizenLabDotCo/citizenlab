@@ -57,9 +57,9 @@ class ProjectPolicy < ApplicationPolicy
       if record.visible_to == 'public' && record.publication_status != 'draft'
         scope.all
       elsif record.visible_to == 'groups' && record.publication_status != 'draft'
-        scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderators(record.id))
+        scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderator(record.id))
       else
-        scope.admin.or(scope.project_moderators(record.id))
+        scope.admin.or(scope.project_moderator(record.id))
       end
     end
   end
