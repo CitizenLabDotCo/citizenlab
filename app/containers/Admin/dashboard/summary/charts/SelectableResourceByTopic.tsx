@@ -56,11 +56,20 @@ class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
       code: topicId as string,
     }));
     const res = sortBy(mapped, 'name');
+
     return res.length > 0 ? res : null;
   }
 
   convertSerie = (serie: IGraphFormat | null) => {
-    const { currentTopicFilter, currentResourceByTopic, topicOptions, intl: { formatMessage } } = this.props;
+    const {
+      currentTopicFilter,
+      currentResourceByTopic,
+      topicOptions,
+      intl: {
+        formatMessage
+      }
+    } = this.props;
+
     if (serie && currentResourceByTopic) {
       const selectedTopic = serie.find(item => item.code === currentTopicFilter);
       const selectedCount = selectedTopic ? selectedTopic.value : 0;
@@ -73,13 +82,16 @@ class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
         selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedTopic);
       }
 
-      const convertedSerie = serie.map(item => {
+      const convertedSerie = serie
+      .filter(item => item.code !== currentTopicFilter)
+      .map(item => {
         const { value, ...rest } = item;
         return { value: value - selectedCount, ...rest };
-      }).filter(item => item.code !== currentTopicFilter);
+      });
 
       return { convertedSerie, selectedCount, selectedName };
     }
+
     return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
   }
 
@@ -94,7 +106,12 @@ class SelectableResourceByTopic extends PureComponent<PropsWithHoCs> {
   }
 
   render() {
-    const { currentResourceByTopic, currentTopicFilter, onResourceByTopicChange } = this.props;
+    const {
+      currentResourceByTopic,
+      currentTopicFilter,
+      onResourceByTopicChange
+    } = this.props;
+
     return (
       <SelectableResourceChart
         {...this.props}
