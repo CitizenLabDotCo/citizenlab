@@ -31,6 +31,7 @@ import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -615,6 +616,7 @@ type State = {
   spamModalVisible: boolean;
   moreActions: IAction[];
   ideaIdForSocialSharing: string | null;
+  translateButtonClicked: boolean;
 };
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
@@ -641,7 +643,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap: false,
       spamModalVisible: false,
       moreActions: [],
-      ideaIdForSocialSharing: null
+      ideaIdForSocialSharing: null,
+      translateButtonClicked: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -824,6 +827,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
+  translateIdea = () => {
+    this.setState({
+      translateButtonClicked: !this.state.translateButtonClicked,
+    });
+  }
+
   render() {
     const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
@@ -961,6 +970,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     </AuthorMeta>
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
+
+                <Button
+                  style="secondary-outlined"
+                  onClick={this.translateIdea}
+                >
+                  {!this.state.translateButtonClicked ? 'Translate this idea' : 'See original text again'}
+                </Button>
 
                 {ideaLocation &&
                   <CSSTransition
