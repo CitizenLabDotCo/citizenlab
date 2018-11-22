@@ -85,10 +85,6 @@ export default class DateInput extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidCatch(error) {
-    console.log(error);
-  }
-
   updateDateTime = (newMoment: moment.Moment | null) => {
     this.setState({ selectedDate: newMoment });
     this.props.onChange(newMoment);
@@ -98,7 +94,7 @@ export default class DateInput extends React.PureComponent<Props, State> {
     this.updateDateTime(newMoment);
   }
 
-  handleFocusChange = ({ focused }) => {
+  handleFocusChange = ({ focused }: { focused: boolean }) => {
     this.setState({ focused });
   }
 

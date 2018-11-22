@@ -17,16 +17,25 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
+
+const StyledContentContainer = styled(ContentContainer)`
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 10px;
+    margin-bottom: 10px;
+  `}
+`;
 
 const Container = styled.div`
   display: flex;
   align-items: center;
-  background: ${rgba(colors.draftYellow, .05)};
+  background: ${rgba(colors.draftYellow, .12)};
   padding: 16px;
   border-radius: 5px;
-  margin-top: 15px;
 `;
 
 const StyledIcon = styled(Icon)`
@@ -78,14 +87,14 @@ class ProjectModeratorIndicator extends PureComponent<Props, State> {
 
     if (authUser && projectId && isProjectModerator({ data: authUser }, projectId)) {
       return (
-        <ContentContainer className={this.props['className']}>
+        <StyledContentContainer className={this.props['className']}>
           <Container>
             <StyledIcon name="shield" />
             <Text>
               <FormattedMessage {...messages.projectModeratorIndicator} />
             </Text>
           </Container>
-        </ContentContainer>
+        </StyledContentContainer>
       );
     }
 

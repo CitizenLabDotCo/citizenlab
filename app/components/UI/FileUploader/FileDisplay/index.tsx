@@ -13,7 +13,6 @@ import { UploadFile } from 'typings';
 
 const Container = styled.div`
   display: flex;
-  max-width: 520px;
   align-items: center;
   color: ${colors.label};
   border: 1px solid ${lighten(.4, colors.label)};
@@ -37,7 +36,7 @@ const FileDownloadLink = styled.a`
   color: ${colors.label};
   display: inline-block;
   margin-right: 10px;
-  word-break: break-all;
+  hyphens: auto;
   max-width: 70%;
 
   &:hover {
@@ -89,7 +88,7 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
     return (
       <Container>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.url} download={file.filename}>
+        <FileDownloadLink href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
           {file.filename}
         </FileDownloadLink>
         <FileSize>({returnFileSize(file.size)})</FileSize>

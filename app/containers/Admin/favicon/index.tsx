@@ -7,7 +7,7 @@ import { Section, SectionField } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 
 // utils
-import { convertUrlToFile } from 'utils/imageTools';
+import { convertUrlToUploadFile } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 
 // services
@@ -39,7 +39,7 @@ const Preview = styled(ImagesDropzone)`
 `;
 
 // typings
-import { CLError, ImageFile } from 'typings';
+import { CLError, UploadFile } from 'typings';
 
 interface IAttributesDiff {
   favicon?: string;
@@ -52,7 +52,7 @@ interface Props {
 type State = {
   attributesDiff: IAttributesDiff;
   errors: { [fieldName: string]:CLError[] };
-  favicon: ImageFile[] | null;
+  favicon: UploadFile[] | null;
   faviconError: string | null;
   saved: boolean;
   loading: boolean;
@@ -76,20 +76,18 @@ class Favicon extends PureComponent<Props, State> {
 
     if (prevProps.tenant !== tenant && !isNilOrError(tenant)) {
       if (tenant.attributes.favicon && tenant.attributes.favicon.large) {
-        convertUrlToFile(tenant.attributes.favicon.large)
-          .then((res) => {
-            if (res) this.setState({ favicon: [res] });
-          });
+        const url = tenant.attributes.favicon.large;
+        convertUrlToUploadFile(url, null, null).then((res) => {
+          if (res) {
+            this.setState({ favicon: [res] });
+          }
+        });
       }
     }
   }
 
-  handleUploadOnAdd = (newImage: ImageFile) => {
+  handleUploadOnAdd = (newImage: UploadFile) => {
     this.setState({ attributesDiff: { favicon: newImage.base64 as string }, favicon: [newImage] });
-  }
-
-  handleUploadOnUpdate = (updatedImages: ImageFile[]) => {
-    this.setState({ favicon: updatedImages });
   }
 
   handleUploadOnRemove = () => {
@@ -135,7 +133,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="152px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder="Drop file here"
                 errorMessage={faviconError}
@@ -149,7 +146,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="32px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}
@@ -163,7 +159,6 @@ class Favicon extends PureComponent<Props, State> {
                 maxImagePreviewWidth="16px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd}
-                onUpdate={this.handleUploadOnUpdate}
                 onRemove={this.handleUploadOnRemove}
                 placeholder=" "
                 errorMessage={faviconError}

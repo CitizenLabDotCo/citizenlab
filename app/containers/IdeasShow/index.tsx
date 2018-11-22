@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import { has, isString, get } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { has, isString, sortBy, last, get, isEmpty } from 'lodash-es';
+import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,20 +22,28 @@ import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import SpamReportForm from 'containers/SpamReport';
 import Modal from 'components/UI/Modal';
 import UserName from 'components/UI/UserName';
+import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
+import AssignBudgetWrapper from './AssignBudgetWrapper';
 import ParentCommentForm from './ParentCommentForm';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
-import VoteControl from 'components/VoteControl';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
+import IdeaSharingModalContent from './IdeaSharingModalContent';
+import FeatureFlag from 'components/FeatureFlag';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 // services
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
-import { ideaStatusStream } from 'services/ideaStatuses';
 import { commentsForIdeaStream, IComments } from 'services/comments';
 import { projectByIdStream, IProject } from 'services/projects';
+import { phaseStream, IPhase } from 'services/phases';
 import { authUserStream } from 'services/auth';
 import { hasPermission } from 'services/permissions';
 
@@ -125,8 +133,8 @@ const IdeaContainer = styled.div`
   padding: 0;
   padding-top: 60px;
   padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -411,6 +419,11 @@ const IdeaBody = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -537,6 +550,17 @@ const VoteControlMobile = styled.div`
   `}
 `;
 
+const AssignBudgetControlMobile = styled.div`
+  margin-top: 15px;
+  margin-bottom: 25px;
+  padding-top: 25px;
+  border-top: solid 1px ${colors.separation};
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 const SharingWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -572,6 +596,7 @@ interface DataProps {
 interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
+  animatePageEnter?: boolean;
 }
 
 interface Props extends DataProps, InputProps { }
@@ -583,11 +608,13 @@ type State = {
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
   project: IProject | null;
+  phases: IPhase[] | null;
   opened: boolean;
   loaded: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   moreActions: IAction[];
+  ideaIdForSocialSharing: string | null;
 };
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
@@ -595,7 +622,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps & InjectedLocalized) {
+  static defaultProps = {
+    animatePageEnter: true
+  };
+
+  constructor(props) {
     super(props);
     const initialState = {
       authUser: null,
@@ -604,11 +635,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImage: null,
       ideaComments: null,
       project: null,
+      phases: null,
       opened: false,
       loaded: false,
       showMap: false,
       spamModalVisible: false,
-      moreActions: []
+      moreActions: [],
+      ideaIdForSocialSharing: null
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -624,8 +657,34 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       filter<string>(ideaId => isString(ideaId))
     );
     const authUser$ = authUserStream().observable;
+    const query = clHistory.getCurrentLocation().query;
+    const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
+    const newIdea$ = urlHasNewIdeaQueryParam ? of({
+      id: get(query, 'new_idea_id'),
+      publish: get(query, 'publish')
+    }) : of(null);
 
     this.subscriptions = [
+      combineLatest(
+        authUser$,
+        newIdea$
+      ).subscribe(async ([authUser, newIdea]) => {
+        if (newIdea && isString(newIdea.id) && !isEmpty(newIdea.id)) {
+          if (authUser) {
+            setTimeout(() => {
+              this.setState({ ideaIdForSocialSharing: newIdea.id });
+            }, 2500);
+
+            if (newIdea.publish === 'true') {
+              await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
+              streams.fetchAllWith({ dataId: [newIdea.id], apiEndpoint: [`${API_PATH}/ideas`] });
+            }
+          }
+
+          window.history.replaceState(null, '', window.location.pathname);
+        }
+      }),
+
       this.ideaId$.pipe(
         distinctUntilChanged(),
         filter(ideaId => !ideaId)
@@ -640,24 +699,29 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaStatusId: string | null = get(idea, 'data.relationships.idea_status.data.id', null);
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
-          const ideaStatus$ = (ideaStatusId ? ideaStatusStream(ideaStatusId).observable : of(null));
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
+          let phases$: Observable<IPhase[] | null> = of(null);
+
+          if (idea.data.attributes.budget && idea.data.relationships.phases && idea.data.relationships.phases.data.length > 0) {
+            phases$ = combineLatest(
+              idea.data.relationships.phases.data.map(phase => phaseStream(phase.id).observable)
+            );
+          }
 
           return combineLatest(
             authUser$,
             ideaImage$,
             ideaAuthor$,
-            ideaStatus$,
             project$,
+            phases$
           ).pipe(
-            map(([authUser, ideaImage, ideaAuthor, _ideaStatus, project]) => ({ authUser, idea, ideaImage, ideaAuthor, project }))
+            map(([authUser, ideaImage, ideaAuthor, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
-      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, loaded: true });
+      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
+        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, phases, loaded: true });
       }),
 
       ideaId$.pipe(
@@ -756,9 +820,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     clHistory.push('/sign-in');
   }
 
+  closeIdeaSocialSharingModal = () => {
+    this.setState({ ideaIdForSocialSharing: null });
+  }
+
   render() {
-    const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, opened, loaded, showMap, moreActions } = this.state;
+    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles } = this.props;
+    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
     let content: JSX.Element | null = null;
 
     if (idea) {
@@ -775,17 +843,37 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const projectId = idea.data.relationships.project.data.id;
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const ideaUrl = location.href;
-
       const auth = this.state.authUser;
-      const utmParams = auth
-        ? {
-          source: 'share_idea',
-          campaign: 'share_content',
-          content: auth.data.id
-        } : {
-          source: 'share_idea',
-          campaign: 'share_content'
-        };
+      const utmParams = auth ? {
+        source: 'share_idea',
+        campaign: 'share_content',
+        content: auth.data.id
+      } : {
+        source: 'share_idea',
+        campaign: 'share_content'
+      };
+      const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
+      const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
+      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+      const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
+      let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextId: string | null = null;
+
+      if (pbProject) {
+        participationContextType = 'Project';
+      } else if (pbPhase) {
+        participationContextType = 'Phase';
+      }
+
+      if (pbProject) {
+        participationContextId = pbProject.data.id;
+      } else if (pbPhase) {
+        participationContextId = pbPhase.data.id;
+      }
 
       content = (
         <>
@@ -830,7 +918,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </StatusContainerMobile>
                 }
 
-                {!inModal &&
+                {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
                       ideaId={idea.data.id}
@@ -848,7 +936,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <AuthorContainer>
                     <Avatar
                       userId={authorId}
-                      size="42px"
+                      size="40px"
                       onClick={authorId ? this.goToUserProfile : () => { }}
                     />
                     <AuthorMeta>
@@ -906,6 +994,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <SeparatorRow />
 
+                {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                  <AssignBudgetControlMobile>
+                    <AssignBudgetWrapper
+                      ideaId={idea.data.id}
+                      projectId={projectId}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
+                    />
+                  </AssignBudgetControlMobile>
+                }
+
                 <SharingMobile
                   url={ideaUrl}
                   twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
@@ -925,15 +1025,30 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
               <RightColumnDesktop>
                 <MetaContent>
-                  <VoteLabel>
-                    <FormattedMessage {...messages.voteOnThisIdea} />
-                  </VoteLabel>
 
-                  <VoteWrapper
-                    ideaId={idea.data.id}
-                    votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
-                    projectId={projectId}
-                  />
+                  {showVoteControl &&
+                    <>
+                      <VoteLabel>
+                        <FormattedMessage {...messages.voteOnThisIdea} />
+                      </VoteLabel>
+
+                      <VoteWrapper
+                        ideaId={idea.data.id}
+                        votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+                        projectId={projectId}
+                      />
+                    </>
+                  }
+
+                  {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                    <AssignBudgetWrapper
+                      ideaId={idea.data.id}
+                      projectId={projectId}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
+                      budgetingDescriptor={budgetingDescriptor}
+                    />
+                  }
 
                   {statusId &&
                     <StatusContainer>
@@ -1024,12 +1139,28 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           timeout={contentTimeout + contentDelay}
           mountOnEnter={false}
           unmountOnExit={false}
+          enter={animatePageEnter}
           exit={true}
         >
           <Container>
             {content}
           </Container>
         </CSSTransition>
+
+        <FeatureFlag name="ideaflow_social_sharing">
+          <Modal
+            opened={!!ideaIdForSocialSharing}
+            close={this.closeIdeaSocialSharingModal}
+            fixedHeight={false}
+            hasSkipButton={true}
+            skipText={<FormattedMessage {...messages.skipSharing} />}
+            label={formatMessage(messages.modalShareLabel)}
+          >
+            {ideaIdForSocialSharing &&
+              <IdeaSharingModalContent ideaId={ideaIdForSocialSharing} />
+            }
+          </Modal>
+        </FeatureFlag>
       </>
     );
   }

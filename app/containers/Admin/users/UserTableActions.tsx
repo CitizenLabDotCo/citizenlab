@@ -283,7 +283,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         this.setState({ processing: true });
         await Promise.all(promises);
         await timeout(1000);
-        await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+        await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
         success();
         return true;
       } catch (error) {
@@ -295,7 +295,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
 
         // if error because users already part of group(s)
         if (error && error.json && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
-          await streams.fetchAllStreamsWithEndpoint(`${API_PATH}/groups`);
+          await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();
           return true;
         } else {
@@ -397,12 +397,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     <FormattedMessage {...messages.moveUsers} />
                   </DropdownFooterButton>
                 )}
-              >
-                <ActionButton className="e2e-move-users noRightMargin">
-                  <StyledIcon name="moveFolder" />
-                  <FormattedMessage {...messages.moveUsers} />
-                </ActionButton>
-              </Dropdown>
+              />
             </DropdownWrapper>
           </ActionButtonWrapper>
         }

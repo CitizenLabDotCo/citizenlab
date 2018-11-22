@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, has } from 'lodash-es';
+import { isString, has, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 
@@ -8,9 +8,14 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream } from 'services/ideas';
+import { ideaByIdStream, IIdea } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
+import { projectByIdStream, IProject } from 'services/projects';
+import { phaseStream, IPhase } from 'services/phases';
+
+// utils
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -123,11 +128,10 @@ const Vote: any = styled.div`
 
 const Upvote = Vote.extend`
   margin-right: 12px;
-  margin-right: 8px;
 
   &:not(.enabled) {
     ${VoteCount} {
-      margin-right: 10px;
+      margin-right: 14px;
     }
   }
 
@@ -190,15 +194,18 @@ const Downvote = Vote.extend`
   }
 `;
 
-type Props = {
+interface Props {
   ideaId: string;
   unauthenticatedVoteClick?: () => void;
   disabledVoteClick?: () => void;
   size: '1' | '2' | '3';
-};
+}
 
-type State = {
-  authUser: IUser | null,
+interface State {
+  idea: IIdea | null;
+  project: IProject | null;
+  phases: IPhase[] | null;
+  authUser: IUser | null;
   upvotesCount: number;
   downvotesCount: number;
   voting: 'up' | 'down' | null;
@@ -209,7 +216,7 @@ type State = {
   cancellingEnabled: boolean | null;
   votingFutureEnabled: string | null;
   votingDisabledReason: string | null;
-};
+}
 
 export default class VoteControl extends PureComponent<Props, State> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
@@ -218,9 +225,12 @@ export default class VoteControl extends PureComponent<Props, State> {
   upvoteElement: HTMLDivElement | null;
   downvoteElement: HTMLDivElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
+      idea: null,
+      project: null,
+      phases: null,
       authUser: null,
       upvotesCount: 0,
       downvotesCount: 0,
@@ -309,7 +319,30 @@ export default class VoteControl extends PureComponent<Props, State> {
         }));
       }),
 
-      idea$.subscribe((idea) => {
+      idea$.pipe(
+        switchMap((idea) => {
+          let project$: Observable<IProject | null> = of(null);
+          let phases$: Observable<IPhase[] | null> = of(null);
+          const hasPhases = !isEmpty(get(idea.data.relationships.phases, 'data', null));
+
+          if (idea.data.attributes.budget && !hasPhases && idea.data.relationships.project.data) {
+            project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
+          }
+
+          if (idea.data.attributes.budget && hasPhases && idea.data.relationships.phases.data.length > 0) {
+            phases$ = combineLatest(
+              idea.data.relationships.phases.data.map(phase => phaseStream(phase.id).observable)
+            );
+          }
+
+          return combineLatest(
+            project$,
+            phases$
+          ).pipe(
+            map(([project, phases]) => ({ idea, project, phases }))
+          );
+        })
+      ).subscribe(({ idea, project, phases }) => {
         const upvotesCount = idea.data.attributes.upvotes_count;
         const downvotesCount = idea.data.attributes.downvotes_count;
         const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
@@ -317,7 +350,7 @@ export default class VoteControl extends PureComponent<Props, State> {
         const votingDisabledReason = idea.data.relationships.action_descriptor.data.voting.disabled_reason;
         const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
 
-        this.setState({ upvotesCount, downvotesCount, votingEnabled, cancellingEnabled, votingDisabledReason, votingFutureEnabled });
+        this.setState({ idea, project, phases, upvotesCount, downvotesCount, votingEnabled, cancellingEnabled, votingDisabledReason, votingFutureEnabled });
       }),
 
       authUser$.subscribe((authUser) => {
@@ -351,9 +384,9 @@ export default class VoteControl extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-	votingAnimationDone = () => {
-		this.setState({ votingAnimation: null });
-	}
+  votingAnimationDone = () => {
+    this.setState({ votingAnimation: null });
+  }
 
   onClickUpvote = (event) => {
     event.preventDefault();
@@ -369,12 +402,12 @@ export default class VoteControl extends PureComponent<Props, State> {
 
   onClickVote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, votingEnabled, cancellingEnabled } = this.state;
-    const { ideaId } = this.props;
+    const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
-      this.props.unauthenticatedVoteClick && this.props.unauthenticatedVoteClick();
+      unauthenticatedVoteClick && unauthenticatedVoteClick();
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-        this.props.disabledVoteClick && this.props.disabledVoteClick();
+      disabledVoteClick && disabledVoteClick();
     } else if (authUser && this.state.voting === null) {
       try {
         this.voting$.next(voteMode);
@@ -450,12 +483,17 @@ export default class VoteControl extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { size } = this.props;
-    const { upvotesCount, downvotesCount, myVoteMode, votingAnimation, votingEnabled } = this.state;
-
+    const { project, phases, upvotesCount, downvotesCount, myVoteMode, votingAnimation, votingEnabled } = this.state;
     const upvotingEnabled = this.upvotingEnabled();
     const downvotingEnabled = this.downvotingEnabled();
+    const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
+    const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
+    const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
+    const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
+    const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
+    const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
 
-    if (this.hideVotes()) return null;
+    if (this.hideVotes() || !showVoteControl) return null;
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>

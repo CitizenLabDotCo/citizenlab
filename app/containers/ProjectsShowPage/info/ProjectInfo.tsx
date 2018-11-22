@@ -30,13 +30,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 70px;
-  margin-bottom: 90px;
+  margin-top: 50px;
+  margin-bottom: 70px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 60px;
   `}
 `;
@@ -107,6 +107,11 @@ const ProjectDescriptionStyled = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -180,6 +185,7 @@ interface Props extends InputProps, DataProps {}
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
   const { project, projectImages, projectFiles, intl: { formatMessage }, authUser } = props;
+
   if (isNilOrError(project)) return null;
 
   const projectUrl = location.href;

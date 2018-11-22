@@ -60,7 +60,7 @@ export function commentsForIdeaStream(ideaId: string) {
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments` });
 }
 
-export function addCommentToIdea(ideaId: string, authorId: string, body: { [key: string]: string }) {
+export async function addCommentToIdea(ideaId: string, authorId: string, body: { [key: string]: string }) {
   const bodyData = {
     comment: {
       author_id: authorId,
@@ -68,10 +68,12 @@ export function addCommentToIdea(ideaId: string, authorId: string, body: { [key:
     }
   };
 
-  return streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, bodyData);
+  const response = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, bodyData);
+  streams.fetchAllWith({ dataId: [ideaId] });
+  return response;
 }
 
-export function addCommentToComment(ideaId: string, authorId: string, parentCommentId: string, body: { [key: string]: string }) {
+export async function addCommentToComment(ideaId: string, authorId: string, parentCommentId: string, body: { [key: string]: string }) {
   const bodyData = {
     comment: {
       author_id: authorId,
@@ -80,7 +82,9 @@ export function addCommentToComment(ideaId: string, authorId: string, parentComm
     }
   };
 
-  return streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, bodyData);
+  const response = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, bodyData);
+  streams.fetchAllWith({ dataId: [ideaId] });
+  return response;
 }
 
 export function updateComment(commentId: string, object: IUpdatedComment) {

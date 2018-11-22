@@ -115,7 +115,7 @@ export type TRule = (
   }
   | {
     ruleType?: 'role';
-    predicate?: 'is_admin' | 'not_is_admin';
+    predicate?: 'is_admin' | 'not_is_admin' | 'is_project_moderator' | 'not_is_project_moderator' | 'is_normal_user' | 'not_is_normal_user';
     value?: undefined;
   }
   | {
@@ -223,6 +223,10 @@ export const ruleTypeConstraints = {
   role: {
     is_admin: null,
     not_is_admin: null,
+    is_project_moderator: null,
+    not_is_project_moderator: null,
+    is_normal_user: null,
+    not_is_normal_user: null,
   },
   participated_in_project: {
     is: ProjectValueSelector,
