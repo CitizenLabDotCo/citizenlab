@@ -73,6 +73,10 @@ const UserName = styled(Link)`
   margin-right: 10px;
 `;
 
+const DeletedUserName = styled.span`
+  font-style: italic;
+`;
+
 const UserScore = styled<any, 'div'>('div')`
   background-color: ${props => props.theme.chartFill};
   width: ${props => props.value * 8}px;
@@ -101,10 +105,7 @@ interface Props {
 }
 
 interface State {
-  serie: {
-    value: number;
-    userId: string;
-  }[] | null;
+  engagementScoreList: IUserEngagementScore[] | null;
 }
 
 class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, State> {
@@ -113,7 +114,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      serie: null,
+      engagementScoreList: null,
     };
   }
 
@@ -133,13 +134,6 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscription.unsubscribe();
   }
 
-  convertToGraphFormat = (serie: IUserEngagementScore[]) => {
-    return serie.map(userEngagementScore => ({
-      value: userEngagementScore.attributes.sum_score,
-      userId: userEngagementScore.relationships.user.data.id,
-    }));
-  }
-
   resubscribe(
     startAt = this.props.startAt,
     endAt = this.props.endAt,
@@ -153,16 +147,16 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
         end_at: endAt,
         group: currentGroupFilter
       },
-    }).observable.subscribe((stream) => {
-      const serie = stream.data;
-      const convertedSerie = this.convertToGraphFormat(serie);
-      this.setState({ serie: convertedSerie });
+    }).observable.subscribe((response) => {
+      const engagementScoreList = response.data;
+      this.setState({ engagementScoreList });
     });
   }
 
   formatName = (firstName: string, lastName: string) => {
     let fullName = `${firstName} ${lastName}`;
 
+    // Add ellipsis to name if it's too long
     if (fullName.length > 20) {
       fullName = `${fullName.slice(0, 22)}...`;
     }
@@ -172,7 +166,7 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
 
   render() {
     const { className, infoMessage } = this.props;
-    const { serie } = this.state;
+    const { engagementScoreList } = this.state;
     const theme = this.props['theme'];
     const { chartFill } = theme;
     const barHoverColor = rgba(chartFill, .25);
@@ -195,39 +189,45 @@ class MostActiveUsersChart extends PureComponent<Props & InjectedIntlProps, Stat
               />}
             </GraphCardTitle>
           </GraphCardHeader>
-          {!serie ?
+          {!engagementScoreList ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
             <UserList>
-              {serie.map((item) => (
-                <UserListItem key={item.userId}>
-                  <User>
-                    <UserImage size="28px" userId={item.userId} />
-                    <GetUser id={item.userId}>
-                      {user => {
-                        const firstName: string = get(user, 'attributes.first_name', '');
-                        const lastName: string = get(user, 'attributes.last_name', '');
-                        const fullName = this.formatName(firstName, lastName);
+              {engagementScoreList.map((item) => {
+                const itemId = item.id;
+                const userId = item.relationships.user.data.id;
+                const userScore = item.attributes.sum_score;
 
-                        return !isNilOrError(user) ?
-                          <UserName to={`/profile/${user.attributes.slug}`}>
-                            {fullName}
-                          </UserName>
-                        :
-                          <UserName to={'/'}>
-                            <FormattedMessage {...messages.deletedUser} />
-                          </UserName>;
+                return (
+                  <UserListItem key={itemId}>
+                    <User>
+                      <UserImage size="28px" userId={userId} />
+                      <GetUser id={userId}>
+                        {user => {
+                          const firstName: string = get(user, 'attributes.first_name', '');
+                          const lastName: string = get(user, 'attributes.last_name', '');
+                          const fullName = this.formatName(firstName, lastName);
+
+                          return !isNilOrError(user) ?
+                            <UserName to={`/profile/${user.attributes.slug}`}>
+                              {fullName}
+                            </UserName>
+                          :
+                            <DeletedUserName>
+                              <FormattedMessage {...messages.deletedUser} />
+                            </DeletedUserName>;
+                          }
                         }
-                      }
-                    </GetUser>
-                  </User>
-                  <UserScore hoverColor={barHoverColor} value={item.value}>
-                    <span>{item.value}</span>
-                  </UserScore>
-                </UserListItem>
-              ))}
+                      </GetUser>
+                    </User>
+                    <UserScore hoverColor={barHoverColor} value={userScore}>
+                      {userScore}
+                    </UserScore>
+                  </UserListItem>
+                );
+              })}
             </UserList>
           }
         </GraphCardInner>
