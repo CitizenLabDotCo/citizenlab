@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { get, isString, isObject, isUndefined, includes } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -103,17 +103,23 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, State> {
+class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
-  redirectToLandingPage = () => {
+  redirect = () => {
     const { location, authUser, idea } = this.props;
     const authError = includes(location.pathname, 'authentication-error');
-    const ideaToPublishId = ((!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') ? idea.id : null);
 
-    clHistory.push({
-      pathname: '/',
-      search: (ideaToPublishId ? `?new_idea_id=${ideaToPublishId}&publish=true` : undefined)
-    });
+    if (!authError && !isNilOrError(authUser) && !isNilOrError(idea) && idea.attributes.publication_status === 'draft') {
+      const ideaToPublishId = idea.id;
+      const ideaToPublishSlug = idea.attributes.slug;
+
+      clHistory.push({
+        pathname: `/ideas/${ideaToPublishSlug}`,
+        search: ((ideaToPublishId && ideaToPublishSlug) ? `?new_idea_id=${ideaToPublishId}&new_idea_slug=${ideaToPublishSlug}&publish=true` : undefined)
+      });
+    } else {
+      clHistory.push('/');
+    }
   }
 
   render() {
@@ -124,7 +130,7 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
       const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
 
       if (!authError && (!isObject(authUser) || (isObject(authUser) && isString(registrationCompletedAt)))) {
-        this.redirectToLandingPage();
+        this.redirect();
         return null;
       }
 
@@ -138,7 +144,7 @@ class CompleteSignUpPage extends React.PureComponent<Props & WithRouterProps, St
               {!authError ? (
                 <>
                   <Title><FormattedMessage {...messages.title} /></Title>
-                  <Step2 onCompleted={this.redirectToLandingPage} />
+                  <Step2 onCompleted={this.redirect} />
                 </>
               ) : (
                 <>

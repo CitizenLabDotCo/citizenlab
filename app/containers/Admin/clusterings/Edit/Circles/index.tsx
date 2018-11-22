@@ -20,7 +20,7 @@ interface InputProps {
   activeComparison: number;
   onClickNode: (Node) => void;
   onShiftClickNode: (Node) => void;
-  onCtrlCickNode: (Node) => void;
+  onCtrlClickNode: (Node) => void;
 }
 
 interface DataProps {
@@ -33,6 +33,7 @@ type State = {
   svgSize: number | null;
   nodes: D3Node[];
   hoveredNode: D3Node | null;
+  ctrlKeyPressed: boolean;
 };
 
 const Container = styled.div`
@@ -50,17 +51,24 @@ class Circles extends PureComponent<Props, State> {
       svgSize: null,
       nodes: [],
       hoveredNode: null,
+      ctrlKeyPressed: false
     };
     this.containerRef = null;
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.calculateNodePositions);
+    window.addEventListener('keydown', this.handleOnKeyDown);
+    window.addEventListener('keyup', this.handleOnKeyUp);
+    window.addEventListener('contextmenu', this.handleContextMenu, false);
     this.calculateNodePositions();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.calculateNodePositions);
+    window.removeEventListener('keydown', this.handleOnKeyDown);
+    window.removeEventListener('keyup', this.handleOnKeyUp);
+    window.removeEventListener('contextmenu', this.handleContextMenu);
   }
 
   calculateNodePositions = () => {
@@ -92,10 +100,32 @@ class Circles extends PureComponent<Props, State> {
   handleOnClickNode = (node: D3Node, event: MouseEvent) => {
     if (event.shiftKey) {
       this.props.onShiftClickNode(node.data);
-    } else if (event.ctrlKey) {
-      this.props.onCtrlCickNode(node.data);
+    } else if (this.state.ctrlKeyPressed) {
+      this.props.onCtrlClickNode(node.data);
     } else {
       this.props.onClickNode(node.data);
+    }
+  }
+
+  handleContextMenu = (event: Event) => {
+    event.preventDefault();
+
+    this.setState({ ctrlKeyPressed: true });
+
+    if (this.state.hoveredNode) {
+      this.props.onCtrlClickNode(this.state.hoveredNode.data);
+    }
+  }
+
+  handleOnKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Control') {
+      this.setState({ ctrlKeyPressed: true });
+    }
+  }
+
+  handleOnKeyUp = (event: KeyboardEvent) => {
+    if (event.key === 'Control') {
+      this.setState({ ctrlKeyPressed: false });
     }
   }
 

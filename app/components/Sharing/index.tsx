@@ -55,8 +55,8 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 5px 0;
-    padding: 11px 12px;
+    margin: 6px 0;
+    padding: 12px 12px;
     border-radius: 5px;
     cursor: pointer;
     transition: all 100ms ease-out;
@@ -101,7 +101,7 @@ const Container = styled.div`
       }
 
       &:hover {
-        background: ${(darken(0.15, colors.emailBg))};
+        background: ${(darken(0.1, colors.emailBg))};
       }
     }
   }
@@ -109,9 +109,13 @@ const Container = styled.div`
 
 interface ITracks {
   clickFbShare: () => void;
+  clickFbShareInModal: () => void;
   clickTwitterShare: () => void;
+  clickTwitterShareInModal: () => void;
   clickMessengerShare: () => void;
+  clickMessengerShareInModal: () => void;
   clickEmailShare: () => void;
+  clickEmailShareInModal: () => void;
 }
 
 export type UtmParams = {
@@ -121,6 +125,7 @@ export type UtmParams = {
 };
 
 interface InputProps {
+  location?: 'modal';
   className?: string;
   url: string;
   twitterMessage: string;
@@ -151,15 +156,20 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
   render() {
     const {
       clickFbShare,
+      clickFbShareInModal,
       clickTwitterShare,
+      clickTwitterShareInModal,
       clickMessengerShare,
+      clickMessengerShareInModal,
       clickEmailShare,
+      clickEmailShareInModal,
       tenant,
       twitterMessage,
       emailSubject,
       emailBody,
       className,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      location
     } = this.props;
 
     if (!isNilOrError(tenant)) {
@@ -169,6 +179,22 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
       const messengerButtonText = formatMessage(messages.shareViaMessenger);
       const twitterButtonText = formatMessage(messages.shareOnTwitter);
       const emailButtonText = formatMessage(messages.shareByEmail);
+      let trackFbShare;
+      let trackTwitterShare;
+      let trackEmailShare;
+      let trackMessengerShare;
+
+      if (location === 'modal') {
+        trackFbShare = clickFbShareInModal;
+        trackTwitterShare = clickTwitterShareInModal;
+        trackEmailShare = clickEmailShareInModal;
+        trackMessengerShare = clickMessengerShareInModal;
+      } else {
+        trackFbShare = clickFbShare;
+        trackTwitterShare = clickTwitterShare;
+        trackEmailShare = clickEmailShare;
+        trackMessengerShare = clickMessengerShare;
+      }
 
       const facebook = (facebookAppId ? (
         <FacebookButton
@@ -176,7 +202,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           url={this.buildUrl('facebook')}
           className="sharingButton facebook first"
           sharer={true}
-          onClick={clickFbShare}
+          onClick={trackFbShare}
         >
           <StyledIcon name="facebook" />
           <Text>{facebookButtonText}</Text>
@@ -187,7 +213,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
         <a
           className="sharingButton messenger"
           href={`fb-messenger://share/?link=${encodeURIComponent(this.buildUrl('messenger'))}&app_id=${facebookAppId}`}
-          onClick={clickMessengerShare}
+          onClick={trackMessengerShare}
         >
           <StyledIcon name="messenger" />
           <Text>{messengerButtonText}</Text>
@@ -200,7 +226,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
           url={this.buildUrl('twitter')}
           className="sharingButton twitter"
           sharer={true}
-          onClick={clickTwitterShare}
+          onClick={trackTwitterShare}
         >
           <StyledIcon name="twitter" />
           <Text>{twitterButtonText}</Text>
@@ -211,7 +237,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
         <a
           className="sharingButton email"
           href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
-          onClick={clickEmailShare}
+          onClick={trackEmailShare}
         >
           <StyledIcon name="email" />
           <Text>{emailButtonText}</Text>
@@ -234,9 +260,13 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
 
 const SharingWithHocs = injectIntl<Props>(injectTracks<Props>({
   clickFbShare: tracks.clickFbShare,
+  clickFbShareInModal: tracks.clickFbShareInModal,
   clickTwitterShare: tracks.clickTwitterShare,
+  clickTwitterShareInModal: tracks.clickTwitterShareInModal,
   clickMessengerShare: tracks.clickMessengerShare,
+  clickMessengerShareInModal: tracks.clickMessengerShareInModal,
   clickEmailShare: tracks.clickEmailShare,
+  clickEmailShareInModal: tracks.clickEmailShareInModal,
 })(Sharing));
 
 const Data = adopt<DataProps, InputProps>({

@@ -41,7 +41,10 @@ const Row = styled.div`
 `;
 
 const ToggleRow = Row.extend`
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 10px;
+  max-width: 288px;
 
   &.last {
     margin-bottom: 0px;
@@ -49,16 +52,19 @@ const ToggleRow = Row.extend`
 `;
 
 const ToggleLabel = styled(Label)`
-  width: 100%;
-  max-width: 200px;
   color: #333;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
+  margin-right: 15px;
 `;
 
 const VotingLimitInput = styled(Input)`
   width: 100px;
   height: 46px !important;
+`;
+
+const BudgetingAmountInput = styled(Input)`
+  max-width: 288px;
 `;
 
 export interface IParticipationContextConfig {
@@ -200,10 +206,11 @@ export default class ParticipationContext extends PureComponent<Props, State> {
         survey_service
       };
     } else if (participation_method === 'budgeting') {
-      output = {
+      output = omitBy({
         participation_method,
-        max_budget
-      };
+        max_budget,
+        commenting_enabled
+      }, isNil) as IParticipationContextConfig;
     }
 
     return output;
@@ -227,7 +234,7 @@ export default class ParticipationContext extends PureComponent<Props, State> {
     this.setState({
       participation_method,
       posting_enabled: (participation_method === 'ideation' ? true : null),
-      commenting_enabled: (participation_method === 'ideation' ? true : null),
+      commenting_enabled: ((participation_method === 'ideation' ||  participation_method === 'budgeting') ? true : null),
       voting_enabled: (participation_method === 'ideation' ? true : null),
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
@@ -361,19 +368,33 @@ export default class ParticipationContext extends PureComponent<Props, State> {
             </SectionField>
 
             {participation_method === 'budgeting' &&
-              <SectionField>
-                <Label>
-                  <FormattedMessage {...messages.amountPerCitizen} />
-                </Label>
-                <Input
-                  onChange={this.handleBudgetingAmountChange}
-                  type="number"
-                  min="1"
-                  placeholder=""
-                  value={(max_budget ? max_budget.toString() : null)}
-                />
-                <Error text={noBudgetingAmount} />
-              </SectionField>
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.amountPerCitizen} />
+                  </Label>
+                  <BudgetingAmountInput
+                    onChange={this.handleBudgetingAmountChange}
+                    type="number"
+                    min="1"
+                    placeholder=""
+                    value={(max_budget ? max_budget.toString() : null)}
+                  />
+                  <Error text={noBudgetingAmount} />
+                </SectionField>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.phasePermissions} />
+                  </Label>
+
+                  <ToggleRow>
+                    <ToggleLabel>
+                      <FormattedMessage {...messages.commentingEnabled} />
+                    </ToggleLabel>
+                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                  </ToggleRow>
+                </SectionField>
+              </>
             }
 
             {participation_method === 'ideation' &&

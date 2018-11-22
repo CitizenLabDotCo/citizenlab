@@ -48,7 +48,9 @@ export default class GetPhase extends React.Component<Props, State> {
         tap(() => resetOnChange && this.setState({ phase: undefined })),
         filter(({ id }) => isString(id)),
         switchMap(({ id }: { id: string }) => phaseStream(id).observable)
-      ).subscribe((phase) => this.setState({ phase: phase.data }))
+      ).subscribe((phase) => {
+        this.setState({ phase: phase.data });
+      })
     ];
   }
 

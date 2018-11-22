@@ -72,7 +72,9 @@ const ProjectNavbarIcon = styled(Icon)`
   transition: fill 100ms ease-out;
 
   &.idea {
-    margin-top: -4px;
+    flex: 0 0 20px;
+    height: 20px;
+    margin-top: -2px;
   }
 `;
 
@@ -152,7 +154,6 @@ interface State {
 }
 
 class ProjectNavbar extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -164,8 +165,15 @@ class ProjectNavbar extends PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  confirmExpenses = () => {
+  setRef = (ref: HTMLDivElement) => {
+    const currentPath = location.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
+    if (ref && lastUrlSegment === 'events') {
+      setTimeout(() => {
+        ref.scrollLeft += 200;
+      }, 10);
+    }
   }
 
   render() {
@@ -180,16 +188,14 @@ class ProjectNavbar extends PureComponent<Props, State> {
         const projectMethod = project.attributes.participation_method;
         const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
-
         let participationContextType: 'Project' | 'Phase' | null = null;
+        let participationContextId: string | null = null;
 
         if (isPBProject) {
           participationContextType = 'Project';
         } else if (isPBPhase) {
           participationContextType = 'Phase';
         }
-
-        let participationContextId: string | null = null;
 
         if (isPBProject) {
           participationContextId = project.id;
@@ -198,7 +204,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
         }
 
         return (
-          <ProjectNavbarWrapper>
+          <ProjectNavbarWrapper innerRef={this.setRef}>
             <StyledContentContainer>
               <ProjectNavbarItems>
 

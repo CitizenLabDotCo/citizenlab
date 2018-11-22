@@ -507,7 +507,7 @@ const icons = {
   add: (className, title) => (
     <svg className={`cl-icon ${className ? className : ''}`} width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
       {injectTitle(title)}
-      <path d="M11.5 0C5.14625 0 0 5.14625 0 11.5C0 17.8538 5.14625 23 11.5 23C17.8538 23 23 17.8538 23 11.5C23 5.14625 17.8538 0 11.5 0ZM17.25 12.65H12.65V17.25H10.35V12.65H5.75V10.35H10.35V5.75H12.65V10.35H17.25V12.65Z" fill="#01A1B1" />
+      <path d="M11.5 0C5.14625 0 0 5.14625 0 11.5C0 17.8538 5.14625 23 11.5 23C17.8538 23 23 17.8538 23 11.5C23 5.14625 17.8538 0 11.5 0ZM17.25 12.65H12.65V17.25H10.35V12.65H5.75V10.35H10.35V5.75H12.65V10.35H17.25V12.65Z" />
     </svg>
   ),
   circleInfo: (className, title) => (

@@ -97,10 +97,6 @@ export default defineMessages({
     id: 'app.containers.Projects.displayCards',
     defaultMessage: 'Card view',
   },
-  aboutThisPhase: {
-    id: 'app.containers.Projects.aboutThisPhase',
-    defaultMessage: 'About this phase',
-  },
   ideasTitle: {
     id: 'app.containers.Projects.ideasTitle',
     defaultMessage: 'Ideas',
@@ -168,5 +164,9 @@ export default defineMessages({
   noExpenses: {
     id: 'app.containers.Projects.noExpenses',
     defaultMessage: `You don't have any expenses yet`,
+  },
+  byAuthor: {
+    id: 'app.containers.Projects.byAuthor',
+    defaultMessage: `by {authorName}`,
   }
 });

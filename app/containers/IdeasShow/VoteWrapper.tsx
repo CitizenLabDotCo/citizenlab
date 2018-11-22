@@ -1,10 +1,8 @@
-import React from 'react';
-
+import React, { PureComponent } from 'react';
 import VotingPopContainer from './VotingPopContainer';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import Unauthenticated from './Unauthenticated';
-
 import { IIdeaData } from 'services/ideas';
 
 type Props = {
@@ -17,7 +15,7 @@ type State = {
   error: 'votingDisabled' | 'unauthenticated' | null;
 };
 
-class VoteWrapper extends React.PureComponent<Props, State> {
+class VoteWrapper extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,13 +32,16 @@ class VoteWrapper extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { ideaId, projectId, votingDescriptor } = this.props;
     const { error } = this.state;
-    if (!this.props.ideaId) return null;
+
+    if (!ideaId) return null;
+
     return (
-      <React.Fragment>
+      <>
         {!error &&
           <VoteControl
-            ideaId={this.props.ideaId}
+            ideaId={ideaId}
             unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
@@ -49,8 +50,8 @@ class VoteWrapper extends React.PureComponent<Props, State> {
         {error === 'votingDisabled' &&
           <VotingPopContainer icon="lock-outlined">
             <VotingDisabled
-              votingDescriptor={this.props.votingDescriptor}
-              projectId={this.props.projectId}
+              votingDescriptor={votingDescriptor}
+              projectId={projectId}
             />
           </VotingPopContainer>
         }
@@ -59,7 +60,7 @@ class VoteWrapper extends React.PureComponent<Props, State> {
             <Unauthenticated />
           </VotingPopContainer>
         }
-      </React.Fragment>
+      </>
     );
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isError, isUndefined } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,9 +33,11 @@ const Container = styled.div`
   flex-direction: column;
   background: ${colors.background};
 
-  &.whiteBg {
-    background: #fff;
-  }
+  ${media.biggerThanMaxTablet`
+    &.whiteBg {
+      background: #fff;
+    }
+  `}
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -83,7 +85,7 @@ interface State {
   loaded: boolean;
 }
 
-class ProjectsShowPage extends React.PureComponent<Props & WithRouterProps, State> {
+class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { children, locale, tenant, project, phases, events } = this.props;
     const { slug } = this.props.params;

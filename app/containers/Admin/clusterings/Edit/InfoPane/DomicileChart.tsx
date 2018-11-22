@@ -61,9 +61,9 @@ class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
         };
 
         series.forEach((serie, serieIndex) => {
-          record[`up ${serieIndex + 1}`] = serie.up[area.id] || 0;
-          record[`down ${serieIndex + 1}`] = -serie.down[area.id] || 0;
-          record[`total ${serieIndex + 1}`] = serie.total[area.id] || 0;
+          record[`up ${serieIndex + 1}`] = serie.series.up[area.id] || 0;
+          record[`down ${serieIndex + 1}`] = -serie.series.down[area.id] || 0;
+          record[`total ${serieIndex + 1}`] = serie.series.total[area.id] || 0;
         });
 
         return record;
@@ -73,9 +73,9 @@ class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
         label: '_blank',
       };
       series.forEach((serie, serieIndex) => {
-        blankRecord[`up ${serieIndex + 1}`] = serie.up['_blank'] || 0;
-        blankRecord[`down ${serieIndex + 1}`] = -serie.down['_blank'] || 0;
-        blankRecord[`total ${serieIndex + 1}`] = serie.total['_blank'] || 0;
+        blankRecord[`up ${serieIndex + 1}`] = serie.series.up['_blank'] || 0;
+        blankRecord[`down ${serieIndex + 1}`] = -serie.series.down['_blank'] || 0;
+        blankRecord[`total ${serieIndex + 1}`] = serie.series.total['_blank'] || 0;
       });
 
       return [...areaBucketsRecord, blankRecord];
