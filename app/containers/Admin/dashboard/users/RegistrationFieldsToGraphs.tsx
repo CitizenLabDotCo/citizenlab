@@ -35,9 +35,13 @@ interface Props extends InputProps, DataProps { }
 
 class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
-    const { series: { users }, options } = data;
+    const {
+      series: {
+        users
+      },
+      options
+    } = data;
     const res = map(users, (value, key) => {
-
       return ({
         value,
         name: options && options[key]
@@ -49,14 +53,23 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
         code: key,
       });
     });
+
     return res.length > 0 ? res : null;
   }
 
   render() {
-    const { customFields, localize, startAt, endAt, currentGroupFilter } = this.props;
+    const {
+      customFields,
+      localize,
+      startAt,
+      endAt,
+      currentGroupFilter
+    } = this.props;
+
     if (isNilOrError(customFields)) {
       return null;
     }
+
     return customFields.map((field, index) => {
       if (field.attributes.code === 'gender') {
         return (
@@ -68,6 +81,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
           />
         );
       }
+
       if (field.attributes.code === 'domicile') {
         return (
           <AreaChart
@@ -78,6 +92,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
           />
         );
       }
+
       if (field.attributes.enabled) {
         if (field.attributes.input_type === 'checkbox') {
           return (
@@ -109,6 +124,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
           );
         }
       }
+
       return null;
     });
   }

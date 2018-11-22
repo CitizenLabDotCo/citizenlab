@@ -203,13 +203,15 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
   }
 
   render() {
-    const { chartLabelSize,
+    const {
+      chartLabelSize,
       chartLabelColor,
       chartStroke,
       chartStrokeGreen,
       chartStrokeRed,
       animationBegin,
-      animationDuration } = this.props['theme'];
+      animationDuration
+    } = this.props['theme'];
     const { formatMessage } = this.props.intl;
     const { serie } = this.state;
     const { className } = this.props;

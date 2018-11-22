@@ -108,7 +108,13 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { colorMain, chartLabelSize, chartLabelColor, animationDuration, animationBegin } = this.props['theme'];
+    const {
+      colorMain,
+      chartLabelSize,
+      chartLabelColor,
+      animationDuration,
+      animationBegin
+    } = this.props['theme'];
     const { className } = this.props;
     const { serie } = this.state;
 
