@@ -73,10 +73,14 @@ class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedL
   generateGroupFilterOptions = () => {
     const {
       groups,
-      groups: { groupsList },
+      groups: {
+        groupsList
+      },
       localize,
-      intl: { formatMessage } } = this.props;
-
+      intl: {
+        formatMessage
+      }
+    } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(groups) && !isNilOrError(groupsList)) {

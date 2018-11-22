@@ -223,7 +223,6 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
   render() {
     const { children, authUser } = this.props;
     const { formatMessage } = this.props.intl;
-
     const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin' },
       { label: formatMessage(messages.tabUsers), url: '/admin/dashboard-users' },
@@ -232,6 +231,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
     const resource = {
       title: formatMessage(messages.viewPublicResource)
     };
+
     if (authUser) {
       if (isAdmin({ data: authUser })) {
         return (
@@ -265,6 +265,7 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
         );
       }
     }
+
     return null;
   }
 }

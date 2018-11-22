@@ -27,8 +27,18 @@ interface Props {
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (!isNilOrError(data)) {
-      const { series: { users }, areas } = data;
-      const { localize, intl: { formatMessage } } = props;
+      const {
+        series: {
+          users
+        },
+        areas
+      } = data;
+      const {
+        localize,
+        intl: {
+          formatMessage
+        }
+      } = props;
       const res = map(users, (value, key) => {
         return ({
           value,
@@ -41,10 +51,13 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
           code: key,
         });
       });
+
       return res.length > 0 ? res : null;
     }
+
     return null;
   };
+
   return (
     <BarChartByCategory
       {...props}
