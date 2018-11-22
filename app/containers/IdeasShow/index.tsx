@@ -596,6 +596,7 @@ interface DataProps {
 interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
+  animatePageEnter?: boolean;
 }
 
 interface Props extends DataProps, InputProps { }
@@ -620,6 +621,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
+
+  static defaultProps = {
+    animatePageEnter: true
+  };
 
   constructor(props) {
     super(props);
@@ -668,12 +673,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           if (authUser) {
             setTimeout(() => {
               this.setState({ ideaIdForSocialSharing: newIdea.id });
-            }, 2000);
+            }, 2500);
 
             if (newIdea.publish === 'true') {
               await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
               streams.fetchAllWith({ dataId: [newIdea.id], apiEndpoint: [`${API_PATH}/ideas`] });
-              console.log('published');
             }
           }
 
@@ -821,7 +825,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, intl: { formatMessage }, localize, ideaFiles } = this.props;
+    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
     let content: JSX.Element | null = null;
 
@@ -1135,6 +1139,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           timeout={contentTimeout + contentDelay}
           mountOnEnter={false}
           unmountOnExit={false}
+          enter={animatePageEnter}
           exit={true}
         >
           <Container>
