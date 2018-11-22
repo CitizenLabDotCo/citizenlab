@@ -1,21 +1,22 @@
 import React, { PureComponent } from 'react';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
+import Icon from 'components/UI/Icon';
 
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Root = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
-  background: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.small};
-  line-height: 22px;
+  background: ${colors.adminTextColor};
+  font-size: ${fontSizes.base};
   z-index: 10;
   width: 100%;
   display: flex;
@@ -24,6 +25,9 @@ const Root = styled.div`
   padding: 20px 30px;
   ${media.smallerThanMaxTablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
+  `}
+  ${media.smallerThanMinTablet`
+    padding: 10px 15px;
   `}
 `;
 
@@ -35,16 +39,31 @@ const StyledContentContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  padding-right: 35px;
+  padding-left: 35px;
   max-width: ${(props) => props.theme.maxPageWidth}px;
+  p:first-child {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+  ${media.smallerThanMaxTablet`
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 0px;
+    p:last-child {
+      display: none;
+    }
+    p:fist-child {
+      margin: 5px;
+    }
+  `}
 `;
 
 const StyledLink = styled(Link)`
   color: white;
   text-decoration: underline;
   &:hover, &:focus {
-    font-weight: 700;
     color: white;
-    outline: none;
     text-decoration: underline;
   }
 `;
@@ -55,31 +74,26 @@ const ButtonContainer = styled.div`
   button {
     margin: 4px;
   }
-  Button.button.primary {
-    border-color: white;
+  button.primary-inverse span {
+    color: ${colors.adminTextColor};
   }
-  ${media.smallerThanMaxTablet`
-    flex-wrap: wrap;
-  `}
-`;
-
-const StyledFormattedMessage = styled(FormattedMessage)`
-    font-weight: 700;
-    margin-bottom: 5px;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  right: 8px;
+  right: 15px;
   top: 50%;
   transform: translateY(-50%);
-  padding: 8px;
   border: none;
   background: none;
-  color: inherit;
-  font: inherit;
-  line-height: 1;
+  fill: white;
   cursor: pointer;
+  svg {
+    height: 15px;
+  }
+  ${media.smallerThanMaxTablet`
+    display: none;
+  `}
 `;
 
 interface Props {
@@ -87,20 +101,21 @@ interface Props {
   onChangePreferences: () => void;
 }
 
-export default class Banner extends PureComponent<Props> {
+class Banner extends PureComponent<Props & InjectedIntlProps> {
   static displayName = 'Banner';
 
   render() {
     const {
       onAccept,
       onChangePreferences,
+      intl: { formatMessage }
     } = this.props;
 
     return (
       <Root role="banner">
         <StyledContentContainer>
           <div>
-            <StyledFormattedMessage
+            <FormattedMessage
               tagName="p"
               {...messages.mainText}
               values={{
@@ -115,20 +130,22 @@ export default class Banner extends PureComponent<Props> {
           </div>
           <Spacer />
           <ButtonContainer>
-            <Button style="primary" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
+            <Button style="admin-dark" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
             <Button style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
           </ButtonContainer>
         </StyledContentContainer>
 
         <CloseButton
           type="button"
-          title="Accept policy"
-          aria-label="Accept policy"
+          title={formatMessage(messages.ariaButtonClose)}
+          aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
         >
-          ✕
+          <Icon name="close4" />
         </CloseButton>
       </Root>
     );
   }
 }
+
+export default injectIntl(Banner);

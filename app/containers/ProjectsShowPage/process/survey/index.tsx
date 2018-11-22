@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -7,11 +7,13 @@ import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
 import Warning from 'components/UI/Warning';
 
+// services
+import { surveyTakingState, DisabledReasons } from 'services/surveyTakingRules';
+
 // resources
-import { IPhaseData } from 'services/phases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import { surveyTakingState, DisabledReasons } from 'services/surveyTakingRules';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styling
 import styled from 'styled-components';
@@ -22,22 +24,24 @@ import messages from './messages';
 const Container = styled.div``;
 
 interface InputProps {
-  surveyEmbedUrl?: string;
-  surveyService?: string;
-  phase?: IPhaseData;
-  projectId: string;
+  projectId: string | null;
+  phaseId?: string | null;
+  surveyEmbedUrl: string;
+  surveyService: string;
+  className?: string;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class Survey extends React.PureComponent<Props, State> {
+class Survey extends PureComponent<Props, State> {
 
   disabledMessage: {[key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
     projectInactive: messages.surveyDisabledProjectInactive,
@@ -47,7 +51,7 @@ class Survey extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { surveyEmbedUrl, surveyService, authUser, project, phase } = this.props;
+    const { surveyEmbedUrl, surveyService, authUser, project, phase, className } = this.props;
 
     if (isNilOrError(project)) return null;
 
@@ -58,44 +62,42 @@ class Survey extends React.PureComponent<Props, State> {
     });
 
     if (show) {
-      if (surveyEmbedUrl && surveyService) {
-        const email = (authUser ? authUser.attributes.email : null);
+      const email = (authUser ? authUser.attributes.email : null);
 
-        return (
-          <Container className={this.props['className']}>
-            {surveyService === 'typeform' &&
-              <TypeformSurvey
-                typeformUrl={surveyEmbedUrl}
-                email={(email || null)}
-              />
-            }
+      return (
+        <Container className={className}>
+          {surveyService === 'typeform' &&
+            <TypeformSurvey
+              typeformUrl={surveyEmbedUrl}
+              email={(email || null)}
+            />
+          }
 
-            {surveyService === 'survey_monkey' &&
-              <SurveymonkeySurvey
-                surveymonkeyUrl={surveyEmbedUrl}
-              />
-            }
-          </Container>
-        );
-      }
-      return null;
+          {surveyService === 'survey_monkey' &&
+            <SurveymonkeySurvey
+              surveymonkeyUrl={surveyEmbedUrl}
+            />
+          }
+        </Container>
+      );
     } else {
       const message = disabledReason ? this.disabledMessage[disabledReason] : messages.surveyDisabledNotPossible;
+
       return (
-        <Warning
-          icon="lock"
-        >
-          <FormattedMessage {...message} />
-        </Warning>
+        <Container className={className}>
+          <Warning icon="lock">
+            <FormattedMessage {...message} />
+          </Warning>
+        </Container>
       );
     }
-
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
 export default (inputProps: InputProps) => (

@@ -30,9 +30,5 @@ export default defineMessages({
   addPageButton: {
     id: 'app.containers.AdminPage.PagesPage.addPageButton',
     defaultMessage: 'Add page',
-  },
-  archivedProject: {
-    id: 'app.containers.AdminPage.archivedProject',
-    defaultMessage: 'This project is archived. You cannot participate anymore.',
-  },
+  }
 });

@@ -1,12 +1,10 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
+import { colors } from 'utils/styleUtils';
 
 const doubleBounce = keyframes`
-  0% {
-    transform: scale(1, 0);
-    opacity: 0;
-  }
+  0% { transform: scale(1, 0); }
   5% { transform: scale(1,0.17942745647835484); }
   10% { transform: scale(1,0.5453767165955569); }
   15% { transform: scale(1,0.894404964443162); }
@@ -16,7 +14,7 @@ const doubleBounce = keyframes`
   35% { transform: scale(1,1.1134007773010595); }
   40% { transform: scale(1,1.037247338664745); }
   45% { transform: scale(1,0.9833121263387835); }
-  50% { transform: scale(1,0.9591514931191875); opacity: 1; }
+  50% { transform: scale(1,0.9591514931191875); }
   55% { transform: scale(1,0.9592070055589312); }
   60% { transform: scale(1,0.9725345308087797); }
   65% { transform: scale(1,0.9888015967917715); }
@@ -26,32 +24,29 @@ const doubleBounce = keyframes`
   85% { transform: scale(1,1.0064881982177143); }
   90% { transform: scale(1,1.0030929569279976); }
   95% { transform: scale(1,1.00022141474777); }
-  100% {
-    transform: scale(1, 1);
-  }
+  100% { transform: scale(1, 1); }
 `;
 
 const Container = styled.div`
-  background-color: #fff;
   position: relative;
-  animation: ${doubleBounce} 450ms linear;
+  animation: ${doubleBounce} 500ms linear;
   transform-origin: bottom;
-  border-top: solid 1px #e5e5e5;
+  border-top: solid 1px ${colors.separation};
   background: #fff;
+  will-change: transform;
 `;
 
 const IconWrapper = styled.div`
   position: absolute;
   top: -18px;
   right: 25px;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   display:flex;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
   border-radius: 50%;
-  border: solid 1px #e5e5e5;
+  border: solid 1px ${colors.separation};
   background: #fff;
 `;
 

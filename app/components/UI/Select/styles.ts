@@ -27,7 +27,7 @@ export function getSelectStyles(borderColor = '#ccc') {
       ...base,
       ':active': null,
       fontSize: '16px',
-      color: isFocused ? colors.clGreyHover : colors.label,
+      color: isFocused ? colors.text : colors.label,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
     }),
     multiValueLabel: () => ({

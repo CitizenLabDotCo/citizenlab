@@ -1,7 +1,7 @@
 import React from 'react';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import  { isString, isEmpty, isError } from 'lodash-es';
+import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
+import { isString, isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
@@ -17,22 +17,19 @@ import SignInUp from './SignInUp';
 // import Modal from 'components/UI/Modal';
 
 // services
-import { localeStream } from 'services/locale';
 import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';
-import { addIdeaFile } from 'services/ideaFiles';
-import { addIdeaImage, deleteIdeaImage, IIdeaImage } from 'services/ideaImages';
-import { getAuthUserAsync } from 'services/auth';
+import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
+import { addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
 import { localState, ILocalStateService } from 'services/localState';
 import { globalState, IGlobalStateService, IIdeasNewPageGlobalState } from 'services/globalState';
 
 // resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // utils
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
-
-// typings
-import { Locale } from 'typings';
 
 // style
 import { media } from 'utils/styleUtils';
@@ -152,6 +149,8 @@ const ButtonBarContainer = styled.div`
 interface InputProps {}
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
 }
 
@@ -159,7 +158,6 @@ interface Props extends InputProps, DataProps {}
 
 interface LocalState {
   showIdeaForm: boolean;
-  locale: Locale | null;
   publishing: boolean;
 }
 
@@ -171,29 +169,29 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   localState: ILocalStateService<LocalState>;
   globalState: IGlobalStateService<IIdeasNewPageGlobalState>;
   subscriptions: Subscription[];
-  projectId$: BehaviorSubject<string> = new BehaviorSubject('');
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props) {
     super(props);
     const initialLocalState: LocalState = {
       showIdeaForm: true,
-      locale: null,
       publishing: false
     };
     const initialGlobalState: IIdeasNewPageGlobalState = {
       title: null,
       description: null,
       selectedTopics: null,
-      selectedProject: null,
+      budget: null,
       position: '',
-      position_coordinates: props.location.query.position ? { type: 'Point', coordinates: JSON.parse(props.location.query.position) as number[] } : null,
+      position_coordinates: null,
       submitError: false,
       processing: false,
       ideaId: null,
-      imageFile: null,
+      ideaSlug: null,
+      imageFile: [],
       imageId: null,
       imageChanged: false,
-      localIdeaFiles: null,
+      ideaFiles: [],
+      ideaFilesToRemove: []
     };
     this.state = initialLocalState;
     this.localState = localState(initialLocalState);
@@ -202,33 +200,24 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidMount() {
-    const { project } = this.props;
+    const { location } = this.props;
     const localState$ = this.localState.observable;
-    const locale$ = localeStream().observable;
 
-    if (!isNilOrError(project)) {
-      this.projectId$.next(project.id);
-    }
-
-    if (this.props.location.query.position) {
-      reverseGeocode(JSON.parse(this.props.location.query.position)).then((position) => {
-        globalState.set('IdeasNewPage', { position });
+    if (location.query.position) {
+      reverseGeocode(JSON.parse(location.query.position)).then((position) => {
+        this.globalState.set({
+          position,
+          position_coordinates: {
+            type: 'Point',
+            coordinates: JSON.parse(location.query.position) as number[]
+          }
+        });
       });
     }
 
     this.subscriptions = [
-      localState$.subscribe(({ showIdeaForm, locale, publishing }) => {
-        this.setState({ showIdeaForm, locale, publishing });
-      }),
-
-      locale$.subscribe((locale) => {
-        this.localState.set({ locale });
-      }),
-
-      this.projectId$.pipe(
-        distinctUntilChanged()
-      ).subscribe((projectId) => {
-        globalState.set('IdeasNewPage', { selectedProject: { value: projectId } });
+      localState$.subscribe(({ showIdeaForm, publishing }) => {
+        this.setState({ showIdeaForm, publishing });
       })
     ];
   }
@@ -237,24 +226,17 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  componentDidUpdate() {
-    const { project } = this.props;
-
-    if (!isNilOrError(project) && isString(project.id)) {
-      this.projectId$.next(project.id);
-    }
-  }
-
   async postIdea(publicationStatus: 'draft' | 'published', authorId: string | null) {
-    const { locale } = await this.localState.get();
-    const { title, description, selectedTopics, selectedProject, position, position_coordinates, ideaId } = await this.globalState.get();
+    const { locale, project } = this.props;
+    const { title, description, selectedTopics, budget, position, position_coordinates, ideaId } = await this.globalState.get();
     const ideaTitle = { [locale as string]: title as string };
     const ideaDescription = { [locale as string]: (description || '') };
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
-    const projectId = (selectedProject ? selectedProject.value as string : null);
+    const projectId = !isNilOrError(project) ? project.id : null;
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : position_coordinates || null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const ideaObject: IIdeaAdd = {
+      budget,
       author_id: authorId,
       publication_status: publicationStatus,
       title_multiloc: ideaTitle,
@@ -274,24 +256,27 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   async postIdeaAndIdeaImage(publicationStatus: 'draft' | 'published', authorId: string | null) {
     try {
-      let ideaImage: IIdeaImage | null = null;
-      const { imageId, imageChanged, imageFile } = await this.globalState.get();
-
+      const { imageId, imageChanged, imageFile, ideaFiles, ideaFilesToRemove } = await this.globalState.get();
       const idea = await this.postIdea(publicationStatus, authorId);
+      const imageToAddPromise = (imageChanged && imageFile && imageFile[0] ? addIdeaImage(idea.data.id, imageFile[0].base64, 0) : Promise.resolve(null));
+      const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(idea.data.id, file.base64, file.name));
+      const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(idea.data.id, file.id as string));
 
-      // check if an image was previously saved and changed afterwards
-      // if so, delete the old image from the server first before uploading the new one
       if (imageId && imageChanged) {
         await deleteIdeaImage(idea.data.id, imageId);
       }
 
-      // upload the newly dropped image to the server
-      if (imageChanged && imageFile && imageFile[0] && imageFile[0].base64 && isString(imageFile[0].base64)) {
-        ideaImage = await addIdeaImage(idea.data.id, imageFile[0].base64 as string, 0);
-      }
+      const response = await Promise.all([
+        imageToAddPromise,
+        ...filesToAddPromises,
+        ...filesToRemovePromises
+      ] as Promise<any>[]);
+
+      const ideaImage = response[0];
 
       this.globalState.set({
         ideaId: idea.data.id,
+        ideaSlug: idea.data.attributes.slug,
         imageId: (ideaImage ? ideaImage.data.id : null),
         imageChanged: false
       });
@@ -302,46 +287,29 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     }
   }
 
-  getFilesToAddPromises = async (ideaId: string) => {
-    const { localIdeaFiles } = await this.globalState.get();
-    const filesToAdd = localIdeaFiles;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (ideaId && filesToAdd && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.filter((fileToAdd) => {
-        return isString(fileToAdd.base64);
-      }).map((fileToAdd) => {
-        return addIdeaFile(ideaId, fileToAdd.base64 as string, fileToAdd.name);
-      });
-    }
-
-    return filesToAddPromises;
-  }
-
   handleOnIdeaSubmit = async () => {
-    try {
-      this.globalState.set({ submitError: false, processing: true });
-      const authUser = await getAuthUserAsync();
-      const ideaResponse = await this.postIdeaAndIdeaImage('published', authUser.data.id);
-      const ideaId = ideaResponse.data.id;
-      const filesToAddPromises = this.getFilesToAddPromises(ideaId);
+    const { authUser } = this.props;
 
-      await filesToAddPromises;
-      clHistory.push({
-        pathname: '/',
-        search: `?new_idea_id=${ideaResponse.data.id}&publish=false`
-      });
-    } catch (error) {
-      if (isError(error) && error.message === 'not_authenticated') {
-        try {
-          await this.postIdeaAndIdeaImage('draft', null);
-          this.globalState.set({ processing: false, submitError: false });
-          this.localState.set({ showIdeaForm: false });
-          window.scrollTo(0, 0);
-        } catch (error) {
-          this.globalState.set({ processing: false, submitError: true });
-        }
-      } else {
+    this.globalState.set({ submitError: false, processing: true });
+
+    if (!isNilOrError(authUser)) {
+      try {
+        const newIdea = await this.postIdeaAndIdeaImage('published', authUser.id);
+
+        clHistory.push({
+          pathname: `/ideas/${newIdea.data.attributes.slug}`,
+          search: `?new_idea_id=${newIdea.data.id}&new_idea_slug=${newIdea.data.attributes.slug}&publish=false`
+        });
+      } catch (error) {
+        this.globalState.set({ processing: false, submitError: true });
+      }
+    } else {
+      try {
+        await this.postIdeaAndIdeaImage('draft', null);
+        this.globalState.set({ processing: false, submitError: false });
+        this.localState.set({ showIdeaForm: false });
+        window.scrollTo(0, 0);
+      } catch (error) {
         this.globalState.set({ processing: false, submitError: true });
       }
     }
@@ -360,8 +328,8 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
       if (idea) {
         clHistory.push({
-          pathname: '/',
-          search: `?new_idea_id=${idea.data.id}&publish=false`
+          pathname: `/ideas/${idea.data.attributes.slug}`,
+          search: `?new_idea_id=${idea.data.id}&new_idea_slug=${idea.data.attributes.slug}&publish=false`
         });
       }
     }
@@ -369,6 +337,9 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
 
   render() {
     const { showIdeaForm, publishing } = this.state;
+    const { project } = this.props;
+
+    if (isNilOrError(project)) return null;
 
     return (
       <Container>
@@ -378,7 +349,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
             {showIdeaForm &&
               <CSSTransition classNames="page" timeout={timeout}>
                 <PageContainer className="ideaForm">
-                  <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} />
+                  <NewIdeaForm onSubmit={this.handleOnIdeaSubmit} projectId={project.id} />
                 </PageContainer>
               </CSSTransition>
             }
@@ -408,8 +379,14 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
   }
 }
 
-export default withRouter<Props>((inputProps: Props & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
-    {project => <IdeasNewPage2 {...inputProps} project={project} />}
-  </GetProject>
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+});
+
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeasNewPage2 {...inputProps} {...dataProps} />}
+  </Data>
 ));

@@ -8,12 +8,11 @@ import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import adminMessages from '../../Admin/pages/messages';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -24,15 +23,19 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const EventsContainer = styled(ContentContainer)`
   background: #f9f9fa;
-  padding-top: 70px;
+  padding-top: 50px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const Events = styled.div`
-  margin-bottom: 100px;
+  margin-bottom: 80px;
 `;
 
 const Title = styled.h1`
@@ -50,10 +53,6 @@ const NoEvents = styled.div`
   font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 26px;
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
 `;
 
 interface InputProps {}
@@ -91,13 +90,10 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
             <Header projectSlug={slug} />
 
             {!isNilOrError(project) &&
-              <ProjectModeratorIndicator projectId={project.id} />
-            }
-
-            {!isNilOrError(project) && project.attributes.publication_status === 'archived' &&
-              <StyledContentContainer>
-                <Warning text={<FormattedMessage {...adminMessages.archivedProject} />} />
-              </StyledContentContainer>
+              <>
+                <ProjectModeratorIndicator projectId={project.id} />
+                <ProjectArchivedIndicator projectId={project.id} />
+              </>
             }
 
             <EventsContainer>

@@ -153,4 +153,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.homepage',
     defaultMessage: 'Homepage',
   },
+  copyToClipboard: {
+    id: 'app.containers.AdminPage.widgets.copyToClipboard',
+    defaultMessage: 'Copy to clipboard',
+  },
+  copied: {
+    id: 'app.containers.AdminPage.widgets.copied',
+    defaultMessage: 'Copied to clipboard',
+  },
 });

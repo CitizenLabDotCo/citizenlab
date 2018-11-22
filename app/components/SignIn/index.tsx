@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { get, isFunction } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
@@ -12,6 +13,9 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
+
+// resources
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
@@ -30,11 +34,12 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // logos
-const googleLogo = require('components/SignUp/google.svg') as string;
-const facebookLogo = require('components/SignUp/facebook.svg') as string;
+const googleLogo = require('components/SignUp/Footer/svg/google.svg') as string;
+const facebookLogo = require('components/SignUp/Footer/svg/facebook.svg') as string;
+const franceconnectLogo = require('components/SignUp/Footer/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   flex: 1;
@@ -56,6 +61,8 @@ const Form = styled.form`
   width: 100%;
 `;
 
+const PasswordLogin = styled.div``;
+
 const FormElement = styled.div`
   width: 100%;
   margin-bottom: 15px;
@@ -65,11 +72,11 @@ const FormElement = styled.div`
 const StyledInput = styled(Input)`
   input {
     &::placeholder {
-      color: ${colors.label}
+      color: ${colors.label};
     }
 
     &:focus::placeholder {
-      color #aaa
+      color: #aaa;
     }
   }
 `;
@@ -142,6 +149,11 @@ const Footer = styled.div`
   flex-direction: column;
 `;
 
+const CreateAccount = styled.div`
+  margin-top: 10px;
+  margin-left: -15px;
+`;
+
 const SocialLoginText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
@@ -171,6 +183,15 @@ const SocialSignInButton = styled.div`
   cursor: pointer;
   position: relative;
 
+  ${media.largePhone`
+    height: 90px;
+  `}
+
+  &.franceconnect:hover,
+  &.franceconnect.active {
+    border-color: #0e4fa1;
+  }
+
   &.google:hover,
   &.google.active {
     border-color: #2a81f4;
@@ -182,11 +203,27 @@ const SocialSignInButton = styled.div`
   }
 `;
 
-type Props = {
+const AzureAdSignInButton = SocialSignInButton.extend`
+  &:hover {
+    border-color: #000;
+  }
+`;
+
+interface InputProps {
   onSignedIn: (userId: string) => void;
   title?: string | JSX.Element;
   goToSignUpForm?: () => void;
-};
+}
+
+interface DataProps {
+  passwordLoginEnabled: boolean | null;
+  googleLoginEnabled: boolean | null;
+  facebookLoginEnabled: boolean | null;
+  azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   location: Location | null;
@@ -206,8 +243,8 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   emailInputElement: HTMLInputElement | null;
   passwordInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       location: clHistory.getCurrentLocation(),
       currentTenant: null,
@@ -235,7 +272,9 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
       }),
 
       globalState$.subscribe((globalState) => {
-        this.setState({ socialLoginUrlParameter: (globalState && globalState.ideaId ? `?new_idea_id=${globalState.ideaId}&publish=true` : '') });
+        this.setState({
+          socialLoginUrlParameter: (globalState && globalState.ideaId && globalState.ideaSlug ? `?new_idea_id=${globalState.ideaId}&new_idea_slug=${globalState.ideaSlug}&publish=true` : '')
+        });
       })
     ];
   }
@@ -310,17 +349,34 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleOnSSOClick = (provider) => () => {
+  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
     window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
   render() {
-    const { title } = this.props;
+    const {
+      location,
+      currentTenant,
+      email,
+      password,
+      processing,
+      emailError,
+      passwordError,
+      signInError,
+      loading
+    } = this.state;
+    const {
+      title,
+      passwordLoginEnabled,
+      googleLoginEnabled,
+      facebookLoginEnabled,
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
+    } = this.props;
     const { formatMessage } = this.props.intl;
-    const { location, currentTenant, email, password, processing, emailError, passwordError, signInError, loading } = this.state;
-    const googleLoginEnabled = !!get(currentTenant, 'data.attributes.settings.google_login.enabled');
-    const facebookLoginEnabled = !!get(currentTenant, 'data.attributes.settings.facebook_login.enabled');
-    const showSocialLogin = (googleLoginEnabled || facebookLoginEnabled);
+    const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
+    const azureAdLogo: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.logo_url');
+    const tenantLoginMechanismName: string = get(currentTenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name');
 
     const createAccount = ((location && location.pathname.replace(/\/$/, '').endsWith('ideas/new')) ? (
       <CreateAnAccountDiv onClick={this.goToSignUpForm}>
@@ -338,72 +394,109 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
           <Title>{title || <FormattedMessage {...messages.title} />}</Title>
 
           <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
-            <FormElement>
-              <StyledInput
-                ariaLabel={formatMessage(messages.emailPlaceholder)}
-                type="email"
-                id="email"
-                value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
-                error={emailError}
-                onChange={this.handleEmailOnChange}
-                setRef={this.handleEmailInputSetRef}
-              />
-            </FormElement>
+            {passwordLoginEnabled &&
+              <PasswordLogin>
+                <FormElement>
+                  <StyledInput
+                    ariaLabel={formatMessage(messages.emailPlaceholder)}
+                    type="email"
+                    id="email"
+                    value={email}
+                    placeholder={formatMessage(messages.emailPlaceholder)}
+                    error={emailError}
+                    onChange={this.handleEmailOnChange}
+                    setRef={this.handleEmailInputSetRef}
+                  />
+                </FormElement>
 
-            <FormElement>
-              <PasswordInput
-                ariaLabel={formatMessage(messages.passwordPlaceholder)}
-                type="password"
-                id="password"
-                value={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
-                onChange={this.handlePasswordOnChange}
-                setRef={this.handlePasswordInputSetRef}
-              />
-              <ForgotPassword to="/password-recovery">
-                <FormattedMessage {...messages.forgotPassword} />
-              </ForgotPassword>
-            </FormElement>
+                <FormElement>
+                  <PasswordInput
+                    ariaLabel={formatMessage(messages.passwordPlaceholder)}
+                    type="password"
+                    id="password"
+                    value={password}
+                    placeholder={formatMessage(messages.passwordPlaceholder)}
+                    error={passwordError}
+                    onChange={this.handlePasswordOnChange}
+                    setRef={this.handlePasswordInputSetRef}
+                  />
+                  <ForgotPassword to="/password-recovery">
+                    <FormattedMessage {...messages.forgotPassword} />
+                  </ForgotPassword>
+                </FormElement>
 
-            <FormElement>
-              <ButtonWrapper>
-                <Button
-                  onClick={this.handleOnSubmit}
-                  size="1"
-                  processing={processing}
-                  text={formatMessage(messages.submit)}
-                  circularCorners={false}
-                  className="e2e-submit-signin"
-                />
-                {createAccount}
-              </ButtonWrapper>
-              <Error marginTop="10px" text={signInError} />
-            </FormElement>
+                <FormElement>
+                  <ButtonWrapper>
+                    <Button
+                      onClick={this.handleOnSubmit}
+                      size="1"
+                      processing={processing}
+                      text={formatMessage(messages.submit)}
+                      circularCorners={false}
+                      className="e2e-submit-signin"
+                    />
+                    {createAccount}
+                  </ButtonWrapper>
+                  <Error marginTop="10px" text={signInError} />
+                </FormElement>
+              </PasswordLogin>
+            }
 
-            {showSocialLogin &&
-              <div>
-                <Separator />
+            {passwordLoginEnabled && externalLoginEnabled &&
+              <Separator />
+            }
 
-                <Footer>
+            {externalLoginEnabled &&
+              <Footer>
+                {(passwordLoginEnabled &&
                   <SocialLoginText>
                     {formatMessage(messages.orLogInWith)}
                   </SocialLoginText>
-                  <SocialLoginButtons>
-                    <FeatureFlag name="google_login">
-                      <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
-                        <img src={googleLogo} height="29px" role="presentation" alt="" />
-                      </SocialSignInButton>
-                    </FeatureFlag>
-                    <FeatureFlag name="facebook_login">
-                      <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
-                        <img src={facebookLogo} height="21px" role="presentation" alt="" />
-                      </SocialSignInButton>
-                    </FeatureFlag>
-                  </SocialLoginButtons>
-                </Footer>
-              </div>
+                )}
+                <SocialLoginButtons>
+                  <FeatureFlag name="azure_ad_login">
+                    <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
+                      <img
+                        src={azureAdLogo}
+                        height="21px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                      />
+                    </AzureAdSignInButton>
+                  </FeatureFlag>
+                <FeatureFlag name="franceconnect_login">
+                  <SocialSignInButton className="franceconnect" onClick={this.handleOnSSOClick('franceconnect')}>
+                    <img
+                      src={franceconnectLogo}
+                      height="45px"
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
+                    />
+                  </SocialSignInButton>
+                </FeatureFlag>
+                  <FeatureFlag name="google_login">
+                    <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
+                      <img
+                        src={googleLogo}
+                        height="29px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Google' })}
+                      />
+                    </SocialSignInButton>
+                  </FeatureFlag>
+                  <FeatureFlag name="facebook_login">
+                    <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
+                      <img
+                        src={facebookLogo}
+                        height="21px"
+                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Facebook' })}
+                      />
+                    </SocialSignInButton>
+                  </FeatureFlag>
+                </SocialLoginButtons>
+                {!passwordLoginEnabled &&
+                  <CreateAccount>
+                    {createAccount}
+                  </CreateAccount>
+                }
+              </Footer>
             }
           </Form>
         </Container>
@@ -414,4 +507,18 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(SignIn);
+const SignInWithInjectedIntl = injectIntl<Props>(SignIn);
+
+const Data = adopt<DataProps, {}>({
+  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
+  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
+  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <SignInWithInjectedIntl {...inputProps} {...dataProps} />}
+  </Data>
+);

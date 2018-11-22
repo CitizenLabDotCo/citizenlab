@@ -2,17 +2,17 @@ export const MARKETING_AND_ANALYTICS_CATEGORIES = [
   'A/B Testing',
   'Analytics',
   'Attribution',
-  'Email',
   'Enrichment',
   'Heatmaps & Recordings',
   'Raw Data',
   'Realtime Dashboards',
   'Referrals',
   'Surveys',
-  'Video'
+  'Video',
+  'Tag Managers'
 ]
 
-export const ADVERTISING_CATEGORIES = ['Advertising', 'Tag Managers']
+export const ADVERTISING_CATEGORIES = ['Advertising']
 
 export const FUNCTIONAL_CATEGORIES = [
   'CRM',
@@ -23,5 +23,7 @@ export const FUNCTIONAL_CATEGORIES = [
   'Performance Monitoring',
   'Personalization',
   'SMS & Push Notifications',
-  'Security & Fraud'
+  'Security & Fraud',
+  'Email',
+  'Email Marketing'
 ]

@@ -49,6 +49,11 @@ const ModalContent: any = styled(clickOutside)`
     &.fixedHeight {
       height: 80vh;
     }
+    ${media.smallerThanMinTablet`
+      height: 100%;
+      width: 100%;
+      max-width: 100%;
+    `}
   `}
 `;
 
@@ -70,13 +75,16 @@ const CloseButton = styled.button`
   cursor: pointer;
   top: 20px;
   right: 20px;
+  outline: none;
 
   ${media.smallerThanMaxTablet`
     top: 10px;
     right: 10px;
   `}
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     svg {
       fill: ${colors.clBlueDark};
     }
@@ -104,7 +112,7 @@ const ModalContainer = styled(FocusTrap)`
   will-change: opacity, transform;
 
   ${media.smallerThanMaxTablet`
-    padding: 20px;
+    padding: 0;
     /* height: calc(100vh - ${props => props.theme.mobileMenuHeight}px); */
     /* bottom: auto; */
   `}

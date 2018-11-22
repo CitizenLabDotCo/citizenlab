@@ -58,7 +58,7 @@ const Loading = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer) `
+const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
@@ -69,8 +69,8 @@ const AttachmentsContainer = styled.div`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const PageContent = styled.div`
@@ -130,6 +130,11 @@ const PageDescription = styled.div`
   a {
     color: ${colors.clBlueDark};
     text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    word-break: break-word;
+    hyphens: auto;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -176,7 +181,7 @@ const PagesNav = styled.nav`
   padding-bottom: 80px;
 `;
 
-const StyledLink = styled(Link) `
+const StyledLink = styled(Link)`
   color: #666;
   font-size: ${fontSizes.large}px;
   font-weight: 400;
@@ -201,7 +206,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -220,76 +225,74 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
-    if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
-      return (
-        <Loading>
-          <Spinner />
-        </Loading>
-      );
-    } else {
-      let seoTitle = formatMessage(messages.notFoundTitle);
-      let seoDescription = formatMessage(messages.notFoundDescription);
-      let blockIndexing = true;
-      let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-      let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+      if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
+        return (
+          <Loading>
+            <Spinner />
+          </Loading>
+        );
+      } else {
+        let seoTitle = formatMessage(messages.notFoundTitle);
+        let seoDescription = formatMessage(messages.notFoundDescription);
+        let blockIndexing = true;
+        let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+        let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
 
-      if (!isNilOrError(page)) {
-        seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
-        seoDescription = '';
-        blockIndexing = false;
-        pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
+        if (!isNilOrError(page)) {
+          seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
+          seoDescription = '';
+          blockIndexing = false;
+          pageTitle = <T value={page.attributes.title_multiloc} />;
+          pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
+        }
+
+        return (
+          <Container>
+            <Helmet>
+              <title>{seoTitle}</title>
+              <meta name="description" content={seoDescription} />
+              {blockIndexing && <meta name="robots" content="noindex" />}
+            </Helmet>
+
+            <PageContent>
+              <StyledContentContainer>
+                <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
+                  <PageTitle>
+                    {pageTitle}
+                  </PageTitle>
+                  <PageDescription>
+                    {pageDescription}
+                  </PageDescription>
+                </Fragment>
+              </StyledContentContainer>
+              <AttachmentsContainer>
+                {pageFiles && !isNilOrError(pageFiles) &&
+                  <FileAttachments files={pageFiles} />
+                }
+              </AttachmentsContainer>
+            </PageContent>
+
+            {!isNilOrError(pageLinks) &&
+              <PagesNavWrapper>
+                <PagesNav>
+                  <StyledContentContainer>
+                    {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
+                      <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
+                        <T value={pageLink.attributes.linked_page_title_multiloc} />
+                        <LinkIcon name="chevron-right" />
+                      </StyledLink>
+                    ))}
+                  </StyledContentContainer>
+                </PagesNav>
+              </PagesNavWrapper>
+            }
+
+            <Footer showCityLogoSection={false} />
+          </Container>
+        );
       }
-
-      return (
-        <Container>
-          <Helmet>
-            <title>{seoTitle}</title>
-            <meta name="description" content={seoDescription} />
-            {blockIndexing && <meta name="robots" content="noindex" />}
-          </Helmet>
-
-          <PageContent>
-            <StyledContentContainer>
-              <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
-                <PageTitle>
-                  {pageTitle}
-                </PageTitle>
-                <PageDescription>
-                  {pageDescription}
-                </PageDescription>
-              </Fragment>
-            </StyledContentContainer>
-            <AttachmentsContainer>
-              {pageFiles && !isNilOrError(pageFiles) &&
-                <FileAttachments files={pageFiles} />
-              }
-            </AttachmentsContainer>
-          </PageContent>
-
-          {!isNilOrError(pageLinks) &&
-            <PagesNavWrapper>
-              <PagesNav>
-                <StyledContentContainer>
-                  {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                    <StyledLink to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
-                      <T value={pageLink.attributes.linked_page_title_multiloc} />
-                      <LinkIcon name="chevron-right" />
-                    </StyledLink>
-                  ))}
-                </StyledContentContainer>
-              </PagesNav>
-            </PagesNavWrapper>
-          }
-
-          <Footer showCityLogoSection={false} />
-        </Container>
-      );
     }
-
-    return null;
   }
-}
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
