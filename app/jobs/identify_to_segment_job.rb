@@ -43,6 +43,7 @@ class IdentifyToSegmentJob < ApplicationJob
       website: "https://#{tenant.host}",
       avatar: tenant&.logo&.medium&.url,
       createdAt: tenant.created_at,
+      tenantLocales: tenant.settings.dig('core', 'locales')
     }
     LogToSegmentService.new.add_tenant_properties(traits, tenant)
 
