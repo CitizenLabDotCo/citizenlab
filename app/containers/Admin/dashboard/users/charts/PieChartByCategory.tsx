@@ -50,12 +50,18 @@ const labelColors = [
 
 class PieChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
-    const { colorMain,
+    const {
+      colorMain,
       animationBegin,
       animationDuration,
       chartLabelSize,
-      chartLabelColor } = this.props['theme'];
-    const { className, graphTitleString, serie } = this.props;
+      chartLabelColor
+    } = this.props['theme'];
+    const {
+      className,
+      graphTitleString,
+      serie
+    } = this.props;
 
     return (
       <GraphCard className={className}>

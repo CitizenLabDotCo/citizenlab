@@ -27,6 +27,7 @@ interface Props {
 const AgeChart = (props: Props & InjectedIntlProps) => {
   const convertToGraphFormat = (data: IUsersByBirthyear) => {
     const currentYear = moment().year();
+
     if (!isNilOrError(data)) {
       return [
         ...range(0, 100, 10).map((minAge) => {
@@ -54,8 +55,10 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
         }
       ];
     }
+
     return null;
   };
+
   return (
     <BarChartByCategory
       {...props}

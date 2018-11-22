@@ -58,13 +58,17 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
       chartLabelColor,
       barHoverColor,
       animationBegin,
-      animationDuration } = this.props['theme'];
+      animationDuration
+    } = this.props['theme'];
     const {
       className,
       graphTitleString,
       serie,
-      intl: { formatMessage },
-      graphUnit } = this.props;
+      intl: {
+        formatMessage
+      },
+      graphUnit
+    } = this.props;
     const noData = !serie || (serie.every(item => isEmpty(item)) || serie.length <= 0);
     const unitName = formatMessage(messages[graphUnit]);
 
