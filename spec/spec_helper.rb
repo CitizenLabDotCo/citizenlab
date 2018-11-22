@@ -140,6 +140,24 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  # config.before(:all) do
+  #   DatabaseCleaner.start
+  #   Apartment::Tenant.switch! 'example_org'
+  # end
+
+  # config.around(:each) do |example|
+  #   DatabaseCleaner.cleaning do
+  #     Apartment::Tenant.switch! 'example_org'
+  #     example.run
+  #     Apartment::Tenant.reset
+  #   end
+  # end
+
+  # config.after(:all) do
+  #   Apartment::Tenant.reset
+  #   DatabaseCleaner.clean
+  # end
+
   # By default, skip the slow tests. Can be overriden on the command line.
   config.filter_run_excluding slow_test: true
 
