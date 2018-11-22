@@ -5,7 +5,7 @@ class PermissionsService
   INFORMATION_ACTIONS = %w()
   IDEATION_ACTIONS = %w(posting voting commenting)
   SURVEY_ACTIONS = %w(taking_survey)
-  BUDGETING_ACTIONS = %w(posting voting commenting budgeting)
+  BUDGETING_ACTIONS = %w(commenting budgeting)
 
 
   def update_permissions_for participation_context

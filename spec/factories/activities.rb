@@ -38,6 +38,21 @@ FactoryBot.define do
         ]
       }}
     end
+
+    factory :comment_created_activity do
+      association :item, factory: :comment
+      action "created"
+    end
+
+    factory :idea_upvoted_activity do
+      association :item, factory: :vote
+      action "idea_upvoted"
+    end
+
+    factory :idea_downvoted_activity do
+      association :item, factory: :downvote
+      action "idea_downvoted"
+    end
   end
 
 
