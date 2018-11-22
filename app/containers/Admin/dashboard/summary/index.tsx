@@ -65,6 +65,8 @@ interface State {
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
   projectFilterOptions: IOption[];
+  groupFilterOptions: IOption[];
+  topicFilterOptions: IOption[];
 }
 
 interface Tracks {
@@ -78,19 +80,13 @@ interface PropsHithHoCs extends Props, InjectedIntlProps, InjectedLocalized, Tra
 
 class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   resourceOptions: IOption[];
-  groupFilterOptions: IOption[];
-  topicFilterOptions: IOption[];
 
   constructor(props: PropsHithHoCs) {
     super(props);
-    const { onlyModerator, projects: { projectsList }, intl: { formatMessage } } = props;
-    this.resourceOptions = [
-      { value: 'ideas', label: formatMessage(messages.ideas) },
-      { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'votes', label: formatMessage(messages.votes) }
-    ];
-    this.groupFilterOptions = this.generateGroupsOptions();
-    this.topicFilterOptions = this.generateTopicOptions();
+    const { onlyModerator } = props;
+    const { projectsList } = props.projects;
+    const { formatMessage } = props.intl;
+
     this.state = {
       resolution: 'month',
       startAtMoment: undefined,
@@ -102,8 +98,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentTopicFilter: null,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
-      projectFilterOptions: this.generateProjectOptions()
+      projectFilterOptions: this.generateProjectOptions(),
+      groupFilterOptions: this.generateGroupsOptions(),
+      topicFilterOptions: this.generateTopicOptions(),
     };
+
+    this.resourceOptions = [
+      { value: 'ideas', label: formatMessage(messages.ideas) },
+      { value: 'comments', label: formatMessage(messages.comments) },
+      { value: 'votes', label: formatMessage(messages.votes) }
+    ];
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -117,11 +121,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     }
 
     if (topics !== prevProps.topics) {
-      this.topicFilterOptions = this.generateTopicOptions();
+      this.setState({ topicFilterOptions: this.generateTopicOptions() });
     }
 
     if (groups !== prevProps.groups) {
-      this.groupFilterOptions = this.generateGroupsOptions();
+      this.setState({ groupFilterOptions: this.generateGroupsOptions() });
     }
   }
 
@@ -178,6 +182,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       }
     } = this.props;
     let filterOptions: IOption[] = [];
+
     if (!isNilOrError(projects) && !isNilOrError(projectsList)) {
       filterOptions = projectsList.map((project) => (
         {
@@ -205,7 +210,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       },
       localize
     } = this.props;
-
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
@@ -228,7 +232,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
         formatMessage
       }
     } = this.props;
-
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(topics)) {
@@ -252,7 +255,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentProjectFilter,
       currentGroupFilter,
       currentTopicFilter,
-      projectFilterOptions
+      projectFilterOptions,
+      groupFilterOptions,
+      topicFilterOptions
     } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
@@ -288,8 +293,8 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             currentTopicFilter={currentTopicFilter}
 
             projectFilterOptions={projectFilterOptions}
-            groupFilterOptions={this.groupFilterOptions}
-            topicFilterOptions={this.topicFilterOptions}
+            groupFilterOptions={groupFilterOptions}
+            topicFilterOptions={topicFilterOptions}
 
             onProjectFilter={this.handleOnProjectFilter}
             onGroupFilter={this.handleOnGroupFilter}
@@ -348,7 +353,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   className="dynamicHeight fullWidth"
                   onResourceByProjectChange={this.onResourceByProjectChange}
                   resourceOptions={this.resourceOptions}
-                  projectOptions={this.state.projectFilterOptions}
+                  projectOptions={projectFilterOptions}
                   startAt={startAt}
                   endAt={endAt}
                   {...this.state}
@@ -357,7 +362,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
               <Column>
                 <SelectableResourceByTopicChart
                   className="fullWidth dynamicHeight"
-                  topicOptions={this.topicFilterOptions}
+                  topicOptions={topicFilterOptions}
                   onResourceByTopicChange={this.onResourceByTopicChange}
                   resourceOptions={this.resourceOptions}
                   startAt={startAt}
