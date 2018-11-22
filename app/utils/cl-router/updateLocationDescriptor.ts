@@ -3,7 +3,7 @@ import { getUrlLocale } from 'services/locale';
 import { LocationDescriptor } from 'history';
 import { Locale } from 'typings';
 
-export default function updateLocationDescriptor(location: LocationDescriptor, locale: Locale) {
+export default function updateLocationDescriptor(location: LocationDescriptor, locale: Locale | '') {
   const descriptor = (isString(location) ? { pathname: location } : location);
   const urlLocale = (descriptor.pathname ? getUrlLocale(descriptor.pathname) : null);
 
@@ -19,4 +19,17 @@ export default function updateLocationDescriptor(location: LocationDescriptor, l
   descriptor.state = { ...descriptor.state, locale };
 
   return descriptor;
+}
+
+export function removeLocale(location: LocationDescriptor) {
+  const pathname = (isString(location) ? location : location.pathname);
+  const urlLocale = (pathname ? getUrlLocale(pathname) : null);
+
+  const result = { pathname, urlLocale };
+  if (pathname && urlLocale) {
+      const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
+      result.pathname = `${pathname.replace(matchRegexp, '/')}`;
+  }
+
+  return result;
 }
