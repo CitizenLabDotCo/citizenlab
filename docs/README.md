@@ -6,7 +6,9 @@
 - In the clustering prototype, comparing clusters using the CTRL key now also works on Mac
 - Widget HTML code can now be copied again
 - Long consequent lines of text now get broken up in multiple lines on the idea page
-- 
+- Admin pages are no longer accessible for normal users
+- Reduced problems with edge cases for uploading images and attachments
+
 ### Added
 - Participatory budgeting (PB)
   - A new participation method in continuous and timeline projects
@@ -14,6 +16,12 @@
   - Citizens can fill their basket with ideas, until they hit the limit
   - Citizens can submit their basket when they're done
   - Admins and moderators can process the results through the idea manager and excel export
+- Advanced dashboards: iteration 1
+  - The summary tab shows statistics on idea/comment/vote and registration activities
+  - The users tab shows information on user demographics and a leaderboard
+  - The time filter can be controller with the precision of a day
+  - Project, group and topic filters are available when applicable
+  - Project moderators can access the summary tabs with enforced project filter
 - Social sharing through the modal is now separately trackable from sharing through the idea page
 - The ideas excel export now contains the idea status
 - A new smart group rule allows for filtering on project moderators and normal users
