@@ -36,7 +36,6 @@ export default () => ({
   name: 'Admin page',
   getComponent: loadAndRender(import('containers/Admin')),
   onEnter: isUserAuthorized,
-  indexRoute: dashboardRoutes(),
   childRoutes: [
     dashboardRoutes(),
     ideasRoutes(),

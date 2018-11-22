@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
-import { get } from 'lodash-es';
+import { get, max } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
@@ -79,7 +79,7 @@ const DeletedUserName = styled.span`
 
 const UserScore = styled<any, 'div'>('div')`
   background-color: ${props => props.theme.chartFill};
-  width: ${props => props.value * 8}px;
+  width: ${props => props.value * 50}%;
   color: #fff;
   padding: 10px;
   display: flex;
@@ -164,12 +164,22 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
     return fullName;
   }
 
+  maxScore = () => {
+    const { engagementScoreList } = this.state;
+    if (engagementScoreList) {
+      return max(engagementScoreList.map((item) => item.attributes.sum_score));
+    } else {
+      return undefined;
+    }
+  }
+
   render() {
     const { className, infoMessage } = this.props;
     const { engagementScoreList } = this.state;
     const theme = this.props['theme'];
     const { chartFill } = theme;
     const barHoverColor = rgba(chartFill, .25);
+    const maxScore = this.maxScore() || 0;
 
     return (
       <GraphCard className={className}>
@@ -222,7 +232,7 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
                         }
                       </GetUser>
                     </User>
-                    <UserScore hoverColor={barHoverColor} value={userScore}>
+                    <UserScore hoverColor={barHoverColor} value={userScore / maxScore}>
                       {userScore}
                     </UserScore>
                   </UserListItem>
