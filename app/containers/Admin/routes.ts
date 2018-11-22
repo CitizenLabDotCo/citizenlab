@@ -15,10 +15,28 @@ import pagesRoutes from './pages/routes';
 import clusteringsRoutes from './clusterings/routes';
 import emailsRoutes from './emails/routes';
 
+import { hasPermission } from 'services/permissions';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+
+const isUserAuthorized = (nextState, replace) => {
+  const pathNameWithLocale = nextState.location.pathname;
+  const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
+  hasPermission({
+    item: { type: 'route', path: pathname },
+    action: 'access'
+  }).subscribe(accessAthorized => {
+    if (!accessAthorized) {
+      replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
+    }
+  });
+};
+
 export default () => ({
   path: 'admin',
   name: 'Admin page',
   getComponent: loadAndRender(import('containers/Admin')),
+  onEnter: isUserAuthorized,
+  indexRoute: dashboardRoutes(),
   childRoutes: [
     dashboardRoutes(),
     ideasRoutes(),
