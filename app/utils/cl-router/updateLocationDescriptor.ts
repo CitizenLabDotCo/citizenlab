@@ -3,7 +3,7 @@ import { getUrlLocale } from 'services/locale';
 import { LocationDescriptor } from 'history';
 import { Locale } from 'typings';
 
-export default function updateLocationDescriptor(location: LocationDescriptor, locale: Locale | '') {
+export default function updateLocationDescriptor(location: LocationDescriptor, locale: Locale) {
   const descriptor = (isString(location) ? { pathname: location } : location);
   const urlLocale = (descriptor.pathname ? getUrlLocale(descriptor.pathname) : null);
 
