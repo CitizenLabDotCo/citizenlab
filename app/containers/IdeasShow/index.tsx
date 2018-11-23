@@ -904,7 +904,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
 
               <Header>
-                <IdeaTitle>
+                <IdeaTitle className="e2e-ideatitle">
                   {ideaTitle}
                 </IdeaTitle>
               </Header>
