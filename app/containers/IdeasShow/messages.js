@@ -313,5 +313,13 @@ export default defineMessages({
   backToOriginalContent: {
     id: 'app.components.IdeasShow.backToOriginalContent',
     defaultMessage: 'See original content again',
-  }
+  },
+  translateComment: {
+    id: 'app.components.IdeasShow.translateComment',
+    defaultMessage: 'Translate this comment',
+  },
+  showOriginalComment: {
+    id: 'app.components.IdeasShow.showOriginalComment',
+    defaultMessage: 'Show original comment',
+  },
 });
