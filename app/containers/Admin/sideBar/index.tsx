@@ -29,6 +29,9 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 const Menu = styled.div`
   flex: 0 0 auto;
   width: 260px;
+  @media print {
+    display: none;
+  }
 `;
 
 const MenuInner = styled.nav`
@@ -156,7 +159,8 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         link: '/admin',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`
+      || pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard-`)),
       },
       {
         id: 'users',
@@ -245,7 +249,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
     return (
       <Menu>
-        <MenuInner role="navigation">
+        <MenuInner>
           {navItems.map((route) => {
             if (route.id === 'initiatieven') {
               if (pathname.match(/^\/nl-/)) {

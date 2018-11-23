@@ -2,11 +2,12 @@ import { definePermissionRule, IRouteItem } from 'services/permissions/permissio
 import { isAdmin, isModerator, isProjectModerator } from '../roles';
 import { IUser } from 'services/users';
 
-definePermissionRule('route', 'access', (item: IRouteItem, user: IUser) => {
+definePermissionRule('route', 'access', (item: IRouteItem, user: IUser | null) => {
   if (/^\/admin/.test(item.path)) {
     if (isAdmin(user)) return true;
     if (isModerator(user) && (
       item.path === '/admin/projects' ||
+      item.path === '/admin' ||
       item.path === '/admin/emails'
     )) return true;
 

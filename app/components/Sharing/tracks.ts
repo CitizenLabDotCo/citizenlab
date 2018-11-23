@@ -5,8 +5,20 @@ export default {
       network: 'facebook',
     },
   },
+  clickFbShareInModal: {
+    name: 'Share button clicked in social sharing modal',
+    properties: {
+      network: 'facebook',
+    },
+  },
   clickTwitterShare: {
     name: 'Share button clicked',
+    properties: {
+      network: 'twitter',
+    },
+  },
+  clickTwitterShareInModal: {
+    name: 'Share button clicked in social sharing modal',
     properties: {
       network: 'twitter',
     },
@@ -17,8 +29,20 @@ export default {
       network: 'messenger',
     },
   },
+  clickMessengerShareInModal: {
+    name: 'Share button clicked in social sharing modal',
+    properties: {
+      network: 'messenger',
+    },
+  },
   clickEmailShare: {
     name: 'Share button clicked',
+    properties: {
+      network: 'email',
+    },
+  },
+  clickEmailShareInModal: {
+    name: 'Share button clicked in social sharing modal',
     properties: {
       network: 'email',
     },
