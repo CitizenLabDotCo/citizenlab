@@ -9,6 +9,7 @@ import { isArray } from 'lodash-es';
 import Author from 'components/Author';
 import CommentBody from './CommentBody';
 import { TranslateButton } from './ParentComment';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { updateComment } from 'services/comments';
@@ -166,16 +167,19 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
             onCancelEdition={this.onCancelEdition}
           />
 
-          {multipleLocales && locale !== ideaLocale &&
-            <TranslateButton
-              onClick={this.translateComment(commentId)}
-            >
-              {!this.state.translateButtonClicked
-                ? <FormattedMessage {...messages.translateComment} />
-                : <FormattedMessage {...messages.showOriginalComment} />
-              }
-            </TranslateButton>
-          }
+          <FeatureFlag name="">
+            {multipleLocales && locale !== ideaLocale &&
+              <TranslateButton
+                onClick={this.translateComment(commentId)}
+              >
+                {!this.state.translateButtonClicked
+                  ? <FormattedMessage {...messages.translateComment} />
+                  : <FormattedMessage {...messages.showOriginalComment} />
+                }
+              </TranslateButton>
+            }
+          </FeatureFlag>
+
         </CommentContainer>
       );
     }

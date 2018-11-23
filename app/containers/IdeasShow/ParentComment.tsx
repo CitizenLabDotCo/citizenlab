@@ -11,6 +11,7 @@ import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
 import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { updateComment } from 'services/comments';
@@ -233,16 +234,18 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       message={messages.parentCommentAuthor}
                     />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
-                    {multipleLocales && locale !== ideaLocale &&
-                      <TranslateButton
-                        onClick={this.translateComment(commentId)}
-                      >
-                        {!this.state.translateButtonClicked
-                          ? <FormattedMessage {...messages.translateComment} />
-                          : <FormattedMessage {...messages.showOriginalComment} />
-                        }
-                      </TranslateButton>
-                    }
+                    <FeatureFlag name="">
+                      {multipleLocales && locale !== ideaLocale &&
+                        <TranslateButton
+                          onClick={this.translateComment(commentId)}
+                        >
+                          {!this.state.translateButtonClicked
+                            ? <FormattedMessage {...messages.translateComment} />
+                            : <FormattedMessage {...messages.showOriginalComment} />
+                          }
+                        </TranslateButton>
+                      }
+                    </FeatureFlag>
                   </>
                 }
 
