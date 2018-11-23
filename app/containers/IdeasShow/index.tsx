@@ -6,6 +6,10 @@ import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // router
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
@@ -599,6 +603,11 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
+interface ITracks {
+  clickTranslateIdeaButton: () => void;
+  clickGoBackToOriginalIdeaCopyButton: () => void;
+}
+
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
@@ -630,7 +639,7 @@ type State = {
   translateButtonClicked: boolean;
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & ITracks, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -839,11 +848,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   translateIdea = () => {
+    const { clickTranslateIdeaButton, clickGoBackToOriginalIdeaCopyButton } = this.props;
+    const { translateButtonClicked } = this.state;
+
+    // tracking
+    translateButtonClicked
+    ? clickGoBackToOriginalIdeaCopyButton()
+    : clickTranslateIdeaButton();
+
     // to be implemented
 
-    this.setState({
-      translateButtonClicked: !this.state.translateButtonClicked,
-    });
+    this.setState(prevState => ({
+      translateButtonClicked: !prevState.translateButtonClicked,
+    }));
   }
 
   render() {
@@ -1202,7 +1219,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
+const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(localize(IdeasShow)));
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
