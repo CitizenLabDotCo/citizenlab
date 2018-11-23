@@ -114,8 +114,9 @@ export default class Checkbox extends PureComponent<Props, State> {
     const { size, value, label } = this.props;
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'} e2e-checkbox`} size={size}>
+      <Container className={`${className} ${label && 'hasLabel'}`} size={size}>
         <CheckboxContainer
+          className="e2e-checkbox"
           innerRef={this.setCheckboxContainerRef}
           tabIndex={0}
           checked={value}

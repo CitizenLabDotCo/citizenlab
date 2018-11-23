@@ -473,7 +473,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   </SocialSignInButton>
                 </FeatureFlag>
                   <FeatureFlag name="google_login">
-                    <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
+                    <SocialSignInButton className="google e2e-google-signin-button" onClick={this.handleOnSSOClick('google')}>
                       <img
                         src={googleLogo}
                         height="29px"
