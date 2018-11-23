@@ -405,6 +405,10 @@ const TimeAgo = styled.div`
   `}
 `;
 
+const TranslateButton = styled(Button)`
+  margin-bottom: 30px;
+`;
+
 const IdeaBody = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
@@ -835,6 +839,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   translateIdea = () => {
+    // to be implemented
+
     this.setState({
       translateButtonClicked: !this.state.translateButtonClicked,
     });
@@ -981,12 +987,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </AuthorAndAdressWrapper>
 
                 {multipleLocales && locale !== ideaLocale &&
-                  <Button
+                  <TranslateButton
                     style="secondary-outlined"
                     onClick={this.translateIdea}
                   >
-                    {!this.state.translateButtonClicked ? 'Translate this idea' : 'See original text again'}
-                  </Button>
+                    {!this.state.translateButtonClicked
+                      ? <FormattedMessage {...messages.translateIdea} />
+                      : <FormattedMessage {...messages.backToOriginalContent} />
+                    }
+                  </TranslateButton>
                 }
 
                 {ideaLocation &&
