@@ -123,11 +123,13 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-interface Tracks {
-  clickReply: Function;
+interface ITracks {
+  clickReply: () => void;
+  clickTranslateCommentButton: () => void;
+  clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & Tracks, State> {
+class ParentComment extends React.PureComponent<Props & ITracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -175,11 +177,19 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
   }
 
   translateComment = (commentId: string) => () => {
+    const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
+    const { translateButtonClicked } = this.state;
+
+    // tracking
+    translateButtonClicked
+    ? clickGoBackToOriginalCommentButton()
+    : clickTranslateCommentButton();
+
     // to be implemented
 
-    this.setState({
-      translateButtonClicked: !this.state.translateButtonClicked,
-    });
+    this.setState(prevState => ({
+      translateButtonClicked: !prevState.translateButtonClicked,
+    }));
   }
 
   render() {

@@ -9,6 +9,7 @@ import { isArray } from 'lodash-es';
 import Author from 'components/Author';
 import CommentBody from './CommentBody';
 import { TranslateButton } from './ParentComment';
+
 // services
 import { updateComment } from 'services/comments';
 
@@ -17,6 +18,10 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
@@ -44,6 +49,11 @@ const StyledAuthor = styled(Author)`
   margin-right: 60px;
 `;
 
+interface ITracks {
+  clickTranslateCommentButton: () => void;
+  clickGoBackToOriginalCommentButton: () => void;
+}
+
 interface InputProps {
   commentId: string;
 }
@@ -63,8 +73,8 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-class ChildComment extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+class ChildComment extends React.PureComponent<Props & ITracks, State> {
+  constructor(props: Props & ITracks) {
     super(props);
     this.state = {
       spamModalVisible: false,
@@ -105,11 +115,19 @@ class ChildComment extends React.PureComponent<Props, State> {
   }
 
   translateComment = (commentId: string) => () => {
+    const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
+    const { translateButtonClicked } = this.state;
+
+    // tracking
+    translateButtonClicked
+    ? clickGoBackToOriginalCommentButton()
+    : clickTranslateCommentButton();
+
     // to be implemented
 
-    this.setState({
-      translateButtonClicked: !this.state.translateButtonClicked,
-    });
+    this.setState(prevState => ({
+      translateButtonClicked: !prevState.translateButtonClicked,
+    }));
   }
 
   render() {
@@ -166,6 +184,8 @@ class ChildComment extends React.PureComponent<Props, State> {
   }
 }
 
+const ChildCommentWithHOCs = injectTracks<Props>(tracks)(ChildComment);
+
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
@@ -175,6 +195,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ChildComment {...inputProps} {...dataProps} />}
+    {dataProps => <ChildCommentWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
