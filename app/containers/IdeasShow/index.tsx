@@ -1003,17 +1003,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
 
-                {multipleLocales && locale !== ideaLocale &&
-                  <TranslateButton
-                    style="secondary-outlined"
-                    onClick={this.translateIdea}
-                  >
-                    {!this.state.translateButtonClicked
-                      ? <FormattedMessage {...messages.translateIdea} />
-                      : <FormattedMessage {...messages.backToOriginalContent} />
-                    }
-                  </TranslateButton>
-                }
+                <FeatureFlag name="">
+                  {multipleLocales && locale !== ideaLocale &&
+                    <TranslateButton
+                      style="secondary-outlined"
+                      onClick={this.translateIdea}
+                    >
+                      {!this.state.translateButtonClicked
+                        ? <FormattedMessage {...messages.translateIdea} />
+                        : <FormattedMessage {...messages.backToOriginalContent} />
+                      }
+                    </TranslateButton>
+                  }
+                </FeatureFlag>
 
                 {ideaLocation &&
                   <CSSTransition
