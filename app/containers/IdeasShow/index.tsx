@@ -4,6 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rx
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -38,6 +39,11 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 
+// resources
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+
 // services
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
@@ -63,7 +69,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -591,6 +596,8 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   ideaFiles: GetResourceFilesChildProps;
 }
 
@@ -834,9 +841,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles } = this.props;
+    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale, tenantLocales } = this.props;
     const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
     let content: JSX.Element | null = null;
+    const multipleLocales = tenantLocales.length > 1;
 
     if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -869,6 +877,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
       const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
+      const ideaLocale = Object.keys(idea.data.attributes.title_multiloc)[0];
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
 
@@ -971,7 +980,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
 
-                {(multipleLocales && userLocale !== ideaLocale &&
+                {multipleLocales && locale !== ideaLocale &&
                   <Button
                     style="secondary-outlined"
                     onClick={this.translateIdea}
@@ -979,7 +988,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     {!this.state.translateButtonClicked ? 'Translate this idea' : 'See original text again'}
                   </Button>
                 }
-
 
                 {ideaLocation &&
                   <CSSTransition
@@ -1187,8 +1195,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
 const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
 
+const Data = adopt<DataProps, InputProps>({
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />,
+  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
+});
+
 export default (inputProps: InputProps) => (
-  <GetResourceFiles resourceId={inputProps.ideaId} resourceType="idea">
-    {ideaFiles => <IdeasShowWithHOCs {...inputProps} ideaFiles={ideaFiles} />}
-  </GetResourceFiles>
+  <Data {...inputProps}>
+    {dataProps => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );
