@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash-es';
+import { get, isArray } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -20,6 +20,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -32,6 +34,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
+import { colors } from 'utils/styleUtils';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -83,6 +86,17 @@ const StyledAuthor = styled(Author)`
   margin-right: 60px;
 `;
 
+export const TranslateButton = styled.button`
+  padding: 0;
+  color: ${colors.clBlue};
+  text-decoration: underline;
+  margin-top: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const ChildCommentsContainer = styled.div``;
 
 interface InputProps {
@@ -96,6 +110,8 @@ interface DataProps {
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
   idea: GetIdeaChildProps;
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -104,6 +120,7 @@ interface State {
   showForm: boolean;
   spamModalVisible: boolean;
   editionMode: boolean;
+  translateButtonClicked: boolean;
 }
 
 interface Tracks {
@@ -117,6 +134,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       showForm: false,
       spamModalVisible: false,
       editionMode: false,
+      translateButtonClicked: false,
     };
   }
 
@@ -156,8 +174,17 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     }
   }
 
+  translateComment = (commentId: string) => () => {
+    // to be implemented
+
+    this.setState({
+      translateButtonClicked: !this.state.translateButtonClicked,
+    });
+  }
+
   render() {
-    const { commentId, authUser, comment, childComments, idea } = this.props;
+    const { commentId, authUser, comment, childComments, idea, locale, tenantLocales } = this.props;
+    const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
@@ -165,6 +192,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const createdAt = comment.attributes.created_at;
+      const ideaLocale = Object.keys(idea.attributes.title_multiloc)[0];
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
@@ -195,6 +223,16 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                       message={messages.parentCommentAuthor}
                     />
                     <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
+                    {multipleLocales && locale !== ideaLocale &&
+                      <TranslateButton
+                        onClick={this.translateComment(commentId)}
+                      >
+                        {!this.state.translateButtonClicked
+                          ? <FormattedMessage {...messages.translateComment} />
+                          : <FormattedMessage {...messages.showOriginalComment} />
+                        }
+                      </TranslateButton>
+                    }
                   </>
                 }
 
@@ -236,6 +274,8 @@ const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (

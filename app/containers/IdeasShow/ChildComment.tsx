@@ -3,24 +3,28 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { isArray } from 'lodash-es';
 
 // components
 import Author from 'components/Author';
 import CommentBody from './CommentBody';
-
+import { TranslateButton } from './ParentComment';
 // services
 import { updateComment } from 'services/comments';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // style
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
 import { CLErrorsJSON } from 'typings';
 
-//
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const StyledMoreActionsMenu = styled(CommentsMoreActions)`
@@ -47,6 +51,8 @@ interface InputProps {
 interface DataProps {
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -54,6 +60,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   spamModalVisible: boolean;
   editionMode: boolean;
+  translateButtonClicked: boolean;
 }
 
 class ChildComment extends React.PureComponent<Props, State> {
@@ -62,6 +69,7 @@ class ChildComment extends React.PureComponent<Props, State> {
     this.state = {
       spamModalVisible: false,
       editionMode: false,
+      translateButtonClicked: false,
     };
   }
 
@@ -96,16 +104,27 @@ class ChildComment extends React.PureComponent<Props, State> {
     }
   }
 
+  translateComment = (commentId: string) => () => {
+    // to be implemented
+
+    this.setState({
+      translateButtonClicked: !this.state.translateButtonClicked,
+    });
+  }
+
   render() {
-    const { comment, idea } = this.props;
+    const { comment, idea, tenantLocales, locale } = this.props;
     const { editionMode } = this.state;
+    const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const className = this.props['className'];
+      const commentId = comment.id;
       const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
       const createdAt = comment.attributes.created_at;
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const projectId = idea.relationships.project.data.id;
+      const ideaLocale = Object.keys(idea.attributes.title_multiloc)[0];
 
       return (
         <CommentContainer className={className}>
@@ -128,6 +147,17 @@ class ChildComment extends React.PureComponent<Props, State> {
             onCommentSave={this.onCommentSave}
             onCancelEdition={this.onCancelEdition}
           />
+
+          {multipleLocales && locale !== ideaLocale &&
+            <TranslateButton
+              onClick={this.translateComment(commentId)}
+            >
+              {!this.state.translateButtonClicked
+                ? <FormattedMessage {...messages.translateComment} />
+                : <FormattedMessage {...messages.showOriginalComment} />
+              }
+            </TranslateButton>
+          }
         </CommentContainer>
       );
     }
@@ -139,6 +169,8 @@ class ChildComment extends React.PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
