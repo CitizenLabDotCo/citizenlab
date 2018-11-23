@@ -65,7 +65,7 @@ interface TrackProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  activeComparison: number;
+  activeComparisonCount: number;
   selectedNodes: Node[][];
 }
 
@@ -75,7 +75,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
   constructor(props) {
     super(props);
     this.state = {
-      activeComparison: 0,
+      activeComparisonCount: 0,
       selectedNodes: [[]],
     };
     this.globalState = globalState.init('AdminFullWidth');
@@ -87,10 +87,6 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
 
   componentWillUnmount() {
     this.globalState.set({ enabled: false });
-  }
-
-  comparisonSet = () => {
-    return this.state.selectedNodes[this.state.activeComparison];
   }
 
   theme = (theme) => {
@@ -106,25 +102,25 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     };
   }
 
-  handleOnChangeActiveComparison = (activeComparison) => {
-    this.setState({ activeComparison });
+  handleOnChangeActiveComparison = (activeComparisonCount: number) => {
+    this.setState({ activeComparisonCount });
   }
 
   handleOnAddComparison = () => {
     this.setState(({ selectedNodes }) => ({
       selectedNodes: [...selectedNodes, []],
-      activeComparison: selectedNodes.length
+      activeComparisonCount: selectedNodes.length
     }));
   }
 
   handleOnDeleteComparison = (index: number) => {
-    const { activeComparison, selectedNodes } = this.state;
+    const { activeComparisonCount, selectedNodes } = this.state;
     const newSelectedNodes = clone(selectedNodes);
     newSelectedNodes.splice(index, 1);
-    const newActiveComparison = activeComparison >= index ? newSelectedNodes.length - 1 : activeComparison;
+    const newActiveComparison = activeComparisonCount >= index ? newSelectedNodes.length - 1 : activeComparisonCount;
     this.setState({
       selectedNodes: newSelectedNodes,
-      activeComparison: newActiveComparison,
+      activeComparisonCount: newActiveComparison,
     });
   }
 
@@ -136,7 +132,7 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     }
     this.setState({
       selectedNodes: [[node]],
-      activeComparison: 0
+      activeComparisonCount: 0
     });
   }
 
@@ -146,8 +142,9 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     } else {
       this.props.trackShiftClickCluster({ extra: { type: node.type, id: node.id } });
     }
+
     const selectedNodes = clone(this.state.selectedNodes);
-    selectedNodes[this.state.activeComparison] = [...this.comparisonSet(), node];
+    selectedNodes[this.state.activeComparisonCount] = [...this.state.selectedNodes[this.state.activeComparisonCount], node];
     this.setState({ selectedNodes });
   }
 
@@ -160,14 +157,14 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     if (this.state.selectedNodes.length < 4) {
       this.setState(({ selectedNodes }) => ({
         selectedNodes: [...selectedNodes, [node]],
-        activeComparison: selectedNodes.length
+        activeComparisonCount: selectedNodes.length
       }));
     }
   }
 
   render() {
     const { clustering } = this.props;
-    const { activeComparison, selectedNodes } = this.state;
+    const { activeComparisonCount, selectedNodes } = this.state;
 
     if (isNilOrError(clustering)) return null;
 
@@ -175,15 +172,15 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
       <ThemeProvider theme={this.theme}>
         <TwoColumns>
           <StyledCircles
-            activeComparison={activeComparison}
+            activeComparison={activeComparisonCount}
             selectedNodes={selectedNodes}
             structure={clustering.attributes.structure}
             onClickNode={this.handleOnClickNode}
             onShiftClickNode={this.handleOnShiftClickNode}
-            onCtrlCickNode={this.handleOnCtrlClickNode}
+            onCtrlClickNode={this.handleOnCtrlClickNode}
           />
           <StyledInfoPane
-            activeComparison={activeComparison}
+            activeComparison={activeComparisonCount}
             selectedNodes={selectedNodes}
             onAddComparison={this.handleOnAddComparison}
             onChangeActiveComparison={this.handleOnChangeActiveComparison}

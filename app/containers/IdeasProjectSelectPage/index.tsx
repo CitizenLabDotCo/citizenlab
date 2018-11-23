@@ -326,7 +326,6 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                 <WithoutButtonBar>
                   <Button
                     className="e2e-submit-project-select-form-mobile"
-                    size="2"
                     text={<FormattedMessage {...messages.continueButton} />}
                     onClick={this.handleOnSubmitClick}
                     disabled={!selectedProjectId}

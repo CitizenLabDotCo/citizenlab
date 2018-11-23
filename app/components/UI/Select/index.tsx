@@ -38,6 +38,7 @@ export default class Select extends React.PureComponent<Props, State> {
   //  https://github.com/JedWatson/react-select/issues/2669
   findFullOptionValue = () => {
     const { options, value } = this.props;
+
     if (typeof value === 'string') {
       return options && options.find((option) => option.value === value);
     } else {

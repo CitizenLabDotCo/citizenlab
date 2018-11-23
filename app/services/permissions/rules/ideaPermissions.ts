@@ -26,3 +26,7 @@ definePermissionRule('ideas', 'edit', (idea: IIdeaData, user: IUser) => {
 definePermissionRule('ideas', 'markAsSpam', () => {
   return true;
 });
+
+definePermissionRule('ideas', 'assignBudget', (idea: IIdeaData | null, user: IUser, { projectId }) => {
+  return !!isAdmin(user) || (!!idea && !!isProjectModerator(user, projectId));
+});

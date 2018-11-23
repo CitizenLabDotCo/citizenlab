@@ -51,9 +51,15 @@ const CommentWrapper = styled.div`
 
     &:not(.mention){
       text-decoration: underline;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-all;
+      word-break: break-word;
+      hyphens: auto;
 
       &:hover {
         text-decoration: underline;
+        color: ${darken(0.15, colors.clBlueDark)};
       }
     }
 

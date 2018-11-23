@@ -173,6 +173,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey',
     defaultMessage: 'Survey',
   },
+  participatoryBudgeting: {
+    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
+    defaultMessage: 'Participatory Budgeting',
+  },
+  amountPerCitizen: {
+    id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
+    defaultMessage: 'Amount per citizen',
+  },
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
     defaultMessage: 'Participation method',
@@ -220,6 +228,10 @@ export default defineMessages({
   noVotingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
+  },
+  noBudgetingAmountErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.noBudgetingAmountErrorMessage',
+    defaultMessage: 'Not a valid amount',
   },
   defaultDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',

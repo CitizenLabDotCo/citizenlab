@@ -89,6 +89,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
     defaultMessage: 'Taking the survey',
   },
+  permissionAction_budgeting: {
+    id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
+    defaultMessage: 'Spending budget',
+  },
   noActionsCanBeTaken: {
     id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTaken',
     defaultMessage: 'No permissions to configure, since the user can\'t do anything here',

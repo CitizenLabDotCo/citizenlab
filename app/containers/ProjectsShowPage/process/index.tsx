@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -6,34 +7,77 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Header from '../Header';
 import Timeline from './Timeline';
-import Phase from './Phase';
+import PhaseAbout from './PhaseAbout';
+import PBExpenses from '../pb/PBExpenses';
+import PhaseSurvey from './PhaseSurvey';
+import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
-import Warning from 'components/UI/Warning';
+import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
+
+// services
+import { IPhaseData } from 'services/phases';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-
 // style
 import styled from 'styled-components';
-import messages from '../../Admin/pages/messages';
+import { colors, media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
+const FirstRow = styled.div`
+  background: #fff;
+
+  ${media.smallerThanMaxTablet`
+    background: ${colors.background};
+  `}
+`;
+
 const StyledTimeline = styled(Timeline)`
-  margin-top: -40px;
-  position: relative;
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 40px;
+  `}
 `;
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 15px;
+const SecondRow = styled.div`
+  background: ${colors.background};
 `;
 
-interface InputProps {}
+const StyledPhaseAbout = styled(PhaseAbout)`
+  margin-bottom: 70px;
+
+  ${media.smallerThanMaxTablet`
+    margin-bottom: 50px;
+  `}
+`;
+
+const SecondRowContentContainer = styled(ContentContainer)`
+  z-index: 0;
+`;
+
+const StyledPBExpenses = styled(PBExpenses)`
+  margin-bottom: -120px;
+`;
+
+const StyledPhaseSurvey = styled(PhaseSurvey)`
+  margin-bottom: 50px;
+`;
+
+const StyledPhaseIdeas = styled(PhaseIdeas)`
+  margin-top: 80px;
+  margin-bottom: 80px;
+
+  ${media.smallerThanMaxTablet`
+    margin-top: 0px;
+  `}
+`;
+
+interface InputProps {
+  className?: string;
+}
 
 interface DataProps {
   project: GetProjectChildProps;
@@ -42,27 +86,28 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  selectedPhaseId: string | null;
+  selectedPhase: IPhaseData | null;
 }
 
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
-
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
-      selectedPhaseId: null
+      selectedPhase: null
     };
   }
 
-  handleOnPhaseSelected = (selectedPhaseId: string | null) => {
-    this.setState({ selectedPhaseId });
+  handleOnPhaseSelected = (selectedPhase: IPhaseData | null) => {
+    this.setState({ selectedPhase });
   }
 
   render() {
-    const className = this.props['className'];
-    const { project } = this.props;
+    const { project, className } = this.props;
     const { slug } = this.props.params;
-    const { selectedPhaseId } = this.state;
+    const { selectedPhase } = this.state;
+    const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
+    const isPBPhase = (selectedPhase && selectedPhase.attributes.participation_method === 'budgeting');
+    const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'timeline') {
@@ -71,23 +116,34 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
       return (
         <Container className={className}>
-          <Header projectSlug={slug} />
+          <Header projectSlug={slug} phaseId={selectedPhaseId} />
+          <FirstRow>
+            <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
+            <ProjectModeratorIndicator projectId={project.id} />
+            <ProjectArchivedIndicator projectId={project.id} />
+            <ContentContainer>
+              <StyledPhaseAbout phaseId={selectedPhaseId} />
+              {isPBPhase &&
+                <StyledPBExpenses
+                  participationContextId={selectedPhaseId}
+                  participationContextType="Phase"
+                />
+              }
+              <StyledPhaseSurvey
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+            </ContentContainer>
+          </FirstRow>
 
-          <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
-
-          <ProjectModeratorIndicator projectId={project.id} />
-
-          {project.attributes.publication_status === 'archived' &&
-            <StyledContentContainer>
-              <Warning text={<FormattedMessage {...messages.archivedProject} />} />
-            </StyledContentContainer>
+          {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
+            <SecondRow>
+              <SecondRowContentContainer>
+                <StyledPhaseIdeas phaseId={selectedPhaseId} />
+              </SecondRowContentContainer>
+              <EventsPreview projectId={project.id} />
+            </SecondRow>
           }
-
-          {selectedPhaseId &&
-            <Phase phaseId={selectedPhaseId} />
-          }
-
-          <EventsPreview projectId={project.id} />
         </Container>
       );
     }
@@ -96,8 +152,12 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 }
 
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+});
+
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetProject slug={inputProps.params.slug}>
-    {project => <ProjectTimelinePage {...inputProps} project={project} />}
-  </GetProject>
+  <Data {...inputProps}>
+    {dataProps => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+  </Data>
 ));

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Dropzone from 'react-dropzone';
-import { size, compact, isEmpty, has } from 'lodash-es';
+import { size, compact, isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -18,10 +18,12 @@ import { getBase64FromFile, createObjectUrl, revokeObjectURL } from 'utils/image
 
 // style
 import styled, { css } from 'styled-components';
-import { ImageFile } from 'typings';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { UploadFile } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -81,48 +83,20 @@ const DropzoneContent = styled.div`
 const StyledDropzone = styled(Dropzone)`
   box-sizing: border-box;
   border-radius: 5px;
-  border-color: #ccc;
-  border-width: 1px;
-  border-style: dashed;
+  border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
-  background: #fff;
+  background: transparent;
   transition: all 100ms ease-out;
 
   &.rounded {
     border-radius: 50%;
   }
 
-  &.canDrop {
-    border-color: #006400;
-
-    ${DropzonePlaceholderText},
-    ${DropzoneImagesRemaining} {
-      color: inherit;
-    }
-
-    ${DropzonePlaceholderIcon} {
-      fill: inherit;
-    }
-  }
-
-  &.cannotDrop {
-    cursor: no-drop !important;
-    border-color: #8b0000;
-
-    ${DropzonePlaceholderText},
-    ${DropzoneImagesRemaining} {
-      color: #ccc;
-    }
-
-    ${DropzonePlaceholderIcon} {
-      fill: #ccc;
-    }
-  }
-
   ${(props: any) => props.disabled ? css`
     cursor: not-allowed;
     border-color: #ccc;
+    cursor: no-drop !important;
 
     ${DropzonePlaceholderText},
     ${DropzoneImagesRemaining} {
@@ -133,16 +107,18 @@ const StyledDropzone = styled(Dropzone)`
       fill: #ccc;
     }
   ` : css`
+    cursor: pointer !important;
+
     &:hover {
-      border-color: inherit;
+      border-color: #000;
 
       ${DropzonePlaceholderText},
       ${DropzoneImagesRemaining} {
-        color: inherit;
+        color: #000;
       }
 
       ${DropzonePlaceholderIcon} {
-        fill: inherit;
+        fill: #000;
       }
     }
   `}
@@ -250,34 +226,33 @@ const RemoveButton: any = styled.div`
   }
 `;
 
-type Props = {
+interface Props {
   id?: string | undefined;
-  images: ImageFile[] | null;
+  images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
-  imagePreviewRatio?: number
+  imagePreviewRatio?: number;
   maxImagePreviewWidth?: string;
   maxImageFileSize?: number;
   maxNumberOfImages?: number;
   placeholder?: string | JSX.Element | null | undefined;
   errorMessage?: string | null | undefined;
   objectFit?: 'cover' | 'contain' | undefined;
-  onAdd: (arg: ImageFile) => void;
-  onUpdate: (arg: ImageFile[] | null) => void;
-  onRemove: (arg: ImageFile) => void;
+  onAdd: (arg: UploadFile) => void;
+  onRemove: (arg: UploadFile) => void;
   imageRadius?: string;
-};
+}
 
-type State = {
-  images: ImageFile[] | null;
+interface State {
+  images: UploadFile[] | null;
   errorMessage: string | null;
   processing: boolean;
   canAnimate: boolean;
   canAnimateTimeout: any;
-};
+}
 
-class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       images: [],
       errorMessage: null,
@@ -288,30 +263,23 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
   }
 
   async componentDidMount() {
-    if (size(this.props.images) > 0) {
-      const images = await this.getImageFiles(this.props.images);
-      this.props.onUpdate(images);
-      this.setState({ images });
-    }
+    const images = await this.getImageFiles(this.props.images);
+    this.setState({ images });
   }
 
   componentWillUnmount() {
-    const { images } = this.props;
-
-    if (images && images.length > 0) {
-      for (let i = 0; i < images.length; i += 1) {
-        const image  = images[i];
-
-        if (image && image.objectUrl) {
-          revokeObjectURL(image.objectUrl);
-        }
-      }
-    }
+    this.revokeObjectUrls(this.state.images);
   }
 
   async componentDidUpdate(prevProps: Props) {
     if (!shallowCompare(prevProps, this.props)) {
-      const images = (this.props.images !== this.state.images ? await this.getImageFiles(this.props.images) : this.state.images);
+      let images = this.state.images;
+
+      if (this.props.images !== this.state.images) {
+        this.revokeObjectUrls(this.state.images);
+        images = await this.getImageFiles(this.props.images);
+      }
+
       const errorMessage = (this.props.errorMessage && this.props.errorMessage !== this.state.errorMessage ? this.props.errorMessage : this.state.errorMessage);
       const processing = (this.state.canAnimate && !errorMessage && size(images) > size(this.state.images));
 
@@ -327,15 +295,15 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  getImageFiles = async (images: ImageFile[] | null) => {
+  getImageFiles = async (images: UploadFile[] | null) => {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
-        if (!has(images[i], 'base64')) {
-          images[i]['base64'] = await getBase64FromFile(images[i]);
+        if (!images[i].base64) {
+          images[i].base64 = await getBase64FromFile(images[i]);
         }
 
-        if (!has(images[i], 'objectUrl')) {
-          images[i]['objectUrl'] = createObjectUrl(images[i]);
+        if (!images[i].url) {
+          images[i].url = createObjectUrl(images[i]);
         }
       }
     }
@@ -343,7 +311,17 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     return images;
   }
 
-  onDrop = async (images: ImageFile[]) => {
+  revokeObjectUrls = (images: UploadFile[] | null) => {
+    if (images && images.length > 0) {
+      for (let i = 0; i < images.length; i += 1) {
+        if (images[i].url && images[i].url.startsWith('blob:')) {
+          revokeObjectURL(images[i].url);
+        }
+      }
+    }
+  }
+
+  onDrop = async (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxItemsCount = this.props.maxNumberOfImages;
     const oldItemsCount = size(this.props.images);
@@ -375,7 +353,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  onDropRejected = (images: ImageFile[]) => {
+  onDropRejected = (images: UploadFile[]) => {
     const { formatMessage } = this.props.intl;
     const maxSize = this.props.maxImageFileSize || 5000000;
 
@@ -387,7 +365,7 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  removeImage = (removedImage: ImageFile) => (event: React.FormEvent<any>) => {
+  removeImage = (removedImage: UploadFile) => (event: React.FormEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -404,8 +382,8 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
 
     setTimeout(() => this.props.onRemove(removedImage), 50);
 
-    if (removedImage && removedImage.objectUrl) {
-      revokeObjectURL(removedImage.objectUrl);
+    if (removedImage && removedImage['objectUrl']) {
+      revokeObjectURL(removedImage['objectUrl']);
     }
   }
 
@@ -436,14 +414,14 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
         const exit = !isEmpty(animate);
 
         return (
-          <CSSTransition key={image.objectUrl} classNames="image" timeout={timeout} enter={enter} exit={exit}>
+          <CSSTransition key={image.url} classNames="image" timeout={timeout} enter={enter} exit={exit}>
             <Box
               key={index}
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
               className={`${hasSpacing} ${animate}`}
             >
-              <Image imageRadius={imageRadius} src={image.objectUrl} objectFit={objectFit}>
+              <Image imageRadius={imageRadius} src={image.url} objectFit={objectFit}>
                 <RemoveButton onClick={this.removeImage(image)} className="remove-button">
                   <RemoveIcon name="close2" />
                 </RemoveButton>
@@ -469,8 +447,6 @@ class ImagesDropzone extends React.PureComponent<Props & InjectedIntlProps, Stat
             className={`${this.props.imageRadius === '50%' && 'rounded'}`}
             accept={acceptedFileTypes}
             maxSize={maxImageFileSize}
-            activeClassName="canDrop"
-            rejectClassName="cannotDrop"
             disabled={processing || maxNumberOfImages === images.length}
             disablePreview={true}
             onDrop={this.onDrop}

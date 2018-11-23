@@ -79,14 +79,14 @@ export function calculateContrastRatio(backgroundColor: number[], textColor: num
       v /= 255;
 
       return v <= 0.03928
-          ? v / 12.92
-          : Math.pow((v + 0.055) / 1.055, 2.4);
+        ? v / 12.92
+        : Math.pow((v + 0.055) / 1.055, 2.4);
     });
     return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
   }
 
   const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
-  / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
+    / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
 
   return contrastRatio;
 }
@@ -94,37 +94,48 @@ export function calculateContrastRatio(backgroundColor: number[], textColor: num
 export function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
   } : null;
 }
 
 export const colors = {
+  background: '#F9F9FA',
   text: '#222',
-  text2: '#767676',
+  label: '#596B7A',
   placeholder: '#aaa',
-  clBlue: '#008292',
-  // this is the first grey to get 4.5 on the light greyish background we often use (#f9f9fa)
+  separation: '#e0e0e0',
+  /**
+  * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
+  */
   clGreyOnGreyBackground: '#737373',
-  // hover color used for clGrey (e.g. in the navbar)
-  clGreyHover: '#222',
-  // background color of dropdown items (e.g. in the navbar)
+  /**
+  * background color of dropdown items (e.g. in the navbar)
+  */
   clDropdownHoverBackground: '#e9e9e9',
+  /**
+  * Green that has a contrast ratio of >=4.5 on a white background
+  */
   clGreen: '#04884C',
-  // darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  /**
+  * darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+  */
   clGreenSuccess: '#008040',
   clGreenSuccessBackground: '#e4f7ef',
+  /**
+  * Red that has a contrast ratio of >=4.5 on a white background
+  */
   clRed: '#E52516',
-  // darker red than clRed for when we have a light red background (clRedSuccessBackground)
+  /**
+  * darker red than clRed for when we have a light red background (clRedErrorBackground)
+  */
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
-  label: '#596B7A',
   draftYellow: '#8C680D',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
-  separation: '#e0e0e0',
-  background: '#F9F9FA',
+  clBlue: '#008292',
   clBlueDark: '#147985',
   clBlueDarkBg: '#d3ecf0',
   clBlueDarker: '#0A5159',
@@ -153,16 +164,19 @@ export const colors = {
 
   // Icon colors
   clIconPrimary: '#00577C',
-  clIconSecondary:'#84939E',
-  clIconAccent:'#01A1B1',
-  clIconBackground:'rgba(1, 161, 177, 0.07)',
+  clIconSecondary: '#84939E',
+  clIconAccent: '#01A1B1',
+  clIconBackground: 'rgba(1, 161, 177, 0.07)',
 
   // social
   facebook: '#3b5998',
   facebookMessenger: '#0084ff',
   twitter: '#1ea4f2',
   emailText: '#004d6c',
-  emailBg: '#e6ebec'
+  emailBg: '#e6ebec',
+
+  // buttons
+  disabledPrimaryButtonBg: '#d0d0d0'
 };
 
 export function color(name: keyof typeof colors) {
@@ -203,6 +217,7 @@ export function booleanClass(value: any, className: string) {
 
 export function quillEditedContent() {
   return `
+    max-width: 100%;
     .ql-align-right {
       text-align: right;
     }
@@ -216,6 +231,9 @@ export function quillEditedContent() {
     img {
       max-width: 100%;
       height: auto;
+    }
+    iframe {
+      max-width: 100%;
     }
   `;
 }

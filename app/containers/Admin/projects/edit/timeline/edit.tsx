@@ -3,11 +3,11 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 
 // Libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import moment from 'moment';
-import { get, isEmpty, isString, some, filter } from 'lodash-es';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import moment, { Moment } from 'moment';
+import { get, isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Services
@@ -18,7 +18,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Utils
 import shallowCompare from 'utils/shallowCompare';
-import { convertUrlToUploadFileWithBase64Observable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 
 // Components
 import Label from 'components/UI/Label';
@@ -81,7 +81,7 @@ interface Props extends DataProps {
 }
 
 interface State {
-  locale: Locale;
+  locale: Locale | null;
   phase: IPhase | null;
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
@@ -90,19 +90,19 @@ interface State {
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
-  phaseFiles: UploadFile[] | null;
-  phaseFilesToRemove: UploadFile[] | null;
+  phaseFiles: UploadFile[];
+  phaseFilesToRemove: UploadFile[];
   submitState: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, State> {
   params$: BehaviorSubject<IParams | null>;
   subscriptions: Subscription[];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props) {
     super(props);
     this.state = {
-      locale: null as any,
+      locale: null,
       phase: null,
       presentationMode: 'card',
       attributeDiff: {},
@@ -111,8 +111,8 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       focusedInput: null,
       saved: false,
       loaded: false,
-      phaseFiles: null,
-      phaseFilesToRemove: null,
+      phaseFiles: [],
+      phaseFilesToRemove: [],
       submitState: 'disabled'
     };
     this.subscriptions = [];
@@ -128,8 +128,9 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
       this.params$.pipe(
         distinctUntilChanged(shallowCompare),
         switchMap((params: IParams) => {
+          const { id } = params;
           const locale$ = localeStream().observable;
-          const phase$ = (params.id ? phaseStream(params.id).observable : of(null));
+          const phase$ = (id ? phaseStream(id).observable : of(null));
           return combineLatest(locale$, phase$);
         })
       ).subscribe(([locale, phase]) => {
@@ -148,22 +149,17 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
               if (phaseFiles && phaseFiles.data && phaseFiles.data.length > 0) {
                 return combineLatest(
                   phaseFiles.data.map((phaseFile) => {
-                    return convertUrlToUploadFileWithBase64Observable(phaseFile.attributes.file.url).pipe(
-                      map((phaseFileObject) => {
-                        phaseFileObject['id'] = phaseFile.id;
-                        phaseFileObject['filename'] = phaseFile.attributes.name;
-                        phaseFileObject['url'] = phaseFile.attributes.file.url;
-                        phaseFileObject['remote'] = true;
-                        return phaseFileObject;
-                      })
-                    );
+                    const url = phaseFile.attributes.file.url;
+                    const filename = phaseFile.attributes.name;
+                    const id = phaseFile.id;
+                    return convertUrlToUploadFileObservable(url, id, filename);
                   })
                 );
               }
 
-              return of(null);
+              return of([]);
             })
-          ) : of(null));
+          ) : of([]));
         })
       ).subscribe((phaseFiles) => {
         this.setState({ phaseFiles });
@@ -190,17 +186,28 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     }));
   }
 
-  handleEditorOnChange = (description_multiloc) => {
-    this.setState((state) => ({
+  handleEditorOnChange = (description_multiloc: Multiloc) => {
+    this.setState(({ attributeDiff }) => ({
       submitState: 'enabled',
       attributeDiff: {
-        ...state.attributeDiff,
-        description_multiloc,
+        ...attributeDiff,
+        description_multiloc
       }
     }));
   }
 
-  handleDateUpdate = ({ startDate, endDate }) => {
+  handleIdeasDisplayChange = (presentationMode: 'map' | 'card') => {
+    this.setState(({ attributeDiff }) => ({
+      presentationMode,
+      submitState: 'enabled',
+      attributeDiff: {
+        ...attributeDiff,
+        presentation_mode: presentationMode
+      }
+    }));
+  }
+
+  handleDateUpdate = ({ startDate, endDate }: { startDate: Moment, endDate: Moment }) => {
     this.setState(({ attributeDiff }) => ({
       submitState: 'enabled',
       attributeDiff: {
@@ -221,7 +228,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
 
   handlePhaseFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => {
-      const isDuplicate = some(prevState.phaseFiles, file => file.base64 === newFile.base64);
+      const isDuplicate = prevState.phaseFiles.some(file => file.base64 === newFile.base64);
       const phaseFiles = (isDuplicate ? prevState.phaseFiles : [...(prevState.phaseFiles || []), newFile]);
       const submitState = (isDuplicate ? prevState.submitState : 'enabled');
 
@@ -234,7 +241,7 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
 
   handlePhaseFileOnRemove = (fileToRemove: UploadFile) => {
     this.setState((prevState) => {
-      const phaseFiles = filter(prevState.phaseFiles, file => file.base64 !== fileToRemove.base64);
+      const phaseFiles = prevState.phaseFiles.filter(file => file.base64 !== fileToRemove.base64);
       const phaseFilesToRemove = [...(prevState.phaseFilesToRemove || []), fileToRemove];
 
       return {
@@ -245,121 +252,79 @@ class AdminProjectTimelineEdit extends React.PureComponent<Props & InjectedIntlP
     });
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
     eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
   }
 
-  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
-    const { attributeDiff } = this.state;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, presentationMode, survey_embed_url, survey_service } = participationContextConfig;
+  getAttributeDiff = (participationContextConfig: IParticipationContextConfig) => {
+    const attributeDiff: IUpdatedPhaseProperties = {
+      ...this.state.attributeDiff,
+      ...participationContextConfig
+    };
 
+    return attributeDiff;
+  }
+
+  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
     this.setState({
       submitState: 'enabled',
-      attributeDiff: {
-        ...attributeDiff,
-        survey_embed_url,
-        survey_service,
-        participation_method: participationMethod,
-        posting_enabled: postingEnabled,
-        commenting_enabled: commentingEnabled,
-        voting_enabled: votingEnabled,
-        voting_method: votingMethod,
-        voting_limited_max: votingLimit,
-        presentation_mode: presentationMode,
-      }
+      attributeDiff: this.getAttributeDiff(participationContextConfig)
     });
   }
 
   handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
-    let { attributeDiff } = this.state;
     const { phase } = this.state;
     const { projectId } = this.props.params;
-    const { participationMethod, postingEnabled, commentingEnabled, votingEnabled, votingMethod, votingLimit, survey_embed_url, survey_service, presentationMode } = participationContextConfig;
-
-    attributeDiff = {
-      ...attributeDiff,
-      survey_embed_url,
-      survey_service,
-      participation_method: participationMethod,
-      posting_enabled: postingEnabled,
-      commenting_enabled: commentingEnabled,
-      voting_enabled: votingEnabled,
-      voting_method: votingMethod,
-      voting_limited_max: votingLimit,
-      presentation_mode: presentationMode
-    };
-
+    const attributeDiff = this.getAttributeDiff(participationContextConfig);
     this.save(projectId, phase, attributeDiff);
   }
 
-  getFilesToAddPromises = (phaseId: string) => {
-    const { phaseFiles } = this.state;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (phaseId && phaseFiles && phaseFiles.length > 0) {
-      filesToAddPromises = phaseFiles.filter((file) => {
-        return isString(file.base64) && file['remote'] !== true;
-      }).map((file) => {
-        return addPhaseFile(phaseId, file.base64 as string, file.name);
-      });
-    }
-
-    return filesToAddPromises;
-  }
-
-  getFilesToRemovePromises = (phaseId: string) => {
-    const { phaseFilesToRemove } = this.state;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (phaseId && phaseFilesToRemove && phaseFilesToRemove.length > 0) {
-      filesToRemovePromises = phaseFilesToRemove.filter((file) => {
-        return file['remote'] === true;
-      }).map((file) => {
-        return deletePhaseFile(phaseId, file.id as string);
-      });
-    }
-
-    return filesToRemovePromises;
-  }
-
   save = async (projectId: string | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
-    try {
-      let phaseResponse = phase;
-      let redirect = false;
+    if (!isEmpty(attributeDiff)) {
+      try {
+        const { phaseFiles, phaseFilesToRemove } = this.state;
+        let phaseResponse = phase;
+        let redirect = false;
 
-      if (phase && !isEmpty(attributeDiff)) {
-        phaseResponse = await updatePhase(phase.data.id, attributeDiff);
-      } else if (projectId && !isEmpty(attributeDiff)) {
-        phaseResponse = await addPhase(projectId, attributeDiff);
-        redirect = true;
+        if (phase && !isEmpty(attributeDiff)) {
+          phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+        } else if (projectId && !isEmpty(attributeDiff)) {
+          phaseResponse = await addPhase(projectId, attributeDiff);
+          redirect = true;
+        }
+
+        if (phaseResponse) {
+          const phaseId = phaseResponse.data.id;
+          const filesToAddPromises = phaseFiles.filter(file => !file.remote).map(file => addPhaseFile(phaseId, file.base64, file.name));
+          const filesToRemovePromises = phaseFilesToRemove.filter(file => file.remote).map(file => deletePhaseFile(phaseId, file.id as string));
+
+          await Promise.all([
+            ...filesToAddPromises,
+            ...filesToRemovePromises
+          ] as Promise<any>[]);
+        }
+
+        this.setState({
+          attributeDiff: {},
+          phaseFilesToRemove: [],
+          saving: false,
+          saved: true,
+          errors: null,
+          submitState: 'success'
+        });
+
+        if (redirect) {
+          clHistory.push(`/admin/projects/${projectId}/timeline/`);
+        }
+      } catch (errors) {
+        this.setState({
+          errors: get(errors, 'json.errors', null),
+          saving: false,
+          saved: false,
+          submitState: 'error'
+        });
       }
-
-      if (phaseResponse) {
-        const filesToAddPromises = this.getFilesToAddPromises(phaseResponse.data.id);
-        const filesToRemovePromises  = this.getFilesToRemovePromises(phaseResponse.data.id);
-        await Promise.all([...filesToAddPromises, ...filesToRemovePromises]);
-      }
-
-      this.setState({
-        attributeDiff: {},
-        phaseFilesToRemove: null,
-        saving: false,
-        saved: true,
-        errors: null,
-        submitState: 'success'
-      });
-
-      if (redirect) {
-        clHistory.push(`/admin/projects/${projectId}/timeline/`);
-      }
-    } catch (errors) {
-      this.setState({
-        errors: get(errors, 'json.errors', null),
-        saving: false,
-        saved: false,
-        submitState: 'error',
-      });
     }
   }
 

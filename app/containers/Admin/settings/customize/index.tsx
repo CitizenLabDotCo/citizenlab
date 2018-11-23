@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
@@ -16,7 +16,7 @@ import Warning from 'components/UI/Warning';
 import styled from 'styled-components';
 
 // utils
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
 
@@ -30,7 +30,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
 
 // typings
-import { CLError, ImageFile, Locale, Multiloc } from 'typings';
+import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 
 const ColorPickerSectionField = styled(SectionField)`
 `;
@@ -45,8 +45,8 @@ const StyledSectionField = styled(SectionField)`
 
 interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
-  logo?: ImageFile | undefined;
-  header_bg?: ImageFile | undefined;
+  logo?: UploadFile | undefined;
+  header_bg?: UploadFile | undefined;
 }
 
 type Props  = {
@@ -57,8 +57,8 @@ type State  = {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
-  logo: ImageFile[] | null;
-  header_bg: ImageFile[] | null;
+  logo: UploadFile[] | null;
+  header_bg: UploadFile[] | null;
   colorPickerOpened: boolean;
   loading: boolean;
   errors: { [fieldName: string]: CLError[] };
@@ -106,20 +106,29 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       combineLatest(
         locale$,
         currentTenant$
-      ).pipe(switchMap(([locale, currentTenant]) => {
-        return combineLatest(
-          convertUrlToFileObservable(currentTenant.data.attributes.logo.large),
-          convertUrlToFileObservable(currentTenant.data.attributes.header_bg.large),
-        ).pipe(map(([currentTenantLogo, currentTenantHeaderBg]) => ({
-          locale,
-          currentTenant,
-          currentTenantLogo,
-          currentTenantHeaderBg,
-        })));
-      })).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
+      ).pipe(
+        switchMap(([locale, currentTenant]) => {
+          const logoUrl = currentTenant.data.attributes.logo.large;
+          const headerUrl = currentTenant.data.attributes.header_bg.large;
+          const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
+          const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
+
+          return combineLatest(
+            logo$,
+            headerBg$,
+          ).pipe(
+            map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+              locale,
+              currentTenant,
+              currentTenantLogo,
+              currentTenantHeaderBg,
+            }))
+          );
+        })
+      ).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
         const { attributesDiff } = this.state;
-        let logo: ImageFile[] | null = null;
-        let header_bg: ImageFile[] | null = null;
+        let logo: UploadFile[] | null = null;
+        let header_bg: UploadFile[] | null = null;
 
         if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
           logo = [currentTenantLogo];
@@ -142,7 +151,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.subscriptions.forEach(subsription => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: ImageFile) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
     this.setState((state) => ({
       ...state,
       [name]: [newImage],
@@ -150,13 +159,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         ...(state.attributesDiff || {}),
         [name]: (newImage.base64 as string)
       }
-    }));
-  }
-
-  handleUploadOnUpdate = (name: 'logo' | 'header_bg') => (updatedImages: ImageFile[]) => {
-    this.setState((state) => ({
-      ...state,
-      [name]: updatedImages
     }));
   }
 
@@ -209,6 +211,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
   handleColorPickerOnChange = (hexColor: string) => {
     const rgbColor = hexToRgb(hexColor);
+
     if (rgbColor) {
       const { r, g, b } = rgbColor;
       const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
@@ -219,7 +222,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     let newDiff = cloneDeep(this.state.attributesDiff);
     newDiff = set(newDiff, 'settings.core.color_main', hexColor);
     this.setState({ attributesDiff: newDiff });
-
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -280,13 +282,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { locale,
+    const {
+      locale,
       currentTenant,
       titleError,
       subtitleError,
       errors,
       contrastRatioWarning,
-      saved } = this.state;
+      saved
+    } = this.state;
 
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
@@ -332,7 +336,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 maxImagePreviewWidth="150px"
                 objectFit="contain"
                 onAdd={this.handleUploadOnAdd('logo')}
-                onUpdate={this.handleUploadOnUpdate('logo')}
                 onRemove={this.handleUploadOnRemove('logo')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={logoError}
@@ -357,7 +360,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"
                 onAdd={this.handleUploadOnAdd('header_bg')}
-                onUpdate={this.handleUploadOnUpdate('header_bg')}
                 onRemove={this.handleUploadOnRemove('header_bg')}
                 placeholder={formatMessage(messages.uploadPlaceholder)}
                 errorMessage={headerError}

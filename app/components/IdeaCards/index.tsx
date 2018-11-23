@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -27,6 +28,9 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { ParticipationMethod } from 'services/participationContexts';
 
 const Container = styled.div`
   width: 100%;
@@ -226,7 +230,7 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: ${colors.text2};
+  color: #767676;
   font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: 22px;
@@ -244,16 +248,24 @@ const LoadMoreButton = styled(Button)``;
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
+  participationMethod?: ParticipationMethod | null;
+  participationContextId?: string | null;
+  participationContextType?: 'Phase' | 'Project' | null;
+  className?: string;
 }
 
-interface Props extends InputProps, GetIdeasChildProps {}
+interface DataProps {
+  ideas: GetIdeasChildProps;
+}
 
-type State = {
+interface Props extends InputProps, DataProps {}
+
+interface State {
   selectedView: 'card' | 'map';
-};
+}
 
-class IdeaCards extends React.PureComponent<Props, State> {
-  constructor(props) {
+class IdeaCards extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       selectedView: (props.defaultView || 'card')
@@ -267,23 +279,23 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 
   loadMore = () => {
-    this.props.onLoadMore();
+    this.props.ideas.onLoadMore();
   }
 
   handleSearchOnChange = (search: string) => {
     // track
-    this.props.onChangeSearchTerm(search);
+    this.props.ideas.onChangeSearchTerm(search);
   }
 
   handleSortOnChange = (sort: string) => {
-    this.props.onChangeSorting(sort);
+    this.props.ideas.onChangeSorting(sort);
   }
 
   handleTopicsOnChange = (topics: string[]) => {
-    this.props.onChangeTopics(topics);
+    this.props.ideas.onChangeTopics(topics);
   }
 
-  selectView = (selectedView: 'card' | 'map') => (event: React.FormEvent<any>) => {
+  selectView = (selectedView: 'card' | 'map') => (event: FormEvent<any>) => {
     event.preventDefault();
     trackEventByName(tracks.toggleDisplay, { selectedDisplayMode: selectedView });
     this.setState({ selectedView });
@@ -291,14 +303,28 @@ class IdeaCards extends React.PureComponent<Props, State> {
 
   render() {
     const { selectedView } = this.state;
-    const { queryParameters, searchValue, ideasList, hasMore, querying, loadingMore } = this.props;
+    const {
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      ideas,
+      className
+    } = this.props;
+    const {
+      queryParameters,
+      searchValue,
+      ideasList,
+      hasMore,
+      querying,
+      loadingMore
+    } = ideas;
     const hasIdeas = (!isNilOrError(ideasList) && ideasList.length > 0);
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
 
     return (
-      <Container id="e2e-ideas-container">
+      <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
             <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
@@ -351,7 +377,13 @@ class IdeaCards extends React.PureComponent<Props, State> {
         {showCardView && !querying && hasIdeas && ideasList &&
           <IdeasList id="e2e-ideas-list">
             {ideasList.map((idea) => (
-              <StyledIdeaCard ideaId={idea.id} key={idea.id} />
+              <StyledIdeaCard
+                key={idea.id}
+                ideaId={idea.id}
+                participationMethod={participationMethod}
+                participationContextId={participationContextId}
+                participationContextType={participationContextType}
+              />
             ))}
           </IdeasList>
         }
@@ -360,13 +392,12 @@ class IdeaCards extends React.PureComponent<Props, State> {
           <LoadMoreButtonWrapper>
             <LoadMoreButton
               onClick={this.loadMore}
-              style="secondary"
               size="2"
+              style="secondary"
               text={<FormattedMessage {...messages.loadMore} />}
               processing={loadingMore}
-              circularCorners={false}
               fullWidth={true}
-              height="60px"
+              height="58px"
             />
           </LoadMoreButtonWrapper>
         }
@@ -379,13 +410,12 @@ class IdeaCards extends React.PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => {
-  const { showViewToggle, defaultView, ...getIdeasInputProps } = inputProps;
-  const props: GetIdeasInputProps = { ...getIdeasInputProps, type: 'load-more' };
+const Data = adopt<DataProps, InputProps>({
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
+});
 
-  return (
-    <GetIdeas {...props}>
-      {ideas => <IdeaCards {...inputProps} {...ideas} />}
-    </GetIdeas>
-  );
-};
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaCards {...inputProps} {...dataProps} />}
+  </Data>
+);

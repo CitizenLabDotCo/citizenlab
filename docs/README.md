@@ -1,5 +1,79 @@
 # Changelog
 
+## 2018-11-22
+
+### Fixed
+- In the clustering prototype, comparing clusters using the CTRL key now also works on Mac
+- Widget HTML code can now be copied again
+- Long consequent lines of text now get broken up in multiple lines on the idea page
+- Admin pages are no longer accessible for normal users
+- Reduced problems with edge cases for uploading images and attachments
+
+### Added
+- Participatory budgeting (PB)
+  - A new participation method in continuous and timeline projects
+  - Admins and moderators can set budget on ideas and a maximum budget on the PB phase
+  - Citizens can fill their basket with ideas, until they hit the limit
+  - Citizens can submit their basket when they're done
+  - Admins and moderators can process the results through the idea manager and excel export
+- Social sharing through the modal is now separately trackable from sharing through the idea page
+- The ideas excel export now contains the idea status
+- A new smart group rule allows for filtering on project moderators and normal users
+
+### Changed
+- Project navigation is now shown in new navigation bar on top
+- The content of the 'Open idea project' for new tenants has changed
+- After posting an idea, the user is redirected towards the idea page of the new idea, instead of the landing page
+
+## 2018-11-07
+
+### Fixed
+- The widget HTML snippet can be copied again
+
+## 2018-11-05
+
+### Fixed
+- Clicking Terms & Conditions links during sign up now opens in a new tab
+
+### Added
+- Azure Active Directory login support, used for VUB Net ID
+
+## 2018-10-25
+
+### Fixed
+- Resizing and alignment of images and video in the editor now works as expected
+- Language selector is now updating the saved locale of a signed in user
+- When clicking "view project" in the project admin in a new tab, the projects loads as expected
+- The navbar user menu is now keyboard accessible
+- Radio buttons in forms are now keyboard accessible
+- The link to the terms and conditions from social sign in buttons is fixed
+- In admin > settings > pages, the editors now have labels that show the language they're in
+- Emails are no longer case sensitive, resolving recurring password reset issues
+- The widget now renders properly in IE11
+- Videos are no longer possible in the invitation editor
+
+### Added
+- Cookie consent manager
+  - A cookie consent footer is shown when the user has not yet accepted cookies
+  - The user can choose to accept all cookies, or open the manager and approve only some use cases
+  - The consent settings are automatically derived from Segment
+  - When the user starts using the platform, they silently accept cookies
+- A new cookie policy page is easier to understand and can no longer be customized through the admin
+- Granular permissions
+  - In the project permissions, an admin or project moderator can choose which citizens can take which actions (posting/voting/comments/taking survey)
+  - Feature flagged as 'granular_permissions', turned off by default
+- Ideas excel export now contains links to the ideas
+- Ideas and comments can now be exported from within a project, also by project moderators
+- Ideas and comments can now be exported for a selection of ideas
+- When signing up, a user gets to see which signup fields are optional
+
+### Changed
+- Published projects are now shown first in the admin projects overview
+- It's now more clear that the brand color can not be changed through the initial input box
+- All "Add <something>" buttons in the admin have moved to the top, for consistency
+- The widget no longer shows the vote count when there are no votes
+- When a project contains no ideas, the project card no longer shows "no ideas yet"
+
 ## 2018-10-09
 
 ### Fixed

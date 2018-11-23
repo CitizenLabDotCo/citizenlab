@@ -13,19 +13,20 @@ const Container = styled.div`
 `;
 
 type Props = {
-  typeformUrl: string,
-  email: string | null,
+  typeformUrl: string;
+  email: string | null;
+  className?: string;
 };
 
 type State = {};
 
 export default class TypeformSurvey extends PureComponent<Props, State> {
   render() {
-    const { email, typeformUrl } = this.props;
+    const { email, typeformUrl, className } = this.props;
     const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
 
     return (
-      <Container className={this.props['className']}>
+      <Container className={className}>
         <Iframe
           url={surveyUrl}
           width="100%"
