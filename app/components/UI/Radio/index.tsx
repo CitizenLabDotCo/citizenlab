@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
@@ -10,7 +10,7 @@ const Wrapper = styled.label`
   cursor: pointer;
 `;
 
-const CustomRadio = styled<any, 'div'>('div')`
+export const CustomRadio: any = styled.div`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -23,22 +23,24 @@ const CustomRadio = styled<any, 'div'>('div')`
   border-radius: 50%;
   border: 1px solid #a6a6a6;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
+  outline: none;
 
-  ${props => props.disabled ?
-    `
-      opacity: 0.5;
-    `
-    :
-    `
-      cursor: pointer;
-      &:not(.checked):hover {
-        border-color: #000;
-      }
-    `
+  &:not(.disabled) {
+    cursor: pointer;
+
+    &:not(.checked):hover,
+    &:not(.checked):focus,
+    &:not(.checked):active {
+      border-color: #000;
+    }
+  }
+
+  &.disabled {
+    opacity: 0.5;
   }
 `;
 
-const Checked = styled.div`
+export const Checked = styled.div`
   flex: 0 0 12px;
   width: 12px;
   height: 12px;
@@ -65,39 +67,50 @@ export interface Props {
   label: string | JSX.Element;
   disabled?: boolean;
   buttonColor?: string | undefined;
+  className?: string;
 }
 
-export default class Radio extends React.PureComponent<Props> {
+export default class Radio extends PureComponent<Props> {
+
+  handleKeyPress = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+      this.handleChange();
+    }
+  }
+
   handleChange = () => {
-    if (!this.props.disabled) {
-      if (this.props.onChange) this.props.onChange(this.props.value);
+    if (!this.props.disabled && this.props.onChange) {
+      this.props.onChange(this.props.value);
     }
   }
 
   render() {
+    const { name, value, currentValue, disabled, buttonColor, label, className } = this.props;
     const id = this.props.id || `${this.props.name}-${this.props.value}`;
-
-    const className = this.props['className'];
-    const checked = (this.props.value === this.props.currentValue);
+    const checked = (value === currentValue);
 
     return (
       <Wrapper className={className} htmlFor={id}>
         <HiddenInput
           type="radio"
-          name={this.props.name}
+          name={name}
           id={id}
-          value={this.props.value}
+          value={value}
           aria-checked={checked}
           checked={checked}
           onChange={this.handleChange}
         />
         <CustomRadio
-          className={`${checked ? 'checked' : ''}`}
-          disabled={this.props.disabled}
+          tabIndex={0}
+          onKeyPress={this.handleKeyPress}
+          className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : ''}`}
+          disabled={disabled}
         >
-          {checked && <Checked color={(this.props.buttonColor || '#49B47D')}/>}
+          {checked &&
+            <Checked color={(buttonColor || '#49B47D')}/>
+          }
         </CustomRadio>
-        <Text className="text">{this.props.label}</Text>
+        <Text className="text">{label}</Text>
       </Wrapper>
     );
   }

@@ -22,6 +22,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
+const Container = styled.div``;
+
 const StyledIcon = styled(Icon)`
   height: 2rem;
   width: 2rem;
@@ -49,7 +51,9 @@ interface InputProps {
   phaseId?: string | undefined;
   style?: ButtonStyles;
   size?: '1' | '2' | '3' | '4';
+  fullWidth?: boolean;
   padding?: string;
+  className?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -66,50 +70,51 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
   };
 
   render() {
-    const { project, phase, authUser } = this.props;
-
+    const { project, phase, authUser, className } = this.props;
     const { show, enabled, disabledReason } = postingButtonState({
-      project: isNilOrError(project) ? null : project,
-      phaseContext: phase,
+      project,
+      phase,
       signedIn: !isNilOrError(authUser)
     });
 
     if (show) {
-      let { style, size } = this.props;
+      let { style, size, fullWidth } = this.props;
       const { padding } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
 
       style = (style || 'primary');
       size = (size || '1');
+      fullWidth = (fullWidth || false);
 
       return (
-        <Tooltip
-          enabled={!enabled && !!disabledReason}
-          content={disabledReason ?
-            <TooltipWrapper>
-              <StyledIcon name="lock-outlined" />
-              <FormattedMessage
-                {...this.disabledMessages[disabledReason]}
-              />
-            </TooltipWrapper>
-          :
-            null
-          }
-          backgroundColor={colors.popoverDarkBg}
-          borderColor={colors.popoverDarkBg}
-          top="57px"
-        >
-          <Button
-            className={this.props['className']}
-            linkTo={(isNilOrError(project) ? '/ideas/new' : `/projects/${project.attributes.slug}/ideas/new`)}
-            style={style}
-            size={size}
-            padding={padding}
-            text={startAnIdeaText}
-            circularCorners={false}
-            disabled={!enabled}
-          />
-        </Tooltip>
+        <Container className={className}>
+          <Tooltip
+            enabled={!enabled && !!disabledReason}
+            content={
+              disabledReason ? (
+                <TooltipWrapper>
+                  <StyledIcon name="lock-outlined" />
+                  <FormattedMessage
+                    {...this.disabledMessages[disabledReason]}
+                  />
+                </TooltipWrapper>
+              ) : null
+            }
+            backgroundColor={colors.popoverDarkBg}
+            borderColor={colors.popoverDarkBg}
+            top="57px"
+          >
+            <Button
+              linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
+              style={style}
+              size={size}
+              padding={padding}
+              text={startAnIdeaText}
+              disabled={!enabled}
+              fullWidth={fullWidth}
+            />
+          </Tooltip>
+        </Container>
       );
     }
 
@@ -120,9 +125,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
 const IdeaButtonWithHOCs = injectIntl<Props>(IdeaButton);
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
   project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
-  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (

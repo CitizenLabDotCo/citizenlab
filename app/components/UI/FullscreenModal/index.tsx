@@ -117,7 +117,7 @@ const TopBar: any = styled.div`
 
 const TopBarInner = styled.div`
   height: 100%;
-  padding-left: 30px;
+  padding-left: 20px;
   padding-right: 30px;
   position: relative;
   display: flex;

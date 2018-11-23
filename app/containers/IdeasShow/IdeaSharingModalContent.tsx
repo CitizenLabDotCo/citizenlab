@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import {  InjectedIntlProps } from 'react-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import localize, { InjectedLocalized } from 'utils/localize';
-import messages from './messages';
+import messages from 'containers/LandingPage/messages';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
@@ -149,6 +149,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
           </Subtitle>
           <SharingWrapper>
             <Sharing
+              location="modal"
               url={ideaUrl}
               twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
               emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
@@ -174,7 +175,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
 
 const IdeaSharingModalContentWithHoCs = injectTracks<Props>({
   sharingModalOpened: tracks.sharingModalOpened,
-  })(injectIntl(localize(IdeaSharingModalContent)));
+})(injectIntl(localize(IdeaSharingModalContent)));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

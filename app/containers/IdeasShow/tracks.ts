@@ -14,4 +14,7 @@ export default {
   clickCommentPublish: {
     name: 'Comment publish clicked',
   },
+  sharingModalOpened: {
+    name: 'ideaflow social sharing modal opened',
+  }
 };

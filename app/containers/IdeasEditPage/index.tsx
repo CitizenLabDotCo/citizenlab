@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isString, isEmpty, get } from 'lodash-es';
+import { isString, isEmpty } from 'lodash-es';
 import { Subscription, Observable, combineLatest, of } from 'rxjs';
 import { switchMap, map, first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -18,7 +18,6 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea } from 'services/ideas';
 import { ideaImageStream, addIdeaImage, deleteIdeaImage } from 'services/ideaImages';
-import { projectByIdStream, IProject } from 'services/projects';
 import { topicByIdStream, ITopic } from 'services/topics';
 import { hasPermission } from 'services/permissions';
 import { addIdeaFile, deleteIdeaFile } from 'services/ideaFiles';
@@ -30,11 +29,11 @@ import { getLocalized } from 'utils/i18n';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { convertUrlToFileObservable } from 'utils/imageTools';
+import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import { convertToGeoJson } from 'utils/locationTools';
 
 // typings
-import { IOption, ImageFile, Multiloc, Locale, UploadFile } from 'typings';
+import { IOption, UploadFile, Multiloc, Locale } from 'typings';
 
 // style
 import { media, fontSizes } from 'utils/styleUtils';
@@ -92,14 +91,15 @@ interface Props {
 }
 
 interface State {
+  projectId: string | null;
   locale: Locale;
   ideaSlug: string | null;
   titleMultiloc: Multiloc | null;
   descriptionMultiloc: Multiloc | null;
   selectedTopics: IOption[] | null;
-  selectedProject: IOption | null;
+  budget: number | null;
   location: string;
-  imageFile: ImageFile[] | null;
+  imageFile: UploadFile[];
   imageId: string | null;
   submitError: boolean;
   loaded: boolean;
@@ -112,14 +112,15 @@ class IdeaEditPage extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
+      projectId: null,
       locale: 'en',
       ideaSlug: null,
       titleMultiloc: null,
       descriptionMultiloc: null,
       selectedTopics: null,
-      selectedProject: null,
+      budget: null,
       location: '',
-      imageFile: null,
+      imageFile: [],
       imageId: null,
       submitError: false,
       loaded: false,
@@ -144,18 +145,13 @@ class IdeaEditPage extends PureComponent<Props, State> {
         const ideaId = idea.data.id;
         const ideaImages = idea.data.relationships.idea_images.data;
         const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
-
         const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable.pipe(
           first(),
           switchMap((ideaImage) => {
-            if (ideaImage && ideaImage.data) {
-              const ideaImageFile$ = convertUrlToFileObservable(ideaImage.data.attributes.versions.large);
-              return ideaImageFile$.pipe(
-                map((ideaImageFile) => ({
-                  file: ideaImageFile,
-                  id: ideaImage.data.id
-                }))
-              );
+            if (ideaImage && ideaImage.data && ideaImage.data.attributes.versions.large) {
+              const url = ideaImage.data.attributes.versions.large;
+              const id = ideaImage.data.id;
+              return convertUrlToUploadFileObservable(url, id, null);
             }
 
             return of(null);
@@ -167,29 +163,13 @@ class IdeaEditPage extends PureComponent<Props, State> {
           context: idea.data
         });
 
-        let project$: Observable<null | IProject> = of(null);
         let topics$: Observable<null | ITopic[]> = of(null);
-
-        if (idea.data.relationships.project && idea.data.relationships.project.data) {
-          project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
-        }
 
         if ((idea.data.relationships.topics && idea.data.relationships.topics.data && idea.data.relationships.topics.data.length > 0)) {
           topics$ = combineLatest(
             idea.data.relationships.topics.data.map(topic => topicByIdStream(topic.id).observable)
           );
         }
-
-        const selectedProject$ = project$.pipe(map((project) => {
-          if (project) {
-            return {
-              value: project.data.id,
-              label: getLocalized(project.data.attributes.title_multiloc, locale, currentTenantLocales)
-            };
-          }
-
-          return null;
-        }));
 
         const selectedTopics$ = topics$.pipe(map((topics) => {
           if (topics && topics.length > 0) {
@@ -208,7 +188,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
           locale$,
           idea$,
           ideaImage$,
-          selectedProject$,
           selectedTopics$,
           granted$
         );
@@ -216,18 +195,19 @@ class IdeaEditPage extends PureComponent<Props, State> {
     );
 
     this.subscriptions = [
-      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedProject, selectedTopics, granted]) => {
+      ideaWithRelationships$.subscribe(([locale, idea, ideaImage, selectedTopics, granted]) => {
         if (granted) {
           this.setState({
             locale,
             selectedTopics,
-            selectedProject,
+            projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,
             titleMultiloc: idea.data.attributes.title_multiloc,
             descriptionMultiloc: idea.data.attributes.body_multiloc,
             location: idea.data.attributes.location_description,
-            imageFile: (ideaImage && ideaImage.file ? [ideaImage.file] : null),
+            budget: idea.data.attributes.budget,
+            imageFile: (ideaImage ? [ideaImage] : []),
             imageId: (ideaImage && ideaImage.id ? ideaImage.id : null)
           });
         } else {
@@ -245,95 +225,49 @@ class IdeaEditPage extends PureComponent<Props, State> {
     eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
   }
 
-  getFilesToAddPromises = (localIdeaFiles: UploadFile[]) => {
-    const { remoteIdeaFiles } = this.props;
-    const ideaId = this.props.params.ideaId;
-    let filesToAdd = localIdeaFiles;
-    let filesToAddPromises: Promise<any>[] = [];
-
-    if (!isNilOrError(localIdeaFiles) && Array.isArray(remoteIdeaFiles)) {
-      // localIdeaFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remoteIdeaFiles = last saved state of files (remote)
-
-      filesToAdd = localIdeaFiles.filter((localIdeaFile) => {
-        return !remoteIdeaFiles.some(remoteIdeaFile => remoteIdeaFile.filename === localIdeaFile.filename);
-      });
-    }
-
-    if (ideaId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addIdeaFile(ideaId as string, fileToAdd.base64, fileToAdd.name));
-    }
-
-    return filesToAddPromises;
-  }
-
-  getFilesToRemovePromises = (localIdeaFiles: UploadFile[]) => {
-    const { remoteIdeaFiles } = this.props;
-    const ideaId = this.props.params.ideaId;
-    let filesToRemove = remoteIdeaFiles;
-    let filesToRemovePromises: Promise<any>[] = [];
-
-    if (!isNilOrError(localIdeaFiles) && Array.isArray(remoteIdeaFiles)) {
-      // localIdeaFiles = local state of files
-      // This means those previously uploaded + files that have been added/removed
-      // remoteIdeaFiles = last saved state of files (remote)
-
-      filesToRemove = remoteIdeaFiles.filter((remoteIdeaFile) => {
-        return !localIdeaFiles.some(localIdeaFile => localIdeaFile.filename === remoteIdeaFile.filename);
-      });
-    }
-
-    if (ideaId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deleteIdeaFile(ideaId as string, fileToRemove.id));
-    }
-
-    return filesToRemovePromises;
-  }
-
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
     const { ideaId } = this.props.params;
-    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId } = this.state;
-    const { title, description, selectedTopics, position, localIdeaFiles } = ideaFormOutput;
+    const { locale, titleMultiloc, descriptionMultiloc, ideaSlug, imageId, imageFile } = this.state;
+    const { title, description, selectedTopics, position, budget, ideaFiles, ideaFilesToRemove } = ideaFormOutput;
     const topicIds = (selectedTopics ? selectedTopics.map(topic => topic.value) : null);
     const locationGeoJSON = (isString(position) && !isEmpty(position) ? await convertToGeoJson(position) : null);
     const locationDescription = (isString(position) && !isEmpty(position) ? position : null);
     const oldImageId = imageId;
-    const oldBase64Image = get(this.state, 'imageFile[0].base64');
-    const newBase64Image = get(ideaFormOutput, 'imageFile[0].base64');
-    const filesToAddPromises: Promise<any>[] = !isNilOrError(localIdeaFiles) ? this.getFilesToAddPromises(localIdeaFiles) : [];
-    const filesToRemovePromises: Promise<any>[] = !isNilOrError(localIdeaFiles) ? this.getFilesToRemovePromises(localIdeaFiles) : [];
+    const oldImage = (imageFile && imageFile.length > 0 ? imageFile[0] : null);
+    const oldImageBase64 = (oldImage ? oldImage.base64 : null);
+    const newImage = (ideaFormOutput.imageFile && ideaFormOutput.imageFile.length > 0 ? ideaFormOutput.imageFile[0] : null);
+    const newImageBase64 = (newImage ? newImage.base64 : null);
+    const imageToAddPromise = (newImageBase64 && oldImageBase64 !== newImageBase64 ? addIdeaImage(ideaId, newImageBase64, 0) : Promise.resolve(null));
+    const filesToAddPromises = ideaFiles.filter(file => !file.remote).map(file => addIdeaFile(ideaId, file.base64, file.name));
+    const filesToRemovePromises = ideaFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteIdeaFile(ideaId, file.id as string));
+    const updateIdeaPromise = updateIdea(ideaId, {
+      budget,
+      title_multiloc: {
+        ...titleMultiloc,
+        [locale]: title
+      },
+      body_multiloc: {
+        ...descriptionMultiloc,
+        [locale]: description
+      },
+      topic_ids: topicIds,
+      location_point_geojson: locationGeoJSON,
+      location_description: locationDescription
+    });
+
     this.setState({ processing: true, submitError: false });
 
     try {
-      if (newBase64Image !== oldBase64Image) {
-        if (oldImageId) {
-          await deleteIdeaImage(ideaId, oldImageId);
-        }
-
-        if (newBase64Image) {
-          await addIdeaImage(ideaId, newBase64Image, 0);
-        }
+      if (oldImageId && oldImageBase64 !== newImageBase64) {
+        await deleteIdeaImage(ideaId, oldImageId);
       }
 
-      await updateIdea(ideaId, {
-        title_multiloc: {
-          ...titleMultiloc,
-          [locale]: title
-        },
-        body_multiloc: {
-          ...descriptionMultiloc,
-          [locale]: description
-        },
-        topic_ids: topicIds,
-        location_point_geojson: locationGeoJSON,
-        location_description: locationDescription
-      });
-
       await Promise.all([
+        updateIdeaPromise,
+        imageToAddPromise,
         ...filesToAddPromises,
         ...filesToRemovePromises
-      ]);
+      ] as Promise<any>[]);
 
       clHistory.push(`/ideas/${ideaSlug}`);
     } catch {
@@ -342,19 +276,19 @@ class IdeaEditPage extends PureComponent<Props, State> {
   }
 
   render() {
-
     if (this.state && this.state.loaded) {
       const { remoteIdeaFiles } = this.props;
       const {
         locale,
+        projectId,
         titleMultiloc,
         descriptionMultiloc,
         selectedTopics,
-        selectedProject,
         location,
         imageFile,
         submitError,
         processing,
+        budget
       } = this.state;
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
@@ -368,10 +302,11 @@ class IdeaEditPage extends PureComponent<Props, State> {
             </Title>
 
             <IdeaForm
+              projectId={projectId}
               title={title}
               description={description}
               selectedTopics={selectedTopics}
-              selectedProject={selectedProject}
+              budget={budget}
               position={location}
               imageFile={imageFile}
               onSubmit={this.handleIdeaFormOutput}
@@ -380,7 +315,6 @@ class IdeaEditPage extends PureComponent<Props, State> {
 
             <ButtonWrapper>
               <SaveButton
-                size="2"
                 processing={processing}
                 text={<FormattedMessage {...messages.save} />}
                 onClick={this.handleOnSaveButtonClick}

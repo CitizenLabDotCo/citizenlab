@@ -1,6 +1,5 @@
 import React from 'react';
-import { returnFileSize } from 'utils/helperUtils';
-import { isError } from 'util';
+import { returnFileSize, isNilOrError } from 'utils/helperUtils';
 
 // styles
 import styled from 'styled-components';
@@ -19,8 +18,8 @@ import { IIdeaFileData } from 'services/ideaFiles';
 
 const Container = styled.div`
   display: flex;
-  max-width: 520px;
   align-items: center;
+  justify-content: space-between;
   color: ${colors.label};
   border: 1px solid ${lighten(.4, colors.label)};
   border-radius: 5px;
@@ -43,8 +42,7 @@ const FileDownloadLink = styled.a`
   color: ${colors.label};
   display: inline-block;
   margin-right: 10px;
-  word-break: break-all;
-  max-width: 70%;
+  hyphens: auto;
 
   &:hover {
     color: inherit;
@@ -53,12 +51,15 @@ const FileDownloadLink = styled.a`
 
   ${media.smallerThanMinTablet`
     margin-right: auto;
-    max-width: 100%;
   `}
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const FileSize = styled.span`
-  margin-right: auto;
+  margin-left: 20px;
   white-space: nowrap;
 
   ${media.smallerThanMinTablet`
@@ -88,16 +89,18 @@ const StyledIcon = styled(Icon)`
 interface Props {
   file: IProjectFileData | IPhaseFileData | IPageFileData | IEventFileData | IIdeaFileData;
   onDeleteClick?: () => void;
+  className?: string;
 }
 
-const FileDisplay = ({ file, onDeleteClick }: Props) => {
-  if (file && !isError(file)) {
+const FileDisplay = ({ file, onDeleteClick, className }: Props) => {
+  if (!isNilOrError(file)) {
     return (
-      <Container>
+      <Container className={className}>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.attributes.file.url} download={file.attributes.name}>
+        <FileDownloadLink href={file.attributes.file.url} download={file.attributes.name} target="_blank" rel="noopener noreferrer">
           {file.attributes.name}
         </FileDownloadLink>
+        <Spacer />
         <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
         {onDeleteClick &&
         <DeleteButton onClick={onDeleteClick}>

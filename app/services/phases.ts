@@ -1,11 +1,10 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { Multiloc } from 'typings';
+import { IRelationship, Multiloc } from 'typings';
+import { pastPresentOrFuture } from 'utils/dateUtils';
+import { ParticipationMethod, SurveyServices } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/phases`;
-
-export type ParticipationMethod = 'ideation' | 'information' | 'survey';
-export type SurveyServices = 'typeform' | 'survey_monkey';
 
 export interface IPhaseData {
   id: string;
@@ -24,15 +23,19 @@ export interface IPhaseData {
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
     presentation_mode: 'card' | 'map';
+    max_budget?: number;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
   };
   relationships: {
+    permissions: {
+      data: IRelationship[];
+    }
     project: {
-      data: {
-        id: string;
-        type: string;
-      }
+      data: IRelationship;
+    }
+    user_basket: {
+      data: IRelationship | null;
     }
   };
 }
@@ -58,6 +61,7 @@ export interface IUpdatedPhaseProperties {
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
   presentation_mode?: 'card' | 'map' | null;
+  max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -80,4 +84,17 @@ export function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
 
 export function deletePhase(phaseId: string) {
   return streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
+}
+
+export function canContainIdeas(phase: IPhaseData) {
+  const pm = phase.attributes.participation_method;
+  return pm === 'ideation' || pm === 'budgeting';
+}
+
+export function getCurrentPhase(phases: IPhaseData[]) {
+  const currentPhase = phases.find((phase) => {
+    return pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present';
+  });
+
+  return (currentPhase || null);
 }
