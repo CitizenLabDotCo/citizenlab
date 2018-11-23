@@ -16,6 +16,12 @@
   - Citizens can fill their basket with ideas, until they hit the limit
   - Citizens can submit their basket when they're done
   - Admins and moderators can process the results through the idea manager and excel export
+- Advanced dashboards: iteration 1
+  - The summary tab shows statistics on idea/comment/vote and registration activities
+  - The users tab shows information on user demographics and a leaderboard
+  - The time filter can be controller with the precision of a day
+  - Project, group and topic filters are available when applicable
+  - Project moderators can access the summary tabs with enforced project filter
 - Social sharing through the modal is now separately trackable from sharing through the idea page
 - The ideas excel export now contains the idea status
 - A new smart group rule allows for filtering on project moderators and normal users
