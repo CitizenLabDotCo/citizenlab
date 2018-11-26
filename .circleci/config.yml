@@ -22,13 +22,13 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-        name: Install JUnit coverage reporter
-        command: npm install --dev jest-junit
+          name: Install JUnit coverage reporter
+          command: npm install --save-dev jest-junit
       - run:
-        name: Run tests with JUnit as reporter
-        command: jest --ci --reporters=default --reporters=jest-junit
-        environment:
-          JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          name: Run tests with JUnit as reporter
+          command: jest --ci --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
 
   lint:
     docker:
