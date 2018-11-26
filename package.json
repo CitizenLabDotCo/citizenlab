@@ -29,7 +29,8 @@
     "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:ci" : "jest --ci --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
