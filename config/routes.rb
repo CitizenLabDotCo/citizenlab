@@ -17,12 +17,12 @@ Rails.application.routes.draw do
 
       resources :ideas, 
         concerns: [:votable, :spam_reportable], 
-        defaults: { votable: 'Idea', spam_reportable: 'Idea'  } do
+        defaults: { votable: 'Idea', spam_reportable: 'Idea' } do
 
         resources :comments, shallow: true, 
           concerns: [:votable, :spam_reportable], 
-          defaults: { votable: 'Comment', spam_reportable: 'Comment'  } do
-            
+          defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
+
           post :mark_as_deleted, on: :member
         end
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
