@@ -1,24 +1,24 @@
 /// <reference types="cypress"/>
 
-Cypress.Commands.add('loginAsAdmin', () => {
-  cy.visit('/sign-in');
-  cy.get('#email').type('koen@citizenlab.co');
-  cy.get('#password').type('testtest');
-  cy.get('.e2e-submit-signin').click();
-});
+// Cypress.Commands.add('loginAsAdmin', () => {
+//   cy.visit('/sign-in');
+//   cy.get('#email').type('koen@citizenlab.co');
+//   cy.get('#password').type('testtest');
+//   cy.get('.e2e-submit-signin').click();
+// });
 
-Cypress.Commands.add('logOut', () => {
-  cy.get('#e2e-user-menu-container').click().get('#e2e-sign-out-link').click();
-});
+// Cypress.Commands.add('logOut', () => {
+//   cy.get('#e2e-user-menu-container').click().get('#e2e-sign-out-link').click();
+// });
 
-Cypress.Commands.add('createNewContinuousProject', (projectName: string) => {
-  cy.visit('/admin/projects');
-  cy.get('.e2e-admin-add-project').click();
-  cy.get('#project-title-en').type(projectName);
-  cy.get('#project-title-nl-BE').type(projectName);
-  cy.get('.e2e-project-type-continuous').click();
-  cy.get('.e2e-submit-wrapper-button').click();
-});
+// Cypress.Commands.add('createNewContinuousProject', (projectName: string) => {
+//   cy.visit('/admin/projects');
+//   cy.get('.e2e-admin-add-project').click();
+//   cy.get('#project-title-en').type(projectName);
+//   cy.get('#project-title-nl-BE').type(projectName);
+//   cy.get('.e2e-project-type-continuous').click();
+//   cy.get('.e2e-submit-wrapper-button').click();
+// });
 
 // describe('Home page', () => {
 //   it('successfully loads', () => {
