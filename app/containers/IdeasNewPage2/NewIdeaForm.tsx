@@ -167,7 +167,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
 
     return (
       <Container id="e2e-new-idea-form">
-        <Title>
+        <Title className="e2e-idea-form-title">
           <FormattedMessage {...messages.formTitle} />
         </Title>
 
