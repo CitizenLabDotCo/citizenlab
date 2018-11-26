@@ -90,7 +90,7 @@ docker-compose run --rm web rspec
 
 ```
 
-For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as on of the test runs fails (for Mac or Windows):
+For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as one of the test runs fails (for Mac or Windows):
 
 ```
 for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_spec.rb; [[ ! $? = 0 ]] && break ; done
