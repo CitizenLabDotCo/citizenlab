@@ -2,7 +2,7 @@ import { IProject } from './projects';
 import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ParticipationMethod, SurveyServices } from './phases';
+import { SurveyServices, ParticipationMethod } from './participationContexts';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -35,6 +35,7 @@ export interface IProjectData {
     presentation_mode: PresentationMode;
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
+    max_budget?: number;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
@@ -59,6 +60,9 @@ export interface IProjectData {
         }
       }
     }
+    user_basket: {
+      data: IRelationship | null;
+    }
   };
 }
 
@@ -78,6 +82,7 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
+  max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
 }
@@ -114,23 +119,45 @@ export function reorderProject(projectId: IProjectData['id'], newOrder: number) 
   return streams.update<IProject>(`${apiEndpoint}/${projectId}/reorder`, projectId, { project: { ordering: newOrder } });
 }
 
-export function deleteProject(projectId: string) {
-  return streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+export async function deleteProject(projectId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
 export function getProjectUrl(project: IProjectData) {
-  let lastUrlSegment;
+  let lastUrlSegment: string;
+  const projectType = project.attributes.process_type;
+  const projectMethod = project.attributes.participation_method;
+  const rootProjectUrl = `/projects/${project.attributes.slug}`;
 
   // Determine where to send the user based on process type & participation method
-  if (project.attributes.process_type === 'timeline') {
+  if (projectType === 'timeline') {
     lastUrlSegment = 'process';
-  } else if (project.attributes.participation_method === 'survey') {
+  } else if (projectMethod === 'survey') {
     lastUrlSegment = 'survey';
-  } else if (project.attributes.participation_method === 'ideation') {
+  } else if (projectMethod === 'ideation' || (projectType === 'continuous' && projectMethod === 'budgeting')) {
     lastUrlSegment = 'ideas';
   } else {
     lastUrlSegment = 'info';
   }
 
-  return `/projects/${project.attributes.slug}/${lastUrlSegment}`;
+  return `${rootProjectUrl}/${lastUrlSegment}`;
+}
+
+export function getProjectIdeasUrl(project: IProjectData) {
+  let projectUrl: string;
+  const projectType = project.attributes.process_type;
+  const projectMethod = project.attributes.participation_method;
+  const rootProjectUrl = `/projects/${project.attributes.slug}`;
+
+  if (projectType === 'timeline') {
+    projectUrl = `${rootProjectUrl}/process`;
+  } else if (projectMethod === 'ideation' || projectMethod === 'budgeting') {
+    projectUrl = `${rootProjectUrl}/ideas`;
+  } else {
+    projectUrl = getProjectUrl(project);
+  }
+
+  return projectUrl;
 }

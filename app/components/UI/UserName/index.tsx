@@ -6,7 +6,6 @@ import { IUserData } from 'services/users';
 import { get } from 'lodash-es';
 
 const User = styled.span`
-  word-break: break-all;
   hyphens: auto;
 
   &.deleted-user {

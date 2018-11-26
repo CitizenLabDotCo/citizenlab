@@ -66,8 +66,8 @@ const RightInner = styled.div`
   margin-right: auto;
   padding-top: 60px;
   padding-bottom: 60px;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 export default class SignInPage extends PureComponent {

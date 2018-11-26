@@ -26,6 +26,10 @@ export interface ICustomFieldData {
   };
 }
 
+export function isBuiltInField(field: ICustomFieldData) {
+  return !!field.attributes.code;
+}
+
 export interface ICustomField {
   data: ICustomFieldData;
 }

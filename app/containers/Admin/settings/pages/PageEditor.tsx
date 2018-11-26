@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Formik, FormikProps } from 'formik';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -31,7 +31,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // Typings
-import { CLErrorsJSON } from 'typings';
+import { CLErrorsJSON, UploadFile } from 'typings';
 
 const timeout = 350;
 
@@ -113,16 +113,18 @@ interface Props extends DataProps, InputProps {}
 
 interface State {
   expanded: boolean;
-  localPageFiles: GetResourceFileObjectsChildProps;
+  pageFiles: UploadFile[];
+  pageFilesToRemove: UploadFile[];
 }
 
-class PageEditor extends React.PureComponent<Props, State>{
+class PageEditor extends PureComponent<Props, State>{
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       expanded: false,
-      localPageFiles: null,
+      pageFiles: [],
+      pageFilesToRemove: []
     };
   }
 
@@ -131,7 +133,7 @@ class PageEditor extends React.PureComponent<Props, State>{
   }
 
   initialValues = () => {
-    const { page, remotePageFiles } = this.props;
+    const { page, remotePageFiles, slug } = this.props;
     let initialValues = {};
 
     if (!isNilOrError(page)) {
@@ -142,7 +144,9 @@ class PageEditor extends React.PureComponent<Props, State>{
       };
     } else {
       initialValues = {
-        title_multiloc: { en: this.props.slug },
+        title_multiloc: {
+          en: slug
+        },
         body_multiloc: {},
       };
     }

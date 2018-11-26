@@ -6,8 +6,11 @@ interface InputProps {}
 
 type children = (renderProps: GetCustomFieldsChildProps) => JSX.Element | null;
 
+type IInputType = 'select' | 'multiselect' | 'checkbox';
+
 interface Props extends InputProps {
   children?: children;
+  inputTypes?: IInputType[];
 }
 
 interface State {
@@ -27,7 +30,8 @@ export default class GetCustomFields extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const customFields$ = customFieldsForUsersStream().observable;
+    const { inputTypes } = this.props;
+    const customFields$ = customFieldsForUsersStream({ queryParameters: { input_types: inputTypes } }).observable;
 
     this.subscriptions = [
       customFields$.subscribe((customFields) => {
