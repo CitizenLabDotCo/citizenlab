@@ -4,6 +4,7 @@
   "app.components.AssignBudgetControl.assigned": "Assigned",
   "app.components.AssignBudgetControl.seeIdea": "See idea",
   "app.components.AssignBudgetControl.undo": "Undo",
+  "app.components.AuthProviderButton.termsAndConditions": "",
   "app.components.ConsentManager.Banner.accept": "Acceptere",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Accepter politik og luk banner",
   "app.components.ConsentManager.Banner.mainText": "Ved at navigere, accepterer du vores {policyLink}",
