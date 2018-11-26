@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -10,7 +9,7 @@ import Button from 'components/UI/Button';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 
 // services
-import { IProjectData } from 'services/projects';
+import { getProjectUrl, getProjectIdeasUrl } from 'services/projects';
 import { isProjectModerator } from 'services/permissions/roles';
 
 // resources
@@ -126,7 +125,6 @@ const ProjectContent = styled.div`
   padding-bottom: 15px;
   margin-right: 40px;
   margin-left: 30px;
-  width: 100%;
 
   ${media.smallerThanMaxTablet`
     align-items: flex-start;
@@ -141,7 +139,6 @@ const ProjectContentInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 100%;
 
   ${media.smallerThanMaxTablet`
     align-items: center;
@@ -153,14 +150,13 @@ const ArchivedLabel = styled.span`
   flex-shrink: 1;
   display: flex;
   color: ${colors.text};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.xs}px;
   font-weight: 500;
   text-transform: uppercase;
   border-radius: 5px;
   padding: 6px 12px;
   background: #e1e3e7;
-  /* margin-top: -30px; */
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 `;
 
 const ProjectTitle = styled.h3`
@@ -170,7 +166,6 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
-  width: 100%;
 `;
 
 const ProjectDescription = styled.div`
@@ -179,7 +174,7 @@ const ProjectDescription = styled.div`
   line-height: 24px;
   font-weight: 400;
   margin-top: 20px;
-  width: 100%;
+  hyphens: auto;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -236,7 +231,6 @@ const ProjectButtonWrapper = styled.div`
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
-    width: 100%;
     margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -261,42 +255,16 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> {
-
-  getProjectUrl = (project: IProjectData) => {
-    const projectType = project.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/info`);
-
-    return projectUrl;
-  }
-
-  getProjectIdeasUrl = (project: IProjectData) => {
-    const projectType = project.attributes.process_type;
-    const rootProjectUrl = `/projects/${project.attributes.slug}`;
-    const projectUrl = (projectType === 'timeline' ? `${rootProjectUrl}/process` : `${rootProjectUrl}/ideas`);
-
-    return projectUrl;
-  }
-
-  goToProject = () => {
-    const { project } = this.props;
-
-    if (!isNilOrError(project)) {
-      const projectUrl = this.getProjectUrl(project);
-      clHistory.push(projectUrl);
-    }
-  }
-
+class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const className = this.props['className'];
     const { authUser, project, projectImages, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
-      const projectUrl = this.getProjectUrl(project);
-      const projectIdeasUrl = this.getProjectIdeasUrl(project);
-      const isArchived  = (project.attributes.publication_status === 'archived');
+      const projectUrl = getProjectUrl(project);
+      const projectIdeasUrl = getProjectIdeasUrl(project);
+      const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
@@ -350,9 +318,8 @@ class ProjectCard extends React.PureComponent<Props & InjectedIntlProps, State> 
             <ProjectButton
               linkTo={projectUrl}
               text={<FormattedMessage {...messages.openProjectButton} />}
-              style="primary"
               size="2"
-              circularCorners={false}
+              style="primary"
             />
           </ProjectButtonWrapper>
 
@@ -377,6 +344,9 @@ const ProjectCardWithHoC = injectIntl(ProjectCard);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCardWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => {
+      const props = { ...inputProps, ...dataProps };
+      return <ProjectCardWithHoC {...props} />;
+    }}
   </Data>
 );

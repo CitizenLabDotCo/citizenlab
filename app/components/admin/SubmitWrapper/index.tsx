@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
 
 // styles
@@ -36,17 +36,18 @@ interface Props {
     messageSuccess: any,
     messageError: any,
   };
-  onClick?: {(event): void};
+  onClick?: (event: FormEvent<any>) => void;
   style?: ButtonStyles;
 }
 
-export default class SubmitWrapper extends React.Component<Props> {
+export default class SubmitWrapper extends PureComponent<Props> {
   submitButton: HTMLInputElement | null;
 
   constructor(props: Props)  {
     super(props as any);
     this.submitButton = null;
   }
+
   removeFocus = (el) => {
     el && el.blur();
   }

@@ -19,7 +19,7 @@ module.exports = {
     .waitForElementVisible('#e2e-modal-container')
 
     .click('.e2e-modal-close-button')
-    .waitForElementVisible('#e2e-ideas-list');
+    .waitForElementVisible('#e2e-idea-show');
 
     browser
     .url(`http://${process.env.ROOT_URL}`)

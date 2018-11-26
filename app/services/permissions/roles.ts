@@ -1,4 +1,4 @@
-import { IUser, IRole } from 'services/users';
+import { IUser, IRole, IProjectModerator } from 'services/users';
 import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -14,13 +14,13 @@ export const isAdmin = (user?: IUser | null | undefined | Error)  => {
   return false;
 };
 
-export const isModerator = (user?: IUser) => {
+export const isModerator = (user?: IUser | null) => {
   return !!user && hasRole(user, 'project_moderator');
 };
 
-export const isProjectModerator = (user?: IUser, projectId?: IProjectData['id'] | null) => {
+export const isProjectModerator = (user?: IUser | null, projectId?: IProjectData['id'] | null) => {
   return isModerator(user) && (
     !projectId ||
-    !!(user && projectId && user.data.attributes.roles && user.data.attributes.roles.find((r) => r.project_id === projectId))
+    !!(user && projectId && user.data.attributes.roles && user.data.attributes.roles.find((r: IProjectModerator) => r.project_id === projectId))
   );
 };

@@ -97,10 +97,6 @@ export default defineMessages({
     id: 'app.containers.Projects.displayCards',
     defaultMessage: 'Card view',
   },
-  aboutThisPhase: {
-    id: 'app.containers.Projects.aboutThisPhase',
-    defaultMessage: 'About this phase',
-  },
   ideasTitle: {
     id: 'app.containers.Projects.ideasTitle',
     defaultMessage: 'Ideas',
@@ -133,8 +129,44 @@ export default defineMessages({
     id: 'app.containers.Projects.selectedPhase',
     defaultMessage: 'Selected phase',
   },
+  yourExpenses: {
+    id: 'app.containers.Projects.yourExpenses',
+    defaultMessage: 'Your expenses',
+  },
+  budgetValidated: {
+    id: 'app.containers.Projects.budgetValidated',
+    defaultMessage: 'Expenses validated, congratulations!',
+  },
+  budgetExceeded: {
+    id: 'app.containers.Projects.budgetExceeded',
+    defaultMessage: 'Your expenses exceed the total assignable budget',
+  },
+  totalBudget: {
+    id: 'app.containers.Projects.totalBudget',
+    defaultMessage: 'Total budget',
+  },
+  spentBudget: {
+    id: 'app.containers.Projects.spentBudget',
+    defaultMessage: 'Spent budget',
+  },
+  manageBudget: {
+    id: 'app.containers.Projects.manageBudget',
+    defaultMessage: 'Manage budget',
+  },
+  submitMyExpenses: {
+    id: 'app.containers.Projects.submitMyExpenses',
+    defaultMessage: 'Submit my expenses',
+  },
   phaseSelectorTitle: {
     id: 'app.containers.Projects.phaseSelectorTitle',
     defaultMessage: 'Phase selector',
   },
+  noExpenses: {
+    id: 'app.containers.Projects.noExpenses',
+    defaultMessage: `You don't have any expenses yet`,
+  },
+  byAuthor: {
+    id: 'app.containers.Projects.byAuthor',
+    defaultMessage: `by {authorName}`,
+  }
 });

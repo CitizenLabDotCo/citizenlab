@@ -1,6 +1,6 @@
 import React from 'react';
 import { xor } from 'lodash-es';
-import { IPhaseData } from 'services/phases';
+import { IPhaseData, canContainIdeas } from 'services/phases';
 import { Label, Popup } from 'semantic-ui-react';
 import T from 'components/T';
 
@@ -25,7 +25,7 @@ class PhasesSelector extends React.PureComponent<Props> {
   }
 
   isEnabled = (phase: IPhaseData) => {
-    return phase.attributes.participation_method === 'ideation';
+    return canContainIdeas(phase);
   }
 
   render() {
@@ -34,15 +34,16 @@ class PhasesSelector extends React.PureComponent<Props> {
       <div>
         {phases.map((phase, index) => (
           <Popup
+            basic
             key={phase.id}
             trigger={
               <Label
                 as={this.isEnabled(phase) ? 'a' : undefined}
                 color={this.isActive(phase.id) ? 'teal' : undefined}
-                circular={true}
                 active={this.isActive(phase.id)}
                 onClick={this.handlePhaseClick(phase)}
-                basic={true}
+                circular
+                basic
               >
                 {index + 1}
               </Label>

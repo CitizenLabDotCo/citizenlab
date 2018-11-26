@@ -20,3 +20,16 @@ export default function updateLocationDescriptor(location: LocationDescriptor, l
 
   return descriptor;
 }
+
+export function removeLocale(location: LocationDescriptor) {
+  const pathname = (isString(location) ? location : location.pathname);
+  const urlLocale = (pathname ? getUrlLocale(pathname) : null);
+
+  const result = { pathname, urlLocale };
+  if (pathname && urlLocale) {
+      const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
+      result.pathname = `${pathname.replace(matchRegexp, '/')}`;
+  }
+
+  return result;
+}
