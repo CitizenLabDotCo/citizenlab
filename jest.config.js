@@ -29,5 +29,6 @@ module.exports = {
   transformIgnorePatterns: [
     "<rootDir>/node_modules/(?!lodash-es).+\\.js$"
   ],
-  snapshotSerializers: ["enzyme-to-json/serializer"]
+  snapshotSerializers: ["enzyme-to-json/serializer"],
+  reporters: ["default", "jest-junit"],
 };
