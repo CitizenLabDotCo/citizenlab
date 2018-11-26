@@ -27,7 +27,7 @@ type children = (renderProps: {
   serie: IGraphFormat | null | undefined;
 }) => JSX.Element | null;
 
-type ISupportedDataType = IUsersByBirthyear
+export type ISupportedDataType = IUsersByBirthyear
   | IIdeasByTopic
   | ICommentsByTopic
   | IVotesByTopic
