@@ -178,7 +178,7 @@ const LinkIcon = styled(Icon)`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-const CookiePolicy = (props: InjectedIntlProps) => {
+export const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
   return (
     <Container>
