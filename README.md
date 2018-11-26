@@ -102,3 +102,29 @@ for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_
 Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
 
 NOTE: Watch out that you don't accidently commit these changes!
+
+
+## Creating Engines
+
+Throughout instructions replace "`blorgh`" by the name of your engine.
+
+Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize with a nice `README` file.
+
+Copy the bin folder from another engine (no renamings required).
+
+Create `config` folder with `config/routes.rb` initialized as:
+```
+Blorgh::Engine.routes.draw do
+
+end
+```
+
+Create `db` folder with in it empty `migrate` folder.
+
+Create `lib` folder with empty `tasks` folder. Copy `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do renamings.
+
+Create empty `spec` folder.
+
+Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
+
+If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
