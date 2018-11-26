@@ -4,6 +4,7 @@ declare global {
       loginAsAdmin: typeof loginAsAdmin;
       logOut: typeof logOut;
       createNewContinuousProject: typeof createNewContinuousProject;
+      acceptCookies: typeof acceptCookies;
     }
   }
 }
@@ -29,6 +30,15 @@ export function createNewContinuousProject(projectName: string) {
   cy.get('.e2e-submit-wrapper-button').click();
 }
 
+export function acceptCookies() {
+  cy.get('.e2e-accept-cookies-btn').then((button) => {
+    if (button) {
+      button.click();
+    }
+  });
+}
+
 Cypress.Commands.add('loginAsAdmin', loginAsAdmin);
 Cypress.Commands.add('logOut', logOut);
 Cypress.Commands.add('createNewContinuousProject', createNewContinuousProject);
+Cypress.Commands.add('acceptCookies', acceptCookies);
