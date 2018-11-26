@@ -59,12 +59,10 @@ interface GlobalState {
   processing: boolean;
 }
 
-interface State extends GlobalState { }
+interface State extends GlobalState {}
 
 export default class ButtonBar extends React.PureComponent<Props, State> {
-
   render() {
-
     return (
       <CSSTransition classNames="buttonbar" timeout={TIMEOUT}>
         <ButtonBarContainer>
