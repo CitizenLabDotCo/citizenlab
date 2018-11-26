@@ -1,42 +1,47 @@
-/**
- * Components using the react-intl module require access to the intl context.
- * This is not available when mounting single components in Enzyme.
- * These helper functions aim to address that and wrap a valid,
- * English-locale intl context around them.
- */
-
+import { IntlProvider, intlShape } from "react-intl";
+import { shallow, mount } from "enzyme";
 import React from 'react';
-import { IntlProvider, intlShape } from 'react-intl';
-import { mount, shallow } from 'enzyme';
 
-// Create the IntlProvider to retrieve context for wrapping around.
-const intlProvider = new IntlProvider({ locale: 'en' }, {});
+// Create IntlProvider to retrieve React Intl context
+const intlProvider = new IntlProvider(
+  {
+    locale: "en",
+    messages: {
+      message1: "Hello world"
+    }
+  },
+  {}
+);
 const { intl } = intlProvider.getChildContext();
 
-/**
- * When using React-Intl `injectIntl` on components, props.intl is required.
- */
-function nodeWithIntlProp(node) {
-    return React.cloneElement(node, { intl });
-}
+// `intl` prop is required when using injectIntl HOC
+const nodeWithIntlProp = node => React.cloneElement(node, { intl });
 
-export function shallowWithIntl(node, { context, ...additionalOptions } = {}) {
-    return shallow(
-        nodeWithIntlProp(node),
-        {
-            context: Object.assign({}, context, { intl }),
-            ...additionalOptions,
-        }
-    );
-}
+// shallow() with React Intl context
+export const shallowWithIntl = (node, { context, ...options } = {}) => {
+  return shallow(nodeWithIntlProp(node), {
+    ...options,
+    context: {
+      ...context,
+      intl
+    }
+  });
+};
 
-export function mountWithIntl(node, { context, childContextTypes, ...additionalOptions } = {}) {
-    return mount(
-        nodeWithIntlProp(node),
-        {
-            context: Object.assign({}, context, { intl }),
-            childContextTypes: Object.assign({}, { intl: intlShape }, childContextTypes),
-            ...additionalOptions,
-        }
-    );
-}
+// mount() with React Intl context
+export const mountWithIntl = (
+  node,
+  { context, childContextTypes, ...options } = {}
+) => {
+  return mount(nodeWithIntlProp(node), {
+    ...options,
+    context: {
+      ...context,
+      intl
+    },
+    childContextTypes: {
+      intl: intlShape,
+      ...childContextTypes
+    }
+  });
+};
