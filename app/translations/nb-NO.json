@@ -996,6 +996,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Dessverre har du ikke rettighetene til å ta denne undersøkelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Det er for øyeblikket umulig å ta denne undersøkelsen.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "Undersøkelsen er ikke lengre tilgjengelig, siden dette prosjektet ikke lengre er aktivt.",
+  "app.containers.SignIn.alreadyAcceptTermsAndConditions": "",
   "app.containers.SignIn.createAnAccount": "Opprett en konto",
   "app.containers.SignIn.emailLabel": "E-post",
   "app.containers.SignIn.emailPlaceholder": "E-post",

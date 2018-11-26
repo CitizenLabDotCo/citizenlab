@@ -996,6 +996,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Unfortunately, you don't have the rights to take this survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "It is currently impossible to take this survey.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "The survey is no longer available, since this project is no longer active.",
+  "app.containers.SignIn.alreadyAcceptTermsAndConditions": "I've already accepted the {tacLink}",
   "app.containers.SignIn.createAnAccount": "Create an account",
   "app.containers.SignIn.emailLabel": "Email",
   "app.containers.SignIn.emailPlaceholder": "Email",

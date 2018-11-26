@@ -996,6 +996,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "",
+  "app.containers.SignIn.alreadyAcceptTermsAndConditions": "",
   "app.containers.SignIn.createAnAccount": "",
   "app.containers.SignIn.emailLabel": "",
   "app.containers.SignIn.emailPlaceholder": "",
