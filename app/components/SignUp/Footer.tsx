@@ -25,7 +25,7 @@ import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
@@ -64,7 +64,15 @@ const SocialSignUpText = styled.div`
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+`;
+
+const SubSocialButtonLink = styled.a`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 300;
+  text-decoration: none;
+  padding-top: 0.2em;
 `;
 
 const AlreadyHaveAnAccount = styled(Link)`
@@ -186,6 +194,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                     acceptText={messages.acceptTermsAndConditions}
                     altText={messages.signUpButtonAltText}
                   />
+                  <SubSocialButtonLink
+                    href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+                    target="_blank"
+                  >
+                    <FormattedMessage {...messages.whatIsFranceConnect} />
+                  </SubSocialButtonLink>
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
                   <AuthProviderButton
