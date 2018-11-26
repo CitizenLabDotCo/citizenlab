@@ -5,20 +5,26 @@ Rails.application.routes.draw do
 
       get 'comments/as_xlsx' => 'comments#index_xlsx'
 
-      resources :ideas do
-        resources :comments, shallow: true do
-          post :mark_as_deleted, on: :member
-          resources :votes, except: [:update], shallow: true, defaults: { votable: 'Comment' } do
-            post :up, on: :collection
-            post :down, on: :collection
-          end
-          resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Comment' }
-        end
-        resources :votes, except: [:update], shallow: true, defaults: { votable: 'Idea' } do
+      concern :votable do
+        resources :votes, except: [:update], shallow: true do
           post :up, on: :collection
           post :down, on: :collection
         end
-        resources :spam_reports, shallow: true, defaults: { spam_reportable: 'Idea' }
+      end
+      concern :spam_reportable do
+        resources :spam_reports, shallow: true
+      end
+
+      resources :ideas, 
+        concerns: [:votable, :spam_reportable], 
+        defaults: { votable: 'Idea', spam_reportable: 'Idea'  } do
+
+        resources :comments, shallow: true, 
+          concerns: [:votable, :spam_reportable], 
+          defaults: { votable: 'Comment', spam_reportable: 'Comment'  } do
+            
+          post :mark_as_deleted, on: :member
+        end
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         resources :activities, only: [:index]
