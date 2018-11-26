@@ -3,13 +3,13 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: "coverage",
   preset: undefined,
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
+  },
   setupTestFrameworkScriptFile: "<rootDir>/internals/jest/setup.js",
   testMatch: [
     "**/?(*.)+(spec|test).(js|jsx|ts|tsx)"
   ],
-  transform: {
-    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
-  },
   moduleDirectories: [
     "node_modules",
     "app"
@@ -22,7 +22,7 @@ module.exports = {
     "json"
   ],
   transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!lodash-es)"
+    "<rootDir>/node_modules/(?!lodash-es).+\\.js$"
   ],
   snapshotSerializers: ["enzyme-to-json/serializer"]
 };
