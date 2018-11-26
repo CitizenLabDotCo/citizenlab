@@ -458,7 +458,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
                       <img
                         src={azureAdLogo}
-                        height="21px"
+                        height="45px"
                         alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
                       />
                     </AzureAdSignInButton>

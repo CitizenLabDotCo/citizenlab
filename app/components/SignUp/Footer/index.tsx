@@ -178,7 +178,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <FeatureFlag name="azure_ad_login">
                   <SignUpButton
                     logoUrl={azureAdLogoUrl}
-                    logoHeight="25px"
+                    logoHeight="45px"
                     loginProvider="azureactivedirectory"
                     socialLoginClicked={socialLoginClicked}
                     loginMechanismName={AzureLoginMechanismName}
