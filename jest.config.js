@@ -14,6 +14,11 @@ module.exports = {
     "node_modules",
     "app"
   ],
+  collectCoverageFrom: [
+    "app/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**"
+  ],
   moduleFileExtensions: [
     "ts",
     "tsx",
