@@ -270,17 +270,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
-        this.setState({
-          processing: true,
-          unknownError: null
-        });
-
+        this.setState({ processing: true, unknownError: null });
         const user = await signUp(firstName, lastName, email, password, locale, isInvitation, token);
-
-        if (!hasCustomFields) {
-          await completeRegistration({});
-        }
-
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
