@@ -16,9 +16,9 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
     type: 'comment_on_your_comment';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc
   };
   relationships: {
