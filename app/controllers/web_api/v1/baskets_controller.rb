@@ -34,8 +34,8 @@ class WebApi::V1::BasketsController < ApplicationController
         end
         @basket.assign_attributes basket_params.except(:idea_ids)
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save
+        SideFxBasketService.new.after_update @basket, current_user 
       end
-      SideFxBasketService.new.after_update @basket, current_user
       render json: @basket, status: :ok
     rescue ClErrors::TransactionError => e
       case e.error_key

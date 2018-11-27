@@ -72,13 +72,34 @@ class User < ApplicationRecord
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
 
-  scope :project_moderators, -> (project_id) {
-    where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+  scope :not_admin, -> {
+    where.not("roles @> '[{\"type\":\"admin\"}]'")
+  }
+
+  scope :project_moderator, -> (project_id=nil) {
+    if project_id
+      where("roles @> ?", JSON.generate([{type: 'project_moderator', project_id: project_id}]))
+    else
+      where("roles @> '[{\"type\":\"project_moderator\"}]'")
+    end
+  }
+
+  scope :not_project_moderator, -> {
+    where.not("roles @> '[{\"type\":\"project_moderator\"}]'")
+  }
+
+  scope :normal_user, -> {
+    where("roles = '[]'::jsonb")
+  }
+
+  scope :not_normal_user, -> {
+    where.not("roles = '[]'::jsonb")
   }
 
   scope :active, -> {
     where("registration_completed_at IS NOT NULL AND invite_status is distinct from 'pending'")
   }
+
 
   scope :in_group, -> (group) {
     if group.rules?
@@ -88,6 +109,14 @@ class User < ApplicationRecord
     end
   }
 
+  scope :in_any_group, -> (groups) {
+    user_ids = groups
+      .flat_map do |group|
+        in_group(group).ids
+      end
+      .uniq
+    where(id: user_ids)
+  }
 
   def self.find_by_cimail email
     where('lower(email) = lower(?)', email).first

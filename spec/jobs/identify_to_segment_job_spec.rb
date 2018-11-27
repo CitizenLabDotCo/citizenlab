@@ -47,6 +47,7 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
             :website=>"https://example.org",
             :avatar=>nil,
             :createdAt=>Tenant.current.created_at,
+            :tenantLocales=>["en","fr-FR","nl-NL"],
             :tenantId=>Tenant.current.id,
             :tenantName=>"test-tenant",
             :tenantHost=>"example.org",
