@@ -998,7 +998,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Il est actuellement impossible de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L’enquête n’est plus disponible, puisque ce projet n’est plus active.",
-  "app.containers.SignIn.alreadyAcceptTermsAndConditions": "J’ai déjà accepté le {tacLink}",
+  "app.containers.SignIn.alreadyAcceptTermsAndConditions": "J’ai déjà accepté les {tacLink}",
   "app.containers.SignIn.createAnAccount": "Créez un compte",
   "app.containers.SignIn.emailLabel": "Adresse e-mail",
   "app.containers.SignIn.emailPlaceholder": "Adresse e-mail",
