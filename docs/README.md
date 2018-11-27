@@ -7,7 +7,7 @@
 - A moderator that has not yet accepted their invitation, is no longer shown as 'null null' in the moderators list
 - Adding an idea by clicking on the map is possible again
 
-## Changed
+### Changed
 - When there are no events in a project, the events title is no longer shown
 - The logo for Azure AD login (VUB Net ID) is shown as a larger image
 - When logging in through a 3rd party login provider, the user needs to confirm that they've already accepted the terms and conditions
