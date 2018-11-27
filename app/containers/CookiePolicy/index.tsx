@@ -198,9 +198,10 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
               <FormattedMessage
                 tagName="p"
                 {...messages.changePreferences}
+                className="cookiePreferencesMessage"
                 values={{
                   changePreferencesButton: (
-                    <StyledButton onClick={openConsentManager} className="cookiePreferences" >
+                    <StyledButton onClick={openConsentManager}>
                       <FormattedMessage {...messages.changePreferencesButtonText} />
                     </StyledButton>
                   )
@@ -285,18 +286,18 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
         </SContentContainer>
       </PageContent>
 
-        <PagesNavWrapper>
-          <PagesNav>
-            <SContentContainer>
-              {LEGAL_PAGES.map((pageSlug) => (
-                <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
-                  <FormattedMessage {...messages[`${pageSlug}PageName`]} />
-                  <LinkIcon name="chevron-right" />
-                </StyledLink>
-              ))}
-            </SContentContainer>
-          </PagesNav>
-        </PagesNavWrapper>
+      <PagesNavWrapper>
+        <PagesNav>
+          <SContentContainer>
+            {LEGAL_PAGES.map((pageSlug) => (
+              <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
+                <FormattedMessage {...messages[`${pageSlug}PageName`]} />
+                <LinkIcon name="chevron-right" />
+              </StyledLink>
+            ))}
+          </SContentContainer>
+        </PagesNav>
+      </PagesNavWrapper>
       }
 
       <Footer showCityLogoSection={false} />

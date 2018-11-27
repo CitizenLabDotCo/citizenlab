@@ -1,6 +1,8 @@
 // ./__mocks__/react-intl.js
 import React from 'react';
-const Intl = jest.genMockFromModule('react-intl');
+import { intlShape } from 'react-intl';
+
+const Intl = jest.genMockFromModule<any>('react-intl');
 
 // Here goes intl context injected into component, feel free to extend
 const intl = {
