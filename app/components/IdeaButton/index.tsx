@@ -74,7 +74,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
     const { show, enabled, disabledReason } = postingButtonState({
       project,
       phase,
-      signedIn: !isNilOrError(authUser)
+      authUser
     });
 
     if (show) {

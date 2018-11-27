@@ -22,7 +22,7 @@ import { hasCustomFields } from 'utils/customFields';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
-import { userByInviteStream, completeRegistration } from 'services/users';
+import { userByInviteStream } from 'services/users';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // i18n
@@ -247,7 +247,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, hasCustomFields, token, firstName, lastName, email, password, tacAccepted } = this.state;
+    const { locale, currentTenant, token, firstName, lastName, email, password, tacAccepted } = this.state;
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
@@ -270,17 +270,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
-        this.setState({
-          processing: true,
-          unknownError: null
-        });
-
+        this.setState({ processing: true, unknownError: null });
         const user = await signUp(firstName, lastName, email, password, locale, isInvitation, token);
-
-        if (!hasCustomFields) {
-          await completeRegistration({});
-        }
-
         this.setState({ processing: false });
         this.props.onCompleted(user.data.id);
       } catch (errors) {
