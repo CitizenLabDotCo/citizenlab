@@ -89,8 +89,6 @@ describe('<GetSerieFromStream />', () => {
       series: {
         comments: {
           topic1: 25,
-          topic2: 5,
-          topic3: 0,
         }
       },
       topics: {
@@ -98,18 +96,6 @@ describe('<GetSerieFromStream />', () => {
           title_multiloc: {
             en: 'Topic 1',
             'fr-BE': 'Theme 1'
-          }
-        },
-        topic2: {
-          title_multiloc: {
-            en: 'Topic 2',
-            'fr-BE': 'Theme 2'
-          }
-        },
-        topic3: {
-          title_multiloc: {
-            en: 'Topic 3',
-            'fr-BE': 'Theme 3'
           }
         },
       },
@@ -125,6 +111,6 @@ describe('<GetSerieFromStream />', () => {
       </GetSerieFromStream>
     );
     expect(convertToGraphFormat).toBeCalledTimes(1);
+    expect(convertToGraphFormat.mock.calls[0][0]).toBe(mockData);
   });
-
 });

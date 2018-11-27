@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders 1`] = `
+exports[`<CookiePolicy /> renders correctly 1`] = `
 <CookiePolicy__Container>
   <HelmetWrapper
     defer={true}
@@ -34,13 +34,13 @@ exports[`renders 1`] = `
             values={Object {}}
           />
           <FormattedMessage
+            className="cookiePreferencesMessage"
             defaultMessage="At any time, you can change your preferences {changePreferencesButton}."
             id="app.containers.CookiePolicy.changePreferences"
             tagName="p"
             values={
               Object {
                 "changePreferencesButton": <CookiePolicy__StyledButton
-                  className="cookiePreferences"
                   onClick={[Function]}
                 >
                   <FormattedMessage
@@ -243,4 +243,30 @@ exports[`renders 1`] = `
     showCityLogoSection={false}
   />
 </CookiePolicy__Container>
+`;
+
+exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
+.c0 {
+  color: #147985;
+  font-weight: 800;
+  -webkit-text-decoration: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+}
+
+.c0:hover {
+  color: #0a3d43;
+}
+
+<button
+  className="c0"
+  onClick={[Function]}
+>
+  <FormattedMessage
+    defaultMessage="here"
+    id="app.containers.CookiePolicy.changePreferencesButtonText"
+    values={Object {}}
+  />
+</button>
 `;
