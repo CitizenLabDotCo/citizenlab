@@ -401,6 +401,20 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "in_any_group" do
+
+    it "gets the union of all users in the given groups" do
+      group1 = create(:smart_group)
+      group2 = create(:group)
+      user1 = create(:user, email: 'jos@test.com', manual_groups: [group2])
+      user2 = create(:user, email: 'jules@test.com')
+      user3 = create(:user)
+      user4 = create(:user, manual_groups: [group2])
+
+      expect(User.in_any_group([group1, group2])).to match_array [user1, user2, user4]
+    end
+  end
+
   describe "find_by_cimail" do
     before do
       create_list(:user, 3)

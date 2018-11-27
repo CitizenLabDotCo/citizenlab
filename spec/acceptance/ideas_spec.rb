@@ -171,6 +171,7 @@ resource "Ideas" do
       u = create(:user)
       i1 = create(:idea)
       baskets = create_list(:basket, 3, ideas: [i1])
+      SideFxBasketService.new.update_basket_counts
 
       do_request sort: "-baskets_count"
       json_response = json_parse(response_body)
@@ -298,7 +299,6 @@ resource "Ideas" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq idea.id
-      expect(json_response.dig(:data, :attributes, :baskets_count)).to eq baskets.size
     end
   end
 

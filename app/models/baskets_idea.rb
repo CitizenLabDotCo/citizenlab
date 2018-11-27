@@ -1,7 +1,6 @@
 class BasketsIdea < ApplicationRecord
   belongs_to :basket
   belongs_to :idea
-  counter_culture :idea, column_name: 'baskets_count'
 
   validates :idea, :basket, presence: true
   validate :idea_with_budget
