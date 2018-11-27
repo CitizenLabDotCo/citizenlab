@@ -168,7 +168,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <FeatureFlag name="azure_ad_login">
                   <AuthProviderButton
                     logoUrl={azureAdLogoUrl}
-                    logoHeight="25px"
+                    logoHeight="45px"
                     provider="azureactivedirectory"
                     providerName={AzureProviderName}
                     onAccept={this.handleOnAccept('azureactivedirectory')}
