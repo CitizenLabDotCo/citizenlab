@@ -10,7 +10,7 @@ const babel = require('babel-core');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');
-const FILES_TO_PARSE = 'app/**/messages.js';
+const FILES_TO_PARSE = 'app/**/messages.*s';
 const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
 let progress;
