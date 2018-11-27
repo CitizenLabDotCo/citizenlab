@@ -47,6 +47,7 @@ const DropzonePlaceholderText = styled.div`
   line-height: 20px;
   font-weight: 400;
   text-align: center;
+  width: 100%;
   transition: all 100ms ease-out;
 `;
 
