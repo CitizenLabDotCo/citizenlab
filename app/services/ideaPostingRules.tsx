@@ -3,13 +3,15 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { GetProjectChildProps } from 'resources/GetProject';
 import { GetPhaseChildProps } from 'resources/GetPhase';
 import { isNilOrError } from 'utils/helperUtils';
+import { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isAdmin } from 'services/permissions/roles';
 
 export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'postingDisabled' | 'projectInactive' | 'notActivePhase' | 'futureEnabled';
 
 interface PostingButtonStateArg {
   project: GetProjectChildProps;
   phase: GetPhaseChildProps;
-  signedIn: boolean;
+  authUser: GetAuthUserChildProps;
 }
 
 const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null) => {
@@ -29,9 +31,12 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
  * @param context
  *  project: The project context we are posting to.
  *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
- *  signedIn: Whether the user is currently authenticated
+ *  authUser: The currently authenticated user
  */
-export const postingButtonState = ({ project, phase, signedIn }: PostingButtonStateArg) => {
+export const postingButtonState = ({ project, phase, authUser }: PostingButtonStateArg) => {
+  const signedIn = !isNilOrError(authUser);
+  const loggedInAsAdmin = (!isNilOrError(authUser) ? isAdmin({ data: authUser }) : false);
+
   if (!isNilOrError(project) && !isNilOrError(phase)) {
     const inCurrentPhase = (pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
     const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
@@ -39,18 +44,19 @@ export const postingButtonState = ({ project, phase, signedIn }: PostingButtonSt
     if (inCurrentPhase) {
       return {
         show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
-        enabled: project.relationships.action_descriptor.data.posting.enabled,
+        enabled: (loggedInAsAdmin || project.relationships.action_descriptor.data.posting.enabled),
         disabledReason: disabledReason(disabled_reason, !!signedIn, future_enabled),
       };
-    } else { // if not in current phase
-      return {
-        show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
-        enabled: false,
-        disabledReason: 'notActivePhase',
-      };
     }
+
+    // if not in current phase
+    return {
+      show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
+      enabled: false,
+      disabledReason: 'notActivePhase',
+    };
   } else if (!isNilOrError(project) && isNilOrError(phase)) { // if not in phase context
-    const enabled = project.relationships.action_descriptor.data.posting.enabled;
+    const enabled = (loggedInAsAdmin || project.relationships.action_descriptor.data.posting.enabled);
     const { disabled_reason, future_enabled } = project.relationships.action_descriptor.data.posting;
 
     return {
