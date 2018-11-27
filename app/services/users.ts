@@ -20,7 +20,7 @@ export interface IUserData {
   id: string;
   type: string;
   attributes: {
-    first_name: string;
+    first_name: string | null;
     last_name: string | null;
     slug: string;
     locale: Locale;
