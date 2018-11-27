@@ -68,5 +68,9 @@ export default defineMessages({
   signInButtonAltText: {
     id: 'app.containers.SignIn.signInButtonAltText',
     defaultMessage: 'Sign in with {loginMechanismName}',
+  },
+  alreadyAcceptTermsAndConditions: {
+    id: 'app.containers.SignIn.alreadyAcceptTermsAndConditions',
+    defaultMessage: 'I\'ve already accepted the {tacLink}',
   }
 });

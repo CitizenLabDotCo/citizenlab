@@ -1,5 +1,17 @@
 # Changelog
 
+## 2018-11-27
+
+### Fixed
+- When all registration fields are disabled, signing up through invite no longer blocks on the first step
+- A moderator that has not yet accepted their invitation, is no longer shown as 'null null' in the moderators list
+- Adding an idea by clicking on the map is possible again
+
+## Changed
+- When there are no events in a project, the events title is no longer shown
+- The logo for Azure AD login (VUB Net ID) is shown as a larger image
+- When logging in through a 3rd party login provider, the user needs to confirm that they've already accepted the terms and conditions
+
 ## 2018-11-22
 
 ### Fixed
@@ -16,6 +28,12 @@
   - Citizens can fill their basket with ideas, until they hit the limit
   - Citizens can submit their basket when they're done
   - Admins and moderators can process the results through the idea manager and excel export
+- Advanced dashboards: iteration 1
+  - The summary tab shows statistics on idea/comment/vote and registration activities
+  - The users tab shows information on user demographics and a leaderboard
+  - The time filter can be controller with the precision of a day
+  - Project, group and topic filters are available when applicable
+  - Project moderators can access the summary tabs with enforced project filter
 - Social sharing through the modal is now separately trackable from sharing through the idea page
 - The ideas excel export now contains the idea status
 - A new smart group rule allows for filtering on project moderators and normal users

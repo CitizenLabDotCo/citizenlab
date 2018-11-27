@@ -25,7 +25,8 @@ const StyledIdeaCards = styled(IdeaCards)`
 `;
 
 interface InputProps {
-  phaseId: string | null;
+  projectId: string;
+  phaseId: string;
   className?: string;
 }
 
@@ -39,7 +40,7 @@ interface State {}
 
 class PhaseIdeas extends PureComponent<Props, State> {
   render() {
-    const { phase, className } = this.props;
+    const { projectId, phaseId, phase, className } = this.props;
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
@@ -52,7 +53,8 @@ class PhaseIdeas extends PureComponent<Props, State> {
               type="load-more"
               sort={'trending'}
               pageSize={12}
-              phaseId={phase.id}
+              projectId={projectId}
+              phaseId={phaseId}
               showViewToggle={true}
               defaultView={phase.attributes.presentation_mode}
               participationMethod={participationMethod}
