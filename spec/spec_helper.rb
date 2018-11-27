@@ -115,6 +115,7 @@ RSpec.configure do |config|
     require './engines/email_campaigns/spec/factories/campaigns_groups.rb'
     require './engines/email_campaigns/spec/factories/deliveries.rb'
     require './engines/email_campaigns/spec/factories/consents.rb'
+    require './engines/machine_translations/spec/factories/machine_translations.rb'
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     # Use transactions for tests
