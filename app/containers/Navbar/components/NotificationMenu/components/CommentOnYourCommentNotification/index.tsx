@@ -52,6 +52,8 @@ export default class CommentOnYourCommentNotification extends React.PureComponen
   render() {
     const { notification } = this.props;
     const { ideaSlug } = this.state;
+    const deletedUser = notification.attributes;
+
     return (
       <NotificationWrapper
         linkTo={`/ideas/${ideaSlug}`}
