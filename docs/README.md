@@ -1,5 +1,17 @@
 # Changelog
 
+## 2018-11-27
+
+### Fixed
+- When all registration fields are disabled, signing up through invite no longer blocks on the first step
+- A moderator that has not yet accepted their invitation, is no longer shown as 'null null' in the moderators list
+- Adding an idea by clicking on the map is possible again
+
+## Changed
+- When there are no events in a project, the events title is no longer shown
+- The logo for Azure AD login (VUB Net ID) is shown as a larger image
+- When logging in through a 3rd party login provider, the user needs to confirm that they've already accepted the terms and conditions
+
 ## 2018-11-22
 
 ### Fixed
