@@ -13,6 +13,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
+import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
@@ -34,12 +35,12 @@ import { AUTH_PATH } from 'containers/App/constants';
 // style
 import { darken } from 'polished';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
-const googleLogo = require('components/SignUp/Footer/svg/google.svg') as string;
-const facebookLogo = require('components/SignUp/Footer/svg/facebook.svg') as string;
-const franceconnectLogo = require('components/SignUp/Footer/svg/franceconnect.svg') as string;
+const googleLogo = require('components/AuthProviderButton/svg/google.svg') as string;
+const facebookLogo = require('components/AuthProviderButton/svg/facebook.svg') as string;
+const franceconnectLogo = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   flex: 1;
@@ -163,50 +164,10 @@ const SocialLoginText = styled.div`
   margin-bottom: 20px;
 `;
 
-const SocialLoginButtons = styled.div`
+const AuthProviderButtons = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const SocialSignInButton = styled.div`
-  width: 100%;
-  height: 58px;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-
-  ${media.largePhone`
-    height: 90px;
-  `}
-
-  &.franceconnect:hover,
-  &.franceconnect.active {
-    border-color: #0e4fa1;
-  }
-
-  &.google:hover,
-  &.google.active {
-    border-color: #2a81f4;
-  }
-
-  &.facebook:hover,
-  &.facebook.active {
-    border-color: #345697;
-  }
-`;
-
-const AzureAdSignInButton = SocialSignInButton.extend`
-  &:hover {
-    border-color: #000;
-  }
 `;
 
 interface InputProps {
@@ -349,7 +310,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
+  handleOnSSOClick = (provider: Providers) => () => {
     window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
   }
 
@@ -453,44 +414,52 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     {formatMessage(messages.orLogInWith)}
                   </SocialLoginText>
                 )}
-                <SocialLoginButtons>
+                <AuthProviderButtons>
                   <FeatureFlag name="azure_ad_login">
-                    <AzureAdSignInButton className="azureactivedirectory" onClick={this.handleOnSSOClick('azureactivedirectory')}>
-                      <img
-                        src={azureAdLogo}
-                        height="45px"
-                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
-                      />
-                    </AzureAdSignInButton>
+                    <AuthProviderButton
+                      logoUrl={azureAdLogo}
+                      logoHeight="45px"
+                      provider="azureactivedirectory"
+                      providerName={tenantLoginMechanismName}
+                      onAccept={this.handleOnSSOClick('azureactivedirectory')}
+                      acceptText={messages.alreadyAcceptTermsAndConditions}
+                      altText={messages.signInButtonAltText}
+                    />
                   </FeatureFlag>
                 <FeatureFlag name="franceconnect_login">
-                  <SocialSignInButton className="franceconnect" onClick={this.handleOnSSOClick('franceconnect')}>
-                    <img
-                      src={franceconnectLogo}
-                      height="45px"
-                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: tenantLoginMechanismName })}
-                    />
-                  </SocialSignInButton>
+                  <AuthProviderButton
+                    logoUrl={franceconnectLogo}
+                    logoHeight="45px"
+                    provider="franceconnect"
+                    providerName="France Connect"
+                    onAccept={this.handleOnSSOClick('franceconnect')}
+                    acceptText={messages.alreadyAcceptTermsAndConditions}
+                    altText={messages.signInButtonAltText}
+                  />
                 </FeatureFlag>
                   <FeatureFlag name="google_login">
-                    <SocialSignInButton className="google" onClick={this.handleOnSSOClick('google')}>
-                      <img
-                        src={googleLogo}
-                        height="29px"
-                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Google' })}
-                      />
-                    </SocialSignInButton>
+                    <AuthProviderButton
+                      logoUrl={googleLogo}
+                      logoHeight="29px"
+                      provider="google"
+                      providerName="Google"
+                      onAccept={this.handleOnSSOClick('google')}
+                      acceptText={messages.alreadyAcceptTermsAndConditions}
+                      altText={messages.signInButtonAltText}
+                    />
                   </FeatureFlag>
                   <FeatureFlag name="facebook_login">
-                    <SocialSignInButton className="facebook" onClick={this.handleOnSSOClick('facebook')}>
-                      <img
-                        src={facebookLogo}
-                        height="21px"
-                        alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'Facebook' })}
-                      />
-                    </SocialSignInButton>
+                    <AuthProviderButton
+                      logoUrl={facebookLogo}
+                      logoHeight="21px"
+                      provider="facebook"
+                      providerName="Facebook"
+                      onAccept={this.handleOnSSOClick('facebook')}
+                      acceptText={messages.alreadyAcceptTermsAndConditions}
+                      altText={messages.signInButtonAltText}
+                    />
                   </FeatureFlag>
-                </SocialLoginButtons>
+                </AuthProviderButtons>
                 {!passwordLoginEnabled &&
                   <CreateAccount>
                     {createAccount}
