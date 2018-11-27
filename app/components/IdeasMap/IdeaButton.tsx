@@ -54,7 +54,7 @@ interface State {}
 
 class IdeaButton extends React.PureComponent<Props, State> {
 
-  disabledReasonToMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor} = {
+  disabledReasonToMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     notPermitted: messages.postingNotPermitted,
     maybeNotPermitted: messages.postingMaybeNotPermitted,
     postingDisabled: messages.postingHereImpossible,
@@ -75,7 +75,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
     const { show, enabled, disabledReason } = postingButtonState({
       project,
       phase,
-      signedIn: !isNilOrError(authUser)
+      authUser
     });
 
     if (!show || !enabled) {
