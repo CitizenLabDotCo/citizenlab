@@ -343,7 +343,7 @@ ActiveRecord::Schema.define(version: 20181126142621) do
     t.index ["token"], name: "index_invites_on_token"
   end
 
-  create_table "machine_translations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "machine_translations_machine_translations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "translation"
     t.uuid "translatable_id"
     t.string "translatable_type"

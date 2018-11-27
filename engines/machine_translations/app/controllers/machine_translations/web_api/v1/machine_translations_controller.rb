@@ -25,8 +25,7 @@ module MachineTranslations
     # end
 
     def show
-      render json: { prrt: 42 }
-      # render json: @campaign, serializer: WebApi::V1::CampaignSerializer
+      render json: @translation, serializer: WebApi::V1::MachineTranslationSerializer
     end
 
     # def create

@@ -127,4 +127,19 @@ Create empty `spec` folder.
 
 Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
 
+Add the following line to your Gemfile
+```
+gem 'blorgh', path: 'engines/blorgh'
+```
+
+Add the following line to your Dockerfile
+```
+COPY engines/blorghs ./engines/blorghs/
+```
+
 If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
+
+If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
+```
+require './engines/blorgh/spec/factories/blorghs.rb'
+```
