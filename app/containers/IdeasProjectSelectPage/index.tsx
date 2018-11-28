@@ -3,6 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { groupBy, isEmpty, isUndefined } from 'lodash-es';
+import MediaQuery from 'react-responsive';
 
 // services
 import { IProjectData } from 'services/projects';
@@ -183,10 +184,6 @@ const WithoutButtonBar = styled.div`
   flex-shrink: 0;
   flex-basis: 100%;
   display: flex;
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const EmptyStateContainer = styled.div`
@@ -257,7 +254,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
       const noProjects = isEmpty(projectsList);
 
       return (
-        <Container>
+        <Container className="e2e-project-selection-page">
           <StyledContentContainer>
             <PageTitle className={noProjects ? 'noProjects' : ''}>
               <FormattedMessage {...messages.pageTitle} />
@@ -323,20 +320,29 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                   }
                 </ColumnsContainer>
 
-                <WithoutButtonBar>
-                  <Button
-                    className="e2e-submit-project-select-form-mobile"
-                    text={<FormattedMessage {...messages.continueButton} />}
-                    onClick={this.handleOnSubmitClick}
-                    disabled={!selectedProjectId}
-                  />
-                </WithoutButtonBar>
+                <MediaQuery maxWidth={1024}>
+                  {(matches) => {
+                    if (matches) {
+                      return (
+                        <WithoutButtonBar>
+                          <Button
+                            className="e2e-submit-project-select-form"
+                            text={<FormattedMessage {...messages.continueButton} />}
+                            onClick={this.handleOnSubmitClick}
+                            disabled={!selectedProjectId}
+                          />
+                        </WithoutButtonBar>
+                      );
+                    }
+
+                    return null;
+                  }}
+                </MediaQuery>
 
                 <ButtonBar>
                   <ButtonBarInner>
                     <Button
                       className="e2e-submit-project-select-form"
-                      size="1"
                       text={<FormattedMessage {...messages.continueButton} />}
                       onClick={this.handleOnSubmitClick}
                       disabled={!selectedProjectId}

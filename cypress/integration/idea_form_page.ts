@@ -74,7 +74,7 @@
 //   const email = `${Math.random().toString(36).substr(2, 5)}@citizenlab.co`;
 //   const password = '123456789';
 //   const projectName = Math.random().toString(36).substr(2, 5);
-//   const ideaTitle = Math.random().toString(36).substr(2, 5);
+//   iconst ideaTtle = Math.random().toString(36).substr(2, 5);
 //   const ideaDescription = Math.random().toString(36).substr(2, 5);
 
 //   // tisha@ornhills.io
@@ -148,30 +148,24 @@
 describe('Idea form page', () => {
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas/new');
+    cy.get('.e2e-accept-cookies-btn').click();
   });
 
-  const submitForm = () => {
-    cy.get('.e2e-submit-idea-form').then((button) => {
-      if (button) {
-        button.click();
-      } else {
-        cy.get('.e2e-submit-idea-form-mobile').click();
-      }
-    });
-  };
+  it('shows the page', () => {
+    cy.get('.e2e-idea-form-page');
+  });
 
   it('shows the idea form', () => {
-    cy.get('.e2e-idea-form-title').contains('Add your idea');
     cy.get('#idea-form');
   });
 
   it('requires a title', () => {
-    submitForm();
+    cy.get('.e2e-submit-idea-form').click();
     cy.get('.e2e-error-message').should('contain', 'Please provide a title');
   });
 
   it('requires a description', () => {
-    submitForm();
+    cy.get('.e2e-submit-idea-form').click();
     cy.get('.e2e-error-message').should('contain', 'Please provide a description');
   });
 
@@ -183,9 +177,17 @@ describe('Idea form page', () => {
     cy.get('.ql-editor').type('test').should('contain', 'test');
   });
 
-  it('saves the idea on submit', () => {
-    cy.get('#title').type('test');
-    cy.get('.ql-editor').type('test');
-    submitForm();
+  it('submits the form', () => {
+    const ideaTtle = Math.random().toString(36).substr(2, 5).toLowerCase();
+    const ideaDescription = Math.random().toString(36).substr(2, 5).toLowerCase();
+
+    cy.get('#title').type(ideaTtle);
+    cy.get('.ql-editor').type(ideaDescription);
+    cy.get('.e2e-submit-idea-form').click();
+    cy.get('.e2e-lazy-idea-flow-sign-in-form');
+    cy.request({
+      method: 'GET',
+      url: `/web_api/v1/ideas/by_slug/${ideaTtle}`
+    });
   });
 });

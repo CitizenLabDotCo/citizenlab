@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import MediaQuery from 'react-responsive';
 
 // components
 import Button from 'components/UI/Button';
@@ -59,7 +60,7 @@ const Title = styled.h1`
 
 const MobileButton = styled.div`
   width: 100%;
-  display: none;
+  display: flex;
 
   .Button {
     margin-right: 10px;
@@ -68,10 +69,6 @@ const MobileButton = styled.div`
   .Error {
     flex: 1;
   }
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
 `;
 
 interface Props {
@@ -182,16 +179,26 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           onSubmit={this.handleIdeaFormOutput}
         />
 
-        <MobileButton>
-          <Button
-            form="idea-form"
-            className="e2e-submit-idea-form-mobile"
-            processing={processing}
-            text={<FormattedMessage {...messages.submit} />}
-            onClick={this.handleOnSubmitButtonClick}
-          />
-          <Error text={submitErrorMessage} marginTop="0px" />
-        </MobileButton>
+        <MediaQuery maxWidth={1024}>
+          {(matches) => {
+            if (matches) {
+              return (
+                <MobileButton>
+                  <Button
+                    form="idea-form"
+                    className="e2e-submit-idea-form"
+                    processing={processing}
+                    text={<FormattedMessage {...messages.submit} />}
+                    onClick={this.handleOnSubmitButtonClick}
+                  />
+                  <Error text={submitErrorMessage} marginTop="0px" />
+                </MobileButton>
+              );
+            }
+
+            return null;
+          }}
+        </MediaQuery>
       </Container>
     );
   }
