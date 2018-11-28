@@ -219,7 +219,7 @@ export const chartTheme = (theme) => {
   };
 };
 
-class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps> {
+export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps> {
   render() {
     const { children, authUser } = this.props;
     const { formatMessage } = this.props.intl;
@@ -237,7 +237,6 @@ class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & Wit
         return (
           <TabbedResource
             resource={resource}
-            messages={messages}
             tabs={tabs}
           >
             <HelmetIntl
