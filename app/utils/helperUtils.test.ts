@@ -4,10 +4,8 @@ test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-test('null is nilOrError', () => {
-  expect(isNilOrError(null)).toBe(true);
-});
-
-test('42 is not nilOrError', () => {
-  expect(isNilOrError(42)).toBe(false);
+describe('isNilOrError', () => {
+  test.each([[null, true], [undefined, true], [new Error, true], [42, false], [{}, false]])('gives the right result for %p', (val, expected) => {
+    expect(isNilOrError(val)).toBe(expected);
+  });
 });
