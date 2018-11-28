@@ -15,7 +15,6 @@ const stream = jest.fn(({ queryParameters }, customId: string) => {
 });
 
 describe('<GetSerieFromStream />', () => {
-
   let child: jest.Mock;
   let convertToGraphFormat: jest.Mock;
 
@@ -24,8 +23,8 @@ describe('<GetSerieFromStream />', () => {
     convertToGraphFormat = jest.fn();
   });
 
-  it('calls the given stream with the given query parameters', () => {
-    shallow(
+  it('passes down parameters to query', () => {
+    const component = shallow(
       <GetSerieFromStream
         convertToGraphFormat={convertToGraphFormat}
         stream={stream}
@@ -36,6 +35,7 @@ describe('<GetSerieFromStream />', () => {
         {child}
       </GetSerieFromStream>
     );
+    expect(stream).toHaveBeenCalledTimes(1);
     expect(stream.mock.calls[0][0]).toEqual({
       queryParameters: {
         end_at: null,
@@ -45,32 +45,47 @@ describe('<GetSerieFromStream />', () => {
         topic: undefined
       }
     });
+    component.setProps({ startAt: 'nextDate' });
+    expect(stream).toHaveBeenCalledTimes(2);
+    expect(stream.mock.calls[1][0]).toEqual({
+      queryParameters: {
+        end_at: null,
+        group: undefined,
+        project: 'testProject',
+        start_at: 'nextDate',
+        topic: undefined
+      }
+    });
   });
 
-  it('calls the given stream with the given extra parameters', () => {
+  it('calls the given stream with the given extra parameter', () => {
     shallow(
       <GetSerieFromStream
         convertToGraphFormat={convertToGraphFormat}
         stream={stream}
         startAt="startDate"
-        endAt={null}
+        endAt="endDate"
         customId="customId"
+        currentGroupFilter="groupID"
+        currentTopicFilter="topicID"
+        currentProjectFilter="projectID"
       >
         {child}
       </GetSerieFromStream>
     );
     expect(stream.mock.calls[0]).toEqual([{
       queryParameters: {
-        end_at: null,
-        group: undefined,
-        project: undefined,
         start_at: 'startDate',
-        topic: undefined
+        end_at: 'endDate',
+        group: 'groupID',
+        project: 'projectID',
+        topic: 'topicID'
       }
     }, 'customId']);
   });
 
   it('doesn\'t calls convertToGraphFormat function if there is no data', () => {
+    mockData = null;
     shallow(
       <GetSerieFromStream
         convertToGraphFormat={convertToGraphFormat}
@@ -112,5 +127,35 @@ describe('<GetSerieFromStream />', () => {
     );
     expect(convertToGraphFormat).toBeCalledTimes(1);
     expect(convertToGraphFormat.mock.calls[0][0]).toBe(mockData);
+  });
+
+  it('passes down result of convertToGraphFormat to the child', () => {
+    convertToGraphFormat = jest.fn(data => ({ comments: data.series.comments }));
+    shallow(
+      <GetSerieFromStream
+        convertToGraphFormat={convertToGraphFormat}
+        stream={stream}
+        startAt="startDate"
+        endAt={null}
+      >
+        {child}
+      </GetSerieFromStream>
+    );
+    mockData = {
+      series: {
+        comments: {
+          topic1: 25,
+        }
+      },
+      topics: {
+        topic1: {
+          title_multiloc: {
+            en: 'Topic 1',
+            'fr-BE': 'Theme 1'
+          }
+        },
+      },
+    };
+    expect(child).toBeCalledWith({ serie: { comments: { topic1: 25 } } });
   });
 });

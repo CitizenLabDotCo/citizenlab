@@ -1,11 +1,12 @@
+// To render components with both intl and theme
+// Never used yet, not sure how well it works
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { colors, fontSizes } from '../styleUtils';
 
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { shallowWithIntl, mountWithIntl } from 'utils/testUtils/withIntl';
-
 const theme = {
   colors,
   fontSizes,
@@ -17,13 +18,13 @@ const theme = {
   maxPageWidth: 952,
 };
 
-export const shallowWithHoCs = (tree) => {
+export const shallowWithThemeIntl = (tree) => {
   const context = shallow(<ThemeProvider theme={theme} />)
     .instance()
     .getChildContext();
   return shallowWithIntl(tree, { context });
 };
-export const mountWithHoCs = (tree) => {
+export const mountWithThemeIntl = (tree) => {
   const context = shallow(<ThemeProvider theme={theme} />)
     .instance()
     .getChildContext();

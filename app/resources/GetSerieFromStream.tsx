@@ -113,21 +113,15 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
       currentTopicFilter,
       stream,
     } = this.props;
-    if (startAt !== prevProps.startAt
-      || endAt !== prevProps.endAt
-      || stream !== prevProps.stream
-      || currentGroupFilter !== prevProps.currentGroupFilter
-      || currentTopicFilter !== prevProps.currentTopicFilter
-      || currentProjectFilter !== prevProps.currentProjectFilter) {
-      this.queryProps$.next({
-        startAt,
-        endAt,
-        currentGroupFilter,
-        currentTopicFilter,
-        currentProjectFilter,
-        stream
-      });
-    }
+    this.queryProps$.next({
+      startAt,
+      endAt,
+      currentGroupFilter,
+      currentTopicFilter,
+      currentProjectFilter,
+      stream
+    });
+
   }
 
   componentWillUnmount() {
