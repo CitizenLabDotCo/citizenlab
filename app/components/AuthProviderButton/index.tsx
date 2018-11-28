@@ -11,7 +11,7 @@ import AuthProviderImage from './AuthProviderImage';
 
 const timeout = 250;
 
-const AuthProviderButtonWrapper = styled.button`
+const AuthProviderButtonWrapper = styled.div`
   width: 100%;
   height: 58px;
   margin-bottom: 15px;
