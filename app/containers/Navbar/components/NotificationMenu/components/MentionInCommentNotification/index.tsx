@@ -1,14 +1,19 @@
 import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
+// services
 import { IMentionInCommentNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
+// i18n
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
+import { DeletedUser } from '../Notification';
 
 type Props = {
   notification: IMentionInCommentNotificationData;
@@ -52,6 +57,7 @@ export default class MentionInCommentNotification extends PureComponent<Props, S
   render() {
     const { notification } = this.props;
     const { ideaSlug } = this.state;
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
 
     return (
       <NotificationWrapper
@@ -63,7 +69,11 @@ export default class MentionInCommentNotification extends PureComponent<Props, S
         <FormattedMessage
           {...messages.mentionInComment}
           values={{
-            name:
+            name: deletedUser ?
+              <DeletedUser>
+                <FormattedMessage {...messages.deletedUser} />
+              </DeletedUser>
+              :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
                 onClick={this.onClickUserName}
