@@ -67,13 +67,18 @@ describe MultilocService do
           hello: 'hallo!'
         }
       })
+      I18n.backend.store_translations(:'fr-FR', {
+        foo: {
+          hello: 'bonjour!'
+        }
+      })
     end
 
     it "assembles a multiloc object for a given translation key" do
       expect(service.i18n_to_multiloc('foo.hello')).to eq({
         "en" => 'hello!',
         "nl-BE" => 'hallo!',
-        "fr-FR" => 'hello!'
+        "fr-FR" => 'bonjour!'
       })
     end
 

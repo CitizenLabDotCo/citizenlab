@@ -403,17 +403,15 @@ resource "Stats - Users" do
       let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
       before do
+        @u1, @u2, @u3 = create_list(:user, 3)
         travel_to(start_at - 1.day) do
           create(:idea_published_activity, user: @u2)
         end
 
         travel_to start_at + 4.days do
           @group = create(:group)
-          @u1 = create(:user)
           create(:membership, user: @u1, group: @group)
-          @u2 = create(:user)
           create(:membership, user: @u2, group: @group)
-          @u3 = create(:user)
 
           create(:comment_created_activity, user: @u1)
           create(:idea_upvoted_activity, user: @u1)

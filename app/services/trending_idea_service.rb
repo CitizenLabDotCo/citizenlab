@@ -18,11 +18,18 @@ class TrendingIdeaService
                            AND (ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
 
     ideas.joins("LEFT OUTER JOIN (SELECT filtered.id AS is_trending_b FROM (#{filter_trending_sql}) AS filtered) AS trends ON is_trending_b = ideas.id")
-         .group('ideas.id, idea_trending_infos.mean_activity_at')
+         .group('ideas.id, idea_trending_infos_ideas.mean_activity_at')
          .select('ideas.*, count(is_trending_b) AS is_trending')
          .left_outer_joins(:idea_trending_info)
-         .select("ideas.*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1)) AS score")
+         .select("ideas.*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos_ideas.mean_activity_at)), 1)) AS score")
          .order('is_trending DESC, score DESC')
+
+    # ideas
+    #   .select("ideas.*, upvotes_count AS score")
+    #   .order('score DESC')
+    #   # .select("(GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1)) AS score")
+    #   # .joins(:idea_trending_info)
+
   end
 
 

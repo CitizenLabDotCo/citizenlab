@@ -25,6 +25,7 @@ FactoryBot.define do
 
   factory :comment_marked_as_spam, parent: :notification, class: 'Notifications::CommentMarkedAsSpam' do
     comment
+    idea
   end
 
   factory :idea_marked_as_spam, parent: :notification, class: 'Notifications::IdeaMarkedAsSpam' do
