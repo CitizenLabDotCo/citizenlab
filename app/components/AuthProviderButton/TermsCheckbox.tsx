@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import Link from 'utils/cl-router/Link';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -19,36 +19,49 @@ interface Props {
   acceptText: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
-const TermsCheckbox = (props: Props & InjectedIntlProps) => {
-  const {
-    timeout,
-    accepted,
-    providerName,
-    onCheck,
-    acceptText,
-  } = props;
+class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
 
-return (
-      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-        <AuthProviderButtonInner>
-          <Checkbox
-            value={accepted}
-            onChange={onCheck}
-            disableLabelClick={true}
-            label={
-              <FormattedMessage
-                {...acceptText}
-                values={{
-                  loginMechanismName: providerName,
-                  tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-                }}
-              />
-            }
-          />
-        </AuthProviderButtonInner>
-      </CSSTransition>
-    );
+  handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  }
 
-};
+  render() {
+    const {
+      timeout,
+      accepted,
+      providerName,
+      onCheck,
+      acceptText,
+    } = this.props;
+
+  return (
+        <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+          <AuthProviderButtonInner>
+            <Checkbox
+              value={accepted}
+              onChange={onCheck}
+              disableLabelClick={true}
+              label={
+                <FormattedMessage
+                  {...acceptText}
+                  values={{
+                    loginMechanismName: providerName,
+                    tacLink: <Link
+                      target="_blank"
+                      to="/pages/terms-and-conditions"
+                      onClick={this.handleLinkClick}
+                    >
+                      <FormattedMessage {...messages.termsAndConditions} />
+                    </Link>
+                  }}
+                />
+              }
+            />
+          </AuthProviderButtonInner>
+        </CSSTransition>
+      );
+
+  }
+}
 
 export default injectIntl<Props>(TermsCheckbox);
