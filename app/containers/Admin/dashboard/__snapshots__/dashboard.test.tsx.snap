@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DashboardsPage /> renders correctly with a project moderator user 1`] = `
+<Component
+  onlyModerator={true}
+/>
+`;
+
+exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
+<withRouter(TabbedResource)
+  resource={
+    Object {
+      "title": "Dashboard",
+    }
+  }
+  tabs={
+    Array [
+      Object {
+        "label": "Summary",
+        "url": "/admin",
+      },
+      Object {
+        "label": "Users",
+        "url": "/admin/dashboard-users",
+      },
+    ]
+  }
+>
+  <HelmetIntl
+    description={
+      Object {
+        "defaultMessage": "Dashboard for activities on the platform",
+        "id": "app.containers.AdminPage.DashboardPage.helmetDescription",
+      }
+    }
+    title={
+      Object {
+        "defaultMessage": "Admin dashboard page",
+        "id": "app.containers.AdminPage.DashboardPage.helmetTitle",
+      }
+    }
+  />
+  <FeatureFlag
+    name="clustering"
+  >
+    <dashboard__StyledWarning
+      text={
+        <FormattedMessage
+          defaultMessage="Try out {insightsLink}, our new beta feature"
+          id="app.containers.AdminPage.DashboardPage.tryOutInsights"
+          values={
+            Object {
+              "insightsLink": <Unknown
+                to="/admin/clusterings"
+              >
+                <FormattedMessage
+                  defaultMessage="insights"
+                  id="app.containers.AdminPage.DashboardPage.insightsLinkText"
+                  values={Object {}}
+                />
+              </Unknown>,
+            }
+          }
+        />
+      }
+    />
+  </FeatureFlag>
+</withRouter(TabbedResource)>
+`;
