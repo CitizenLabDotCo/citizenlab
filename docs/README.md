@@ -1,5 +1,13 @@
 # Changelog
 
+## 2018-11-28
+
+### Fixed
+
+- IE11 graphical fixes in text editor, status badges and file drag&drop area fixed
+- The idea tab is visible again within the admin of a continuous PB project
+- The checkbox within 3rd party login buttons is now clickable in Firefox
+
 ## 2018-11-27
 
 ### Fixed
