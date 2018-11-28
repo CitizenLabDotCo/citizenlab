@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { colors, fontSize, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(Link)`
-  width: calc(100% * (1/3) - 26px);
+  width: calc(100% * (1/2) - 26px);
   margin-left: 13px;
   margin-right: 13px;
   background: white;
@@ -94,6 +94,7 @@ const Title = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
+  overflow-wrap: break-word;
 `;
 
 const Location = styled.div`
@@ -123,7 +124,7 @@ export default (props: Props) => {
   const endAtMoment = moment(event.attributes.end_at);
   const startAtIsoDate = getIsoDate(event.attributes.start_at);
   const endAtIsoDate = getIsoDate(event.attributes.end_at);
-  const startAtDay = startAtMoment.format('DD');
+  const startAtDay = startAtMoment.format('D');
   const endAtDay = endAtMoment.format('DD');
   const startAtMonth = startAtMoment.format('MMM');
   const endAtMonth = endAtMoment.format('MMM');
@@ -155,7 +156,9 @@ export default (props: Props) => {
 
       <TextBlock>
         <Time>{startAt} - {endAt}</Time>
-        <Title><T value={event.attributes.title_multiloc} /></Title>
+        <Title>
+          <T value={event.attributes.title_multiloc} />
+        </Title>
         <Location>
           <StyledIcon name="mapmarker" />
           <T value={event.attributes.location_multiloc} />
