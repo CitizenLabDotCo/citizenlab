@@ -9,17 +9,20 @@ import messages from '../../messages';
 
 interface Props {
   ideaId: string;
+  resetSelectedIdeas: () => void;
 }
 
 class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
 
   handleClickDelete = () => {
-    const { ideaId } = this.props;
+    const { ideaId, resetSelectedIdeas } = this.props;
     const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
 
     if (window.confirm(message)) {
       deleteIdea(ideaId);
     }
+
+    resetSelectedIdeas();
   }
 
   handleClickEdit = () => {

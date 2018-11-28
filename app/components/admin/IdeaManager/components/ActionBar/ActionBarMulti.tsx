@@ -7,17 +7,22 @@ import messages from '../../messages';
 
 interface Props {
   ideaIds: string[];
+  resetSelectedIdeas: () => void;
 }
 
 class ActionBarMulti extends React.PureComponent<Props & InjectedIntlProps> {
   handleClickDelete = () => {
+    const { ideaIds, resetSelectedIdeas } = this.props;
+
     const message = this.props.intl.formatMessage(messages.deleteIdeasConfirmation, { count: this.props.ideaIds.length });
 
     if (window.confirm(message)) {
-      this.props.ideaIds.forEach((id) => {
+      ideaIds.forEach((id) => {
         deleteIdea(id);
       });
     }
+
+    resetSelectedIdeas();
   }
 
   render() {
