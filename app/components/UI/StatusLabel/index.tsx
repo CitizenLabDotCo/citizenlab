@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Container: any = styled.div`
-  min-height: 28px;
+  height: 28px;
   color: ${(props: Props) => colors[props.color]};
   font-size: ${fontSizes.xs}px;
   font-weight: 500;
