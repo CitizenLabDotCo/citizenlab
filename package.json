@@ -31,8 +31,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --runInBand --w=2",
-    "test:ci-coverage": "jest --coverage --ci --reporters=default --reporters=jest-junit --runInBand --w=2"
+    "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
