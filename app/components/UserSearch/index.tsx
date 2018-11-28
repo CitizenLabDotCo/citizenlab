@@ -43,7 +43,6 @@ const SelectGroupsContainer = styled.div`
 
 const StyledAsyncSelect = styled(AsyncSelect)`
   min-width: 300px;
-  z-index: 5;
 `;
 
 const AddGroupButton = styled(Button)`
