@@ -1,5 +1,5 @@
 import { IntlProvider, intlShape, InjectedIntlProps } from 'react-intl';
-import { shallow, mount, ShallowRendererProps } from 'enzyme';
+import { shallow, mount, ShallowRendererProps, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
 // Create IntlProvider to retrieve React Intl context
@@ -21,7 +21,7 @@ const intl = {
 const nodeWithIntlProp = (node) => React.cloneElement(node, { intl });
 
 // shallow() with React Intl context
-export function shallowWithIntl<P>(node: React.ReactElement<P & InjectedIntlProps>, additional: ShallowRendererProps = {}) {
+export function shallowWithIntl<C extends React.Component, P = C['props'], S = C['state']>(node: React.ReactElement<P>, additional: ShallowRendererProps = {}) {
  const { context, ...options } = additional;
   return shallow(nodeWithIntlProp(node), {
     ...options,
@@ -29,7 +29,7 @@ export function shallowWithIntl<P>(node: React.ReactElement<P & InjectedIntlProp
       ...context,
       intl
     }
-  });
+  }) as ShallowWrapper<P & InjectedIntlProps, S, C>;
 }
 
 // mount() with React Intl context

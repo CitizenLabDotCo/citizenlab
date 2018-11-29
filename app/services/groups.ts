@@ -26,6 +26,7 @@ export interface GroupDiff {
 export interface IGroups {
   data: IGroupData[];
 }
+
 export interface IGroup {
   data: IGroupData;
 }
