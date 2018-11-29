@@ -344,9 +344,11 @@ ActiveRecord::Schema.define(version: 20181126142621) do
   end
 
   create_table "machine_translations_machine_translations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.jsonb "translation"
     t.uuid "translatable_id"
     t.string "translatable_type"
+    t.string "attribute_name"
+    t.string "locale_to"
+    t.string "translation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
