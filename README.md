@@ -143,3 +143,5 @@ If you added a factory into your engine, you have to add this line to `spec_help
 ```
 require './engines/blorgh/spec/factories/blorghs.rb'
 ```
+
+If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
