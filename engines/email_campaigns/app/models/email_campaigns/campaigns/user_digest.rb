@@ -55,6 +55,7 @@ module EmailCampaigns
         .resolve
         .where(publication_status: 'published')
         .left_outer_joins(:idea_status)
+
       top_ideas = ti_service.filter_trending top_ideas
       top_ideas = ti_service.sort_trending top_ideas
       top_ideas = top_ideas.take N_TOP_IDEAS
