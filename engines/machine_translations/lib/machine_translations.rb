@@ -1,5 +1,5 @@
 require "machine_translations/engine"
+require "easy_translate"
 
 module MachineTranslations
-  # Your code goes here...
 end
