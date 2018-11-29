@@ -13,14 +13,21 @@ resource "MachineTranslations" do
     header 'Authorization', "Bearer #{token}"
   end
 
-  get "/web_api/v1/machine_translations/:id" do
+  get "/web_api/v1/ideas/:idea_id/machine_translation" do
+    with_options scope: :machine_translation do
+      parameter :attribute_name, "attribute_name"
+      parameter :locale_to, "locale_to"
+    end
+
     let(:translation) { create(:machine_translation) }
-    let(:id) {translation.id}
+    let(:idea_id) { translation.translatable_id }
+    let(:attribute_name) { translation.attribute_name }
+    let(:locale_to) { translation.locale_to }
 
     example_request "Get one machine translation by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :id)).to eq id
+      expect(json_response.dig(:data, :attributes, :translation)).to eq translation.translation
     end
   end
 
