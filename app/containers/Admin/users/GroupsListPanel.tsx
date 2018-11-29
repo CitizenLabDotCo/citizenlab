@@ -37,6 +37,7 @@ const Panel = styled.div`
   background: ${colors.background};
   display: flex;
   flex-direction: column;
+  flex: 1;
   justify-content: flex-start;
   padding: 55px 20px;
 `;
