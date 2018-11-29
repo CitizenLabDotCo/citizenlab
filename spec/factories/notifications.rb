@@ -1,7 +1,7 @@
 FactoryBot.define do
 
   factory :notification, class: 'Notification' do
-    read_at nil
+    read_at { nil }
     recipient
   end
 
@@ -41,8 +41,8 @@ FactoryBot.define do
     comment
     idea
     initiating_user
-    reason_code 'irrelevant'
-    other_reason nil
+    reason_code { 'irrelevant' }
+    other_reason { nil }
   end
 
   factory :invite_accepted, parent: :notification, class: 'Notifications::InviteAccepted' do

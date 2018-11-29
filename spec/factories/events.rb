@@ -13,8 +13,8 @@ FactoryBot.define do
       "en" => "Vogelstraat 4, around the corner",
       "nl-BE" => "Vogelstraat 4, om de hoek"
     }}
-    start_at "2017-05-01 20:00"
-    end_at "2017-05-01 22:00"
+    start_at { "2017-05-01 20:00" }
+    end_at { "2017-05-01 22:00" }
   end
 end
 
