@@ -44,6 +44,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       apartment (~> 2.1.0)
       apartment-sidekiq
+      easy_translate
       kaminari (~> 1.1.1)
       pundit (~> 1.1.0)
       rails (~> 5.1.5)
@@ -183,6 +184,9 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
+    easy_translate (0.5.1)
+      thread
+      thread_safe
     erubi (1.7.0)
     et-orbi (1.0.9)
       tzinfo
@@ -471,6 +475,7 @@ GEM
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
     thor (0.20.0)
+    thread (0.2.2)
     thread_safe (0.3.6)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)

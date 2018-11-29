@@ -9,21 +9,26 @@ module MachineTranslations
         :attribute_name,
         :locale_to,
       )
-      tanslation_attributes = {
+      translation_attributes = {
         translatable_type: translatable_type,
         translatable_id: translatable_id,
         attribute_name: translation_params[:attribute_name],
         locale_to: translation_params[:locale_to]
       }
-      @translation = MachineTranslation.find_by tanslation_attributes
+      @translation = MachineTranslation.find_by translation_attributes
       if !@translation
-        @translation = MachineTranslationService.new.create_translation_for tanslation_attributes
+        ActiveRecord::Base.transaction do
+          @translation = MachineTranslationService.new.create_translation_for translation_attributes
+          authorize @translation
+        end
+        SideFxMachineTranslationService.new.after_create @translation, current_user
+      else
+        authorize @translation
       end
       if @translation.updated_at < @translation.translatable.updated_at
         MachineTranslationService.new.update_translation @translation
+        SideFxMachineTranslationService.new.after_update @translation, current_user
       end
-
-      authorize @translation
 
       render json: @translation, serializer: WebApi::V1::MachineTranslationSerializer
     end
