@@ -383,7 +383,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
         <FormattedMessage {...messages.createAnAccount} />
       </CreateAnAccountDiv>
     ) : (
-      <CreateAnAccountLink to="/sign-up">
+      <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
         <FormattedMessage {...messages.createAnAccount} />
       </CreateAnAccountLink>
     ));
@@ -420,7 +420,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     onChange={this.handlePasswordOnChange}
                     setRef={this.handlePasswordInputSetRef}
                   />
-                  <ForgotPassword to="/password-recovery">
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
                     <FormattedMessage {...messages.forgotPassword} />
                   </ForgotPassword>
                 </FormElement>

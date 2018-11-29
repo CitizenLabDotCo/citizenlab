@@ -81,7 +81,7 @@ export default class SignInPage extends PureComponent {
 
   render() {
     return (
-      <Container>
+      <Container className="e2e-sign-in-page">
         <Left>
           <SignInUpBanner />
         </Left>
