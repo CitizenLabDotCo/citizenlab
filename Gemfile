@@ -58,13 +58,15 @@ group :test do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+# gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "pundit", "~> 1.1.0"
+gem "pundit", "~> 2.0"
 gem "active_model_serializers", "~> 0.10.8"
+
+# Not clear why we are using this fork, to be investigated
+# https://github.com/ngty/knock/commits/master
 gem "knock", "~> 2.1.1", github: 'ngty/knock', ref: '97fb32f59b2027c808964b875be2fff22400da1d'
 gem "sidekiq" # , "~> 5.0.5"
-gem "sidekiq-cron", "~> 0.6.3"
 gem "apartment", "~> 2.2.0"
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 1.2.2"
@@ -82,11 +84,11 @@ gem "liquid", "~> 4.0"
 gem "premailer-rails" # , "~> 1.9.6"
 gem 'groupdate' # , "~> 3.2.0"
 gem 'rubyzip', '~> 1.2.1'
-gem 'axlsx', '3.0.0.pre'#, github: 'randym/axlsx', ref: 'c8ac844572b25fda358cc01d2104720c4c42f450'
+gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
 gem 'activerecord-postgis-adapter' # , '~> 5.2'
-gem 'simple_segment', '~> 0.2.1'
+gem 'simple_segment', '~> 0.3'
 gem 'okcomputer'
 gem 'sentry-raven'
 gem 'omniauth' # , '~> 1.7.1'
@@ -99,7 +101,11 @@ gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
 gem 'acts_as_list'
-gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
+
+# Using a fork while waiting for release/merge of these 2 PRs
+# https://github.com/seejohnrun/ice_cube/pull/458
+# https://github.com/seejohnrun/ice_cube/pull/459
+gem 'ice_cube', github: 'gssbzn/ice_cube', ref: '605394a'
 gem 'skylight'
 gem 'mailgun-ruby'
 
