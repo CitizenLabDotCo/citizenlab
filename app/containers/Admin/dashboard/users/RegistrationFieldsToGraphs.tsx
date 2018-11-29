@@ -33,7 +33,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
+export class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const {
       series: {

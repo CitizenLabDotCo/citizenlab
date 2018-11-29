@@ -1,21 +1,22 @@
 import React from 'react';
-
+import { shallow, mount } from 'enzyme';
+// to both reder the styles and have methods to test them, this is how
 import 'jest-styled-components';
-import { shallow } from 'enzyme';
-import { mountWithTheme } from 'utils/testUtils/withTheme';
+
 import { colors } from 'utils/styleUtils';
 
 import Checkbox from './';
 
+// creating a mock function to pass in to the component
 const onChangeCheckbox = jest.fn();
 
 describe('Checkbox UI component', () => {
   it('renders correctly when unchecked', () => {
-    const wrapper = mountWithTheme(<Checkbox label="test" value={false} onChange={onChangeCheckbox} />);
+    const wrapper = mount(<Checkbox label="test" value={false} onChange={onChangeCheckbox} />);
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly when checked', () => {
-    const wrapper = mountWithTheme(<Checkbox label="test" value={true} onChange={onChangeCheckbox} />);
+    const wrapper = mount(<Checkbox label="test" value={true} onChange={onChangeCheckbox} />);
     const { clGreen } = colors;
     expect(wrapper.find('Checkbox__CheckboxContainer')).toHaveStyleRule('background', clGreen);
     expect(wrapper).toMatchSnapshot();
