@@ -18,14 +18,52 @@ namespace :nlp do
   task :geotag_ideas, [:host] => [:environment] do |t, args|
     tenant = Tenant.find_by_host args[:host]
     api = NLP::API.new ENV.fetch("CL2_NLP_HOST")
+    data = []
     Apartment::Tenant.switch(tenant.schema_name) do
-      Idea.ids.each do |idea_id|
+      Idea.all.each do |idea|
         # TODO figure out locale
-        resp = api.idea_geotagging tenant.id, 'nl', idea_id
+        resp = api.idea_geotagging tenant.id, 'nl', idea.id
         geos = JSON.parse(resp.body)['data']
         if geos.present?
           geo = geos.first
-          Idea.find(idea_id).update!(location_point: "Point(#{geo['lon']} #{geo['lat']})")
+          row = {
+            id: idea.id,
+            title: idea.title_multiloc.values.first,
+            body: idea.body_multiloc.values.first,
+            original_lat: -1.0,
+            original_lon: -1.0,
+            original_location_description: idea.location_description,
+            guessed_lat: geo['lat'],
+            guessed_lon: geo['lon'],
+            guessed_location_description: geo['display_name']
+          }
+          if idea.location_point
+            longitude, latitude = RGeo::GeoJSON.encode(idea.location_point)['coordinates']
+            row[:original_lat] = latitude
+            row[:original_lon] = longitude
+          end
+          puts "--------------"
+          puts "#{idea.title_multiloc.values.first}"
+          puts "Original:"
+          if idea.location_point
+            longitude, latitude = RGeo::GeoJSON.encode(idea.location_point)['coordinates']
+            puts "(#{latitude}, #{longitude})"
+          else
+            puts "no coordinates"
+          end
+          puts "#{idea.location_description}"
+          puts "Guess:"
+          puts "(#{geo['lat']}, #{geo['lon']})"
+          puts "#{geo['display_name']}"
+          puts "--------------"
+          data += [row]
+          CSV.open('geotagging_results_knokke_heist.csv', "wb") do |csv|
+            csv << data.first.keys
+            data.sort_by{|row| row[:original_lat]}.each do |d|
+              csv << d.values
+            end
+          end
+          # Idea.find(idea_id).update!(location_point: "Point(#{geo['lon']} #{geo['lat']})")
         end
       end
     end
