@@ -65,6 +65,7 @@ The 3rd step is also not always required. It is needed when
 
 ## Testing
 
+### Unit and integration tests
 Resetting the database, with the previous command, upsets the testing database as well. Before running the tests, it's sometimes necessary to put it back in it's default shape. We can do this with the following command:
 
 ```
@@ -94,6 +95,18 @@ For debugging random test failures, it's can be useful to run the tests multiple
 
 ```
 for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_spec.rb; [[ ! $? = 0 ]] && break ; done
+```
+
+### End-to-end tests
+
+The e2e tests themselves are defined in cl2-front. But they take some assumptions on the available data on the platform, so the can assume some projects, ideas, users, ... to be there. 
+
+This data is defined in `config/tenant_templates/e2etests_template.yml`. The tenant settings are defined in `lib/tasks/create_tenant.rake`.
+
+To (re)load the data and run the e2e tests locally, execute the following command:
+
+```
+docker-compose run --rm web bundle exec rake cl2_back:create_tenant['localhost','e2etests_template']
 ```
 
 
