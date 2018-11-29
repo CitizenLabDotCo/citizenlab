@@ -15,8 +15,8 @@ resource "MachineTranslations" do
 
   get "/web_api/v1/ideas/:idea_id/machine_translation" do
     with_options scope: :machine_translation do
-      parameter :attribute_name, "attribute_name"
-      parameter :locale_to, "locale_to"
+      parameter :attribute_name, "The name of the attribute to translate (e.g. title_multiloc)"
+      parameter :locale_to, "The locale to translate to"
     end
 
     let(:translation) { create(:machine_translation) }
