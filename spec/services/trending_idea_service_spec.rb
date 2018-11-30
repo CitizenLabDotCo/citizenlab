@@ -57,8 +57,7 @@ describe TrendingIdeaService do
         lines.concat ['--------------------------']
         lines.concat ['--------------------------']
       end
-      # lines.each{|l| puts l}
-      # byebug
+      lines.each{|l| puts l}
       expect(trending_score_sorted).to eq expected_order
     end
   end
