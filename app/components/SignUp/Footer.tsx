@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import SignUpButton from './SignUpButton';
+import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
 
 // services
 import { globalState, IIdeasNewPageGlobalState } from 'services/globalState';
@@ -18,7 +18,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // utils
 import { AUTH_PATH } from 'containers/App/constants';
@@ -29,9 +29,9 @@ import { fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
-const googleLogoUrl = require('./svg/google.svg') as string;
-const facebookLogoUrl = require('./svg/facebook.svg') as string;
-const franceconnectLogoUrl = require('./svg/franceconnect.svg') as string;
+const googleLogoUrl = require('components/AuthProviderButton/svg/google.svg') as string;
+const facebookLogoUrl = require('components/AuthProviderButton/svg/facebook.svg') as string;
+const franceconnectLogoUrl = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
 
 const Container = styled.div`
   width: 100%;
@@ -52,7 +52,7 @@ const FooterContent = styled.div`
   flex-direction: column;
 `;
 
-const SocialSignUpButtons = styled.div`
+const AuthProviderButtons = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -94,11 +94,9 @@ interface DataProps {
   franceconnectLoginEnabled: boolean | null;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
-  socialLoginClicked: 'google' | 'facebook' | 'azureactivedirectory'  | 'franceconnect' | null;
-  socialLoginTaCAccepted: boolean;
   socialLoginUrlParameter: string;
 }
 
@@ -108,8 +106,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      socialLoginClicked: null,
-      socialLoginTaCAccepted: false,
       socialLoginUrlParameter: ''
     };
     this.subscriptions = [];
@@ -135,12 +131,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
     this.props.goToSignIn();
   }
 
-  handleOnSSOClick = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
-    this.setState(state => ({ socialLoginClicked: (state.socialLoginClicked === provider && !state.socialLoginTaCAccepted ? null : provider) }));
-  }
-
-  handleSocialLoginAcceptTaC = (provider: 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect') => () => {
-    this.setState({ socialLoginTaCAccepted: true });
+  handleOnAccept = (provider: Providers) => () => {
     setTimeout(() => {
       window.location.href = `${AUTH_PATH}/${provider}${this.state.socialLoginUrlParameter}`;
     }, 200);
@@ -153,12 +144,11 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { socialLoginClicked, socialLoginTaCAccepted } = this.state;
     const { tenant, passwordLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginsCount = this.externalLoginsCount();
     const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
-    const AzureLoginMechanismName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
+    const AzureProviderName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
 
     if (externalLoginsCount > 0) {
       return (
@@ -174,56 +164,52 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </SocialSignUpText>
               }
 
-              <SocialSignUpButtons>
+              <AuthProviderButtons>
                 <FeatureFlag name="azure_ad_login">
-                  <SignUpButton
+                  <AuthProviderButton
                     logoUrl={azureAdLogoUrl}
-                    logoHeight="25px"
-                    loginProvider="azureactivedirectory"
-                    socialLoginClicked={socialLoginClicked}
-                    loginMechanismName={AzureLoginMechanismName}
-                    socialLoginTaCAccepted={socialLoginTaCAccepted}
-                    onClick={this.handleOnSSOClick('azureactivedirectory')}
-                    onAcceptToC={this.handleSocialLoginAcceptTaC('azureactivedirectory')}
+                    logoHeight="45px"
+                    provider="azureactivedirectory"
+                    providerName={AzureProviderName}
+                    onAccept={this.handleOnAccept('azureactivedirectory')}
+                    acceptText={messages.acceptTermsAndConditions}
+                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="franceconnect_login">
-                  <SignUpButton
+                  <AuthProviderButton
                     logoUrl={franceconnectLogoUrl}
                     logoHeight="45px"
-                    loginProvider="franceconnect"
-                    socialLoginClicked={socialLoginClicked}
-                    loginMechanismName="France Connect"
-                    socialLoginTaCAccepted={socialLoginTaCAccepted}
-                    onClick={this.handleOnSSOClick('franceconnect')}
-                    onAcceptToC={this.handleSocialLoginAcceptTaC('franceconnect')}
+                    provider="franceconnect"
+                    providerName="France Connect"
+                    onAccept={this.handleOnAccept('franceconnect')}
+                    acceptText={messages.acceptTermsAndConditions}
+                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
-                  <SignUpButton
+                  <AuthProviderButton
                     logoUrl={googleLogoUrl}
                     logoHeight="29px"
-                    loginProvider="google"
-                    socialLoginClicked={socialLoginClicked}
-                    loginMechanismName="Google"
-                    socialLoginTaCAccepted={socialLoginTaCAccepted}
-                    onClick={this.handleOnSSOClick('google')}
-                    onAcceptToC={this.handleSocialLoginAcceptTaC('google')}
+                    provider="google"
+                    providerName="Google"
+                    onAccept={this.handleOnAccept('google')}
+                    acceptText={messages.acceptTermsAndConditions}
+                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
-                  <SignUpButton
+                  <AuthProviderButton
                     logoUrl={facebookLogoUrl}
                     logoHeight="21px"
-                    loginProvider="facebook"
-                    socialLoginClicked={socialLoginClicked}
-                    loginMechanismName="Facebook"
-                    socialLoginTaCAccepted={socialLoginTaCAccepted}
-                    onClick={this.handleOnSSOClick('facebook')}
-                    onAcceptToC={this.handleSocialLoginAcceptTaC('facebook')}
+                    provider="facebook"
+                    providerName="Facebook"
+                    onAccept={this.handleOnAccept('facebook')}
+                    acceptText={messages.acceptTermsAndConditions}
+                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
-              </SocialSignUpButtons>
+              </AuthProviderButtons>
               {!passwordLoginEnabled &&
                 <AlreadyHaveAnAccount to="/sign-in">
                   <FormattedMessage {...messages.alreadyHaveAnAccount} />

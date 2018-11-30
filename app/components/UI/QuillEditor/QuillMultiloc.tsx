@@ -38,6 +38,7 @@ const LabelWrapper = styled.div`
 const InfoIcon = styled(Icon)`
   cursor: pointer;
   width: 20px;
+  height: 20px;
   margin-left: 10px;
 `;
 
