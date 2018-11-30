@@ -47,7 +47,7 @@ import { API_PATH } from 'containers/App/constants';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-
+import GetMachineTranslation from 'resources/GetMachineTranslation';
 // services
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
@@ -865,7 +865,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   render() {
     const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale, tenantLocales } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      ideaComments,
+      project,
+      phases,
+      opened,
+      loaded,
+      showMap,
+      moreActions,
+      ideaIdForSocialSharing,
+      translateButtonClicked
+    } = this.state;
     let content: JSX.Element | null = null;
     const multipleLocales = tenantLocales.length > 1;
 
@@ -1039,6 +1052,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
+                    {
+                      translateButtonClicked ?
+                      <GetMachineTranslation>
+                        {translation =>  <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }}/>}
+                      </GetMachineTranslation>
+                    }
                     <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
                   </IdeaBody>
                 </Fragment>
