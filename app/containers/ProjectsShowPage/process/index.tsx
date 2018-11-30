@@ -136,10 +136,10 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
             </ContentContainer>
           </FirstRow>
 
-          {(participationMethod === 'ideation' || participationMethod === 'budgeting') &&
+          {(participationMethod === 'ideation' || participationMethod === 'budgeting') && selectedPhaseId &&
             <SecondRow>
               <SecondRowContentContainer>
-                <StyledPhaseIdeas phaseId={selectedPhaseId} />
+                <StyledPhaseIdeas projectId={project.id} phaseId={selectedPhaseId} />
               </SecondRowContentContainer>
               <EventsPreview projectId={project.id} />
             </SecondRow>
