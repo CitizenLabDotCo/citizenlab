@@ -106,7 +106,7 @@ NOTE: Watch out that you don't accidently commit these changes!
 
 ## Creating Engines
 
-In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`.Throughout these instructions, replace "`blorgh`" by the name of your engine.
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
 
 1. Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize your engine with a nice `README` file.
 
