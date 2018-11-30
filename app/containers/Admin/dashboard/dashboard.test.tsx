@@ -1,19 +1,24 @@
+// libraries
 import React from 'react';
-import 'jest-styled-components';
-jest.mock('utils/cl-intl');
+import { shallow } from 'enzyme';
+
+// component to test
 import { DashboardsPage } from './';
 
-import { shallowWithIntl } from 'utils/testUtils/withIntl';
+// mock utilities
+jest.mock('utils/cl-intl');
 import { mockAdmin, mockProjectModerator } from 'services/__mocks__/auth';
+import { intl } from 'utils/cl-intl';
 
 describe('<DashboardsPage />', () => {
+  // this is an integration test : it also tests how well our utilities function check access rights
   it('renders correctly with an admin user', () => {
-    const wrapper = shallowWithIntl(<DashboardsPage authUser={mockAdmin.data} />);
+    const wrapper = shallow(<DashboardsPage authUser={mockAdmin.data} intl={intl} />);
     expect(wrapper).toMatchSnapshot();
   });
 
   it('renders correctly with a project moderator user', () => {
-    const wrapper = shallowWithIntl(<DashboardsPage authUser={mockProjectModerator('testProjectId').data} />);
+    const wrapper = shallow(<DashboardsPage authUser={mockProjectModerator('testProjectId').data} intl={intl} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

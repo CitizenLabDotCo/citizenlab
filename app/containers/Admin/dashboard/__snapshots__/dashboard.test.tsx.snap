@@ -56,7 +56,6 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
                 <FormattedMessage
                   defaultMessage="insights"
                   id="app.containers.AdminPage.DashboardPage.insightsLinkText"
-                  values={Object {}}
                 />
               </Unknown>,
             }
