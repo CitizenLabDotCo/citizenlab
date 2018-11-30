@@ -179,7 +179,12 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
                 circularCorners={false}
               />
               {!hasRequiredFields &&
-                <SkipButton onClick={this.skipStep}>{formatMessage(messages.skip)}</SkipButton>
+                <SkipButton
+                  className="e2e-signup-step2-skip-btn"
+                  onClick={this.skipStep}
+                >
+                  {formatMessage(messages.skip)}
+                </SkipButton>
               }
             </ButtonWrapper>
             <Error text={unknownError} />

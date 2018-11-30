@@ -31,12 +31,12 @@ describe('Idea form page', () => {
       .get('.e2e-idea-form-location-input-field input').should('have.value', 'Antwerp, Belgium');
   });
 
-  it('requires a title', () => {
+  it('shows an error when no title is provided', () => {
     cy.get('.e2e-submit-idea-form').click()
       .get('.e2e-error-message').should('contain', 'Please provide a title');
   });
 
-  it('requires a description', () => {
+  it('shows an error when no description is provided', () => {
     cy.get('.e2e-submit-idea-form').click()
       .get('.e2e-error-message').should('contain', 'Please provide a description');
   });
@@ -55,7 +55,6 @@ describe('Idea form page', () => {
       });
   });
 });
-
 
 // Cypress.Commands.add('loginAsAdmin', () => {
 //   cy.visit('/sign-in');
@@ -90,7 +89,7 @@ describe('Idea form page', () => {
 //     cy.get('#email').type('koen@citizenlab.co');
 //     cy.get('#password').type('testtest');
 //     cy.get('.e2e-submit-signin').click();
-//     cy.location('pathname').should('eq', '/en/');
+//     cy.location('pathname').should('eq', '/en-GB/');
 //     cy.getCookie('cl2_jwt').should('exist');
 //     cy.get('#e2e-user-menu-container').should('contain', 'Koen');
 //   });
@@ -119,7 +118,7 @@ describe('Idea form page', () => {
 //     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
 //     cy.get('#e2e-signup-step1-button').click();
 //     cy.get('.e2e-signup-step2-button').click();
-//     cy.location('pathname').should('eq', '/en/');
+//     cy.location('pathname').should('eq', '/en-GB/');
 //     cy.getCookie('cl2_jwt').should('exist');
 //     cy.get('#e2e-user-menu-container').should('contain', firstName);
 //   });
@@ -152,14 +151,14 @@ describe('Idea form page', () => {
 
 //   it('goes to the project selection page when clicking on the "Start an idea" button', () => {
 //     cy.get('.addIdea').click();
-//     cy.location('pathname').should('eq', '/en/ideas/new');
+//     cy.location('pathname').should('eq', '/en-GB/ideas/new');
 //   });
 
 //   it('goes the idea form when selecting a project and clicking "Continue"', () => {
 //     cy.visit('/ideas/new');
 //     cy.contains('An idea? Bring it to your council!').click();
 //     cy.get('.e2e-submit-project-select-form').click();
-//     cy.location('pathname').should('eq', `/en/projects/${projectName}/ideas/new`);
+//     cy.location('pathname').should('eq', `/en-GB/projects/${projectName}/ideas/new`);
 //   });
 
 //   it('shows the idea form when navigating to it', () => {
@@ -178,11 +177,11 @@ describe('Idea form page', () => {
 //     cy.createNewContinuousProject(projectName);
 //     cy.logOut();
 //     cy.get('.addIdea').click();
-//     cy.location('pathname').should('eq', '/en/ideas/new');
+//     cy.location('pathname').should('eq', '/en-GB/ideas/new');
 //     cy.acceptCookies();
 //     cy.contains(projectName).click();
 //     cy.get('.e2e-submit-project-select-form').click();
-//     cy.location('pathname').should('eq', `/en/projects/${projectName}/ideas/new`);
+//     cy.location('pathname').should('eq', `/en-GB/projects/${projectName}/ideas/new`);
 //     cy.get('#title').type(ideaTitle);
 //     cy.get('.ql-editor').type(ideaDescription);
 //     cy.get('.e2e-submit-idea-form').then((button) => {
@@ -195,7 +194,7 @@ describe('Idea form page', () => {
 //     cy.get('#email').type('koen@citizenlab.co');
 //     cy.get('#password').type('testtest');
 //     cy.get('.e2e-submit-signin').click();
-//     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
+//     cy.location('pathname').should('eq', `/en-GB/ideas/${ideaTitle}`);
 //     cy.get('.e2e-idea-social-sharing-modal-title');
 //     cy.get('.e2e-modal-close-button').click();
 //     cy.get('.e2e-ideatitle').contains(ideaTitle);

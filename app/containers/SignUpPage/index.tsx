@@ -123,7 +123,7 @@ class SignUpPage extends PureComponent<Props & ITracks & WithRouterProps, State>
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
 
     return (
-      <Container>
+      <Container className="e2e-sign-up-page">
         <Left>
           <SignInUpBanner />
         </Left>
