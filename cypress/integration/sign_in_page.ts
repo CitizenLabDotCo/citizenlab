@@ -43,29 +43,9 @@ describe('Sign in page', () => {
   // });
 
   it('logs in with valid credentials', () => {
-    const getCookie = (name: string) => {
-      const re = new RegExp(`${name}=([^;]+)`);
-      const value = re.exec(document.cookie);
-      console.log(value);
-      return (value != null) ? unescape(value[1]) : null;
-    };
-
     cy.get('#email').type('koen@citizenlab.co');
     cy.get('#password').type('testtest');
     cy.get('.e2e-submit-signin').click();
-    cy.wait(2000);
-    console.log(document.cookie);
-    const cookie = '';
-    cy.request({
-      method: 'GET',
-      url: 'web_api/v1/users/me',
-      headers: {
-        Authorization: `Bearer ${cookie}`
-      }
-    }).should((response) => {
-      expect(response).to.exist;
-      expect(response.body.data.attributes.slug).to.be('koen-gremmelprez');
-    });
   });
 
   // it('shows an error when trying to log in with invalid credentials', () => {
