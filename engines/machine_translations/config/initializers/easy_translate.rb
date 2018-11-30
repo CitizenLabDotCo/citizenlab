@@ -1,0 +1,1 @@
+EasyTranslate.api_key = '***REMOVED***' # Env.fetch('GOOGLE_API_KEY')

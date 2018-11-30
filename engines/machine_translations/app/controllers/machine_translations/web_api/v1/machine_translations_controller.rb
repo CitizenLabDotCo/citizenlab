@@ -15,19 +15,36 @@ module MachineTranslations
         attribute_name: translation_params[:attribute_name],
         locale_to: translation_params[:locale_to]
       }
+
       @translation = MachineTranslation.find_by translation_attributes
+      # create translation if it doesn't exist
       if !@translation
-        ActiveRecord::Base.transaction do
-          @translation = MachineTranslationService.new.create_translation_for translation_attributes
+        begin
+          @translation = MachineTranslationService.new.build_translation_for translation_attributes
           authorize @translation
+        rescue ClErrors::TransactionError => e
+          if e.error_key == :translatable_blank
+            render json: { errors: { base: [{ error: 'translatable_blank' }] } }, status: :unprocessable_entity
+            return
+          else
+            raise e
+          end
         end
-        SideFxMachineTranslationService.new.after_create @translation, current_user
+        if !@translation.save
+          render json: { errors: @translation.errors.details }, status: :unprocessable_entity
+          return
+        end
       else
         authorize @translation
       end
+      # update translation if the original text may have changed
       if @translation.updated_at < @translation.translatable.updated_at
-        MachineTranslationService.new.update_translation @translation
-        SideFxMachineTranslationService.new.after_update @translation, current_user
+        MachineTranslationService.new.assign_new_translation @translation
+        authorize @translation
+        if !@translation.save
+          render json: { errors: @translation.errors.details }, status: :unprocessable_entity
+          return
+        end
       end
 
       render json: @translation, serializer: WebApi::V1::MachineTranslationSerializer

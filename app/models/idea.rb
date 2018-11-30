@@ -36,6 +36,7 @@ class Idea < ApplicationRecord
   has_many :idea_images, -> { order(:ordering) }, dependent: :destroy
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  has_many :machine_translations, as: :translatable, class_name: 'MachineTranslations::MachineTranslation', dependent: :destroy
   has_one :idea_trending_info
 
   PUBLICATION_STATUSES = %w(draft published closed spam)
