@@ -1,0 +1,1 @@
+EasyTranslate.api_key = 'AIzaSyCQ-EUNWPdhTLSM5LP25do-rgimEvr6wyA' # Env.fetch('GOOGLE_API_KEY')
