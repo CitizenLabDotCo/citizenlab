@@ -25,7 +25,7 @@ describe('Project selection page', () => {
   it('navigates to the idea form when selecting a project and clicking continue', () => {
     cy.contains('An idea? Bring it to your council!').click();
     cy.get('.e2e-submit-project-select-form').click();
-    cy.location('pathname').should('eq', '/en/projects/an-idea-bring-it-to-your-council/ideas/new');
+    cy.url().should('include', '/projects/an-idea-bring-it-to-your-council/ideas/new');
     cy.get('#idea-form');
   });
 });

@@ -132,6 +132,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   dropRow={this.handleDropRow}
                 >
                   <Toggle
+                    className={`e2e-custom-registration-field-toggle ${field.attributes.enabled ? 'enabled' : 'disabled'}`}
                     value={field.attributes.enabled}
                     onChange={this.handleOnEnabledToggle(field)}
                   />
