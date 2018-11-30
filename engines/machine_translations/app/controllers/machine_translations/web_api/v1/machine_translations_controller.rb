@@ -47,7 +47,7 @@ module MachineTranslations
         end
       end
 
-      render json: @translation, serializer: WebApi::V1::MachineTranslationSerializer
+      render json: @translation, serializer: ::WebApi::V1::MachineTranslationSerializer
     end
 
   end
