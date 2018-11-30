@@ -51,10 +51,8 @@ module EmailCampaigns
 
     def top_ideas recipient
       ti_service = TrendingIdeaService.new 
-      top_ideas = IdeaPolicy::Scope.new(recipient, Idea)
-        .resolve
-        .where(publication_status: 'published')
-        # .left_outer_joins(:idea_status)
+      top_ideas = IdeaPolicy::Scope.new(recipient, Idea).resolve
+        .published
 
       top_ideas = ti_service.filter_trending top_ideas
       top_ideas = ti_service.sort_trending top_ideas
