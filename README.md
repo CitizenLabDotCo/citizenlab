@@ -149,4 +149,4 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 
 12. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
-13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in the model files of the main app.
+13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
