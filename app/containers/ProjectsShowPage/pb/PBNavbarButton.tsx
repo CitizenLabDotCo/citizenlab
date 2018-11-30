@@ -86,6 +86,7 @@ export default class PBNavbarButton extends PureComponent<Props, State> {
         <DropdownWrapper>
           <Dropdown
             top="-5px"
+            left="-57px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={
