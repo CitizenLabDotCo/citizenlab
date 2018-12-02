@@ -115,7 +115,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'gender'")
-      .order("custom_field_values->'gender'")
+      .order(Arel.sql("custom_field_values->'gender'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
     render json: {series: {users: serie}}
@@ -132,7 +132,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'birthyear'")
-      .order("custom_field_values->'birthyear'")
+      .order(Arel.sql("custom_field_values->'birthyear'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
     render json: {series: {users: serie}}
@@ -149,7 +149,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'domicile'")
-      .order("custom_field_values->'domicile'")
+      .order(Arel.sql("custom_field_values->'domicile'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
     areas = Area.where(id: serie.keys).select(:id, :title_multiloc)
@@ -167,7 +167,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     serie = users
       .where(registration_completed_at: @start_at..@end_at)
       .group("custom_field_values->'education'")
-      .order("custom_field_values->'education'")
+      .order(Arel.sql("custom_field_values->'education'"))
       .count
     serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
     render json: {series: {users: serie}}
@@ -188,7 +188,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       serie = users
         .where(registration_completed_at: @start_at..@end_at)
         .group("custom_field_values->'#{@custom_field.key}'")
-        .order("custom_field_values->'#{@custom_field.key}'")
+        .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
         .count
       serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
       options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
@@ -207,7 +207,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
       serie = users
         .where(registration_completed_at: @start_at..@end_at)
         .group("custom_field_values->'#{@custom_field.key}'")
-        .order("custom_field_values->'#{@custom_field.key}'")
+        .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
         .count
       serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
       render json: {series: {users: serie}}
