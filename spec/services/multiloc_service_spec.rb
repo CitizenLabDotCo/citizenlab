@@ -83,7 +83,7 @@ describe MultilocService do
     end
 
     it "returns missing strings for a missing translation key" do
-      expect{service.i18n_to_multiloc('not.existing.key')}.to raise_error
+      expect{service.i18n_to_multiloc('not.existing.key')}.to raise_error(I18n::MissingTranslationData)
     end
   end
 
