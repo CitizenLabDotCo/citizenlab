@@ -22,9 +22,9 @@ export interface IMachineTranslation {
 }
 
 export function machineTranslationByIdeaIdStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}`, ...streamParams });
+  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/machine_translation`, ...streamParams });
 }
 
 export function machineTranslationByCommentIdStream(commentId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/comments/${commentId}`, ...streamParams });
+  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/comments/${commentId}/machine_translation`, ...streamParams });
 }
