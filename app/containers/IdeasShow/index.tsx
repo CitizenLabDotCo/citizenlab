@@ -1066,8 +1066,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       translateButtonClicked ?
                       <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                         {translation => {
+                          console.log(translation);
                           return !isNilOrError(translation) ?
-                          <span dangerouslySetInnerHTML={{ __html: linkifyHtml('it works') }}/>
+                          <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>
                           :
                           null;
                         }}
