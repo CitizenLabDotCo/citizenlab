@@ -959,9 +959,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
 
               <Header>
-                <IdeaTitle>
-                  {ideaTitle}
-                </IdeaTitle>
+                { translateButtonClicked ?
+                  <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                    {translation => {
+                      return !isNilOrError(translation) ?
+                      <IdeaTitle>{translation.attributes.translation}</IdeaTitle>
+                      :
+                        null;
+                    }}
+                  </GetMachineTranslation>
+                  :
+                  <IdeaTitle>{ideaTitle}</IdeaTitle>
+                }
               </Header>
             </HeaderWrapper>
 
@@ -1057,13 +1066,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       translateButtonClicked ?
                       <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                         {translation => {
-                          // console.log(!isNilOrError(translation) && translation);
                           return !isNilOrError(translation) ?
                           <span dangerouslySetInnerHTML={{ __html: linkifyHtml('it works') }}/>
                           :
                           null;
-                        }
-                        }
+                        }}
                       </GetMachineTranslation>
                       :
                       <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
