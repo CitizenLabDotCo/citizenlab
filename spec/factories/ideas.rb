@@ -8,6 +8,7 @@ FactoryBot.define do
       "en" => "<p>It would improve the air quality!</p>",
       "nl-BE" => "<p>De luchtkwaliteit zou er gevoelig op vooruitgaan!</p>"
     }}
+    sequence(:slug) {|n| "plant-more-trees-#{n}"}
     publication_status { "published" }
     budget { 750 }
     association :project, factory: :continuous_project

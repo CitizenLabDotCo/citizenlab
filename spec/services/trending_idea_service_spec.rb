@@ -71,7 +71,7 @@ describe TrendingIdeaService do
       author = create(:user)
       idea = create(:idea, author: author, published_at: published_at)
       is_popular = (rand(3) == 0)
-      (if is_popular then rand(100) else rand(3) end).times do |i| 
+      (if is_popular then rand(20) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'up',
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
@@ -80,17 +80,14 @@ describe TrendingIdeaService do
                user: author,
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      (if is_popular then rand(30) else rand(3) end).times do |i| 
+      (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'down', 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      (if is_popular then rand(50) else rand(3) end).times do |i| 
+      (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:comment, idea: idea, 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      #if (idea.comments_count > 5) && (idea.upvotes_count > 5)
-      #  byebug
-      #end
     end
   end
 

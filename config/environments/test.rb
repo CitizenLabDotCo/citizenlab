@@ -45,4 +45,6 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.log_level = :error
+  # config.active_record.verbose_query_logs = true
+   
 end
