@@ -59,13 +59,13 @@ export default class GetMachineTranslation extends React.Component<Props, State>
           if (isString(ideaId)) {
             return machineTranslationByIdeaIdStream(ideaId,
               {
-                queryParameters: { attribute_name: attributeName, locale_to: localeTo }
+                queryParameters: { machine_translation: { attribute_name: attributeName, locale_to: localeTo } }
               }
             ).observable;
           } else if (isString(commentId)) {
             return machineTranslationByCommentIdStream(commentId,
               {
-                queryParameters: { attribute_name: attributeName , locale_to: localeTo }
+                queryParameters: { machine_translation: { attribute_name: attributeName, locale_to: localeTo } }
               }
             ).observable;
           }
