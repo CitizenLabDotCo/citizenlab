@@ -28,7 +28,7 @@ describe('Sign up page', () => {
     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click().should('have.class', 'checked');
   });
 
-  it('signs up without custom fields', () => {
+  it('signs up with valid credentials and no custom fields enabled', () => {
     const firstName = Math.random().toString(36).substr(2, 12);
     const lastName = Math.random().toString(36).substr(2, 12);
     const email = `${Math.random().toString(36).substr(2, 12)}@citizenlab.co`;
@@ -49,7 +49,7 @@ describe('Sign up page', () => {
     });
   });
 
-  it('signs up with optional custom fields', () => {
+  it('signs up with valid credentials and optional custom fields enabled', () => {
     // before
     // enable all custom fields to make sure the 2nd signup step gets triggered
     cy.loginAsAdmin();

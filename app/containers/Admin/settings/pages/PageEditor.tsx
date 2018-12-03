@@ -257,7 +257,7 @@ class PageEditor extends PureComponent<Props, State>{
             <EditionForm>
               {page !== undefined &&
                 <Formik
-                  initialValues={this.initialValues()}
+                  initialValues={this.initialValues() as any}
                   enableReinitialize={true}
                   validateOnChange={false}
                   validateOnBlur={false}

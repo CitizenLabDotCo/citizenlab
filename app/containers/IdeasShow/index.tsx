@@ -800,7 +800,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
     if (element) {
-      element.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
     }
   }
 
