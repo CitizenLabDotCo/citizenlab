@@ -74,7 +74,6 @@ export default class GetMachineTranslation extends React.Component<Props, State>
         })
       )
       .subscribe((machineTranslation) => {
-        console.log(machineTranslation);
         this.setState({ machineTranslation: !isNilOrError(machineTranslation) ? machineTranslation.data : machineTranslation });
       })
     ];
