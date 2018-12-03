@@ -48,7 +48,10 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27bf6b1fe195c0e32d596ae3433d562af17641d7
 // services
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
