@@ -47,6 +47,7 @@ import { API_PATH } from 'containers/App/constants';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // services
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
@@ -865,7 +866,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   render() {
     const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale, tenantLocales } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      ideaComments,
+      project,
+      phases,
+      opened,
+      loaded,
+      showMap,
+      moreActions,
+      ideaIdForSocialSharing,
+      translateButtonClicked
+    } = this.state;
     let content: JSX.Element | null = null;
     const multipleLocales = tenantLocales.length > 1;
 
@@ -1039,7 +1053,21 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+                    {
+                      translateButtonClicked ?
+                      <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                        {translation => {
+                          // console.log(!isNilOrError(translation) && translation);
+                          return !isNilOrError(translation) ?
+                          <span dangerouslySetInnerHTML={{ __html: linkifyHtml('it works') }}/>
+                          :
+                          null;
+                        }
+                        }
+                      </GetMachineTranslation>
+                      :
+                      <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+                    }
                   </IdeaBody>
                 </Fragment>
 

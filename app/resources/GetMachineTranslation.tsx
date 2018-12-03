@@ -9,8 +9,11 @@ import {
   machineTranslationByCommentIdStream
 } from 'services/machineTranslations';
 import { isNilOrError } from 'utils/helperUtils';
+import { Locale } from 'typings';
 
 interface InputProps {
+  attributeName: 'body_multiloc' | 'title_multiloc';
+  localeTo: Locale;
   ideaId?: string;
   commentId?: string;
   resetOnChange?: boolean;
@@ -44,9 +47,9 @@ export default class GetMachineTranslation extends React.Component<Props, State>
   }
 
   componentDidMount() {
-    const { ideaId, commentId, resetOnChange } = this.props;
+    const { attributeName, localeTo, ideaId, commentId, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ideaId, commentId, resetOnChange });
+    this.inputProps$ = new BehaviorSubject({ attributeName, localeTo, ideaId, commentId, resetOnChange });
 
     this.subscriptions = [
       this.inputProps$.pipe(
@@ -54,23 +57,32 @@ export default class GetMachineTranslation extends React.Component<Props, State>
         tap(() => resetOnChange && this.setState({ machineTranslation: undefined })),
         switchMap(({ ideaId, commentId }) => {
           if (isString(ideaId)) {
-            return machineTranslationByIdeaIdStream(ideaId).observable;
+            return machineTranslationByIdeaIdStream(ideaId,
+              {
+                queryParameters: { attribute_name: attributeName, locale_to: localeTo }
+              }
+            ).observable;
           } else if (isString(commentId)) {
-            return machineTranslationByCommentIdStream(commentId).observable;
+            return machineTranslationByCommentIdStream(commentId,
+              {
+                queryParameters: { attribute_name: attributeName , locale_to: localeTo }
+              }
+            ).observable;
           }
 
           return of(null);
         })
       )
       .subscribe((machineTranslation) => {
+        console.log(machineTranslation);
         this.setState({ machineTranslation: !isNilOrError(machineTranslation) ? machineTranslation.data : machineTranslation });
       })
     ];
   }
 
   componentDidUpdate() {
-    const { ideaId, commentId, resetOnChange } = this.props;
-    this.inputProps$.next({ ideaId, commentId, resetOnChange });
+    const { attributeName, localeTo, ideaId, commentId, resetOnChange } = this.props;
+    this.inputProps$.next({ attributeName, localeTo, ideaId, commentId, resetOnChange });
   }
 
   componentWillUnmount() {
