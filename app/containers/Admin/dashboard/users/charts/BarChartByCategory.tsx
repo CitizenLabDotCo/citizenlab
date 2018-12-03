@@ -121,8 +121,10 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
 
 const BarChartByCategoryWithHoCs = injectIntl<Props>(withTheme(BarChartByCategory as any) as any);
 
-export default (inputProps: InputProps) => (
+const BarChartByCategoryComponent = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
     {serie => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
+
+export default BarChartByCategoryComponent;
