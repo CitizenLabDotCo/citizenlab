@@ -177,7 +177,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
-  translateComment = (commentId: string) => () => {
+  translateComment = () => {
     const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
     const { translateButtonClicked } = this.state;
 
@@ -185,8 +185,6 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
     translateButtonClicked
     ? clickGoBackToOriginalCommentButton()
     : clickTranslateCommentButton();
-
-    // to be implemented
 
     this.setState(prevState => ({
       translateButtonClicked: !prevState.translateButtonClicked,
@@ -196,6 +194,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
   render() {
     const { commentId, authUser, comment, childComments, idea, locale, tenantLocales } = this.props;
     const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
+    const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
@@ -233,11 +232,19 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       size="40px"
                       message={messages.parentCommentAuthor}
                     />
-                    <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
+                    <CommentBody
+                      commentBody={commentBodyMultiloc}
+                      editionMode={this.state.editionMode}
+                      onCommentSave={this.onCommentSave}
+                      onCancelEdition={this.onCancelEdition}
+                      last={this.props.last}
+                      translateButtonClicked={translateButtonClicked}
+                      commentId={commentId}
+                    />
                     <FeatureFlag name="">
                       {multipleLocales && locale !== ideaLocale &&
                         <TranslateButton
-                          onClick={this.translateComment(commentId)}
+                          onClick={this.translateComment}
                         >
                           {!this.state.translateButtonClicked
                             ? <FormattedMessage {...messages.translateComment} />

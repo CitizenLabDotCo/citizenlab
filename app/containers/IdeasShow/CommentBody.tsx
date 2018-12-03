@@ -8,6 +8,8 @@ import { isNilOrError } from 'utils/helperUtils';
 // Utils & Loaders
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetMachineTranslation from 'resources/GetMachineTranslation';
+
 import { getLocalized } from 'utils/i18n';
 
 // Components
@@ -93,6 +95,8 @@ interface InputProps {
   last?: boolean;
   onCommentSave: {(values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>): void};
   onCancelEdition: {(): void};
+  translateButtonClicked: boolean;
+  commentId: string;
 }
 
 interface DataProps {
@@ -134,12 +138,31 @@ class CommentBody extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { editionMode, commentBody, locale, tenantLocales, last } = this.props;
+    const {
+      editionMode,
+      commentBody,
+      locale,
+      tenantLocales,
+      last,
+      translateButtonClicked,
+      commentId
+    } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !editionMode) {
       return (
         <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>
+        {translateButtonClicked ?
+          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
+            {translation => {
+              return !isNilOrError(translation) ?
+                <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />
+              :
+                null;
+            }}
+          </GetMachineTranslation>
+          :
           <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
+        }
         </CommentWrapper>
       );
     }
