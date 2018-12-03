@@ -115,7 +115,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
     }
   }
 
-  translateComment = (commentId: string) => () => {
+  translateComment = () => {
     const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
     const { translateButtonClicked } = this.state;
 
@@ -124,8 +124,6 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
     ? clickGoBackToOriginalCommentButton()
     : clickTranslateCommentButton();
 
-    // to be implemented
-
     this.setState(prevState => ({
       translateButtonClicked: !prevState.translateButtonClicked,
     }));
@@ -133,7 +131,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     const { comment, idea, tenantLocales, locale } = this.props;
-    const { editionMode } = this.state;
+    const { editionMode, translateButtonClicked } = this.state;
     const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
@@ -165,12 +163,14 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
             editionMode={editionMode}
             onCommentSave={this.onCommentSave}
             onCancelEdition={this.onCancelEdition}
+            translateButtonClicked={translateButtonClicked}
+            commentId={commentId}
           />
 
           <FeatureFlag name="">
             {multipleLocales && locale !== ideaLocale &&
               <TranslateButton
-                onClick={this.translateComment(commentId)}
+                onClick={this.translateComment}
               >
                 {!this.state.translateButtonClicked
                   ? <FormattedMessage {...messages.translateComment} />
