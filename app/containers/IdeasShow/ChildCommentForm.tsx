@@ -197,17 +197,14 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
       const { formatMessage } = this.props.intl;
       const { inputValue, canSubmit, errorMessage } = this.state;
       const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
-      const randomString = Math.random().toString(36).substring(7);
-      const id = `reply-to-comment-${randomString}`;
 
       return (
         <CommentContainer>
-          <label htmlFor={id}>
+          <label>
             <HiddenLabel>
               <FormattedMessage {...messages.replyToComment} />
             </HiddenLabel>
             <StyledTextArea
-              id={id}
               name="comment"
               placeholder={placeholder}
               rows={1}
