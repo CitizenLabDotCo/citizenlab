@@ -36,6 +36,7 @@ FactoryBot.define do
       "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
       "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
+    sequence(:slug) {|n| "renew-west-parc-#{n}"}
     publication_status { 'published' }
 
     transient do
