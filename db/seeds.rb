@@ -182,6 +182,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       participatory_budgeting: {
         enabled: true,
         allowed: true
+      },
+      machine_translations: {
+        enabled: true,
+        allowed: true
       }
     }
   })
