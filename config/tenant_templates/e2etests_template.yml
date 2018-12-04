@@ -641,6 +641,10 @@ models:
     birthyear: 
     domicile: 
     education: 
+    registration_completed_at: !ruby/object:ActiveSupport::TimeWithZone
+      utc: &48 2018-03-28 13:34:57.035418000 Z
+      zone: *8
+      time: *48
     password: "testtest"
     remote_avatar_url: 
     roles:
