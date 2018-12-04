@@ -7,7 +7,7 @@ jest.mock('services/areas');
 
 let mockData: ISupportedDataType | null | undefined = null;
 
-const stream = jest.fn(({ queryParameters }, customId: string) => {
+const stream = jest.fn((_parameters, _customId: string) => {
   const observable = new BehaviorSubject(mockData);
   return {
     observable
@@ -23,7 +23,7 @@ describe('<GetSerieFromStream />', () => {
     convertToGraphFormat = jest.fn();
   });
 
-  it('passes down parameters to query', () => {
+  it('queries with the right parameters and update', () => {
     const component = shallow(
       <GetSerieFromStream
         convertToGraphFormat={convertToGraphFormat}

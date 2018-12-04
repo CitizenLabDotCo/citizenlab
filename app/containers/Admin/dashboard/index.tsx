@@ -1,7 +1,7 @@
 import React from 'react';
 
 // router
-import { withRouter, WithRouterProps } from 'react-router';
+import {  WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -219,7 +219,7 @@ export const chartTheme = (theme) => {
   };
 };
 
-export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps> {
+export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const { children, authUser } = this.props;
     const { formatMessage } = this.props.intl;
@@ -269,7 +269,7 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
   }
 }
 
-const DashboardsPageWithHoC = withRouter(injectIntl(DashboardsPage));
+const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 export default (props) => (
   <GetAuthUser {...props}>

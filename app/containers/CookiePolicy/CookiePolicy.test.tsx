@@ -6,14 +6,10 @@ jest.mock('utils/eventEmitter');
 import { CookiePolicy } from './';
 import eventEmitter from 'utils/eventEmitter';
 
-// tslint:disable-next-line:no-vanilla-formatted-messages
-import { FormattedMessage } from 'react-intl';
-
 import { shallowWithIntl } from 'utils/testUtils/withIntl';
 import { shallow } from 'enzyme';
 
 const emit = eventEmitter.emit as jest.Mock;
-type FormattedMessageProps = FormattedMessage.Props;
 
 describe('<CookiePolicy />', () => {
   it('renders correctly', () => {
@@ -24,14 +20,13 @@ describe('<CookiePolicy />', () => {
   it('renders correctly openConsentManager button', () => {
     const wrapper = shallowWithIntl(<CookiePolicy />);
     const cookieMessage = wrapper.find('FormattedMessage.cookiePreferencesMessage');
-    const values = cookieMessage.props().values as FormattedMessageProps['values'];
+    const values = cookieMessage.props().values;
     const prefbutton = values && values.changePreferencesButton as JSX.Element | null;
     const button = prefbutton && shallow(prefbutton);
     expect(button).toMatchSnapshot();
   });
 
   /* this is a pretty reliant on the implementation way to test that it opens consent manager.
-    ideally, this would be tested by integration testing
   */
   it('has a functional openConsentManager Button', () => {
     // render component
@@ -39,7 +34,7 @@ describe('<CookiePolicy />', () => {
     expect(eventEmitter.emit).toBeCalledTimes(0);
 
     const cookieMessage = wrapper.find('FormattedMessage.cookiePreferencesMessage');
-    const values = cookieMessage.props().values as FormattedMessageProps['values'];
+    const values = cookieMessage.props().values;
     const prefbutton = values && values.changePreferencesButton as JSX.Element | null;
     const button = prefbutton && shallow(prefbutton);
     button && button.simulate('click');
