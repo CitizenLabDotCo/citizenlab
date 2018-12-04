@@ -56,19 +56,26 @@ export default class GetMachineTranslation extends React.Component<Props, State>
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ machineTranslation: undefined })),
         switchMap(({ ideaId, commentId }) => {
-          console.log('attribute name: ' + attributeName);
           if (isString(ideaId)) {
             return machineTranslationByIdeaIdStream(ideaId,
               {
-                queryParameters: { machine_translation: { attribute_name: attributeName, locale_to: localeTo } },
-                cacheStream: false
+                queryParameters: {
+                  machine_translation: {
+                    locale_to: localeTo,
+                    attribute_name: attributeName
+                  }
+                }
               }
             ).observable;
           } else if (isString(commentId)) {
             return machineTranslationByCommentIdStream(commentId,
               {
-                queryParameters: { machine_translation: { attribute_name: attributeName, locale_to: localeTo } },
-                cacheStream: false
+                queryParameters: {
+                  machine_translation: {
+                    locale_to: localeTo,
+                    attribute_name: attributeName
+                  }
+                }
               }
             ).observable;
           }
@@ -94,9 +101,6 @@ export default class GetMachineTranslation extends React.Component<Props, State>
   render() {
     const { children } = this.props;
     const { machineTranslation } = this.state;
-    console.log('resource');
-    console.log(this.props.attributeName);
-    console.log(machineTranslation);
     return (children as children)(machineTranslation);
   }
 }
