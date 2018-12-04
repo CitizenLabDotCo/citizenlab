@@ -22,7 +22,7 @@ namespace :nlp do
     Apartment::Tenant.switch(tenant.schema_name) do
       Idea.all.each do |idea|
         # TODO figure out locale
-        resp = api.idea_geotagging tenant.id, 'nl', idea.id
+        resp = api.idea_geotagging tenant.id, idea
         geos = JSON.parse(resp.body)['data']
         if geos.present?
           geo = geos.first
