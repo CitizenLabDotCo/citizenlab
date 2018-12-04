@@ -200,12 +200,11 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
 
       return (
         <CommentContainer>
-          <label htmlFor="reply-to-comment">
+          <label>
             <HiddenLabel>
               <FormattedMessage {...messages.replyToComment} />
             </HiddenLabel>
             <StyledTextArea
-              id="reply-to-comment"
               name="comment"
               placeholder={placeholder}
               rows={1}
