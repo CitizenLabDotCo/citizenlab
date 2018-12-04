@@ -962,6 +962,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 { translateButtonClicked ?
                   <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
                     {translation => {
+                      console.log('title_multiloc');
+                      console.log(translation);
                       return !isNilOrError(translation) ?
                       <IdeaTitle>{translation.attributes.translation}</IdeaTitle>
                       :
@@ -1026,7 +1028,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
 
-                <FeatureFlag name="machine_translations">
+                <FeatureFlag name="">
                   {multipleLocales && locale !== ideaLocale &&
                     <TranslateButton
                       style="secondary-outlined"
@@ -1066,6 +1068,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       translateButtonClicked ?
                       <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                         {translation => {
+                          console.log('body_multiloc');
+                          console.log(translation);
                           return !isNilOrError(translation) ?
                           <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>
                           :
