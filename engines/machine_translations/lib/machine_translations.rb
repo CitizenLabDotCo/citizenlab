@@ -1,5 +1,5 @@
-require "machine_translations/engine"
 require "easy_translate"
+require "machine_translations/engine"
 
 module MachineTranslations
 end
