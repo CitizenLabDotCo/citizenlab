@@ -26,7 +26,7 @@ export interface State {
 }
 
 export default function injectLocalize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
-  class Localized extends PureComponent<P & InjectedLocalized, State> {
+  return class Localized extends PureComponent<P, State> {
     subscriptions: Subscription[];
     static displayName = `WithLocalize(${getDisplayName(Component)})`;
 
@@ -78,8 +78,7 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
 
       return null;
     }
-  }
-  return Localized as React.ComponentType<P & InjectedLocalized>;
+  };
 }
 
 function getDisplayName(Component) {
