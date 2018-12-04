@@ -20,7 +20,7 @@ module NLP
     def ideas_duplicates tenant_id, locale, text
       self.class.post(
         "/v1/tenants/#{tenant_id}/#{locale}",
-        body: {text: text},
+        body: {text: text}.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
     end
@@ -45,9 +45,16 @@ module NLP
       )
     end
 
-    def idea_geotagging tenant_id, locale, idea_id
-      self.class.get(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/#{idea_id}/geotagging"
+    def idea_geotagging tenant_id, idea, locale=nil
+      if !locale
+        locale, text = idea.body_multiloc.first
+      else
+        text = idea.body_multiloc[locale]
+      end
+      self.class.post(
+        "/v1/tenants/#{tenant_id}/geotagging",
+        body: {text: text, locale: locale}.to_json,
+        headers: {'Content-Type' => 'application/json'} 
       )
     end
 
