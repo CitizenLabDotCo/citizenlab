@@ -1,16 +1,20 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { ICommentMarkedAsSpamNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
+// i18n
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
+import { Multiloc } from 'typings';
+
+// components
 import T from 'components/T';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
-import { Multiloc } from 'typings';
+import { DeletedUser } from '../Notification';
 
 type Props = {
   notification: ICommentMarkedAsSpamNotificationData;
@@ -57,6 +61,7 @@ export default class CommentMarkedAsSpamNotification extends React.PureComponent
   render() {
     const { notification } = this.props;
     const { ideaSlug, ideaTitle } = this.state;
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
 
     if (!ideaSlug || !ideaTitle) return null;
 
@@ -70,7 +75,11 @@ export default class CommentMarkedAsSpamNotification extends React.PureComponent
         <FormattedMessage
           {...messages.userMarkedCommentAsSpam}
           values={{
-            name:
+            name: deletedUser ?
+              <DeletedUser>
+                <FormattedMessage {...messages.deletedUser} />
+              </DeletedUser>
+              :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
                 onClick={this.onClickUserName}
