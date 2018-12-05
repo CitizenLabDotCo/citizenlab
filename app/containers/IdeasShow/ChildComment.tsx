@@ -167,7 +167,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
             commentId={commentId}
           />
 
-          <FeatureFlag name="machine_translations">
+          <FeatureFlag name="">
             {multipleLocales && locale !== ideaLocale &&
               <TranslateButton
                 onClick={this.translateComment}

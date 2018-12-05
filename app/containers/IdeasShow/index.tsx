@@ -638,6 +638,7 @@ type State = {
   moreActions: IAction[];
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
+  translating: boolean;
 };
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & ITracks, State> {
@@ -666,6 +667,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       moreActions: [],
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
+      translating: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -857,10 +859,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     ? clickGoBackToOriginalIdeaCopyButton()
     : clickTranslateIdeaButton();
 
-    // to be implemented
-
     this.setState(prevState => ({
       translateButtonClicked: !prevState.translateButtonClicked,
+      translating: true,
     }));
   }
 
@@ -878,7 +879,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap,
       moreActions,
       ideaIdForSocialSharing,
-      translateButtonClicked
+      translateButtonClicked,
     } = this.state;
     let content: JSX.Element | null = null;
     const multipleLocales = tenantLocales.length > 1;
@@ -1031,6 +1032,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     <TranslateButton
                       style="secondary-outlined"
                       onClick={this.translateIdea}
+                      processing={this.state.translating}
                     >
                       {!this.state.translateButtonClicked
                         ? <FormattedMessage {...messages.translateIdea} />
@@ -1067,9 +1069,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                       <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                         {translation => {
                           return !isNilOrError(translation) ?
-                          <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>
-                          :
-                          null;
+                            <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>
+                            :
+                            null;
                         }}
                       </GetMachineTranslation>
                       :
