@@ -853,10 +853,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   translateIdea = () => {
-    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
+    const { clickTranslateIdeaButton } = this.props;
 
     // tracking
-    clickGoBackToOriginalIdeaCopyButton();
+    clickTranslateIdeaButton();
 
     this.setState({
       translateFromOriginalButtonClicked: true,
@@ -866,10 +866,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   backToOriginalContent = () => {
-    const { clickTranslateIdeaButton } = this.props;
+    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
 
     // tracking
-    clickTranslateIdeaButton();
+    clickGoBackToOriginalIdeaCopyButton();
 
     this.setState({
        translateFromOriginalButtonClicked: false,
