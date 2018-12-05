@@ -72,5 +72,9 @@ export default defineMessages({
   alreadyAcceptTermsAndConditions: {
     id: 'app.containers.SignIn.alreadyAcceptTermsAndConditions',
     defaultMessage: 'I\'ve already accepted the {tacLink}',
+  },
+  whatIsFranceConnect: {
+    id: 'app.containers.SignIn.whatIsFranceConnect',
+    defaultMessage: 'What is France Connect?',
   }
 });
