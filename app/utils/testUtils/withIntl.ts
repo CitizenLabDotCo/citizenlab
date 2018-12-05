@@ -1,5 +1,5 @@
 import { IntlProvider, intlShape, InjectedIntlProps } from 'react-intl';
-import { shallow, mount, ShallowRendererProps, ShallowWrapper } from 'enzyme';
+import { shallow, mount, ShallowRendererProps, MountRendererProps, ShallowWrapper, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 // Create IntlProvider to retrieve React Intl context
@@ -18,11 +18,13 @@ const intl = {
     }, { tenantName: 'The Test', orgName: 'Test Town', orgType: 'testing', ...values || {} }),
 };
 
-const nodeWithIntlProp = (node) => React.cloneElement(node, { intl });
+function nodeWithIntlProp<P>(node: React.ReactElement<P>) {
+  return React.cloneElement(node as React.ReactElement<any>, { intl }) as React.ReactElement<P & InjectedIntlProps>;
+}
 
 // shallow() with React Intl context
 export function shallowWithIntl<C extends React.Component, P = C['props'], S = C['state']>(node: React.ReactElement<P>, additional: ShallowRendererProps = {}) {
- const { context, ...options } = additional;
+  const { context, ...options } = additional;
   return shallow(nodeWithIntlProp(node), {
     ...options,
     context: {
@@ -33,11 +35,9 @@ export function shallowWithIntl<C extends React.Component, P = C['props'], S = C
 }
 
 // mount() with React Intl context
-export const mountWithIntl = (
-  node,
-  { context, childContextTypes, ...options } = {}
-) => {
-  return mount(nodeWithIntlProp(node), {
+export function mountWithIntl<C extends React.Component, P = C['props'], S = C['state']>(node: React.ReactElement<P>, additional: MountRendererProps = {}) {
+  const { context, childContextTypes, ...options } = additional;
+  return mount<P & InjectedIntlProps>(nodeWithIntlProp(node), {
     ...options,
     context: {
       ...context,
@@ -47,5 +47,5 @@ export const mountWithIntl = (
       intl: intlShape,
       ...childContextTypes
     }
-  });
-};
+  }) as ReactWrapper<P & InjectedIntlProps, S, C>;
+}
