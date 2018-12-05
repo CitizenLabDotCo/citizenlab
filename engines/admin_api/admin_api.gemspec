@@ -13,10 +13,10 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 5.1.5"
+  s.add_dependency "rails", "~> 5.2.1"
   s.add_dependency "active_model_serializers", "~> 0.10.7"
-  s.add_dependency "apartment", "~> 2.1.0"
-  s.add_dependency "graphql", "1.8.0.pre11"
+  s.add_dependency "apartment", "~> 2.2.0"
+  s.add_dependency "graphql", "~> 1.8.0"
 
   s.add_development_dependency "rspec_api_documentation"
   s.add_development_dependency "rspec-rails"
