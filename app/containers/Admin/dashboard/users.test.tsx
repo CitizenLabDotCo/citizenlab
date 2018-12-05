@@ -27,17 +27,17 @@ describe('<UsersDashboard />', () => {
   it('reacts to group changes', () => {
     const wrapper = shallowWithIntl(<UsersDashboard groups={{ ...mockGetGroups, groupsList: null }} {...localizeProps} />);
     let filters = wrapper.find('ChartFilters');
-    // setting snapshots here is a disputable option -- cf code discussion
+
     expect(filters.prop('groupFilterOptions')).toMatchSnapshot();
 
     wrapper.setProps({ groups: mockGetGroups });
 
     // you can access the instance and read its props and state like this
-    // don't abuse it -- cf code discussion
+
     // console.log(wrapper.instance().props);
 
     // you need to update the filter object to reflect the changes
     filters = wrapper.find('ChartFilters');
-    expect(filters.prop('groupFilterOptions')).toMatchSnapshot()
+    expect(filters.prop('groupFilterOptions')).toMatchSnapshot();
   });
 });
