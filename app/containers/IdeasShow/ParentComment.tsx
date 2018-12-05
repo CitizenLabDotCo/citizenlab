@@ -190,6 +190,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                     <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                     <StyledAuthor
                       authorId={authorId}
+                      notALink={authorId ? false : true}
                       createdAt={createdAt}
                       size="40px"
                       message={messages.parentCommentAuthor}
