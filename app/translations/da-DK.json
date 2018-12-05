@@ -910,6 +910,7 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Du er nu administrator af platformen",
   "app.containers.NotificationMenu.clearAll": "Ryd alle",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Din kommentar på '{ideaTitle}' er blevet slettet af en administrator fordi {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dens indhold er upassende} other {{otherReason}}}",
+  "app.containers.NotificationMenu.deletedUser": "",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
   "app.containers.NotificationMenu.loadMore": "Indlæs flere...",
   "app.containers.NotificationMenu.loading": "Indlæser notifikationer...",

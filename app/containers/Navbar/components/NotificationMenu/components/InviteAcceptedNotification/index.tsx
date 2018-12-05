@@ -1,12 +1,17 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
+// services
 import { IInviteAcceptedNotificationData } from 'services/notifications';
 
+// i18n
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
+import { DeletedUser } from '../Notification';
 
 type Props = {
   notification: IInviteAcceptedNotificationData;
@@ -23,6 +28,7 @@ export default class InviteAcceptedNotification extends React.PureComponent<Prop
 
   render() {
     const { notification } = this.props;
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
 
     return (
       <NotificationWrapper
@@ -34,7 +40,11 @@ export default class InviteAcceptedNotification extends React.PureComponent<Prop
         <FormattedMessage
           {...messages.userAcceptedYourInvitation}
           values={{
-            name:
+            name: deletedUser ?
+              <DeletedUser>
+                <FormattedMessage {...messages.deletedUser} />
+              </DeletedUser>
+              :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
                 onClick={this.onClickUserName}
