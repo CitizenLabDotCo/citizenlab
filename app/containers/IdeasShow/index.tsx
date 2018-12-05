@@ -1070,7 +1070,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
 
-                <FeatureFlag name="">
+                <FeatureFlag name="machine_translations">
                   {translateButton}
                 </FeatureFlag>
 
