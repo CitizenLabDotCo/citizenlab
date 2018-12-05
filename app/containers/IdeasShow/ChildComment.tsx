@@ -3,7 +3,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { isArray } from 'lodash-es';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Author from 'components/Author';
@@ -17,7 +17,6 @@ import { updateComment } from 'services/comments';
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // analytics
@@ -63,7 +62,6 @@ interface DataProps {
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -74,9 +72,9 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-class ChildComment extends React.PureComponent<Props & ITracks, State> {
+class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocalized, State> {
   constructor(props: Props & ITracks) {
-    super(props);
+    super(props as any);
     this.state = {
       spamModalVisible: false,
       editionMode: false,
@@ -130,9 +128,8 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { comment, idea, tenantLocales, locale } = this.props;
+    const { comment, idea, locale, localize } = this.props;
     const { editionMode, translateButtonClicked } = this.state;
-    const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const className = this.props['className'];
@@ -141,7 +138,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
       const createdAt = comment.attributes.created_at;
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const projectId = idea.relationships.project.data.id;
-      const ideaLocale = Object.keys(idea.attributes.title_multiloc)[0];
+      const showTranslateButton = localize(commentBodyMultiloc) === commentBodyMultiloc[locale];
 
       return (
         <CommentContainer className={className}>
@@ -168,7 +165,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
           />
 
           <FeatureFlag name="machine_translations">
-            {multipleLocales && locale !== ideaLocale &&
+            {showTranslateButton &&
               <TranslateButton
                 onClick={this.translateComment}
               >
@@ -188,12 +185,11 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-const ChildCommentWithHOCs = injectTracks<Props>(tracks)(ChildComment);
+const ChildCommentWithHOCs = injectTracks<Props>(tracks)(localize(ChildComment));
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
-  tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
 });
 
