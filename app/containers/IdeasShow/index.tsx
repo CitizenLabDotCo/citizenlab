@@ -637,8 +637,9 @@ type State = {
   spamModalVisible: boolean;
   moreActions: IAction[];
   ideaIdForSocialSharing: string | null;
-  translateButtonClicked: boolean;
-  translating: boolean;
+  translateFromOriginalButtonClicked: boolean;
+  titleTranslationLoading: boolean;
+  bodyTranslationLoading: boolean;
 };
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & ITracks, State> {
@@ -666,8 +667,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       spamModalVisible: false,
       moreActions: [],
       ideaIdForSocialSharing: null,
-      translateButtonClicked: false,
-      translating: false,
+      translateFromOriginalButtonClicked: false,
+      titleTranslationLoading: false,
+      bodyTranslationLoading: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -851,18 +853,27 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   translateIdea = () => {
-    const { clickTranslateIdeaButton, clickGoBackToOriginalIdeaCopyButton } = this.props;
-    const { translateButtonClicked } = this.state;
+    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
 
     // tracking
-    translateButtonClicked
-    ? clickGoBackToOriginalIdeaCopyButton()
-    : clickTranslateIdeaButton();
+    clickGoBackToOriginalIdeaCopyButton();
 
-    this.setState(prevState => ({
-      translateButtonClicked: !prevState.translateButtonClicked,
-      translating: true,
-    }));
+    this.setState({
+      translateFromOriginalButtonClicked: true,
+      titleTranslationLoading: true,
+      bodyTranslationLoading: true,
+    });
+  }
+
+  backToOriginalContent = () => {
+    const { clickTranslateIdeaButton } = this.props;
+
+    // tracking
+    clickTranslateIdeaButton();
+
+    this.setState({
+       translateFromOriginalButtonClicked: false,
+    });
   }
 
   render() {
@@ -879,10 +890,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap,
       moreActions,
       ideaIdForSocialSharing,
-      translateButtonClicked,
+      translateFromOriginalButtonClicked,
+      titleTranslationLoading,
+      bodyTranslationLoading
     } = this.state;
     let content: JSX.Element | null = null;
     const multipleLocales = tenantLocales.length > 1;
+    const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
 
     if (idea) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
@@ -918,6 +932,31 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaLocale = Object.keys(idea.data.attributes.title_multiloc)[0];
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
+      let translateButton: JSX.Element | null = null;
+
+      if (multipleLocales && locale !== ideaLocale) {
+        if (!translateFromOriginalButtonClicked) {
+          translateButton = (
+            <TranslateButton
+              style="secondary-outlined"
+              onClick={this.translateIdea}
+              processing={translationsLoading}
+            >
+              <FormattedMessage {...messages.translateIdea} />
+            </TranslateButton>
+          );
+        } else {
+          translateButton = (
+            <TranslateButton
+              style="secondary-outlined"
+              onClick={this.backToOriginalContent}
+              processing={translationsLoading}
+            >
+              <FormattedMessage {...messages.backToOriginalContent} />
+            </TranslateButton>
+          );
+        }
+      }
 
       if (pbProject) {
         participationContextType = 'Project';
@@ -960,17 +999,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
 
               <Header>
-                { translateButtonClicked ?
+                {translateFromOriginalButtonClicked ?
                   <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
                     {translation => {
-                      return !isNilOrError(translation) ?
-                      <IdeaTitle>{translation.attributes.translation}</IdeaTitle>
-                      :
-                        null;
+                      if (!isNilOrError(translation)) {
+                        this.setState({ titleTranslationLoading: false });
+                        return (
+                          <IdeaTitle>{translation.attributes.translation}</IdeaTitle>
+                        );
+                      }
+                      return null;
                     }}
                   </GetMachineTranslation>
                   :
-                  <IdeaTitle>{ideaTitle}</IdeaTitle>
+                    <IdeaTitle>{ideaTitle}</IdeaTitle>
                 }
               </Header>
             </HeaderWrapper>
@@ -1028,18 +1070,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </AuthorAndAdressWrapper>
 
                 <FeatureFlag name="">
-                  {multipleLocales && locale !== ideaLocale &&
-                    <TranslateButton
-                      style="secondary-outlined"
-                      onClick={this.translateIdea}
-                      processing={this.state.translating}
-                    >
-                      {!this.state.translateButtonClicked
-                        ? <FormattedMessage {...messages.translateIdea} />
-                        : <FormattedMessage {...messages.backToOriginalContent} />
-                      }
-                    </TranslateButton>
-                  }
+                  {translateButton}
                 </FeatureFlag>
 
                 {ideaLocation &&
@@ -1064,19 +1095,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                    {
-                      translateButtonClicked ?
-                      <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
-                        {translation => {
-                          return !isNilOrError(translation) ?
-                            <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>
-                            :
-                            null;
-                        }}
-                      </GetMachineTranslation>
-                      :
-                      <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
-                    }
+                  {translateFromOriginalButtonClicked ?
+                    <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                      {translation => {
+                        if (!isNilOrError(translation)) {
+                          this.setState({ bodyTranslationLoading: false });
+                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                        }
+                        return null;
+                      }}
+                    </GetMachineTranslation>
+                    :
+                    <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+                  }
                   </IdeaBody>
                 </Fragment>
 
