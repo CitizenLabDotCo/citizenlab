@@ -274,6 +274,7 @@ type Props = {
   minWidth?: string;
   width?: string;
   type?: string;
+  spinnerColor?: string;
 };
 
 type State = {};
@@ -332,7 +333,7 @@ class Button extends PureComponent<Props, State> {
     className = `${className ? className : ''}`;
 
     const spinnerSize = this.getSpinnerSize(size);
-    const spinnerColor = this.getSpinnerColor(style);
+    const spinnerColor = this.props.spinnerColor || this.getSpinnerColor(style);
     const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
 
