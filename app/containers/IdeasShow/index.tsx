@@ -1004,13 +1004,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 {translateFromOriginalButtonClicked ?
                   <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
                     {translation => {
-                      if (!isNilOrError(translation)) {
-                        this.setState({ titleTranslationLoading: false });
-                        return (
-                          <IdeaTitle>{translation.attributes.translation}</IdeaTitle>
-                        );
+                      if (isNilOrError(translation)) {
+                        return <IdeaTitle>{ideaTitle}</IdeaTitle>;
                       }
-                      return null;
+
+                      this.setState({ titleTranslationLoading: false });
+                      return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
                     }}
                   </GetMachineTranslation>
                   :
@@ -1100,11 +1099,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   {translateFromOriginalButtonClicked ?
                     <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                       {translation => {
-                        if (!isNilOrError(translation)) {
-                          this.setState({ bodyTranslationLoading: false });
-                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                        if (isNilOrError(translation)) {
+                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
                         }
-                        return null;
+
+                        this.setState({ bodyTranslationLoading: false });
+                        return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
                       }}
                     </GetMachineTranslation>
                     :
