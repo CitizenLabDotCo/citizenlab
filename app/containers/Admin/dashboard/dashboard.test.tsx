@@ -8,7 +8,8 @@ import { DashboardsPage } from './';
 // mock utilities
 jest.mock('utils/cl-intl');
 import { mockAdmin, mockProjectModerator } from 'services/__mocks__/auth';
-import { intl } from 'utils/cl-intl';
+const Intl = require('utils/cl-intl/__mocks__/');
+const { intl } = Intl;
 
 describe('<DashboardsPage />', () => {
   // this is an integration test : it also tests how well our utilities function check access rights
