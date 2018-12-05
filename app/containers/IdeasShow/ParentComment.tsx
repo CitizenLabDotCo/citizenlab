@@ -1,7 +1,8 @@
 import React from 'react';
-import { get, isArray } from 'lodash-es';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import ChildComment from './ChildComment';
@@ -130,7 +131,7 @@ interface ITracks {
   clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & ITracks, State> {
+class ParentComment extends React.PureComponent<Props & ITracks & InjectedLocalized, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -192,8 +193,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, idea, locale, tenantLocales } = this.props;
-    const multipleLocales = isArray(tenantLocales) && tenantLocales.length > 1;
+    const { commentId, authUser, comment, childComments, idea, locale, localize } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
@@ -202,7 +202,6 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const createdAt = comment.attributes.created_at;
-      const ideaLocale = Object.keys(idea.attributes.title_multiloc)[0];
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
@@ -212,6 +211,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
         if (comment.relationships.parent.data.id === commentId) return true;
         return false;
       }).map(comment => comment.id));
+      const showTranslateButton = localize(commentBodyMultiloc) === commentBodyMultiloc[locale];
 
       // Hide parent comments that are deleted with no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
@@ -242,7 +242,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       commentId={commentId}
                     />
                     <FeatureFlag name="machine_translations">
-                      {multipleLocales && locale !== ideaLocale &&
+                      {showTranslateButton &&
                         <TranslateButton
                           onClick={this.translateComment}
                         >
@@ -289,7 +289,7 @@ const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
   clickTranslateCommentButton: tracks.clickTranslateCommentButton,
   clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
-})(ParentComment);
+})(localize(ParentComment));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,

@@ -45,7 +45,6 @@ import { API_PATH } from 'containers/App/constants';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
@@ -611,7 +610,6 @@ interface ITracks {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
   ideaFiles: GetResourceFilesChildProps;
 }
 
@@ -877,7 +875,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale, tenantLocales } = this.props;
+    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale } = this.props;
     const {
       idea,
       ideaImage,
@@ -895,7 +893,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       bodyTranslationLoading
     } = this.state;
     let content: JSX.Element | null = null;
-    const multipleLocales = tenantLocales.length > 1;
     const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
 
     if (idea) {
@@ -929,12 +926,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
       const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
-      const ideaLocale = Object.keys(idea.data.attributes.title_multiloc)[0];
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
       let translateButton: JSX.Element | null = null;
+      const showTranslateButton = ideaTitle === titleMultiloc[locale];
 
-      if (multipleLocales && locale !== ideaLocale) {
+      if (showTranslateButton) {
         if (!translateFromOriginalButtonClicked) {
           translateButton = (
             <TranslateButton
@@ -1013,7 +1010,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                     }}
                   </GetMachineTranslation>
                   :
-                    <IdeaTitle>{ideaTitle}</IdeaTitle>
+                  <IdeaTitle>{ideaTitle}</IdeaTitle>
                 }
               </Header>
             </HeaderWrapper>
@@ -1294,7 +1291,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(localize(IdeasShow)));
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
 });
