@@ -241,7 +241,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       translateButtonClicked={translateButtonClicked}
                       commentId={commentId}
                     />
-                    <FeatureFlag name="machine_translations">
+                    <FeatureFlag name="">
                       {multipleLocales && locale !== ideaLocale &&
                         <TranslateButton
                           onClick={this.translateComment}
@@ -287,6 +287,8 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
 
 const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
+  clickTranslateCommentButton: tracks.clickTranslateCommentButton,
+  clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
 })(ParentComment);
 
 const Data = adopt<DataProps, InputProps>({
