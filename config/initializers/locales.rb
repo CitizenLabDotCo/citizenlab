@@ -4,6 +4,7 @@ CL2_SUPPORTED_LOCALES = [:en, :"en-GB", :"en-CA", :"nl-BE", :"nl-NL", :"fr-BE", 
 
 I18n.available_locales = CL2_SUPPORTED_LOCALES + [:nl, :fr, :de, :da, :nb]
 
+I18n.default_locale = :en
 
 # This allows a lookup of e.g. 'nl-NL' to be resolved by 'nl' In order for
 # this to work, we need to support more locales in CL2_SUPPORTED_LOCALES than
