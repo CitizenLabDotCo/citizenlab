@@ -34,31 +34,32 @@ describe TrendingIdeaService do
         trending_score_sorted = TrendingIdeaService.new.sort_trending(Idea.all).map(&:id)
         expected_order = Idea.all.sort_by{ |i| TrendingIdeaService.new.trending_score i }.map(&:id).reverse
       end
-      lines = []
-      Idea.count.times do |i|
-        lines.concat [i]
-        i_got = Idea.find_by(id: trending_score_sorted[i])
-        i_exp = Idea.find_by(id: expected_order[i])
 
-        lines.concat ["ID:        #{trending_score_sorted[i]}       #{expected_order[i]}"]
-        lines.concat ['--------------------------']
-        lines.concat ["Score:     #{TrendingIdeaService.new.trending_score i_got}       #{TrendingIdeaService.new.trending_score i_exp}"]
-        lines.concat ["Trending?: #{TrendingIdeaService.new.trending? i_got}       #{TrendingIdeaService.new.trending? i_exp}"]
-        lines.concat ['--------------------------']
-        lines.concat ["Vote diff: #{i_got.score}       #{i_exp.score}"]
-        lines.concat ["Com cnt:   #{i_got.comments_count}       #{i_exp.comments_count}"]
-        lines.concat ["Pub_at:    #{i_got.published_at}       #{i_exp.published_at}"]
-        lines.concat ['--------------------------']
-        lines.concat ["Last C:    #{Time.at(i_got.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
-        lines.concat ["Last V:    #{Time.at(i_got.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
-        lines.concat ['--------------------------']
-        lines.concat ["Last A:    #{i_got.idea_trending_info.last_activity_at}       #{i_exp.idea_trending_info.last_activity_at}"]
-        lines.concat ["Mean A:    #{i_got.idea_trending_info.mean_activity_at}       #{i_exp.idea_trending_info.mean_activity_at}"]
-        lines.concat ['--------------------------']
-        lines.concat ['--------------------------']
-      end
+      # lines = []
+      # Idea.count.times do |i|
+      #   lines.concat [i]
+      #   i_got = Idea.find_by(id: trending_score_sorted[i])
+      #   i_exp = Idea.find_by(id: expected_order[i])
+
+      #   lines.concat ["ID:        #{trending_score_sorted[i]}       #{expected_order[i]}"]
+      #   lines.concat ['--------------------------']
+      #   lines.concat ["Score:     #{TrendingIdeaService.new.trending_score i_got}       #{TrendingIdeaService.new.trending_score i_exp}"]
+      #   lines.concat ["Trending?: #{TrendingIdeaService.new.trending? i_got}       #{TrendingIdeaService.new.trending? i_exp}"]
+      #   lines.concat ['--------------------------']
+      #   lines.concat ["Vote diff: #{i_got.score}       #{i_exp.score}"]
+      #   lines.concat ["Com cnt:   #{i_got.comments_count}       #{i_exp.comments_count}"]
+      #   lines.concat ["Pub_at:    #{i_got.published_at}       #{i_exp.published_at}"]
+      #   lines.concat ['--------------------------']
+      #   lines.concat ["Last C:    #{Time.at(i_got.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.comments.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
+      #   lines.concat ["Last V:    #{Time.at(i_got.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}       #{Time.at(i_exp.upvotes.map{|c| c.created_at.to_i}.sort.reverse.first || 0)}"]
+      #   lines.concat ['--------------------------']
+      #   lines.concat ["Last A:    #{i_got.idea_trending_info.last_activity_at}       #{i_exp.idea_trending_info.last_activity_at}"]
+      #   lines.concat ["Mean A:    #{i_got.idea_trending_info.mean_activity_at}       #{i_exp.idea_trending_info.mean_activity_at}"]
+      #   lines.concat ['--------------------------']
+      #   lines.concat ['--------------------------']
+      # end
       # lines.each{|l| puts l}
-      # byebug
+
       expect(trending_score_sorted).to eq expected_order
     end
   end
@@ -70,7 +71,7 @@ describe TrendingIdeaService do
       author = create(:user)
       idea = create(:idea, author: author, published_at: published_at)
       is_popular = (rand(3) == 0)
-      (if is_popular then rand(100) else rand(3) end).times do |i| 
+      (if is_popular then rand(20) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'up',
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
@@ -79,17 +80,14 @@ describe TrendingIdeaService do
                user: author,
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      (if is_popular then rand(30) else rand(3) end).times do |i| 
+      (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:vote, votable: idea, mode: 'down', 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      (if is_popular then rand(50) else rand(3) end).times do |i| 
+      (if is_popular then rand(10) else rand(3) end).times do |i| 
         create(:comment, idea: idea, 
                created_at: Faker::Time.between(published_at, DateTime.now))
       end
-      #if (idea.comments_count > 5) && (idea.upvotes_count > 5)
-      #  byebug
-      #end
     end
   end
 

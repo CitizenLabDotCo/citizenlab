@@ -7,9 +7,8 @@ resource "Baskets" do
 
   before do
     header "Content-Type", "application/json"
-
     @user = create(:user)
-    @ideas = create_list(:idea, 3)
+    @ideas = create_list(:idea, 3, project: create(:project), idea_status: create(:idea_status), author: @user)
     create_list(:basket, 2, participation_context: create(:continuous_budgeting_project, with_permissions: true))
     @basket = create(:basket, ideas: @ideas, user: @user, participation_context: create(:continuous_budgeting_project, with_permissions: true))
   end

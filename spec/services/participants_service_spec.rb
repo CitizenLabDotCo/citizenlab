@@ -77,7 +77,6 @@ describe TimelineService do
       others = create_list(:user, 3)
       
       idea = nil
-      other_idea = nil
       travel_to Time.now - 100.days do
         idea = create(:idea, project: project, author: pp1)
       end
@@ -88,7 +87,7 @@ describe TimelineService do
       travel_to Time.now - 2.days do
         create(:vote, votable: idea, mode: 'up', user: pp3)
         create(:comment, idea: idea, author: pp2)
-        create(:comment, idea: other_idea, author: others.last)
+        create(:comment, author: others.last)
       end
       create(:comment, idea: idea, author: pp4)
 

@@ -31,7 +31,7 @@ class SmartGroupsService
       # https://github.com/rails/rails/issues/20077
       Group
         .where(id: group.id)
-        .where(filter(User.where(id: [user.id]), group.rules).exists)
+        .where(filter(User.where(id: [user.id]), group.rules).arel.exists)
     end.inject(:or) || Group.none
   end
 

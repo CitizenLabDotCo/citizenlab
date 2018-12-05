@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022092934) do
+ActiveRecord::Schema.define(version: 2018_10_22_092934) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "uuid-ossp"
-  enable_extension "pgcrypto"
 
   create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "item_type", null: false
@@ -491,7 +491,7 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.string "survey_service"
     t.integer "ordering"
     t.integer "max_budget"
-    t.index ["created_at"], name: "index_projects_on_created_at"
+    t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
