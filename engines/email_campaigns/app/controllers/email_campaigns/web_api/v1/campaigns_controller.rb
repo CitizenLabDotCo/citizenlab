@@ -33,7 +33,6 @@ module EmailCampaigns
       @campaign.author ||= current_user
 
       authorize @campaign
-
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)

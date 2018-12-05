@@ -23,7 +23,7 @@ RSpec.describe LogActivityJob, type: :job do
       idea = create(:idea)
       frozen_idea = idea.destroy
       user = create(:user)
-      expect{job.perform("Idea/#{frozen_idea.id}", "created", user, Time.now)}.to change{Activity.count}.from(0).to(1)
+      expect{job.perform("Idea/#{frozen_idea.id}", "deleted", user, Time.now)}.to change{Activity.count}.from(0).to(1)
     end
 
     it "enqueues a MakeNotificationsJob" do

@@ -2,9 +2,8 @@ require 'faker'
 
 FactoryBot.define do
   factory :tenant do
-    name Faker::Address.city
-    # host Faker::Internet.domain_name
-    host "localhost"
+    name { Faker::Address.city }
+    host { "localhost" }
     settings {
       {
         "core" => {
@@ -26,8 +25,8 @@ FactoryBot.define do
   end
 
   factory :test_tenant, class: Tenant do
-    name "test-tenant"
-    host "example.org"
+    name { "test-tenant" }
+    host { "example.org" }
     settings {
       {
         "core" => {

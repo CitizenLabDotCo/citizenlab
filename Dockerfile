@@ -1,4 +1,4 @@
-FROM ruby:2.4.2-slim
+FROM ruby:2.5.3-slim
 
 # Docker images can start off with nothing, but it's extremely
 # common to pull in from a base image. In our case we're pulling
