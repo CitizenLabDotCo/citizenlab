@@ -6,7 +6,7 @@ export const __setResponseFor = (url, payload) => {
 };
 
 export default jest.fn((url, _data, _options, _queryParameters): Promise<any>  => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, _reject) => {
     resolve(responses[url]);
   });
 });

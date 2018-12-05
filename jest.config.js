@@ -31,4 +31,7 @@ module.exports = {
   ],
   snapshotSerializers: ["enzyme-to-json/serializer"],
   reporters: ["default", "jest-junit"],
+  moduleNameMapper: {
+    "\\.(css|svg)$": "identity-obj-proxy"
+  }
 };
