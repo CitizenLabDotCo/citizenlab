@@ -43,6 +43,7 @@ export type Props = {
   placeholder?: string | null | undefined;
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
+  disabled?: boolean;
 };
 
 type State = {
@@ -123,6 +124,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
                   onChange={this.handleOnChange(currentTenantLocale)}
                   onBlur={this.props.onBlur}
                   maxCharCount={this.props.maxCharCount}
+                  disabled={this.props.disabled}
                 />
               </InputWrapper>
             );
