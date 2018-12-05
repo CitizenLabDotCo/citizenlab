@@ -1,16 +1,21 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
 import { Multiloc } from 'typings';
-
-import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
-import { ideaByIdStream } from 'services/ideas';
-
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
+import { DeletedUser } from '../Notification';
+import T from 'components/T';
+
+// services
+import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
+import { ideaByIdStream } from 'services/ideas';
 
 type Props = {
   notification: IIdeaMarkedAsSpamNotificationData;
@@ -57,6 +62,7 @@ export default class IdeaMarkedAsSpamNotification extends React.PureComponent<Pr
   render() {
     const { notification } = this.props;
     const { ideaSlug, ideaTitle } = this.state;
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
 
     if (!ideaSlug || !ideaTitle) return null;
 
@@ -70,7 +76,11 @@ export default class IdeaMarkedAsSpamNotification extends React.PureComponent<Pr
         <FormattedMessage
           {...messages.userMarkedIdeaAsSpam}
           values={{
-            name:
+            name: deletedUser ?
+              <DeletedUser>
+                <FormattedMessage {...messages.deletedUser} />
+              </DeletedUser>
+              :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
                 onClick={this.onClickUserName}
