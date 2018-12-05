@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
@@ -16,6 +17,9 @@ import { projectByIdStream, IProject } from 'services/projects';
 import { phaseStream, IPhase } from 'services/phases';
 import { ParticipationMethod, SurveyServices } from 'services/participationContexts';
 import eventEmitter from 'utils/eventEmitter';
+
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -80,12 +84,18 @@ export interface IParticipationContextConfig {
   survey_embed_url?: string | null;
 }
 
-type Props = {
+interface DataProps {
+  tenant: GetTenantChildProps;
+}
+
+interface InputProps {
   onChange: (arg: IParticipationContextConfig) => void;
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
-};
+}
+
+interface Props extends DataProps, InputProps {}
 
 interface State extends IParticipationContextConfig {
   noVotingLimit: JSX.Element | null;
@@ -93,7 +103,7 @@ interface State extends IParticipationContextConfig {
   loaded: boolean;
 }
 
-export default class ParticipationContext extends PureComponent<Props, State> {
+class ParticipationContext extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -304,6 +314,7 @@ export default class ParticipationContext extends PureComponent<Props, State> {
   }
 
   render() {
+    const { tenant } = this.props;
     const className = this.props['className'];
     const {
       participation_method,
@@ -320,6 +331,7 @@ export default class ParticipationContext extends PureComponent<Props, State> {
       noVotingLimit,
       noBudgetingAmount,
     } = this.state;
+    const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
 
     if (loaded) {
       return (
@@ -371,7 +383,10 @@ export default class ParticipationContext extends PureComponent<Props, State> {
               <>
                 <SectionField>
                   <Label>
-                    <FormattedMessage {...messages.amountPerCitizen} />
+                    <FormattedMessage
+                      {...messages.amountPerCitizen}
+                      values={{ currency: tenantCurrency }}
+                    />
                   </Label>
                   <BudgetingAmountInput
                     onChange={this.handleBudgetingAmountChange}
@@ -522,3 +537,9 @@ export default class ParticipationContext extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetTenant>
+    {tenant => <ParticipationContext {...inputProps} tenant={tenant} />}
+  </GetTenant>
+);

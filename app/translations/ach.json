@@ -910,6 +910,7 @@
   "app.containers.NotificationMenu.adminRightsReceived": "",
   "app.containers.NotificationMenu.clearAll": "",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "",
+  "app.containers.NotificationMenu.deletedUser": "",
   "app.containers.NotificationMenu.error": "",
   "app.containers.NotificationMenu.loadMore": "",
   "app.containers.NotificationMenu.loading": "",

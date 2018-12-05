@@ -7,12 +7,17 @@ const Container = styled.div`
   display: flex;
 `;
 
-export default (props: { ideaIds: string[] }) => {
-  const { ideaIds } = props;
+interface Props {
+  ideaIds: string[];
+  resetSelectedIdeas: () => void;
+}
+
+export default (props: Props) => {
+  const { ideaIds, resetSelectedIdeas } = props;
   return (
     <Container>
-      {ideaIds.length > 1 && <ActionBarMulti ideaIds={ideaIds} />}
-      {ideaIds.length === 1 && <ActionBarSingle ideaId={ideaIds[0]} />}
+      {ideaIds.length > 1 && <ActionBarMulti ideaIds={ideaIds} resetSelectedIdeas={resetSelectedIdeas} />}
+      {ideaIds.length === 1 && <ActionBarSingle ideaId={ideaIds[0]} resetSelectedIdeas={resetSelectedIdeas} />}
     </Container>
   );
 };

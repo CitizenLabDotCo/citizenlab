@@ -910,6 +910,7 @@
   "app.containers.NotificationMenu.adminRightsReceived": "Sie sind jetzt ein Administrator der Plattform",
   "app.containers.NotificationMenu.clearAll": "Alle Benachrichtigungen löschen",
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Ihr Kommentar zu '{ideaTitle}' wurde von einem Administrator gelöscht, weil\n      {reasonCode, select, irrelevant {er sachfremd war} inappropriate {sein Inhalt unangemessen war} other {{otherReason}}}",
+  "app.containers.NotificationMenu.deletedUser": "",
   "app.containers.NotificationMenu.error": "Benachrichtigungen konnten nicht geladen werden",
   "app.containers.NotificationMenu.loadMore": "Mehr laden...",
   "app.containers.NotificationMenu.loading": "Benachrichtigungen werden geladen...",
