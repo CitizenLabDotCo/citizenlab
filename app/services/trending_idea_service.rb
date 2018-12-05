@@ -2,7 +2,7 @@ class TrendingIdeaService
 
   def filter_trending ideas=Idea.all
    with_trending_score(ideas)
-      .where('CASE WHEN sub.is_trending THEN sub.score_abs ELSE (-1/sub.score_abs) END > 0')
+    .where('sub.is_trending' => true)
   end
 
   def sort_trending ideas=Idea.all
