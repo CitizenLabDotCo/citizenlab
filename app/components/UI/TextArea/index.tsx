@@ -40,6 +40,10 @@ const Container: any = styled.div`
       border-color: #666;
     }
 
+    &:disabled {
+      background-color: #f9f9f9;
+    }
+
     &.error {
       border-color: ${color('clRedError')} !important;
 
@@ -84,6 +88,7 @@ export type Props = {
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;
   maxCharCount?: number;
+  disabled?: boolean;
 };
 
 type State = {};
@@ -138,7 +143,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
 
   render() {
     let { rows, placeholder } = this.props;
-    const { name, value, error, children, maxCharCount } = this.props;
+    const { name, value, error, children, maxCharCount, disabled } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const className = this.props['className'];
 
@@ -159,6 +164,7 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             innerRef={this.setRef}
+            disabled={disabled}
           />
           {value && maxCharCount &&
             <CharacterCount className={value.length === maxCharCount ? 'error' : ''}>
