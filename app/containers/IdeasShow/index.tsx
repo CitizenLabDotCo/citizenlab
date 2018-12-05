@@ -941,6 +941,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               style="secondary-outlined"
               onClick={this.translateIdea}
               processing={translationsLoading}
+              spinnerColor={colors.label}
             >
               <FormattedMessage {...messages.translateIdea} />
             </TranslateButton>
@@ -951,6 +952,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               style="secondary-outlined"
               onClick={this.backToOriginalContent}
               processing={translationsLoading}
+              spinnerColor={colors.label}
             >
               <FormattedMessage {...messages.backToOriginalContent} />
             </TranslateButton>
