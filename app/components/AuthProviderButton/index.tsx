@@ -14,7 +14,7 @@ const timeout = 250;
 const AuthProviderButtonWrapper = styled.div`
   width: 100%;
   height: 58px;
-  margin-bottom: 15px;
+  margin-top: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
