@@ -4,6 +4,29 @@
 #
 version: 2
 jobs:
+  test:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm i
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          name: Run tests with JUnit as reporter
+          environment:
+            JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+          command: npm run test:ci
+
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -178,6 +201,13 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - master
+                - production
       - lint:
           filters:
             branches:

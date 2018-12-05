@@ -22,6 +22,9 @@ export function returnFileSize(number) {
   return;
 }
 
+export function sum(a, b) {
+  return a + b;
+}
 export function getFormattedBudget(locale: Locale, budget: number, currency: string) {
   return new Intl.NumberFormat(locale, {
     currency,
