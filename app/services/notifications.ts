@@ -16,9 +16,9 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
     type: 'comment_on_your_comment';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc
   };
   relationships: {
@@ -54,9 +54,9 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
     type: 'comment_on_your_idea';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc;
   };
   relationships: {
@@ -92,9 +92,9 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
     type: 'mention_in_comment';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc;
   };
   relationships: {
@@ -130,9 +130,9 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
     type: 'idea_marked_as_spam';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc;
   };
   relationships: {
@@ -168,9 +168,9 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
     type: 'comment_marked_as_spam';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title: Multiloc;
   };
   relationships: {
@@ -229,9 +229,9 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
     type: 'invite_accepted';
     read_at: string;
     created_at: string;
-    initiating_user_first_name: string;
-    initiating_user_last_name: string;
-    initiating_user_slug: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
   };
   relationships: {
     initiating_user: {

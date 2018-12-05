@@ -1,15 +1,18 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { ICommentOnYourIdeaNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
+// i18n
 import messages from '../../messages';
-
 import { FormattedMessage } from 'utils/cl-intl';
 
+// components
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
+import { DeletedUser } from '../Notification';
 
 type Props = {
   notification: ICommentOnYourIdeaNotificationData;
@@ -53,6 +56,7 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
   render() {
     const { notification } = this.props;
     const { ideaSlug } = this.state;
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
 
     return (
       <NotificationWrapper
@@ -64,7 +68,11 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
         <FormattedMessage
           {...messages.userCommentedOnYourIdea}
           values={{
-            name:
+            name: deletedUser ?
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+            :
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={this.onClickUserName}

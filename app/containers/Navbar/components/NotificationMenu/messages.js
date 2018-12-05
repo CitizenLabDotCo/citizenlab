@@ -76,4 +76,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.notificationsLabel',
     defaultMessage: 'Notifications',
   },
+  deletedUser: {
+    id: 'app.containers.NotificationMenu.deletedUser',
+    defaultMessage: 'Deleted user',
+  },
 });
