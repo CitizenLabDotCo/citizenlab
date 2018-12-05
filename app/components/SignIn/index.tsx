@@ -161,13 +161,21 @@ const SocialLoginText = styled.div`
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 `;
 
 const AuthProviderButtons = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const SubSocialButtonLink = styled.a`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 300;
+  text-decoration: none;
+  padding-top: 0.2em;
 `;
 
 interface InputProps {
@@ -436,6 +444,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     acceptText={messages.alreadyAcceptTermsAndConditions}
                     altText={messages.signInButtonAltText}
                   />
+                  <SubSocialButtonLink
+                    href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+                    target="_blank"
+                  >
+                    <FormattedMessage {...messages.whatIsFranceConnect} />
+                  </SubSocialButtonLink>
                 </FeatureFlag>
                   <FeatureFlag name="google_login">
                     <AuthProviderButton
