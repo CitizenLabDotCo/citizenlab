@@ -8,6 +8,6 @@ FactoryBot.define do
       "en" => "<p>How are the people feeling?</p><p>What is the expected agespan?</p>",
       "nl-BE" => "<p>Hoe voelen de mensen zich?</p><p>Wat is de levensverwachting?</p>"
     }}
-    icon "medical"
+    icon { "medical" }
   end
 end

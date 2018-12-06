@@ -37,37 +37,44 @@ resource "Stats - Votes" do
     header "Content-Type", "application/json"
     Tenant.update(created_at: now - 3.month)
     @timezone = Tenant.settings('core','timezone')
+    @idea_status = create(:idea_status)
   end
 
   get "web_api/v1/stats/votes_count" do
     time_boundary_parameters self
 
     before do
-      create_list(:vote, 6)
-      create_list(:vote, 2, mode: 'down')
+      i1, i2 = create_list(:idea, 2, idea_status: @idea_status, project: create(:project), author: create(:user))
+      create_list(:vote, 3, votable: i1)
+      create_list(:vote, 2, mode: 'down', votable: i2)
     end
 
     example "Count all votes" do
       do_request
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response.dig(:up)).to eq 6
+      expect(json_response.dig(:up)).to eq 3
       expect(json_response.dig(:down)).to eq 2
-      expect(json_response.dig(:total)).to eq 8
+      expect(json_response.dig(:total)).to eq 5
     end
   end
 
   context "with dependency on custom_fields" do
-    before do
+    before(:all) do
+      Apartment::Tenant.switch!('example_org')
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
-      create_list(:vote, 6)
-      create_list(:vote, 2, mode: 'down')
+    end
+
+    after(:all) do
+      Apartment::Tenant.reset
+      Tenant.find_by(host: 'example.org').destroy
+      create(:test_tenant)
     end
 
     get "web_api/v1/stats/votes_by_birthyear" do
       before do
-        @ideas = create_list(:idea, 5)
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, birthyear: 1984)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
@@ -100,7 +107,7 @@ resource "Stats - Votes" do
       before do
        @eversem = create(:area, title_multiloc: {'en' => 'Eversem'}).id
        @wolvertem = create(:area, title_multiloc: {'en' => 'Wolvertem'}).id
-        @ideas = create_list(:idea, 5)
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, domicile: @eversem)
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
@@ -131,7 +138,7 @@ resource "Stats - Votes" do
 
     get "web_api/v1/stats/votes_by_education" do
       before do
-        @ideas = create_list(:idea, 5)
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, education: '2')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
@@ -162,7 +169,7 @@ resource "Stats - Votes" do
 
     get "web_api/v1/stats/votes_by_gender" do
       before do
-        @ideas = create_list(:idea, 5)
+        @ideas = create_list(:idea, 3, idea_status: @idea_status)
         @someone = create(:user, gender: 'female')
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
@@ -197,7 +204,7 @@ resource "Stats - Votes" do
         @opt1 = create(:custom_field_option, custom_field: @custom_field, key: 'passive_politician')
         @opt2 = create(:custom_field_option, custom_field: @custom_field, key: 'retarded_politician')
         @opt3 = create(:custom_field_option, custom_field: @custom_field, key: 'no')
-        @ideas = create_list(:idea, 5)
+        @ideas = create_list(:idea, 5, idea_status: @idea_status)
         @someone = create(:user, custom_field_values: {@custom_field.key => @opt1.key})
         create(:vote, mode: 'up', user: @someone, votable: @ideas.first)
         create(:vote, mode: 'down', user: @someone, votable: @ideas.last)
@@ -232,8 +239,10 @@ resource "Stats - Votes" do
   context "by time" do
 
     before do
-      create_list(:vote, 6)
-      create_list(:vote, 2, mode: 'down')
+      project = create(:project)
+      i1, i2 = create_list(:idea, 2, idea_status: @idea_status, project: project)
+      create_list(:vote, 3, votable: i1)
+      create_list(:vote, 2, mode: 'down', votable: i2)
     end
 
     get "web_api/v1/stats/votes_by_time" do
@@ -252,9 +261,9 @@ resource "Stats - Votes" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.to_date-start_at.to_date).to_i+1)
-          expect(json_response[:series][:up].values.inject(&:+)).to eq 6
+          expect(json_response[:series][:up].values.inject(&:+)).to eq 3
           expect(json_response[:series][:down].values.inject(&:+)).to eq 2
-          expect(json_response[:series][:total].values.inject(&:+)).to eq 8
+          expect(json_response[:series][:total].values.inject(&:+)).to eq 5
         end
       end
 
@@ -291,9 +300,9 @@ resource "Stats - Votes" do
       example_request "Votes by time (cumulative)" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response[:series][:up].values.last).to eq 7
+        expect(json_response[:series][:up].values.last).to eq 4
         expect(json_response[:series][:down].values.last).to eq 2
-        expect(json_response[:series][:total].values.last).to eq 9
+        expect(json_response[:series][:total].values.last).to eq 6
       end
     end
   end
@@ -311,10 +320,10 @@ resource "Stats - Votes" do
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
       let!(:topic3) { create(:topic) }
-      let!(:idea1) { create(:idea, topics: [topic1])}
-      let!(:idea2) { create(:idea, topics: [topic2])}
-      let!(:idea3) { create(:idea, topics: [topic1, topic2])}
-      let!(:idea4) { create(:idea)}
+      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1])}
+      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2])}
+      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2])}
+      let!(:idea4) { create(:idea, idea_status: @idea_status)}
       let!(:vote1) { create(:vote, votable: idea1) }
       let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
       let!(:vote3) { create(:vote, votable: idea2) }
@@ -334,9 +343,9 @@ resource "Stats - Votes" do
     describe "filtered by project" do
       before do
         @project = create(:project)
-        idea = create(:idea_with_topics, topics_count: 2, project: @project)
+        idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2, project: @project)
         create(:vote, votable: idea)
-        create(:vote, votable: create(:idea_with_topics))
+        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -353,9 +362,9 @@ resource "Stats - Votes" do
     describe "filtered by group" do
       before do
         @group = create(:group)
-        idea = create(:idea_with_topics, topics_count: 2)
+        idea = create(:idea_with_topics, idea_status: @idea_status, topics_count: 2)
         create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
-        create(:vote, votable: create(:idea_with_topics))
+        create(:vote, votable: create(:idea_with_topics, idea_status: @idea_status))
       end
 
       let(:start_at) { now.in_time_zone(@timezone).beginning_of_month }
@@ -383,10 +392,10 @@ resource "Stats - Votes" do
 
       let!(:project1) { create(:project) }
       let!(:project2) { create(:project) }
-      let!(:idea1) { create(:idea, project: project1) }
-      let!(:idea2) { create(:idea, project: project1) }
-      let!(:idea3) { create(:idea, project: project2) }
-      let!(:idea4) { create(:idea) }
+      let!(:idea1) { create(:idea, idea_status: @idea_status, project: project1) }
+      let!(:idea2) { create(:idea, idea_status: @idea_status, project: project1) }
+      let!(:idea3) { create(:idea, idea_status: @idea_status, project: project2) }
+      let!(:idea4) { create(:idea, idea_status: @idea_status) }
       let!(:vote1) { create(:vote, votable: idea1) }
       let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
       let!(:vote3) { create(:vote, votable: idea2) }
@@ -407,8 +416,8 @@ resource "Stats - Votes" do
     describe "filtered by topic" do
       before do
         @topic = create(:topic)
-        idea1 = create(:idea, topics: [@topic])
-        idea2 = create(:idea_with_topics)
+        idea1 = create(:idea, idea_status: @idea_status, topics: [@topic])
+        idea2 = create(:idea_with_topics, idea_status: @idea_status)
         create(:vote, votable: idea1)
         create(:vote, votable: idea2)
       end
@@ -428,7 +437,7 @@ resource "Stats - Votes" do
       before do
         @group = create(:group)
         project = create(:project)
-        idea = create(:idea, project: project)
+        idea = create(:idea, idea_status: @idea_status, project: project)
         create(:vote, votable: idea, user: create(:user, manual_groups: [@group]))
         create(:vote, votable: idea)
       end
