@@ -1024,7 +1024,7 @@
   "app.containers.SignIn.whatIsFranceConnect": "crwdns19878:0crwdne19878:0",
   "app.containers.SignInPage.title": "crwdns17043:0crwdne17043:0",
   "app.containers.SignInUpBanner.slogan": "crwdns18183:0crwdne18183:0",
-  "app.containers.SignUp.acceptTermsAndConditions": "crwdns19690:0{tacLink}crwdnd19690:0{tenantLoginMechanismName}crwdne19690:0",
+  "app.containers.SignUp.acceptTermsAndConditions": "crwdns19690:0{tacLink}crwdnd19690:0{loginMechanismName}crwdne19690:0",
   "app.containers.SignUp.alreadyHaveAnAccount": "crwdns17045:0crwdne17045:0",
   "app.containers.SignUp.areaLabel": "crwdns18072:0crwdne18072:0",
   "app.containers.SignUp.areaPlaceholder": "crwdns18073:0crwdne18073:0",
