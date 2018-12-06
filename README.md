@@ -91,7 +91,7 @@ docker-compose run --rm web rspec
 
 ```
 
-For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as on of the test runs fails (for Mac or Windows):
+For debugging random test failures, it's can be useful to run the tests multiple times, but stop as soon as one of the test runs fails (for Mac or Windows):
 
 ```
 for i in `seq 50`; do docker-compose run --rm web rspec ./spec/acceptance/pages_spec.rb; [[ ! $? = 0 ]] && break ; done
@@ -115,3 +115,51 @@ docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2
 Two environment variables can be used for this purpose: `SEED_SIZE` (e.g. small, medium, large, empty) and `DEFAULT_HOST` (e.g. empty.localhost, dendermonde.citizenlab.co). Set the desired values in the `.env` file and re-build the docker container.
 
 NOTE: Watch out that you don't accidently commit these changes!
+
+
+## Creating Engines
+
+In this section, we explain what you need to do (and what you shouldn't forget) when adding a new engine to `cl2-back`. Throughout these instructions, replace "`blorgh`" by the name of your engine.
+
+1. Create a new folder in the `engines` folder and initialize it with an empty `app` folder. Initialize your engine with a nice `README` file.
+
+2. Copy the `bin` folder from another engine (no renamings required).
+
+3. Create a `config` folder with a `config/routes.rb` file initialized as:
+```
+Blorgh::Engine.routes.draw do
+
+end
+```
+
+4. Create a `db` folder and in it an empty `migrate` folder.
+
+5. Create a `lib` folder with an empty `tasks` folder. Copy the `blorgh` folder (with `engine.rb` and `version.rb`) and `blorgh.rb` from another engine and do the necessary renamings in the copied files.
+
+6. Create an empty `spec` folder. Add a stage to the `Jenkinsfile` such that CI will execute your engine's tests. Later, you will be able to execute your engine's tests by running:
+```
+docker-compose run --rm web rspec ./engines/blorgh/spec
+```
+
+7. Copy over `blorgh.gemspec` and rename (no need to include `MIT-LICENSE` or `Rakefile`), remove/add dependencies if you know what you're doing.
+
+8. Add the following line to your `Gemfile`:
+```
+gem 'blorgh', path: 'engines/blorgh'
+```
+
+9. Add the following line to your Dockerfile:
+```
+COPY engines/blorghs ./engines/blorghs/
+```
+
+10. If you're going to add endpoints to your engine, don't forget to mount it in the main `routes.rb` file.
+
+11. If you added a factory into your engine, you have to add this line to `spec_helper.rb`:
+```
+require './engines/blorgh/spec/factories/blorghs.rb'
+```
+
+12. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
+
+13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
