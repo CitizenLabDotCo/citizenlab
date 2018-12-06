@@ -1225,6 +1225,30 @@ models:
     published_at: '2018-03-24 00:00:00'
     created_at: '2017-10-21 00:00:00'
     updated_at: '2018-03-28 13:35:20'
+  - &oldIdea
+    title_multiloc:
+      en-GB: Very Old Idea
+    body_multiloc:
+      nl-BE: "<p>The oldest idea.</p>"
+    publication_status: published
+    project_ref: *76
+    author_ref: *mortal1
+    location_description: 
+    published_at: '1990-08-01 00:00:00'
+    created_at: '1990-05-15 00:00:00'
+    updated_at: '1990-03-28 13:35:21'
+  - &newIdea
+    title_multiloc:
+      en-GB: Very New Idea
+    body_multiloc:
+      nl-BE: "<p>The newest idea.</p>"
+    publication_status: published
+    project_ref: *76
+    author_ref: *mortal1
+    location_description: 
+    published_at_timediff: 0
+    created_at_timediff: 0
+    updated_at_timediff: 0
   - &418
     title_multiloc:
       nl-BE: Atque laborum et tempore quia.
