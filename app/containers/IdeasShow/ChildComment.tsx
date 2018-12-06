@@ -3,7 +3,6 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Author from 'components/Author';
@@ -72,7 +71,7 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocalized, State> {
+class ChildComment extends React.PureComponent<Props & ITracks, State> {
   constructor(props: Props & ITracks) {
     super(props as any);
     this.state = {
@@ -128,10 +127,10 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocaliz
   }
 
   render() {
-    const { comment, idea, locale, localize } = this.props;
+    const { comment, idea, locale } = this.props;
     const { editionMode, translateButtonClicked } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
+    if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
       const className = this.props['className'];
       const commentId = comment.id;
       const authorId = comment.relationships.author.data ? comment.relationships.author.data.id : null;
@@ -186,7 +185,7 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocaliz
   }
 }
 
-const ChildCommentWithHOCs = injectTracks<Props>(tracks)(localize(ChildComment));
+const ChildCommentWithHOCs = injectTracks<Props>(tracks)(ChildComment);
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,

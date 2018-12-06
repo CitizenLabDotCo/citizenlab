@@ -2,7 +2,6 @@ import React from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import localize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import ChildComment from './ChildComment';
@@ -131,7 +130,7 @@ interface ITracks {
   clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & ITracks & InjectedLocalized, State> {
+class ParentComment extends React.PureComponent<Props & ITracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -193,10 +192,10 @@ class ParentComment extends React.PureComponent<Props & ITracks & InjectedLocali
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, idea, locale, localize } = this.props;
+    const { commentId, authUser, comment, childComments, idea, locale } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
+    if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
       const ideaId = comment.relationships.idea.data.id;
       const projectId = idea.relationships.project.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
@@ -290,7 +289,7 @@ const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
   clickTranslateCommentButton: tracks.clickTranslateCommentButton,
   clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
-})(localize(ParentComment));
+})(ParentComment);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
