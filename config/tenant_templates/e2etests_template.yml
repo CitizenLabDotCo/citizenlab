@@ -199,7 +199,7 @@ models:
     domicile: 
     education: 
     registration_completed_at: '2018-03-28 13:34:57'
-    password: "testtest"
+    password: testtest
     remote_avatar_url: 
     roles:
     - type: admin
@@ -536,6 +536,31 @@ models:
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
   project:
+  - &project1
+    title_multiloc:
+      en-GB: Test project 1
+      nl-BE: Test project 1
+    description_multiloc:
+      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
+        for young and old.</p>"
+      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
+        plek van maken, voor jong en oud.</p>"
+    remote_header_bg_url: 
+    description_preview_multiloc:
+      en-GB: Let's renew the parc at the city border.
+      nl-BE: Laten we het park op de grend van de stad vernieuwen.
+    presentation_mode: card
+    participation_method: ideation
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
   - &76
     title_multiloc: projects.open_idea_project_title
     description_multiloc: projects.open_idea_project_description
@@ -574,31 +599,6 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 7
-  - &81
-    title_multiloc:
-      en-GB: Exercitationem eum voluptatum eos sit.
-      nl-BE: Dolor sint illum incidunt id quos dolores consequatur assumenda.
-    description_multiloc:
-      en-GB: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: 
-    description_preview_multiloc:
-      en-GB: Let's renew the parc at the city border.
-      nl-BE: Laten we het park op de grend van de stad vernieuwen.
-    presentation_mode: card
-    participation_method: ideation
-    process_type: timeline
-    internal_role: 
-    publication_status: published
-    created_at: '2018-03-28 13:35:04'
-    updated_at: '2018-03-28 13:35:04'
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
   - &90
     title_multiloc:
       en-GB: Ea quas cupiditate tenetur delectus aliquam.
@@ -815,7 +815,7 @@ models:
         quidem dolor iste ut laboriosam. Nam autem non consequuntur quis vel. Culpa
         ut voluptate voluptatem at quibusdam ut.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *admin
     location_description: 9908 Audra Place
     published_at: '2017-12-30 00:00:00'
@@ -902,7 +902,7 @@ models:
         placeat qui. Sint voluptas eum voluptatem nemo. Deleniti atque qui omnis nesciunt
         aliquid odit. Quia aut est aut. Harum voluptas voluptatem fugiat reprehenderit.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *102
     location_description: 7602 Kuhic Spurs
     published_at: '2018-03-12 00:00:00'
@@ -955,7 +955,7 @@ models:
         non. Incidunt et omnis voluptas et earum labore. Ratione vel fugiat incidunt.
         Et sed autem autem esse exercitationem.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *114
     location_description: 164 Fahey Corners
     published_at: '2017-11-10 00:00:00'
@@ -973,7 +973,7 @@ models:
         Minus et sunt illum inventore ut. Blanditiis sint optio quas necessitatibus
         recusandae et id.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *110
     location_description: 30741 Crist Stream
     published_at: '2018-03-13 00:00:00'
@@ -1057,7 +1057,7 @@ models:
         quo sunt sint enim voluptatibus ut. Expedita velit eaque nam. Modi incidunt
         minus exercitationem velit aut ratione.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *mortal2
     location_description: 
     published_at: '2018-02-18 00:00:00'
@@ -1308,7 +1308,7 @@ models:
         provident. Ullam esse velit officiis enim maiores. Fuga saepe iure deleniti.
         Labore qui numquam.</p>"
     publication_status: published
-    project_ref: *81
+    project_ref: *project1
     author_ref: *admin
     location_description: 224 Raynor Coves
     published_at: '2017-09-12 00:00:00'
@@ -6227,9 +6227,11 @@ models:
         eveniet aperiam dolore.</p><p>Quia iusto veritatis aut velit. Quae tempora
         rerum. Autem deleniti exercitationem non qui eligendi et. Similique iste dolorem
         labore. Corporis nisi voluptatem doloribus laborum.</p>"
-    project_ref: *81
-    start_at: 2018-02-13
-    end_at: 2018-02-28
+    project_ref: *project1
+    start_at_timediff: -1440 # 24*60
+    # start_at: 2018-02-13
+    end_at_timediff: 1440 # 24*60
+    # end_at: 2018-02-28
     participation_method: ideation
     created_at: '2018-03-28 13:35:05'
     updated_at: '2018-03-28 13:35:05'
@@ -6256,7 +6258,7 @@ models:
         In totam veritatis quasi aspernatur.</p><p>Quisquam qui suscipit deleniti.
         Eligendi labore et aut veritatis nisi dolore vel. Modi suscipit explicabo
         nihil.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-03-01
     end_at: 2018-03-07
     participation_method: ideation
@@ -6286,7 +6288,7 @@ models:
         qui culpa. Quo facere qui voluptate nam sit quasi maiores.</p><p>Magnam aspernatur
         porro cumque fugiat. Et ducimus saepe delectus odit quis. Nam ex omnis in
         consequatur modi porro atque. Dolor voluptas est architecto.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-03-08
     end_at: 2018-03-27
     participation_method: ideation
@@ -6314,7 +6316,7 @@ models:
         molestiae enim.</p><p>Expedita est repellat quia et et ut inventore. Perspiciatis
         fugit qui. Autem earum laudantium ut aut. Voluptates at ea dolores aliquam.
         Magni asperiores molestiae doloremque minus fugit.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-03-28
     end_at: 2018-04-12
     participation_method: ideation
@@ -6344,7 +6346,7 @@ models:
         adipisci. Voluptates eum perspiciatis temporibus.</p><p>Consequatur iure accusantium
         enim consectetur quas deleniti. Laborum temporibus dolor iste eaque soluta.
         Consequatur beatae iste. Recusandae in quis.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-04-13
     end_at: 2018-05-04
     participation_method: ideation
@@ -6370,7 +6372,7 @@ models:
         neque dolor quia. Necessitatibus ex beatae quia optio quia totam rem.</p><p>Eum
         iste optio ducimus vel debitis libero. Laboriosam et tempore repellendus ut
         ab dignissimos. Voluptatem accusamus quo necessitatibus neque similique quod.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-05-05
     end_at: 2018-05-24
     participation_method: ideation
@@ -6398,7 +6400,7 @@ models:
         est impedit quia qui et ut perferendis. Incidunt ipsa voluptatem eaque. Est
         id labore tempore corporis sed et. Beatae molestiae est mollitia quisquam
         corrupti neque ea.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: 2018-05-25
     end_at: 2018-06-21
     participation_method: ideation
@@ -7052,7 +7054,7 @@ models:
         Et quia necessitatibus enim. Voluptas odit quo est labore molestiae.</p><p>Incidunt
         aliquam dolor sint vel. Et quia dolore non esse eveniet. Nemo vel harum et
         fugiat eum molestiae.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: '2018-04-27 00:00:00'
     end_at: '2018-04-27 06:00:00'
     location_multiloc:
@@ -7069,7 +7071,7 @@ models:
         voluptatem natus ipsam. Doloribus voluptatem distinctio nihil.</p><p>Provident
         et aperiam labore aut perferendis et. Rerum repellat mollitia. Incidunt consectetur
         quas voluptatem soluta sint. Aut deserunt dolor.</p>"
-    project_ref: *81
+    project_ref: *project1
     start_at: '2017-10-30 00:00:00'
     end_at: '2017-10-30 10:00:00'
     location_multiloc:
