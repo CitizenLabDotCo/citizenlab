@@ -106,7 +106,7 @@ This data is defined in `config/tenant_templates/e2etests_template.yml`. The ten
 To (re)load the data and run the e2e tests locally, execute the following command:
 
 ```
-docker-compose run --rm web bundle exec rake cl2_back:create_tenant['localhost','e2etests_template']
+docker-compose run --rm web bundle exec rake cl2_back:create_tenant[localhost,e2etests_template]
 ```
 
 
