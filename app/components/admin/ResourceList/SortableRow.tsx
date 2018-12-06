@@ -16,6 +16,7 @@ type Props = {
   isDragging: boolean;
   index: number;
   id: string;
+  className?: string;
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex, number) => void;
@@ -28,7 +29,7 @@ class SortableRow extends React.Component<Props, State> {
     const { connectDropTarget, connectDragSource, isDragging, lastItem } = this.props;
     const opacity = isDragging ? 0 : 1;
     return connectDropTarget(connectDragSource(
-      <div style={{ opacity }}>
+      <div style={{ opacity }} className={this.props.className}>
         <Row lastItem={lastItem}>
           <DragHandle>
             <Icon name="sort" />

@@ -8,6 +8,7 @@ declare global {
 }
 
 export function loginAsAdmin() {
+  cy.logout();
   cy.visit('/sign-in');
   cy.get('#email').type('koen@citizenlab.co');
   cy.get('#password').type('testtest');
@@ -15,8 +16,11 @@ export function loginAsAdmin() {
 }
 
 export function logout() {
-  cy.get('#e2e-user-menu-container').click();
-  cy.get('#e2e-sign-out-link').click();
+  cy.get('body').then(($body) => {
+    if ($body.find('#e2e-sign-out-link').length) {
+      cy.get('#e2e-sign-out-link').click();
+    }
+  });
 }
 
 Cypress.Commands.add('loginAsAdmin', loginAsAdmin);

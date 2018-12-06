@@ -28,11 +28,12 @@ describe('Sign up page', () => {
     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click().should('have.class', 'checked');
   });
 
-  it('signs up with valid credentials and no custom fields enabled', () => {
+  it('signs up with valid credentials and without custom fields', () => {
     const firstName = Math.random().toString(36).substr(2, 12);
     const lastName = Math.random().toString(36).substr(2, 12);
     const email = `${Math.random().toString(36).substr(2, 12)}@citizenlab.co`;
     const password = Math.random().toString(36).substr(2, 12);
+
     cy.get('#firstName').type(firstName);
     cy.get('#lastName').type(lastName);
     cy.get('#email').type(email);
@@ -49,9 +50,9 @@ describe('Sign up page', () => {
     });
   });
 
-  it('signs up with valid credentials and optional custom fields enabled', () => {
+  it('signs up with valid credentials and optional custom fields', () => {
     // before
-    // enable all custom fields to make sure the 2nd signup step gets triggered
+    // enable all custom fields
     cy.loginAsAdmin();
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-custom-registration-field-toggle').then((toggle) => {
@@ -85,13 +86,67 @@ describe('Sign up page', () => {
     });
 
     // after
-    // disable all custom fields again to make sure the signup flow doesn't enter the 2nd step by default
-    cy.logout();
+    // disable all custom fields
     cy.loginAsAdmin();
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-custom-registration-field-toggle').then((toggle) => {
       if (toggle.hasClass('enabled')) {
         cy.get('.e2e-custom-registration-field-toggle.enabled').click({ multiple: true });
+      }
+    });
+    cy.logout();
+  });
+
+  it('signs up with valid credentials and a required custom field', () => {
+    const customFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const customFieldValue = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
+    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+
+    // before
+    // create a new required custom text field
+    cy.loginAsAdmin();
+    cy.visit('/admin/settings/registration');
+    cy.get('.e2e-add-custom-field-btn').click();
+    cy.url().should('include', '/admin/settings/registration/custom_fields/new');
+    cy.get('.e2e-multiloc-input input').each(($el) => cy.wrap($el).type(customFieldName));
+    cy.get('.e2e-custom-field-required-toggle').click();
+    cy.get('.e2e-submit-wrapper-button').click();
+    cy.url().should('include', '/admin/settings/registration');
+    cy.logout();
+
+    // test
+    cy.visit('/sign-up');
+    cy.get('#firstName').type(firstName);
+    cy.get('#lastName').type(lastName);
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+    cy.get('#e2e-signup-step1-button').click();
+    cy.get('#e2e-signup-step2');
+    cy.get(`#root_${customFieldName}`).type(customFieldValue);
+    cy.get('.e2e-signup-step2-button').click();
+    cy.location('pathname').should('eq', '/en-GB/');
+    cy.request({
+      method: 'GET',
+      url: `web_api/v1/users/by_slug/${firstName.toLowerCase()}-${lastName.toLowerCase()}`
+    }).then((response) => {
+      expect(response.body.data.attributes.first_name).to.eq(firstName);
+      expect(response.body.data.attributes.last_name).to.eq(lastName);
+      // expect(response.body.data.attributes.custom_field_values).to.exist;
+      // expect(response.body.data.attributes.custom_field_values[`${customFieldName}`]).to.eq(customFieldValue);
+    });
+
+    // after
+    // remove the newly created custom field again
+    cy.loginAsAdmin();
+    cy.visit('/admin/settings/registration');
+    cy.get('.e2e-custom-registration-field-row').each((element) => {
+      if (cy.wrap(element).contains(customFieldName)) {
+        cy.wrap(element).get('.e2e-delete-custom-field-btn').click();
+        cy.get('body').trigger('{enter}', { force: true });
       }
     });
     cy.logout();
