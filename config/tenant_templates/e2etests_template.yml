@@ -676,16 +676,16 @@ models:
       nl-BE: 'Omgevingsanalyse / Meerjarenplan: een gefaseerde aanpak'
     description_multiloc:
       nl-BE: |-
-        <p><em>Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan 2020-2025? Dat kan vandaag al, laagdrempelig, overzichtelijk en zonder veel extra inspanningen. Hou het in een eerste fase intern en open na de verkiezingen naar een grote publiek. </em></p>
+        <p><em>Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan 2020-2025? Dat kan vandaag al, laagdrempelig, overzichtelijk en zonder veel extra inspanningen. Hou het in een eerste fase intern en open na de verkiezingen naar een grote publiek. </em></p>
         <p></p>
-        <p><strong>Hoe ga je van start met een intern inspraaktraject (korte of lange termijn): </strong></p>
+        <p><strong>Hoe ga je van start met een intern inspraaktraject (korte of lange termijn): </strong></p>
         <ul>
-          <li>een e-maillijst van het personeel dat je wilt betrekken bij het proces. Die voegen wij toe aan het platform. </li>
+          <li>een e-maillijst van het personeel dat je wilt betrekken bij het proces. Die voegen wij toe aan het platform. </li>
           <li>het opzetten van één of verschillende 'projecten' die enkel toegankelijk zijn door de mensen uit deze lijst (via 'Machtigingen')</li>
-          <li>ondertussen kunnen ook andere mensen zich blijven inloggen op het platform en andere projecten volgen, maar krijgen ze dus geen toegang tot de 'interne' projecten </li>
-          <li>hoe die 'interne' projecten vormgegeven worden hangt af van de invulling van de soort interne bevraging die jullie verkiezen: een project in verschillende fases, met 'vaste ideeën' waarop mensen kunnen en/of stemmen en/of reageren. Of je kiest voor een project met een eerste fase waarin mensen vrije ideeën kunnen plaatsen, en dan een tweede 'gesloten' fase, waarin mensen enkel kunnen reageren. Ik gaf hier al even een voorbeeld. </li>
+          <li>ondertussen kunnen ook andere mensen zich blijven inloggen op het platform en andere projecten volgen, maar krijgen ze dus geen toegang tot de 'interne' projecten </li>
+          <li>hoe die 'interne' projecten vormgegeven worden hangt af van de invulling van de soort interne bevraging die jullie verkiezen: een project in verschillende fases, met 'vaste ideeën' waarop mensen kunnen en/of stemmen en/of reageren. Of je kiest voor een project met een eerste fase waarin mensen vrije ideeën kunnen plaatsen, en dan een tweede 'gesloten' fase, waarin mensen enkel kunnen reageren. Ik gaf hier al even een voorbeeld. </li>
           <li>de 'vaste ideeën' kunnen de SDG's zijn of thema's op basis van de DESTEP (<a href="https://www.citizenlab.co/blog/burgerparticipatie-nl/online-platform-vergemakkelijkt-inspraak-bij-omgevingsanalyse/?lang=nl">zie artikel</a> ).</li>
-          <li>van zodra de 'interne fase' voorbij is, creëren we een nieuw 'open' project en maken we een selectie van ideeën (vast of los) die we verslepen naar dat nieuwe project. Dat open project kan dan (bijvoorbeeld vanaf november, na #vk2018)?   </li>
+          <li>van zodra de 'interne fase' voorbij is, creëren we een nieuw 'open' project en maken we een selectie van ideeën (vast of los) die we verslepen naar dat nieuwe project. Dat open project kan dan (bijvoorbeeld vanaf november, na #vk2018)?   </li>
         </ul>
     description_preview_multiloc:
       nl-BE: 'Bent u al begonnen met de opmaak van een Omgevingsanalyse of het Meerjarenplan
@@ -709,7 +709,7 @@ models:
       nl-BE: 'RUP: inspraak vanaf startnota tot openbaar onderzoek'
     description_multiloc:
       nl-BE: |-
-        <p><strong>Modaliteiten bepaald bij besluit van de Vlaamse Regering</strong></p>
+        <p><strong>Modaliteiten bepaald bij besluit van de Vlaamse Regering</strong></p>
         <p></p>
         <p>Op vrijdag 17 februari 2017 keurde de Vlaamse Regering een uitvoeringsbesluit goed dat bij dit decreet hoort.</p>
         <p>Het uitvoeringsbesluit regelt onder meer:</p>
@@ -724,12 +724,12 @@ models:
         <ol>
           <li>Via dit platform, door op 'Lanceer je idee' te klikken, of door te reageren op de reeds toegevoegde ideeën.</li>
           <li>Door een aangetekende brief te sturen naar het College van xx.</li>
-          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
-          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en XX. </li>
+          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
+          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en XX. </li>
         </ol>
         <p>Achtergrondinfo:</p>
         <p><strong>WIJZIGINGSDECREET EN UITVOERINGSBESLUIT</strong></p>
-        <p>Op 1 juli 2016 bekrachtigde de Vlaamse Regering een decreet waardoor de planmilieueffectrapportage en andere effectbeoordelingen in het planningsproces van een ruimtelijk uitvoeringsplan geïntegreerd worden.</p>
+        <p>Op 1 juli 2016 bekrachtigde de Vlaamse Regering een decreet waardoor de planmilieueffectrapportage en andere effectbeoordelingen in het planningsproces van een ruimtelijk uitvoeringsplan geïntegreerd worden.</p>
         <p>De gewijzigde regelgeving sluit hierdoor inhoudelijke en procedurele inconsistenties uit die optreden bij de overgang van de milieueffectrapportage naar het planproces. Bovendien beoogt de nieuwe procedure een versterking van het draagvlak voor de ruimtelijke uitvoeringsplannen door een consultatie bij het begin van het planningsproces en een openbaar onderzoek op het einde.</p>
         <p></p>
     description_preview_multiloc:
@@ -6811,17 +6811,17 @@ models:
       nl-BE: 'Fase 1: eerste participatie 60 dagen'
     description_multiloc:
       nl-BE: |-
-        <p>Bedoeling van deze eerste fase is om <strong>het draagvlak voor de komende veranderingen te verbreden, door een efficiënte, maatgerichte participatie vanaf het begin van het proces</strong>. </p>
-        <p>De 'ideeën' die je hier vindt, tonen de grote lijnen van een het voorontwerp. Nog nies is definitief en als burgers kun je in deze periode zelf je ideeën geven en reageren op de eerste voorstellen. Je kunt zelfs stemmen op ideeën die je goed of minder goed vindt!</p>
+        <p>Bedoeling van deze eerste fase is om <strong>het draagvlak voor de komende veranderingen te verbreden, door een efficiënte, maatgerichte participatie vanaf het begin van het proces</strong>. </p>
+        <p>De 'ideeën' die je hier vindt, tonen de grote lijnen van een het voorontwerp. Nog nies is definitief en als burgers kun je in deze periode zelf je ideeën geven en reageren op de eerste voorstellen. Je kunt zelfs stemmen op ideeën die je goed of minder goed vindt!</p>
         <p></p>
-        <p><strong>Wat gebeurt er dus in deze fase? </strong></p>
+        <p><strong>Wat gebeurt er dus in deze fase? </strong></p>
         <ul>
           <li>Afbakening RUP</li>
           <li>Vragen aan de dienste planning mbt inhoud RUP</li>
           <li>RUP-advies toets</li>
         </ul>
-        <p>Welke documenten zijn op dit moment beschikbaar? </p>
-        <p>Alle documenten vind je <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Diensten/GRUPS/Wat-is-een-RUP-">achter deze link</a> . </p>
+        <p>Welke documenten zijn op dit moment beschikbaar? </p>
+        <p>Alle documenten vind je <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Diensten/GRUPS/Wat-is-een-RUP-">achter deze link</a> . </p>
     project_ref: *71
     start_at: 2018-02-01
     end_at: 2018-02-19
@@ -6837,7 +6837,7 @@ models:
       nl-BE: Input via enquête
     description_multiloc:
       nl-BE: "<p>Vul de enquête in. De input zal gebruikt worden bij de verdere opmaak
-        van de startnota. </p>"
+        van de startnota. </p>"
     project_ref: *71
     start_at: 2018-02-20
     end_at: 2018-03-11
@@ -6853,24 +6853,24 @@ models:
       nl-BE: 'Fase 2: Uitwerking RUP: ''gesloten'', informatieve fase '
     description_multiloc:
       nl-BE: |-
-        <p><strong>Wat gebeurt er in deze fase? </strong></p>
+        <p><strong>Wat gebeurt er in deze fase? </strong></p>
         <ul>
           <li>De administratie werkt het RUP verder uit</li>
           <li>Ook de afbakening van het RUP wordt gefinaliseerd</li>
           <li>Op het einde van deze fase moet er een voorontwerp RUP klaar zijn</li>
-          <li>We organiseren ook een plenaire vergadering: klik op 'Activiteiten' om te weten wanneer deze plaatsvind. </li>
+          <li>We organiseren ook een plenaire vergadering: klik op 'Activiteiten' om te weten wanneer deze plaatsvind. </li>
         </ul>
-        <p>Alle openbare documenten zijn hier raadpleegbaar: </p>
+        <p>Alle openbare documenten zijn hier raadpleegbaar: </p>
         <ul>
           <li>
-        <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Algemeen/Home/Nieuwsberichten/articleType/ArticleView/articleId/8999">Procesnota A</a> </li>
+        <a href="https://www.ruimtelijkeordening.be/nl-nl/NL/Algemeen/Home/Nieuwsberichten/articleType/ArticleView/articleId/8999">Procesnota A</a> </li>
           <li>Startnota RUB</li>
           <li>Kaartenbundel startnota</li>
         </ul>
-        <p><em><strong>Contact? </strong></em></p>
+        <p><em><strong>Contact? </strong></em></p>
         <ul>
-          <li>Ruimtelijke planning en mobiliteit </li>
-          <li>Hertogin Sofieplein </li>
+          <li>Ruimtelijke planning en mobiliteit </li>
+          <li>Hertogin Sofieplein </li>
           <li>11233 Gemeente Stad</li>
           <li>Tel. 091 001 002 - 011 000 808</li>
           <li><a href="mailto:%70%6c%61%6e%6e%69%6e%67%40%6c%6f%6d%6d%65%6c%2e%62%65">planning@gemeente.be</a></li>
@@ -6892,17 +6892,17 @@ models:
       nl-BE: 'Fase 3: tweede participatie: openbaar onderzoek '
     description_multiloc:
       nl-BE: |-
-        <p>Officiële openbaar onderzoek. </p>
+        <p>Officiële openbaar onderzoek. </p>
         <p></p>
         <p><strong>Reageren?</strong></p>
         <p>Tijdens de periode van de raadpleging kan iedereen reacties indienen. Dit kan op de volgende drie manieren-GB:</p>
         <ol>
-          <li>Door hier in te loggen met een geldig e-mailadres en </li>
-          <li>Door een aangetekende brief te sturen naar het College van Burgemeester en Schepenen, p/a X, Y </li>
-          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
-          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en Mobiliteit in het Huis van de Stad.  </li>
+          <li>Door hier in te loggen met een geldig e-mailadres en </li>
+          <li>Door een aangetekende brief te sturen naar het College van Burgemeester en Schepenen, p/a X, Y </li>
+          <li><a href="https://www.lommel.be/eloketdetail/162/reacties-rup-hertog-jansite"><u><strong>Via dit formulier</strong></u></a></li>
+          <li>Door opmerkingen af te geven tegen ontvangstbewijs bij de dienst Ruimtelijke Planning en Mobiliteit in het Huis van de Stad.  </li>
         </ol>
-        <p><strong>Participatiemoment</strong> </p>
+        <p><strong>Participatiemoment</strong> </p>
         <p>De Stad Y licht de plannen toe tijdens een participatiemoment op <strong>dinsdag ... januari 2018</strong> om <strong>19u00</strong> in de zaal F van het <strong>Stadhuis</strong></p>
     project_ref: *71
     start_at: 2018-03-30
@@ -6919,12 +6919,12 @@ models:
       nl-BE: 'Eerste verwerking en categorisering '
     description_multiloc:
       nl-BE: |-
-        <p><em>Voorbeeld van wat je in deze fase kunt communiceren:</em> "In deze fase analyseert de stuurgroep de reacties en de adviesen van de verschillende diensten en werkgroepen. In deze fase is het niet langer mogelijk om ideeën te geven. Je kunt wel nog de ideeën en reacties uit vorige fase consulteren."</p>
+        <p><em>Voorbeeld van wat je in deze fase kunt communiceren:</em> "In deze fase analyseert de stuurgroep de reacties en de adviesen van de verschillende diensten en werkgroepen. In deze fase is het niet langer mogelijk om ideeën te geven. Je kunt wel nog de ideeën en reacties uit vorige fase consulteren."</p>
         <p><strong>TIPS voor beheerders</strong>:</p>
         <ol>
-          <li>De fases in dit voorbeeldproject zijn indicatief,  bedoeld om de mogelijkheden van de tijdslijn te tonen als manier om te communiceren over je proces. </li>
-          <li>Je kunt de algemene beschrijving van deze projectpagina gebruiken om informatie (pdf's, links, afbeeldingen) te delen. Hou deze pagina up-to-date. </li>
-          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. Gebruik dit profiel ook om te reageren op ideeën of reacties van je doelpubliek. </li>
+          <li>De fases in dit voorbeeldproject zijn indicatief,  bedoeld om de mogelijkheden van de tijdslijn te tonen als manier om te communiceren over je proces. </li>
+          <li>Je kunt de algemene beschrijving van deze projectpagina gebruiken om informatie (pdf's, links, afbeeldingen) te delen. Hou deze pagina up-to-date. </li>
+          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. Gebruik dit profiel ook om te reageren op ideeën of reacties van je doelpubliek. </li>
         </ol>
     project_ref: *1453
     start_at: 2018-03-01
@@ -6941,31 +6941,31 @@ models:
       nl-BE: 'Interne bevraging bij gemeentepersoneel '
     description_multiloc:
       nl-BE: |-
-        <p><em>Voorbeeld van wat je in deze fase kunt communiceren</em>: "In deze fase kan al het gemeentepersoneel reageren op DESTEP-voorstellen, zich laten inspireren door en reageren op de Duurzaamheidsdoelstellingen of zelf nieuwe ideeën geven. </p>
+        <p><em>Voorbeeld van wat je in deze fase kunt communiceren</em>: "In deze fase kan al het gemeentepersoneel reageren op DESTEP-voorstellen, zich laten inspireren door en reageren op de Duurzaamheidsdoelstellingen of zelf nieuwe ideeën geven. </p>
         <ul>
           <li>Laat je hierbij inspireren door <a href="http://www.vvsg.be/Werking_Organisatie/bbc/Pages/meerjarenplan.aspx">deze infotekst</a> .</li>
-          <li>Contacteer in deze fase zeker <a href="mailto:communicatie@voorbeeld.be">communicatie@jouwgemeente.be</a>  voor meer achtergrondvragen.  </li>
+          <li>Contacteer in deze fase zeker <a href="mailto:communicatie@voorbeeld.be">communicatie@jouwgemeente.be</a>  voor meer achtergrondvragen.  </li>
           <li>Ondertussen kun je hier om meevolgen wat de input van vorige adviesraden en wijkraden was.</li>
         </ul>
         <p>Of neem contact op met iemand uit onderstaande adviesraden: Bijvoorbeeld:</p>
         <ul>
-          <li><strong>Culturele raad </strong></li>
+          <li><strong>Culturele raad </strong></li>
         </ul>
         <p><em>Voorzitter/contact</em></p>
         <ul>
-          <li><strong>Gecoro (Gemeentelijke commissie voor Ruimtelijke Ordening) </strong></li>
+          <li><strong>Gecoro (Gemeentelijke commissie voor Ruimtelijke Ordening) </strong></li>
         </ul>
         <p><em>Voorzitter/contact</em></p>
         <ul>
-          <li><strong>Jeugdraad </strong></li>
+          <li><strong>Jeugdraad </strong></li>
         </ul>
         <p><em>Voorzitter/contactpersoon</em></p>
         <ul>
           <li><strong>etc.."</strong></li>
         </ul>
-        <p><strong>TIPS voor beheerders: </strong></p>
+        <p><strong>TIPS voor beheerders: </strong></p>
         <ol>
-          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. </li>
+          <li>Plaats als gemeente of stad zelf al ideeën, waarop het personeel kan reageren. Maak hiervoor een profiel aan met het e-mailadres en bijvoorbeeld het logo van de gemeente. </li>
           <li>Bepaal <strong>in de instellingen van deze tijdslijnfase</strong> of je aan het personeel 1. nog toelaat om zelf nog andere ideeën te plaatsen of 2. enkel toelaat om te reageren of te stemmen op ideeën.</li>
         </ol>
     project_ref: *1453
@@ -6984,11 +6984,11 @@ models:
     description_multiloc:
       nl-BE: |-
         <p><em>Voorbeeld van wat je in deze fase kunt communiceren:</em> "Vul deze enquête in. We nemen de resultaten mee naar de volgende fase." (de enquête-url is toegevoegd als voorbeeld)</p>
-        <p> </p>
-        <p><strong>TIPS voor beheerders</strong>: </p>
+        <p> </p>
+        <p><strong>TIPS voor beheerders</strong>: </p>
         <ul>
-          <li>Je kunt in je platform gemakkelijk een enquête integreren. Maak je enquête makkelijk aan via Typeform of Survey Monkey en copy-paste de 'embed url' hierboven. <a href="http://support.citizenlab.co/nl-hoe-bereik-je-nog-meer-burgers/een-enquete-toevoegen-aan-je-platform">In dit artikel</a>  lees je meer over het toevoegen van een enquête.</li>
-          <li>Deze tijdslijnfases zijn indicatief opgemaakt. Je kunt je enquête natuurlijk op een ander moment inplannen. </li>
+          <li>Je kunt in je platform gemakkelijk een enquête integreren. Maak je enquête makkelijk aan via Typeform of Survey Monkey en copy-paste de 'embed url' hierboven. <a href="http://support.citizenlab.co/nl-hoe-bereik-je-nog-meer-burgers/een-enquete-toevoegen-aan-je-platform">In dit artikel</a>  lees je meer over het toevoegen van een enquête.</li>
+          <li>Deze tijdslijnfases zijn indicatief opgemaakt. Je kunt je enquête natuurlijk op een ander moment inplannen. </li>
         </ul>
     project_ref: *1453
     start_at: 2018-04-22
@@ -7007,12 +7007,12 @@ models:
       nl-BE: 'Omgevingsanalyse input verzamelen bij groot publiek '
     description_multiloc:
       nl-BE: |-
-        <p>Voorbeeld van wat je in deze fase kunt communiceren: "Nu is het aan jullie. We gebruiken de resultaten van de eerste fase als input voor deze belangrijke 'open' fase. </p>
-        <p>Vanaf nu kunnen alle bewoners zich uitspreken rond de verschillende thema's, projecten en ideeën die naar boven zijn gekomen. </p>
-        <p><strong>TIPS voor de beheerders</strong>: </p>
-        <p>1. Een makkelijk manier om ideeën te beheren, is door in instellingen van het project op 'Ideeën' te klikken. In dat overzicht kun je lijst ideeën beheren: <strong>één idee of verschillende ideeën aanvinken en verslepen naar de linkerkolom</strong>. Op die manier kun je ze makkelijk verplaatsen naar de volgende fase, kun je kernwoorden toevoegen of de status veranderen. De beschrijvingen van de statussen kunnen aangepast worden. Laat ons jullie keuze weten via <a href="mailto:support@citizenlab.co">support@citizenlab.co.</a> </p>
+        <p>Voorbeeld van wat je in deze fase kunt communiceren: "Nu is het aan jullie. We gebruiken de resultaten van de eerste fase als input voor deze belangrijke 'open' fase. </p>
+        <p>Vanaf nu kunnen alle bewoners zich uitspreken rond de verschillende thema's, projecten en ideeën die naar boven zijn gekomen. </p>
+        <p><strong>TIPS voor de beheerders</strong>: </p>
+        <p>1. Een makkelijk manier om ideeën te beheren, is door in instellingen van het project op 'Ideeën' te klikken. In dat overzicht kun je lijst ideeën beheren: <strong>één idee of verschillende ideeën aanvinken en verslepen naar de linkerkolom</strong>. Op die manier kun je ze makkelijk verplaatsen naar de volgende fase, kun je kernwoorden toevoegen of de status veranderen. De beschrijvingen van de statussen kunnen aangepast worden. Laat ons jullie keuze weten via <a href="mailto:support@citizenlab.co">support@citizenlab.co.</a> </p>
         <p>2. Als je een idee in een ander project wilt plaatsen, klik dan in de algemene platform-instellingen op 'Ideeën' en verplaats de ideeën daar naar eventueel een ander project.</p>
-        <p>3. Twijfel niet om de beschrijving van de verschillende fases of van het 'project' up to date te houden (tekst aanpassen, extra pdf's toevoegen, ...) Blijf communiceren met je doelpubliek en gebruik hiervoor de beschrijving van het project en de beschrijving in de tijdslijnfases. </p>
+        <p>3. Twijfel niet om de beschrijving van de verschillende fases of van het 'project' up to date te houden (tekst aanpassen, extra pdf's toevoegen, ...) Blijf communiceren met je doelpubliek en gebruik hiervoor de beschrijving van het project en de beschrijving in de tijdslijnfases. </p>
     project_ref: *1453
     start_at: 2018-04-27
     end_at: 2018-05-05
@@ -7218,11 +7218,11 @@ models:
       nl-BE: Participatieavond
     description_multiloc:
       nl-BE: |-
-        <p><strong>Op deze avond geeft de dienst Ruimtelijke Planning jullie uitleg bij de verschillende plannen en krijgen jullie antwoorden op jullie opmerkingen en bezwaren. </strong></p>
+        <p><strong>Op deze avond geeft de dienst Ruimtelijke Planning jullie uitleg bij de verschillende plannen en krijgen jullie antwoorden op jullie opmerkingen en bezwaren. </strong></p>
         <ul>
           <li>Ideeën en vragen worden beantwoord, en komen ook op het platform</li>
           <li>Zo blijft alles op één plaats</li>
-          <li>e-mailadressen kunnen worden geïmporteerd op het platform </li>
+          <li>e-mailadressen kunnen worden geïmporteerd op het platform </li>
           <li>Geregistreerde gebruikers krijgen ook de uitnodigen</li>
           <li>Ideeën van bewoners tijdens bewonersvergadering worden geïmporteerd op het platform</li>
         </ul>
@@ -7239,7 +7239,7 @@ models:
       nl-BE: "<p>We komen samen in het gemeentehuis om jullie meer uitleg te geven en
         de nodige tijd te nemen om op jullie vragen te antwoorden. We nemen ook de
         tijd om de input die via het platform is verzameld, op deze bijeenkomst te
-        delen. </p>"
+        delen. </p>"
     project_ref: *1453
     start_at: '2018-08-13 18:00:00'
     end_at: '2018-08-13 20:00:00'
