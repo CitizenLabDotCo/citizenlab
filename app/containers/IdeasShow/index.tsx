@@ -929,7 +929,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
       let translateButton: JSX.Element | null = null;
-      const showTranslateButton = ideaTitle === titleMultiloc[locale];
+      const showTranslateButton = !titleMultiloc[locale];
 
       if (showTranslateButton) {
         if (!translateFromOriginalButtonClicked) {
