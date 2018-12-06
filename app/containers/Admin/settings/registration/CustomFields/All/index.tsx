@@ -107,6 +107,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>
             <Button
+              className="e2e-add-custom-field-btn"
               style="cl-blue"
               circularCorners={false}
               icon="plus-circle"
@@ -126,6 +127,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                 <SortableRow
                   key={field.id}
                   id={field.id}
+                  className="e2e-custom-registration-field-row"
                   index={index}
                   lastItem={lastItem}
                   moveRow={this.handleDragRow}
@@ -141,10 +143,21 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   </TextCell>
                   {!isBuiltInField(field) &&
                     <Buttons>
-                      <Button disabled={isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                      <Button
+                        className="e2e-delete-custom-field-btn"
+                        disabled={isBuiltInField(field)}
+                        onClick={this.handleOnDeleteClick(field.id)}
+                        style="text"
+                        icon="delete"
+                      >
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
-                      <Button disabled={isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+                      <Button
+                        disabled={isBuiltInField(field)}
+                        linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
+                        style="secondary"
+                        icon="edit"
+                      >
                         <FormattedMessage {...messages.editButtonLabel} />
                       </Button>
                     </Buttons>

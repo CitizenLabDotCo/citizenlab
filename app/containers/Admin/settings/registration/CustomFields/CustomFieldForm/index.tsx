@@ -115,6 +115,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               <FormattedMessage {...messages.fieldRequired} />
             </Label>
             <Field
+              className="e2e-custom-field-required-toggle"
               name="required"
               component={FormikToggle}
             />
