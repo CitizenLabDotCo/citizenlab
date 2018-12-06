@@ -1,16 +1,16 @@
 FactoryBot.define do
   factory :activity do
     association :item, factory: :idea
-    action "published"
+    action { "published" }
     acted_at {Time.now}
     user
 
     factory :idea_published_activity do
-      action "published"
+      action { "published" }
     end
 
     factory :idea_changed_title_activity do
-      action "changed_title"
+      action { "changed_title" }
       payload {{
         "change" => [
           {"en" => "old title"},
@@ -20,7 +20,7 @@ FactoryBot.define do
     end
 
     factory :idea_changed_body_activity do
-      action "changed_body"
+      action { "changed_body" }
       payload {{
         "change" => [
           {"en" => "old body"},
@@ -30,7 +30,7 @@ FactoryBot.define do
     end
 
     factory :idea_changed_status_activity do
-      action "changed_status"
+      action { "changed_status" }
       payload {{
         "change" => [
           "somepreviousstatusid",
@@ -41,17 +41,17 @@ FactoryBot.define do
 
     factory :comment_created_activity do
       association :item, factory: :comment
-      action "created"
+      action { "created" }
     end
 
     factory :idea_upvoted_activity do
       association :item, factory: :vote
-      action "idea_upvoted"
+      action { "idea_upvoted" }
     end
 
     factory :idea_downvoted_activity do
       association :item, factory: :downvote
-      action "idea_downvoted"
+      action { "idea_downvoted" }
     end
   end
 
