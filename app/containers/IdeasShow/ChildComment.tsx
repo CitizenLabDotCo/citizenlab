@@ -138,7 +138,7 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocaliz
       const createdAt = comment.attributes.created_at;
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const projectId = idea.relationships.project.data.id;
-      const showTranslateButton = localize(commentBodyMultiloc) === commentBodyMultiloc[locale];
+      const showTranslateButton = !commentBodyMultiloc[locale];
 
       return (
         <CommentContainer className={className}>
