@@ -154,11 +154,11 @@ class CommentBody extends React.PureComponent<Props, State> {
         {translateButtonClicked ?
           <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
             {translation => {
-              if (isNilOrError(translation)) {
-                return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
+              if (!isNilOrError(translation)) {
+                return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
               }
 
-              return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
+              return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
             }}
           </GetMachineTranslation>
           :

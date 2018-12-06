@@ -1003,12 +1003,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 {translateFromOriginalButtonClicked ?
                   <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
                     {translation => {
-                      if (isNilOrError(translation)) {
-                        return <IdeaTitle>{ideaTitle}</IdeaTitle>;
+                      if (!isNilOrError(translation)) {
+                        this.setState({ titleTranslationLoading: false });
+                        return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
                       }
 
-                      this.setState({ titleTranslationLoading: false });
-                      return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
+                      return <IdeaTitle>{ideaTitle}</IdeaTitle>;
                     }}
                   </GetMachineTranslation>
                   :
@@ -1098,12 +1098,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   {translateFromOriginalButtonClicked ?
                     <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
                       {translation => {
-                        if (isNilOrError(translation)) {
-                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+                        if (!isNilOrError(translation)) {
+                          this.setState({ bodyTranslationLoading: false });
+                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
                         }
 
-                        this.setState({ bodyTranslationLoading: false });
-                        return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                        return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
                       }}
                     </GetMachineTranslation>
                     :
