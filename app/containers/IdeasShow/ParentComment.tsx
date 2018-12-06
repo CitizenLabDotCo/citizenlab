@@ -211,7 +211,7 @@ class ParentComment extends React.PureComponent<Props & ITracks & InjectedLocali
         if (comment.relationships.parent.data.id === commentId) return true;
         return false;
       }).map(comment => comment.id));
-      const showTranslateButton = localize(commentBodyMultiloc) === commentBodyMultiloc[locale];
+      const showTranslateButton = !commentBodyMultiloc[locale];
 
       // Hide parent comments that are deleted with no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
