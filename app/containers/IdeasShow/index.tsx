@@ -46,6 +46,7 @@ import { API_PATH } from 'containers/App/constants';
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // services
@@ -62,9 +63,9 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
+import { getLocalized } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -610,6 +611,7 @@ interface ITracks {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   ideaFiles: GetResourceFilesChildProps;
 }
 
@@ -640,7 +642,7 @@ type State = {
   bodyTranslationLoading: boolean;
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & ITracks, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -875,7 +877,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   render() {
-    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles, locale } = this.props;
+    const { inModal, animatePageEnter, intl: { formatMessage }, ideaFiles, locale, tenantLocales } = this.props;
     const {
       idea,
       ideaImage,
@@ -895,12 +897,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     let content: JSX.Element | null = null;
     const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
 
-    if (idea) {
+    if (idea && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const ideaTitle = localize(titleMultiloc);
-      const ideaBody = localize(idea.data.attributes.body_multiloc);
+      const ideaTitle = getLocalized(titleMultiloc, locale, tenantLocales);
+      const ideaBody = getLocalized(idea.data.attributes.body_multiloc, locale, tenantLocales);
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -1288,10 +1290,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(localize(IdeasShow)));
+const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
 });
 
