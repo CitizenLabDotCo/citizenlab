@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
 // components
+import HasPermission from 'components/HasPermission';
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -51,6 +52,10 @@ const RightColumn = styled.div`
     padding: 0;
     max-width: none;
   }
+  @media print {
+    padding: 0;
+    max-width: none,
+  }
 `;
 
 type Props = {};
@@ -96,10 +101,12 @@ export default class AdminPage extends React.PureComponent<Props, State> {
     return (
       <>
         <Container className={this.props['className']}>
-          <Sidebar />
-          <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
-            {children}
-          </RightColumn>
+          <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+            <Sidebar />
+            <RightColumn className={`${adminFullWidth && 'fullWidth'} ${adminNoPadding && 'noPadding'}`}>
+              {children}
+            </RightColumn>
+          </HasPermission>
         </Container>
       </>
     );

@@ -5,6 +5,7 @@ import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
@@ -70,8 +71,9 @@ export function signOut() {
     removeJwt();
     streams.reset(null);
 
-    if (location.pathname.startsWith('/admin')) {
-      clHistory.push('/');
+    const { pathname, urlLocale } = removeLocale(location.pathname);
+    if (pathname && pathname.startsWith('/admin')) {
+      clHistory.push(`/${urlLocale}`);
     }
   }
 }

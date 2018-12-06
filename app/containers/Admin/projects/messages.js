@@ -179,7 +179,7 @@ export default defineMessages({
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
-    defaultMessage: 'Amount per citizen',
+    defaultMessage: 'Amount per citizen, in {currency}',
   },
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
@@ -288,18 +288,6 @@ export default defineMessages({
   moderatorsRoleExplanation: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
     defaultMessage: `Moderation rights grant somebody who's not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.`,
-  },
-  deleteModeratorLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.deleteModeratorLabel',
-    defaultMessage: 'Delete',
-  },
-  moderatorDeletionConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorDeletionConfirmation',
-    defaultMessage: 'Are you sure?',
-  },
-  moderatorsNotFound: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsNotFound',
-    defaultMessage: 'Moderators not found',
   },
   addUser: {
     id: 'app.containers.AdminPage.ProjectEdit.addUser',

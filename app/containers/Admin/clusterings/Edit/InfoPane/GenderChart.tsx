@@ -48,9 +48,9 @@ class GenderChart extends PureComponent<Props, State> {
         label: gender,
       };
       series.forEach((serie, index) => {
-        record[`up ${index + 1}`] = serie.up[gender] || 0;
-        record[`down ${index + 1}`] = -serie.down[gender] || 0;
-        record[`sum ${index + 1}`] = serie.up[gender] - serie.down[gender] || 0;
+        record[`up ${index + 1}`] = serie.series.up[gender] || 0;
+        record[`down ${index + 1}`] = -serie.series.down[gender] || 0;
+        record[`sum ${index + 1}`] = serie.series.up[gender] - serie.series.down[gender] || 0;
       });
       return record;
     });

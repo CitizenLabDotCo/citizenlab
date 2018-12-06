@@ -150,6 +150,7 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedLocaliz
 
           <StyledAuthor
             authorId={authorId}
+            notALink={authorId ? false : true}
             createdAt={createdAt}
             message={messages.childCommentAuthor}
             size="40px"

@@ -3,7 +3,7 @@ import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
-import { ICustomFieldData, updateCustomFieldForUsers } from 'services/userCustomFields';
+import { ICustomFieldData, updateCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
@@ -57,6 +57,7 @@ class General extends React.Component<Props, State> {
         {...props}
         mode="edit"
         customFieldId={this.props.customField.id}
+        builtInField={isBuiltInField(this.props.customField)}
       />
     )
   )

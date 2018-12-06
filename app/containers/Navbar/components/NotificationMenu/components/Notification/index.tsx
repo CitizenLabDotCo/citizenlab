@@ -22,6 +22,11 @@ import {
   IProjectModerationRightsReceivedNotificationData,
   IAdminRightsReceivedNotificationData
 } from 'services/notifications';
+import styled from 'styled-components';
+
+export const DeletedUser = styled.span`
+  font-style: italic;
+`;
 
 type Props = {
   notification: TNotificationData,

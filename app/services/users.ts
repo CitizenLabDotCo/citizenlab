@@ -5,16 +5,22 @@ import { authUserStream } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
-export interface IRole {
-  type: 'admin' | 'project_moderator';
-  project_id?: string;
-}
+export type IProjectModerator = {
+  type: 'project_moderator';
+  project_id: string;
+};
+
+type IAdmin = {
+  type: 'admin';
+};
+
+export type  IRole = IAdmin | IProjectModerator;
 
 export interface IUserData {
   id: string;
   type: string;
   attributes: {
-    first_name: string;
+    first_name: string | null;
     last_name: string | null;
     slug: string;
     locale: Locale;

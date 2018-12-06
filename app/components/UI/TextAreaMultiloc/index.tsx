@@ -44,6 +44,7 @@ export type Props = {
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
   renderPerLocale?: (locale: string) => JSX.Element;
+  disabled?: boolean;
 };
 
 type State = {
@@ -99,7 +100,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       return (
         <Container id={this.props.id} className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const { label, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale } = this.props;
+            const { label, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], '') as string;
             const error = get(errorMultiloc, [currentTenantLocale], null);
             const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
@@ -126,6 +127,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
                   error={error}
                   onChange={this.handleOnChange(currentTenantLocale)}
                   maxCharCount={maxCharCount}
+                  disabled={disabled}
                 />
               </TextAreaWrapper>
             );

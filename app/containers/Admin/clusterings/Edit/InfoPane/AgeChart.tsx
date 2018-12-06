@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Subscription, combineLatest } from 'rxjs';
-import { isEqual, forOwn, get, isEmpty } from 'lodash-es';
+import { isEqual, forOwn, get, isEmpty, each } from 'lodash-es';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
 import { votesByBirthyearStream, IVotesByBirthyear } from 'services/stats';
 import styled, { withTheme } from 'styled-components';
@@ -51,9 +51,9 @@ class AgeChart extends PureComponent<Props, State> {
         label: `${minAge}-${maxAge}`,
       };
 
-      series.forEach((serie, serieIndex) => {
+      each(series, (serie, serieIndex) => {
         ['up', 'down', 'total'].forEach((mode) => {
-          forOwn(serie[mode], (voteCount, birthYear) => {
+          forOwn(serie.series[mode], (voteCount, birthYear) => {
             const age = currentYear - parseInt(birthYear, 10);
             if (age >= minAge && age < maxAge) {
               if (!record[`${mode} ${serieIndex + 1}`]) {
@@ -70,9 +70,9 @@ class AgeChart extends PureComponent<Props, State> {
     const blankRecord = {
       label: '_blank'
     };
-    series.forEach((serie, serieIndex) => {
+    each(series, (serie, serieIndex) => {
       ['up', 'down', 'total'].forEach((mode) => {
-        blankRecord[`${mode} ${serieIndex + 1}`] = (mode === 'down' ? -1 : 1) * get(serie, `${mode}._blank`);
+        blankRecord[`${mode} ${serieIndex + 1}`] = (mode === 'down' ? -1 : 1) * get(serie.series, `${mode}._blank`);
       });
     });
 

@@ -192,5 +192,9 @@ export default defineMessages({
   signUpButtonAltText: {
     id: 'app.containers.SignUp.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
+  },
+  whatIsFranceConnect: {
+    id: 'app.containers.SignUp.whatIsFranceConnect',
+    defaultMessage: 'What is France Connect?',
   }
 });
