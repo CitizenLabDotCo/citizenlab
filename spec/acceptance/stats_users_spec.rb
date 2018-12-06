@@ -403,17 +403,15 @@ resource "Stats - Users" do
       let(:end_at) { (now-1.month).in_time_zone(@timezone).end_of_month }
 
       before do
+        @u1, @u2, @u3 = create_list(:user, 3)
         travel_to(start_at - 1.day) do
           create(:idea_published_activity, user: @u2)
         end
 
         travel_to start_at + 4.days do
           @group = create(:group)
-          @u1 = create(:user)
           create(:membership, user: @u1, group: @group)
-          @u2 = create(:user)
           create(:membership, user: @u2, group: @group)
-          @u3 = create(:user)
 
           create(:comment_created_activity, user: @u1)
           create(:idea_upvoted_activity, user: @u1)
@@ -438,13 +436,24 @@ resource "Stats - Users" do
 
   describe "depending on custom fields" do
 
-    before do
-      # we need the built in custom fields first, so lets run the base tenant template
+    before(:all) do
+      Apartment::Tenant.switch!('example_org')
       TenantTemplateService.new.apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
+    end
+
+    after(:all) do
+      Apartment::Tenant.reset
+      Tenant.find_by(host: 'example.org').destroy
+      create(:test_tenant)
+    end
+
+    before do
       travel_to(start_at - 1.day) { create(:user) }
       travel_to(end_at + 1.day) { create(:user) }
     end
+
+
 
     let (:start_at) { (now-1.year).in_time_zone(@timezone).beginning_of_year }
     let (:end_at) { (now-1.year).in_time_zone(@timezone).end_of_year }

@@ -9,9 +9,9 @@ FactoryBot.define do
       "en" => "<p>In this phase we gather ideas. Don't be shy, there are no stupid ideas!</p>",
       "nl-BE" => "<p>In deze fase verzamelen we ideeën. Wees niet verlegen, er zijn geen domme ideeën!</p>"
     }}
-    participation_method 'ideation'
-    start_at "2017-05-01"
-    end_at "2017-06-30"
+    participation_method { 'ideation' }
+    start_at { "2017-05-01" }
+    end_at { "2017-06-30" }
 
     transient do
       with_permissions { false }
@@ -30,7 +30,7 @@ FactoryBot.define do
 
     factory :phase_sequence do
       transient do
-        duration_in_days 5
+        duration_in_days { 5 }
       end
 
       after(:build) do |phase, evaluator|

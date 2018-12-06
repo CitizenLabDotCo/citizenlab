@@ -36,7 +36,8 @@ FactoryBot.define do
       "en" => "Let's renew the parc at the city border and make it an enjoyable place for young and old.",
       "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
-    publication_status 'published'
+    sequence(:slug) {|n| "renew-west-parc-#{n}"}
+    publication_status { 'published' }
 
     transient do
       with_permissions { false }
@@ -50,7 +51,7 @@ FactoryBot.define do
 
     factory :project_with_topics do
       transient do
-        topics_count 5
+        topics_count { 5 }
       end
       after(:create) do |project, evaluator|
         evaluator.topics_count.times do |i|
@@ -61,7 +62,7 @@ FactoryBot.define do
 
     factory :project_with_areas do
       transient do
-        areas_count 5
+        areas_count { 5 }
       end
       after(:create) do |project, evaluator|
         evaluator.areas_count.times do |i|
@@ -72,7 +73,7 @@ FactoryBot.define do
 
     factory :project_with_phases do
       transient do
-        phases_count 5
+        phases_count { 5 }
       end
       after(:create) do |project, evaluator|
         start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
@@ -98,7 +99,7 @@ FactoryBot.define do
 
     factory :project_with_past_phases do
       transient do
-        phases_count 5
+        phases_count { 5 }
       end
       after(:create) do |project, evaluator|
         start_at = Faker::Date.between(2.year.ago, 1.year.ago)
@@ -162,7 +163,7 @@ FactoryBot.define do
 
     factory :project_with_future_phases do
       transient do
-        phases_count 5
+        phases_count { 5 }
       end
       after(:create) do |project, evaluator|
         start_at = Faker::Date.between(Time.now, 1.year.from_now)
@@ -179,15 +180,15 @@ FactoryBot.define do
 
     factory :project_xl do
       transient do
-        ideas_count 10
-        topics_count 3
-        areas_count 3
-        phases_count 3
-        events_count 3
-        pages_count 3
-        images_count 3
-        files_count 3
-        groups_count 3
+        ideas_count { 10 }
+        topics_count { 3 }
+        areas_count { 3 }
+        phases_count { 3 }
+        events_count { 3 }
+        pages_count { 3 }
+        images_count { 3 }
+        files_count { 3 }
+        groups_count { 3 }
       end
       after(:create) do |project, evaluator|
         evaluator.ideas_count.times do |i|
@@ -222,14 +223,14 @@ FactoryBot.define do
 
 
     factory :private_admins_project do
-      visible_to :admins
+      visible_to { :admins }
     end
 
     factory :private_groups_project do
-      visible_to 'groups'
+      visible_to { 'groups' }
       transient do
-        groups_count 1
-        user nil
+        groups_count { 1 }
+        user { nil }
       end
       after(:create) do |project, evaluator|
         evaluator.groups_count.times do |i|
@@ -242,32 +243,32 @@ FactoryBot.define do
       end
 
       factory :private_groups_continuous_project do
-        process_type 'continuous'
+        process_type { 'continuous' }
         factory :private_groups_continuous_budgeting_project do
-          participation_method 'budgeting'
-          max_budget 10000
+          participation_method { 'budgeting' }
+          max_budget { 10000 }
         end
       end
     end
 
     factory :continuous_project do
-      process_type 'continuous'
-      participation_method 'ideation'
-      voting_method 'unlimited'
-      voting_limited_max 7
+      process_type { 'continuous' }
+      participation_method { 'ideation' }
+      voting_method { 'unlimited' }
+      voting_limited_max { 7 }
     end
 
     factory :continuous_survey_project do
-      process_type 'continuous'
-      participation_method 'survey'
-      survey_service 'typeform'
-      survey_embed_url "https://citizenlabco.typeform.com/to/HKGaPV"
+      process_type { 'continuous' }
+      participation_method { 'survey' }
+      survey_service { 'typeform' }
+      survey_embed_url { "https://citizenlabco.typeform.com/to/HKGaPV" }
     end
 
     factory :continuous_budgeting_project do
-      process_type 'continuous'
-      participation_method 'budgeting'
-      max_budget 10000
+      process_type { 'continuous' }
+      participation_method { 'budgeting' }
+      max_budget { 10000 }
     end
 
   end
