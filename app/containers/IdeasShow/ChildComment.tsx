@@ -72,7 +72,7 @@ interface State {
 }
 
 class ChildComment extends React.PureComponent<Props & ITracks, State> {
-  constructor(props: Props & ITracks) {
+  constructor(props: Props) {
     super(props as any);
     this.state = {
       spamModalVisible: false,
