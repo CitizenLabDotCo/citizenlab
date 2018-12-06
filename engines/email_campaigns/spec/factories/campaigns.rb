@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :manual_campaign, class: EmailCampaigns::Campaigns::Manual do
-    enabled true
+    enabled { true }
     author
-    sender "author"
-    reply_to "someguy@somecity.com"
+    sender { "author" }
+    reply_to { "someguy@somecity.com" }
     subject_multiloc {{
       "en" => "We're almost done with your feedback"  
     }}
@@ -13,93 +13,93 @@ FactoryBot.define do
   end
 
   factory :comment_on_your_comment_campaign, class: EmailCampaigns::Campaigns::CommentOnYourComment do
-    enabled true
+    enabled { true }
   end
 
   factory :comment_on_your_idea_campaign, class: EmailCampaigns::Campaigns::CommentOnYourIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
-    enabled true
+    enabled { true }
   end
 
   factory :comment_deleted_by_admin_campaign, class: EmailCampaigns::Campaigns::CommentDeletedByAdmin do
-    enabled true
+    enabled { true }
   end
 
   factory :comment_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::CommentMarkedAsSpam do
-    enabled true
+    enabled { true }
   end
 
   factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
-    enabled true
+    enabled { true }
   end
 
   factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
-    enabled true
+    enabled { true }
   end
 
   factory :invite_accepted_campaign, class: EmailCampaigns::Campaigns::InviteAccepted do
-    enabled true
+    enabled { true }
   end
 
   factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
-    enabled true
+    enabled { true }
   end
 
   factory :project_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
-    enabled true
+    enabled { true }
   end
 
   factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :welcome_campaign, class: EmailCampaigns::Campaigns::Welcome do
-    enabled true
+    enabled { true }
   end
 
   factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
-    enabled true
+    enabled { true }
   end
 
   factory :first_idea_published_campaign, class: EmailCampaigns::Campaigns::FirstIdeaPublished do
-    enabled true
+    enabled { true }
   end
 
   factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
-    enabled true
+    enabled { true }
   end
 
   factory :new_comment_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnCommentedIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :new_comment_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::NewCommentOnVotedIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :status_change_of_voted_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfVotedIdea do
-    enabled true
+    enabled { true }
   end
 
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
-    enabled true
+    enabled { true }
     schedule { weekly_schedule }
   end
 
   factory :moderator_digest_campaign, class: EmailCampaigns::Campaigns::ModeratorDigest do
-    enabled true
+    enabled { true }
     schedule { weekly_schedule }
   end
 
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
-    enabled true
+    enabled { true }
     schedule { weekly_schedule }
   end
 

@@ -3,11 +3,10 @@ require "rails_helper"
 describe SideFxTenantService do
   let(:service) { SideFxTenantService.new }
   let(:current_user) { create(:user) }
-  let(:tenant) { create(:tenant) }
-
 
   describe "after_create" do
     it "logs a 'created' action" do
+      tenant = Tenant.current
       expect {service.after_create(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'created', current_user, tenant.updated_at.to_i)
     end
@@ -16,6 +15,7 @@ describe SideFxTenantService do
 
   describe "after_update" do
     it "logs a 'changed' action job when the tenant has changed" do
+      tenant = Tenant.current
       settings = tenant.settings
       settings['core']['organization_name'] = "New name"
       tenant.update(settings: settings)
@@ -24,6 +24,9 @@ describe SideFxTenantService do
     end
 
     it "logs a 'changed_host' action job when the tenant host has changed" do
+      # This case needs a separate tenant, since we change the host, which
+      # changes the db schema and makes some calls fail otherwise
+      tenant = create(:tenant)
       old_host = tenant.host
       tenant.update(host: 'some-domain.net')
       expect {service.after_update(tenant, current_user)}.
@@ -31,6 +34,7 @@ describe SideFxTenantService do
     end
 
     it "logs a 'changed_lifecycle_stage' action job when the tenant has changed" do
+      tenant = Tenant.current
       settings = tenant.settings
       old_lifecycle_stage = settings['core']['lifecycle_stage']
       settings['core']['lifecycle_stage'] = "churned"
