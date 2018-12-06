@@ -156,7 +156,7 @@ export const colors = {
 
   adminTextColor: '#044D6C',
   adminLightText: 'rgba(255, 255, 255, 0.8)',
-  adminSecondaryTextColor: '#84939E',
+  adminSecondaryTextColor: '#596B7A',
 
   adminBorder: '#EAEAEA',
   adminSeparation: '#EAEAEA',

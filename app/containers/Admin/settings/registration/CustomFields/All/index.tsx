@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { clone, isEqual } from 'lodash-es';
-import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers } from 'services/userCustomFields';
+import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -98,15 +98,10 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     return (itemsWhileDragging || customFields);
   }
 
-  isBuiltInField = (field: ICustomFieldData) => {
-    return !!field.attributes.code;
-  }
-
   render() {
     const listItems = this.listItems() || [];
     const listItemsLength = listItems.length;
     let lastItem = false;
-
     return (
       <>
         <FeatureFlag name="user_custom_fields">
@@ -143,19 +138,19 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   <TextCell className="expand">
                     <T value={field.attributes.title_multiloc} />
                   </TextCell>
-                  {!this.isBuiltInField(field) &&
+                    {isBuiltInField(field) &&
+                      <div><FormattedMessage {...messages.systemField} /></div>
+                    }
                     <Buttons>
-                      <Button disabled={this.isBuiltInField(field)} onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
-                        <FormattedMessage {...messages.deleteButtonLabel} />
-                      </Button>
-                      <Button disabled={this.isBuiltInField(field)} linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+                      {!isBuiltInField(field) &&
+                        <Button onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                          <FormattedMessage {...messages.deleteButtonLabel} />
+                        </Button>
+                      }
+                      <Button linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
                         <FormattedMessage {...messages.editButtonLabel} />
                       </Button>
                     </Buttons>
-                  }
-                  {this.isBuiltInField(field) &&
-                    <div><FormattedMessage {...messages.systemField} /></div>
-                  }
                 </SortableRow>
               );
             })
