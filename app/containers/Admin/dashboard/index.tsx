@@ -1,8 +1,5 @@
 import React from 'react';
 
-// router
-import {  WithRouterProps } from 'react-router';
-
 // components
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
