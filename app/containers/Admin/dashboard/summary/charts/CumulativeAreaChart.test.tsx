@@ -1,12 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
-jest.mock('services/stats');
 import { intl } from 'utils/cl-intl';
 import { CumulativeAreaChart } from './CumulativeAreaChart';
+import { usersByTimeCumulativeStream, __setMockUsersByTimeCumulativeStream, mockUsersByTimeCumulative } from 'services/__mocks__/stats';
 import { chartTheme } from '../..';
 
-const stream = jest.fn();
 const serie = [
   {
     name: 'x',
@@ -21,21 +20,41 @@ const serie = [
 ];
 
 describe('<CumulativeAreaChart />', () => {
-  it('renders correctly', () => {
+  it('renders correctly without data', () => {
     const wrapper = shallow(
       <CumulativeAreaChart
         intl={intl}
         theme={chartTheme({})}
-        serie={serie}
         graphTitleMessageKey="commentsByTimeTitle"
         graphUnit="comments"
         startAt={'05-12-2018'}
         endAt={'06-12-2018'}
+        currentProjectFilter={null}
+        currentGroupFilter={null}
+        currentTopicFilter={null}
         resolution={'day'}
-        stream={stream}
-        {...this.state}
+        stream={usersByTimeCumulativeStream}
       />
     );
+    expect(wrapper).toMatchSnapshot();
+  });
+  it('renders correctly with data', () => {
+    const wrapper = shallow(
+      <CumulativeAreaChart
+        intl={intl}
+        theme={chartTheme({})}
+        graphTitleMessageKey="commentsByTimeTitle"
+        graphUnit="comments"
+        startAt={'05-12-2018'}
+        endAt={'06-12-2018'}
+        currentProjectFilter={null}
+        currentGroupFilter={null}
+        currentTopicFilter={null}
+        resolution={'day'}
+        stream={usersByTimeCumulativeStream}
+      />
+    );
+    __setMockUsersByTimeCumulativeStream(mockUsersByTimeCumulative);
     expect(wrapper).toMatchSnapshot();
   });
 });

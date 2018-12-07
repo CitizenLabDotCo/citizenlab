@@ -39,7 +39,7 @@ Array [
     key="1"
     startAt="someTimeAgo"
   />,
-  <BarChartByCategoryComponent
+  <WrappedBarChartByCategory
     convertToGraphFormat={[Function]}
     currentGroupFilter={null}
     customId="4145ae1d-da1e-4984-a043-e1269eb37cd4"

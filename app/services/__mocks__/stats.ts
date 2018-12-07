@@ -1,7 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
-import { IUsersByRegistrationField } from 'services/stats';
+import { IUsersByRegistrationField, IUsersByTime } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
 
+// usersByRegFieldStream
 let mockUsersByRegFieldsVariable: IUsersByRegistrationField | null = null;
 
 export const __setMockUsersByRegFields = (data: IUsersByRegistrationField) => {
@@ -42,3 +43,54 @@ export const mockUsersByRegFields = {
     }
   }
 } as IUsersByRegistrationField;
+
+// usersByTimeCumulativeStream
+let mockUsersByTimeCumulativeStreamVariable: IUsersByTime | null = null;
+
+export const __setMockUsersByTimeCumulativeStream = (data: IUsersByTime) => {
+  mockUsersByTimeCumulativeStreamVariable = data;
+};
+
+export const usersByTimeCumulativeStream = jest.fn((_streamParams: IStreamParams) => {
+  const observable = new BehaviorSubject(mockUsersByTimeCumulativeStreamVariable);
+  return {
+    observable
+  };
+});
+
+export const mockUsersByTimeCumulative = {
+  series: {
+    users: {
+      '2018-11-01': 1,
+      '2018-11-02': 1,
+      '2018-11-03': 1,
+      '2018-11-04': 1,
+      '2018-11-05': 1,
+      '2018-11-06': 1,
+      '2018-11-07': 1,
+      '2018-11-08': 1,
+      '2018-11-09': 1,
+      '2018-11-10': 1,
+      '2018-11-11': 6,
+      '2018-11-12': 6,
+      '2018-11-13': 6,
+      '2018-11-14': 6,
+      '2018-11-15': 6,
+      '2018-11-16': 6,
+      '2018-11-17': 6,
+      '2018-11-18': 6,
+      '2018-11-19': 6,
+      '2018-11-20': 6,
+      '2018-11-21': 6,
+      '2018-11-22': 6,
+      '2018-11-23': 6,
+      '2018-11-24': 6,
+      '2018-11-25': 6,
+      '2018-11-26': 10,
+      '2018-11-27': 10,
+      '2018-11-28': 10,
+      '2018-11-29': 10,
+      '2018-11-30': 10
+    }
+  }
+};

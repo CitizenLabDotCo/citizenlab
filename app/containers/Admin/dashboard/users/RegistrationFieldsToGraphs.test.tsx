@@ -36,7 +36,7 @@ describe('<RegistrationFieldsToGraphs />', () => {
         {...localizeProps}
       />
     );
-    const convertToGraphFormat = wrapper.find('BarChartByCategoryComponent').prop('convertToGraphFormat') as Function;
+    const convertToGraphFormat = wrapper.find('WrappedBarChartByCategory').prop('convertToGraphFormat') as Function;
     expect(convertToGraphFormat(mockUsersByRegFields)).toMatchSnapshot();
   });
 });
