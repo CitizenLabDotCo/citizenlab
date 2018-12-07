@@ -30,7 +30,7 @@ class TenantTemplateService
               id, ref_class = obj_to_id_and_class[field_value]
               model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
             end
-          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url')
+          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
