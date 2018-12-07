@@ -104,8 +104,10 @@ class PieChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
 
 const PieChartByCategoryWithHoCs = injectIntl<Props>(withTheme(PieChartByCategory as any) as any);
 
-export default (inputProps: InputProps) => (
+const PieChartByCategoryComponent = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
     {serie => <PieChartByCategoryWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
+
+export default PieChartByCategoryComponent;

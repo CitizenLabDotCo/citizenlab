@@ -51,7 +51,7 @@ interface Tracks {
   trackFilterOnGroup: Function;
 }
 
-class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
   constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
     super(props as any);
     this.state = {

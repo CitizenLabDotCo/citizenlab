@@ -1,3 +1,4 @@
+/* TODO
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { colors, fontSizes } from '../styleUtils';
@@ -29,3 +30,4 @@ export const mountWithTheme = (tree) => {
     childContextTypes: ThemeProvider.childContextTypes,
   });
 };
+*/
