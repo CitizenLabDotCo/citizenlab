@@ -9,7 +9,6 @@ declare global {
 }
 
 export function login(email: string, password: string) {
-  cy.logout();
   cy.visit('/sign-in');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
@@ -17,19 +16,11 @@ export function login(email: string, password: string) {
 }
 
 export function logout() {
-  return cy.get('body').then(($body) => {
-    if ($body.find('#e2e-user-menu-container').length) {
-      cy.get('#e2e-user-menu-container button').click();
-      cy.get('#e2e-sign-out-link').click();
-      Promise.resolve();
-    } else {
-      Promise.resolve();
-    }
-  });
+  cy.get('#e2e-user-menu-container button').click();
+  cy.get('#e2e-sign-out-link').click();
 }
 
 export function signup(firstName: string, lastName: string, email: string, password: string) {
-  cy.logout();
   cy.visit('/sign-up');
   cy.get('#firstName').type(firstName);
   cy.get('#lastName').type(lastName);

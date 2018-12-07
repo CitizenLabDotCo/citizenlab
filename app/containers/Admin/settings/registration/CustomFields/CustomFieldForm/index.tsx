@@ -53,6 +53,8 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
   render() {
     const { isSubmitting, mode, errors, isValid, touched } = this.props;
 
+    console.log(this.props);
+
     return (
       <Form>
         <Section>
@@ -61,6 +63,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               <FormattedMessage {...messages.fieldEnabled} />
             </Label>
             <Field
+              className={`e2e-custom-field-enabled-toggle ${this.props.values.enabled ? 'enabled' : 'disabled'}`}
               name="enabled"
               component={FormikToggle}
             />
@@ -115,7 +118,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               <FormattedMessage {...messages.fieldRequired} />
             </Label>
             <Field
-              className="e2e-custom-field-required-toggle"
+              className={`e2e-custom-field-required-toggle ${this.props.values.required ? 'enabled' : 'disabled'}`}
               name="required"
               component={FormikToggle}
             />
