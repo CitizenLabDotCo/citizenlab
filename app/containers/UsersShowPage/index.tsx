@@ -117,14 +117,14 @@ class UsersShowPage extends PureComponent<Props, State> {
       const memberSince = moment(user.attributes.created_at).format('LL');
 
       return (
-        <Container className={this.props['className']}>
+        <Container id="e2e-usersshowpage" className={this.props['className']}>
           <StyledContentContainer>
             <UserAvatar>
               <Avatar userId={user.id} size="180px" />
             </UserAvatar>
 
             <UserInfo>
-              <FullName>{user.attributes.first_name} {user.attributes.last_name}</FullName>
+              <FullName id="e2e-usersshowpage-fullname">{user.attributes.first_name} {user.attributes.last_name}</FullName>
               <JoinedAt>
                 <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
               </JoinedAt>
