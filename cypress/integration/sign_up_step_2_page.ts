@@ -1,12 +1,13 @@
 describe('Sign up step 2 page', () => {
   const customFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
 
-  const createAndEnableCustomField = () => {
+  const createCustomField = () => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-add-custom-field-btn').click();
-    cy.url().should('include', '/admin/settings/registration/custom_fields/new');
+    cy.location('pathname').should('eq', '/en-GB/admin/settings/registration/custom_fields/new');
     cy.get('.e2e-multiloc-input input').each(($el) => cy.wrap($el).type(customFieldName));
+    cy.get('.e2e-custom-field-enabled-toggle').click();
     cy.get('.e2e-submit-wrapper-button').click();
     cy.url().should('include', '/admin/settings/registration');
     cy.logout();
@@ -16,7 +17,7 @@ describe('Sign up step 2 page', () => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-add-custom-field-btn').click();
-    cy.url().should('include', '/admin/settings/registration');
+    cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
     cy.get(`.e2e-custom-field-edit-btn.${customFieldName}`).click();
     cy.get('.e2e-custom-field-enabled-toggle').then(($toggle) => {
       if ($toggle.hasClass('disabled')) {
@@ -32,7 +33,7 @@ describe('Sign up step 2 page', () => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-add-custom-field-btn').click();
-    cy.url().should('include', '/admin/settings/registration');
+    cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
     cy.get(`.e2e-custom-field-edit-btn.${customFieldName}`).click();
     cy.get('.e2e-custom-field-enabled-toggle').then(($toggle) => {
       if ($toggle.hasClass('enabled')) {
@@ -48,7 +49,7 @@ describe('Sign up step 2 page', () => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-add-custom-field-btn').click();
-    cy.url().should('include', '/admin/settings/registration');
+    cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
     cy.get(`.e2e-custom-field-edit-btn.${customFieldName}`).click();
     cy.get('.e2e-custom-field-required-toggle').then(($toggle) => {
       if ($toggle.hasClass('disabled')) {
@@ -64,7 +65,7 @@ describe('Sign up step 2 page', () => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
     cy.get('.e2e-add-custom-field-btn').click();
-    cy.url().should('include', '/admin/settings/registration');
+    cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
     cy.get(`.e2e-custom-field-edit-btn.${customFieldName}`).click();
     cy.get('.e2e-custom-field-required-toggle').then(($toggle) => {
       if ($toggle.hasClass('enabled')) {
@@ -85,7 +86,7 @@ describe('Sign up step 2 page', () => {
   };
 
   before(() => {
-    // empty
+    createCustomField();
   });
 
   after(() => {
@@ -97,7 +98,9 @@ describe('Sign up step 2 page', () => {
     cy.get('.e2e-accept-cookies-btn').click();
   });
 
-  afterEach(() => {});
+  afterEach(() => {
+    disableCustomField();
+  });
 
   it('does not show the 2nd step when no custom fields are enabled', () => {
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
@@ -118,7 +121,7 @@ describe('Sign up step 2 page', () => {
     const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
     // before
-    createAndEnableCustomField();
+    enableCustomField();
     cy.signup(firstName, lastName, email, password);
     cy.get('#e2e-signup-step2');
     cy.visit('/');
@@ -138,6 +141,7 @@ describe('Sign up step 2 page', () => {
     const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
     // before
+    enableCustomField();
     setCustomFieldToRequired();
     cy.signup(firstName, lastName, email, password);
     cy.get('#e2e-signup-step2');
@@ -158,6 +162,8 @@ describe('Sign up step 2 page', () => {
     const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
     // before
+    enableCustomField();
+    setCustomFieldToRequired();
     cy.signup(firstName, lastName, email, password);
     cy.get('#e2e-signup-step2');
     cy.visit('/');
