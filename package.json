@@ -26,7 +26,7 @@
     "e2e-setup": "selenium-standalone install",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
@@ -165,10 +165,10 @@
     "tslint-microsoft-contrib": "5.2.1",
     "tslint-react": "3.6.0",
     "tsutils": "3.5.2",
-    "typescript": "3.2.1",
+    "typescript": "3.2.2",
     "typescript-styled-plugin": "0.13.0",
     "url-loader": "1.1.2",
-    "webpack": "4.27.0",
+    "webpack": "4.27.1",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-cli": "3.1.2",
     "webpack-dashboard": "2.0.0",
