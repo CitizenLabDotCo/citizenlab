@@ -19,7 +19,7 @@ export interface ICustomFieldData {
     created_at: string;
     updated_at: string;
   };
-  relationships: {
+  relationships?: {
     custom_field_options: {
       data: IRelationship;
     };

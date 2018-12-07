@@ -104,7 +104,7 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(prevProps: QueryProps) {
+  componentDidUpdate() {
     const {
       startAt,
       endAt,
