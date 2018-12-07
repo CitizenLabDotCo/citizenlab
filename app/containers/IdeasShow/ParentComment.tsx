@@ -11,6 +11,7 @@ import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
 import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
+import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { updateComment } from 'services/comments';
@@ -20,6 +21,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -32,6 +35,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
+import { colors } from 'utils/styleUtils';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -83,6 +87,17 @@ const StyledAuthor = styled(Author)`
   margin-right: 60px;
 `;
 
+export const TranslateButton = styled.button`
+  padding: 0;
+  color: ${colors.clBlue};
+  text-decoration: underline;
+  margin-top: 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const ChildCommentsContainer = styled.div``;
 
 interface InputProps {
@@ -96,6 +111,8 @@ interface DataProps {
   comment: GetCommentChildProps;
   childComments: GetCommentsChildProps;
   idea: GetIdeaChildProps;
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -104,19 +121,23 @@ interface State {
   showForm: boolean;
   spamModalVisible: boolean;
   editionMode: boolean;
+  translateButtonClicked: boolean;
 }
 
-interface Tracks {
-  clickReply: Function;
+interface ITracks {
+  clickReply: () => void;
+  clickTranslateCommentButton: () => void;
+  clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & Tracks, State> {
+class ParentComment extends React.PureComponent<Props & ITracks, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
       showForm: false,
       spamModalVisible: false,
       editionMode: false,
+      translateButtonClicked: false,
     };
   }
 
@@ -156,10 +177,25 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
     }
   }
 
-  render() {
-    const { commentId, authUser, comment, childComments, idea } = this.props;
+  translateComment = () => {
+    const { clickTranslateCommentButton, clickGoBackToOriginalCommentButton } = this.props;
+    const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
+    // tracking
+    translateButtonClicked
+    ? clickGoBackToOriginalCommentButton()
+    : clickTranslateCommentButton();
+
+    this.setState(prevState => ({
+      translateButtonClicked: !prevState.translateButtonClicked,
+    }));
+  }
+
+  render() {
+    const { commentId, authUser, comment, childComments, idea, locale } = this.props;
+    const { translateButtonClicked } = this.state;
+
+    if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
       const ideaId = comment.relationships.idea.data.id;
       const projectId = idea.relationships.project.data.id;
       const authorId = (comment.relationships.author.data ? comment.relationships.author.data.id : null);
@@ -174,6 +210,7 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
         if (comment.relationships.parent.data.id === commentId) return true;
         return false;
       }).map(comment => comment.id));
+      const showTranslateButton = !commentBodyMultiloc[locale];
 
       // Hide parent comments that are deleted with no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
@@ -190,11 +227,32 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
                     <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                     <StyledAuthor
                       authorId={authorId}
+                      notALink={authorId ? false : true}
                       createdAt={createdAt}
                       size="40px"
                       message={messages.parentCommentAuthor}
                     />
-                    <CommentBody commentBody={commentBodyMultiloc} editionMode={this.state.editionMode} onCommentSave={this.onCommentSave} onCancelEdition={this.onCancelEdition} last={this.props.last} />
+                    <CommentBody
+                      commentBody={commentBodyMultiloc}
+                      editionMode={this.state.editionMode}
+                      onCommentSave={this.onCommentSave}
+                      onCancelEdition={this.onCancelEdition}
+                      last={this.props.last}
+                      translateButtonClicked={translateButtonClicked}
+                      commentId={commentId}
+                    />
+                    <FeatureFlag name="machine_translations">
+                      {showTranslateButton &&
+                        <TranslateButton
+                          onClick={this.translateComment}
+                        >
+                          {!this.state.translateButtonClicked
+                            ? <FormattedMessage {...messages.translateComment} />
+                            : <FormattedMessage {...messages.showOriginalComment} />
+                          }
+                        </TranslateButton>
+                      }
+                    </FeatureFlag>
                   </>
                 }
 
@@ -229,6 +287,8 @@ class ParentComment extends React.PureComponent<Props & Tracks, State> {
 
 const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
+  clickTranslateCommentButton: tracks.clickTranslateCommentButton,
+  clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
 })(ParentComment);
 
 const Data = adopt<DataProps, InputProps>({
@@ -236,6 +296,8 @@ const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  tenantLocales: <GetTenantLocales />,
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
