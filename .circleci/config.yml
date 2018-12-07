@@ -184,6 +184,7 @@ workflows:
       - cypress/run:
           # requires:
           #   - deploy_demo
+          executor: cypress/base-8
           command: cypress run --spec 'cypress/integration/*.ts' -e CYPRESS_BASE_URL=$CYPRESS_BASE_URL
           filters:
             branches:
