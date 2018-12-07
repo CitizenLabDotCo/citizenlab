@@ -50,7 +50,7 @@ Array [
     startAt="someTimeAgo"
     stream={[MockFunction]}
   />,
-  <PieChartByCategoryComponent
+  <WrappedPieChartByCategory
     convertToGraphFormat={[Function]}
     currentGroupFilter={null}
     customId="a0e5a642-a67d-4f73-bb52-35af018a903c"
