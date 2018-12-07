@@ -20,7 +20,7 @@ describe('<UsersDashboard />', () => {
     // ignore the error, shallowWithIntl method passes in the intl object
     const wrapper = shallowWithIntl(<UsersDashboard groups={mockGetGroups} {...localizeProps} />);
     // the component sets endAtMoment to current time, but to match snapshots we need a stable date
-    wrapper.setState({ endAtMoment: moment('2010-01-01T05:06:07', moment.ISO_8601) });
+    wrapper.setState({ endAtMoment: moment('2010-01-01T04:06:07.000Z') });
     expect(wrapper).toMatchSnapshot();
   });
 
