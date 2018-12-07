@@ -135,6 +135,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                   onClick={this.handleOnToggle(entry, index)}
                   className={`
                     ${!multiple && checked ? 'selected' : ''} ${last ? 'last' : ''}
+                    e2e-${entry.value}
                   `}
                 >
                   <ListItemText>{entry.text}</ListItemText>

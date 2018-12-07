@@ -85,6 +85,7 @@ export default class SelectTopic extends PureComponent<Props, State> {
       if (options && options.length > 0) {
         return (
           <FilterSelector
+            id="e2e-idea-filter-selector"
             title={<FormattedMessage {...messages.topicsTitle} key={titleKey} />}
             name="topics"
             selected={selectedValues}
