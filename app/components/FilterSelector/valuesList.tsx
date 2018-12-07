@@ -134,7 +134,9 @@ export default class ValuesList extends PureComponent<Props, State> {
                   key={entry.value}
                   onClick={this.handleOnToggle(entry, index)}
                   className={`
-                    ${!multiple && checked ? 'selected' : ''} ${last ? 'last' : ''}
+                    ${!multiple && checked ? 'selected' : ''}
+                    ${last ? 'last' : ''}
+                    ${entry.value === 'archived' ? 'e2e-projects-filter-archived' : ''}
                   `}
                 >
                   <ListItemText>{entry.text}</ListItemText>
