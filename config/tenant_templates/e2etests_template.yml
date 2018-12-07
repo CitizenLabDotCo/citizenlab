@@ -29,7 +29,8 @@ models:
   topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
-  - title_multiloc: topics.waste
+  - &topic_waste  
+    title_multiloc: topics.waste
     description_multiloc: topics.waste_description
   - title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
@@ -1249,6 +1250,18 @@ models:
     published_at_timediff: 0
     created_at_timediff: 0
     updated_at_timediff: 0
+  - &topic_idea
+    title_multiloc:
+      en-GB: The idea about waste
+    body_multiloc:
+      nl-BE: "<p>We should make less of it</p>"
+    publication_status: published
+    project_ref: *76
+    author_ref: *mortal1
+    location_description: 
+    published_at: '2017-09-01 00:00:00'
+    created_at: '2017-10-15 00:00:00'
+    updated_at: '2018-03-28 13:35:21'
   - &418
     title_multiloc:
       nl-BE: Atque laborum et tempore quia.
@@ -7271,6 +7284,9 @@ models:
       nl-BE: Gemeentehuis Stadhuis
     created_at: '2018-03-28 13:58:21'
     updated_at: '2018-03-28 13:58:21'
+  ideas_topic:
+  - idea_ref: *topic_idea
+    topic_ref: *topic_waste
   ideas_phase:
   - idea_ref: *221
     phase_ref: *1510
