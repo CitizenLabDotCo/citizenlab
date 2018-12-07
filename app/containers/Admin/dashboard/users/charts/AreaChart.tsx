@@ -69,6 +69,6 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   );
 };
 
-const AreaChartComponent = injectIntl<Props>(localize<Props & InjectedIntlProps>(AreaChart));
+const WrappedAreaChart = injectIntl<Props>(localize<Props & InjectedIntlProps>(AreaChart));
 
-export default AreaChartComponent;
+export default WrappedAreaChart;
