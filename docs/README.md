@@ -1,5 +1,28 @@
 # Changelog
 
+## 2018-12-07
+
+### Fixed
+- It's again possible to write a comment to a comment on mobile
+- When logged in and trying to log in again, the user is now redirected to the homepage
+- A deleted user no longer generates a link going nowhere in the comments
+- The dropdown menu for granular permissions no longer disappears behind the user search field
+- After deleting an idea, the edit and delete buttons are no longer shown in the idea manager
+- Long event title no longer pass out of the event box
+- Notifications from a user that got deleted now show 'deleted user' instead of nothing
+
+### Added
+- Machine translations on the idea page
+  - The idea body and every comment not in the user's language shows a button to translate
+  - Feature flagged as `machine_translations`
+  - Works for all languages
+- Show the currency in the amount field for participatory budgeting in the admin
+- Built-in registration fields can now be made required in the admin
+- FranceConnect now shows a "What is FranceConnect?" link under the button
+
+### Changed
+- The picks column in the idea manager no longer shows a euro icon
+
 ## 2018-11-28
 
 ### Fixed
