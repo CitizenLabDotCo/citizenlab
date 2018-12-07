@@ -171,7 +171,7 @@
     "typescript": "3.2.1",
     "typescript-styled-plugin": "0.13.0",
     "url-loader": "1.1.2",
-    "webpack": "4.27.0",
+    "webpack": "4.27.1",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-cli": "3.1.2",
     "webpack-dashboard": "2.0.0",
