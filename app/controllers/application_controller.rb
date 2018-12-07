@@ -2,6 +2,7 @@ class ApplicationController < ActionController::API
   include Knock::Authenticable
   include Pundit
 
+  before_action :set_current
   before_action :authenticate_user, if: :secure_controller?
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -48,5 +49,9 @@ class ApplicationController < ActionController::API
 
   def user_not_authorized
     render json: { errors: { base: [{ error: 'Unauthorized!' }] } }, status: :unauthorized
+  end
+
+  def set_current
+    Current.tenant = Tenant.current
   end
 end

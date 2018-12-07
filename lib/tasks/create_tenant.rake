@@ -15,15 +15,15 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','nl-BE'],
+          locales: ['en-GB','nl-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en" => Faker::Address.city,
-            "nl-BE" => Faker::Address.city,
+            "en-GB" => 'Wonderville',
+            "nl-BE" => 'Mirakelgem',
           },
           timezone: "Europe/Brussels",
-          currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
-          color_main: Faker::Color.hex_color,
+          currency: 'EUR',
+          color_main: '#732901',
         },
         groups: {
           enabled: true,
@@ -73,10 +73,10 @@ namespace :cl2_back do
     })
 
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.new.apply_template('en_tenant_template')
-      SideFxTenantService.new.after_apply_template(tenant, nil)
+      TenantTemplateService.new.apply_template(tenant_template)
     end
 
+    SideFxTenantService.new.after_apply_template(tenant, nil)
     SideFxTenantService.new.after_create(tenant, nil)
 
   end

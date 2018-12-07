@@ -10,12 +10,18 @@ class WebApi::V1::InvitesController < ApplicationController
 
   def index
     @invites = policy_scope(Invite)
-      .left_outer_joins(:invitee) # .includes(:invitee)
+      .left_outer_joins(:invitee)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    @invites = @invites.search_by_all(params[:search]) if params[:search].present?
-    @invites = @invites.where("users.invite_status = ?", params[:invite_status]).references(:invitee) if params[:invite_status].present?
+    if params[:search].present?
+      @invites = @invites.search_by_all(params[:search])
+      # Started happening when moved from rails 5.1 -> 5.2
+      # https://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#module-ActiveRecord::Associations::ClassMethods-label-Table+Aliasing
+      @invites = @invites.where("invitees_invites.invite_status = ?", params[:invite_status]) if params[:invite_status].present?
+    else
+      @invites = @invites.where("users.invite_status = ?", params[:invite_status]) if params[:invite_status].present?
+    end
 
     if params[:sort].present? && !params[:search].present?
       @invites = case params[:sort]

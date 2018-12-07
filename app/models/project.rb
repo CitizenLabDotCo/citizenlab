@@ -72,7 +72,7 @@ class Project < ApplicationRecord
     # the order by play nicely with previous distinct operations
     where(id: all)
     .distinct(false)
-    .order("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END")
+    .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
   }
 
   def continuous?

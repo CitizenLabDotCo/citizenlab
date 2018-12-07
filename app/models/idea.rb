@@ -90,7 +90,7 @@ class Idea < ApplicationRecord
   end)
 
   scope :order_new, -> (direction=:desc) {order(published_at: direction)}
-  scope :order_popular, -> (direction=:desc) {order("(upvotes_count - downvotes_count) #{direction}")}
+  scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}"))}
   # based on https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d
 
   scope :order_status, -> (direction=:desc) {

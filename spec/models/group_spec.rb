@@ -54,12 +54,12 @@ RSpec.describe Group, type: :model do
 
     it "can not be added to rules groups" do
       g = create(:smart_group)
-      expect{g.add_member create(:user)}.to raise_error
+      expect{g.add_member create(:user)}.to raise_error(RuntimeError)
     end
 
     it "can not be deleted from rules groups" do
       g = create(:smart_group)
-      expect{g.remove_member create(:user)}.to raise_error
+      expect{g.remove_member create(:user)}.to raise_error(RuntimeError)
     end
 
     it "has consistent responses between member and member_ids for rules groups" do
@@ -126,7 +126,8 @@ RSpec.describe Group, type: :model do
   describe "update_memberships_count!" do
     it "does nothing for a manual group" do
       group = build(:group)
-      expect(group.update_memberships_count!).not_to receive(:update_memberships_count!)
+      expect(group).not_to receive(:update)
+      group.update_memberships_count!
     end
 
     it "updates the membership count for a rules group" do

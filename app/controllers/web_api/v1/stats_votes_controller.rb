@@ -172,7 +172,7 @@ class WebApi::V1::StatsVotesController < WebApi::V1::StatsController
       .where(votable_id: apply_idea_filters(policy_scope(Idea), filter_params))
       .left_outer_joins(:user)
       .group("mode","users.custom_field_values->>'#{key}'")
-      .order("users.custom_field_values->>'#{key}'")
+      .order(Arel.sql("users.custom_field_values->>'#{key}'"))
       .count
     data = %w(up down).map do |mode|
       [
