@@ -25,3 +25,6 @@ tests_output/*
 browserstack.err
 .babel-cache/*
 .cache-loader/*
+
+cypress/videos/
+cypress/screenshots/
