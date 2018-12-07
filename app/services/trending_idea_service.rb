@@ -1,28 +1,35 @@
 class TrendingIdeaService
 
   def filter_trending ideas=Idea.all
-    ideas.includes(:idea_status)
-         .includes(:idea_trending_info)
-         .where.not('idea_statuses.code' => 'rejected')
-         .where.not('(ideas.upvotes_count - ideas.downvotes_count) < 0')
-         .where("ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}'")
+   with_trending_score(ideas)
+    .where('sub.is_trending' => true)
   end
 
   def sort_trending ideas=Idea.all
-    filter_trending_sql = "SELECT ideas.*
-                           FROM ideas 
-                           LEFT OUTER JOIN idea_statuses ON idea_statuses.id = ideas.idea_status_id 
-                           LEFT OUTER JOIN idea_trending_infos ON idea_trending_infos.idea_id = ideas.id 
-                           WHERE (idea_statuses.code != 'rejected') 
-                           AND (NOT ((ideas.upvotes_count - ideas.downvotes_count) < 0)) 
-                           AND (ideas.created_at >= timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}')"
+    with_trending_score(ideas)
+      .order('trending_score DESC')
+  end
 
-    ideas.joins("LEFT OUTER JOIN (SELECT filtered.id AS is_trending_b FROM (#{filter_trending_sql}) AS filtered) AS trends ON is_trending_b = ideas.id")
-         .group('ideas.id, idea_trending_infos.mean_activity_at')
-         .select('ideas.*, count(is_trending_b) AS is_trending')
-         .left_outer_joins(:idea_trending_info)
-         .select("ideas.*, (GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1)) AS score")
-         .order('is_trending DESC, score DESC')
+  def with_trending_score ideas=Idea.all
+    sub_query = Idea
+      .joins(:idea_status)
+      .joins(:idea_trending_info)
+      .select("""
+        ideas.id,
+        NOT (
+          ideas.upvotes_count - ideas.downvotes_count < 0 OR
+          ideas.created_at < timestamp '#{Time.at(Time.now.to_i - IdeaTrendingInfo::TREND_SINCE_ACTIVITY)}' OR
+          idea_statuses.code = 'rejected'
+        ) AS is_trending,
+        GREATEST(((ideas.upvotes_count - ideas.downvotes_count) + 1), 1) / GREATEST((#{Time.now.to_i} - extract(epoch from idea_trending_infos.mean_activity_at)), 1) AS score_abs
+      """)
+
+    ideas
+      .joins("INNER JOIN (#{sub_query.to_sql}) sub ON ideas.id = sub.id")
+      .select("""
+        ideas.*,
+        CASE WHEN sub.is_trending THEN sub.score_abs ELSE (-1/sub.score_abs) END as trending_score
+      """)
   end
 
 

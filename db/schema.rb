@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022092934) do
+ActiveRecord::Schema.define(version: 2018_12_05_134744) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "postgis"
   enable_extension "uuid-ossp"
-  enable_extension "pgcrypto"
 
   create_table "activities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "item_type", null: false
@@ -343,6 +343,18 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.index ["token"], name: "index_invites_on_token"
   end
 
+  create_table "machine_translations_machine_translations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "translatable_id", null: false
+    t.string "translatable_type", null: false
+    t.string "attribute_name", null: false
+    t.string "locale_to", null: false
+    t.string "translation", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["translatable_id", "translatable_type", "attribute_name", "locale_to"], name: "machine_translations_lookup", unique: true
+    t.index ["translatable_id", "translatable_type"], name: "machine_translations_translatable"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -491,7 +503,7 @@ ActiveRecord::Schema.define(version: 20181022092934) do
     t.string "survey_service"
     t.integer "ordering"
     t.integer "max_budget"
-    t.index ["created_at"], name: "index_projects_on_created_at"
+    t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

@@ -1,4 +1,4 @@
-FROM ruby:2.4.2-slim
+FROM ruby:2.5.3-slim
 
 # Docker images can start off with nothing, but it's extremely
 # common to pull in from a base image. In our case we're pulling
@@ -50,10 +50,11 @@ WORKDIR $INSTALL_PATH
 # future commands from within this directory.
 
 COPY Gemfile Gemfile.lock ./
-COPY engines/public_api ./engines/public_api/
 COPY engines/admin_api ./engines/admin_api/
 COPY engines/email_campaigns ./engines/email_campaigns/
+COPY engines/machine_translations ./engines/machine_translations/
 COPY engines/nlp ./engines/nlp/
+COPY engines/public_api ./engines/public_api/
 # This is going to copy in the Gemfile and Gemfile.lock from our
 # work station at a path relative to the Dockerfile to the
 # my_dockerized_app/ path inside of the Docker image.
