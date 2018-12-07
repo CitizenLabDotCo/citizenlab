@@ -215,8 +215,7 @@ class ProjectCard extends PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
-    const { projectId, selected } = this.props;
+    const { projectId, selected, className } = this.props;
     const { project, projectImages, permission } = this.props;
 
     if (!isNilOrError(project) && !isNilOrError(permission) && !isNilOrError(projectImages)) {
@@ -231,7 +230,7 @@ class ProjectCard extends PureComponent<Props, State> {
       return (
         <Container
           onClick={this.handleOnClick}
-          className={`${className} ${selected && 'selected'} ${enabled && 'enabled'}`}
+          className={`${className} ${selected ? 'selected' : ''} ${enabled ? 'enabled' : 'disabled'}`}
         >
           <ImageWrapper>
             {smallImage ? (
