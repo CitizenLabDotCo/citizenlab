@@ -19,13 +19,13 @@ describe('Project ideas page', () => {
 
   it('asks unauthorised users to log in or sign up before they vote', () => {
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('e2e-login-button');
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('e2e-register-button');
+    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button');
+    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-register-button');
   });
 
   it('takes unauthorised users through signup and back to the page', () => {
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('e2e-login-button').click();
+    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button').click();
     cy.location('pathname').should('eq', '/en-GB/sign-in');
   });
 
@@ -39,13 +39,13 @@ describe('Project ideas page', () => {
 
   it('lets you change the ordering of the list', () => {
     cy.get('#e2e-ideas-sort-filter ').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-new').click();
+    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
     const firstIdea = cy.get('#e2e-ideas-container').find('.e2e-idea-card').first();
     firstIdea.contains('New');
     const lastIdea = cy.get('#e2e-ideas-container').find('.e2e-idea-card').last();
     lastIdea.contains('Old');
     cy.get('#e2e-ideas-sort-filter ').click();
-    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e--new').click();
+    cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-old').click();
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().should('be', lastIdea);
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').last().should('be', firstIdea);
   });
