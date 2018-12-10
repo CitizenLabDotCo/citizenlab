@@ -44,6 +44,7 @@ class New extends React.Component<Props> {
     <CustomFieldForm
       {...props}
       mode="new"
+      builtInField={false}
     />
   )
 

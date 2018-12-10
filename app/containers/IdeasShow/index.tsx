@@ -4,6 +4,11 @@ import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rx
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
+
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -31,11 +36,18 @@ import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+
+// resources
+import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // services
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
@@ -51,9 +63,9 @@ import { hasPermission } from 'services/permissions';
 import T from 'components/T';
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import localize, { InjectedLocalized } from 'utils/localize';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
+import { getLocalized } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -62,7 +74,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -399,6 +410,10 @@ const TimeAgo = styled.div`
   `}
 `;
 
+const TranslateButton = styled(Button)`
+  margin-bottom: 30px;
+`;
+
 const IdeaBody = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.large}px;
@@ -589,7 +604,14 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
+interface ITracks {
+  clickTranslateIdeaButton: () => void;
+  clickGoBackToOriginalIdeaCopyButton: () => void;
+}
+
 interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
   ideaFiles: GetResourceFilesChildProps;
 }
 
@@ -615,9 +637,12 @@ type State = {
   spamModalVisible: boolean;
   moreActions: IAction[];
   ideaIdForSocialSharing: string | null;
+  translateFromOriginalButtonClicked: boolean;
+  titleTranslationLoading: boolean;
+  bodyTranslationLoading: boolean;
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -641,7 +666,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       showMap: false,
       spamModalVisible: false,
       moreActions: [],
-      ideaIdForSocialSharing: null
+      ideaIdForSocialSharing: null,
+      translateFromOriginalButtonClicked: false,
+      titleTranslationLoading: false,
+      bodyTranslationLoading: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -828,17 +856,57 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  render() {
-    const { inModal, animatePageEnter, intl: { formatMessage }, localize, ideaFiles } = this.props;
-    const { idea, ideaImage, ideaAuthor, ideaComments, project, phases, opened, loaded, showMap, moreActions, ideaIdForSocialSharing } = this.state;
-    let content: JSX.Element | null = null;
+  translateIdea = () => {
+    const { clickTranslateIdeaButton } = this.props;
 
-    if (idea) {
+    // tracking
+    clickTranslateIdeaButton();
+
+    this.setState({
+      translateFromOriginalButtonClicked: true,
+      titleTranslationLoading: true,
+      bodyTranslationLoading: true,
+    });
+  }
+
+  backToOriginalContent = () => {
+    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
+
+    // tracking
+    clickGoBackToOriginalIdeaCopyButton();
+
+    this.setState({
+       translateFromOriginalButtonClicked: false,
+    });
+  }
+
+  render() {
+    const { inModal, animatePageEnter, intl: { formatMessage }, ideaFiles, locale, tenantLocales } = this.props;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      ideaComments,
+      project,
+      phases,
+      opened,
+      loaded,
+      showMap,
+      moreActions,
+      ideaIdForSocialSharing,
+      translateFromOriginalButtonClicked,
+      titleTranslationLoading,
+      bodyTranslationLoading
+    } = this.state;
+    let content: JSX.Element | null = null;
+    const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
+
+    if (idea && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const authorId = ideaAuthor ? ideaAuthor.data.id : null;
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
-      const ideaTitle = localize(titleMultiloc);
-      const ideaBody = localize(idea.data.attributes.body_multiloc);
+      const ideaTitle = getLocalized(titleMultiloc, locale, tenantLocales);
+      const ideaBody = getLocalized(idea.data.attributes.body_multiloc, locale, tenantLocales);
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -866,6 +934,34 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
       let participationContextId: string | null = null;
+      let translateButton: JSX.Element | null = null;
+      const showTranslateButton = !titleMultiloc[locale];
+
+      if (showTranslateButton) {
+        if (!translateFromOriginalButtonClicked) {
+          translateButton = (
+            <TranslateButton
+              style="secondary-outlined"
+              onClick={this.translateIdea}
+              processing={translationsLoading}
+              spinnerColor={colors.label}
+            >
+              <FormattedMessage {...messages.translateIdea} />
+            </TranslateButton>
+          );
+        } else {
+          translateButton = (
+            <TranslateButton
+              style="secondary-outlined"
+              onClick={this.backToOriginalContent}
+              processing={translationsLoading}
+              spinnerColor={colors.label}
+            >
+              <FormattedMessage {...messages.backToOriginalContent} />
+            </TranslateButton>
+          );
+        }
+      }
 
       if (pbProject) {
         participationContextType = 'Project';
@@ -908,9 +1004,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               }
 
               <Header>
-                <IdeaTitle className="e2e-ideatitle">
-                  {ideaTitle}
-                </IdeaTitle>
+                {translateFromOriginalButtonClicked ?
+                  <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                    {translation => {
+                      if (!isNilOrError(translation)) {
+                        this.setState({ titleTranslationLoading: false });
+                        return <IdeaTitle>{translation.attributes.translation}</IdeaTitle>;
+                      }
+
+                      return <IdeaTitle>{ideaTitle}</IdeaTitle>;
+                    }}
+                  </GetMachineTranslation>
+                  :
+                  <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
+                }
               </Header>
             </HeaderWrapper>
 
@@ -966,6 +1073,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </AuthorContainer>
                 </AuthorAndAdressWrapper>
 
+                <FeatureFlag name="machine_translations">
+                  {translateButton}
+                </FeatureFlag>
+
                 {ideaLocation &&
                   <CSSTransition
                     classNames="map"
@@ -988,7 +1099,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
+                  {translateFromOriginalButtonClicked ?
+                    <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                      {translation => {
+                        if (!isNilOrError(translation)) {
+                          this.setState({ bodyTranslationLoading: false });
+                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                        }
+
+                        return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+                      }}
+                    </GetMachineTranslation>
+                    :
                     <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+                  }
                   </IdeaBody>
                 </Fragment>
 
@@ -1170,10 +1294,16 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 }
 
-const IdeasShowWithHOCs = injectIntl(localize(IdeasShow));
+const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(IdeasShow));
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />,
+  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
+});
 
 export default (inputProps: InputProps) => (
-  <GetResourceFiles resourceId={inputProps.ideaId} resourceType="idea">
-    {ideaFiles => <IdeasShowWithHOCs {...inputProps} ideaFiles={ideaFiles} />}
-  </GetResourceFiles>
+  <Data {...inputProps}>
+    {dataProps => <IdeasShowWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );

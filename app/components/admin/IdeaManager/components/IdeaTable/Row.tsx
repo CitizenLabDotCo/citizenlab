@@ -149,7 +149,6 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
           </Table.Cell>
           <FeatureFlag name="participatory_budgeting">
             <Table.Cell singleLine>
-              <Icon name="euro sign" />
               {attrs.baskets_count}
             </Table.Cell>
           </FeatureFlag>

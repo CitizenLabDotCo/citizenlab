@@ -141,17 +141,24 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   <TextCell className="expand">
                     <T value={field.attributes.title_multiloc} />
                   </TextCell>
-                  {!isBuiltInField(field) &&
+                    {isBuiltInField(field) &&
+                      <div><FormattedMessage {...messages.systemField} /></div>
+                    }
                     <Buttons>
-                      <Button
-                        className={`e2e-delete-custom-field-btn ${field.attributes.title_multiloc['en-GB']}`}
-                        disabled={isBuiltInField(field)}
-                        onClick={this.handleOnDeleteClick(field.id)}
-                        style="text"
-                        icon="delete"
-                      >
-                        <FormattedMessage {...messages.deleteButtonLabel} />
-                      </Button>
+                      {/* field.attributes.title_multiloc['en-GB'] classname added for e2e testing, please don't delete */}
+                      {!isBuiltInField(field) &&
+                        <Button
+                          className={`e2e-delete-custom-field-btn ${field.attributes.title_multiloc['en-GB']}`}
+                          disabled={isBuiltInField(field)}
+                          onClick={this.handleOnDeleteClick(field.id)}
+                          style="text"
+                          icon="delete"
+                        >
+                          <FormattedMessage {...messages.deleteButtonLabel} />
+                        </Button>
+                      }
+
+                      {/* field.attributes.title_multiloc['en-GB'] classname added for e2e testing, please don't delete */}
                       <Button
                         className={`e2e-custom-field-edit-btn ${field.attributes.title_multiloc['en-GB']}`}
                         disabled={isBuiltInField(field)}
@@ -162,10 +169,6 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                         <FormattedMessage {...messages.editButtonLabel} />
                       </Button>
                     </Buttons>
-                  }
-                  {isBuiltInField(field) &&
-                    <div><FormattedMessage {...messages.systemField} /></div>
-                  }
                 </SortableRow>
               );
             })

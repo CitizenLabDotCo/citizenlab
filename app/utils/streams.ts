@@ -5,6 +5,7 @@ import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
+import stringify from 'json-stable-stringify';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -176,21 +177,18 @@ class Streams {
     return apiEndpoint.replace(/\/$/, '');
   }
 
-  getSerializedUrl(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null, cacheStream: boolean) {
-    let serializedUrl = apiEndpoint;
+  getStreamId(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null, cacheStream: boolean) {
+    let streamId = apiEndpoint;
 
-    if (queryParameters !== null && isQueryStream) {
-      const serializedQueryParameters = Object.keys(queryParameters).sort().map(key => `${encodeURIComponent(key)}=${encodeURIComponent((queryParameters)[key])}`).join('&');
-      serializedUrl = `${apiEndpoint}?${serializedQueryParameters}`;
-
-      if (!cacheStream) {
-        serializedUrl += '&cache_stream=false';
-      }
-    } else if (!cacheStream) {
-      serializedUrl += '?cache_stream=false';
+    if (!cacheStream) {
+      streamId = `${streamId}?cached=${cacheStream}`;
     }
 
-    return serializedUrl;
+    if (queryParameters !== null && isQueryStream) {
+      streamId = `${streamId}&${stringify(queryParameters)}`;
+    }
+
+    return streamId;
   }
 
   addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
@@ -236,7 +234,7 @@ class Streams {
     const isQueryStream = (isObject(queryParameters) && !isEmpty(queryParameters));
     const isSearchQuery = (isQueryStream && queryParameters && queryParameters['search'] && isString(queryParameters['search']) && !isEmpty(queryParameters['search']));
     const cacheStream = ((isSearchQuery || inputParams.cacheStream === false) ? false : true);
-    const streamId = this.getSerializedUrl(apiEndpoint, isQueryStream, queryParameters, cacheStream);
+    const streamId = this.getStreamId(apiEndpoint, isQueryStream, queryParameters, cacheStream);
 
     if (!has(this.streams, streamId)) {
       const { bodyData } = params;
