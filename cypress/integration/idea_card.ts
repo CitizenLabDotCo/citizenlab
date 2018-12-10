@@ -1,7 +1,6 @@
 describe('Idea card component', () => {
   beforeEach(() => {
     cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
-    // .get('.e2e-accept-cookies-btn').click();
   });
 
   describe('Continuous project', () => {
