@@ -29,7 +29,7 @@
     "test:bschrome": "nightwatch -c nightwatch-bs.conf.js -e chrome",
     "test:pa11y": "cross-env NODE_ENV=staging pa11y-ci",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
