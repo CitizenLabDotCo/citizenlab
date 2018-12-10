@@ -33,6 +33,7 @@ describe('Sign up step 1 page', () => {
     const lastName = Math.random().toString(36).substr(2, 12);
     const email = `${Math.random().toString(36).substr(2, 12)}@citizenlab.co`;
     const password = Math.random().toString(36).substr(2, 12);
+
     cy.signup(firstName, lastName, email, password);
     cy.location('pathname').should('eq', '/en-GB/');
   });
