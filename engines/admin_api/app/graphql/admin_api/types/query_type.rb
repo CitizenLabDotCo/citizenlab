@@ -94,5 +94,10 @@ module AdminApi
       Idea.find(args[:id])
     end
 
+    field :public_pages, Types::PageType.connection_type, null: false
+    def public_pages
+      ::PagePolicy::Scope.new(nil, Page).resolve
+    end
+
   end
 end
