@@ -145,11 +145,9 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       <div><FormattedMessage {...messages.systemField} /></div>
                     }
                     <Buttons>
-                      {/* field.attributes.title_multiloc['en-GB'] classname added for e2e testing, please don't delete */}
                       {!isBuiltInField(field) &&
                         <Button
-                          className={`e2e-delete-custom-field-btn ${field.attributes.title_multiloc['en-GB']}`}
-                          disabled={isBuiltInField(field)}
+                          className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                           onClick={this.handleOnDeleteClick(field.id)}
                           style="text"
                           icon="delete"
@@ -158,10 +156,8 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                         </Button>
                       }
 
-                      {/* field.attributes.title_multiloc['en-GB'] classname added for e2e testing, please don't delete */}
                       <Button
-                        className={`e2e-custom-field-edit-btn ${field.attributes.title_multiloc['en-GB']}`}
-                        disabled={isBuiltInField(field)}
+                        className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                         linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
                         style="secondary"
                         icon="edit"
