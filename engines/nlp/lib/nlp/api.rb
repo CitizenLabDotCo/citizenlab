@@ -45,7 +45,7 @@ module NLP
       )
     end
 
-    def idea_geotagging tenant_id, idea, locale=nil
+    def idea_geotagging tenant_id, idea, locale: nil, picky_poi: false, include_phrases: false, case_sensitive: true, geocoder: 'nominatim'
       if !locale
         locale, text = idea.body_multiloc.first
       else
@@ -53,7 +53,14 @@ module NLP
       end
       self.class.post(
         "/v1/tenants/#{tenant_id}/geotagging",
-        body: {text: text, locale: locale}.to_json,
+        body: {
+          text: text, 
+          locale: locale,
+          picky_poi: picky_poi, 
+          include_phrases: include_phrases, 
+          case_sensitive: case_sensitive, 
+          geocoder: geocoder
+        }.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
     end
