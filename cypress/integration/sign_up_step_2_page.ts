@@ -18,27 +18,22 @@ describe('Sign up step 2 page', () => {
     cy.visit('/admin/settings/registration');
     cy.get(`.e2e-custom-field-edit-btn.e2e-${fieldName}`).click();
     cy.get('.e2e-custom-field-enabled-toggle').then(($enableToggle) => {
-      let save = false;
-
       if ((enabled && $enableToggle.hasClass('disabled')) || (!enabled && $enableToggle.hasClass('enabled'))) {
-        save = true;
         cy.wrap($enableToggle).click();
       }
-
-      cy.get('.e2e-custom-field-required-toggle').then(($requireToggle) => {
-        if ((required && $requireToggle.hasClass('disabled')) || (!required && $requireToggle.hasClass('enabled'))) {
-          save = true;
-          cy.wrap($requireToggle).click();
-        }
-
-        if (save) {
-          cy.get('.e2e-submit-wrapper-button').click();
-          cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
-        }
-
-        cy.logout();
-      });
-    });
+    })
+    .get('.e2e-custom-field-required-toggle').then(($requireToggle) => {
+      if ((required && $requireToggle.hasClass('disabled')) || (!required && $requireToggle.hasClass('enabled'))) {
+        cy.wrap($requireToggle).click();
+      }
+    })
+    .get('.e2e-submit-wrapper-button').then(($submitBtn) => {
+      if (!$submitBtn.hasClass('disabled')) {
+        cy.wrap($submitBtn).click();
+        cy.location('pathname').should('eq', '/en-GB/admin/settings/registration');
+      }
+    })
+    .logout();
   };
 
   const deleteCustomField = (fieldName: string) => {

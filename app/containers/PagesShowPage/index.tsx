@@ -237,17 +237,19 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
         let blockIndexing = true;
         let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
         let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+        let pageSlug = '';
 
         if (!isNilOrError(page)) {
           seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
           seoDescription = '';
           blockIndexing = false;
+          pageSlug = page.attributes.slug;
           pageTitle = <T value={page.attributes.title_multiloc} />;
           pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
         }
 
         return (
-          <Container id="e2e-aboutpage">
+          <Container className={`e2e-page-${pageSlug}`}>
             <Helmet>
               <title>{seoTitle}</title>
               <meta name="description" content={seoDescription} />
@@ -257,7 +259,7 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
             <PageContent>
               <StyledContentContainer>
                 <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
-                  <PageTitle id="e2e-aboutpage-pagetitle">
+                  <PageTitle>
                     {pageTitle}
                   </PageTitle>
                   <PageDescription>
@@ -273,11 +275,15 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
             </PageContent>
 
             {!isNilOrError(pageLinks) &&
-              <PagesNavWrapper id="e2e-aboutpage-navwrapper">
+              <PagesNavWrapper>
                 <PagesNav>
                   <StyledContentContainer>
                     {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                      <StyledLink className="e2e-aboutpage-navlink" to={`/pages/${pageLink.attributes.linked_page_slug}`} key={pageLink.id}>
+                      <StyledLink
+                        className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
+                        to={`/pages/${pageLink.attributes.linked_page_slug}`}
+                        key={pageLink.id}
+                      >
                         <T value={pageLink.attributes.linked_page_title_multiloc} />
                         <LinkIcon name="chevron-right" />
                       </StyledLink>

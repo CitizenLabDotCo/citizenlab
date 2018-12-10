@@ -180,8 +180,9 @@ const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager
 
 const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
+
   return (
-    <Container>
+    <Container className="e2e-page-cookie-policy">
       <Helmet>
         <title>{formatMessage(messages.cookiePolicyTitle)}</title>
         <meta name="description" content={formatMessage(messages.cookiePolicyDescription)} />
@@ -285,19 +286,18 @@ const CookiePolicy = (props: InjectedIntlProps) => {
         </SContentContainer>
       </PageContent>
 
-        <PagesNavWrapper>
-          <PagesNav>
-            <SContentContainer>
-              {LEGAL_PAGES.map((pageSlug) => (
-                <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
-                  <FormattedMessage {...messages[`${pageSlug}PageName`]} />
-                  <LinkIcon name="chevron-right" />
-                </StyledLink>
-              ))}
-            </SContentContainer>
-          </PagesNav>
-        </PagesNavWrapper>
-      }
+      <PagesNavWrapper>
+        <PagesNav>
+          <SContentContainer>
+            {LEGAL_PAGES.map((pageSlug) => (
+              <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
+                <FormattedMessage {...messages[`${pageSlug}PageName`]} />
+                <LinkIcon name="chevron-right" />
+              </StyledLink>
+            ))}
+          </SContentContainer>
+        </PagesNav>
+      </PagesNavWrapper>
 
       <Footer showCityLogoSection={false} />
     </Container>

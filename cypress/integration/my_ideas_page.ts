@@ -1,7 +1,9 @@
 describe('My ideas page', () => {
   beforeEach(() => {
-    cy.visit('/profile/koen-gremmelprez');
-      // .get('.e2e-accept-cookies-btn').click();
+    cy.visit('/');
+    cy.login('admin@citizenlab.co', 'testtest');
+    cy.get('#e2e-user-menu-container button').click();
+    cy.get('#e2e-my-ideas-page-link').click();
   });
 
   it('shows the page', () => {
@@ -9,8 +11,7 @@ describe('My ideas page', () => {
   });
 
   it('shows the user name', () => {
-    cy.get('#e2e-usersshowpage-fullname')
-      .contains('Koen Gremmelprez');
+    cy.get('#e2e-usersshowpage-fullname').contains('Sylvester Kalinoski');
   });
 
   it('shows the idea cards component', () => {
