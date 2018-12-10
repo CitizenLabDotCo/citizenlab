@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ContentContainer from 'components/ContentContainer';
 import ProjectNavbar from './ProjectNavbar';
+import IdeaButton from 'components/IdeaButton';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -29,6 +30,7 @@ const Container = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
+  z-index: 3;
 
   ${media.smallerThanMinTablet`
     height: 200px;
@@ -103,6 +105,14 @@ const HeaderImage: any = styled.div`
   right: 0;
 `;
 
+const StyledIdeaButton = styled(IdeaButton)`
+  margin-top: 20px;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
+`;
+
 interface InputProps {
   projectSlug: string;
   phaseId?: string | null;
@@ -125,6 +135,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
       const projectType = project.attributes.process_type;
       const projectPublicationStatus = project.attributes.publication_status;
+      const projectMethod = project.attributes.participation_method;
 
       return (
         <>
@@ -141,6 +152,12 @@ class ProjectsShowPage extends PureComponent<Props, State> {
                   <ArchivedLabel>
                     <FormattedMessage {...messages.archived} />
                   </ArchivedLabel>
+                }
+                {/* Continuous Ideation Idea Button */}
+                {projectType === 'continuous' && projectMethod === 'ideation' &&
+                  <StyledIdeaButton
+                    projectId={project.id}
+                  />
                 }
               </HeaderContent>
             </ContentContainer>
