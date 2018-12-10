@@ -137,6 +137,8 @@ export default class ValuesList extends PureComponent<Props, State> {
                     ${!multiple && checked ? 'selected' : ''}
                     ${last ? 'last' : ''}
                     ${entry.value === 'archived' ? 'e2e-projects-filter-archived' : ''}
+                    ${entry.value === 'new' ? 'e2e-projects-filter-new' : ''}
+                    ${entry.value === '-new' ? 'e2e-projects-filter-old' : ''}
                   `}
                 >
                   <ListItemText>{entry.text}</ListItemText>

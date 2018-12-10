@@ -4,15 +4,6 @@ describe('Idea card component', () => {
     // .get('.e2e-accept-cookies-btn').click();
   });
 
-  it('goes to the idea page when clicked on', () => {
-    cy.get('#e2e-ideas-list')
-      .find('.e2e-idea-card')
-      .first()
-      .click();
-
-    cy.location('pathname').should('eq', '/en-GB/ideas/repellendus-reprehenderit-quae-voluptas-quia');
-  });
-
   describe('Continuous project', () => {
 
     describe('The idea is upvoted', () => {

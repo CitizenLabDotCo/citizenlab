@@ -327,7 +327,7 @@ class IdeaCards extends PureComponent<Props, State> {
       <Container id="e2e-ideas-container" className={className}>
         <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
-            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} />
+            <StyledSearchInput value={(searchValue || '')} onChange={this.handleSearchOnChange} className="e2e-search-ideas-input"/>
           </LeftFilterArea>
 
           <RightFilterArea>

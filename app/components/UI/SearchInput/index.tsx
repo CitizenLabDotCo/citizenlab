@@ -65,6 +65,7 @@ interface Props {
   value: string;
   onChange: (arg: string) => void;
   onFocus?: () => void;
+  className?: string;
 }
 
 type State = {};

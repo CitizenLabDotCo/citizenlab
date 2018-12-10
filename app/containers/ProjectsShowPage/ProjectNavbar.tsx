@@ -213,6 +213,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/process`}
                     activeClassName="active"
+                    className="e2e-project-process-link"
                   >
                     <ProjectNavbarIcon name="timeline" />
                     <FormattedMessage {...messages.navProcess} />
@@ -233,6 +234,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/ideas`}
                     activeClassName="active"
+                    className="e2e-project-ideas-link"
                   >
                     <ProjectNavbarIcon name="idea" className="idea" />
                     <FormattedMessage {...messages.navIdeas} />
