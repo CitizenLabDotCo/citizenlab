@@ -1,13 +1,29 @@
+// {
+//   "compilerOptions": {
+//     "strict": true,
+//     "baseUrl": "../node_modules",
+//     "target": "es5",
+//     "lib": ["es5", "es2015", "dom"],
+//     "types": ["cypress"]
+//   },
+//   "include": [
+//     "**/*.ts",
+//     "../node_modules/cypress"
+//   ]
+// }
+
 {
   "compilerOptions": {
-    "strict": true,
-    "baseUrl": "../node_modules",
     "target": "es5",
+    "module": "commonjs",
     "lib": ["es5", "es2015", "dom"],
-    "types": ["cypress"]
+    "skipLibCheck": true,
+    "strict": true,
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
-    "**/*.*",
-    "../node_modules/cypress"
+    "../cypress/**/*.ts"
   ]
 }
