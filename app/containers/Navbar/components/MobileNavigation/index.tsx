@@ -14,6 +14,7 @@ const Container = styled.div`
   right: 0;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 3px;
   background: #fff;
   border-top: solid 1px ${colors.separation};
   display: flex;
@@ -29,44 +30,43 @@ const Container = styled.div`
   }
 `;
 
-const NavigationIconWrapper = styled.div`
-  width: 100%;
-  flex: 0 0 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
 const NavigationIcon = styled(Icon)`
   fill: #999;
   height: 24px;
+  width: 24px;
+  .cl-icon-primary, .cl-icon-accent {
+    fill: #999;
+  }
+`;
+
+const NavigationIconWrapper = styled.div`
+  display: flex;
+  height: 24px;
+  width: 24px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const NavigationLabel = styled.div`
   width: 100%;
-  height: 16px;
   color: #999;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  text-align: center;
-  flex: 1;
-  display: flex;
-  align-items: top;
-  justify-content: center;
+  margin-left: 12px;
 `;
 
 const NavigationItem = styled(Link)`
-  width: calc(100% / 4);
-  display:flex;
-  flex-direction: column;
+  display: flex;
   align-items: center;
   cursor: pointer;
-  margin-top: 8px;
-  margin-bottom: 10px;
+  margin: 0 auto;
 
   &.active {
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
+      .cl-icon-primary, .cl-icon-accent {
+        fill: ${(props) => props.theme.colorMain};
+      }
     }
 
     ${NavigationLabel} {
@@ -76,11 +76,11 @@ const NavigationItem = styled(Link)`
   }
 `;
 
-interface InputProps {}
+interface InputProps { }
 
-interface Props extends InputProps {}
+interface Props extends InputProps { }
 
-interface State {}
+interface State { }
 
 export default class MobileNavigation extends PureComponent<Props, State> {
   render() {
@@ -89,7 +89,7 @@ export default class MobileNavigation extends PureComponent<Props, State> {
 
         <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
-            <NavigationIcon name="home" />
+            <NavigationIcon name="homeFilled" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageHome} />
@@ -98,19 +98,10 @@ export default class MobileNavigation extends PureComponent<Props, State> {
 
         <NavigationItem to="/projects" activeClassName="active">
           <NavigationIconWrapper>
-            <NavigationIcon name="project" />
+            <NavigationIcon name="folder" />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
-          </NavigationLabel>
-        </NavigationItem>
-
-        <NavigationItem to="/ideas" activeClassName="active">
-          <NavigationIconWrapper>
-            <NavigationIcon name="idea" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageIdeas} />
           </NavigationLabel>
         </NavigationItem>
 
