@@ -186,6 +186,10 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ contextRef });
   }
 
+  resetSelectedIdeas = () => {
+    this.setState({ selectedIdeas: {} });
+  }
+
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
@@ -225,6 +229,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <MiddleColumn>
             <ActionBar
               ideaIds={selectedIdeaIds}
+              resetSelectedIdeas={this.resetSelectedIdeas}
             />
           </MiddleColumn>
         </ThreeColumns>

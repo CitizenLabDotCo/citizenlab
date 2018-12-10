@@ -179,7 +179,7 @@ export default defineMessages({
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
-    defaultMessage: 'Amount per citizen',
+    defaultMessage: 'Amount per citizen, in {currency}',
   },
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',

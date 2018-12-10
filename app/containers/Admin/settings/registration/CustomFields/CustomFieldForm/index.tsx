@@ -28,6 +28,7 @@ export interface FormValues {
 export interface Props {
   mode: 'new' | 'edit';
   customFieldId: string;
+  builtInField: boolean;
 }
 
 class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
@@ -51,7 +52,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
   }
 
   render() {
-    const { isSubmitting, mode, errors, isValid, touched } = this.props;
+    const { isSubmitting, mode, errors, isValid, touched, builtInField } = this.props;
 
     console.log(this.props);
 
@@ -81,7 +82,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               name="input_type"
               component={FormikSelect}
               options={this.inputTypeOptions()}
-              disabled={mode === 'edit'}
+              disabled={mode === 'edit' || builtInField}
             />
             {touched.input_type && <Error
               fieldName="input_type"
@@ -94,6 +95,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               name="title_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldTitle} />}
+              disabled={builtInField}
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
@@ -106,6 +108,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
               label={<FormattedMessage {...messages.fieldDescription} />}
+              disabled={builtInField}
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"
