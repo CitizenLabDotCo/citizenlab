@@ -16,7 +16,7 @@ describe('Sign up step 2 page', () => {
   const updateCustomField = (fieldName: string, enabled: boolean, required: boolean) => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
-    cy.get(`.e2e-custom-field-edit-btn.${fieldName}`).click();
+    cy.get(`.e2e-custom-field-edit-btn.e2e-${fieldName}`).click();
     cy.get('.e2e-custom-field-enabled-toggle').then(($enableToggle) => {
       let save = false;
 
@@ -44,7 +44,7 @@ describe('Sign up step 2 page', () => {
   const deleteCustomField = (fieldName: string) => {
     cy.login('admin@citizenlab.co', 'testtest');
     cy.visit('/admin/settings/registration');
-    cy.get(`.e2e-delete-custom-field-btn.${fieldName}`).click();
+    cy.get(`.e2e-delete-custom-field-btn.e2e-${fieldName}`).click();
     cy.get('body').trigger('{enter}', { force: true });
     cy.logout();
   };
