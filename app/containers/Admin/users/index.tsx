@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  flex: 1;
   display: flex;
   background: #fff;
 `;
