@@ -87,7 +87,7 @@ interface State {
   selectedIdeaId: string | null;
 }
 
-class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
+export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State> {
   private createIdeaButton: HTMLDivElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
