@@ -107,7 +107,7 @@ const Container: any = styled.div`
     color:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
   .ql-toolbar.ql-snow {
-    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
   }
 
   background: #fff;
@@ -139,7 +139,7 @@ const Container: any = styled.div`
     content: ${(props: any) => `"${props.remove}"`};
   }
   .ql-container {
-    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
     border-radius: 0 0 5px 5px;
     width: 100%;
     height: 100%;
