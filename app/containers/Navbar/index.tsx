@@ -117,7 +117,7 @@ const NavigationItem = styled(Link)`
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: bold;
-  padding: 0 20px;
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,10 +125,6 @@ const NavigationItem = styled(Link)`
   outline: none;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
-
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
 
   &.active {
     background-color: ${(props) => rgba(props.theme.colorMain, .1)};
@@ -146,7 +142,6 @@ const NavigationDropdown = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  margin-right: 40px;
 `;
 
 const NavigationDropdownItem = styled.button`
@@ -159,7 +154,7 @@ const NavigationDropdownItem = styled.button`
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 20px;
+  padding: 0 40px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
