@@ -9,7 +9,6 @@ import NotificationMenu from './components/NotificationMenu';
 import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
@@ -268,29 +267,6 @@ const RightItem: any = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 15px;
   `}
-`;
-
-const StyledIdeaButton = styled(IdeaButton)`
-  a.Button {
-    border: solid 2px ${colors.separation} !important;
-    padding-left: 18px;
-    padding-right: 18px;
-
-    &:hover,
-    &:focus {
-      border-color: ${darken(0.2, colors.separation)} !important;
-    }
-
-    ${media.smallerThanMinTablet`
-      padding-left: 10px;
-      padding-right: 10px;
-    `}
-  }
-
-  .buttonText {
-    font-size: ${fontSizes.base}px !important;
-    color: ${(props) => props.theme.colorMain};
-  }
 `;
 
 const LoginLink = styled(Link)`
