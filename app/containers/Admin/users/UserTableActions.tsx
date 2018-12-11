@@ -380,15 +380,13 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"
                       >
-                        {/* <DropdownListItemInner> */}
-                          <DropdownListItemText>
-                            <T value={group.attributes.title_multiloc} />
-                          </DropdownListItemText>
-                          <StyledCheckbox
-                            value={includes(selectedGroupIds, group.id)}
-                            onChange={this.toggleGroup(group.id)}
-                          />
-                        {/* </DropdownListItemInner> */}
+                        <DropdownListItemText>
+                          <T value={group.attributes.title_multiloc} />
+                        </DropdownListItemText>
+                        <StyledCheckbox
+                          value={includes(selectedGroupIds, group.id)}
+                          onChange={this.toggleGroup(group.id)}
+                        />
                       </DropdownListItem>
                     ))}
                   </>
