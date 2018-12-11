@@ -36,7 +36,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken } from 'polished';
+import { darken, rgba } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -117,22 +117,24 @@ const NavigationItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: bold;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
   outline: none;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 
   &:not(:last-child) {
     margin-right: 40px;
   }
 
   &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
     color: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 
   &:focus,
@@ -152,23 +154,24 @@ const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: bold;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: 0 20px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 
   &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
     color: ${(props) => props.theme.colorMain};
     fill: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 
   &:hover,
@@ -421,10 +424,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-            <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="1" />
-            </RightItem>
-
             {!authUser &&
               <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
