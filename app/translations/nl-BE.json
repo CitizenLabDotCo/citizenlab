@@ -1151,7 +1151,6 @@
   "app.containers.admin.project.permissions.permissionsSubtitle": "Mensen met toegang tot dit project",
   "app.containers.admin.project.permissions.permissionsTitle": "Beheer de toegang tot het project",
   "app.containers.app.navbar.admin": "Beheer platform",
-  "app.containers.app.navbar.allProjects": "Alle projecten",
   "app.containers.app.navbar.editProfile": "Bewerk profiel",
   "app.containers.app.navbar.login": "Inloggen",
   "app.containers.app.navbar.logoAltText": "{tenantName} - logo",
