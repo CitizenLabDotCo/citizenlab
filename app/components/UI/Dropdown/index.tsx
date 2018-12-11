@@ -9,7 +9,7 @@ const timeout = 200;
 const Container: any = styled(clickOutside)`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: 3px;
   background-color: #fff;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
   z-index: 5;
