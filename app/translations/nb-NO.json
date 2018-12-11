@@ -28,6 +28,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Lagre",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Dine preferanser for informasjonskapsler",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Verktøy",
+  "app.components.CustomFieldsForm.mustBeANumber": "",
   "app.components.CustomFieldsForm.optional": "(valgfri)",
   "app.components.CustomFieldsForm.requiredError": "Dette feltet er påkrevd",
   "app.components.ErrorBoundary.genericError": "En feil oppsto og vi kan ikke vise dette innholdet. Vennligst prøv igjen.",
