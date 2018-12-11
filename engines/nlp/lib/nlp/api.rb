@@ -54,7 +54,6 @@ module NLP
         headers: {'Content-Type' => 'application/json'} 
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
-      byebug
     end
 
   end
