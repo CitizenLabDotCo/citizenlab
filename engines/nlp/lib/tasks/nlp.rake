@@ -20,10 +20,10 @@ namespace :nlp do
     data = []
     [true, false].each do |reverse_query|
       [true, false].each do |filter_by_city|
-        ['nominatim', 'google'].each do |geocoder|
-          [true, false].each do |case_sensitive|
-            [true].each do |include_phrases|
-              [true, false].each do |picky_poi|
+        [true, false].each do |picky_poi|
+          [true].each do |include_phrases|
+            [true, false].each do |case_sensitive|
+              ['nominatim', 'google'].each do |geocoder|
                 Tenant.pluck(:host).select do |host|
                   !host.include? 'localhost'
                 end.each do |host|
