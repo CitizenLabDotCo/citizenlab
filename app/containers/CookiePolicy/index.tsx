@@ -178,7 +178,7 @@ const LinkIcon = styled(Icon)`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-const CookiePolicy = (props: InjectedIntlProps) => {
+export const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
   return (
     <Container>
@@ -198,6 +198,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
               <FormattedMessage
                 tagName="p"
                 {...messages.changePreferences}
+                className="cookiePreferencesMessage"
                 values={{
                   changePreferencesButton: (
                     <StyledButton onClick={openConsentManager}>
@@ -273,7 +274,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
                 {...messages.cookiesList}
                 values={{
                   cookiesListButton: (
-                    <StyledButton onClick={openConsentManager}>
+                    <StyledButton onClick={openConsentManager} className="cookieList" >
                       {formatMessage(messages.cookiesListButtonText)}
                     </StyledButton>
                   )
@@ -285,18 +286,18 @@ const CookiePolicy = (props: InjectedIntlProps) => {
         </SContentContainer>
       </PageContent>
 
-        <PagesNavWrapper>
-          <PagesNav>
-            <SContentContainer>
-              {LEGAL_PAGES.map((pageSlug) => (
-                <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
-                  <FormattedMessage {...messages[`${pageSlug}PageName`]} />
-                  <LinkIcon name="chevron-right" />
-                </StyledLink>
-              ))}
-            </SContentContainer>
-          </PagesNav>
-        </PagesNavWrapper>
+      <PagesNavWrapper>
+        <PagesNav>
+          <SContentContainer>
+            {LEGAL_PAGES.map((pageSlug) => (
+              <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
+                <FormattedMessage {...messages[`${pageSlug}PageName`]} />
+                <LinkIcon name="chevron-right" />
+              </StyledLink>
+            ))}
+          </SContentContainer>
+        </PagesNav>
+      </PagesNavWrapper>
       }
 
       <Footer showCityLogoSection={false} />

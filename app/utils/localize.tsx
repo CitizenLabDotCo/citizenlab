@@ -25,9 +25,10 @@ export interface State {
   tenantLocales: Locale[];
 }
 
-export default function localize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
+export default function injectLocalize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
   return class Localized extends PureComponent<P, State> {
     subscriptions: Subscription[];
+    static displayName = `WithLocalize(${getDisplayName(Component)})`;
 
     constructor(props) {
       super(props);
@@ -78,4 +79,8 @@ export default function localize<P>(Component: React.ComponentType<P & InjectedL
       return null;
     }
   };
+}
+
+function getDisplayName(Component) {
+  return Component.displayName || Component.name || 'Component';
 }

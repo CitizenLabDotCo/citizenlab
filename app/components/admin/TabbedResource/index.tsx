@@ -113,7 +113,7 @@ type Props = {
     title: string | Multiloc,
     publicLink?: string,
   },
-  messages: {
+  messages?: {
     viewPublicResource: Message,
   },
   tabs?: TabProps[],
@@ -151,7 +151,7 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         <ResourceHeader className="e2e-resource-header">
           <Title>{showLabel(resource.title)}</Title>
 
-          {resource.publicLink &&
+          {resource.publicLink && messages &&
             <Button
               style="cl-blue"
               icon="eye"

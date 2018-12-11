@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox UI component renders correctly when checked 1`] = `
+.c0:not(.hasLabel) {
+  -webkit-flex: 0 0 22px;
+  -ms-flex: 0 0 22px;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.c0.hasLabel {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  -webkit-flex: 0 0 22px;
+  -ms-flex: 0 0 22px;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  border: solid 1px #aaa;
+  border-radius: 3px;
+  background: #fff;
+  background: #04884C;
+  border-color: #04884C;
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.15);
+}
+
+.c1:hover {
+  border-color: #04884C;
+}
+
+.c1:focus {
+  outline-style: solid;
+  outline-width: 3px;
+  outline-color: #aaa;
+}
+
+.c2 {
+  fill: #fff;
+  height: 55%;
+}
+
+.c3 {
+  color: #596B7A;
+  padding: 5px 0 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+<Checkbox
+  label="test"
+  onChange={[MockFunction]}
+  size="22px"
+  value={true}
+>
+  <Checkbox__Container
+    className="undefined hasLabel e2e-checkbox"
+    size="22px"
+  >
+    <div
+      className="undefined hasLabel e2e-checkbox c0"
+      size="22px"
+    >
+      <Checkbox__CheckboxContainer
+        checked={true}
+        innerRef={[Function]}
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        size="22px"
+        tabIndex={0}
+      >
+        <div
+          checked={true}
+          className="c1"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          size="22px"
+          tabIndex={0}
+        >
+          <Checkbox__CheckmarkIcon
+            name="checkmark"
+          >
+            <Icon
+              className="c2"
+              name="checkmark"
+            >
+              <svg
+                className="c2"
+                height="100%"
+                viewBox="0 0 19 15"
+              >
+                <path
+                  d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
+                  fillRule="evenodd"
+                />
+              </svg>
+            </Icon>
+          </Checkbox__CheckmarkIcon>
+        </div>
+      </Checkbox__CheckboxContainer>
+      <Checkbox__Label
+        onClick={[Function]}
+      >
+        <label
+          className="c3"
+          onClick={[Function]}
+        >
+          test
+        </label>
+      </Checkbox__Label>
+    </div>
+  </Checkbox__Container>
+</Checkbox>
+`;
+
+exports[`Checkbox UI component renders correctly when unchecked 1`] = `
+.c0:not(.hasLabel) {
+  -webkit-flex: 0 0 22px;
+  -ms-flex: 0 0 22px;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.c0.hasLabel {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c1 {
+  -webkit-flex: 0 0 22px;
+  -ms-flex: 0 0 22px;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  color: #fff;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  cursor: pointer;
+  border: solid 1px #aaa;
+  border-radius: 3px;
+  background: #fff;
+  background: #fff;
+  border-color: #aaa;
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.15);
+}
+
+.c1:hover {
+  border-color: #333;
+}
+
+.c1:focus {
+  outline-style: solid;
+  outline-width: 3px;
+  outline-color: #aaa;
+}
+
+.c2 {
+  color: #596B7A;
+  padding: 5px 0 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+<Checkbox
+  label="test"
+  onChange={[MockFunction]}
+  size="22px"
+  value={false}
+>
+  <Checkbox__Container
+    className="undefined hasLabel e2e-checkbox"
+    size="22px"
+  >
+    <div
+      className="undefined hasLabel e2e-checkbox c0"
+      size="22px"
+    >
+      <Checkbox__CheckboxContainer
+        checked={false}
+        innerRef={[Function]}
+        onClick={[Function]}
+        onKeyPress={[Function]}
+        size="22px"
+        tabIndex={0}
+      >
+        <div
+          checked={false}
+          className="c1"
+          onClick={[Function]}
+          onKeyPress={[Function]}
+          size="22px"
+          tabIndex={0}
+        />
+      </Checkbox__CheckboxContainer>
+      <Checkbox__Label
+        onClick={[Function]}
+      >
+        <label
+          className="c2"
+          onClick={[Function]}
+        >
+          test
+        </label>
+      </Checkbox__Label>
+    </div>
+  </Checkbox__Container>
+</Checkbox>
+`;
