@@ -113,7 +113,7 @@ type Props = {
     title: string | Multiloc,
     publicLink?: string,
   },
-  messages: {
+  messages?: {
     viewPublicResource: Message,
   },
   tabs?: TabProps[],

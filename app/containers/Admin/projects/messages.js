@@ -305,4 +305,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.draft',
     defaultMessage: 'Draft',
   },
+  addNewIdea: {
+    id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
+    defaultMessage: 'Add an idea',
+  },
 });

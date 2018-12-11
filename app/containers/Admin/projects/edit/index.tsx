@@ -9,20 +9,37 @@ import { projectByIdStream, IProjectData } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
+import Button from 'components/UI/Button';
+import IdeaButton from 'components/IdeaButton';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 import clHistory from 'utils/cl-router/history';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
 
-const StyledGoBackButton = styled(GoBackButton)`
-  margin-top: 10px;
+const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: absolute;
+  top: 50px;
+  right: 0;
+
+  & > *:not(:last-child) {
+    margin-right: 15px;
+  }
+`;
+
+const TopContainer = styled.div`
+  width: 100%;
   margin-bottom: 30px;
+  position: relative;
 `;
 
 type Props = {
@@ -143,22 +160,36 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     const { formatMessage } = this.props.intl;
 
     if (loaded) {
-      const { children } = this.props;
+      const { children, location: { pathname } } = this.props;
       const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
-          publicLink: project ? `/projects/${project.attributes.slug}` : ''
-        },
-        messages: {
-          viewPublicResource: messages.viewPublicProject,
         },
         tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
       };
-
-      return(
+      console.log(/^.*\/ideas$/.test(pathname));
+      return (
         <>
-          <StyledGoBackButton onClick={this.goBack} />
+          <TopContainer>
+            <GoBackButton onClick={this.goBack} />
+            <ActionsContainer>
+              {/^.*\/ideas$/.test(pathname) &&
+                <Button
+                  linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
+                  text={formatMessage(messages.addNewIdea)}
+                />
+              }
+              <Button
+                style="cl-blue"
+                icon="eye"
+                linkTo={project ? `/projects/${project.attributes.slug}` : ''}
+                circularCorners={false}
+              >
+                <FormattedMessage {...messages.viewPublicProject} />
+              </Button>
+            </ActionsContainer>
+          </TopContainer>
           <TabbedResource {...tabbedProps}>
             {childrenWithExtraProps}
           </TabbedResource>
