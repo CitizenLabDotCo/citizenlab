@@ -460,6 +460,7 @@
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "Wir konnten Ihre Änderungen nicht speichern, bitte versuchen Sie es erneut.",
   "app.containers.AdminPage.ProjectDescription.saveSuccessLabel": "Gespeichert!",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Ihre Änderungen wurden gespeichert.",
+  "app.containers.AdminPage.ProjectEdit.addNewIdea": "",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "{orgName, select, München {Fügen Sie einen Bezirk oder ein Projekt hinzu} other {Fügen Sie ein Projekt hinzu}}",
   "app.containers.AdminPage.ProjectEdit.addUser": "Moderator hinzufügen",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Total budget",

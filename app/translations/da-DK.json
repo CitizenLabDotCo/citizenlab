@@ -460,6 +460,7 @@
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "Vi kunne ikke gemme dine ændringer, prøv venligst igen.",
   "app.containers.AdminPage.ProjectDescription.saveSuccessLabel": "Gemt!",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Dine ændringer er blevet gemt.",
+  "app.containers.AdminPage.ProjectEdit.addNewIdea": "",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Tilføj et projekt",
   "app.containers.AdminPage.ProjectEdit.addUser": "Tilføj moderator",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Total budget",
