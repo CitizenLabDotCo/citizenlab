@@ -169,6 +169,7 @@ const Container: any = styled.div`
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
+      font-weight: ${(props: any) => props.fontWeight || 'normal'}
     }
     ${StyledIcon} {
       flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
@@ -284,6 +285,7 @@ type Props = {
   borderColor?: string;
   borderHoverColor?: string;
   borderThickness?: string;
+  fontWeight?: string;
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
@@ -334,7 +336,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, inABanner } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, inABanner } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -387,6 +389,7 @@ class Button extends PureComponent<Props, State> {
         borderColor={borderColor}
         borderHoverColor={borderHoverColor}
         borderThickness={borderThickness}
+        fontWeight={fontWeight}
         minWidth={minWidth}
       >
         {linkTo ? (

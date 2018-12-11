@@ -9,7 +9,6 @@ import NotificationMenu from './components/NotificationMenu';
 import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
@@ -36,7 +35,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken } from 'polished';
+import { darken, rgba } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -117,22 +116,20 @@ const NavigationItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: bold;
+  padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
   outline: none;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 
   &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
     color: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 
   &:focus,
@@ -145,30 +142,30 @@ const NavigationDropdown = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  margin-right: 40px;
 `;
 
 const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: bold;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: 0 40px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 
   &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
     color: ${(props) => props.theme.colorMain};
     fill: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 
   &:hover,
@@ -265,29 +262,6 @@ const RightItem: any = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 15px;
   `}
-`;
-
-const StyledIdeaButton = styled(IdeaButton)`
-  a.Button {
-    border: solid 2px ${colors.separation} !important;
-    padding-left: 18px;
-    padding-right: 18px;
-
-    &:hover,
-    &:focus {
-      border-color: ${darken(0.2, colors.separation)} !important;
-    }
-
-    ${media.smallerThanMinTablet`
-      padding-left: 10px;
-      padding-right: 10px;
-    `}
-  }
-
-  .buttonText {
-    font-size: ${fontSizes.base}px !important;
-    color: ${(props) => props.theme.colorMain};
-  }
 `;
 
 const LoginLink = styled(Link)`
@@ -421,10 +395,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
           </Left>
 
           <Right>
-            <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="1" />
-            </RightItem>
-
             {!authUser &&
               <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
