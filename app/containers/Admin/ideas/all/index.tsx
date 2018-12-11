@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import IdeaManager from 'components/admin/IdeaManager';
+import IdeaButton from 'components/IdeaButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -88,6 +89,7 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
           <HeaderTitle>
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
+          <IdeaButton />
         </HeaderContainer>
         <PageWrapper>
           <IdeaManager />
