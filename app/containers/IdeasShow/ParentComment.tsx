@@ -210,7 +210,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
         if (comment.relationships.parent.data.id === commentId) return true;
         return false;
       }).map(comment => comment.id));
-      const showTranslateButton = !commentBodyMultiloc[locale];
+      const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
 
       // Hide parent comments that are deleted with no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
@@ -222,7 +222,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
           <CommentsWithReplyBoxContainer>
             <CommentsContainer className={`${showCommentForm && 'hasReplyBox'}`}>
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
-                {!commentDeleted &&
+                {comment.attributes.publication_status === 'published' &&
                   <>
                     <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                     <StyledAuthor
@@ -233,7 +233,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       message={messages.parentCommentAuthor}
                     />
                     <CommentBody
-                      commentBody={commentBodyMultiloc}
+                      commentBody={comment.attributes.body_multiloc}
                       editionMode={this.state.editionMode}
                       onCommentSave={this.onCommentSave}
                       onCancelEdition={this.onCancelEdition}
