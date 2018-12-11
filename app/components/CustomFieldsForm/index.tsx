@@ -148,7 +148,6 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
     const fieldNames = get(schema, `${locale}.properties`, null) as object;
     const requiredErrorMessage = this.props.intl.formatMessage(messages.requiredError);
     const mustBeANumberMessage = this.props.intl.formatMessage(messages.mustBeANumber);
-    console.log(formData);
 
     errors['__errors'] = [];
 
