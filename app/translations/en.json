@@ -1151,7 +1151,6 @@
   "app.containers.admin.project.permissions.permissionsSubtitle": "People that can access this project",
   "app.containers.admin.project.permissions.permissionsTitle": "Manage the access to your project",
   "app.containers.app.navbar.admin": "Admin",
-  "app.containers.app.navbar.allProjects": "All projects",
   "app.containers.app.navbar.editProfile": "Edit profile",
   "app.containers.app.navbar.login": "Log in",
   "app.containers.app.navbar.logoAltText": "{tenantName} - logo",
