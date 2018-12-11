@@ -140,18 +140,6 @@ const StyledPBNavbarButton = styled(PBNavbarButton)`
 // TODO support different tooltip positions, this includes a quickfix to show
 // tooltip content on smaller than max tablets
 const StyledIdeaButton = styled(IdeaButton)`
-  height: 100%;
-  & * {
-    height: 100%;
-  }
-  a {
-    height: 100%;
-    border-radius: 0;
-  }
-  .buttonText {
-    display: inline-flex;
-    align-items: center;
-  }
   margin-left: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -313,6 +301,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {projectType === 'continuous' && projectMethod === 'ideation' &&
                   <StyledIdeaButton
                     projectId={project.id}
+                    inABanner
                   />
                 }
               </ProjectNavbarItems>
