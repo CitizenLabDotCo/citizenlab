@@ -11,6 +11,7 @@ import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
+import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -253,9 +254,9 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class LandingPage extends PureComponent<Props, State> {
   componentDidMount() {
@@ -301,7 +302,7 @@ class LandingPage extends PureComponent<Props, State> {
       const tenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }}/>);
+      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }} />);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
@@ -322,6 +323,7 @@ class LandingPage extends PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
+                <AvatarBubbles />
                 {authUser &&
                   <SIdeaButton
                     style="primary-inverse"
