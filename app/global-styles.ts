@@ -1,103 +1,151 @@
 import { injectGlobal } from 'styled-components';
 import { fontSize } from 'utils/styleUtils';
 import {
-  visueltLightTTF,
-  visueltLightWOFF,
-  visueltLightWOFF2,
-  visueltLightItalicTTF,
-  visueltLightItalicWOFF,
-  visueltLightItalicWOFF2,
-  visueltRegularTTF,
-  visueltRegularWOFF,
-  visueltRegularWOFF2,
-  visueltRegularItalicTTF,
-  visueltRegularItalicWOFF,
-  visueltRegularItalicWOFF2,
-  visueltMediumTTF,
-  visueltMediumWOFF,
-  visueltMediumWOFF2,
-  visueltMediumItalicTTF,
-  visueltMediumItalicWOFF,
-  visueltMediumItalicWOFF2,
-  visueltBoldTTF,
-  visueltBoldWOFF,
-  visueltBoldWOFF2,
-  visueltBoldItalicTTF,
-  visueltBoldItalicWOFF,
-  visueltBoldItalicWOFF2
+  larsseitThinTTF,
+  larsseitThinWOFF,
+  larsseitThinWOFF2,
+  larsseitThinItalicTTF,
+  larsseitThinItalicWOFF,
+  larsseitThinItalicWOFF2,
+  larsseitLightTTF,
+  larsseitLightWOFF,
+  larsseitLightWOFF2,
+  larsseitLightItalicTTF,
+  larsseitLightItalicWOFF,
+  larsseitLightItalicWOFF2,
+  larsseitRegularTTF,
+  larsseitRegularWOFF,
+  larsseitRegularWOFF2,
+  larsseitRegularItalicTTF,
+  larsseitRegularItalicWOFF,
+  larsseitRegularItalicWOFF2,
+  larsseitMediumTTF,
+  larsseitMediumWOFF,
+  larsseitMediumWOFF2,
+  larsseitMediumItalicTTF,
+  larsseitMediumItalicWOFF,
+  larsseitMediumItalicWOFF2,
+  larsseitBoldTTF,
+  larsseitBoldWOFF,
+  larsseitBoldWOFF2,
+  larsseitBoldItalicTTF,
+  larsseitBoldItalicWOFF,
+  larsseitBoldItalicWOFF2,
+  larsseitExtraBoldTTF,
+  larsseitExtraBoldWOFF,
+  larsseitExtraBoldWOFF2,
+  larsseitExtraBoldItalicTTF,
+  larsseitExtraBoldItalicWOFF,
+  larsseitExtraBoldItalicWOFF2
 } from './fonts';
 
 export default injectGlobal`
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltLightWOFF2}) format('woff2'),
-          url(${visueltLightWOFF}) format('woff'),
-          url(${visueltLightTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitThinWOFF2}) format('woff2'),
+          url(${larsseitThinWOFF}) format('woff'),
+          url(${larsseitThinTTF}) format('truetype');
+    font-style: normal;
+    font-weight: 200;
+  }
+
+  @font-face {
+    font-family: 'larsseit';
+    src:  url(${larsseitThinItalicWOFF2}) format('woff2'),
+          url(${larsseitThinItalicWOFF}) format('woff'),
+          url(${larsseitThinItalicTTF}) format('truetype');
+    font-style: italic;
+    font-weight: 200;
+  }
+
+  @font-face {
+    font-family: 'larsseit';
+    src:  url(${larsseitLightWOFF2}) format('woff2'),
+          url(${larsseitLightWOFF}) format('woff'),
+          url(${larsseitLightTTF}) format('truetype');
     font-style: normal;
     font-weight: 300;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltLightItalicWOFF2}) format('woff2'),
-          url(${visueltLightItalicWOFF}) format('woff'),
-          url(${visueltLightItalicTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitLightItalicWOFF2}) format('woff2'),
+          url(${larsseitLightItalicWOFF}) format('woff'),
+          url(${larsseitLightItalicTTF}) format('truetype');
     font-style: italic;
     font-weight: 300;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltRegularWOFF2}) format('woff2'),
-          url(${visueltRegularWOFF}) format('woff'),
-          url(${visueltRegularTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitRegularWOFF2}) format('woff2'),
+          url(${larsseitRegularWOFF}) format('woff'),
+          url(${larsseitRegularTTF}) format('truetype');
     font-style: normal;
     font-weight: 400;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltRegularItalicWOFF2}) format('woff2'),
-          url(${visueltRegularItalicWOFF}) format('woff'),
-          url(${visueltRegularItalicTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitRegularItalicWOFF2}) format('woff2'),
+          url(${larsseitRegularItalicWOFF}) format('woff'),
+          url(${larsseitRegularItalicTTF}) format('truetype');
     font-style: italic;
     font-weight: 400;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltMediumWOFF2}) format('woff2'),
-          url(${visueltMediumWOFF}) format('woff'),
-          url(${visueltMediumTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitMediumWOFF2}) format('woff2'),
+          url(${larsseitMediumWOFF}) format('woff'),
+          url(${larsseitMediumTTF}) format('truetype');
     font-style: normal;
     font-weight: 500;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltMediumItalicWOFF2}) format('woff2'),
-          url(${visueltMediumItalicWOFF}) format('woff'),
-          url(${visueltMediumItalicTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitMediumItalicWOFF2}) format('woff2'),
+          url(${larsseitMediumItalicWOFF}) format('woff'),
+          url(${larsseitMediumItalicTTF}) format('truetype');
     font-style: italic;
     font-weight: 500;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltBoldWOFF2}) format('woff2'),
-          url(${visueltBoldWOFF}) format('woff'),
-          url(${visueltBoldTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitBoldWOFF2}) format('woff2'),
+          url(${larsseitBoldWOFF}) format('woff'),
+          url(${larsseitBoldTTF}) format('truetype');
     font-style: normal;
     font-weight: 600;
   }
 
   @font-face {
-    font-family: 'visuelt';
-    src:  url(${visueltBoldItalicWOFF2}) format('woff2'),
-          url(${visueltBoldItalicWOFF}) format('woff'),
-          url(${visueltBoldItalicTTF}) format('truetype');
+    font-family: 'larsseit';
+    src:  url(${larsseitBoldItalicWOFF2}) format('woff2'),
+          url(${larsseitBoldItalicWOFF}) format('woff'),
+          url(${larsseitBoldItalicTTF}) format('truetype');
     font-style: italic;
     font-weight: 600;
+  }
+
+  @font-face {
+    font-family: 'larsseit';
+    src:  url(${larsseitExtraBoldWOFF2}) format('woff2'),
+          url(${larsseitExtraBoldWOFF}) format('woff'),
+          url(${larsseitExtraBoldTTF}) format('truetype');
+    font-style: normal;
+    font-weight: 800;
+  }
+
+  @font-face {
+    font-family: 'larsseit';
+    src:  url(${larsseitExtraBoldItalicWOFF2}) format('woff2'),
+          url(${larsseitExtraBoldItalicWOFF}) format('woff'),
+          url(${larsseitExtraBoldItalicTTF}) format('truetype');
+    font-style: italic;
+    font-weight: 800;
   }
 
   html {
@@ -113,7 +161,7 @@ export default injectGlobal`
   html,
   body {
     background-color: #fff;
-    font-family: 'visuelt', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: ${fontSize('small')};
     height: 100%;
     position: relative;
