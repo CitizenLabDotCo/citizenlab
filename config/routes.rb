@@ -174,6 +174,8 @@ Rails.application.routes.draw do
       resources :baskets, except: [:index]
       resources :clusterings
 
+      resources :avatars, only: [:index]
+
       match 'manifest.json', to: 'manifest#show', via: :get
       
     end
