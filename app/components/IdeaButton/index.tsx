@@ -22,7 +22,14 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  &.bannerStyle {
+    height: 100%;
+    & * {
+      height: 100%;
+    }
+  }
+`;
 
 const StyledIcon = styled(Icon)`
   height: 2rem;
@@ -54,6 +61,7 @@ interface InputProps {
   fullWidth?: boolean;
   padding?: string;
   className?: string;
+  inABanner?: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -79,7 +87,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
 
     if (show) {
       let { style, size, fullWidth } = this.props;
-      const { padding } = this.props;
+      const { padding, inABanner } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
 
       style = (style || 'primary');
@@ -87,7 +95,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
       fullWidth = (fullWidth || false);
 
       return (
-        <Container className={className}>
+        <Container className={`${className} ${inABanner ? 'bannerStyle' : ''}`}>
           <Tooltip
             enabled={!enabled && !!disabledReason}
             content={
@@ -112,6 +120,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
               text={startAnIdeaText}
               disabled={!enabled}
               fullWidth={fullWidth}
+              inABanner={inABanner}
             />
           </Tooltip>
         </Container>

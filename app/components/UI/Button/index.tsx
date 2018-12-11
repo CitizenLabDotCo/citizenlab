@@ -219,6 +219,20 @@ const Container: any = styled.div`
   a.disabled {
     pointer-events: none;
   }
+  &.bannerStyle {
+    height: 100%;
+    & * {
+      height: 100%;
+    }
+    a {
+      height: 100%;
+      border-radius: 0;
+    }
+    .buttonText {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
 `;
 
 const SpinnerWrapper = styled.div`
@@ -275,6 +289,7 @@ type Props = {
   width?: string;
   type?: string;
   spinnerColor?: string;
+  inABanner?: boolean;
 };
 
 type State = {};
@@ -319,7 +334,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, inABanner } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -364,7 +379,7 @@ class Button extends PureComponent<Props, State> {
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
-        className={`${className} ${buttonClassnames}`}
+        className={`${className} ${buttonClassnames} ${inABanner ? 'bannerStyle' : ''}`}
         textColor={textColor}
         textHoverColor={textHoverColor}
         bgColor={bgColor}
