@@ -86,8 +86,7 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: #000;
-  opacity: 0.4;
+  background: linear-gradient(0deg, rgba(22, 58, 125, 0.9), rgba(22, 58, 125, 0.9));
   position: absolute;
   top: 0;
   bottom: 0;
@@ -120,8 +119,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 980px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 50px;
-  line-height: 58px;
+  font-size: 35px;
+  line-height: normal;
   font-weight: 600;
   text-align: center;
   margin: 0;
@@ -142,8 +141,8 @@ const HeaderSubtitle: any = styled.h2`
   width: 100%;
   max-width: 580px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 26px;
+  font-size: ${fontSizes.xl}px;
+  line-height: normal;
   font-weight: 300;
   hyphens: auto;
   max-width: 980px;
@@ -323,7 +322,7 @@ class LandingPage extends PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
-                <AvatarBubbles />
+                {/* <AvatarBubbles /> */}
                 {authUser &&
                   <SIdeaButton
                     style="primary-inverse"
@@ -332,10 +331,12 @@ class LandingPage extends PureComponent<Props, State> {
                 }
                 {!authUser && <Button
                   style="primary-inverse"
-                  size="2"
+                  textColor="#000"
+                  fontWeight="bold"
+                  padding="10px 30px"
+                  size="1"
                   onClick={this.goToSignUpPage}
                   text={<FormattedMessage {...messages.createAccount} />}
-                  circularCorners={false}
                 />}
               </HeaderContent>
             </Header>
