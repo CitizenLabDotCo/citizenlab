@@ -1151,7 +1151,6 @@
   "app.containers.admin.project.permissions.permissionsSubtitle": "{orgName, select, München {Personen mit Zugang zum Bezirk oder Projekt} other {Personen, die Zugang zu diesem Projekt haben}}",
   "app.containers.admin.project.permissions.permissionsTitle": "{orgName, select, München {Verwalten des Zugangs zu Bezirk oder Projekt} other {Verwalten des Zugangs zu Ihrem Projekt}}",
   "app.containers.app.navbar.admin": "Administrator",
-  "app.containers.app.navbar.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.app.navbar.editProfile": "Profil bearbeiten",
   "app.containers.app.navbar.login": "Anmelden",
   "app.containers.app.navbar.logoAltText": "{tenantName} - Logo",
