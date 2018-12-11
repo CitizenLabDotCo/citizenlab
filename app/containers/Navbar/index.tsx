@@ -35,7 +35,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { css, } from 'styled-components';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -208,29 +208,6 @@ const ProjectsListItem = styled(Link)`
   }
 `;
 
-const ProjectsListFooter = styled(Link)`
-  width: 100%;
-  color: #fff;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  text-align: center;
-  text-decoration: none;
-  padding: 15px 15px;
-  cursor: pointer;
-  background: ${(props) => props.theme.colorMain};
-  border-radius: 5px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  transition: all 80ms ease-out;
-
-  &:hover,
-  &:focus {
-    color: #fff;
-    background: ${(props) => darken(0.15, props.theme.colorMain)};
-    text-decoration: none;
-  }
-`;
-
 const Right = styled.div`
   display: flex;
   align-items: center;
@@ -374,11 +351,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                           </ProjectsListItem>
                         ))}
                       </>
-                    )}
-                    footer={(
-                      <ProjectsListFooter to={'/projects'}>
-                        <FormattedMessage {...messages.allProjects} />
-                      </ProjectsListFooter>
                     )}
                   />
                 </NavigationDropdown>
