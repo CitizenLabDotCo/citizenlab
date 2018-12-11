@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.optional',
     defaultMessage: '(optional)',
   },
+  mustBeANumber: {
+    id: 'app.components.CustomFieldsForm.mustBeANumber',
+    defaultMessage: 'This field expects a number',
+  },
 });
