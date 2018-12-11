@@ -49,7 +49,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps { }
 
-class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
+export class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> {
   render() {
     const {
       chartFill,
@@ -121,8 +121,10 @@ class BarChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
 
 const BarChartByCategoryWithHoCs = injectIntl<Props>(withTheme(BarChartByCategory as any) as any);
 
-export default (inputProps: InputProps) => (
+const WrappedBarChartByCategory = (inputProps: InputProps) => (
   <GetSerieFromStream {...inputProps}>
     {serie => <BarChartByCategoryWithHoCs {...serie} {...inputProps} />}
   </GetSerieFromStream>
 );
+
+export default WrappedBarChartByCategory;
