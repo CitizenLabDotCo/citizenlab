@@ -85,8 +85,7 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: #000;
-  opacity: 0.4;
+  background: linear-gradient(0deg, rgba(22, 58, 125, 0.9), rgba(22, 58, 125, 0.9));
   position: absolute;
   top: 0;
   bottom: 0;
