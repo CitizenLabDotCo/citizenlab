@@ -1151,7 +1151,6 @@
   "app.containers.admin.project.permissions.permissionsSubtitle": "Personnes qui peuvent accéder à ce projet",
   "app.containers.admin.project.permissions.permissionsTitle": "Qui peut accéder à votre projet ?",
   "app.containers.app.navbar.admin": "Panneau admin",
-  "app.containers.app.navbar.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
   "app.containers.app.navbar.editProfile": "Editer profil",
   "app.containers.app.navbar.login": "Se connecter",
   "app.containers.app.navbar.logoAltText": "{tenantName} - logo",

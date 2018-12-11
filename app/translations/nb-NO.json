@@ -1151,7 +1151,6 @@
   "app.containers.admin.project.permissions.permissionsSubtitle": "Folk som har tilgang til dette prosjektet",
   "app.containers.admin.project.permissions.permissionsTitle": "Administrer tilgangen til prosjektet ditt",
   "app.containers.app.navbar.admin": "Administrator",
-  "app.containers.app.navbar.allProjects": "Alle prosjekter",
   "app.containers.app.navbar.editProfile": "Rediger profil",
   "app.containers.app.navbar.login": "Logg inn",
   "app.containers.app.navbar.logoAltText": "{tenantName} - logoen",
