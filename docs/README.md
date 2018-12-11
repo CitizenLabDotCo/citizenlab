@@ -1,5 +1,10 @@
 # Changelog
 
+## 2018-12-11-2
+
+### Fixed
+- A required registration field of type number no longer blocks users on step 2 of the registration flow
+
 ## 2018-12-11
 
 ### Fixed
