@@ -24,7 +24,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -320,7 +320,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                   }
                 </ColumnsContainer>
 
-                <MediaQuery maxWidth={1024}>
+                <MediaQuery maxWidth={viewportWidths.largeTablet}>
                   {(matches) => {
                     if (matches) {
                       return (

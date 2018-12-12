@@ -23,6 +23,7 @@ import { IOption, UploadFile } from 'typings';
 // style
 import { media, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -179,7 +180,7 @@ export default class NewIdeaForm extends PureComponent<Props, State> {
           onSubmit={this.handleIdeaFormOutput}
         />
 
-        <MediaQuery maxWidth={1024}>
+        <MediaQuery maxWidth={viewportWidths.largeTablet}>
           {(matches) => {
             if (matches) {
               return (

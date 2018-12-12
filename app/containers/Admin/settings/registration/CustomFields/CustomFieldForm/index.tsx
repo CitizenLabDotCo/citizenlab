@@ -54,8 +54,6 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
   render() {
     const { isSubmitting, mode, errors, isValid, touched, builtInField } = this.props;
 
-    console.log(this.props);
-
     return (
       <Form>
         <Section>
