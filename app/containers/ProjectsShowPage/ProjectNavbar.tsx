@@ -301,7 +301,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {projectType === 'continuous' && projectMethod === 'ideation' &&
                   <StyledIdeaButton
                     projectId={project.id}
-                    inABanner
+                    fullHeight
                   />
                 }
               </ProjectNavbarItems>
