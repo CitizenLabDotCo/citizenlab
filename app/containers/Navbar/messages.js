@@ -46,7 +46,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.projectsModeration',
     defaultMessage: 'Projects Moderation',
   },
-
   pageIdeas: {
     id: 'app.containers.app.navbar.pageIdeas',
     defaultMessage: 'Ideas',
@@ -58,6 +57,10 @@ export default defineMessages({
   pageProjects: {
     id: 'app.containers.app.navbar.pageProjects',
     defaultMessage: 'Projects',
+  },
+  allProjects: {
+    id: 'app.containers.app.navbar.pageProjects',
+    defaultMessage: 'All projects',
   },
   pageInformation: {
     id: 'app.containers.app.navbar.pageInformation',
