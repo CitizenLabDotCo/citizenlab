@@ -43,7 +43,7 @@ import { IModalInfo } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
-  color: #FC3C2D;
+  color: ${colors.clRed2};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
@@ -52,7 +52,7 @@ const IdeaBudget = styled.div`
   top: 15px;
   left: 19px;
   border-radius: 5px;
-  border: solid 1px #FC3C2D;
+  border: solid 1px ${colors.clRed2};
   background: rgba(255, 255, 255, 0.9);
 `;
 

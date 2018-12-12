@@ -39,5 +39,5 @@ interface IStreamAvatarsParams extends IStreamParams {
 
 // TODO don't cache that
 export function avatarsStream(streamParams: IStreamAvatarsParams | null = null) {
-  return streams.get<IAvatars>({ apiEndpoint, ...streamParams, cacheStream: true });
+  return streams.get<IAvatars>({ apiEndpoint, ...streamParams, cacheStream: false });
 }
