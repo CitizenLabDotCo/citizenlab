@@ -140,6 +140,12 @@ const NavigationItem = styled(Link)`
   }
 `;
 
+const NavigationItemText = styled.span`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const NavigationDropdown = styled.div`
   display: flex;
   align-items: stretch;
@@ -226,7 +232,8 @@ const ProjectsListFooter = styled(Link)`
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
-   &:hover,
+
+  &:hover,
   &:focus {
     color: #fff;
     background: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -245,7 +252,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 30px;
+  padding: 0 15px;
 
   &.login {
     border-top: 6px solid transparent;
@@ -371,7 +378,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
             <NavigationItems>
               <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
-                <FormattedMessage {...messages.pageOverview} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageOverview} />
+                </NavigationItemText>
               </NavigationItem>
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
@@ -381,10 +390,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                     aria-haspopup="true"
                     onClick={this.toggleProjectsDropdown}
                   >
-                    <FormattedMessage {...messages.pageProjects} />
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageProjects} />
+                    </NavigationItemText>
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
-
                   <Dropdown
                     top="68px"
                     opened={projectsDropdownOpened}
@@ -412,11 +422,15 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
               }
 
               <NavigationItem to="/ideas" activeClassName="active">
-                <FormattedMessage {...messages.pageIdeas} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageIdeas} />
+                </NavigationItemText>
               </NavigationItem>
 
               <NavigationItem to="/pages/information" activeClassName="active">
-                <FormattedMessage {...messages.pageInformation} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageInformation} />
+                </NavigationItemText>
               </NavigationItem>
             </NavigationItems>
           </Left>
@@ -425,7 +439,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             {!authUser &&
               <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.logIn} />
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.logIn} />
+                  </NavigationItemText>
                 </LoginLink>
               </RightItem>
             }
@@ -438,7 +454,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   fullHeight
                   linkTo="/sign-up"
                 >
-                  <FormattedMessage {...messages.signUp} />
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.signUp} />
+                  </NavigationItemText>
                 </SignupButton>
               </RightItem>
             }

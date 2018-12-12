@@ -127,6 +127,7 @@ export const colors = {
   * Red that has a contrast ratio of >=4.5 on a white background
   */
   clRed: '#E52516',
+  clRed2: '#FC3C2D',
   /**
   * darker red than clRed for when we have a light red background (clRedErrorBackground)
   */
