@@ -26,7 +26,7 @@ interface State {
 export type GetAvatarsChildProps = IAvatars | undefined | null;
 
 export default class GetAvatars extends React.Component<Props, State> {
-  private inputProps$: BehaviorSubject<InputProps>;
+  private inputProps$: BehaviorSubject<Props>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -41,10 +41,28 @@ export default class GetAvatars extends React.Component<Props, State> {
 
     this.subscriptions = [
       this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ limit, context }) => context
-          ? avatarsStream({ queryParameters: { limit, context_type: context.type, context_id: context.id } }).observable
-          : avatarsStream({ queryParameters: { limit } }).observable)
+        distinctUntilChanged((prev, next) => {
+          const { children: prevChildren, ...prevWithoutChildren } = prev;
+          const { children: nextChildren, ...nextWithoutChildren } = next;
+          return isEqual(prevWithoutChildren, nextWithoutChildren);
+        }),
+        switchMap(({ limit, context }) => {
+          if (context) {
+            return avatarsStream({
+              queryParameters: {
+                limit,
+                context_type: context.type,
+                context_id: context.id
+              }
+            }).observable;
+          }
+
+          return avatarsStream({
+            queryParameters: {
+              limit
+            }
+          }).observable;
+        })
       ).subscribe((avatars) => this.setState({ avatars: (!isNilOrError(avatars) ? avatars : null) }))
     ];
   }
