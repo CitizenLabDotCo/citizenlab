@@ -118,7 +118,7 @@ const NavigationItem = styled(Link)`
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: normal;
-  padding: 0 35px;
+  padding: 0 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,7 +244,20 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 15px;
+  padding: 0 30px;
+
+  &.login {
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+
+    &:hover {
+      border-top: 6px solid ${(props) => rgba(props.theme.colorMain, .3)};
+    }
+  }
+
+  &.signup {
+    padding: 0;
+  }
 
   &.notification {
     ${media.smallerThanMinTablet`
@@ -257,7 +270,6 @@ const RightItem: any = styled.div`
     &:hover {
       background-color: ${(props) => rgba(props.theme.colorMain, .1)};
       color: ${(props) => props.theme.colorMain};
-      border-top-color: ${(props) => props.theme.colorMain};
     }
 
   }
@@ -418,8 +430,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {!authUser &&
-              <RightItem>
-                <SignupButton fontWeight="bold" fullHeight linkTo="/sign-up">
+              <RightItem className="signup">
+                <SignupButton
+                  padding="0 30px"
+                  fontWeight="bold"
+                  fullHeight
+                  linkTo="/sign-up"
+                >
                   <FormattedMessage {...messages.signUp} />
                 </SignupButton>
               </RightItem>
