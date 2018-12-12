@@ -21,9 +21,8 @@ import messages from './messages';
 import { IOption, UploadFile } from 'typings';
 
 // style
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
