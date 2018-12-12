@@ -232,7 +232,8 @@ const ProjectsListFooter = styled(Link)`
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
-   &:hover,
+
+  &:hover,
   &:focus {
     color: #fff;
     background: ${(props) => darken(0.15, props.theme.colorMain)};
@@ -251,7 +252,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 30px;
+  padding: 0 15px;
 
   &.login {
     border-top: 6px solid transparent;
