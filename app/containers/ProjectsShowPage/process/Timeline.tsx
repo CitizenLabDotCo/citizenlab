@@ -96,38 +96,25 @@ const HeaderSecondRow = styled.div`
 `;
 
 const HeaderLeftSection = styled.div`
-  flex-shrink: 1;
   flex-grow: 1;
-  flex-basis: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-shrink: 1;
+  flex-basis: 0;
   padding-top: 8px;
   padding-bottom: 8px;
-  border: solid 1px orange;
+  border: solid 2px orange;
 `;
 
 const HeaderRightSection = styled.div`
-  flex-shrink: 0;
   flex-grow: 0;
+  flex-shrink: 0;
   flex-basis: auto;
   display: flex;
   align-items: center;
-  border: solid 1px purple;
-`;
-
-const PhaseSummary = styled.div`
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: auto;
-  display: flex;
-  align-items: center;
-  border: solid 1px green;
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex-shrink: 0;
   flex-grow: 0;
+  flex-shrink: 0;
   flex-basis: 32px;
   width: 32px;
   height: 32px;
@@ -151,14 +138,13 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
+  width: 100%;
   height: 55px;
-  flex-shrink: 1;
-  flex-grow: 1;
-  flex-basis: auto;
+  flex: 1;
   display: flex;
   align-items: center;
   flex-direction: row;
-  border: solid 1px red;
+  border: solid 2px red;
 
   ${media.smallerThanMinTablet`
     min-height: 80px;
@@ -174,11 +160,6 @@ const HeaderTitle = styled.h2`
   font-size: ${fontSizes.large}px;
   line-height: 25px;
   font-weight: 600;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-break: break-word;
-  hyphens: auto;
   margin: 0;
   margin-right: 20px;
   padding: 0;
@@ -534,7 +515,7 @@ export default class Timeline extends PureComponent<Props, State> {
               <HeaderRows>
                 <HeaderFirstRow>
                   <HeaderLeftSection>
-                    <PhaseSummary>
+                    {/* <PhaseSummary> */}
                       {isSelected &&
                         <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
                           <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
@@ -561,7 +542,7 @@ export default class Timeline extends PureComponent<Props, State> {
                           )}
                         </MobileDate>
                       </HeaderTitleWrapper>
-                    </PhaseSummary>
+                    {/* </PhaseSummary> */}
                   </HeaderLeftSection>
 
                   <HeaderRightSection>
