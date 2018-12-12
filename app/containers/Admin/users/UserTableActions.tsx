@@ -114,13 +114,18 @@ const DropdownListItemText = styled.div`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 `;
 
-const DropdownListItem = styled.button`
+const DropdownListItem = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
@@ -370,6 +375,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                   <>
                     {groupsList.map((group) => (
                       <DropdownListItem
+                        role="button"
                         key={group.id}
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"

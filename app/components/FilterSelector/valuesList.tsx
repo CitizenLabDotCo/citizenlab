@@ -19,6 +19,11 @@ const ListItemText = styled.div`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 `;
 
 const ListItem = styled.button`

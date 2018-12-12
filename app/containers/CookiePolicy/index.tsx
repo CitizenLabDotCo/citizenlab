@@ -178,7 +178,7 @@ const LinkIcon = styled(Icon)`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-const CookiePolicy = (props: InjectedIntlProps) => {
+export const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   return (
@@ -199,6 +199,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
               <FormattedMessage
                 tagName="p"
                 {...messages.changePreferences}
+                className="cookiePreferencesMessage"
                 values={{
                   changePreferencesButton: (
                     <StyledButton onClick={openConsentManager}>
@@ -274,7 +275,7 @@ const CookiePolicy = (props: InjectedIntlProps) => {
                 {...messages.cookiesList}
                 values={{
                   cookiesListButton: (
-                    <StyledButton onClick={openConsentManager}>
+                    <StyledButton onClick={openConsentManager} className="cookieList" >
                       {formatMessage(messages.cookiesListButtonText)}
                     </StyledButton>
                   )

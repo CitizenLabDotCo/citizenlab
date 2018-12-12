@@ -1,5 +1,17 @@
 # Changelog
 
+## 2018-12-11-2
+
+### Fixed
+- A required registration field of type number no longer blocks users on step 2 of the registration flow
+
+## 2018-12-11
+
+### Fixed
+- Loading an idea page with a deleted comment no longer results in an error being shown
+- Assigning a first bedget to a PB project as a new user no longer shows an infinite spinner
+- Various dropdowns, most famously users group selection dropdown, no longer overlap menu items
+
 ## 2018-12-07
 
 ### Fixed

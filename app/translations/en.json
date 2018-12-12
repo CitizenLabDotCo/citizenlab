@@ -28,6 +28,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Save",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Your cookie preferences",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tools",
+  "app.components.CustomFieldsForm.mustBeANumber": "This field expects a number",
   "app.components.CustomFieldsForm.optional": "(optional)",
   "app.components.CustomFieldsForm.requiredError": "This field is required",
   "app.components.ErrorBoundary.genericError": "An error occured and we cannot display this content. Please try again.",

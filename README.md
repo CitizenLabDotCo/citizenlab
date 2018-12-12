@@ -37,6 +37,28 @@ If you want to manually run these tests, you will need a browserstack user/key c
 BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
 ```
 
+## Unit and integration tests
+
+These tests are run on each PR. Jest will consider every file with the extention `.test.(ts|tsx)` a test.
+
+To manually run them once
+```
+npm test 
+```
+
+To run the tests in watcher mode :
+```
+npm run test:watch 
+```
+Quick reminder of the watcher commands: a to run all tests, enter to re-run, u to update a snapshot (make sure the changes are as expected before pushing new snapshots).
+
+If tests run crashes you might have to increase the number of watchable files.
+
+On linux this means running : 
+```
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+```
+
 ## IDE setup
 
 Your text editor of choice should support [Editorconfig][editorconfig] and [Typescript][typescript].

@@ -28,6 +28,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Opslaan",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Je cookievoorkeuren",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Tools",
+  "app.components.CustomFieldsForm.mustBeANumber": "",
   "app.components.CustomFieldsForm.optional": "(optioneel)",
   "app.components.CustomFieldsForm.requiredError": "Dit veld is verplicht",
   "app.components.ErrorBoundary.genericError": "Er is een fout opgetreden en we kunnen inhoud niet weergeven. Probeer het opnieuw.",

@@ -51,8 +51,6 @@ const ContainerInner = styled.div`
 const Content: any = styled.div`
   width: ${(props: Props) => props.width};
   max-height: ${(props: any) => props.maxHeight};
-  display: flex;
-  flex-direction: column;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;
