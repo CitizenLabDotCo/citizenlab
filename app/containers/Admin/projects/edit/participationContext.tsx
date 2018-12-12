@@ -504,7 +504,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                   <Label>
                     <FormattedMessage {...messages.surveyService} />
                   </Label>
-                  {['typeform', 'survey_monkey'].map((provider) => (
+                  {['typeform', 'survey_monkey', 'google_forms'].map((provider) => (
                     <Radio
                       onChange={this.handleSurveyProviderChange}
                       currentValue={survey_service}
