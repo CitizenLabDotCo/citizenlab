@@ -18,9 +18,13 @@ export default defineMessages({
     id: 'app.containers.app.navbar.startIdea',
     defaultMessage: 'Start an idea',
   },
-  login: {
-    id: 'app.containers.app.navbar.login',
+  logIn: {
+    id: 'app.containers.app.navbar.logIn',
     defaultMessage: 'Log in',
+  },
+  signUp: {
+    id: 'app.containers.app.navbar.signUp',
+    defaultMessage: 'Sign up',
   },
   register: {
     id: 'app.containers.app.navbar.register',

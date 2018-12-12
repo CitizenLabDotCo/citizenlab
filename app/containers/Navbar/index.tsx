@@ -12,6 +12,7 @@ import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
+import Button from 'components/UI/Button';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -233,6 +234,7 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
 `;
 
 const RightItem: any = styled.div`
@@ -267,7 +269,18 @@ const LoginLink = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: bold;
+  padding: 0;
+
+  &:hover {
+    color: ${colors.text};
+  }
+`;
+
+const SignupButton = styled(Button)`
+  color: #fff;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base}px;
   padding: 0;
 
   &:hover {
@@ -397,8 +410,16 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             {!authUser &&
               <RightItem className="login">
                 <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.login} />
+                  <FormattedMessage {...messages.logIn} />
                 </LoginLink>
+              </RightItem>
+            }
+
+            {!authUser &&
+              <RightItem>
+                <SignupButton fontWeight="bold" fullHeight linkTo="/sign-up">
+                  <FormattedMessage {...messages.signUp} />
+                </SignupButton>
               </RightItem>
             }
 
