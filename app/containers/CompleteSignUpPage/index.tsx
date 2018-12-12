@@ -129,8 +129,6 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
       const authError = includes(location.pathname, 'authentication-error');
       const registrationCompletedAt = (authUser ? authUser.attributes.registration_completed_at : null);
 
-      console.log(authUser);
-
       if (!authError && (!isObject(authUser) || (isObject(authUser) && isString(registrationCompletedAt)))) {
         this.redirect();
         return null;

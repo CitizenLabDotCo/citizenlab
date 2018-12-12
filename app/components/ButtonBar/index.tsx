@@ -4,6 +4,7 @@ import MediaQuery from 'react-responsive';
 // style
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 const TIMEOUT = 600;
 
@@ -60,7 +61,7 @@ interface State extends GlobalState {}
 export default class ButtonBar extends React.PureComponent<Props, State> {
   render() {
     return (
-      <MediaQuery minWidth={1024}>
+      <MediaQuery minWidth={viewportWidths.largeTablet}>
         {(matches) => {
           if (matches) {
             return (
