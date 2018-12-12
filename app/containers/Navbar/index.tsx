@@ -35,7 +35,7 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled, { css, } from 'styled-components';
+import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
@@ -117,8 +117,8 @@ const NavigationItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: bold;
-  padding: 0 40px;
+  font-weight: normal;
+  padding: 0 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,15 +127,16 @@ const NavigationItem = styled(Link)`
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
 
-  &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
-    color: ${(props) => props.theme.colorMain};
-    border-top-color: ${(props) => props.theme.colorMain};
-  }
-
   &:focus,
   &:hover {
     color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+  }
+
+  &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
+    color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 `;
 
@@ -149,30 +150,32 @@ const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 40px;
+  padding: 0 35px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
 
-  &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
-    color: ${(props) => props.theme.colorMain};
-    fill: ${(props) => props.theme.colorMain};
-    border-top-color: ${(props) => props.theme.colorMain};
-  }
 
   &:hover,
   &:focus {
     color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
     fill: ${(props) => props.theme.colorMain};
+  }
+
+  &.active {
+    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
+    color: ${(props) => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => props.theme.colorMain};
   }
 `;
 
@@ -242,7 +245,20 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-left: 30px;
+  padding: 0 30px;
+
+  &.login {
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+
+    &:hover {
+      border-top: 6px solid ${(props) => rgba(props.theme.colorMain, .3)};
+    }
+  }
+
+  &.signup {
+    padding: 0;
+  }
 
   &.notification {
     ${media.smallerThanMinTablet`
@@ -250,14 +266,13 @@ const RightItem: any = styled.div`
     `}
   }
 
-  &.addIdea {
-    padding-left: 0px;
+  &.usermenu {
+    &:focus,
+    &:hover {
+      background-color: ${(props) => rgba(props.theme.colorMain, .1)};
+      color: ${(props) => props.theme.colorMain};
+    }
 
-    ${(props: any) => props.loggedIn && css`
-      ${media.smallerThanMinTablet`
-        display: none;
-      `}
-    `}
   }
 
   ${media.smallerThanMinTablet`
@@ -416,8 +431,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {!authUser &&
-              <RightItem>
-                <SignupButton fontWeight="bold" fullHeight linkTo="/sign-up">
+              <RightItem className="signup">
+                <SignupButton
+                  padding="0 30px"
+                  fontWeight="bold"
+                  fullHeight
+                  linkTo="/sign-up"
+                >
                   <FormattedMessage {...messages.signUp} />
                 </SignupButton>
               </RightItem>

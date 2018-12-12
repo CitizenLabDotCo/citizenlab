@@ -24,6 +24,7 @@ import messages from '../../messages';
 const Container = styled.div`
   display: flex;
   position: relative;
+  height: 100%;
 
   * {
     user-select: none;
@@ -32,7 +33,7 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${colors.label};
-  margin-right: 5px;
+  margin-right: 12px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   transition: all 100ms ease-out;
@@ -56,21 +57,17 @@ const OpenDropdownButton = styled.button`
 
   &:hover,
   &:focus {
+
     ${StyledUserName} {
       color: #000;
     }
 
     ${StyledAvatar} {
-      img {
-        border-color: #000;
-      }
-
       svg {
         fill: ${darken(0.2, colors.label)};
       }
     }
   }
-
   &:focus {
     outline: none;
   }
@@ -147,7 +144,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             />
             <StyledAvatar
               userId={userId}
-              size="30px"
+              size="45px"
             />
           </OpenDropdownButton>
 
@@ -155,7 +152,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             id="e2e-user-menu-dropdown"
             width="220px"
             mobileWidth="220px"
-            top="42px"
+            top="62px"
             right="-5px"
             mobileRight="-5px"
             opened={opened}
