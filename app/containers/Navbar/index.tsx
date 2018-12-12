@@ -242,7 +242,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-left: 30px;
+  padding: 0 15px;
 
   &.notification {
     ${media.smallerThanMinTablet`
@@ -250,14 +250,14 @@ const RightItem: any = styled.div`
     `}
   }
 
-  &.addIdea {
-    padding-left: 0px;
+  &.usermenu {
+    &:focus,
+    &:hover {
+      background-color: ${(props) => rgba(props.theme.colorMain, .1)};
+      color: ${(props) => props.theme.colorMain};
+      border-top-color: ${(props) => props.theme.colorMain};
+    }
 
-    ${(props: any) => props.loggedIn && css`
-      ${media.smallerThanMinTablet`
-        display: none;
-      `}
-    `}
   }
 
   ${media.smallerThanMinTablet`
