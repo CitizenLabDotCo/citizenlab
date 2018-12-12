@@ -1,8 +1,4 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
-
-// components
-import { AvatarImage, AvatarContainer } from 'components/Avatar';
 
 // resources TODO
 import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
@@ -17,10 +13,15 @@ import styled, { css } from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const AvatarWrapper = styled.div`
-  padding: 2px;
-  background: #fff;
+  border: 2px solid #fff;
   border-radius: 50%;
   display: flex;
+`;
+
+const AvatarImage: any = styled.img`
+  height: ${(props: any) => props.size}px;
+  width: ${(props: any) => props.size}px;
+  border-radius: 50%;
 `;
 
 const Container: any = styled.div`
@@ -58,13 +59,18 @@ const SSpan: any = styled.div`
   font-weight: 700;
 `;
 
+/* inputProps
+* limit: the number of avatars you need, you'll get one extra bubble with the remaining count, defaults to 3
+* context: extra info if you use the component in a specific context
+* size: image size, each bubble will be 4px bigger because of margins.
+*/
 interface InputProps {
-  limit?: number; // the number of avatars you need, you'll get one extra bubble with the remaining count
-  context?: { // extra info if you use the component in a specific context
+  limit?: number;
+  context?: {
     type: 'project' | 'group';
     id: string;
   };
-  size?: number; // image size, each bubble will be 4px bigger because of margins.
+  size?: number;
 }
 
 interface DataProps {
@@ -76,7 +82,7 @@ interface State { }
 
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { avatars, size, limit } = this.props;
+    const { avatars, size } = this.props;
     if (avatars) {
       const avatarList = avatars.data;
       const avatarCount = avatarList.length;
@@ -94,21 +100,17 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             if (index === avatarCount) {
               return (
                 <AvatarWrapper key={index}>
-                  <AvatarContainer>
                     <SSpan size={definedSize} >+&nbsp;{userCount - index}</SSpan>
-                  </AvatarContainer>
                 </AvatarWrapper>
               );
             }
             return (
               <AvatarWrapper key={index}>
-                <AvatarContainer>
-                  <AvatarImage
-                    src={avatarList[index].attributes.avatar[imageSize]}
-                    alt={this.props.intl.formatMessage(messages.avatarAltText)}
-                    pxSize={`${definedSize}px`}
-                  />
-                </AvatarContainer>
+                <AvatarImage
+                  src={avatarList[index].attributes.avatar[imageSize]}
+                  alt={this.props.intl.formatMessage(messages.avatarAltText)}
+                  size={definedSize}
+                />
               </AvatarWrapper>
             );
           })}
