@@ -460,6 +460,7 @@
   "app.containers.AdminPage.ProjectDescription.saveErrorMessage": "We konden je gegevens niet opslaan. Probeer opnieuw alstublieft.",
   "app.containers.AdminPage.ProjectDescription.saveSuccessLabel": "Opgeslagen!",
   "app.containers.AdminPage.ProjectDescription.saveSuccessMessage": "Je wijzigingen werden opgeslagen.",
+  "app.containers.AdminPage.ProjectEdit.addNewIdea": "",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Voeg een project toe",
   "app.containers.AdminPage.ProjectEdit.addUser": "Voeg een moderator toe",
   "app.containers.AdminPage.ProjectEdit.amountPerCitizen": "Totaalbedrag",
