@@ -36,7 +36,7 @@ module ParticipationContext
           message: "Not a valid SurveyMonkey embed URL"
         }
         survey.validates :survey_embed_url, if: [:survey?, :google_forms?], format: { 
-          with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*/viewform?embedded=true\z/,
+          with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true\z/,
           message: "Not a valid Google Forms embed URL"
         }
       end
