@@ -35,7 +35,7 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled, { css, } from 'styled-components';
+import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
@@ -117,8 +117,8 @@ const NavigationItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: bold;
-  padding: 0 40px;
+  font-weight: normal;
+  padding: 0 35px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -128,7 +128,7 @@ const NavigationItem = styled(Link)`
   border-bottom: 6px solid transparent;
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
+    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
     color: ${(props) => props.theme.colorMain};
     border-top-color: ${(props) => props.theme.colorMain};
   }
@@ -136,6 +136,7 @@ const NavigationItem = styled(Link)`
   &:focus,
   &:hover {
     color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 `;
 
@@ -149,13 +150,13 @@ const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: bold;
+  font-weight: normal;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 40px;
+  padding: 0 35px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
@@ -163,7 +164,7 @@ const NavigationDropdownItem = styled.button`
   border-bottom: 6px solid transparent;
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .1)};
+    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
     color: ${(props) => props.theme.colorMain};
     fill: ${(props) => props.theme.colorMain};
     border-top-color: ${(props) => props.theme.colorMain};
@@ -172,6 +173,7 @@ const NavigationDropdownItem = styled.button`
   &:hover,
   &:focus {
     color: ${(props) => props.theme.colorMain};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
     fill: ${(props) => props.theme.colorMain};
   }
 `;
