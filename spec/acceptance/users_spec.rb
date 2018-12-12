@@ -186,9 +186,7 @@ resource "Users" do
       end
       example "Get all users as non-admin", document: false do
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(status).to eq 401
       end
     end
 
