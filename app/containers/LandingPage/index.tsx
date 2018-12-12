@@ -322,7 +322,7 @@ class LandingPage extends PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
-                {/* <AvatarBubbles /> */}
+                <AvatarBubbles size={40} />
                 {authUser &&
                   <SIdeaButton
                     style="primary-inverse"

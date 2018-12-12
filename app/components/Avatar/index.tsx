@@ -20,7 +20,7 @@ import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container: any = styled.div`
+ export const AvatarContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.pxSize};
   width: ${(props: any) => props.pxSize};
   height: ${(props: any) => props.pxSize};
@@ -35,11 +35,11 @@ const Container: any = styled.div`
   }
 `;
 
-const AvatarImage: any = styled.img`
+export const AvatarImage: any = styled.img`
   width: ${(props: any) => props.pxSize};
   height: ${(props: any) => props.pxSize};
   border-radius: 50%;
-  border: 1px solid #ccc;
+  border: 2px solid #fff;
   transition: all 100ms ease-out;
 
   &.clickable:hover {
@@ -119,14 +119,16 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     const { avatarSrc, userName } = this.state;
     const isClickable = (this.props.onClick && isFunction(this.props.onClick));
 
-    const { hideIfNoAvatar, size } = this.props;
+    const { hideIfNoAvatar } = this.props;
+    let { size } = this.props;
+    size = avatarSrc ? size : '30px';
 
     if (hideIfNoAvatar && !avatarSrc) {
       return null;
     }
 
     return (
-      <Container
+      <AvatarContainer
         className={`${className} ${isClickable ? 'clickable' : ''}`}
         onClick={this.handleOnClick}
         pxSize={size}
@@ -146,7 +148,7 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             pxSize={size}
           />
         )}
-      </Container>
+      </AvatarContainer>
     );
   }
 }
