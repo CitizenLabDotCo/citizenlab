@@ -23,6 +23,7 @@ jobs:
           paths:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
+      - run: npx jest --clearCache
       - run:
           name: Run tests with JUnit as reporter
           environment:
