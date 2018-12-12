@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { IAvatarData, avatarsStream } from 'services/avatars';
+import { IAvatars, avatarsStream } from 'services/avatars';
 import { isNilOrError } from 'utils/helperUtils';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
@@ -20,10 +20,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  avatars: IAvatarData[] | undefined | null;
+  avatars: IAvatars | undefined | null;
 }
 
-export type GetAvatarsChildProps = IAvatarData[] | undefined | null;
+export type GetAvatarsChildProps = IAvatars | undefined | null;
 
 export default class GetAvatars extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -37,13 +37,15 @@ export default class GetAvatars extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    this.inputProps$ = new BehaviorSubject(this.props);
+
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
         switchMap(({ limit, context }) => context
           ? avatarsStream({ queryParameters: { limit, context_type: context.type, context_id: context.id } }).observable
           : avatarsStream({ queryParameters: { limit } }).observable)
-      ).subscribe((avatars) => this.setState({ avatars: (!isNilOrError(avatars) ? avatars.data : null) }))
+      ).subscribe((avatars) => this.setState({ avatars: (!isNilOrError(avatars) ? avatars : null) }))
     ];
   }
 

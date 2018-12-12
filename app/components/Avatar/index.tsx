@@ -20,7 +20,7 @@ import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container: any = styled.div`
+ export const AvatarContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.pxSize};
   width: ${(props: any) => props.pxSize};
   height: ${(props: any) => props.pxSize};
@@ -35,7 +35,7 @@ const Container: any = styled.div`
   }
 `;
 
-const AvatarImage: any = styled.img`
+export const AvatarImage: any = styled.img`
   width: ${(props: any) => props.pxSize};
   height: ${(props: any) => props.pxSize};
   border-radius: 50%;
@@ -126,7 +126,7 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return (
-      <Container
+      <AvatarContainer
         className={`${className} ${isClickable ? 'clickable' : ''}`}
         onClick={this.handleOnClick}
         pxSize={size}
@@ -146,7 +146,7 @@ export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             pxSize={size}
           />
         )}
-      </Container>
+      </AvatarContainer>
     );
   }
 }
