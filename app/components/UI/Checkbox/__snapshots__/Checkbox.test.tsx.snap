@@ -78,15 +78,16 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
   value={true}
 >
   <Checkbox__Container
-    className="undefined hasLabel e2e-checkbox"
+    className="undefined hasLabel"
     size="22px"
   >
     <div
-      className="undefined hasLabel e2e-checkbox c0"
+      className="undefined hasLabel c0"
       size="22px"
     >
       <Checkbox__CheckboxContainer
         checked={true}
+        className="e2e-checkbox checked"
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
@@ -95,7 +96,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
       >
         <div
           checked={true}
-          className="c1"
+          className="e2e-checkbox checked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
           size="22px"
@@ -210,15 +211,16 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
   value={false}
 >
   <Checkbox__Container
-    className="undefined hasLabel e2e-checkbox"
+    className="undefined hasLabel"
     size="22px"
   >
     <div
-      className="undefined hasLabel e2e-checkbox c0"
+      className="undefined hasLabel c0"
       size="22px"
     >
       <Checkbox__CheckboxContainer
         checked={false}
+        className="e2e-checkbox unchecked"
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
@@ -227,7 +229,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
       >
         <div
           checked={false}
-          className="c1"
+          className="e2e-checkbox unchecked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
           size="22px"
