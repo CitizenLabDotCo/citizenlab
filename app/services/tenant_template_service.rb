@@ -9,6 +9,7 @@ class TenantTemplateService
 
 
   def apply_template template_name, is_path=false
+    start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     template = resolve_template(template_name, is_path)
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
@@ -29,6 +30,11 @@ class TenantTemplateService
             if field_value
               id, ref_class = obj_to_id_and_class[field_value]
               model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
+            end
+          elsif field_name.end_with?('_timediff')
+            if field_value && field_value.kind_of?(Numeric)
+              time = start_of_day + field_value.hours
+              model.send("#{field_name.chomp '_timediff'}=", time)
             end
           elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
