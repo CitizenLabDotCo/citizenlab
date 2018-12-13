@@ -272,7 +272,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
       return (
-        <Container className={`${className} ${isArchived ? 'archived' : ''}`}>
+        <Container className={`${className} e2e-project-card ${isArchived ? 'archived' : ''}`}>
           <ProjectImageContainer>
             <ProjectImagePlaceholder>
               <ProjectImagePlaceholderIcon name="project" />
