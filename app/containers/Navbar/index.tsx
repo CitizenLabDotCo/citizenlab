@@ -117,7 +117,7 @@ const NavigationItem = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: normal;
+  font-weight: 500;
   padding: 0 30px;
   display: flex;
   align-items: center;
@@ -129,13 +129,12 @@ const NavigationItem = styled(Link)`
 
   &:focus,
   &:hover {
-    color: ${(props) => props.theme.colorMain};
+    color: inherit;
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 
   &.active {
     background-color: ${(props) => rgba(props.theme.colorMain, .05)};
-    color: ${(props) => props.theme.colorMain};
     border-top-color: ${(props) => props.theme.colorMain};
   }
 `;
@@ -156,7 +155,7 @@ const NavigationDropdownItem = styled.button`
   color: ${colors.label};
   fill: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: normal;
+  font-weight: 500;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
@@ -172,15 +171,12 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &:focus {
-    color: ${(props) => props.theme.colorMain};
+    color: inherit;
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
-    fill: ${(props) => props.theme.colorMain};
   }
 
   &.active {
     background-color: ${(props) => rgba(props.theme.colorMain, .05)};
-    color: ${(props) => props.theme.colorMain};
-    fill: ${(props) => props.theme.colorMain};
     border-top-color: ${(props) => props.theme.colorMain};
   }
 `;
