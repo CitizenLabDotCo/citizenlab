@@ -75,6 +75,7 @@ export type Props = {
   label?: string | JSX.Element | null | undefined;
   size?: 'small' | 'normal' | 'large';
   onChange: (event: React.FormEvent<any>) => void;
+  className?: string;
 };
 
 type State = {};
@@ -87,8 +88,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const className = this.props['className'];
-    const { value, disabled, label } = this.props;
+    const { value, disabled, label, className } = this.props;
 
     return (
       <Container className={`${className} ${label && 'hasLabel'}`}>

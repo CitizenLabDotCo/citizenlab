@@ -41,8 +41,8 @@ export default class Unauthenticated extends React.PureComponent {
   render() {
     return (
       <Container>
-        <Button onClick={this.goToLogin}><FormattedMessage {...messages.login} /></Button>
-        <RegisterLink onClick={this.goToRegister}><FormattedMessage {...messages.register} /></RegisterLink>
+        <Button onClick={this.goToLogin} className="e2e-login-button"><FormattedMessage {...messages.login} /></Button>
+        <RegisterLink onClick={this.goToRegister} className="e2e-register-button"><FormattedMessage {...messages.register} /></RegisterLink>
       </Container>
     );
   }

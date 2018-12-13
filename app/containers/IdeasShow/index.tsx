@@ -828,7 +828,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
     if (element) {
-      element.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
     }
   }
 
@@ -1012,7 +1016,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                     }}
                   </GetMachineTranslation>
                   :
-                  <IdeaTitle>{ideaTitle}</IdeaTitle>
+                  <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
                 }
               </Header>
             </HeaderWrapper>

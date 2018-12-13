@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import bowser from 'bowser';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
@@ -86,6 +87,7 @@ export default class PBNavbarButton extends PureComponent<Props, State> {
         <DropdownWrapper>
           <Dropdown
             top="-5px"
+            right={bowser.msie ? '-5px' : 'auto'}
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={
