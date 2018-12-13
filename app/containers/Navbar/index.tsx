@@ -249,16 +249,15 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 30px;
 
-  &.login {
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
+  // &.login {
+  //   border-top: 6px solid transparent;
+  //   border-bottom: 6px solid transparent;
 
-    &:hover {
-      border-top: 6px solid ${(props) => rgba(props.theme.colorMain, .3)};
-    }
-  }
+  //   &:hover {
+  //     border-top: 6px solid ${(props) => rgba(props.theme.colorMain, .3)};
+  //   }
+  // }
 
   &.signup {
     padding: 0;
@@ -289,19 +288,9 @@ const RightItem: any = styled.div`
   `}
 `;
 
-const LoginLink = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  font-weight: 500;
-  padding: 0;
+const LogInButton = NavigationItem.extend``;
 
-  &:hover {
-    color: ${colors.text};
-  }
-`;
-
-const SignupButton = styled(Button)`
+const SignUpButton = styled(Button)`
   color: #fff;
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
@@ -439,18 +428,23 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
           <Right>
             {!authUser &&
+
               <RightItem className="login">
-                <LoginLink to="/sign-in" id="e2e-login-link">
+                <LogInButton
+                  id="e2e-login-link"
+                  to="/sign-in"
+                  activeClassName="active"
+                >
                   <NavigationItemText>
                     <FormattedMessage {...messages.logIn} />
                   </NavigationItemText>
-                </LoginLink>
+                </LogInButton>
               </RightItem>
             }
 
             {!authUser &&
               <RightItem className="signup">
-                <SignupButton
+                <SignUpButton
                   padding="0 30px"
                   fontWeight="500"
                   fullHeight
@@ -459,7 +453,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   <NavigationItemText>
                     <FormattedMessage {...messages.signUp} />
                   </NavigationItemText>
-                </SignupButton>
+                </SignUpButton>
               </RightItem>
             }
 
