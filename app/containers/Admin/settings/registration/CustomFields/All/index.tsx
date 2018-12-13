@@ -107,6 +107,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
         <FeatureFlag name="user_custom_fields">
           <ButtonWrapper>
             <Button
+              className="e2e-add-custom-field-btn"
               style="cl-blue"
               circularCorners={false}
               icon="plus-circle"
@@ -126,12 +127,14 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                 <SortableRow
                   key={field.id}
                   id={field.id}
+                  className="e2e-custom-registration-field-row"
                   index={index}
                   lastItem={lastItem}
                   moveRow={this.handleDragRow}
                   dropRow={this.handleDropRow}
                 >
                   <Toggle
+                    className={`e2e-custom-registration-field-toggle ${field.attributes.enabled ? 'enabled' : 'disabled'}`}
                     value={field.attributes.enabled}
                     onChange={this.handleOnEnabledToggle(field)}
                   />
@@ -143,11 +146,22 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     }
                     <Buttons>
                       {!isBuiltInField(field) &&
-                        <Button onClick={this.handleOnDeleteClick(field.id)} style="text" circularCorners={false} icon="delete">
+                        <Button
+                          className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                          onClick={this.handleOnDeleteClick(field.id)}
+                          style="text"
+                          icon="delete"
+                        >
                           <FormattedMessage {...messages.deleteButtonLabel} />
                         </Button>
                       }
-                      <Button linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`} style="secondary" circularCorners={false} icon="edit">
+
+                      <Button
+                        className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                        linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
+                        style="secondary"
+                        icon="edit"
+                      >
                         <FormattedMessage {...messages.editButtonLabel} />
                       </Button>
                     </Buttons>

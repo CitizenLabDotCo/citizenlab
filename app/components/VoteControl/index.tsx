@@ -501,7 +501,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           active={myVoteMode === 'up'}
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
-          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'}`}
+          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
           size={size}
           enabled={upvotingEnabled}
         >

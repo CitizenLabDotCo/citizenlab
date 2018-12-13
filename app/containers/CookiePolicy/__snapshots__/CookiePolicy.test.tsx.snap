@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CookiePolicy /> renders correctly 1`] = `
-<CookiePolicy__Container>
+<CookiePolicy__Container
+  className="e2e-page-cookie-policy"
+>
   <HelmetWrapper
     defer={true}
     encodeSpecialCharacters={true}
@@ -224,7 +226,6 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
       </CookiePolicy__SContentContainer>
     </CookiePolicy__PagesNav>
   </CookiePolicy__PagesNavWrapper>
-  }
   <Footer
     showCityLogoSection={false}
   />

@@ -685,6 +685,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               {!project ? (
                 <>
                   <Radio
+                    className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
                     currentValue={projectType}
                     value="timeline"
@@ -693,6 +694,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     label={<FormattedMessage {...messages.timeline} />}
                   />
                   <Radio
+                    className="e2e-project-type-continuous"
                     onChange={this.handeProjectTypeOnChange}
                     currentValue={projectType}
                     value="continuous"

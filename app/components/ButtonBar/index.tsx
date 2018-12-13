@@ -1,9 +1,10 @@
 import React from 'react';
+import MediaQuery from 'react-responsive';
 
 // style
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { viewportWidths } from 'utils/styleUtils';
 
 const TIMEOUT = 600;
 
@@ -17,10 +18,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
 
   &.buttonbar-enter {
     transform: translateY(64px);
@@ -59,20 +56,28 @@ interface GlobalState {
   processing: boolean;
 }
 
-interface State extends GlobalState { }
+interface State extends GlobalState {}
 
 export default class ButtonBar extends React.PureComponent<Props, State> {
-
   render() {
-
     return (
-      <CSSTransition classNames="buttonbar" timeout={TIMEOUT}>
-        <ButtonBarContainer>
-          <Container>
-            {this.props.children}
-          </Container>
-        </ButtonBarContainer>
-      </CSSTransition>
+      <MediaQuery minWidth={viewportWidths.largeTablet}>
+        {(matches) => {
+          if (matches) {
+            return (
+              <CSSTransition classNames="buttonbar" timeout={TIMEOUT}>
+                <ButtonBarContainer>
+                  <Container>
+                    {this.props.children}
+                  </Container>
+                </ButtonBarContainer>
+              </CSSTransition>
+            );
+          }
+
+          return null;
+        }}
+      </MediaQuery>
     );
   }
 }
