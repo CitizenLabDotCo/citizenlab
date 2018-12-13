@@ -7,8 +7,6 @@ import Link from 'utils/cl-router/Link';
 // components
 import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
-import AvatarBubbles from 'components/AvatarBubbles';
-import Button from 'components/UI/Button';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -23,17 +21,10 @@ import { LEGAL_PAGES } from 'services/pages';
 
 import eventEmitter from 'utils/eventEmitter';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-
 // style
 import styled from 'styled-components';
 import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-
-// analytics
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
 
 // typings
 import { Locale } from 'typings';
@@ -43,37 +34,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 0;
-`;
-
-const FooterBanner: any = styled.div`
-  background: ${props => props.theme.colorMain};
-  width: 100%;
-  height: 450px;
-  flex: 0 0 450px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  ${media.smallerThanMinTablet`
-    height: 400px;
-    flex: 0 0 400px;
-  `}
-
-   & p {
-    color: #fff;
-    font-size: ${fontSizes.xxxxl}px;
-    margin-bottom: 20px;
-    max-width: 500px;
-    text-align: center;
-  }
-`;
-
-const SAvatarBubbles = styled(AvatarBubbles)`
-  margin-bottom: 40px;
 `;
 
 const FirstLine = styled.div`
@@ -226,19 +186,11 @@ const PoweredBy = styled.a`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
-
 interface InputProps {
   showCityLogoSection?: boolean | undefined;
 }
 
-interface Props extends DataProps, InputProps { }
-
-interface ITracks {
-  clickCreateAccountCTA: ({ extra: { fromLocation: string } }) => void;
-}
+interface Props extends InputProps { }
 
 type State = {
   locale: Locale | null;
@@ -246,7 +198,7 @@ type State = {
   showCityLogoSection: boolean;
 };
 
-class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
+class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
   static defaultProps = {
@@ -283,15 +235,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  onClickCTA(fromLocation) {
-    return () => this.props.clickCreateAccountCTA({ extra: { fromLocation } });
-  }
-
   render() {
-    const fromLocation = window.location.href;
     const { locale, currentTenant, showCityLogoSection } = this.state;
     const { formatMessage } = this.props.intl;
-    const { authUser } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -306,23 +252,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
-
-          {!authUser && showCityLogoSection &&
-            <FooterBanner>
-              <FormattedMessage tagName="p" {...messages.join} />
-              <SAvatarBubbles />
-              <Button
-                style="primary-inverse"
-                textColor="#000"
-                fontWeight="bold"
-                padding="10px 30px"
-                size="1"
-                linkTo="/sign-up"
-                text={<FormattedMessage {...messages.createAccount} />}
-                onClick={this.onClickCTA(fromLocation)}
-              />
-            </FooterBanner>
-          }
           {showCityLogoSection &&
             <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
               <FirstLine id="hook-footer-logo">
@@ -373,10 +302,4 @@ class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
   }
 }
 
-const FooterWithInjectedIntl = injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(Footer));
-
-export default (inputProps: InputProps) => (
-  <GetAuthUser>
-    {authUser => (<FooterWithInjectedIntl authUser={authUser} {...inputProps} />)}
-  </GetAuthUser>
-);
+export default injectIntl<Props >(Footer);
