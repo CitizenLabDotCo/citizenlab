@@ -578,6 +578,7 @@ export default class Timeline extends PureComponent<Props, State> {
                         style="secondary"
                         padding="10px 6px"
                         disabled={selectedPhaseId === phases.data[0].id}
+                        aria-label={<FormattedMessage {...messages.goToPreviousPhase} />}
                       />
                       <NextPhaseButton
                         onClick={this.goToNextPhase}
@@ -585,6 +586,7 @@ export default class Timeline extends PureComponent<Props, State> {
                         style="secondary"
                         padding="10px 6px"
                         disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
+                        aria-label={<FormattedMessage {...messages.goToNextPhase} />}
                       />
                     </PhaseNavigation>
                   </HeaderRightSection>
