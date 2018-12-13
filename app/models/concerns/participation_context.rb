@@ -6,7 +6,7 @@ module ParticipationContext
   PARTICIPATION_METHODS = %w(information ideation survey budgeting)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
-  SURVEY_SERVICES = %w(typeform survey_monkey)
+  SURVEY_SERVICES = %w(typeform survey_monkey google_forms)
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
@@ -34,6 +34,10 @@ module ParticipationContext
         survey.validates :survey_embed_url, if: [:survey?, :survey_monkey?], format: { 
           with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
           message: "Not a valid SurveyMonkey embed URL"
+        }
+        survey.validates :survey_embed_url, if: [:survey?, :google_forms?], format: { 
+          with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true\z/,
+          message: "Not a valid Google Forms embed URL"
         }
       end
       with_options if: :budgeting? do |budgeting|
@@ -112,6 +116,10 @@ module ParticipationContext
 
   def survey_monkey?
     self.survey_service == 'survey_monkey'
+  end
+
+  def google_forms?
+    self.survey_service == 'google_forms'
   end
 
 end
