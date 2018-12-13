@@ -3,6 +3,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
+import bowser from 'bowser';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -116,7 +117,6 @@ const DropdownListItemText = styled.div`
   text-align: left;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  word-break: break-all;
   word-break: break-word;
   hyphens: auto;
 `;
@@ -369,6 +369,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             <DropdownWrapper>
               <Dropdown
                 top="10px"
+                left={bowser.msie ? '-5px' : 'auto'}
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
                 content={(
