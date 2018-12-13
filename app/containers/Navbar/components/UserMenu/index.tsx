@@ -197,7 +197,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
                 </HasPermission>
 
                 <DropdownListItem
-                  id="e2e-profile-profile-link"
+                  id="e2e-my-ideas-page-link"
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
                   style="text"

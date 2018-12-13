@@ -46,15 +46,6 @@ class Edit extends React.PureComponent<Props> {
     return <AreaForm {...props} />;
   }
 
-  initialValues = () => {
-    const { area } = this.props;
-
-    return !isNilOrError(area) && ({
-      title_multiloc: area.attributes.title_multiloc,
-      description_multiloc: area.attributes.description_multiloc
-    });
-  }
-
   render() {
     const { area } = this.props;
     return (
@@ -62,12 +53,17 @@ class Edit extends React.PureComponent<Props> {
         <SectionTitle>
           <FormattedMessage {...messages.editFormTitle} />
         </SectionTitle>
-        { area && <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-          validate={AreaForm.validate}
-        />}
+        {!isNilOrError(area) &&
+          <Formik
+            initialValues={{
+              title_multiloc: area.attributes.title_multiloc,
+              description_multiloc: area.attributes.description_multiloc
+            }}
+            render={this.renderFn}
+            onSubmit={this.handleSubmit}
+            validate={AreaForm.validate}
+          />
+        }
       </Section>
     );
   }

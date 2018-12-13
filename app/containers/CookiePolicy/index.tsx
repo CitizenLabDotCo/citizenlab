@@ -180,8 +180,9 @@ const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager
 
 export const CookiePolicy = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
+
   return (
-    <Container>
+    <Container className="e2e-page-cookie-policy">
       <Helmet>
         <title>{formatMessage(messages.cookiePolicyTitle)}</title>
         <meta name="description" content={formatMessage(messages.cookiePolicyDescription)} />
@@ -298,7 +299,6 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
           </SContentContainer>
         </PagesNav>
       </PagesNavWrapper>
-      }
 
       <Footer showCityLogoSection={false} />
     </Container>
