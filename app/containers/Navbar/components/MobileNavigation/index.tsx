@@ -34,7 +34,7 @@ const NavigationIcon = styled(Icon)`
   fill: #999;
   height: 24px;
   width: 24px;
-  .cl-icon-primary, .cl-icon-accent {
+  .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary {
     fill: #999;
   }
 `;
@@ -64,7 +64,7 @@ const NavigationItem = styled(Link)`
   &.active {
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
-      .cl-icon-primary, .cl-icon-accent {
+      .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary  {
         fill: ${(props) => props.theme.colorMain};
       }
     }
