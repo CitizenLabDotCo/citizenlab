@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Bijlagen",
   "app.containers.Projects.events": "Activiteiten",
   "app.containers.Projects.goBackToList": "Ga terug naar de lijst",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "Projecten",
   "app.containers.Projects.ideasTitle": "Ideeën binnen dit project",
   "app.containers.Projects.information": "Info",

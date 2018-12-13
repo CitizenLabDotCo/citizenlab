@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Vedhæftede filer",
   "app.containers.Projects.events": "Begivenheder",
   "app.containers.Projects.goBackToList": "Gå tilbage til listen",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "Projekter",
   "app.containers.Projects.ideasTitle": "Ideer til dette projekt",
   "app.containers.Projects.information": "Information",

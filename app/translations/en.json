@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Attachments",
   "app.containers.Projects.events": "Events",
   "app.containers.Projects.goBackToList": "Go back to the list",
+  "app.containers.Projects.goToNextPhase": "Go to next phase",
+  "app.containers.Projects.goToPreviousPhase": "Go to previous phase",
   "app.containers.Projects.header": "Projects",
   "app.containers.Projects.ideasTitle": "Ideas for this project",
   "app.containers.Projects.information": "Information",
