@@ -36,6 +36,7 @@ const StyledUserName = styled(UserName)`
   margin-right: 12px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
+  font-weight: 500;
   transition: all 100ms ease-out;
 
   ${media.smallerThanMinTablet`

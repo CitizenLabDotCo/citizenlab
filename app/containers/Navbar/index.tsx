@@ -287,7 +287,7 @@ const LoginLink = styled(Link)`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: bold;
+  font-weight: 500;
   padding: 0;
 
   &:hover {
@@ -446,7 +446,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
               <RightItem className="signup">
                 <SignupButton
                   padding="0 30px"
-                  fontWeight="bold"
+                  fontWeight="500"
                   fullHeight
                   linkTo="/sign-up"
                 >
