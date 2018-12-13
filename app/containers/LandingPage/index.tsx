@@ -50,6 +50,33 @@ const Container: any = styled.div`
   `}
 `;
 
+const FooterBanner: any = styled.div`
+  background: ${props => props.theme.colorMain};
+  width: 100%;
+  flex: 0 0 450px;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 90px 0;
+
+  ${media.smallerThanMinTablet`
+    height: 400px;
+    flex: 0 0 400px;
+  `}
+
+   & p {
+    color: #fff;
+    font-size: ${fontSizes.xxxxl}px;
+    margin-bottom: 20px;
+    max-width: 500px;
+    text-align: center;
+  }
+`;
+
 const Header = styled.div`
   width: 100%;
   height: 550px;
@@ -159,7 +186,7 @@ const HeaderSubtitle: any = styled.h2`
 `;
 
 const SAvatarBubbles = styled(AvatarBubbles)`
-  margin-bottom: 35px;
+  margin-bottom: 45px;
 `;
 
 const SIdeaButton = styled(IdeaButton)`
@@ -278,8 +305,12 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   goToSignUpPage = () => {
-    trackEvent(tracks.clickCreateAccountCTA);
+    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
     clHistory.push('/sign-up');
+  }
+
+  clickCreateAccountCTAFooter = () => {
+    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'footer' } } });
   }
 
   render() {
@@ -365,6 +396,20 @@ class LandingPage extends PureComponent<Props, State> {
                 </Section>
               </IdeasStyledContentContainer>
 
+              {!authUser &&
+                <FooterBanner>
+                  <p>{subtitle}</p>
+                  <SAvatarBubbles />
+                  <Button
+                    style="primary-inverse"
+                    padding="10px 30px"
+                    size="1"
+                    linkTo="/sign-up"
+                    text={<FormattedMessage {...messages.createAccount} />}
+                    onClick={this.clickCreateAccountCTAFooter}
+                  />
+                </FooterBanner>
+              }
               <Footer />
             </Content>
           </Container>
