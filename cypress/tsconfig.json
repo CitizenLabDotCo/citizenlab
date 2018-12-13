@@ -1,17 +1,3 @@
-// {
-//   "compilerOptions": {
-//     "strict": true,
-//     "baseUrl": "../node_modules",
-//     "target": "es5",
-//     "lib": ["es5", "es2015", "dom"],
-//     "types": ["cypress"]
-//   },
-//   "include": [
-//     "**/*.ts",
-//     "../node_modules/cypress"
-//   ]
-// }
-
 {
   "compilerOptions": {
     "target": "es5",
@@ -23,8 +9,13 @@
       "cypress"
     ]
   },
-  "include": [
+  "exclude": [
     "../node_modules",
+    "../app",
+    "../e2e",
+    "../internals"
+  ],
+  "include": [
     "../cypress/**/*.ts"
   ]
 }

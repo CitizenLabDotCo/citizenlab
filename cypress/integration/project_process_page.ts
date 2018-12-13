@@ -1,12 +1,7 @@
-function visitProject(projectName: string) {
-  cy.visit(`en-GB/projects/${projectName}/process`)
-    .get('.e2e-accept-cookies-btn').click();
-}
-
 describe('Project process page', () => {
   beforeEach(() => {
-    cy.visit('en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process')
-      .get('.e2e-accept-cookies-btn').click();
+    cy.visit('/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process');
+    cy.get('.e2e-accept-cookies-btn').click();
   });
 
   it('shows the page', () => {
