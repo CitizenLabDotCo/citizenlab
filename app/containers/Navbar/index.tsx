@@ -50,7 +50,7 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 999;
 
   &.citizen {
@@ -103,7 +103,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 78px;
+  height: 80px;
   display: flex;
   align-items: stretch;
   margin-left: 35px;
@@ -270,7 +270,12 @@ const RightItem: any = styled.div`
     `}
   }
 
-  &.usermenu {
+  &.usermenu,
+  &.notification {
+    &:hover {
+      cursor: pointer;
+    }
+
     &:focus,
     &:hover {
       background-color: ${(props) => rgba(props.theme.colorMain, .1)};

@@ -102,17 +102,12 @@ const HeaderContent = styled.div`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: -50px;
   padding-left: 30px;
   padding-right: 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  ${media.smallerThanMinTablet`
-    margin-top: -30px;
-  `}
 `;
 
 const HeaderTitle: any = styled.h1`
