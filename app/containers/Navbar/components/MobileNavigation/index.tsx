@@ -105,6 +105,15 @@ export default class MobileNavigation extends PureComponent<Props, State> {
           </NavigationLabel>
         </NavigationItem>
 
+        <NavigationItem to="/ideas" activeClassName="active">
+          <NavigationIconWrapper>
+            <NavigationIcon name="ideas" />
+          </NavigationIconWrapper>
+          <NavigationLabel>
+            <FormattedMessage {...messages.mobilePageIdeas} />
+          </NavigationLabel>
+        </NavigationItem>
+
       </Container>
     );
   }
