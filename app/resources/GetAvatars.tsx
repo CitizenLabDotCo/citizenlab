@@ -26,7 +26,7 @@ interface State {
 export type GetAvatarsChildProps = IAvatars | undefined | null;
 
 export default class GetAvatars extends React.Component<Props, State> {
-  private inputProps$: BehaviorSubject<Props>;
+  private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -37,15 +37,12 @@ export default class GetAvatars extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.inputProps$ = new BehaviorSubject(this.props);
+    const { limit, context } = this.props;
+    this.inputProps$ = new BehaviorSubject({ limit, context });
 
     this.subscriptions = [
       this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => {
-          const { children: prevChildren, ...prevWithoutChildren } = prev;
-          const { children: nextChildren, ...nextWithoutChildren } = next;
-          return isEqual(prevWithoutChildren, nextWithoutChildren);
-        }),
+        distinctUntilChanged((prev, next) => isEqual(prev, next)),
         switchMap(({ limit, context }) => {
           if (context) {
             return avatarsStream({
@@ -68,7 +65,8 @@ export default class GetAvatars extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    this.inputProps$.next(this.props);
+    const { limit, context } = this.props;
+    this.inputProps$.next({ limit, context });
   }
 
   componentWillUnmount() {
