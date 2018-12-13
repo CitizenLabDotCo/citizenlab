@@ -115,7 +115,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
       }
 
       return (
-        <Container className={className}>
+        <Container className={`${className} e2e-project-process-page`}>
           <Header projectSlug={slug} phaseId={selectedPhaseId} />
           <FirstRow>
             <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
