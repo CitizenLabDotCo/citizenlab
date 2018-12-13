@@ -99,6 +99,7 @@ resource "Pages" do
     with_options scope: :page do
       parameter :title_multiloc, "The title of the page, as a multiloc string", required: true
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
+      parameter :publication_status, "Whether the page is publicly accessible. Either #{Page::PUBLICATION_STATUSES.join(" or ")}, defaults to published", required: false
       parameter :slug, "The unique slug of the page. If not given, it will be auto generated"
     end
     ValidationErrorHelper.new.error_fields(self, Page)
@@ -113,6 +114,7 @@ resource "Pages" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'published'
       end
     end
 
@@ -136,12 +138,14 @@ resource "Pages" do
       parameter :title_multiloc, "The title of the page, as a multiloc string", required: true
       parameter :body_multiloc, "The content of the page, as a multiloc HTML string", required: true
       parameter :slug, "The unique slug of the page"
+      parameter :publication_status, "Whether the page is publicly accessible. Either #{Page::PUBLICATION_STATUSES.join(" or ")}.", required: false
     end
     ValidationErrorHelper.new.error_fields(self, Page)
 
     let(:id) { @page.id }
     let(:title_multiloc) { {"en" => "Changed title" } }
     let(:body_multiloc) { {"en" => "Changed body" } }
+    let(:publication_status) { 'draft' }
     let(:slug) { "changed-title" }
 
     example_request "Update a page" do
@@ -149,6 +153,7 @@ resource "Pages" do
       expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
       expect(json_response.dig(:data,:attributes,:body_multiloc,:en)).to eq "Changed body"
       expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
+      expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
     end
   end
 

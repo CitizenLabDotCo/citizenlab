@@ -22,5 +22,4 @@ RSpec.describe Page, type: :model do
 
   end
 
-
 end

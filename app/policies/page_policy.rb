@@ -11,8 +11,8 @@ class PagePolicy < ApplicationPolicy
       if @user && @user.admin?
         scope.all
       else
-        scope.none
-      end        
+        scope.published
+      end
     end
   end
 
@@ -21,7 +21,7 @@ class PagePolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    record.published? || (user&.active? && user.admin?)
   end
 
   def by_slug?
