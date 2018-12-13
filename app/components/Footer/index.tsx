@@ -307,7 +307,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
 
-          {!authUser &&
+          {!authUser && showCityLogoSection &&
             <FooterBanner>
               <FormattedMessage tagName="p" {...messages.join} />
               <SAvatarBubbles />
@@ -321,7 +321,8 @@ class Footer extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
                 text={<FormattedMessage {...messages.createAccount} />}
                 onClick={this.onClickCTA(fromLocation)}
               />
-            </FooterBanner>}
+            </FooterBanner>
+          }
           {showCityLogoSection &&
             <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
               <FirstLine id="hook-footer-logo">
