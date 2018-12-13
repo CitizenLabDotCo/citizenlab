@@ -161,7 +161,7 @@ const NavigationDropdownItem = styled.button`
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 35px;
+  padding: 0 30px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
@@ -248,7 +248,7 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 15px;
+  padding: 0 30px;
 
   &.login {
     border-top: 6px solid transparent;
