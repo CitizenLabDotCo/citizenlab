@@ -1,5 +1,22 @@
 # Changelog
 
+## 2018-12-13
+
+### Fixed
+
+- User digest email campaigns is sent out again
+- IE11 UI fixes:
+  - Project card text overflow bug
+  - Project header text wrapping/centering bug
+  - Timeline header broken layout bug
+  - Dropdown not correctly positioned bug
+- Creating new tenants and changing the host of existing tenants makes automatic DNS changes again
+
+### Added
+
+- SEO improvements: project pages and info pages are now included in sitemap
+- Surveys now have Google Forms support
+
 ## 2018-12-11-2
 
 ### Fixed

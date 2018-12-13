@@ -153,7 +153,7 @@ export default class SignInUp extends React.PureComponent<Props, State> {
 
     const signIn = (show === 'signIn' ? (
       <FormContainer>
-        <Form>
+        <Form className="e2e-lazy-idea-flow-sign-in-form">
           <SignIn
             title={<FormattedMessage {...messages.signInTitle} />}
             onSignedIn={this.handleOnSignedIn}

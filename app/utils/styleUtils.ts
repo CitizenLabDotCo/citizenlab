@@ -1,5 +1,9 @@
 import { css } from 'styled-components';
 
+export const viewportWidths = {
+  largeTablet: 1024
+};
+
 export const media = {
   smallPhone: (style: any, ...args) => css`
     @media (max-width: 320px) {
@@ -27,17 +31,17 @@ export const media = {
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: 1024px) {
+    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) {
       ${css(style, ...args)}
     }
   `,
   tabletLandscape: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: 1024px) and (orientation : landscape) {
+    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : landscape) {
       ${css(style, ...args)}
     }
   `,
   tabletPortrait: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: 1024px) and (orientation : portrait) {
+    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : portrait) {
       ${css(style, ...args)}
     }
   `,
@@ -52,12 +56,12 @@ export const media = {
     }
   `,
   smallerThanMaxTablet: (style: any, ...args) => css`
-    @media (max-width: 1024px) {
+    @media (max-width: ${viewportWidths.largeTablet}px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanMaxTablet: (style: any, ...args) => css`
-    @media (min-width: 1025px) {
+    @media (min-width: ${viewportWidths.largeTablet + 1}px) {
       ${css(style, ...args)}
     }
   `,
