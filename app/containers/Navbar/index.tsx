@@ -103,7 +103,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 76px;
+  height: 78px;
   display: flex;
   align-items: stretch;
   margin-left: 35px;
@@ -126,10 +126,11 @@ const NavigationItem = styled(Link)`
   outline: none;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
+  height: 100%;
 
   &:focus,
   &:hover {
-    color: inherit;
+    color: ${colors.label};
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 
@@ -171,7 +172,7 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &:focus {
-    color: inherit;
+    color: ${colors.label};
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 
