@@ -34,7 +34,7 @@ export function signup(firstName: string, lastName: string, email: string, passw
 export function acceptCookies() {
   cy.get('body').then(($body) => {
     if ($body.find('.e2e-accept-cookies-btn').length) {
-      cy.acceptCookies();
+      cy.get('.e2e-accept-cookies-btn').click();
     }
   });
 }
