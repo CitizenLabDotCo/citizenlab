@@ -1,16 +1,16 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import Iframe from 'react-iframe';
-import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+`;
 
-  iframe {
-    /* border: solid 1px ${colors.separation}; */
-    border: none;
-  }
+const StyledIframe = styled.iframe`
+  display: block;
+  border: none;
+  height: 600px;
+  flex-basis: 640px;
 `;
 
 type Props = {
@@ -18,21 +18,15 @@ type Props = {
   className?: string;
 };
 
-type State = {};
+export default class GoogleFormsSurvey extends PureComponent<Props> {
 
-export default class GoogleFormsSurvey extends PureComponent<Props, State> {
   render() {
     const { googleFormsUrl, className } = this.props;
 
     return (
       <Container className={className}>
-        <Iframe
-          url={googleFormsUrl}
-          width="100%"
-          height="542px"
-          display="initial"
-          position="relative"
-          allowFullScreen
+        <StyledIframe
+          src={googleFormsUrl}
         />
       </Container>
     );
