@@ -52,8 +52,8 @@ const Container: any = styled.div`
 
 const Header = styled.div`
   width: 100%;
-  height: 450px;
-  flex: 0 0 450px;
+  height: 550px;
+  flex: 0 0 550px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -117,7 +117,7 @@ const HeaderContent = styled.div`
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
-  max-width: 980px;
+  max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 35px;
   line-height: normal;
@@ -139,7 +139,7 @@ const HeaderTitle: any = styled.h1`
 
 const HeaderSubtitle: any = styled.h2`
   width: 100%;
-  max-width: 580px;
+  max-width: 375px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
@@ -202,13 +202,7 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
-  padding-top: 0px;
-  margin-top: -80px;
   padding-bottom: 90px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: -130px;
-  `}
 `;
 
 const SectionHeader = styled.div`
@@ -330,15 +324,13 @@ class LandingPage extends PureComponent<Props, State> {
                 {authUser &&
                   <SIdeaButton
                     style="primary-inverse"
-                    size="2"
                   />
                 }
                 {!authUser && <Button
                   style="primary-inverse"
                   textColor="#000"
-                  fontWeight="bold"
-                  padding="10px 30px"
-                  size="1"
+                  fontWeight="500"
+                  padding="17px 15px"
                   onClick={this.goToSignUpPage}
                   text={<FormattedMessage {...messages.createAccount} />}
                 />}
