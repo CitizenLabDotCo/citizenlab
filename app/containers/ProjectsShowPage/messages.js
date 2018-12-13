@@ -89,6 +89,14 @@ export default defineMessages({
     id: 'app.containers.Projects.endedOn',
     defaultMessage: 'Ended on {date}',
   },
+  goToPreviousPhase: {
+    id: 'app.containers.Projects.goToPreviousPhase',
+    defaultMessage: 'Go to previous phase',
+  },
+  goToNextPhase: {
+    id: 'app.containers.Projects.goToNextPhase',
+    defaultMessage: 'Go to next phase',
+  },
   displayMap: {
     id: 'app.containers.Projects.displayMap',
     defaultMessage: 'Map view',
