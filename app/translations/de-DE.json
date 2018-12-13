@@ -28,7 +28,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "Speichern",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "Ihre Cookie-Präferenzen",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "Werkzeuge",
-  "app.components.CustomFieldsForm.mustBeANumber": "",
+  "app.components.CustomFieldsForm.mustBeANumber": "This field expects a number",
   "app.components.CustomFieldsForm.optional": "(optional)",
   "app.components.CustomFieldsForm.requiredError": "Dieses Feld ist erforderlich",
   "app.components.ErrorBoundary.genericError": "Ein Fehler trat auf. Wir können diesen Inhalt nicht anzeigen. Bitte versuchen Sie es später noch einmal.",
