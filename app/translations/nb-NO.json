@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Vedlegg",
   "app.containers.Projects.events": "Hendelser",
   "app.containers.Projects.goBackToList": "Gå tilbake til listen",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "Prosjekter",
   "app.containers.Projects.ideasTitle": "Idéer for dette prosjektet",
   "app.containers.Projects.information": "Informasjon",
