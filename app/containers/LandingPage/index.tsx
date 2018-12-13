@@ -402,8 +402,6 @@ class LandingPage extends PureComponent<Props, State> {
                   <SAvatarBubbles />
                   <Button
                     style="primary-inverse"
-                    textColor="#000"
-                    fontWeight="bold"
                     padding="10px 30px"
                     size="1"
                     linkTo="/sign-up"
