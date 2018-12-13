@@ -721,6 +721,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     <ParticipationContext
                       onSubmit={this.handleParcticipationContextOnSubmit}
                       onChange={this.handleParticipationContextOnChange}
+                      apiErrors={apiErrors}
                     />
                   </ParticipationContextWrapper>
                 </CSSTransition>
@@ -732,6 +733,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 projectId={project.data.id}
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
+                apiErrors={apiErrors}
               />
             }
 
