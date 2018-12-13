@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import TypeformSurvey from './TypeformSurvey';
 import SurveymonkeySurvey from './SurveymonkeySurvey';
+import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
 
 // services
@@ -76,6 +77,12 @@ class Survey extends PureComponent<Props, State> {
           {surveyService === 'survey_monkey' &&
             <SurveymonkeySurvey
               surveymonkeyUrl={surveyEmbedUrl}
+            />
+          }
+
+          {surveyService === 'google_forms' &&
+            <GoogleFormsSurvey
+              googleFormsUrl={surveyEmbedUrl}
             />
           }
         </Container>
