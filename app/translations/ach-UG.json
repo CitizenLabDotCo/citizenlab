@@ -28,6 +28,7 @@
   "app.components.ConsentManager.Modal.PreferencesDialog.save": "crwdns19540:0crwdne19540:0",
   "app.components.ConsentManager.Modal.PreferencesDialog.title": "crwdns19542:0crwdne19542:0",
   "app.components.ConsentManager.Modal.PreferencesDialog.tools": "crwdns19544:0crwdne19544:0",
+  "app.components.CustomFieldsForm.mustBeANumber": "crwdns19890:0crwdne19890:0",
   "app.components.CustomFieldsForm.optional": "crwdns19620:0crwdne19620:0",
   "app.components.CustomFieldsForm.requiredError": "crwdns18440:0crwdne18440:0",
   "app.components.ErrorBoundary.genericError": "crwdns18497:0crwdne18497:0",
