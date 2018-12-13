@@ -168,7 +168,6 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         },
         tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
       };
-      console.log(/^.*\/ideas$/.test(pathname));
       return (
         <>
           <TopContainer>
