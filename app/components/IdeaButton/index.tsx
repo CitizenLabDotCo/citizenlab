@@ -19,6 +19,10 @@ import messages from './messages';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// tracks
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 // styling
 import { fontSizes, colors } from 'utils/styleUtils';
 
@@ -53,6 +57,10 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
+interface ITracks {
+  clickNewIdea: ({ extra: object }) => void;
+}
+
 interface InputProps {
   projectId?: string | undefined;
   phaseId?: string | undefined;
@@ -66,7 +74,8 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
+class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
+  locationRef = window.location.href;
 
   disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     notPermitted: messages.postingNotPermitted,
@@ -76,6 +85,10 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
     notActivePhase: messages.postingNotActivePhase,
     futureEnabled: messages.postingHereImpossible,
   };
+
+  onNewIdea = (_event) => {
+    this.props.clickNewIdea({ extra: { urlFrom: this.locationRef } });
+  }
 
   render() {
     const { project, phase, authUser, className } = this.props;
@@ -121,6 +134,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
               disabled={!enabled}
               fullWidth={fullWidth}
               fullHeight={fullHeight}
+              onClick={this.onNewIdea}
             />
           </Tooltip>
         </Container>
@@ -131,7 +145,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-const IdeaButtonWithHOCs = injectIntl<Props>(IdeaButton);
+const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlProps>(tracks)(IdeaButton));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,

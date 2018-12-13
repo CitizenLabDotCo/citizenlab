@@ -10,7 +10,6 @@ import { projectByIdStream, IProjectData } from 'services/projects';
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 import clHistory from 'utils/cl-router/history';
 
@@ -18,6 +17,10 @@ import clHistory from 'utils/cl-router/history';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+// tracks
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
@@ -51,12 +54,16 @@ type Props = {
   }
 };
 
+interface ITracks {
+  clickNewIdea: ({ extra: object }) => void;
+}
+
 type State = {
   project: IProjectData | null,
   loaded: boolean
 };
 
-class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps & ITracks, State> {
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
@@ -154,6 +161,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     }
   }
 
+  onNewIdea = (pathname) => (_event) => {
+    this.props.clickNewIdea({ extra: { pathnameFrom: pathname } });
+  }
+
   render() {
     const { projectId } = this.props.params;
     const { project, loaded } = this.state;
@@ -177,6 +188,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
                 <Button
                   linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
                   text={formatMessage(messages.addNewIdea)}
+                  onClick={this.onNewIdea(pathname)}
                 />
               }
               <Button
@@ -200,4 +212,4 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 }
 
-export default injectIntl<Props>(AdminProjectEdition);
+export default injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(AdminProjectEdition));
