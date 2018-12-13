@@ -99,9 +99,10 @@ const HeaderLeftSection = styled.div`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
+  display: flex;
+  align-items: center;
   padding-top: 8px;
   padding-bottom: 8px;
-  border: solid 2px orange;
 `;
 
 const HeaderRightSection = styled.div`
@@ -138,19 +139,19 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
-  width: 100%;
   height: 55px;
-  flex: 1;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
   align-items: center;
   flex-direction: row;
-  border: solid 2px red;
 
   ${media.smallerThanMinTablet`
     min-height: 80px;
-    align-items: flex-start;
-    justify-content: center;
     flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     margin-right: 0px;
   `}
 `;
@@ -163,6 +164,9 @@ const HeaderTitle = styled.h2`
   margin: 0;
   margin-right: 20px;
   padding: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
@@ -515,34 +519,32 @@ export default class Timeline extends PureComponent<Props, State> {
               <HeaderRows>
                 <HeaderFirstRow>
                   <HeaderLeftSection>
-                    {/* <PhaseSummary> */}
-                      {isSelected &&
-                        <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                          <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                            {selectedPhaseNumber}
-                          </PhaseNumber>
-                        </PhaseNumberWrapper>
-                      }
+                    {isSelected &&
+                      <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                        <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                          {selectedPhaseNumber}
+                        </PhaseNumber>
+                      </PhaseNumberWrapper>
+                    }
 
-                      <HeaderTitleWrapper>
-                        <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                          {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
-                        </HeaderTitle>
-                        <MobileDate>
-                          {phaseStatus === 'past' && (
-                            <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
-                          )}
+                    <HeaderTitleWrapper>
+                      <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                        {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+                      </HeaderTitle>
+                      <MobileDate>
+                        {phaseStatus === 'past' && (
+                          <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
+                        )}
 
-                          {phaseStatus === 'present' && (
-                            <FormattedMessage {...messages.endsOn} values={{ date: mobileSelectedPhaseEnd }} />
-                          )}
+                        {phaseStatus === 'present' && (
+                          <FormattedMessage {...messages.endsOn} values={{ date: mobileSelectedPhaseEnd }} />
+                        )}
 
-                          {phaseStatus === 'future' && (
-                            <FormattedMessage {...messages.startsOn} values={{ date: mobileSelectedPhaseStart }} />
-                          )}
-                        </MobileDate>
-                      </HeaderTitleWrapper>
-                    {/* </PhaseSummary> */}
+                        {phaseStatus === 'future' && (
+                          <FormattedMessage {...messages.startsOn} values={{ date: mobileSelectedPhaseStart }} />
+                        )}
+                      </MobileDate>
+                    </HeaderTitleWrapper>
                   </HeaderLeftSection>
 
                   <HeaderRightSection>
