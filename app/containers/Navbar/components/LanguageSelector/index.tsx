@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
+import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
@@ -32,12 +33,20 @@ const Container = styled.div`
   }
 `;
 
+const DropdownItemIcon = styled(Icon)`
+  width: 11px;
+  height: 6px;
+  fill: ${colors.label};
+  margin-top: 1px;
+  margin-left: 4px;
+  transition: all 80ms ease-out;
+`;
+
 const OpenMenuButton = styled.button`
   color: ${colors.label};
-  border: 2px solid rgba(132, 147, 158, 0.35);
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
-  font-weight: bold;
+  font-weight: 500;
   line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
@@ -49,6 +58,10 @@ const OpenMenuButton = styled.button`
   &:hover,
   &:focus {
     color: #000;
+
+    ${DropdownItemIcon} {
+      fill: #000;
+    }
   }
 `;
 
@@ -135,6 +148,7 @@ class LanguageSelector extends PureComponent<Props, State> {
         <Container>
           <OpenMenuButton onClick={this.toggleDropdown}>
             {currentlySelectedLocale.substr(0, 2).toUpperCase()}
+            <DropdownItemIcon name="dropdown" />
           </OpenMenuButton>
 
           <Dropdown
