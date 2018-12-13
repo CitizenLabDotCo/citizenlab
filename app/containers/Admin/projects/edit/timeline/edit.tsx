@@ -363,6 +363,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
                   phaseId={(phase ? phase.data.id : null)}
                   onSubmit={this.handleParcticipationContextOnSubmit}
                   onChange={this.handleParticipationContextOnChange}
+                  apiErrors={errors}
                 />
               </SectionField>
 
