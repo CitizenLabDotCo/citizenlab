@@ -4,6 +4,7 @@ declare global {
       login: typeof login;
       logout: typeof logout;
       signup: typeof signup;
+      acceptCookies: typeof acceptCookies;
     }
   }
 }
@@ -30,6 +31,15 @@ export function signup(firstName: string, lastName: string, email: string, passw
   cy.get('#e2e-signup-step1-button').click();
 }
 
+export function acceptCookies() {
+  cy.get('body').then(($body) => {
+    if ($body.find('.e2e-accept-cookies-btn').length) {
+      cy.acceptCookies();
+    }
+  });
+}
+
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
+Cypress.Commands.add('acceptCookies', acceptCookies);

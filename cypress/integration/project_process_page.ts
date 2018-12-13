@@ -1,7 +1,7 @@
 describe('Project process page', () => {
   beforeEach(() => {
     cy.visit('/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process');
-    cy.get('.e2e-accept-cookies-btn').click();
+    cy.acceptCookies();
   });
 
   it('shows the page', () => {
