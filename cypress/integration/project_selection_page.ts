@@ -1,7 +1,7 @@
 describe('Project selection page', () => {
   beforeEach(() => {
     cy.visit('/ideas/new');
-    cy.get('.e2e-accept-cookies-btn').click();
+    cy.acceptCookies();
   });
 
   it('shows the page', () => {

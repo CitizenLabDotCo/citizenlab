@@ -1,7 +1,7 @@
 describe('Project ideas page', () => {
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
-    cy.get('.e2e-accept-cookies-btn').click();
+    cy.acceptCookies();
   });
 
   it('shows the page', () => {

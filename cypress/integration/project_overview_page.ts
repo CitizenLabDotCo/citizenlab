@@ -1,7 +1,6 @@
 describe('Project overview page', () => {
   beforeEach(() => {
     cy.visit('/projects/');
-      // .get('.e2e-accept-cookies-btn').click();
   });
 
   it('shows the page', () => {
