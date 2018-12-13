@@ -1,5 +1,5 @@
 import React from 'react';
-import { isBoolean } from 'lodash-es';
+import { isBoolean, isString, isArray } from 'lodash-es';
 import ReactSelect from 'react-select';
 import { IOption } from 'typings';
 import selectStyles from 'components/UI/Select/styles';
@@ -14,6 +14,7 @@ export type Props = {
   autoBlur?: boolean;
   onChange: (arg: IOption[]) => void;
   disabled?: boolean;
+  className?: string;
 };
 
 type State = {};
@@ -36,25 +37,25 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
   findFullOptionValue = (value) => {
-    if (typeof value === 'string') {
+    if (isString(value)) {
       return this.props.options && this.props.options.find((option) => option.value === value);
-    } else {
-      return value;
     }
+
+    return value;
   }
 
   findFullOptionValues = () => {
     const { value } = this.props;
-    if (value instanceof Array) {
+
+    if (isArray(value)) {
       return value.map(this.findFullOptionValue);
-    } else {
-      return value;
     }
+
+    return value;
   }
 
   render() {
-    const className = this.props['className'];
-    const { id } = this.props;
+    const { id, className } = this.props;
     let { value, placeholder, options, max, autoBlur } = this.props;
     const { inputId } = this.props;
 

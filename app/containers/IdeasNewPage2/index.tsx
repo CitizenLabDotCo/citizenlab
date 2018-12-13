@@ -342,7 +342,7 @@ class IdeasNewPage2 extends React.PureComponent<Props & WithRouterProps, State> 
     if (isNilOrError(project)) return null;
 
     return (
-      <Container>
+      <Container className="e2e-idea-form-page">
         <ContainerInner className={`${publishing && 'hidden'}`}>
           <TransitionGroup>
 

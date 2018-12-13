@@ -23,12 +23,12 @@ module.exports = function (api) {
   const env = {
     test: {
       presets: [
-        '@babel/preset-env',
-        '@babel/preset-react',
+        "@babel/preset-env",
+        "@babel/preset-react",
         "@babel/typescript"
       ],
       plugins: [
-        'transform-es2015-modules-commonjs',
+        "transform-es2015-modules-commonjs",
         "babel-plugin-styled-components",
         "@babel/plugin-syntax-dynamic-import",
         "@babel/proposal-class-properties",

@@ -72,7 +72,12 @@ const RightInner = styled.div`
 
 export default class SignInPage extends PureComponent {
   onSuccess = (previousPathname: string | null) => () => {
-    clHistory.push(previousPathname || '/');
+    if (previousPathname && !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in'))) {
+      // go back to the page you were previously on after signing in
+      clHistory.push(previousPathname);
+    } else {
+      clHistory.push('/');
+    }
   }
 
   goToSignUpForm = () => {
@@ -81,7 +86,7 @@ export default class SignInPage extends PureComponent {
 
   render() {
     return (
-      <Container>
+      <Container className="e2e-sign-in-page">
         <Left>
           <SignInUpBanner />
         </Left>
