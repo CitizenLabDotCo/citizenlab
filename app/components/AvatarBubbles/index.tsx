@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 
-// resources TODO
+// resources
 import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
 
 // i18n
@@ -39,7 +39,7 @@ const Container: any = styled.div`
 
       &:nth-child(${index + 1}) {
         z-index: ${index};
-        left: ${index * (props.size - 7)}px;
+        left: ${index * (props.size - props.overlap)}px;
       }
     }
   `) : css``};
@@ -59,10 +59,11 @@ const SSpan: any = styled.div`
   font-weight: 700;
 `;
 
-/* inputProps
+/* InputProps
 * limit: the number of avatars you need, you'll get one extra bubble with the remaining count, defaults to 3
-* context: extra info if you use the component in a specific context
-* size: image size, each bubble will be 4px bigger because of margins.
+* context: extra info if you use the component in a specific context, defaults to platform-wide
+* size: image size, each bubble will be 4px bigger because of margins, defaults to 30px
+* overlap: the number of pixel the bubbles overlap, defaults to 7
 */
 interface InputProps {
   limit?: number;
@@ -71,56 +72,65 @@ interface InputProps {
     id: string;
   };
   size?: number;
+  overlap?: number;
+  className?: string;
 }
 
 interface DataProps {
   avatars: GetAvatarsChildProps;
 }
+
 interface Props extends InputProps, DataProps { }
 
-interface State { }
+const AvatarBubbles = (props: Props & InjectedIntlProps) => {
+  const { avatars, size, overlap, className } = props;
+  if (avatars) {
+    const avatarList = avatars.data;
+    const avatarCount = avatarList.length;
+    const userCount = avatars.meta.total;
 
-class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
-  render() {
-    const { avatars, size } = this.props;
-    if (avatars) {
-      const avatarList = avatars.data;
-      const avatarCount = avatarList.length;
-      const userCount = avatars.meta.total;
-      const definedSize = size || 30;
+    const definedSize = size || 30;
+    const definedOverlap = overlap || 7;
 
-      const imageSize = (definedSize > 160 ? 'large' : 'medium');
+    const imageSize = (definedSize > 160 ? 'large' : 'medium');
 
-      // total width is the highest left position offset plus the total width of last bubble
-      const calcWidth = avatarCount * (definedSize - 7) + definedSize + 4;
+    // total component width is the highest left position offset plus the total width of last bubble
+    const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 4;
 
-      return (
-        <Container count={avatarCount} size={definedSize} width={calcWidth}>
-          {[...Array(avatarCount + 1).keys()].map((index) => {
-            if (index === avatarCount) {
-              return (
-                <AvatarWrapper key={index}>
-                    <SSpan size={definedSize} >+&nbsp;{userCount - index}</SSpan>
-                </AvatarWrapper>
-              );
-            }
-            return (
-              <AvatarWrapper key={index}>
-                <AvatarImage
-                  src={avatarList[index].attributes.avatar[imageSize]}
-                  alt={this.props.intl.formatMessage(messages.avatarAltText)}
-                  size={definedSize}
-                />
-              </AvatarWrapper>
-            );
-          })}
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container
+        className={className}
+        count={avatarCount}
+        size={definedSize}
+        width={calcWidth}
+        overlap={definedOverlap}
+      >
+        {avatarCount === 0 &&
+          <AvatarWrapper key={avatarCount}>
+            <SSpan size={definedSize} >{userCount}</SSpan>
+          </AvatarWrapper>
+        }
+        {avatarCount > 0 && avatarList.map((avatar, index) => {
+          return (
+            <AvatarWrapper key={index}>
+              <AvatarImage
+                src={avatar.attributes.avatar[imageSize]}
+                alt={props.intl.formatMessage(messages.avatarAltText)}
+                size={definedSize}
+              />
+            </AvatarWrapper>
+          );
+        })}
+        {avatarCount > 0 &&
+          <AvatarWrapper key={avatarCount}>
+            <SSpan size={definedSize} >+&nbsp;{userCount - avatarCount}</SSpan>
+          </AvatarWrapper>
+        }
+      </Container >
+    );
   }
-}
+  return null;
+};
 
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 

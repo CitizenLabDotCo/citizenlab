@@ -150,7 +150,7 @@ const HeaderSubtitle: any = styled.h2`
   text-decoration: none;
   padding: 0;
   padding-bottom: 0px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   margin-top: 25px;
   border-bottom: solid 1px transparent;
 
@@ -161,6 +161,10 @@ const HeaderSubtitle: any = styled.h2`
     margin-top: 15px;
     margin-bottom: 20px;
   `}
+`;
+
+const SAvatarBubbles = styled(AvatarBubbles)`
+  margin-bottom: 35px;
 `;
 
 const SIdeaButton = styled(IdeaButton)`
@@ -322,7 +326,7 @@ class LandingPage extends PureComponent<Props, State> {
                 <HeaderSubtitle hasHeader={hasHeaderImage}>
                   {subtitle}
                 </HeaderSubtitle>
-                <AvatarBubbles />
+                <SAvatarBubbles />
                 {authUser &&
                   <SIdeaButton
                     style="primary-inverse"
