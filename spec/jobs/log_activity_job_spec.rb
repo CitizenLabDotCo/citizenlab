@@ -26,6 +26,12 @@ RSpec.describe LogActivityJob, type: :job do
       expect{job.perform("Idea/#{frozen_idea.id}", "deleted", user, Time.now)}.to change{Activity.count}.from(0).to(1)
     end
 
+    it "logs an activity when the user is nil" do
+      area = create(:area)
+      job.perform(area, "created", nil, Time.now)
+      expect(Activity.last.item_type).to eq area.class.name
+    end
+
     it "enqueues a MakeNotificationsJob" do
       idea = create(:idea)
       user = create(:user)
@@ -49,5 +55,6 @@ RSpec.describe LogActivityJob, type: :job do
       user = create(:user)
       expect{job.perform(idea, "created", user, Time.now)}.to have_enqueued_job(LogToSegmentJob)
     end
+
   end
 end
