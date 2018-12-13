@@ -199,7 +199,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       fontSizes,
       colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
       menuStyle: 'light',
-      menuHeight: 74,
+      menuHeight: 78,
       mobileMenuHeight: 72,
       mobileTopBarHeight: 66,
       maxPageWidth: 952,
