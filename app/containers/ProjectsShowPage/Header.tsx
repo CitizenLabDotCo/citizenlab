@@ -20,7 +20,6 @@ import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  background-color: #767676;
   width: 100%;
   height: 350px;
   display: flex;
@@ -29,32 +28,31 @@ const Container = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   position: relative;
+  background: #767676;
 
   ${media.smallerThanMinTablet`
     height: 200px;
   `}
 `;
 
-const HeaderContent = styled.div`
-  width: 100%;
-  height: 100%;
+const HeaderContent = styled(ContentContainer)`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   margin-top: -40px;
 
   ${media.smallerThanMinTablet`
-    flex-direction: column;
-    justify-content: flex-start;
     margin-top: 0px;
   `}
 `;
 
-const ArchivedLabel = styled.span`
-  flex-grow: 0;
-  flex-shrink: 1;
+const ArchivedLabelWrapper = styled.div`
   display: flex;
+  justify-content: center;
+`;
+
+const ArchivedLabel = styled.span`
   color: #fff;
   font-size: ${fontSizes.small}px;
   font-weight: 500;
@@ -65,12 +63,15 @@ const ArchivedLabel = styled.span`
   margin-top: 15px;
 `;
 
-const HeaderTitle = styled.div`
+const HeaderTitle = styled.h2`
   color: #fff;
   font-size: 42px;
   line-height: 52px;
   font-weight: 500;
   text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin: 0;
   padding: 0;
 
@@ -132,18 +133,18 @@ class ProjectsShowPage extends PureComponent<Props, State> {
           <Container className={projectType}>
             <HeaderImage src={projectHeaderImageLarge} />
             <HeaderOverlay />
-            <ContentContainer>
-              <HeaderContent className={projectType}>
-                <HeaderTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </HeaderTitle>
-                {projectPublicationStatus === 'archived' &&
+            <HeaderContent className={projectType}>
+              <HeaderTitle>
+                <T value={project.attributes.title_multiloc} />
+              </HeaderTitle>
+              {projectPublicationStatus === 'archived' &&
+                <ArchivedLabelWrapper>
                   <ArchivedLabel>
                     <FormattedMessage {...messages.archived} />
                   </ArchivedLabel>
-                }
-              </HeaderContent>
-            </ContentContainer>
+                </ArchivedLabelWrapper>
+              }
+            </HeaderContent>
           </Container>
         </>
       );
