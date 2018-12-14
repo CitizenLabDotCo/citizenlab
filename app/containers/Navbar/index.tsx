@@ -272,7 +272,10 @@ const RightItem: any = styled.div`
       background-color: ${(props) => rgba(props.theme.colorMain, .1)};
       color: ${(props) => props.theme.colorMain};
     }
+  }
 
+  &.languageselector {
+    margin-left: 20px;
   }
 
   ${media.smallerThanMinTablet`
@@ -461,7 +464,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem>
+              <RightItem className="languageselector">
                 <LanguageSelector />
               </RightItem>
             }
