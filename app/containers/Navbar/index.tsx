@@ -263,15 +263,7 @@ const RightItem: any = styled.div`
 
   &.usermenu,
   &.notification {
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:focus,
-    &:hover {
-      background-color: ${(props) => rgba(props.theme.colorMain, .1)};
-      color: ${(props) => props.theme.colorMain};
-    }
+    padding: 0 15px;
   }
 
   &.languageselector {
