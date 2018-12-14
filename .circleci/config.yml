@@ -4,7 +4,7 @@
 #
 version: 2.1
 orbs:
-  cypress: cypress-io/cypress@1.0.0
+  cypress: cypress-io/cypress@1.2.0
 jobs:
   test:
     docker:
@@ -232,8 +232,9 @@ workflows:
           requires:
             - deploy_demo
             - reset_e2e_tenant
-          executor: cypress/base-8
-          command: npx cypress run --spec 'cypress/integration/*.ts' --config baseUrl=https://e2e.stg.citizenlab.co
+          executor: cypress/browsers-chrome69
+          browser: chrome
+          command: npx cypress run --spec 'cypress/integration/sign_up_step_2_page.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           filters:
             branches:
               only: master
