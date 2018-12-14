@@ -6,6 +6,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import Fragment from 'components/Fragment';
 
 // i18n
@@ -35,6 +36,16 @@ const Container = styled.div`
   flex-direction: column;
   z-index: 0;
 `;
+
+const ShortFeedback = styled.div`
+  background-color: ${colors.adminBackground};
+`;
+
+const Buttons = styled.div`
+
+`;
+
+const FeedbackButton = styled(Button)``;
 
 const FirstLine = styled.div`
   display: flex;
@@ -71,7 +82,7 @@ const SecondLine = styled.div`
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  border-top: 1px solid ${colors.separation};
+  border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
 
   ${media.smallerThanMaxTablet`
@@ -139,18 +150,21 @@ const Separator = styled.span`
   `}
 `;
 
+const PoweredBy = styled.span`
+  margin-right: 10px;
+`;
+
 const CitizenLabLogo = styled(Icon)`
   height: 22px;
-  fill: ${colors.label};
+  fill: ${colors.clIconSecondary};
   margin-left: 8px;
   transition: all 150ms ease-out;
   flex: 1 1 100px;
 `;
 
-const PoweredBy = styled.a`
+const PoweredByWrapper = styled.a`
   color: ${colors.label};
-  font-weight: 300;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   line-height: 19px;
   text-decoration: none;
   display: flex;
@@ -158,6 +172,8 @@ const PoweredBy = styled.a`
   align-items: center;
   cursor: pointer;
   outline: none;
+  padding: 10px 30px 10px 0;
+  border-right: 1px solid #E8E8E8;
 
   ${media.biggerThanMaxTablet`
     &:hover {
@@ -266,6 +282,15 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             </Fragment>
           }
 
+          <ShortFeedback>
+            <span>
+              Did you find what you're looking for?
+            </span>
+            <Buttons>
+              <FeedbackButton style="text">YES</FeedbackButton>
+              <FeedbackButton style="text">NO</FeedbackButton>
+            </Buttons>
+          </ShortFeedback>
           <SecondLine>
             <PagesNav>
               <ul>
@@ -288,10 +313,10 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               </ul>
             </PagesNav>
 
-            <PoweredBy href="https://www.citizenlab.co/">
-              <span>{poweredBy}</span>
+            <PoweredByWrapper href="https://www.citizenlab.co/">
+              <PoweredBy>{poweredBy}</PoweredBy>
               <CitizenLabLogo name="logo" />
-            </PoweredBy>
+            </PoweredByWrapper>
 
           </SecondLine>
         </Container>
