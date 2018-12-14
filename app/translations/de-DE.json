@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Anhänge",
   "app.containers.Projects.events": "Veranstaltungen",
   "app.containers.Projects.goBackToList": "Zurück zur Liste",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.Projects.ideasTitle": "{orgName, select, München {Meldungen in diesem Bezirk} other {Ideen für dieses Projekt}}",
   "app.containers.Projects.information": "Information",

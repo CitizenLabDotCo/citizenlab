@@ -54,7 +54,7 @@ describe('Sign up step 2 page', () => {
 
   beforeEach(() => {
     cy.visit('/');
-    cy.get('.e2e-accept-cookies-btn').click();
+    cy.acceptCookies();
   });
 
   it('does not show the 2nd step when no custom fields are enabled', () => {
