@@ -63,7 +63,7 @@ export default defineMessages({
     defaultMessage: 'Projects',
   },
   allProjects: {
-    id: 'app.containers.app.navbar.pageProjects',
+    id: 'app.containers.app.navbar.allProjects',
     defaultMessage: 'All projects',
   },
   pageInformation: {
