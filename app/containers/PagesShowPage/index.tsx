@@ -32,7 +32,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
