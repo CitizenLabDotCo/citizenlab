@@ -51,6 +51,7 @@ const Container = styled.div`
   top: 0;
   background: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid #EAEAEA;
   z-index: 999;
 
   &.citizen {
@@ -74,7 +75,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  height: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const LogoLink = styled(Link) `
@@ -242,7 +243,7 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  height: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const RightItem: any = styled.div`
