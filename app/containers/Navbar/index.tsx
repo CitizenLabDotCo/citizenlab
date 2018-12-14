@@ -253,6 +253,7 @@ const RightItem: any = styled.div`
 
   &.signup {
     padding: 0;
+    margin-right: 20px;
   }
 
   &.notification {
@@ -266,13 +267,12 @@ const RightItem: any = styled.div`
     padding: 0 15px;
   }
 
+  &.usermenu,
   &.languageselector {
-    margin-left: 20px;
+    ${media.smallerThanMinTablet`
+      padding: 0 5px;
+    `}
   }
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-  `}
 `;
 
 const LogInButton = NavigationItem.extend``;
