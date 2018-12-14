@@ -15,9 +15,10 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { phasesStream, IPhases, IPhaseData, getCurrentPhase } from 'services/phases';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { getLocalized } from 'utils/i18n';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // utils
 import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
@@ -374,13 +375,13 @@ type State = {
   loaded: boolean;
 };
 
-export default class Timeline extends PureComponent<Props, State> {
+class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props);
+    super(props as any);
     const initialState = {
       locale: null,
       currentTenant: null,
@@ -578,7 +579,7 @@ export default class Timeline extends PureComponent<Props, State> {
                         style="secondary"
                         padding="10px 6px"
                         disabled={selectedPhaseId === phases.data[0].id}
-                        aria-label={<FormattedMessage {...messages.goToPreviousPhase} />}
+                        ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
                       />
                       <NextPhaseButton
                         onClick={this.goToNextPhase}
@@ -586,7 +587,7 @@ export default class Timeline extends PureComponent<Props, State> {
                         style="secondary"
                         padding="10px 6px"
                         disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
-                        aria-label={<FormattedMessage {...messages.goToNextPhase} />}
+                        ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
                       />
                     </PhaseNavigation>
                   </HeaderRightSection>
@@ -644,3 +645,5 @@ export default class Timeline extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(Timeline);
