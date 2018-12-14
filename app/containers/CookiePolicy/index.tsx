@@ -22,7 +22,7 @@ import Fragment from 'components/Fragment';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media, quillEditedContent } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // these styled components should be imported from PagesShowPage for consistency.
@@ -72,55 +72,7 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  line-height: 25px;
-
-  h1 {
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 35px;
-    font-weight: 600;
-  }
-
-  h2 {
-    padding-top: 30px;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 600;
-  }
-
-  h3 {
-    padding-top: 20px;
-    font-size: ${fontSizes.xl}px;
-    line-height: 30px;
-    font-weight: 600;
-  }
-
-  p {
-    font-size: ${fontSizes.large}px;
-    font-weight: 300;
-    line-height: 27px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
+  ${quillEditedContent()}
 `;
 
 const StyledButton = styled.button`
