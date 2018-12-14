@@ -250,15 +250,6 @@ const RightItem: any = styled.div`
   justify-content: center;
   height: 100%;
 
-  // &.login {
-  //   border-top: 6px solid transparent;
-  //   border-bottom: 6px solid transparent;
-
-  //   &:hover {
-  //     border-top: 6px solid ${(props) => rgba(props.theme.colorMain, .3)};
-  //   }
-  // }
-
   &.signup {
     padding: 0;
   }
@@ -433,7 +424,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 <LogInButton
                   id="e2e-login-link"
                   to="/sign-in"
-                  activeClassName="active"
                 >
                   <NavigationItemText>
                     <FormattedMessage {...messages.logIn} />
