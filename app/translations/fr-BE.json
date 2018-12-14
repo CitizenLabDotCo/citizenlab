@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "Pièces jointes",
   "app.containers.Projects.events": "Evénements",
   "app.containers.Projects.goBackToList": "Retour à la liste",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.Projects.ideasTitle": "Les idées pour ce projet",
   "app.containers.Projects.information": "Informations",

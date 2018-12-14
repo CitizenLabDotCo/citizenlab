@@ -967,6 +967,8 @@
   "app.containers.Projects.eventAttachments": "",
   "app.containers.Projects.events": "",
   "app.containers.Projects.goBackToList": "",
+  "app.containers.Projects.goToNextPhase": "",
+  "app.containers.Projects.goToPreviousPhase": "",
   "app.containers.Projects.header": "",
   "app.containers.Projects.ideasTitle": "",
   "app.containers.Projects.information": "",

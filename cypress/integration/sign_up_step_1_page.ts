@@ -1,7 +1,7 @@
 describe('Sign up step 1 page', () => {
   beforeEach(() => {
     cy.visit('/sign-up');
-    cy.get('.e2e-accept-cookies-btn').click();
+    cy.acceptCookies();
   });
 
   it('shows the page', () => {
