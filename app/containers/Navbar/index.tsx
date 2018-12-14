@@ -74,6 +74,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
+  height: 100%;
 `;
 
 const LogoLink = styled(Link) `
@@ -103,7 +104,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 80px;
+  height: 100%;
   display: flex;
   align-items: stretch;
   margin-left: 35px;
