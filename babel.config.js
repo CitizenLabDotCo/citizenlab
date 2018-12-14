@@ -20,6 +20,7 @@ module.exports = function (api) {
     "@babel/proposal-object-rest-spread",
     "@babel/plugin-transform-runtime"
   ];
+
   const env = {
     test: {
       presets: [
