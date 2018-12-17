@@ -75,46 +75,46 @@ describe('Sign up step 2 page', () => {
     });
   });
 
-  it('does not show it when no custom fields are enabled', () => {
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+  // it('does not show it when no custom fields are enabled', () => {
+  //   const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
+  //   const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
-    // before
-    signup(firstName, lastName, email, password);
-    cy.login(email, password);
+  //   // before
+  //   signup(firstName, lastName, email, password);
+  //   cy.login(email, password);
 
-    // test
-    cy.visit('/complete-signup');
-    cy.location('pathname').should('eq', '/en-GB/');
-    cy.get('#e2e-landing-page');
-  });
+  //   // test
+  //   cy.visit('/complete-signup');
+  //   cy.location('pathname').should('eq', '/en-GB/');
+  //   cy.get('#e2e-landing-page');
+  // });
 
-  it('can skip it when an optional custom field is enabled', () => {
-    const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+  // it('can skip it when an optional custom field is enabled', () => {
+  //   const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
+  //   const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
-    // before
-    createCustomField(randomFieldName, true, false).then((response) => {
-      const customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
-      cy.login(email, password);
+  //   // before
+  //   createCustomField(randomFieldName, true, false).then((response) => {
+  //     const customFieldId = response.body.data.id;
+  //     signup(firstName, lastName, email, password);
+  //     cy.login(email, password);
 
-      // test
-      cy.visit('/complete-signup');
-      cy.get('#e2e-signup-step2');
-      cy.get('.e2e-signup-step2-skip-btn').click();
-      cy.location('pathname').should('eq', '/en-GB/');
-      cy.get('#e2e-landing-page');
+  //     // test
+  //     cy.visit('/complete-signup');
+  //     cy.get('#e2e-signup-step2');
+  //     cy.get('.e2e-signup-step2-skip-btn').click();
+  //     cy.location('pathname').should('eq', '/en-GB/');
+  //     cy.get('#e2e-landing-page');
 
-      // after
-      deleteCustomField(customFieldId);
-    });
-  });
+  //     // after
+  //     deleteCustomField(customFieldId);
+  //   });
+  // });
 
   it('shows an error message when submitting an empty form that contains a required custom field', () => {
     const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
@@ -140,29 +140,29 @@ describe('Sign up step 2 page', () => {
     });
   });
 
-  it('successfully completes when submitting a filled-in form that contains a required custom field', () => {
-    const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+  // it('successfully completes when submitting a filled-in form that contains a required custom field', () => {
+  //   const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
+  //   const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
+  //   const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
-    // before
-    createCustomField(randomFieldName, true, true).then((response) => {
-      const customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
-      cy.login(email, password);
+  //   // before
+  //   createCustomField(randomFieldName, true, true).then((response) => {
+  //     const customFieldId = response.body.data.id;
+  //     signup(firstName, lastName, email, password);
+  //     cy.login(email, password);
 
-      // test
-      cy.visit('/complete-signup');
-      cy.get('#e2e-signup-step2');
-      cy.get(`#root_${randomFieldName}`).type('test');
-      cy.get('.e2e-signup-step2-button').click();
-      cy.location('pathname').should('eq', '/en-GB/');
-      cy.get('#e2e-landing-page');
+  //     // test
+  //     cy.visit('/complete-signup');
+  //     cy.get('#e2e-signup-step2');
+  //     cy.get(`#root_${randomFieldName}`).type('test');
+  //     cy.get('.e2e-signup-step2-button').click();
+  //     cy.location('pathname').should('eq', '/en-GB/');
+  //     cy.get('#e2e-landing-page');
 
-      // after
-      deleteCustomField(customFieldId);
-    });
-  });
+  //     // after
+  //     deleteCustomField(customFieldId);
+  //   });
+  // });
 });
