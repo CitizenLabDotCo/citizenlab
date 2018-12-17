@@ -37,17 +37,23 @@ const Container = styled.div`
   z-index: 0;
 `;
 
-const ShortFeedback = styled.div`
+const SecondLine = styled.div`
   display: flex;
   justify-content: flex-start;
+  background-color: #fff;
 `;
 
-const Wrapper = styled.div`
+const ShortFeedback = styled.div`
   display: flex;
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
   margin-bottom: -6px;
+`;
+
+const ThankYouNote = styled.span`
+  font-size: ${fontSizes.base}px;
+  font-weight: 600;
 `;
 
 const FeedbackQuestion = styled.span`
@@ -99,7 +105,7 @@ const TenantSlogan = styled.div`
   text-align: center;
 `;
 
-const SecondLine = styled.div`
+const ThirdLine = styled.div`
   width: 100%;
   min-height: 60px;
   display: flex;
@@ -259,6 +265,7 @@ type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
+  shortFeedbackButtonClicked: boolean;
 };
 
 class Footer extends PureComponent<Props & InjectedIntlProps, State> {
@@ -273,7 +280,8 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       locale: null,
       currentTenant: null,
-      showCityLogoSection: false
+      showCityLogoSection: false,
+      shortFeedbackButtonClicked: false
     };
     this.subscriptions = [];
   }
@@ -298,8 +306,14 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  handleFeedbackButtonClick = () => {
+    this.setState({
+      shortFeedbackButtonClicked: true
+    });
+  }
+
   render() {
-    const { locale, currentTenant, showCityLogoSection } = this.state;
+    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
 
     let surveyLink: string | null = null;
@@ -340,22 +354,30 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             </Fragment>
           }
 
-          <ShortFeedback>
-            <Wrapper>
-              <FeedbackQuestion>
-                <FormattedMessage {...messages.feedbackQuestion} />
-              </FeedbackQuestion>
-              <Buttons>
-                <FeedbackButton padding="0 12px" fontWeight="500" style="text">
-                  <FormattedMessage {...messages.yes} />
-                </FeedbackButton>
-                <FeedbackButton padding="0 12px" fontWeight="500" style="text">
-                  <FormattedMessage {...messages.no} />
-                </FeedbackButton>
-              </Buttons>
-            </Wrapper>
-          </ShortFeedback>
           <SecondLine>
+            <ShortFeedback>
+              {shortFeedbackButtonClicked ?
+                <ThankYouNote>
+                  <FormattedMessage {...messages.thanksForFeedback} />
+                </ThankYouNote>
+                :
+                <>
+                  <FeedbackQuestion>
+                    <FormattedMessage {...messages.feedbackQuestion} />
+                  </FeedbackQuestion>
+                  <Buttons>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                      <FormattedMessage {...messages.yes} />
+                    </FeedbackButton>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                      <FormattedMessage {...messages.no} />
+                    </FeedbackButton>
+                  </Buttons>
+                </>
+              }
+            </ShortFeedback>
+          </SecondLine>
+          <ThirdLine>
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
@@ -387,7 +409,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 <SendFeedbackIcon name="questionMark" />
               </SendFeedback>
             </Right>
-          </SecondLine>
+          </ThirdLine>
         </Container>
       );
     }
