@@ -1182,6 +1182,7 @@
   "app.containers.footer.slogan": "{type, select, generic {Dette er et initiativ fra {name}} other {Dette er et initiativ fra {name}}}",
   "app.containers.footer.terms-and-conditions": "Betingelser og vilkår",
   "app.containers.footer.termsLink": "Betingelser for brug",
+  "app.containers.footer.thanksForFeedback": "",
   "app.containers.footer.yes": "",
   "app.containers.landing.cityProjects": "Projekter",
   "app.containers.landing.createAccount": "Opret en profil",
