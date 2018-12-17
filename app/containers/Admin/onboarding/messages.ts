@@ -47,7 +47,7 @@ export default defineMessages({
     defaultMessage: 'Define what you want to know from your users'
   },
   setupArticle2Description: {
-    id: 'containers.Admin.onboarding.setupArticle1Description',
+    id: 'containers.Admin.onboarding.setupArticle2Description',
     defaultMessage: 'You can ask your users additional information while registering. Use the registration fields to get better insights or to segment your users into groups (by age or area, etc..).'
   },
   setupArticle3Link: {
@@ -59,20 +59,8 @@ export default defineMessages({
     defaultMessage: 'Link the platform to third party websites using a widget'
   },
   setupArticle3Description: {
-    id: 'containers.Admin.onboarding.setupArticle1Description',
+    id: 'containers.Admin.onboarding.setupArticle3Description',
     defaultMessage: 'A personalized widget brings people from other websites to your engagement platform.'
-  },
-  setupArticle4Link: {
-    id: 'containers.Admin.onboarding.setupArticle3Link',
-    defaultMessage: '/unused'
-  },
-  setupArticle4Title: {
-    id: 'containers.Admin.onboarding.setupArticle3Title',
-    defaultMessage: 'Unused'
-  },
-  setupArticle4Description: {
-    id: 'containers.Admin.onboarding.setupArticle1Description',
-    defaultMessage: 'Not yet used'
   },
   // Engage section
   engageSectionTitle: {
@@ -104,7 +92,7 @@ export default defineMessages({
     defaultMessage: 'Invite your target audience to your platform'
   },
   engageArticle2Description: {
-    id: 'containers.Admin.onboarding.engageArticle1Description',
+    id: 'containers.Admin.onboarding.engageArticle2Description',
     defaultMessage: 'Add a personal message with a clear call-to-action. If you have a list of email addresses from people that participated in an offline event, easily add this list to the platform.'
   },
   engageArticle3Link: {
@@ -116,7 +104,7 @@ export default defineMessages({
     defaultMessage: 'Send emails'
   },
   engageArticle3Description: {
-    id: 'containers.Admin.onboarding.engageArticle1Description',
+    id: 'containers.Admin.onboarding.engageArticle3Description',
     defaultMessage: 'Inform your audience on a project entering a new phase, invite them for a project related event, warn them on an approaching deadline, etc.. You can do all this by creating custom email campaigns.'
   },
   // Manage section
@@ -149,7 +137,7 @@ export default defineMessages({
     defaultMessage: 'Manage your users'
   },
   manageArticle2Description: {
-    id: 'containers.Admin.onboarding.manageArticle1Description',
+    id: 'containers.Admin.onboarding.manageArticle2Description',
     defaultMessage: 'Create groups to be able to contact specific groups or define permissions per group.'
   },
   manageArticle3Link: {
@@ -161,7 +149,7 @@ export default defineMessages({
     defaultMessage: 'Not yet used'
   },
   manageArticle3Description: {
-    id: 'containers.Admin.onboarding.manageArticle1Description',
+    id: 'containers.Admin.onboarding.manageArticle3Description',
     defaultMessage: 'Not yet used'
   },
   // Decide section
@@ -194,7 +182,7 @@ export default defineMessages({
     defaultMessage: 'Use the insights'
   },
   decideArticle2Description: {
-    id: 'containers.Admin.onboarding.decideArticle1Description',
+    id: 'containers.Admin.onboarding.decideArticle2Description',
     defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.'
   },
   decideArticle3Link: {
@@ -206,7 +194,7 @@ export default defineMessages({
     defaultMessage: 'Not yet used'
   },
   decideArticle3Description: {
-    id: 'containers.Admin.onboarding.decideArticle1Description',
+    id: 'containers.Admin.onboarding.decideArticle3Description',
     defaultMessage: 'Not yet used'
   },
 });
