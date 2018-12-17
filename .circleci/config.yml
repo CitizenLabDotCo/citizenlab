@@ -236,8 +236,7 @@ workflows:
           requires:
             - deploy_demo
             - reset_e2e_tenant
-          executor: cypress/browsers-chrome69
-          browser: chrome
+          executor: cypress/base-10
           command: npx cypress run --spec 'cypress/integration/sign_up_step_2.ts' --config baseUrl=https://e2e.stg.citizenlab.co
           filters:
             branches:
