@@ -225,6 +225,8 @@ const PoweredByWrapper = styled.a`
   `}
 `;
 
+const SendFeedback = styled.a``;
+
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
   margin-right: 20px;
@@ -289,6 +291,17 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { locale, currentTenant, showCityLogoSection } = this.state;
     const { formatMessage } = this.props.intl;
+
+    let surveyLink: string | null = null;
+
+    if (locale === 'fr-BE' || locale === 'fr-FR') {
+      surveyLink = 'https://citizenlabco.typeform.com/to/Cgn9hg';
+    } else if (locale === 'nl-BE' || locale === 'nl-NL') {
+      surveyLink = 'https://citizenlabco.typeform.com/to/gOuYim';
+    } else {
+      // English survey when language is not French or Dutch
+      surveyLink = 'https://citizenlabco.typeform.com/to/z7baRP';
+    }
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -359,7 +372,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               <CitizenLabLogo name="logo" />
             </PoweredByWrapper>
 
-            <SendFeedbackIcon name="questionMark" />
+            <SendFeedback target="_blank" href={surveyLink}>
+              <SendFeedbackIcon name="questionMark" />
+            </SendFeedback>
 
           </SecondLine>
         </Container>
