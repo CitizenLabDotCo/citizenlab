@@ -38,7 +38,15 @@ const SectionHeader = styled.div`
   padding: 20px 40px;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid ${colors.adminBorder}
+  border-bottom: 1px solid ${colors.adminBorder};
+  & a {
+    color: ${colors.adminSecondaryTextColor};
+    text-decoration: underline;
+  }
+  & a:hover {
+    color: ${colors.clIconAccent};
+    text-decoration: underline;
+  }
 `;
 
 const SectionTitle: any = styled.div`
