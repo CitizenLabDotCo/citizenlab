@@ -130,6 +130,9 @@ describe('Sign up step 2 page', () => {
       return signup(firstName, lastName, email, password);
     }).then(() => {
       cy.login(email, password);
+      cy.wait(1000);
+      cy.visit('/');
+      cy.wait(1000);
 
       // test
       cy.visit('/complete-signup');
