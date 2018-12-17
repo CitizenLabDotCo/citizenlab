@@ -67,8 +67,14 @@ type State  = {
   headerError: string | null;
   titleError: Multiloc;
   subtitleError: Multiloc;
-  contrastRatioWarning: boolean;
+  contrastRatioWarning: {
+    color_main: boolean;
+    color_secondary: boolean;
+    color_text: boolean;
+  };
 };
+
+type TenantColors = 'color_main' | 'color_secondary' | 'color_text';
 
 class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, State> {
   titleMaxCharCount: number;
@@ -91,7 +97,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       headerError: null,
       titleError: {},
       subtitleError: {},
-      contrastRatioWarning: false,
+      contrastRatioWarning: {
+        color_main: false,
+        color_secondary: false,
+        color_text: false
+      }
     };
     this.titleMaxCharCount = 45;
     this.subtitleMaxCharCount = 90;
@@ -209,18 +219,25 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
-  handleColorPickerOnChange = (hexColor: string) => {
+  handleColorPickerOnChange = (colorName: TenantColors) => (hexColor: string) => {
     const rgbColor = hexToRgb(hexColor);
 
     if (rgbColor) {
-      const { r, g, b } = rgbColor;
-      const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
-      const contrastRatioWarning = contrastRatio < 4.50 ? true : false;
-      this.setState({ contrastRatioWarning });
+      this.setState(({ contrastRatioWarning }) => {
+        const { r, g, b } = rgbColor;
+        const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+
+        return {
+          contrastRatioWarning: {
+            ...contrastRatioWarning,
+            [colorName]: (contrastRatio < 4.50 ? true : false)
+          }
+        };
+      });
     }
 
     let newDiff = cloneDeep(this.state.attributesDiff);
-    newDiff = set(newDiff, 'settings.core.color_main', hexColor);
+    newDiff = set(newDiff, `settings.core.${colorName}`, hexColor);
     this.setState({ attributesDiff: newDiff });
   }
 
@@ -305,25 +322,27 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.titleBranding} />
             </SectionTitle>
 
-            <ColorPickerSectionField>
-              <Label>
-                <FormattedMessage {...messages.mainColor} />
-              </Label>
-              <ColorPickerInput
-                type="text"
-                value={get(tenantAttrs, 'settings.core.color_main')}
-                onChange={this.handleColorPickerOnChange}
-              />
-              {contrastRatioWarning &&
-                <ContrastWarning
-                  text={
-                    <FormattedMessage
-                      {...messages.contrastRatioTooLow}
-                    />
-                  }
+            {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => (
+              <ColorPickerSectionField key={colorName}>
+                <Label>
+                  <FormattedMessage {...messages[colorName]} />
+                </Label>
+                <ColorPickerInput
+                  type="text"
+                  value={get(tenantAttrs, `settings.core.${colorName}`)}
+                  onChange={this.handleColorPickerOnChange(colorName)}
                 />
-              }
-            </ColorPickerSectionField>
+                {contrastRatioWarning[colorName] &&
+                  <ContrastWarning
+                    text={
+                      <FormattedMessage
+                        {...messages.contrastRatioTooLow}
+                      />
+                    }
+                  />
+                }
+              </ColorPickerSectionField>
+            ))}
 
             <SectionField key={'logo'}>
               <Label><FormattedMessage {...messages['logo']} /></Label>

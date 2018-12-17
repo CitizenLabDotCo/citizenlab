@@ -47,9 +47,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.languages',
     defaultMessage: 'Languages',
   },
-  mainColor: {
-    id: 'app.containers.AdminPage.SettingsPage.mainColor',
+  color_main: {
+    id: 'app.containers.AdminPage.SettingsPage.color_main',
     defaultMessage: 'Main color',
+  },
+  color_secondary: {
+    id: 'app.containers.AdminPage.SettingsPage.color_secondary',
+    defaultMessage: 'Secondary color',
+  },
+  color_text: {
+    id: 'app.containers.AdminPage.SettingsPage.color_text',
+    defaultMessage: 'Text color',
   },
   menuStyle: {
     id: 'app.containers.AdminPage.SettingsPage.menuStyle',
