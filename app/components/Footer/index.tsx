@@ -52,6 +52,8 @@ const ShortFeedback = styled.div`
 `;
 
 const ThankYouNote = styled.span`
+  display: block;
+  padding: 1.5px 0;
   font-size: ${fontSizes.base}px;
   font-weight: 600;
 `;
@@ -193,6 +195,10 @@ const Right = styled.div`
 
 const PoweredBy = styled.span`
   margin-right: 10px;
+
+  ${media.largePhone`
+    margin-right: 5px;
+  `}
 `;
 
 const CitizenLabLogo = styled(Icon)`
@@ -238,6 +244,16 @@ const PoweredByWrapper = styled.a`
     ${CitizenLabLogo} {
       fill: #333;
     }
+  `}
+
+  ${media.largePhone`
+    margin-right: 13px;
+    padding-right: 13px;
+  `}
+
+  ${media.smallPhone`
+    margin-right: 10px;
+    padding-right: 10px;
   `}
 `;
 

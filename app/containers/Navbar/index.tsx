@@ -254,7 +254,6 @@ const RightItem: any = styled.div`
 
   &.signup {
     padding: 0;
-    margin-right: 20px;
   }
 
   &.notification {
@@ -268,15 +267,34 @@ const RightItem: any = styled.div`
     padding: 0 15px;
   }
 
-  &.usermenu,
-  &.languageselector {
+  &.usermenu {
     ${media.smallerThanMinTablet`
       padding: 0 5px;
     `}
   }
+
+  &.languageselector {
+    padding-left: 30px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 15px;
+    `}
+
+    ${media.phone`
+      padding-left: 12px;
+    `}
+  }
 `;
 
-const LogInButton = NavigationItem.extend``;
+const LogInButton = NavigationItem.extend`
+  ${media.smallerThanMinTablet`
+    padding: 0 15px;
+  `}
+
+  ${media.phone`
+    padding: 0 12px;
+  `}
+`;
 
 const SignUpButton = styled(Button)`
   color: #fff;
@@ -287,6 +305,17 @@ const SignUpButton = styled(Button)`
   &:hover {
     color: ${colors.text};
   }
+
+  .Button {
+    ${media.smallerThanMinTablet`
+      padding: 0 15px;
+    `}
+
+    ${media.phone`
+      padding: 0 12px;
+    `}
+  }
+
 `;
 
 interface InputProps {}
