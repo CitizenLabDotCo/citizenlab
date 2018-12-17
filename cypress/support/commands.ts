@@ -16,6 +16,7 @@ export function login(email: string, password: string) {
   cy.get('.e2e-submit-signin').click();
   cy.visit('/');
   cy.get('#e2e-landing-page');
+  cy.wait(1000);
 }
 
 export function logout() {
