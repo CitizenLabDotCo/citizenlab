@@ -17,11 +17,11 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
     Array [
       Object {
         "label": "Summary",
-        "url": "/admin",
+        "url": "/admin/dashboard",
       },
       Object {
         "label": "Users",
-        "url": "/admin/dashboard-users",
+        "url": "/admin/dashboard/users",
       },
     ]
   }
