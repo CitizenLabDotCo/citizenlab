@@ -84,6 +84,10 @@ describe('Sign up step 2 page', () => {
     // before
     signup(firstName, lastName, email, password);
     cy.login(email, password);
+    cy.wait(1000);
+    cy.visit('/');
+    cy.get('#e2e-landing-page');
+    cy.wait(1000);
 
     // test
     cy.visit('/complete-signup');
@@ -103,6 +107,10 @@ describe('Sign up step 2 page', () => {
       const customFieldId = response.body.data.id;
       signup(firstName, lastName, email, password);
       cy.login(email, password);
+      cy.wait(1000);
+      cy.visit('/');
+      cy.get('#e2e-landing-page');
+      cy.wait(1000);
 
       // test
       cy.visit('/complete-signup');
@@ -129,6 +137,10 @@ describe('Sign up step 2 page', () => {
       customFieldId = response.body.data.id;
       signup(firstName, lastName, email, password);
       cy.login(email, password);
+      cy.wait(1000);
+      cy.visit('/');
+      cy.get('#e2e-landing-page');
+      cy.wait(1000);
 
       // test
       cy.visit('/complete-signup');
@@ -153,6 +165,10 @@ describe('Sign up step 2 page', () => {
       const customFieldId = response.body.data.id;
       signup(firstName, lastName, email, password);
       cy.login(email, password);
+      cy.wait(1000);
+      cy.visit('/');
+      cy.get('#e2e-landing-page');
+      cy.wait(1000);
 
       // test
       cy.visit('/complete-signup');
