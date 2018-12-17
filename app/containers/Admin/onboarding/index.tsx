@@ -12,6 +12,10 @@ import PageWrapper from 'components/admin/PageWrapper';
 import Icon, { IconNames } from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -127,11 +131,14 @@ const content: section[] = [
   },
 ];
 
+const trackExternal = (section: string) => () => trackEventByName(tracks.externalLink.name, { extra: { section } });
+const trackInternal = (section: string, article: number) => () => trackEventByName(tracks.internalLink.name, { extra: { section, article } });
+
 export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const renderArticle = (section: string, i: number) => (
-    <Article to={formatMessage(messages[`${section}Article${i}Link`])} key={i}>
+    <Article to={formatMessage(messages[`${section}Article${i}Link`])} key={i} onClick={trackInternal(section, i)}>
       <div>
         <FormattedMessage tagName="h3" {...messages[`${section}Article${i}Title`]} />
         <FormattedMessage tagName="p" {...messages[`${section}Article${i}Description`]} />
@@ -155,7 +162,7 @@ export const Onboarding = (props: InjectedIntlProps) => {
           <FormattedMessage tagName="h2" {...messages[`${key}SectionTitle`]} />
         </SectionTitle>
         {/*tslint:disable-next-line*/}
-        <a href={formatMessage(messages[`${key}SectionLink`])} target="_blank">
+        <a href={formatMessage(messages[`${key}SectionLink`])} target="_blank" onClick={trackExternal(key)}>
           <FormattedMessage {...messages.readCompleteGuide} />
         </a>
       </SectionHeader>
