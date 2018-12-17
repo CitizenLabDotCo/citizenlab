@@ -131,6 +131,7 @@ describe('Sign up step 2 page', () => {
 
       // test
       cy.visit('/complete-signup');
+      cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-signup-step2');
       cy.get('.e2e-signup-step2-button').click();
       cy.get('.e2e-error-message').should('contain', 'This field is required');
