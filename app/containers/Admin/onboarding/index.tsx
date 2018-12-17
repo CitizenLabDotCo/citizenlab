@@ -14,8 +14,7 @@ import Link from 'utils/cl-router/Link';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, quillEditedContent } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   h1 {
