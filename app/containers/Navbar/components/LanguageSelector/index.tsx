@@ -50,7 +50,7 @@ const OpenMenuButton = styled.button`
   line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
-  padding: 10px;
+  padding: 0;
   display: flex;
   align-items: center;
   outline: none;
