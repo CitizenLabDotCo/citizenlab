@@ -33,7 +33,7 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run --spec 'cypress/integration/sign_up_step_2.ts'"
+    "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
   },
   "dependencies": {
     "@babel/polyfill": "7.0.0",
