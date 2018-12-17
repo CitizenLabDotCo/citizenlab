@@ -35,7 +35,7 @@ describe('Sign up step 2 page', () => {
   };
 
   const signup = (firstName: string, lastName: string, email: string, password: string) => {
-    cy.request({
+    return cy.request({
       headers: {
         'Content-Type': 'application/json',
       },
@@ -117,6 +117,7 @@ describe('Sign up step 2 page', () => {
   // });
 
   it('shows an error message when submitting an empty form that contains a required custom field', () => {
+    let customFieldId: string = null as any;
     const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
@@ -125,8 +126,9 @@ describe('Sign up step 2 page', () => {
 
     // before
     createCustomField(randomFieldName, true, true).then((response) => {
-      const customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
+      customFieldId = response.body.data.id;
+      return signup(firstName, lastName, email, password);
+    }).then(() => {
       cy.login(email, password);
 
       // test
