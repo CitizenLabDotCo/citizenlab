@@ -51,6 +51,7 @@ const Container = styled.div`
   top: 0;
   background: #fff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid #EAEAEA;
   z-index: 999;
 
   &.citizen {
@@ -74,7 +75,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
-  height: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const LogoLink = styled(Link) `
@@ -242,7 +243,7 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  height: 100%;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const RightItem: any = styled.div`
@@ -253,6 +254,7 @@ const RightItem: any = styled.div`
 
   &.signup {
     padding: 0;
+    margin-right: 20px;
   }
 
   &.notification {
@@ -263,21 +265,15 @@ const RightItem: any = styled.div`
 
   &.usermenu,
   &.notification {
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:focus,
-    &:hover {
-      background-color: ${(props) => rgba(props.theme.colorMain, .1)};
-      color: ${(props) => props.theme.colorMain};
-    }
-
+    padding: 0 15px;
   }
 
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-  `}
+  &.usermenu,
+  &.languageselector {
+    ${media.smallerThanMinTablet`
+      padding: 0 5px;
+    `}
+  }
 `;
 
 const LogInButton = NavigationItem.extend``;
@@ -461,7 +457,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem>
+              <RightItem className="languageselector">
                 <LanguageSelector />
               </RightItem>
             }
