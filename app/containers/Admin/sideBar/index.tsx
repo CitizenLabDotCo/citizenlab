@@ -16,10 +16,6 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-// tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -69,34 +65,6 @@ const Text = styled.div`
   `}
 `;
 
-const FakeDoor = styled.a`
-  flex: 0 0 auto;
-  width: 210px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 5px;
-  padding-right: 15px;
-  padding-bottom: 1px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  border-radius: 5px;
-
-  &:hover {
-    ${Text} {
-      color: #fff;
-    };
-
-    .cl-icon {
-      .cl-icon-primary {
-        fill: ${colors.clIconAccent}
-      }
-      .cl-icon-accent {
-        fill: ${colors.clIconPrimary}
-      }
-    };
-  }
-`;
 const Spacer = styled.div`
   flex-grow: 1;
 `;
@@ -155,12 +123,32 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     };
     this.routes = [
       {
-        id: 'dashboard',
+        id: 'guide',
         link: '/admin',
+        iconName: 'play',
+        message: 'guide',
+        isActive: (pathName) => pathName === (`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+      },
+      {
+        id: 'projects',
+        link: '/admin/projects',
+        iconName: 'folder',
+        message: 'projects',
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
+      },
+      {
+        id: 'ideas',
+        link: '/admin/ideas',
+        iconName: 'ideas',
+        message: 'ideas',
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
+      },
+      {
+        id: 'dashboard',
+        link: '/admin/dashboard',
         iconName: 'stats',
         message: 'dashboard',
-        isActive: (pathName) => (pathName === `${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`
-      || pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard-`)),
+        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'users',
@@ -175,27 +163,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         iconName: 'invitations',
         message: 'invitations',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/invitations`))
-      },
-      {
-        id: 'projects',
-        link: '/admin/projects',
-        iconName: 'folder',
-        message: 'projects',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
-      },
-      {
-        id: 'initiatieven',
-        link: ' https://www.citizenlab.co/nl/continuous-participation',
-        iconName: 'initiatieven',
-        message: 'Burger-initiatieven',
-        isActive: () => false,
-      },
-      {
-        id: 'ideas',
-        link: '/admin/ideas',
-        iconName: 'ideas',
-        message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
       },
       {
         id: 'emails',
@@ -234,10 +201,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  track = () => {
-    this.props.trackFakeDoor();
-  }
-
   render() {
     const { formatMessage } = this.props.intl;
     const { pathname } = this.props.location;
@@ -251,18 +214,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
       <Menu>
         <MenuInner>
           {navItems.map((route) => {
-            if (route.id === 'initiatieven') {
-              if (pathname.match(/^\/nl-/)) {
-                return (
-                  <FeatureFlag name={route.featureName} key={route.id}>
-                    <FakeDoor href={route.link} target="blank" onClick={this.track}>
-                      <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-                      <Text>{route.message}</Text>
-                    </FakeDoor>
-                  </FeatureFlag>
-                );
-              } else { return null; }
-            } else if (route.id === 'emails') {
+            if (route.id === 'emails') {
               return (
                 <GetFeatureFlag name="manual_emailing" key={route.id}>
                   {(manualEmailing) => (
@@ -294,6 +246,4 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     );
   }
 }
-export default injectTracks<Props>({
-  trackFakeDoor: tracks.fakeDoor,
-})(withRouter<Props>(injectIntl(Sidebar)));
+export default withRouter<Props>(injectIntl(Sidebar));
