@@ -136,7 +136,7 @@ const PagesNav = styled.nav`
     order: 2;
     text-align: center;
     justify-content: center;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-bottom: 15px;
   `}
 `;
@@ -174,6 +174,17 @@ const Separator = styled.span`
   `}
 `;
 
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMaxTablet`
+    order: 1;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  `}
+`;
+
 const PoweredBy = styled.span`
   margin-right: 10px;
 `;
@@ -193,6 +204,7 @@ const PoweredByWrapper = styled.a`
   text-decoration: none;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   outline: none;
@@ -211,8 +223,6 @@ const PoweredByWrapper = styled.a`
   `}
 
   ${media.smallerThanMaxTablet`
-    order: 1;
-    margin-top: 10px;
     color: #333;
 
     &:hover {
@@ -367,15 +377,16 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               </ul>
             </PagesNav>
 
-            <PoweredByWrapper href="https://www.citizenlab.co/">
-              <PoweredBy>{poweredBy}</PoweredBy>
-              <CitizenLabLogo name="logo" />
-            </PoweredByWrapper>
+            <Right>
+              <PoweredByWrapper href="https://www.citizenlab.co/">
+                <PoweredBy>{poweredBy}</PoweredBy>
+                <CitizenLabLogo name="logo" />
+              </PoweredByWrapper>
 
-            <SendFeedback target="_blank" href={surveyLink}>
-              <SendFeedbackIcon name="questionMark" />
-            </SendFeedback>
-
+              <SendFeedback target="_blank" href={surveyLink}>
+                <SendFeedbackIcon name="questionMark" />
+              </SendFeedback>
+            </Right>
           </SecondLine>
         </Container>
       );
