@@ -84,7 +84,19 @@
             "description": "The main brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#335533"
+            "default": "#000000"
+          },
+          "color_secondary": {
+            "description": "The secondary brand color as a hexadecimal value including the anchor character",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#000000"
+          },
+          "color_text": {
+            "description": "The text brand color as a hexadecimal value including the anchor character",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#000000"
           },
           "color_header_overlay": {
             "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
@@ -342,7 +354,7 @@
       },
       "surveys": {
         "type": "object",
-        "description":  "Allow the embedding of surveys from Typeform and Survey Monkey",
+        "description":  "Allow the embedding of surveys from Typeform, Survey Monkey and Google Forms",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
