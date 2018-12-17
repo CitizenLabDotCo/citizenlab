@@ -52,6 +52,8 @@ const ShortFeedback = styled.div`
 `;
 
 const ThankYouNote = styled.span`
+  display: block;
+  padding: 1.5px 0;
   font-size: ${fontSizes.base}px;
   font-weight: 600;
 `;
