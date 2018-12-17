@@ -60,6 +60,10 @@ const Buttons = styled.div`
 `;
 
 const FeedbackButton = styled(Button)`
+  .Button {
+    text-transform: uppercase;
+  }
+
   &:hover {
     .Button {
       text-decoration: underline;
@@ -316,11 +320,15 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
           <ShortFeedback>
             <Wrapper>
               <FeedbackQuestion>
-                Did you find what you're looking for?
+                <FormattedMessage {...messages.feedbackQuestion} />
               </FeedbackQuestion>
               <Buttons>
-                <FeedbackButton padding="0 12px" fontWeight="500" style="text">YES</FeedbackButton>
-                <FeedbackButton padding="0 12px" fontWeight="500" style="text">NO</FeedbackButton>
+                <FeedbackButton padding="0 12px" fontWeight="500" style="text">
+                  <FormattedMessage {...messages.yes} />
+                </FeedbackButton>
+                <FeedbackButton padding="0 12px" fontWeight="500" style="text">
+                  <FormattedMessage {...messages.no} />
+                </FeedbackButton>
               </Buttons>
             </Wrapper>
           </ShortFeedback>
