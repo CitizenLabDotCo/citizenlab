@@ -1182,6 +1182,7 @@
   "app.containers.footer.slogan": "{type, select, generic {Dies ist eine Initiative von {name}} other {Dies ist eine Initiative von {name}}}",
   "app.containers.footer.terms-and-conditions": "Geschäftsbedingungen",
   "app.containers.footer.termsLink": "Nutzungsbedingungen",
+  "app.containers.footer.thanksForFeedback": "",
   "app.containers.footer.yes": "",
   "app.containers.landing.cityProjects": "{orgName, select, München {Bezirke} other {Projekte}}",
   "app.containers.landing.createAccount": "Erstellen Sie ein Konto",
