@@ -53,4 +53,8 @@ export default defineMessages({
     id: 'app.containers.footer.no',
     defaultMessage: 'No'
   },
+  thanksForFeedback: {
+    id: 'app.containers.footer.thanksForFeedback',
+    defaultMessage: 'Thanks for your feedback!'
+  },
 });
