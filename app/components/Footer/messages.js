@@ -41,12 +41,4 @@ export default defineMessages({
     id: 'app.containers.footer.selectLanguage',
     defaultMessage: 'Select a Language',
   },
-  join: {
-    id: 'app.containers.footer.join',
-    defaultMessage: 'Join citizens already making a change',
-  },
-  createAccount: {
-    id: 'app.containers.landing.createAccount',
-    defaultMessage: 'Create an account',
-  },
 });
