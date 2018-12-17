@@ -173,6 +173,7 @@ const PoweredByWrapper = styled.a`
   cursor: pointer;
   outline: none;
   padding: 10px 30px 10px 0;
+  margin-right: 30px;
   border-right: 1px solid #E8E8E8;
 
   ${media.biggerThanMaxTablet`
@@ -198,6 +199,16 @@ const PoweredByWrapper = styled.a`
       fill: #333;
     }
   `}
+`;
+
+const SendFeedbackIcon = styled(Icon)`
+  fill: ${colors.clIconSecondary};
+  margin-right: 20px;
+
+  &:hover {
+    cursor: pointer;
+    fill: #000;
+  }
 `;
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
@@ -317,6 +328,8 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
               <PoweredBy>{poweredBy}</PoweredBy>
               <CitizenLabLogo name="logo" />
             </PoweredByWrapper>
+
+            <SendFeedbackIcon name="questionMark" />
 
           </SecondLine>
         </Container>
