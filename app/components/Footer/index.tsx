@@ -37,18 +37,14 @@ const Container = styled.div`
   z-index: 0;
 `;
 
-const SecondLine = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  background-color: #fff;
-`;
-
 const ShortFeedback = styled.div`
   display: flex;
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
-  margin-bottom: -6px;
+  position: absolute;
+  top: -49px;
+  left: 0;
 `;
 
 const ThankYouNote = styled.span`
@@ -107,7 +103,7 @@ const TenantSlogan = styled.div`
   text-align: center;
 `;
 
-const ThirdLine = styled.div`
+const SecondLine = styled.div`
   width: 100%;
   min-height: 60px;
   display: flex;
@@ -116,6 +112,7 @@ const ThirdLine = styled.div`
   background: #fff;
   border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
+  position: relative;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -372,28 +369,26 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
           <SecondLine>
             <ShortFeedback>
-              {shortFeedbackButtonClicked ?
-                <ThankYouNote>
-                  <FormattedMessage {...messages.thanksForFeedback} />
-                </ThankYouNote>
-                :
-                <>
-                  <FeedbackQuestion>
-                    <FormattedMessage {...messages.feedbackQuestion} />
-                  </FeedbackQuestion>
-                  <Buttons>
-                    <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
-                      <FormattedMessage {...messages.yes} />
-                    </FeedbackButton>
-                    <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
-                      <FormattedMessage {...messages.no} />
-                    </FeedbackButton>
-                  </Buttons>
-                </>
-              }
-            </ShortFeedback>
-          </SecondLine>
-          <ThirdLine>
+                {shortFeedbackButtonClicked ?
+                  <ThankYouNote>
+                    <FormattedMessage {...messages.thanksForFeedback} />
+                  </ThankYouNote>
+                  :
+                  <>
+                    <FeedbackQuestion>
+                      <FormattedMessage {...messages.feedbackQuestion} />
+                    </FeedbackQuestion>
+                    <Buttons>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                        <FormattedMessage {...messages.yes} />
+                      </FeedbackButton>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                        <FormattedMessage {...messages.no} />
+                      </FeedbackButton>
+                    </Buttons>
+                  </>
+                }
+              </ShortFeedback>
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
@@ -425,7 +420,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 <SendFeedbackIcon name="questionMark" />
               </SendFeedback>
             </Right>
-          </ThirdLine>
+          </SecondLine>
         </Container>
       );
     }
