@@ -1,5 +1,5 @@
 describe('Sign up step 2 page', () => {
-  const adminJwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwNzFlZmNlMS1iMmNkLTQ1ZTEtOGI0Ni1iYzkyMTY1NmU1NTUifQ.s6nSGiPxbaRz-LdPamKE-eM5W3Cjff8YpylAE-YwAdE';
+  let adminJwt: string = null as any;
 
   const createCustomField = (fieldName: string, enabled: boolean, required: boolean) => {
     return cy.request({
@@ -54,7 +54,7 @@ describe('Sign up step 2 page', () => {
   };
 
   const login = (email: string, password: string) => {
-    cy.request({
+    return cy.request({
       headers: {
         'Content-Type': 'application/json',
       },
@@ -69,7 +69,13 @@ describe('Sign up step 2 page', () => {
     });
   };
 
-  it('does not show the 2nd step when no custom fields are enabled', () => {
+  before(() => {
+    login('admin@citizenlab.co', 'testtest').then((response) => {
+      adminJwt = response.body.jwt;
+    });
+  });
+
+  it('does not show it when no custom fields are enabled', () => {
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
@@ -85,7 +91,7 @@ describe('Sign up step 2 page', () => {
     cy.get('#e2e-landing-page');
   });
 
-  it('shows the 2nd step and can skip it when an optional custom field is enabled', () => {
+  it('can skip it when an optional custom field is enabled', () => {
     const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
@@ -110,7 +116,7 @@ describe('Sign up step 2 page', () => {
     });
   });
 
-  it('shows the 2nd step and an error message when not filled in when a required custom field is enabled', () => {
+  it('shows an error message when submitting an empty form that contains a required custom field', () => {
     const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
@@ -134,7 +140,7 @@ describe('Sign up step 2 page', () => {
     });
   });
 
-  it('shows and successfully completes the 2nd step when filled in when a required custom field is enabled', () => {
+  it('successfully completes when submitting a filled-in form that contains a required custom field', () => {
     const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
     const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
