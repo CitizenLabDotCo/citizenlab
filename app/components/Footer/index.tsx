@@ -38,14 +38,34 @@ const Container = styled.div`
 `;
 
 const ShortFeedback = styled.div`
+  display: flex;
+  justify-content: flex-start;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 13px 25px;
   background-color: ${colors.adminBackground};
+  margin-bottom: -6px;
+`;
+
+const FeedbackQuestion = styled.span`
+  font-size: ${fontSizes.base}px;
+  margin-right: 12px;
 `;
 
 const Buttons = styled.div`
-
+  display: flex;
 `;
 
-const FeedbackButton = styled(Button)``;
+const FeedbackButton = styled(Button)`
+  &:hover {
+    .Button {
+      text-decoration: underline;
+    }
+  }
+`;
 
 const FirstLine = styled.div`
   display: flex;
@@ -294,13 +314,15 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
           }
 
           <ShortFeedback>
-            <span>
-              Did you find what you're looking for?
-            </span>
-            <Buttons>
-              <FeedbackButton style="text">YES</FeedbackButton>
-              <FeedbackButton style="text">NO</FeedbackButton>
-            </Buttons>
+            <Wrapper>
+              <FeedbackQuestion>
+                Did you find what you're looking for?
+              </FeedbackQuestion>
+              <Buttons>
+                <FeedbackButton padding="0 12px" fontWeight="500" style="text">YES</FeedbackButton>
+                <FeedbackButton padding="0 12px" fontWeight="500" style="text">NO</FeedbackButton>
+              </Buttons>
+            </Wrapper>
           </ShortFeedback>
           <SecondLine>
             <PagesNav>
