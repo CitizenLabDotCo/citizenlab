@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs';
 import { globalState, IAdminFullWidth, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
 
 // components
-import HasPermission from 'components/HasPermission';
 import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
