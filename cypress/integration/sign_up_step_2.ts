@@ -130,13 +130,12 @@ describe('Sign up step 2 page', () => {
       return signup(firstName, lastName, email, password);
     }).then(() => {
       cy.login(email, password);
-      cy.wait(1000);
-      cy.visit('/');
-      cy.wait(1000);
+      // cy.wait(1000);
+      // cy.visit('/');
+      // cy.wait(1000);
 
       // test
       cy.visit('/complete-signup');
-      cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-signup-step2');
       cy.get('.e2e-signup-step2-button').click();
       cy.get('.e2e-error-message').should('contain', 'This field is required');
