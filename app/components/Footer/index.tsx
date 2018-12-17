@@ -42,6 +42,7 @@ const ShortFeedback = styled.div`
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
+  color: ${colors.label};
   position: absolute;
   top: -49px;
   left: 0;
