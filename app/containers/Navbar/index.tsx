@@ -12,7 +12,6 @@ import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
-import Button from 'components/UI/Button';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -289,7 +288,7 @@ const RightItem: any = styled.div`
   }
 `;
 
-const LogInButton = NavigationItem.extend`
+const LogInLink = NavigationItem.extend`
   &:focus,
   &:hover {
     border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
@@ -304,22 +303,20 @@ const LogInButton = NavigationItem.extend`
   `}
 `;
 
-const SignUpButton = styled(Button)`
+const SignUpLink = styled(Link)`
+  background-color: ${(props) => props.theme.colorSecondary};
   color: #fff;
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  padding: 0;
+  padding: 0 30px;
+  height: 100%;
+  display: flex;
+  align-items: center;
 
-  .Button.button.primary {
-    background-color: ${(props) => props.theme.colorSecondary};
-  }
-
+  &:focus,
   &:hover {
-    color: ${colors.text};
-
-    .Button.button.primary {
-      background-color: darken(0.12, ${(props) => props.theme.colorSecondary})};
-    }
+    color: #fff;
+    background-color: ${(props) => darken(0.12, props.theme.colorSecondary)};
   }
 
   ${media.smallerThanMinTablet`
@@ -461,29 +458,26 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             {!authUser &&
 
               <RightItem className="login">
-                <LogInButton
+                <LogInLink
                   id="e2e-login-link"
                   to="/sign-in"
                 >
                   <NavigationItemText>
                     <FormattedMessage {...messages.logIn} />
                   </NavigationItemText>
-                </LogInButton>
+                </LogInLink>
               </RightItem>
             }
 
             {!authUser &&
               <RightItem className="signup">
-                <SignUpButton
-                  padding="0 30px"
-                  fontWeight="500"
-                  fullHeight
-                  linkTo="/sign-up"
+                <SignUpLink
+                  to="/sign-up"
                 >
                   <NavigationItemText>
                     <FormattedMessage {...messages.signUp} />
                   </NavigationItemText>
-                </SignUpButton>
+                </SignUpLink>
               </RightItem>
             }
 
