@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { remCalc, colors, fontSize, media } from 'utils/styleUtils';
+import { remCalc, colors, fontSizes, media } from 'utils/styleUtils';
 
 export const Section = styled.div`
   margin-bottom: 0;
@@ -11,16 +11,18 @@ export const SubSection = styled.section`
 `;
 
 export const SectionTitle = styled.h1`
-  font-size: ${fontSize('xxl')};
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: ${remCalc(32)};
-  margin-bottom: ${remCalc(30)};
+  margin-bottom: ${remCalc(45)};
 `;
 
 export const SectionSubtitle = styled.p`
-  color: ${colors.label};
-  font-size: ${fontSize('base')};
+  color: ${colors.adminSecondaryTextColor};
+  font-size: ${fontSizes.base}px;
   margin-bottom: ${remCalc(45)};
+  font-weight: 400;
+  max-width: 60em;
 
   ${SectionTitle} + &{
     margin-top: -2rem;
@@ -49,7 +51,7 @@ export const SectionField = styled.div`
     border-radius: 5px;
     border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 24px;
     outline: none;

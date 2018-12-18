@@ -13,7 +13,7 @@ import Toggle from 'components/UI/Toggle';
 import Collapse from 'components/admin/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
@@ -533,6 +533,10 @@ class Invitations extends React.PureComponent<Props, State> {
             <SectionTitle>
               <FormattedMessage {...messages.invitePeople} />
             </SectionTitle>
+
+            <SectionSubtitle>
+              <FormattedMessage {...messages.invitationSubtitle} />
+            </SectionSubtitle>
 
             <ViewButtons>
               <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
