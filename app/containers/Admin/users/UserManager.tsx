@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isArray, includes } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
@@ -51,7 +51,7 @@ const initialState: State = {
   errors: [],
 };
 
-export class UserManager extends React.PureComponent<Props, State> {
+export class UserManager extends PureComponent<Props, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {

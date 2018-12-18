@@ -685,6 +685,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               {!project ? (
                 <>
                   <Radio
+                    className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
                     currentValue={projectType}
                     value="timeline"
@@ -693,6 +694,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     label={<FormattedMessage {...messages.timeline} />}
                   />
                   <Radio
+                    className="e2e-project-type-continuous"
                     onChange={this.handeProjectTypeOnChange}
                     currentValue={projectType}
                     value="continuous"
@@ -721,6 +723,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     <ParticipationContext
                       onSubmit={this.handleParcticipationContextOnSubmit}
                       onChange={this.handleParticipationContextOnChange}
+                      apiErrors={apiErrors}
                     />
                   </ParticipationContextWrapper>
                 </CSSTransition>
@@ -732,6 +735,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 projectId={project.data.id}
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
+                apiErrors={apiErrors}
               />
             }
 

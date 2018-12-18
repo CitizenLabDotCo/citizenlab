@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UsersDashboard /> reacts to group changes 1`] = `
+Array [
+  Object {
+    "label": "All Groups",
+    "value": "",
+  },
+]
+`;
+
+exports[`<UsersDashboard /> reacts to group changes 2`] = `
+Array [
+  Object {
+    "label": "All Groups",
+    "value": "",
+  },
+  Object {
+    "label": "Test Group",
+    "value": "test_group_id",
+  },
+]
+`;
+
+exports[`<UsersDashboard /> renders correctly 1`] = `
+<Fragment>
+  <dashboard__ControlBar>
+    <TimeControl
+      endAtMoment={"2010-01-01T04:06:07.000Z"}
+      onChange={[Function]}
+    />
+  </dashboard__ControlBar>
+  <ChartFilters
+    configuration={
+      Object {
+        "showGroupFilter": true,
+        "showProjectFilter": false,
+        "showTopicFilter": false,
+      }
+    }
+    currentGroupFilter={null}
+    currentProjectFilter={null}
+    currentTopicFilter={null}
+    groupFilterOptions={
+      Array [
+        Object {
+          "label": "All Groups",
+          "value": "",
+        },
+        Object {
+          "label": "Test Group",
+          "value": "test_group_id",
+        },
+      ]
+    }
+    onGroupFilter={[Function]}
+    onProjectFilter={null}
+    onTopicFilter={null}
+    projectFilterOptions={null}
+    topicFilterOptions={null}
+  />
+  <ThemeProvider
+    theme={[Function]}
+  >
+    <dashboard__GraphsContainer>
+      <AgeChart
+        currentGroupFilter={null}
+        endAt="2010-01-01T04:06:07.000Z"
+      />
+      <Component
+        currentGroupFilter={null}
+        endAt="2010-01-01T04:06:07.000Z"
+      />
+      <WithTheme(MostActiveUsersList)
+        className="dynamicHeight"
+        currentGroupFilter={null}
+        endAt="2010-01-01T04:06:07.000Z"
+        infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
+      />
+    </dashboard__GraphsContainer>
+  </ThemeProvider>
+</Fragment>
+`;

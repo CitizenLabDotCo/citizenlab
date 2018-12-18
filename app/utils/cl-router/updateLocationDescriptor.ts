@@ -9,10 +9,10 @@ export default function updateLocationDescriptor(location: LocationDescriptor, l
 
   if (descriptor.pathname) {
     if (!urlLocale && locale) {
-      descriptor.pathname = `/${locale}${descriptor.pathname}`;
+      descriptor.pathname = `/${String(locale)}${descriptor.pathname}`;
     } else if (urlLocale && locale && urlLocale !== locale) {
       const matchRegexp = new RegExp(`^\/(${urlLocale})\/`);
-      descriptor.pathname = `${descriptor.pathname.replace(matchRegexp, `/${locale}/`)}`;
+      descriptor.pathname = `${descriptor.pathname.replace(matchRegexp, `/${String(locale)}/`)}`;
     }
   }
 

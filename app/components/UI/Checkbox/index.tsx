@@ -29,12 +29,12 @@ const CheckboxContainer: any = styled.div`
   border: solid 1px #aaa;
   border-radius: 3px;
   background: #fff;
-  background: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#fff'};
-  border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#aaa'};
+  background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
+  border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &:hover {
-    border-color: ${(props: any) => props.checked ? props.theme.colors.clGreen : '#333'};
+    border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
   }
 
   &:focus {
@@ -114,8 +114,9 @@ export default class Checkbox extends PureComponent<Props, State> {
     const { size, value, label } = this.props;
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'} e2e-checkbox`} size={size}>
+      <Container className={`${className} ${label && 'hasLabel'}`} size={size}>
         <CheckboxContainer
+          className={`e2e-checkbox ${value ? 'checked' : 'unchecked'}`}
           innerRef={this.setCheckboxContainerRef}
           tabIndex={0}
           checked={value}

@@ -19,6 +19,10 @@ const ListItemText = styled.div`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 `;
 
 const ListItem = styled.button`
@@ -134,7 +138,11 @@ export default class ValuesList extends PureComponent<Props, State> {
                   key={entry.value}
                   onClick={this.handleOnToggle(entry, index)}
                   className={`
-                    ${!multiple && checked ? 'selected' : ''} ${last ? 'last' : ''}
+                    ${!multiple && checked ? 'selected' : ''}
+                    ${last ? 'last' : ''}
+                    ${entry.value === 'archived' ? 'e2e-projects-filter-archived' : ''}
+                    ${entry.value === 'new' ? 'e2e-projects-filter-new' : ''}
+                    ${entry.value === '-new' ? 'e2e-projects-filter-old' : ''}
                   `}
                 >
                   <ListItemText>{entry.text}</ListItemText>
