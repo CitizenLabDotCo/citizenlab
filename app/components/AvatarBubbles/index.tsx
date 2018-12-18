@@ -118,14 +118,6 @@ const AvatarBubbles = (props: Props & InjectedIntlProps) => {
         width={calcWidth}
         overlap={definedOverlap}
       >
-        {/* If there are users but no one has an avatar, show number of users */}
-        {(avatarCount === 0 && usersWithoutAvatar > 0) &&
-          <AvatarWrapper>
-            <SSpan size={definedSize}>{userCount} {(usersWithoutAvatar > 999) && <PlusIcon name="plus" />}</SSpan>
-          </AvatarWrapper>
-        }
-
-        {/* If there are users with an avatar, show avatars + number of users */}
         {avatarCount > 0 && avatarList.map((avatar, index) => {
           return (
             <AvatarWrapper key={index}>
@@ -140,7 +132,7 @@ const AvatarBubbles = (props: Props & InjectedIntlProps) => {
         {usersWithoutAvatar > 0 &&
           <AvatarWrapper key={avatarCount}>
             <SSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
-              {avatarCount} {(usersWithoutAvatar > 999) && <PlusIcon name="plus" />}
+              {usersWithoutAvatar} {(usersWithoutAvatar > 999) && <PlusIcon name="plus" />}
             </SSpan>
           </AvatarWrapper>
         }
