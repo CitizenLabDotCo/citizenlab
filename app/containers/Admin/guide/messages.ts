@@ -175,7 +175,7 @@ export default defineMessages({
   },
   decideArticle2Link: {
     id: 'containers.Admin.onboarding.decideArticle2Link',
-    defaultMessage: '/admin/dashboard'
+    defaultMessage: '/admin/insights'
   },
   decideArticle2Title: {
     id: 'containers.Admin.onboarding.decideArticle2Title',

@@ -37,7 +37,7 @@ export default () => ({
   getComponent: loadAndRender(import('containers/Admin')),
   onEnter: isUserAuthorized,
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/onboarding'))
+    getComponent: loadAndRender(import('containers/Admin/guide'))
   },
   childRoutes: [
     dashboardRoutes(),
