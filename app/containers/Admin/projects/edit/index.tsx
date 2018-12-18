@@ -79,33 +79,39 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
+    const { formatMessage } = this.props.intl;
 
     let tabs: TabProps[] = [
       {
-        label: this.props.intl.formatMessage(messages.generalTab),
+        label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
         className: 'general',
+        subtitle: formatMessage(messages.generalTabSubtitle)
       },
       {
-        label: this.props.intl.formatMessage(messages.descriptionTab),
+        label: formatMessage(messages.descriptionTab),
         url: `${baseTabsUrl}/description`,
-        className: 'description'
+        className: 'description',
+        subtitle: formatMessage(messages.descriptionTabSubtitle),
       },
       {
-        label: this.props.intl.formatMessage(messages.ideasTab),
+        label: formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
         className: 'ideas',
+        subtitle: formatMessage(messages.ideasTabSubtitle),
       },
       {
-        label: this.props.intl.formatMessage(messages.eventsTab),
+        label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
         className: 'events',
+        subtitle: formatMessage(messages.eventsTabSubtitle),
       },
       {
-        label: this.props.intl.formatMessage(messages.permissionsTab),
+        label: formatMessage(messages.permissionsTab),
         url: `${baseTabsUrl}/permissions`,
         feature: 'private_projects',
         className: 'permissions',
+        subtitle: formatMessage(messages.permissionsTabSubtitle),
       },
     ];
 
@@ -115,9 +121,10 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
 
     if (project.attributes.process_type === 'timeline') {
       tabs.splice(3, 0, {
-        label: this.props.intl.formatMessage(messages.phasesTab),
+        label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
         className: 'phases',
+        subtitle: formatMessage(messages.phasesTabSubtitle)
       });
     }
 

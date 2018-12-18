@@ -17,24 +17,19 @@ import { Message, Multiloc } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 const ResourceHeader = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 30px;
   @media print {
     margin-bottom: 10px;
   }
-`;
-
-const Title = styled.h1`
-  font-size: ${fontSize('xxxl')};
-  line-height: 40px;
-  font-weight: 600;
-  margin: 0;
-  margin-right: 15px;
-  padding: 0;
+  p {
+    margin-right: 40px;
+  }
 `;
 
 const TabbedNav = styled.nav`
@@ -106,12 +101,14 @@ export type TabProps = {
   active?: boolean,
   feature?: string,
   className?: string,
+  subtitle?: string
 };
 
 type Props = {
   resource: {
     title: string | Multiloc,
     publicLink?: string,
+    subtitle?: string;
   },
   messages?: {
     viewPublicResource: Message,
@@ -141,15 +138,34 @@ function showLabel(label: string | Multiloc | Message) {
   }
 }
 
+function urlMatch(tabUrl: string) {
+  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+}
+
 class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { children, resource, messages, tabs, location } = this.props;
 
+    const activeTab = location && location.pathname && tabs && tabs.length > 0 &&
+      tabs.filter(tab => urlMatch(tab.url).test(location.pathname))[0];
+
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
-          <Title>{showLabel(resource.title)}</Title>
+          <div>
+            <SectionTitle>{showLabel(resource.title)}</SectionTitle>
+            {activeTab && activeTab.subtitle &&
+              <SectionSubtitle>
+                {activeTab.subtitle}
+              </SectionSubtitle>
+            }
+            {(!activeTab || (activeTab && !activeTab.subtitle)) && resource.subtitle &&
+              <SectionSubtitle>
+                {resource.subtitle}
+              </SectionSubtitle>
+            }
+          </div>
 
           {resource.publicLink && messages &&
             <Button
@@ -166,11 +182,10 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
-              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})(\/)?$`);
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>
-                  <Tab className={`${tab.className} ${location && location.pathname && urlMatch.test(location.pathname) ? 'active' : ''}`}>
+                  <Tab className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
                     <Link to={tab.url}>{showLabel(tab.label)}</Link>
                   </Tab>
                 </FeatureFlag>
