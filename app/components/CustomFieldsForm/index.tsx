@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import moment from 'moment';
 import { isBoolean, forOwn, get, uniq, isNil, isEmpty } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // libraries
 import Form, { FieldProps } from 'react-jsonschema-form';
@@ -144,8 +145,9 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
   validate = (formData, errors) => {
     const { schema, locale } = this.state;
     const requiredFieldNames = get(schema, `${locale}.required`, []);
-    const fieldNames = get(schema, `${locale}.properties`, null);
+    const fieldNames = get(schema, `${locale}.properties`, null) as object;
     const requiredErrorMessage = this.props.intl.formatMessage(messages.requiredError);
+    const mustBeANumberMessage = this.props.intl.formatMessage(messages.mustBeANumber);
 
     errors['__errors'] = [];
 
@@ -155,13 +157,19 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     requiredFieldNames.filter((requiredFieldName) => {
       return (isNil(formData[requiredFieldName])
-        || (!isBoolean(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
+        || (!isBoolean(formData[requiredFieldName]) && !Number.isInteger(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
         || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
       );
     }).forEach((requiredFieldName) => {
       errors[requiredFieldName].addError(requiredErrorMessage);
     });
-
+    if (!isNilOrError(locale) && !isNilOrError(schema)) {
+      Object.keys(fieldNames).filter(fieldName => {
+        return !isNil(formData[fieldName]) && schema[locale].properties[fieldName].type === 'number' && !Number.isInteger(formData[fieldName]);
+      }).forEach((numberFieldWithError) => {
+        errors[numberFieldWithError].addError(mustBeANumberMessage);
+      });
+    }
     return errors;
   }
 
@@ -362,7 +370,7 @@ function renderLabel(id, label, required) {
       </Label>
     );
   }
-return;
+  return;
 }
 
 export default injectIntl<Props>(CustomFieldsForm);

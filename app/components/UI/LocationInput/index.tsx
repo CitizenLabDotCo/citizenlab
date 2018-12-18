@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PlacesAutocomplete, { geocodeByPlaceId } from 'react-places-autocomplete';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
@@ -58,11 +58,12 @@ type Props = {
   value: string;
   placeholder: string;
   onChange: (arg: string) => void;
+  className?: string;
 };
 
 type State = {};
 
-export default class LocationInput extends React.PureComponent<Props, State> {
+export default class LocationInput extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props as any);
   }
@@ -77,7 +78,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { id } = this.props;
+    const { id, className } = this.props;
     let { value, placeholder } = this.props;
 
     value = (value || '');
@@ -114,7 +115,7 @@ export default class LocationInput extends React.PureComponent<Props, State> {
     );
 
     return (
-      <LocationInputWrapper>
+      <LocationInputWrapper className={className}>
         <PlacesAutocomplete
           id={id}
           highlightFirstSuggestion={true}

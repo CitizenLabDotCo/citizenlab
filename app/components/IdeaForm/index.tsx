@@ -403,6 +403,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement>
             <Label value={<FormattedMessage {...messages.topicsLabel} />} htmlFor="topics" />
             <StyledMultipleSelect
+              className="e2e-idea-form-topics-multiple-select-box"
               inputId="topics"
               value={selectedTopics}
               placeholder={<FormattedMessage {...messages.topicsPlaceholder} />}
@@ -421,6 +422,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </HiddenLabel>
             <LocationInput
               id="location"
+              className="e2e-idea-form-location-input-field"
               value={position}
               placeholder={formatMessage(messages.locationPlaceholder)}
               onChange={this.handleLocationOnChange}

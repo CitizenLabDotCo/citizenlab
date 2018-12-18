@@ -10,7 +10,7 @@ const babel = require('babel-core');
 const animateProgress = require('./helpers/progress');
 const addCheckmark = require('./helpers/checkmark');
 const constants = require('../../app/containers/App/constants');
-const FILES_TO_PARSE = 'app/**/messages.js';
+const FILES_TO_PARSE = 'app/**/messages.*s';
 const locales = Object.keys(constants.appLocalePairs);
 const newLine = () => process.stdout.write('\n');
 let progress;
@@ -88,7 +88,7 @@ for (const locale of locales) {
 const extractFromFile = async (fileName) => {
   try {
     const codeToTransform = await readFilePromise(fileName);
-    const options = { plugins: ['react-intl'] };
+    const options = { plugins: ['react-intl'], filename: fileName };
     const { metadata } = await babel.transform(codeToTransform, options);
 
     if (metadata && metadata['react-intl'] && metadata['react-intl'].messages) {
@@ -118,7 +118,7 @@ const extractFromFile = async (fileName) => {
   const files = await globPromise(FILES_TO_PARSE);
   memoryTaskDone();
 
-  const extractTaskDone = task('Run extraction on all files');
+  const extractTaskDone = task('Run extraction on all files\n');
   // Run extraction on all files that match the glob on line 16
   try {
     await Promise.all(files.map((fileName) => extractFromFile(fileName)));

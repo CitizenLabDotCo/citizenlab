@@ -273,6 +273,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey_monkey',
     defaultMessage: 'Survey Monkey',
   },
+  google_forms: {
+    id: 'app.containers.AdminPage.ProjectEdit.google_forms',
+    defaultMessage: 'Google Forms',
+  },
   surveyEmbedUrl: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyEmbedUrl',
     defaultMessage: 'Survey Embed URL',

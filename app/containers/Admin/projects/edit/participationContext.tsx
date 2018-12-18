@@ -30,6 +30,9 @@ import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
 import { fontSizes } from 'utils/styleUtils';
 
+// Typings
+import { CLError } from 'typings';
+
 const Container = styled.div``;
 
 const StyledSection = styled(Section)`
@@ -93,6 +96,7 @@ interface InputProps {
   onSubmit: (arg: IParticipationContextConfig) => void;
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
+  apiErrors?: { [fieldName: string]: CLError[] } | null;
 }
 
 interface Props extends DataProps, InputProps {}
@@ -314,7 +318,7 @@ class ParticipationContext extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant } = this.props;
+    const { tenant, apiErrors } = this.props;
     const className = this.props['className'];
     const {
       participation_method,
@@ -377,6 +381,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                 id="participationmethod-information"
                 label={<FormattedMessage {...messages.information} />}
               />
+              <Error apiErrors={apiErrors && apiErrors.participation_method} />
             </SectionField>
 
             {participation_method === 'budgeting' &&
@@ -395,7 +400,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                     placeholder=""
                     value={(max_budget ? max_budget.toString() : null)}
                   />
-                  <Error text={noBudgetingAmount} />
+                  <Error text={noBudgetingAmount} apiErrors={apiErrors && apiErrors.max_budget}/>
                 </SectionField>
                 <SectionField>
                   <Label>
@@ -408,6 +413,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                     </ToggleLabel>
                     <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                   </ToggleRow>
+                  <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                 </SectionField>
               </>
             }
@@ -424,6 +430,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                       <FormattedMessage {...messages.postingEnabled} />
                     </ToggleLabel>
                     <Toggle value={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
+                    <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
                   </ToggleRow>
 
                   <ToggleRow>
@@ -431,6 +438,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
                     <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                   </ToggleRow>
 
                   <ToggleRow className="last">
@@ -438,6 +446,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
                     <Toggle value={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
+                    <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
                   </ToggleRow>
                 </StyledSectionField>
                 {voting_enabled &&
@@ -461,6 +470,8 @@ class ParticipationContext extends PureComponent<Props, State> {
                       id="votingmethod-limited"
                       label={<FormattedMessage {...messages.limited} />}
                     />
+                    <Error apiErrors={apiErrors && apiErrors.voting_method} />
+
                     {participation_method === 'ideation' && voting_method === 'limited' &&
                       <>
                         <Label htmlFor="voting-title">
@@ -474,7 +485,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                           value={(voting_limited_max ? voting_limited_max.toString() : null)}
                           onChange={this.handleVotingLimitOnChange}
                         />
-                        <Error text={noVotingLimit} />
+                        <Error text={noVotingLimit} apiErrors={apiErrors && apiErrors.voting_limit} />
                       </>
                     }
                   </SectionField>
@@ -494,6 +505,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                       label={<FormattedMessage {...messages[`${key}Display`]} />}
                     />
                   ))}
+                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
                 </SectionField>
               </>
             }
@@ -504,7 +516,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                   <Label>
                     <FormattedMessage {...messages.surveyService} />
                   </Label>
-                  {['typeform', 'survey_monkey'].map((provider) => (
+                  {['typeform', 'survey_monkey', 'google_forms'].map((provider) => (
                     <Radio
                       onChange={this.handleSurveyProviderChange}
                       currentValue={survey_service}
@@ -515,6 +527,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                       key={provider}
                     />
                   ))}
+                  <Error apiErrors={apiErrors && apiErrors.survey_service} />
                 </SectionField>
                 <SectionField>
                   <Label>
@@ -525,6 +538,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                     type="text"
                     value={survey_embed_url}
                   />
+                  <Error apiErrors={apiErrors && apiErrors.survey_embed_url} />
                 </SectionField>
               </>
             }

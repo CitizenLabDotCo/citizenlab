@@ -293,6 +293,7 @@ type Props = {
   type?: string;
   spinnerColor?: string;
   fullHeight?: boolean;
+  ariaLabel?: string;
 };
 
 type State = {};
@@ -337,7 +338,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight, ariaLabel } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -413,7 +414,7 @@ class Button extends PureComponent<Props, State> {
               </StyledLink>
             )
         ) : (
-            <StyledButton disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+            <StyledButton aria-label={ariaLabel} disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
           )}
       </Container>
     );

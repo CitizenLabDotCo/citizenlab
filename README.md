@@ -1,7 +1,6 @@
 # CL2 Front 
 
 [![CircleCI](https://circleci.com/gh/CitizenLabDotCo/cl2-front.svg?style=svg&circle-token=46bc7ddacbeec9135870cb8765c2968f590ed7e6)](https://circleci.com/gh/CitizenLabDotCo/cl2-front)
-[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)](https://www.browserstack.com/automate/public-build/d2d5RDVDNHBGeHJFZjh2dHEyQ1FPUHRDc2Y3MFhGOXZiSjZsZFFqMEl0QT0tLWgwNzFuVThDUkNGR0JHSlhralhqbmc9PQ==--ee3c39ea9e8b82faaa48e43e3cea883277221935%)
 
 
 
@@ -35,6 +34,28 @@ Tests are run automatically every night at midnight (UTC). Please check the stat
 If you want to manually run these tests, you will need a browserstack user/key combo and the URL of a test platform, then run this command, replacing `xxx`, `yyy` and `zzz` with the appropriate info:
 ```
 BROWSERSTACK_USER=xxx BROWSERSTACK_KEY=yyy ROOT_URL=zzz npm run test:browserstack
+```
+
+## Unit and integration tests
+
+These tests are run on each PR. Jest will consider every file with the extention `.test.(ts|tsx)` a test.
+
+To manually run them once
+```
+npm test 
+```
+
+To run the tests in watcher mode :
+```
+npm run test:watch 
+```
+Quick reminder of the watcher commands: a to run all tests, enter to re-run, u to update a snapshot (make sure the changes are as expected before pushing new snapshots).
+
+If tests run crashes you might have to increase the number of watchable files.
+
+On linux this means running : 
+```
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
 ```
 
 ## IDE setup

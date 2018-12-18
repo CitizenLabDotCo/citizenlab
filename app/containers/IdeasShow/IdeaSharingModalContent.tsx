@@ -141,7 +141,7 @@ class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlPr
       return (
         <Container>
           <Rocket src={rocket} alt="rocket" />
-          <Title>
+          <Title className="e2e-idea-social-sharing-modal-title">
             <FormattedMessage {...messages.shareTitle} />
           </Title>
           <Subtitle>
