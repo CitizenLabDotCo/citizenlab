@@ -218,7 +218,7 @@ const Right = styled.div`
 const PoweredBy = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base};
+  line-height: ${fontSizes.base}px;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -234,7 +234,6 @@ const PoweredBy = styled.div`
   ${media.largePhone`
     color: #333;
     margin-right: 20px;
-    padding-top: 15px;
     padding-right: 15px;
   `}
 `;
@@ -261,7 +260,7 @@ const CitizenlabLink = styled.a`
   ${media.largePhone`
     width: 100.66px;
     height: 18px;
-    flex-basis: 100.66px;
+    flex: 0 0 100.66px;
   `}
 `;
 
