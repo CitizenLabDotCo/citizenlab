@@ -173,6 +173,7 @@ const StyledThing = styled(Polymorph)`
   font-size: ${fontSizes.small}px;
   line-height: 19px;
   text-decoration: none;
+  padding: 0;
 
   &:hover {
     color: #000;
