@@ -86,32 +86,27 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
         className: 'general',
-        subtitle: formatMessage(messages.generalTabSubtitle)
       },
       {
         label: formatMessage(messages.descriptionTab),
         url: `${baseTabsUrl}/description`,
         className: 'description',
-        subtitle: formatMessage(messages.descriptionTabSubtitle),
       },
       {
         label: formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
         className: 'ideas',
-        subtitle: formatMessage(messages.ideasTabSubtitle),
       },
       {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
         className: 'events',
-        subtitle: formatMessage(messages.eventsTabSubtitle),
       },
       {
         label: formatMessage(messages.permissionsTab),
         url: `${baseTabsUrl}/permissions`,
         feature: 'private_projects',
         className: 'permissions',
-        subtitle: formatMessage(messages.permissionsTabSubtitle),
       },
     ];
 
@@ -124,7 +119,6 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
         className: 'phases',
-        subtitle: formatMessage(messages.phasesTabSubtitle)
       });
     }
 

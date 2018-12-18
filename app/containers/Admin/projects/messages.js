@@ -129,25 +129,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
     defaultMessage: 'General',
   },
-  generalTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.generalTabSubtitle',
+  titleGeneral: {
+    id: 'app.containers.AdminPage.ProjectEdit.titleGeneral',
+    defaultMessage: 'General settings for the project',
+  },
+  subtitleGeneral: {
+    id: 'app.containers.AdminPage.ProjectEdit.subtitleGeneral',
     defaultMessage: 'Personalise your project. You can change it at anytime.',
   },
   descriptionTab: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
   },
-  descriptionTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.descriptionTabSubtitle',
-    defaultMessage: 'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments, … This information helps visitors to understand what your project is about.',
-  },
   ideasTab: {
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
-  },
-  ideasTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideasTabSubtitle',
-    defaultMessage: 'Get an overview of all the ideas inside your project. Add themes, change the status by dragging and dropping them to one of the left columns or edit the ideas (add image, take out typo’s).',
   },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
@@ -160,10 +156,6 @@ export default defineMessages({
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
-  },
-  eventsTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.eventsTabSubtitle',
-    defaultMessage: 'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
   permissionsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',

@@ -226,7 +226,8 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
       //  { label: formatMessage(messages.tabAcquisition), url: '/admin/insights/aquisiton' } TODO
     ];
     const resource = {
-      title: formatMessage(messages.viewPublicResource)
+      title: formatMessage(messages.titleInsights),
+      subtitle: formatMessage(messages.subtitleInsights)
     };
 
     if (authUser) {

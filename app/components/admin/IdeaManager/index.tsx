@@ -26,11 +26,21 @@ import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
 import ExportButtons from './components/ExportButtons';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+const Row = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  h2 {
+    margin-bottom: 20px;
+  }
+`;
 const ThreeColumns = styled.div`
   display: flex;
   margin: -10px;
@@ -89,7 +99,7 @@ interface DataProps {
   phases: GetPhasesChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
@@ -211,13 +221,22 @@ class IdeaManager extends React.PureComponent<Props, State> {
     } else if (selectedProject) {
       exportQueryParameter = selectedProject;
       exportType = 'project';
-    } else  {
+    } else {
       exportQueryParameter = 'all';
       exportType = 'all';
     }
-
     return (
       <div ref={this.handleContextRef}>
+        {project !== undefined &&
+          <>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleIdeas} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleIdeas} />
+            </SectionSubtitle>
+          </>
+        }
         <ExportButtons
           exportType={exportType}
           exportQueryParameter={exportQueryParameter}

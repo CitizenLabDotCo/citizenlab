@@ -15,7 +15,7 @@ import messages from '../messages';
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -261,9 +261,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     return (
       <>
-        <SectionTitle>
+        <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
-        </SectionTitle>
+        </PageTitle>
         <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
         <SectionSubtitle>
           <FormattedMessage {...messages.overviewPageSubtitle} />
