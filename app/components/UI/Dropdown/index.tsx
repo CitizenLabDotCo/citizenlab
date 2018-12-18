@@ -11,7 +11,7 @@ const Container: any = styled(clickOutside)`
   flex-direction: column;
   border-radius: 3px;
   background-color: #fff;
-  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
   z-index: 5;
   position: absolute;
   top: ${(props: Props) => props.top};
@@ -51,8 +51,6 @@ const ContainerInner = styled.div`
 const Content: any = styled.div`
   width: ${(props: Props) => props.width};
   max-height: ${(props: any) => props.maxHeight};
-  display: flex;
-  flex-direction: column;
   margin-top: 10px;
   margin-bottom: 10px;
   margin-left: 5px;

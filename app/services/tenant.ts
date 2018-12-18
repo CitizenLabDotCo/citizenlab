@@ -19,18 +19,18 @@ export interface ITenantSettings {
     organization_site?: string;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
     lifecycle_stage?: 'demo' | 'active' | 'churned' | 'not_applicable';
-    header_title: Multiloc | null;
-    header_slogan: Multiloc | null;
-    meta_title: Multiloc | null;
-    meta_description: Multiloc | null;
-    signup_helper_text: Multiloc | null;
+    header_title?: Multiloc | null;
+    header_slogan?: Multiloc | null;
+    meta_title?: Multiloc | null;
+    meta_description?: Multiloc | null;
+    signup_helper_text?: Multiloc | null;
     color_main: string | null;
     color_secondary: string | null;
     color_text: string | null;
-    color_menu_bg: string | null;
+    color_menu_bg?: string | null;
     currency: string;
   };
-  demographic_fields: {
+  demographic_fields?: {
     allowed: boolean;
     enabled: boolean;
     gender: boolean;
@@ -45,7 +45,7 @@ export interface ITenantSettings {
   facebook_login?: {
     allowed: boolean;
     app_id: string;
-    app_secret: string;
+    app_secret?: string;
     enabled: boolean;
   };
   google_login?: {

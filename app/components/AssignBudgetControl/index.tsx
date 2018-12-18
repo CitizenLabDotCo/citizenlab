@@ -198,21 +198,26 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
               idea_ids: newIdeas,
               submitted_at: null
             });
+            done();
             this.props.ideaAddedToBasket();
           } catch (error) {
+            done();
             streams.fetchAllWith({ dataId: [basket.id] });
           }
         } else {
-          await addBasket({
-            user_id: authUser.id,
-            participation_context_id: participationContextId,
-            participation_context_type: participationContextType,
-            idea_ids: [idea.id]
-          });
-          this.props.basketCreated();
+          try {
+            await addBasket({
+              user_id: authUser.id,
+              participation_context_id: participationContextId,
+              participation_context_type: participationContextType,
+              idea_ids: [idea.id]
+            });
+            done();
+            this.props.basketCreated();
+          } catch (error) {
+            done();
+          }
         }
-
-        await done();
       }
     }
   }

@@ -3,6 +3,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
+import bowser from 'bowser';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -114,13 +115,17 @@ const DropdownListItemText = styled.div`
   font-weight: 400;
   line-height: 21px;
   text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 `;
 
-const DropdownListItem = styled.button`
+const DropdownListItem = styled.div`
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
@@ -364,12 +369,14 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             <DropdownWrapper>
               <Dropdown
                 top="10px"
+                left={bowser.msie ? '-5px' : 'auto'}
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
                 content={(
                   <>
                     {groupsList.map((group) => (
                       <DropdownListItem
+                        role="button"
                         key={group.id}
                         onClick={this.toggleGroup(group.id)}
                         className="e2e-dropdown-item"

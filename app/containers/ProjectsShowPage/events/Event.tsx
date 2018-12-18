@@ -25,7 +25,6 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -96,7 +95,7 @@ const EventDatesSeparator = styled.div`
 
 const EventYear = styled.div`
   color: #fff;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
   display: flex;
   align-items: center;
@@ -116,8 +115,6 @@ const EventInformation = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
-  margin-bottom: 15px;
   margin-left: 40px;
 
   &.past {
@@ -125,11 +122,10 @@ const EventInformation = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
-    flex-direction: column;
     order: 3;
     border: none;
-    padding-right: 0;
-    margin-left: 0;
+    margin: 0px;
+    margin-top: 20px;
   `}
 `;
 
@@ -149,30 +145,6 @@ const EventTitle = styled.div`
 `;
 
 const EventDescription = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: 21px;
-
-  strong {
-    font-weight: 600;
-  }
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
-
   ${quillEditedContent()}
 `;
 
@@ -204,8 +176,8 @@ const EventLocation = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 40px;
-  margin-right: 30px;
+  margin-left: 20px;
+  margin-right: 10px;
 
   ${media.smallerThanMaxTablet`
     margin: 0;
@@ -224,18 +196,19 @@ const EventLocationInner = styled.div`
 `;
 
 const EventLocationLabel = styled.div`
-  color: #666;
-  font-size: ${fontSizes.base}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.large}px;
   font-weight: 300;
-  line-height: 21px;
+  line-height: 27px;
   margin-bottom: 2px;
+
 `;
 
 const EventLocationAddress = styled.div`
-  color: #666;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
+  color: ${colors.label};
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
+  line-height: 24px;
   display: flex;
   align-items: center;
 `;

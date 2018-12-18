@@ -15,9 +15,10 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { phasesStream, IPhases, IPhaseData, getCurrentPhase } from 'services/phases';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { getLocalized } from 'utils/i18n';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 // utils
 import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
@@ -56,14 +57,13 @@ const ContainerInner = styled.div`
 
 const Header = styled.div`
   width: 100%;
+  display: flex;
+  justify-content: center;
   background-color: #fff;
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 8px;
   padding-bottom: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   border-bottom: solid 1px ${colors.separation};
 
   ${media.smallerThanMinTablet`
@@ -72,44 +72,52 @@ const Header = styled.div`
   `}
 `;
 
-const HeaderRow = styled.div`
-  flex: 1;
+const HeaderRows = styled.div`
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth}px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+`;
+
+const HeaderFirstRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
 `;
 
-const HeaderFirstRow = HeaderRow.extend``;
+const HeaderSecondRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-const HeaderSecondRow = HeaderRow.extend`
   ${media.biggerThanMinTablet`
     display: none;
   `}
 `;
 
-const HeaderSection = styled.div`
+const HeaderLeftSection = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
   align-items: center;
-`;
-
-const HeaderLeftSection = HeaderSection.extend`
-  flex-direction: column;
-  align-items: flex-start;
   padding-top: 8px;
   padding-bottom: 8px;
 `;
 
-const HeaderRightSection = HeaderSection.extend``;
-
-const PhaseSummary = styled.div`
+const HeaderRightSection = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
   display: flex;
   align-items: center;
 `;
 
 const PhaseNumberWrapper = styled.div`
-  flex: 0 0 auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 32px;
   width: 32px;
   height: 32px;
   display: flex;
@@ -132,13 +140,19 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
-  min-height: 55px;
+  height: 55px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  align-items: center;
+  flex-direction: row;
 
   ${media.smallerThanMinTablet`
     min-height: 80px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
     margin-right: 0px;
   `}
 `;
@@ -148,10 +162,12 @@ const HeaderTitle = styled.h2`
   font-size: ${fontSizes.large}px;
   line-height: 25px;
   font-weight: 600;
-  display: flex;
-  align-items: center;
+  margin: 0;
   margin-right: 20px;
-  margin-bottom: 0;
+  padding: 0;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
@@ -359,13 +375,13 @@ type State = {
   loaded: boolean;
 };
 
-export default class Timeline extends PureComponent<Props, State> {
+class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
   constructor(props: Props) {
-    super(props);
+    super(props as any);
     const initialState = {
       locale: null,
       currentTenant: null,
@@ -501,9 +517,9 @@ export default class Timeline extends PureComponent<Props, State> {
         <Container className={className}>
           <ContainerInner>
             <Header>
-              <HeaderFirstRow>
-                <HeaderLeftSection>
-                  <PhaseSummary>
+              <HeaderRows>
+                <HeaderFirstRow>
+                  <HeaderLeftSection>
                     {isSelected &&
                       <PhaseNumberWrapper className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
@@ -530,59 +546,61 @@ export default class Timeline extends PureComponent<Props, State> {
                         )}
                       </MobileDate>
                     </HeaderTitleWrapper>
-                  </PhaseSummary>
-                </HeaderLeftSection>
+                  </HeaderLeftSection>
 
-                <HeaderRightSection>
-                  <HeaderDate>
-                    {isSelected &&
-                      <HeaderSubtitle>
-                        {phaseStatus === 'past' && (
-                          <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
-                        )}
+                  <HeaderRightSection>
+                    <HeaderDate>
+                      {isSelected &&
+                        <HeaderSubtitle>
+                          {phaseStatus === 'past' && (
+                            <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                          )}
 
-                        {phaseStatus === 'present' && (
-                          <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
-                        )}
+                          {phaseStatus === 'present' && (
+                            <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                          )}
 
-                        {phaseStatus === 'future' && (
-                          <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
-                        )}
-                      </HeaderSubtitle>
-                    }
-                  </HeaderDate>
+                          {phaseStatus === 'future' && (
+                            <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                          )}
+                        </HeaderSubtitle>
+                      }
+                    </HeaderDate>
 
-                  <IdeaButtonDesktop
+                    <IdeaButtonDesktop
+                      projectId={this.props.projectId}
+                      phaseId={selectedPhaseId}
+                    />
+
+                    <PhaseNavigation>
+                      <PreviousPhaseButton
+                        onClick={this.goToPreviousPhase}
+                        icon="chevron-left"
+                        style="secondary"
+                        padding="10px 6px"
+                        disabled={selectedPhaseId === phases.data[0].id}
+                        ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
+                      />
+                      <NextPhaseButton
+                        onClick={this.goToNextPhase}
+                        icon="chevron-right"
+                        style="secondary"
+                        padding="10px 6px"
+                        disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
+                        ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
+                      />
+                    </PhaseNavigation>
+                  </HeaderRightSection>
+                </HeaderFirstRow>
+
+                <HeaderSecondRow>
+                  <IdeaButtonMobile
                     projectId={this.props.projectId}
-                    phaseId={selectedPhaseId}
+                    phaseId={selectedPhaseId || undefined}
+                    fullWidth={true}
                   />
-
-                  <PhaseNavigation>
-                    <PreviousPhaseButton
-                      onClick={this.goToPreviousPhase}
-                      icon="chevron-left"
-                      style="secondary"
-                      padding="10px 6px"
-                      disabled={selectedPhaseId === phases.data[0].id}
-                    />
-                    <NextPhaseButton
-                      onClick={this.goToNextPhase}
-                      icon="chevron-right"
-                      style="secondary"
-                      padding="10px 6px"
-                      disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
-                    />
-                  </PhaseNavigation>
-                </HeaderRightSection>
-              </HeaderFirstRow>
-
-              <HeaderSecondRow>
-                <IdeaButtonMobile
-                  projectId={this.props.projectId}
-                  phaseId={selectedPhaseId || undefined}
-                  fullWidth={true}
-                />
-              </HeaderSecondRow>
+                </HeaderSecondRow>
+              </HeaderRows>
             </Header>
 
             <Phases>
@@ -627,3 +645,5 @@ export default class Timeline extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(Timeline);

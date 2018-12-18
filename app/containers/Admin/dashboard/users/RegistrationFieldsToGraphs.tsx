@@ -31,9 +31,9 @@ interface DataProps {
   customFields: GetCustomFieldsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+export interface Props extends InputProps, DataProps { }
 
-class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
+export class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
   convertToGraphFormat = (data: IUsersByRegistrationField) => {
     const {
       series: {
@@ -130,7 +130,7 @@ class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIntlProps
   }
 }
 
-const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs));
+const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs as any)) as any;
 
 export default (inputProps: InputProps) => (
   <GetCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>

@@ -72,8 +72,13 @@ export function signOut() {
     streams.reset(null);
 
     const { pathname, urlLocale } = removeLocale(location.pathname);
-    if (pathname && pathname.startsWith('/admin')) {
-      clHistory.push(`/${urlLocale}`);
+
+    if (pathname) {
+      if (pathname.endsWith('/sign-up')) {
+        clHistory.push('/');
+      } else if (pathname.startsWith('/admin')) {
+        clHistory.push(`/${urlLocale}`);
+      }
     }
   }
 }

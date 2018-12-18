@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import { Formik } from 'formik';
 
@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   background: #fff;
 `;
@@ -54,13 +55,12 @@ export interface State {
   groupCreationModal: false | 'step1' | IGroupData['attributes']['membership_type'];
 }
 
-class UsersPage extends React.Component<Props & WithRouterProps, State> {
+class UsersPage extends PureComponent<Props & WithRouterProps, State> {
   globalState: IGlobalStateService<IAdminNoPadding>;
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props) {
     super(props);
     this.globalState = globalState.init('AdminNoPadding', { enabled: true });
-
     this.state = {
       groupCreationModal: false,
     };
@@ -93,11 +93,9 @@ class UsersPage extends React.Component<Props & WithRouterProps, State> {
   }
 
   handleSubmitForm = (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting }) => {
-    addGroup({ ...values })
-    .then(() => {
+    addGroup({ ...values }).then(() => {
       this.closeGroupCreationModal();
-    })
-    .catch((errorResponse) => {
+    }).catch((errorResponse) => {
       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);
       setSubmitting(false);

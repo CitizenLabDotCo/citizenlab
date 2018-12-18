@@ -3,17 +3,26 @@ import request from 'utils/request';
 import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
+interface CommentAttributes {
+  upvotes_count: number;
+  downvotes_count: number;
+  created_at: string;
+  updated_at: string;
+}
+interface IPresentComment extends CommentAttributes {
+  body_multiloc: Multiloc;
+  publication_status: 'published';
+}
+
+interface IDeletedComment extends CommentAttributes {
+  body_multiloc: null;
+  publication_status: 'deleted';
+}
+
 export interface ICommentData {
   id: string;
   type: 'comments';
-  attributes: {
-    body_multiloc: Multiloc;
-    upvotes_count: number;
-    downvotes_count: number;
-    created_at: string;
-    updated_at: string;
-    publication_status: 'published' | 'deleted';
-  };
+  attributes: IPresentComment | IDeletedComment;
   relationships: {
     idea: {
       data: IRelationship;

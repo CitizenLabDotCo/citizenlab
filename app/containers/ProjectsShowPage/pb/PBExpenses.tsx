@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { get, round } from 'lodash-es';
 import moment from 'moment';
+import bowser from 'bowser';
 
 // services
 import { updateBasket } from 'services/baskets';
@@ -418,6 +419,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <DropdownWrapper>
                     <Dropdown
                       top="10px"
+                      left={bowser.msie ? '-5px' : 'auto'}
                       mobileWidth="250px"
                       mobileLeft="-5px"
                       opened={dropdownOpened}

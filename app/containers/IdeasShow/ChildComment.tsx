@@ -137,7 +137,9 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
       const createdAt = comment.attributes.created_at;
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const projectId = idea.relationships.project.data.id;
-      const showTranslateButton = !commentBodyMultiloc[locale];
+      const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
+
+      if (comment.attributes.publication_status !== 'published') return null;
 
       return (
         <CommentContainer className={className}>
@@ -156,7 +158,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
           />
 
           <CommentBody
-            commentBody={commentBodyMultiloc}
+            commentBody={comment.attributes.body_multiloc}
             editionMode={editionMode}
             onCommentSave={this.onCommentSave}
             onCancelEdition={this.onCancelEdition}

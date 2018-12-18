@@ -16,6 +16,7 @@ type State = {
 function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>) {
   return class NewFormatMessageComponent extends PureComponent<P & InjectedIntlProps, State> {
     subscriptions: Subscription[];
+    static displayName = `WithIntl(${getDisplayName(Component)})`;
 
     constructor(props) {
       super(props);
@@ -74,4 +75,8 @@ function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>
 
 export default function injectIntl<P>(component: React.ComponentType<P & InjectedIntlProps>, options?: InjectIntlConfig) {
   return originalInjectIntl<P & InjectedIntlProps>(buildComponent<P & InjectedIntlProps>(component), options);
+}
+
+function getDisplayName(Component) {
+  return Component.displayName || Component.name || 'Component';
 }

@@ -40,16 +40,6 @@ class New extends React.Component<Props> {
       });
   }
 
-  initialValues = () => {
-    return {
-      input_type: 'text',
-      title_multiloc: {},
-      description_multiloc: {},
-      required: false,
-      enabled: true,
-    };
-  }
-
   renderFn = (props) => (
     <CustomFieldForm
       {...props}
@@ -75,7 +65,13 @@ class New extends React.Component<Props> {
         </PageTitle>
         <PageWrapper>
           <Formik
-            initialValues={this.initialValues()}
+            initialValues={{
+              input_type: 'text',
+              title_multiloc: {},
+              description_multiloc: {},
+              required: false,
+              enabled: true,
+            }}
             onSubmit={this.handleSubmit}
             render={this.renderFn}
             validate={CustomFieldForm.validate}

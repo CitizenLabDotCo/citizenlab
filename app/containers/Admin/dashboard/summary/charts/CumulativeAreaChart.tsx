@@ -59,7 +59,7 @@ type Props = {
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
 };
 
-class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State> {
+export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
