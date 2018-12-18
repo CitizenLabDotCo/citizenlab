@@ -5,6 +5,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Bekijk idee",
   "app.components.AssignBudgetControl.undo": "Verwijderen",
   "app.components.AuthProviderButton.termsAndConditions": "gebruiksvoorwaarden",
+  "app.components.AvatarBubbles.avatarAltText": "",
   "app.components.ConsentManager.Banner.accept": "Aanvaarden",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Aanvaard het beleid en sluit de banner",
   "app.components.ConsentManager.Banner.mainText": "Door te navigeren, ga je akkoord met ons {policyLink}",

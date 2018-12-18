@@ -5,6 +5,7 @@
   "app.components.AssignBudgetControl.seeIdea": "See idea",
   "app.components.AssignBudgetControl.undo": "Undo",
   "app.components.AuthProviderButton.termsAndConditions": "terms and conditions",
+  "app.components.AvatarBubbles.avatarAltText": "",
   "app.components.ConsentManager.Banner.accept": "Acceptere",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Accepter politik og luk banner",
   "app.components.ConsentManager.Banner.mainText": "Ved at navigere, accepterer du vores {policyLink}",
