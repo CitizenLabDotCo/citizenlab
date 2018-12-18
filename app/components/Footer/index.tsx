@@ -6,7 +6,6 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';
-import Button from 'components/UI/Button';
 import Fragment from 'components/Fragment';
 
 // i18n
@@ -75,24 +74,25 @@ const Buttons = styled.div`
   display: flex;
 `;
 
-const FeedbackButton = styled(Button)`
-  .Button {
-    padding: 0 12px;
+const FeedbackButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.colorText};
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 12px;
+  margin-bottom: -3px;
 
-    ${media.largePhone`
-      padding: 0 8px;
-    `}
-  }
+  ${media.largePhone`
+    padding: 0 8px;
+  `}
 
-  .Button.button.text {
-    text-transform: uppercase;
-    color: ${(props) => props.theme.colorText};
-  }
-
+  &:focus,
   &:hover {
-    .Button {
-      text-decoration: underline;
-    }
+    outline: none;
+    cursor: pointer;
+    text-decoration: underline;
   }
 `;
 
@@ -415,18 +415,10 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
                     <Buttons>
-                      <FeedbackButton
-                        onClick={this.handleFeedbackButtonClick}
-                        fontWeight="600"
-                        style="text"
-                      >
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick}>
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
-                      <FeedbackButton
-                        onClick={this.handleFeedbackButtonClick}
-                        fontWeight="600"
-                        style="text"
-                      >
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick}>
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
                     </Buttons>
