@@ -1,4 +1,6 @@
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   saveButtonLabel: {
@@ -28,5 +30,13 @@ export default defineMessages({
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.ProjectDescription.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',
+  },
+  titleDescription: {
+    id: 'app.containers.AdminPage.ProjectDescription.titleDescription',
+    defaultMessage: 'Project description',
+  },
+  subtitleDescription: {
+    id: 'app.containers.AdminPage.ProjectDescription.subtitleDescription',
+    defaultMessage: 'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,… This information helps visitors to understand what your project is about.',
   },
 });

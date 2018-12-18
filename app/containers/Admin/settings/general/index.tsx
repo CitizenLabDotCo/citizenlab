@@ -16,7 +16,7 @@ import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
 
 // services
 import {
@@ -184,6 +184,9 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionTitle>
               <FormattedMessage {...messages.titleBasic} />
             </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleBasic} />
+            </SectionSubtitle>
 
             <SectionField>
               <InputMultiloc

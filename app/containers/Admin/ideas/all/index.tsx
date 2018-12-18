@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import IdeaManager from 'components/admin/IdeaManager';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -64,9 +64,9 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
   render() {
     return (
       <>
-        <SectionTitle>
+        <PageTitle>
           <FormattedMessage {...messages.header} />
-        </SectionTitle>
+        </PageTitle>
         <SectionSubtitle>
           <FormattedMessage {...messages.headerSubtitle} />
         </SectionSubtitle>

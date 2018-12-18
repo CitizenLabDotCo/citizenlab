@@ -17,7 +17,8 @@ import { Message, Multiloc } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionSubtitle } from 'components/admin/Section';
+import Title from 'components/admin/PageTitle';
 
 const ResourceHeader = styled.div`
   display: flex;
@@ -101,7 +102,6 @@ export type TabProps = {
   active?: boolean,
   feature?: string,
   className?: string,
-  subtitle?: string
 };
 
 type Props = {
@@ -154,13 +154,8 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
       <>
         <ResourceHeader className="e2e-resource-header">
           <div>
-            <SectionTitle>{showLabel(resource.title)}</SectionTitle>
-            {activeTab && activeTab.subtitle &&
-              <SectionSubtitle>
-                {activeTab.subtitle}
-              </SectionSubtitle>
-            }
-            {(!activeTab || (activeTab && !activeTab.subtitle)) && resource.subtitle &&
+            <Title>{showLabel(resource.title)}</Title>
+            {resource.subtitle &&
               <SectionSubtitle>
                 {resource.subtitle}
               </SectionSubtitle>

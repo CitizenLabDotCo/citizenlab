@@ -10,7 +10,13 @@ export const SubSection = styled.section`
   margin-bottom: 0;
 `;
 
-export const SectionTitle = styled.h1`
+export const SubSectionTitle = styled.h3`
+  font-size: ${fontSizes.xl}px;
+  font-weight: 400;
+  line-height: ${remCalc(30)};
+`;
+
+export const SectionTitle = styled.h2`
   font-size: ${fontSizes.xxl}px;
   font-weight: 500;
   line-height: ${remCalc(32)};
@@ -27,6 +33,15 @@ export const SectionSubtitle = styled.p`
   ${SectionTitle} + &{
     margin-top: -2rem;
   }
+`;
+
+export const PageTitle =  styled.h1`
+  font-size: ${fontSizes.xxxl}px;
+  line-height: 40px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 15px;
 `;
 
 export const SectionField = styled.div`

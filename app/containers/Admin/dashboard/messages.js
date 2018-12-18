@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
     defaultMessage: 'Acquisition',
   },
-  viewPublicResource: {
-    id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
-    defaultMessage: 'Dashboard',
-  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',
@@ -241,5 +237,13 @@ export default defineMessages({
   deletedUser: {
     id: 'app.containers.AdminPage.DashboardPage.deletedUser',
     defaultMessage: 'Deleted user',
+  },
+  subtitleInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.subtitleInsights',
+    defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
+  },
+  titleInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.titleInsights',
+    defaultMessage: 'Insights',
   },
 });

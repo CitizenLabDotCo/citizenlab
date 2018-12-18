@@ -13,7 +13,7 @@ import Toggle from 'components/UI/Toggle';
 import Collapse from 'components/admin/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
+import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
@@ -530,9 +530,9 @@ class Invitations extends React.PureComponent<Props, State> {
       />
         <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
-            <SectionTitle>
+            <PageTitle>
               <FormattedMessage {...messages.invitePeople} />
-            </SectionTitle>
+            </PageTitle>
 
             <SectionSubtitle>
               <FormattedMessage {...messages.invitationSubtitle} />
