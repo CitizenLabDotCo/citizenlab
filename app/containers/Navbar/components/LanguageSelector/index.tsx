@@ -43,7 +43,7 @@ const DropdownItemIcon = styled(Icon)`
 `;
 
 const OpenMenuButton = styled.button`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   border-radius: 5px;
   font-size: ${fontSizes.base}px;
   font-weight: 500;

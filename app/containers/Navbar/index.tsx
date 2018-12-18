@@ -116,7 +116,7 @@ const NavigationItems = styled.div`
 `;
 
 const NavigationItem = styled(Link)`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
@@ -155,8 +155,8 @@ const NavigationDropdown = styled.div`
 `;
 
 const NavigationDropdownItem = styled.button`
-  color: ${colors.label};
-  fill: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
+  fill: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;

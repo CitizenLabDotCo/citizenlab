@@ -192,6 +192,12 @@ const SAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
 `;
 
+const SignUpButton = styled(Button)`
+  .Button.button.primary-inverse {
+    color: ${(props: any) => props.theme.colorText};
+  }
+`;
+
 const SIdeaButton = styled(IdeaButton)`
   display: none;
 
@@ -355,9 +361,8 @@ class LandingPage extends PureComponent<Props, State> {
                     style="primary-inverse"
                   />
                 }
-                {!authUser && <Button
+                {!authUser && <SignUpButton
                   style="primary-inverse"
-                  textColor="#000"
                   fontWeight="500"
                   padding="17px 15px"
                   onClick={this.goToSignUpPage}
