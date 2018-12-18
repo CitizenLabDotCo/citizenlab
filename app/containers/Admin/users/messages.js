@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.allUsers',
     defaultMessage: 'All users',
   },
+  usersSubtitle: {
+    id: 'app.containers.Admin.Users.GroupsPanel.usersSubtitle',
+    defaultMessage: 'Get an overview of all the people and organisations that registered on the platform. Put a selection of users in normal or ‘smart’ groups.',
+  },
   groupsTitle: {
     id: 'app.containers.Admin.Users.GroupsPanel.groupsTitle',
     defaultMessage: 'Groups',
