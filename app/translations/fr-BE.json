@@ -5,6 +5,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Voir l'idée",
   "app.components.AssignBudgetControl.undo": "Annuler",
   "app.components.AuthProviderButton.termsAndConditions": "termes et conditions",
+  "app.components.AvatarBubbles.avatarAltText": "",
   "app.components.ConsentManager.Banner.accept": "Accepter",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Accepter la politique et fermer bannière",
   "app.components.ConsentManager.Banner.mainText": "En naviguant, vous acceptez notre {policyLink}",
