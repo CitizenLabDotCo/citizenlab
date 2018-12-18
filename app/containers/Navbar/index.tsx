@@ -193,16 +193,19 @@ const NavigationDropdownItemIcon = styled(Icon)`
 `;
 
 const ProjectsListItem = styled(Link)`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 22px;
+  line-height: 21px;
   text-decoration: none;
   padding: 10px;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   background: #fff;
   border-radius: 5px;
-  padding: 10px;
   text-decoration: none;
 
   &.last {
@@ -394,7 +397,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
               {tenantLocales && projectsList && projectsList.length > 0 &&
                 <NavigationDropdown>
                   <NavigationDropdownItem
-                    className={secondUrlSegment === 'projects' ? 'active' : ''}
+                    className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
                     aria-haspopup="true"
                     onClick={this.toggleProjectsDropdown}
                   >
@@ -405,6 +408,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationDropdownItem>
                   <Dropdown
                     top="68px"
+                    left="-5px"
                     opened={projectsDropdownOpened}
                     onClickOutside={this.toggleProjectsDropdown}
                     content={(

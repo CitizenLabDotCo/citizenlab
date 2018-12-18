@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -27,6 +28,34 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  padding: 16px;
+  margin-bottom: 25px;
+  background: #fff;
+  border-radius: 5px;
+  border: solid 1px ${colors.separation};
+  position: relative;
+
+  &.archived {
+    background: #f6f6f6;
+  }
+
+  ${media.biggerThanMaxTablet`
+    min-height: 222px;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 15px;
+  `}
+`;
 
 const ProjectImageContainer =  styled.div`
   width: 190px;
@@ -74,35 +103,6 @@ const ProjectImage = styled<LazyImageProps>(LazyImage)`
   `}
 `;
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  padding: 16px;
-  margin-bottom: 25px;
-  background: #fff;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
-  position: relative;
-
-  &.archived {
-    background: #f6f6f6;
-  }
-
-  ${media.biggerThanMaxTablet`
-    min-height: 222px;
-  `}
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 15px;
-  `}
-`;
-
 const ProjectModeratorIcon = styled(Icon)`
   width: 24px;
   height: 24px;
@@ -118,37 +118,37 @@ const ProjectModeratorIcon = styled(Icon)`
 `;
 
 const ProjectContent = styled.div`
-  flex: 1 1 0%;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   padding-top: 10px;
   padding-bottom: 15px;
   margin-right: 40px;
   margin-left: 30px;
 
   ${media.smallerThanMaxTablet`
-    align-items: flex-start;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: auto;
     margin: 0;
     padding: 15px;
     padding-top: 20px;
-    flex: 1 1 auto;
   `}
 `;
 
-const ProjectContentInner = styled.div`
+const ArchivedLabelWrapper = styled.div`
+  margin-bottom: 8px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 
   ${media.smallerThanMaxTablet`
-    align-items: center;
-  `};
+    justify-content: center;
+  `}
 `;
 
 const ArchivedLabel = styled.span`
-  flex-grow: 0;
-  flex-shrink: 1;
-  display: flex;
   color: ${colors.text};
   font-size: ${fontSizes.xs}px;
   font-weight: 500;
@@ -156,7 +156,6 @@ const ArchivedLabel = styled.span`
   border-radius: 5px;
   padding: 6px 12px;
   background: #e1e3e7;
-  margin-bottom: 8px;
 `;
 
 const ProjectTitle = styled.h3`
@@ -173,8 +172,10 @@ const ProjectDescription = styled.div`
   font-size: ${fontSizes.medium}px;
   line-height: 24px;
   font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin-top: 20px;
-  hyphens: auto;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -226,16 +227,18 @@ const IdeaCount = styled(Link)`
 `;
 
 const ProjectButtonWrapper = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
   display: flex;
   align-items: center;
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
+    justify-content: center;
     margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 10px;
-    align-items: center;
-    justify-content: center;
   `}
 `;
 
@@ -269,7 +272,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
       return (
-        <Container className={`${className} ${isArchived ? 'archived' : ''}`}>
+        <Container className={`${className} e2e-project-card ${isArchived ? 'archived' : ''}`}>
           <ProjectImageContainer>
             <ProjectImagePlaceholder>
               <ProjectImagePlaceholderIcon name="project" />
@@ -283,21 +286,34 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           </ProjectImageContainer>
 
           <ProjectContent>
-            <ProjectContentInner>
-              {isArchived &&
+            {isArchived &&
+              <ArchivedLabelWrapper>
                 <ArchivedLabel>
                   <FormattedMessage {...messages.archived} />
                 </ArchivedLabel>
-              }
+              </ArchivedLabelWrapper>
+            }
 
-              <ProjectTitle>
-                <T value={project.attributes.title_multiloc} />
-              </ProjectTitle>
-              <ProjectDescription>
-                <T value={project.attributes.description_preview_multiloc} />
-              </ProjectDescription>
+            <ProjectTitle>
+              <T value={project.attributes.title_multiloc} />
+            </ProjectTitle>
+
+            <T value={project.attributes.description_preview_multiloc}>
+              {(description) => {
+                if (!isEmpty(description)) {
+                  return (
+                  <ProjectDescription>
+                    {description}
+                  </ProjectDescription>
+                  );
+                }
+
+                return null;
+              }}
+            </T>
+
+            {showIdeasCount && ideasCount > 0 &&
               <ProjectMetaItems>
-                {showIdeasCount && ideasCount > 0 &&
                   <IdeaCount to={projectIdeasUrl}>
                     <IdeaCountIcon name="idea" />
                     <IdeaCountText>
@@ -309,9 +325,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                       />
                     </IdeaCountText>
                   </IdeaCount>
-                }
               </ProjectMetaItems>
-            </ProjectContentInner>
+            }
           </ProjectContent>
 
           <ProjectButtonWrapper>

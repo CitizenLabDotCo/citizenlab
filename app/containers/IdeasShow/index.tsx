@@ -415,57 +415,6 @@ const TranslateButton = styled(Button)`
 `;
 
 const IdeaBody = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  line-height: 25px;
-
-  p {
-    color: ${colors.text};
-    font-size: ${fontSizes.large}px;
-    font-weight: 300;
-    line-height: 27px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
-
-  ul {
-    list-style-type: disc;
-    list-style-position: outside;
-    padding: 0;
-    padding-left: 25px;
-    margin: 0;
-    margin-bottom: 25px;
-
-    li {
-      padding: 0;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      margin: 0;
-    }
-  }
-
-  strong {
-    font-weight: 500;
-  }
-
   ${quillEditedContent()}
 `;
 
@@ -828,7 +777,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
     if (element) {
-      element.scrollIntoView({ behavior: 'instant', block: 'center', inline: 'nearest' });
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
     }
   }
 
@@ -1012,7 +965,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                     }}
                   </GetMachineTranslation>
                   :
-                  <IdeaTitle>{ideaTitle}</IdeaTitle>
+                  <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
                 }
               </Header>
             </HeaderWrapper>

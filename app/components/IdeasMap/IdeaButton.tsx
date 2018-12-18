@@ -111,8 +111,10 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />
 });
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaButton = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaButton {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaButton;

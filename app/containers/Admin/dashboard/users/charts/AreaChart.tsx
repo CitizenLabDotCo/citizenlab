@@ -69,4 +69,6 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   );
 };
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(AreaChart));
+const WrappedAreaChart = injectIntl<Props>(localize<Props & InjectedIntlProps>(AreaChart));
+
+export default WrappedAreaChart;
