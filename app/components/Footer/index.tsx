@@ -42,7 +42,7 @@ const ShortFeedback = styled.div`
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
-  color: ${colors.label};
+  color: ${(props) => props.theme.colorText};
   position: absolute;
   top: -49px;
   left: 0;
@@ -65,8 +65,9 @@ const Buttons = styled.div`
 `;
 
 const FeedbackButton = styled(Button)`
-  .Button {
+  .Button.button.text {
     text-transform: uppercase;
+    color: ${(props) => props.theme.colorText};
   }
 
   &:hover {
@@ -97,7 +98,7 @@ const TenantLogo = styled.img`
 const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
-  color: #444;
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.xl}px;
   font-weight: 500;
   line-height: 28px;
@@ -360,10 +361,20 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
                     <Buttons>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                      <FeedbackButton
+                        onClick={this.handleFeedbackButtonClick}
+                        padding="0 12px"
+                        fontWeight="600"
+                        style="text"
+                      >
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick} padding="0 12px" fontWeight="600" style="text">
+                      <FeedbackButton
+                        onClick={this.handleFeedbackButtonClick}
+                        padding="0 12px"
+                        fontWeight="600"
+                        style="text"
+                      >
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
                     </Buttons>
