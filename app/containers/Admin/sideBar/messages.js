@@ -5,9 +5,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.guide',
     defaultMessage: 'Guide',
   },
-  dashboard: {
-    id: 'app.containers.AdminPage.SideBar.dashboard',
-    defaultMessage: 'Dashboard',
+  insights: {
+    id: 'app.containers.AdminPage.SideBar.insights',
+    defaultMessage: 'Insights',
   },
   users: {
     id: 'app.containers.AdminPage.SideBar.users',
