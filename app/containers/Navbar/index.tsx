@@ -290,6 +290,11 @@ const RightItem: any = styled.div`
 `;
 
 const LogInButton = NavigationItem.extend`
+  &:focus,
+  &:hover {
+    border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
+  }
+
   ${media.smallerThanMinTablet`
     padding: 0 15px;
   `}
@@ -305,20 +310,25 @@ const SignUpButton = styled(Button)`
   line-height: ${fontSizes.base}px;
   padding: 0;
 
+  .Button.button.primary {
+    background-color: ${(props) => props.theme.colorSecondary};
+  }
+
   &:hover {
     color: ${colors.text};
+
+    .Button.button.primary {
+      background-color: darken(0.12, ${(props) => props.theme.colorSecondary})};
+    }
   }
 
-  .Button {
-    ${media.smallerThanMinTablet`
-      padding: 0 15px;
-    `}
+  ${media.smallerThanMinTablet`
+    padding: 0 15px;
+  `}
 
-    ${media.phone`
-      padding: 0 12px;
-    `}
-  }
-
+  ${media.phone`
+    padding: 0 12px;
+  `}
 `;
 
 interface InputProps {}
