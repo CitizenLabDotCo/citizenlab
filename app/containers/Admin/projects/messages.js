@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
     defaultMessage: 'Projects',
   },
+  overviewPageSubtitle: {
+    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle',
+    defaultMessage: 'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
+  },
   editProject: {
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See this project',
@@ -125,25 +129,49 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
     defaultMessage: 'General',
   },
+  generalTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.generalTabSubtitle',
+    defaultMessage: 'Personalise your project. You can change it at anytime.',
+  },
   descriptionTab: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
     defaultMessage: 'Description',
+  },
+  descriptionTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.descriptionTabSubtitle',
+    defaultMessage: 'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments, … This information helps visitors to understand what your project is about.',
   },
   ideasTab: {
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
   },
+  ideasTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideasTabSubtitle',
+    defaultMessage: 'Get an overview of all the ideas inside your project. Add themes, change the status by dragging and dropping them to one of the left columns or edit the ideas (add image, take out typo’s).',
+  },
   phasesTab: {
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
+  },
+  phasesTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.phasesTabSubtitle',
+    defaultMessage: 'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different ideation method (idea-gathering, surveys, only information, voting or commenting on or off ….)',
   },
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
   },
+  eventsTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.eventsTabSubtitle',
+    defaultMessage: 'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
+  },
   permissionsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
     defaultMessage: 'Permissions',
+  },
+  permissionsTabSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle',
+    defaultMessage: 'Define who can view the project and who can manage it (project moderator role). Also, granular participation rights can be assigned (contact support@citizenlab.co if you require this).',
   },
   deleteProjectLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
