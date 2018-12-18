@@ -258,9 +258,9 @@ const CitizenlabLink = styled.a`
   margin-left: 8px;
 
   ${media.largePhone`
-    width: 100.66px;
-    height: 18px;
-    flex: 0 0 100.66px;
+    width: 111.85px;
+    height: 20px;
+    flex: 0 0 111.85px;
   `}
 `;
 
@@ -280,8 +280,8 @@ const CitizenlabLogo: any = styled.svg`
   }
 
   ${media.largePhone`
-    width: 100.66px;
-    height: 18px;
+    width: 111.85px;
+    height: 20px;
   `}
 `;
 
