@@ -131,7 +131,7 @@ const NavigationItem = styled(Link)`
 
   &:focus,
   &:hover {
-    color: ${colors.label};
+    color: ${(props: any) => props.theme.colorText};
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 
@@ -173,7 +173,7 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &:focus {
-    color: ${colors.label};
+    color: ${(props: any) => props.theme.colorText};
     border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
   }
 

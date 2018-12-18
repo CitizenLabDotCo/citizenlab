@@ -57,7 +57,7 @@ const OpenMenuButton = styled.button`
 
   &:hover,
   &:focus {
-    color: #000;
+    color: ${(props: any) => props.theme.colorText};
 
     ${DropdownItemIcon} {
       fill: #000;
