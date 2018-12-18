@@ -39,6 +39,7 @@ const Container = styled.div`
 
 const ShortFeedback = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
@@ -46,6 +47,11 @@ const ShortFeedback = styled.div`
   position: absolute;
   top: -49px;
   left: 0;
+
+  ${media.largePhone`
+    width: 100%;
+  `}
+
 `;
 
 const ThankYouNote = styled.span`
@@ -58,6 +64,11 @@ const ThankYouNote = styled.span`
 const FeedbackQuestion = styled.span`
   font-size: ${fontSizes.base}px;
   margin-right: 12px;
+
+  ${media.largePhone`
+    font-size: ${fontSizes.small}px;
+    margin-right: 5px;
+  `}
 `;
 
 const Buttons = styled.div`
@@ -65,6 +76,14 @@ const Buttons = styled.div`
 `;
 
 const FeedbackButton = styled(Button)`
+  .Button {
+    padding: 0 12px;
+
+    ${media.largePhone`
+      padding: 0 8px;
+    `}
+  }
+
   .Button.button.text {
     text-transform: uppercase;
     color: ${(props) => props.theme.colorText};
@@ -190,34 +209,60 @@ const Right = styled.div`
     margin-top: 15px;
     margin-bottom: 10px;
   `}
+
+  ${media.largePhone`
+    margin-top: 25px;
+  `}
 `;
 
 const PoweredBy = styled.div`
   color: ${colors.label};
-  font-weight: 300;
-  font-size: ${fontSizes.small}px;
-  line-height: 19px;
+  font-size: ${fontSizes.base}px;
+  line-height: ${fontSizes.base};
   text-decoration: none;
   display: flex;
-  flex-direction: row;
   align-items: center;
   outline: none;
+  padding: 10px 25px 10px 0;
+  margin-right: 30px;
+  border-right: 1px solid #E8E8E8;
+
   ${media.smallerThanMaxTablet`
-    order: 1;
-    margin-top: 10px;
     color: #333;
+  `}
+
+  ${media.largePhone`
+    color: #333;
+    margin-right: 20px;
+    padding-top: 15px;
+    padding-right: 15px;
+  `}
+`;
+
+const PoweredByText = styled.span`
+  margin-right: 5px;
+
+  ${media.largePhone`
+    margin-right: 0;
+    font-size: ${fontSizes.small}px;
   `}
 `;
 
 const CitizenlabLink = styled.a`
-  width: 115px;
-  height: 22px;
-  flex: 0 0 115px;
+  width: 151px;
+  height: 27px;
+  flex: 0 0 151px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   margin-left: 8px;
+
+  ${media.largePhone`
+    width: 100.66px;
+    height: 18px;
+    flex-basis: 100.66px;
+  `}
 `;
 
 const CitizenlabName = styled.span`
@@ -227,20 +272,30 @@ const CitizenlabName = styled.span`
 `;
 
 const CitizenlabLogo: any = styled.svg`
-  width: 115px;
-  height: 22px;
-  fill: ${colors.label};
+  width: 151px;
+  height: 27px;
+  fill: ${colors.clIconSecondary};
   transition: all 150ms ease-out;
   &:hover {
     fill: #000;
   }
+
+  ${media.largePhone`
+    width: 100.66px;
+    height: 18px;
+  `}
 `;
 
-const SendFeedback = styled.a``;
+const SendFeedback = styled.a`
+  margin-right: 20px;
+
+  ${media.largePhone`
+    margin-right: 0;
+  `}
+`;
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
-  margin-right: 20px;
 
   &:hover {
     cursor: pointer;
@@ -363,7 +418,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                     <Buttons>
                       <FeedbackButton
                         onClick={this.handleFeedbackButtonClick}
-                        padding="0 12px"
                         fontWeight="600"
                         style="text"
                       >
@@ -371,7 +425,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                       </FeedbackButton>
                       <FeedbackButton
                         onClick={this.handleFeedbackButtonClick}
-                        padding="0 12px"
                         fontWeight="600"
                         style="text"
                       >
@@ -404,7 +457,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Right>
               <PoweredBy>
-                <span>{poweredBy}</span>
+                <PoweredByText>{poweredBy}</PoweredByText>
                 <CitizenlabLink href="https://www.citizenlab.co/">
                   <CitizenlabName>CitizenLab</CitizenlabName>
                   <CitizenlabLogo height="100%" viewBox="0 1 140.753 27.002" alt="CitizenLab">
