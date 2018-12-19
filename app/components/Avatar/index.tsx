@@ -1,13 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { isFunction } from 'lodash-es';
-import { Subscription } from 'rxjs';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // services
-import { userByIdStream, getUserName } from 'services/users';
+import { getUserName } from 'services/users';
+
+// resources
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -59,98 +62,75 @@ const AvatarIcon: any = styled(Icon)`
   }
 `;
 
-type Props = {
+interface InputProps {
   userId: string | null;
   size: string;
-  onClick?: (event: React.FormEvent) => void;
+  onClick?: (event: FormEvent) => void;
   hideIfNoAvatar?: boolean | undefined;
-};
+  className?: string;
+}
 
-type State = {
-  avatarSrc: string | null;
-  userName: string | null;
-};
+interface DataProps {
+  user: GetUserChildProps;
+}
 
-export class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps {}
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      avatarSrc: null,
-      userName: null,
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const { userId, size } = this.props;
-
-    if (userId) {
-      const user$ = userByIdStream(userId).observable;
-
-      this.subscriptions = [
-        user$.subscribe((user) => {
-          const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
-          const avatarSrc = (!isNilOrError(user) ? user.data.attributes.avatar[imageSize] : null);
-          const userName = (!isNilOrError(user) ? getUserName(user.data) : null);
-
-          this.setState({
-            avatarSrc,
-            userName
-          });
-        })
-      ];
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleOnClick = (event: React.FormEvent) => {
+class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
+  handleOnClick = (event: FormEvent) => {
     if (this.props.onClick) {
       this.props.onClick(event);
     }
   }
 
   render() {
-    const className = this.props['className'];
-    const { avatarSrc, userName } = this.state;
-    const isClickable = (this.props.onClick && isFunction(this.props.onClick));
+    const { hideIfNoAvatar, user, size, onClick, className } = this.props;
 
-    const { hideIfNoAvatar } = this.props;
-    let { size } = this.props;
-    size = avatarSrc ? size : '30px';
+    if (!isNilOrError(user) && hideIfNoAvatar !== true) {
+      const isClickable = (onClick && isFunction(onClick));
+      const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
+      const avatarSrc = user.attributes.avatar[imageSize];
+      const userName = getUserName(user);
 
-    if (hideIfNoAvatar && !avatarSrc) {
-      return null;
+      return (
+        <AvatarContainer
+          className={`${className} ${isClickable ? 'clickable' : ''}`}
+          onClick={this.handleOnClick}
+          pxSize={size}
+        >
+          {avatarSrc ? (
+            <AvatarImage
+              className={`${isClickable ? 'clickable' : ''}`}
+              src={avatarSrc}
+              alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
+              pxSize={size}
+            />
+          ) : (
+            <AvatarIcon
+              className={`${isClickable ? 'clickable' : ''}`}
+              name="user"
+              title={<FormattedMessage {...messages.noAvatarAltText} />}
+              pxSize={size}
+            />
+          )}
+        </AvatarContainer>
+      );
     }
 
-    return (
-      <AvatarContainer
-        className={`${className} ${isClickable ? 'clickable' : ''}`}
-        onClick={this.handleOnClick}
-        pxSize={size}
-      >
-        {avatarSrc ? (
-          <AvatarImage
-            className={`${isClickable ? 'clickable' : ''}`}
-            src={avatarSrc}
-            alt={this.props.intl.formatMessage(messages.avatarAltText, { userName })}
-            pxSize={size}
-          />
-        ) : (
-          <AvatarIcon
-            className={`${isClickable ? 'clickable' : ''}`}
-            name="user"
-            title={<FormattedMessage {...messages.noAvatarAltText} />}
-            pxSize={size}
-          />
-        )}
-      </AvatarContainer>
-    );
+    return null;
   }
 }
 
-export default injectIntl<Props>(Avatar);
+const Data = adopt<DataProps, InputProps>({
+  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>
+});
+
+const AvatarWithHoc = injectIntl<Props>(Avatar);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AvatarWithHoc {...inputProps} {...dataProps} />}
+  </Data>
+);

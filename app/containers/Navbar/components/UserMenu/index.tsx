@@ -149,7 +149,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             />
             <StyledAvatar
               userId={userId}
-              size="45px"
+              size="30px"
             />
           </OpenDropdownButton>
 
