@@ -10,8 +10,9 @@ import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import AvatarBubbles from 'components/AvatarBubbles';
+import SignedOutHeader from './SignedOutHeader';
+import SignedInHeader from './SignedInHeader';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -80,130 +81,8 @@ const FooterBanner: any = styled.div`
   }
 `;
 
-const Header = styled.div`
-  width: 100%;
-  height: 550px;
-  flex: 0 0 550px;
-  margin: 0;
-  padding: 0;
-  position: relative;
-
-  ${media.smallerThanMinTablet`
-    height: 400px;
-    flex: 0 0 400px;
-  `}
-`;
-
-const HeaderImage = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderImageBackground: any = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-image: url(${(props: any) => props.src});
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-image: url(${(props: any) => props.src});
-`;
-
-const HeaderImageOverlay = styled.div`
-  background: linear-gradient(0deg, rgba(22, 58, 125, 0.9), rgba(22, 58, 125, 0.9));
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-`;
-
-const HeaderContent = styled.div`
-  width: 100%;
-  max-width: ${(props) => props.theme.maxPageWidth + 60}px;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  padding-left: 30px;
-  padding-right: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const HeaderTitle: any = styled.h1`
-  width: 100%;
-  max-width: 600px;
-  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 35px;
-  line-height: normal;
-  font-weight: 600;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    font-size: 46px;
-    line-height: 58px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xxxxl}px;
-    line-height: 39px;
-  `}
-`;
-
-const HeaderSubtitle: any = styled.h2`
-  width: 100%;
-  max-width: 375px;
-  color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${fontSizes.xl}px;
-  line-height: normal;
-  font-weight: 300;
-  hyphens: auto;
-  max-width: 980px;
-  text-align: center;
-  text-decoration: none;
-  padding: 0;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  margin-top: 25px;
-  border-bottom: solid 1px transparent;
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
-    font-weight: 300;
-    line-height: 26px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-  `}
-`;
-
 const SAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
-`;
-
-const SignUpButton = styled(Button)`
-  .Button.button.primary-inverse {
-    color: ${(props: any) => props.theme.colorText};
-  }
-`;
-
-const SIdeaButton = styled(IdeaButton)`
-  display: none;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
 `;
 
 const Content = styled.div`
@@ -327,14 +206,9 @@ class LandingPage extends PureComponent<Props, State> {
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
-      const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
-      const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-      const tenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }} />);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
@@ -342,34 +216,7 @@ class LandingPage extends PureComponent<Props, State> {
       return (
         <>
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
-            <Header id="hook-header">
-              <HeaderImage id="hook-header-image">
-                <HeaderImageBackground src={tenantHeaderImage} />
-                <HeaderImageOverlay />
-              </HeaderImage>
-
-              <HeaderContent id="hook-header-content">
-                <HeaderTitle hasHeader={hasHeaderImage}>
-                  {title}
-                </HeaderTitle>
-                <HeaderSubtitle hasHeader={hasHeaderImage}>
-                  {subtitle}
-                </HeaderSubtitle>
-                <SAvatarBubbles />
-                {authUser &&
-                  <SIdeaButton
-                    style="primary-inverse"
-                  />
-                }
-                {!authUser && <SignUpButton
-                  style="primary-inverse"
-                  fontWeight="500"
-                  padding="17px 15px"
-                  onClick={this.goToSignUpPage}
-                  text={<FormattedMessage {...messages.createAccount} />}
-                />}
-              </HeaderContent>
-            </Header>
+            {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
               <ProjectsStyledContentContainer>

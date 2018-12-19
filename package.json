@@ -181,7 +181,7 @@
     "styled-components": "3.4.10",
     "ts-loader": "5.3.1",
     "ts-jest": "23.10.5",
-    "tslint": "5.11.0",
+    "tslint": "5.12.0",
     "tslint-config-airbnb": "5.11.1",
     "tslint-consistent-codestyle": "1.14.1",
     "tslint-eslint-rules": "5.4.0",
