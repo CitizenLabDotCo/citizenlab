@@ -52,6 +52,7 @@ const Container = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   border-bottom: 1px solid #EAEAEA;
   z-index: 999;
+  -webkit-transform: translateZ(0);
 
   &.citizen {
     ${media.smallerThanMaxTablet`
