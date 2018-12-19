@@ -29,12 +29,7 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
   tenant = Tenant.current
   if tenant.has_feature('franceconnect_login')
 
-    host = case Tenant.settings("franceconnect_login", "environment")
-    when "integration"
-      'fcp.integ01.dev-franceconnect.fr'
-    when "production"
-      'app.franceconnect.gouv.fr'
-    end 
+    host = SingleSignOnService.new.franceconnect_host
 
     options = env['omniauth.strategy'].options
     options[:scope] = [:openid, :profile, :email, :address]

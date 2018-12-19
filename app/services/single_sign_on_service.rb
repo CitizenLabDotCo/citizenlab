@@ -62,6 +62,40 @@ class SingleSignOnService
     }
   end
 
+  def logout_url provider, user
+    self.send("#{provider}_logout_url", user)
+  end
+
+  def franceconnect_logout_url user
+    last_identity = user.identities
+      .where(provider: 'franceconnect')
+      .order(created_at: :desc)
+      .limit(1)
+      &.first
+
+    id_token = last_identity.auth_hash.dig('credentials', 'id_token')
+
+    url_params = {
+      id_token_hint: id_token,
+      post_logout_redirect_uri: FrontendService.new.home_url
+    }
+
+    "https://#{franceconnect_host}/api/v1/logout?#{url_params.to_query}"
+  end
+
+  def franceconnect_host
+    case Tenant.settings("franceconnect_login", "environment")
+    when "integration"
+      'fcp.integ01.dev-franceconnect.fr'
+    when "production"
+      'app.franceconnect.gouv.fr'
+    end
+  end
+
+  def supports_logout? provider
+    provider == 'franceconnect'
+  end
+
   private
 
   def image_available? img_url_s
