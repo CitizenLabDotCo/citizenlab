@@ -1,4 +1,5 @@
 import { get, set, remove } from 'js-cookie';
+import jwtDecode from 'jwt-decode';
 
 const COOKIE_NAME = 'cl2_jwt';
 
@@ -16,4 +17,8 @@ export function setJwt(jwt: string) {
 
 export function removeJwt() {
   remove(COOKIE_NAME, { expires: 60 });
+}
+
+export function decode(jwt) {
+  return jwtDecode(jwt);
 }
