@@ -149,10 +149,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.phasesTab',
     defaultMessage: 'Timeline',
   },
-  phasesTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.phasesTabSubtitle',
-    defaultMessage: 'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different ideation method (idea-gathering, surveys, only information, voting or commenting on or off ….)',
-  },
   eventsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.eventsTab',
     defaultMessage: 'Events',
