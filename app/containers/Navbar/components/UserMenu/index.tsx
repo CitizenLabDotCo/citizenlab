@@ -39,6 +39,10 @@ const StyledUserName = styled(UserName)`
   font-weight: 500;
   transition: all 100ms ease-out;
 
+  &:hover {
+    color: ${(props: any) => props.theme.colorText};
+  }
+
   ${media.smallerThanMinTablet`
     display: none;
   `}

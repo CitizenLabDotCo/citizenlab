@@ -17,7 +17,7 @@ export const media = {
     }
   `,
   largePhone: (style: any, ...args) => css`
-    @media (max-width: 410px) {
+    @media (max-width: 415px) {
       ${css(style, ...args)}
     }
   `,
@@ -27,7 +27,7 @@ export const media = {
     }
   `,
   biggerThanLargePhone: (style: any, ...args) => css`
-    @media (min-width: 410px) {
+    @media (min-width: 415px) {
       ${css(style, ...args)}
     }
   `,
