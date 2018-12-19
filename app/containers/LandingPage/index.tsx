@@ -79,6 +79,10 @@ const FooterBanner: any = styled.div`
     max-width: 500px;
     text-align: center;
   }
+
+  .Button.button.primary-inverse {
+    color: ${(props: any) => props.theme.colorText};
+  }
 `;
 
 const SAvatarBubbles = styled(AvatarBubbles)`
@@ -257,7 +261,6 @@ class LandingPage extends PureComponent<Props, State> {
                   <SAvatarBubbles />
                   <Button
                     style="primary-inverse"
-                    textColor={AdminSetTextColor}
                     padding="10px 30px"
                     size="1"
                     linkTo="/sign-up"
