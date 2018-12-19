@@ -58,6 +58,10 @@ const AuthProviderButtons = styled.div`
   flex-direction: column;
 `;
 
+const FranceConnectButton = styled.div`
+
+`;
+
 const SocialSignUpText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
@@ -171,7 +175,9 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   {formatMessage(messages.orSignUpWith)}
                 </SocialSignUpText>
               }
-
+              <FranceConnectButton>
+                <img src={franceconnectLogoUrl} alt="FranceConnect logo"/>
+              </FranceConnectButton>
               <AuthProviderButtons>
                 <FeatureFlag name="azure_ad_login">
                   <AuthProviderButton
