@@ -45,7 +45,7 @@
     "body-scroll-lock": "2.6.1",
     "bowser": "1.9.4",
     "compression": "1.7.3",
-    "core-js": "2.6.0",
+    "core-js": "2.6.1",
     "cross-env": "5.2.0",
     "d3-hierarchy": "1.1.8",
     "file-saver": "2.0.0",
