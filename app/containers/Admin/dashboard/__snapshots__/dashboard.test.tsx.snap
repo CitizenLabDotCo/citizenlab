@@ -11,18 +11,18 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
   resource={
     Object {
       "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
-      "title": "Insights",
+      "title": "Dashboard",
     }
   }
   tabs={
     Array [
       Object {
         "label": "Summary",
-        "url": "/admin/insights",
+        "url": "/admin/dashboard",
       },
       Object {
         "label": "Users",
-        "url": "/admin/insights/users",
+        "url": "/admin/dashboard/users",
       },
     ]
   }
