@@ -516,7 +516,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder": "Velg en deltagelsesmetode",
   "app.containers.AdminPage.ProjectEdit.participatoryBudgeting": "Participatory Budgeting",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Tillatelser",
-  "app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle": "",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Aktiverte handlinger",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Tidslinje",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Poste idéer",

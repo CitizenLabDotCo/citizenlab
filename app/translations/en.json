@@ -516,7 +516,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder": "Select a participation method",
   "app.containers.AdminPage.ProjectEdit.participatoryBudgeting": "Participatory Budgeting",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Permissions",
-  "app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle": "Define who can view the project and who can manage it (project moderator role). Also, granular participation rights can be assigned (contact support@citizenlab.co if you require this).",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Enabled actions",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Timeline",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Posting ideas",

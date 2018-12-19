@@ -516,7 +516,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder": "Kies de methode voor deze fase",
   "app.containers.AdminPage.ProjectEdit.participatoryBudgeting": "Burgerbegroting",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Machtigingen",
-  "app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle": "",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Ingeschakelde acties",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Tijdslijn",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Ideeën posten",
