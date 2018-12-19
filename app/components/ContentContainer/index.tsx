@@ -25,7 +25,7 @@ interface IContentContainer {
 const ContentContainer: SFC<IContentContainer> = ({ children, className }) => {
   return (
     <Outer className={className}>
-      <Inner>
+      <Inner className="inner">
         {children}
       </Inner>
     </Outer>
