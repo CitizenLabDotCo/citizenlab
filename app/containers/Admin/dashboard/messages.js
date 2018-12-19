@@ -238,12 +238,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.deletedUser',
     defaultMessage: 'Deleted user',
   },
-  subtitleInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.subtitleInsights',
+  subtitleDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
     defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
   },
-  titleInsights: {
-    id: 'app.containers.AdminPage.DashboardPage.titleInsights',
-    defaultMessage: 'Insights',
+  titleDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
+    defaultMessage: 'Dashboard',
   },
 });

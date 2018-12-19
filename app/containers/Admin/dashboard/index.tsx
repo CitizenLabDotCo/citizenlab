@@ -221,13 +221,13 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
     const { children, authUser } = this.props;
     const { formatMessage } = this.props.intl;
     const tabs = [
-      { label: formatMessage(messages.tabSummary), url: '/admin/insights' },
-      { label: formatMessage(messages.tabUsers), url: '/admin/insights/users' },
-      //  { label: formatMessage(messages.tabAcquisition), url: '/admin/insights/aquisiton' } TODO
+      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+      { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
+      //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard/aquisiton' } TODO
     ];
     const resource = {
-      title: formatMessage(messages.titleInsights),
-      subtitle: formatMessage(messages.subtitleInsights)
+      title: formatMessage(messages.titleDashboard),
+      subtitle: formatMessage(messages.subtitleDashboard)
     };
 
     if (authUser) {
