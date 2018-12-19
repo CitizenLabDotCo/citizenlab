@@ -5,8 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-// import IdeaButton from 'components/IdeaButton';
-// import AvatarBubbles from 'components/AvatarBubbles';
 import ContentContainer from 'components/ContentContainer';
 
 // resources
@@ -21,17 +19,20 @@ import tracks from './tracks';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
+import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-// import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Header = styled.div`
   width: 100%;
   height: 195px;
   position: relative;
+
+  ${media.smallerThanMinTablet`
+    height: 250px;
+  `}
 `;
 
 const HeaderImageContainer = styled.div`
@@ -68,17 +69,44 @@ const HeaderContent = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   height: 100%;
+
+  & > .inner {
+    height: 100%;
+  }
+`;
+
+const Content = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  `}
 `;
 
 const Left = styled.div`
-  margin-right: 100px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 0px;
+  `}
 `;
 
 const Icons = styled.div`
   display: flex;
+  margin-right: 40px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const NoAvatarUserIcon = styled.svg`
@@ -94,6 +122,10 @@ const CompleteProfileIcon = styled.svg`
 `;
 
 const Text = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  display: flex;
   color: #fff;
   font-size: ${fontSizes.xxl}px;
   line-height: 31px;
@@ -102,10 +134,40 @@ const Text = styled.div`
 
 const Right = styled.div`
   display: flex;
+
+  ${media.smallerThanMinTablet`
+    flex-grow: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  `}
 `;
 
 const SkipButton = styled(Button)`
   margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    order: 2;
+    margin-right: 0px;
+  `}
+`;
+
+const AcceptButton = styled(Button)`
+  ${media.smallerThanMinTablet`
+    order: 1;
+    margin-bottom: 10px;
+  `}
+`;
+
+const Centered = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+
+  ${Text} {
+    text-align: center;
+  }
 `;
 
 export interface InputProps {
@@ -142,17 +204,16 @@ class SignedInHeader extends PureComponent<Props, State> {
     const { locale, tenant, authUser, className } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser)) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
-      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
-      const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-      const tenantHeaderTitle = (headerTitleMultiLoc ? getLocalized(headerTitleMultiLoc, locale, tenantLocales) : null);
-      const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const title = (tenantHeaderTitle ? tenantHeaderTitle : <FormattedMessage {...messages.titleCity} values={{ name: tenantName }} />);
-      const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
-      const hasHeaderImage = (tenantHeaderImage !== null);
+
+      // mock values for now
+      const showCompleteProfileHeader = true;
+      const showCustomCTAHeader = false;
+      const showDefaultHeader = false;
+      const ctaContentTextMultiloc = { en: "It's time to participate in our new project" };
+      const ctaPrimaryButtonTextMultiloc = { en: 'Participate now' };
+      const ctaSecondaryButtonTextMultiloc = { en: "I'll do it later" };
+      const defaultMessageMultiloc = { en: 'Make a change in your city today' };
 
       return (
         <Header className={className} id="hook-header">
@@ -163,32 +224,74 @@ class SignedInHeader extends PureComponent<Props, State> {
 
           <HeaderContent>
             <StyledContentContainer>
-              <Left>
-                <Icons>
-                  <NoAvatarUserIcon height="100%" viewBox="0 0 56 56"><path d="M28 0C12.56 0 0 12.561 0 28s12.56 28 28 28c.282 0 .558-.035.84-.042l.098.019a1.115 1.115 0 0 0 .548-.022l.131-.037C44.303 55.071 56 42.894 56 28 56 12.561 43.439 0 28 0zm16.641 47.504c-.109-.356-.356-.658-.716-.776l-6.142-2.044c-2.145-.895-3.143-4.326-3.376-5.703 1.589-1.477 3.057-3.678 3.057-5.665 0-.677.191-.936.154-.942a1.17 1.17 0 0 0 .8-.698c.115-.286 1.12-2.851 1.12-4.58 0-.096-.011-.191-.034-.282-.147-.586-.49-1.176-1.004-1.545v-5.432c0-3.358-1.021-4.765-2.104-5.579-.244-1.672-2.033-4.922-8.396-4.922-6.505 0-10.5 6.115-10.5 10.5v5.432c-.513.369-.856.959-1.003 1.545a1.183 1.183 0 0 0-.035.282c0 1.729 1.005 4.294 1.12 4.58.14.348.324.569.688.661.075.044.266.305.266.979 0 1.987 1.468 4.188 3.057 5.665-.231 1.375-1.221 4.805-3.297 5.672l-6.223 2.075c-.357.118-.614.413-.726.77C5.838 42.786 2.329 35.801 2.329 28c0-14.152 11.515-25.667 25.667-25.667S53.662 13.848 53.662 28c.004 7.803-3.508 14.793-9.021 19.504z"/></NoAvatarUserIcon>
-                  <CompleteProfileIcon height="100%" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="url(#paint0_linear)" fillOpacity=".5"/><path d="M19 33.252v3.75h3.75l11.06-11.06-3.75-3.75L19 33.252zm17.71-10.21a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/><defs><linearGradient id="paint0_linear" x1="43.68" x2="6.72" y2="48.16" gradientUnits="userSpaceOnUse"><stop stopColor="#fff"/><stop offset="1" stopColor="#fff" stopOpacity=".34"/></linearGradient></defs></CompleteProfileIcon>
-                </Icons>
-                <Text>
-                  <FormattedMessage {...messages.completeYourProfile} values={{ firstName: authUser.attributes.first_name }} />
-                </Text>
-              </Left>
-              <Left />
+              <Content>
+                {/* First header state - complete profile */}
+                {showCompleteProfileHeader &&
+                  <>
+                    <Left>
+                      <Icons>
+                        <NoAvatarUserIcon height="100%" viewBox="0 0 56 56"><path d="M28 0C12.56 0 0 12.561 0 28s12.56 28 28 28c.282 0 .558-.035.84-.042l.098.019a1.115 1.115 0 0 0 .548-.022l.131-.037C44.303 55.071 56 42.894 56 28 56 12.561 43.439 0 28 0zm16.641 47.504c-.109-.356-.356-.658-.716-.776l-6.142-2.044c-2.145-.895-3.143-4.326-3.376-5.703 1.589-1.477 3.057-3.678 3.057-5.665 0-.677.191-.936.154-.942a1.17 1.17 0 0 0 .8-.698c.115-.286 1.12-2.851 1.12-4.58 0-.096-.011-.191-.034-.282-.147-.586-.49-1.176-1.004-1.545v-5.432c0-3.358-1.021-4.765-2.104-5.579-.244-1.672-2.033-4.922-8.396-4.922-6.505 0-10.5 6.115-10.5 10.5v5.432c-.513.369-.856.959-1.003 1.545a1.183 1.183 0 0 0-.035.282c0 1.729 1.005 4.294 1.12 4.58.14.348.324.569.688.661.075.044.266.305.266.979 0 1.987 1.468 4.188 3.057 5.665-.231 1.375-1.221 4.805-3.297 5.672l-6.223 2.075c-.357.118-.614.413-.726.77C5.838 42.786 2.329 35.801 2.329 28c0-14.152 11.515-25.667 25.667-25.667S53.662 13.848 53.662 28c.004 7.803-3.508 14.793-9.021 19.504z"/></NoAvatarUserIcon>
+                        <CompleteProfileIcon height="100%" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="url(#paint0_linear)" fillOpacity=".5"/><path d="M19 33.252v3.75h3.75l11.06-11.06-3.75-3.75L19 33.252zm17.71-10.21a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/><defs><linearGradient id="paint0_linear" x1="43.68" x2="6.72" y2="48.16" gradientUnits="userSpaceOnUse"><stop stopColor="#fff"/><stop offset="1" stopColor="#fff" stopOpacity=".34"/></linearGradient></defs></CompleteProfileIcon>
+                      </Icons>
+                      <Text>
+                        <FormattedMessage {...messages.completeYourProfile} values={{ firstName: authUser.attributes.first_name }} />
+                      </Text>
+                    </Left>
 
-              <Right>
-                <SkipButton
-                  style="primary-outlined"
-                  text={<FormattedMessage {...messages.doItLater} />}
-                  onClick={this.handleSkipButtonClick}
-                  borderColor="#fff"
-                  textColor="#fff"
-                />
-                <Button
-                  text={<FormattedMessage {...messages.completeProfile} />}
-                  linkTo="/profile/edit"
-                  bgColor="#fff"
-                  textColor={this.props.theme.colorMain}
-                />
-              </Right>
+                    <Right>
+                      <SkipButton
+                        style="primary-outlined"
+                        text={<FormattedMessage {...messages.doItLater} />}
+                        onClick={this.handleSkipButtonClick}
+                        borderColor="#fff"
+                        textColor="#fff"
+                      />
+                      <AcceptButton
+                        text={<FormattedMessage {...messages.completeProfile} />}
+                        linkTo="/profile/edit"
+                        bgColor="#fff"
+                        textColor={this.props.theme.colorMain}
+                      />
+                    </Right>
+                  </>
+                }
+
+                {/* Second header state - custom CTA */}
+                {showCustomCTAHeader &&
+                  <>
+                    <Left>
+                      <Text>
+                        <T value={ctaContentTextMultiloc} />
+                      </Text>
+                    </Left>
+
+                    <Right>
+                      <SkipButton
+                        style="primary-outlined"
+                        text={<T value={ctaPrimaryButtonTextMultiloc} />}
+                        onClick={this.handleSkipButtonClick}
+                        borderColor="#fff"
+                        textColor="#fff"
+                      />
+                      <Button
+                        text={<T value={ctaSecondaryButtonTextMultiloc} />}
+                        linkTo="/profile/edit"
+                        bgColor="#fff"
+                        textColor={this.props.theme.colorMain}
+                      />
+                    </Right>
+                  </>
+                }
+
+                {/* Third header state - default customizable message */}
+                {showDefaultHeader &&
+                  <Centered>
+                    <Text>
+                      <T value={defaultMessageMultiloc} />
+                    </Text>
+                  </Centered>
+                }
+              </Content>
             </StyledContentContainer>
           </HeaderContent>
         </Header>
