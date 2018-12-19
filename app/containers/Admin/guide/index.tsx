@@ -22,7 +22,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   h1 {
-    text-align: center;
     font-weight: 300;
     margin-bottom: 45px;
   }
