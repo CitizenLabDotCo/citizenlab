@@ -10,18 +10,19 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
 <withRouter(TabbedResource)
   resource={
     Object {
-      "title": "Dashboard",
+      "subtitle": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
+      "title": "Insights",
     }
   }
   tabs={
     Array [
       Object {
         "label": "Summary",
-        "url": "/admin/dashboard",
+        "url": "/admin/insights",
       },
       Object {
         "label": "Users",
-        "url": "/admin/dashboard/users",
+        "url": "/admin/insights/users",
       },
     ]
   }
