@@ -19,7 +19,6 @@ const Container = styled.div`
   justify-content: flex-end;
   align-items: flex-end;
   width: 100%;
-  flex-wrap: wrap;
   margin-bottom: 30px;
 
   & > *:not(:last-child) {
