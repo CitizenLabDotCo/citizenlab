@@ -157,10 +157,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
     defaultMessage: 'Permissions',
   },
-  permissionsTabSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle',
-    defaultMessage: 'Define who can view the project and who can manage it (project moderator role). Also, granular participation rights can be assigned (contact support@citizenlab.co if you require this).',
-  },
   deleteProjectLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
     defaultMessage: 'Remove this project',
