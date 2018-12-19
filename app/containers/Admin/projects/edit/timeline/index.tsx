@@ -21,6 +21,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // Styling
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -93,6 +94,12 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
 
     return (
       <ListWrapper>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleTimeline} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleTimeline} />
+        </SectionSubtitle>
         <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" circularCorners={false} linkTo={`/admin/projects/${projectId}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>

@@ -32,15 +32,6 @@ import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const Row = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  width: 100%;
-  h2 {
-    margin-bottom: 20px;
-  }
-`;
 const ThreeColumns = styled.div`
   display: flex;
   margin: -10px;

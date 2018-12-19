@@ -147,9 +147,6 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
   render() {
     const { children, resource, messages, tabs, location } = this.props;
 
-    const activeTab = location && location.pathname && tabs && tabs.length > 0 &&
-      tabs.filter(tab => urlMatch(tab.url).test(location.pathname))[0];
-
     return (
       <>
         <ResourceHeader className="e2e-resource-header">

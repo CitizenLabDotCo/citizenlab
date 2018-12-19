@@ -17,9 +17,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  align-items: flex-start;
-  margin-bottom: 30px;
+  align-items: flex-end;
+  width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 
   & > *:not(:last-child) {
     margin-right: 15px;
