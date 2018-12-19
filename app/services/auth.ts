@@ -1,12 +1,11 @@
 import { IUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
-import { API_PATH } from 'containers/App/constants';
-import { getJwt, setJwt, removeJwt } from 'utils/auth/jwt';
+import { API_PATH, AUTH_PATH } from 'containers/App/constants';
+import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
 export const authApiEndpoint = `${API_PATH}/users/me`;
 
 export interface IUserToken {
@@ -68,18 +67,27 @@ export function signOut() {
   const jwt = getJwt();
 
   if (jwt) {
+    const decodedJwt = decode(jwt);
+
     removeJwt();
-    streams.reset(null);
 
-    const { pathname, urlLocale } = removeLocale(location.pathname);
+    if (decodedJwt.logout_supported) {
+      const { provider, sub } = decodedJwt;
+      const url = `${AUTH_PATH}/${provider}/logout?user_id=${sub}`;
+      window.location.href = url;
+    } else {
+      streams.reset(null);
+      const { pathname, urlLocale } = removeLocale(location.pathname);
 
-    if (pathname) {
-      if (pathname.endsWith('/sign-up')) {
-        clHistory.push('/');
-      } else if (pathname.startsWith('/admin')) {
-        clHistory.push(`/${urlLocale}`);
+      if (pathname) {
+        if (pathname.endsWith('/sign-up')) {
+          clHistory.push('/');
+        } else if (pathname.startsWith('/admin')) {
+          clHistory.push(`/${urlLocale}`);
+        }
       }
     }
+
   }
 }
 
