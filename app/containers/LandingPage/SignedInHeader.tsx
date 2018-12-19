@@ -4,7 +4,7 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-// import Button from 'components/UI/Button';
+import Button from 'components/UI/Button';
 // import IdeaButton from 'components/IdeaButton';
 // import AvatarBubbles from 'components/AvatarBubbles';
 import ContentContainer from 'components/ContentContainer';
@@ -24,7 +24,8 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 // import { media, fontSizes } from 'utils/styleUtils';
 
 const Header = styled.div`
@@ -48,7 +49,8 @@ const HeaderImage = styled.img`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: linear-gradient(0deg, rgba(22, 58, 125, 0.9), rgba(22, 58, 125, 0.9));
+  background: ${(props) => props.theme.colorMain};
+  opacity: 0.9;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -66,6 +68,17 @@ const HeaderContent = styled.div`
 
 const StyledContentContainer = styled(ContentContainer)`
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const Left = styled.div`
+  margin-right: 100px;
+`;
+
+const Icons = styled.div`
+  display: flex;
 `;
 
 const NoAvatarUserIcon = styled.svg`
@@ -80,6 +93,21 @@ const CompleteProfileIcon = styled.svg`
   height: 50px;
 `;
 
+const Text = styled.div`
+  color: #fff;
+  font-size: ${fontSizes.xxl}px;
+  line-height: 31px;
+  font-weight: 400;
+`;
+
+const Right = styled.div`
+  display: flex;
+`;
+
+const SkipButton = styled(Button)`
+  margin-right: 10px;
+`;
+
 export interface InputProps {
   className?: string;
 }
@@ -90,7 +118,9 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {}
 
@@ -100,10 +130,18 @@ class SignedInHeader extends PureComponent<Props, State> {
     clHistory.push('/sign-up');
   }
 
+  handleSkipButtonClick = () => {
+
+  }
+
+  handleSubmitButtonClick = () => {
+
+  }
+
   render() {
     const { locale, tenant, authUser, className } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
@@ -125,8 +163,32 @@ class SignedInHeader extends PureComponent<Props, State> {
 
           <HeaderContent>
             <StyledContentContainer>
-              <NoAvatarUserIcon height="100%" viewBox="0 0 56 56"><path d="M28 0C12.56 0 0 12.561 0 28s12.56 28 28 28c.282 0 .558-.035.84-.042l.098.019a1.115 1.115 0 0 0 .548-.022l.131-.037C44.303 55.071 56 42.894 56 28 56 12.561 43.439 0 28 0zm16.641 47.504c-.109-.356-.356-.658-.716-.776l-6.142-2.044c-2.145-.895-3.143-4.326-3.376-5.703 1.589-1.477 3.057-3.678 3.057-5.665 0-.677.191-.936.154-.942a1.17 1.17 0 0 0 .8-.698c.115-.286 1.12-2.851 1.12-4.58 0-.096-.011-.191-.034-.282-.147-.586-.49-1.176-1.004-1.545v-5.432c0-3.358-1.021-4.765-2.104-5.579-.244-1.672-2.033-4.922-8.396-4.922-6.505 0-10.5 6.115-10.5 10.5v5.432c-.513.369-.856.959-1.003 1.545a1.183 1.183 0 0 0-.035.282c0 1.729 1.005 4.294 1.12 4.58.14.348.324.569.688.661.075.044.266.305.266.979 0 1.987 1.468 4.188 3.057 5.665-.231 1.375-1.221 4.805-3.297 5.672l-6.223 2.075c-.357.118-.614.413-.726.77C5.838 42.786 2.329 35.801 2.329 28c0-14.152 11.515-25.667 25.667-25.667S53.662 13.848 53.662 28c.004 7.803-3.508 14.793-9.021 19.504z"/></NoAvatarUserIcon>
-              <CompleteProfileIcon height="100%" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="url(#paint0_linear)" fill-opacity=".5"/><path d="M19 33.252v3.75h3.75l11.06-11.06-3.75-3.75L19 33.252zm17.71-10.21a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/><defs><linearGradient id="paint0_linear" x1="43.68" x2="6.72" y2="48.16" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".34"/></linearGradient></defs></CompleteProfileIcon>
+              <Left>
+                <Icons>
+                  <NoAvatarUserIcon height="100%" viewBox="0 0 56 56"><path d="M28 0C12.56 0 0 12.561 0 28s12.56 28 28 28c.282 0 .558-.035.84-.042l.098.019a1.115 1.115 0 0 0 .548-.022l.131-.037C44.303 55.071 56 42.894 56 28 56 12.561 43.439 0 28 0zm16.641 47.504c-.109-.356-.356-.658-.716-.776l-6.142-2.044c-2.145-.895-3.143-4.326-3.376-5.703 1.589-1.477 3.057-3.678 3.057-5.665 0-.677.191-.936.154-.942a1.17 1.17 0 0 0 .8-.698c.115-.286 1.12-2.851 1.12-4.58 0-.096-.011-.191-.034-.282-.147-.586-.49-1.176-1.004-1.545v-5.432c0-3.358-1.021-4.765-2.104-5.579-.244-1.672-2.033-4.922-8.396-4.922-6.505 0-10.5 6.115-10.5 10.5v5.432c-.513.369-.856.959-1.003 1.545a1.183 1.183 0 0 0-.035.282c0 1.729 1.005 4.294 1.12 4.58.14.348.324.569.688.661.075.044.266.305.266.979 0 1.987 1.468 4.188 3.057 5.665-.231 1.375-1.221 4.805-3.297 5.672l-6.223 2.075c-.357.118-.614.413-.726.77C5.838 42.786 2.329 35.801 2.329 28c0-14.152 11.515-25.667 25.667-25.667S53.662 13.848 53.662 28c.004 7.803-3.508 14.793-9.021 19.504z"/></NoAvatarUserIcon>
+                  <CompleteProfileIcon height="100%" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="28" r="28" fill="url(#paint0_linear)" fillOpacity=".5"/><path d="M19 33.252v3.75h3.75l11.06-11.06-3.75-3.75L19 33.252zm17.71-10.21a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#fff"/><defs><linearGradient id="paint0_linear" x1="43.68" x2="6.72" y2="48.16" gradientUnits="userSpaceOnUse"><stop stopColor="#fff"/><stop offset="1" stopColor="#fff" stopOpacity=".34"/></linearGradient></defs></CompleteProfileIcon>
+                </Icons>
+                <Text>
+                  <FormattedMessage {...messages.completeYourProfile} values={{ firstName: authUser.attributes.first_name }} />
+                </Text>
+              </Left>
+              <Left />
+
+              <Right>
+                <SkipButton
+                  style="primary-outlined"
+                  text={<FormattedMessage {...messages.doItLater} />}
+                  onClick={this.handleSkipButtonClick}
+                  borderColor="#fff"
+                  textColor="#fff"
+                />
+                <Button
+                  text={<FormattedMessage {...messages.completeProfile} />}
+                  linkTo="/profile/edit"
+                  bgColor="#fff"
+                  textColor={this.props.theme.colorMain}
+                />
+              </Right>
             </StyledContentContainer>
           </HeaderContent>
         </Header>
@@ -143,8 +205,10 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />
 });
 
+const SignedInHeaderWithHoC = withTheme<Props, State>(SignedInHeader);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedInHeader {...inputProps} {...dataProps} />}
+    {dataProps => <SignedInHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );
