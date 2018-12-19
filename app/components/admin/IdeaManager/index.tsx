@@ -32,6 +32,14 @@ import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+const Row = styled.div`
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+`;
+
 const ThreeColumns = styled.div`
   display: flex;
   margin: -10px;
@@ -218,20 +226,26 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
     return (
       <div ref={this.handleContextRef}>
-        {project !== undefined &&
-          <>
-            <SectionTitle>
-              <FormattedMessage {...messages.titleIdeas} />
-            </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleIdeas} />
-            </SectionSubtitle>
-          </>
-        }
-        <ExportButtons
-          exportType={exportType}
-          exportQueryParameter={exportQueryParameter}
-        />
+        <Row>
+          {project !== undefined &&
+            <div>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleIdeas} />
+              </SectionTitle>
+              <SectionSubtitle>
+                <FormattedMessage {...messages.subtitleIdeas} />
+              </SectionSubtitle>
+            </div>
+          }
+          {project === undefined &&
+            <div />
+          }
+          <ExportButtons
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+            className={project === undefined ? 'all' : 'project'}
+          />
+        </Row>
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />
