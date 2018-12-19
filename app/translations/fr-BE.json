@@ -516,7 +516,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder": "Choisir une méthode de participation",
   "app.containers.AdminPage.ProjectEdit.participatoryBudgeting": "Budget participatif",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Autorisations",
-  "app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle": "",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Actions autorisées",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Ligne de temps",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Poster des idées",

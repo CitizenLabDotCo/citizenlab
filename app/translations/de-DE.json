@@ -516,7 +516,6 @@
   "app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder": "{orgName, select, München {Wählen Sie eine Input-/Output-Methode} other {Wählen Sie eine Partizipationsmethode}}",
   "app.containers.AdminPage.ProjectEdit.participatoryBudgeting": "Participatory Budgeting",
   "app.containers.AdminPage.ProjectEdit.permissionsTab": "Berechtigungen",
-  "app.containers.AdminPage.ProjectEdit.permissionsTabSubtitle": "",
   "app.containers.AdminPage.ProjectEdit.phasePermissions": "Aktivierte Aktionen",
   "app.containers.AdminPage.ProjectEdit.phasesTab": "Zeitleiste",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "{orgName, select, München {Mängelmeldungen veröffentlichen} other {Ideen veröffentlichen}}",
