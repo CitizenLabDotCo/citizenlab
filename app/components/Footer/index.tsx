@@ -14,6 +14,10 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
+// tracking
+import { injectTracks } from 'utils/analytics';
+import tracks from 'containers/Admin/users/tracks';
+
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -305,6 +309,11 @@ const SendFeedbackIcon = styled(Icon)`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
+interface ITracks {
+  clickShortFeedbackYes: () => void;
+  clickShortFeedbackNo: () => void;
+}
+
 interface InputProps {
   showCityLogoSection?: boolean | undefined;
 }
@@ -318,15 +327,15 @@ type State = {
   shortFeedbackButtonClicked: boolean;
 };
 
-class Footer extends PureComponent<Props & InjectedIntlProps, State> {
+class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
   static defaultProps = {
     showCityLogoSection: true
   };
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       locale: null,
       currentTenant: null,
@@ -356,10 +365,19 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleFeedbackButtonClick = () => {
+  handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
+    const { clickShortFeedbackYes, clickShortFeedbackNo } = this.props;
+
     this.setState({
       shortFeedbackButtonClicked: true
     });
+
+    // tracking
+    if (answer === 'yes') {
+      clickShortFeedbackYes();
+    } else if (answer === 'no') {
+      clickShortFeedbackNo();
+    }
   }
 
   render() {
@@ -416,10 +434,10 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
                     <Buttons>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick}>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick}>
+                      <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
                     </Buttons>
@@ -471,4 +489,4 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props >(Footer);
+export default injectTracks<Props>(tracks)(injectIntl(Footer));
