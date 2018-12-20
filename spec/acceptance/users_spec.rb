@@ -385,6 +385,32 @@ resource "Users" do
           expect(@user.reload.avatar_url).to be nil
         end
       end
+
+      describe do
+        let(:cf) { create(:custom_field) }
+        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:custom_field_values) {{
+          cf.key => "somevalue",
+          birthyear_cf.key => 1969,
+        }}
+        let(:first_name) { 'Raymond' }
+        let(:last_name) { 'Betancourt' }
+        let(:email) { 'ray.mond@rocks.com' }
+        let(:locale) { 'fr-FR' }
+
+        example "Can't change some attributes of a user identified with FranceConnect", document: false do
+          create(:franceconnect_identity, user: @user)
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.first_name).not_to eq first_name
+          expect(@user.last_name).not_to eq last_name
+          expect(@user.email).not_to eq email
+          expect(@user.locale).to eq locale
+          expect(@user.custom_field_values[cf.key]).to eq "somevalue"
+          expect(@user.custom_field_values[birthyear_cf.key]).not_to eq 1969
+        end
+      end
     end
 
     post "web_api/v1/users/complete_registration" do
@@ -414,6 +440,24 @@ resource "Users" do
       example "[error] Complete the registration of a user fails if the user has already completed signup" do
         do_request
         expect(response_status).to eq 401
+      end
+
+      describe do
+        let(:cf) { create(:custom_field) }
+        let(:birthyear_cf) { create(:birthyear_custom_field) }
+        let(:custom_field_values) {{
+          cf.key => "somevalue",
+          birthyear_cf.key => 1969,
+        }}
+        example "Can't change some custom_field_values of a user identified with FranceConnect", document: false do
+          @user.update(registration_completed_at: nil)
+          create(:franceconnect_identity, user: @user)
+          do_request
+          expect(response_status).to eq 200
+          @user.reload
+          expect(@user.custom_field_values[cf.key]).to eq "somevalue"
+          expect(@user.custom_field_values[birthyear_cf.key]).not_to eq 1969
+        end
       end
     end
 

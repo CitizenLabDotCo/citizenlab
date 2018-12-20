@@ -59,5 +59,12 @@ FactoryBot.define do
       enabled { true }
     end
 
+    factory :birthyear_custom_field do
+      key { 'birthyear' }
+      title_multiloc { {en: 'birthyear' } }
+      input_type { 'number' }
+      code { 'birthyear' }
+    end
+
   end
 end

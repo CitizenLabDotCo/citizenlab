@@ -53,24 +53,12 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
 
   end
 end
-
-
-# TWITTER_SETUP_PROC = lambda do |env|
-#   tenant = Tenant.current
-#   if tenant.has_feature('twitter_login')
-#     env['omniauth.strategy'].options[:client_id] = Tenant.settings("twitter_login", "api_key")
-#     env['omniauth.strategy'].options[:client_secret] = Tenant.settings("twitter_login", "api_secret")
-#   end
-# end
-
-   
+ 
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :facebook, :setup => FACEBOOK_SETUP_PROC
   provider :google_oauth2, :setup => GOOGLE_SETUP_PROC, name: 'google'
   provider :azure_activedirectory, :setup => AZURE_AD_SETUP_PROC
   provider :openid_connect, :setup => FRANCECONNECT_SETUP_PROC, name: 'franceconnect'
-
-  # provider :twitter, :setup => TWITTER_SETUP_PROC
 end
 
 
