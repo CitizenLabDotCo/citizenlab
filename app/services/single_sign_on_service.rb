@@ -58,6 +58,7 @@ class SingleSignOnService
     def profile_to_user_attrs auth
       # Todo: Do something smart with the address auth.extra.raw_info.address.formatted
       {
+        last_name: auth.info['last_name'].titleize, # FC returns last names in ALL CAPITALS
         gender: auth.extra.raw_info.gender,
         locale: Tenant.current.closest_locale_to('fr-FR'),
         birthyear: (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
@@ -89,6 +90,18 @@ class SingleSignOnService
         'app.franceconnect.gouv.fr'
       end
     end
+
+    def update_on_sign_in?
+      true
+    end
+
+    def unchangeable_attributes
+      [:first_name, :last_name, :email, :gender, :birthyear]
+    end
+
+    def unchangeable_custom_fields
+      [:birthyear, :gender]
+    end
   end
 
   @@provider_helpers = {
@@ -112,7 +125,7 @@ class SingleSignOnService
   end
 
   def helper provider
-    @@provider_helpers[provider]
+    @@provider_helpers[provider] || raise("Unsupported provider #{provider}")
   end
 
   def logout_url provider, user
@@ -127,6 +140,39 @@ class SingleSignOnService
 
   def supports_logout? provider
     helper(provider).respond_to? :logout_url
+  end
+
+  def update_on_sign_in? provider
+    helper(provider).respond_to?(:update_on_sign_in?) && helper(provider).update_on_sign_in?
+  end
+
+  # Some providers don't allow users to manually change certain properties,
+  # meaning they can't override values coming from the provider. This returns
+  # all the properties that users can't manually change for the given user
+  def attributes_user_cant_change user
+    providers = user.identities.pluck(:provider).uniq
+    attributes = providers.flat_map do |provider| 
+      provider_helper = helper(provider)
+      if provider_helper.respond_to? :unchangeable_attributes
+        provider_helper.unchangeable_attributes
+      else
+        []
+      end
+    end
+    attributes.uniq
+  end
+
+  def custom_fields_user_cant_change user
+    providers = user.identities.pluck(:provider).uniq
+    custom_fields = providers.flat_map do |provider| 
+      provider_helper = helper(provider)
+      if provider_helper.respond_to? :unchangeable_custom_fields
+        provider_helper.unchangeable_custom_fields
+      else
+        []
+      end
+    end
+    custom_fields.uniq
   end
 
   private

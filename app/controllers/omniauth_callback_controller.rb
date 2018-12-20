@@ -4,24 +4,25 @@ class OmniauthCallbackController < ApplicationController
 
 
   def create
+    sso_service = SingleSignOnService.new
+
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
     provider = auth['provider']
 
-    @identity = Identity.find_with_omniauth(auth)
-
-    if @identity.nil?
-      @identity = Identity.create_with_omniauth(auth)
-    end
+    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
 
     @user = @identity.user || User.find_by_cimail(auth.info.email)
 
     if @user
       @identity.update(user: @user) unless @identity.user
+      if sso_service.update_on_sign_in?(provider)
+        @user.update(sso_service.profile_to_user_attrs(auth))
+      end
       set_auth_cookie(provider: provider)
       redirect_to(add_uri_params(FrontendService.new.signin_success_url(locale: @user.locale), omniauth_params))
     else
-      @user = User.new(SingleSignOnService.new.profile_to_user_attrs(auth))
+      @user = User.new(sso_service.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin
