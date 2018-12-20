@@ -29,7 +29,7 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
   tenant = Tenant.current
   if tenant.has_feature('franceconnect_login')
 
-    host = SingleSignOnService.new.franceconnect_host
+    host = SingleSignOnService::FranceConnect.new.host
 
     options = env['omniauth.strategy'].options
     options[:scope] = [:openid, :profile, :email, :address]

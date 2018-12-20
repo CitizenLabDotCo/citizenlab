@@ -21,7 +21,7 @@ class OmniauthCallbackController < ApplicationController
       set_auth_cookie(provider: provider)
       redirect_to(add_uri_params(FrontendService.new.signin_success_url(locale: @user.locale), omniauth_params))
     else
-      @user = User.build_with_omniauth(auth)
+      @user = User.new(SingleSignOnService.new.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin
