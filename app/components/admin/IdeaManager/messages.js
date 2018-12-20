@@ -105,4 +105,12 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.exportSelectedComments',
     defaultMessage: 'Export comments for selected ideas (.xslx)',
   },
+  titleIdeas: {
+    id: 'app.components.admin.IdeaManager.titleIdeas',
+    defaultMessage: 'Manage idea',
+  },
+  subtitleIdeas: {
+    id: 'app.components.admin.IdeaManager.subtitleIdeas',
+    defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+  },
 });

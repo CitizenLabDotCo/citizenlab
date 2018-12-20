@@ -6,7 +6,7 @@ import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 // import Warning from 'components/UI/Warning';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
-import { SectionTitle } from 'components/admin/Section';
+import { SubSectionTitle } from 'components/admin/Section';
 
 interface InputProps {
   projectId: string;
@@ -31,9 +31,9 @@ export default class Moderators extends PureComponent<Props>{
 
     return (
       <Container>
-        <SectionTitle>
+        <SubSectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
-        </SectionTitle>
+        </SubSectionTitle>
         {/* <StyledWarning text={<FormattedMessage {...messages.moderatorsRoleExplanation} />} /> */}
         <UserSearch projectId={projectId} moderators={moderators} />
         <ModeratorList moderators={moderators} projectId={projectId}/>

@@ -1,10 +1,22 @@
 import React, { PureComponent } from 'react';
 import IdeasWidget from './IdeasWidget';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 export default class AdminSettingsWidgets extends PureComponent {
   render() {
     return (
-      <IdeasWidget />
+      <>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleWidgets} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleWidgets} />
+        </SectionSubtitle>
+        <IdeasWidget />
+      </>
     );
   }
 }

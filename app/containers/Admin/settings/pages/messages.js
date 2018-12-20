@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  titlePages: {
+    id: 'app.containers.AdminPage.PagesEdition.titlePages',
+    defaultMessage: 'Legal and About pages',
+  },
+  subtitlePages: {
+    id: 'app.containers.AdminPage.SettingsPage.tabPagesSubtitle',
+    defaultMessage: 'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',
     defaultMessage: 'Page Title',
