@@ -1,5 +1,5 @@
 import { injectGlobal } from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import {
   larsseitThinTTF,
   larsseitThinWOFF,
@@ -162,7 +162,7 @@ export default injectGlobal`
   body {
     background-color: #fff;
     font-family: 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: ${fontSize('small')};
+    font-size: ${fontSizes.small}px;
     height: 100%;
     position: relative;
     width: 100%;

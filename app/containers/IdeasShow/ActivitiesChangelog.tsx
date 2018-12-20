@@ -17,7 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const ChangeLogEntry = styled.div`
   display: flex;
@@ -39,13 +39,13 @@ const TextWrapper = styled.div`
   flex-direction: column;
 
   p {
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     margin: 0;
 
     &:last-child {
-      color: ${color('label')};
-      font-size: ${fontSize('small')}
+      color: ${colors.label};
+      font-size: ${fontSizes.small}px
     }
   }
 `;

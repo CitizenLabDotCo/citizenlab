@@ -1,7 +1,7 @@
 
 import React, { PureComponent, MouseEvent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { map, flatten, uniq } from 'lodash-es';
 import { Node, ParentNode, ideasUnder } from 'services/clusterings';
 import GenderChart from './GenderChart';
@@ -36,7 +36,7 @@ const TabbedNav = styled.nav`
 
 const Tab = styled.li`
   color: ${colors.label};
-  font-size: ${fontSize('base')};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-transform: capitalize;
   list-style: none;

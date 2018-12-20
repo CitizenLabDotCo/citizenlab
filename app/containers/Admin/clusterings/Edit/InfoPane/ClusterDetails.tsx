@@ -4,7 +4,7 @@ import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
 import { ParentNode } from 'services/clusterings';
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 type Props = {
   ideaIds: string[];
@@ -21,7 +21,7 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  font-size: ${fontSize('base')};
+  font-size: ${fontSizes.base}px;
   padding-top: 5px;
   padding-bottom: 5px;
 `;

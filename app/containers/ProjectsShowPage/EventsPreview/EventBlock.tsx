@@ -14,7 +14,7 @@ import { getIsoDate } from 'utils/dateUtils';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSize, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: calc(100% * (1/2) - 26px);
@@ -85,7 +85,7 @@ const TextBlock = styled.div`
 
 const Time = styled.div`
   color: ${colors.label};
-  font-size: ${fontSize('small')};
+  font-size: ${fontSizes.small}px;
   margin-bottom: 8px;
 `;
 
@@ -99,7 +99,7 @@ const Title = styled.div`
 
 const Location = styled.div`
   color: ${colors.label};
-  font-size: ${fontSize('small')};
+  font-size: ${fontSizes.small}px;
   display: flex;
   align-items: center;
   display: none;

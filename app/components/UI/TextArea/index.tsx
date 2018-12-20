@@ -7,7 +7,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 
 // style
 import styled from 'styled-components';
-import { color, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   position: relative;
@@ -45,11 +45,11 @@ const Container: any = styled.div`
     }
 
     &.error {
-      border-color: ${color('clRedError')} !important;
+      border-color: ${colors.clRedError} !important;
 
       &:hover,
       &:focus {
-        border-color: ${color('clRedError')} !important;
+        border-color: ${colors.clRedError} !important;
       }
     }
   }
@@ -57,14 +57,14 @@ const Container: any = styled.div`
 
 const CharacterCount = styled.p`
   bottom: 0;
-  color: ${color('label')};
+  color: ${colors.label};
   margin: 0;
   padding: .5rem;
   position: absolute;
   right: 0;
 
   &.error {
-    color: ${color('clRedError')};
+    color: ${colors.clRedError};
   }
 `;
 

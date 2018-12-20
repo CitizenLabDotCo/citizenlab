@@ -279,17 +279,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     }
   }
 
-  menuStyleOptions = () => ([
-    {
-      value: 'light',
-      label: this.props.intl.formatMessage(messages.menuStyleLight),
-    },
-    {
-      value: 'dark',
-      label: this.props.intl.formatMessage(messages.menuStyleDark),
-    },
-  ])
-
   handleColorPickerOnClick = () => {
     this.setState({ colorPickerOpened: true });
   }
