@@ -11,7 +11,7 @@ export default defineMessages({
   },
   title: {
     id: 'containers.Admin.onboarding.title',
-    defaultMessage: 'Get Started Easily'
+    defaultMessage: 'Guide'
   },
   readCompleteGuide: {
     id: 'containers.Admin.onboarding.readCompleteGuide',
