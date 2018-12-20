@@ -226,7 +226,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
       </CookiePolicy__SContentContainer>
     </CookiePolicy__PagesNav>
   </CookiePolicy__PagesNavWrapper>
-  <Footer
+  <WrappedFooter
     showCityLogoSection={false}
   />
 </CookiePolicy__Container>
