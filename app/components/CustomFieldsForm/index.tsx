@@ -183,6 +183,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
         onChange={onChange}
         key={props.id}
         id={props.id}
+        disabled={props.disabled}
       />
     );
   }
@@ -197,6 +198,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
         value={props.value}
         key={props.id}
         id={props.id}
+        disabled={props.disabled}
       />
     );
   }
@@ -221,6 +223,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           onChange={onChange}
           key={props.id}
           inputId={props.id}
+          disabled={props.disabled}
         />
       );
     }
@@ -241,6 +244,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps, State> {
           options={props.options.enumOptions}
           onChange={onChange}
           inputId={props.id}
+          disabled={props.disabled}
         />
       );
     }
