@@ -328,6 +328,7 @@ type State = {
 };
 
 class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
+  static displayName = 'Footer';
   subscriptions: Subscription[];
 
   static defaultProps = {
@@ -489,4 +490,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl(Footer));
+const WrappedFooter = injectTracks<Props>(tracks)(injectIntl(Footer));
+Object.assign(WrappedFooter).displayName = 'WrappedFooter';
+
+export default WrappedFooter;
