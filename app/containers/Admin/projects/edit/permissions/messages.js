@@ -7,7 +7,7 @@ export default defineMessages({
   },
   subtitlePermissions: {
     id: 'app.containers.admin.project.permissions.subtitlePermissions',
-    defaultMessage: 'Define who can view the project and who can manage it (project moderator role). Also, granular participation rights can be assigned (contact support@citizenlab.co if you require this).',
+    defaultMessage: 'Define who can view the project and who can manage it as a project moderator. Also, granular participation rights can be assigned. Contact support@citizenlab.co if you require this.',
   },
   permissionTypeLabel: {
     id: 'app.containers.admin.project.permissions.permissionTypeLabel',
