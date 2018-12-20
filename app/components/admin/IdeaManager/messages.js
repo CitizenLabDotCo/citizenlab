@@ -107,7 +107,7 @@ export default defineMessages({
   },
   titleIdeas: {
     id: 'app.components.admin.IdeaManager.titleIdeas',
-    defaultMessage: 'Manage ideas',
+    defaultMessage: 'Manage idea',
   },
   subtitleIdeas: {
     id: 'app.components.admin.IdeaManager.subtitleIdeas',
