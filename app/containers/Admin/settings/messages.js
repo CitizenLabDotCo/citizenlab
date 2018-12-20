@@ -167,7 +167,7 @@ export default defineMessages({
   },
   subtitleRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
-    defaultMessage: 'Define what specific information you want to ask (required or optional) people while creating an account. Use this information to create Smart Groups and give different groups access to certain projects.',
+    defaultMessage: 'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
   },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
