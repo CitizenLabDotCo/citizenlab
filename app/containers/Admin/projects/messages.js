@@ -135,7 +135,7 @@ export default defineMessages({
   },
   subtitleGeneral: {
     id: 'app.containers.AdminPage.ProjectEdit.subtitleGeneral',
-    defaultMessage: 'Personalise your project. You can change it at anytime.',
+    defaultMessage: 'Personalize your project. You can change it at anytime.',
   },
   descriptionTab: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
