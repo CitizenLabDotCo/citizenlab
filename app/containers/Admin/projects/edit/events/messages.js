@@ -71,7 +71,7 @@ export default defineMessages({
   },
   titleEvents: {
     id: 'app.containers.AdminPage.ProjectEvents.titleEvents',
-    defaultMessage: 'Manage Events',
+    defaultMessage: 'Manage events',
   },
   subtitleEvents: {
     id: 'app.containers.AdminPage.ProjectEvents.subtitleEvents',
