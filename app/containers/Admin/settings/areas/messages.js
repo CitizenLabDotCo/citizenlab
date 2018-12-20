@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   subtitleAreas: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleAreas',
-    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give different groups access to certain projects.',
+    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give particular groups access to certain projects.',
   },
   titleAreas: {
     id: 'app.containers.AdminPage.SettingsPage.titleAreas',
