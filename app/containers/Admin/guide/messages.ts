@@ -36,7 +36,7 @@ export default defineMessages({
   },
   setupArticle1Description: {
     id: 'containers.Admin.onboarding.setupArticle1Description',
-    defaultMessage: 'Projects are the beating heart of the platform. Admins and project moderators can customize and edit the projects at any time (information, files, images, areas, timeline, methods, activities, etc..).'
+    defaultMessage: 'Projects are the beating heart of the platform. Admins and project moderators can customize and edit the projects at any time: information, files, images, areas, timeline, participation methods, planned activities, etc...'
   },
   setupArticle2Link: {
     id: 'containers.Admin.onboarding.setupArticle2Link',
@@ -48,7 +48,7 @@ export default defineMessages({
   },
   setupArticle2Description: {
     id: 'containers.Admin.onboarding.setupArticle2Description',
-    defaultMessage: 'You can ask your users additional information while registering. Use the registration fields to get better insights or to segment your users into groups (by age or area, etc..).'
+    defaultMessage: 'You can ask your users additional information while registering. Use the registration fields to get better insights, or to segment your users into groups, for example by age, area, interests, etc...'
   },
   setupArticle3Link: {
     id: 'containers.Admin.onboarding.setupArticle3Link',
@@ -60,7 +60,7 @@ export default defineMessages({
   },
   setupArticle3Description: {
     id: 'containers.Admin.onboarding.setupArticle3Description',
-    defaultMessage: 'A personalized widget brings people from other websites to your engagement platform.'
+    defaultMessage: 'A personalized widget brings people from other websites to your platform.'
   },
   // Engage section
   engageSectionTitle: {
@@ -77,7 +77,7 @@ export default defineMessages({
   },
   engageArticle1Title: {
     id: 'containers.Admin.onboarding.engageArticle1Title',
-    defaultMessage: 'Onboard admins and project moderators'
+    defaultMessage: 'Involve admins and project moderators'
   },
   engageArticle1Description: {
     id: 'containers.Admin.onboarding.engageArticle1Description',
@@ -89,7 +89,7 @@ export default defineMessages({
   },
   engageArticle2Title: {
     id: 'containers.Admin.onboarding.engageArticle2Title',
-    defaultMessage: 'Invite your target audience to your platform'
+    defaultMessage: 'Invite your target audience'
   },
   engageArticle2Description: {
     id: 'containers.Admin.onboarding.engageArticle2Description',
@@ -101,7 +101,7 @@ export default defineMessages({
   },
   engageArticle3Title: {
     id: 'containers.Admin.onboarding.engageArticle3Title',
-    defaultMessage: 'Send emails'
+    defaultMessage: 'Send emails to keep your users updated'
   },
   engageArticle3Description: {
     id: 'containers.Admin.onboarding.engageArticle3Description',
@@ -171,7 +171,7 @@ export default defineMessages({
   },
   decideArticle1Description: {
     id: 'containers.Admin.onboarding.decideArticle1Description',
-    defaultMessage: 'Add topics to ideas or change the idea status. Mark them as spam if they are offending. The author are notified when you change the status or comment on their ideas'
+    defaultMessage: 'Add topics to ideas or change the idea status. Mark ideas as spam if they are offending. The author is notified when you change the status or comment on his/her idea.'
   },
   decideArticle2Link: {
     id: 'containers.Admin.onboarding.decideArticle2Link',
@@ -183,7 +183,7 @@ export default defineMessages({
   },
   decideArticle2Description: {
     id: 'containers.Admin.onboarding.decideArticle2Description',
-    defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.'
+    defaultMessage: 'Get immediate and easy-to-grasp analytics, and monitor closely what’s happening on the platform.'
   },
   decideArticle3Link: {
     id: 'containers.Admin.onboarding.decideArticle3Link',
