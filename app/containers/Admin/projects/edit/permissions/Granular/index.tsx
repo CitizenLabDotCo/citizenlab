@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IProjectData } from 'services/projects';
 
-import { Section, SectionTitle } from 'components/admin/Section';
+import { SubSectionTitle } from 'components/admin/Section';
 import Timeline from './Timeline';
 import Continuous from './Continuous';
 import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import { StyledSection } from '../';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
-`;
-
-const StyledSection = styled(Section)`
-margin-bottom: 110px;
 `;
 
 interface Props {
@@ -27,9 +24,9 @@ class Granular extends Component<Props> {
     const { project } = this.props;
     return (
       <StyledSection>
-        <SectionTitle>
+        <SubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
-        </SectionTitle>
+        </SubSectionTitle>
         <StyledWarning>
           <FormattedMessage {...messages.engagementWarning} />
         </StyledWarning>

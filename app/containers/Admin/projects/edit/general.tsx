@@ -16,7 +16,7 @@ import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import HasPermission from 'components/HasPermission';
 
@@ -636,6 +636,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleGeneral} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleGeneral} />
+            </SectionSubtitle>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
