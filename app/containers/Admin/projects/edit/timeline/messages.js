@@ -75,7 +75,7 @@ export default defineMessages({
   },
   titleTimeline: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleTimeline',
-    defaultMessage: 'Manage project chronology',
+    defaultMessage: 'Manage timeline phases',
   },
   subtitleTimeline: {
     id: 'app.containers.AdminPage.ProjectTimeline.subtitleTimeline',
