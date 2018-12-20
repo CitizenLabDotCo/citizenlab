@@ -33,9 +33,6 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
-// TODO use real customized textColor
-const AdminSetTextColor = '#333';
-
 const Container: any = styled.div`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);

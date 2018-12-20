@@ -8,7 +8,6 @@ const theme = {
   colors,
   fontSizes,
   colorMain: '#ef0071',
-  menuStyle: 'light',
   menuHeight: 74,
   mobileMenuHeight: 72,
   mobileTopBarHeight: 66,

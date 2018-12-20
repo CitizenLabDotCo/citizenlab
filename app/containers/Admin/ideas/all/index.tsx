@@ -15,7 +15,7 @@ import { requestBlob } from 'utils/request';
 
 // styling
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ const HeaderContainer = styled.div`
 `;
 
 const HeaderTitle = styled.h1`
-  font-size: ${fontSize('xxxl')};
+  font-size: ${fontSizes.xxxl}px;
   line-height: 40px;
   font-weight: 600;
   padding: 0;

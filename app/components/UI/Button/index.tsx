@@ -3,7 +3,7 @@ import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
-import { color, colors, invisibleA11yText } from 'utils/styleUtils';
+import { colors, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
@@ -186,26 +186,26 @@ const Container: any = styled.div`
     &.secondary {
       ${(props: any) => buttonTheme(
         props,
-        color('lightGreyishBlue'),
-        darken(0.1, color('label')),
+        colors.lightGreyishBlue,
+        darken(0.1, colors.label),
         'transparent',
-        darken(0.05, color('lightGreyishBlue'))
+        darken(0.05, colors.lightGreyishBlue)
       )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
-      ${(props: any) => buttonTheme(props, 'transparent', color('label'), color('label'))}
+      ${(props: any) => buttonTheme(props, 'transparent', colors.label, colors.label)}
     }
     &.text {
-      ${(props: any) => buttonTheme(props, 'transparent', color('label'))}
+      ${(props: any) => buttonTheme(props, 'transparent', colors.label)}
     }
     &.success {
-      ${(props: any) => buttonTheme(props, color('clGreenSuccessBackground'), color('clGreenSuccess'))}
+      ${(props: any) => buttonTheme(props, colors.clGreenSuccessBackground, colors.clGreenSuccess)}
     }
     &.cl-blue {
-      ${(props: any) => buttonTheme(props, color('clBlueDark'), 'white')}
+      ${(props: any) => buttonTheme(props, colors.clBlueDark, 'white')}
     }
     &.admin-dark {
       ${(props: any) => buttonTheme(props, colors.adminTextColor, 'white')}

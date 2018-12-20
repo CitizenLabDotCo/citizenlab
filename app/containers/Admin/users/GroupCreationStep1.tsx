@@ -13,7 +13,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const TypesWrapper = styled.div`
@@ -30,7 +30,7 @@ const GroupType = styled.div`
   align-items: center;
 
   .groupName {
-    font-size: ${fontSize('xl')};
+    font-size: ${fontSizes.xl}px;
     font-weight: bold;
     text-align: center;
   }
