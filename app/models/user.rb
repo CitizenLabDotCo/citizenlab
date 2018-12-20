@@ -129,17 +129,6 @@ class User < ApplicationRecord
     find_by_cimail request.params["auth"]["email"]
   end
 
-  def self.build_with_omniauth auth
-    extra_user_attrs = SingleSignOnService.new.profile_to_user_attrs(auth.provider, auth)
-    new({
-      first_name: auth.info['first_name'],
-      last_name: auth.info['last_name'],
-      email: auth.info['email'],
-      remote_avatar_url: auth.info['image'],
-    }.merge(extra_user_attrs))
-  end
-
-
   def avatar_blank?
     avatar.file.nil?
   end
