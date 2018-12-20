@@ -176,7 +176,7 @@ export const stylingConsts = {
   mobileTopBarHeight: 66,
   maxPageWidth: 952,
   bannerWidth: 1340,
-  contentWidth: 1150,
+  pageWidth: 1150,
   textWidth: 720,
 };
 
