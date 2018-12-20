@@ -79,6 +79,6 @@ export default defineMessages({
   },
   subtitleTimeline: {
     id: 'app.containers.AdminPage.ProjectTimeline.subtitleTimeline',
-    defaultMessage: 'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method (idea-gathering, surveys, only information, voting or commenting on or off ….)',
+    defaultMessage: 'Define the different timeline phases for your project and describe what each phase is about. In every phase you can pick a different participation method: idea gathering, surveys, information, voting, commenting or participatory budgeting.',
   },
 });
