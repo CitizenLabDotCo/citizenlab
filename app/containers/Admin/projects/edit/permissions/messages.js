@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   titlePermissions: {
     id: 'app.containers.admin.project.permissions.titlePermissions',
-    defaultMessage: 'Access',
+    defaultMessage: 'Manage permissions',
   },
   subtitlePermissions: {
     id: 'app.containers.admin.project.permissions.subtitlePermissions',
