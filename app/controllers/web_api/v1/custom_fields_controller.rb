@@ -20,6 +20,8 @@ class WebApi::V1::CustomFieldsController < ApplicationController
     json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, fields)
     ui_schema_multiloc = service.fields_to_ui_schema_multiloc(Tenant.current, fields)
 
+    mark_unchangeable_fields_as_disabled(ui_schema_multiloc) if current_user
+
     render json: {json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc}
   end
 
@@ -92,5 +94,16 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
   def secure_controller?
     false
+  end
+
+  def mark_unchangeable_fields_as_disabled ui_schema_multiloc
+    sso_service = SingleSignOnService.new
+    unchangeable_custom_fields = sso_service.custom_fields_user_cant_change(current_user).map(&:to_s)
+    ui_schema_multiloc.each do |_locale, ui_schema|
+      ui_schema
+        .keys
+        .select{|key| unchangeable_custom_fields.include? key}
+        .each{|key| ui_schema[key]["ui:disabled"] = true}
+    end
   end
 end
