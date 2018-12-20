@@ -444,7 +444,7 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                   <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
                     <img
                       src={franceconnectLogo}
-                      alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
                     />
                   </FranceConnectButton>
                   <SubSocialButtonLink
