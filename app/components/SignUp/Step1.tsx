@@ -339,12 +339,12 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         }
 
         <FormElement>
-          <Label value={formatMessage(messages.firstNameLabel)} htmlFor="firstName" />
+          <Label value={formatMessage(messages.firstNamesLabel)} htmlFor="firstName" />
           <Input
             id="firstName"
             type="text"
             value={firstName}
-            placeholder={formatMessage(messages.firstNamePlaceholder)}
+            placeholder={formatMessage(messages.firstNamesPlaceholder)}
             error={firstNameError}
             onChange={this.handleFirstNameOnChange}
             setRef={this.handleFirstNameInputSetRef}
