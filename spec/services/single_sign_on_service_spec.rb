@@ -41,7 +41,7 @@ describe SingleSignOnService do
     context "for a user only using franceconnect" do
       it "returns some protected attributes" do
         identity = create(:franceconnect_identity)
-        expect(service.attributes_user_cant_change(identity.user)).to match_array [:first_name, :last_name, :email, :gender, :birthyear]
+        expect(service.attributes_user_cant_change(identity.user)).to match_array [:first_name, :last_name, :gender, :birthyear]
       end
     end  
   end
