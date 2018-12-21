@@ -171,9 +171,8 @@ const AuthProviderButtons = styled.div`
 `;
 
 const FranceConnectButton = styled.div`
-  width: 100%;
-  height: auto;
   cursor: pointer;
+  margin-top: 10px;
 `;
 
 const SubSocialButtonLink = styled.a`
