@@ -29,13 +29,13 @@ export default defineMessages({
     id: 'app.containers.SignUp.tokenAlreadyAcceptedError',
     defaultMessage: 'The invitation has already been redeemed',
   },
-  firstNameLabel: {
-    id: 'app.containers.SignUp.firstNameLabel',
-    defaultMessage: 'First name',
+  firstNamesLabel: {
+    id: 'app.containers.SignUp.firstNamesLabel',
+    defaultMessage: 'First names',
   },
-  firstNamePlaceholder: {
-    id: 'app.containers.SignUp.firstNamePlaceholder',
-    defaultMessage: 'Enter your first name',
+  firstNamesPlaceholder: {
+    id: 'app.containers.SignUp.firstNamesPlaceholder',
+    defaultMessage: 'Enter your first names',
   },
   noFirstNameError: {
     id: 'app.containers.SignUp.noFirstNameError',
