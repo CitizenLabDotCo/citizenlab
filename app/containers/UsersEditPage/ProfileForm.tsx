@@ -266,7 +266,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
+            <LabelWithTooltip htmlFor="firstName" translateId="firstNames" />
             <Input
               type="text"
               name="first_name"
