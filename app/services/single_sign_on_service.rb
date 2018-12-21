@@ -96,7 +96,7 @@ class SingleSignOnService
     end
 
     def unchangeable_attributes
-      [:first_name, :last_name, :email, :gender, :birthyear]
+      [:first_name, :last_name, :gender, :birthyear]
     end
 
     def unchangeable_custom_fields

@@ -406,7 +406,7 @@ resource "Users" do
           @user.reload
           expect(@user.first_name).not_to eq first_name
           expect(@user.last_name).not_to eq last_name
-          expect(@user.email).not_to eq email
+          expect(@user.email).to eq email
           expect(@user.locale).to eq locale
           expect(@user.custom_field_values[cf.key]).to eq "new value"
           expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
