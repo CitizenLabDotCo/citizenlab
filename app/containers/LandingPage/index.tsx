@@ -261,6 +261,7 @@ class LandingPage extends PureComponent<Props, State> {
                     padding="10px 30px"
                     size="1"
                     linkTo="/sign-up"
+                    fontWeight="500"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}
                   />

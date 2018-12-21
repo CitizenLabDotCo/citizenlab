@@ -60,7 +60,8 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: linear-gradient(0deg, rgba(22, 58, 125, 0.9), rgba(22, 58, 125, 0.9));
+  background: ${(props) => props.theme.colorMain};
+  opacity: 0.9;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -209,7 +210,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
             {!authUser && <SignUpButton
               style="primary-inverse"
               fontWeight="500"
-              padding="17px 15px"
+              padding="15px 22px"
               onClick={this.goToSignUpPage}
               text={<FormattedMessage {...messages.createAccount} />}
             />}
