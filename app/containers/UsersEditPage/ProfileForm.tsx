@@ -14,6 +14,7 @@ import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 import { Formik } from 'formik';
 import eventEmitter from 'utils/eventEmitter';
 import { hasCustomFields } from 'utils/customFields';
+import { getJwt, decode } from 'utils/auth/jwt';
 
 // components
 import LabelWithTooltip from './LabelWithTooltip';
@@ -166,6 +167,12 @@ class ProfileForm extends PureComponent<Props, State> {
     });
   }
 
+  usingFranceConnect = () => {
+    const jwt = getJwt();
+    const decodedJwt = jwt && decode(jwt);
+    return decodedJwt && decodedJwt.provider === 'franceconnect';
+  }
+
   formikRender = (props) => {
     const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
     const { hasCustomFields, localeOptions } = this.state;
@@ -228,6 +235,8 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched('avatar');
     };
 
+    const usingFranceConnect = !!this.usingFranceConnect();
+
     return (
       <ProfileSection>
         <form className="e2e-profile-edit-form">
@@ -265,6 +274,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.first_name}
               onChange={createChangeHandler('first_name')}
               onBlur={createBlurHandler('first_name')}
+              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.first_name} />
           </SectionField>
@@ -278,6 +288,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.last_name}
               onChange={createChangeHandler('last_name')}
               onBlur={createBlurHandler('last_name')}
+              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.last_name} />
           </SectionField>
@@ -291,6 +302,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.email}
               onChange={createChangeHandler('email')}
               onBlur={createBlurHandler('email')}
+              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.email} />
           </SectionField>
@@ -310,18 +322,20 @@ class ProfileForm extends PureComponent<Props, State> {
             <Error apiErrors={errors.bio_multiloc} />
           </SectionField>
 
-          <SectionField>
-            <LabelWithTooltip htmlFor="password" translateId="password" />
-            <Input
-              type="password"
-              name="password"
-              id="password"
-              value={values.password}
-              onChange={createChangeHandler('password')}
-              onBlur={createBlurHandler('password')}
-            />
-            <Error apiErrors={errors.password} />
-          </SectionField>
+          {!usingFranceConnect &&
+            <SectionField>
+              <LabelWithTooltip htmlFor="password" translateId="password" />
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                value={values.password}
+                onChange={createChangeHandler('password')}
+                onBlur={createBlurHandler('password')}
+              />
+              <Error apiErrors={errors.password} />
+            </SectionField>
+          }
 
           <SectionField>
             <LabelWithTooltip htmlFor="language" translateId="language" />
