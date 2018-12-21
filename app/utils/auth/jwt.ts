@@ -3,6 +3,12 @@ import jwtDecode from 'jwt-decode';
 
 const COOKIE_NAME = 'cl2_jwt';
 
+interface IDecodedJwt {
+  sub: string;
+  provider?: string;
+  logout_supported?: boolean;
+}
+
 export function getJwt() {
   try {
     return get(COOKIE_NAME);
@@ -20,5 +26,5 @@ export function removeJwt() {
 }
 
 export function decode(jwt) {
-  return jwtDecode(jwt);
+  return jwtDecode<IDecodedJwt>(jwt);
 }
