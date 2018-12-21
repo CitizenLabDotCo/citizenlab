@@ -302,7 +302,6 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.email}
               onChange={createChangeHandler('email')}
               onBlur={createBlurHandler('email')}
-              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.email} />
           </SectionField>
