@@ -55,7 +55,7 @@ const SSpan: any = styled.span`
   line-height: ${(props: any) => props.size}px;
   width: ${(props: any) => props.size}px;
   padding-bottom: 0;
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   background: ${colors.clIconSecondary};
   border-radius: 50%;
   color: white;
@@ -132,7 +132,8 @@ const AvatarBubbles = (props: Props & InjectedIntlProps) => {
         {usersWithoutAvatar > 0 &&
           <AvatarWrapper key={avatarCount}>
             <SSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
-              {usersWithoutAvatar} {(usersWithoutAvatar > 999) && <PlusIcon name="plus" />}
+              <PlusIcon name="plus" />
+              {usersWithoutAvatar}
             </SSpan>
           </AvatarWrapper>
         }
