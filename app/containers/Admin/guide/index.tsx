@@ -11,6 +11,10 @@ import { InjectedIntlProps } from 'react-intl';
 import PageWrapper from 'components/admin/PageWrapper';
 import Icon, { IconNames } from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
+import FeatureFlag from 'components/FeatureFlag';
+
+// resources
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -103,29 +107,29 @@ const IconWrapper = styled.div`
 
 type section = {
   key: IconNames,
-  articles: number,
+  articles: string[],
   color: string
 };
 
 const content: section[] = [
   {
     key: 'setup',
-    articles: 3,
-    color: colors.clIconAccent
+    articles: ['projects', 'user_custom_fields', 'widgets'],
+    color: colors.clIconAccent,
   },
   {
     key: 'engage',
-    articles: 3,
+    articles: ['invitations', 'invitations', 'manual_emailing'],
     color: colors.adminOrangeIcons
   },
   {
     key: 'manage',
-    articles: 2,
+    articles: ['projects', 'users'],
     color: colors.clGreen
   },
   {
     key: 'decide',
-    articles: 2,
+    articles: ['ideas', 'dashboard'],
     color: colors.clRed
   },
 ];
@@ -136,6 +140,32 @@ const trackInternal = (section: string, article: number) => () => trackEventByNa
 export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
+  const renderFlags = (section: string, index: number, article: string) => {
+    if (article === 'emails') {
+      return (
+        <GetFeatureFlag name="manual_emailing" key={index}>
+          {(manualEmailing) => (
+            <GetFeatureFlag name="automated_emailing_control">
+              {(automatedEmailing) => manualEmailing || automatedEmailing ?
+                renderArticle(section, index)
+                :
+                null
+              }
+            </GetFeatureFlag>
+          )}
+        </GetFeatureFlag>
+      );
+    } else if (article === 'widgets' || article === 'user_custom_fields') {
+      return (
+        <FeatureFlag name="article" key="index">
+          {renderArticle(section, index)}
+        </FeatureFlag>
+      );
+    } else {
+      return renderArticle(section, index);
+    }
+  };
+
   const renderArticle = (section: string, i: number) => (
     <Article to={formatMessage(messages[`${section}Article${i}Link`])} key={i} onClick={trackInternal(section, i)}>
       <div>
@@ -145,14 +175,11 @@ export const Onboarding = (props: InjectedIntlProps) => {
       <IconWrapper><Icon name="arrowLeft" /></IconWrapper>
     </Article>
   );
-  const renderArticles = (section: string, articles: number) => {
-    let i = 1;
-    const res: JSX.Element[] = [];
-    for (; i <= articles; i = i + 1) {
-      res.push(renderArticle(section, i));
-    }
-    return res;
+
+  const renderArticles = (section: string, articles: string[]) => {
+    return articles.map((article, index) => renderFlags(section, index, article));
   };
+
   const renderSection = ({ key, articles, color }: section) => (
     <SectionWrapper key={key}>
       <SectionHeader>
