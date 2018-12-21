@@ -390,7 +390,7 @@ resource "Users" do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:birthyear_custom_field) }
         let(:custom_field_values) {{
-          cf.key => "somevalue",
+          cf.key => "new value",
           birthyear_cf.key => 1969,
         }}
         let(:first_name) { 'Raymond' }
@@ -400,6 +400,7 @@ resource "Users" do
 
         example "Can't change some attributes of a user identified with FranceConnect", document: false do
           create(:franceconnect_identity, user: @user)
+          @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
           @user.reload
@@ -407,8 +408,8 @@ resource "Users" do
           expect(@user.last_name).not_to eq last_name
           expect(@user.email).not_to eq email
           expect(@user.locale).to eq locale
-          expect(@user.custom_field_values[cf.key]).to eq "somevalue"
-          expect(@user.custom_field_values[birthyear_cf.key]).not_to eq 1969
+          expect(@user.custom_field_values[cf.key]).to eq "new value"
+          expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
         end
       end
     end
@@ -445,18 +446,22 @@ resource "Users" do
       describe do
         let(:cf) { create(:custom_field) }
         let(:birthyear_cf) { create(:birthyear_custom_field) }
+
         let(:custom_field_values) {{
-          cf.key => "somevalue",
+          cf.key => "new value",
           birthyear_cf.key => 1969,
         }}
         example "Can't change some custom_field_values of a user identified with FranceConnect", document: false do
-          @user.update(registration_completed_at: nil)
+          @user.update(
+            registration_completed_at: nil,
+            custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
+          )
           create(:franceconnect_identity, user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
-          expect(@user.custom_field_values[cf.key]).to eq "somevalue"
-          expect(@user.custom_field_values[birthyear_cf.key]).not_to eq 1969
+          expect(@user.custom_field_values[cf.key]).to eq "new value"
+          expect(@user.custom_field_values[birthyear_cf.key]).to eq 1950
         end
       end
     end

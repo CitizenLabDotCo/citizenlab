@@ -53,6 +53,8 @@ class OmniauthCallbackController < ApplicationController
     url = sso_service.logout_url(provider, user)
 
     redirect_to url
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to FrontendService.new.home_url
   end
 
 
