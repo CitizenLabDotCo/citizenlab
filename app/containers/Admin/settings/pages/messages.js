@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Legal and About pages',
   },
   subtitlePages: {
-    id: 'app.containers.AdminPage.SettingsPage.tabPagesSubtitle',
+    id: 'app.containers.AdminPage.PagesEdition.subtitlePages',
     defaultMessage: 'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
   },
   titleLabel: {
