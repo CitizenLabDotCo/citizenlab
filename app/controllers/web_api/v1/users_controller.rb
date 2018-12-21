@@ -96,9 +96,13 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def update
-    user_params = permitted_attributes @user
     permissions_before = Permission.for_user(@user)
+
+    user_params = permitted_attributes @user
+    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
+
     @user.assign_attributes user_params
+
     if user_params.keys.include?('avatar') && user_params['avatar'] == nil
       # setting the avatar attribute to nil will not remove the avatar
       @user.remove_avatar!
@@ -117,7 +121,10 @@ class WebApi::V1::UsersController < ::ApplicationController
     @user = current_user
     authorize @user
 
-    @user.assign_attributes(permitted_attributes(@user))
+    user_params = permitted_attributes @user
+    user_params[:custom_field_values] = @user.custom_field_values.merge(user_params[:custom_field_values] || {})
+
+    @user.assign_attributes(user_params)
     @user.registration_completed_at = Time.now
 
     if @user.save

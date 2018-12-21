@@ -150,7 +150,7 @@ class SingleSignOnService
   # meaning they can't override values coming from the provider. This returns
   # all the properties that users can't manually change for the given user
   def attributes_user_cant_change user
-    providers = user.identities.pluck(:provider).uniq
+    providers = user&.identities&.pluck(:provider)&.uniq || []
     attributes = providers.flat_map do |provider| 
       provider_helper = helper(provider)
       if provider_helper.respond_to? :unchangeable_attributes
@@ -163,7 +163,7 @@ class SingleSignOnService
   end
 
   def custom_fields_user_cant_change user
-    providers = user.identities.pluck(:provider).uniq
+    providers = user&.identities&.pluck(:provider)&.uniq || []
     custom_fields = providers.flat_map do |provider| 
       provider_helper = helper(provider)
       if provider_helper.respond_to? :unchangeable_custom_fields
