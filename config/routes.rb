@@ -175,6 +175,7 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index]
+      resource :onboarding_status, only: [:show]
 
       match 'manifest.json', to: 'manifest#show', via: :get
       
