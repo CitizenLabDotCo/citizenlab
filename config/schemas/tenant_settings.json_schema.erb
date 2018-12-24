@@ -109,8 +109,16 @@
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_onboarding_message": {
-            "description": "Optional text that is shown when there's nothing to report for a user that's signed in.",
+            "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_button": {
+            "description": "Text on the CTA button next to the custom onboarding message",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_link": {
+            "description": "The location the CTA button links to",
+            "type": "string"
           }
         }
       },
