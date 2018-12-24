@@ -4,29 +4,31 @@ class OmniauthCallbackController < ApplicationController
 
 
   def create
+    sso_service = SingleSignOnService.new
+
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params']
+    provider = auth['provider']
 
-    @identity = Identity.find_with_omniauth(auth)
-
-    if @identity.nil?
-      @identity = Identity.create_with_omniauth(auth)
-    end
+    @identity = Identity.find_with_omniauth(auth) || Identity.create_with_omniauth(auth)
 
     @user = @identity.user || User.find_by_cimail(auth.info.email)
 
     if @user
       @identity.update(user: @user) unless @identity.user
-      set_auth_cookie
+      if sso_service.update_on_sign_in?(provider)
+        @user.update(sso_service.profile_to_user_attrs(auth))
+      end
+      set_auth_cookie(provider: provider)
       redirect_to(add_uri_params(FrontendService.new.signin_success_url(locale: @user.locale), omniauth_params))
     else
-      @user = User.build_with_omniauth(auth)
+      @user = User.new(sso_service.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
       begin
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
-        set_auth_cookie
+        set_auth_cookie(provider: provider)
         redirect_to(add_uri_params(FrontendService.new.signup_success_url(locale: @user.locale), omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
@@ -40,6 +42,19 @@ class OmniauthCallbackController < ApplicationController
   def failure
     omniauth_params = request.env['omniauth.params']
     redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
+  end
+
+  def logout
+    provider = params[:provider]
+    user_id = params[:user_id]
+    user = User.find(user_id)
+    sso_service = SingleSignOnService.new
+
+    url = sso_service.logout_url(provider, user)
+
+    redirect_to url
+  rescue ActiveRecord::RecordNotFound => e
+    redirect_to FrontendService.new.home_url
   end
 
 
@@ -57,17 +72,22 @@ class OmniauthCallbackController < ApplicationController
     uri.to_s
   end
 
-  def auth_token entity
-    if entity.respond_to? :to_token_payload
-      Knock::AuthToken.new payload: entity.to_token_payload
+  def auth_token entity, provider
+    payload = if entity.respond_to? :to_token_payload
+      entity.to_token_payload
     else
-      Knock::AuthToken.new payload: { sub: entity.id }
+      { sub: entity.id }
     end
+
+    Knock::AuthToken.new payload: payload.merge({
+      provider: provider,
+      logout_supported: SingleSignOnService.new.supports_logout?(provider)
+    })
   end
 
-  def set_auth_cookie
+  def set_auth_cookie provider: nil
     cookies[:cl2_jwt] = {
-      value: auth_token(@user).token,
+      value: auth_token(@user, provider).token,
       expires: 1.month.from_now
     }
   end

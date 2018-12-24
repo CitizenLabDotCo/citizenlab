@@ -301,26 +301,6 @@ RSpec.describe User, type: :model do
 
   end
 
-  describe "build_with_omniauth" do
-    it "creates a new user" do
-      auth = OpenStruct.new({
-        provider: 'someprovider',
-        info: {
-          first_name: 'Jos',
-          last_name: 'Jossens',
-          email: 'jos@josnet.com',
-          image: 'http://www.josnet.com/my-picture'
-        }
-      })
-
-      ssos = instance_double("SingleSignOnService")
-      expect(SingleSignOnService).to receive(:new).and_return(ssos)
-      expect(ssos).to receive(:profile_to_user_attrs).with('someprovider', auth).and_return({})
-      expect(User).to receive(:new)
-      User.build_with_omniauth(auth)
-    end
-  end
-
   describe "custom_field_values" do
     it "validates when custom_field_values have changed" do
       u = create(:user)
