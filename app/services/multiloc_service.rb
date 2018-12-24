@@ -26,4 +26,8 @@ class MultilocService
     end
   end
 
+  def is_empty? multiloc
+    !multiloc || multiloc.values.all?(&:blank?)
+  end
+
 end
