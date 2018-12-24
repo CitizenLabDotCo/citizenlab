@@ -43,7 +43,7 @@ namespace :nlp do
                           original_location_description: idea.location_description,
                           guessed_lat: geo['lat'],
                           guessed_lon: geo['lon'],
-                          guessed_location_description: geo['display_name'],
+                          guessed_location_description: geo['address'],
                           picky_poi: picky_poi, 
                           include_phrases: include_phrases, 
                           case_sensitive: case_sensitive, 
@@ -68,7 +68,7 @@ namespace :nlp do
                         puts "#{idea.location_description}"
                         puts "Guess:"
                         puts "(#{geo['lat']}, #{geo['lon']})"
-                        puts "#{geo['display_name']}"
+                        puts "#{geo['address']}"
                         puts "--------------"
                         data += [row]
                         CSV.open('geotagging_results_knokke_heist.csv', "wb") do |csv|
