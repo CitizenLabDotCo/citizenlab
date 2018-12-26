@@ -9,11 +9,11 @@ module NLP
       options = {}
       options[:filter_idea_ids] = filter_idea_ids if filter_idea_ids
       options[:min_score] = min_score if min_score
-      res = @api.ideas_duplicates tenant_id, idea.id, locale, options
+      res = @api.similarity tenant_id, idea.id, locale, options
       if res.present?
         return res.map do |h|
           {
-            idea: Idea.find(h['id']),
+            idea_id: h['id'],
             score: h['score'].to_f
           }
         end

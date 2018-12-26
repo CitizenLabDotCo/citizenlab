@@ -17,7 +17,7 @@ module NLP
       )
     end
 
-    def ideas_duplicates tenant_id, idea_id, locale, options={}
+    def similarity tenant_id, idea_id, locale, options={}
       options[:locale] = locale
       resp = self.class.get(
         "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity",
