@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe ClusteringService do
-  let(:service) { ClusteringService.new }
+  let(:service) { NLP::ClusteringService.new }
 
   describe "drop_empty_clusters" do
 

@@ -27,7 +27,7 @@ module NLP
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
-    def ideas_clustering tenant_id, locale, options={}
+    def clustering tenant_id, locale, options={}
       query = {}
       query['n_clusters'] = options[:n_clusters] if options[:n_clusters]
       body = {}
