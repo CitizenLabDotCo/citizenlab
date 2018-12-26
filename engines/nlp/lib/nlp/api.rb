@@ -28,14 +28,12 @@ module NLP
     end
 
     def clustering tenant_id, locale, options={}
-      query = {}
-      query['n_clusters'] = options[:n_clusters] if options[:n_clusters]
-      body = {}
+      body = {locale: locale}
       body[:idea_ids] = options[:idea_ids] if options[:idea_ids]
+      body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
 
       self.class.post(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/clustering",
-        query: query,
+        "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
