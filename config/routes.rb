@@ -192,6 +192,7 @@ Rails.application.routes.draw do
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
+  mount NLP::Engine => "", as: 'nlp'
 
   if Rails.env.development?
     require_dependency 'sidekiq/web'
