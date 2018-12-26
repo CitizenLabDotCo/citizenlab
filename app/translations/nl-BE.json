@@ -93,7 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "Rapporteer als spam",
   "app.components.IdeasShow.send": "Verzenden",
   "app.components.IdeasShow.showOriginalComment": "Toon oorspronkelijke reactie",
-  "app.components.IdeasShow.similarIdeas": "",
+  "app.components.IdeasShow.similarIdeas": "Gelijkaardige ideeën",
   "app.components.IdeasShow.skipSharing": "Sla deze stap over, en deel het later",
   "app.components.IdeasShow.spanModalLabelComment": "Rapporteer reactie als spam : selecteer de reden",
   "app.components.IdeasShow.spanModalLabelIdea": "Rapporteer idee als spam : selecteer de reden",
@@ -1290,7 +1290,7 @@
   "containers.Admin.onboarding.manageArticle3Link": "/unused",
   "containers.Admin.onboarding.manageArticle3Title": "Nog niet gebruikt",
   "containers.Admin.onboarding.manageSectionLink": "http://support.citizenlab.co/nl-jouw-citizenlab-platform-stap-voor-stap",
-  "containers.Admin.onboarding.manageSectionTitle": "beheren",
+  "containers.Admin.onboarding.manageSectionTitle": "modereren",
   "containers.Admin.onboarding.readCompleteGuide": "Lees de volledige gids",
   "containers.Admin.onboarding.setupArticle1Description": "Projecten zijn het kloppend hart van je platform. Beheerders en projectmoderatoren kunnen projecten op elk moment bewerken (informatie, bijlagen, afbeeldingen, gebieden, tijdlijn, participatiemethodes, activiteiten, ...)",
   "containers.Admin.onboarding.setupArticle1Link": "/admin/projects/new",
@@ -1302,6 +1302,6 @@
   "containers.Admin.onboarding.setupArticle3Link": "/admin/settings/widgets",
   "containers.Admin.onboarding.setupArticle3Title": "Leg een link tussen het platform en andere websites met gebruik van een widget",
   "containers.Admin.onboarding.setupSectionLink": "http://support.citizenlab.co/nl-jouw-citizenlab-platform-stap-voor-stap",
-  "containers.Admin.onboarding.setupSectionTitle": "Setup",
+  "containers.Admin.onboarding.setupSectionTitle": "configuration",
   "containers.Admin.onboarding.title": "Gids"
 }
