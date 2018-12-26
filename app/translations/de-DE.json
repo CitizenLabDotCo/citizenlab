@@ -93,6 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "Als Spam melden",
   "app.components.IdeasShow.send": "Senden",
   "app.components.IdeasShow.showOriginalComment": "Show original comment",
+  "app.components.IdeasShow.similarIdeas": "",
   "app.components.IdeasShow.skipSharing": "Vergessen Sie es, ich werde es später tun",
   "app.components.IdeasShow.spanModalLabelComment": "Kommentar als Spam melden: Wählen Sie einen Grund",
   "app.components.IdeasShow.spanModalLabelIdea": "Idee als Spam melden: Wählen Sie einen Grund",
