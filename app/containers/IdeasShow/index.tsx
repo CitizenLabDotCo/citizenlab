@@ -37,6 +37,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
+import SimilarIdeas from './SimilarIdeas';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -1176,6 +1177,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                       </MoreActionsMenuWrapper>
                     }
                   </MetaButtons>
+                  <FeatureFlag name="similar_ideas">
+                    <SimilarIdeas ideaId={idea.data.id} />
+                  </FeatureFlag>
                 </MetaContent>
               </RightColumnDesktop>
             </Content>
