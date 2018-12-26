@@ -15,6 +15,36 @@ namespace :nlp do
     end
   end
 
+  task :similar_ideas, [] => [:environment] do |t, args|
+    logs = []
+    api = NLP::API.new ENV.fetch("CL2_NLP_HOST")
+    Tenant.pluck(:host).select do |host|
+      !host.include? 'localhost'
+    end.each do |host|
+      tenant = Tenant.find_by_host host
+      Apartment::Tenant.switch(tenant.schema_name) do
+        logs += [host]
+        3.times do
+          idea = Idea.all.shuffle.first
+          locale = idea.title_multiloc.keys.first
+          res = api.ideas_duplicates tenant.id, idea.id, locale
+          
+          logs += ['-------']
+          logs += ["Subject: #{idea.title_multiloc.values.first}"]
+          if res
+            res.each do |h|
+              candidate = Idea.find h['id']
+              logs += ["Candidate: #{candidate.title_multiloc.values.first} (score: #{h['score']})"]
+            end
+            logs += ['-------']
+          end
+        end
+        logs += ['']
+      end
+    end
+    logs.each{|ln| puts ln}
+  end
+
   task :geotag_ideas, [] => [:environment] do |t, args|
     geotagging = NLP::GeotagService.new
     data = []
