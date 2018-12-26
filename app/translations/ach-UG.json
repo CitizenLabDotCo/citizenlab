@@ -93,6 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "crwdns18293:0crwdne18293:0",
   "app.components.IdeasShow.send": "crwdns19273:0crwdne19273:0",
   "app.components.IdeasShow.showOriginalComment": "crwdns19884:0crwdne19884:0",
+  "app.components.IdeasShow.similarIdeas": "crwdns20064:0crwdne20064:0",
   "app.components.IdeasShow.skipSharing": "crwdns19770:0crwdne19770:0",
   "app.components.IdeasShow.spanModalLabelComment": "crwdns19546:0crwdne19546:0",
   "app.components.IdeasShow.spanModalLabelIdea": "crwdns19548:0crwdne19548:0",
