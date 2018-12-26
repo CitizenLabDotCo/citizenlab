@@ -12,7 +12,7 @@ import messages from './messages';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
@@ -26,8 +26,8 @@ import GetModerators from 'resources/GetModerators';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const StyledSection = styled(Section)`
-  margin-bottom: 110px;
+export const StyledSection = styled(Section)`
+  margin-bottom: 60px;
 `;
 
 const RadioButtonsWrapper = styled.div`
@@ -46,13 +46,13 @@ const StyledRadio = styled(Radio)`
   }
 `;
 
-type Props  = {
+type Props = {
   params: {
     projectId: string | null
   };
 };
 
-type State  = {
+type State = {
   project: IProject | null;
   oldGroupsProjects: IGroupsProjects | null;
   newGroupsProjects: IGroupsProjects | null;
@@ -185,10 +185,18 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
       return (
         <>
           <StyledSection>
+            <SectionTitle>
+              <FormattedMessage {...messages.titlePermissions} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitlePermissions} />
+            </SectionSubtitle>
+          </StyledSection>
+          <StyledSection>
             <SectionField>
-              <SectionTitle>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
-              </SectionTitle>
+              </SubSectionTitle>
 
               <RadioButtonsWrapper>
                 <StyledRadio

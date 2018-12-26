@@ -30,36 +30,16 @@ const Container = styled.div`
 `;
 
 const InformationBody = styled.div`
+  ${quillEditedContent()}
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  font-weight: 400;
   line-height: 23px;
 
   p {
-    &:last-child {
-      margin-bottom: 0px;
-    }
+    font-size: ${fontSizes.base}px;
+    line-height: 23px;
   }
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
-
-  strong {
-    font-weight: 500;
-  }
-
-  ${quillEditedContent()}
 `;
 
 const StyledFileAttachments = styled(FileAttachments)`

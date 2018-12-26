@@ -26,10 +26,19 @@ import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import { Input, Sticky, Message } from 'semantic-ui-react';
 import ExportButtons from './components/ExportButtons';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+
+const Row = styled.div`
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+`;
 
 const ThreeColumns = styled.div`
   display: flex;
@@ -89,7 +98,7 @@ interface DataProps {
   phases: GetPhasesChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 type TFilterMenu = 'topics' | 'phases' | 'projects' | 'statuses';
 
@@ -211,17 +220,32 @@ class IdeaManager extends React.PureComponent<Props, State> {
     } else if (selectedProject) {
       exportQueryParameter = selectedProject;
       exportType = 'project';
-    } else  {
+    } else {
       exportQueryParameter = 'all';
       exportType = 'all';
     }
-
     return (
       <div ref={this.handleContextRef}>
-        <ExportButtons
-          exportType={exportType}
-          exportQueryParameter={exportQueryParameter}
-        />
+        <Row>
+          {project !== undefined &&
+            <div>
+              <SectionTitle>
+                <FormattedMessage {...messages.titleIdeas} />
+              </SectionTitle>
+              <SectionSubtitle>
+                <FormattedMessage {...messages.subtitleIdeas} />
+              </SectionSubtitle>
+            </div>
+          }
+          {project === undefined &&
+            <div />
+          }
+          <ExportButtons
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+            className={project === undefined ? 'all' : 'project'}
+          />
+        </Row>
         <ThreeColumns>
           <LeftColumn>
             <Input icon="search" onChange={this.handleSearchChange} />

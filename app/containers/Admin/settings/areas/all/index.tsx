@@ -9,18 +9,18 @@ import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-import { Section, SectionTitle } from 'components/admin/Section';
+import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   areas: GetAreasChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
@@ -42,6 +42,9 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleAreas} />
+        </SectionSubtitle>
         <ButtonWrapper>
           <Button
             style="cl-blue"
@@ -56,7 +59,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
           {areas.map((area, index) => (
             <Row key={area.id} lastItem={(index === areas.length - 1)}>
               <TextCell className="expand">
-                <T value={area.attributes.title_multiloc}/>
+                <T value={area.attributes.title_multiloc} />
               </TextCell>
               <Button
                 onClick={this.handleDeleteClick(area.id)}
@@ -74,8 +77,8 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps>{
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </Button>
-          </Row>
-        ))}
+            </Row>
+          ))}
         </List>
       </Section>
     );
