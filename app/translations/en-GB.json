@@ -93,6 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "",
   "app.components.IdeasShow.send": "",
   "app.components.IdeasShow.showOriginalComment": "",
+  "app.components.IdeasShow.similarIdeas": "",
   "app.components.IdeasShow.skipSharing": "",
   "app.components.IdeasShow.spanModalLabelComment": "",
   "app.components.IdeasShow.spanModalLabelIdea": "",

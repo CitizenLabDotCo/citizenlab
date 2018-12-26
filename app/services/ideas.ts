@@ -72,6 +72,15 @@ export interface IIdeaData {
   };
 }
 
+export interface IMinimalIdeaData {
+  id: string;
+  type: string;
+  attributes: {
+    slug: string;
+    title_multiloc: Multiloc;
+  };
+}
+
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -147,4 +156,8 @@ export function deleteIdea(ideaId: string) {
 
 export function ideaActivities(ideaId: string) {
   return streams.get<{ data: IdeaActivity[] }>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities` });
+}
+
+export function similarIdeas(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IMinimalIdeaData[]}>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`, ...streamParams });
 }
