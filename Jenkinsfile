@@ -62,6 +62,13 @@ pipeline {
       }
     }
 
+    stage('Test NLP') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/nlp/spec/'
+
+      }
+    }
+
     stage('Test slow tests (tenant templates)') {
       when { branch 'master' }
       steps {
