@@ -93,6 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "Rapporteer als spam",
   "app.components.IdeasShow.send": "Verzenden",
   "app.components.IdeasShow.showOriginalComment": "Toon oorspronkelijke reactie",
+  "app.components.IdeasShow.similarIdeas": "",
   "app.components.IdeasShow.skipSharing": "Sla deze stap over, en deel het later",
   "app.components.IdeasShow.spanModalLabelComment": "Rapporteer reactie als spam : selecteer de reden",
   "app.components.IdeasShow.spanModalLabelIdea": "Rapporteer idee als spam : selecteer de reden",

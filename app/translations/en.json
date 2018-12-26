@@ -93,6 +93,7 @@
   "app.components.IdeasShow.reportAsSpam": "Report as spam",
   "app.components.IdeasShow.send": "Send",
   "app.components.IdeasShow.showOriginalComment": "Show original comment",
+  "app.components.IdeasShow.similarIdeas": "Similar ideas",
   "app.components.IdeasShow.skipSharing": "Skip it, I'll do it later",
   "app.components.IdeasShow.spanModalLabelComment": "Report comment as spam : select reason",
   "app.components.IdeasShow.spanModalLabelIdea": "Report idea as spam : select reason",
