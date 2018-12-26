@@ -1,5 +1,23 @@
 # Changelog
 
+## 2018-12-26
+
+### Fixed
+- The rich text editor now formats more content the same way as they will be shown in the platform
+
+### Added
+- Admin onboarding guide
+  - Shown as the first page in the admin, guiding users on steps to take
+- The idea page now shows similar ideas, based on NLP
+  - Feature flagged as `similar_ideas`, turned off by default
+  - Experimental, intended to evaluate NLP similarity performance
+- A user is now automatically signed out from FranceConnect when signing out of the platform
+
+### Changed
+- When a user signs in using FranceConnect, names and some signup fields can no longer be changed manually
+- The FranceConnect button now has the official size and dimensions and no T&C
+- SEO improvements to the "Powered by CitizenLab" logo
+
 ## 2018-12-13
 
 ### Fixed
