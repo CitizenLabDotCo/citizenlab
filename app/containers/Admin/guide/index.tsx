@@ -141,23 +141,9 @@ export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const renderFlags = (section: string, index: number, article: string) => {
-    if (article === 'emails') {
+    if (article === 'widgets' || article === 'user_custom_fields' || article === 'manual_emailing') {
       return (
-        <GetFeatureFlag name="manual_emailing" key={index}>
-          {(manualEmailing) => (
-            <GetFeatureFlag name="automated_emailing_control">
-              {(automatedEmailing) => manualEmailing || automatedEmailing ?
-                renderArticle(section, index)
-                :
-                null
-              }
-            </GetFeatureFlag>
-          )}
-        </GetFeatureFlag>
-      );
-    } else if (article === 'widgets' || article === 'user_custom_fields') {
-      return (
-        <FeatureFlag name="article" key="index">
+        <FeatureFlag name={article} key={index}>
           {renderArticle(section, index)}
         </FeatureFlag>
       );
@@ -177,7 +163,7 @@ export const Onboarding = (props: InjectedIntlProps) => {
   );
 
   const renderArticles = (section: string, articles: string[]) => {
-    return articles.map((article, index) => renderFlags(section, index, article));
+    return articles.map((article, index) => renderFlags(section, index + 1, article));
   };
 
   const renderSection = ({ key, articles, color }: section) => (
