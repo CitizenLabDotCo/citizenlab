@@ -17,12 +17,14 @@ module NLP
       )
     end
 
-    def ideas_duplicates tenant_id, locale, text
-      self.class.post(
-        "/v1/tenants/#{tenant_id}/#{locale}",
-        body: {text: text},
+    def similarity tenant_id, idea_id, locale, options={}
+      options[:locale] = locale
+      resp = self.class.get(
+        "/v1/tenants/#{tenant_id}/ideas/#{idea_id}/similarity",
+        body: options.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
     def ideas_clustering tenant_id, locale, options={}
@@ -45,10 +47,15 @@ module NLP
       )
     end
 
-    def ideas_geotagging tenant_id, locale
-      self.class.get(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/geotagging"
+    def idea_geotagging tenant_id, text, locale, options={}
+      options[:text] = text
+      options[:locale] = locale
+      resp = self.class.post(
+        "/v1/tenants/#{tenant_id}/geotagging",
+        body: options.to_json,
+        headers: {'Content-Type' => 'application/json'} 
       )
+      return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
   end
