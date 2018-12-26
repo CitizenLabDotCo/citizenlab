@@ -71,9 +71,9 @@ module NLP
       clustering_items = api.clustering(
         Tenant.current.id, 
         Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
-        idea_ids: idea_ids,
+        filter_idea_ids: idea_ids,
         n_clusters: (idea_ids.size / 10 + 1)
-        ).parsed_response.dig('data','items')
+        ).parsed_response.dig('data')
       clti = {}
       clustering_items.each do |item|
         clti[item['cluster']] ||= []

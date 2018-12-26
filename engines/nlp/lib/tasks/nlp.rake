@@ -43,30 +43,15 @@ namespace :nlp do
   end
 
   task :cluster_ideas, [] => [:environment] do |t, args|
-    logs = []
     service = NLP::ClusteringService.new
     Tenant.pluck(:host).select do |host|
       !host.include? 'localhost'
     end.each do |host|
       tenant = Tenant.find_by_host host
       Apartment::Tenant.switch(tenant.schema_name) do
-        logs += [host]
-        3.times do
-          idea = Idea.all.shuffle.first
-          sim = service.similarity tenant.id, idea, min_score: 0.2
-          
-          logs += ['-------']
-          logs += ["Subject: #{idea.title_multiloc.values.first}"]
-          sim.each do |h|
-            candidate = Idea.find h[:idea_id]
-            logs += ["Candidate: #{candidate.title_multiloc.values.first} (score: #{h[:score]})"]
-          end
-          logs += ['-------']
-        end
-        logs += ['']
+        service.build_structure ['clustering'], Idea
       end
     end
-    logs.each{|ln| puts ln}
   end
 
   task :geotag_ideas, [] => [:environment] do |t, args|
