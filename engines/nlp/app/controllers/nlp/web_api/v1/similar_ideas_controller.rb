@@ -12,7 +12,7 @@ module NLP
 
           service = NLP::SimilarityService.new
           similarities = service.similarity Tenant.current.id, idea, min_score: SIMILARITY_TRESHOLD
-          @ideas = policy_scope(Idea.where(id: similarities.map{|h| h[:idea].id}))
+          @ideas = policy_scope(Idea.where(id: similarities.map{|h| h[:idea_id]}))
             .page(params.dig(:page, :number))
             .per(params.dig(:page, :size))
 
