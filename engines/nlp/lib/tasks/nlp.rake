@@ -31,7 +31,7 @@ namespace :nlp do
           logs += ['-------']
           logs += ["Subject: #{idea.title_multiloc.values.first}"]
           sim.each do |h|
-            candidate =Idea.find h[:idea_id]
+            candidate = Idea.find h[:idea_id]
             logs += ["Candidate: #{candidate.title_multiloc.values.first} (score: #{h[:score]})"]
           end
           logs += ['-------']
