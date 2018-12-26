@@ -26,7 +26,7 @@ namespace :nlp do
         logs += [host]
         3.times do
           idea = Idea.all.shuffle.first
-          sim = service.similarity tenant.id, idea
+          sim = service.similarity tenant.id, idea, min_score: 0.2
           
           logs += ['-------']
           logs += ["Subject: #{idea.title_multiloc.values.first}"]
