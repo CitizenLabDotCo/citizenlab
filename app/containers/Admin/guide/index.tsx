@@ -13,9 +13,6 @@ import Icon, { IconNames } from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
 
-// resources
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
