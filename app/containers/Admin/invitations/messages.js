@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.invitePeople',
     defaultMessage: 'Invite people via email',
   },
+  invitationSubtitle: {
+    id: 'app.containers.Admin.Invitations.invitationSubtitle',
+    defaultMessage: 'Invite people to the platform at any point in time. They get a neutral invitation email with your logo, in which they are asked to register on the platform.',
+  },
   importTab: {
     id: 'app.containers.Admin.Invitations.importTab',
     defaultMessage: 'Import email addresses',

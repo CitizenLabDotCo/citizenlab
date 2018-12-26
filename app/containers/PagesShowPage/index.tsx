@@ -32,7 +32,6 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { darken } from 'polished';
 import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -99,69 +98,6 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  line-height: 25px;
-
-  h1 {
-    font-size: ${fontSizes.xxxl}px;
-    line-height: 35px;
-    font-weight: 600;
-  }
-
-  h2 {
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 600;
-  }
-
-  p {
-    color: ${colors.text};
-    font-size: ${fontSizes.large}px;
-    font-weight: 300;
-    line-height: 27px;
-
-    &:last-child {
-      margin-bottom: 0px;
-    }
-  }
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-all;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
-
-  ul {
-    list-style-type: disc;
-    list-style-position: outside;
-    padding: 0;
-    padding-left: 25px;
-    margin: 0;
-    margin-bottom: 25px;
-
-    li {
-      padding: 0;
-      padding-top: 2px;
-      padding-bottom: 2px;
-      margin: 0;
-    }
-  }
-
-  strong {
-    font-weight: 500;
-  }
-
   ${quillEditedContent()}
 `;
 

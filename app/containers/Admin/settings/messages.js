@@ -4,7 +4,9 @@
  * This contains all the text for the AdminPage.SettingsPage component.
  */
 
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
@@ -15,17 +17,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.helmetDescription',
     defaultMessage: 'Admin settings page',
   },
-  viewPublicResource: {
-    id: 'app.containers.AdminPage.SettingsPage.viewPublicResource',
+  pageTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.pageTitle',
     defaultMessage: 'Settings',
   },
   tabSettings: {
     id: 'app.containers.AdminPage.SettingsPage.tabSettings',
-    defaultMessage: 'Settings',
+    defaultMessage: 'General',
+  },
+  subtitleBasic: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBasic',
+    defaultMessage: 'Add the name of your organisation or city, a url to your website and the languages in which this platform should be made available.',
   },
   tabCustomize: {
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
+  },
+  subtitleCustomize: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleCustomize',
+    defaultMessage: 'Define how your homepage looks like and pick the colour for the action buttons.',
+  },
+  titleCustomize: {
+    id: 'app.containers.AdminPage.SettingsPage.titleCustomize',
+    defaultMessage: 'Customize your platform',
   },
   tabPages: {
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
@@ -151,9 +165,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.titleRegistrationFields',
     defaultMessage: 'Registration fields',
   },
+  subtitleRegistrationFields: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
+    defaultMessage: 'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
+  },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
     defaultMessage: 'Areas',
+  },
+  tabAreasSubtitle: {
+    id: 'app.containers.AdminPage.SettingsPage.tabAreasSubtitle',
+    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give different groups access to certain projects.',
   },
   urlError: {
     id: 'app.containers.AdminPage.SettingsPage.urlError',

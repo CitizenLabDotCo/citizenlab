@@ -17,24 +17,20 @@ import { Message, Multiloc } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
+import { SectionSubtitle } from 'components/admin/Section';
+import Title from 'components/admin/PageTitle';
 
 const ResourceHeader = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 30px;
   @media print {
     margin-bottom: 10px;
   }
-`;
-
-const Title = styled.h1`
-  font-size: ${fontSize('xxxl')};
-  line-height: 40px;
-  font-weight: 600;
-  margin: 0;
-  margin-right: 15px;
-  padding: 0;
+  p {
+    margin-right: 40px;
+  }
 `;
 
 const TabbedNav = styled.nav`
@@ -112,6 +108,7 @@ type Props = {
   resource: {
     title: string | Multiloc,
     publicLink?: string,
+    subtitle?: string;
   },
   messages?: {
     viewPublicResource: Message,
@@ -141,6 +138,10 @@ function showLabel(label: string | Multiloc | Message) {
   }
 }
 
+function urlMatch(tabUrl: string) {
+  return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
+}
+
 class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
@@ -149,7 +150,14 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
-          <Title>{showLabel(resource.title)}</Title>
+          <div>
+            <Title>{showLabel(resource.title)}</Title>
+            {resource.subtitle &&
+              <SectionSubtitle>
+                {resource.subtitle}
+              </SectionSubtitle>
+            }
+          </div>
 
           {resource.publicLink && messages &&
             <Button
@@ -166,11 +174,10 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
         {(tabs && tabs.length > 0) &&
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
-              const urlMatch = new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tab.url})(\/)?$`);
 
               return (
                 <FeatureFlag key={tab.url} name={tab.feature}>
-                  <Tab className={`${tab.className} ${location && location.pathname && urlMatch.test(location.pathname) ? 'active' : ''}`}>
+                  <Tab className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
                     <Link to={tab.url}>{showLabel(tab.label)}</Link>
                   </Tab>
                 </FeatureFlag>

@@ -53,9 +53,9 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.avatarUploadError',
     defaultMessage: 'Avatar upload failed',
   },
-  firstName: {
-    id: 'app.containers.UsersEditPage.firstName',
-    defaultMessage: 'First name',
+  firstNames: {
+    id: 'app.containers.UsersEditPage.firstNames',
+    defaultMessage: 'First names',
   },
   lastName: {
     id: 'app.containers.UsersEditPage.lastName',

@@ -51,8 +51,8 @@ describe('Idea form page', () => {
     cy.get('.e2e-submit-idea-form').click();
     cy.get('.e2e-lazy-idea-flow-sign-in-form');
     cy.request({
-        method: 'GET',
-        url: `/web_api/v1/ideas/by_slug/${ideaTtle}`
-      });
+      method: 'GET',
+      url: `/web_api/v1/ideas/by_slug/${ideaTtle}`
+    });
   });
 });

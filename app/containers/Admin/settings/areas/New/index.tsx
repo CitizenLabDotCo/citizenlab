@@ -1,9 +1,12 @@
 import React from 'react';
 import clHistory from 'utils/cl-router/history';
 
+// intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// Components
+import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { addArea } from 'services/areas';
@@ -34,6 +37,10 @@ export default class New extends React.Component<Props> {
     return <AreaForm {...props} />;
   }
 
+  goBack = () => {
+    clHistory.push('/admin/settings/areas');
+  }
+
   initialValues = () => ({
     title_multiloc: {},
     description_multiloc: {}
@@ -42,15 +49,16 @@ export default class New extends React.Component<Props> {
   render() {
     return (
       <Section>
+        <GoBackButton onClick={this.goBack} />
         <SectionTitle>
           <FormattedMessage {...messages.addAreaButton} />
         </SectionTitle>
-          <Formik
-            initialValues={this.initialValues()}
-            render={this.renderFn}
-            onSubmit={this.handleSubmit}
-            validate={AreaForm.validate}
-          />
+        <Formik
+          initialValues={this.initialValues()}
+          render={this.renderFn}
+          onSubmit={this.handleSubmit}
+          validate={AreaForm.validate}
+        />
       </Section>
     );
   }

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
     defaultMessage: 'Projects',
   },
+  overviewPageSubtitle: {
+    id: 'app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle',
+    defaultMessage: 'Create as many projects as you want and edit them at any time. Drag and drop them to change the order in which you want to see them on your homepage.',
+  },
   editProject: {
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See this project',
@@ -124,6 +128,14 @@ export default defineMessages({
   generalTab: {
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
     defaultMessage: 'General',
+  },
+  titleGeneral: {
+    id: 'app.containers.AdminPage.ProjectEdit.titleGeneral',
+    defaultMessage: 'General settings for the project',
+  },
+  subtitleGeneral: {
+    id: 'app.containers.AdminPage.ProjectEdit.subtitleGeneral',
+    defaultMessage: 'Personalize your project. You can change it at anytime.',
   },
   descriptionTab: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionTab',
