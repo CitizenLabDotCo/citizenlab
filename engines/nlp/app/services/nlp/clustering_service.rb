@@ -22,6 +22,16 @@ module NLP
 
     private
 
+    def double_cluster_levels levels
+      if !levels.present?
+        []
+      elsif levels.first == 'clustering'
+        ['clustering', 'clustering'] + double_cluster_levels(levels.drop(1))
+      else 
+        [levels.first] + double_cluster_levels(levels.drop(1))
+      end
+    end
+
     def create_levels_to_ids levels, idea_scope, options
       levels.map do |level|
         level_ids_to_idea_ids = case level
@@ -65,43 +75,64 @@ module NLP
       end.to_h
     end
 
-
-    def clustering_levels_to_ids idea_ids
-      api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
-      clustering_items = api.clustering(
-        Tenant.current.id, 
-        Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
-        filter_idea_ids: idea_ids,
-        n_clusters: (idea_ids.size / 10 + 1)
-        ).parsed_response.dig('data')
-      clti = {}
-      clustering_items.each do |item|
-        clti[item['cluster']] ||= []
-        clti[item['cluster']] += [item['id']]
-      end
-      clti
-    end
-
     def create_children levels, idea_ids, levels_to_ids, options
       if levels.present?
         level = levels.first
         if level == 'clustering'
-          clustering_levels_to_ids idea_ids
+          create_clustering_children levels, idea_ids, levels_to_ids, options
         else
-          levels_to_ids[level]
-        end.map do |level_id, filter_idea_ids|
-          clustering = nil
-          begin
-            clustering = self.send "#{level}_to_cluster",level_id
-          rescue NoMethodError => e
-            raise "Unknown level #{level}"
+          levels_to_ids[level].map do |level_id, filter_idea_ids|
+            clustering = nil
+            begin
+              clustering = self.send "#{level}_to_cluster",level_id
+            rescue NoMethodError => e
+              raise "Unknown level #{level}"
+            end
+            clustering[:children] = create_children levels.drop(1), (idea_ids & filter_idea_ids), levels_to_ids, options
+            clustering
           end
-          clustering[:children] = create_children levels.drop(1), (idea_ids & filter_idea_ids), levels_to_ids, options
-          clustering
         end
       else
         idea_ids.map{|idea_id| idea_to_cluster(idea_id)}
       end
+    end
+
+    def create_clustering_children levels, idea_ids, levels_to_ids, options
+      # calculate depth
+      max_depth = levels.take_while{|l| l == 'clustering'}.count
+      levels = levels.drop(max_depth)
+      # apply hierarchical clustering
+      api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
+      raw_clustering = api.clustering(
+        Tenant.current.id, 
+        Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
+        filter_idea_ids: idea_ids,
+        max_depth: max_depth
+        # n_clusters: (idea_ids.size / 10 + 1)
+        ).parsed_response.dig('data')
+      # create clustering clusterings and make recursice calls on leaves
+      create_clustering_children_rec(raw_clustering) do |leaf_clustering, sub_idea_ids|
+        leaf_clustering[:children] = create_children levels, (idea_ids & sub_idea_ids), levels_to_ids, options
+      end
+    end
+
+    def create_clustering_children_rec raw_clustering, &block
+      raw_clustering.map do |item|
+        cluster = clustering_to_cluster item['id']
+        cluster[:keywords] = item['keywords'].map{|keyword| to_keyword_object keyword} if item['keywords']
+        if item['children'].present?
+          cluster[:children] = create_clustering_children_rec item['children'], &block
+        else
+          yield cluster, item['ideas']
+        end
+        cluster
+      end
+    end
+
+    def to_keyword_object keyword
+      {
+        name: keyword
+      }
     end
 
     def drop_empty_clusters clustering
@@ -150,11 +181,13 @@ module NLP
       }
     end
 
-    def clustering_to_cluster cluster_id
-      {
+    def clustering_to_cluster cluster_id, options={}
+      c = {
         type: "custom",
         id: "#{cluster_id}-#{SecureRandom.uuid}"
       }
+      c[:keywords] = options[:keywords] if options[:keywords]
+      c
     end
   end
 end

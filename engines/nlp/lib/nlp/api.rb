@@ -29,8 +29,9 @@ module NLP
 
     def clustering tenant_id, locale, options={}
       body = {locale: locale}
-      body[:idea_ids] = options[:idea_ids] if options[:idea_ids]
+      body[:idea_ids]   = options[:idea_ids]   if options[:idea_ids]
       body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
+      body[:max_depth]  = options[:max_depth]  if options[:max_depth]
 
       self.class.post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
