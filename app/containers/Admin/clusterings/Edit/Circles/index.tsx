@@ -4,13 +4,13 @@ import { keyBy, find, findIndex } from 'lodash-es';
 import IdeaCircle from './IdeaCircle';
 import CustomCircle from './CustomCircle';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node, ParentNode } from 'services/clusterings';
+import { Node, ParentNode, CustomNode } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import TopicCircle from './TopicCircle';
 import styled from 'styled-components';
 
-export type D3Node = {
-  data: Node;
+export type D3Node<N = Node> = {
+  data: N;
   [key: string]: any;
 };
 
@@ -174,7 +174,7 @@ class Circles extends PureComponent<Props, State> {
                 }
                 {node.data.type === 'custom' &&
                   <CustomCircle
-                    node={node}
+                    node={node as D3Node<CustomNode>}
                     onClick={this.handleOnClickNode}
                     selectionIndex={this.selectionIndex(node)}
                     onMouseEnter={this.handleOnMouseEnter}

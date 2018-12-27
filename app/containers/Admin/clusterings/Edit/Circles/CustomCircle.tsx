@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNil } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
+import { CustomNode } from 'services/clusterings';
 
 const StyledCircle: any = styled.circle`
   position: relative;
@@ -21,12 +22,12 @@ const StyledText: any = styled.text`
 `;
 
 interface InputProps {
-  node: D3Node;
+  node: D3Node<CustomNode>;
   selectionIndex: number | null;
   hovered?: boolean;
-  onClick?: (node: D3Node, event: MouseEvent) => void;
-  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
-  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+  onClick?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
+  onMouseEnter?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
+  onMouseLeave?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
 }
 
 interface DataProps {}
@@ -54,6 +55,8 @@ class ClusterCircle extends PureComponent<Props, State> {
 
   render() {
     const { node, selectionIndex, hovered } = this.props;
+    const nodeData = node.data;
+
     return (
       <>
         <StyledCircle
@@ -71,7 +74,7 @@ class ClusterCircle extends PureComponent<Props, State> {
           show={!isNil(selectionIndex) || hovered}
           size={12 + (2 * node.height)}
         >
-          {node.data['title']}
+          {nodeData.title || node.keywords && node.keywords.join(' ')}
         </StyledText>
       </>
     );
