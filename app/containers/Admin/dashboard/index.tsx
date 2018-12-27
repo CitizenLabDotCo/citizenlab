@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -10,6 +11,7 @@ import Link from 'utils/cl-router/Link';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
@@ -199,7 +201,9 @@ export type IResolution = 'day' | 'week' | 'month';
 
 interface Props {
   authUser: GetAuthUserChildProps;
+  geographicDashboardEnabled: GetFeatureFlagChildProps;
 }
+
 export const chartTheme = (theme) => {
   return {
     ...theme,
@@ -217,14 +221,25 @@ export const chartTheme = (theme) => {
 };
 
 export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps> {
-  render() {
-    const { children, authUser } = this.props;
-    const { formatMessage } = this.props.intl;
+
+  tabs = () => {
+    const { intl: { formatMessage }, geographicDashboardEnabled } = this.props;
     const tabs = [
       { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
       { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
       //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard/aquisiton' } TODO
     ];
+    if (geographicDashboardEnabled) {
+      tabs.push(
+        { label: formatMessage(messages.tabMap), url: '/admin/dashboard/map' }
+      );
+    }
+    return tabs;
+  }
+
+  render() {
+    const { intl: { formatMessage }, children, authUser } = this.props;
+
     const resource = {
       title: formatMessage(messages.titleDashboard),
       subtitle: formatMessage(messages.subtitleDashboard)
@@ -235,7 +250,7 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
         return (
           <TabbedResource
             resource={resource}
-            tabs={tabs}
+            tabs={this.tabs()}
           >
             <HelmetIntl
               title={messages.helmetTitle}
@@ -269,8 +284,13 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
 
 const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
+const Data = adopt({
+  authUser: <GetAuthUser />,
+  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />
+});
+
 export default (props) => (
-  <GetAuthUser {...props}>
-    {authUser => <DashboardsPageWithHoC authUser={authUser} {...props} />}
-  </GetAuthUser>
+  <Data {...props}>
+    {dataProps => <DashboardsPageWithHoC {...dataProps} {...props} />}
+  </Data>
 );
