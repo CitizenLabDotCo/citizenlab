@@ -84,18 +84,26 @@ export default defineMessages({
   },
   level_project: {
     id: 'app.containers.Admin.clusterViewer.level_project',
-    defaultMessage: 'Projects',
+    defaultMessage: 'Project',
   },
   level_topic: {
     id: 'app.containers.Admin.clusterViewer.level_topic',
-    defaultMessage: 'Topics',
+    defaultMessage: 'Topic',
   },
   level_area: {
     id: 'app.containers.Admin.clusterViewer.level_area',
-    defaultMessage: 'Areas',
+    defaultMessage: 'Area',
   },
   level_clustering: {
     id: 'app.containers.Admin.clusterViewer.level_clustering',
-    defaultMessage: 'Clustering',
+    defaultMessage: 'AI Magic',
   },
+  firstLevel: {
+    id: 'app.containers.Admin.clusterViewer.firstLevel',
+    defaultMessage: 'First group all ideas by {level}',
+  },
+  thenLevel: {
+    id: 'app.containers.Admin.clusterViewer.thenLevel',
+    defaultMessage: 'within group them by {level}',
+  }
 });

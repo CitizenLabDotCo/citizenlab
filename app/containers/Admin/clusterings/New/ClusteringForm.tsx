@@ -10,6 +10,7 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
+import LevelsInput from './LevelsInput';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -44,10 +45,10 @@ export interface FormValues {
   search?: string;
 }
 
-class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
+class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
   levelsOptionList = () => (
-    ['project', 'topic', 'area', 'clustering'].map(level => ({
+    ['project', 'topic', 'area', 'clustering', 'clustering'].map(level => ({
       label: this.props.intl.formatMessage(messages[`level_${level}`]),
       value: level,
     }))
@@ -88,8 +89,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocaliz
             </Label>
             <Field
               name="levels"
-              component={FormikMultipleSelect}
-              options={this.levelsOptionList()}
+              component={LevelsInput}
             />
           </SectionField>
 
@@ -206,4 +206,4 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocaliz
   }
 }
 
-export default injectIntl(localize(AreaForm));
+export default injectIntl(localize(ClusteringForm));
