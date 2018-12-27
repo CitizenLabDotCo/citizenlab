@@ -17,9 +17,9 @@ module NLP
         filter_by_city: filter_by_city
       }
       # TODO parameterize the choice of location between title and body
-      title_locations = @api.idea_geotagging tenant_id, title, locale, options
+      title_locations = @api.geotag tenant_id, title, locale, options
       return title_locations.first if title_locations.present?
-      body_locations = @api.idea_geotagging tenant_id, idea.body_multiloc[locale], locale, options
+      body_locations = @api.geotag tenant_id, idea.body_multiloc[locale], locale, options
       return body_locations.first if body_locations.present?
     end
 

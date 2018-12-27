@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  mount PublicApi::Engine => "/api", as: 'public_api'
+  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
+  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
+  mount MachineTranslations::Engine => "", as: 'machine_translations'
+  mount NLP::Engine => "", as: 'nlp'
+
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
 
@@ -186,13 +192,6 @@ Rails.application.routes.draw do
   get '/auth/failure', to: 'omniauth_callback#failure'
   post '/auth/failure', to: 'omniauth_callback#failure'
   get '/auth/:provider/logout', to: 'omniauth_callback#logout'
-
-
-  mount PublicApi::Engine => "/api", as: 'public_api'
-  mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
-  mount EmailCampaigns::Engine => "", as: 'email_campaigns'
-  mount MachineTranslations::Engine => "", as: 'machine_translations'
-  mount NLP::Engine => "", as: 'nlp'
 
   if Rails.env.development?
     require_dependency 'sidekiq/web'
