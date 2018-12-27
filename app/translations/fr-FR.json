@@ -414,6 +414,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "filtre actuel du thème",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Comprenez en un coup d'oeil et facilement ce qu'il se passe sur la plateforme.",
   "app.containers.AdminPage.DashboardPage.tabAcquisition": "Acquisition",
+  "app.containers.AdminPage.DashboardPage.tabMap": "",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Résumé",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Utilisateurs",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Tableau de bord",
