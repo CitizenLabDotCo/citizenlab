@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNil } from 'lodash-es';
+import { isNil, take } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
 import { CustomNode } from 'services/clusterings';
@@ -53,9 +53,13 @@ class ClusterCircle extends PureComponent<Props, State> {
     this.props.onMouseLeave && this.props.onMouseLeave(node, event);
   }
 
+  nodeLabel = () => {
+    const nodeData = this.props.node.data;
+    return nodeData.title || (nodeData.keywords && take(nodeData.keywords.map(k => k.name), 2).join(' '));
+  }
+
   render() {
     const { node, selectionIndex, hovered } = this.props;
-    const nodeData = node.data;
 
     return (
       <>
@@ -74,7 +78,7 @@ class ClusterCircle extends PureComponent<Props, State> {
           show={!isNil(selectionIndex) || hovered}
           size={12 + (2 * node.height)}
         >
-          {nodeData.title || node.keywords && node.keywords.join(' ')}
+          {this.nodeLabel()}
         </StyledText>
       </>
     );

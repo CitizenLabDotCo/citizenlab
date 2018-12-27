@@ -105,5 +105,13 @@ export default defineMessages({
   thenLevel: {
     id: 'app.containers.Admin.clusterViewer.thenLevel',
     defaultMessage: 'within group them by {level}',
+  },
+  keywords: {
+    id: 'app.containers.Admin.clusterViewer.keywords',
+    defaultMessage: 'Keywords',
+  },
+  clusterContains: {
+    id: 'app.containers.Admin.clusterViewer.clusterContains',
+    defaultMessage: 'This cluster contains the following ideas',
   }
 });
