@@ -46,7 +46,7 @@ module NLP
       )
     end
 
-    def idea_geotagging tenant_id, text, locale, options={}
+    def geotag tenant_id, text, locale, options={}
       options[:text] = text
       options[:locale] = locale
       resp = self.class.post(
