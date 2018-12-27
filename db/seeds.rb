@@ -190,6 +190,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       similar_ideas: {
         enabled: true,
         allowed: true
+      },
+      geographic_dashboard: {
+        enabled: true,
+        allowed: true
       }
     }
   })
