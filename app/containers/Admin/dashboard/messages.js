@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
     defaultMessage: 'Acquisition',
   },
+  tabMap: {
+    id: 'app.containers.AdminPage.DashboardPage.tabMap',
+    defaultMessage: 'Map',
+  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',
