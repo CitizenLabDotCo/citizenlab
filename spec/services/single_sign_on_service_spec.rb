@@ -5,7 +5,7 @@ describe SingleSignOnService do
   let(:service) { SingleSignOnService.new }
 
   describe "profile_to_user_attrs" do
-    it "creates a new user" do
+    it "correctly interprets locale for azure_ad" do
       auth = OpenStruct.new({
         provider: 'azureactivedirectory',
         info: OpenStruct.new({
@@ -27,6 +27,33 @@ describe SingleSignOnService do
         remote_avatar_url: 'http://www.josnet.com/my-picture',
         locale: 'en'
       })
+    end
+
+    it "correctly interprets gender, locale and image for google" do
+      auth = OpenStruct.new({
+        provider: 'google',
+        info: OpenStruct.new({
+          "first_name" => 'Jos',
+          "last_name" => 'Jossens',
+          "email" => 'jos@josnet.com',
+          "image" => 'http://www.josnet.com/my-picture'
+        }),
+        extra: OpenStruct.new({
+          raw_info: OpenStruct.new({
+            gender: 'female',
+            locale: 'fr-FR',
+          })
+        })
+      })
+
+      expect_any_instance_of(SingleSignOnService::Google).to receive(:image_available?).and_return(true)
+      user_attrs = service.profile_to_user_attrs(auth)
+
+      expect(user_attrs).to include({
+        locale: 'fr-FR',
+        gender: 'female',
+        remote_avatar_url: 'http://www.josnet.com/my-picture',
+      }) 
     end
   end
 
@@ -61,5 +88,6 @@ describe SingleSignOnService do
       end
     end  
   end
+
 
 end
