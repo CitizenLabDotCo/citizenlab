@@ -49,7 +49,7 @@ namespace :nlp do
     end.each do |host|
       tenant = Tenant.find_by_host host
       Apartment::Tenant.switch(tenant.schema_name) do
-        service.build_structure ['clustering'], Idea
+        Clustering.create!(title_multiloc: Idea.first.title_multiloc, structure: service.build_structure(['clustering'], Idea))
       end
     end
   end
