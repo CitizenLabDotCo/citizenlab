@@ -711,7 +711,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 </>
               ) : (
                   <>
-                    <ProjectType>{projectType}</ProjectType>
+                    <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
                 )}
 
