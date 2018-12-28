@@ -395,6 +395,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Ideer over tid",
   "app.containers.AdminPage.DashboardPage.insightsLinkText": "indblik",
   "app.containers.AdminPage.DashboardPage.male": "mand",
+  "app.containers.AdminPage.DashboardPage.mapHelperText": "",
   "app.containers.AdminPage.DashboardPage.mostActiveUsers": "Most active users",
   "app.containers.AdminPage.DashboardPage.noData": "No data available with the current filters.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Downvotes",
