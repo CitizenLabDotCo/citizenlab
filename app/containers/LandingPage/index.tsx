@@ -203,7 +203,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects, authUser } = this.props;
+    const { locale, tenant, projects, authUser, onboardingStatus } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -282,7 +282,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />
+  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />,
 });
 
 export default (inputProps: InputProps) => (
