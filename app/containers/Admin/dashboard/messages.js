@@ -250,4 +250,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
   },
+  mapHelperText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+    defaultMessage: 'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
+  },
 });
