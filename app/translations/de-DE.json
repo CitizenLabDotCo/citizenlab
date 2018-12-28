@@ -395,6 +395,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "{orgName, select, München {Meldungen im Laufe der Zeit} other {Ideen im Laufe der Zeit}}",
   "app.containers.AdminPage.DashboardPage.insightsLinkText": "Einblicke",
   "app.containers.AdminPage.DashboardPage.male": "männlich",
+  "app.containers.AdminPage.DashboardPage.mapHelperText": "",
   "app.containers.AdminPage.DashboardPage.mostActiveUsers": "Most active users",
   "app.containers.AdminPage.DashboardPage.noData": "No data available with the current filters.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Downvotes",

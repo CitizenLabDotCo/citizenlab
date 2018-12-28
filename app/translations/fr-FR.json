@@ -395,6 +395,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Idées",
   "app.containers.AdminPage.DashboardPage.insightsLinkText": "Tendances",
   "app.containers.AdminPage.DashboardPage.male": "masculin",
+  "app.containers.AdminPage.DashboardPage.mapHelperText": "",
   "app.containers.AdminPage.DashboardPage.mostActiveUsers": "Utilisateurs les plus actifs",
   "app.containers.AdminPage.DashboardPage.noData": "Aucune donnée disponible avec filtres actifs.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Votes contre",

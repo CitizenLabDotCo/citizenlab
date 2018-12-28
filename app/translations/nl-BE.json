@@ -395,6 +395,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Ideeën",
   "app.containers.AdminPage.DashboardPage.insightsLinkText": "inzichten",
   "app.containers.AdminPage.DashboardPage.male": "man",
+  "app.containers.AdminPage.DashboardPage.mapHelperText": "",
   "app.containers.AdminPage.DashboardPage.mostActiveUsers": "Meest actieve gebruikers",
   "app.containers.AdminPage.DashboardPage.noData": "Geen gegevens beschikbaar met de huidige filters.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Stemmen tegen",

@@ -395,6 +395,7 @@
   "app.containers.AdminPage.DashboardPage.ideasByTimeTitle": "Ideas",
   "app.containers.AdminPage.DashboardPage.insightsLinkText": "insights",
   "app.containers.AdminPage.DashboardPage.male": "male",
+  "app.containers.AdminPage.DashboardPage.mapHelperText": "This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.",
   "app.containers.AdminPage.DashboardPage.mostActiveUsers": "Most active users",
   "app.containers.AdminPage.DashboardPage.noData": "No data available with the current filters.",
   "app.containers.AdminPage.DashboardPage.numberOfVotesDown": "Downvotes",
