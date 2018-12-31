@@ -168,11 +168,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <SortableList
                   items={publishedProjects}
                   onReorder={this.handleReorder}
+                  id="e2e-admin-published-projects-list"
                   className="e2e-admin-projects-list"
                 >
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((project: IProjectData, index: number) => (
                       <SortableRow
+                        className="e2e-admin-projects-list-item"
                         key={project.id}
                         id={project.id}
                         index={index}
@@ -210,12 +212,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   items={draftProjects}
                   onReorder={this.handleReorder}
                   className="e2e-admin-projects-list"
+                  id="e2e-admin-draft-projects-list"
                 >
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((project: IProjectData, index: number) => (
                       <SortableRow
                         key={project.id}
                         id={project.id}
+                        className="e2e-admin-projects-list-item"
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
@@ -246,9 +250,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.archived} />
                 </ListHeaderTitle>
               </ListHeader>
-              <List>
+              <List id="e2e-admin-archived-projects-list">
                 {archivedProjects.map((project, index) => (
-                  <Row key={project.id} lastItem={(index === archivedProjects.length - 1)}>
+                  <Row
+                    className="e2e-admin-projects-list-item"
+                    key={project.id}
+                    lastItem={(index === archivedProjects.length - 1)}
+                  >
                     {row(project)}
                   </Row>
                 ))}
