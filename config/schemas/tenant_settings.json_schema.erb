@@ -487,6 +487,16 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
         }
+      },
+      "similar_ideas": {
+        "type": "object",
+        "description":  "Show links to similar ideas on the idea page",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
