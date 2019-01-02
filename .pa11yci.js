@@ -16,90 +16,93 @@ const config = {
     // will complain a missing submit button for the search field
     // So we ignore this specific rule for such pages
     {
-      url: 'https://demo.stg.citizenlab.co/en/',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/ideas',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/ideas',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/projects/renewing-westbrook-parc/process',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ],
       // Allow for two disabled buttons with a light background color to be on the page
       threshold: 2
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/projects/renewing-westbrook-parc/info',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/info',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ],
       // Allow Twitter share button with a too low contrast ratio
       threshold: 1
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/profile/koen-gremmelprez',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/profile/sylvester-kalinoski',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/projects/open-idea-project/ideas/new',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/projects/an-idea-bring-it-to-your-council/ideas/new',
       threshold: 12,
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/ideas/new',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/ideas/new',
       // Allow disabled button to have a too low contrast ratio
       threshold: 1,
     }, {
-      url: 'https://demo.stg.citizenlab.co/en/ideas/more-box-parking-for-bikes-in-the-centrum',
+      url: 'https://pa11y.stg.citizenlab.co/en-GB/ideas/quisquam-omnis-non-quas',
       // Hide Twitter sharing button as the Twitter colors have a too low contrast ratio
       hideElements: '.twitter',
     },
-    'https://demo.stg.citizenlab.co/en/projects',
-    'https://demo.stg.citizenlab.co/en/projects/renewing-westbrook-parc/events',
-    'https://demo.stg.citizenlab.co/en/sign-in',
-    'https://demo.stg.citizenlab.co/en/sign-up',
-    'https://demo.stg.citizenlab.co/en/pages/information'
+    'https://pa11y.stg.citizenlab.co/en-GB/projects',
+    'https://pa11y.stg.citizenlab.co/en-GB/projects/renewing-westbrook-parc/events',
+    'https://pa11y.stg.citizenlab.co/en-GB/sign-in',
+    'https://pa11y.stg.citizenlab.co/en-GB/sign-up',
+    'https://pa11y.stg.citizenlab.co/en-GB/pages/information'
   ] : [
     {
-      url: 'http://localhost:3000/en/',
+      url: 'http://localhost:3000/en-GB',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/ideas',
+      url: 'http://localhost:3000/en-GB/ideas',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/process',
+      url: 'http://localhost:3000/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/info',
+      url: 'http://localhost:3000/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/info',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/profile/koen-gremmelprez',
+      url: 'http://localhost:3000/en-GB/profile/sylvester-kalinoski',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ]
     }, {
-      url: 'http://localhost:3000/en/projects/open-idea-project/ideas/new',
+      url: 'http://localhost:3000/en-GB/projects/an-idea-bring-it-to-your-council/ideas/new',
       threshold: 12,
     }, {
-      url: 'http://localhost:3000/en/ideas/new',
+      url: 'http://localhost:3000/en-GB/ideas/new',
       threshold: 1,
+    }, {
+      url: 'http://localhost:3000/en-GB/ideas/quisquam-omnis-non-quas',
+      // Hide Twitter sharing button as the Twitter colors have a too low contrast ratio
+      hideElements: '.twitter',
     },
-    'http://localhost:3000/en/projects',
-    'http://localhost:3000/en/projects/ratione-rerum-minus-quisquam-aperiam/events',
-    'http://localhost:3000/en/ideas/ut-maiores-dolorem-optio-aut-quas',
-    'http://localhost:3000/en/sign-in',
-    'http://localhost:3000/en/sign-up',
-    'http://localhost:3000/en/pages/information'
+    'http://localhost:3000/en-GB/projects',
+    'http://localhost:3000/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/events',
+    'http://localhost:3000/en-GB/sign-in',
+    'http://localhost:3000/en-GB/sign-up',
+    'http://localhost:3000/en-GB/pages/information'
   ]
 }
 
