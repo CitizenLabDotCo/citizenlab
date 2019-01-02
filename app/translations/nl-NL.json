@@ -668,7 +668,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Link naar jullie website (URL) in de footer",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "E-mails",
-  "app.containers.AdminPage.SideBar.gettingStarted": "Op weg",
+  "app.containers.AdminPage.SideBar.gettingStarted": "Helpcentrum",
   "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/nederlands",
   "app.containers.AdminPage.SideBar.groups": "Groepen",
   "app.containers.AdminPage.SideBar.guide": "Gids",
