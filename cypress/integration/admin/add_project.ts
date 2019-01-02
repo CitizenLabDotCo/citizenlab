@@ -15,6 +15,9 @@ describe('Admin: add project', () => {
         const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
         const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
 
+        // Select 'Draft' publication status
+        cy.get('.e2e-projecstatus-draft').click();
+
         // Type random project titles for these required fields
         cy.get('#project-title-en-GB').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
@@ -39,6 +42,9 @@ describe('Admin: add project', () => {
         const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
         const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
 
+        // Select 'Published' publication status
+        cy.get('.e2e-projecstatus-published').click();
+
         // Type random project titles for these required fields
         cy.get('#project-title-en-GB').type(projectTitleEN);
         cy.get('#project-title-nl-BE').type(projectTitleNL);
@@ -62,6 +68,9 @@ describe('Admin: add project', () => {
       it('creates an archived project', () => {
         const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
         const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+
+        // Select 'Archived' publication status
+        cy.get('.e2e-projecstatus-archived').click();
 
         // Type random project titles for these required fields
         cy.get('#project-title-en-GB').type(projectTitleEN);

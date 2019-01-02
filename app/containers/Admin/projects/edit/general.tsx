@@ -652,6 +652,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="draft"
                 name="projectstatus"
                 id="projecstatus-draft"
+                className="e2e-projecstatus-draft"
                 label={<FormattedMessage {...messages.draftStatus} />}
               />
               <Radio
@@ -660,6 +661,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="published"
                 name="projectstatus"
                 id="projecstatus-published"
+                className="e2e-projecstatus-published"
                 label={<FormattedMessage {...messages.publishedStatus} />}
               />
               <Radio
@@ -668,6 +670,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="archived"
                 name="projectstatus"
                 id="projecstatus-archived"
+                className="e2e-projecstatus-archived"
                 label={<FormattedMessage {...messages.archivedStatus} />}
               />
             </SectionField>
