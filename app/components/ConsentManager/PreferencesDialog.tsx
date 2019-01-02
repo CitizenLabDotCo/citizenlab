@@ -35,6 +35,7 @@ export const ContentContainer = styled.div`
 
 const Scroll = styled.div`
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   margin-top: 16px;
 `;
 
@@ -124,6 +125,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
           {Object.keys(categoryDestinations).map((category) => {
             if (categoryDestinations[category].length > 0) {
               return (
+                <>
                 <CategoryCard
                   key={category}
                   category={category}
@@ -132,6 +134,39 @@ export default class PreferencesDialog extends PureComponent<Props> {
                   onChange={onChange}
                   handleChange={this.handleChange}
                 />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+              </>
               );
             }
             return;

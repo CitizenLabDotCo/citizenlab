@@ -34,8 +34,7 @@ const ModalContent: any = styled(clickOutside)`
   display: flex;
   flex-direction: column;
   outline: none;
-  overflow-y: ${(props: any) => props.hasHeaderOrFooter ? 'hidden' : 'auto'};
-  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden;
   padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
   position: relative;
 
@@ -50,15 +49,14 @@ const ModalContent: any = styled(clickOutside)`
       height: 80vh;
     }
     ${media.smallerThanMinTablet`
-      height: 100%;
-      width: 100%;
+      height: 100vh;
+      width: 100vw;
       max-width: 100%;
     `}
   `}
 `;
 
 const CloseIcon = styled(Icon)`
-  height: 20px;
   fill: ${colors.mediumGrey};
   display: flex;
   align-items: center;
@@ -93,7 +91,7 @@ const CloseButton = styled.button`
 
 const HiddenSpan = styled.span`${hideVisually()}`;
 
-const ModalContainer = styled(FocusTrap)`
+const ModalContainer = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -322,39 +320,41 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer
-          id="e2e-modal-container"
-          className={this.props.className}
-          aria-modal="true"
-          role="dialog"
-          aria-label={label}
-        >
-          <ModalContent
-            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
-            width={width}
-            onClickOutside={this.clickOutsideModal}
-            hasHeaderOrFooter={header !== undefined || footer !== undefined}
-            innerRef={this.setContentRef}
+        <FocusTrap>
+          <ModalContainer
+            id="e2e-modal-container"
+            className={this.props.className}
+            aria-modal="true"
+            role="dialog"
+            aria-label={label}
           >
-            <CloseButton
-              className="e2e-modal-close-button"
-              onClick={this.clickCloseButton}
-              innerRef={this.setCloseButtonRef}
+            <ModalContent
+              className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+              width={width}
+              onClickOutside={this.clickOutsideModal}
+              hasHeaderOrFooter={header !== undefined || footer !== undefined}
+              innerRef={this.setContentRef}
             >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
-              </HiddenSpan>
-              <CloseIcon name="close3" />
-            </CloseButton >
-            {header && <HeaderContainer> {header} </HeaderContainer>}
-            {children}
-            {footer && <FooterContainer> {footer} </FooterContainer>}
-          </ModalContent>
+              <CloseButton
+                className="e2e-modal-close-button"
+                onClick={this.clickCloseButton}
+                innerRef={this.setCloseButtonRef}
+              >
+                <HiddenSpan>
+                  <FormattedMessage {...messages.closeButtonLabel} />
+                </HiddenSpan>
+                <CloseIcon name="close3" />
+              </CloseButton >
+              {header && <HeaderContainer> {header} </HeaderContainer>}
+              {children}
+              {footer && <FooterContainer> {footer} </FooterContainer>}
+            </ModalContent>
 
-          {hasSkipButton && skipText &&
-            <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
-          }
-        </ModalContainer>
+            {hasSkipButton && skipText &&
+              <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
+            }
+          </ModalContainer>
+        </FocusTrap>
       </CSSTransition>
     ) : undefined);
 
