@@ -17,12 +17,12 @@ module NLP
         filter_by_city: filter_by_city
       }
       # TODO parameterize the choice of location between title and body
-      title_locations = Rails.cache.fetch("#{idea.cache_key}/geotag/title/#{locale}") do
+      title_locations = Rails.cache.fetch("#{idea.cache_key}/geotag/title/#{locale}/#{options.to_s}") do
         @api.geotag tenant_id, title, locale, options
       end
       return title_locations.first if title_locations.present?
 
-      body_locations = Rails.cache.fetch("#{idea.cache_key}/geotag/body/#{locale}") do
+      body_locations = Rails.cache.fetch("#{idea.cache_key}/geotag/body/#{locale}/#{options.to_s}") do
         @api.geotag tenant_id, idea.body_multiloc[locale], locale, options
       end
       return body_locations.first if body_locations.present?
