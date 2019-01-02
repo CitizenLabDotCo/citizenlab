@@ -523,6 +523,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         ...participationContextConfig
       };
 
+      console.log('projectImagesToRemove:');
+      console.log(projectImagesToRemove);
+
       try {
         this.setState({ saved: false });
         this.processing$.next(true);
@@ -550,6 +553,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           const imagesToRemovePromises = projectImagesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectImage(projectId as string, file.id as string));
           const filesToAddPromises = projectFiles.filter(file => !file.remote).map(file => addProjectFile(projectId as string, file.base64, file.name));
           const filesToRemovePromises = projectFilesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectFile(projectId as string, file.id as string));
+
+          console.log('imagesToRemovePromises:');
+          console.log(imagesToRemovePromises);
 
           await Promise.all([
             ...imagesToAddPromises,
