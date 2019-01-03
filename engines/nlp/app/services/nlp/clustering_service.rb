@@ -99,7 +99,7 @@ module NLP
 
     def create_clustering_children levels, idea_ids, levels_to_ids, options
       # calculate depth
-      max_depth = levels.take_while{|l| l == 'clustering'}.count
+      max_depth = levels.take_while{|l| l == 'clustering'}.size
       levels = levels.drop(max_depth)
       # apply hierarchical clustering
       api = NLP::API.new(ENV.fetch("CL2_NLP_HOST"))
