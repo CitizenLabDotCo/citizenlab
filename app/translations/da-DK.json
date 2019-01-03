@@ -668,7 +668,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Webside (URL)",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "E-mails",
-  "app.containers.AdminPage.SideBar.gettingStarted": "Kom i gang",
+  "app.containers.AdminPage.SideBar.gettingStarted": "Hjælp",
   "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/danish",
   "app.containers.AdminPage.SideBar.groups": "Grupper",
   "app.containers.AdminPage.SideBar.guide": "Guide",

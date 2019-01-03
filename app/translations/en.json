@@ -668,7 +668,7 @@
   "app.containers.AdminPage.SettingsPage.urlTitle": "Website (URL)",
   "app.containers.AdminPage.SideBar.dashboard": "Dashboard",
   "app.containers.AdminPage.SideBar.emails": "Emails",
-  "app.containers.AdminPage.SideBar.gettingStarted": "Get Started",
+  "app.containers.AdminPage.SideBar.gettingStarted": "Help Center",
   "app.containers.AdminPage.SideBar.gettingStartedLink": "http://support.citizenlab.co/english",
   "app.containers.AdminPage.SideBar.groups": "Groups",
   "app.containers.AdminPage.SideBar.guide": "Guide",
