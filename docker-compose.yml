@@ -26,7 +26,7 @@ services:
       - 'redis'
       - 'mailcatcher'
       - 'rabbitmq'
-      - 'memcached'
+      # - 'memcached'
     build: .
     image: citizenlabdotco/cl2-back:latest
     ports:
