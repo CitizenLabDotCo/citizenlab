@@ -40,6 +40,7 @@ const StyledSection = styled(Section)`
 `;
 
 const StyledSectionField = styled(SectionField)`
+  width: 100%;
 `;
 
 const Row = styled.div`
@@ -48,10 +49,11 @@ const Row = styled.div`
 `;
 
 const ToggleRow = Row.extend`
+  width: 100%;
+  max-width: 288px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  max-width: 288px;
 
   &.last {
     margin-bottom: 0px;
@@ -59,6 +61,7 @@ const ToggleRow = Row.extend`
 `;
 
 const ToggleLabel = styled(Label)`
+  flex: 1;
   color: #333;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
