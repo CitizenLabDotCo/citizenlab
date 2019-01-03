@@ -47,11 +47,14 @@ module NLP
     end
 
     def geotag tenant_id, text, locale, options={}
-      options[:text] = text
-      options[:locale] = locale
+      body = {
+        **options,
+        text: text,
+        locale: locale
+      }
       resp = self.class.post(
         "/v1/tenants/#{tenant_id}/geotagging",
-        body: options.to_json,
+        body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
