@@ -163,6 +163,7 @@ const EventLocationWrapper = styled.div`
   }
 
   ${media.smallerThanMaxTablet`
+    width: 100%;
     flex: 1;
     order: 2;
     align-items: left;
