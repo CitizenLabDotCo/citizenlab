@@ -26,6 +26,7 @@ services:
       - 'redis'
       - 'mailcatcher'
       - 'rabbitmq'
+      - 'memcached'
     build: .
     image: citizenlabdotco/cl2-back:latest
     ports:
@@ -60,6 +61,14 @@ services:
     image: 'schickling/mailcatcher'
     ports:
       - '1080:1080'
+
+  # Include this and uncomment :mem_cache_store in
+  # `config/environments/development.rb` if you want to enable caching in
+  # development
+
+  # memcached:
+  #   image: memcached:alpine
+  #   command: memcached -m 64
 
 volumes:
   redis:
