@@ -31,7 +31,7 @@ Rails.application.configure do
 
     config.cache_store = :null_store
     # config.cache_store = :mem_cache_store,
-    #   ENV.fetch('MEMCACHE_HOST'),
+    #   ENV.fetch('MEMCACHED_HOST'),
     #   { namespace: -> { Apartment::Tenant.current } }
   end
 
