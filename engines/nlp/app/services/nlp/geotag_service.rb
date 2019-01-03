@@ -15,7 +15,7 @@ module NLP
         geocoder: geocoder,
         reverse_query: reverse_query, 
         filter_by_city: filter_by_city
-      }
+      }.freeze
       # TODO parameterize the choice of location between title and body
       title_locations = Rails.cache.fetch(geotag_cache_key(idea, 'title', locale, options)) do
         @api.geotag tenant_id, title, locale, options
