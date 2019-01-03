@@ -28,7 +28,7 @@ import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  padding: 20px;
+  padding: 25px;
   margin: 20px auto;
   display: flex;
   flex-direction: row;
@@ -38,6 +38,7 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
+    padding: 20px;
   `}
 `;
 
@@ -149,6 +150,7 @@ const EventDescription = styled.div`
 `;
 
 const EventLocationWrapper = styled.div`
+  width: 300px;
   flex: 0 0 300px;
   padding: 20px;
   display: flex;
@@ -185,9 +187,11 @@ const EventLocation = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
+  flex: 0 0 28px;
+  width: 28px;
   height: 28px;
   fill: #666;
-  margin-right: 20px;
+  margin-right: 15px;
 `;
 
 const EventLocationInner = styled.div`
@@ -200,8 +204,7 @@ const EventLocationLabel = styled.div`
   font-size: ${fontSizes.large}px;
   font-weight: 300;
   line-height: 27px;
-  margin-bottom: 2px;
-
+  margin-bottom: 1px;
 `;
 
 const EventLocationAddress = styled.div`
@@ -211,6 +214,9 @@ const EventLocationAddress = styled.div`
   line-height: 24px;
   display: flex;
   align-items: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 interface InputProps {
@@ -283,7 +289,8 @@ class Event extends React.PureComponent<Props, State> {
             <EventDescription>
               <T value={event.attributes.description_multiloc} supportHtml={true} />
             </EventDescription>
-            {eventFiles && !isNilOrError(eventFiles) &&
+
+            {!isNilOrError(eventFiles) && eventFiles.length > 0 &&
               <FileAttachments files={eventFiles} />
             }
           </EventInformation>
