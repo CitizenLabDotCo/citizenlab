@@ -76,7 +76,7 @@ module NLP
     end
 
     def create_children levels, idea_ids, levels_to_ids, options
-      if levels.present?
+      if levels.present? && idea_ids.size > 2
         level = levels.first
         if level == 'clustering'
           create_clustering_children levels, idea_ids, levels_to_ids, options
@@ -106,11 +106,10 @@ module NLP
       raw_clustering = api.clustering(
         Tenant.current.id, 
         Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
-        filter_idea_ids: idea_ids,
+        idea_ids: idea_ids,
         max_depth: max_depth
-        # n_clusters: (idea_ids.size / 10 + 1)
         ).parsed_response.dig('data')
-      # create clustering clusterings and make recursice calls on leaves
+      # create clustering clusterings and make recursive calls on leaves
       create_clustering_children_rec(raw_clustering) do |leaf_clustering, sub_idea_ids|
         leaf_clustering[:children] = create_children levels, (idea_ids & sub_idea_ids), levels_to_ids, options
       end
