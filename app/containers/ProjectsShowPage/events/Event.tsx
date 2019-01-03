@@ -15,8 +15,6 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 import { IEventData } from 'services/events';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import T from 'components/T';
 
 // utils
@@ -28,7 +26,7 @@ import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  padding: 25px;
+  padding: 30px;
   margin: 20px auto;
   display: flex;
   flex-direction: row;
@@ -38,7 +36,7 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
-    padding: 20px;
+    padding: 25px;
   `}
 `;
 
@@ -67,10 +65,6 @@ const EventDates = styled.div`
   &.past {
     background: #939393;
   }
-
-  ${media.smallerThanMaxTablet`
-
-  `}
 `;
 
 const EventDate = styled.div`
@@ -191,21 +185,8 @@ const MapIcon = styled(Icon)`
   flex: 0 0 28px;
   width: 28px;
   height: 28px;
-  fill: #666;
-  margin-right: 15px;
-`;
-
-const EventLocationInner = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const EventLocationLabel = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  line-height: 27px;
-  margin-bottom: 1px;
+  fill: ${colors.label};
+  margin-right: 6px;
 `;
 
 const EventLocationAddress = styled.div`
@@ -300,15 +281,9 @@ class Event extends React.PureComponent<Props, State> {
             <EventLocationWrapper className={eventStatus}>
               <EventLocation>
                 <MapIcon name="mapmarker" />
-
-                <EventLocationInner>
-                  <EventLocationLabel>
-                    <FormattedMessage {...messages.location} />
-                  </EventLocationLabel>
-                  <EventLocationAddress>
-                    <T value={event.attributes.location_multiloc} />
-                  </EventLocationAddress>
-                </EventLocationInner>
+                <EventLocationAddress>
+                  <T value={event.attributes.location_multiloc} />
+                </EventLocationAddress>
               </EventLocation>
             </EventLocationWrapper>
           }
