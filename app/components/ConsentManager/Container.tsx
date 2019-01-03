@@ -9,14 +9,37 @@ import Banner from './Banner';
 import PreferencesDialog from './PreferencesDialog';
 import CancelDialog from './CancelDialog';
 import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 
 import { IDestination, CustomPreferences } from './';
+
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+
+export const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin : 4px;
+  }
+  Button.button.primary-inverse span {
+    color: ${colors.adminTextColor}
+  }
+  Button.button.primary:not(.disabled) {
+    background-color: ${colors.adminTextColor};
+    &:hover, &:focus {
+      background-color: ${darken(0.1, colors.adminTextColor)};
+    }
+  }
+`;
 
 interface Props {
   setPreferences: Function;
@@ -80,7 +103,13 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  handleSave = () => {
+  handleSave = (categoryDestinations) => (e) => {
+    e.preventDefault();
+
+    if (!this.validate(categoryDestinations)) {
+      return;
+    }
+
     const { saveConsent } = this.props;
 
     this.setState({
@@ -124,6 +153,16 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     resetPreferences();
   }
 
+  validate = (categoryDestinations) => {
+    let res = true;
+    for (const category of Object.keys(categoryDestinations)) {
+      if (categoryDestinations[category].length > 0) {
+        res = res && !(this.props[category] === null);
+      }
+    }
+    return res;
+  }
+
   render() {
     const {
       destinations,
@@ -157,11 +196,21 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
           close={this.closeDialog}
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
+          header={<FormattedMessage {...messages.title} tagName="h1" />}
+          footer={<ButtonContainer>
+            <Button onClick={this.handleCancel} style="primary-inverse">
+              <FormattedMessage {...messages.cancel} />
+            </Button>
+            <Button
+              onClick={this.handleSave(categoryDestinations)}
+              style="primary"
+            >
+              <FormattedMessage  {...messages.save} />
+            </Button>
+          </ButtonContainer>}
         >
           {!isCancelling &&
             <PreferencesDialog
-              onCancel={this.handleCancel}
-              onSave={this.handleSave}
               onChange={this.handleCategoryChange}
               categoryDestinations={categoryDestinations}
               analytics={preferences.analytics}

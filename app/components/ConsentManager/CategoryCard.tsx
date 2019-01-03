@@ -15,7 +15,9 @@ const Container = styled.div`
   background-color: ${transparentize(.95, colors.adminTextColor)};;
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
-  margin-right: 10px;
+  &:last-child {
+    margin: 0;
+  }
   ${media.smallerThanMaxTablet`
     flex-wrap: wrap;
   `}
