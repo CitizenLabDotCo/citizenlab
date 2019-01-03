@@ -766,11 +766,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="selection"
                 name="areas"
                 id="areas-selection"
+                className="e2e-areas-selection"
                 label={<FormattedMessage {...messages.areasSelectionLabel} />}
               />
 
               {areaType === 'selection' &&
                 <MultipleSelect
+                  id="e2e-area-selector"
                   options={areasOptions}
                   value={areasValues}
                   onChange={this.handleAreaSelectionChange}
