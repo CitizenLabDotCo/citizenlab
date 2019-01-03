@@ -30,7 +30,7 @@ const config = {
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ],
-      // Allow for two disabled buttons with a light background color to be on the page
+      // Allow for two disabled 'Start an idea' buttons (with a too light background color) to pass the test
       threshold: 2
     }, {
       url: 'https://pa11y.stg.citizenlab.co/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/info',
@@ -46,11 +46,9 @@ const config = {
       ]
     }, {
       url: 'https://pa11y.stg.citizenlab.co/en-GB/projects/an-idea-bring-it-to-your-council/ideas/new',
-      threshold: 12,
+       threshold: 9,
     }, {
       url: 'https://pa11y.stg.citizenlab.co/en-GB/ideas/new',
-      // Allow disabled button to have a too low contrast ratio
-      threshold: 1,
     }, {
       url: 'https://pa11y.stg.citizenlab.co/en-GB/ideas/quisquam-omnis-non-quas',
       // Hide Twitter sharing button as the Twitter colors have a too low contrast ratio
@@ -76,12 +74,16 @@ const config = {
       url: 'http://localhost:3000/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/process',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
-      ]
+      ],
+      // Allow for two disabled 'Start an idea' buttons (with a too light background color) to pass the test
+      threshold: 2
     }, {
       url: 'http://localhost:3000/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/info',
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
-      ]
+      ],
+      // Allow Twitter share button with a too low contrast ratio
+      threshold: 1
     }, {
       url: 'http://localhost:3000/en-GB/profile/sylvester-kalinoski',
       ignore: [
@@ -89,10 +91,9 @@ const config = {
       ]
     }, {
       url: 'http://localhost:3000/en-GB/projects/an-idea-bring-it-to-your-council/ideas/new',
-      threshold: 12,
+      threshold: 9,
     }, {
       url: 'http://localhost:3000/en-GB/ideas/new',
-      threshold: 1,
     }, {
       url: 'http://localhost:3000/en-GB/ideas/quisquam-omnis-non-quas',
       // Hide Twitter sharing button as the Twitter colors have a too low contrast ratio
