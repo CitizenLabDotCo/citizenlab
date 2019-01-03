@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from 'components/UI/Button';
-import { ContentContainer, Spacer, ButtonContainer } from './PreferencesDialog';
+import { ContentContainer } from './PreferencesDialog';
+import { ButtonContainer } from './Container';
 
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,7 +9,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 const CancelDialog = ({ onCancelBack, onCancelConfirm }) => (
   <ContentContainer role="dialog" aria-modal>
     <FormattedMessage {...messages.confirmation} tagName="h1" />
-    <Spacer />
     <ButtonContainer>
       <Button onClick={onCancelBack} style="primary-inverse">
         <FormattedMessage {...messages.back} />
