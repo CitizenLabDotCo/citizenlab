@@ -465,6 +465,16 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
         }
+      },
+      "machine_translations": {
+        "type": "object",
+        "description":  "Allows users to see translated content.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       }
     },
   "dependencies": {

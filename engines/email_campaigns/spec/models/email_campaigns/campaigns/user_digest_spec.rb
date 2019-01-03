@@ -37,4 +37,17 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
         ).to eq(top_comment.created_at.iso8601)
   	end
   end
+
+  describe 'before_send_hooks' do
+    let(:campaign) { build(:user_digest_campaign) }
+
+    it "returns true when there are at least 3 trending ideas" do
+      create_list(:idea, 3, published_at: Time.now - 1.minute)
+      expect(campaign.is_content_worth_sending?).to be_truthy
+    end
+
+    it "returns false when there are less than 3 trending ideas" do
+      expect(campaign.is_content_worth_sending?).to be_falsey
+    end
+  end
 end

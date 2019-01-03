@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_22_092934) do
+ActiveRecord::Schema.define(version: 2018_12_10_113428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -343,6 +343,18 @@ ActiveRecord::Schema.define(version: 2018_10_22_092934) do
     t.index ["token"], name: "index_invites_on_token"
   end
 
+  create_table "machine_translations_machine_translations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "translatable_id", null: false
+    t.string "translatable_type", null: false
+    t.string "attribute_name", null: false
+    t.string "locale_to", null: false
+    t.string "translation", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["translatable_id", "translatable_type", "attribute_name", "locale_to"], name: "machine_translations_lookup", unique: true
+    t.index ["translatable_id", "translatable_type"], name: "machine_translations_translatable"
+  end
+
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "group_id"
     t.uuid "user_id"
@@ -402,6 +414,7 @@ ActiveRecord::Schema.define(version: 2018_10_22_092934) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "project_id"
+    t.string "publication_status", default: "published", null: false
     t.index ["project_id"], name: "index_pages_on_project_id"
     t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
