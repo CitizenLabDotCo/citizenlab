@@ -55,7 +55,7 @@ class ClusterCircle extends PureComponent<Props, State> {
 
   nodeLabel = () => {
     const nodeData = this.props.node.data;
-    return nodeData.title || (nodeData.keywords && take(nodeData.keywords.map(k => k.name), 2).join(' '));
+    return nodeData.title || (nodeData.keywords && take(nodeData.keywords.map(k => k.name), 1).join(' '));
   }
 
   render() {
