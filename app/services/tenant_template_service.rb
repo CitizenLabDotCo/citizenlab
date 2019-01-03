@@ -36,7 +36,7 @@ class TenantTemplateService
               time = start_of_day + field_value.hours
               model.send("#{field_name.chomp '_timediff'}=", time)
             end
-          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url')
+          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
