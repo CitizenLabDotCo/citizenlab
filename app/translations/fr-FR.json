@@ -1030,7 +1030,7 @@
   "app.containers.ProjectsIndexPage.metaTitle": "{tenantName, select, frw {Communes} other {Projets}} • {orgName}",
   "app.containers.ProjectsIndexPage.pageTitle": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledMaybeNotPermitted": "Seuls certains utilisateurs peuvent répondre à cette enquête. Enregistrez vous d'abord.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Cette enquête ne peut être prise lors de cette phase dans le panneau Montage est active.",
+  "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Vous pourrez participer à cette enquête lorsque cette phase du processus sera active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Il est actuellement impossible de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L’enquête n’est plus disponible, puisque ce projet n’est plus active.",
