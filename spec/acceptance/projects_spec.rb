@@ -314,6 +314,15 @@ resource "Projects" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:areas,:data).size).to eq 0
       end
+
+      describe do
+        example "The header image can be removed" do
+          @project.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+          expect(@project.reload.header_bg_url).to be_present
+          do_request project: {header_bg: nil}
+          expect(@project.reload.header_bg_url).to be nil
+        end
+      end
     end
 
     patch "web_api/v1/projects/:id/reorder" do
