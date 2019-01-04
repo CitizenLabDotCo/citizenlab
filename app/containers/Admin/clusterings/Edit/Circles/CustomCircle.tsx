@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNil, take } from 'lodash-es';
+import { isNil } from 'lodash-es';
 import styled from 'styled-components';
 import { D3Node } from './';
 import { CustomNode } from 'services/clusterings';
@@ -17,10 +17,6 @@ const StyledCircle: any = styled.circle`
   `}
 `;
 
-const StyledText: any = styled.text`
-  font-size: ${props => (props as any).size}px;
-`;
-
 interface InputProps {
   node: D3Node<CustomNode>;
   selectionIndex: number | null;
@@ -30,11 +26,11 @@ interface InputProps {
   onMouseLeave?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
 }
 
-interface DataProps {}
+interface DataProps { }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class ClusterCircle extends PureComponent<Props, State> {
 
@@ -53,34 +49,18 @@ class ClusterCircle extends PureComponent<Props, State> {
     this.props.onMouseLeave && this.props.onMouseLeave(node, event);
   }
 
-  nodeLabel = () => {
-    const nodeData = this.props.node.data;
-    return nodeData.title || (nodeData.keywords && take(nodeData.keywords.map(k => k.name), 1).join(' '));
-  }
-
   render() {
-    const { node, selectionIndex, hovered } = this.props;
+    const { node, selectionIndex } = this.props;
 
     return (
-      <>
-        <StyledCircle
-          r={node.r}
-          onClick={this.handleOnClick}
-          onMouseEnter={this.handleOnMouseEnter}
-          onMouseLeave={this.handleOnMouseLeave}
-          selectionIndex={selectionIndex}
-        />
-        <StyledText
-          x={0}
-          y={-node.r}
-          textAnchor="middle"
-          alignmentBaseline="central"
-          show={!isNil(selectionIndex) || hovered}
-          size={12 + (2 * node.height)}
-        >
-          {this.nodeLabel()}
-        </StyledText>
-      </>
+      <StyledCircle
+        transform={`translate(${node.x},${node.y})`}
+        r={node.r}
+        onClick={this.handleOnClick}
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        selectionIndex={selectionIndex}
+      />
     );
   }
 }

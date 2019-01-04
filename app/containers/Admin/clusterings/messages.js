@@ -113,5 +113,17 @@ export default defineMessages({
   clusterContains: {
     id: 'app.containers.Admin.clusterViewer.clusterContains',
     defaultMessage: 'This cluster contains the following ideas',
+  },
+  idea: {
+    id: 'app.containers.Admin.clusterViewer.idea',
+    defaultMessage: 'Idea',
+  },
+  project: {
+    id: 'app.containers.Admin.clusterViewer.project',
+    defaultMessage: 'Project',
+  },
+  topic: {
+    id: 'app.containers.Admin.clusterViewer.topic',
+    defaultMessage: 'Topic',
   }
 });

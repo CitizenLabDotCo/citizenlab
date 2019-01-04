@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
-import { round, isNil } from 'lodash-es';
+import { isNil } from 'lodash-es';
 import { D3Node } from './';
 
 const borderColor = '#003348';
@@ -40,9 +39,9 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class ProjectCircle extends PureComponent<Props, State> {
 
@@ -65,9 +64,7 @@ class ProjectCircle extends PureComponent<Props, State> {
     const { node, selectionIndex, hovered, project } = this.props;
 
     if (isNilOrError(project)) return null;
-
     return (
-      <>
         <StyledCircle
           r={node.r}
           onClick={this.handleOnClick}
@@ -75,62 +72,8 @@ class ProjectCircle extends PureComponent<Props, State> {
           onMouseLeave={this.handleOnMouseLeave}
           selectionIndex={selectionIndex}
           hovered={hovered}
+          transform={`translate(${node.x},${node.y})`}
         />
-        <T value={project.attributes.title_multiloc}>
-          {(localizedTitle) => {
-            const width = (localizedTitle.length * 7) + 50;
-            const height = 60;
-            const xPos = (-width) / 2;
-            const yPos = -round(node.r + height + 2);
-            const borderRadius = 5;
-
-            return (
-              <svg
-                x={xPos}
-                y={yPos}
-                width={width}
-                height={height}
-                style={{ display: `${hovered ? 'block' : 'none'}` }}
-              >
-                <rect
-                  x="0"
-                  y="0"
-                  width={width}
-                  height={height}
-                  rx={borderRadius}
-                  ry={borderRadius}
-                  stroke={borderColor}
-                  strokeWidth="2"
-                  fill="#fff"
-                />
-                <text
-                  fill={borderColor}
-                  fontSize="16"
-                >
-                  <tspan
-                    x={width / 2}
-                    y={(height / 2) - 10}
-                    fontWeight="bold"
-                    textAnchor="middle"
-                    alignmentBaseline="central"
-                  >
-                    Project
-                  </tspan>
-                  <tspan
-                    x={width / 2}
-                    y={(height / 2) + 10}
-                    fontWeight="normal"
-                    textAnchor="middle"
-                    alignmentBaseline="central"
-                  >
-                    {localizedTitle}
-                  </tspan>
-                </text>
-              </svg>
-            );
-          }}
-        </T>
-      </>
     );
   }
 }

@@ -2,11 +2,15 @@ import React, { PureComponent } from 'react';
 import { hierarchy, pack } from 'd3-hierarchy';
 import { keyBy, find, findIndex } from 'lodash-es';
 import IdeaCircle from './IdeaCircle';
+import IdeaCircleLabel from './IdeaCircleLabel';
 import CustomCircle from './CustomCircle';
+import CustomCircleLabel from './CustomCircleLabel';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import { Node, ParentNode, CustomNode } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
+import ProjectCircleLabel from './ProjectCircleLabel';
 import TopicCircle from './TopicCircle';
+import TopicCircleLabel from './TopicCircleLabel';
 import styled from 'styled-components';
 
 export type D3Node<N = Node> = {
@@ -27,7 +31,7 @@ interface DataProps {
   ideas: GetIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 type State = {
   svgSize: number | null;
@@ -147,6 +151,111 @@ class Circles extends PureComponent<Props, State> {
   render() {
     const { nodes, svgSize, hoveredNode } = this.state;
 
+    const CirclesElements: any = [];
+    const HoverLabelElements: any = [];
+    const CustomLabelElements: any = [];
+    nodes.map((node, index) => {
+      if (node.data.type === 'idea') {
+        CirclesElements.push(
+          <IdeaCircle
+            key={index}
+            node={node}
+            ideaId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+        HoverLabelElements.push(
+          <IdeaCircleLabel
+            key={index}
+            node={node}
+            ideaId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+      }
+      if (node.data.type === 'custom') {
+        CirclesElements.push(
+          <CustomCircle
+            key={index}
+            node={node as D3Node<CustomNode>}
+            onClick={this.handleOnClickNode}
+            selectionIndex={this.selectionIndex(node)}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+        CustomLabelElements.push(
+          <CustomCircleLabel
+            key={index}
+            node={node as D3Node<CustomNode>}
+            onClick={this.handleOnClickNode}
+            selectionIndex={this.selectionIndex(node)}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+      }
+      if (node.data.type === 'project') {
+        CirclesElements.push(
+          <ProjectCircle
+            key={index}
+            node={node}
+            projectId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+        HoverLabelElements.push(
+          <ProjectCircleLabel
+            key={index}
+            node={node}
+            projectId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+      }
+      if (node.data.type === 'topic') {
+        CirclesElements.push(
+          <TopicCircle
+            key={index}
+            node={node}
+            topicId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+        HoverLabelElements.push(
+          <TopicCircleLabel
+            key={index}
+            node={node}
+            topicId={node.data.id}
+            hovered={node === hoveredNode}
+            selectionIndex={this.selectionIndex(node)}
+            onClick={this.handleOnClickNode}
+            onMouseEnter={this.handleOnMouseEnter}
+            onMouseLeave={this.handleOnMouseLeave}
+          />
+        );
+      }
+    });
     return (
       <Container innerRef={this.setContainerRef} className={this.props['className']}>
         {svgSize &&
@@ -156,55 +265,15 @@ class Circles extends PureComponent<Props, State> {
             preserveAspectRatio="xMidYMid meet"
             style={{ overflow: 'visible' }}
           >
-            {nodes.map((node, index) => (
-              <g
-                key={index}
-                transform={`translate(${node.x},${node.y})`}
-              >
-                {node.data.type === 'idea' &&
-                  <IdeaCircle
-                    node={node}
-                    ideaId={node.data.id}
-                    hovered={node === hoveredNode}
-                    selectionIndex={this.selectionIndex(node)}
-                    onClick={this.handleOnClickNode}
-                    onMouseEnter={this.handleOnMouseEnter}
-                    onMouseLeave={this.handleOnMouseLeave}
-                  />
-                }
-                {node.data.type === 'custom' &&
-                  <CustomCircle
-                    node={node as D3Node<CustomNode>}
-                    onClick={this.handleOnClickNode}
-                    selectionIndex={this.selectionIndex(node)}
-                    onMouseEnter={this.handleOnMouseEnter}
-                    onMouseLeave={this.handleOnMouseLeave}
-                  />
-                }
-                {node.data.type === 'project' &&
-                  <ProjectCircle
-                    node={node}
-                    projectId={node.data.id}
-                    hovered={node === hoveredNode}
-                    selectionIndex={this.selectionIndex(node)}
-                    onClick={this.handleOnClickNode}
-                    onMouseEnter={this.handleOnMouseEnter}
-                    onMouseLeave={this.handleOnMouseLeave}
-                  />
-                }
-                {node.data.type === 'topic' &&
-                  <TopicCircle
-                    node={node}
-                    topicId={node.data.id}
-                    hovered={node === hoveredNode}
-                    selectionIndex={this.selectionIndex(node)}
-                    onClick={this.handleOnClickNode}
-                    onMouseEnter={this.handleOnMouseEnter}
-                    onMouseLeave={this.handleOnMouseLeave}
-                  />
-                }
-              </g>
-            ))}
+            <g className="circles">
+              {CirclesElements}
+            </g>
+            <g
+              className="labels"
+            >
+              {CustomLabelElements}
+              {HoverLabelElements}
+            </g>
           </svg>
         }
       </Container>
