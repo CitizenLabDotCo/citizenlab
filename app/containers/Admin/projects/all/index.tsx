@@ -143,7 +143,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               }
             </RowContentInner>
             <StyledButton
-              className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               linkTo={`/admin/projects/${project.id}/edit`}
               style="secondary"
               circularCorners={false}
