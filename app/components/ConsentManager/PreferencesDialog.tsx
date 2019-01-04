@@ -59,7 +59,6 @@ export default class PreferencesDialog extends PureComponent<Props> {
           {Object.keys(categoryDestinations).map((category) => {
             if (categoryDestinations[category].length > 0) {
               return (
-                <>
                 <CategoryCard
                   key={category}
                   category={category}
@@ -68,39 +67,6 @@ export default class PreferencesDialog extends PureComponent<Props> {
                   onChange={onChange}
                   handleChange={this.handleChange}
                 />
-                <CategoryCard
-                  key={category}
-                  category={category}
-                  destinations={categoryDestinations[category]}
-                  checked={checkCategories[category]}
-                  onChange={onChange}
-                  handleChange={this.handleChange}
-                />
-                <CategoryCard
-                  key={category}
-                  category={category}
-                  destinations={categoryDestinations[category]}
-                  checked={checkCategories[category]}
-                  onChange={onChange}
-                  handleChange={this.handleChange}
-                />
-                <CategoryCard
-                  key={category}
-                  category={category}
-                  destinations={categoryDestinations[category]}
-                  checked={checkCategories[category]}
-                  onChange={onChange}
-                  handleChange={this.handleChange}
-                />
-                <CategoryCard
-                  key={category}
-                  category={category}
-                  destinations={categoryDestinations[category]}
-                  checked={checkCategories[category]}
-                  onChange={onChange}
-                  handleChange={this.handleChange}
-                />
-              </>
               );
             }
             return;
