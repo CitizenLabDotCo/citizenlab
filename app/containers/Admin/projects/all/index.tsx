@@ -19,6 +19,7 @@ import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
+import Toggle from 'components/UI/Toggle';
 
 // style
 import styled from 'styled-components';
@@ -80,19 +81,31 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  publishedProjects: IProjectData[] | null;
-  draftProjects: IProjectData[] | null;
-  archivedProjects: IProjectData[] | null;
+  manualProjectSorting: boolean;
 }
 
 class AdminProjectsList extends PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      manualProjectSorting: false,
+    };
+  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
   }
 
+  handleToggleManualProjectSorting = () => {
+    this.setState(prevState => {
+      return { manualProjectSorting: !prevState.manualProjectSorting };
+    });
+  }
+
   render () {
     const { projects } = this.props;
+    const { manualProjectSorting } = this.state;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList)) {
@@ -162,6 +175,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <ListHeader className="marginTop">
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
+                  <Toggle
+                    value={manualProjectSorting}
+                    onChange={this.handleToggleManualProjectSorting}
+                  />
                 </ListHeaderTitle>
               </ListHeader>
               <HasPermission item="projects" action="reorder">
