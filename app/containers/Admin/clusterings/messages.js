@@ -3,7 +3,9 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   absolute: {
@@ -125,5 +127,41 @@ export default defineMessages({
   topic: {
     id: 'app.containers.Admin.clusterViewer.topic',
     defaultMessage: 'Topic',
-  }
+  },
+  legend: {
+    id: 'app.containers.Admin.clusterViewer.legend',
+    defaultMessage: 'Legend',
+  },
+  controls: {
+    id: 'app.containers.Admin.clusterViewer.controls',
+    defaultMessage: 'Controls',
+  },
+  upvotes: {
+    id: 'app.containers.Admin.clusterViewer.upvotes',
+    defaultMessage: 'More upvotes',
+  },
+  downvotes: {
+    id: 'app.containers.Admin.clusterViewer.downvotes',
+    defaultMessage: 'More downvotes',
+  },
+  noVotes: {
+    id: 'app.containers.Admin.clusterViewer.noVotes',
+    defaultMessage: 'No votes',
+  },
+  numVotes: {
+    id: 'app.containers.Admin.clusterViewer.numVotes',
+    defaultMessage: 'N° of votes',
+  },
+  clickLegend: {
+    id: 'app.containers.Admin.clusterViewer.clickLegend',
+    defaultMessage: 'Select node to see details',
+  },
+  shiftLegend: {
+    id: 'app.containers.Admin.clusterViewer.shiftLegend',
+    defaultMessage: 'Add to list and see selection stats',
+  },
+  ctrlLegend: {
+    id: 'app.containers.Admin.clusterViewer.ctrlLegend',
+    defaultMessage: 'Compare nodes',
+  },
 });

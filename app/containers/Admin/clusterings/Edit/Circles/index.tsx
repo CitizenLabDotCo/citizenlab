@@ -1,17 +1,21 @@
 import React, { PureComponent } from 'react';
 import { hierarchy, pack } from 'd3-hierarchy';
 import { keyBy, find, findIndex } from 'lodash-es';
+import styled from 'styled-components';
+
+import Icon from 'components/UI/Icon';
 import IdeaCircle from './IdeaCircle';
 import IdeaCircleLabel from './IdeaCircleLabel';
 import CustomCircle from './CustomCircle';
 import CustomCircleLabel from './CustomCircleLabel';
-import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
-import { Node, ParentNode, CustomNode } from 'services/clusterings';
 import ProjectCircle from './ProjectCircle';
 import ProjectCircleLabel from './ProjectCircleLabel';
 import TopicCircle from './TopicCircle';
 import TopicCircleLabel from './TopicCircleLabel';
-import styled from 'styled-components';
+import LegendPanel from './LegendPanel';
+
+import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import { Node, ParentNode, CustomNode } from 'services/clusterings';
 
 export type D3Node<N = Node> = {
   data: N;
@@ -38,12 +42,24 @@ type State = {
   nodes: D3Node[];
   hoveredNode: D3Node | null;
   ctrlKeyPressed: boolean;
+  showLegend: boolean;
 };
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+`;
+
+const LegendCorner = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+`;
+const StyledIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
 `;
 
 class Circles extends PureComponent<Props, State> {
@@ -55,7 +71,8 @@ class Circles extends PureComponent<Props, State> {
       svgSize: null,
       nodes: [],
       hoveredNode: null,
-      ctrlKeyPressed: false
+      ctrlKeyPressed: false,
+      showLegend: false
     };
     this.containerRef = null;
   }
@@ -148,8 +165,15 @@ class Circles extends PureComponent<Props, State> {
     return index === -1 ? null : index;
   }
 
+  onShowLegend = () => {
+    this.setState({ showLegend: true });
+  }
+  onHideLegend = () => {
+    this.setState({ showLegend: false });
+  }
+
   render() {
-    const { nodes, svgSize, hoveredNode } = this.state;
+    const { nodes, svgSize, hoveredNode, showLegend } = this.state;
 
     const CirclesElements: any = [];
     const HoverLabelElements: any = [];
@@ -276,11 +300,17 @@ class Circles extends PureComponent<Props, State> {
             </g>
           </svg>
         }
+        <LegendCorner>
+          {!showLegend ? (
+            <button onClick={this.onShowLegend}>
+              <StyledIcon name="info" />
+            </button>
+          ) : <LegendPanel onClickOutside={this.onHideLegend} />}
+        </LegendCorner>
       </Container>
     );
   }
 }
-
 export default (inputProps: InputProps) => (
   <GetIdeas type="load-more" pageSize={1000} sort="new">
     {(ideasProps) => ideasProps.ideasList ? <Circles {...inputProps} ideas={ideasProps} /> : null}
