@@ -119,7 +119,6 @@ export default class LegendPanel extends PureComponent<Props, State> {
 
   render() {
     const { selectedTab } = this.state;
-    console.log(selectedTab);
     const { onClickOutside } = this.props;
     return (
       <Container className={this.props['className']} onClickOutside={onClickOutside}>
