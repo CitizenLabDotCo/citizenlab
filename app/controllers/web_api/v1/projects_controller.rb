@@ -54,8 +54,13 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def update
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
     params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
+    project_params = permitted_attributes(Project)
     
-    @project.assign_attributes permitted_attributes(Project)
+    @project.assign_attributes project_params
+    if project_params.keys.include?('header_bg') && project_params['header_bg'] == nil
+      # setting the header image attribute to nil will not remove the header image
+      @project.remove_header_bg!
+    end
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
     if @project.save
