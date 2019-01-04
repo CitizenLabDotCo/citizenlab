@@ -13,6 +13,16 @@ class WebApi::V1::TenantsController < ApplicationController
     params[:header_bg] = tenant_params[:header_bg] if tenant_params[:header_bg]
     params[:favicon] = tenant_params[:favicon] if tenant_params[:favicon]
     @tenant.assign_attributes params
+    # setting the header image, logo or favicon attributes to nil will not remove the images
+    if tenant_params.keys.include?('header_bg') && tenant_params['header_bg'] == nil
+      @tenant.remove_header_bg!
+    end
+    if tenant_params.keys.include?('logo') && tenant_params['logo'] == nil
+      @tenant.remove_logo!
+    end
+    if tenant_params.keys.include?('favicon') && tenant_params['favicon'] == nil
+      @tenant.remove_favicon!
+    end
     authorize @tenant
     SideFxTenantService.new.before_update @tenant, current_user
     if @tenant.save
