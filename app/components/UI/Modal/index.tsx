@@ -356,8 +356,8 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
                 innerRef={this.setContentRef}
               >
                 {children}
-                <Spacer />
               </ModalContent>
+              <Spacer />
 
               {footer && <FooterContainer> {footer} </FooterContainer>}
 
