@@ -121,7 +121,7 @@ describe('Admin: add project', () => {
         // Navigates to admin/settings/projects
         cy.location('pathname').should('eq', '/en-GB/admin/projects');
 
-        // Get project id, then area id and look up area to compare
+        // Get projectId, then areaId and look up area to compare
         let projectId;
         cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
           .find('a')
