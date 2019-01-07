@@ -97,6 +97,36 @@ resource "Tenants" do
         expect(json_response.dig(:errors,:settings)).to be_present
       end
     end
+
+    describe do
+      example "The header image can be removed" do
+        tenant = Tenant.current
+        tenant.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+        expect(tenant.reload.header_bg_url).to be_present
+        do_request tenant: {header_bg: nil}
+        expect(tenant.reload.header_bg_url).to be nil
+      end
+    end
+
+    describe do
+      example "The logo can be removed" do
+        tenant = Tenant.current
+        tenant.update(logo: Rails.root.join("spec/fixtures/logo.png").open)
+        expect(tenant.reload.logo_url).to be_present
+        do_request tenant: {logo: nil}
+        expect(tenant.reload.logo_url).to be nil
+      end
+    end
+
+    describe do
+      example "The favicon can be removed" do
+        tenant = Tenant.current
+        tenant.update(favicon: Rails.root.join("spec/fixtures/favicon.png").open)
+        expect(tenant.reload.favicon_url).to be_present
+        do_request tenant: {favicon: nil}
+        expect(tenant.reload.favicon_url).to be nil
+      end
+    end
   end
 
     
