@@ -6,8 +6,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Components
 import Banner from './Banner';
-import PreferencesDialog from './PreferencesDialog';
-import CancelDialog from './CancelDialog';
+import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 
@@ -28,7 +27,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   button {
-    margin : 4px;
+    margin : 4px !important;
   }
   Button.button.primary-inverse span {
     color: ${colors.adminTextColor}
@@ -163,6 +162,31 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     return res;
   }
 
+  renderFooter = (categoryDestinations) => (
+    this.state.isCancelling ? (
+      <ButtonContainer>
+        <Button onClick={this.handleCancelConfirm} style="primary-inverse">
+          <FormattedMessage {...messages.back} />
+        </Button>
+        <Button onClick={this.handleCancelBack} style="primary">
+          <FormattedMessage {...messages.confirm} />
+        </Button>
+      </ButtonContainer>
+    ) : (
+        <ButtonContainer>
+          <Button onClick={this.handleCancel} style="primary-inverse">
+            <FormattedMessage {...messages.cancel} />
+          </Button>
+          <Button
+            onClick={this.handleSave(categoryDestinations)}
+            style="primary"
+          >
+            <FormattedMessage  {...messages.save} />
+          </Button>
+        </ButtonContainer>
+      )
+  )
+
   render() {
     const {
       destinations,
@@ -197,17 +221,7 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
           header={<FormattedMessage {...messages.title} tagName="h1" />}
-          footer={<ButtonContainer>
-            <Button onClick={this.handleCancel} style="primary-inverse">
-              <FormattedMessage {...messages.cancel} />
-            </Button>
-            <Button
-              onClick={this.handleSave(categoryDestinations)}
-              style="primary"
-            >
-              <FormattedMessage  {...messages.save} />
-            </Button>
-          </ButtonContainer>}
+          footer={this.renderFooter(categoryDestinations)}
         >
           {!isCancelling &&
             <PreferencesDialog
@@ -219,10 +233,9 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
             />
           }
           {isCancelling &&
-            <CancelDialog
-              onCancelConfirm={this.handleCancelConfirm}
-              onCancelBack={this.handleCancelBack}
-            />
+            <ContentContainer role="dialog" aria-modal>
+              <FormattedMessage {...messages.confirmation} tagName="h1" />
+            </ContentContainer>
           }
         </Modal>
         {isConsentRequired && newDestinations.length > 0 && (

@@ -27,7 +27,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
 const ModalContent = styled.div`
-  padding: 20px;
   -webkit-overflow-scroll: auto;
   overflow-y: auto;
   overflow-x: hidden;
@@ -74,7 +73,7 @@ const HiddenSpan = styled.span`${hideVisually()}`;
 const ModalContainer: any = styled(clickOutside)`
   width: 100%;
   max-width: ${(props: any) => props.width};
-  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white'};
+  background: white;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
@@ -88,8 +87,6 @@ const ModalContainer: any = styled(clickOutside)`
   }
 
   ${media.smallerThanMaxTablet`
-    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '25px'};
-
     &.fixedHeight {
       height: 80vh;
     }
@@ -150,7 +147,7 @@ const Overlay = styled.div`
 const HeaderContainer = styled.div`
   background: white;
   width: 100%;
-  height: 74px;
+  flex: 0 0 54px;
   border-bottom: 2px solid ${colors.separation};
   display: flex;
   flex-direction: row;
