@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-import ContentContainer from 'components/ContentContainer';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -27,13 +26,16 @@ import T from 'components/T';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
+const desktopHeight = '195px';
+const mobileHeight = '250px';
+
 const Header = styled.div`
   width: 100%;
-  height: 195px;
+  height: ${desktopHeight};
   position: relative;
 
-  ${media.largePhone`
-    height: 250px;
+  ${media.smallerThanMinTablet`
+    height: ${mobileHeight};
   `}
 `;
 
@@ -49,7 +51,8 @@ const HeaderImageContainer = styled.div`
 
 const HeaderImage = styled.img`
   width: 100%;
-  min-height: 250px;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const HeaderImageOverlay = styled.div`
@@ -68,37 +71,35 @@ const HeaderContent = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-`;
-
-const StyledContentContainer = styled(ContentContainer)`
-  height: 100%;
-
-  & > .inner {
-    height: 100%;
-  }
-`;
-
-const Content = styled.div`
-  height: 100%;
   display: flex;
   align-items: center;
-  padding: 0 20px;
   justify-content: center;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-  `}
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 75px;
+  padding-right: 75px;
 
   p {
     color: #fff;
     font-size: ${fontSizes.xxl}px;
     line-height: 31px;
     font-weight: 400;
+
     &.center {
-        text-align: center;
-      }
+      text-align: center;
+    }
   }
+
+  ${media.smallerThanMaxTablet`
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+  `}
 `;
 
 const Left = styled.div`
@@ -118,16 +119,11 @@ const Left = styled.div`
 
 const Icons = styled.div`
   display: flex;
-  margin-right: 40px;
+  margin-right: 30px;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThanMaxTablet`
     display: none;
   `}
-
-  svg:last-child {
-    margin-left: -7px;
-    z-index: -1;
-  }
 `;
 
 const NoAvatarUserIcon: any = styled(Icon)`
@@ -148,6 +144,7 @@ const Text = styled.div`
   flex-shrink: 1;
   flex-basis: 0;
   display: flex;
+
   ${media.smallerThanMinTablet`
     flex-basis: auto;
     flex-direction: column;
@@ -159,28 +156,25 @@ const Text = styled.div`
 const Right = styled.div`
   display: flex;
 
-  ${media.smallerThanMaxTablet`
-    margin-top: 30px;
-  `}
-
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    margin-top: 30px;
   `}
 `;
 
 const SkipButton = styled(Button)`
   margin-right: 10px;
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     order: 2;
     margin-right: 0px;
   `}
 `;
 
 const AcceptButton = styled(Button)`
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     order: 1;
     margin-bottom: 10px;
   `}
@@ -220,96 +214,91 @@ class SignedInHeader extends PureComponent<Props, State> {
   render() {
     const { locale, tenant, authUser, className, onboardingStatus } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingStatus)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
 
-      if (onboardingStatus) {
-        return (
-          <Header className={className} id="hook-header">
-            <HeaderImageContainer>
-              {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} />}
-              <HeaderImageOverlay />
-            </HeaderImageContainer>
+      return (
+        <Header className={className} id="hook-header">
+          <HeaderImageContainer>
+            {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} />}
+            <HeaderImageOverlay />
+          </HeaderImageContainer>
 
-            <HeaderContent>
-              <StyledContentContainer mode="banner">
-                <Content>
-                  {/* First header state - complete profile */}
-                  {onboardingStatus.status === 'complete_profile' &&
-                    <>
-                      <Left>
-                        <Icons>
-                          <NoAvatarUserIcon name="noAvatar" />
-                          <CompleteProfileIcon name="completeProfile" />
-                        </Icons>
-                        <Text>
-                          <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
-                        </Text>
-                      </Left>
+          <HeaderContent>
+            {/* First header state - complete profile */}
+            {onboardingStatus.status === 'complete_profile' &&
+              <>
+                <Left>
+                  <Icons>
+                    <NoAvatarUserIcon name="noAvatar" />
+                    <CompleteProfileIcon name="completeProfile" />
+                  </Icons>
+                  <Text>
+                    <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
+                  </Text>
+                </Left>
 
-                      <Right>
-                        <SkipButton
-                          style="primary-outlined"
-                          text={<FormattedMessage {...messages.doItLater} />}
-                          onClick={this.handleSkipButtonClick}
-                          borderColor="#fff"
-                          textColor="#fff"
-                        />
-                        <AcceptButton
-                          text={<FormattedMessage {...messages.completeProfile} />}
-                          linkTo="/profile/edit"
-                          bgColor="#fff"
-                          textColor={this.props.theme.colorMain}
-                        />
-                      </Right>
-                    </>
-                  }
+                <Right>
+                  <SkipButton
+                    style="primary-outlined"
+                    text={<FormattedMessage {...messages.doItLater} />}
+                    onClick={this.handleSkipButtonClick}
+                    borderColor="#fff"
+                    textColor="#fff"
+                  />
+                  <AcceptButton
+                    text={<FormattedMessage {...messages.completeProfile} />}
+                    linkTo="/profile/edit"
+                    bgColor="#fff"
+                    textColor={this.props.theme.colorMain}
+                  />
+                </Right>
+              </>
+            }
 
-                  {/* Second header state - custom CTA */}
-                  {onboardingStatus.status === 'custom_cta' &&
-                    <>
-                      <Left>
-                        <Text>
-                          <T as="p" value={onboardingStatus.cta_message_multiloc} />
-                        </Text>
-                      </Left>
+            {/* Second header state - custom CTA */}
+            {onboardingStatus.status === 'custom_cta' &&
+              <>
+                <Left>
+                  <Text>
+                    <T as="p" value={onboardingStatus.cta_message_multiloc} />
+                  </Text>
+                </Left>
 
-                      <Right>
-                        {/* TODO missing field in the backend
-                        <SkipButton
-                          style="primary-outlined"
-                          text={<T value={onboardingStatus.cta_button_multiloc} />}
-                          onClick={this.handleSkipButtonClick}
-                          borderColor="#fff"
-                          textColor="#fff"
-                        />*/}
-                        <SkipButton
-                          style="primary-outlined"
-                          text={<FormattedMessage {...messages.doItLater} />}
-                          onClick={this.handleSkipButtonClick}
-                          borderColor="#fff"
-                          textColor="#fff"
-                        />
-                        <AcceptButton
-                          text={<T value={onboardingStatus.cta_button_multiloc} />}
-                          linkTo={onboardingStatus.cta_button_link}
-                          bgColor="#fff"
-                          textColor={this.props.theme.colorMain}
-                        />
-                      </Right>
-                    </>
-                  }
+                <Right>
+                  {/* TODO missing field in the backend
+                  <SkipButton
+                    style="primary-outlined"
+                    text={<T value={onboardingStatus.cta_button_multiloc} />}
+                    onClick={this.handleSkipButtonClick}
+                    borderColor="#fff"
+                    textColor="#fff"
+                  />
+                  */}
+                  <SkipButton
+                    style="primary-outlined"
+                    text={<FormattedMessage {...messages.doItLater} />}
+                    onClick={this.handleSkipButtonClick}
+                    borderColor="#fff"
+                    textColor="#fff"
+                  />
+                  <AcceptButton
+                    text={<T value={onboardingStatus.cta_button_multiloc} />}
+                    linkTo={onboardingStatus.cta_button_link}
+                    bgColor="#fff"
+                    textColor={this.props.theme.colorMain}
+                  />
+                </Right>
+              </>
+            }
 
-                  {/* Third header state - default customizable message */}
-                  {onboardingStatus.status === 'default' &&
-                    <T as="p" value={onboardingStatus.cta_message_multiloc} className="center" />
-                  }
-                </Content>
-              </StyledContentContainer>
-            </HeaderContent>
-          </Header>
-        );
-      }
+            {/* Third header state - default customizable message */}
+            {onboardingStatus.status === 'default' &&
+              <T as="p" value={onboardingStatus.cta_message_multiloc} className="center" />
+            }
+          </HeaderContent>
+        </Header>
+      );
     }
 
     return null;

@@ -73,7 +73,7 @@ export default defineMessages({
   },
   completeYourProfile: {
     id: 'app.containers.landing.completeYourProfile',
-    defaultMessage: `Welcome {firstName}. It's time to complete your profile`,
+    defaultMessage: `Welcome {firstName}. It's time to complete your profile.`,
   },
   completeProfile: {
     id: 'app.containers.landing.completeProfile',

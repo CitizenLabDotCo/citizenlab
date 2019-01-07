@@ -6,8 +6,8 @@ export const viewportWidths = {
   smallPhone: 320,
   phone: 360,
   largePhone: 415,
-  smallTablet: 768,
-  largeTablet: 1024,
+  smallTablet: 767,
+  largeTablet: 1023,
 };
 
 export const media = {
