@@ -1,13 +1,14 @@
 module Onboarding
   class OnboardingService
 
-    CAMPAIGNS = %i(complete_profile custom_cta default)
+    CAMPAIGNS = %w(complete_profile custom_cta default)
 
     def current_campaign user
       raise ArgumentError unless user
-      if profile_incomplete? user
+      dismissals = CampaignDismissal.where(user: user).pluck(:campaign_name)
+      if profile_incomplete?(user) && !dismissals.include?('complete_profile')
         :complete_profile
-      elsif !MultilocService.new.is_empty?(Tenant.settings('core', 'custom_onboarding_message'))
+      elsif !MultilocService.new.is_empty?(Tenant.settings('core', 'custom_onboarding_message')) && !dismissals.include?('custom_cta')
         :custom_cta
       else
         :default

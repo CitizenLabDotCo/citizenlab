@@ -30,6 +30,12 @@ describe Onboarding::OnboardingService do
       expect(service.current_campaign(user)).to eq :complete_profile
     end
 
+    it "returns :default when a user with an incomplete profile dimissed :complete_profile" do
+      user.update(bio_multiloc: {})
+      Onboarding::CampaignDismissal.create(user: user, campaign_name: 'complete_profile')
+      expect(service.current_campaign(user)).to eq :default
+    end
+
     it "returns :custom_cta when a custom message is configured" do
       tenant = Tenant.current
       tenant.settings['core']['custom_onboarding_message'] = {
@@ -37,6 +43,16 @@ describe Onboarding::OnboardingService do
       }
       tenant.save
       expect(service.current_campaign(user)).to eq :custom_cta
+    end
+
+    it "returns :default when a custom message is configured and a user dimissed :custom_cta" do
+      tenant = Tenant.current
+      tenant.settings['core']['custom_onboarding_message'] = {
+        en: "Do the hippy shake"
+      }
+      tenant.save
+      Onboarding::CampaignDismissal.create(user: user, campaign_name: 'custom_cta')
+      expect(service.current_campaign(user)).to eq :default
     end
 
     it "returns :default when no custom message is configured" do

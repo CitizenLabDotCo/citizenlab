@@ -389,12 +389,12 @@ ActiveRecord::Schema.define(version: 2019_01_07_123605) do
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
   end
 
-  create_table "omboarding_campaign_dismissal", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "user_id"
     t.string "campaign_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_omboarding_campaign_dismissal_on_user_id"
+    t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
   end
 
   create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

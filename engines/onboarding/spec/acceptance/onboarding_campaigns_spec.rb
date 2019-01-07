@@ -53,4 +53,28 @@ resource "Onboarding campaigns" do
     end
   end
 
+  post "web_api/v1/onboarding_campaigns/:campaign_name/dismissal" do
+    context "for a user with an incomplete profile" do
+      let (:campaign_name) { 'complete_profile' }
+
+      describe "the first time" do
+        example_request "Create an onboarding campaign dismissal" do
+          expect(status).to eq 200
+        end
+      end
+
+      context "a campaign was dismissed before" do
+        before do
+          Onboarding::CampaignDismissal.create(campaign_name: campaign_name, user: @user)
+        end
+
+        example_request "[error] Create an onboarding campaign dismissal for the same campaign twice" do
+          expect(status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors]).to match({:campaign_name=>[{:error=>"taken", :value=>"complete_profile"}]})
+        end
+      end
+    end
+  end
+
 end
