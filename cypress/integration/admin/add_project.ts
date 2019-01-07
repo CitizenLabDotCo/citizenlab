@@ -32,70 +32,70 @@ describe('Admin: add project', () => {
   });
 
   context('Type: Timeline', () => {
-    // context('Areas: All areas', () => {
-    //   it('creates a draft project', () => {
-    //     const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-    //     const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+    context('Areas: All areas', () => {
+      it('creates a draft project', () => {
+        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
 
-    //     // Select 'Draft' publication status
-    //     cy.get('.e2e-projecstatus-draft').click();
+        // Select 'Draft' publication status
+        cy.get('.e2e-projecstatus-draft').click();
 
-    //     // Type random project titles for these required fields
-    //     cy.get('#project-title-en-GB').type(projectTitleEN);
-    //     cy.get('#project-title-nl-BE').type(projectTitleNL);
+        // Type random project titles for these required fields
+        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-nl-BE').type(projectTitleNL);
 
-    //     // Submit project
-    //     cy.get('.e2e-submit-wrapper-button').click();
+        // Submit project
+        cy.get('.e2e-submit-wrapper-button').click();
 
-    //     // Navigates to admin/settings/projects
-    //     cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        // Navigates to admin/settings/projects
+        cy.location('pathname').should('eq', '/en-GB/admin/projects');
 
-    //     // Project should appear on top of the Published projects
-    //     cy.get('#e2e-admin-draft-projects-list').contains(projectTitleEN);
-    //   });
+        // Project should appear on top of the Published projects
+        cy.get('#e2e-admin-draft-projects-list').contains(projectTitleEN);
+      });
 
-    //   it('creates a published project', () => {
-    //     const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-    //     const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+      it('creates a published project', () => {
+        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
 
-    //     // Select 'Published' publication status
-    //     cy.get('.e2e-projecstatus-published').click();
+        // Select 'Published' publication status
+        cy.get('.e2e-projecstatus-published').click();
 
-    //     // Type random project titles for these required fields
-    //     cy.get('#project-title-en-GB').type(projectTitleEN);
-    //     cy.get('#project-title-nl-BE').type(projectTitleNL);
+        // Type random project titles for these required fields
+        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-nl-BE').type(projectTitleNL);
 
-    //     // Submit project
-    //     cy.get('.e2e-submit-wrapper-button').click();
+        // Submit project
+        cy.get('.e2e-submit-wrapper-button').click();
 
-    //     // Navigates to admin/settings/projects
-    //     cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        // Navigates to admin/settings/projects
+        cy.location('pathname').should('eq', '/en-GB/admin/projects');
 
-    //     // Project should appear on top of the Published projects
-    //     cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
-    //   });
+        // Project should appear on top of the Published projects
+        cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
+      });
 
-    //   it('creates an archived project', () => {
-    //     const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
-    //     const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
+      it('creates an archived project', () => {
+        const projectTitleEN = Math.random().toString(36).substr(2, 5).toLowerCase();
+        const projectTitleNL = Math.random().toString(36).substr(2, 5).toLowerCase();
 
-    //     // Select 'Archived' publication status
-    //     cy.get('.e2e-projecstatus-archived').click();
+        // Select 'Archived' publication status
+        cy.get('.e2e-projecstatus-archived').click();
 
-    //     // Type random project titles for these required fields
-    //     cy.get('#project-title-en-GB').type(projectTitleEN);
-    //     cy.get('#project-title-nl-BE').type(projectTitleNL);
+        // Type random project titles for these required fields
+        cy.get('#project-title-en-GB').type(projectTitleEN);
+        cy.get('#project-title-nl-BE').type(projectTitleNL);
 
-    //     // Submit project
-    //     cy.get('.e2e-submit-wrapper-button').click();
+        // Submit project
+        cy.get('.e2e-submit-wrapper-button').click();
 
-    //     // Navigates to admin/settings/projects
-    //     cy.location('pathname').should('eq', '/en-GB/admin/projects');
+        // Navigates to admin/settings/projects
+        cy.location('pathname').should('eq', '/en-GB/admin/projects');
 
-    //     // Project should appear on top of the Published projects
-    //     cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
-    //   });
-    // });
+        // Project should appear on top of the Published projects
+        cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
+      });
+    });
 
     context('Areas: Selection', () => {
       it('creates a published project with the correct area', () => {
