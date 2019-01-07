@@ -19,6 +19,8 @@ import Title from 'components/admin/PageTitle';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
+import Toggle from 'components/UI/Toggle';
+import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
@@ -35,12 +37,16 @@ const ListHeader = styled.div`
 `;
 
 const ListHeaderTitle = styled.h3`
+  display: flex;
+  align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   padding: 0;
   margin: 0;
 `;
+
+const ToggleLabel = styled.label``;
 
 const RowContent = styled.div`
   flex: 1;
@@ -80,19 +86,31 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  publishedProjects: IProjectData[] | null;
-  draftProjects: IProjectData[] | null;
-  archivedProjects: IProjectData[] | null;
+  manualProjectSorting: boolean;
 }
 
 class AdminProjectsList extends PureComponent<Props, State> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      manualProjectSorting: false,
+    };
+  }
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
   }
 
+  handleToggleManualProjectSorting = () => {
+    this.setState(prevState => {
+      return { manualProjectSorting: !prevState.manualProjectSorting };
+    });
+  }
+
   render () {
     const { projects } = this.props;
+    const { manualProjectSorting } = this.state;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList)) {
@@ -162,6 +180,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <ListHeader className="marginTop">
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
+                  <Toggle
+                    id="manual-sorting-toggle"
+                    value={manualProjectSorting}
+                    onChange={this.handleToggleManualProjectSorting}
+                  />
+                  <ToggleLabel htmlFor="manual-sorting-toggle">
+                    {}
+                  </ToggleLabel>
                 </ListHeaderTitle>
               </ListHeader>
               <HasPermission item="projects" action="reorder">

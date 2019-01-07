@@ -137,12 +137,12 @@ const NavigationItem = styled(Link)`
   &:focus,
   &:hover {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: blue;
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
-    border-top-color: ${(props) => props.theme.colorMain};
+    background-color: blue;
+    border-top-color: blue;
   }
 `;
 
@@ -179,12 +179,12 @@ const NavigationDropdownItem = styled.button`
   &:hover,
   &:focus {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: blue;
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
-    border-top-color: ${(props) => props.theme.colorMain};
+    background-color: blue;
+    border-top-color: blue;
   }
 `;
 
@@ -296,7 +296,7 @@ const RightItem: any = styled.div`
 const LogInLink = NavigationItem.extend`
   &:focus,
   &:hover {
-    border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
+    border-top-color: blue;
   }
 
   ${media.smallerThanMinTablet`
@@ -321,7 +321,7 @@ const SignUpLink = styled(Link)`
   &:focus,
   &:hover {
     color: #fff;
-    background-color: ${(props) => darken(0.12, props.theme.colorSecondary)};
+    background-color: blue;
   }
 
   ${media.smallerThanMinTablet`
