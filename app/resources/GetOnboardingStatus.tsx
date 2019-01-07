@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Subscription } from 'rxjs';
 import { onboardingStatusStream, IOnboardingStatus } from 'services/onboardingStatus';
 import { isNilOrError } from 'utils/helperUtils';
@@ -17,10 +17,10 @@ interface State {
 
 export type GetOnboardingStatusChildProps = IOnboardingStatus | undefined | null;
 
-export default class GetOnboardingStatus extends React.Component<Props, State> {
+export default class GetOnboardingStatus extends Component<Props, State> {
   private subscriptions: Subscription[];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
       onboardingStatus: undefined

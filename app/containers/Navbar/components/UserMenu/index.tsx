@@ -33,7 +33,7 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${(props: any) => props.theme.colorText};
-  margin-right: 12px;
+  margin-right: 8px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
