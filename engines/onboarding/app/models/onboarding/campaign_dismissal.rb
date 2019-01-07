@@ -3,6 +3,6 @@ module Onboarding
     belongs_to :user
 
     validates :campaign_name, :user, presence: true
-    validates :campaign_name, inclusion: {in: OnboardingService::STATUSES}
+    validates :campaign_name, inclusion: {in: OnboardingService::CAMPAIGNS}
   end
 end
