@@ -15,7 +15,7 @@ resource "Onboarding status" do
 
   get "web_api/v1/onboarding_status" do
 
-    response_field :status, "One of #{OnboardingService::STATUSES.join(' or ')}", scope: :attributes
+    response_field :status, "One of #{Onboarding::OnboardingService::STATUSES.join(' or ')}", scope: :attributes
 
     context "for a user with an incomplete profile" do
       example_request "Get the onboarding status" do

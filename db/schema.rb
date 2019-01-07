@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_10_113428) do
+ActiveRecord::Schema.define(version: 2019_01_07_123605) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -387,6 +387,14 @@ ActiveRecord::Schema.define(version: 2018_12_10_113428) do
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
+  end
+
+  create_table "omboarding_campaign_dismissal", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "campaign_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_omboarding_campaign_dismissal_on_user_id"
   end
 
   create_table "page_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
