@@ -113,7 +113,7 @@ describe('Admin: add project', () => {
         cy.get('.e2e-areas-selection').click();
 
         // Pick (only) area
-        cy.get('#e2e-area-selector').click().trigger('keydown', { keyCode: 13, which: 13 });
+        cy.get('#e2e-area-selector').click().find('input').type('Carrotgem').trigger('keydown', { keyCode: 13, which: 13 });
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
@@ -122,27 +122,21 @@ describe('Admin: add project', () => {
         cy.location('pathname').should('eq', '/en-GB/admin/projects');
 
         // Get projectId, then areaId and look up area to compare
-        let projectId;
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
-          .find('a')
-          .then((manageProjectButtonLinks) => {
-            const manageProjectButtonLink = manageProjectButtonLinks[0];
-            const href = manageProjectButtonLink.href;
-            const hrefSegments = href && href.split('/');
-            projectId = Array.isArray(hrefSegments) && hrefSegments[hrefSegments.length - 2];
-
-            if (isString(projectId)) {
-              getProject(projectId).then((projectData) => {
-                const areaId = get(projectData.body.data.relationships.areas.data[0], 'id');
-                if (isString(areaId)) {
-                  getArea(areaId).then((areaData) => {
-                    const area = get(areaData.body.data.attributes.title_multiloc, 'en-GB');
-                    expect(area).to.eq('Carrotgem');
-                  });
-                }
-              });
-            }
-          });
+        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).find('a').then((manageProjectButtonLinks) => {
+          const manageProjectButtonLink = manageProjectButtonLinks[0];
+          const href = manageProjectButtonLink.href;
+          const hrefSegments = href && href.split('/');
+          const projectId = hrefSegments[hrefSegments.length - 2];
+          return projectId;
+        }).then((projectId) => {
+          return getProject(projectId);
+        }).then((projectData) => {
+          const areaId = get(projectData.body.data.relationships.areas.data[0], 'id');
+          return getArea(areaId);
+        }).then((areaData) => {
+          const area = get(areaData.body.data.attributes.title_multiloc, 'en-GB');
+          expect(area).to.eq('Carrotgem');
+        });
       });
     });
   });
