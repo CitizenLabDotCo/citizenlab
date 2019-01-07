@@ -51,14 +51,18 @@ pipeline {
     stage('Test email campaigns') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/email_campaigns/spec/'
-
       }
     }
 
     stage('Test machine translations') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/machine_translations/spec/'
+      }
+    }
 
+    stage('Test onboarding') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/onboarding/spec/'
       }
     }
 

@@ -1,7 +1,7 @@
 module Onboarding
   class OnboardingService
 
-    STATUSES = %i(complete_profile custom_cta default)
+    CAMPAIGNS = %i(complete_profile custom_cta default)
 
     def current_campaign user
       raise ArgumentError unless user
