@@ -34,12 +34,10 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
   fill: ${colors.mediumGrey};
-  flex: 1;
-  svg {
-    height: 100%;
-    width: 100%;
-  }
 `;
 
 const CloseButton = styled.button`
@@ -53,11 +51,6 @@ const CloseButton = styled.button`
   justify-content: center;
   cursor: pointer;
   outline: none;
-
-  ${media.smallerThanMaxTablet`
-    top: 10px;
-    right: 10px;
-  `}
 
   &:hover,
   &:focus,
