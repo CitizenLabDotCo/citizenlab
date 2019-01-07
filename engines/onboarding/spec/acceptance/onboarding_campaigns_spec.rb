@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Onboarding status" do
+resource "Onboarding campaigns" do
 
   explanation "Indicates which call to action to show to the current user"
 
@@ -13,15 +13,15 @@ resource "Onboarding status" do
     header "Content-Type", "application/json"
   end
 
-  get "web_api/v1/onboarding_status" do
+  get "web_api/v1/onboarding_campaigns/current" do
 
     response_field :status, "One of #{Onboarding::OnboardingService::STATUSES.join(' or ')}", scope: :attributes
 
     context "for a user with an incomplete profile" do
-      example_request "Get the onboarding status" do
+      example_request "Get the current onboarding campaign" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:status]).to eq 'complete_profile'
+        expect(json_response[:data][:attributes][:name]).to eq 'complete_profile'
         expect(json_response[:data][:attributes][:cta_message_multiloc]).to be_nil
         expect(json_response[:data][:attributes][:cta_button_multiloc]).to be_nil
         expect(json_response[:data][:attributes][:cta_button_link]).to be_nil
@@ -41,11 +41,11 @@ resource "Onboarding status" do
         t.settings['core']['custom_onboarding_link'] = "/ideas"
         t.save
       end
-      example "Get the onboarding status for a user with a complete profile" do
+      example "Get the current onboarding campaign for a user with a complete profile" do
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:status]).to eq 'custom_cta'
+        expect(json_response[:data][:attributes][:name]).to eq 'custom_cta'
         expect(json_response[:data][:attributes][:cta_message_multiloc][:en]).to eq "Dance like noone is watching"
         expect(json_response[:data][:attributes][:cta_button_multiloc][:en]).to eq "Click here"
         expect(json_response[:data][:attributes][:cta_button_link]).to eq "/ideas"

@@ -1,27 +1,29 @@
 module Onboarding
-  class WebApi::V1::OnboardingStatusesController < OnboardingController
+  class WebApi::V1::CampaignsController < OnboardingController
 
-    class OnboardingStatus < OpenStruct
+    class Campaign < OpenStruct
       include ActiveModel::Serialization
       def type
-        OnboardingStatus
+        Campaign
       end
     end
 
 
-    def show
-      authorize current_user
+    def current
+      authorize current_user, :update?
       service = OnboardingService.new
-      status = service.status(current_user)
-      custom_cta = status == :custom_cta
-      onboarding_status = OnboardingStatus.new({
-        status: status,
+      current_campaign = service.current_campaign(current_user)
+      custom_cta = current_campaign == :custom_cta
+      campaign = Campaign.new({
+        name: current_campaign,
         cta_message_multiloc: custom_cta ? Tenant.settings('core','custom_onboarding_message') : nil,
         cta_button_multiloc: custom_cta ? Tenant.settings('core','custom_onboarding_button') : nil,
         cta_button_link: custom_cta ? Tenant.settings('core','custom_onboarding_link') : nil,
       })
-      render json: onboarding_status
+      render json: campaign
     end
+
+    private
 
     def secure_controller?
       true

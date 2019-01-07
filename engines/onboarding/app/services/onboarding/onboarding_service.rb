@@ -3,7 +3,7 @@ module Onboarding
 
     STATUSES = %i(complete_profile custom_cta default)
 
-    def status user
+    def current_campaign user
       raise ArgumentError unless user
       if profile_incomplete? user
         :complete_profile
