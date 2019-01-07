@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 
 export const ContentContainer = styled.div`
+  background: white;
+  padding: 20px;
   height: 100%;
   width: 100%;
   display: flex;
@@ -56,9 +58,10 @@ export default class PreferencesDialog extends PureComponent<Props> {
     const checkCategories = { analytics, advertising, functional };
     return (
       <ContentContainer>
-          {Object.keys(categoryDestinations).map((category) => {
-            if (categoryDestinations[category].length > 0) {
-              return (
+        {Object.keys(categoryDestinations).map((category) => {
+          if (categoryDestinations[category].length > 0) {
+            return (
+              <>
                 <CategoryCard
                   key={category}
                   category={category}
@@ -67,10 +70,51 @@ export default class PreferencesDialog extends PureComponent<Props> {
                   onChange={onChange}
                   handleChange={this.handleChange}
                 />
-              );
-            }
-            return;
-          })}
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+                <CategoryCard
+                  key={category}
+                  category={category}
+                  destinations={categoryDestinations[category]}
+                  checked={checkCategories[category]}
+                  onChange={onChange}
+                  handleChange={this.handleChange}
+                />
+              </>
+            );
+          }
+          return;
+        })}
       </ContentContainer>
     );
   }
