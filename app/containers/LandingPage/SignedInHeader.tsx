@@ -11,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetOnboardingStatus, { GetOnboardingStatusChildProps } from 'resources/GetOnboardingStatus';
+import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resources/GetOnboardingCampaigns';
 
 // utils
 import { trackEvent } from 'utils/analytics';
@@ -188,7 +188,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
-  onboardingStatus: GetOnboardingStatusChildProps;
+  onboardingCampaigns: GetOnboardingCampaignsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -212,9 +212,9 @@ class SignedInHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, className, onboardingStatus } = this.props;
+    const { locale, tenant, authUser, className, onboardingCampaigns } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingStatus)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
 
       return (
@@ -226,7 +226,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
           <HeaderContent>
             {/* First header state - complete profile */}
-            {onboardingStatus.status === 'complete_profile' &&
+            {onboardingCampaigns.name === 'complete_profile' &&
               <>
                 <Left>
                   <Icons>
@@ -257,11 +257,11 @@ class SignedInHeader extends PureComponent<Props, State> {
             }
 
             {/* Second header state - custom CTA */}
-            {onboardingStatus.status === 'custom_cta' &&
+            {onboardingCampaigns.name === 'custom_cta' &&
               <>
                 <Left>
                   <Text>
-                    <T as="p" value={onboardingStatus.cta_message_multiloc} />
+                    <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
                   </Text>
                 </Left>
 
@@ -269,7 +269,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   {/* TODO missing field in the backend
                   <SkipButton
                     style="primary-outlined"
-                    text={<T value={onboardingStatus.cta_button_multiloc} />}
+                    text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                     onClick={this.handleSkipButtonClick}
                     borderColor="#fff"
                     textColor="#fff"
@@ -283,8 +283,8 @@ class SignedInHeader extends PureComponent<Props, State> {
                     textColor="#fff"
                   />
                   <AcceptButton
-                    text={<T value={onboardingStatus.cta_button_multiloc} />}
-                    linkTo={onboardingStatus.cta_button_link}
+                    text={<T value={onboardingCampaigns.cta_button_multiloc} />}
+                    linkTo={onboardingCampaigns.cta_button_link}
                     bgColor="#fff"
                     textColor={this.props.theme.colorMain}
                   />
@@ -293,8 +293,8 @@ class SignedInHeader extends PureComponent<Props, State> {
             }
 
             {/* Third header state - default customizable message */}
-            {onboardingStatus.status === 'default' &&
-              <T as="p" value={onboardingStatus.cta_message_multiloc} className="center" />
+            {onboardingCampaigns.name === 'default' &&
+              <T as="p" value={onboardingCampaigns.cta_message_multiloc} className="center" />
             }
           </HeaderContent>
         </Header>
@@ -309,7 +309,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  onboardingStatus: <GetOnboardingStatus />
+  onboardingCampaigns: <GetOnboardingCampaigns />
 });
 
 const SignedInHeaderWithHoC = withTheme<Props, State>(SignedInHeader);
