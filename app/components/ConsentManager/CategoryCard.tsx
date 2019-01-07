@@ -55,13 +55,16 @@ const Separator = styled.span`
   font-weight: 400;
   font-size: ${fontSizes.base}px;
   line-height: 19px;
+`;
+
+const SSpan = styled.span`
   padding-left: 10px;
   padding-right: 10px;
 
   ${media.smallerThanMaxTablet`
     padding-left: 8px;
     padding-right: 8px;
-  `}
+`}
 `;
 
 const StyledLabel = styled.label`
@@ -110,13 +113,13 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         {...messages[`${category}Purpose`]}
       />
       <p>
-        <FormattedMessage {...messages.tools} />{' : '}
+        <FormattedMessage {...messages.tools} />
         {destinations.map((d, index) => (
           <Fragment key={d.id}>
             {index !== 0 &&
               <Separator>•</Separator>
             }
-            {d.name}
+            <SSpan>{d.name}</SSpan>
           </Fragment>
         ))}
       </p>
