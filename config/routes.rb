@@ -175,7 +175,6 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index]
-      resource :onboarding_status, only: [:show]
 
       match 'manifest.json', to: 'manifest#show', via: :get
       
@@ -195,6 +194,7 @@ Rails.application.routes.draw do
   mount AdminApi::Engine => "/admin_api", as: 'admin_api', defaults: {format: :json}
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
+  mount Onboarding::Engine => "", as: 'onboarding'
 
   if Rails.env.development?
     require_dependency 'sidekiq/web'

@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe OnboardingService do
-  let(:service) { OnboardingService.new }
+describe Onboarding::OnboardingService do
+  let(:service) { Onboarding::OnboardingService.new }
 
   describe "status" do
 
