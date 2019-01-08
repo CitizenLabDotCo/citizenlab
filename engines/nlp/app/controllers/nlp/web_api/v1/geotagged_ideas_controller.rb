@@ -7,7 +7,6 @@ module NLP
           @ideas = policy_scope(Idea)
             .page(params.dig(:page, :number))
             .per(params.dig(:page, :size))
-          @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
           geotagging = NLP::GeotagService.new
           geotags = @ideas.where('location_point IS NULL').map do |idea|
