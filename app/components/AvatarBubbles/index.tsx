@@ -67,8 +67,9 @@ const SSpan: any = styled.span`
 `;
 
 const PlusIcon = styled(Icon)`
-  height: 5px;
-  margin-left: 1px;
+  width: 8px;
+  height: 8px;
+  margin-right: 1px;
 `;
 
 /* InputProps
@@ -102,7 +103,7 @@ const AvatarBubbles = (props: Props & InjectedIntlProps) => {
     const userCount = avatars.meta.total;
     const usersWithoutAvatar = userCount - avatarCount;
 
-    const definedSize = size || 34;
+    const definedSize = size || 40;
     const definedOverlap = overlap || 7;
 
     const imageSize = (definedSize > 160 ? 'large' : 'medium');

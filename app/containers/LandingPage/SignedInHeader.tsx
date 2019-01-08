@@ -7,6 +7,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 
+// services
+import { dismissOnboardingCampaign, IOnboardingCampaignNames } from 'services/onboardingCampaigns';
+
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -26,27 +29,34 @@ import T from 'components/T';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
-const desktopHeight = '195px';
-const mobileHeight = '250px';
-
 const Header = styled.div`
   width: 100%;
-  height: ${desktopHeight};
+  min-height: 195px;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   ${media.smallerThanMinTablet`
-    height: ${mobileHeight};
+    min-height: 250px;
   `}
 `;
 
 const HeaderImageContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
+const HeaderImageContainerInner = styled.div`
   width: 100%;
   height: 100%;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  position: relative;
 `;
 
 const HeaderImage = styled.img`
@@ -66,11 +76,7 @@ const HeaderImageOverlay = styled.div`
 `;
 
 const HeaderContent = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,16 +84,23 @@ const HeaderContent = styled.div`
   padding-bottom: 20px;
   padding-left: 75px;
   padding-right: 75px;
+  z-index: 1;
 
   p {
     color: #fff;
     font-size: ${fontSizes.xxl}px;
-    line-height: 31px;
+    line-height: 33px;
     font-weight: 400;
+  }
 
-    &.center {
+  &.default {
+    p {
       text-align: center;
     }
+
+    ${media.smallerThanMinTablet`
+      align-items: center;
+    `}
   }
 
   ${media.smallerThanMaxTablet`
@@ -203,8 +216,8 @@ class SignedInHeader extends PureComponent<Props, State> {
     clHistory.push('/sign-up');
   }
 
-  handleSkipButtonClick = () => {
-
+  handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
+    dismissOnboardingCampaign(name);
   }
 
   handleSubmitButtonClick = () => {
@@ -212,7 +225,7 @@ class SignedInHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, className, onboardingCampaigns } = this.props;
+    const { locale, tenant, authUser, className, onboardingCampaigns, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
@@ -220,11 +233,13 @@ class SignedInHeader extends PureComponent<Props, State> {
       return (
         <Header className={className} id="hook-header">
           <HeaderImageContainer>
-            {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} />}
-            <HeaderImageOverlay />
+            <HeaderImageContainerInner>
+              {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} />}
+              <HeaderImageOverlay />
+            </HeaderImageContainerInner>
           </HeaderImageContainer>
 
-          <HeaderContent>
+          <HeaderContent className={onboardingCampaigns.name}>
             {/* First header state - complete profile */}
             {onboardingCampaigns.name === 'complete_profile' &&
               <>
@@ -242,15 +257,17 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <SkipButton
                     style="primary-outlined"
                     text={<FormattedMessage {...messages.doItLater} />}
-                    onClick={this.handleSkipButtonClick}
+                    onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                     borderColor="#fff"
                     textColor="#fff"
+                    size="2"
                   />
                   <AcceptButton
                     text={<FormattedMessage {...messages.completeProfile} />}
                     linkTo="/profile/edit"
                     bgColor="#fff"
-                    textColor={this.props.theme.colorMain}
+                    textColor={theme.colorMain}
+                    size="2"
                   />
                 </Right>
               </>
@@ -266,27 +283,20 @@ class SignedInHeader extends PureComponent<Props, State> {
                 </Left>
 
                 <Right>
-                  {/* TODO missing field in the backend
-                  <SkipButton
-                    style="primary-outlined"
-                    text={<T value={onboardingCampaigns.cta_button_multiloc} />}
-                    onClick={this.handleSkipButtonClick}
-                    borderColor="#fff"
-                    textColor="#fff"
-                  />
-                  */}
                   <SkipButton
                     style="primary-outlined"
                     text={<FormattedMessage {...messages.doItLater} />}
-                    onClick={this.handleSkipButtonClick}
+                    onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                     borderColor="#fff"
                     textColor="#fff"
+                    size="2"
                   />
                   <AcceptButton
                     text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                     linkTo={onboardingCampaigns.cta_button_link}
                     bgColor="#fff"
-                    textColor={this.props.theme.colorMain}
+                    textColor={theme.colorMain}
+                    size="2"
                   />
                 </Right>
               </>
@@ -294,7 +304,12 @@ class SignedInHeader extends PureComponent<Props, State> {
 
             {/* Third header state - default customizable message */}
             {onboardingCampaigns.name === 'default' &&
-              <T as="p" value={onboardingCampaigns.cta_message_multiloc} className="center" />
+              <>
+              {onboardingCampaigns.cta_message_multiloc
+                ? <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
+                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="p" values={{ firstName: authUser.attributes.first_name }}/>
+              }
+              </>
             }
           </HeaderContent>
         </Header>
