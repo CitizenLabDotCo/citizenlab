@@ -18,7 +18,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  geotaggedIdeas: IGeotaggedIdeaData[] | undefined| null;
+  geotaggedIdeas: IGeotaggedIdeaData[] | undefined | null;
 }
 
 export type GetGeotaggedIdeasChildProps = IGeotaggedIdeaData[] | undefined| null;

@@ -47,6 +47,7 @@ const customIcon = Leaflet.icon({
 interface Point extends GeoJSON.Point {
   data?: any;
   id: string;
+  title?: string;
 }
 
 interface DataMarkerOptions extends Leaflet.MarkerOptions {
@@ -195,7 +196,7 @@ class CLMap extends React.PureComponent<Props, State> {
 
       this.markers = compact(points).map((point) => {
         bounds.push([point.coordinates[1], point.coordinates[0]]);
-        return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id } as DataMarkerOptions));
+        return new Marker([point.coordinates[1], point.coordinates[0]] as [number, number], ({ ...this.markerOptions, data: point.data, id: point.id, title: point.title ? point.title : '' } as DataMarkerOptions));
       });
 
       if (bounds.length > 0) this.bounds$.next(new Leaflet.LatLngBounds(bounds));
