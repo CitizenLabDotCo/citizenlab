@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash-es';
 
 // components
 import FileAttachments from 'components/UI/FileAttachments';
+import ClearFix from 'components/ClearFix';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -74,7 +75,9 @@ class PhaseAbout extends PureComponent<Props, State> {
         return (
           <Container className={className}>
             <InformationBody>
-              <T value={phase.attributes.description_multiloc} supportHtml={true} />
+               <T value={phase.attributes.description_multiloc} supportHtml={true} />
+               {/* Have clearfix for aligned (floated) videos */}
+               <ClearFix />
             </InformationBody>
             {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
               <StyledFileAttachments files={phaseFiles} />

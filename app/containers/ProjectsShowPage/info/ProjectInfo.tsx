@@ -8,6 +8,7 @@ import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
 import FileAttachments from 'components/UI/FileAttachments';
+import ClearFix from 'components/ClearFix';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -122,6 +123,8 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
         <Left>
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
+            {/* Have clearfix for aligned (floated) videos */}
+            <ClearFix />
           </ProjectDescriptionStyled>
           {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />

@@ -151,6 +151,13 @@ const Container: any = styled.div`
     -webkit-appearance: none;
     .ql-editor {
       min-height: 300px;
+
+      // Clearfix for aligned/floating images (which are wrapped in p elements by Quill)
+      p:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
     }
     .ql-editor.ql-blank::before {
       color: #aaa;
