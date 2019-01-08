@@ -168,6 +168,7 @@ const CitizenlabLink = styled.a`
 `;
 
 const CitizenlabName = styled.span`
+  color: #000;
   white-space: nowrap;
   overflow: hidden;
   text-indent: -9999px;
