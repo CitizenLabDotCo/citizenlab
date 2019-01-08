@@ -1,14 +1,77 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 
+// dataloading
 import { isNilOrError } from 'utils/helperUtils';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
+// components
+import Icon from 'components/UI/Icon';
+import Author from 'components/Author';
+import Link from 'utils/cl-router/Link';
+
+// intl
 import T from 'components/T';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
+// styling
+import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
 const Container = styled.div`
-  padding: 20px;
-  width: 100%;
+  width: 300px;
+  height: 600px;
+  overflow: hidden;
+  padding: 10px;
+  padding-top: 30px;
+  border-radius: 5px;
+  border: 1px solid ${colors.adminBorder};
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  h4 {
+    font-size: ${fontSizes.medium}px;
+  }
+`;
+
+const TextContainer = styled.div`
+  overflow-y: auto;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  min-height: 0;
+`;
+const CloseIcon = styled(Icon)`
+  flex: 0 0 15px;
+  width: 15px;
+  fill: ${colors.mediumGrey};
+`;
+const StyledAuthor = styled(Author)`
+  margin-top: 25px;
+`;
+
+const CloseButton = styled.button`
+  height: 15px;
+  width: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  cursor: pointer;
+  top: 10px;
+  right: 10px;
+  outline: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    svg {
+      fill: ${colors.clBlueDark};
+    }
+  }
 `;
 
 interface DataProps {
@@ -18,26 +81,44 @@ interface DataProps {
 interface InputProps {
   ideaId: string;
   className?: string;
+  onClose: () => void;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
 class IdeaPane extends PureComponent<Props, State> {
+  trackLinkClick = () => {
+    const slug = !isNilOrError(this.props.idea) && this.props.idea.attributes.slug;
+    trackEventByName(tracks.clickIdeaOnMap.name, { extra: { slug } });
+  }
   render() {
-    const { idea, className } = this.props;
+    const { idea, className, onClose } = this.props;
 
-    if (isNilOrError(idea)) return <Container />;
+    if (isNilOrError(idea)) return null;
 
     return (
       <Container className={className}>
-        <h4>
-          <T value={idea.attributes.title_multiloc} />
-        </h4>
-        <p>
+        <CloseButton
+          onClick={onClose}
+        >
+          <CloseIcon name="close3" />
+        </CloseButton >
+
+        <Link to={`/ideas/${idea.attributes.slug}`} target="_blank" onClick={this.trackLinkClick}>
+          <T as="h4" value={idea.attributes.title_multiloc} />
+        </Link>
+
+        <StyledAuthor
+          authorId={idea.relationships.author.data ? idea.relationships.author.data.id : null}
+          createdAt={idea.attributes.published_at}
+          size="34px"
+          notALink
+        />
+        <TextContainer>
           <T value={idea.attributes.body_multiloc} supportHtml />
-        </p>
+        </TextContainer>
       </Container>
     );
   }

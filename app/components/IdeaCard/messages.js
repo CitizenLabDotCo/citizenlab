@@ -6,18 +6,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  byAuthorName: {
-    id: 'app.components.IdeaCard.byAuthorName',
-    defaultMessage: 'by {authorName}',
-  },
-  byAuthorNameComponent: {
-    id: 'app.components.IdeaCard.byAuthorNameComponent',
-    defaultMessage: 'by {authorNameComponent}',
-  },
-  byDeletedUser: {
-    id: 'app.components.IdeaCard.byDeletedUser',
-    defaultMessage: 'by {deletedUser}',
-  },
   deletedUser: {
     id: 'app.components.IdeaCard.deletedUser',
     defaultMessage: 'deleted user',

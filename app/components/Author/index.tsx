@@ -17,6 +17,7 @@ import { userByIdStream, IUser } from 'services/users';
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -68,12 +69,8 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-// typings
-import { Message } from 'typings';
-
 type Props = {
   authorId: string | null;
-  message: Message;
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
@@ -129,7 +126,7 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, message, size, notALink } = this.props;
+    const { authorId, createdAt, size, notALink } = this.props;
     const { author } = this.state;
 
     const authorNameComponent = notALink ? (
@@ -150,7 +147,7 @@ class Author extends React.PureComponent<Props, State> {
         <AuthorMeta>
           <AuthorNameContainer>
             <FormattedMessage
-              {...message}
+              {...messages.byAuthorNameComponent}
               values={{ authorNameComponent }}
             />
           </AuthorNameContainer>
