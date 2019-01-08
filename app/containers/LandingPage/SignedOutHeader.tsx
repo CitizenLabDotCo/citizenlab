@@ -133,7 +133,7 @@ const HeaderSubtitle: any = styled.h2`
   `}
 `;
 
-const SAvatarBubbles = styled(AvatarBubbles)`
+const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
 `;
 
@@ -143,7 +143,7 @@ const SignUpButton = styled(Button)`
   }
 `;
 
-const SIdeaButton = styled(IdeaButton)`
+const StyledIdeaButton = styled(IdeaButton)`
   display: none;
 
   ${media.smallerThanMinTablet`
@@ -198,22 +198,24 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <HeaderTitle hasHeader={hasHeaderImage}>
               {title}
             </HeaderTitle>
+
             <HeaderSubtitle hasHeader={hasHeaderImage}>
               {subtitle}
             </HeaderSubtitle>
-            <SAvatarBubbles />
-            {authUser &&
-              <SIdeaButton
+
+            <StyledAvatarBubbles />
+
+            {authUser ? (
+              <StyledIdeaButton style="primary-inverse" />
+            ) : (
+              <SignUpButton
                 style="primary-inverse"
+                fontWeight="500"
+                padding="15px 22px"
+                onClick={this.goToSignUpPage}
+                text={<FormattedMessage {...messages.createAccount} />}
               />
-            }
-            {!authUser && <SignUpButton
-              style="primary-inverse"
-              fontWeight="500"
-              padding="15px 22px"
-              onClick={this.goToSignUpPage}
-              text={<FormattedMessage {...messages.createAccount} />}
-            />}
+            )}
           </HeaderContent>
         </Header>
       );

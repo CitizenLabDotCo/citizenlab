@@ -82,5 +82,9 @@ export default defineMessages({
   doItLater: {
     id: 'app.containers.landing.doItLater',
     defaultMessage: `I'll do it later`,
+  },
+  defaultSignedInMessage: {
+    id: 'app.containers.landing.defaultSignedInMessage',
+    defaultMessage: `{firstName}, inspire change today!`,
   }
 });
