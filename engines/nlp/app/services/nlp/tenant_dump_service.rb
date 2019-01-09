@@ -6,7 +6,7 @@ module NLP
         {
           id: tenant.id,
           name: tenant.name,
-          osm_relation_id: tenant.settings.dig('maps', 'osm_relation_id')
+          osm_relation_id: tenant.settings.dig('maps', 'osm_relation_id'),
           locales: Tenant.settings('core', 'locales'),
           topics: encode_topics,
           ideas: encode_ideas,
