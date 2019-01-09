@@ -185,4 +185,9 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast. This may result in text that\'s hard to read. Choose a darker color to optimize readability.',
   },
+  welcomeText: {
+    id: 'app.components.AdminPage.SettingsPage.welcomeText',
+    defaultMessage: 'Welcome text',
+
+  }
 });

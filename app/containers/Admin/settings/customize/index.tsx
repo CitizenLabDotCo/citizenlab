@@ -404,6 +404,18 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             </StyledSectionField>
           </Section>
 
+          <Section key={'header'}>
+            <SectionTitle>
+              <FormattedMessage {...messages.welcomeText} />
+            </SectionTitle>
+
+            <SectionField key={'header_bg'}>
+              <Label>
+                <FormattedMessage {...messages['header_bg']} />
+              </Label>
+            </SectionField>
+          </Section>
+
           <SubmitWrapper
             loading={this.state.loading}
             status={getSubmitState({ errors, saved, diff: attributesDiff })}
