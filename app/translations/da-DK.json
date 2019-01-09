@@ -495,6 +495,7 @@
   "app.containers.AdminPage.ProjectEdit.ideation": "Idésamling",
   "app.containers.AdminPage.ProjectEdit.information": "Information",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrænset",
+  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Kortvisning",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Moderationsrettigheder giver nogen der ikke er administrator, rettigheder til at ændre projektindstillingerne og moderere ideer og kommentarer som hører til projektet. Administratorer har altid moderationsrettigheder for alle projekter.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Hvem kan moderere dette projekt?",
