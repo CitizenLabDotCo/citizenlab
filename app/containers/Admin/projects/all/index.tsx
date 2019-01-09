@@ -203,26 +203,36 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 {/* </FeatureFlag> */}
               </ListHeader>
               <HasPermission item="projects" action="reorder">
-                <SortableList
-                  items={publishedProjects}
-                  onReorder={this.handleReorder}
-                  className="e2e-admin-projects-list"
-                >
-                  {({ itemsList, handleDragRow, handleDropRow }) => (
-                    itemsList.map((project: IProjectData, index: number) => (
-                      <SortableRow
-                        key={project.id}
-                        id={project.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === publishedProjects.length - 1)}
-                      >
+                {manualProjectSorting ?
+                  <SortableList
+                    items={publishedProjects}
+                    onReorder={this.handleReorder}
+                    className="e2e-admin-projects-list"
+                  >
+                    {({ itemsList, handleDragRow, handleDropRow }) => (
+                      itemsList.map((project: IProjectData, index: number) => (
+                        <SortableRow
+                          key={project.id}
+                          id={project.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={(index === publishedProjects.length - 1)}
+                        >
+                          {row(project)}
+                        </SortableRow>
+                      ))
+                    )}
+                  </SortableList>
+                  :
+                  <List>
+                    {publishedProjects.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
                         {row(project)}
-                      </SortableRow>
-                    ))
-                  )}
-                </SortableList>
+                      </Row>
+                    ))}
+                  </List>
+                }
                 <HasPermission.No>
                   <List>
                     {publishedProjects.map((project, index) => (
