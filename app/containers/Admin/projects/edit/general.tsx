@@ -652,6 +652,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="draft"
                 name="projectstatus"
                 id="projecstatus-draft"
+                className="e2e-projecstatus-draft"
                 label={<FormattedMessage {...messages.draftStatus} />}
               />
               <Radio
@@ -660,6 +661,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="published"
                 name="projectstatus"
                 id="projecstatus-published"
+                className="e2e-projecstatus-published"
                 label={<FormattedMessage {...messages.publishedStatus} />}
               />
               <Radio
@@ -668,6 +670,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="archived"
                 name="projectstatus"
                 id="projecstatus-archived"
+                className="e2e-projecstatus-archived"
                 label={<FormattedMessage {...messages.archivedStatus} />}
               />
             </SectionField>
@@ -763,11 +766,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 value="selection"
                 name="areas"
                 id="areas-selection"
+                className="e2e-areas-selection"
                 label={<FormattedMessage {...messages.areasSelectionLabel} />}
               />
 
               {areaType === 'selection' &&
                 <MultipleSelect
+                  id="e2e-area-selector"
                   options={areasOptions}
                   value={areasValues}
                   onChange={this.handleAreaSelectionChange}
