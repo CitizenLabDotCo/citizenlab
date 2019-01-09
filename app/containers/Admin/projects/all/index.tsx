@@ -23,6 +23,7 @@ import Toggle from 'components/UI/Toggle';
 
 // style
 import styled from 'styled-components';
+import FeatureFlag from 'components/FeatureFlag';
 
 const ListHeader = styled.div`
   display: flex;
@@ -45,7 +46,15 @@ const ListHeaderTitle = styled.h3`
   margin: 0;
 `;
 
-const ToggleLabel = styled.label``;
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ToggleLabel = styled.label`
+  font-size: ${fontSizes.base}px;
+  margin-right: 15px;
+`;
 
 const RowContent = styled.div`
   flex: 1;
@@ -179,15 +188,19 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <ListHeader className="marginTop">
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
-                  <Toggle
-                    id="manual-sorting-toggle"
-                    value={manualProjectSorting}
-                    onChange={this.handleToggleManualProjectSorting}
-                  />
-                  <ToggleLabel htmlFor="manual-sorting-toggle">
-                    {}
-                  </ToggleLabel>
                 </ListHeaderTitle>
+                {/* <FeatureFlag name="manual_project_sorting"> */}
+                  <ToggleWrapper>
+                    <ToggleLabel htmlFor="manual-sorting-toggle">
+                      <FormattedMessage {...messages.manualSortingProjects} />
+                    </ToggleLabel>
+                    <Toggle
+                      id="manual-sorting-toggle"
+                      value={manualProjectSorting}
+                      onChange={this.handleToggleManualProjectSorting}
+                    />
+                  </ToggleWrapper>
+                {/* </FeatureFlag> */}
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 <SortableList

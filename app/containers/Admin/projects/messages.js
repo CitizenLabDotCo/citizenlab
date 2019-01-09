@@ -313,4 +313,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  manualSortingProjects: {
+    id: 'app.containers.AdminPage.ProjectEdit.manualSortingProjects',
+    defaultMessage: 'Manually sort projects',
+  }
 });
