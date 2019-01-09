@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  permissionsTitle: {
-    id: 'app.containers.admin.project.permissions.permissionsTitle',
-    defaultMessage: 'Access',
+  titlePermissions: {
+    id: 'app.containers.admin.project.permissions.titlePermissions',
+    defaultMessage: 'Manage permissions',
   },
-  permissionsSubtitle: {
-    id: 'app.containers.admin.project.permissions.permissionsSubtitle',
-    defaultMessage: 'People that can access this project',
+  subtitlePermissions: {
+    id: 'app.containers.admin.project.permissions.subtitlePermissions',
+    defaultMessage: 'Define who can view the project and who can manage it as a project moderator. Also, granular participation rights can be assigned. Contact support@citizenlab.co if you require this.',
   },
   permissionTypeLabel: {
     id: 'app.containers.admin.project.permissions.permissionTypeLabel',

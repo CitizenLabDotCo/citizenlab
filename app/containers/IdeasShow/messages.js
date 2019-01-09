@@ -322,4 +322,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.showOriginalComment',
     defaultMessage: 'Show original comment',
   },
+  similarIdeas: {
+    id: 'app.components.IdeasShow.similarIdeas',
+    defaultMessage: 'Similar ideas',
+  },
 });

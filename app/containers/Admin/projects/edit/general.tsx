@@ -16,7 +16,7 @@ import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from './participationContext';
 import HasPermission from 'components/HasPermission';
 
@@ -149,8 +149,8 @@ interface State {
   project: IProject | null;
   publicationStatus: 'draft' | 'published' | 'archived';
   projectType: 'continuous' | 'timeline';
-   projectAttributesDiff: IUpdatedProjectProperties;
-  headerBg: UploadFile[] | null;
+  projectAttributesDiff: IUpdatedProjectProperties;
+  projectHeaderImage: UploadFile[] | null;
   presentationMode: 'map' | 'card';
   projectImages: UploadFile[];
   projectImagesToRemove: UploadFile[];
@@ -183,7 +183,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       publicationStatus: 'published',
       projectType: 'timeline',
       projectAttributesDiff: {},
-      headerBg: null,
+      projectHeaderImage: null,
       presentationMode: 'card',
       projectImages: [],
       projectImagesToRemove: [],
@@ -255,7 +255,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         switchMap((project) => {
           if (project) {
             const headerUrl = project.data.attributes.header_bg.large;
-            const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
+            const projectHeaderImage$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
             const projectFiles$ = (project ? projectFilesStream(project.data.id).observable.pipe(
               switchMap((projectFiles) => {
@@ -291,13 +291,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
             return combineLatest(
               this.processing$,
-              headerBg$,
+              projectHeaderImage$,
               projectFiles$,
               projectImages$
             ).pipe(
               rxFilter(([processing]) => !processing),
-              map(([_processing, headerBg, projectFiles, projectImages]) => ({
-                headerBg,
+              map(([_processing, projectHeaderImage, projectFiles, projectImages]) => ({
+                projectHeaderImage,
                 projectFiles,
                 projectImages
               }))
@@ -305,17 +305,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           }
 
           return of({
-            headerBg: null,
+            projectHeaderImage: null,
             projectFiles: [],
             projectImages: []
           });
         })
-      ).subscribe(({ headerBg, projectFiles, projectImages }) => {
+      ).subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
         if (!this.state.processingDelete) {
           this.setState({
             projectFiles,
             projectImages,
-            headerBg: (headerBg ? [headerBg] : null)
+            projectHeaderImage: (projectHeaderImage ? [projectHeaderImage] : null)
           });
         }
       }),
@@ -378,7 +378,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         ...projectAttributesDiff,
         header_bg: newHeader.base64
       },
-      headerBg: [newHeader]
+      projectHeaderImage: [newHeader]
     }));
   }
 
@@ -389,7 +389,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         ...projectAttributesDiff,
         header_bg: null
       },
-      headerBg: null
+      projectHeaderImage: null
     }));
   }
 
@@ -611,7 +611,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       projectType,
       noTitleError,
       project,
-      headerBg,
+      projectHeaderImage,
       projectImages,
       projectFiles,
       loading,
@@ -636,6 +636,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       return (
         <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleGeneral} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleGeneral} />
+            </SectionSubtitle>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
@@ -705,7 +711,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 </>
               ) : (
                   <>
-                    <ProjectType>{projectType}</ProjectType>
+                    <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
                 )}
 
@@ -776,7 +782,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.headerImageLabel} />
               </Label>
               <StyledImagesDropzone
-                images={headerBg}
+                images={projectHeaderImage}
                 imagePreviewRatio={120 / 480}
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxImageFileSize={5000000}

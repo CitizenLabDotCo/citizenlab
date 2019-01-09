@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.widgets.title',
     defaultMessage: 'Widgets',
   },
+  titleWidgets: {
+    id: 'app.containers.AdminPage.widgets.titleWidgets',
+    defaultMessage: 'Widgets',
+  },
+  subtitleWidgets: {
+    id: 'app.containers.AdminPage.widgets.subtitleWidgets',
+    defaultMessage: 'Generate as many widgets as you like, and add the html-code to your website.',
+  },
   titleIdeaContent: {
     id: 'app.containers.AdminPage.widgets.titleIdeaContent',
     defaultMessage: 'Idea Content',

@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  guide: {
+    id: 'app.containers.AdminPage.SideBar.guide',
+    defaultMessage: 'Guide',
+  },
   dashboard: {
     id: 'app.containers.AdminPage.SideBar.dashboard',
     defaultMessage: 'Dashboard',

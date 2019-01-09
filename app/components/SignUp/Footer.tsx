@@ -58,6 +58,11 @@ const AuthProviderButtons = styled.div`
   flex-direction: column;
 `;
 
+const FranceConnectButton = styled.div`
+  cursor: pointer;
+  margin-top: 10px;
+`;
+
 const SocialSignUpText = styled.div`
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
@@ -171,7 +176,6 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   {formatMessage(messages.orSignUpWith)}
                 </SocialSignUpText>
               }
-
               <AuthProviderButtons>
                 <FeatureFlag name="azure_ad_login">
                   <AuthProviderButton
@@ -185,15 +189,12 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   />
                 </FeatureFlag>
                 <FeatureFlag name="franceconnect_login">
-                  <AuthProviderButton
-                    logoUrl={franceconnectLogoUrl}
-                    logoHeight="45px"
-                    provider="franceconnect"
-                    providerName="France Connect"
-                    onAccept={this.handleOnAccept('franceconnect')}
-                    acceptText={messages.acceptTermsAndConditions}
-                    altText={messages.signUpButtonAltText}
-                  />
+                  <FranceConnectButton role="button" onClick={this.handleOnAccept('franceconnect')}>
+                    <img
+                      src={franceconnectLogoUrl}
+                      alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
+                    />
+                  </FranceConnectButton>
                   <SubSocialButtonLink
                     href="https://app.franceconnect.gouv.fr/en-savoir-plus"
                     target="_blank"
