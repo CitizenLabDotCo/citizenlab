@@ -121,10 +121,10 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
         />
         <Dropdown
           width="300px"
-          mobileWidth="300px"
+          mobileWidth="220px"
           top="40px"
           right="-5px"
-          mobileRight="-5px"
+          mobileRight="-15px"
           opened={dropdownOpened}
           onClickOutside={this.toggleDropdown}
           content={(

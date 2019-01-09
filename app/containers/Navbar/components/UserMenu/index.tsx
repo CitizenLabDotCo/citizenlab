@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // components
@@ -33,7 +33,7 @@ const Container = styled.div`
 
 const StyledUserName = styled(UserName)`
   color: ${(props: any) => props.theme.colorText};
-  margin-right: 8px;
+  margin-right: 7px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -59,6 +59,8 @@ const OpenDropdownButton = styled.button`
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  padding: 0px;
+  margin: 0px;
 
   &:hover,
   &:focus {
@@ -97,7 +99,7 @@ type State = {
   opened: boolean;
 };
 
-export default class UserMenu extends React.PureComponent<Props, State> {
+export default class UserMenu extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -157,8 +159,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             id="e2e-user-menu-dropdown"
             width="220px"
             mobileWidth="220px"
-            top="62px"
-            right="-5px"
+            top="64px"
+            right="-17px"
             mobileRight="-5px"
             opened={opened}
             onClickOutside={this.toggleDropdown}

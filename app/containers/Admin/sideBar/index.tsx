@@ -239,7 +239,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
           <Spacer />
           <GetStartedLink href={formatMessage({ ...messages.gettingStartedLink })} target="blank">
             <IconWrapper><Icon name="circleInfo" /></IconWrapper>
-            <Text><b>{formatMessage({ ...messages.gettingStarted })}</b></Text>
+            <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
           </GetStartedLink>
         </MenuInner>
       </Menu>
