@@ -9,7 +9,7 @@
       "core": {
         "type": "object",
         "description": "The core of the system. Container for general settings. Always enabled",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text"],
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -84,25 +84,19 @@
             "description": "The main brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#2E3E90"
           },
           "color_secondary": {
             "description": "The secondary brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#18853B"
           },
           "color_text": {
             "description": "The text brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
-          },
-          "color_header_overlay": {
-            "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#BF502F"
           },
           "signup_helper_text": {
             "description": "An optional short text, shown on top of the sign up form. Keep it short. Supports HTML",
