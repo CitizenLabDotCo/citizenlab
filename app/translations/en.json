@@ -495,6 +495,7 @@
   "app.containers.AdminPage.ProjectEdit.ideation": "Idea collection",
   "app.containers.AdminPage.ProjectEdit.information": "Information",
   "app.containers.AdminPage.ProjectEdit.limited": "Limited",
+  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "Manually sort projects",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Map View",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Moderation rights grant somebody who's not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who can moderate this project?",

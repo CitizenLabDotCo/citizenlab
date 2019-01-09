@@ -495,6 +495,7 @@
   "app.containers.AdminPage.ProjectEdit.ideation": "Ideeën verzamelen, reageren en/of stemmen",
   "app.containers.AdminPage.ProjectEdit.information": "Info",
   "app.containers.AdminPage.ProjectEdit.limited": "Beperkt",
+  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Op kaart",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Door hier moderatorrechten te geven aan iemand die geen beheerder is van het platform, geef je die persoon het recht om de settings van alleen dit project te beheren en om ideeën te beheren binnen enkel dit project. Alleen Beheerders hebben moderatorrechten in alle projecten op het platform.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Wie heeft moderatorrechten voor dit project? ",
