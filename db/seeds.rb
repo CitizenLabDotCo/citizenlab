@@ -135,6 +135,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed:true
       },
+      manual_project_sorting: {
+        enabled: true,
+        allowed: true
+      },
       private_projects: {
         enabled: true,
         allowed: true
