@@ -44,6 +44,16 @@ class SingleSignOnService
 
       user_attrs
     end
+
+    private
+    
+    def image_available? img_url_s
+      img_url = URI.parse(img_url_s)
+      req = Net::HTTP.new(img_url.host, img_url.port)
+      req.use_ssl = true
+      res = req.request_head(img_url.path)
+      res.code != '404'
+    end
   end
 
   class AzureActiveDirectory
@@ -177,13 +187,6 @@ class SingleSignOnService
 
   private
 
-  def image_available? img_url_s
-    img_url = URI.parse(img_url_s)
-    req = Net::HTTP.new(img_url.host, img_url.port)
-    req.use_ssl = true
-    res = req.request_head(img_url.path)
-    res.code != '404'
-  end
 
 
 

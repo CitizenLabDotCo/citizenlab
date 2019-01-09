@@ -51,9 +51,7 @@ class UserPolicy < ApplicationPolicy
   def permitted_attributes
     shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
     if user && user.admin?
-      shared + [roles: [:type, :project_id]]
-    else
-      shared
+      shared += [roles: [:type, :project_id]]
     end
     unchangeable_attributes = SingleSignOnService.new.attributes_user_cant_change(user)
     shared - unchangeable_attributes
