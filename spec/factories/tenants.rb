@@ -18,7 +18,9 @@ FactoryBot.define do
           "timezone" => "Europe/Brussels",
           "currency" => "EUR",
           "locales" => ["en","nl-BE","fr-FR"],
-          "color_main" => "#335533"
+          "color_main" => "#335533",
+          "color_secondary" => Faker::Color.hex_color,
+          "color_text" => Faker::Color.hex_color,
         }
       }
     }
@@ -42,7 +44,9 @@ FactoryBot.define do
           "locales" => ["en","fr-FR","nl-NL"],
           "timezone" => "Europe/Brussels",
           "currency" => "EUR",
-          "color_main" => "#335533"
+          "color_main" => "#335533",
+          "color_secondary" => Faker::Color.hex_color,
+          "color_text" => Faker::Color.hex_color,
         }
       }
     }
