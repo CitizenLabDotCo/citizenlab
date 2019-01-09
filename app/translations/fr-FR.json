@@ -1,5 +1,6 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "ATTENTION : la couleur que vous avez sélectionné n’est pas assez contrastée. Cela peut entraîner des problèmes de lecture. Choisissez une couleur plus foncée pour optimiser la lisibilité.",
+  "app.components.AdminPage.SettingsPage.welcomeText": "",
   "app.components.AssignBudgetControl.assign": "Attribuer",
   "app.components.AssignBudgetControl.assigned": "Attribué",
   "app.components.AssignBudgetControl.seeIdea": "Voir l'idée",

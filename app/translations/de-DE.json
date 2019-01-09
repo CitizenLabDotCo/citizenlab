@@ -1,5 +1,6 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Achtung: der Kontrast der Farbe, die Sie ausgewählt haben, ist nicht hoch genug. Dies könnte dazu führen, dass der Text schwer zu lesen ist. Wählen Sie eine dunklere Farbe um die Lesbarkeit zu optimieren.",
+  "app.components.AdminPage.SettingsPage.welcomeText": "",
   "app.components.AssignBudgetControl.assign": "Assign",
   "app.components.AssignBudgetControl.assigned": "Assigned",
   "app.components.AssignBudgetControl.seeIdea": "See idea",
