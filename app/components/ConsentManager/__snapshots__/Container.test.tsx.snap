@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConsentManager /> renders correctly when no cookie is set (destinations = newDestinations) 1`] = `
+<Fragment>
+  <ModalWithTracks
+    close={[Function]}
+    fixedHeight={false}
+    label="Your cookie preferences"
+    opened={false}
+  >
+    <PreferencesDialog
+      advertising={null}
+      analytics={null}
+      categoryDestinations={
+        Object {
+          "advertising": Array [
+            Object {
+              "category": "Advertising",
+              "description": "Advertising BS",
+              "id": "AdvertisingTool",
+              "name": "AdvertisingTool",
+              "website": "http://random.com/advertising",
+            },
+          ],
+          "analytics": Array [
+            Object {
+              "category": "Analytics",
+              "description": "Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+              "id": "Google Analytics",
+              "name": "Google Analytics",
+              "website": "http://google.com/analytics",
+            },
+            Object {
+              "category": "Tag Managers",
+              "description": "MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+              "id": "MarketingTool",
+              "name": "MarketingTool",
+              "website": "http://random.com/marketing",
+            },
+          ],
+          "functional": Array [
+            Object {
+              "category": "Security & Fraud",
+              "description": "Actually might be handy",
+              "id": "FunctionalTool",
+              "name": "FunctionalTool",
+              "website": "http://random.com/securitycookie",
+            },
+          ],
+        }
+      }
+      functional={null}
+      onCancel={[Function]}
+      onChange={[Function]}
+      onSave={[Function]}
+    />
+  </ModalWithTracks>
+  <Banner
+    onAccept={[Function]}
+    onChangePreferences={[Function]}
+  />
+</Fragment>
+`;
+
+exports[`<ConsentManager /> renders correctly when there is no new destination 1`] = `
+<Fragment>
+  <ModalWithTracks
+    close={[Function]}
+    fixedHeight={false}
+    label="Your cookie preferences"
+    opened={false}
+  >
+    <PreferencesDialog
+      advertising={true}
+      analytics={false}
+      categoryDestinations={
+        Object {
+          "advertising": Array [
+            Object {
+              "category": "Advertising",
+              "description": "Advertising BS",
+              "id": "AdvertisingTool",
+              "name": "AdvertisingTool",
+              "website": "http://random.com/advertising",
+            },
+          ],
+          "analytics": Array [
+            Object {
+              "category": "Analytics",
+              "description": "Google Analytics is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+              "id": "Google Analytics",
+              "name": "Google Analytics",
+              "website": "http://google.com/analytics",
+            },
+            Object {
+              "category": "Tag Managers",
+              "description": "MarketingTool is the most popular marketing tool for the web. It’s free and provides a wide range of features. It’s especially good at measuring traffic sources and ad campaigns.",
+              "id": "MarketingTool",
+              "name": "MarketingTool",
+              "website": "http://random.com/marketing",
+            },
+          ],
+          "functional": Array [
+            Object {
+              "category": "Security & Fraud",
+              "description": "Actually might be handy",
+              "id": "FunctionalTool",
+              "name": "FunctionalTool",
+              "website": "http://random.com/securitycookie",
+            },
+          ],
+        }
+      }
+      functional={false}
+      onCancel={[Function]}
+      onChange={[Function]}
+      onSave={[Function]}
+    />
+  </ModalWithTracks>
+</Fragment>
+`;
+
+exports[`<ConsentManager /> renders correctly when there is no tracking destination 1`] = `
+<Fragment>
+  <ModalWithTracks
+    close={[Function]}
+    fixedHeight={false}
+    label="Your cookie preferences"
+    opened={false}
+  >
+    <PreferencesDialog
+      advertising={null}
+      analytics={null}
+      categoryDestinations={
+        Object {
+          "advertising": Array [],
+          "analytics": Array [],
+          "functional": Array [],
+        }
+      }
+      functional={null}
+      onCancel={[Function]}
+      onChange={[Function]}
+      onSave={[Function]}
+    />
+  </ModalWithTracks>
+</Fragment>
+`;

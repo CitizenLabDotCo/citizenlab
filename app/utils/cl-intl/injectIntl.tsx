@@ -5,6 +5,7 @@ import { currentTenantStream } from 'services/tenant';
 import { injectIntl as originalInjectIntl, InjectedIntlProps, InjectIntlConfig } from 'react-intl';
 import { localeStream } from 'services/locale';
 import { getLocalized } from 'utils/i18n';
+import { getDisplayName } from 'utils/helperUtils';
 
 type State = {
   tenantName: string | null;
@@ -75,8 +76,4 @@ function buildComponent<P>(Component: React.ComponentType<P & InjectedIntlProps>
 
 export default function injectIntl<P>(component: React.ComponentType<P & InjectedIntlProps>, options?: InjectIntlConfig) {
   return originalInjectIntl<P & InjectedIntlProps>(buildComponent<P & InjectedIntlProps>(component), options);
-}
-
-function getDisplayName(Component) {
-  return Component.displayName || Component.name || 'Component';
 }

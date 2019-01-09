@@ -34,7 +34,7 @@ interface State {
   isCancelling: boolean;
 }
 
-class Container extends PureComponent<Props & InjectedIntlProps, State> {
+export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -149,7 +149,6 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
         categoryDestinations.analytics.push(destination);
       }
     }
-
     return (
       <>
         <Modal

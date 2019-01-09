@@ -35,3 +35,7 @@ export function getFormattedBudget(locale: Locale, budget: number, currency: str
     maximumFractionDigits: 0
   }).format(budget);
 }
+
+export function getDisplayName(Component) {
+  return Component.displayName || Component.name || 'Component';
+}
