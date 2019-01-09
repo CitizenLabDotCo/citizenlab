@@ -20,7 +20,6 @@ import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Toggle from 'components/UI/Toggle';
-import Label from 'components/UI/Label';
 
 // style
 import styled from 'styled-components';
