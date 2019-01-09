@@ -3,7 +3,8 @@ import React from 'react';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import IdeaManager from 'components/admin/IdeaManager';
-import IdeaButton from 'components/IdeaButton';
+// import IdeaButton from 'components/IdeaButton';
+import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,25 +15,25 @@ import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
 
 // styling
-import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+// import styled from 'styled-components';
+// import { fontSizes } from 'utils/styleUtils';
 
-const HeaderContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 30px;
-`;
+// const HeaderContainer = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 0;
+//   margin: 0;
+//   margin-bottom: 30px;
+// `;
 
-const HeaderTitle = styled.h1`
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 40px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-`;
+// const HeaderTitle = styled.h1`
+//   font-size: ${fontSizes.xxxl}px;
+//   line-height: 40px;
+//   font-weight: 600;
+//   padding: 0;
+//   margin: 0;
+// `;
 
 interface Props {}
 
@@ -85,12 +86,23 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
   render() {
     return (
       <>
+        {/*
         <HeaderContainer>
           <HeaderTitle>
             <FormattedMessage {...messages.header} />
           </HeaderTitle>
           <IdeaButton />
         </HeaderContainer>
+        */}
+
+        <PageTitle>
+          <FormattedMessage {...messages.header} />
+        </PageTitle>
+
+        <SectionSubtitle>
+          <FormattedMessage {...messages.headerSubtitle} />
+        </SectionSubtitle>
+
         <PageWrapper>
           <IdeaManager />
         </PageWrapper>

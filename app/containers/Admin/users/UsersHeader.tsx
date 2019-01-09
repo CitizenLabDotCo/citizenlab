@@ -20,17 +20,27 @@ import tracks from './tracks';
 // Styling
 import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const gutter = '.5rem';
 
 const TitleWrapper = styled.div`
-  min-height: 95px;
+  min-height: 105px;
+  h2 {
+    margin: 10px;
+    margin-bottom: 30px !important;
+    margin-top: 20px;
+    color: ${colors.adminSecondaryTextColor};
+    font-size: ${fontSizes.base}px;
+    font-weight: 400;
+  }
+`;
+
+const FirstRow = styled.div`
   align-items: flex-start;
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
-  margin-bottom: 10px;
   margin-left: -${gutter};
   margin-right: -${gutter};
 
@@ -38,6 +48,11 @@ const TitleWrapper = styled.div`
     padding-left: ${gutter};
     padding-right: ${gutter};
   }
+`;
+
+const OnlyRow = styled(FirstRow)`
+  min-height: 105px;
+  margin-bottom: 30px;
 `;
 
 const TitleIcon = styled(Icon)`
@@ -48,7 +63,7 @@ const TitleIcon = styled(Icon)`
   }
 
   .cl-icon-background {
-    fill ${rgba(colors.adminOrangeIcons, .1)}
+    fill: ${rgba(colors.adminOrangeIcons, .1)};
   }
 `;
 
@@ -117,8 +132,8 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
 
   render() {
     if (this.props.title) {
-    return (
-        <TitleWrapper>
+      return (
+        <OnlyRow>
           {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
           <TextAndButtons>
             <T as="h1" value={this.props.title} />
@@ -129,16 +144,19 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
           </TextAndButtons>
           <Spacer />
           <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} onFocus={this.focusSearch} />
-        </TitleWrapper>
+        </OnlyRow>
       );
     }
     return (
       <TitleWrapper>
-        <TextAndButtons>
-          <FormattedMessage tagName="h1" {...messages.allUsers} />
-        </TextAndButtons>
-        <Spacer />
-        <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />
+        <FirstRow>
+          <TextAndButtons>
+            <FormattedMessage tagName="h1" {...messages.allUsers} />
+          </TextAndButtons>
+          <Spacer />
+          <StyledSearch value={this.state.searchValue} onChange={this.handleSearchChange} />
+        </FirstRow>
+        <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>
     );
   }

@@ -68,5 +68,13 @@ export default defineMessages({
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEvents.fileUploadLabel',
     defaultMessage: 'Add files to this event',
-  }
+  },
+  titleEvents: {
+    id: 'app.containers.AdminPage.ProjectEvents.titleEvents',
+    defaultMessage: 'Manage events',
+  },
+  subtitleEvents: {
+    id: 'app.containers.AdminPage.ProjectEvents.subtitleEvents',
+    defaultMessage: 'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
+  },
 });
