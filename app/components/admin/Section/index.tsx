@@ -29,6 +29,7 @@ export const SectionSubtitle = styled.p`
   margin-bottom: ${remCalc(45)};
   font-weight: 400;
   max-width: 60em;
+
   ${SectionTitle} + &{
     margin-top: -2rem;
   }

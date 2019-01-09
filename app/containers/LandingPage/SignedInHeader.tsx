@@ -36,9 +36,9 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
 
-  ${media.smallerThanMinTablet`
+  /* ${media.smallerThanMinTablet`
     min-height: 250px;
-  `}
+  `} */
 `;
 
 const HeaderImageContainer = styled.div`

@@ -254,43 +254,23 @@ const Right = styled.div`
 `;
 
 const RightItem: any = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  margin-left: 40px;
 
-  &.signup {
-    padding: 0;
+  &.noLeftMargin {
+    margin-left: 0px;
   }
 
-  &.notification {
-    ${media.smallerThanMinTablet`
-      display: none;
-    `}
+  &.languageselector.notLoggedIn {
+    margin-left: 20px;
   }
 
-  &.usermenu,
-  &.notification {
-    padding: 0 15px;
-  }
-
-  &.usermenu {
-    ${media.smallerThanMinTablet`
-      padding: 0 5px;
-    `}
-  }
-
-  &.languageselector {
-    padding-left: 30px;
-
-    ${media.smallerThanMinTablet`
-      padding-left: 15px;
-    `}
-
-    ${media.phone`
-      padding-left: 12px;
-    `}
-  }
+  ${media.smallerThanMinTablet`
+    margin-left: 30px;
+  `}
 `;
 
 const LogInLink = NavigationItem.extend`
@@ -301,10 +281,6 @@ const LogInLink = NavigationItem.extend`
 
   ${media.smallerThanMinTablet`
     padding: 0 15px;
-  `}
-
-  ${media.phone`
-    padding: 0 12px;
   `}
 `;
 
@@ -428,8 +404,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
                   <Dropdown
-                    top="68px"
-                    left="-5px"
+                    top="64px"
+                    left="10px"
                     opened={projectsDropdownOpened}
                     onClickOutside={this.toggleProjectsDropdown}
                     content={(
@@ -471,7 +447,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
           <Right>
             {!authUser &&
 
-              <RightItem className="login">
+              <RightItem className="login noLeftMargin">
                 <LogInLink
                   id="e2e-login-link"
                   to="/sign-in"
@@ -484,7 +460,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {!authUser &&
-              <RightItem onClick={this.trackSignUpLinkClick} className="signup">
+              <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
                 <SignUpLink
                   to="/sign-up"
                 >
@@ -508,7 +484,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className="languageselector">
+              <RightItem className={`languageselector ${!authUser ? 'notLoggedIn' : ''}`}>
                 <LanguageSelector />
               </RightItem>
             }
