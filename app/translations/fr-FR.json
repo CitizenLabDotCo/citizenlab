@@ -495,6 +495,7 @@
   "app.containers.AdminPage.ProjectEdit.ideation": "Idéation",
   "app.containers.AdminPage.ProjectEdit.information": "Information",
   "app.containers.AdminPage.ProjectEdit.limited": "Limité",
+  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Carte",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Les droits de modérations autorisent quelqu'un qui n'est pas Administrateur à modifier les paramètres du projet, ainsi que modérer les idées et commentaires qui en font partie. Les Administrateurs ont toujours les droits de modération sur tous les projets.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Qui peut modérer ce projet ?",
