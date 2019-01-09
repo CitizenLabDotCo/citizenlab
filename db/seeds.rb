@@ -188,6 +188,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
       machine_translations: {
         enabled: true,
         allowed: true
+      },
+      similar_ideas: {
+        enabled: true,
+        allowed: true
       }
     }
   })
