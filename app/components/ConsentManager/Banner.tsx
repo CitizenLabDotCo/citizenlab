@@ -130,13 +130,14 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           </div>
           <Spacer />
           <ButtonContainer>
-            <Button style="admin-dark" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
+            <Button style="admin-dark" className="integration-open-modal" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
             <Button className="e2e-accept-cookies-btn" style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
           </ButtonContainer>
         </StyledContentContainer>
 
         <CloseButton
           type="button"
+          className="integration-button-close"
           title={formatMessage(messages.ariaButtonClose)}
           aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
