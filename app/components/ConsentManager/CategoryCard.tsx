@@ -91,7 +91,6 @@ interface Props {
   category: string;
   destinations: IDestination[];
   checked: boolean;
-  onChange: (category: string, value: boolean) => void;
   handleChange: (e: FormEvent<HTMLInputElement>) => (void);
 }
 
