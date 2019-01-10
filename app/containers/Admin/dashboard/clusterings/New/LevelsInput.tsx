@@ -81,8 +81,8 @@ class FormikInput extends PureComponent<FieldProps<TLevel[]>, State> {
           </Level>
         ))}
         <AddLevel key="new-level" depth={value.length + 1}>
-          {this.availableLevels().map(level => (
-            <AddButton onClick={this.handleAddLevel(level)} style="secondary-outlined" size="1" icon="add">
+          {this.availableLevels().map((level, index) => (
+            <AddButton key={`level_${level}_${index}`} onClick={this.handleAddLevel(level)} style="secondary-outlined" size="1" icon="add">
               <FormattedMessage {...messages[`level_${level}`]} />
             </AddButton>
           ))}
