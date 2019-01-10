@@ -1,7 +1,7 @@
 import loadAndRender from 'utils/loadAndRender';
 
 export default () => ({
-  path: 'clusterings',
+  path: 'insights',
   getComponent: loadAndRender(import('./')),
   indexRoute: {
     getComponent: loadAndRender(import('./All')),
@@ -10,10 +10,6 @@ export default () => ({
     {
       path: 'new',
       getComponent: loadAndRender(import('./New')),
-    },
-    {
-      path: ':clusteringId',
-      getComponent: loadAndRender(import('./Edit')),
     },
   ],
 });

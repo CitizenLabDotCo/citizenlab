@@ -12,7 +12,6 @@ import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
-import clusteringsRoutes from './clusterings/routes';
 import emailsRoutes from './emails/routes';
 
 import { hasPermission } from 'services/permissions';
@@ -51,12 +50,15 @@ export default () => ({
     settingsRoutes(),
     settingsAreasRoutes(),
     pagesRoutes(),
-    clusteringsRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
     {
       path: 'favicon',
       getComponent: loadAndRender(import('containers/Admin/favicon')),
+    },
+    {
+      path: 'dashboard/insights/:clusteringId',
+      getComponent: loadAndRender(import('./dashboard/clusterings/Show')),
     },
   ],
 });

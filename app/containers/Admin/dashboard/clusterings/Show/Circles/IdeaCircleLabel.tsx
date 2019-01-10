@@ -1,82 +1,42 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import T from 'components/T';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
-import { round, isNil } from 'lodash-es';
+import { round } from 'lodash-es';
 import { D3Node } from './';
 
-const borderColor = '#003348';
-
-const StyledCircle: any = styled.circle`
-  position: relative;
-  fill: green;
-  fill-opacity: 0.2;
-  cursor: pointer;
-
-  &:hover {
-    stroke: ${borderColor};
-    stroke-width: 2px;
-  }
-
-  ${props => !isNil((props as any).selectionIndex) && `
-    stroke: black;
-    stroke-width: 2px;
-    fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
-  `}
-`;
+const borderColor = '#00a2b1';
 
 interface InputProps {
   node: D3Node;
-  projectId: string;
-  selectionIndex: number | null;
+  ideaId: string;
   hovered: boolean;
+  selectionIndex: number | null;
   onClick: (node: D3Node, event: MouseEvent) => void;
   onMouseEnter: (node: D3Node, event: MouseEvent) => void;
   onMouseLeave: (node: D3Node, event: MouseEvent) => void;
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  idea: GetIdeaChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
-class ProjectCircle extends PureComponent<Props, State> {
-
-  handleOnClick = (event: MouseEvent) => {
-    const { node } = this.props;
-    this.props.onClick && this.props.onClick(node, event);
-  }
-
-  handleOnMouseEnter = (event: MouseEvent) => {
-    const { node } = this.props;
-    this.props.onMouseEnter && this.props.onMouseEnter(node, event);
-  }
-
-  handleOnMouseLeave = (event: MouseEvent) => {
-    const { node } = this.props;
-    this.props.onMouseLeave && this.props.onMouseLeave(node, event);
-  }
-
+class IdeaCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { node, selectionIndex, hovered, project } = this.props;
+    const { node, hovered, idea, intl } = this.props;
 
-    if (isNilOrError(project)) return null;
+    if (isNilOrError(idea)) return null;
 
     return (
       <>
-        <StyledCircle
-          r={node.r}
-          onClick={this.handleOnClick}
-          onMouseEnter={this.handleOnMouseEnter}
-          onMouseLeave={this.handleOnMouseLeave}
-          selectionIndex={selectionIndex}
-          hovered={hovered}
-        />
-        <T value={project.attributes.title_multiloc}>
+        <T value={idea.attributes.title_multiloc}>
           {(localizedTitle) => {
             const width = (localizedTitle.length * 7) + 50;
             const height = 60;
@@ -86,8 +46,8 @@ class ProjectCircle extends PureComponent<Props, State> {
 
             return (
               <svg
-                x={xPos}
-                y={yPos}
+                x={xPos + node.x}
+                y={yPos + node.y}
                 width={width}
                 height={height}
                 style={{ display: `${hovered ? 'block' : 'none'}` }}
@@ -114,7 +74,7 @@ class ProjectCircle extends PureComponent<Props, State> {
                     textAnchor="middle"
                     alignmentBaseline="central"
                   >
-                    Project
+                    {intl.formatMessage(messages.idea)}
                   </tspan>
                   <tspan
                     x={width / 2}
@@ -135,8 +95,10 @@ class ProjectCircle extends PureComponent<Props, State> {
   }
 }
 
+const IdeaLabelWithIntl = injectIntl(IdeaCircleLabel);
+
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
-    {(project) => <ProjectCircle {...inputProps} project={project} />}
-  </GetProject>
+  <GetIdea id={inputProps.ideaId}>
+    {(idea) => <IdeaLabelWithIntl {...inputProps} idea={idea} />}
+  </GetIdea>
 );

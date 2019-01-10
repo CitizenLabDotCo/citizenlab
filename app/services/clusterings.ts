@@ -23,6 +23,9 @@ export interface CustomNode extends BaseNode {
   type: 'custom';
   title?: string;
   children: Node[];
+  keywords?: {
+    name: string;
+  }[];
 }
 
 export interface IdeaNode extends BaseNode {
