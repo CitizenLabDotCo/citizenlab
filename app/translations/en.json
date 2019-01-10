@@ -430,6 +430,7 @@
   "app.containers.AdminPage.DashboardPage.selectedTopic": "current topic filter",
   "app.containers.AdminPage.DashboardPage.subtitleDashboard": "Get immediate and easy-to-grasp analytics into what’s moving on the platform.",
   "app.containers.AdminPage.DashboardPage.tabAcquisition": "Acquisition",
+  "app.containers.AdminPage.DashboardPage.tabInsights": "Insights",
   "app.containers.AdminPage.DashboardPage.tabSummary": "Summary",
   "app.containers.AdminPage.DashboardPage.tabUsers": "Users",
   "app.containers.AdminPage.DashboardPage.titleDashboard": "Dashboard",
