@@ -3,7 +3,9 @@
  *
  * This contains all the text for the AdminPage.DashboardPage component.
  */
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   absolute: {
@@ -84,18 +86,82 @@ export default defineMessages({
   },
   level_project: {
     id: 'app.containers.Admin.clusterViewer.level_project',
-    defaultMessage: 'Projects',
+    defaultMessage: 'Project',
   },
   level_topic: {
     id: 'app.containers.Admin.clusterViewer.level_topic',
-    defaultMessage: 'Topics',
+    defaultMessage: 'Topic',
   },
   level_area: {
     id: 'app.containers.Admin.clusterViewer.level_area',
-    defaultMessage: 'Areas',
+    defaultMessage: 'Area',
   },
   level_clustering: {
     id: 'app.containers.Admin.clusterViewer.level_clustering',
-    defaultMessage: 'Clustering',
+    defaultMessage: 'AI Magic',
+  },
+  firstLevel: {
+    id: 'app.containers.Admin.clusterViewer.firstLevel',
+    defaultMessage: 'First group all ideas by {level}',
+  },
+  thenLevel: {
+    id: 'app.containers.Admin.clusterViewer.thenLevel',
+    defaultMessage: 'within group them by {level}',
+  },
+  keywords: {
+    id: 'app.containers.Admin.clusterViewer.keywords',
+    defaultMessage: 'Keywords',
+  },
+  clusterContains: {
+    id: 'app.containers.Admin.clusterViewer.clusterContains',
+    defaultMessage: 'This cluster contains the following ideas',
+  },
+  idea: {
+    id: 'app.containers.Admin.clusterViewer.idea',
+    defaultMessage: 'Idea',
+  },
+  project: {
+    id: 'app.containers.Admin.clusterViewer.project',
+    defaultMessage: 'Project',
+  },
+  topic: {
+    id: 'app.containers.Admin.clusterViewer.topic',
+    defaultMessage: 'Topic',
+  },
+  legend: {
+    id: 'app.containers.Admin.clusterViewer.legend',
+    defaultMessage: 'Legend',
+  },
+  controls: {
+    id: 'app.containers.Admin.clusterViewer.controls',
+    defaultMessage: 'Controls',
+  },
+  upvotes: {
+    id: 'app.containers.Admin.clusterViewer.upvotes',
+    defaultMessage: 'More upvotes',
+  },
+  downvotes: {
+    id: 'app.containers.Admin.clusterViewer.downvotes',
+    defaultMessage: 'More downvotes',
+  },
+  noVotes: {
+    id: 'app.containers.Admin.clusterViewer.noVotes',
+    defaultMessage: 'No votes',
+  },
+  numVotes: {
+    id: 'app.containers.Admin.clusterViewer.numVotes',
+    defaultMessage: 'N° of votes',
+  },
+  clickLegend: {
+    id: 'app.containers.Admin.clusterViewer.clickLegend',
+    defaultMessage: 'Select node to see details',
+  },
+  shiftLegend: {
+    id: 'app.containers.Admin.clusterViewer.shiftLegend',
+    defaultMessage: 'Add to list and see selection stats',
+  },
+  ctrlLegend: {
+    id: 'app.containers.Admin.clusterViewer.ctrlLegend',
+    defaultMessage: 'Compare nodes',
   },
 });

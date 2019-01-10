@@ -58,11 +58,10 @@ const ModalContent: any = styled(clickOutside)`
 `;
 
 const CloseIcon = styled(Icon)`
+  flex: 0 0 20px;
+  width: 20px;
   height: 20px;
   fill: ${colors.mediumGrey};
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const CloseButton = styled.button`
@@ -76,11 +75,6 @@ const CloseButton = styled.button`
   top: 20px;
   right: 20px;
   outline: none;
-
-  ${media.smallerThanMaxTablet`
-    top: 10px;
-    right: 10px;
-  `}
 
   &:hover,
   &:focus,
