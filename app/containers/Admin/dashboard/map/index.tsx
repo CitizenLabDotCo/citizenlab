@@ -35,7 +35,6 @@ const MapWrapper = styled.div`
 `;
 
 const StyledWarning = styled(Warning)`
-  // max-width: 600px;
   margin-bottom: 30px;
 `;
 
