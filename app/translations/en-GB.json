@@ -1,6 +1,7 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "",
-  "app.components.AdminPage.SettingsPage.welcomeText": "",
+  "app.components.AdminPage.SettingsPage.customSectionLabel": "",
+  "app.components.AdminPage.SettingsPage.homePageCustomSection": "",
   "app.components.AssignBudgetControl.assign": "",
   "app.components.AssignBudgetControl.assigned": "",
   "app.components.AssignBudgetControl.seeIdea": "",
