@@ -129,7 +129,6 @@ export default class PreferencesDialog extends PureComponent<Props> {
                   category={category}
                   destinations={categoryDestinations[category]}
                   checked={checkCategories[category]}
-                  onChange={onChange}
                   handleChange={this.handleChange}
                 />
               );
