@@ -49,13 +49,6 @@ export interface FormValues {
 
 class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
-  levelsOptionList = () => (
-    ['project', 'topic', 'area', 'clustering', 'clustering'].map(level => ({
-      label: this.props.intl.formatMessage(messages[`level_${level}`]),
-      value: level,
-    }))
-  )
-
   resourcesToOptionList = (resources) => {
     return resources && resources.map((resource) => ({
       label: this.props.localize(resource.attributes.title_multiloc),
