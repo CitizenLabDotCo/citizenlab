@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 300px;
   height: 600px;
   overflow: hidden;
-  padding: 10px;
+  padding: 15px;
   padding-top: 30px;
   border-radius: 5px;
   border: 1px solid ${colors.adminBorder};
@@ -39,7 +39,7 @@ const Container = styled.div`
 
 const TextContainer = styled.div`
   overflow-y: auto;
-  margin-top: 15px;
+  margin-top: 22px;
   margin-bottom: 20px;
   flex-grow: 1;
   min-height: 0;
