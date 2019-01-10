@@ -22,16 +22,6 @@ module NLP
 
     private
 
-    def double_cluster_levels levels
-      if !levels.present?
-        []
-      elsif levels.first == 'clustering'
-        ['clustering', 'clustering'] + double_cluster_levels(levels.drop(1))
-      else 
-        [levels.first] + double_cluster_levels(levels.drop(1))
-      end
-    end
-
     def create_levels_to_ids levels, idea_scope, options
       levels.map do |level|
         level_ids_to_idea_ids = case level
