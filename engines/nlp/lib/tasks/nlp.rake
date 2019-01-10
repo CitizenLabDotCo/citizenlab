@@ -50,6 +50,18 @@ namespace :nlp do
     logs.each{|ln| puts ln}
   end
 
+  task :cluster_ideas, [] => [:environment] do |t, args|
+    service = NLP::ClusteringService.new
+    Tenant.pluck(:host).select do |host|
+      !host.include? 'localhost'
+    end.each do |host|
+      tenant = Tenant.find_by_host host
+      Apartment::Tenant.switch(tenant.schema_name) do
+        service.build_structure ['clustering'], Idea
+      end
+    end
+  end
+
   task :geotag_ideas, [] => [:environment] do |t, args|
     geotagging = NLP::GeotagService.new
     data = []
