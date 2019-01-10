@@ -5,9 +5,6 @@ import { adopt } from 'react-adopt';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import Summary from './summary';
-import Warning from 'components/UI/Warning';
-import FeatureFlag from 'components/FeatureFlag';
-import Link from 'utils/cl-router/Link';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -19,16 +16,12 @@ import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
-`;
 
 export const ControlBar = styled.div`
   display: flex;
@@ -201,6 +194,7 @@ export type IResolution = 'day' | 'week' | 'month';
 
 interface Props {
   authUser: GetAuthUserChildProps;
+  insightsEnabled: GetFeatureFlagChildProps;
   geographicDashboardEnabled: GetFeatureFlagChildProps;
 }
 
@@ -221,53 +215,42 @@ export const chartTheme = (theme) => {
 };
 
 export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProps> {
+  private tabs = [
+    { label: this.props.intl.formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+    { label: this.props.intl.formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
+    //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard/aquisiton' } TODO
+  ];
+  private resource = {
+    title: this.props.intl.formatMessage(messages.titleDashboard),
+    subtitle: this.props.intl.formatMessage(messages.subtitleDashboard)
+  };
 
-  tabs = () => {
-    const { intl: { formatMessage }, geographicDashboardEnabled } = this.props;
-    const tabs = [
-      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
-      { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
-      //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard/aquisiton' } TODO
-    ];
-    if (geographicDashboardEnabled) {
-      tabs.push(
-        { label: formatMessage(messages.tabMap), url: '/admin/dashboard/map' }
+  componentWillMount() {
+    if (this.props.insightsEnabled) {
+      this.tabs.push(
+        { label: this.props.intl.formatMessage(messages.tabInsights), url: '/admin/dashboard/insights' }
       );
     }
-    return tabs;
+    if (this.props.geographicDashboardEnabled) {
+      this.tabs.push(
+        { label: this.props.intl.formatMessage(messages.tabMap), url: '/admin/dashboard/map' }
+      );
+    }
   }
-
   render() {
-    const { intl: { formatMessage }, children, authUser } = this.props;
-
-    const resource = {
-      title: formatMessage(messages.titleDashboard),
-      subtitle: formatMessage(messages.subtitleDashboard)
-    };
+    const { children, authUser } = this.props;
 
     if (authUser) {
       if (isAdmin({ data: authUser })) {
         return (
           <TabbedResource
-            resource={resource}
-            tabs={this.tabs()}
+            resource={this.resource}
+            tabs={this.tabs}
           >
             <HelmetIntl
               title={messages.helmetTitle}
               description={messages.helmetDescription}
             />
-            <FeatureFlag name={'clustering'}>
-              <StyledWarning
-                text={
-                  <FormattedMessage
-                    {...messages.tryOutInsights}
-                    values={{
-                      insightsLink: <Link to={'/admin/clusterings'}><FormattedMessage {...messages.insightsLinkText} /></Link>
-                    }}
-                  />
-                }
-              />
-            </FeatureFlag>
             {children}
           </TabbedResource>
         );
@@ -286,6 +269,7 @@ const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 const Data = adopt({
   authUser: <GetAuthUser />,
+  insightsEnabled: <GetFeatureFlag name="clustering" />,
   geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />
 });
 

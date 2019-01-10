@@ -11,6 +11,10 @@ import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/glob
 import { colors, media } from 'utils/styleUtils';
 import { injectTracks } from 'utils/analytics';
 import tracks from '../tracks';
+import clHistory from 'utils/cl-router/history';
+import GoBackButton from 'components/UI/GoBackButton';
+import { PageTitle } from 'components/admin/Section';
+import T from 'components/T';
 
 const TwoColumns = styled.div`
   flex-shrink: 0;
@@ -47,7 +51,11 @@ const StyledInfoPane = styled(InfoPane)`
   `}
 `;
 
-interface InputProps {}
+const StyledGoBackButton = styled(GoBackButton)`
+  margin-bottom: 20px;
+`;
+
+interface InputProps { }
 
 interface DataProps {
   clustering: GetClusteringChildProps;
@@ -62,7 +70,7 @@ interface TrackProps {
   trackShiftClickIdea: Function;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   activeComparisonCount: number;
@@ -162,6 +170,10 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     }
   }
 
+  goBack = () => {
+    clHistory.push('/admin/dashboard/insights');
+  }
+
   render() {
     const { clustering } = this.props;
     const { activeComparisonCount, selectedNodes } = this.state;
@@ -169,25 +181,31 @@ class ClusterViewer extends PureComponent<Props & WithRouterProps & TrackProps, 
     if (isNilOrError(clustering)) return null;
 
     return (
-      <ThemeProvider theme={this.theme}>
-        <TwoColumns>
-          <StyledCircles
-            activeComparison={activeComparisonCount}
-            selectedNodes={selectedNodes}
-            structure={clustering.attributes.structure}
-            onClickNode={this.handleOnClickNode}
-            onShiftClickNode={this.handleOnShiftClickNode}
-            onCtrlClickNode={this.handleOnCtrlClickNode}
-          />
-          <StyledInfoPane
-            activeComparison={activeComparisonCount}
-            selectedNodes={selectedNodes}
-            onAddComparison={this.handleOnAddComparison}
-            onChangeActiveComparison={this.handleOnChangeActiveComparison}
-            onDeleteComparison={this.handleOnDeleteComparison}
-          />
-        </TwoColumns>
-      </ThemeProvider>
+      <>
+        <StyledGoBackButton onClick={this.goBack} />
+        <PageTitle>
+          <T value={clustering.attributes.title_multiloc} />
+        </PageTitle>
+        <ThemeProvider theme={this.theme}>
+          <TwoColumns>
+            <StyledCircles
+              activeComparison={activeComparisonCount}
+              selectedNodes={selectedNodes}
+              structure={clustering.attributes.structure}
+              onClickNode={this.handleOnClickNode}
+              onShiftClickNode={this.handleOnShiftClickNode}
+              onCtrlClickNode={this.handleOnCtrlClickNode}
+            />
+            <StyledInfoPane
+              activeComparison={activeComparisonCount}
+              selectedNodes={selectedNodes}
+              onAddComparison={this.handleOnAddComparison}
+              onChangeActiveComparison={this.handleOnChangeActiveComparison}
+              onDeleteComparison={this.handleOnDeleteComparison}
+            />
+          </TwoColumns>
+        </ThemeProvider>
+      </>
     );
   }
 }

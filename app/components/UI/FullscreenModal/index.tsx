@@ -267,8 +267,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.onEscKeyPressed, true);
 
-    disableBodyScroll(this.ModalContentInnerElement);
-
     // on route change
     this.unlisten = clHistory.listen(() => {
       setTimeout(() => this.props.close(), 250);
@@ -285,6 +283,12 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
       window.history.pushState({ path: localizedUrl }, '', localizedUrl);
       trackPage(localizedUrl, { modal: true });
     }
+
+     if (this.ModalContentInnerElement) {
+      setTimeout(() => {
+        disableBodyScroll(this.ModalContentInnerElement);
+      }, 250);
+     }
   }
 
   onEscKeyPressed = (event) => {

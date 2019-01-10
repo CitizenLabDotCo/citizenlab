@@ -1,4 +1,5 @@
 import loadAndRender from 'utils/loadAndRender';
+import clusteringsRoutes from './clusterings/routes';
 
 export default () => ({
   name: 'Admin dashboard',
@@ -12,6 +13,7 @@ export default () => ({
       path: 'users',
       getComponent: loadAndRender(import('./users')),
     },
+    clusteringsRoutes(),
   /* TODO {
       path: 'dashboard-acquisition',
       getComponent: loadAndRender(import('./acquisition')),

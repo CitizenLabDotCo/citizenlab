@@ -24,15 +24,7 @@ class IdeaDetails extends PureComponent<Props> {
 
     return (
       <Container className={this.props['className']}>
-        <h1>Selected idea:</h1>
-        <h3>
-          <T value={idea.attributes.title_multiloc} />
-        </h3>
-        <T value={idea.attributes.body_multiloc}>
-          {(body) => (
-            <div dangerouslySetInnerHTML={{ __html: body }} />
-          )}
-        </T>
+        <T value={idea.attributes.body_multiloc} supportHtml />
       </Container>
     );
   }

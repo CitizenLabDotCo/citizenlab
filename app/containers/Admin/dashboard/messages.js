@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
     defaultMessage: 'Acquisition',
   },
+  tabInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.tabInsights',
+    defaultMessage: 'Insights',
+  },
   tabMap: {
     id: 'app.containers.AdminPage.DashboardPage.tabMap',
     defaultMessage: 'Map',
