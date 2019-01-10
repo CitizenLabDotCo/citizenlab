@@ -149,7 +149,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
           lat: "50.8503",
           long: "4.3517"
         },
-        zoom_level: 12
+        zoom_level: 12,
+        osm_relation_id: 2404021
       },
       excel_export: {
        enabled: true,
@@ -188,6 +189,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       similar_ideas: {
+        enabled: true,
+        allowed: true
+      },
+      geographic_dashboard: {
         enabled: true,
         allowed: true
       }

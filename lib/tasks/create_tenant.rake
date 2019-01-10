@@ -72,6 +72,10 @@ namespace :cl2_back do
         similar_ideas: {
           enabled: true,
           allowed: true
+        },
+        geographic_dashboard: {
+          enabled: true,
+          allowed: true
         }
       }
     })
