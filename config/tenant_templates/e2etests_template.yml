@@ -7296,3 +7296,8 @@ models:
     phase_ref: *1510
   - idea_ref: *1298
     phase_ref: *1510
+  areas:
+    - title_multiloc:
+        en-GB: Carrotgem
+        nl-BE: Wortelgem
+      
