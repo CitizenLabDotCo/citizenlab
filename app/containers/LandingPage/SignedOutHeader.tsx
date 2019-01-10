@@ -119,28 +119,31 @@ const HeaderSubtitle: any = styled.h2`
   text-align: center;
   text-decoration: none;
   padding: 0;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  margin-top: 25px;
-  border-bottom: solid 1px transparent;
+  margin: 0;
+  margin-top: 30px;
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xl}px;
     font-weight: 300;
     line-height: 26px;
     margin-top: 15px;
-    margin-bottom: 20px;
   `}
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
-  margin-bottom: 45px;
+  margin-top: 18px;
 `;
 
 const SignUpButton = styled(Button)`
+  margin-top: 40px;
+
   .Button.button.primary-inverse {
     color: ${(props: any) => props.theme.colorText};
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 30px;
+  `}
 `;
 
 const StyledIdeaButton = styled(IdeaButton)`

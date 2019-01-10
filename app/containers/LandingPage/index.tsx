@@ -82,7 +82,7 @@ const FooterBanner: any = styled.div`
   }
 `;
 
-const SAvatarBubbles = styled(AvatarBubbles)`
+const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
 `;
 
@@ -255,7 +255,7 @@ class LandingPage extends PureComponent<Props, State> {
               {!authUser &&
                 <FooterBanner>
                   <p>{subtitle}</p>
-                  <SAvatarBubbles />
+                  <StyledAvatarBubbles />
                   <Button
                     style="primary-inverse"
                     padding="10px 30px"

@@ -48,11 +48,7 @@ const StyledUserName = styled(UserName)`
   `}
 `;
 
-const StyledAvatar = styled(Avatar)`
-  svg {
-    fill: ${colors.label};
-  }
-`;
+const StyledAvatar = styled(Avatar)``;
 
 const OpenDropdownButton = styled.button`
   display: flex;
@@ -64,17 +60,21 @@ const OpenDropdownButton = styled.button`
 
   &:hover,
   &:focus {
-
     ${StyledUserName} {
       color: #000;
     }
 
     ${StyledAvatar} {
-      svg {
+      .avatarImage {
+        border-color: #000;
+      }
+
+      .avatarIcon {
         fill: ${darken(0.2, colors.label)};
       }
     }
   }
+
   &:focus {
     outline: none;
   }
@@ -152,6 +152,7 @@ export default class UserMenu extends PureComponent<Props, State> {
             <StyledAvatar
               userId={userId}
               size="30px"
+              fillColor={colors.label}
             />
           </OpenDropdownButton>
 
