@@ -51,12 +51,15 @@ export default () => ({
     settingsRoutes(),
     settingsAreasRoutes(),
     pagesRoutes(),
-    clusteringsRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
     {
       path: 'favicon',
       getComponent: loadAndRender(import('containers/Admin/favicon')),
+    },
+    {
+      path: 'dashboard/insights/:clusteringId',
+      getComponent: loadAndRender(import('./dashboard/clusterings/Show')),
     },
   ],
 });
