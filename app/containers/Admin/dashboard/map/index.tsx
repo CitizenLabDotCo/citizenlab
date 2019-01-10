@@ -82,12 +82,6 @@ class Map extends PureComponent<Props & InjectedLocalized, State> {
       ));
   }
 
-  toggleIdea = (id: string) => {
-    this.setState(({ selectedIdeaId }) => {
-      return { selectedIdeaId: (id !== selectedIdeaId ? id : null) };
-    });
-  }
-
   handleIdeaClick = (id: string) => {
     const { panelOpened, selectedIdeaId } = this.state;
     if (id === selectedIdeaId) {
