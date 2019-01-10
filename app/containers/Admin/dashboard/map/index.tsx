@@ -10,6 +10,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Spinner from 'components/UI/Spinner';
 import MapComponent from 'components/Map';
 import IdeaPane from './IdeaPane';
+import Warning from 'components/UI/Warning';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,6 +32,11 @@ const MapWrapper = styled.div`
   display: flex;
   align-items: stretch;
   height: 600px;
+`;
+
+const StyledWarning = styled(Warning)`
+  // max-width: 600px;
+  margin-bottom: 30px;
 `;
 
 const StyledMap = styled(MapComponent)`
@@ -116,9 +122,9 @@ class Map extends PureComponent<Props & InjectedLocalized, State> {
     if (isNilOrError(ideas)) return null;
     return (
       <div>
-        <p>
-          <FormattedMessage {...messages.mapHelperText} />
-        </p>
+        <StyledWarning
+          text={<FormattedMessage {...messages.mapHelperText} />}
+        />
         <MapWrapper>
           <StyledMap
             points={this.getPoints(ideas)}
