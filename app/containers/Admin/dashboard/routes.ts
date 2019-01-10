@@ -18,5 +18,9 @@ export default () => ({
       path: 'dashboard-acquisition',
       getComponent: loadAndRender(import('./acquisition')),
     },*/
+    {
+      path: 'map',
+      getComponent: loadAndRender(import('./map')),
+    }
   ],
 });

@@ -27,7 +27,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 // Typing
-import { IIdeaData } from 'services/ideas';
+import { IGeotaggedIdeaData } from 'services/ideas';
 
 const timeout = 40000;
 
@@ -98,7 +98,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
     };
   }
 
-  getPoints = (ideas: Partial<IIdeaData>[] | null | undefined | Error) => {
+  getPoints = (ideas: IGeotaggedIdeaData[] | null | undefined | Error) => {
     const ideaPoints: any[] = [];
 
     if (!isNilOrError(ideas) && ideas.length > 0) {

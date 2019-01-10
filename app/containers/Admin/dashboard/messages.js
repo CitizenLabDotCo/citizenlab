@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabInsights',
     defaultMessage: 'Insights',
   },
+  tabMap: {
+    id: 'app.containers.AdminPage.DashboardPage.tabMap',
+    defaultMessage: 'Map',
+  },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
     defaultMessage: 'Admin dashboard page',
@@ -249,5 +253,9 @@ export default defineMessages({
   titleDashboard: {
     id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
     defaultMessage: 'Dashboard',
+  },
+  mapHelperText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+    defaultMessage: 'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
   },
 });

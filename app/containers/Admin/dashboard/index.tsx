@@ -195,7 +195,9 @@ export type IResolution = 'day' | 'week' | 'month';
 interface Props {
   authUser: GetAuthUserChildProps;
   insightsEnabled: GetFeatureFlagChildProps;
+  geographicDashboardEnabled: GetFeatureFlagChildProps;
 }
+
 export const chartTheme = (theme) => {
   return {
     ...theme,
@@ -227,6 +229,11 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
     if (this.props.insightsEnabled) {
       this.tabs.push(
         { label: this.props.intl.formatMessage(messages.tabInsights), url: '/admin/dashboard/insights' }
+      );
+    }
+    if (this.props.geographicDashboardEnabled) {
+      this.tabs.push(
+        { label: this.props.intl.formatMessage(messages.tabMap), url: '/admin/dashboard/map' }
       );
     }
   }
@@ -262,7 +269,8 @@ const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 const Data = adopt({
   authUser: <GetAuthUser />,
-  insightsEnabled: <GetFeatureFlag name="clustering" />
+  insightsEnabled: <GetFeatureFlag name="clustering" />,
+  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />
 });
 
 export default (props) => (
