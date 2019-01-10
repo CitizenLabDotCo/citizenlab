@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 import HelmetIntl from 'components/HelmetIntl';
 import TabbedResource from 'components/admin/TabbedResource';
 import Summary from './summary';
-import Warning from 'components/UI/Warning';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -17,16 +16,12 @@ import { isAdmin, isProjectModerator } from 'services/permissions/roles';
 // i18n
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
-`;
 
 export const ControlBar = styled.div`
   display: flex;
