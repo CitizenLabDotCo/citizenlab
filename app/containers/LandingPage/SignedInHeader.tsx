@@ -19,6 +19,7 @@ import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resour
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,16 +30,20 @@ import T from 'components/T';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
+const contentTimeout = 350;
+const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const contentDelay = 550;
+
 const Header = styled.div`
   width: 100%;
-  min-height: 195px;
+  height: 190px;
   position: relative;
   display: flex;
   flex-direction: column;
 
-  /* ${media.smallerThanMinTablet`
-    min-height: 250px;
-  `} */
+  ${media.smallerThanMinTablet`
+    height: 210px;
+  `}
 `;
 
 const HeaderImageContainer = styled.div`
@@ -76,7 +81,11 @@ const HeaderImageOverlay = styled.div`
 `;
 
 const HeaderContent = styled.div`
-  flex: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,23 +93,39 @@ const HeaderContent = styled.div`
   padding-bottom: 20px;
   padding-left: 75px;
   padding-right: 75px;
-  z-index: 1;
+  overflow: hidden;
+
+  &.content-enter {
+    opacity: 0;
+
+    &.content-enter-active {
+      opacity: 1;
+      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+    }
+  }
+
+  &.content-enter-done {
+    opacity: 1;
+  }
+
+  &.content-exit {
+    opacity: 1;
+    transition: all ${contentTimeout}ms ${contentEasing};
+
+    &.content-exit-active {
+      opacity: 0;
+    }
+  }
+
+  &.content-exit-done {
+    display: none;
+  }
 
   p {
     color: #fff;
     font-size: ${fontSizes.xxl}px;
     line-height: 33px;
     font-weight: 400;
-  }
-
-  &.default {
-    p {
-      text-align: center;
-    }
-
-    ${media.smallerThanMinTablet`
-      align-items: center;
-    `}
   }
 
   ${media.smallerThanMaxTablet`
@@ -112,6 +137,18 @@ const HeaderContent = styled.div`
     flex-direction: column;
     align-items: stretch;
     padding: 20px;
+  `}
+`;
+
+const HeaderContentCompleteProfile = HeaderContent.extend``;
+const HeaderContentCustomCta = HeaderContent.extend``;
+const HeaderContentDefault = HeaderContent.extend`
+  p {
+    text-align: center;
+  }
+
+  ${media.smallerThanMinTablet`
+    align-items: center;
   `}
 `;
 
@@ -239,79 +276,97 @@ class SignedInHeader extends PureComponent<Props, State> {
             </HeaderImageContainerInner>
           </HeaderImageContainer>
 
-          <HeaderContent className={onboardingCampaigns.name}>
-            {/* First header state - complete profile */}
-            {onboardingCampaigns.name === 'complete_profile' &&
-              <>
-                <Left>
-                  <Icons>
-                    <NoAvatarUserIcon name="noAvatar" />
-                    <CompleteProfileIcon name="completeProfile" />
-                  </Icons>
-                  <Text>
-                    <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
-                  </Text>
-                </Left>
+          {/* First header state - complete profile */}
+          <CSSTransition
+            classNames="content"
+            in={onboardingCampaigns.name === 'complete_profile'}
+            timeout={onboardingCampaigns.name === 'complete_profile' ? contentTimeout + contentDelay : contentTimeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <HeaderContentCompleteProfile>
+              <Left>
+                <Icons>
+                  <NoAvatarUserIcon name="noAvatar" />
+                  <CompleteProfileIcon name="completeProfile" />
+                </Icons>
+                <Text>
+                  <FormattedMessage {...messages.completeYourProfile} tagName="p" values={{ firstName: authUser.attributes.first_name }} />
+                </Text>
+              </Left>
 
-                <Right>
-                  <SkipButton
-                    style="primary-outlined"
-                    text={<FormattedMessage {...messages.doItLater} />}
-                    onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
-                    borderColor="#fff"
-                    textColor="#fff"
-                    size="2"
-                  />
-                  <AcceptButton
-                    text={<FormattedMessage {...messages.completeProfile} />}
-                    linkTo="/profile/edit"
-                    bgColor="#fff"
-                    textColor={theme.colorMain}
-                    size="2"
-                  />
-                </Right>
-              </>
-            }
+              <Right>
+                <SkipButton
+                  style="primary-outlined"
+                  text={<FormattedMessage {...messages.doItLater} />}
+                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
+                  borderColor="#fff"
+                  textColor="#fff"
+                />
+                <AcceptButton
+                  text={<FormattedMessage {...messages.completeProfile} />}
+                  linkTo="/profile/edit"
+                  bgColor="#fff"
+                  textColor={theme.colorMain}
+                />
+              </Right>
+            </HeaderContentCompleteProfile>
+          </CSSTransition>
 
-            {/* Second header state - custom CTA */}
-            {onboardingCampaigns.name === 'custom_cta' &&
-              <>
-                <Left>
-                  <Text>
-                    <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
-                  </Text>
-                </Left>
+          {/* Second header state - custom CTA */}
+          <CSSTransition
+            classNames="content"
+            in={onboardingCampaigns.name === 'custom_cta'}
+            timeout={onboardingCampaigns.name === 'custom_cta' ? contentTimeout + contentDelay : contentTimeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <HeaderContentCustomCta>
+              <Left>
+                <Text>
+                  <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
+                </Text>
+              </Left>
 
-                <Right>
-                  <SkipButton
-                    style="primary-outlined"
-                    text={<FormattedMessage {...messages.doItLater} />}
-                    onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
-                    borderColor="#fff"
-                    textColor="#fff"
-                    size="2"
-                  />
-                  <AcceptButton
-                    text={<T value={onboardingCampaigns.cta_button_multiloc} />}
-                    linkTo={onboardingCampaigns.cta_button_link}
-                    bgColor="#fff"
-                    textColor={theme.colorMain}
-                    size="2"
-                  />
-                </Right>
-              </>
-            }
+              <Right>
+                <SkipButton
+                  style="primary-outlined"
+                  text={<FormattedMessage {...messages.doItLater} />}
+                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
+                  borderColor="#fff"
+                  textColor="#fff"
+                />
+                <AcceptButton
+                  text={<T value={onboardingCampaigns.cta_button_multiloc} />}
+                  linkTo={onboardingCampaigns.cta_button_link}
+                  bgColor="#fff"
+                  textColor={theme.colorMain}
+                />
+              </Right>
+            </HeaderContentCustomCta>
+          </CSSTransition>
 
-            {/* Third header state - default customizable message */}
-            {onboardingCampaigns.name === 'default' &&
-              <>
+          {/* Third header state - default customizable message */}
+          <CSSTransition
+            classNames="content"
+            in={onboardingCampaigns.name === 'default'}
+            timeout={onboardingCampaigns.name === 'default' ? contentTimeout + contentDelay : contentTimeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <HeaderContentDefault>
               {onboardingCampaigns.cta_message_multiloc
                 ? <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
                 : <FormattedMessage {...messages.defaultSignedInMessage} tagName="p" values={{ firstName: authUser.attributes.first_name }}/>
               }
-              </>
-            }
-          </HeaderContent>
+            </HeaderContentDefault>
+          </CSSTransition>
         </Header>
       );
     }

@@ -126,6 +126,9 @@ const TenantSlogan = styled.div`
   font-weight: 500;
   line-height: 28px;
   text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const SecondLine = styled.div`

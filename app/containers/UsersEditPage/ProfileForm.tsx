@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty } from 'lodash-es';
+import streams from 'utils/streams';
 
 // services
 import { IAreaData } from 'services/areas';
@@ -29,7 +30,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import ProfileSection from './ProfileSection';
 
 // i18n
-import { appLocalePairs } from 'containers/App/constants';
+import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -141,7 +142,7 @@ class ProfileForm extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleFormikSubmit = (values, formikActions) => {
+  handleFormikSubmit = async (values, formikActions) => {
     let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
 
@@ -154,17 +155,19 @@ class ProfileForm extends PureComponent<Props, State> {
 
     setStatus('');
 
-    updateUser(this.props.user.id, newValues).then((user) => {
+    try {
+      const user = await updateUser(this.props.user.id, newValues);
+      streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
       resetForm();
       setStatus('success');
       updateLocale(user.data.attributes.locale);
-    }).catch((errorResponse) => {
+    } catch (errorResponse) {
       if (errorResponse.json) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
-    });
+    }
   }
 
   usingFranceConnect = () => {
