@@ -11,6 +11,7 @@ import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
 import LevelsInput from './LevelsInput';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -25,11 +26,12 @@ import GetProjects from 'resources/GetProjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // Typings
 import { Multiloc } from 'typings';
 
-export interface Props {}
+export interface Props { }
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -61,13 +63,17 @@ class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedL
     }));
   }
 
+  goBack = () => {
+    clHistory.push('/admin/dashboard/insights');
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
     return (
       <Form>
-
         <Section>
+          <GoBackButton onClick={this.goBack} />
           <SectionTitle>
             <FormattedMessage {...messages.titleClusterInformation} />
           </SectionTitle>
