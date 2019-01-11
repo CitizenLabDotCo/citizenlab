@@ -12,8 +12,6 @@ import PreferencesDialog from './PreferencesDialog';
 jest.mock('utils/cl-intl');
 
 describe('<ConsentManager />', () => {
-  let onCancel: Jest.Mock;
-  let onSave: Jest.Mock;
   let onChange: Jest.Mock;
   const isConsentRequired = true;
   const implyConsentOnInteraction = false;
@@ -62,15 +60,11 @@ describe('<ConsentManager />', () => {
 
   beforeEach(() => {
     onChange = jest.fn();
-    onSave = jest.fn();
-    onCancel = jest.fn();
   });
 
   it('renders correctly when there are destinations', () => {
     const wrapper = shallow(
       <PreferencesDialog
-        onCancel={onCancel}
-        onSave={onSave}
         onChange={onChange}
         categoryDestinations={categoryDestinations}
         analytics={preferences.analytics}
@@ -82,8 +76,6 @@ describe('<ConsentManager />', () => {
   it('renders correctly when there are no destinations', () => {
     const wrapper = shallow(
       <PreferencesDialog
-        onCancel={onCancel}
-        onSave={onSave}
         onChange={onChange}
         categoryDestinations={{
           analytics: [],
@@ -95,31 +87,5 @@ describe('<ConsentManager />', () => {
         functional={preferences.functional}
       />);
     expect(wrapper).toMatchSnapshot();
-  });
-  it('has a disabled save button when some field is empty', () => {
-    const wrapper = shallow(
-      <PreferencesDialog
-        onCancel={onCancel}
-        onSave={onSave}
-        onChange={onChange}
-        categoryDestinations={categoryDestinations}
-        analytics={preferences.analytics}
-        advertising={preferences.advertising}
-        functional={preferences.functional}
-      />);
-    expect(wrapper.find('.integration-save').prop('disabled')).toBeTruthy();
-  });
-  it('has an enabled save button when no field is empty', () => {
-    const wrapper = shallow(
-      <PreferencesDialog
-        onCancel={onCancel}
-        onSave={onSave}
-        onChange={onChange}
-        categoryDestinations={categoryDestinations}
-        analytics={true}
-        advertising={false}
-        functional={true}
-      />);
-    expect(wrapper.find('.integration-save').prop('disabled')).toBeFalsy();
   });
 });

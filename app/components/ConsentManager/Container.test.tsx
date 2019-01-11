@@ -246,4 +246,43 @@ describe('<ConsentManager />', () => {
     expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
     expect(wrapper.state('isCancelling')).toBeTruthy();
   });
+  it('has a disabled save button when some field is empty', () => {
+    const wrapper = mountWithTheme(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={isConsentRequired}
+        implyConsentOnInteraction={implyConsentOnInteraction}
+        destinations={destinations}
+        newDestinations={newDestinations}
+        preferences={{
+          analytics: true,
+          advertising: null,
+          functional: null
+        }}
+      />);
+    expect(wrapper.find('.integration-save').prop('disabled')).toBeTruthy();
+  });
+  it('has an enabled save button when no field is empty', () => {
+    const wrapper = mountWithTheme(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={isConsentRequired}
+        implyConsentOnInteraction={implyConsentOnInteraction}
+        destinations={destinations}
+        newDestinations={newDestinations}
+        preferences={{
+          analytics: true,
+          advertising: false,
+          functional: true
+        }}
+      />);
+      const footer = shallow(wrapper.renderFooter);
+    expect(footer.find('.integration-save').prop('disabled')).toBeFalsy();
+  });
 });
