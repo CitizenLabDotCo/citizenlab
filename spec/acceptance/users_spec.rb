@@ -369,6 +369,24 @@ resource "Users" do
       end
 
       describe do
+        before do
+          @user = create(:admin)
+          token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+          header 'Authorization', "Bearer #{token}"
+        end
+        let(:mortal_user) { create(:user) }
+        let(:id) { mortal_user.id }
+        let(:roles) { [type: 'admin']}
+
+        example_request "Make a user admin, as an admin" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq id
+          expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
+        end
+      end
+
+      describe do
         example "Update a user's custom field values" do
           cf = create(:custom_field)
           do_request(user: {custom_field_values: {cf.key => "somevalue"}})

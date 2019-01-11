@@ -27,15 +27,14 @@ module NLP
       return JSON.parse(resp.body)['data'] if resp.code == 200
     end
 
-    def ideas_clustering tenant_id, locale, options={}
-      query = {}
-      query['n_clusters'] = options[:n_clusters] if options[:n_clusters]
-      body = {}
-      body[:idea_ids] = options[:idea_ids] if options[:idea_ids]
+    def clustering tenant_id, locale, options={}
+      body = {locale: locale}
+      body[:idea_ids]   = options[:idea_ids]   if options[:idea_ids]
+      body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
+      body[:max_depth]  = options[:max_depth]  if options[:max_depth]
 
       self.class.post(
-        "/v1/tenants/#{tenant_id}/#{locale}/ideas/clustering",
-        query: query,
+        "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
@@ -47,12 +46,15 @@ module NLP
       )
     end
 
-    def idea_geotagging tenant_id, text, locale, options={}
-      options[:text] = text
-      options[:locale] = locale
+    def geotag tenant_id, text, locale, options={}
+      body = {
+        **options,
+        text: text,
+        locale: locale
+      }
       resp = self.class.post(
         "/v1/tenants/#{tenant_id}/geotagging",
-        body: options.to_json,
+        body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
       return JSON.parse(resp.body)['data'] if resp.code == 200
