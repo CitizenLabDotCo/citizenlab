@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // components
@@ -13,16 +12,19 @@ import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
+import T from 'components/T';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // utils
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -101,6 +103,8 @@ const IdeasStyledContentContainer = StyledContentContainer.extend`
   background: #f9f9fa;
 `;
 
+const CustomSectionContentContainer = StyledContentContainer.extend``;
+
 const Section = styled.div`
   width: 100%;
   padding-top: 100px;
@@ -160,6 +164,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   projects: GetProjectsChildProps;
   authUser: GetAuthUserChildProps;
+  homepageInfoPage: GetPageChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -203,9 +208,9 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects, authUser, onboardingStatus } = this.props;
+    const { locale, tenant, projects, authUser, homepageInfoPage, onboardingStatus } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
       const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
@@ -213,6 +218,8 @@ class LandingPage extends PureComponent<Props, State> {
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
       const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
+      const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
+      const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
 
       return (
         <>
@@ -252,6 +259,12 @@ class LandingPage extends PureComponent<Props, State> {
                 </Section>
               </IdeasStyledContentContainer>
 
+              <CustomSectionContentContainer>
+                {showCustomSection &&
+                  <T value={customSectionBodyMultiloc} supportHtml={true} />
+                }
+              </CustomSectionContentContainer>
+
               {!authUser &&
                 <FooterBanner>
                   <p>{subtitle}</p>
@@ -283,6 +296,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />,
+  homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
 export default (inputProps: InputProps) => (
