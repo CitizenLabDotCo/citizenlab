@@ -77,13 +77,12 @@ const PageDescription = styled.div`
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
-  font-weight: 800;
-  text-decoration: none;
-  margin: 0;
-  padding: 0;
+  text-decoration: underline;
+
 
   &:hover {
     color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
   }
 `;
 

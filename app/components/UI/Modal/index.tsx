@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // analytics
-import { injectTracks, trackPage } from 'utils/analytics';
+import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
@@ -26,35 +26,11 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
-const ModalContent: any = styled(clickOutside)`
+const ModalContent = styled.div`
+  -webkit-overflow-scroll: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   width: 100%;
-  max-width: ${(props: any) => props.width};
-  background: ${(props: any) => props.hasHeaderOrFooter ? colors.background : 'white'};
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  outline: none;
-  overflow-y: ${(props: any) => props.hasHeaderOrFooter ? 'hidden' : 'auto'};
-  -webkit-overflow-scrolling: touch;
-  padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
-  position: relative;
-
-  &.fixedHeight {
-    height: 600px;
-  }
-
-  ${media.smallerThanMaxTablet`
-    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '25px'};
-
-    &.fixedHeight {
-      height: 80vh;
-    }
-    ${media.smallerThanMinTablet`
-      height: 100%;
-      width: 100%;
-      max-width: 100%;
-    `}
-  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -65,15 +41,15 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 15px;
   height: 32px;
   width: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: absolute;
   cursor: pointer;
-  top: 20px;
-  right: 20px;
   outline: none;
 
   &:hover,
@@ -87,7 +63,35 @@ const CloseButton = styled.button`
 
 const HiddenSpan = styled.span`${hideVisually()}`;
 
-const ModalContainer = styled(FocusTrap)`
+const ModalContainer: any = styled(clickOutside)`
+  width: 100%;
+  max-width: ${(props: any) => props.width};
+  background: white;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  overflow: hidden;
+  padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
+  position: relative;
+
+  &.fixedHeight {
+    height: 600px;
+  }
+
+  ${media.smallerThanMaxTablet`
+    &.fixedHeight {
+      height: 80vh;
+    }
+    ${media.smallerThanMinTablet`
+      height: 100vh;
+      width: 100vw;
+      max-width: 100%;
+    `}
+  `}
+`;
+
+const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -96,10 +100,10 @@ const ModalContainer = styled(FocusTrap)`
   right: 0;
   bottom: 0;
   display: flex;
+  background: rgba(0, 0, 0, 0.75);
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
   padding: 30px;
   overflow: hidden;
   z-index: 1000000;
@@ -136,18 +140,23 @@ const ModalContainer = styled(FocusTrap)`
 const HeaderContainer = styled.div`
   background: white;
   width: 100%;
-  height: 74px;
+  flex: 0 0 54px;
   border-bottom: 2px solid ${colors.separation};
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 40px;
+  padding-right: 40px;
+  h1 {
+    font-size: ${fontSizes.medium}px;
+  }
 `;
 
 const FooterContainer = styled(HeaderContainer)`
-  background: white;
   border-bottom: none;
   border-top: 2px solid ${colors.separation};
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 const Skip = styled.div`
@@ -163,15 +172,18 @@ const Skip = styled.div`
   `}
 `;
 
+export const Spacer = styled.div`
+  flex: 1;
+`;
+
 interface ITracks {
-  clickCloseButton: (arg: any) => void;
-  clickOutsideModal: (arg: any) => void;
-  clickBack: (arg: any) => void;
+  clickCloseButton: () => void;
+  clickOutsideModal: () => void;
+  clickBack: () => void;
 }
 
 type Props = {
   opened: boolean;
-  url?: string | undefined;
   fixedHeight?: boolean | undefined;
   width?: string | undefined;
   close: () => void;
@@ -209,7 +221,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     }
 
     if (this.props.opened) {
-      this.openModal(this.props.url);
+      this.openModal();
     }
   }
 
@@ -227,13 +239,13 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (!prevProps.opened && this.props.opened) {
-      this.openModal(this.props.url);
+      this.openModal();
     } else if (prevProps.opened && !this.props.opened) {
       this.cleanup();
     }
   }
 
-  openModal = (url: undefined | string) => {
+  openModal = () => {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
@@ -244,27 +256,15 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     if (this.ModalCloseButton) {
       this.ModalCloseButton.focus();
     }
-
-    if (url) {
-      window.history.pushState({ path: url }, '', url);
-
-      // Since we bypass the normal history mechanism and take it into our own hands here,
-      // we exceptionally also need to track the page change manually
-      // Don't try this at home!
-      trackPage(url, { modal: true });
-    }
   }
 
   manuallyCloseModal = () => {
-    if (this.props.url && this.goBackUrl) {
-      clHistory.push(this.goBackUrl);
-    }
     this.props.close();
   }
 
   handlePopstateEvent = () => {
     if (location.href === this.goBackUrl) {
-      this.props.clickBack({ extra: { url: this.props.url } });
+      this.props.clickBack();
     }
 
     this.props.close();
@@ -281,14 +281,14 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal({ extra: { url: this.props.url } });
+    this.props.clickOutsideModal();
     this.manuallyCloseModal();
   }
 
   clickCloseButton = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.clickCloseButton({ extra: { url: this.props.url } });
+    this.props.clickCloseButton();
     this.manuallyCloseModal();
   }
 
@@ -316,39 +316,47 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
     const element = (opened ? (
       <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <ModalContainer
-          id="e2e-modal-container"
-          className={this.props.className}
-          aria-modal="true"
-          role="dialog"
-          aria-label={label}
-        >
-          <ModalContent
-            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
-            width={width}
-            onClickOutside={this.clickOutsideModal}
-            hasHeaderOrFooter={header !== undefined || footer !== undefined}
-            innerRef={this.setContentRef}
+        <FocusTrap>
+          <Overlay
+            id="e2e-modal-container"
+            className={this.props.className}
+            aria-modal="true"
+            role="dialog"
+            aria-label={label}
           >
-            <CloseButton
-              className="e2e-modal-close-button"
-              onClick={this.clickCloseButton}
-              innerRef={this.setCloseButtonRef}
+            <ModalContainer
+              className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+              width={width}
+              onClickOutside={this.clickOutsideModal}
+              hasHeaderOrFooter={header !== undefined || footer !== undefined}
             >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
-              </HiddenSpan>
-              <CloseIcon name="close3" />
-            </CloseButton >
-            {header && <HeaderContainer> {header} </HeaderContainer>}
-            {children}
-            {footer && <FooterContainer> {footer} </FooterContainer>}
-          </ModalContent>
+              <CloseButton
+                className="e2e-modal-close-button"
+                onClick={this.clickCloseButton}
+                innerRef={this.setCloseButtonRef}
+              >
+                <HiddenSpan>
+                  <FormattedMessage {...messages.closeButtonLabel} />
+                </HiddenSpan>
+                <CloseIcon name="close3" />
+              </CloseButton >
 
-          {hasSkipButton && skipText &&
-            <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
-          }
-        </ModalContainer>
+              {header && <HeaderContainer> {header} </HeaderContainer>}
+              <ModalContent
+                innerRef={this.setContentRef}
+              >
+                {children}
+              </ModalContent>
+              <Spacer />
+
+              {footer && <FooterContainer> {footer} </FooterContainer>}
+
+              {hasSkipButton && skipText &&
+                <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
+              }
+            </ModalContainer>
+          </Overlay>
+        </FocusTrap>
       </CSSTransition>
     ) : undefined);
 
