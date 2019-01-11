@@ -18,12 +18,15 @@ exports[`<CategoryCard /> renders correctly when allowed 1`] = `
         defaultMessage="Tools"
         id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
       />
-       : 
-      Google Analytics
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
-      MarketingTool
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>
   <CategoryCard__InputContainer
@@ -111,12 +114,15 @@ exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
         defaultMessage="Tools"
         id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
       />
-       : 
-      Google Analytics
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
-      MarketingTool
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>
   <CategoryCard__InputContainer
@@ -204,12 +210,15 @@ exports[`<CategoryCard /> renders correctly when null 1`] = `
         defaultMessage="Tools"
         id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
       />
-       : 
-      Google Analytics
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
       <CategoryCard__Separator>
         •
       </CategoryCard__Separator>
-      MarketingTool
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
     </p>
   </CategoryCard__TextContainer>
   <CategoryCard__InputContainer

@@ -5,6 +5,40 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
   <ModalWithTracks
     close={[Function]}
     fixedHeight={false}
+    footer={
+      <Container__ButtonContainer>
+        <WithTheme(Button)
+          className="integration-cancel"
+          onClick={[Function]}
+          style="primary-inverse"
+          textColor="#044D6C"
+        >
+          <FormattedMessage
+            defaultMessage="Cancel"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
+          />
+        </WithTheme(Button)>
+        <WithTheme(Button)
+          bgColor="#044D6C"
+          bgHoverColor="#022a3b"
+          className="integration-save"
+          onClick={[Function]}
+          style="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
+          />
+        </WithTheme(Button)>
+      </Container__ButtonContainer>
+    }
+    header={
+      <FormattedMessage
+        defaultMessage="Your cookie preferences"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.title"
+        tagName="h1"
+      />
+    }
     label="Your cookie preferences"
     opened={false}
   >
@@ -50,9 +84,7 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
         }
       }
       functional={null}
-      onCancel={[Function]}
       onChange={[Function]}
-      onSave={[Function]}
     />
   </ModalWithTracks>
   <Banner
@@ -67,6 +99,40 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
   <ModalWithTracks
     close={[Function]}
     fixedHeight={false}
+    footer={
+      <Container__ButtonContainer>
+        <WithTheme(Button)
+          className="integration-cancel"
+          onClick={[Function]}
+          style="primary-inverse"
+          textColor="#044D6C"
+        >
+          <FormattedMessage
+            defaultMessage="Cancel"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
+          />
+        </WithTheme(Button)>
+        <WithTheme(Button)
+          bgColor="#044D6C"
+          bgHoverColor="#022a3b"
+          className="integration-save"
+          onClick={[Function]}
+          style="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
+          />
+        </WithTheme(Button)>
+      </Container__ButtonContainer>
+    }
+    header={
+      <FormattedMessage
+        defaultMessage="Your cookie preferences"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.title"
+        tagName="h1"
+      />
+    }
     label="Your cookie preferences"
     opened={false}
   >
@@ -112,9 +178,7 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
         }
       }
       functional={false}
-      onCancel={[Function]}
       onChange={[Function]}
-      onSave={[Function]}
     />
   </ModalWithTracks>
 </Fragment>
@@ -125,6 +189,40 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
   <ModalWithTracks
     close={[Function]}
     fixedHeight={false}
+    footer={
+      <Container__ButtonContainer>
+        <WithTheme(Button)
+          className="integration-cancel"
+          onClick={[Function]}
+          style="primary-inverse"
+          textColor="#044D6C"
+        >
+          <FormattedMessage
+            defaultMessage="Cancel"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
+          />
+        </WithTheme(Button)>
+        <WithTheme(Button)
+          bgColor="#044D6C"
+          bgHoverColor="#022a3b"
+          className="integration-save"
+          onClick={[Function]}
+          style="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
+          />
+        </WithTheme(Button)>
+      </Container__ButtonContainer>
+    }
+    header={
+      <FormattedMessage
+        defaultMessage="Your cookie preferences"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.title"
+        tagName="h1"
+      />
+    }
     label="Your cookie preferences"
     opened={false}
   >
@@ -139,9 +237,7 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
         }
       }
       functional={null}
-      onCancel={[Function]}
       onChange={[Function]}
-      onSave={[Function]}
     />
   </ModalWithTracks>
 </Fragment>
