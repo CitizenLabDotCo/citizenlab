@@ -76,6 +76,11 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  desktop: (style: any, ...args) => css`
+    @media (min-height: 800px) and (min-width: 1280px) {
+      ${css(style, ...args)}
+    }
+  `,
 };
 
 export const colors = {

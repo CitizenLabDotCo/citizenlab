@@ -404,7 +404,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
                   <Dropdown
-                    top="64px"
+                    top="68px"
                     left="10px"
                     opened={projectsDropdownOpened}
                     onClickOutside={this.toggleProjectsDropdown}

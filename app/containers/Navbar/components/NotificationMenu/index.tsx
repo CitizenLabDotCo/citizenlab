@@ -2,7 +2,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { injectTracks } from 'utils/analytics';
 import NotificationCount from './components/NotificationCount';
 import Dropdown from 'components/UI/Dropdown';
@@ -30,11 +30,20 @@ const LoadingContainer = styled.div`
 const EmptyStateContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   height: 200px;
-  color: #A6A6A6;
+  color: ${colors.label};
   font-size: ${fontSizes.large}px;
+  line-height: 24px;
+`;
+
+const EmptyStateImage = styled.img`
+  margin-bottom: 20px;
+`;
+
+const EmptyStateText = styled.div`
+  text-align: center;
 `;
 
 type Props = {};
@@ -122,7 +131,7 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
         <Dropdown
           width="300px"
           mobileWidth="220px"
-          top="40px"
+          top="42px"
           right="-5px"
           mobileRight="-15px"
           opened={dropdownOpened}
@@ -148,8 +157,8 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
               ))}
               {notifications && notifications.length === 0 &&
                 <EmptyStateContainer>
-                  <img src={EmptyStateImg} role="presentation" alt="" />
-                  <FormattedMessage {...messages.noNotifications} />
+                  <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
+                  <EmptyStateText><FormattedMessage {...messages.noNotifications} /></EmptyStateText>
                 </EmptyStateContainer>
               }
             </InfiniteScroll>

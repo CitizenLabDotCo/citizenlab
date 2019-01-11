@@ -28,13 +28,24 @@ import { media, fontSizes } from 'utils/styleUtils';
 
 const Header = styled.div`
   width: 100%;
-  height: 550px;
+  min-height: 450px;
   margin: 0;
   padding: 0;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  ${media.desktop`
+    min-height: 500px;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    min-height: 400px;
+  `}
 
   ${media.smallerThanMinTablet`
-    height: 400px;
+    min-height: 350px;
   `}
 `;
 
@@ -70,19 +81,15 @@ const HeaderImageOverlay = styled.div`
 `;
 
 const HeaderContent = styled.div`
+  flex: 1;
   width: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding: 35px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 `;
 
 const HeaderTitle: any = styled.h1`
@@ -90,20 +97,15 @@ const HeaderTitle: any = styled.h1`
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: 35px;
-  line-height: normal;
+  line-height: 42px;
   font-weight: 600;
   text-align: center;
   margin: 0;
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 46px;
-    line-height: 58px;
-  `}
-
-  ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xxxxl}px;
-    line-height: 39px;
+    line-height: 40px;
   `}
 `;
 
@@ -112,20 +114,19 @@ const HeaderSubtitle: any = styled.h2`
   max-width: 375px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: ${fontSizes.xl}px;
-  line-height: normal;
+  line-height: 28px;
   font-weight: 300;
-  hyphens: auto;
   max-width: 980px;
   text-align: center;
   text-decoration: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding: 0;
   margin: 0;
   margin-top: 30px;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
-    font-weight: 300;
-    line-height: 26px;
     margin-top: 15px;
   `}
 `;
@@ -135,7 +136,7 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 `;
 
 const SignUpButton = styled(Button)`
-  margin-top: 40px;
+  margin-top: 38px;
 
   .Button.button.primary-inverse {
     color: ${(props: any) => props.theme.colorText};
@@ -214,7 +215,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
               <SignUpButton
                 style="primary-inverse"
                 fontWeight="500"
-                padding="15px 22px"
+                padding="13px 22px"
                 onClick={this.goToSignUpPage}
                 text={<FormattedMessage {...messages.createAccount} />}
               />
