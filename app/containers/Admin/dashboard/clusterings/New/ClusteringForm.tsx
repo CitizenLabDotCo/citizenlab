@@ -10,6 +10,8 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
+import LevelsInput from './LevelsInput';
+import GoBackButton from 'components/UI/GoBackButton';
 
 // I18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -24,11 +26,12 @@ import GetProjects from 'resources/GetProjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // Typings
 import { Multiloc } from 'typings';
 
-export interface Props {}
+export interface Props { }
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -44,14 +47,7 @@ export interface FormValues {
   search?: string;
 }
 
-class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
-
-  levelsOptionList = () => (
-    ['project', 'topic', 'area', 'clustering'].map(level => ({
-      label: this.props.intl.formatMessage(messages[`level_${level}`]),
-      value: level,
-    }))
-  )
+class ClusteringForm extends PureComponent<InjectedFormikProps<Props & InjectedLocalized & InjectedIntlProps, FormValues>> {
 
   resourcesToOptionList = (resources) => {
     return resources && resources.map((resource) => ({
@@ -60,13 +56,17 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocaliz
     }));
   }
 
+  goBack = () => {
+    clHistory.push('/admin/dashboard/insights');
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched } = this.props;
 
     return (
       <Form>
-
         <Section>
+          <GoBackButton onClick={this.goBack} />
           <SectionTitle>
             <FormattedMessage {...messages.titleClusterInformation} />
           </SectionTitle>
@@ -88,8 +88,7 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocaliz
             </Label>
             <Field
               name="levels"
-              component={FormikMultipleSelect}
-              options={this.levelsOptionList()}
+              component={LevelsInput}
             />
           </SectionField>
 
@@ -206,4 +205,4 @@ class AreaForm extends PureComponent<InjectedFormikProps<Props & InjectedLocaliz
   }
 }
 
-export default injectIntl(localize(AreaForm));
+export default injectIntl(localize(ClusteringForm));

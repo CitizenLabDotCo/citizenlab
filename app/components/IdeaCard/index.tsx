@@ -342,7 +342,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
                 size="34px"
-                message={messages.byAuthorNameComponent}
                 notALink
               />
             </IdeaContent>

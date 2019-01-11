@@ -11,7 +11,6 @@ import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import ComparisonSwitcher from './ComparisonSwitcher';
 import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
 import { injectTracks } from 'utils/analytics';
@@ -94,8 +93,6 @@ const Details = styled.div`
   padding-top: 0;
 `;
 
-const StyledComparisonSwitcher = styled(ComparisonSwitcher)``;
-
 const ChartTitle = styled.h3`
   margin: 0;
   margin-left: 20px;
@@ -171,7 +168,7 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
   }
 
   render() {
-    const { activeComparison, onAddComparison, onChangeActiveComparison, onDeleteComparison, selectedNodes } = this.props;
+    const { selectedNodes } = this.props;
     const { normalization, selectedTab } = this.state;
     const comparisonSet = this.comparisonSet();
 
@@ -185,26 +182,16 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
             Details
           </Tab>
         </TabbedNav>
-
         <Content>
-          {selectedTab === 'options' &&
-            <>
-              <StyledComparisonSwitcher
-                activeComparison={activeComparison}
-                comparisonCount={selectedNodes.length}
-                onAddComparison={onAddComparison}
-                onDeleteComparison={onDeleteComparison}
-                onChangeActiveComparison={onChangeActiveComparison}
-              />
-            </>
-          }
-
+          <ComparisonLegend
+            selectedNodes={this.props.selectedNodes}
+          />
           {selectedTab === 'details' && (
             <Details>
-              {comparisonSet.length === 1 && comparisonSet[0].type === 'idea' &&
+              {selectedNodes.length === 1 && comparisonSet[0].type === 'idea' &&
                 <IdeaDetails ideaId={comparisonSet[0].id} />
               }
-              {comparisonSet.length === 1 && comparisonSet[0].type !== 'idea' &&
+              {selectedNodes.length === 1 && comparisonSet[0].type !== 'idea' &&
                 <ClusterDetails node={comparisonSet[0] as ParentNode} ideaIds={this.selectedIdeas()} />
               }
             </Details>
@@ -212,9 +199,6 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
 
           {selectedTab === 'votes' &&
             <>
-              <ComparisonLegend
-                selectedNodes={this.props.selectedNodes}
-              />
               <RadioButtons>
                 <StyledRadio
                   key="absolute"

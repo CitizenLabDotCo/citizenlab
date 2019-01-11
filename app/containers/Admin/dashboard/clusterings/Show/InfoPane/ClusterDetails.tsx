@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react';
-import T from 'components/T';
-import GetIdea from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
+import { isEmpty } from 'lodash-es';
 import { ParentNode } from 'services/clusterings';
+import GetIdea from 'resources/GetIdea';
+
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
+import messages from '../../messages';
 
 type Props = {
   ideaIds: string[];
@@ -28,19 +33,33 @@ const ListItem = styled.li`
 
 class ClusterDetails extends PureComponent<Props> {
 
+  keywords = () : {name: string}[] => {
+    const { node } = this.props;
+    return (node.type === 'custom' && node.keywords) || [];
+  }
+
   render() {
     const { ideaIds, node } = this.props;
 
     if (!node) return null;
 
+    const keywords = this.keywords();
+
     return (
       <Container className={this.props['className']}>
-        <h3>The selected cluster contains the following ideas:</h3>
-        {/* {node.type === 'custom' && node.title &&
-          <h3>
-            {node.title}
-          </h3>
-        } */}
+        {!isEmpty(keywords) &&
+          <>
+            <h4><FormattedMessage {...messages.keywords} /></h4>
+            <List>
+              {keywords.map(kw => (
+                <ListItem key={kw.name}>
+                  {kw.name}
+                </ListItem>
+              ))}
+            </List>
+          </>
+        }
+        <h4><FormattedMessage {...messages.clusterContains} /></h4>
         <List>
           {ideaIds.map((id) => (
             <GetIdea key={id} id={id}>
