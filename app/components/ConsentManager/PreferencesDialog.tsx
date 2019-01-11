@@ -137,7 +137,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
         </Scroll>
         <Spacer />
         <ButtonContainer>
-          <Button onClick={onCancel} style="primary-inverse">
+          <Button className="integration-cancel" onClick={onCancel} style="primary-inverse">
             <FormattedMessage {...messages.cancel} />
           </Button>
           <Button
