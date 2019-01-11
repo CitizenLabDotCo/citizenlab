@@ -78,11 +78,7 @@ const PageDescription = styled.div`
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-break: break-word;
-  hyphens: auto;
+
 
   &:hover {
     color: ${darken(0.15, colors.clBlueDark)};

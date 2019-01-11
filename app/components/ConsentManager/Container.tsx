@@ -29,15 +29,6 @@ export const ButtonContainer = styled.div`
   button {
     margin : 4px !important;
   }
-  Button.button.primary-inverse span {
-    color: ${colors.adminTextColor}
-  }
-  Button.button.primary:not(.disabled) {
-    background-color: ${colors.adminTextColor};
-    &:hover, &:focus {
-      background-color: ${darken(0.1, colors.adminTextColor)};
-    }
-  }
 `;
 
 interface Props {
@@ -165,21 +156,23 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
   renderFooter = (categoryDestinations) => (
     this.state.isCancelling ? (
       <ButtonContainer>
-        <Button onClick={this.handleCancelConfirm} style="primary-inverse">
+        <Button onClick={this.handleCancelBack} style="primary-inverse" textColor={colors.adminTextColor}>
           <FormattedMessage {...messages.back} />
         </Button>
-        <Button onClick={this.handleCancelBack} style="primary">
+        <Button onClick={this.handleCancelConfirm} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
           <FormattedMessage {...messages.confirm} />
         </Button>
       </ButtonContainer>
     ) : (
         <ButtonContainer>
-          <Button onClick={this.handleCancel} style="primary-inverse">
+          <Button onClick={this.handleCancel} style="primary-inverse" textColor={colors.adminTextColor}>
             <FormattedMessage {...messages.cancel} />
           </Button>
           <Button
             onClick={this.handleSave(categoryDestinations)}
             style="primary"
+            bgColor={colors.adminTextColor}
+            bgHoverColor={darken(0.1, colors.adminTextColor)}
           >
             <FormattedMessage  {...messages.save} />
           </Button>
