@@ -188,10 +188,10 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
           />
           {selectedTab === 'details' && (
             <Details>
-              {selectedNodes.length === 1 && comparisonSet[0].type === 'idea' &&
+              {selectedNodes.length === 1 && comparisonSet.length === 1 && comparisonSet[0].type === 'idea' &&
                 <IdeaDetails ideaId={comparisonSet[0].id} />
               }
-              {selectedNodes.length === 1 && comparisonSet[0].type !== 'idea' &&
+              {selectedNodes.length === 1 && comparisonSet.length === 1 && comparisonSet[0].type !== 'idea' &&
                 <ClusterDetails node={comparisonSet[0] as ParentNode} ideaIds={this.selectedIdeas()} />
               }
             </Details>
