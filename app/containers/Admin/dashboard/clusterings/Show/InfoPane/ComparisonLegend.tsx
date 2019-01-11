@@ -74,10 +74,9 @@ class ComparisonLegend extends PureComponent<Props, State> {
           </GetTopic>
         );
       case 'custom':
-        return <span>{node.title}</span>;
+        return <span>{node.title || (node.keywords && node.keywords.map(k => k.name).join(' '))}</span>;
       default:
         return null;
-        break;
     }
   }
 

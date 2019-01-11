@@ -1,13 +1,22 @@
 import React, { PureComponent } from 'react';
-import { isNil } from 'lodash-es';
 import styled from 'styled-components';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { isNilOrError } from 'utils/helperUtils';
+import { isNil } from 'lodash-es';
 import { D3Node } from './';
+
+const borderColor = '#003348';
 
 const StyledCircle: any = styled.circle`
   position: relative;
   fill: green;
   fill-opacity: 0.2;
   cursor: pointer;
+
+  &:hover {
+    stroke: ${borderColor};
+    stroke-width: 2px;
+  }
 
   ${props => !isNil((props as any).selectionIndex) && `
     stroke: black;
@@ -16,26 +25,25 @@ const StyledCircle: any = styled.circle`
   `}
 `;
 
-const StyledText: any = styled.text`
-  font-size: ${props => (props as any).size}px;
-`;
-
 interface InputProps {
   node: D3Node;
+  projectId: string;
   selectionIndex: number | null;
-  hovered?: boolean;
-  onClick?: (node: D3Node, event: MouseEvent) => void;
-  onMouseEnter?: (node: D3Node, event: MouseEvent) => void;
-  onMouseLeave?: (node: D3Node, event: MouseEvent) => void;
+  hovered: boolean;
+  onClick: (node: D3Node, event: MouseEvent) => void;
+  onMouseEnter: (node: D3Node, event: MouseEvent) => void;
+  onMouseLeave: (node: D3Node, event: MouseEvent) => void;
 }
 
-interface DataProps {}
+interface DataProps {
+  project: GetProjectChildProps;
+}
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
-interface State {}
+interface State { }
 
-class ClusterCircle extends PureComponent<Props, State> {
+class ProjectCircle extends PureComponent<Props, State> {
 
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
@@ -53,29 +61,25 @@ class ClusterCircle extends PureComponent<Props, State> {
   }
 
   render() {
-    const { node, selectionIndex, hovered } = this.props;
+    const { node, selectionIndex, hovered, project } = this.props;
+
+    if (isNilOrError(project)) return null;
     return (
-      <>
         <StyledCircle
           r={node.r}
           onClick={this.handleOnClick}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           selectionIndex={selectionIndex}
+          hovered={hovered}
+          transform={`translate(${node.x},${node.y})`}
         />
-        <StyledText
-          x={0}
-          y={-node.r}
-          textAnchor="middle"
-          alignmentBaseline="central"
-          show={!isNil(selectionIndex) || hovered}
-          size={12 + (2 * node.height)}
-        >
-          {node.data['title']}
-        </StyledText>
-      </>
     );
   }
 }
 
-export default ClusterCircle;
+export default (inputProps: InputProps) => (
+  <GetProject id={inputProps.projectId}>
+    {(project) => <ProjectCircle {...inputProps} project={project} />}
+  </GetProject>
+);

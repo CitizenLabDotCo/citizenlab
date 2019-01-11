@@ -57,7 +57,7 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
                 <FormattedMessage {...messages.deleteButtonLabel} />
               </Button>
               <Button
-                linkTo={`/admin/clusterings/${area.id}`}
+                linkTo={`/admin/dashboard/insights/${area.id}`}
                 style="secondary"
                 circularCorners={false}
                 icon="eye"
@@ -72,7 +72,7 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
             style="cl-blue"
             circularCorners={false}
             icon="plus-circle"
-            linkTo="/admin/clusterings/new"
+            linkTo="/admin/dashboard/insights/new"
           >
             <FormattedMessage {...messages.addClusteringButton} />
           </Button>
