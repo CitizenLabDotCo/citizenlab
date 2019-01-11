@@ -108,6 +108,7 @@ gem 'acts_as_list'
 gem 'ice_cube', github: 'gssbzn/ice_cube', ref: '605394a'
 gem 'skylight'
 gem 'mailgun-ruby'
+gem 'dalli'
 
 gem 'admin_api', path: 'engines/admin_api'
 gem 'email_campaigns', path: 'engines/email_campaigns'

@@ -401,6 +401,10 @@
             "type": "number",
             "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
             "default": 12
+          },
+          "osm_relation_id": {
+            "type": "integer",
+            "description": "The relation identifier that encloses the region of the tenant. You can find this through https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the relation id if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If the no correct relation is present amongst the results (e.g. Scheveningen), search for the smallest enclosing region (e.g. The Hague)"
           }
         }
       },
@@ -496,11 +500,21 @@
       },
       "similar_ideas": {
         "type": "object",
-        "description":  "Show links to similar ideas on the idea page",
+        "description":  "Show links to similar ideas on the idea page. PoC, not yet stable.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      "geographic_dashboard": {
+        "type": "object",
+        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
       }
