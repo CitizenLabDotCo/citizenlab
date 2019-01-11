@@ -202,7 +202,14 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
           header={<FormattedMessage {...messages.title} tagName="h1" />}
-          footer={<Footer {...this} {...this.state} />}
+          footer={<Footer
+            validate={this.validate}
+            isCancelling={this.state.isCancelling}
+            handleCancelBack={this.handleCancelBack}
+            handleCancelConfirm={this.handleCancelConfirm}
+            handleCancel={this.handleCancel}
+            handleSave={this.handleSave}
+          />}
         >
           {!isCancelling &&
             <PreferencesDialog
