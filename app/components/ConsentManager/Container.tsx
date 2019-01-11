@@ -6,17 +6,30 @@ import eventEmitter from 'utils/eventEmitter';
 
 // Components
 import Banner from './Banner';
-import PreferencesDialog from './PreferencesDialog';
-import CancelDialog from './CancelDialog';
+import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Modal from 'components/UI/Modal';
+import Button from 'components/UI/Button';
 
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 
 import { IDestination, CustomPreferences } from './';
+
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
+
+export const ButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    margin : 4px !important;
+  }
+`;
 
 interface Props {
   setPreferences: Function;
@@ -80,7 +93,13 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  handleSave = () => {
+  handleSave = (categoryDestinations) => (e) => {
+    e.preventDefault();
+
+    if (!this.validate(categoryDestinations)) {
+      return;
+    }
+
     const { saveConsent } = this.props;
 
     this.setState({
@@ -124,6 +143,44 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     resetPreferences();
   }
 
+  validate = (categoryDestinations) => {
+    let res = true;
+    for (const category of Object.keys(categoryDestinations)) {
+      if (categoryDestinations[category].length > 0) {
+        res = res && !(this.props[category] === null);
+      }
+    }
+    return res;
+  }
+
+  renderFooter = (categoryDestinations) => (
+    this.state.isCancelling ? (
+      <ButtonContainer>
+        <Button onClick={this.handleCancelBack} style="primary-inverse" textColor={colors.adminTextColor}>
+          <FormattedMessage {...messages.back} />
+        </Button>
+        <Button onClick={this.handleCancelConfirm} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
+          <FormattedMessage {...messages.confirm} />
+        </Button>
+      </ButtonContainer>
+    ) : (
+        <ButtonContainer>
+          <Button onClick={this.handleCancel} className="integration-cancel" style="primary-inverse" textColor={colors.adminTextColor}>
+            <FormattedMessage {...messages.cancel} />
+          </Button>
+          <Button
+            onClick={this.handleSave(categoryDestinations)}
+            style="primary"
+            bgColor={colors.adminTextColor}
+            bgHoverColor={darken(0.1, colors.adminTextColor)}
+            className="integration-save"
+          >
+            <FormattedMessage  {...messages.save} />
+          </Button>
+        </ButtonContainer>
+      )
+  )
+
   render() {
     const {
       destinations,
@@ -156,11 +213,11 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
           close={this.closeDialog}
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
+          header={<FormattedMessage {...messages.title} tagName="h1" />}
+          footer={this.renderFooter(categoryDestinations)}
         >
           {!isCancelling &&
             <PreferencesDialog
-              onCancel={this.handleCancel}
-              onSave={this.handleSave}
               onChange={this.handleCategoryChange}
               categoryDestinations={categoryDestinations}
               analytics={preferences.analytics}
@@ -169,10 +226,9 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
             />
           }
           {isCancelling &&
-            <CancelDialog
-              onCancelConfirm={this.handleCancelConfirm}
-              onCancelBack={this.handleCancelBack}
-            />
+            <ContentContainer role="dialog" aria-modal>
+              <FormattedMessage {...messages.confirmation} tagName="h1" />
+            </ContentContainer>
           }
         </Modal>
         {isConsentRequired && newDestinations.length > 0 && (

@@ -23,7 +23,7 @@ export default class New extends PureComponent<Props> {
       ...values
     })
       .then((clustering) => {
-        clHistory.push(`/admin/clusterings/${clustering.data.id}`);
+        clHistory.push(`/admin/dashboard/insights/${clustering.data.id}`);
       })
       .catch((errorResponse) => {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
