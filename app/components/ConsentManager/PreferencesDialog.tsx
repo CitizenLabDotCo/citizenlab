@@ -144,6 +144,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
             onClick={this.handleSave}
             style="primary"
             disabled={!this.validate()}
+            className="integration-save"
           >
             <FormattedMessage {...messages.save} />
           </Button>
