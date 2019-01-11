@@ -246,8 +246,8 @@ describe('<ConsentManager />', () => {
     expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
     expect(wrapper.state('isCancelling')).toBeTruthy();
   });
-  it('has a disabled save button when some field is empty', () => {
-    const wrapper = mountWithTheme(
+  it('is invalid when when some field is empty', () => {
+    const wrapper = shallow(
       <Container
         intl={intl}
         setPreferences={setPreferences}
@@ -263,10 +263,10 @@ describe('<ConsentManager />', () => {
           functional: null
         }}
       />);
-    expect(wrapper.find('.integration-save').prop('disabled')).toBeTruthy();
+    expect(wrapper.instance().validate()).toBeFalsy();
   });
-  it('has an enabled save button when no field is empty', () => {
-    const wrapper = mountWithTheme(
+  it('is valid when when no field is empty', () => {
+    const wrapper = shallow(
       <Container
         intl={intl}
         setPreferences={setPreferences}
@@ -282,7 +282,6 @@ describe('<ConsentManager />', () => {
           functional: true
         }}
       />);
-      const footer = shallow(wrapper.renderFooter);
-    expect(footer.find('.integration-save').prop('disabled')).toBeFalsy();
+    expect(wrapper.instance().validate()).toBeTruthy();
   });
 });

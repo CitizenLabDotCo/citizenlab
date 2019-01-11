@@ -6,31 +6,14 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
     close={[Function]}
     fixedHeight={false}
     footer={
-      <Container__ButtonContainer>
-        <WithTheme(Button)
-          className="integration-cancel"
-          onClick={[Function]}
-          style="primary-inverse"
-          textColor="#044D6C"
-        >
-          <FormattedMessage
-            defaultMessage="Cancel"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
-          />
-        </WithTheme(Button)>
-        <WithTheme(Button)
-          bgColor="#044D6C"
-          bgHoverColor="#022a3b"
-          className="integration-save"
-          onClick={[Function]}
-          style="primary"
-        >
-          <FormattedMessage
-            defaultMessage="Save"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
-          />
-        </WithTheme(Button)>
-      </Container__ButtonContainer>
+      <Footer
+        handleCancel={[Function]}
+        handleCancelBack={[Function]}
+        handleCancelConfirm={[Function]}
+        handleSave={[Function]}
+        isCancelling={false}
+        validate={[Function]}
+      />
     }
     header={
       <FormattedMessage
@@ -100,31 +83,14 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
     close={[Function]}
     fixedHeight={false}
     footer={
-      <Container__ButtonContainer>
-        <WithTheme(Button)
-          className="integration-cancel"
-          onClick={[Function]}
-          style="primary-inverse"
-          textColor="#044D6C"
-        >
-          <FormattedMessage
-            defaultMessage="Cancel"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
-          />
-        </WithTheme(Button)>
-        <WithTheme(Button)
-          bgColor="#044D6C"
-          bgHoverColor="#022a3b"
-          className="integration-save"
-          onClick={[Function]}
-          style="primary"
-        >
-          <FormattedMessage
-            defaultMessage="Save"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
-          />
-        </WithTheme(Button)>
-      </Container__ButtonContainer>
+      <Footer
+        handleCancel={[Function]}
+        handleCancelBack={[Function]}
+        handleCancelConfirm={[Function]}
+        handleSave={[Function]}
+        isCancelling={false}
+        validate={[Function]}
+      />
     }
     header={
       <FormattedMessage
@@ -190,31 +156,14 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
     close={[Function]}
     fixedHeight={false}
     footer={
-      <Container__ButtonContainer>
-        <WithTheme(Button)
-          className="integration-cancel"
-          onClick={[Function]}
-          style="primary-inverse"
-          textColor="#044D6C"
-        >
-          <FormattedMessage
-            defaultMessage="Cancel"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.cancel"
-          />
-        </WithTheme(Button)>
-        <WithTheme(Button)
-          bgColor="#044D6C"
-          bgHoverColor="#022a3b"
-          className="integration-save"
-          onClick={[Function]}
-          style="primary"
-        >
-          <FormattedMessage
-            defaultMessage="Save"
-            id="app.components.ConsentManager.Modal.PreferencesDialog.save"
-          />
-        </WithTheme(Button)>
-      </Container__ButtonContainer>
+      <Footer
+        handleCancel={[Function]}
+        handleCancelBack={[Function]}
+        handleCancelConfirm={[Function]}
+        handleSave={[Function]}
+        isCancelling={false}
+        validate={[Function]}
+      />
     }
     header={
       <FormattedMessage
