@@ -160,7 +160,7 @@ export default class UserMenu extends PureComponent<Props, State> {
             id="e2e-user-menu-dropdown"
             width="220px"
             mobileWidth="220px"
-            top="64px"
+            top="68px"
             right="-17px"
             mobileRight="-5px"
             opened={opened}

@@ -153,7 +153,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
           <Dropdown
             width="180px"
-            top="36px"
+            top="38px"
             right="-5px"
             mobileRight="-5px"
             opened={dropdownOpened}

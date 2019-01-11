@@ -64,6 +64,10 @@ const StyledContentContainer = styled.div`
 const Left = styled.div`
   flex: 1;
   margin-right: 40px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 20px;
+  `}
 `;
 
 const StyledLink = styled(Link)`

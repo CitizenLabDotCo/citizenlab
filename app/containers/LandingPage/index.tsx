@@ -113,7 +113,12 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
+  padding-top: 90px;
   padding-bottom: 90px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 40px;
+  `}
 `;
 
 const SectionHeader = styled.div`

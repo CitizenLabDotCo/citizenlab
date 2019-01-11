@@ -140,6 +140,7 @@ const SecondLine = styled.div`
   background: #fff;
   border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
+  margin-top: 30px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
