@@ -55,6 +55,17 @@
         "id": {"type": "string"},
         "type": {"type": "string", "enum": ["custom"]},
         "title": {"type": "string"},
+        "keywords": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name"],
+            "properties": {
+              "name": {"type": "string"}
+            }
+          }
+        },
         "children": {"$ref": "#/definitions/children"}
       }
     },
