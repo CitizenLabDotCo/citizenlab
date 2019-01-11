@@ -203,4 +203,47 @@ describe('<ConsentManager />', () => {
     wrapper.find('Modal').find('.e2e-modal-close-button').find('button').simulate('click');
     expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
   });
+  it('when no preferences are set, clicking cancel in the dialog will close it', () => {
+    const wrapper = mountWithTheme(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={isConsentRequired}
+        implyConsentOnInteraction={implyConsentOnInteraction}
+        destinations={destinations}
+        newDestinations={newDestinations}
+        preferences={{
+          analytics: null,
+          advertising: null,
+          functional: null
+        }}
+      />);
+    wrapper.find('.integration-open-modal').find('button').simulate('click');
+    wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
+    expect(wrapper.find('Modal').prop('opened')).toBeFalsy();
+  });
+  it('when a preferences is set, clicking cancel in the dialog will prompt confirmation', () => {
+    const wrapper = mountWithTheme(
+      <Container
+        intl={intl}
+        setPreferences={setPreferences}
+        resetPreferences={resetPreferences}
+        saveConsent={saveConsent}
+        isConsentRequired={isConsentRequired}
+        implyConsentOnInteraction={implyConsentOnInteraction}
+        destinations={destinations}
+        newDestinations={newDestinations}
+        preferences={{
+          analytics: true,
+          advertising: null,
+          functional: null
+        }}
+      />);
+    wrapper.find('.integration-open-modal').find('button').simulate('click');
+    wrapper.find('Modal').find('.integration-cancel').find('button').simulate('click');
+    expect(wrapper.find('Modal').prop('opened')).toBeTruthy();
+    expect(wrapper.state('isCancelling')).toBeTruthy();
+  });
 });
