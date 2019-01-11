@@ -12,6 +12,10 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
+// utils
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 const Container = styled.aside`
   margin-top: 40px;
 `;
@@ -53,9 +57,12 @@ interface DataProps {
   ideas: GetSimilarIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class SimilarIdeas extends React.Component<Props> {
+  onClickIdeaLink = (index: number) => () => {
+    trackEventByName(tracks.clickSimilarIdeaLink.name, { extra: { index } });
+  }
 
   render() {
     const { ideas } = this.props;
@@ -66,10 +73,11 @@ class SimilarIdeas extends React.Component<Props> {
       <Container>
         <Title><FormattedMessage {...messages.similarIdeas} /></Title>
         <Table>
-          {ideas.map(idea => (
+          {ideas.map((idea, index) => (
             <Row key={idea.id}>
               <IdeaLink
                 to={`/ideas/${idea.attributes.slug}`}
+                onClick={this.onClickIdeaLink(index)}
               >
                 <T value={idea.attributes.title_multiloc} />
               </IdeaLink>

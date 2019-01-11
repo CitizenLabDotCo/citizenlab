@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IIdeaData, ideasMarkersStream } from 'services/ideas';
+import { IGeotaggedIdeaData, ideasMarkersStream } from 'services/ideas';
 
 interface InputProps {
   phaseId?: string;
@@ -16,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaMarkers: Partial<IIdeaData>[] | undefined| null;
+  ideaMarkers: IGeotaggedIdeaData[] | undefined| null;
 }
 
-export type GetIdeaMarkersChildProps = Partial<IIdeaData>[] | undefined| null;
+export type GetIdeaMarkersChildProps = IGeotaggedIdeaData[] | undefined| null;
 
 export default class GetIdeaMarkers extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

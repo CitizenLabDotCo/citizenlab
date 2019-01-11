@@ -131,7 +131,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           <Spacer />
           <ButtonContainer>
             <Button style="admin-dark" className="integration-open-modal" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
-            <Button className="e2e-accept-cookies-btn" style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
+            <Button className="e2e-accept-cookies-btn" textColor={colors.adminTextColor} style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
           </ButtonContainer>
         </StyledContentContainer>
 

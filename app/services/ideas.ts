@@ -81,6 +81,16 @@ export interface IMinimalIdeaData {
   };
 }
 
+export interface IGeotaggedIdeaData {
+  id: string;
+  type: string;
+  attributes: {
+    title_multiloc: Multiloc;
+    location_point_geojson: GeoJSON.Point;
+    location_description: string;
+  };
+}
+
 export interface IIdeaLinks {
   self: string;
   first: string;
@@ -139,7 +149,11 @@ export function ideasStream(streamParams: IStreamParams | null = null) {
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{data: Partial<IIdeaData>[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
+  return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
+}
+
+export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks }>({ apiEndpoint: `${API_PATH}/ideas/geotagged`, ...streamParams, cacheStream: false });
 }
 
 export function addIdea(object: IIdeaAdd) {
