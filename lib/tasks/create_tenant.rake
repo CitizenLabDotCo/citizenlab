@@ -23,9 +23,9 @@ namespace :cl2_back do
           },
           timezone: "Europe/Brussels",
           currency: 'EUR',
-          color_main: '#2E3E90',
-          color_secondary: '#18853B',
-          color_text: '#BF502F'
+          color_main: '#163A7D',
+          color_secondary: '#E54B4B',
+          color_text: '#163A7D'
         },
         groups: {
           enabled: true,
