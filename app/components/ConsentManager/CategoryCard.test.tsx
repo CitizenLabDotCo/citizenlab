@@ -32,7 +32,7 @@ describe('<CategoryCard />', () => {
     ]
   };
 
-  const handleChange = jest.fn((event) => { console.log(event); });
+  const handleChange = jest.fn();
 
   beforeEach(() => {
   });
