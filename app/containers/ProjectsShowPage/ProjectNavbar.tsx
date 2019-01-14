@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import ContentContainer from 'components/ContentContainer';
 import PBNavbarButton from './pb/PBNavbarButton';
+import IdeaButton from 'components/IdeaButton';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -134,6 +135,31 @@ const StyledPBNavbarButton = styled(PBNavbarButton)`
   `}
 `;
 
+// TODO support different tooltip positions, this includes a quickfix to show
+// tooltip content on smaller than max tablets
+const StyledIdeaButton = styled(IdeaButton)`
+  margin-left: 40px;
+
+  ${media.smallerThanMaxTablet`
+    .tooltip-container {
+      left: 0;
+    }
+    .tooltip-content {
+      right: 100%;
+      ::after {
+        left: 50%;
+      }
+      ::before {
+        left: 50%;
+      }
+    }
+  `}
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
 interface InputProps {
   projectSlug: string;
   phaseId?: string | null;
@@ -145,7 +171,7 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   dropdownOpened: boolean;
@@ -268,6 +294,14 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <StyledPBNavbarButton
                     participationContextType={participationContextType}
                     participationContextId={participationContextId}
+                  />
+                }
+
+                {/* Continuous Ideation Idea Button desktop */}
+                {projectType === 'continuous' && projectMethod === 'ideation' &&
+                  <StyledIdeaButton
+                    projectId={project.id}
+                    fullHeight
                   />
                 }
               </ProjectNavbarItems>

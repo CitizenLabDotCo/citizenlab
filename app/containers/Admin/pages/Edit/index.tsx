@@ -8,14 +8,14 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import PageForm from 'components/PageForm';
 import { Formik } from 'formik';
 import PageWrapper from 'components/admin/PageWrapper';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 import GoBackButton from 'components/UI/GoBackButton';
 import T from 'components/T';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 const Title = styled.h1`
-  font-size: ${fontSize('xxxl')};
+  font-size: ${fontSizes.xxxl}px;
   padding: 0;
   width: 100%;
   margin: 1rem 0 3rem 0;

@@ -47,7 +47,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled, { ThemeProvider } from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
@@ -194,16 +194,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const { location, children } = this.props;
     const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
-    const theme = {
-      colors,
-      fontSizes,
-      colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
-      menuStyle: 'light',
-      menuHeight: 74,
-      mobileMenuHeight: 72,
-      mobileTopBarHeight: 66,
-      maxPageWidth: 952,
-    };
+    const theme = getTheme(tenant);
 
     const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
       <VoteControl

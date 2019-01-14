@@ -3,7 +3,7 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 type Props = {
   idea: GetIdeaChildProps;
@@ -11,7 +11,7 @@ type Props = {
 
 const Container = styled.div`
   p {
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
   }
 `;
 

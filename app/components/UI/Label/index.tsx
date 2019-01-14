@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { remCalc, fontSize, color, invisibleA11yText, booleanClass } from 'utils/styleUtils';
+import { remCalc, fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleUtils';
 
 const StyledLabel = styled.label`
-  color: ${color('label')};
+  color: ${colors.label};
   display: flex;
-  font-size: ${fontSize('base')};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin: 0;
   padding-bottom: ${remCalc(10)};

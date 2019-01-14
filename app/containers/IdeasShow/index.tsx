@@ -885,7 +885,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       const cancellingEnabled = idea.data.relationships.action_descriptor.data.voting.cancelling_enabled;
       const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
       const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
-      const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
+      const projectProcessType = get(project, 'data.attributes.process_type');
+      const projectParticipationMethod = get(project, 'data.attributes.participation_method');
+      const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
       const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
       const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
       const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);

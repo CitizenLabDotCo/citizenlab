@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // Lazy Images observer
 import { lazyImageObserver } from 'utils/lazyImagesObserver';
@@ -30,7 +30,7 @@ export interface State {
   loaded: boolean;
 }
 
-export class LazyImage extends React.PureComponent<Props, State> {
+export class LazyImage extends PureComponent<Props, State> {
   image: HTMLImageElement | null;
 
   constructor(props) {
