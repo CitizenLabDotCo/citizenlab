@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import messages from './messages';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -7,7 +7,16 @@ import { ButtonContainer } from './Container';
 import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
-const Footer = ({ validate, isCancelling, handleCancelBack, handleCancelConfirm, handleCancel, handleSave }) => {
+interface Props {
+    validate: () => boolean;
+    handleCancelBack: () => void;
+    handleCancelConfirm: () => void;
+    handleCancel: () => void;
+    handleSave: (e: FormEvent<any>) => void;
+    isCancelling: boolean;
+}
+
+const Footer = ({ validate, isCancelling, handleCancelBack, handleCancelConfirm, handleCancel, handleSave }: Props) => {
   const isValid = validate();
   return (
     isCancelling ? (

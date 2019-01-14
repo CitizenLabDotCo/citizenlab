@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 
 // Events
@@ -19,8 +19,6 @@ import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 import { IDestination, CustomPreferences } from './';
 
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -55,7 +53,7 @@ interface State {
 export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       isDialogOpen: false,
@@ -116,7 +114,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     saveConsent();
   }
 
-  handleCategoryChange = (category, value) => {
+  handleCategoryChange = (category: string, value: boolean) => {
     const { setPreferences } = this.props;
 
     setPreferences({
@@ -136,7 +134,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     return res;
   }
 
-  handleSave = (e) => {
+  handleSave = (e: FormEvent<any>) => {
     e.preventDefault();
 
     if (!this.validate()) {
