@@ -1078,6 +1078,7 @@
   "app.containers.SignUp.areaLabel": "Gebied",
   "app.containers.SignUp.areaPlaceholder": "Selecteer het gebied waar je woont",
   "app.containers.SignUp.continue": "Ga verder",
+  "app.containers.SignUp.defaultSignUpHelper": "",
   "app.containers.SignUp.emailLabel": "E-mail",
   "app.containers.SignUp.emailPlaceholder": "Vul je e-mailadres in",
   "app.containers.SignUp.female": "Vrouw",

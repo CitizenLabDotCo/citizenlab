@@ -1078,6 +1078,7 @@
   "app.containers.SignUp.areaLabel": "Gebiet",
   "app.containers.SignUp.areaPlaceholder": "Wählen Sie das Gebiet, in dem Sie leben",
   "app.containers.SignUp.continue": "Fortfahren",
+  "app.containers.SignUp.defaultSignUpHelper": "",
   "app.containers.SignUp.emailLabel": "Mail",
   "app.containers.SignUp.emailPlaceholder": "Geben Sie Ihre E-Mail-Adresse ein",
   "app.containers.SignUp.female": "Weiblich",

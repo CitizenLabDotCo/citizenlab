@@ -1078,6 +1078,7 @@
   "app.containers.SignUp.areaLabel": "",
   "app.containers.SignUp.areaPlaceholder": "",
   "app.containers.SignUp.continue": "",
+  "app.containers.SignUp.defaultSignUpHelper": "",
   "app.containers.SignUp.emailLabel": "",
   "app.containers.SignUp.emailPlaceholder": "",
   "app.containers.SignUp.female": "",
