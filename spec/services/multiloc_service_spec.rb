@@ -105,6 +105,18 @@ describe MultilocService do
     end
   end
 
+  describe "is_empty?" do
+    it "returns true on a nil multiloc" do
+      expect(service.is_empty?(nil)).to be true
+    end
 
+    it "returns true on a multiloc with only empty values" do
+      expect(service.is_empty?({en: ''})).to be true
+    end
+
+    it "returns false on a multiloc with values" do
+      expect(service.is_empty?({en: 'yes', 'nl-NL' => ''})).to be false
+    end
+  end
 
 end

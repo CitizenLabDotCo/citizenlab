@@ -9,7 +9,7 @@
       "core": {
         "type": "object",
         "description": "The core of the system. Container for general settings. Always enabled",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text"],
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -84,17 +84,36 @@
             "description": "The main brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#335533"
+            "default": "#163A7D"
           },
-          "color_header_overlay": {
-            "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
+          "color_secondary": {
+            "description": "The secondary brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#E54B4B"
+          },
+          "color_text": {
+            "description": "The text brand color as a hexadecimal value including the anchor character",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#163A7D"
           },
           "signup_helper_text": {
             "description": "An optional short text, shown on top of the sign up form. Keep it short. Supports HTML",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_message": {
+            "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_button": {
+            "description": "Text on the CTA button next to the custom onboarding message",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_link": {
+            "description": "The location the CTA button links to. Should be a relative link (start with /)",
+            "type": "string",
+            "pattern": "^$|^/.*$"
           }
         }
       },
