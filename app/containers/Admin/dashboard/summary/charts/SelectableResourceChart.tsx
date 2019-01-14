@@ -29,6 +29,7 @@ const SHiddenLabel = styled(HiddenLabel)`
 const GraphCardTitle = styled.h3`
   margin: 0;
   margin-right: 15px;
+  font-weight: 600;
 
   ${media.smallerThan1280px`
     margin-bottom: 15px;

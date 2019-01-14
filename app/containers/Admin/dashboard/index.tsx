@@ -164,6 +164,7 @@ export const GraphCardTitle = styled.h3`
   display: flex;
   align-items: center;
   margin: 0;
+  font-weight: 600;
 `;
 
 export const GraphCardFigureContainer = styled.div`
@@ -173,7 +174,7 @@ export const GraphCardFigureContainer = styled.div`
 
 export const GraphCardFigure = styled.span`
   margin-right: 5px;
-  font-weight: bold;
+  font-weight: 600  ;
 `;
 
 export const GraphCardFigureChange = styled.span`
