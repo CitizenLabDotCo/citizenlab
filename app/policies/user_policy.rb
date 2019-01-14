@@ -8,14 +8,12 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user && user.admin?
-        scope
-      elsif user
-        scope.where(id: user.id)
-      else
-        scope.none
-      end
+      scope
     end
+  end
+
+  def index?
+    user&.active? && user.admin?
   end
 
   def create?
