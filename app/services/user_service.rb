@@ -74,7 +74,7 @@ class UserService
   def random_custom_field_values user: nil
     custom_field_values = {}
     if user
-      JSON.parse(user[:custom_field_values]).each do |property, value|
+      user[:custom_field_values].each do |property, value|
         if ['gender', 'education', 'birthyear'].include? property
           custom_field_values[property] = value # if !(property == 'education' && (value.to_i < 2 || value.to_i > 8))
         end
@@ -83,17 +83,17 @@ class UserService
     custom_field_values['gender'] ||= (User::GENDERS+[nil]).shuffle.first
     custom_field_values['birthyear'] ||= pick_birthyear if rand(3) > 0
     custom_field_values['education'] ||= (rand(7)+2).to_s if rand(3) > 0
+    custom_field_values
   end
 
   def random_first_name gender
     case gender
-      when 'male'
-        Faker::Name.male_first_name
-      when 'female'
-        Faker::Name.female_first_name
-      else
-        Faker::Name.first_name
-      end
+    when 'male'
+      Faker::Name.male_first_name
+    when 'female'
+      Faker::Name.female_first_name
+    else
+      Faker::Name.first_name
     end
   end
 
@@ -107,14 +107,13 @@ class UserService
 
   def random_avatar_url gender
     case gender
-      when 'male'
-        MALE_AVATAR_URLS
-      when 'female'
-        FEMALE_AVATAR_URLS
-      else
-        MALE_AVATAR_URLS + FEMALE_AVATAR_URLS
-      end.shuffle.first
-    end
+    when 'male'
+      MALE_AVATAR_URLS
+    when 'female'
+      FEMALE_AVATAR_URLS
+    else
+      MALE_AVATAR_URLS + FEMALE_AVATAR_URLS
+    end.shuffle.first
   end
 
   def random_bio locales
