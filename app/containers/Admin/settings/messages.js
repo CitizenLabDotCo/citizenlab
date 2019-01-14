@@ -61,21 +61,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.languages',
     defaultMessage: 'Languages',
   },
-  mainColor: {
-    id: 'app.containers.AdminPage.SettingsPage.mainColor',
+  color_main: {
+    id: 'app.containers.AdminPage.SettingsPage.color_main',
     defaultMessage: 'Main color',
   },
-  menuStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.menuStyle',
-    defaultMessage: 'Menu style',
+  color_secondary: {
+    id: 'app.containers.AdminPage.SettingsPage.color_secondary',
+    defaultMessage: 'Secondary color',
   },
-  menuStyleLight: {
-    id: 'app.containers.AdminPage.SettingsPage.menuStyleLight',
-    defaultMessage: 'Light',
-  },
-  menuStyleDark: {
-    id: 'app.containers.AdminPage.SettingsPage.menuStyleDark',
-    defaultMessage: 'Dark',
+  color_text: {
+    id: 'app.containers.AdminPage.SettingsPage.color_text',
+    defaultMessage: 'Text color',
   },
   logo: {
     id: 'app.containers.AdminPage.SettingsPage.logo',

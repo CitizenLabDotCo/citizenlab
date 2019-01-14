@@ -5,7 +5,7 @@ import React, { SFC } from 'react';
 import styled from 'styled-components';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
-import { remCalc, fontSize, fontSizes, colors } from 'utils/styleUtils';
+import { remCalc, fontSizes, colors } from 'utils/styleUtils';
 
 // Components
 export { default as SortableList } from './SortableList';
@@ -23,7 +23,7 @@ export const StyledRow = styled.div`
   align-items: center !important;
   border-top: 1px solid ${colors.separation};
   display: flex !important;
-  font-size: ${fontSize('small')};
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   justify-content: space-between !important;
   line-height: 20px;
@@ -41,11 +41,11 @@ export const StyledRow = styled.div`
   }
 
   h1 {
-    font-size: ${fontSize('large')};
+    font-size: ${fontSizes.large}px;
   }
 
   h2 {
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
   }
 
   p {
@@ -74,7 +74,7 @@ export const StyledRow = styled.div`
   }
 
   > .primary {
-    font-size: ${fontSize('base')}
+    font-size: ${fontSizes.base}px
     font-weight: 400;
     line-height: 20px;
   }
@@ -102,7 +102,7 @@ export const StyledRow = styled.div`
   &.e2e-admin-list-head-row {
     border-top: 0;
     color: ${colors.label};
-    font-size: ${fontSize('small')};
+    font-size: ${fontSizes.small}px;
     font-weight: 500;
   }
 `;

@@ -136,7 +136,7 @@ export function getProjectUrl(project: IProjectData) {
     lastUrlSegment = 'process';
   } else if (projectMethod === 'survey') {
     lastUrlSegment = 'survey';
-  } else if (projectMethod === 'ideation' || (projectType === 'continuous' && projectMethod === 'budgeting')) {
+  } else if (projectType === 'continuous' && projectMethod === 'budgeting') {
     lastUrlSegment = 'ideas';
   } else {
     lastUrlSegment = 'info';

@@ -1,58 +1,63 @@
 import { css } from 'styled-components';
 import { darken } from 'polished';
 
+// Media
 export const viewportWidths = {
-  largeTablet: 1024
+  smallPhone: 320,
+  phone: 360,
+  largePhone: 415,
+  smallTablet: 767,
+  largeTablet: 1023,
 };
 
 export const media = {
   smallPhone: (style: any, ...args) => css`
-    @media (max-width: 320px) {
+    @media (max-width: ${viewportWidths.smallPhone}px) {
       ${css(style, ...args)}
     }
   `,
   phone: (style: any, ...args) => css`
-    @media (max-width: 360px) {
+    @media (max-width: ${viewportWidths.phone}px) {
       ${css(style, ...args)}
     }
   `,
   largePhone: (style: any, ...args) => css`
-    @media (max-width: 410px) {
+    @media (max-width: ${viewportWidths.largePhone}px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanPhone: (style: any, ...args) => css`
-    @media (min-width: 360px) {
+    @media (min-width: ${viewportWidths.phone}px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanLargePhone: (style: any, ...args) => css`
-    @media (min-width: 410px) {
+    @media (min-width: ${viewportWidths.largePhone}px) {
       ${css(style, ...args)}
     }
   `,
   tablet: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) {
       ${css(style, ...args)}
     }
   `,
   tabletLandscape: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : landscape) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : landscape) {
       ${css(style, ...args)}
     }
   `,
   tabletPortrait: (style: any, ...args) => css`
-    @media (min-width: 768px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : portrait) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet}px) and (orientation : portrait) {
       ${css(style, ...args)}
     }
   `,
   smallerThanMinTablet: (style: any, ...args) => css`
-    @media (max-width: 768px) {
+    @media (max-width: ${viewportWidths.smallTablet}px) {
       ${css(style, ...args)}
     }
   `,
   biggerThanMinTablet: (style: any, ...args) => css`
-    @media (min-width: 768px) {
+    @media (min-width: ${viewportWidths.smallTablet}px) {
       ${css(style, ...args)}
     }
   `,
@@ -71,39 +76,12 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  desktop: (style: any, ...args) => css`
+    @media (min-height: 800px) and (min-width: 1280px) {
+      ${css(style, ...args)}
+    }
+  `,
 };
-
-export function remCalc(desiredSize: number) {
-  return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
-}
-
-export function calculateContrastRatio(backgroundColor: number[], textColor: number[]) {
-  function luminanace(r: number, g: number, b: number) {
-    const a: any = [r, g, b].map((val: number) => {
-      let v = val;
-      v /= 255;
-
-      return v <= 0.03928
-        ? v / 12.92
-        : Math.pow((v + 0.055) / 1.055, 2.4);
-    });
-    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-  }
-
-  const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
-    / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
-
-  return contrastRatio;
-}
-
-export function hexToRgb(hex) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
-}
 
 export const colors = {
   background: '#F9F9FA',
@@ -132,6 +110,7 @@ export const colors = {
   * Red that has a contrast ratio of >=4.5 on a white background
   */
   clRed: '#E52516',
+  clRed2: '#FC3C2D',
   /**
   * darker red than clRed for when we have a light red background (clRedErrorBackground)
   */
@@ -184,10 +163,6 @@ export const colors = {
   disabledPrimaryButtonBg: '#d0d0d0'
 };
 
-export function color(name: keyof typeof colors) {
-  return colors[name];
-}
-
 export const fontSizes = {
   xs: 12,
   small: 14,
@@ -200,26 +175,17 @@ export const fontSizes = {
   xxxxl: 34
 };
 
-export function fontSize(name: keyof typeof fontSizes) {
-  return `${fontSizes[name]}px`;
-}
+export const stylingConsts = {
+  menuHeight: 78,
+  mobileMenuHeight: 72,
+  mobileTopBarHeight: 66,
+  maxPageWidth: 952,
+  bannerWidth: 1340,
+  pageWidth: 1150,
+  textWidth: 720,
+};
 
-export function invisibleA11yText() {
-  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-  return `
-  position: absolute !important;
-  height: 1px; width: 1px;
-  overflow: hidden;
-  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-  clip: rect(1px, 1px, 1px, 1px);
-`;
-}
-
-export function booleanClass(value: any, className: string) {
-  if (!!value) return ` ${className}`;
-  return '';
-}
-
+// Reusable text styling
 export function quillEditedContent() {
   return `
     max-width: 100%;
@@ -333,4 +299,69 @@ export function quillEditedContent() {
       max-width: 100%;
     }
   `;
+}
+
+// Main theme passed through any styled component
+export function getTheme(tenant) {
+  return ({
+    colors,
+    fontSizes,
+    colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
+    colorSecondary: (tenant ? tenant.data.attributes.settings.core.color_secondary : '#000000'),
+    colorText: (tenant ? tenant.data.attributes.settings.core.color_text : '#000000'),
+    ...stylingConsts
+  });
+}
+
+// Utils
+export function booleanClass(value: any, className: string) {
+  if (!!value) {
+    return ` ${className}`;
+  }
+
+  return '';
+}
+
+export function invisibleA11yText() {
+  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  return `
+    position: absolute !important;
+    height: 1px; width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px, 1px, 1px, 1px);
+  `;
+}
+
+// Calculus
+export function remCalc(desiredSize: number) {
+  return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
+}
+
+export function calculateContrastRatio(backgroundColor: number[], textColor: number[]) {
+  function luminanace(r: number, g: number, b: number) {
+    const a: any = [r, g, b].map((val: number) => {
+      let v = val;
+      v /= 255;
+
+      return v <= 0.03928
+        ? v / 12.92
+        : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+  }
+
+  const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
+    / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
+
+  return contrastRatio;
+}
+
+export function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
 }

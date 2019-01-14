@@ -43,9 +43,10 @@ const DropdownItemIcon = styled(Icon)`
 `;
 
 const OpenMenuButton = styled.button`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
+  border-radius: 5px;
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
@@ -152,7 +153,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
           <Dropdown
             width="180px"
-            top="36px"
+            top="38px"
             right="-5px"
             mobileRight="-5px"
             opened={dropdownOpened}

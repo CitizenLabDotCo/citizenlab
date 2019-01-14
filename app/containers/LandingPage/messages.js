@@ -70,5 +70,21 @@ export default defineMessages({
   emailSharingBody: {
     id: 'app.containers.landing.emailSharingBody',
     defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
+  },
+  completeYourProfile: {
+    id: 'app.containers.landing.completeYourProfile',
+    defaultMessage: `Welcome {firstName}. It's time to complete your profile.`,
+  },
+  completeProfile: {
+    id: 'app.containers.landing.completeProfile',
+    defaultMessage: `Complete profile`,
+  },
+  doItLater: {
+    id: 'app.containers.landing.doItLater',
+    defaultMessage: `I'll do it later`,
+  },
+  defaultSignedInMessage: {
+    id: 'app.containers.landing.defaultSignedInMessage',
+    defaultMessage: `{firstName}, inspire change today!`,
   }
 });

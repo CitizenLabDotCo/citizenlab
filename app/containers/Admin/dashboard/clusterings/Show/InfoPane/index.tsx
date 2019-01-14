@@ -35,7 +35,7 @@ const TabbedNav = styled.nav`
 
 const Tab = styled.li`
   color: ${colors.label};
-  font-size: ${fontSizes.base};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   text-transform: capitalize;
   list-style: none;

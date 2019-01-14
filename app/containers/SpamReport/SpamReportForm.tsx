@@ -24,7 +24,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // Style
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const timeout = 300;
 
@@ -34,7 +34,7 @@ const StyledRadio = styled(Radio)`
 
   .text {
     color: #333;
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
   }

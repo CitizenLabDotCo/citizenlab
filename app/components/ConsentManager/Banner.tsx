@@ -23,39 +23,50 @@ const Root = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px 30px;
+
   ${media.smallerThanMaxTablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
   `}
-  ${media.smallerThanMinTablet`
-    padding: 10px 15px;
-  `}
-`;
 
-const Spacer = styled.div`
-  flex: 1;
+  ${media.smallerThanMinTablet`
+    padding: 15px 15px;
+  `}
 `;
 
 const StyledContentContainer = styled.div`
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   width: 100%;
   padding-right: 35px;
   padding-left: 35px;
   max-width: ${(props) => props.theme.maxPageWidth}px;
+
   p:first-child {
-    font-weight: 700;
+    font-weight: 500;
     margin-bottom: 5px;
   }
+
   ${media.smallerThanMaxTablet`
-    flex-wrap: wrap;
-    justify-content: flex-end;
     padding: 0px;
+
+    p:first-child {
+      font-weight: 300;
+      margin: 0;
+    }
+
     p:last-child {
       display: none;
     }
-    p:fist-child {
-      margin: 5px;
-    }
+  `}
+`;
+
+const Left = styled.div`
+  flex: 1;
+  margin-right: 40px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 20px;
   `}
 `;
 
@@ -70,13 +81,6 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
-  button {
-    margin: 4px;
-  }
-  button.primary-inverse span {
-    color: ${colors.adminTextColor};
-  }
 `;
 
 const CloseButton = styled.button`
@@ -88,9 +92,12 @@ const CloseButton = styled.button`
   background: none;
   fill: white;
   cursor: pointer;
+
   svg {
+    width: 15px;
     height: 15px;
   }
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
@@ -114,7 +121,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
     return (
       <Root role="banner">
         <StyledContentContainer>
-          <div>
+          <Left>
             <FormattedMessage
               tagName="p"
               {...messages.mainText}
@@ -127,11 +134,25 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
               }}
             />
             <FormattedMessage {...messages.subText} tagName="p" />
-          </div>
-          <Spacer />
+          </Left>
           <ButtonContainer>
-            <Button style="admin-dark" className="integration-open-modal" onClick={onChangePreferences}><FormattedMessage {...messages.manage} /></Button>
-            <Button className="e2e-accept-cookies-btn" textColor={colors.adminTextColor} style="primary-inverse" onClick={onAccept}><FormattedMessage {...messages.accept} /></Button>
+            <Button
+              style="primary-outlined"
+              borderColor="transparent"
+              textColor="#fff"
+              onClick={onChangePreferences}
+              className="integration-open-modal"
+            >
+              <FormattedMessage {...messages.manage} />
+            </Button>
+            <Button
+              className="e2e-accept-cookies-btn"
+              style="primary-inverse"
+              textColor={colors.adminTextColor}
+              onClick={onAccept}
+            >
+              <FormattedMessage {...messages.accept} />
+            </Button>
           </ButtonContainer>
         </StyledContentContainer>
 

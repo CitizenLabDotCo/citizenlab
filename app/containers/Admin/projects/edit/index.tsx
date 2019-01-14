@@ -9,20 +9,40 @@ import { projectByIdStream, IProjectData } from 'services/projects';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
+import Button from 'components/UI/Button';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 import clHistory from 'utils/cl-router/history';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+// tracks
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
 
-const StyledGoBackButton = styled(GoBackButton)`
-  margin-top: 10px;
+const ActionsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  position: absolute;
+  top: 50px;
+  right: 0;
+
+  & > *:not(:last-child) {
+    margin-right: 15px;
+  }
+`;
+
+const TopContainer = styled.div`
+  width: 100%;
   margin-bottom: 30px;
+  position: relative;
 `;
 
 type Props = {
@@ -34,12 +54,16 @@ type Props = {
   }
 };
 
+interface ITracks {
+  clickNewIdea: ({ extra: object }) => void;
+}
+
 type State = {
   project: IProjectData | null,
   loaded: boolean
 };
 
-class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps & ITracks, State> {
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
@@ -138,28 +162,46 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
     }
   }
 
+  onNewIdea = (pathname) => (_event) => {
+    this.props.clickNewIdea({ extra: { pathnameFrom: pathname } });
+  }
+
   render() {
     const { projectId } = this.props.params;
     const { project, loaded } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (loaded) {
-      const { children } = this.props;
+      const { children, location: { pathname } } = this.props;
       const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
         resource: {
           title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
-          publicLink: project ? `/projects/${project.attributes.slug}` : ''
-        },
-        messages: {
-          viewPublicResource: messages.viewPublicProject,
         },
         tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
       };
-
-      return(
+      return (
         <>
-          <StyledGoBackButton onClick={this.goBack} />
+          <TopContainer>
+            <GoBackButton onClick={this.goBack} />
+            <ActionsContainer>
+              {/^.*\/ideas$/.test(pathname) &&
+                <Button
+                  linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
+                  text={formatMessage(messages.addNewIdea)}
+                  onClick={this.onNewIdea(pathname)}
+                />
+              }
+              <Button
+                style="cl-blue"
+                icon="eye"
+                linkTo={project ? `/projects/${project.attributes.slug}` : ''}
+                circularCorners={false}
+              >
+                <FormattedMessage {...messages.viewPublicProject} />
+              </Button>
+            </ActionsContainer>
+          </TopContainer>
           <TabbedResource {...tabbedProps}>
             {childrenWithExtraProps}
           </TabbedResource>
@@ -171,4 +213,4 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps,
   }
 }
 
-export default injectIntl<Props>(AdminProjectEdition);
+export default injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(AdminProjectEdition));

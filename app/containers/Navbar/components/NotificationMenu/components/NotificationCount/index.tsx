@@ -10,7 +10,7 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import messages from '../../messages';
 
 const Container = styled.button`
@@ -32,20 +32,27 @@ const Container = styled.button`
 `;
 
 const NotificationIcon = styled(Icon)`
-  height: 26px;
+  height: 24px;
   fill: inherit;
   transition: all 150ms ease;`
 ;
 
 const NewNotificationsIndicator = styled.div`
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: solid 2px #fff;
-  background: #FF672F;
+  color: #fff;
+  font-size: ${fontSizes.xs}px;
+  line-height: ${fontSizes.xs}px;
+  background: ${colors.clRed};
+  padding: 2px;
+  border-radius: 5px;
+  border: solid 1px #fff;
   position: absolute;
-  top: -4px;
-  right: -4px;
+  top: -8px;
+  left: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 18px;
+  min-height: 18px;
 `;
 
 type Props = {
@@ -62,7 +69,13 @@ class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> 
     return (
       <Container aria-label={this.props.intl.formatMessage(messages.notificationsLabel)} onClick={this.props.onClick}>
         <NotificationIcon name="notification" />
-        {(isNumber(count) && count > 0) ? <NewNotificationsIndicator /> : null}
+        {(isNumber(count) && count > 0) ?
+          <NewNotificationsIndicator>
+            {count}
+          </NewNotificationsIndicator>
+          :
+          null
+        }
       </Container>
     );
   }

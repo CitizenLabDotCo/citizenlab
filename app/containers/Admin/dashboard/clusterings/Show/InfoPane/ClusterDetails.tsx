@@ -5,7 +5,7 @@ import { ParentNode } from 'services/clusterings';
 import GetIdea from 'resources/GetIdea';
 
 import styled from 'styled-components';
-import { fontSize } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
@@ -26,7 +26,7 @@ const List = styled.ul`
 `;
 
 const ListItem = styled.li`
-  font-size: ${fontSize('base')};
+  font-size: ${fontSizes.base}px;
   padding-top: 5px;
   padding-bottom: 5px;
 `;
