@@ -372,4 +372,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(Modal);
+const WrappedModal = injectTracks<Props>(tracks)(Modal);
+WrappedModal.displayName = 'ModalWithTracks';
+
+export default WrappedModal;

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 
 // Events
@@ -8,7 +8,7 @@ import eventEmitter from 'utils/eventEmitter';
 import Banner from './Banner';
 import PreferencesDialog, { ContentContainer } from './PreferencesDialog';
 import Modal from 'components/UI/Modal';
-import Button from 'components/UI/Button';
+import Footer from './Footer';
 
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -19,8 +19,6 @@ import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 import { IDestination, CustomPreferences } from './';
 
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 export const ButtonContainer = styled.div`
   width: 100%;
@@ -45,26 +43,57 @@ interface Props {
 interface State {
   isDialogOpen: boolean;
   isCancelling: boolean;
+  categoryDestinations: {
+    analytics: IDestination[],
+    advertising: IDestination[],
+    functional: IDestination[],
+  };
 }
 
-class Container extends PureComponent<Props & InjectedIntlProps, State> {
+export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       isDialogOpen: false,
-      isCancelling: false
+      isCancelling: false,
+      categoryDestinations: {
+        analytics: [] as IDestination[],
+        advertising: [] as IDestination[],
+        functional: [] as IDestination[],
+      }
     };
   }
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('openConsentManager').subscribe(this.openDialog)
     ];
+    this.assignDestinations();
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.destinations !== prevProps.destinations) {
+      this.assignDestinations();
+    }
+  }
+
+  assignDestinations = () => {
+    const { categoryDestinations } = this.state;
+    for (const destination of this.props.destinations) {
+      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
+        categoryDestinations.advertising.push(destination);
+      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
+        categoryDestinations.functional.push(destination);
+      } else {
+        // Fallback to analytics
+        categoryDestinations.analytics.push(destination);
+      }
+    }
   }
 
   openDialog = () => {
@@ -85,7 +114,7 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     saveConsent();
   }
 
-  handleCategoryChange = (category, value) => {
+  handleCategoryChange = (category: string, value: boolean) => {
     const { setPreferences } = this.props;
 
     setPreferences({
@@ -93,10 +122,22 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  handleSave = (categoryDestinations) => (e) => {
+  validate = () => {
+    let res = true;
+    const { categoryDestinations } = this.state;
+    const { preferences } = this.props;
+    for (const category of Object.keys(categoryDestinations)) {
+      if (categoryDestinations[category].length > 0) {
+        res = res && !(preferences[category] === null);
+      }
+    }
+    return res;
+  }
+
+  handleSave = (e: FormEvent<any>) => {
     e.preventDefault();
 
-    if (!this.validate(categoryDestinations)) {
+    if (!this.validate()) {
       return;
     }
 
@@ -143,69 +184,14 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
     resetPreferences();
   }
 
-  validate = (categoryDestinations) => {
-    let res = true;
-    for (const category of Object.keys(categoryDestinations)) {
-      if (categoryDestinations[category].length > 0) {
-        res = res && !(this.props[category] === null);
-      }
-    }
-    return res;
-  }
-
-  renderFooter = (categoryDestinations) => (
-    this.state.isCancelling ? (
-      <ButtonContainer>
-        <Button onClick={this.handleCancelBack} style="primary-inverse" textColor={colors.adminTextColor}>
-          <FormattedMessage {...messages.back} />
-        </Button>
-        <Button onClick={this.handleCancelConfirm} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
-          <FormattedMessage {...messages.confirm} />
-        </Button>
-      </ButtonContainer>
-    ) : (
-        <ButtonContainer>
-          <Button onClick={this.handleCancel} style="primary-inverse" textColor={colors.adminTextColor}>
-            <FormattedMessage {...messages.cancel} />
-          </Button>
-          <Button
-            onClick={this.handleSave(categoryDestinations)}
-            style="primary"
-            bgColor={colors.adminTextColor}
-            bgHoverColor={darken(0.1, colors.adminTextColor)}
-          >
-            <FormattedMessage  {...messages.save} />
-          </Button>
-        </ButtonContainer>
-      )
-  )
-
   render() {
     const {
-      destinations,
       newDestinations,
       preferences,
       isConsentRequired,
       intl,
     } = this.props;
-    const { isDialogOpen, isCancelling } = this.state;
-    const categoryDestinations = {
-      analytics: [] as IDestination[],
-      advertising: [] as IDestination[],
-      functional: [] as IDestination[],
-    };
-
-    for (const destination of destinations) {
-      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinations.advertising.push(destination);
-      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
-        categoryDestinations.functional.push(destination);
-      } else {
-        // Fallback to analytics
-        categoryDestinations.analytics.push(destination);
-      }
-    }
-
+    const { isDialogOpen, isCancelling, categoryDestinations } = this.state;
     return (
       <>
         <Modal
@@ -214,7 +200,14 @@ class Container extends PureComponent<Props & InjectedIntlProps, State> {
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
           header={<FormattedMessage {...messages.title} tagName="h1" />}
-          footer={this.renderFooter(categoryDestinations)}
+          footer={<Footer
+            validate={this.validate}
+            isCancelling={this.state.isCancelling}
+            handleCancelBack={this.handleCancelBack}
+            handleCancelConfirm={this.handleCancelConfirm}
+            handleCancel={this.handleCancel}
+            handleSave={this.handleSave}
+          />}
         >
           {!isCancelling &&
             <PreferencesDialog
