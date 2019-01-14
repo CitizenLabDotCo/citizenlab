@@ -5,6 +5,7 @@
   "app.components.AssignBudgetControl.seeIdea": "Idee anschauen",
   "app.components.AssignBudgetControl.undo": "Rückgängig",
   "app.components.AuthProviderButton.termsAndConditions": "allgemeine Geschäftsbedingungen",
+  "app.components.AvatarBubbles.avatarAltText": "",
   "app.components.ConsentManager.Banner.accept": "Akzeptieren",
   "app.components.ConsentManager.Banner.ariaButtonClose": "Richtlinien werden akzeptiert und das Banner wird geschlossen",
   "app.components.ConsentManager.Banner.mainText": "Durch die weitere Benutzung der Plattform, erklären Sie sich mit unserem {policyLink} einverstanden",
