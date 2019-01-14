@@ -8,7 +8,7 @@ import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formi
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Multiloc } from 'typings';
-
+import styled from 'styled-components';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -23,6 +23,16 @@ import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
+import { fontSizes } from 'utils/styleUtils';
+
+const StyledSection = styled(Section)`
+  margin-bottom: 2.5rem;
+`;
+
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 1rem;
+  font-size: ${fontSizes.xl}px;
+`;
 
 export interface FormValues {
   sender: 'author' | 'organization';
@@ -94,10 +104,10 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
     return (
       <Form>
-        <Section>
-          <SectionTitle>
+        <StyledSection>
+          <StyledSectionTitle>
             1. <FormattedMessage {...messages.formTitleWho}/>
-          </SectionTitle>
+          </StyledSectionTitle>
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldSender} />
@@ -148,13 +158,12 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               apiErrors={errors.reply_to as any}
             />}
           </SectionField>
+        </StyledSection>
 
-        </Section>
-
-        <Section>
-          <SectionTitle>
+        <StyledSection>
+          <StyledSectionTitle>
             2. <FormattedMessage {...messages.formTitleWhat} />
-          </SectionTitle>
+          </StyledSectionTitle>
           <SectionField>
             <FastField
               name="subject_multiloc"
@@ -179,7 +188,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />}
           </SectionField>
 
-        </Section>
+        </StyledSection>
 
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}
