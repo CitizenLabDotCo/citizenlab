@@ -257,10 +257,6 @@ class SignedInHeader extends PureComponent<Props, State> {
     dismissOnboardingCampaign(name);
   }
 
-  handleSubmitButtonClick = () => {
-
-  }
-
   render() {
     const { locale, tenant, authUser, className, onboardingCampaigns, theme } = this.props;
 
