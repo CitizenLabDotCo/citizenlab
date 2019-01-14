@@ -115,15 +115,15 @@ class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
             <Tooltip />
             <ReferenceLine y={0} stroke="#000" />
             {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+              <Bar key={`up ${index + 1}`} dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
             ))}
             {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
+              <Bar key={`down ${index + 1}`} dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
             ))}
             {ideaIdsComparisons.length === 1 &&
-              <Bar dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
+              <Bar key="up 1" dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
             {ideaIdsComparisons.length === 1 &&
-              <Bar dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
+              <Bar key="down 1" dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
           </BarChart>
         </ResponsiveContainer>
       </Container>

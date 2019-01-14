@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoryCard /> renders correctly when allowed 1`] = `
+<CategoryCard__Container>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <FormattedMessage
+        defaultMessage="Tools"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+      />
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
+      <CategoryCard__Separator>
+        •
+      </CategoryCard__Separator>
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+  <CategoryCard__InputContainer
+    aria-labelledby="analytics-radio"
+    role="radiogroup"
+  >
+    <CategoryCard__HiddenLabel
+      id="analytics-radio"
+    >
+      <FormattedMessage
+        defaultMessage="Allow {category} tracking?"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
+        values={
+          Object {
+            "category": "analytics",
+          }
+        }
+      />
+    </CategoryCard__HiddenLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-true"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={true}
+        checked={true}
+        id="analytics-radio-true"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="true"
+      />
+      <Radio__CustomRadio
+        className="checked"
+      >
+        <Radio__Checked
+          color="#49B47D"
+        />
+      </Radio__CustomRadio>
+      <FormattedMessage
+        defaultMessage="Allow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+      />
+    </CategoryCard__StyledLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-false"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={false}
+        checked={false}
+        id="analytics-radio-false"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="false"
+      />
+      <Radio__CustomRadio
+        className=""
+      />
+      <FormattedMessage
+        defaultMessage="Disallow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+      />
+    </CategoryCard__StyledLabel>
+  </CategoryCard__InputContainer>
+</CategoryCard__Container>
+`;
+
+exports[`<CategoryCard /> renders correctly when disallowed 1`] = `
+<CategoryCard__Container>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <FormattedMessage
+        defaultMessage="Tools"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+      />
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
+      <CategoryCard__Separator>
+        •
+      </CategoryCard__Separator>
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+  <CategoryCard__InputContainer
+    aria-labelledby="analytics-radio"
+    role="radiogroup"
+  >
+    <CategoryCard__HiddenLabel
+      id="analytics-radio"
+    >
+      <FormattedMessage
+        defaultMessage="Allow {category} tracking?"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
+        values={
+          Object {
+            "category": "analytics",
+          }
+        }
+      />
+    </CategoryCard__HiddenLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-true"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={false}
+        checked={false}
+        id="analytics-radio-true"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="true"
+      />
+      <Radio__CustomRadio
+        className=""
+      />
+      <FormattedMessage
+        defaultMessage="Allow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+      />
+    </CategoryCard__StyledLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-false"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={true}
+        checked={true}
+        id="analytics-radio-false"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="false"
+      />
+      <Radio__CustomRadio
+        className="checked"
+      >
+        <Radio__Checked
+          color="#49B47D"
+        />
+      </Radio__CustomRadio>
+      <FormattedMessage
+        defaultMessage="Disallow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+      />
+    </CategoryCard__StyledLabel>
+  </CategoryCard__InputContainer>
+</CategoryCard__Container>
+`;
+
+exports[`<CategoryCard /> renders correctly when null 1`] = `
+<CategoryCard__Container>
+  <CategoryCard__TextContainer>
+    <FormattedMessage
+      defaultMessage="Marketing and analytics"
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analytics"
+      tagName="h2"
+    />
+    <FormattedMessage
+      defaultMessage="We use this tracking to understand better how you use the platform in order to learn and improve your navigation. This information is only used in mass analytics, and in no way to track individuals."
+      id="app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose"
+      tagName="p"
+    />
+    <p>
+      <FormattedMessage
+        defaultMessage="Tools"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.tools"
+      />
+      <CategoryCard__SSpan>
+        Google Analytics
+      </CategoryCard__SSpan>
+      <CategoryCard__Separator>
+        •
+      </CategoryCard__Separator>
+      <CategoryCard__SSpan>
+        MarketingTool
+      </CategoryCard__SSpan>
+    </p>
+  </CategoryCard__TextContainer>
+  <CategoryCard__InputContainer
+    aria-labelledby="analytics-radio"
+    role="radiogroup"
+  >
+    <CategoryCard__HiddenLabel
+      id="analytics-radio"
+    >
+      <FormattedMessage
+        defaultMessage="Allow {category} tracking?"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup"
+        values={
+          Object {
+            "category": "analytics",
+          }
+        }
+      />
+    </CategoryCard__HiddenLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-true"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={false}
+        checked={false}
+        id="analytics-radio-true"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="true"
+      />
+      <Radio__CustomRadio
+        className=""
+      />
+      <FormattedMessage
+        defaultMessage="Allow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.allow"
+      />
+    </CategoryCard__StyledLabel>
+    <CategoryCard__StyledLabel
+      htmlFor="analytics-radio-false"
+    >
+      <CategoryCard__StyledInput
+        aria-checked={false}
+        checked={false}
+        id="analytics-radio-false"
+        name="analytics"
+        onChange={[MockFunction]}
+        required={true}
+        type="radio"
+        value="false"
+      />
+      <Radio__CustomRadio
+        className=""
+      />
+      <FormattedMessage
+        defaultMessage="Disallow"
+        id="app.components.ConsentManager.Modal.PreferencesDialog.disallow"
+      />
+    </CategoryCard__StyledLabel>
+  </CategoryCard__InputContainer>
+</CategoryCard__Container>
+`;

@@ -141,6 +141,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
               borderColor="transparent"
               textColor="#fff"
               onClick={onChangePreferences}
+              className="integration-open-modal"
             >
               <FormattedMessage {...messages.manage} />
             </Button>
@@ -157,6 +158,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
 
         <CloseButton
           type="button"
+          className="integration-button-close"
           title={formatMessage(messages.ariaButtonClose)}
           aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
