@@ -53,7 +53,6 @@ export default class PreferencesDialog extends PureComponent<Props> {
       functional,
       advertising,
       analytics,
-      onChange
     } = this.props;
     const checkCategories = { analytics, advertising, functional };
     return (
@@ -66,7 +65,6 @@ export default class PreferencesDialog extends PureComponent<Props> {
                 category={category}
                 destinations={categoryDestinations[category]}
                 checked={checkCategories[category]}
-                onChange={onChange}
                 handleChange={this.handleChange}
               />
             );
