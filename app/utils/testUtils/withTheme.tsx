@@ -13,16 +13,25 @@ const theme = {
   mobileTopBarHeight: 66,
   maxPageWidth: 952,
 };
-
-export const shallowWithTheme = (tree) => {
+/* TODO: type this right... https://github.com/styled-components/jest-styled-components/issues/217
+export function shallowWithTheme<C extends Component, P = C['props'], S = C['state']>(tree: ReactElement<P>, options?: ShallowRendererProps) {
   const context = shallow(<ThemeProvider theme={theme} />)
     .instance()
     .getChildContext();
-  return shallow(tree, { context });
-};
+  return shallow(tree, {
+    ...options,
+    context: {
+      ...context,
+      intl
+    }
+  }) as ShallowWrapper<P, S, C>;
+}
+*/
+
 export const mountWithTheme = (tree) => {
   const context = shallow(<ThemeProvider theme={theme} />)
     .instance()
+    // @ts-ignore: TODO type this well
     .getChildContext();
   return mount(tree, {
     context,
