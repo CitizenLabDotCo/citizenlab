@@ -33,10 +33,6 @@
   - 3 different colors (main, secondary, text) are configurable in Admin HQ
 - The clustering prototype has been moved to its own dashboard tab
 
-### Know issues
-
-- Similar ideas and making new clusterings sometimes fails
-
 ## 2018-12-26
 
 ### Fixed
