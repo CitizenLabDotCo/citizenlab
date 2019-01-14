@@ -1078,6 +1078,7 @@
   "app.containers.SignUp.areaLabel": "Område",
   "app.containers.SignUp.areaPlaceholder": "Vælg det område du bor i",
   "app.containers.SignUp.continue": "Fortsæt",
+  "app.containers.SignUp.defaultSignUpHelper": "",
   "app.containers.SignUp.emailLabel": "E-mail",
   "app.containers.SignUp.emailPlaceholder": "Indtast din e-mailadresse",
   "app.containers.SignUp.female": "Kvinde",
