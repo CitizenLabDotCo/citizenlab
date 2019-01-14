@@ -72,6 +72,7 @@ const TextAndButtons = styled.div`
     margin-left: 10px;
     margin-right: 10px;
     display: inline;
+    font-weight: 600;
   }
 `;
 
