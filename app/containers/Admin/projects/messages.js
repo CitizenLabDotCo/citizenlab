@@ -21,6 +21,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.editProjectButton',
     defaultMessage: 'See this project',
   },
+  publishedTooltip: {
+    id: 'app.containers.AdminPage.ProjectDashboard.publishedTooltip',
+    defaultMessage: 'Published projects are currently active project which are shown on the platform.',
+  },
+  draftTooltip: {
+    id: 'app.containers.AdminPage.ProjectDashboard.draftTooltip',
+    defaultMessage: 'Draft projects are not shown on the platform. You can work on them with other admin and project moderators, until they are ready to be published.',
+  },
+  archivedTooltip: {
+    id: 'app.containers.AdminPage.ProjectDashboard.archivedTooltip',
+    defaultMessage: 'Archived projects are over but still shown on the platform. It is clearly indicated to users that they are archived and participation is no longer possible.',
+  },
   backToList: {
     id: 'app.containers.AdminPage.ProjectEdit.backToListButton',
     defaultMessage: 'Go back',
