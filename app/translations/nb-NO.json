@@ -1228,6 +1228,7 @@
   "app.containers.footer.poweredBy": "Drevet av",
   "app.containers.footer.privacy-policy": "Retningslinjer for personvern",
   "app.containers.footer.selectLanguage": "Velg et språk",
+  "app.containers.footer.sendFeedback": "",
   "app.containers.footer.slogan": "{type, velg, generisk {Dette er et initiativ fra {name}} andre {Dette er et initiativ fra{name}}}",
   "app.containers.footer.terms-and-conditions": "Vilkår og betingelser",
   "app.containers.footer.termsLink": "Brukervilkår",
