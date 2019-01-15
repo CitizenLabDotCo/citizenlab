@@ -24,7 +24,7 @@ namespace :cl2_back do
           timezone: "Europe/Brussels",
           currency: 'EUR',
           color_main: '#163A7D',
-          color_secondary: '#E54B4B',
+          color_secondary: '#cf4040',
           color_text: '#163A7D'
         },
         groups: {
