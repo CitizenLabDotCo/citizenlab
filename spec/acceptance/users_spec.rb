@@ -186,9 +186,7 @@ resource "Users" do
       end
       example "Get all users as non-admin", document: false do
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(status).to eq 401
       end
     end
 
@@ -365,6 +363,24 @@ resource "Users" do
           expect(json_response.dig(:data, :relationships, :granted_permissions, :data).size).to eq 1
           expect(json_response.dig(:included).select{|i| i[:type] == 'permissions'}.first&.dig(:attributes, :permitted_by)).to eq 'groups'
           expect(json_response.dig(:included).select{|i| i[:type] == 'projects'}.first&.dig(:attributes, :slug)).to eq project.slug
+        end
+      end
+
+      describe do
+        before do
+          @user = create(:admin)
+          token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+          header 'Authorization', "Bearer #{token}"
+        end
+        let(:mortal_user) { create(:user) }
+        let(:id) { mortal_user.id }
+        let(:roles) { [type: 'admin']}
+
+        example_request "Make a user admin, as an admin" do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :id)).to eq id
+          expect(json_response.dig(:data, :attributes, :roles)).to eq [{type: 'admin'}]
         end
       end
 

@@ -9,7 +9,7 @@
       "core": {
         "type": "object",
         "description": "The core of the system. Container for general settings. Always enabled",
-        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main"],
+        "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text"],
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -84,29 +84,36 @@
             "description": "The main brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#163A7D"
           },
           "color_secondary": {
             "description": "The secondary brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#E54B4B"
           },
           "color_text": {
             "description": "The text brand color as a hexadecimal value including the anchor character",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
-          },
-          "color_header_overlay": {
-            "description": "The color as a hexadecimal value that is transparently overlaid on the homepage header",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#000000"
+            "default": "#163A7D"
           },
           "signup_helper_text": {
             "description": "An optional short text, shown on top of the sign up form. Keep it short. Supports HTML",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_message": {
+            "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_button": {
+            "description": "Text on the CTA button next to the custom onboarding message",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_onboarding_link": {
+            "description": "The location the CTA button links to. Should be a relative link (start with /)",
+            "type": "string",
+            "pattern": "^$|^/.*$"
           }
         }
       },
@@ -395,6 +402,10 @@
             "type": "number",
             "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
             "default": 12
+          },
+          "osm_relation_id": {
+            "type": "integer",
+            "description": "The relation identifier that encloses the region of the tenant. You can find this through https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the relation id if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If the no correct relation is present amongst the results (e.g. Scheveningen), search for the smallest enclosing region (e.g. The Hague)"
           }
         }
       },
@@ -490,11 +501,21 @@
       },
       "similar_ideas": {
         "type": "object",
-        "description":  "Show links to similar ideas on the idea page",
+        "description":  "Show links to similar ideas on the idea page. PoC, not yet stable.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      "geographic_dashboard": {
+        "type": "object",
+        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
       }
