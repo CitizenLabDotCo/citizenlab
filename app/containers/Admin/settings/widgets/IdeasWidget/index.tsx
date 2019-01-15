@@ -21,11 +21,7 @@ const Container = styled.div`
   justify-content: space-between;
 `;
 
-const WidgetSettingsTitle = styled.h3`
-  font-weight: 600;
-`;
-
-const WidgetPreviewTitle = WidgetSettingsTitle.extend``;
+const WidgetTitle = styled.h3``;
 
 const StyledWidgetPreview = styled(WidgetPreview)`
   margin-bottom: 40px;
@@ -125,9 +121,9 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container>
         <div>
-          <WidgetSettingsTitle>
+          <WidgetTitle>
             <FormattedMessage {...messages.settingsTitle} />
-          </WidgetSettingsTitle>
+          </WidgetTitle>
           <Formik
             initialValues={this.initialValues()}
             render={this.renderIdeasFormFn}
@@ -136,9 +132,9 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps, State> {
           />
         </div>
         <div>
-          <WidgetPreviewTitle>
+          <WidgetTitle>
             <FormattedMessage {...messages.previewTitle} />
-          </WidgetPreviewTitle>
+          </WidgetTitle>
           <StyledWidgetPreview
             path={`/ideas?${this.generateWidgetParams()}`}
             width={width || 300}
