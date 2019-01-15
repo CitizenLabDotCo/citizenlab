@@ -18,15 +18,16 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
-import { fontSizes, colors } from 'utils/styleUtils';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // style
+import { fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const ListHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin-bottom: 25px;
 
   &.marginTop {
@@ -40,6 +41,7 @@ const ListHeaderTitle = styled.h3`
   font-weight: 400;
   padding: 0;
   margin: 0;
+  margin-right: 7px;
 `;
 
 const RowContent = styled.div`
@@ -71,13 +73,13 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-interface InputProps {}
+interface InputProps { }
 
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   publishedProjects: IProjectData[] | null;
@@ -91,7 +93,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     reorderProject(projectId, newOrder);
   }
 
-  render () {
+  render() {
     const { projects } = this.props;
     let lists: JSX.Element | null = null;
 
@@ -107,7 +109,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         return project.attributes.publication_status === 'archived';
       });
 
-      const row = (project : IProjectData) => {
+      const row = (project: IProjectData) => {
         return (
           <RowContent>
             <RowContentInner className="expand primary">
@@ -121,8 +123,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           text={projectGroups.length > 0 ? (
                             <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
                           ) : (
-                            <FormattedMessage {...messages.onlyAdminsCanView} />
-                          )}
+                              <FormattedMessage {...messages.onlyAdminsCanView} />
+                            )}
                           color="clBlue"
                           icon="lock"
                         />
@@ -163,6 +165,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
                 </ListHeaderTitle>
+                <InfoTooltip {...messages.publishedTooltip} />
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 <SortableList
@@ -206,6 +209,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.draft} />
                 </ListHeaderTitle>
+                <InfoTooltip {...messages.draftTooltip} />
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 <SortableList
@@ -249,6 +253,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.archived} />
                 </ListHeaderTitle>
+                <InfoTooltip {...messages.archivedTooltip} />
               </ListHeader>
               <List id="e2e-admin-archived-projects-list">
                 {archivedProjects.map((project, index) => (
@@ -273,9 +278,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
           <FormattedMessage {...messages.overviewPageTitle} />
         </PageTitle>
         <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
-        <SectionSubtitle>
-          <FormattedMessage {...messages.overviewPageSubtitle} />
-        </SectionSubtitle>
+          <SectionSubtitle>
+            <FormattedMessage {...messages.overviewPageSubtitle} />
+          </SectionSubtitle>
         </HasPermission>
 
         <PageWrapper>
