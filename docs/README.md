@@ -1,6 +1,6 @@
 # Changelog
 
-## 2019-01-14
+## 2019-01-15
 
 ### Fixed
 
@@ -32,6 +32,7 @@
   - The font has changed all over the platform
   - 3 different colors (main, secondary, text) are configurable in Admin HQ
 - The clustering prototype has been moved to its own dashboard tab
+- Project cards for continuous projects now link to the information page instead of ideas
 
 ## 2018-12-26
 
