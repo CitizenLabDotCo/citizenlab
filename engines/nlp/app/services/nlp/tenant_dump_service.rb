@@ -6,6 +6,8 @@ module NLP
         {
           id: tenant.id,
           name: tenant.name,
+          host: tenant.host,
+          osm_relation_id: tenant.settings.dig('maps', 'osm_relation_id'),
           locales: Tenant.settings('core', 'locales'),
           topics: encode_topics,
           ideas: encode_ideas,

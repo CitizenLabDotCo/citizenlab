@@ -40,7 +40,7 @@ class WebApi::V1::ClusteringsController < ApplicationController
     @ideas = @ideas.where('downvotes_count >= ?', pa[:minimal_downvotes]) if pa[:minimal_downvotes].present?
     @ideas = @ideas.where('(upvotes_count + downvotes_count) >= ?', pa[:minimal_total_votes]) if pa[:minimal_total_votes].present?
 
-    @clustering.structure = ClusteringService.new.build_structure(
+    @clustering.structure = NLP::ClusteringService.new.build_structure(
       pa[:levels],
       @ideas,
       options

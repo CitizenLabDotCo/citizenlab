@@ -23,7 +23,9 @@ namespace :cl2_back do
           },
           timezone: "Europe/Brussels",
           currency: 'EUR',
-          color_main: '#732901',
+          color_main: '#163A7D',
+          color_secondary: '#E54B4B',
+          color_text: '#163A7D'
         },
         groups: {
           enabled: true,
@@ -70,6 +72,10 @@ namespace :cl2_back do
           allowed: true
         },
         similar_ideas: {
+          enabled: true,
+          allowed: true
+        },
+        geographic_dashboard: {
           enabled: true,
           allowed: true
         }

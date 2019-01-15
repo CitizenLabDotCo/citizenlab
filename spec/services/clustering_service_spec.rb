@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe ClusteringService do
-  let(:service) { ClusteringService.new }
+describe NLP::ClusteringService do
+  let(:service) { NLP::ClusteringService.new }
 
   describe "drop_empty_clusters" do
 
@@ -227,8 +227,10 @@ describe ClusteringService do
       t1, t2 = create_list(:topic, 2)
       i1 = create(:idea, project: p1, topics: [t1])
       i2 = create(:idea, project: p1, topics: [t1])
-      i3 = create(:idea, project: p2, topics: [t1])
-      i4 = create(:idea, project: p2, topics: [t2])
+      i3 = create(:idea, project: p1, topics: [t1])
+      i4 = create(:idea, project: p2, topics: [t1])
+      i5 = create(:idea, project: p2, topics: [t2])
+      i6 = create(:idea, project: p2, topics: [t2])
       
       expect(order_children_rec(service.build_structure(['project', 'topic'])[:children])).to match(order_children_rec([
         {
@@ -246,6 +248,10 @@ describe ClusteringService do
                 {
                   type: "idea",
                   id: i2.id
+                },
+                {
+                  type: "idea",
+                  id: i3.id
                 }
               ]
             }
@@ -261,7 +267,7 @@ describe ClusteringService do
               children: [
                 {
                   type: "idea",
-                  id: i3.id
+                  id: i4.id
                 }
               ]
             },
@@ -271,7 +277,11 @@ describe ClusteringService do
               children: [
                 {
                   type: "idea",
-                  id: i4.id
+                  id: i5.id
+                },
+                {
+                  type: "idea",
+                  id: i6.id
                 }
               ]
             }
