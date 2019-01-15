@@ -141,7 +141,7 @@ const NavigationItem = styled(Link)`
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
+    background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
     border-top-color: ${(props) => props.theme.colorMain};
   }
 `;

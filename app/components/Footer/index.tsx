@@ -303,6 +303,10 @@ const SendFeedback = styled.a`
   `}
 `;
 
+const SendFeedbackText = styled.span`
+  display: none;
+`;
+
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
 
@@ -483,6 +487,9 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
               </PoweredBy>
 
               <SendFeedback target="_blank" href={surveyLink}>
+                <SendFeedbackText>
+                  <FormattedMessage {...messages.sendFeedback} />
+                </SendFeedbackText>
                 <SendFeedbackIcon name="questionMark" />
               </SendFeedback>
             </Right>
