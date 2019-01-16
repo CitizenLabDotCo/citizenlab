@@ -17,7 +17,9 @@ module Notifications
         User.admin.or(User.project_moderator(idea.project_id)).map do |recipient|
           self.create(
            recipient_id: recipient.id,
-           initiating_user: initiator
+           initiating_user: initiator,
+           idea_id: idea.id,
+           project_id: idea.project_id
          )
         end
       else
