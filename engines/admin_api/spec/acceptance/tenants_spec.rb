@@ -41,7 +41,7 @@ resource "Tenants" do
         settings['core']['locales'] = ['en-GB']
 
         do_request tenant: {settings: settings}
-        expect(status).not_to eq 200
+        expect(status).to eq 422
       end
     end
   end
