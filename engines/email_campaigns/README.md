@@ -116,7 +116,8 @@ end
 
 ## Add the Actual Campaign
 
-1. Create campaign file in `models/email_campaigns/campaigns`. If with notification, inherit from `Campaigns::NotificationCampaign`
+1. Create campaign file in `engines/email_campaigns/app/models/email_campaigns/campaigns`. If with notification, inherit from `Campaigns::NotificationCampaign`. Include the desired concerns (e.g. `Consentable`, `RecipientConfigurable`, `Disableable`, `Trackable`).
+2. Add the campaign class to `delivery_service.rb`
 
 
 ## Update the Specs
