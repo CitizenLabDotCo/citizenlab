@@ -74,7 +74,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 `;
