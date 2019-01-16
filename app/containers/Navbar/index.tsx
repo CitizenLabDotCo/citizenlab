@@ -153,7 +153,7 @@ const NavigationItem = styled(Link)`
       left: 0;
       height: 100%;
       width: 100%;
-      z-index: 10;
+      z-index: 2;
       background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
       pointer-events: none;
     }
@@ -211,7 +211,7 @@ const NavigationDropdownItem = styled.button`
       left: 0;
       height: 100%;
       width: 100%;
-      z-index: 10;
+      z-index: 2;
       background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
       pointer-events: none;
     }
