@@ -42,7 +42,7 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMinTablet`
-    height: 210px;
+    height: 220px;
   `}
 `;
 
@@ -153,16 +153,11 @@ const HeaderContentDefault = HeaderContent.extend`
 `;
 
 const Left = styled.div`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
   display: flex;
   align-items: center;
   margin-right: 60px;
 
   ${media.smallerThanMinTablet`
-    flex-basis: auto;
-    flex-grow: 0;
     margin-right: 0;
   `}
 `;
@@ -189,21 +184,10 @@ const CompleteProfileIcon = styled(Icon)`
   height: 50px;
 `;
 
-const Text = styled.div`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-  display: flex;
-
-  ${media.smallerThanMinTablet`
-    flex-basis: auto;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-  `}
-`;
+const Text = styled.div``;
 
 const Right = styled.div`
+  flex-shrink: 0;
   display: flex;
 
   ${media.smallerThanMinTablet`
