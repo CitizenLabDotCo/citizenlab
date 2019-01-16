@@ -41,9 +41,6 @@ export default class FileUploader extends React.PureComponent<Props, State>{
 
     return (
       <>
-        <Label>
-          <FormattedMessage {...messages.fileUploadLabel} />
-        </Label>
         <FileInput
           onAdd={this.handleFileOnAdd}
         />

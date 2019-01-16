@@ -1,4 +1,6 @@
-import { defineMessages } from 'react-intl';
+import {
+  defineMessages
+} from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
@@ -93,13 +95,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.titleLabel',
     defaultMessage: 'Title',
   },
+  titleLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.titleLabelTooltip',
+    defaultMessage: 'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
+  },
   projectType: {
     id: 'app.containers.AdminPage.ProjectEdit.projectType',
     defaultMessage: 'Project type',
   },
+  projectTypeEdit: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypeEdit',
+    defaultMessage: 'Project type',
+  },
+  projectTypeEditTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip',
+    defaultMessage: 'You cannot change the project type after its creation. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
+  },
   projectTypePlaceholder: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypePlaceholder',
     defaultMessage: 'Is this a continuous or a timeline project?',
+  },
+  projectTypeTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypeTooltip',
+    defaultMessage: 'Choose whether or not the project has a timeline. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
   continuous: {
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
@@ -117,6 +135,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.areasLabel',
     defaultMessage: 'Areas',
   },
+  areasLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltip',
+    defaultMessage: 'Indicate on what geographical areas this project applies. The areas can be set {areasLabelTooltipLink}.',
+  },
+  areasLabelTooltipLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
+    defaultMessage: 'here',
+  },
   areasAllLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasAllLabel',
     defaultMessage: 'All Areas',
@@ -129,13 +155,25 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabel',
     defaultMessage: 'Header Image',
   },
+  headerImageLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
+    defaultMessage: 'This image will be shown on top of the project page. The ideal dimensions are 1440x330.',
+  },
   projectImageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
     defaultMessage: 'Project Images',
   },
+  projectImageLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip',
+    defaultMessage: 'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are 800x800.',
+  },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
     defaultMessage: 'Attach files to this project',
+  },
+  fileUploadLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip',
+    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
   },
   generalTab: {
     id: 'app.containers.AdminPage.ProjectEdit.generalTab',
@@ -143,6 +181,10 @@ export default defineMessages({
   },
   titleGeneral: {
     id: 'app.containers.AdminPage.ProjectEdit.titleGeneral',
+    defaultMessage: 'General settings for the project',
+  },
+  titleGeneralTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.titleGeneralTooltip',
     defaultMessage: 'General settings for the project',
   },
   subtitleGeneral: {
@@ -173,6 +215,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
     defaultMessage: 'Remove this project',
   },
+  deleteProjectLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
+    defaultMessage: 'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
+  },
   deleteProjectButton: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
     defaultMessage: 'Remove',
@@ -189,17 +235,33 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.information',
     defaultMessage: 'Information',
   },
+  informationTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.informationTooltip',
+    defaultMessage: 'Users can only read the information you provide, they cannot participate actively.',
+  },
   ideation: {
     id: 'app.containers.AdminPage.ProjectEdit.ideation',
     defaultMessage: 'Ideation',
+  },
+  ideationTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideationTooltip',
+    defaultMessage: 'Users can post ideas, comment on other ideas and/or vote.',
   },
   survey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey',
     defaultMessage: 'Survey',
   },
+  surveyTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyTooltip',
+    defaultMessage: 'You integrate a survey in which the users can participate.',
+  },
   participatoryBudgeting: {
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
     defaultMessage: 'Participatory Budgeting',
+  },
+  participatoryBudgetingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingTooltip',
+    defaultMessage: 'Users can select ideas until their selection reaches a predefined budget threshold.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',
@@ -208,6 +270,10 @@ export default defineMessages({
   participationMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethod',
     defaultMessage: 'Participation method',
+  },
+  participationMethodTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationMethodTooltip',
+    defaultMessage: 'Choose how users can participate.',
   },
   participationMethodPlaceholder: {
     id: 'app.containers.AdminPage.ProjectEdit.participationMethodPlaceholder',
@@ -229,6 +295,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingMethod',
     defaultMessage: 'Voting method',
   },
+  votingMethodTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
+    defaultMessage: 'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
+  },
   votingMethodPlaceholder: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethodPlaceholder',
     defaultMessage: 'Select the voting method',
@@ -240,6 +310,10 @@ export default defineMessages({
   phasePermissions: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
     defaultMessage: 'Enabled actions',
+  },
+  phasePermissionsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
+    defaultMessage: 'Select what participative action users can take during this ideation phase.',
   },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
@@ -261,6 +335,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
   },
+  defaultDisplayTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip',
+    defaultMessage: 'Choose whether ideas on the project page are shown as idea cards or as pins on a map. Either way, users can switch to the other view themselves.',
+  },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
     defaultMessage: 'Cards',
@@ -272,6 +350,10 @@ export default defineMessages({
   statusLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
     defaultMessage: 'Publication status',
+  },
+  publicationStatusTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
+    defaultMessage: 'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
   },
   draftStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
@@ -288,6 +370,18 @@ export default defineMessages({
   surveyService: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
     defaultMessage: 'Survey Service',
+  },
+  surveyServiceTooltipLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
+    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+  },
+  surveyServiceTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
+    defaultMessage: 'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
+  },
+  surveyServiceTooltipLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
+    defaultMessage: 'here',
   },
   typeform: {
     id: 'app.containers.AdminPage.ProjectEdit.typeform',
