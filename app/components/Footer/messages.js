@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.footer.thanksForFeedback',
     defaultMessage: 'Thanks for your feedback!'
   },
+  sendFeedback: {
+    id: 'app.containers.footer.sendFeedback',
+    defaultMessage: 'Send your feedback'
+  }
 });

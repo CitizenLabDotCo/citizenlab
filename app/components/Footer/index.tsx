@@ -37,67 +37,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 0;
-`;
-
-const ShortFeedback = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 13px 25px;
-  background-color: ${colors.adminBackground};
-  color: ${(props) => props.theme.colorText};
-  position: absolute;
-  top: -49px;
-  left: 0;
-
-  ${media.largePhone`
-    width: 100%;
-  `}
-
-`;
-
-const ThankYouNote = styled.span`
-  display: block;
-  padding: 1.5px 0;
-  font-size: ${fontSizes.base}px;
-  font-weight: 600;
-`;
-
-const FeedbackQuestion = styled.span`
-  font-size: ${fontSizes.base}px;
-  margin-right: 12px;
-
-  ${media.largePhone`
-    font-size: ${fontSizes.small}px;
-    margin-right: 5px;
-  `}
-`;
-
-const Buttons = styled.div`
-  display: flex;
-`;
-
-const FeedbackButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colorText};
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 0 12px;
-  margin-bottom: -3px;
-
-  ${media.largePhone`
-    padding: 0 8px;
-  `}
-
-  &:focus,
-  &:hover {
-    outline: none;
-    cursor: pointer;
-    text-decoration: underline;
-  }
 `;
 
 const FirstLine = styled.div`
@@ -105,7 +44,10 @@ const FirstLine = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 110px 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 110px;
+  padding-bottom: 130px;
   background: #fff;
 `;
 
@@ -140,7 +82,6 @@ const SecondLine = styled.div`
   background: #fff;
   border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
-  margin-top: 30px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -151,12 +92,72 @@ const SecondLine = styled.div`
   `}
 `;
 
+const ShortFeedback = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 13px 25px;
+  background-color: ${colors.adminBackground};
+  color: ${(props) => props.theme.colorText};
+  position: absolute;
+  top: -49px;
+  left: 0;
+
+  ${media.largePhone`
+    width: 100%;
+  `}
+`;
+
+const ThankYouNote = styled.span`
+  display: block;
+  padding: 1.5px 0;
+  font-size: ${fontSizes.base}px;
+  font-weight: 600;
+`;
+
+const FeedbackQuestion = styled.span`
+  font-size: ${fontSizes.base}px;
+  margin-right: 12px;
+
+  ${media.largePhone`
+    font-size: ${fontSizes.small}px;
+    margin-right: 5px;
+  `}
+`;
+
+const Buttons = styled.div`
+  display: flex;
+`;
+
+const FeedbackButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(props) => props.theme.colorText};
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0 12px;
+  margin-bottom: -3px;
+  z-index: 1;
+
+  ${media.largePhone`
+    padding: 0 8px;
+  `}
+
+  &:focus,
+  &:hover {
+    outline: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`;
+
 const PagesNav = styled.nav`
   color: ${colors.label};
   flex: 1;
   text-align: left;
 
-  ul{
+  ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -192,6 +193,7 @@ const StyledThing = styled(Polymorph)`
     line-height: 16px;
   `}
 `;
+
 const StyledButton = StyledThing.withComponent('button');
 const StyledLink = StyledThing.withComponent(Link);
 
@@ -303,8 +305,13 @@ const SendFeedback = styled.a`
   `}
 `;
 
+const SendFeedbackText = styled.span`
+  display: none;
+`;
+
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
+  height: 34px;
 
   &:hover {
     cursor: pointer;
@@ -430,26 +437,26 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
 
           <SecondLine>
             <ShortFeedback>
-                {shortFeedbackButtonClicked ?
-                  <ThankYouNote>
-                    <FormattedMessage {...messages.thanksForFeedback} />
-                  </ThankYouNote>
-                  :
-                  <>
-                    <FeedbackQuestion>
-                      <FormattedMessage {...messages.feedbackQuestion} />
-                    </FeedbackQuestion>
-                    <Buttons>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
-                        <FormattedMessage {...messages.yes} />
-                      </FeedbackButton>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
-                        <FormattedMessage {...messages.no} />
-                      </FeedbackButton>
-                    </Buttons>
-                  </>
-                }
-              </ShortFeedback>
+              {shortFeedbackButtonClicked ?
+                <ThankYouNote>
+                  <FormattedMessage {...messages.thanksForFeedback} />
+                </ThankYouNote>
+                :
+                <>
+                  <FeedbackQuestion>
+                    <FormattedMessage {...messages.feedbackQuestion} />
+                  </FeedbackQuestion>
+                  <Buttons>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
+                      <FormattedMessage {...messages.yes} />
+                    </FeedbackButton>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
+                      <FormattedMessage {...messages.no} />
+                    </FeedbackButton>
+                  </Buttons>
+                </>
+              }
+            </ShortFeedback>
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
@@ -483,6 +490,9 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
               </PoweredBy>
 
               <SendFeedback target="_blank" href={surveyLink}>
+                <SendFeedbackText>
+                  <FormattedMessage {...messages.sendFeedback} />
+                </SendFeedbackText>
                 <SendFeedbackIcon name="questionMark" />
               </SendFeedback>
             </Right>

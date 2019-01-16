@@ -27,13 +27,19 @@ const Container = styled.div`
   width: 100%;
   background: #fff;
   padding-top: 80px;
-  padding-bottom: 90px;
+  padding-bottom: 100px;
 `;
 
 const Header = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+
+  h2 {
+    padding: 0;
+    margin: 0;
+  }
 `;
 
 const Events = styled.div`

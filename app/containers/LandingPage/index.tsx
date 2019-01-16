@@ -54,7 +54,7 @@ const Container: any = styled.div`
 const FooterBanner: any = styled.div`
   background: ${props => props.theme.colorMain};
   width: 100%;
-  flex: 0 0 450px;
+  /* min-height: 450px; */
   margin: 0;
   padding: 0;
   position: relative;
@@ -62,17 +62,17 @@ const FooterBanner: any = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 90px 0;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 
-  ${media.smallerThanMinTablet`
-    height: 400px;
-    flex: 0 0 400px;
-  `}
-
-   & p {
+  p {
     color: #fff;
-    font-size: ${fontSizes.xxxxl}px;
-    margin-bottom: 20px;
+    font-size: ${fontSizes.xxxl + 1}px;
+    line-height: normal;
+    font-weight: 600;
+    margin-bottom: 30px;
     max-width: 500px;
     text-align: center;
   }

@@ -8,7 +8,6 @@ import messages from '../../messages';
 import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes } from 'lodash-es';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -55,8 +54,8 @@ const NavigationLabel = styled.div`
   width: 100%;
   color: #999;
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-left: 12px;
+  font-weight: 500;
+  margin-left: 10px;
 `;
 
 const NavigationItem = styled(Link)`
@@ -75,7 +74,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 `;
@@ -96,6 +95,7 @@ class MobileNavigation extends PureComponent<Props, State> {
   render() {
     const { location, className } = this.props;
     const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
+    const secondUrlSegment = (urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null);
 
     return (
       <Container className={className}>
@@ -109,7 +109,7 @@ class MobileNavigation extends PureComponent<Props, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/projects" className={includes(urlSegments, 'projects') ? 'active' : ''}>
+        <NavigationItem to="/projects" className={secondUrlSegment === 'projects' ? 'active' : ''}>
           <NavigationIconWrapper>
             <NavigationIcon name="folder" />
           </NavigationIconWrapper>
@@ -118,7 +118,7 @@ class MobileNavigation extends PureComponent<Props, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/ideas" className={includes(urlSegments, 'ideas') ? 'active' : ''}>
+        <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
           <NavigationIconWrapper>
             <NavigationIcon name="ideas" />
           </NavigationIconWrapper>
