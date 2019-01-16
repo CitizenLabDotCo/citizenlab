@@ -8,7 +8,7 @@ function generateUrls(host) {
       ignore: [
         'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
       ],
-      // Allow for signed-in header title and subtitle to be on 'unrecognizable'/transparent background
+      // Allow for signed-out header title and subtitle to be on 'unrecognizable'/transparent background
       threshold: 2
     }, {
       url: `${host}/en-GB/ideas`,
