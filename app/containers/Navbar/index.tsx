@@ -201,8 +201,20 @@ const NavigationDropdownItem = styled.button`
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
     border-top-color: ${(props) => props.theme.colorMain};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 10;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
 `;
 
