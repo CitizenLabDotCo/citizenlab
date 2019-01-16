@@ -101,6 +101,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         timezone: "Europe/Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
+        color_secondary: Faker::Color.hex_color,
+        color_text: Faker::Color.hex_color,
       },
       password_login: {
         allowed: true,
@@ -189,8 +191,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       similar_ideas: {
-        enabled: true,
-        allowed: true
+        enabled: false,
+        allowed: false
       },
       geographic_dashboard: {
         enabled: true,
@@ -219,6 +221,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         timezone: "Europe/Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
+        color_secondary: Faker::Color.hex_color,
+        color_text: Faker::Color.hex_color,
       },
       facebook_login: {
         allowed: true,

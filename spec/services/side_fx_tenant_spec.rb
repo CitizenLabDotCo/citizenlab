@@ -17,8 +17,8 @@ describe SideFxTenantService do
     it "logs a 'changed' action job when the tenant has changed" do
       tenant = Tenant.current
       settings = tenant.settings
-      settings['core']['organization_name'] = "New name"
-      tenant.update(settings: settings)
+      settings['core']['organization_name'] = {'en' => "New name"}
+      tenant.update!(settings: settings)
       expect {service.after_update(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'changed', current_user, tenant.updated_at.to_i)
     end
@@ -28,7 +28,7 @@ describe SideFxTenantService do
       # changes the db schema and makes some calls fail otherwise
       tenant = create(:tenant)
       old_host = tenant.host
-      tenant.update(host: 'some-domain.net')
+      tenant.update!(host: 'some-domain.net')
       expect {service.after_update(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'changed_host', current_user, tenant.updated_at.to_i, payload: {changes: [old_host, "some-domain.net"]})
     end
@@ -38,7 +38,7 @@ describe SideFxTenantService do
       settings = tenant.settings
       old_lifecycle_stage = settings['core']['lifecycle_stage']
       settings['core']['lifecycle_stage'] = "churned"
-      tenant.update(settings: settings)
+      tenant.update!(settings: settings)
       expect {service.after_update(tenant, current_user)}.
         to have_enqueued_job(LogActivityJob).with(tenant, 'changed_lifecycle_stage', current_user, tenant.updated_at.to_i, payload: {changes: [old_lifecycle_stage, "churned"]})
     end
