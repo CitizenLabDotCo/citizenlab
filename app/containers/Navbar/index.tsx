@@ -264,10 +264,6 @@ const RightItem: any = styled.div`
     margin-left: 0px;
   }
 
-  &.languageselector.notLoggedIn {
-    margin-left: 20px;
-  }
-
   ${media.smallerThanMinTablet`
     margin-left: 30px;
   `}
@@ -302,6 +298,14 @@ const SignUpLink = NavigationItem.extend`
   ${media.phone`
     padding: 0 12px;
   `}
+`;
+
+const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 40px;
+
+  &.notLoggedIn {
+    padding-left: 20px;
+  }
 `;
 
 interface InputProps {}
@@ -479,8 +483,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className={`languageselector ${!authUser ? 'notLoggedIn' : ''}`}>
-                <LanguageSelector />
+              <RightItem className="noLeftMargin">
+                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>
