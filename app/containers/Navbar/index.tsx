@@ -133,6 +133,7 @@ const NavigationItem = styled(Link)`
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   height: 100%;
+  position: relative;
 
   &:focus,
   &:hover {
@@ -141,12 +142,29 @@ const NavigationItem = styled(Link)`
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
     border-top-color: ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 10;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
 `;
 
 const NavigationItemText = styled.span`
+  &:not(.sign-up-span) {
+    background-color: #fff;
+  }
+
   &:hover {
     text-decoration: underline;
   }
@@ -264,10 +282,6 @@ const RightItem: any = styled.div`
     margin-left: 0px;
   }
 
-  &.languageselector.notLoggedIn {
-    margin-left: 20px;
-  }
-
   ${media.smallerThanMinTablet`
     margin-left: 30px;
   `}
@@ -284,15 +298,10 @@ const LogInLink = NavigationItem.extend`
   `}
 `;
 
-const SignUpLink = styled(Link)`
-  background-color: ${(props) => props.theme.colorSecondary};
+const SignUpLink = NavigationItem.extend`
   color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  padding: 0 30px;
-  height: 100%;
-  display: flex;
-  align-items: center;
+  background-color: ${(props) => props.theme.colorSecondary};
+  border: none;
 
   &:focus,
   &:hover {
@@ -307,6 +316,14 @@ const SignUpLink = styled(Link)`
   ${media.phone`
     padding: 0 12px;
   `}
+`;
+
+const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 40px;
+
+  &.notLoggedIn {
+    padding-left: 20px;
+  }
 `;
 
 interface InputProps {}
@@ -464,7 +481,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                 <SignUpLink
                   to="/sign-up"
                 >
-                  <NavigationItemText>
+                  <NavigationItemText className="sign-up-span">
                     <FormattedMessage {...messages.signUp} />
                   </NavigationItemText>
                 </SignUpLink>
@@ -484,8 +501,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className={`languageselector ${!authUser ? 'notLoggedIn' : ''}`}>
-                <LanguageSelector />
+              <RightItem className="noLeftMargin">
+                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>

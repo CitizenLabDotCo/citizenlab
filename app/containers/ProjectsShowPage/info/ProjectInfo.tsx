@@ -30,13 +30,13 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-top: 50px;
-  margin-bottom: 60px;
+  margin-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
     margin-top: 30px;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
   `}
 `;
 
