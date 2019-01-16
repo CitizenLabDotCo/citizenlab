@@ -20,11 +20,11 @@ module EmailCampaigns
         @campaigns = @campaigns.where.not(type: campaign_types)
       end
 
-      render json: @campaigns, each_serializer: WebApi::V1::CampaignSerializer
+      render json: @campaigns, each_serializer: EmailCampaigns::WebApi::V1::CampaignSerializer
     end
 
     def show
-      render json: @campaign, serializer: WebApi::V1::CampaignSerializer
+      render json: @campaign, serializer: EmailCampaigns::WebApi::V1::CampaignSerializer
     end
 
     def create
@@ -36,7 +36,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_create(@campaign, current_user)
       if @campaign.save
         SideFxCampaignService.new.after_create(@campaign, current_user)
-        render json: @campaign, status: :created, serializer: WebApi::V1::CampaignSerializer
+        render json: @campaign, status: :created, serializer: EmailCampaigns::WebApi::V1::CampaignSerializer
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
@@ -53,7 +53,7 @@ module EmailCampaigns
 
         if @campaign.save
           SideFxCampaignService.new.after_update(@campaign, current_user)
-          render json: @campaign, status: :ok, serializer: WebApi::V1::CampaignSerializer
+          render json: @campaign, status: :ok, serializer: EmailCampaigns::WebApi::V1::CampaignSerializer
         else
           render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
         end
@@ -75,7 +75,7 @@ module EmailCampaigns
       SideFxCampaignService.new.before_send(@campaign, current_user)
       EmailCampaigns::DeliveryService.new.send_now(@campaign)
       SideFxCampaignService.new.after_send(@campaign, current_user)
-      render json: @campaign.reload, serializer: WebApi::V1::CampaignSerializer
+      render json: @campaign.reload, serializer: EmailCampaigns::WebApi::V1::CampaignSerializer
     end
 
     def send_preview
