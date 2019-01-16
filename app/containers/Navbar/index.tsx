@@ -133,6 +133,7 @@ const NavigationItem = styled(Link)`
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   height: 100%;
+  position: relative;
 
   &:focus,
   &:hover {
@@ -141,12 +142,29 @@ const NavigationItem = styled(Link)`
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
     border-top-color: ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 10;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
 `;
 
 const NavigationItemText = styled.span`
+  &:not(.sign-up-span) {
+    background-color: #fff;
+  }
+
   &:hover {
     text-decoration: underline;
   }
@@ -464,7 +482,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                 <SignUpLink
                   to="/sign-up"
                 >
-                  <NavigationItemText>
+                  <NavigationItemText className="sign-up-span">
                     <FormattedMessage {...messages.signUp} />
                   </NavigationItemText>
                 </SignUpLink>
