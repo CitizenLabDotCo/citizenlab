@@ -43,7 +43,12 @@ class Tenant < ApplicationRecord
   end
 
   def schema_name
-    self.host_was.gsub(/\./, "_")
+    # The reason for using `host_was` and not `host` is
+    # because the schema name would be wrong when updating
+    # the tenant's host. `host_was` should always 
+    # correspond to the value as it currently is in the
+    # database.
+    self.host_was&.gsub(/\./, "_")
   end
 
   def cleanup_settings
