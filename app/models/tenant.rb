@@ -43,7 +43,7 @@ class Tenant < ApplicationRecord
   end
 
   def schema_name
-    self.host.gsub(/\./, "_")
+    self.host_was.gsub(/\./, "_")
   end
 
   def cleanup_settings
