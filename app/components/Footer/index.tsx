@@ -44,7 +44,10 @@ const FirstLine = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 110px 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 110px;
+  padding-bottom: 130px;
   background: #fff;
 `;
 

@@ -27,7 +27,7 @@ const Container = styled.div`
   width: 100%;
   background: #fff;
   padding-top: 80px;
-  padding-bottom: 110px;
+  padding-bottom: 100px;
 `;
 
 const Header = styled.div`
