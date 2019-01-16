@@ -26,8 +26,12 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 import { Locale } from 'typings';
 
 const Container = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
   position: relative;
   cursor: pointer;
+
   * {
     user-select: none;
   }
@@ -153,7 +157,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
           <Dropdown
             width="180px"
-            top="38px"
+            top="68px"
             right="-5px"
             mobileRight="-5px"
             opened={dropdownOpened}
