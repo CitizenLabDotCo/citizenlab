@@ -107,9 +107,11 @@ end
 
 1. If not yet exisiting, add a new `LogActivityJob` to the appropriate side FX service.
 
-2. Create a notification file in `models/notifications`.
+2. Create a notification file in `models/notifications`. Make sure to specify as many of the supported attributes (e.g. idea, comment...) as possible.
 
-3. Create a frontend task to support the new notification.
+3. Add a new factory for this type of notification.
+
+4. Create a frontend task to support the new notification.
 
 
 ## Add the Actual Campaign
