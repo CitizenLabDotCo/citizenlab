@@ -145,10 +145,10 @@ class CampaignsConsentForm extends PureComponent<Props & ITracks, State> {
   }
 }
 
-const CampaignsConsentFormWithHOCS = injectTracks<Props>(tracks)(CampaignsConsentForm);
+const CampaignsConsentFormWithHOCs = injectTracks<Props>(tracks)(CampaignsConsentForm);
 
 export default (inputProps) => (
   <GetCampaignConsents>
-    {(consents) => <CampaignsConsentFormWithHOCS {...inputProps} consents={consents} />}
+    {(consents) => <CampaignsConsentFormWithHOCs {...inputProps} consents={consents} />}
   </GetCampaignConsents>
 );
