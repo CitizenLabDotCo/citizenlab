@@ -10,6 +10,10 @@ const StyledLabel = styled.label`
   margin: 0;
   padding-bottom: ${remCalc(10)};
 
+  & > :not(last-child) {
+    margin-right: 7px;
+  }
+
   &.invisible {
     ${invisibleA11yText}
   }
