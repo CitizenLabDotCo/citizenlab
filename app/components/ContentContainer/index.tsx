@@ -1,21 +1,30 @@
 import React, { SFC } from 'react';
 import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
+import bowser from 'bowser';
 
 const Outer = styled.div`
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   position: relative;
   padding-left: 20px;
   padding-right: 20px;
+
+  &:not(.ie) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const Inner: any = styled.div`
   width: 100%;
   max-width: ${(props: any) => props.maxWidth}px;
   z-index: 1;
+
+  &.ie {
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 interface IContentContainer {
@@ -36,8 +45,8 @@ const ContentContainer: SFC<IContentContainer> = ({ children, className, mode })
     maxWidth = stylingConsts.maxPageWidth;
   }
   return (
-    <Outer className={className}>
-      <Inner className="inner" maxWidth={maxWidth} >
+    <Outer className={`${className} ${bowser.msie ? 'ie' : ''}`}>
+      <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >
         {children}
       </Inner>
     </Outer>
