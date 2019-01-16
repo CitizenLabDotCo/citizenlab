@@ -3,8 +3,6 @@ module EmailCampaigns
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
-    include Disableable
-    include Trackable
 
     recipient_filter :filter_notification_recipient
 
