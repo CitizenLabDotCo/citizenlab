@@ -29,11 +29,8 @@ const AvatarImage: any = styled.img`
 `;
 
 const Container: any = styled.div`
-  height: ${(props: any) => props.size + 4}px;
   width: ${(props: any) => props.width}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: ${(props: any) => props.size + 6}px;
   position: relative;
 
   ${(props: any) => props.count >= 1 ? [...Array(props.count + 1).keys()].map(index =>
@@ -111,7 +108,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const definedSize = size || 40;
       const definedOverlap = overlap || 7;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
-      const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 4; // total component width is the highest left position offset plus the total width of last bubble
+      const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
       if (userCount > 10 && avatarCount > 2) {
         return (

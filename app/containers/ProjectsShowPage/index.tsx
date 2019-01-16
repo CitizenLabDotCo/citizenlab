@@ -55,6 +55,7 @@ const Loading = styled.div`
 const Content = styled.div`
   flex: 1 0 auto;
   height: 100%;
+  margin-bottom: 0px;
 `;
 
 const ProjectNotFoundWrapper = styled.div`

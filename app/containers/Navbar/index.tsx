@@ -284,15 +284,10 @@ const LogInLink = NavigationItem.extend`
   `}
 `;
 
-const SignUpLink = styled(Link)`
-  background-color: ${(props) => props.theme.colorSecondary};
+const SignUpLink = NavigationItem.extend`
   color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  padding: 0 30px;
-  height: 100%;
-  display: flex;
-  align-items: center;
+  background-color: ${(props) => props.theme.colorSecondary};
+  border: none;
 
   &:focus,
   &:hover {
