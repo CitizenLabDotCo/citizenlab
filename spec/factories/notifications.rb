@@ -49,6 +49,12 @@ FactoryBot.define do
     idea
   end
 
+  factory :new_comment_for_admin, parent: :notification, class: 'Notifications::NewCommentForAdmin' do
+    initiating_user
+    comment
+    idea
+  end
+
   factory :new_idea_for_admin, parent: :notification, class: 'Notifications::NewIdeaForAdmin' do
     initiating_user
     idea

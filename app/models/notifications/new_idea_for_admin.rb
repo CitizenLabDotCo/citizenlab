@@ -13,7 +13,7 @@ module Notifications
       idea = activity.item
       initiator = idea.author
       
-      if initiator && !(initiator&.admin? || initiator.project_moderator(idea.project_id))
+      if initiator && !(initiator&.admin? || initiator.project_moderator?(idea.project_id))
         User.admin.or(User.project_moderator(idea.project_id)).map do |recipient|
           self.create(
            recipient_id: recipient.id,
