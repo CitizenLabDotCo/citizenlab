@@ -75,10 +75,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewProject',
     defaultMessage: 'Add a project',
   },
-  draft: {
-    id: 'app.containers.AdminPage.ProjectEdit.draft',
-    defaultMessage: 'Draft',
-  },
   published: {
     id: 'app.containers.AdminPage.ProjectEdit.published',
     defaultMessage: 'Published',
@@ -235,32 +231,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.information',
     defaultMessage: 'Information',
   },
-  informationTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.informationTooltip',
+  informationDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.informationDescription',
     defaultMessage: 'Users can only read the information you provide, they cannot participate actively.',
   },
   ideation: {
     id: 'app.containers.AdminPage.ProjectEdit.ideation',
     defaultMessage: 'Ideation',
   },
-  ideationTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideationTooltip',
+  ideationDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideationDescription',
     defaultMessage: 'Users can post ideas, comment on other ideas and/or vote.',
   },
   survey: {
     id: 'app.containers.AdminPage.ProjectEdit.survey',
     defaultMessage: 'Survey',
   },
-  surveyTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyTooltip',
+  surveyDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyDescription',
     defaultMessage: 'You integrate a survey in which the users can participate.',
   },
   participatoryBudgeting: {
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
     defaultMessage: 'Participatory Budgeting',
   },
-  participatoryBudgetingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingTooltip',
+  participatoryBudgetingDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
     defaultMessage: 'Users can select ideas until their selection reaches a predefined budget threshold.',
   },
   amountPerCitizen: {
@@ -409,7 +405,7 @@ export default defineMessages({
   },
   moderatorsRoleExplanation: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
-    defaultMessage: `Moderation rights grant somebody who's not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.`,
+    defaultMessage: 'Moderation rights grant somebody who\'s not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.',
   },
   addUser: {
     id: 'app.containers.AdminPage.ProjectEdit.addUser',

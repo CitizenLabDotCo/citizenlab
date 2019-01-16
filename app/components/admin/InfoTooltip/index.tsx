@@ -16,8 +16,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 type Props = OriginalFormattedMessage.Props;
 
 const StyledIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
+  height: 14px;
+  width: 14px;
 `;
 const TooltipWrapper = styled.div`
   padding: 15px;
@@ -40,7 +40,7 @@ const InfoTooltip = (props: Props) => (
     borderColor={colors.adminTextColor}
     top="32px"
   >
-    <StyledIcon name="info" />
+    <StyledIcon name="info3" />
   </Tooltip >
 );
 

@@ -30,7 +30,7 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // Typings
 import { CLError } from 'typings';
@@ -83,6 +83,16 @@ const StyledA = styled.a`
     text-decoration: underline;
   }
 `;
+const LabelText = styled.div`
+  margin-top: 15px;
+  h3 {
+    margin-bottom: 0;
+    font-weight: 600;
+  }
+  p {
+    color: ${colors.adminSecondaryTextColor};
+  }
+`;
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -120,7 +130,7 @@ interface State extends IParticipationContextConfig {
 class ParticipationContext extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       participation_method: 'ideation',
@@ -363,10 +373,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 name="participationmethod"
                 id="participationmethod-ideation"
                 label={(
-                  <>
-                    <FormattedMessage {...messages.ideation} />
-                    <InfoTooltip {...messages.ideationTooltip} />
-                  </>)}
+                  <LabelText>
+                    <FormattedMessage tagName="h3" {...messages.ideation} />
+                    <FormattedMessage tagName="p" {...messages.ideationDescription} />
+                  </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
                 <Radio
@@ -376,10 +386,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   name="participationmethod"
                   id={'participationmethod-budgeting'}
                   label={(
-                    <>
-                      <FormattedMessage {...messages.participatoryBudgeting} />
-                      <InfoTooltip {...messages.participatoryBudgetingTooltip} />
-                    </>)}
+                    <LabelText>
+                      <FormattedMessage tagName="h3" {...messages.participatoryBudgeting} />
+                      <FormattedMessage tagName="p" {...messages.participatoryBudgetingDescription} />
+                    </LabelText>)}
                 />
               </FeatureFlag>
               <FeatureFlag name="surveys">
@@ -390,10 +400,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   name="participationmethod"
                   id={'participationmethod-survey'}
                   label={(
-                    <>
-                      <FormattedMessage {...messages.survey} />
-                      <InfoTooltip {...messages.surveyTooltip} />
-                    </>)}
+                    <LabelText>
+                      <FormattedMessage tagName="h3" {...messages.survey} />
+                      <FormattedMessage tagName="p" {...messages.surveyDescription} />
+                    </LabelText>)}
                 />
               </FeatureFlag>
               <Radio
@@ -403,10 +413,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 name="participationmethod"
                 id="participationmethod-information"
                 label={(
-                  <>
-                    <FormattedMessage {...messages.information} />
-                    <InfoTooltip {...messages.informationTooltip} />
-                  </>)}
+                  <LabelText>
+                    <FormattedMessage tagName="h3" {...messages.information} />
+                    <FormattedMessage tagName="p" {...messages.informationDescription} />
+                  </LabelText>)}
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
             </SectionField>
