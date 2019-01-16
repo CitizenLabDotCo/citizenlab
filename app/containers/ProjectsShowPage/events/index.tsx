@@ -28,6 +28,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 const EventsContainer = styled(ContentContainer)`
   background: #f9f9fa;
   padding-top: 50px;
+  padding-bottom: 40px;
 
   ${media.smallerThanMinTablet`
     padding-top: 30px;

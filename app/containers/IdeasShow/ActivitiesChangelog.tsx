@@ -11,7 +11,7 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // i18n
-import { FormattedTime } from 'react-intl';
+import { FormattedTime, FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
@@ -79,8 +79,9 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  render () {
+  render() {
     const { user } = this.state;
+    console.log(this.props.activity.attributes.acted_at);
 
     return (
       <ChangeLogEntry>
@@ -98,6 +99,13 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
             />
           </p>
           <p>
+            <FormattedDate
+              value={this.props.activity.attributes.acted_at}
+              year="numeric"
+              month="2-digit"
+              day="2-digit"
+            />
+            &nbsp;
             <FormattedTime
               value={this.props.activity.attributes.acted_at}
               hour="2-digit"

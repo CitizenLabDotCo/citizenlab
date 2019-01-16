@@ -8,7 +8,7 @@ import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Section, SectionTitle, SectionField } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
@@ -336,8 +336,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
           <Section key={'branding'}>
             <SectionTitle>
-              <FormattedMessage {...messages.titleBranding} />
+              <FormattedMessage {...messages.titleCustomize} />
             </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleCustomize} />
+            </SectionSubtitle>
+
+            <SubSectionTitle>
+              <FormattedMessage {...messages.titleBranding} />
+            </SubSectionTitle>
 
             {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => (
               <ColorPickerSectionField key={colorName}>
@@ -380,9 +387,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           </Section>
 
           <Section key={'header'}>
-            <SectionTitle>
+            <SubSectionTitle>
               <FormattedMessage {...messages.header} />
-            </SectionTitle>
+            </SubSectionTitle>
 
             <SectionField key={'header_bg'}>
               <Label>

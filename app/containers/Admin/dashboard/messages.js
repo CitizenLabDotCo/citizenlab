@@ -21,9 +21,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.tabAcquisition',
     defaultMessage: 'Acquisition',
   },
-  viewPublicResource: {
-    id: 'app.containers.AdminPage.DashboardPage.viewPublicResource',
-    defaultMessage: 'Dashboard',
+  tabInsights: {
+    id: 'app.containers.AdminPage.DashboardPage.tabInsights',
+    defaultMessage: 'Insights',
+  },
+  tabMap: {
+    id: 'app.containers.AdminPage.DashboardPage.tabMap',
+    defaultMessage: 'Map',
   },
   helmetTitle: {
     id: 'app.containers.AdminPage.DashboardPage.helmetTitle',
@@ -241,5 +245,17 @@ export default defineMessages({
   deletedUser: {
     id: 'app.containers.AdminPage.DashboardPage.deletedUser',
     defaultMessage: 'Deleted user',
+  },
+  subtitleDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.subtitleDashboard',
+    defaultMessage: 'Get immediate and easy-to-grasp analytics into what’s moving on the platform.',
+  },
+  titleDashboard: {
+    id: 'app.containers.AdminPage.DashboardPage.titleDashboard',
+    defaultMessage: 'Dashboard',
+  },
+  mapHelperText: {
+    id: 'app.containers.AdminPage.DashboardPage.mapHelperText',
+    defaultMessage: 'This map shows ideas at locations that are automatically detected from the idea text. Some locations can be inaccurate. Ideas for which no locations were found are not shown.',
   },
 });

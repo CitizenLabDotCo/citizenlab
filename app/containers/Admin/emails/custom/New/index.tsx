@@ -15,7 +15,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;
-  margin: 1rem 0 3rem 0;
+  font-weight: 600;
+  margin: 3rem 0 1rem 0;
 `;
 
 type Props = {

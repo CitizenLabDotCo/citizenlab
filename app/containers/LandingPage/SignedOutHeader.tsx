@@ -26,15 +26,33 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Header = styled.div`
   width: 100%;
-  height: 550px;
+  min-height: 450px;
   margin: 0;
   padding: 0;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  ${media.desktop`
+    min-height: 500px;
+  `}
+
+  ${media.smallerThanMaxTablet`
+    min-height: 400px;
+  `}
 
   ${media.smallerThanMinTablet`
-    height: 400px;
+    min-height: 350px;
   `}
 `;
 
@@ -71,25 +89,21 @@ const HeaderImageOverlay = styled.div`
 
 const HeaderContent = styled.div`
   width: 100%;
-  max-width: ${(props) => props.theme.maxPageWidth + 60}px;
   height: 100%;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  max-width: ${(props) => props.theme.maxPageWidth + 60}px;
+  padding: 35px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 `;
 
 const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 35px;
+  font-size: ${fontSizes.xxxl + 1}px;
   line-height: normal;
   font-weight: 600;
   text-align: center;
@@ -97,13 +111,8 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: 46px;
-    line-height: 58px;
-  `}
-
-  ${media.smallerThanMinTablet`
     font-size: ${fontSizes.xxxxl}px;
-    line-height: 39px;
+    line-height: 40px;
   `}
 `;
 
@@ -112,38 +121,40 @@ const HeaderSubtitle: any = styled.h2`
   max-width: 375px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: ${fontSizes.xl}px;
-  line-height: normal;
+  line-height: 28px;
   font-weight: 300;
-  hyphens: auto;
   max-width: 980px;
   text-align: center;
   text-decoration: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding: 0;
-  padding-bottom: 0px;
-  margin-bottom: 20px;
-  margin-top: 25px;
-  border-bottom: solid 1px transparent;
+  margin: 0;
+  margin-top: 30px;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
-    font-weight: 300;
-    line-height: 26px;
     margin-top: 15px;
-    margin-bottom: 20px;
   `}
 `;
 
-const SAvatarBubbles = styled(AvatarBubbles)`
-  margin-bottom: 45px;
+const StyledAvatarBubbles = styled(AvatarBubbles)`
+  margin-top: 18px;
 `;
 
 const SignUpButton = styled(Button)`
+  margin-top: 38px;
+
   .Button.button.primary-inverse {
     color: ${(props: any) => props.theme.colorText};
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 30px;
+  `}
 `;
 
-const SIdeaButton = styled(IdeaButton)`
+const StyledIdeaButton = styled(IdeaButton)`
   display: none;
 
   ${media.smallerThanMinTablet`
@@ -188,34 +199,38 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const hasHeaderImage = (tenantHeaderImage !== null);
 
       return (
-        <Header className={className} id="hook-header">
-          <HeaderImage id="hook-header-image">
-            <HeaderImageBackground src={tenantHeaderImage} />
-            <HeaderImageOverlay />
-          </HeaderImage>
+        <Container className={className}>
+          <Header id="hook-header">
+            <HeaderImage id="hook-header-image">
+              <HeaderImageBackground src={tenantHeaderImage} />
+              <HeaderImageOverlay />
+            </HeaderImage>
 
-          <HeaderContent id="hook-header-content">
-            <HeaderTitle hasHeader={hasHeaderImage}>
-              {title}
-            </HeaderTitle>
-            <HeaderSubtitle hasHeader={hasHeaderImage}>
-              {subtitle}
-            </HeaderSubtitle>
-            <SAvatarBubbles />
-            {authUser &&
-              <SIdeaButton
-                style="primary-inverse"
-              />
-            }
-            {!authUser && <SignUpButton
-              style="primary-inverse"
-              fontWeight="500"
-              padding="15px 22px"
-              onClick={this.goToSignUpPage}
-              text={<FormattedMessage {...messages.createAccount} />}
-            />}
-          </HeaderContent>
-        </Header>
+            <HeaderContent id="hook-header-content">
+              <HeaderTitle hasHeader={hasHeaderImage}>
+                {title}
+              </HeaderTitle>
+
+              <HeaderSubtitle hasHeader={hasHeaderImage}>
+                {subtitle}
+              </HeaderSubtitle>
+
+              <StyledAvatarBubbles />
+
+              {authUser ? (
+                <StyledIdeaButton style="primary-inverse" />
+              ) : (
+                <SignUpButton
+                  style="primary-inverse"
+                  fontWeight="500"
+                  padding="13px 22px"
+                  onClick={this.goToSignUpPage}
+                  text={<FormattedMessage {...messages.createAccount} />}
+                />
+              )}
+            </HeaderContent>
+          </Header>
+        </Container>
       );
     }
 

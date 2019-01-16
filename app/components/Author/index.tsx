@@ -17,11 +17,14 @@ import { userByIdStream, IUser } from 'services/users';
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+import { Message } from 'typings';
 
 const AuthorContainer = styled.div`
   display: flex;
@@ -40,7 +43,7 @@ const AuthorMeta = styled.div`
   margin-left: 7px;
 `;
 
-const AuthorNameContainer = styled.div `
+const AuthorNameContainer = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: 19px;
@@ -68,15 +71,12 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-// typings
-import { Message } from 'typings';
-
 type Props = {
   authorId: string | null;
-  message: Message;
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
+  message?: Message;
 };
 
 type State = {
@@ -129,16 +129,16 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, message, size, notALink } = this.props;
+    const { authorId, createdAt, size, notALink, message } = this.props;
     const { author } = this.state;
 
     const authorNameComponent = notALink ? (
       <UserName user={(author ? author.data : null)} />
     ) : (
-      <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''}>
-        <UserName user={(author ? author.data : null)} />
-      </AuthorNameLink>
-    );
+        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+          <UserName user={(author ? author.data : null)} />
+        </AuthorNameLink>
+      );
 
     return (
       <AuthorContainer className={className}>
@@ -149,10 +149,18 @@ class Author extends React.PureComponent<Props, State> {
         />
         <AuthorMeta>
           <AuthorNameContainer>
-            <FormattedMessage
-              {...message}
-              values={{ authorNameComponent }}
-            />
+            {message ? (
+              <FormattedMessage
+                {...message}
+                values={{ authorNameComponent }}
+              />
+            ) : (
+                <FormattedMessage
+                  {...messages.byAuthorNameComponent}
+                  values={{ authorNameComponent }}
+                />
+              )
+            }
           </AuthorNameContainer>
           {createdAt &&
             <TimeAgo>

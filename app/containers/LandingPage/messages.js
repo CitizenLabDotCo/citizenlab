@@ -73,7 +73,7 @@ export default defineMessages({
   },
   completeYourProfile: {
     id: 'app.containers.landing.completeYourProfile',
-    defaultMessage: `Welcome {firstName}. It's time to complete your profile`,
+    defaultMessage: `Welcome {firstName}. It's time to complete your profile.`,
   },
   completeProfile: {
     id: 'app.containers.landing.completeProfile',
@@ -82,5 +82,9 @@ export default defineMessages({
   doItLater: {
     id: 'app.containers.landing.doItLater',
     defaultMessage: `I'll do it later`,
+  },
+  defaultSignedInMessage: {
+    id: 'app.containers.landing.defaultSignedInMessage',
+    defaultMessage: `{firstName}, inspire change today!`,
   }
 });

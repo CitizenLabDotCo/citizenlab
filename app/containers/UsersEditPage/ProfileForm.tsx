@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty } from 'lodash-es';
+import streams from 'utils/streams';
 
 // services
 import { IAreaData } from 'services/areas';
@@ -14,6 +15,7 @@ import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 import { Formik } from 'formik';
 import eventEmitter from 'utils/eventEmitter';
 import { hasCustomFields } from 'utils/customFields';
+import { getJwt, decode } from 'utils/auth/jwt';
 
 // components
 import LabelWithTooltip from './LabelWithTooltip';
@@ -28,7 +30,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import ProfileSection from './ProfileSection';
 
 // i18n
-import { appLocalePairs } from 'containers/App/constants';
+import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -140,7 +142,7 @@ class ProfileForm extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleFormikSubmit = (values, formikActions) => {
+  handleFormikSubmit = async (values, formikActions) => {
     let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
 
@@ -153,17 +155,25 @@ class ProfileForm extends PureComponent<Props, State> {
 
     setStatus('');
 
-    updateUser(this.props.user.id, newValues).then((user) => {
+    try {
+      const user = await updateUser(this.props.user.id, newValues);
+      streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
       resetForm();
       setStatus('success');
       updateLocale(user.data.attributes.locale);
-    }).catch((errorResponse) => {
+    } catch (errorResponse) {
       if (errorResponse.json) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
       }
-    });
+    }
+  }
+
+  usingFranceConnect = () => {
+    const jwt = getJwt();
+    const decodedJwt = jwt && decode(jwt);
+    return decodedJwt && decodedJwt.provider === 'franceconnect';
   }
 
   formikRender = (props) => {
@@ -228,6 +238,8 @@ class ProfileForm extends PureComponent<Props, State> {
       setFieldTouched('avatar');
     };
 
+    const usingFranceConnect = !!this.usingFranceConnect();
+
     return (
       <ProfileSection>
         <form className="e2e-profile-edit-form">
@@ -257,7 +269,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <LabelWithTooltip htmlFor="firstName" translateId="firstName" />
+            <LabelWithTooltip htmlFor="firstName" translateId="firstNames" />
             <Input
               type="text"
               name="first_name"
@@ -265,6 +277,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.first_name}
               onChange={createChangeHandler('first_name')}
               onBlur={createBlurHandler('first_name')}
+              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.first_name} />
           </SectionField>
@@ -278,6 +291,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.last_name}
               onChange={createChangeHandler('last_name')}
               onBlur={createBlurHandler('last_name')}
+              disabled={usingFranceConnect}
             />
             <Error apiErrors={errors.last_name} />
           </SectionField>
@@ -310,18 +324,20 @@ class ProfileForm extends PureComponent<Props, State> {
             <Error apiErrors={errors.bio_multiloc} />
           </SectionField>
 
-          <SectionField>
-            <LabelWithTooltip htmlFor="password" translateId="password" />
-            <Input
-              type="password"
-              name="password"
-              id="password"
-              value={values.password}
-              onChange={createChangeHandler('password')}
-              onBlur={createBlurHandler('password')}
-            />
-            <Error apiErrors={errors.password} />
-          </SectionField>
+          {!usingFranceConnect &&
+            <SectionField>
+              <LabelWithTooltip htmlFor="password" translateId="password" />
+              <Input
+                type="password"
+                name="password"
+                id="password"
+                value={values.password}
+                onChange={createChangeHandler('password')}
+                onBlur={createBlurHandler('password')}
+              />
+              <Error apiErrors={errors.password} />
+            </SectionField>
+          }
 
           <SectionField>
             <LabelWithTooltip htmlFor="language" translateId="language" />

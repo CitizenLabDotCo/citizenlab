@@ -5,6 +5,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
+import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -51,8 +54,8 @@ const NavigationLabel = styled.div`
   width: 100%;
   color: #999;
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-left: 12px;
+  font-weight: 500;
+  margin-left: 10px;
 `;
 
 const NavigationItem = styled(Link)`
@@ -71,21 +74,31 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 `;
 
-interface InputProps { }
+interface InputProps {
+  className?: string;
+}
 
-interface Props extends InputProps { }
+interface DataProps {
+  location: GetLocationChildProps;
+}
 
-interface State { }
+interface Props extends InputProps, DataProps {}
 
-export default class MobileNavigation extends PureComponent<Props, State> {
+interface State {}
+
+class MobileNavigation extends PureComponent<Props, State> {
   render() {
+    const { location, className } = this.props;
+    const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
+    const secondUrlSegment = (urlSegments && urlSegments.length >= 1 ? urlSegments[1] : null);
+
     return (
-      <Container className={this.props['className']}>
+      <Container className={className}>
 
         <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex>
           <NavigationIconWrapper>
@@ -96,7 +109,7 @@ export default class MobileNavigation extends PureComponent<Props, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/projects" activeClassName="active">
+        <NavigationItem to="/projects" className={secondUrlSegment === 'projects' ? 'active' : ''}>
           <NavigationIconWrapper>
             <NavigationIcon name="folder" />
           </NavigationIconWrapper>
@@ -105,7 +118,7 @@ export default class MobileNavigation extends PureComponent<Props, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/ideas" activeClassName="active">
+        <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
           <NavigationIconWrapper>
             <NavigationIcon name="ideas" />
           </NavigationIconWrapper>
@@ -118,3 +131,13 @@ export default class MobileNavigation extends PureComponent<Props, State> {
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  location: <GetLocation />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <MobileNavigation {...inputProps} {...dataProps} />}
+  </Data>
+);

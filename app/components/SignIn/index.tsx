@@ -170,6 +170,11 @@ const AuthProviderButtons = styled.div`
   flex-direction: column;
 `;
 
+const FranceConnectButton = styled.div`
+  cursor: pointer;
+  margin-top: 10px;
+`;
+
 const SubSocialButtonLink = styled.a`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -435,15 +440,12 @@ class SignIn extends React.PureComponent<Props & InjectedIntlProps, State> {
                     />
                   </FeatureFlag>
                 <FeatureFlag name="franceconnect_login">
-                  <AuthProviderButton
-                    logoUrl={franceconnectLogo}
-                    logoHeight="45px"
-                    provider="franceconnect"
-                    providerName="France Connect"
-                    onAccept={this.handleOnSSOClick('franceconnect')}
-                    acceptText={messages.alreadyAcceptTermsAndConditions}
-                    altText={messages.signInButtonAltText}
-                  />
+                  <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
+                    <img
+                      src={franceconnectLogo}
+                      alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
+                    />
+                  </FranceConnectButton>
                   <SubSocialButtonLink
                     href="https://app.franceconnect.gouv.fr/en-savoir-plus"
                     target="_blank"

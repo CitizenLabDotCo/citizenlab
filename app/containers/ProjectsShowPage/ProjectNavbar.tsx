@@ -73,8 +73,6 @@ const ProjectNavbarIcon = styled(Icon)`
   transition: fill 100ms ease-out;
 
   &.idea {
-    flex: 0 0 20px;
-    height: 20px;
     margin-top: -2px;
   }
 `;

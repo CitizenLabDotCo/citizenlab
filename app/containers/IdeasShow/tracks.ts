@@ -29,4 +29,7 @@ export default {
   clickGoBackToOriginalCommentButton: {
     name: 'Clicked button to go back to original, non-translated comment',
   },
+  clickSimilarIdeaLink: {
+    name: 'Clicked on a Similar Idea',
+  },
 };
