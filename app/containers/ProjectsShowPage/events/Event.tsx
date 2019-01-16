@@ -182,9 +182,9 @@ const EventLocation = styled.div`
 `;
 
 const MapIcon = styled(Icon)`
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
   fill: ${colors.label};
   margin-right: 6px;
 `;
