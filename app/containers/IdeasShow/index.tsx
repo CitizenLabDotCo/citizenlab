@@ -466,6 +466,13 @@ const MetaContent = styled.div`
   flex-direction: column;
 `;
 
+const ControlWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 35px;
+`;
+
 const VoteLabel = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -478,9 +485,7 @@ const VoteLabel = styled.div`
   `}
 `;
 
-const StatusContainer = styled.div`
-  margin-top: 35px;
-`;
+const StatusContainer = styled.div``;
 
 const StatusContainerMobile = styled(StatusContainer)`
   margin-top: -20px;
@@ -874,12 +879,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
         source: 'share_idea',
         campaign: 'share_content'
       };
-      const pbProject = (project && project.data.attributes.process_type === 'continuous' && project.data.attributes.participation_method === 'budgeting' ? project : null);
+      const upvotesCount = idea.data.attributes.upvotes_count;
+      const downvotesCount = idea.data.attributes.downvotes_count;
+      const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
+      const cancellingEnabled = idea.data.relationships.action_descriptor.data.voting.cancelling_enabled;
+      const votingFutureEnabled = idea.data.relationships.action_descriptor.data.voting.future_enabled;
+      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
+      const projectProcessType = get(project, 'data.attributes.process_type');
+      const projectParticipationMethod = get(project, 'data.attributes.participation_method');
+      const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
       const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
       const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
       const lastPhase = (phases ? last(sortBy(phases, [phase => phase.data.attributes.end_at]) as IPhase[]) : null);
       const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
-      const showVoteControl = !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast));
+      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
       const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
       const budgetingDescriptor = get(idea.data.relationships.action_descriptor.data, 'budgeting', null);
       let participationContextType: 'Project' | 'Phase' | null = null;
@@ -1104,28 +1117,32 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               <RightColumnDesktop>
                 <MetaContent>
 
-                  {showVoteControl &&
-                    <>
-                      <VoteLabel>
-                        <FormattedMessage {...messages.voteOnThisIdea} />
-                      </VoteLabel>
+                  {(showVoteControl || showBudgetControl) &&
+                    <ControlWrapper>
+                      {showVoteControl &&
+                        <>
+                          <VoteLabel>
+                            <FormattedMessage {...messages.voteOnThisIdea} />
+                          </VoteLabel>
 
-                      <VoteWrapper
-                        ideaId={idea.data.id}
-                        votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
-                        projectId={projectId}
-                      />
-                    </>
-                  }
+                          <VoteWrapper
+                            ideaId={idea.data.id}
+                            votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
+                            projectId={projectId}
+                          />
+                        </>
+                      }
 
-                  {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
-                    <AssignBudgetWrapper
-                      ideaId={idea.data.id}
-                      projectId={projectId}
-                      participationContextId={participationContextId}
-                      participationContextType={participationContextType}
-                      budgetingDescriptor={budgetingDescriptor}
-                    />
+                      {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
+                        <AssignBudgetWrapper
+                          ideaId={idea.data.id}
+                          projectId={projectId}
+                          participationContextId={participationContextId}
+                          participationContextType={participationContextType}
+                          budgetingDescriptor={budgetingDescriptor}
+                        />
+                      }
+                    </ControlWrapper>
                   }
 
                   {statusId &&

@@ -226,7 +226,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
       </CookiePolicy__SContentContainer>
     </CookiePolicy__PagesNav>
   </CookiePolicy__PagesNavWrapper>
-  <Footer
+  <WrappedFooter
     showCityLogoSection={false}
   />
 </CookiePolicy__Container>
@@ -235,15 +235,17 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
 exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
 .c0 {
   color: #147985;
-  font-weight: 800;
-  -webkit-text-decoration: none;
-  text-decoration: none;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
   margin: 0;
   padding: 0;
+  cursor: pointer;
 }
 
 .c0:hover {
   color: #0a3d43;
+  -webkit-text-decoration: underline;
+  text-decoration: underline;
 }
 
 <button

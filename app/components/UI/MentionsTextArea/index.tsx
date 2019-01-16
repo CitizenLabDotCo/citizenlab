@@ -13,7 +13,7 @@ import Error from 'components/UI/Error';
 
 // style
 import styled from 'styled-components';
-import { color } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -82,7 +82,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
         input: {
           padding,
           margin: 0,
-          color: color('text'),
+          color: colors.text,
           fontSize: '18px',
           lineHeight: `${lineHeight}px`,
           minHeight: `${rows * lineHeight}px`,
@@ -117,7 +117,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     };
 
     const mentionStyle = {
-      backgroundColor: transparentize(0.9, color('clBlueDark'))
+      backgroundColor: transparentize(0.9, colors.clBlueDark)
     };
 
     this.setState({ style, mentionStyle });

@@ -9,10 +9,13 @@ import NotificationMenu from './components/NotificationMenu';
 import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import IdeaButton from 'components/IdeaButton';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
+
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -35,8 +38,8 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // style
-import styled, { css, } from 'styled-components';
-import { darken } from 'polished';
+import styled from 'styled-components';
+import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -50,8 +53,10 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid #EAEAEA;
   z-index: 999;
+  -webkit-transform: translateZ(0);
 
   &.citizen {
     ${media.smallerThanMaxTablet`
@@ -74,6 +79,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
   flex-grow: 1;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const LogoLink = styled(Link) `
@@ -103,7 +109,7 @@ const Logo = styled.img`
 `;
 
 const NavigationItems = styled.div`
-  height: 76px;
+  height: 100%;
   display: flex;
   align-items: stretch;
   margin-left: 35px;
@@ -114,30 +120,53 @@ const NavigationItems = styled.div`
 `;
 
 const NavigationItem = styled(Link)`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 500;
+  padding: 0 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
   outline: none;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
-
-  &:not(:last-child) {
-    margin-right: 40px;
-  }
-
-  &.active {
-    color: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
-  }
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  height: 100%;
+  position: relative;
 
   &:focus,
   &:hover {
-    color: ${(props) => props.theme.colorMain};
+    color: ${(props: any) => props.theme.colorText};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+  }
+
+  &.active {
+    border-top-color: ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
+  }
+`;
+
+const NavigationItemText = styled.span`
+  &:not(.sign-up-span) {
+    background-color: #fff;
+  }
+
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -145,36 +174,47 @@ const NavigationDropdown = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
-  margin-right: 40px;
 `;
 
 const NavigationDropdownItem = styled.button`
-  color: ${colors.label};
-  fill: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
+  fill: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: ${fontSizes.base}px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0;
+  padding: 0 30px;
   transition: all 100ms ease;
   outline: none;
   cursor: pointer;
-  border-top: 4px solid transparent;
-  border-bottom: 4px solid transparent;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
 
-  &.active {
-    color: ${(props) => props.theme.colorMain};
-    fill: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => props.theme.colorMain};
-  }
 
   &:hover,
   &:focus {
-    color: ${(props) => props.theme.colorMain};
-    fill: ${(props) => props.theme.colorMain};
+    color: ${(props: any) => props.theme.colorText};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+  }
+
+  &.active {
+    border-top-color: ${(props) => props.theme.colorMain};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 2;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
 `;
 
@@ -224,7 +264,7 @@ const ProjectsListFooter = styled(Link)`
   padding: 15px 15px;
   cursor: pointer;
   background: ${(props) => props.theme.colorMain};
-  border-radius: 5px;
+  border-radius: 3px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
@@ -240,68 +280,61 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  height: ${(props) => props.theme.menuHeight}px;
 `;
 
 const RightItem: any = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
-  padding-left: 30px;
+  margin-left: 40px;
 
-  &.notification {
-    ${media.smallerThanMinTablet`
-      display: none;
-    `}
-  }
-
-  &.addIdea {
-    padding-left: 0px;
-
-    ${(props: any) => props.loggedIn && css`
-      ${media.smallerThanMinTablet`
-        display: none;
-      `}
-    `}
+  &.noLeftMargin {
+    margin-left: 0px;
   }
 
   ${media.smallerThanMinTablet`
-    padding-left: 15px;
+    margin-left: 30px;
   `}
 `;
 
-const StyledIdeaButton = styled(IdeaButton)`
-  a.Button {
-    border: solid 2px ${colors.separation} !important;
-    padding-left: 18px;
-    padding-right: 18px;
-
-    &:hover,
-    &:focus {
-      border-color: ${darken(0.2, colors.separation)} !important;
-    }
-
-    ${media.smallerThanMinTablet`
-      padding-left: 10px;
-      padding-right: 10px;
-    `}
+const LogInLink = NavigationItem.extend`
+  &:focus,
+  &:hover {
+    border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
   }
 
-  .buttonText {
-    font-size: ${fontSizes.base}px !important;
-    color: ${(props) => props.theme.colorMain};
-  }
+  ${media.smallerThanMinTablet`
+    padding: 0 15px;
+  `}
 `;
 
-const LoginLink = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  font-weight: 400;
-  padding: 0;
+const SignUpLink = NavigationItem.extend`
+  color: #fff;
+  background-color: ${(props) => props.theme.colorSecondary};
+  border: none;
 
+  &:focus,
   &:hover {
-    color: ${colors.text};
+    color: #fff;
+    background-color: ${(props) => darken(0.12, props.theme.colorSecondary)};
+  }
+
+  ${media.smallerThanMinTablet`
+    padding: 0 15px;
+  `}
+
+  ${media.phone`
+    padding: 0 12px;
+  `}
+`;
+
+const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 40px;
+
+  &.notLoggedIn {
+    padding-left: 20px;
   }
 `;
 
@@ -314,13 +347,17 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
+interface ITracks {
+  clickSignUpLink: () => void;
+}
+
 interface Props extends InputProps, DataProps {}
 
 interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & ITracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -337,6 +374,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
   toggleProjectsDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
+  }
+
+  trackSignUpLinkClick = () => {
+    // track click for analytics
+    this.props.clickSignUpLink();
   }
 
   render() {
@@ -373,7 +415,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
             <NavigationItems>
               <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
-                <FormattedMessage {...messages.pageOverview} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageOverview} />
+                </NavigationItemText>
               </NavigationItem>
 
               {tenantLocales && projectsList && projectsList.length > 0 &&
@@ -383,13 +427,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                     aria-haspopup="true"
                     onClick={this.toggleProjectsDropdown}
                   >
-                    <FormattedMessage {...messages.pageProjects} />
+                    <NavigationItemText>
+                      <FormattedMessage {...messages.pageProjects} />
+                    </NavigationItemText>
                     <NavigationDropdownItemIcon name="dropdown" />
                   </NavigationDropdownItem>
-
                   <Dropdown
-                    top="65px"
-                    left="-5px"
+                    top="68px"
+                    left="10px"
                     opened={projectsDropdownOpened}
                     onClickOutside={this.toggleProjectsDropdown}
                     content={(
@@ -415,25 +460,43 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
               }
 
               <NavigationItem to="/ideas" activeClassName="active">
-                <FormattedMessage {...messages.pageIdeas} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageIdeas} />
+                </NavigationItemText>
               </NavigationItem>
 
               <NavigationItem to="/pages/information" activeClassName="active">
-                <FormattedMessage {...messages.pageInformation} />
+                <NavigationItemText>
+                  <FormattedMessage {...messages.pageInformation} />
+                </NavigationItemText>
               </NavigationItem>
             </NavigationItems>
           </Left>
 
           <Right>
-            <RightItem className="addIdea" loggedIn={authUser !== null}>
-              <StyledIdeaButton style="secondary-outlined" size="1" />
-            </RightItem>
+            {!authUser &&
+
+              <RightItem className="login noLeftMargin">
+                <LogInLink
+                  id="e2e-login-link"
+                  to="/sign-in"
+                >
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.logIn} />
+                  </NavigationItemText>
+                </LogInLink>
+              </RightItem>
+            }
 
             {!authUser &&
-              <RightItem className="login">
-                <LoginLink to="/sign-in" id="e2e-login-link">
-                  <FormattedMessage {...messages.login} />
-                </LoginLink>
+              <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
+                <SignUpLink
+                  to="/sign-up"
+                >
+                  <NavigationItemText className="sign-up-span">
+                    <FormattedMessage {...messages.signUp} />
+                  </NavigationItemText>
+                </SignUpLink>
               </RightItem>
             }
 
@@ -450,8 +513,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem>
-                <LanguageSelector />
+              <RightItem className="noLeftMargin">
+                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>
@@ -468,7 +531,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
-const NavbarWithHOCs = withRouter(injectIntl(Navbar));
+const NavbarWithHOCs = withRouter(injectTracks(tracks)(injectIntl(Navbar)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

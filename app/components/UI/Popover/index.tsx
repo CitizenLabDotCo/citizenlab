@@ -100,8 +100,8 @@ export default class Popover extends PureComponent<Props> {
           classNames="dropdown"
           exit={false}
         >
-          <Content onClickOutside={onClickOutside} top={top}>
-            <ContentInner backgroundColor={backgroundColor} borderColor={borderColor}>
+          <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
+            <ContentInner backgroundColor={backgroundColor} borderColor={borderColor} className="tooltip-content">
               {content}
             </ContentInner>
           </Content>

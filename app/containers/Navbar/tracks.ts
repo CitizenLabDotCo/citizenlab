@@ -8,4 +8,7 @@ export default {
   clickNotification: {
     name: 'Notification clicked',
   },
+  clickSignUpLink: {
+    name: 'Sign Up link in top navbar clicked',
+  },
 };

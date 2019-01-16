@@ -25,14 +25,6 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div`
-  position: relative;
-  cursor: pointer;
-  * {
-    user-select: none;
-  }
-`;
-
 const DropdownItemIcon = styled(Icon)`
   width: 11px;
   height: 6px;
@@ -43,9 +35,10 @@ const DropdownItemIcon = styled(Icon)`
 `;
 
 const OpenMenuButton = styled.button`
-  color: ${colors.label};
+  color: ${(props: any) => props.theme.colorText};
+  border-radius: 5px;
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: ${fontSizes.base}px;
   cursor: pointer;
   margin: 0;
@@ -53,13 +46,27 @@ const OpenMenuButton = styled.button`
   display: flex;
   align-items: center;
   outline: none;
+`;
+
+const Container = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+
+  * {
+    user-select: none;
+  }
 
   &:hover,
   &:focus {
-    color: #000;
+    ${OpenMenuButton} {
+      color: #000;
 
-    ${DropdownItemIcon} {
-      fill: #000;
+      ${DropdownItemIcon} {
+        fill: #000;
+      }
     }
   }
 `;
@@ -98,13 +105,17 @@ const ListItem = styled.button`
   }
 `;
 
+interface InputProps {
+  className?: string;
+}
+
 interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends DataProps, InputProps {}
 
 type State = {
   dropdownOpened: boolean;
@@ -136,7 +147,7 @@ class LanguageSelector extends PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, locale } = this.props;
+    const { tenant, locale, className } = this.props;
     const { dropdownOpened } = this.state;
 
     if (!isNilOrError(tenant) && !isNilOrError(locale)) {
@@ -144,15 +155,15 @@ class LanguageSelector extends PureComponent<Props, State> {
       const currentlySelectedLocale = locale;
 
       return (
-        <Container>
-          <OpenMenuButton onClick={this.toggleDropdown}>
+        <Container className={className} onClick={this.toggleDropdown}>
+          <OpenMenuButton>
             {currentlySelectedLocale.substr(0, 2).toUpperCase()}
             <DropdownItemIcon name="dropdown" />
           </OpenMenuButton>
 
           <Dropdown
             width="180px"
-            top="36px"
+            top="68px"
             right="-5px"
             mobileRight="-5px"
             opened={dropdownOpened}
@@ -181,13 +192,15 @@ class LanguageSelector extends PureComponent<Props, State> {
     return null;
   }
 }
-const Data = adopt<DataProps>({
+
+const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   locale: <GetLocale />
 });
-export default () => (
+
+export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <LanguageSelector {...dataProps} />}
+    {dataProps => <LanguageSelector {...inputProps} {...dataProps} />}
   </Data>
 );

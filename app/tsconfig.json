@@ -21,6 +21,9 @@
       "name": "typescript-styled-plugin"
     }]
   },
+  "files": [
+    "custom.d.ts" 
+  ],
   "include": [
       "**/*"
   ],

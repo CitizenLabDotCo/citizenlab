@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // components
@@ -24,6 +24,7 @@ import messages from '../../messages';
 const Container = styled.div`
   display: flex;
   position: relative;
+  height: 100%;
 
   * {
     user-select: none;
@@ -31,28 +32,31 @@ const Container = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  color: ${colors.label};
-  margin-right: 5px;
+  color: ${(props: any) => props.theme.colorText};
+  margin-right: 7px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
+  font-weight: 500;
   transition: all 100ms ease-out;
+
+  &:hover {
+    color: ${(props: any) => props.theme.colorText};
+  }
 
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const StyledAvatar = styled(Avatar)`
-  svg {
-    fill: ${colors.label};
-  }
-`;
+const StyledAvatar = styled(Avatar)``;
 
 const OpenDropdownButton = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  padding: 0px;
+  margin: 0px;
 
   &:hover,
   &:focus {
@@ -61,11 +65,11 @@ const OpenDropdownButton = styled.button`
     }
 
     ${StyledAvatar} {
-      img {
+      .avatarImage {
         border-color: #000;
       }
 
-      svg {
+      .avatarIcon {
         fill: ${darken(0.2, colors.label)};
       }
     }
@@ -95,7 +99,7 @@ type State = {
   opened: boolean;
 };
 
-export default class UserMenu extends React.PureComponent<Props, State> {
+export default class UserMenu extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -148,6 +152,7 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             <StyledAvatar
               userId={userId}
               size="30px"
+              fillColor={colors.label}
             />
           </OpenDropdownButton>
 
@@ -155,8 +160,8 @@ export default class UserMenu extends React.PureComponent<Props, State> {
             id="e2e-user-menu-dropdown"
             width="220px"
             mobileWidth="220px"
-            top="42px"
-            right="-5px"
+            top="68px"
+            right="-17px"
             mobileRight="-5px"
             opened={opened}
             onClickOutside={this.toggleDropdown}

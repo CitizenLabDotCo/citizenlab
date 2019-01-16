@@ -12,6 +12,7 @@ import PageWrapper from 'components/admin/PageWrapper';
 import Icon, { IconNames } from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import FeatureFlag from 'components/FeatureFlag';
+import { PageTitle } from 'components/admin/Section';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -21,16 +22,25 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container = styled.div`
-  h1 {
-    font-weight: 300;
-    margin-bottom: 45px;
-  }
+const Meta = styled.div`
+  display: none;
+`;
+
+const Container = styled.div``;
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
 `;
 
 const SectionWrapper = styled(PageWrapper)`
   margin-bottom: 20px;
   padding: 0;
+
   &:last-child {
     margin-bottom: 60px;
   }
@@ -75,6 +85,7 @@ const Article = styled(Link)`
   padding: 30px 0;
   h3 {
     color: ${colors.adminTextColor};
+    font-weight: 500;
   }
   p {
     color: ${colors.adminSecondaryTextColor};
@@ -182,14 +193,22 @@ export const Onboarding = (props: InjectedIntlProps) => {
   );
 
   return (
-    <Container>
+    <>
+    <Meta>
       <Helmet>
         <title>{formatMessage(messages.HTMLTitle)}</title>
         <meta name="description" content={formatMessage(messages.HTMLDescription)} />
       </Helmet>
-      <FormattedMessage tagName="h1" {...messages.title} />
+    </Meta>
+
+    <Container>
+      <HeaderContainer>
+        <PageTitle>{formatMessage(messages.title)}</PageTitle>
+      </HeaderContainer>
+
       {content.map(section => renderSection(section))}
     </Container>
+    </>
   );
 };
 

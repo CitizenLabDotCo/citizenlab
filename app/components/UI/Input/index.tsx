@@ -7,7 +7,7 @@ import Error from 'components/UI/Error';
 
 // style
 import styled from 'styled-components';
-import { media, color, fontSize } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`
@@ -17,7 +17,7 @@ const Container: any = styled.div`
   input {
     width: 100%;
     height: 100%;
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
@@ -53,8 +53,8 @@ const Container: any = styled.div`
 `;
 
 const CharCount = styled.div`
-  color: ${color('label')};
-  font-size: ${fontSize('small')};
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: right;
   position: absolute;

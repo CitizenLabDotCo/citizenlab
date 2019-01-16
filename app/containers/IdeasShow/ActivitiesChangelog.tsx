@@ -11,13 +11,13 @@ import UserName from 'components/UI/UserName';
 import Avatar from 'components/Avatar';
 
 // i18n
-import { FormattedTime } from 'react-intl';
+import { FormattedTime, FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const ChangeLogEntry = styled.div`
   display: flex;
@@ -39,13 +39,13 @@ const TextWrapper = styled.div`
   flex-direction: column;
 
   p {
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     margin: 0;
 
     &:last-child {
-      color: ${color('label')};
-      font-size: ${fontSize('small')}
+      color: ${colors.label};
+      font-size: ${fontSizes.small}px
     }
   }
 `;
@@ -79,8 +79,9 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
     this.subs.forEach(sub => sub.unsubscribe());
   }
 
-  render () {
+  render() {
     const { user } = this.state;
+    console.log(this.props.activity.attributes.acted_at);
 
     return (
       <ChangeLogEntry>
@@ -98,6 +99,13 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
             />
           </p>
           <p>
+            <FormattedDate
+              value={this.props.activity.attributes.acted_at}
+              year="numeric"
+              month="2-digit"
+              day="2-digit"
+            />
+            &nbsp;
             <FormattedTime
               value={this.props.activity.attributes.acted_at}
               hour="2-digit"

@@ -41,4 +41,24 @@ export default defineMessages({
     id: 'app.containers.footer.selectLanguage',
     defaultMessage: 'Select a Language',
   },
+  feedbackQuestion: {
+    id: 'app.containers.footer.feedbackQuestion',
+    defaultMessage: 'Did you find what you\'re looking for?'
+  },
+  yes: {
+    id: 'app.containers.footer.yes',
+    defaultMessage: 'Yes'
+  },
+  no: {
+    id: 'app.containers.footer.no',
+    defaultMessage: 'No'
+  },
+  thanksForFeedback: {
+    id: 'app.containers.footer.thanksForFeedback',
+    defaultMessage: 'Thanks for your feedback!'
+  },
+  sendFeedback: {
+    id: 'app.containers.footer.sendFeedback',
+    defaultMessage: 'Send your feedback'
+  }
 });

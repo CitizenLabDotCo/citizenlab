@@ -126,7 +126,7 @@ interface DataProps {
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   visibleStep: 'step1' | 'step2';
@@ -187,10 +187,14 @@ class SignUp extends React.PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
-                  {signupHelperText && !isEmpty(signupHelperText) &&
-                    <SignupHelperText>
+                  {signupHelperText && !isEmpty(signupHelperText) ?
+                    (<SignupHelperText>
                       <T value={signupHelperText} supportHtml />
-                    </SignupHelperText>
+                    </SignupHelperText>)
+
+                    : (<SignupHelperText>
+                      <FormattedMessage {...messages.defaultSignUpHelper} />
+                    </SignupHelperText>)
                   }
                   <FeatureFlag name="password_login">
                     <Step1

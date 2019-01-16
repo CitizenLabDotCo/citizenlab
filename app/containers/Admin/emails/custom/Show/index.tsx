@@ -76,6 +76,7 @@ const PageTitleWrapper = styled.div`
 const PageTitle = styled.h1`
   margin-bottom: 0;
   margin-right: 1rem;
+  font-weight: 600;
 `;
 
 const Buttons = styled.div`

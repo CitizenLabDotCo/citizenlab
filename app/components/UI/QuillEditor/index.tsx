@@ -94,7 +94,7 @@ import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
-import { fontSize, colors, quillEditedContent } from 'utils/styleUtils';
+import { fontSizes, colors, quillEditedContent } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
@@ -107,7 +107,7 @@ const Container: any = styled.div`
     color:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
   }
   .ql-toolbar.ql-snow {
-    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
   }
 
   background: #fff;
@@ -139,11 +139,11 @@ const Container: any = styled.div`
     content: ${(props: any) => `"${props.remove}"`};
   }
   .ql-container {
-    font-family: 'visuelt','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
+    font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
     border-radius: 0 0 5px 5px;
     width: 100%;
     height: 100%;
-    font-size: ${fontSize('base')};
+    font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
     border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};

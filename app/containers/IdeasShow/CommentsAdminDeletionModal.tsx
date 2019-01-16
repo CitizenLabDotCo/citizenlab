@@ -25,11 +25,13 @@ import styled from 'styled-components';
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  flex-wrap: wrap;
   margin-top: 1rem;
   width: 100%;
 
-  > * + * {
+  .Button {
     margin-left: 1rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -62,10 +64,10 @@ const DeleteReason = styled.div`
 
 // Typings
 export interface Props {
-  onDeleteComment: {(values): void};
-  onCloseDeleteModal: {(): void};
+  onDeleteComment: { (values): void };
+  onCloseDeleteModal: { (): void };
 }
-export interface State {}
+export interface State { }
 
 class CommentsAdminDeletionForm extends React.Component<Props, State> {
   constructor(props) {

@@ -196,5 +196,9 @@ export default defineMessages({
   whatIsFranceConnect: {
     id: 'app.containers.SignUp.whatIsFranceConnect',
     defaultMessage: 'What is France Connect?',
+  },
+  defaultSignUpHelper: {
+    id: 'app.containers.SignUp.defaultSignUpHelper',
+    defaultMessage: 'Tell us who you are and we’ll tell you how you can participate.',
   }
 });

@@ -1,51 +1,75 @@
-const visueltLightTTF = require('./assets/fonts/Visuelt-Light.ttf');
-const visueltLightWOFF = require('./assets/fonts/Visuelt-Light.woff');
-const visueltLightWOFF2 = require('./assets/fonts/Visuelt-Light.woff2');
-const visueltLightItalicTTF = require('./assets/fonts/Visuelt-LightItalic.ttf');
-const visueltLightItalicWOFF = require('./assets/fonts/Visuelt-LightItalic.woff');
-const visueltLightItalicWOFF2 = require('./assets/fonts/Visuelt-LightItalic.woff2');
-const visueltRegularTTF = require('./assets/fonts/Visuelt-Regular.ttf');
-const visueltRegularWOFF = require('./assets/fonts/Visuelt-Regular.woff');
-const visueltRegularWOFF2 = require('./assets/fonts/Visuelt-Regular.woff2');
-const visueltRegularItalicTTF = require('./assets/fonts/Visuelt-Italic.ttf');
-const visueltRegularItalicWOFF = require('./assets/fonts/Visuelt-Italic.woff');
-const visueltRegularItalicWOFF2 = require('./assets/fonts/Visuelt-Italic.woff2');
-const visueltMediumTTF = require('./assets/fonts/Visuelt-Medium.ttf');
-const visueltMediumWOFF = require('./assets/fonts/Visuelt-Medium.woff');
-const visueltMediumWOFF2 = require('./assets/fonts/Visuelt-Medium.woff2');
-const visueltMediumItalicTTF = require('./assets/fonts/Visuelt-MediumItalic.ttf');
-const visueltMediumItalicWOFF = require('./assets/fonts/Visuelt-MediumItalic.woff');
-const visueltMediumItalicWOFF2 = require('./assets/fonts/Visuelt-MediumItalic.woff2');
-const visueltBoldTTF = require('./assets/fonts/Visuelt-Bold.ttf');
-const visueltBoldWOFF = require('./assets/fonts/Visuelt-Bold.woff');
-const visueltBoldWOFF2 = require('./assets/fonts/Visuelt-Bold.woff2');
-const visueltBoldItalicTTF = require('./assets/fonts/Visuelt-BoldItalic.ttf');
-const visueltBoldItalicWOFF = require('./assets/fonts/Visuelt-BoldItalic.woff');
-const visueltBoldItalicWOFF2 = require('./assets/fonts/Visuelt-BoldItalic.woff2');
+const larsseitThinTTF = require('./assets/fonts/larsseit-thin.ttf');
+const larsseitThinWOFF = require('./assets/fonts/larsseit-thin.woff');
+const larsseitThinWOFF2 = require('./assets/fonts/larsseit-thin.woff2');
+const larsseitThinItalicTTF = require('./assets/fonts/larsseit-thinitalic.ttf');
+const larsseitThinItalicWOFF = require('./assets/fonts/larsseit-thinitalic.woff');
+const larsseitThinItalicWOFF2 = require('./assets/fonts/larsseit-thinitalic.woff2');
+const larsseitLightTTF = require('./assets/fonts/larsseit-light.ttf');
+const larsseitLightWOFF = require('./assets/fonts/larsseit-light.woff');
+const larsseitLightWOFF2 = require('./assets/fonts/larsseit-light.woff2');
+const larsseitLightItalicTTF = require('./assets/fonts/larsseit-lightitalic.ttf');
+const larsseitLightItalicWOFF = require('./assets/fonts/larsseit-lightitalic.woff');
+const larsseitLightItalicWOFF2 = require('./assets/fonts/larsseit-lightitalic.woff2');
+const larsseitRegularTTF = require('./assets/fonts/larsseit.ttf');
+const larsseitRegularWOFF = require('./assets/fonts/larsseit.woff');
+const larsseitRegularWOFF2 = require('./assets/fonts/larsseit.woff2');
+const larsseitRegularItalicTTF = require('./assets/fonts/larsseit-italic.ttf');
+const larsseitRegularItalicWOFF = require('./assets/fonts/larsseit-italic.woff');
+const larsseitRegularItalicWOFF2 = require('./assets/fonts/larsseit-italic.woff2');
+const larsseitMediumTTF = require('./assets/fonts/larsseit-medium.ttf');
+const larsseitMediumWOFF = require('./assets/fonts/larsseit-medium.woff');
+const larsseitMediumWOFF2 = require('./assets/fonts/larsseit-medium.woff2');
+const larsseitMediumItalicTTF = require('./assets/fonts/larsseit-mediumitalic.ttf');
+const larsseitMediumItalicWOFF = require('./assets/fonts/larsseit-mediumitalic.woff');
+const larsseitMediumItalicWOFF2 = require('./assets/fonts/larsseit-mediumitalic.woff2');
+const larsseitBoldTTF = require('./assets/fonts/larsseit-bold.ttf');
+const larsseitBoldWOFF = require('./assets/fonts/larsseit-bold.woff');
+const larsseitBoldWOFF2 = require('./assets/fonts/larsseit-bold.woff2');
+const larsseitBoldItalicTTF = require('./assets/fonts/larsseit-bolditalic.ttf');
+const larsseitBoldItalicWOFF = require('./assets/fonts/larsseit-bolditalic.woff');
+const larsseitBoldItalicWOFF2 = require('./assets/fonts/larsseit-bolditalic.woff2');
+const larsseitExtraBoldTTF = require('./assets/fonts/larsseit-extrabold.ttf');
+const larsseitExtraBoldWOFF = require('./assets/fonts/larsseit-extrabold.woff');
+const larsseitExtraBoldWOFF2 = require('./assets/fonts/larsseit-extrabold.woff2');
+const larsseitExtraBoldItalicTTF = require('./assets/fonts/larsseit-extrabolditalic.ttf');
+const larsseitExtraBoldItalicWOFF = require('./assets/fonts/larsseit-extrabolditalic.woff');
+const larsseitExtraBoldItalicWOFF2 = require('./assets/fonts/larsseit-extrabolditalic.woff2');
 
 export {
-  visueltLightTTF,
-  visueltLightWOFF,
-  visueltLightWOFF2,
-  visueltLightItalicTTF,
-  visueltLightItalicWOFF,
-  visueltLightItalicWOFF2,
-  visueltRegularTTF,
-  visueltRegularWOFF,
-  visueltRegularWOFF2,
-  visueltRegularItalicTTF,
-  visueltRegularItalicWOFF,
-  visueltRegularItalicWOFF2,
-  visueltMediumTTF,
-  visueltMediumWOFF,
-  visueltMediumWOFF2,
-  visueltMediumItalicTTF,
-  visueltMediumItalicWOFF,
-  visueltMediumItalicWOFF2,
-  visueltBoldTTF,
-  visueltBoldWOFF,
-  visueltBoldWOFF2,
-  visueltBoldItalicTTF,
-  visueltBoldItalicWOFF,
-  visueltBoldItalicWOFF2,
+  larsseitThinTTF,
+  larsseitThinWOFF,
+  larsseitThinWOFF2,
+  larsseitThinItalicTTF,
+  larsseitThinItalicWOFF,
+  larsseitThinItalicWOFF2,
+  larsseitLightTTF,
+  larsseitLightWOFF,
+  larsseitLightWOFF2,
+  larsseitLightItalicTTF,
+  larsseitLightItalicWOFF,
+  larsseitLightItalicWOFF2,
+  larsseitRegularTTF,
+  larsseitRegularWOFF,
+  larsseitRegularWOFF2,
+  larsseitRegularItalicTTF,
+  larsseitRegularItalicWOFF,
+  larsseitRegularItalicWOFF2,
+  larsseitMediumTTF,
+  larsseitMediumWOFF,
+  larsseitMediumWOFF2,
+  larsseitMediumItalicTTF,
+  larsseitMediumItalicWOFF,
+  larsseitMediumItalicWOFF2,
+  larsseitBoldTTF,
+  larsseitBoldWOFF,
+  larsseitBoldWOFF2,
+  larsseitBoldItalicTTF,
+  larsseitBoldItalicWOFF,
+  larsseitBoldItalicWOFF2,
+  larsseitExtraBoldTTF,
+  larsseitExtraBoldWOFF,
+  larsseitExtraBoldWOFF2,
+  larsseitExtraBoldItalicTTF,
+  larsseitExtraBoldItalicWOFF,
+  larsseitExtraBoldItalicWOFF2
 };
