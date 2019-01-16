@@ -1,11 +1,6 @@
 import React from 'react';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // components
-import Label from 'components/UI/Label';
 import FileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
