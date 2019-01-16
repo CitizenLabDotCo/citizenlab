@@ -54,7 +54,6 @@ const ShortFeedback = styled.div`
   ${media.largePhone`
     width: 100%;
   `}
-
 `;
 
 const ThankYouNote = styled.span`
@@ -140,7 +139,6 @@ const SecondLine = styled.div`
   background: #fff;
   border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
-  margin-top: 30px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -156,7 +154,7 @@ const PagesNav = styled.nav`
   flex: 1;
   text-align: left;
 
-  ul{
+  ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -192,6 +190,7 @@ const StyledThing = styled(Polymorph)`
     line-height: 16px;
   `}
 `;
+
 const StyledButton = StyledThing.withComponent('button');
 const StyledLink = StyledThing.withComponent(Link);
 
@@ -305,6 +304,7 @@ const SendFeedback = styled.a`
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
+  height: 34px;
 
   &:hover {
     cursor: pointer;

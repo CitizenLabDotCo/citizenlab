@@ -26,6 +26,12 @@ import { getLocalized } from 'utils/i18n';
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
+const Container = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const Header = styled.div`
   width: 100%;
   min-height: 450px;
@@ -35,6 +41,7 @@ const Header = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   ${media.desktop`
     min-height: 500px;
@@ -81,8 +88,8 @@ const HeaderImageOverlay = styled.div`
 `;
 
 const HeaderContent = styled.div`
-  flex: 1;
   width: 100%;
+  height: 100%;
   max-width: ${(props) => props.theme.maxPageWidth + 60}px;
   padding: 35px 30px;
   display: flex;
@@ -96,8 +103,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: 35px;
-  line-height: 42px;
+  font-size: ${fontSizes.xxxl + 1}px;
+  line-height: normal;
   font-weight: 600;
   text-align: center;
   margin: 0;
@@ -192,36 +199,38 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const hasHeaderImage = (tenantHeaderImage !== null);
 
       return (
-        <Header className={className} id="hook-header">
-          <HeaderImage id="hook-header-image">
-            <HeaderImageBackground src={tenantHeaderImage} />
-            <HeaderImageOverlay />
-          </HeaderImage>
+        <Container className={className}>
+          <Header id="hook-header">
+            <HeaderImage id="hook-header-image">
+              <HeaderImageBackground src={tenantHeaderImage} />
+              <HeaderImageOverlay />
+            </HeaderImage>
 
-          <HeaderContent id="hook-header-content">
-            <HeaderTitle hasHeader={hasHeaderImage}>
-              {title}
-            </HeaderTitle>
+            <HeaderContent id="hook-header-content">
+              <HeaderTitle hasHeader={hasHeaderImage}>
+                {title}
+              </HeaderTitle>
 
-            <HeaderSubtitle hasHeader={hasHeaderImage}>
-              {subtitle}
-            </HeaderSubtitle>
+              <HeaderSubtitle hasHeader={hasHeaderImage}>
+                {subtitle}
+              </HeaderSubtitle>
 
-            <StyledAvatarBubbles />
+              <StyledAvatarBubbles />
 
-            {authUser ? (
-              <StyledIdeaButton style="primary-inverse" />
-            ) : (
-              <SignUpButton
-                style="primary-inverse"
-                fontWeight="500"
-                padding="13px 22px"
-                onClick={this.goToSignUpPage}
-                text={<FormattedMessage {...messages.createAccount} />}
-              />
-            )}
-          </HeaderContent>
-        </Header>
+              {authUser ? (
+                <StyledIdeaButton style="primary-inverse" />
+              ) : (
+                <SignUpButton
+                  style="primary-inverse"
+                  fontWeight="500"
+                  padding="13px 22px"
+                  onClick={this.goToSignUpPage}
+                  text={<FormattedMessage {...messages.createAccount} />}
+                />
+              )}
+            </HeaderContent>
+          </Header>
+        </Container>
       );
     }
 
