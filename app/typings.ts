@@ -1,5 +1,11 @@
 import { appLocalePairs } from 'containers/App/constants';
 
+declare global {
+  interface Function {
+    displayName?: string;
+  }
+}
+
 export interface IRelationship {
   id: string;
   type: string;

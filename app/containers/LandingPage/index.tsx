@@ -56,7 +56,7 @@ const Container: any = styled.div`
 const FooterBanner: any = styled.div`
   background: ${props => props.theme.colorMain};
   width: 100%;
-  flex: 0 0 450px;
+  min-height: 300px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -64,17 +64,17 @@ const FooterBanner: any = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 90px 0;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 
-  ${media.smallerThanMinTablet`
-    height: 400px;
-    flex: 0 0 400px;
-  `}
-
-   & p {
+  p {
     color: #fff;
-    font-size: ${fontSizes.xxxxl}px;
-    margin-bottom: 20px;
+    font-size: ${fontSizes.xxxl + 1}px;
+    line-height: normal;
+    font-weight: 600;
+    margin-bottom: 30px;
     max-width: 500px;
     text-align: center;
   }
@@ -84,7 +84,7 @@ const FooterBanner: any = styled.div`
   }
 `;
 
-const SAvatarBubbles = styled(AvatarBubbles)`
+const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-bottom: 45px;
 `;
 
@@ -117,7 +117,12 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
+  padding-top: 90px;
   padding-bottom: 90px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 40px;
+  `}
 `;
 
 const SectionHeader = styled.div`
@@ -208,7 +213,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects, authUser, homepageInfoPage, onboardingStatus } = this.props;
+    const { locale, tenant, projects, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -268,7 +273,7 @@ class LandingPage extends PureComponent<Props, State> {
               {!authUser &&
                 <FooterBanner>
                   <p>{subtitle}</p>
-                  <SAvatarBubbles />
+                  <StyledAvatarBubbles />
                   <Button
                     style="primary-inverse"
                     padding="10px 30px"

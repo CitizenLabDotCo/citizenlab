@@ -37,7 +37,59 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 0;
+`;
+
+const FirstLine = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 110px;
+  padding-bottom: 130px;
+  background: #fff;
+`;
+
+const LogoLink = styled.a`
+  cursor: pointer;
+`;
+
+const TenantLogo = styled.img`
+  height: 50px;
+  margin-bottom: 20px;
+`;
+
+const TenantSlogan = styled.div`
+  width: 100%;
+  max-width: 340px;
+  color: ${(props) => props.theme.colorText};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: center;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
+
+const SecondLine = styled.div`
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-top: 6px solid ${colors.adminBackground};
+  padding: 12px 28px;
+  position: relative;
+
+  ${media.smallerThanMaxTablet`
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+  `}
 `;
 
 const ShortFeedback = styled.div`
@@ -54,7 +106,6 @@ const ShortFeedback = styled.div`
   ${media.largePhone`
     width: 100%;
   `}
-
 `;
 
 const ThankYouNote = styled.span`
@@ -87,6 +138,7 @@ const FeedbackButton = styled.button`
   text-transform: uppercase;
   padding: 0 12px;
   margin-bottom: -3px;
+  z-index: 1;
 
   ${media.largePhone`
     padding: 0 8px;
@@ -100,59 +152,12 @@ const FeedbackButton = styled.button`
   }
 `;
 
-const FirstLine = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 110px 20px;
-  background: #fff;
-`;
-
-const LogoLink = styled.a`
-  cursor: pointer;
-`;
-
-const TenantLogo = styled.img`
-  height: 50px;
-  margin-bottom: 20px;
-`;
-
-const TenantSlogan = styled.div`
-  width: 100%;
-  max-width: 340px;
-  color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 500;
-  line-height: 28px;
-  text-align: center;
-`;
-
-const SecondLine = styled.div`
-  width: 100%;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #fff;
-  border-top: 6px solid ${colors.adminBackground};
-  padding: 12px 28px;
-  position: relative;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-  `}
-`;
-
 const PagesNav = styled.nav`
   color: ${colors.label};
   flex: 1;
   text-align: left;
 
-  ul{
+  ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -188,6 +193,7 @@ const StyledThing = styled(Polymorph)`
     line-height: 16px;
   `}
 `;
+
 const StyledButton = StyledThing.withComponent('button');
 const StyledLink = StyledThing.withComponent(Link);
 
@@ -270,6 +276,7 @@ const CitizenlabLink = styled.a`
 `;
 
 const CitizenlabName = styled.span`
+  color: #000;
   white-space: nowrap;
   overflow: hidden;
   text-indent: -9999px;
@@ -298,8 +305,13 @@ const SendFeedback = styled.a`
   `}
 `;
 
+const SendFeedbackText = styled.span`
+  display: none;
+`;
+
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
+  height: 34px;
 
   &:hover {
     cursor: pointer;
@@ -425,26 +437,26 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
 
           <SecondLine>
             <ShortFeedback>
-                {shortFeedbackButtonClicked ?
-                  <ThankYouNote>
-                    <FormattedMessage {...messages.thanksForFeedback} />
-                  </ThankYouNote>
-                  :
-                  <>
-                    <FeedbackQuestion>
-                      <FormattedMessage {...messages.feedbackQuestion} />
-                    </FeedbackQuestion>
-                    <Buttons>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
-                        <FormattedMessage {...messages.yes} />
-                      </FeedbackButton>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
-                        <FormattedMessage {...messages.no} />
-                      </FeedbackButton>
-                    </Buttons>
-                  </>
-                }
-              </ShortFeedback>
+              {shortFeedbackButtonClicked ?
+                <ThankYouNote>
+                  <FormattedMessage {...messages.thanksForFeedback} />
+                </ThankYouNote>
+                :
+                <>
+                  <FeedbackQuestion>
+                    <FormattedMessage {...messages.feedbackQuestion} />
+                  </FeedbackQuestion>
+                  <Buttons>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
+                      <FormattedMessage {...messages.yes} />
+                    </FeedbackButton>
+                    <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
+                      <FormattedMessage {...messages.no} />
+                    </FeedbackButton>
+                  </Buttons>
+                </>
+              }
+            </ShortFeedback>
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
@@ -478,6 +490,9 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
               </PoweredBy>
 
               <SendFeedback target="_blank" href={surveyLink}>
+                <SendFeedbackText>
+                  <FormattedMessage {...messages.sendFeedback} />
+                </SendFeedbackText>
                 <SendFeedbackIcon name="questionMark" />
               </SendFeedback>
             </Right>

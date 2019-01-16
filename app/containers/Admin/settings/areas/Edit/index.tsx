@@ -9,6 +9,7 @@ import messages from '../messages';
 import GetArea, { GetAreaChildProps } from 'resources/GetArea';
 import { updateArea } from 'services/areas';
 
+import GoBackButton from 'components/UI/GoBackButton';
 import { Section, SectionTitle } from 'components/admin/Section';
 
 import { Formik } from 'formik';
@@ -46,10 +47,15 @@ class Edit extends React.PureComponent<Props> {
     return <AreaForm {...props} />;
   }
 
+  goBack = () => {
+    clHistory.push('/admin/settings/areas');
+  }
+
   render() {
     const { area } = this.props;
     return (
       <Section>
+        <GoBackButton onClick={this.goBack} />
         <SectionTitle>
           <FormattedMessage {...messages.editFormTitle} />
         </SectionTitle>

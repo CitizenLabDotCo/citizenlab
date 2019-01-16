@@ -9,5 +9,5 @@ export default styled.h1`
   font-weight: 600;
   padding: 0;
   margin: 0;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 `;

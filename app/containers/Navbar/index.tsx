@@ -133,6 +133,7 @@ const NavigationItem = styled(Link)`
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   height: 100%;
+  position: relative;
 
   &:focus,
   &:hover {
@@ -141,12 +142,29 @@ const NavigationItem = styled(Link)`
   }
 
   &.active {
-    background-color: ${(props) => rgba(props.theme.colorMain, .05)};
     border-top-color: ${(props) => props.theme.colorMain};
+    border-bottom-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: 10;
+      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
 `;
 
 const NavigationItemText = styled.span`
+  &:not(.sign-up-span) {
+    background-color: #fff;
+  }
+
   &:hover {
     text-decoration: underline;
   }
@@ -254,43 +272,19 @@ const Right = styled.div`
 `;
 
 const RightItem: any = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  margin-left: 40px;
 
-  &.signup {
-    padding: 0;
+  &.noLeftMargin {
+    margin-left: 0px;
   }
 
-  &.notification {
-    ${media.smallerThanMinTablet`
-      display: none;
-    `}
-  }
-
-  &.usermenu,
-  &.notification {
-    padding: 0 15px;
-  }
-
-  &.usermenu {
-    ${media.smallerThanMinTablet`
-      padding: 0 5px;
-    `}
-  }
-
-  &.languageselector {
-    padding-left: 30px;
-
-    ${media.smallerThanMinTablet`
-      padding-left: 15px;
-    `}
-
-    ${media.phone`
-      padding-left: 12px;
-    `}
-  }
+  ${media.smallerThanMinTablet`
+    margin-left: 30px;
+  `}
 `;
 
 const LogInLink = NavigationItem.extend`
@@ -302,21 +296,12 @@ const LogInLink = NavigationItem.extend`
   ${media.smallerThanMinTablet`
     padding: 0 15px;
   `}
-
-  ${media.phone`
-    padding: 0 12px;
-  `}
 `;
 
-const SignUpLink = styled(Link)`
-  background-color: ${(props) => props.theme.colorSecondary};
+const SignUpLink = NavigationItem.extend`
   color: #fff;
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
-  padding: 0 30px;
-  height: 100%;
-  display: flex;
-  align-items: center;
+  background-color: ${(props) => props.theme.colorSecondary};
+  border: none;
 
   &:focus,
   &:hover {
@@ -331,6 +316,14 @@ const SignUpLink = styled(Link)`
   ${media.phone`
     padding: 0 12px;
   `}
+`;
+
+const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 40px;
+
+  &.notLoggedIn {
+    padding-left: 20px;
+  }
 `;
 
 interface InputProps {}
@@ -429,7 +422,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   </NavigationDropdownItem>
                   <Dropdown
                     top="68px"
-                    left="-5px"
+                    left="10px"
                     opened={projectsDropdownOpened}
                     onClickOutside={this.toggleProjectsDropdown}
                     content={(
@@ -471,7 +464,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
           <Right>
             {!authUser &&
 
-              <RightItem className="login">
+              <RightItem className="login noLeftMargin">
                 <LogInLink
                   id="e2e-login-link"
                   to="/sign-in"
@@ -484,11 +477,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {!authUser &&
-              <RightItem onClick={this.trackSignUpLinkClick} className="signup">
+              <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
                 <SignUpLink
                   to="/sign-up"
                 >
-                  <NavigationItemText>
+                  <NavigationItemText className="sign-up-span">
                     <FormattedMessage {...messages.signUp} />
                   </NavigationItemText>
                 </SignUpLink>
@@ -508,8 +501,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className="languageselector">
-                <LanguageSelector />
+              <RightItem className="noLeftMargin">
+                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>

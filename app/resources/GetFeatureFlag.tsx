@@ -7,12 +7,14 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 
 interface Props {
   name?: string;
-  children?: (showFeature: boolean) => JSX.Element | null;
+  children?: (showFeature: GetFeatureFlagChildProps) => JSX.Element | null;
 }
 
 interface State {
   tenantSettings: ITenant['data']['attributes']['settings'] | null;
 }
+
+export type GetFeatureFlagChildProps = boolean;
 
 export default class GetFeatureFlag extends PureComponent<Props, State> {
   subscription: Subscription | null;

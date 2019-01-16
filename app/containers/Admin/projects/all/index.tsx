@@ -15,7 +15,7 @@ import messages from '../messages';
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
-import Title from 'components/admin/PageTitle';
+import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -23,7 +23,7 @@ import Toggle from 'components/UI/Toggle';
 
 // style
 import styled from 'styled-components';
-import FeatureFlag from 'components/FeatureFlag';
+// import FeatureFlag from 'components/FeatureFlag';
 
 const ListHeader = styled.div`
   display: flex;
@@ -169,7 +169,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               }
             </RowContentInner>
             <StyledButton
-              className={`e2e-admin-edit-project ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               linkTo={`/admin/projects/${project.id}/edit`}
               style="secondary"
               circularCorners={false}
@@ -258,12 +258,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   items={draftProjects}
                   onReorder={this.handleReorder}
                   className="e2e-admin-projects-list"
+                  id="e2e-admin-draft-projects-list"
                 >
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((project: IProjectData, index: number) => (
                       <SortableRow
                         key={project.id}
                         id={project.id}
+                        className="e2e-admin-projects-list-item"
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
@@ -294,9 +296,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.archived} />
                 </ListHeaderTitle>
               </ListHeader>
-              <List>
+              <List id="e2e-admin-archived-projects-list">
                 {archivedProjects.map((project, index) => (
-                  <Row key={project.id} lastItem={(index === archivedProjects.length - 1)}>
+                  <Row
+                    className="e2e-admin-projects-list-item"
+                    key={project.id}
+                    lastItem={(index === archivedProjects.length - 1)}
+                  >
                     {row(project)}
                   </Row>
                 ))}
@@ -309,9 +315,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     return (
       <>
-        <Title>
+        <PageTitle>
           <FormattedMessage {...messages.overviewPageTitle} />
-        </Title>
+        </PageTitle>
+        <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+        <SectionSubtitle>
+          <FormattedMessage {...messages.overviewPageSubtitle} />
+        </SectionSubtitle>
+        </HasPermission>
 
         <PageWrapper>
           <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">

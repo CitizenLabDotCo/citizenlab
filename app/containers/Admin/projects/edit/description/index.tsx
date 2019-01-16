@@ -11,6 +11,11 @@ import GetProject from 'resources/GetProject';
 
 // Components
 import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 
 // Typing
 import { CLErrorsJSON } from 'typings';
@@ -50,6 +55,13 @@ class ProjectDescription extends React.PureComponent<Props> {
     const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
 
     return (
+      <>
+      <SectionTitle>
+        <FormattedMessage {...messages.titleDescription} />
+      </SectionTitle>
+      <SectionSubtitle>
+        <FormattedMessage {...messages.subtitleDescription} />
+      </SectionSubtitle>
         <Formik
           onSubmit={this.saveProject}
           initialValues={{
@@ -61,6 +73,7 @@ class ProjectDescription extends React.PureComponent<Props> {
             <DescriptionEditionForm {...formikProps} />
           )}
         </Formik>
+        </>
     );
   }
 }

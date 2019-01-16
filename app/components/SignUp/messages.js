@@ -29,13 +29,13 @@ export default defineMessages({
     id: 'app.containers.SignUp.tokenAlreadyAcceptedError',
     defaultMessage: 'The invitation has already been redeemed',
   },
-  firstNameLabel: {
-    id: 'app.containers.SignUp.firstNameLabel',
-    defaultMessage: 'First name',
+  firstNamesLabel: {
+    id: 'app.containers.SignUp.firstNamesLabel',
+    defaultMessage: 'First names',
   },
-  firstNamePlaceholder: {
-    id: 'app.containers.SignUp.firstNamePlaceholder',
-    defaultMessage: 'Enter your first name',
+  firstNamesPlaceholder: {
+    id: 'app.containers.SignUp.firstNamesPlaceholder',
+    defaultMessage: 'Enter your first names',
   },
   noFirstNameError: {
     id: 'app.containers.SignUp.noFirstNameError',
@@ -196,5 +196,9 @@ export default defineMessages({
   whatIsFranceConnect: {
     id: 'app.containers.SignUp.whatIsFranceConnect',
     defaultMessage: 'What is France Connect?',
+  },
+  defaultSignUpHelper: {
+    id: 'app.containers.SignUp.defaultSignUpHelper',
+    defaultMessage: 'Tell us who you are and we’ll tell you how you can participate.',
   }
 });

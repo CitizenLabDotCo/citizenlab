@@ -31,7 +31,7 @@ const GroupType = styled.div`
 
   .groupName {
     font-size: ${fontSizes.xl}px;
-    font-weight: bold;
+    font-weight: 600;
     text-align: center;
   }
 

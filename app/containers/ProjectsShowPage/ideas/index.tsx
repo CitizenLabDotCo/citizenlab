@@ -26,6 +26,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   background: ${colors.background};
+  padding-bottom: 10px;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`

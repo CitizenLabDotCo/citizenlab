@@ -14,21 +14,35 @@ import ExportIdeasButton from './ExportIdeasButton';
 import ExportCommentsButton from './ExportCommentsButton';
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  width: 100%;
-  margin-bottom: 30px;
+  &.project {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: 70px;
+    padding-top: 10px;
 
-  & > *:not(:last-child) {
-    margin-right: 15px;
+    & > *:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+
+  &.all {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+
+    & > *:not(:last-child) {
+      margin-right: 15px;
+    }
   }
 `;
 
 interface Props {
   exportType: string;
   exportQueryParameter: 'all' | string | string[];
+  className?: string;
 }
 
 interface ITracks {
@@ -57,7 +71,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
       queryParametersObject['project'] = queryParameter;
-    } else if (!isString(queryParameter))  {
+    } else if (!isString(queryParameter)) {
       queryParametersObject['ideas'] = queryParameter;
     }
 
@@ -80,7 +94,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
       queryParametersObject['project'] = queryParameter;
-    } else if (!isString(queryParameter))  {
+    } else if (!isString(queryParameter)) {
       queryParametersObject['ideas'] = queryParameter;
     }
 
@@ -98,10 +112,10 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { exportType } = this.props;
+    const { exportType, className } = this.props;
     const { exportingIdeas, exportingComments } = this.state;
     return (
-      <Container>
+      <Container className={className}>
         <ExportIdeasButton
           exportingIdeas={exportingIdeas}
           exportType={exportType}
