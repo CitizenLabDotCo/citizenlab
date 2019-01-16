@@ -46,15 +46,6 @@ const OpenMenuButton = styled.button`
   display: flex;
   align-items: center;
   outline: none;
-
-  /* &:hover,
-  &:focus {
-    color: #000;
-
-    ${DropdownItemIcon} {
-      fill: #000;
-    }
-  } */
 `;
 
 const Container = styled.div`
