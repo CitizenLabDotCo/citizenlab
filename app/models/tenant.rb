@@ -19,8 +19,10 @@ class Tenant < ApplicationRecord
     }
   }
 
-  validate do |record|
-    missing_locales = User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale)
+  validate(on: :update) do |record|
+    missing_locales = Apartment::Tenant.switch(schema_name) do 
+      User.where.not(locale: settings.dig('core', 'locales')).pluck(&:locale)
+    end
     if missing_locales.present?
       record.errors.add(:settings, "is missing locales that are still in use by some users: #{missing_locales.uniq}")
     end
@@ -41,7 +43,12 @@ class Tenant < ApplicationRecord
   end
 
   def schema_name
-    self.host.gsub(/\./, "_")
+    # The reason for using `host_was` and not `host` is
+    # because the schema name would be wrong when updating
+    # the tenant's host. `host_was` should always 
+    # correspond to the value as it currently is in the
+    # database.
+    self.host_was&.gsub(/\./, "_")
   end
 
   def cleanup_settings
