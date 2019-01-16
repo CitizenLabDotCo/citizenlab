@@ -62,6 +62,7 @@ const MenuTitle = styled.div`
   h2 {
     margin: 0;
     padding: 0;
+    font-weight: 600;
   }
 `;
 

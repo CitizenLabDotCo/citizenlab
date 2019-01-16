@@ -3,6 +3,7 @@ import React from 'react';
 // components
 import PageWrapper from 'components/admin/PageWrapper';
 import IdeaManager from 'components/admin/IdeaManager';
+import IdeaButton from 'components/IdeaButton';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
@@ -13,7 +14,23 @@ import messages from './messages';
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
 
-interface Props { }
+// styling
+import styled from 'styled-components';
+
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
+`;
+
+const Left = styled.div`
+  margin-right: 80px;
+`;
+
+interface Props {}
 
 interface ITracks {
   clickExportAllIdeas: () => void;
@@ -64,12 +81,17 @@ export default class AllIdeas extends React.PureComponent<Props & ITracks, State
   render() {
     return (
       <>
-        <PageTitle>
-          <FormattedMessage {...messages.header} />
-        </PageTitle>
-        <SectionSubtitle>
-          <FormattedMessage {...messages.headerSubtitle} />
-        </SectionSubtitle>
+        <HeaderContainer>
+          <Left>
+            <PageTitle>
+              <FormattedMessage {...messages.header} />
+            </PageTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.headerSubtitle} />
+            </SectionSubtitle>
+          </Left>
+          <IdeaButton />
+        </HeaderContainer>
 
         <PageWrapper>
           <IdeaManager />

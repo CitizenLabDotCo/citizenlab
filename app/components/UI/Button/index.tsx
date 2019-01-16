@@ -3,7 +3,7 @@ import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
-import { color, colors, invisibleA11yText } from 'utils/styleUtils';
+import { colors, invisibleA11yText } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
@@ -169,6 +169,7 @@ const Container: any = styled.div`
       opacity: ${(props: any) => props.processing ? 0 : 1};
       font-size: ${(props: any) => getFontSize(props.size)};
       line-height: ${(props: any) => getLineHeight(props.size)};
+      font-weight: ${(props: any) => props.fontWeight || 'normal'}
     }
     ${StyledIcon} {
       flex: 0 0 ${(props: any) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
@@ -185,26 +186,26 @@ const Container: any = styled.div`
     &.secondary {
       ${(props: any) => buttonTheme(
         props,
-        color('lightGreyishBlue'),
-        darken(0.1, color('label')),
+        colors.lightGreyishBlue,
+        darken(0.1, colors.label),
         'transparent',
-        darken(0.05, color('lightGreyishBlue'))
+        darken(0.05, colors.lightGreyishBlue)
       )}
     }
     &.primary-outlined {
       ${(props: any) => buttonTheme(props, 'transparent', props.theme.colorMain || 'e0e0e0', props.theme.colorMain || 'e0e0e0')}
     }
     &.secondary-outlined {
-      ${(props: any) => buttonTheme(props, 'transparent', color('label'), color('label'))}
+      ${(props: any) => buttonTheme(props, 'transparent', colors.label, colors.label)}
     }
     &.text {
-      ${(props: any) => buttonTheme(props, 'transparent', color('label'))}
+      ${(props: any) => buttonTheme(props, 'transparent', colors.label)}
     }
     &.success {
-      ${(props: any) => buttonTheme(props, color('clGreenSuccessBackground'), color('clGreenSuccess'))}
+      ${(props: any) => buttonTheme(props, colors.clGreenSuccessBackground, colors.clGreenSuccess)}
     }
     &.cl-blue {
-      ${(props: any) => buttonTheme(props, color('clBlueDark'), 'white')}
+      ${(props: any) => buttonTheme(props, colors.clBlueDark, 'white')}
     }
     &.admin-dark {
       ${(props: any) => buttonTheme(props, colors.adminTextColor, 'white')}
@@ -218,6 +219,21 @@ const Container: any = styled.div`
   }
   a.disabled {
     pointer-events: none;
+  }
+  &.bannerStyle {
+    height: 100%;
+
+    .Button {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .buttonText {
+      display: inline-flex;
+      align-items: center;
+    }
   }
 `;
 
@@ -270,11 +286,13 @@ type Props = {
   borderColor?: string;
   borderHoverColor?: string;
   borderThickness?: string;
+  fontWeight?: string;
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
   type?: string;
   spinnerColor?: string;
+  fullHeight?: boolean;
   ariaLabel?: string;
 };
 
@@ -320,7 +338,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, ariaLabel } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight, ariaLabel } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -365,7 +383,7 @@ class Button extends PureComponent<Props, State> {
         onClick={this.handleOnClick}
         disabled={disabled}
         circularCorners={circularCorners}
-        className={`${className} ${buttonClassnames}`}
+        className={`${className} ${buttonClassnames} ${fullHeight ? 'bannerStyle' : ''}`}
         textColor={textColor}
         textHoverColor={textHoverColor}
         bgColor={bgColor}
@@ -373,6 +391,7 @@ class Button extends PureComponent<Props, State> {
         borderColor={borderColor}
         borderHoverColor={borderHoverColor}
         borderThickness={borderThickness}
+        fontWeight={fontWeight}
         minWidth={minWidth}
       >
         {linkTo ? (

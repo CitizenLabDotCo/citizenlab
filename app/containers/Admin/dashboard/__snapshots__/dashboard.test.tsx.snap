@@ -41,29 +41,5 @@ exports[`<DashboardsPage /> renders correctly with an admin user 1`] = `
       }
     }
   />
-  <FeatureFlag
-    name="clustering"
-  >
-    <dashboard__StyledWarning
-      text={
-        <FormattedMessage
-          defaultMessage="Try out {insightsLink}, our new beta feature"
-          id="app.containers.AdminPage.DashboardPage.tryOutInsights"
-          values={
-            Object {
-              "insightsLink": <Unknown
-                to="/admin/clusterings"
-              >
-                <FormattedMessage
-                  defaultMessage="insights"
-                  id="app.containers.AdminPage.DashboardPage.insightsLinkText"
-                />
-              </Unknown>,
-            }
-          }
-        />
-      }
-    />
-  </FeatureFlag>
 </withRouter(TabbedResource)>
 `;

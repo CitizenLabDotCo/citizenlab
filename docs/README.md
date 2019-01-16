@@ -378,7 +378,7 @@
   - The buttons on the project page are now in the right place
   - In the projects pages, the footer is no longer behaving like a header
 - When trying to add a timeline phase that overlaps with another phase, a more descriptive error is shown
-- Visuelt font is now always being loaded
+- larsseit font is now always being loaded
 
 ### Added
 - Smart groups allow admins to automatically and continuously make users part of groups based on conditions
@@ -404,7 +404,7 @@
 - Notifications that indicate a status change now show the correct status name
 - The admin pages editors support changing content and creating new pages again
 - When searching in the invites, filters still work as expected
-- The font has changed again to Visuelt
+- The font has changed again to larsseit
 
 ### Added
 - Accessibility improvements:

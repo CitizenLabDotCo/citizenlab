@@ -26,7 +26,13 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding-bottom: 80px;
+
+  ${media.smallerThanMaxTablet`
+    padding-bottom: 40px;
+  `}
+`;
 
 const FirstRow = styled.div`
   background: #fff;

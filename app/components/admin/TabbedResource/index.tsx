@@ -5,7 +5,7 @@ import Link from 'utils/cl-router/Link';
 
 // style
 import styled from 'styled-components';
-import { color, fontSize } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,9 +25,11 @@ const ResourceHeader = styled.div`
   align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 30px;
+
   @media print {
     margin-bottom: 10px;
   }
+
   p {
     margin-right: 40px;
   }
@@ -38,7 +40,7 @@ const TabbedNav = styled.nav`
   border-radius: 5px 5px 0 0;
   padding-left: 44px;
   display: flex;
-  border: 1px solid ${color('separation')};
+  border: 1px solid ${colors.separation};
   border-bottom: 1px solid transparent;
   @media print {
     border: none;
@@ -58,8 +60,8 @@ const Tab = styled.div`
   }
 
   a {
-    color: ${color('label')};
-    font-size: ${fontSize('base')};
+    color: ${colors.label};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 1.5rem;
     text-transform: capitalize;
@@ -71,12 +73,12 @@ const Tab = styled.div`
   }
 
   &:hover a {
-    color: ${color('adminTextColor')};
+    color: ${colors.adminTextColor};
   }
 
   &.active a {
-    color: ${color('adminTextColor')};
-    border-color: ${color('clBlueDark')};
+    color: ${colors.adminTextColor};
+    border-color: ${colors.clBlueDark};
   }
 
   &:not(.active):hover a {
@@ -85,8 +87,8 @@ const Tab = styled.div`
 `;
 
 const ChildWrapper = styled.div`
-  border: 1px solid ${color('separation')};
-  background: ${color('adminContentBackground')};
+  border: 1px solid ${colors.separation};
+  background: ${colors.adminContentBackground};
   margin-bottom: 2rem;
   padding: 3rem;
   @media print {

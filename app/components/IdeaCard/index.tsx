@@ -43,7 +43,7 @@ import { IModalInfo } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 
 const IdeaBudget = styled.div`
-  color: #FC3C2D;
+  color: ${colors.clRed2};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
@@ -52,7 +52,7 @@ const IdeaBudget = styled.div`
   top: 15px;
   left: 19px;
   border-radius: 5px;
-  border: solid 1px #FC3C2D;
+  border: solid 1px ${colors.clRed2};
   background: rgba(255, 255, 255, 0.9);
 `;
 
@@ -294,7 +294,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       !isUndefined(ideaImage) &&
       !isUndefined(ideaAuthor)
     ) {
-      const ideaImageUrl = (ideaImage ? ideaImage.attributes.versions.medium : null);
+      const ideaImageUrl: string | null = get(ideaImage, 'attributes.versions.medium', null);
       const votingDescriptor = get(idea.relationships.action_descriptor.data, 'voting', null);
       const budgetingDescriptor = get(idea.relationships.action_descriptor.data, 'budgeting', null);
       const projectId = idea.relationships.project.data.id;
@@ -342,7 +342,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 authorId={ideaAuthorId}
                 createdAt={idea.attributes.published_at}
                 size="34px"
-                message={messages.byAuthorNameComponent}
                 notALink
               />
             </IdeaContent>

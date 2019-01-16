@@ -10,6 +10,7 @@ export interface InputProps {
   onReorder: (fieldId: string, newOrder: number) => void;
   children: (renderProps: RenderProps) => JSX.Element | JSX.Element[] | null;
   className?: string;
+  id?: string;
 }
 
 type RenderProps = {
@@ -58,10 +59,10 @@ export class SortableList extends Component<InputProps, SortableListState> {
 
   render() {
     const itemsList = this.listItems() || [];
-    const { children } = this.props;
+    const { children, id, className } = this.props;
 
     return (
-      <List className={this.props.className}>
+      <List id={id} className={className}>
         {children({ itemsList, handleDragRow: this.handleDragRow, handleDropRow: this.handleDropRow })}
       </List>
     );
