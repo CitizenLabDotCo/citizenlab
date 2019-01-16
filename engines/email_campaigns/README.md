@@ -99,3 +99,25 @@ end
 ### Schedulable
 ### SenderConfigurable
 ### Trackable
+
+
+# Adding New Email Campaign (Optional: With Notifications)
+
+## Optional: Create a Notification
+
+1. If not yet exisiting, add a new `LogActivityJob` to the appropriate side FX service.
+
+2. Create a notification file in `models/notifications`.
+
+3. Create a frontend task to support the new notification.
+
+
+## Add the Actual Campaign
+
+1. Create campaign file in `models/email_campaigns/campaigns`. If with notification, inherit from `Campaigns::NotificationCampaign`
+
+
+## Update the Specs
+
+## Deployement
+
