@@ -197,7 +197,7 @@ export function quillEditedContent() {
     h1 {
       font-size: ${fontSizes.xxxl - 2}px;
       line-height: 33px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0;
       margin: 0;
       margin-bottom: 25px;
@@ -206,7 +206,7 @@ export function quillEditedContent() {
     h2 {
       font-size: ${fontSizes.xxl - 2}px;
       line-height: 31px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0;
       margin: 0;
       margin-top: 5px;
@@ -216,7 +216,7 @@ export function quillEditedContent() {
     h3 {
       font-size: ${fontSizes.xl}px;
       line-height: 26px;
-      font-weight: 600;
+      font-weight: 500;
       margin: 0;
       margin-top: 5px;
       margin-bottom: 15px;
@@ -225,7 +225,7 @@ export function quillEditedContent() {
     h4 {
       font-size: ${fontSizes.large}px;
       line-height: 26px;
-      font-weight: 600;
+      font-weight: 500;
       margin: 0;
       margin-top: 5px;
       margin-bottom: 15px;
