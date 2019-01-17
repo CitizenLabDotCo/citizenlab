@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.ProjectCards.publicationStatus',
     defaultMessage: 'Publication status',
   },
+  currentlyWorkingOn: {
+    id: 'app.containers.ProjectCards.currentlyWorkingOn',
+    defaultMessage: '{tenantName} is currently working on',
+  },
 });
