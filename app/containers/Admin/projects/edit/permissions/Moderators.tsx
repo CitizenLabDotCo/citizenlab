@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from './messages';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 // import Warning from 'components/UI/Warning';

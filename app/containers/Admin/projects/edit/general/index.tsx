@@ -17,7 +17,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from './participationContext';
+import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import Link from 'utils/cl-router/Link';
@@ -29,7 +29,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // services
 import {

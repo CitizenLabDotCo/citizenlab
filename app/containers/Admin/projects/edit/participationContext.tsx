@@ -25,7 +25,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
