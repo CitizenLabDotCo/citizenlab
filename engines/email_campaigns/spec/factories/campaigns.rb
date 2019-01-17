@@ -80,6 +80,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+    enabled { true }
+  end
+
   factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
     enabled { true }
   end
