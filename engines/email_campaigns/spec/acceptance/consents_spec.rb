@@ -25,6 +25,7 @@ resource "Campaign consents" do
         # create(:idea_published_campaign),
         create(:user_digest_campaign),
         create(:manual_campaign),
+        create(:new_idea_for_admin)
       ]
       @consents = @campaigns.map.with_index do |campaign, i|
         create(:consent, user: @user, campaign_type: campaign.type, consented: i%2 == 0)
