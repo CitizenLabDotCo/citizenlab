@@ -54,7 +54,7 @@ const SSpan: any = styled.span`
   line-height: ${(props: any) => props.size}px;
   width: ${(props: any) => props.size}px;
   padding-bottom: 0;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   background: ${colors.clIconSecondary};
   border-radius: 50%;
   color: white;
@@ -105,12 +105,12 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarCount = avatarList.length;
       const userCount = avatars.meta.total;
       const usersWithoutAvatar = userCount - avatarCount;
-      const definedSize = size || 40;
-      const definedOverlap = overlap || 7;
+      const definedSize = size || 34;
+      const definedOverlap = overlap || 6;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if (userCount > 10 && avatarCount > 2) {
+      if (userCount > 3 && avatarCount > 2) {
         return (
           <Container
             className={className}
@@ -146,7 +146,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => (
-  <GetAvatars limit={inputProps.limit || 3} context={inputProps.context}>
+  <GetAvatars limit={inputProps.limit || 4} context={inputProps.context}>
     {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
   </GetAvatars>
 );
