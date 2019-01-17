@@ -26,6 +26,7 @@ const AvatarImage: any = styled.img`
   height: ${(props: any) => props.size}px;
   width: ${(props: any) => props.size}px;
   border-radius: 50%;
+  text-indent: -9999px;
 `;
 
 const Container: any = styled.div`
@@ -46,7 +47,7 @@ const Container: any = styled.div`
   `) : css``};
 `;
 
-const SSpan: any = styled.span`
+const StyledSpan: any = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,7 +111,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if (userCount > 3 && avatarCount > 2) {
+      if (userCount > 10 && avatarCount > 2) {
         return (
           <Container
             className={className}
@@ -129,10 +130,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
               </AvatarWrapper>
             ))}
             <AvatarWrapper key={avatarCount}>
-              <SSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
+              <StyledSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
                 <PlusIcon name="plus" />
                 {usersWithoutAvatar}
-              </SSpan>
+              </StyledSpan>
             </AvatarWrapper>
           </Container>
         );
