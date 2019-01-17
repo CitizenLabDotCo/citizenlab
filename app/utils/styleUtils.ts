@@ -307,6 +307,7 @@ export function getTheme(tenant) {
     colors,
     fontSizes,
     colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
+    headerOverlayOpacity: (tenant ? tenant.data.attributes.settings.core.header_overlay_opacity : 90),
     colorSecondary: (tenant ? tenant.data.attributes.settings.core.color_secondary : '#000000'),
     colorText: (tenant ? tenant.data.attributes.settings.core.color_text : '#000000'),
     ...stylingConsts
