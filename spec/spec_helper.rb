@@ -1,5 +1,8 @@
 require 'simplecov'
 require 'simplecov-rcov'
+require 'webmock/rspec'
+
+WebMock.allow_net_connect!
 
 SimpleCov.formatters = [
   SimpleCov::Formatter::HTMLFormatter,
