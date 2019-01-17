@@ -191,8 +191,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true
       },
       similar_ideas: {
-        enabled: true,
-        allowed: true
+        enabled: false,
+        allowed: false
       },
       geographic_dashboard: {
         enabled: true,
