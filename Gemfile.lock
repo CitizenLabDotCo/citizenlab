@@ -77,6 +77,17 @@ PATH
       pundit (~> 2.0)
       rails (~> 5.2.1)
 
+PATH
+  remote: engines/surveys
+  specs:
+    surveys (0.1.0)
+      active_model_serializers (~> 0.10.7)
+      apartment (~> 2.2.0)
+      apartment-sidekiq
+      kaminari (~> 1.1.1)
+      pundit (~> 2.0)
+      rails (~> 5.2.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -583,6 +594,7 @@ DEPENDENCIES
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
+  surveys!
   webmock (~> 3.4)
 
 BUNDLED WITH
