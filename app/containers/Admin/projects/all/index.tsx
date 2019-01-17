@@ -9,7 +9,7 @@ import GetProjectGroups from 'resources/GetProjectGroups';
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
-import messages from '../messages';
+import messages from './messages';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';

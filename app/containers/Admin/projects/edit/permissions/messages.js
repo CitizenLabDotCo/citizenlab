@@ -121,4 +121,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
     defaultMessage: 'Moderators not found',
   },
+  moderatorsSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
+    defaultMessage: 'Who can moderate this project?',
+  },
+  moderatorsRoleExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
+    defaultMessage: 'Moderation rights grant somebody who\'s not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.',
+  },
 });
