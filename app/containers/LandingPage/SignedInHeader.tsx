@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -244,6 +245,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
+      const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
 
       return (
         <Header className={className} id="hook-header">
@@ -306,7 +308,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCustomCta>
               <Left>
                 <Text>
-                  <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
+                  <T as="p" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
                 </Text>
               </Left>
 
@@ -339,8 +341,8 @@ class SignedInHeader extends PureComponent<Props, State> {
             exit={true}
           >
             <HeaderContentDefault>
-              {onboardingCampaigns.cta_message_multiloc
-                ? <T as="p" value={onboardingCampaigns.cta_message_multiloc} />
+              {defaultMessage && !isEmpty(defaultMessage)
+                ? <T as="p" value={defaultMessage} supportHtml />
                 : <FormattedMessage {...messages.defaultSignedInMessage} tagName="p" values={{ firstName: authUser.attributes.first_name }}/>
               }
             </HeaderContentDefault>
