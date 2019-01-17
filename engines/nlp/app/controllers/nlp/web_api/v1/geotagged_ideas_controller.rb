@@ -10,7 +10,7 @@ module NLP
 
           geotagging = NLP::GeotagService.new
           geotags = @ideas.where('location_point IS NULL').map do |idea|
-            [idea.id, geotagging.geotag(Tenant.current.id, idea)]
+            [idea.id, geotagging.geotag(Tenant.current.id, idea, geocoder: 'google')]
           end.to_h
 
           render json: @ideas, each_serializer: ::WebApi::V1::IdeaGeotagSerializer, geotags: geotags
