@@ -44,6 +44,7 @@ const ContentContainer: SFC<IContentContainer> = ({ children, className, mode })
   } else {
     maxWidth = stylingConsts.maxPageWidth;
   }
+
   return (
     <Outer className={`${className} ${bowser.msie ? 'ie' : ''}`}>
       <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >

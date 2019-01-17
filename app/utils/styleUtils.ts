@@ -172,7 +172,8 @@ export const fontSizes = {
   xl: 21,
   xxl: 25,
   xxxl: 30,
-  xxxxl: 34
+  xxxxl: 34,
+  xxxxxl: 42
 };
 
 export const stylingConsts = {
