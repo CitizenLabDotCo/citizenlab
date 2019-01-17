@@ -26,6 +26,7 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import CommentsMoreActions from './CommentsMoreActions';
 import { CLErrorsJSON } from 'typings';
+import { media } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,6 +36,11 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
+
+  ${media.smallerThanMinTablet`
+    top: 4px;
+    right: 10px;
+  `}
 `;
 
 const CommentContainer = styled.div`

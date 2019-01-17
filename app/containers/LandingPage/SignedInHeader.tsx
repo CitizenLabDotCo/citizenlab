@@ -81,29 +81,6 @@ const HeaderImage = styled.img`
       height: 100%;
     }
   `}
-
-  /* position: absolute;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  border: solid 2px red;
-
-  &.objectFitCoverSupported {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  &:not(.objectFitCoverSupported) {
-    width: 100%;
-    height: auto;
-
-    ${media.smallerThanMinTablet`
-      width: auto;
-      height: 100%;
-    `}
-  } */
 `;
 
 const HeaderImageOverlay = styled.div`
