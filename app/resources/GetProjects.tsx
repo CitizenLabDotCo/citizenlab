@@ -17,7 +17,6 @@ export interface InputProps {
   areas?: string[];
   topics?: string[];
   publicationStatuses: PublicationStatus[];
-  hideAllFilters?: boolean;
   filterCanModerate?: boolean;
 }
 
