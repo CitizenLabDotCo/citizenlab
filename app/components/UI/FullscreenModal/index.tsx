@@ -285,12 +285,6 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     }
 
     disableBodyScroll(this.ModalContentInnerElement);
-
-    //  if (this.ModalContentInnerElement) {
-    //   setTimeout(() => {
-    //     disableBodyScroll(this.ModalContentInnerElement);
-    //   }, 250);
-    //  }
   }
 
   onEscKeyPressed = (event) => {
