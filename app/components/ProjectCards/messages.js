@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loadMore: {
-    id: 'app.components.ProjectCards.loadMore',
-    defaultMessage: 'Load more projects',
+  showMore: {
+    id: 'app.components.ProjectCards.showMore',
+    defaultMessage: 'Show more',
   },
   noProjects: {
     id: 'app.components.ProjectCards.noProjects',

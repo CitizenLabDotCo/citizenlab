@@ -21,7 +21,7 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -47,6 +47,7 @@ const Header = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
+  border-bottom: 1px solid #D1D1D1;
 
   ${media.smallerThanMaxTablet`
     justify-content: flex-start;
@@ -73,6 +74,7 @@ const FilterArea = styled.div`
 const ProjectsList = styled.div`
   display: flex;
   flex-direction: column;
+  margin-bottom: 43px;
 
   ${media.smallerThanMaxTablet`
     flex-direction: row;
@@ -129,13 +131,15 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const LoadMoreButtonWrapper = styled.div`
+const ShowMoreButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const ShowMoreButton = styled(Button)`
+  color: ${(props: any) => props.theme.colorText};
+`;
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -157,7 +161,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {};
   }
 
-  loadMore = () => {
+  showMore = () => {
     this.props.projects.onLoadMore();
   }
 
@@ -214,17 +218,20 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
           }
 
           {!querying && hasMore &&
-            <LoadMoreButtonWrapper>
-              <LoadMoreButton
-                onClick={this.loadMore}
-                size="2"
+            <ShowMoreButtonWrapper>
+              <ShowMoreButton
+                onClick={this.showMore}
+                size="1"
                 style="secondary"
-                text={<FormattedMessage {...messages.loadMore} />}
+                text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
-                fullWidth={true}
-                height="58px"
+                height="50px"
+                icon="showMore"
+                iconPos="left"
+                textColor={this.props['theme'].colorText}
+                fontWeight="500"
               />
-            </LoadMoreButtonWrapper>
+            </ShowMoreButtonWrapper>
           }
         </Container>
       );
@@ -234,7 +241,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const ProjectCardsWithHOCs = injectIntl(ProjectCards);
+const ProjectCardsWithHOCs = injectIntl(withTheme(ProjectCards) as any);
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
