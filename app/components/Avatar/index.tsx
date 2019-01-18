@@ -32,7 +32,6 @@ import { colors } from 'utils/styleUtils';
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: ${(props: any) => props.padding};
   border-radius: 50%;
   transition: all 100ms ease-out;
   background: #fff;
