@@ -249,7 +249,6 @@ class LandingPage extends PureComponent<Props, State> {
                         pageSize={3}
                         sort="new"
                         publicationStatuses={['published']}
-                        hideAllFilters={true}
                       />
                     </SectionContainer>
                   </ProjectSection>
