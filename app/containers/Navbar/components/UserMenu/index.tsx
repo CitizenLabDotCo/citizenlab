@@ -15,7 +15,6 @@ import { IUser } from 'services/users';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -48,8 +47,6 @@ const StyledUserName = styled(UserName)`
   `}
 `;
 
-const StyledAvatar = styled(Avatar)``;
-
 const OpenDropdownButton = styled.button`
   display: flex;
   flex-direction: row;
@@ -62,16 +59,6 @@ const OpenDropdownButton = styled.button`
   &:focus {
     ${StyledUserName} {
       color: #000;
-    }
-
-    ${StyledAvatar} {
-      .avatarImage {
-        border-color: #000;
-      }
-
-      .avatarIcon {
-        fill: ${darken(0.2, colors.label)};
-      }
     }
   }
 
@@ -149,9 +136,10 @@ export default class UserMenu extends PureComponent<Props, State> {
               user={authUser.data}
               hideLastName={true}
             />
-            <StyledAvatar
+            <Avatar
               userId={userId}
               size="30px"
+              hasHoverEffect={true}
               fillColor={colors.label}
             />
           </OpenDropdownButton>
