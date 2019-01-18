@@ -1,5 +1,24 @@
 # Changelog
 
+## 2019-01-18
+
+### Fixed
+
+- Overflowing text in project header
+- Fixed color overlay full opaque for non-updated tenant settings
+- Fixed avatar layout in IE11
+- Fixed idea page scrolling not working in some cases on iPad
+- Pressing the enter key inside of a project settings page will no longer trigger a dialog to delet the project
+
+### Changed
+
+- Reduced the size of the avatars on the landing page header and footer
+- Made 'alt' text inside avatar invisible
+- Better cross-browser scaling of the background image of the header that's being shown to signed-in users
+- Added more spacing underneath Survey, as not to overlap the new feedback buttons
+- Increased width of author header inside of a comment to better accomodate long names
+- Adjusted avatar hover effect to be inline with design spec￼
+
 ## 2019-01-17
 
 ## Added
