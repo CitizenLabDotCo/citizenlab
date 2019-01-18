@@ -5,8 +5,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
+import SendFeedback from 'components/SendFeedback';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -297,28 +297,6 @@ const CitizenlabLogo: any = styled.svg`
   `}
 `;
 
-const SendFeedback = styled.a`
-  margin-right: 20px;
-
-  ${media.largePhone`
-    margin-right: 0;
-  `}
-`;
-
-const SendFeedbackText = styled.span`
-  display: none;
-`;
-
-const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.clIconSecondary};
-  height: 34px;
-
-  &:hover {
-    cursor: pointer;
-    fill: #000;
-  }
-`;
-
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
 interface ITracks {
@@ -396,17 +374,6 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
   render() {
     const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
     const { formatMessage } = this.props.intl;
-
-    let surveyLink: string | null = null;
-
-    if (locale === 'fr-BE' || locale === 'fr-FR') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/Cgn9hg';
-    } else if (locale === 'nl-BE' || locale === 'nl-NL') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/gOuYim';
-    } else {
-      // English survey when language is not French or Dutch
-      surveyLink = 'https://citizenlabco.typeform.com/to/z7baRP';
-    }
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -489,12 +456,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback target="_blank" href={surveyLink}>
-                <SendFeedbackText>
-                  <FormattedMessage {...messages.sendFeedback} />
-                </SendFeedbackText>
-                <SendFeedbackIcon name="questionMark" />
-              </SendFeedback>
+              <SendFeedback />
             </Right>
           </SecondLine>
         </Container>
