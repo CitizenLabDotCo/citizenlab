@@ -1,5 +1,46 @@
 # Changelog
 
+## 2019-01-17
+
+## Added
+
+- `header_overlay_opacity` in admin HQ allows to configure how transparent header color is when not signed in
+- `custom_onboarding_fallback_message` in admin HQ allows to override the message shown in the header when signed in
+
+## 2019-01-16
+
+### Fixed
+
+- The clustering prototype no longer shows labels behind other content
+- Removing a project header image is again possible
+- New active platforms get properly submitted to google search console again
+- Scrolling issues with an iPad on the idea modal have been resolved
+- Signing up through Google is working again
+- The line underneath active elements in the project navbar now has the correct length
+- A long location does no longer break the lay-out of an event card
+- The dashboards are visible again by project moderators
+- The admin toggle in the users manager is working again
+
+### Added
+
+- When logged in, a user gets to see a dynamic call to action, asking to
+  - Complete their profile
+  - Display a custom message configurable through admin HQ
+  - Display the default fallback engagement motivator
+- The landing page header now shows user avatars
+- It's now possible to post an idea from the admin idea manager
+- The footer now shows a feedback element for citizens
+- A new 'map' dashboard now shows the ideas on their locations detected from the text using NLP
+- The clustering prototype now shows the detected keywords when clustering is used
+
+### Changed
+
+- The navbar and landing page have a completely refreshed design
+  - The font has changed all over the platform
+  - 3 different colors (main, secondary, text) are configurable in Admin HQ
+- The clustering prototype has been moved to its own dashboard tab
+- Project cards for continuous projects now link to the information page instead of ideas
+
 ## 2018-12-26
 
 ### Fixed

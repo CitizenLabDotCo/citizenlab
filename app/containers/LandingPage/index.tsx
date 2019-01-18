@@ -54,7 +54,7 @@ const Container: any = styled.div`
 const FooterBanner: any = styled.div`
   background: ${props => props.theme.colorMain};
   width: 100%;
-  /* min-height: 450px; */
+  min-height: 300px;
   margin: 0;
   padding: 0;
   position: relative;
