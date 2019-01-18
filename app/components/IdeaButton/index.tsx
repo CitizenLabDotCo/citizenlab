@@ -67,9 +67,12 @@ interface InputProps {
   style?: ButtonStyles;
   size?: '1' | '2' | '3' | '4';
   fullWidth?: boolean;
-  padding?: string;
   className?: string;
   fullHeight?: boolean;
+  bgColor?: string;
+  textColor?: string;
+  fontWeight?: string;
+  padding?: string;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -99,13 +102,17 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     });
 
     if (show) {
-      let { style, size, fullWidth } = this.props;
-      const { padding, fullHeight } = this.props;
+      let { style, size, fullWidth, bgColor, textColor, fontWeight, padding } = this.props;
+      const { fullHeight } = this.props;
       const startAnIdeaText = this.props.intl.formatMessage(messages.startAnIdea);
 
       style = (style || 'primary');
       size = (size || '1');
       fullWidth = (fullWidth || false);
+      bgColor = (bgColor || undefined);
+      textColor = (textColor || undefined);
+      fontWeight = (fontWeight || undefined);
+      padding = (padding || undefined);
 
       return (
         <Container className={`${className} ${fullHeight ? 'bannerStyle' : ''}`}>
@@ -129,11 +136,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
               linkTo={(!isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new')}
               style={style}
               size={size}
-              padding={padding}
               text={startAnIdeaText}
               disabled={!enabled}
               fullWidth={fullWidth}
               fullHeight={fullHeight}
+              bgColor={bgColor}
+              textColor={textColor}
+              fontWeight={fontWeight}
+              padding={padding}
               onClick={this.onNewIdea}
             />
           </Tooltip>

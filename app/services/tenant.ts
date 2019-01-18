@@ -25,10 +25,12 @@ export interface ITenantSettings {
     meta_description?: Multiloc | null;
     signup_helper_text?: Multiloc | null;
     color_main: string | null;
+    header_overlay_opacity: number | null;
     color_secondary: string | null;
     color_text: string | null;
     color_menu_bg?: string | null;
     currency: string;
+    custom_onboarding_fallback_message?: Multiloc | null;
   };
   demographic_fields?: {
     allowed: boolean;

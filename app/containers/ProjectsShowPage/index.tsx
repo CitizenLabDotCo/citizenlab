@@ -54,6 +54,9 @@ const Loading = styled.div`
 
 const Content = styled.div`
   flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   height: 100%;
   margin-bottom: 0px;
 `;
