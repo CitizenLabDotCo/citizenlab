@@ -8,6 +8,7 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
+import SendFeedback from 'components/SendFeedback';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
@@ -131,8 +132,13 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const ShowMoreButtonWrapper = styled.div`
+const Footer = styled.div`
+  display: flex;
+  align-items: center;
   width: 100%;
+`;
+
+const ShowMoreButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
 `;
@@ -217,22 +223,26 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
             </ProjectsList>
           }
 
-          {!querying && hasMore &&
-            <ShowMoreButtonWrapper>
-              <ShowMoreButton
-                onClick={this.showMore}
-                size="1"
-                style="secondary"
-                text={<FormattedMessage {...messages.showMore} />}
-                processing={loadingMore}
-                height="50px"
-                icon="showMore"
-                iconPos="left"
-                textColor={this.props['theme'].colorText}
-                fontWeight="500"
-              />
-            </ShowMoreButtonWrapper>
-          }
+          <Footer>
+            {!querying && hasMore &&
+              <ShowMoreButtonWrapper>
+                <ShowMoreButton
+                  onClick={this.showMore}
+                  size="1"
+                  style="secondary"
+                  text={<FormattedMessage {...messages.showMore} />}
+                  processing={loadingMore}
+                  height="50px"
+                  icon="showMore"
+                  iconPos="left"
+                  textColor={this.props['theme'].colorText}
+                  fontWeight="500"
+                />
+              </ShowMoreButtonWrapper>
+            }
+
+            <SendFeedback showFeedbackText={true} />
+          </Footer>
         </Container>
       );
     }
