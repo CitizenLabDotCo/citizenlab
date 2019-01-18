@@ -1,6 +1,13 @@
 # Changelog
 
-## 2019-01-15
+## 2019-01-17
+
+## Added
+
+- `header_overlay_opacity` in admin HQ allows to configure how transparent header color is when not signed in
+- `custom_onboarding_fallback_message` in admin HQ allows to override the message shown in the header when signed in
+
+## 2019-01-16
 
 ### Fixed
 
