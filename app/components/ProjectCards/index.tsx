@@ -8,10 +8,9 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
-import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
@@ -54,16 +53,17 @@ const Header = styled.div`
   `};
 `;
 
-const Title = styled.h3``;
+const Title = styled.h3`
+  display: flex;
+  align-items: center;
+  color: ${(props: any) => props.theme.colorText};
+  margin-bottom: 0;
+`;
 
 const FilterArea = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
-
-  &.publicationstatus {
-    margin-right: 30px;
-  }
 
   ${media.smallerThanMaxTablet`
     height: 30px;
@@ -165,12 +165,8 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.projects.onChangeAreas(areas);
   }
 
-  handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
-    this.props.projects.onChangePublicationStatus(status);
-  }
-
   render() {
-    const { hideAllFilters, tenant, locale } = this.props;
+    const { tenant, locale } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -180,23 +176,17 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const tenantName = getLocalized(organizationNameMulitiLoc, locale, tenantLocales);
 
-      console.log(tenant);
       return (
         <Container id="e2e-projects-container">
-          {hideAllFilters !== true &&
-            <Header>
-              <Title>
-                {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
-              </Title>
-              <FilterArea className="publicationstatus">
-                <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
-              </FilterArea>
+          <Header>
+            <Title>
+              {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
+            </Title>
 
-              <FilterArea>
-                <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-              </FilterArea>
-            </Header>
-          }
+            <FilterArea>
+              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+            </FilterArea>
+          </Header>
 
           {querying &&
             <Loading id="projects-loading">
