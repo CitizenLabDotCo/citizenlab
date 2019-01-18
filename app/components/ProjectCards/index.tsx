@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -10,10 +12,14 @@ import SelectPublicationStatus from './SelectPublicationStatus';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
@@ -35,7 +41,7 @@ const Loading = styled.div`
   border: solid 1px ${colors.separation};
 `;
 
-const FiltersArea = styled.div`
+const Header = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -47,6 +53,8 @@ const FiltersArea = styled.div`
     justify-content: flex-start;
   `};
 `;
+
+const Title = styled.h3``;
 
 const FilterArea = styled.div`
   height: 60px;
@@ -129,96 +137,123 @@ const LoadMoreButtonWrapper = styled.div`
 
 const LoadMoreButton = styled(Button)``;
 
+interface DataProps {
+  projects: GetProjectsChildProps;
+  tenant: GetTenantChildProps;
+  locale: GetLocaleChildProps;
+}
+
 interface InputProps extends GetProjectsInputProps {}
 
-interface Props extends InputProps, GetProjectsChildProps {}
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class ProjectCards extends PureComponent<Props, State> {
+class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   emptyArray: string[] = [];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {};
   }
 
   loadMore = () => {
-    this.props.onLoadMore();
+    this.props.projects.onLoadMore();
   }
 
   handleAreasOnChange = (areas: string[]) => {
-    this.props.onChangeAreas(areas);
+    this.props.projects.onChangeAreas(areas);
   }
 
   handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
-    this.props.onChangePublicationStatus(status);
+    this.props.projects.onChangePublicationStatus(status);
   }
 
   render() {
-    const { queryParameters, projectsList, hasMore, querying, loadingMore, hideAllFilters } = this.props;
+    const { hideAllFilters, tenant, locale } = this.props;
+    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
 
-    return (
-      <Container id="e2e-projects-container">
-        {hideAllFilters !== true &&
-          <FiltersArea id="e2e-projects-filters">
-            <FilterArea className="publicationstatus">
-              <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
-            </FilterArea>
+    if (!isNilOrError(tenant) && locale) {
+      const organizationNameMulitiLoc = tenant.attributes.settings.core.organization_name;
+      const tenantLocales = tenant.attributes.settings.core.locales;
+      const tenantName = getLocalized(organizationNameMulitiLoc, locale, tenantLocales);
 
-            <FilterArea>
-              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-            </FilterArea>
-          </FiltersArea>
-        }
+      console.log(tenant);
+      return (
+        <Container id="e2e-projects-container">
+          {hideAllFilters !== true &&
+            <Header>
+              <Title>
+                {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
+              </Title>
+              <FilterArea className="publicationstatus">
+                <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+              </FilterArea>
 
-        {querying &&
-          <Loading id="projects-loading">
-            <Spinner />
-          </Loading>
-        }
+              <FilterArea>
+                <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+              </FilterArea>
+            </Header>
+          }
 
-        {!querying && !hasProjects &&
-          <EmptyContainer id="projects-empty">
-            <ProjectIcon name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage {...messages.noProjects} />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
-        }
+          {querying &&
+            <Loading id="projects-loading">
+              <Spinner />
+            </Loading>
+          }
 
-        {!querying && hasProjects && projectsList &&
-          <ProjectsList id="e2e-projects-list">
-            {projectsList.map((project) => (
-              <StyledProjectCard key={project.id} projectId={project.id} />
-            ))}
-          </ProjectsList>
-        }
+          {!querying && !hasProjects &&
+            <EmptyContainer id="projects-empty">
+              <ProjectIcon name="idea" />
+              <EmptyMessage>
+                <EmptyMessageLine>
+                  <FormattedMessage {...messages.noProjects} />
+                </EmptyMessageLine>
+              </EmptyMessage>
+            </EmptyContainer>
+          }
 
-        {!querying && hasMore &&
-          <LoadMoreButtonWrapper>
-            <LoadMoreButton
-              onClick={this.loadMore}
-              size="2"
-              style="secondary"
-              text={<FormattedMessage {...messages.loadMore} />}
-              processing={loadingMore}
-              fullWidth={true}
-              height="58px"
-            />
-          </LoadMoreButtonWrapper>
-        }
-      </Container>
-    );
+          {!querying && hasProjects && projectsList &&
+            <ProjectsList id="e2e-projects-list">
+              {projectsList.map((project) => (
+                <StyledProjectCard key={project.id} projectId={project.id} />
+              ))}
+            </ProjectsList>
+          }
+
+          {!querying && hasMore &&
+            <LoadMoreButtonWrapper>
+              <LoadMoreButton
+                onClick={this.loadMore}
+                size="2"
+                style="secondary"
+                text={<FormattedMessage {...messages.loadMore} />}
+                processing={loadingMore}
+                fullWidth={true}
+                height="58px"
+              />
+            </LoadMoreButtonWrapper>
+          }
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
+const ProjectCardsWithHOCs = injectIntl(ProjectCards);
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  locale: <GetLocale />,
+  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
+});
+
 export default (inputProps: InputProps) => (
-  <GetProjects {...inputProps}>
-    {projects => <ProjectCards {...inputProps} {...projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps => <ProjectCardsWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );
