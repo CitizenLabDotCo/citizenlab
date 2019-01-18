@@ -214,6 +214,7 @@ const Separator = styled.span`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 20px;
 
   ${media.smallerThanMaxTablet`
     order: 1;
@@ -456,7 +457,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback />
+              <SendFeedback showFeedbackText={false} />
             </Right>
           </SecondLine>
         </Container>

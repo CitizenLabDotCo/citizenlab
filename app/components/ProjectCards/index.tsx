@@ -8,6 +8,7 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
+import SendFeedback from 'components/SendFeedback';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
@@ -131,14 +132,23 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const ShowMoreButtonWrapper = styled.div`
-  width: 100%;
+const Footer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: center;
+  width: 100%;
+  position: relative;
 `;
+
+const ShowMoreButtonWrapper = styled.div``;
 
 const ShowMoreButton = styled(Button)`
   color: ${(props: any) => props.theme.colorText};
+`;
+
+const SSendFeedback = styled(SendFeedback)`
+  position: absolute;
+  right: 0;
 `;
 
 interface DataProps {
@@ -217,22 +227,26 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
             </ProjectsList>
           }
 
-          {!querying && hasMore &&
-            <ShowMoreButtonWrapper>
-              <ShowMoreButton
-                onClick={this.showMore}
-                size="1"
-                style="secondary"
-                text={<FormattedMessage {...messages.showMore} />}
-                processing={loadingMore}
-                height="50px"
-                icon="showMore"
-                iconPos="left"
-                textColor={this.props['theme'].colorText}
-                fontWeight="500"
-              />
-            </ShowMoreButtonWrapper>
-          }
+          <Footer>
+            {!querying && hasMore &&
+              <ShowMoreButtonWrapper>
+                <ShowMoreButton
+                  onClick={this.showMore}
+                  size="1"
+                  style="secondary"
+                  text={<FormattedMessage {...messages.showMore} />}
+                  processing={loadingMore}
+                  height="50px"
+                  icon="showMore"
+                  iconPos="left"
+                  textColor={this.props['theme'].colorText}
+                  fontWeight="500"
+                />
+              </ShowMoreButtonWrapper>
+            }
+
+            <SSendFeedback showFeedbackText={true} />
+          </Footer>
         </Container>
       );
     }
