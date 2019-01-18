@@ -33,7 +33,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, quillEditedContent } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -103,7 +103,16 @@ const IdeasStyledContentContainer = StyledContentContainer.extend`
   background: #f9f9fa;
 `;
 
-const CustomSectionContentContainer = StyledContentContainer.extend``;
+const CustomSectionContentContainer = styled(ContentContainer)`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+
+  ${quillEditedContent()}
+`;
 
 const Section = styled.div`
   width: 100%;
@@ -240,7 +249,6 @@ class LandingPage extends PureComponent<Props, State> {
                         pageSize={3}
                         sort="new"
                         publicationStatuses={['published']}
-                        hideAllFilters={true}
                       />
                     </SectionContainer>
                   </ProjectSection>
