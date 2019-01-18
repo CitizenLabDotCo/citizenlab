@@ -35,7 +35,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -47,6 +47,11 @@ const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
   top: 10px;
   right: 20px;
+
+  ${media.smallerThanMinTablet`
+    top: 4px;
+    right: 10px;
+  `}
 `;
 
 const Container = styled.div`
@@ -84,7 +89,6 @@ const CommentContainerInner = styled.div`
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
-  margin-right: 60px;
 `;
 
 export const TranslateButton = styled.button`

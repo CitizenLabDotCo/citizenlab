@@ -79,7 +79,7 @@ const HeaderImageBackground: any = styled.div`
 
 const HeaderImageOverlay = styled.div`
   background: ${(props) => props.theme.colorMain};
-  opacity: 0.9;
+  opacity: ${(props) => props.theme.headerOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
