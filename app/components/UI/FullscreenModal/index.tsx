@@ -284,11 +284,13 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
       trackPage(localizedUrl, { modal: true });
     }
 
-     if (this.ModalContentInnerElement) {
-      setTimeout(() => {
-        disableBodyScroll(this.ModalContentInnerElement);
-      }, 250);
-     }
+    disableBodyScroll(this.ModalContentInnerElement);
+
+    //  if (this.ModalContentInnerElement) {
+    //   setTimeout(() => {
+    //     disableBodyScroll(this.ModalContentInnerElement);
+    //   }, 250);
+    //  }
   }
 
   onEscKeyPressed = (event) => {
