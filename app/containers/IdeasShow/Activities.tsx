@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // resourcs
 import GetIdeaActivities, { GetIdeaActivitiesChildProps } from 'resources/GetIdeaActivities';
@@ -23,6 +23,13 @@ const LinkButton = styled.button`
   display: inline;
   margin: 0;
   padding: 0;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
 `;
 
 const Title = styled.h1`
@@ -43,8 +50,8 @@ interface State {
   modalOpen: boolean;
 }
 
-class IdeaActivities extends React.Component<Props, State> {
-  constructor(props: Props) {
+class IdeaActivities extends PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       modalOpen: false

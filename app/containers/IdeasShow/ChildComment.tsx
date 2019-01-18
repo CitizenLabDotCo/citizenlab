@@ -51,7 +51,6 @@ const CommentContainer = styled.div`
 
 const StyledAuthor = styled(Author)`
   margin-bottom: 20px;
-  margin-right: 60px;
 `;
 
 interface ITracks {

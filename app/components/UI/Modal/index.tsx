@@ -26,6 +26,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
+const timeout = 400;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+
 const ModalContent = styled.div`
   -webkit-overflow-scroll: auto;
   overflow-y: auto;
@@ -118,20 +121,20 @@ const Overlay = styled.div`
   &.modal-enter {
     opacity: 0;
 
-    ${ModalContent} {
+    ${ModalContainer} {
       opacity: 0;
       transform: translateY(-40px);
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: opacity ${timeout}ms ${easing};
 
-      ${ModalContent} {
+      ${ModalContainer} {
         opacity: 1;
         transform: translateY(0px);
-        transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                    transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: opacity ${timeout}ms ${easing},
+                    transform ${timeout}ms ${easing};
       }
     }
   }
@@ -315,15 +318,23 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     width = (isString(width) ? width : '650px');
 
     const element = (opened ? (
-      <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <FocusTrap>
-          <Overlay
-            id="e2e-modal-container"
-            className={this.props.className}
-            aria-modal="true"
-            role="dialog"
-            aria-label={label}
-          >
+      // <CSSTransition classNames="modal" timeout={timeout} exit={false}>
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={timeout}
+        mountOnEnter={false}
+        unmountOnExit={false}
+        exit={true}
+      >
+        <Overlay
+          id="e2e-modal-container"
+          className={this.props.className}
+          aria-modal="true"
+          role="dialog"
+          aria-label={label}
+        >
+          <FocusTrap>
             <ModalContainer
               className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
               width={width}
@@ -355,8 +366,8 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
                 <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
               }
             </ModalContainer>
-          </Overlay>
-        </FocusTrap>
+          </FocusTrap>
+        </Overlay>
       </CSSTransition>
     ) : undefined);
 
