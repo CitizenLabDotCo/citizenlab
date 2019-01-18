@@ -443,7 +443,9 @@ const SeparatorRow = styled.div`
 `;
 
 const RightColumn = styled.div`
-  flex: 0 0 auto;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 200px;
   width: 200px;
   margin: 0;
   padding: 0;
@@ -453,7 +455,6 @@ const RightColumnDesktop = RightColumn.extend`
   position: sticky;
   top: 95px;
   align-self: flex-start;
-  transform: translate3d(0, 0, 0);
 
   ${media.smallerThanMaxTablet`
     display: none;
