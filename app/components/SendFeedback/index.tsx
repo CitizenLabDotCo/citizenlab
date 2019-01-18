@@ -15,6 +15,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const SendFeedback = styled.a`
+  display: flex;
+  align-items; center;
+  flex-grow: 1;
   margin-right: 20px;
 
   ${media.largePhone`
@@ -24,11 +27,16 @@ const SendFeedback = styled.a`
 
 const SendFeedbackText = styled.span`
   display: none;
+
+  &.show {
+    display: inline;
+  }
 `;
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
   height: 34px;
+  margin-right: 10px;
 
   &:hover {
     cursor: pointer;
@@ -36,7 +44,9 @@ const SendFeedbackIcon = styled(Icon)`
   }
 `;
 
-interface InputProps {}
+interface InputProps {
+  showFeedbackText: boolean;
+}
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -45,7 +55,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const SendFeedbackComponent = (props: Props) => {
-  const { locale } = props;
+  const { locale, showFeedbackText } = props;
   let surveyLink: string | null = null;
 
   if (locale === 'fr-BE' || locale === 'fr-FR') {
@@ -59,16 +69,17 @@ const SendFeedbackComponent = (props: Props) => {
 
   return (
     <SendFeedback target="_blank" href={surveyLink}>
-      <SendFeedbackText>
+      <SendFeedbackIcon name="questionMark" />
+      {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
+      <SendFeedbackText className={showFeedbackText ? 'show' : ''}>
         <FormattedMessage {...messages.sendFeedback} />
       </SendFeedbackText>
-      <SendFeedbackIcon name="questionMark" />
     </SendFeedback>
   );
 };
 
-export default () => (
+ export default ({ showFeedbackText }: InputProps) => (
   <GetLocale>
-    {locale => <SendFeedbackComponent locale={locale} />}
+    {locale => <SendFeedbackComponent showFeedbackText={showFeedbackText} locale={locale} />}
   </GetLocale>
 );

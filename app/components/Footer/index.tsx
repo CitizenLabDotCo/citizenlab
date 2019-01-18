@@ -456,7 +456,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback />
+              <SendFeedback showFeedbackText={false} />
             </Right>
           </SecondLine>
         </Container>
