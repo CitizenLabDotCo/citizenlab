@@ -300,13 +300,15 @@ type State = {};
 
 class Button extends PureComponent<Props, State> {
 
-  handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
-    if (this.props.onClick && !this.props.disabled && !this.props.processing) {
-      event.preventDefault();
-      this.props.onClick(event);
-    } else if (this.props.onClick && (this.props.disabled || this.props.processing)) {
-      event.preventDefault();
-      event.stopPropagation();
+  handleOnClick = (event) => {
+    if (event.detail !== 0) {
+      if (this.props.onClick && !this.props.disabled && !this.props.processing) {
+        event.preventDefault();
+        this.props.onClick(event);
+      } else if (this.props.onClick && (this.props.disabled || this.props.processing)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
     }
   }
 
