@@ -1,4 +1,10 @@
 # Changelog
+## 2019-01-19
+
+### Fixed
+
+- Registration fields of the type 'multiple select' can again be set in the 2nd step of the signup flow
+- Creating invitations through an excel file no longer fails when there are multiple users with the same first and last name
 
 ## 2019-01-18
 
@@ -21,7 +27,7 @@
 
 ## 2019-01-17
 
-## Added
+### Added
 
 - `header_overlay_opacity` in admin HQ allows to configure how transparent header color is when not signed in
 - `custom_onboarding_fallback_message` in admin HQ allows to override the message shown in the header when signed in
