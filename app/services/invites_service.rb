@@ -165,9 +165,19 @@ class InvitesService
       add_error(:no_invites_specified)
       fail_now
     else
-      hash_array.map do |invite_params|
+      invites = hash_array.map do |invite_params|
         invite = build_invite(invite_params, default_params, inviter)
       end
+      invitees = invites.map(&:invitee)
+      # Since invites will later be created in a single transaction, the
+      # normal mechanism for generating slugs could result in non-unique
+      # slugs. Therefore we generate the slugs manually
+      invitees.zip(SlugService.new.generate_slugs(invitees){|u| u.display_name}) do |(invitee, slug)|
+        if invitee.display_name.present?
+          invitee.slug = slug
+        end
+      end
+      invites
     end
   end
 
