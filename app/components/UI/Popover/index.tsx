@@ -10,6 +10,8 @@ import { colors } from 'utils/styleUtils';
 const Container = styled.div`
   position: relative;
   outline: none;
+  display: flex;
+  align-items: center;
 
   * {
     outline: none;

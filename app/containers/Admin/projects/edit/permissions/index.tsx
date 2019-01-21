@@ -16,6 +16,7 @@ import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField }
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
@@ -196,6 +197,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
+                <InfoTooltip {...messages.permissionsTypeTooltip} />
               </SubSectionTitle>
 
               <RadioButtonsWrapper>
@@ -263,5 +265,4 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
     return null;
   }
 }
-
 export default injectIntl<Props>(ProjectPermissions);
