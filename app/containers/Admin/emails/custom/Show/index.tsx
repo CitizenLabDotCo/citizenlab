@@ -30,6 +30,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const PageHeader = styled.div`
   display: flex;
@@ -65,6 +66,7 @@ const SendTestEmailButton = styled.button`
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
+  display: flex;
 `;
 
 const PageTitleWrapper = styled.div`
@@ -220,6 +222,8 @@ class Show extends React.Component<Props, State> {
                 onClick={this.handleSendTestEmail}
               >
                 <FormattedMessage {...messages.sendTestEmailButton} />
+                &nbsp;
+                <InfoTooltip {...messages.sendTestEmailTooltip} />
               </SendTestEmailButton>
             }
           </CampaignHeader>

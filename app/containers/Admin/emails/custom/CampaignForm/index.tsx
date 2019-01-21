@@ -24,6 +24,7 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import { fontSizes } from 'utils/styleUtils';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -81,9 +82,9 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
 
   groupsOptions = (groups: GetGroupsChildProps) => {
     return !isNilOrError(groups.groupsList) && groups.groupsList.map((group) => ({
-        label: this.props.localize(group.attributes.title_multiloc),
-        value: group.id,
-      }));
+      label: this.props.localize(group.attributes.title_multiloc),
+      value: group.id,
+    }));
   }
 
   renderFormikQuillMultiloc = (props) => {
@@ -106,11 +107,12 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
       <Form>
         <StyledSection>
           <StyledSectionTitle>
-            1. <FormattedMessage {...messages.formTitleWho}/>
+            1. <FormattedMessage {...messages.formTitleWho} />
           </StyledSectionTitle>
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldSender} />
+              <InfoTooltip {...messages.fieldSenderTooltip} />
             </Label>
             <FastField
               name="sender"
@@ -127,6 +129,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldTo} />
+              <InfoTooltip {...messages.fieldToTooltip} />
             </Label>
             <GetGroups>
               {(groups) => (isNilOrError(groups)) ? null : (
@@ -147,6 +150,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <SectionField>
             <Label>
               <FormattedMessage {...messages.fieldReplyTo} />
+              <InfoTooltip {...messages.fieldReplyToTooltip} />
             </Label>
             <FastField
               name="reply_to"
@@ -168,7 +172,12 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             <FastField
               name="subject_multiloc"
               component={FormikInputMultiloc}
-              label={<FormattedMessage {...messages.fieldSubject} />}
+              label={(
+                <>
+                  <FormattedMessage {...messages.fieldSubject} />
+                  <InfoTooltip {...messages.fieldSubjectTooltip} />
+                </>
+              )}
               maxCharCount={80}
             />
             {touched.subject_multiloc && <Error
@@ -213,7 +222,7 @@ const Data = adopt<DataProps, InputProps>({
 
 const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
 
-export default(inputProps: InputProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
   </Data>
