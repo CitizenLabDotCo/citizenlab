@@ -5,7 +5,7 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // import i18n
 import messages from './messages';
@@ -17,19 +17,33 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 const SendFeedback = styled.a`
   display: flex;
   align-items; center;
-  flex-grow: 1;
-  margin-right: 20px;
 
   ${media.largePhone`
     margin-right: 0;
   `}
+
+  &:hover {
+    cursor: pointer;
+
+    .send-feedback-text {
+      color: #000;
+    }
+
+    .send-feedback-icon {
+      fill: #000;
+    }
+  }
 `;
 
 const SendFeedbackText = styled.span`
   display: none;
+  font-size: ${fontSizes.base}px;
+  color: ${colors.clIconSecondary};
+  margin-top: -3px;
 
   &.show {
-    display: inline;
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -37,15 +51,11 @@ const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
   height: 34px;
   margin-right: 10px;
-
-  &:hover {
-    cursor: pointer;
-    fill: #000;
-  }
 `;
 
 interface InputProps {
   showFeedbackText: boolean;
+  className?: string;
 }
 
 interface DataProps {
@@ -55,7 +65,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const SendFeedbackComponent = (props: Props) => {
-  const { locale, showFeedbackText } = props;
+  const { locale, showFeedbackText, className } = props;
+
   let surveyLink: string | null = null;
 
   if (locale === 'fr-BE' || locale === 'fr-FR') {
@@ -68,18 +79,22 @@ const SendFeedbackComponent = (props: Props) => {
   }
 
   return (
-    <SendFeedback target="_blank" href={surveyLink}>
-      <SendFeedbackIcon name="questionMark" />
+    <SendFeedback className={className} target="_blank" href={surveyLink}>
+      <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
       {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
-      <SendFeedbackText className={showFeedbackText ? 'show' : ''}>
+      <SendFeedbackText className={`send-feedback-text  ${showFeedbackText ? 'show' : ''}`}>
         <FormattedMessage {...messages.sendFeedback} />
       </SendFeedbackText>
     </SendFeedback>
   );
 };
 
- export default ({ showFeedbackText }: InputProps) => (
+ export default (inputProps: InputProps) => (
   <GetLocale>
-    {locale => <SendFeedbackComponent showFeedbackText={showFeedbackText} locale={locale} />}
+    {locale => <SendFeedbackComponent
+      showFeedbackText={inputProps.showFeedbackText}
+      locale={locale}
+      {...inputProps}
+    />}
   </GetLocale>
 );
