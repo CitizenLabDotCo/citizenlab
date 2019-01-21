@@ -46,8 +46,8 @@ const ContrastWarning = styled(Warning)`
   margin-top: 10px;
 `;
 
-const StyledSectionField = styled(SectionField)`
-  max-width: 500px;
+const WideSectionField = styled(SectionField)`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
 interface DataProps {
@@ -409,7 +409,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               />
             </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
@@ -418,9 +418,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
               />
-            </StyledSectionField>
+            </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
@@ -429,15 +429,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
               />
-            </StyledSectionField>
+            </SectionField>
           </Section>
 
           <Section>
-            <SectionTitle>
+            <SubSectionTitle>
               <FormattedMessage {...messages.homePageCustomSection} />
-            </SectionTitle>
+            </SubSectionTitle>
 
-            <SectionField>
+            <WideSectionField>
               <QuillMultiloc
                 id="custom-section"
                 inAdmin
@@ -446,7 +446,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
-            </SectionField>
+            </WideSectionField>
           </Section>
 
           <SubmitWrapper
