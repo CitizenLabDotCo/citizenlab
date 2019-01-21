@@ -216,6 +216,7 @@ const Separator = styled.span`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  padding: 0 20px;
 
   ${media.smallerThanMaxTablet`
     order: 1;

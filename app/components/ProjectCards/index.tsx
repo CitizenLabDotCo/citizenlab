@@ -47,12 +47,8 @@ const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 33px;
   border-bottom: 1px solid #D1D1D1;
-
-  ${media.smallerThanMaxTablet`
-    justify-content: flex-start;
-  `};
 `;
 
 const Title = styled.h3`
@@ -82,6 +78,10 @@ const ProjectsList = styled.div`
     flex-wrap: wrap;
     margin-left: -13px;
     margin-right: -13px;
+  `};
+
+  ${media.largePhone`
+    margin-bottom: 23px;
   `};
 `;
 
@@ -135,16 +135,43 @@ const EmptyMessageLine = styled.div`
 const Footer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
 `;
 
 const ShowMoreButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  ${media.smallerThanMinTablet`
+    margin-bottom: 60px;
+  `}
+
+  ${media.largePhone`
+    margin-bottom: 40px;
+  `}
 `;
 
 const ShowMoreButton = styled(Button)`
   color: ${(props: any) => props.theme.colorText};
+`;
+
+const SendFeedbackGhostItem = styled(SendFeedback)`
+  visibility: hidden;
+  margin-right: auto;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
+
+const SSendFeedback = styled(SendFeedback)`
+  margin-left: auto;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 0;
+  `}
 `;
 
 interface DataProps {
@@ -224,6 +251,9 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
           }
 
           <Footer>
+            {/* Hipster way to center and right-align the other two items in this container */}
+            <SendFeedbackGhostItem showFeedbackText={true}/>
+
             {!querying && hasMore &&
               <ShowMoreButtonWrapper>
                 <ShowMoreButton
@@ -241,7 +271,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
               </ShowMoreButtonWrapper>
             }
 
-            <SendFeedback showFeedbackText={true} />
+            <SSendFeedback showFeedbackText={true} />
           </Footer>
         </Container>
       );
