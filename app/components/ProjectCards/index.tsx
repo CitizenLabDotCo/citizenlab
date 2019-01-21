@@ -56,16 +56,13 @@ const Title = styled.h3`
   align-items: center;
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
+  margin-right: 40px;
 `;
 
 const FilterArea = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
-
-  ${media.smallerThanMaxTablet`
-    height: 30px;
-  `}
 `;
 
 const ProjectsList = styled.div`
