@@ -10,6 +10,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Pagination from 'components/admin/Pagination';
 import Button from 'components/UI/Button';
 import Row from './Row';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // resources
 import GetInvites, { GetInvitesChildProps, SortAttribute } from 'resources/GetInvites';
@@ -49,9 +50,15 @@ const EmptyStateContainer = styled.div`
   justify-content: center;
 `;
 
-interface InputProps {}
+const SDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
-interface Props extends InputProps, GetInvitesChildProps {}
+interface InputProps { }
+
+interface Props extends InputProps, GetInvitesChildProps { }
 
 interface State {
   searchValue: string;
@@ -146,7 +153,11 @@ class InvitesTable extends React.PureComponent<Props, State> {
                     width={1}
                     textAlign="center"
                   >
-                    <FormattedMessage {...messages.deleteInvite} />
+                    <SDiv>
+                      <FormattedMessage {...messages.deleteInvite} />
+                      &nbsp;
+                      <InfoTooltip {...messages.deleteInviteTooltip} />
+                    </SDiv>
                   </Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
