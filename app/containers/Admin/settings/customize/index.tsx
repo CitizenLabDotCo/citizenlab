@@ -329,6 +329,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
+      const customSectionInfoMessage = this.props.intl.formatMessage(messages.customSectionInfo);
+
       const homepageInfoPageBodyMultiloc = !isNilOrError(homepageInfoPage) ? { ...homepageInfoPage.attributes.body_multiloc, ...attributesDiff.homepage_info } : { ...attributesDiff.homepage_info };
 
       return (
@@ -444,6 +446,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 label={<FormattedMessage {...messages.customSectionLabel} />}
                 valueMultiloc={homepageInfoPageBodyMultiloc}
                 onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
+                infoMessage={customSectionInfoMessage}
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
             </WideSectionField>

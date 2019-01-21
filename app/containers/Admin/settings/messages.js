@@ -192,5 +192,9 @@ export default defineMessages({
   customSectionLabel: {
     id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
     defaultMessage: 'Content',
-  }
+  },
+  customSectionInfo: {
+    id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
+    defaultMessage: 'The content of this field will be shown at the bottom of the platform\'s home page, visible to all users.',
+  },
 });
