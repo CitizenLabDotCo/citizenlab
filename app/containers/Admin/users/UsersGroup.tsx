@@ -148,10 +148,10 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
 
     switch (groupEditionModal) {
       case 'manual':
-        ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderManual} />;
+        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
         break;
       case 'rules':
-        ModalHeader = <FormattedMessage tagName="h3" {...messages.modalHeaderRules} />;
+        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
         break;
     }
 

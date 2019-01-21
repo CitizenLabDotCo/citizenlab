@@ -183,9 +183,11 @@ const StyledThing = styled(Polymorph)`
   line-height: 19px;
   text-decoration: none;
   padding: 0;
+  cursor: pointer;
 
   &:hover {
     color: #000;
+    text-decoration: underline;
   }
 
   ${media.smallerThanMaxTablet`

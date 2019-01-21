@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // services
@@ -28,10 +28,6 @@ const AvatarWrapper = styled.div`
   flex: 0 0 2rem;
   height: 2rem;
   margin-right: 1rem;
-
-  svg {
-    width: 100%;
-  }
 `;
 
 const TextWrapper = styled.div`
@@ -59,7 +55,7 @@ interface State {
   user: IUser | null;
 }
 
-export default class ActivityChangeLog extends React.Component<Props, State> {
+export default class ActivityChangeLog extends PureComponent<Props, State> {
   subs: Subscription[] = [];
 
   constructor(props) {
@@ -69,6 +65,7 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
       user: null,
     };
   }
+
   componentDidMount() {
     this.subs.push(userByIdStream(this.props.activity.relationships.user.data.id).observable.subscribe((response) => {
       this.setState({ user: response });
@@ -81,7 +78,6 @@ export default class ActivityChangeLog extends React.Component<Props, State> {
 
   render() {
     const { user } = this.state;
-    console.log(this.props.activity.attributes.acted_at);
 
     return (
       <ChangeLogEntry>

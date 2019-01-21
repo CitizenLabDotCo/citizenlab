@@ -32,8 +32,8 @@ const LinkButton = styled.button`
   }
 `;
 
-const Title = styled.h1`
-  margin-bottom: 60px;
+const Activities = styled.div`
+  padding: 30px;
 `;
 
 interface InputProps {
@@ -78,11 +78,16 @@ class IdeaActivities extends PureComponent<Props, State> {
           <span> - <LinkButton onClick={this.openModal}>
             <FormattedMessage {...messages.lastUpdated} values={{ modificationTime: <FormattedRelative value={lastUpdated} /> }} />
           </LinkButton></span>
-          <Modal opened={this.state.modalOpen} close={this.closeModal} >
-            <Title><FormattedMessage {...messages.lastChangesTitle} /></Title>
-            {ideaActivities.map((activity) => (
-              <ActivitiesChangeLog key={activity.id} activity={activity} />
-            ))}
+          <Modal
+            opened={this.state.modalOpen}
+            close={this.closeModal}
+            header={<FormattedMessage {...messages.lastChangesTitle} />}
+          >
+            <Activities>
+              {ideaActivities.map((activity) => (
+                <ActivitiesChangeLog key={activity.id} activity={activity} />
+              ))}
+            </Activities>
           </Modal>
         </>
       );

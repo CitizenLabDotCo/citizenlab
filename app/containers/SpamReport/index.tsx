@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // Services
 import { sendSpamReport, Report } from 'services/spamReports';
@@ -10,21 +10,28 @@ import ReportForm from './SpamReportForm';
 // Typings
 import { CRUDParams } from 'typings';
 
+// style
+import styled from 'styled-components';
+
+const Container = styled.div`
+  padding: 30px;
+`;
+
 interface Props {
   resourceType: 'comments' | 'ideas';
   resourceId: string;
+  className?: string;
 }
 
 interface State {
   diff: Report | null;
 }
 
-class SpamReportForm extends React.Component<Props, State & CRUDParams> {
+class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
   reasonCodes: Report['reason_code'][] = ['wrong_content', 'inappropriate', 'other'];
 
   constructor (props) {
     super(props);
-
     this.state = {
       diff: null,
       loading: false,
@@ -60,11 +67,9 @@ class SpamReportForm extends React.Component<Props, State & CRUDParams> {
 
     this.setState({ loading: true });
 
-    sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff)
-    .then(() => {
+    sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff).then(() => {
       this.setState({ loading: false, saved: true, errors: null, diff: null });
-    })
-    .catch((e) => {
+    }).catch((e) => {
       let errors = this.state.errors;
       if (e.json && e.json.errors) {
         errors = e.json.errors;
@@ -76,17 +81,19 @@ class SpamReportForm extends React.Component<Props, State & CRUDParams> {
 
   render () {
     return (
-      <ReportForm
-        reasonCodes={this.reasonCodes}
-        diff={this.state.diff}
-        onReasonChange={this.handleSelectionChange}
-        onTextChange={this.handleReasonTextUpdate}
-        onSubmit={this.handleSubmit}
-        loading={this.state.loading}
-        saved={this.state.saved}
-        errors={this.state.errors}
-        itemType={this.props.resourceType}
-      />
+      <Container className={this.props.className}>
+        <ReportForm
+          reasonCodes={this.reasonCodes}
+          diff={this.state.diff}
+          onReasonChange={this.handleSelectionChange}
+          onTextChange={this.handleReasonTextUpdate}
+          onSubmit={this.handleSubmit}
+          loading={this.state.loading}
+          saved={this.state.saved}
+          errors={this.state.errors}
+          itemType={this.props.resourceType}
+        />
+      </Container>
     );
   }
 }

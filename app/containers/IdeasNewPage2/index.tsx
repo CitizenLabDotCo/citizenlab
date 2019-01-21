@@ -14,7 +14,6 @@ import clHistory from 'utils/cl-router/history';
 import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import SignInUp from './SignInUp';
-// import Modal from 'components/UI/Modal';
 
 // services
 import { addIdea, updateIdea, IIdeaAdd } from 'services/ideas';

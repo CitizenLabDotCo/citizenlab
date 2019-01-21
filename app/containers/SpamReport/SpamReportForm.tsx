@@ -8,7 +8,7 @@ import { Report } from 'services/spamReports';
 import getSubmitState from 'utils/getSubmitState';
 
 // Components
-import { SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionField, SectionSubtitle } from 'components/admin/Section';
 import Radio from 'components/UI/Radio';
 import TextArea from 'components/UI/TextArea';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -91,7 +91,7 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
 
     return (
       <form onSubmit={this.props.onSubmit}>
-        <SectionTitle><FormattedMessage {...messages.title} /></SectionTitle>
+        {/* <SectionTitle><FormattedMessage {...messages.title} /></SectionTitle> */}
         <SectionSubtitle><FormattedMessage {...messages.subtitle} /></SectionSubtitle>
 
         <SectionField>
