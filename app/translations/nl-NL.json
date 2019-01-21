@@ -952,6 +952,7 @@
   "app.containers.IdeasShow.placeholderComment": "Zeg ons wat je denkt!",
   "app.containers.IdeasShow.postedIn": "Geplaatst in {projectLink}",
   "app.containers.IdeasShow.publishComment": "Reageer op dit idee",
+  "app.containers.IdeasShow.reportAsSpamModalTitle": "",
   "app.containers.IdeasShow.shareByEmail": "Deel per e-mail",
   "app.containers.IdeasShow.shareCTA": "Deel dit idee",
   "app.containers.IdeasShow.shareOnFacebook": "Delen op Facebook",

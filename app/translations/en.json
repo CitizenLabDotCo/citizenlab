@@ -952,6 +952,7 @@
   "app.containers.IdeasShow.placeholderComment": "Tell us your thoughts!",
   "app.containers.IdeasShow.postedIn": "Posted in {projectLink}",
   "app.containers.IdeasShow.publishComment": "Post comment",
+  "app.containers.IdeasShow.reportAsSpamModalTitle": "Why do you want to report this as spam?",
   "app.containers.IdeasShow.shareByEmail": "Share by email",
   "app.containers.IdeasShow.shareCTA": "Share this idea",
   "app.containers.IdeasShow.shareOnFacebook": "Share on Facebook",

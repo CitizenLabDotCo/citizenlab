@@ -952,6 +952,7 @@
   "app.containers.IdeasShow.placeholderComment": "Sagen Sie uns Ihre Meinung!",
   "app.containers.IdeasShow.postedIn": "Veröffentlicht in {projectLink}",
   "app.containers.IdeasShow.publishComment": "{orgName, select, München {Regieren Sie auf diese Mängelmeldung} other {Reagieren Sie auf diese Idee}}",
+  "app.containers.IdeasShow.reportAsSpamModalTitle": "",
   "app.containers.IdeasShow.shareByEmail": "Per Email teilen",
   "app.containers.IdeasShow.shareCTA": "{orgName, select, München {Teilen Sie diese Meldung mit anderen} other {Teilen Sie diese Idee}}",
   "app.containers.IdeasShow.shareOnFacebook": "Auf Facebook teilen",
