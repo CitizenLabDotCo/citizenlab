@@ -952,6 +952,7 @@
   "app.containers.IdeasShow.placeholderComment": "Faites-nous part de vos impressions !",
   "app.containers.IdeasShow.postedIn": "Posté dans {projectLink}",
   "app.containers.IdeasShow.publishComment": "Réagissez à cette idée",
+  "app.containers.IdeasShow.reportAsSpamModalTitle": "",
   "app.containers.IdeasShow.shareByEmail": "Partager par e-mail ",
   "app.containers.IdeasShow.shareCTA": "Partagez cette idée",
   "app.containers.IdeasShow.shareOnFacebook": "Partager sur Facebook",
