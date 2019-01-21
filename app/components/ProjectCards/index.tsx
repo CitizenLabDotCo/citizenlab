@@ -57,6 +57,7 @@ const Title = styled.h3`
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
   margin-right: 40px;
+  font-weight: 600;
 `;
 
 const FilterArea = styled.div`
