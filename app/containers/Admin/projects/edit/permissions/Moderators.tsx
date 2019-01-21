@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 // import Warning from 'components/UI/Warning';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
 import { SubSectionTitle } from 'components/admin/Section';
+import InfoTooltip from 'components/admin/InfoTooltip';
+import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
   projectId: string;
@@ -21,11 +23,17 @@ const Container = styled.div`
   margin-bottom: 25px;
 `;
 
+const StyledA = styled.a`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 // const StyledWarning = styled(Warning)`
 //   margin-bottom: 15px;
 // `;
 
-export default class Moderators extends PureComponent<Props>{
+class Moderators extends PureComponent<Props & InjectedIntlProps>{
   render() {
     const { moderators, projectId } = this.props;
 
@@ -33,11 +41,24 @@ export default class Moderators extends PureComponent<Props>{
       <Container>
         <SubSectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
+          <InfoTooltip
+            {...messages.moderatorsSectionTooltip}
+            values={{
+              moreInfoModeratorLink: (
+                <StyledA href={this.props.intl.formatMessage(messages.moreInfoModeratorLink)} target="_blank">
+                  <FormattedMessage {...messages.moreInfoModeratorLinkText} />
+                </StyledA>)
+            }}
+          />
         </SubSectionTitle>
         {/* <StyledWarning text={<FormattedMessage {...messages.moderatorsRoleExplanation} />} /> */}
         <UserSearch projectId={projectId} moderators={moderators} />
-        <ModeratorList moderators={moderators} projectId={projectId}/>
+        <ModeratorList moderators={moderators} projectId={projectId} />
       </Container>
     );
   }
 }
+
+const ModeratorsWithIntl = injectIntl(Moderators);
+
+export default ModeratorsWithIntl;
