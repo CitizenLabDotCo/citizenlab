@@ -26,14 +26,21 @@ import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import styled from 'styled-components';
 
 const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 30px;
+`;
 
-  > * + * {
-    margin-left: 1rem;
-  }
+const CancelButton = styled(Button)`
+  margin-right: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const AcceptButton = styled(Button)`
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 // Typing
@@ -138,12 +145,14 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
           className={this.props.className}
           actions={this.state.actions}
         />
+
         <Modal
           fixedHeight={false}
           opened={this.state.modalVisible_delete}
           close={this.closeDeleteModal}
           className="e2e-comment-deletion-modal"
           label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
+          header={<FormattedMessage {...messages.confirmCommentDeletion} />}
         >
           <HasPermission item={this.props.comment} action="justifyDeletion" context={{ projectId: this.props.projectId }}>
             {/* Justification required for the deletion */}
@@ -151,21 +160,32 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
 
             {/* No justification required */}
             <HasPermission.No>
-              <p>
-                <FormattedMessage {...messages.confirmCommentDeletion} />
-              </p>
               <ButtonsWrapper>
-                <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
-                <Button style="primary" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
+                <CancelButton
+                  style="secondary"
+                  onClick={this.closeDeleteModal}
+                >
+                  <FormattedMessage {...messages.commentDeletionCancelButton} />
+                </CancelButton>
+                <AcceptButton
+                  style="primary"
+                  processing={this.state.loading_deleteComment}
+                  circularCorners={false}
+                  onClick={this.deleteComment}
+                >
+                  <FormattedMessage {...messages.commentDeletionConfirmButton} />
+                </AcceptButton>
               </ButtonsWrapper>
             </HasPermission.No>
           </HasPermission>
         </Modal>
+
         <Modal
           fixedHeight={false}
           opened={this.state.modalVisible_spam}
           close={this.closeSpamModal}
           label={this.props.intl.formatMessage(messages.spanModalLabelComment)}
+          header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
         >
           <SpamReportForm resourceId={this.props.comment.id} resourceType="comments" />
         </Modal>

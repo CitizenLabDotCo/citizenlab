@@ -77,6 +77,7 @@ const PageDescription = styled.div`
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
+  font-weight: 300;
   text-decoration: underline;
   margin: 0;
   padding: 0;

@@ -2,11 +2,10 @@ import React, { Fragment, FormEvent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize, hideVisually } from 'polished';
-
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
 import { CustomRadio, Checked } from 'components/UI/Radio';
+import { IDestination } from './';
 
 const Container = styled.div`
   display: flex;
@@ -35,12 +34,8 @@ const TextContainer = styled.div`
 
 const InputContainer = styled.div`
   display: flex;
-  justify-content: flex-start;
   flex-direction: column;
-  padding-right: 0;
-  ${media.smallerThanMaxTablet`
-    margin-top: 20px;
-  `}
+  margin-bottom: 10px;
 `;
 
 const HiddenLabel = styled.label`
@@ -71,27 +66,30 @@ const StyledLabel = styled.label`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 12px;
   flex-wrap: nowrap;
   font-size: ${fontSizes.base}px;
   color: ${colors.label};
   cursor: pointer;
   font-weight: 400;
-  span {
-    margin-bottom: 4px;
-  }
+  margin-bottom: 5px;
+
   input {
     cursor: pointer;
   }
+
   &:focus-within, &:hover {
     color: black;
+
     div {
       border-color: black;
     }
   }
 `;
-// Typing
-import { IDestination } from './';
+
+const Tools = styled.span`
+  font-weight: 500;
+`;
+
 interface Props {
   category: string;
   destinations: IDestination[];
@@ -107,12 +105,56 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         tagName="h2"
         {...messages[category]}
       />
+      <InputContainer role="radiogroup" aria-labelledby={`${category}-radio`}>
+        <HiddenLabel id={`${category}-radio`}>
+          <FormattedMessage
+            {...messages.ariaRadioGroup}
+            values={{ category }}
+          />
+        </HiddenLabel>
+        <StyledLabel htmlFor={`${category}-radio-true`}>
+          <StyledInput
+            type="radio"
+            name={category}
+            id={`${category}-radio-true`}
+            value="true"
+            checked={checked === true}
+            aria-checked={checked === true}
+            onChange={handleChange}
+            required
+          />
+          <CustomRadio
+            className={`${checked === true ? 'checked' : ''}`}
+          >
+            {checked === true && <Checked color="#49B47D" />}
+          </CustomRadio>
+          <FormattedMessage {...messages.allow} />
+        </StyledLabel>
+        <StyledLabel htmlFor={`${category}-radio-false`}>
+          <StyledInput
+            type="radio"
+            name={category}
+            id={`${category}-radio-false`}
+            value="false"
+            checked={checked === false}
+            aria-checked={checked === false}
+            onChange={handleChange}
+            required
+          />
+          <CustomRadio
+            className={`${checked === false ? 'checked' : ''}`}
+          >
+            {checked === false && <Checked color="#49B47D" />}
+          </CustomRadio>
+          <FormattedMessage {...messages.disallow} />
+        </StyledLabel>
+      </InputContainer>
       <FormattedMessage
         tagName="p"
         {...messages[`${category}Purpose`]}
       />
       <p>
-        <FormattedMessage {...messages.tools} />
+        <Tools><FormattedMessage {...messages.tools} />:</Tools>
         {destinations.map((d, index) => (
           <Fragment key={d.id}>
             {index !== 0 &&
@@ -123,50 +165,6 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
         ))}
       </p>
     </TextContainer>
-    <InputContainer role="radiogroup" aria-labelledby={`${category}-radio`}>
-      <HiddenLabel id={`${category}-radio`}>
-        <FormattedMessage
-          {...messages.ariaRadioGroup}
-          values={{ category }}
-        />
-      </HiddenLabel>
-      <StyledLabel htmlFor={`${category}-radio-true`}>
-        <StyledInput
-          type="radio"
-          name={category}
-          id={`${category}-radio-true`}
-          value="true"
-          checked={checked === true}
-          aria-checked={checked === true}
-          onChange={handleChange}
-          required
-        />
-        <CustomRadio
-          className={`${checked === true ? 'checked' : ''}`}
-        >
-          {checked === true && <Checked color="#49B47D" />}
-        </CustomRadio>
-        <FormattedMessage {...messages.allow} />
-      </StyledLabel>
-      <StyledLabel htmlFor={`${category}-radio-false`}>
-        <StyledInput
-          type="radio"
-          name={category}
-          id={`${category}-radio-false`}
-          value="false"
-          checked={checked === false}
-          aria-checked={checked === false}
-          onChange={handleChange}
-          required
-        />
-        <CustomRadio
-          className={`${checked === false ? 'checked' : ''}`}
-        >
-          {checked === false && <Checked color="#49B47D" />}
-        </CustomRadio>
-        <FormattedMessage {...messages.disallow} />
-      </StyledLabel>
-    </InputContainer>
   </Container>
 );
 

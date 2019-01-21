@@ -12,7 +12,7 @@ import { fontSizes, media } from 'utils/styleUtils';
 
 export const ContentContainer = styled.div`
   background: white;
-  padding: 20px;
+  padding: 30px;
   height: 100%;
   width: 100%;
   display: flex;
