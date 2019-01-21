@@ -25,9 +25,9 @@ class SlugService
 
     # Find the all the persisted duplicates
     claz = unpersisted_records&.first.class
-    db_occurences = slugs.drop(1).inject(claz.where('slug LIKE ?', "#{slugs[0]}%")) do |scope, slug|
-      scope.or(claz.where('slug LIKE ?', "#{slug}%"))
-    end.pluck(:slug)
+    db_occurences = claz
+      .where('slug SIMILAR TO ?', "(#{slugs.join('|')})%")
+      .pluck(:slug)
 
     # hash that will map vanilla slugs to the highest index found
     # e.g. {'john' => 3} if {slug: 'john-3'} exists
