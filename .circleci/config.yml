@@ -33,7 +33,6 @@ jobs:
       - store_artifacts:
           path: ./reports/junit
 
-
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
