@@ -17,6 +17,7 @@ nl:
       "password_reset": Ik stel het wachtwoord voor mijn account opnieuw in
       "first_idea_published": Mijn eerste idee wordt gepubliceerd
       "idea_published": Mijn idee wordt gepubliceerd
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": Iemand reageert op een idee waar ik ook op reageerde
       "new_comment_on_voted_idea": Iemand reageerde op een idee waarvoor ik heb gestemd
       "new_idea_for_admin": When an idea is published in a project I can moderate
@@ -42,6 +43,7 @@ nl:
       "password_reset": Wanneer een gebruiker een nieuw wachtwoord aanvraagt
       "first_idea_published": Wanneer het eerste idee van een gebruiker wordt gepubliceerd
       "idea_published": Wanneer mijn idee gepubliceerd wordt
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker ook op reageerde
       "new_comment_on_voted_idea": Wanneer een nieuwe reactie wordt geplaatst op een idee waar de gebruiker op stemde
       "new_idea_for_admin": When an idea is published in a project I can moderate

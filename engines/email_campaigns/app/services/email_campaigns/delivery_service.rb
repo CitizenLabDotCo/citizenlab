@@ -16,6 +16,7 @@ module EmailCampaigns
       Campaigns::Manual,      
       Campaigns::MentionInComment,
       Campaigns::ModeratorDigest,
+      Campaigns::NewCommentForAdmin,
       Campaigns::NewCommentOnCommentedIdea,
       Campaigns::NewCommentOnVotedIdea,
       Campaigns::NewIdeaForAdmin,

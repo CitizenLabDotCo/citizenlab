@@ -17,6 +17,7 @@ fr:
       "password_reset": Je demande de réinitialiser mon mot de passe
       "first_idea_published": Ma première idée est publiée
       "idea_published": Mon idée est publiée
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai commenté
       "new_comment_on_voted_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai voté
       "new_idea_for_admin": When an idea is published in a project I can moderate
@@ -42,6 +43,7 @@ fr:
       "password_reset": Lorsqu'un utilisateur demande de réinitialiser son password
       "first_idea_published": Lorsque la première idée de l’utilisateur est publiée
       "idea_published": Lorsque mon idée est publiée
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": Lorsqu'un nouveau commentaire a été posté sur une idée que l'utilisateur a commenté
       "new_comment_on_voted_idea": Lorsqu'un commentaire a été posté sur une idée que l'utilisateur à voté
       "new_idea_for_admin": When an idea is published in a project I can moderate
