@@ -8,10 +8,11 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
+import SelectPublicationStatus from './SelectPublicationStatus';
 import SendFeedback from 'components/SendFeedback';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
@@ -56,6 +57,8 @@ const Title = styled.h3`
   align-items: center;
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
+  margin-right: 40px;
+  font-weight: 600;
 `;
 
 const FilterArea = styled.div`
@@ -63,9 +66,9 @@ const FilterArea = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMaxTablet`
-    height: 30px;
-  `}
+  &.publicationstatus {
+    margin-right: 30px;
+  }
 `;
 
 const ProjectsList = styled.div`
@@ -180,7 +183,11 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface InputProps extends GetProjectsInputProps {}
+interface InputProps extends GetProjectsInputProps {
+  showTitle: boolean;
+  showPublicationStatusFilter: boolean;
+  showSendFeedback: boolean;
+}
 
 interface Props extends InputProps, DataProps {}
 
@@ -198,12 +205,16 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.projects.onLoadMore();
   }
 
+  handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
+    this.props.projects.onChangePublicationStatus(status);
+  }
+
   handleAreasOnChange = (areas: string[]) => {
     this.props.projects.onChangeAreas(areas);
   }
 
   render() {
-    const { tenant, locale } = this.props;
+    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -216,9 +227,17 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container id="e2e-projects-container">
           <Header>
-            <Title>
-              {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
-            </Title>
+            {showTitle &&
+              <Title>
+                {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
+              </Title>
+            }
+
+            {showPublicationStatusFilter &&
+              <FilterArea className="publicationstatus">
+                <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+              </FilterArea>
+            }
 
             <FilterArea>
               <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
@@ -271,7 +290,9 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
               </ShowMoreButtonWrapper>
             }
 
-            <SSendFeedback showFeedbackText={true} />
+            {showSendFeedback &&
+              <SSendFeedback showFeedbackText={true} />
+            }
           </Footer>
         </Container>
       );
