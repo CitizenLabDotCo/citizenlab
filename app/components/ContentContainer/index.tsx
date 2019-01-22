@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { stylingConsts } from 'utils/styleUtils';
 import bowser from 'bowser';
@@ -27,31 +27,38 @@ const Inner: any = styled.div`
   }
 `;
 
-interface IContentContainer {
+interface Props {
   children?: any;
   className?: string;
   mode?: 'oldPage' | 'banner' | 'page' | 'text';
+  maxWidth?: number;
 }
 
-const ContentContainer: SFC<IContentContainer> = ({ children, className, mode }) => {
-  let maxWidth: number;
-  if (mode === 'banner') {
-    maxWidth = stylingConsts.bannerWidth;
-  } else if (mode === 'page') {
-    maxWidth = stylingConsts.pageWidth;
-  } else if (mode === 'text') {
-    maxWidth = stylingConsts.textWidth;
-  } else {
-    maxWidth = stylingConsts.maxPageWidth;
+interface State {}
+
+export default class ContentContainer extends PureComponent<Props, State> {
+  render () {
+    const { mode, className, children } = this.props;
+    let maxWidth = this.props.maxWidth;
+
+    if (!maxWidth) {
+      if (mode === 'banner') {
+        maxWidth = stylingConsts.bannerWidth;
+      } else if (mode === 'page') {
+        maxWidth = stylingConsts.pageWidth;
+      } else if (mode === 'text') {
+        maxWidth = stylingConsts.textWidth;
+      } else {
+        maxWidth = stylingConsts.maxPageWidth;
+      }
+    }
+
+    return (
+      <Outer className={`${className} ${bowser.msie ? 'ie' : ''}`}>
+        <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >
+          {children}
+        </Inner>
+      </Outer>
+    );
   }
-
-  return (
-    <Outer className={`${className} ${bowser.msie ? 'ie' : ''}`}>
-      <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >
-        {children}
-      </Inner>
-    </Outer>
-  );
-};
-
-export default ContentContainer;
+}
