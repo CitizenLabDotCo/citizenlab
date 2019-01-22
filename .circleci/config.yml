@@ -220,7 +220,7 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - coverage:
+      - test_coverage:
           filters:
             branches:
               ignore:
