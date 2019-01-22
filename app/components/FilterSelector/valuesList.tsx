@@ -15,7 +15,7 @@ const List = styled.div`
 
 const ListItemText = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 21px;
   text-align: left;
