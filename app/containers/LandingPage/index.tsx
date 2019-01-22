@@ -17,7 +17,6 @@ import T from 'components/T';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
@@ -176,7 +175,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  projects: GetProjectsChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
 }
@@ -222,7 +220,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects, authUser, homepageInfoPage } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -231,7 +229,6 @@ class LandingPage extends PureComponent<Props, State> {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
-      const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
 
@@ -309,7 +306,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />,
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
