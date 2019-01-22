@@ -61,6 +61,9 @@ export default () => (
           pageSize={50}
           publicationStatuses={['published', 'archived']}
           sort="new"
+          showTitle={false}
+          showPublicationStatusFilter={true}
+          showSendFeedback={false}
         />
       </StyledContentContainer>
       <Footer />
