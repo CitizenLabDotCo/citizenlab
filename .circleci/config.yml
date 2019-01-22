@@ -33,6 +33,30 @@ jobs:
       - store_artifacts:
           path: ./reports/junit
 
+  test_coverage:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          name: Run tests coverage with lcov html reporter
+          command: npm run test:ci-coverage
+      - store_artifacts:
+          path: ./coverage/lcov-report/
+          destination: lcov
+
   lint:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -196,6 +220,13 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
+      - coverage:
+          filters:
+            branches:
+              ignore:
+                - crowdin_master
+                - master
+                - production
       - test:
           filters:
             branches:
