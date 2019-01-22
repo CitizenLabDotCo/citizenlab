@@ -32,6 +32,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --reporters=default --reporters=jest-junit --w=2",
+    "test:ci-coverage": "jest --ci --coverage --w=2",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
   },
