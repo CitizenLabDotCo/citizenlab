@@ -241,7 +241,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-              <ProjectsStyledContentContainer>
+              <ProjectsStyledContentContainer maxWidth={1148}>
                 {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>

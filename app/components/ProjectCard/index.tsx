@@ -41,6 +41,9 @@ const Container = styled.div`
   border: solid 1px ${colors.separation};
   position: relative;
 
+  width: 100%;
+  height: 449px;
+
   &.archived {
     background: #f6f6f6;
   }
