@@ -17,6 +17,7 @@ en:
       "password_reset": When I request a password reset for my account
       "first_idea_published": When my first idea gets published
       "idea_published": When my idea gets published
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
@@ -42,6 +43,7 @@ en:
       "password_reset": When a user requests a password reset
       "first_idea_published": When a user’s first idea gets published
       "idea_published": When my idea gets published
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
