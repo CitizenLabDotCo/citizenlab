@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
@@ -52,13 +51,18 @@ const Header = styled.div`
   border-bottom: 1px solid #D1D1D1;
 `;
 
-const Title = styled.h3`
+const Title = styled.h2`
   display: flex;
   align-items: center;
   color: ${(props: any) => props.theme.colorText};
   margin-bottom: 0;
   margin-right: 40px;
   font-weight: 600;
+  font-size: ${fontSizes.xl}px;
+
+  ${media.largePhone`
+    font-size: ${fontSizes.large}px;
+  `};
 `;
 
 const FilterArea = styled.div`
@@ -103,33 +107,61 @@ const StyledProjectCard = styled(ProjectCard)`
 
 const EmptyContainer = styled.div`
   width: 100%;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  margin-bottom: 43px;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
+  border: 1px solid ${colors.adminSeparation};
   background: #fff;
+  color: ${(props: any) => props.theme.colorText};
+  position: relative;
 `;
 
-const ProjectIcon = styled(Icon)`
-  height: 45px;
-  fill: #999;
+const EmptyProjectsImage = styled.img`
+  width: 100%;
+  height: auto;
+
+  ${media.smallerThanMaxTablet`
+    &.objectFitCoverSupported {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:not(.objectFitCoverSupported) {
+      width: auto;
+      height: 100%;
+    }
+  `}
 `;
 
 const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: ${(props: any) => props.theme.colorText};
 `;
 
-const EmptyMessageLine = styled.div`
-  color: #999;
-  font-size: ${fontSizes.large}px;
+const EmptyMessageTitle = styled.h2`
+  font-weight: 600;
+  font-size: ${fontSizes.xl}px;
+  white-space: nowrap;
+  margin-bottom: 5px;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.large}px;
+  `};
+`;
+
+const EmptyMessageLine = styled.p`
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 25px;
   text-align: center;
@@ -218,6 +250,8 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
+    const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
+    const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant) && locale) {
       const organizationNameMulitiLoc = tenant.attributes.settings.core.organization_name;
@@ -252,10 +286,13 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
           {!querying && !hasProjects &&
             <EmptyContainer id="projects-empty">
-              <ProjectIcon name="idea" />
+              <EmptyProjectsImage src={EmptyProjectsImageSrc} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />
               <EmptyMessage>
+                <EmptyMessageTitle>
+                  <FormattedMessage {...messages.noProjectYet} />
+                </EmptyMessageTitle>
                 <EmptyMessageLine>
-                  <FormattedMessage {...messages.noProjects} />
+                  <FormattedMessage {...messages.stayTuned} />
                 </EmptyMessageLine>
               </EmptyMessage>
             </EmptyContainer>

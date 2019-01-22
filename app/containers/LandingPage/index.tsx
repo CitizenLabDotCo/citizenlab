@@ -242,7 +242,6 @@ class LandingPage extends PureComponent<Props, State> {
 
             <Content>
               <ProjectsStyledContentContainer>
-                {hasProjects &&
                   <ProjectSection>
                     <SectionContainer>
                       <ProjectCards
@@ -255,7 +254,6 @@ class LandingPage extends PureComponent<Props, State> {
                       />
                     </SectionContainer>
                   </ProjectSection>
-                }
               </ProjectsStyledContentContainer>
 
               <IdeasStyledContentContainer>
