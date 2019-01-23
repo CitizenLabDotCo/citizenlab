@@ -16,6 +16,10 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.relative',
     defaultMessage: 'Relative',
   },
+  relativeTooltip: {
+    id: 'app.containers.Admin.clusterViewer.relativeTooltip',
+    defaultMessage: 'This shows the percentage of all votes (on the whole platform) of that user segment (x-axis) that have been put on ideas in the current selection. It acts as weighted scoring for voting behaviour per user segment, allowing to compare user segments regardless of segment size.',
+  },
   addClusteringButton: {
     id: 'app.containers.Admin.clusterViewer.addClusteringButton',
     defaultMessage: 'Generate new insight graph',
