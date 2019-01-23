@@ -7,6 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedNumber } from 'react-intl';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const Container = styled.div`
   display: flex;
@@ -33,10 +34,14 @@ const GraphCardPercentage = styled.div`
 `;
 
 const GraphCardTitle = styled.h3`
+  display: flex;
   font-size: ${fontSizes.large}px;
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   margin: 0;
+  & > :not(last-child) {
+    margin-right: 7px;
+  }
 `;
 
 const GraphCardCount = styled.div`
@@ -52,13 +57,15 @@ type DataProps = {
   stats: any;
 };
 
+type IRelevantStats = 'sent' | 'delivered' | 'opened' | 'clicked';
+
 type Props = InputProps & DataProps;
 
 type State = {};
 
 class CampaignStats extends React.Component<Props, State> {
 
-  relevantsStats = ['sent', 'delivered', 'opened', 'clicked'];
+  relevantsStats = ['sent', 'delivered', 'opened', 'clicked'] as IRelevantStats[];
 
     render() {
       const { stats, className } = this.props;
@@ -87,6 +94,7 @@ class CampaignStats extends React.Component<Props, State> {
               </GraphCardCount>
               <GraphCardTitle>
                 <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
+                {status === 'clicked' && <InfoTooltip {...messages.deliveryStatus_clickedTooltip} />}
               </GraphCardTitle>
             </GraphCard>
           ))}

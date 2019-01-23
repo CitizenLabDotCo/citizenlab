@@ -183,6 +183,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Campaigns.deliveryStatus_clicked',
     defaultMessage: 'Clicked',
   },
+  deliveryStatus_clickedTooltip: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_clickedTooltip',
+    defaultMessage: 'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
+  },
   tabCustom: {
     id: 'app.containers.Admin.Campaigns.tabCustom',
     defaultMessage: 'Custom',
