@@ -13,6 +13,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
 import T from 'components/T';
+import Fragment from 'components/Fragment';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -239,18 +240,18 @@ class LandingPage extends PureComponent<Props, State> {
 
             <Content>
               <ProjectsStyledContentContainer>
-                  <ProjectSection>
-                    <SectionContainer>
-                      <ProjectCards
-                        pageSize={3}
-                        sort="new"
-                        publicationStatuses={['published']}
-                        showTitle={true}
-                        showPublicationStatusFilter={false}
-                        showSendFeedback={true}
-                      />
-                    </SectionContainer>
-                  </ProjectSection>
+                <ProjectSection>
+                  <SectionContainer>
+                    <ProjectCards
+                      pageSize={3}
+                      sort="new"
+                      publicationStatuses={['published']}
+                      showTitle={true}
+                      showPublicationStatusFilter={false}
+                      showSendFeedback={true}
+                    />
+                  </SectionContainer>
+                </ProjectSection>
               </ProjectsStyledContentContainer>
 
               <IdeasStyledContentContainer>
@@ -271,9 +272,12 @@ class LandingPage extends PureComponent<Props, State> {
               </IdeasStyledContentContainer>
 
               <CustomSectionContentContainer>
+                <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+
                 {showCustomSection &&
                   <T value={customSectionBodyMultiloc} supportHtml={true} />
                 }
+                </Fragment>
               </CustomSectionContentContainer>
 
               {!authUser &&
