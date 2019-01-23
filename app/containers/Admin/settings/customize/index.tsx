@@ -31,6 +31,7 @@ import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, I
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const ColorPickerSectionField = styled(SectionField)`
 `;
@@ -365,7 +366,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
             <SectionField key={'header_bg'}>
               <Label>
-                <FormattedMessage {...messages['header_bg']} />
+                <FormattedMessage {...messages.header_bg} />
+                <InfoTooltip {...messages.header_bgTooltip} />
               </Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -385,7 +387,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={<FormattedMessage {...messages.headerTitleLabel} />}
+                label={<><FormattedMessage {...messages.headerTitleLabel} /><InfoTooltip {...messages.headerTitleTooltip} /></>}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -396,7 +398,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
+                label={<><FormattedMessage {...messages.headerSubtitleLabel} /><InfoTooltip {...messages.headerSubtitleTooltip} /></>}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
