@@ -369,6 +369,20 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "typeform_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of surveys from Typeform",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "user_token": {
+            "description": "The user token",
+            "type": "string"
+          }
+        }
+      },
       "maps": {
         "type": "object",
         "description":  "Show maps throughout the platform",
@@ -525,7 +539,8 @@
     "projects_pages": ["projects"],
     "projects_events": ["projects"],
     "projects_phases": ["projects"],
-    "private_projects": ["groups"]
+    "private_projects": ["groups"],
+    "typeform_surveys": ["surveys"]
   },
   "definitions": {
     "multiloc_string": {

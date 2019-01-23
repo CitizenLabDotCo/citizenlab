@@ -81,6 +81,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def destroy
+    SideFxProjectService.new.before_destroy(@project, current_user)
     project = @project.destroy
     if project.destroyed?
       SideFxProjectService.new.after_destroy(project, current_user)
