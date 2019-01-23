@@ -30,7 +30,6 @@ const LabelWrapper = styled.div`
 
 const LanguageExtension = styled(Label)`
   font-weight: 500;
-  margin-left: 5px;
 `;
 
 export type Props = {
