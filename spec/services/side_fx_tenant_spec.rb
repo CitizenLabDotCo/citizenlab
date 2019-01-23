@@ -45,4 +45,12 @@ describe SideFxTenantService do
 
   end
 
+  describe "before_destroy" do
+    it "calls the TypeformWebhookManager to clean up" do
+      tenant = Tenant.current
+      expect_any_instance_of(Surveys::TypeformWebhookManager).to receive(:tenant_to_be_destroyed).with(tenant)
+      service.before_destroy(tenant, current_user)
+    end
+  end
+
 end
