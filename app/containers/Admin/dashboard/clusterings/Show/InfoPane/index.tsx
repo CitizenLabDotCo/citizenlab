@@ -15,6 +15,7 @@ import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../tracks';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const Container = styled.div`
   width: 100%;
@@ -212,7 +213,7 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
                   onChange={this.handleOnChangeNormalization}
                   currentValue={this.state.normalization}
                   value="relative"
-                  label={<FormattedMessage {...messages.relative} />}
+                  label={<><FormattedMessage {...messages.relative} /><InfoTooltip {...messages.relativeTooltip} /></>}
                 />
               </RadioButtons>
               <ChartTitle>Gender</ChartTitle>
