@@ -80,10 +80,37 @@ class UserService
         end
       end
     end
-    custom_field_values['gender'] ||= (User::GENDERS+[nil]).shuffle.first
-    custom_field_values['birthyear'] ||= pick_birthyear if rand(3) > 0
+    custom_field_values['gender'] ||= User::GENDERS.shuffle.first if rand(3) > 0
+    custom_field_values['birthyear'] ||= random_birthyear if rand(3) > 0
     custom_field_values['education'] ||= (rand(7)+2).to_s if rand(3) > 0
     custom_field_values
+  end
+
+  def random_birthyear
+    min_age, max_age = pick_weighted ({
+      [14,20]  => 7,
+      [20,30]  => 22,
+      [30,40]  => 32,
+      [40,50]  => 25,
+      [50,60]  => 15,
+      [60,70]  => 10,
+      [70,80]  => 5,
+      [80,90]  => 3,
+      [90,100] => 1,
+    })
+    age = rand(max_age - min_age) + min_age
+    Date.today.year - age
+  end
+
+  def pick_weighted weighted
+    sum = weighted.inject(0) do |sum, item_and_weight|
+      sum += item_and_weight[1]
+    end
+    target = rand(sum)
+    weighted.each do |item, weight|
+      return item if target <= weight
+      target -= weight
+    end
   end
 
   def random_first_name gender
