@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   mount EmailCampaigns::Engine => "", as: 'email_campaigns'
   mount MachineTranslations::Engine => "", as: 'machine_translations'
   mount NLP::Engine => "", as: 'nlp'
+  mount Onboarding::Engine => "", as: 'onboarding'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -179,6 +180,8 @@ Rails.application.routes.draw do
 
       resources :baskets, except: [:index]
       resources :clusterings
+
+      resources :avatars, only: [:index]
 
       match 'manifest.json', to: 'manifest#show', via: :get
       

@@ -186,9 +186,7 @@ resource "Users" do
       end
       example "Get all users as non-admin", document: false do
         do_request
-        expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(status).to eq 401
       end
     end
 
@@ -437,8 +435,10 @@ resource "Users" do
         parameter :custom_field_values, "An object that can only contain keys for custom fields for users", required: true
       end
 
-      let(:cf) { create(:custom_field )}
-      let(:custom_field_values) {{cf.key => "somevalue" }}
+      let(:cf1) { create(:custom_field ) }
+      let(:cf2) { create(:custom_field_multiselect, required: true ) }
+      let(:cf2_options) { create_list(:custom_field_option, 2, custom_field: cf2) }
+      let(:custom_field_values) {{ cf1.key => "somevalue", cf2.key => [cf2_options.first.key] }}
 
       example "Complete the registration of a user" do
         @user.update(registration_completed_at: nil)
@@ -446,13 +446,13 @@ resource "Users" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present
-        expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq "somevalue"
+        expect(json_response.dig(:data, :attributes, :custom_field_values, cf1.key.to_sym)).to eq "somevalue"
+        expect(json_response.dig(:data, :attributes, :custom_field_values, cf2.key.to_sym)).to eq [cf2_options.first.key]
       end
 
       example "[error] Complete the registration of a user fails if not all required fields are provided" do
         @user.update(registration_completed_at: nil)
-        cf.update(required: true)
-        do_request(user: {custom_field_values: {cf.key => nil}})
+        do_request(user: {custom_field_values: {cf2.key => nil}})
         expect(response_status).to eq 422
       end
 

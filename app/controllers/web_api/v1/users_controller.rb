@@ -8,6 +8,7 @@ class WebApi::V1::UsersController < ::ApplicationController
 
 
   def index
+    authorize :user, :index?
     @users = policy_scope(User)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
