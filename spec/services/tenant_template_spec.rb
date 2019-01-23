@@ -35,6 +35,8 @@ describe TenantTemplateService do
               }.to_h,
               timezone: "Europe/Brussels",
               color_main: Faker::Color.hex_color,
+              color_secondary: Faker::Color.hex_color,
+              color_text: Faker::Color.hex_color,
               currency: 'EUR'
             },
             facebook_login: {

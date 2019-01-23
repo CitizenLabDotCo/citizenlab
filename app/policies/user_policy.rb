@@ -8,14 +8,12 @@ class UserPolicy < ApplicationPolicy
     end
 
     def resolve
-      if user && user.admin?
-        scope
-      elsif user
-        scope.where(id: user.id)
-      else
-        scope.none
-      end
+      scope
     end
+  end
+
+  def index?
+    user&.active? && user.admin?
   end
 
   def create?
@@ -66,8 +64,14 @@ class UserPolicy < ApplicationPolicy
   private
   
   def allowed_custom_field_keys
-    enabled_keys = CustomField.fields_for(User).enabled.pluck(:key).map(&:to_sym)
     unchangeable_keys = SingleSignOnService.new.custom_fields_user_cant_change(user)
-    enabled_keys - unchangeable_keys
+    enabled_fields = CustomField
+      .fields_for(User)
+      .where.not(key: unchangeable_keys)
+      .enabled
+    simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)
+    array_keys = enabled_fields.support_multiple_values.pluck(:key).map(&:to_sym)
+
+    [*simple_keys, array_keys.map{|k| [k, []]}.to_h]
   end
 end
