@@ -5,9 +5,13 @@ export default defineMessages({
     id: 'app.components.ProjectCards.showMore',
     defaultMessage: 'Show more',
   },
-  noProjects: {
-    id: 'app.components.ProjectCards.noProjects',
-    defaultMessage: 'No projects were found',
+  noProjectYet: {
+    id: 'app.components.ProjectCards.noProjectYet',
+    defaultMessage: 'There is no project yet',
+  },
+  stayTuned: {
+    id: 'app.components.ProjectCards.stayTuned',
+    defaultMessage: 'Stay tuned, a project is gonna show up pretty soon.  ',
   },
   areasTitle: {
     id: 'app.containers.ProjectCards.areasTitle',
