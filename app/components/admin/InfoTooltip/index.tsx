@@ -15,7 +15,7 @@ import { fontSizes } from 'utils/styleUtils';
 // typing
 interface Props extends OriginalFormattedMessage.Props {
   size?: 'small' | 'big';
-  position?: 'left' | 'right' | 'up' | 'down';
+  position?: 'left' | 'right' | 'up' | 'down' | 'up-left';
 }
 
 const StyledIcon = styled(Icon)`
@@ -45,7 +45,7 @@ const InfoTooltip = (props: Props) => (
         <FormattedMessage {...props} />
       </TooltipWrapper>
     )}
-    offset="20px"
+    offset={20}
     position={props.position}
   >
     <StyledIcon name="info3" />

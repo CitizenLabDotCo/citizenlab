@@ -364,7 +364,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.participationMethod} />
-                <InfoTooltip {...messages.participationMethodTooltip} />
+                <InfoTooltip {...messages.participationMethodTooltip} size="small" />
               </Label>
               <Radio
                 onChange={this.handleParticipationMethodOnChange}
