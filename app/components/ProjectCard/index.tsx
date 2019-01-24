@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
+
+// router
+import Link from 'utils/cl-router/Link';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -31,7 +33,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
-const Container = styled.div`
+const Container = styled(Link)`
   width: 100%;
   height: 449px;
   display: flex;
@@ -45,6 +47,7 @@ const Container = styled.div`
   border-radius: 5px;
   /* border: solid 1px ${colors.separation}; */
   box-shadow: 1px 0 2px 0 rgba(0, 0, 0, .05);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
   transition: all 200ms ease;
 
   &.archived {
@@ -207,11 +210,29 @@ const ContentBody = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
 `;
 
-// const ProjectTitle = styled.h2``;
+const ProjectTitle = styled.h3`
+  color: ${({ theme }) => theme.colorMain};
+  font-size: ${fontSizes.xl}px;
+  line-height: normal;
+  font-weight: 500;
+  margin: 0;
+  padding: 0;
+`;
 
-// const ProjectDescription = styled.p``;
+const ProjectDescription = styled.div`
+  color: ${(props) => props.theme.colors.secondaryText};
+  font-size: ${fontSizes.base}px;
+  line-height: 22px;
+  font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  margin-top: 20px;
+`;
 
 const ContentFooter = styled.div`
   display: flex;
@@ -250,26 +271,6 @@ const ArchivedLabel = styled.span`
   background: #e1e3e7;
 `;
 
-const ProjectTitle = styled.h3`
-  color: ${({ theme }) => theme.colorMain};
-  font-size: ${fontSizes.xl}px;
-  line-height: normal;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-`;
-
-const ProjectDescription = styled.div`
-  color: ${(props) => props.theme.colors.secondaryText};
-  font-size: ${fontSizes.base}px;
-  line-height: 22px;
-  font-weight: 400;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  margin-top: 20px;
-`;
-
 const ProjectMetaItems = styled.div`
   height: 100%;
   color: ${(props) => props.theme.colors.label};
@@ -282,55 +283,32 @@ const ProjectMetaItems = styled.div`
   `}
 `;
 
-const IdeaCountIcon = styled(Icon)`
-  width: 14px;
+const MetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 24px;
+`;
+
+const MetaItemIcon = styled(Icon)`
+  width: 20px;
   height: 20px;
   fill: ${({ theme }) => theme.colorMain};
 `;
 
-const IdeaCountText = styled.div`
+const CommentIcon = MetaItemIcon.extend`
+  width: 22px;
+  height: 22px;
+`;
+
+const MetaItemText = styled.div`
   color: ${({ theme }) => theme.colorMain};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   margin-left: 4px;
 `;
-
-const IdeaCount = styled(Link)`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    ${IdeaCountIcon} {
-      fill: #000;
-    }
-
-    ${IdeaCountText} {
-      color: #000;
-      text-decoration: none;
-    }
-  }
-`;
-
-const ProjectButtonWrapper = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  flex-basis: auto;
-  display: flex;
-  align-items: center;
-  margin-right: 20px;
-
-  ${media.smallerThanMaxTablet`
-    justify-content: center;
-    margin-right: 0px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-  `}
-`;
-
-const ProjectButton = styled(Button)``;
 
 export interface InputProps {
   projectId: string;
@@ -362,7 +340,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const timeRemaining = '5 days';
 
       return (
-        <Container className={`${className} e2e-project-card ${isArchived ? 'archived' : ''}`}>
+        <Container
+          className={`${className} e2e-project-card ${isArchived ? 'archived' : ''}`}
+          to={projectUrl}
+        >
           <ProjectImageContainer>
             <ProjectImagePlaceholder>
               <ProjectImagePlaceholderIcon name="project" />
@@ -437,12 +418,19 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterRight>
                 {showIdeasCount && ideasCount > 0 &&
                   <ProjectMetaItems>
-                      <IdeaCount to={projectIdeasUrl}>
-                        <IdeaCountIcon name="idea2" />
-                        <IdeaCountText>
+                      <MetaItem>
+                        <MetaItemIcon name="idea2" />
+                        <MetaItemText>
                           {ideasCount}
-                        </IdeaCountText>
-                      </IdeaCount>
+                        </MetaItemText>
+                      </MetaItem>
+
+                      <MetaItem>
+                        <CommentIcon name="comment2" />
+                        <MetaItemText>
+                          {ideasCount}
+                        </MetaItemText>
+                      </MetaItem>
                   </ProjectMetaItems>
                 }
               </ContentFooterRight>

@@ -33,7 +33,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, fontSizes, quillEditedContent, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -98,7 +98,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
-  background: #f3f3f3;
+  background: ${colors.background};
 `;
 
 const IdeasStyledContentContainer = StyledContentContainer.extend`
