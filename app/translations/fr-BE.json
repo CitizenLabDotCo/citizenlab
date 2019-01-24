@@ -117,6 +117,7 @@
   "app.components.ProjectCard.ideas": "idées",
   "app.components.ProjectCard.imageAltText": "{orgName} - image principale pour le projet {projectTitle}",
   "app.components.ProjectCard.openProjectButton": "En savoir plus",
+  "app.components.ProjectCard.remaining": "",
   "app.components.ProjectCard.xIdeas": "{IdeasCount, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
   "app.components.ProjectCards.noProjectYet": "",
   "app.components.ProjectCards.showMore": "",

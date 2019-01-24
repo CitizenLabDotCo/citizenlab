@@ -117,6 +117,7 @@
   "app.components.ProjectCard.ideas": "ideeën",
   "app.components.ProjectCard.imageAltText": "{orgName} - hoofdafbeelding voor project {projectTitle}",
   "app.components.ProjectCard.openProjectButton": "Ontdek meer",
+  "app.components.ProjectCard.remaining": "",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {nog geen ideeën} one {# idee} other {# ideeën}}",
   "app.components.ProjectCards.noProjectYet": "",
   "app.components.ProjectCards.showMore": "",
