@@ -42,8 +42,7 @@ const Container: any = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  /* background: #fff; */
-  background: #f3f3f3;
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     min-height: auto;
@@ -98,7 +97,9 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const ProjectsStyledContentContainer = StyledContentContainer.extend``;
+const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
+  background: #f3f3f3;
+`;
 
 const IdeasStyledContentContainer = StyledContentContainer.extend`
   background: #f9f9fa;
@@ -240,24 +241,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-<<<<<<< HEAD
               <ProjectsStyledContentContainer maxWidth={1148}>
-                {hasProjects &&
-                  <ProjectSection>
-                    <SectionContainer>
-                      <ProjectCards
-                        pageSize={3}
-                        sort="new"
-                        publicationStatuses={['published']}
-                        showTitle={true}
-                        showPublicationStatusFilter={false}
-                        showSendFeedback={true}
-                      />
-                    </SectionContainer>
-                  </ProjectSection>
-                }
-=======
-              <ProjectsStyledContentContainer>
                 <ProjectSection>
                   <SectionContainer>
                     <ProjectCards
@@ -270,7 +254,6 @@ class LandingPage extends PureComponent<Props, State> {
                     />
                   </SectionContainer>
                 </ProjectSection>
->>>>>>> 0cfde11bc095eed096536c1d793c393bc3a2b2af
               </ProjectsStyledContentContainer>
 
               <IdeasStyledContentContainer>
