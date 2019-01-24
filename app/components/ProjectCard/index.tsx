@@ -138,28 +138,17 @@ const ProjectContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 18px;
+  margin-bottom: 35px;
   margin-left: 68px;
   margin-right: 32px;
-
-  /*
-  ${media.smallerThanMaxTablet`
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    margin: 0;
-    padding: 15px;
-    padding-top: 20px;
-  `}
-  */
 `;
 
 const ContentHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 22px;
+  padding-bottom: 16px;
   border-bottom: solid 1px #e8e8e8;
 `;
 
@@ -194,20 +183,18 @@ const ProjectLabel = styled.div`
   color: ${({ theme }) => theme.colorSecondary};
   font-size: ${fontSizes.small};
   font-weight: 400;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 9px;
-  padding-bottom: 9px;
+  padding-left: 18px;
+  padding-right: 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-radius: 5px;
-  background: ${({ theme }) => rgba(theme.colorSecondary, 0.05)};
+  background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
   transition: all 200ms ease;
   cursor: pointer;
 
   &:hover {
-    color: #448943;
-    background: #DFEADF;
-
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${({ theme }) => darken(0.2, theme.colorSecondary)};
+    background: ${({ theme }) => rgba(theme.colorSecondary, 0.15)};
   }
 `;
 
@@ -230,13 +217,19 @@ const ContentFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 22px;
+  padding-top: 16px;
   border-top: solid 1px #e8e8e8;
 `;
 
-const ContentFooterLeft = styled.div``;
+const ContentFooterSection = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
 
-const ContentFooterRight = styled.div``;
+const ContentFooterLeft = ContentFooterSection.extend``;
+
+const ContentFooterRight = ContentFooterSection.extend``;
 
 const ArchivedLabelWrapper = styled.div`
   margin-bottom: 8px;
@@ -269,8 +262,8 @@ const ProjectTitle = styled.h3`
 const ProjectDescription = styled.div`
   color: ${(props) => props.theme.colors.secondaryText};
   font-size: ${fontSizes.base}px;
-  line-height: normal;
-  font-weight: 300;
+  line-height: 22px;
+  font-weight: 400;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -278,12 +271,11 @@ const ProjectDescription = styled.div`
 `;
 
 const ProjectMetaItems = styled.div`
+  height: 100%;
   color: ${(props) => props.theme.colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 20px;
   display: flex;
-  margin-top: 25px;
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -291,20 +283,17 @@ const ProjectMetaItems = styled.div`
 `;
 
 const IdeaCountIcon = styled(Icon)`
-  height: 25px;
-  width: 25px;
-  fill: ${(props) => props.theme.colors.label};
-  margin-right: 8px;
-  margin-top: -5px;
-  transition: all 100ms ease-out;
+  width: 14px;
+  height: 20px;
+  fill: ${({ theme }) => theme.colorMain};
 `;
 
 const IdeaCountText = styled.div`
-  color: ${(props) => props.theme.colors.label};
+  color: ${({ theme }) => theme.colorMain};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
-  transition: all 100ms ease-out;
+  line-height: normal;
+  margin-left: 4px;
 `;
 
 const IdeaCount = styled(Link)`
@@ -437,11 +426,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <ContentFooter>
               <ContentFooterLeft>
                 <AvatarBubbles
-                  size={25}
-                  context={{
-                    type: 'project',
-                    id: project.id
-                  }}
+                  size={30}
+                  // context={{
+                  //   type: 'project',
+                  //   id: project.id
+                  // }}
                 />
               </ContentFooterLeft>
 
@@ -449,14 +438,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {showIdeasCount && ideasCount > 0 &&
                   <ProjectMetaItems>
                       <IdeaCount to={projectIdeasUrl}>
-                        <IdeaCountIcon name="idea" />
+                        <IdeaCountIcon name="idea2" />
                         <IdeaCountText>
-                          <FormattedMessage
-                            {...messages.xIdeas}
-                            values={{
-                              ideasCount,
-                            }}
-                          />
+                          {ideasCount}
                         </IdeaCountText>
                       </IdeaCount>
                   </ProjectMetaItems>
