@@ -287,7 +287,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         await updateTenant(currentTenant.data.id, attributesDiff as IUpdatedTenantProperties);
         if (!isNilOrError(homepageInfoPage)) {
           const homepageInfoPageId = homepageInfoPage.id;
-          await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+          if (attributesDiff.homepage_info) {
+            await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+          }
         }
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
