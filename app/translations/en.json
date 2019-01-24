@@ -117,6 +117,7 @@
   "app.components.ProjectCard.ideas": "ideas",
   "app.components.ProjectCard.imageAltText": "{orgName} - main image for the project '{projectTitle}'",
   "app.components.ProjectCard.openProjectButton": "Discover more",
+  "app.components.ProjectCard.remaining": "{timeRemaining} remaining",
   "app.components.ProjectCard.xIdeas": "{ideasCount, plural, =0 {no ideas yet} one {# idea} other {# ideas}}",
   "app.components.ProjectCards.noProjectYet": "There is no project yet",
   "app.components.ProjectCards.showMore": "Show more",

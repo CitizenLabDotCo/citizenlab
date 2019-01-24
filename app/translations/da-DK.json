@@ -117,6 +117,7 @@
   "app.components.ProjectCard.ideas": "ideer",
   "app.components.ProjectCard.imageAltText": "{orgName} - hovedbillede for projektet '{projectTitle}'",
   "app.components.ProjectCard.openProjectButton": "Opdag mere",
+  "app.components.ProjectCard.remaining": "",
   "app.components.ProjectCard.xIdeas": "{x, plural, =0 {ingen ideer} one {# idé} other {# ideer}}",
   "app.components.ProjectCards.noProjectYet": "",
   "app.components.ProjectCards.showMore": "",
