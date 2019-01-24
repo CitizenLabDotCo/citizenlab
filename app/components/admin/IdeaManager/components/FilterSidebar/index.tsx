@@ -41,7 +41,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
 
   tabName = (message: string, selection, key) => {
     const title = this.props.intl.formatMessage(messages[message]);
-    const active = this.props.activeFilterMenu === key
+    const active = this.props.activeFilterMenu === key;
     const selectionSign = isEmpty(selection) ? '' : '*';
     return (
       <>

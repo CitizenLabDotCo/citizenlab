@@ -45,7 +45,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               label={(
                 <>
                   <FormattedMessage {...messages.descriptionPreviewLabel} />
-                  <InfoTooltip {...messages.descriptionPreviewTooltip} />
+                  <InfoTooltip {...messages.descriptionPreviewTooltip} size="small" />
                 </>
               )}
               rows={5}
@@ -63,7 +63,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               label={(
                 <>
                   <FormattedMessage {...messages.descriptionLabel} />
-                  <InfoTooltip {...messages.descriptionTooltip} />
+                  <InfoTooltip {...messages.descriptionTooltip} size="small" />
                 </>
               )}
             />

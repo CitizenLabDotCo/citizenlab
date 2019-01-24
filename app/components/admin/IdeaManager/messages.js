@@ -79,7 +79,7 @@ export default defineMessages({
   },
   projectsTabTooltip: {
     id: 'app.components.admin.IdeaManager.projectsTabTooltip',
-    defaultMessage: 'Projects',
+    defaultMessage: 'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
   },
   columnsTooltip: {
     id: 'app.components.admin.IdeaManager.columnsTooltip',

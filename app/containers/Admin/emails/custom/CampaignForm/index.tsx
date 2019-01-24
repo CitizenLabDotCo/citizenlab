@@ -88,13 +88,11 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   renderFormikQuillMultiloc = (props) => {
-    const infoMessage = this.props.intl.formatMessage(messages.nameVariablesInfo);
     return (
       <FormikQuillMultiloc
-        label={<FormattedMessage {...messages.fieldBody} />}
+        label={<><FormattedMessage {...messages.fieldBody} /><InfoTooltip {...messages.nameVariablesInfo} /></>}
         noVideos
         noAlign
-        infoMessage={infoMessage}
         {...props}
       />
     );

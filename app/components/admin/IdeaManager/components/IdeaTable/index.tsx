@@ -2,7 +2,7 @@ import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
 
 // components
-import { Table, Popup, Icon } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { FormattedMessage } from 'utils/cl-intl';
 import SortableTableHeader from 'components/admin/SortableTableHeader';
 import Row from './Row';
@@ -23,6 +23,7 @@ import { SortDirection } from 'utils/paginationUtils';
 
 // i18n
 import messages from '../../messages';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 interface Props {
   ideaSortAttribute?: SortAttribute;
@@ -151,11 +152,7 @@ export default class IdeaTable extends React.Component<Props, State> {
                 >
                   <FormattedMessage {...messages.participatoryBudgettingPicks} />
                   &nbsp;
-                  <Popup
-                    basic
-                    trigger={<Icon name="info circle" />}
-                    content={<FormattedMessage {...messages.basketsCountTooltip} />}
-                  />
+                  <InfoTooltip {...messages.basketsCountTooltip} size="small" position="up-left" />
                 </SortableTableHeader>
               </Table.HeaderCell>
             </FeatureFlag>
