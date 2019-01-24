@@ -13,11 +13,11 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
 import T from 'components/T';
+import Fragment from 'components/Fragment';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
@@ -177,7 +177,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  projects: GetProjectsChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
 }
@@ -223,7 +222,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, projects, authUser, homepageInfoPage } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -232,7 +231,6 @@ class LandingPage extends PureComponent<Props, State> {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
-      const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
 
@@ -242,6 +240,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
+<<<<<<< HEAD
               <ProjectsStyledContentContainer maxWidth={1148}>
                 {hasProjects &&
                   <ProjectSection>
@@ -257,6 +256,21 @@ class LandingPage extends PureComponent<Props, State> {
                     </SectionContainer>
                   </ProjectSection>
                 }
+=======
+              <ProjectsStyledContentContainer>
+                <ProjectSection>
+                  <SectionContainer>
+                    <ProjectCards
+                      pageSize={3}
+                      sort="new"
+                      publicationStatuses={['published']}
+                      showTitle={true}
+                      showPublicationStatusFilter={false}
+                      showSendFeedback={true}
+                    />
+                  </SectionContainer>
+                </ProjectSection>
+>>>>>>> 0cfde11bc095eed096536c1d793c393bc3a2b2af
               </ProjectsStyledContentContainer>
 
               <IdeasStyledContentContainer>
@@ -277,9 +291,12 @@ class LandingPage extends PureComponent<Props, State> {
               </IdeasStyledContentContainer>
 
               <CustomSectionContentContainer>
+                <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+
                 {showCustomSection &&
                   <T value={customSectionBodyMultiloc} supportHtml={true} />
                 }
+                </Fragment>
               </CustomSectionContentContainer>
 
               {!authUser &&
@@ -312,7 +329,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />,
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 

@@ -20,6 +20,7 @@ import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Toggle from 'components/UI/Toggle';
+import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -189,7 +190,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
                 </ListHeaderTitle>
-                {/* <FeatureFlag name="manual_project_sorting"> */}
+                <FeatureFlag name="manual_project_sorting">
                   <ToggleWrapper>
                     <ToggleLabel htmlFor="manual-sorting-toggle">
                       <FormattedMessage {...messages.manualSortingProjects} />
@@ -200,7 +201,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                       onChange={this.handleToggleManualProjectSorting}
                     />
                   </ToggleWrapper>
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 {manualProjectSorting ?

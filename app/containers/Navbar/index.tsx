@@ -450,11 +450,15 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                         ))}
                       </>
                     )}
-                    footer={(
-                      <ProjectsListFooter to={'/projects'}>
-                        <FormattedMessage {...messages.allProjects} />
-                      </ProjectsListFooter>
-                    )}
+                    footer={
+                      <>
+                        {projectsList.length > 9 &&
+                          <ProjectsListFooter to={'/projects'}>
+                            <FormattedMessage {...messages.allProjects} />
+                          </ProjectsListFooter>
+                        }
+                      </>
+                    }
                   />
                 </NavigationDropdown>
               }
