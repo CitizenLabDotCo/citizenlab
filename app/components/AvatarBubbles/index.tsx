@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -99,9 +100,9 @@ interface State {}
 
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { avatars, size, overlap, className } = this.props;
+    const { avatars, size, overlap, context, className } = this.props;
 
-    if (avatars) {
+    if (!isNilOrError(avatars)) {
       const avatarList = avatars.data;
       const avatarCount = avatarList.length;
       const userCount = avatars.meta.total;
@@ -111,7 +112,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if (userCount > 10 && avatarCount > 2) {
+      if ((!context && userCount > 10 && avatarCount > 3) || (context && avatarCount > 3)) {
         return (
           <Container
             className={className}

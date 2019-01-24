@@ -8,6 +8,7 @@ import { isEmpty } from 'lodash-es';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
+import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl, getProjectIdeasUrl } from 'services/projects';
@@ -28,24 +29,31 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import { rgba, darken } from 'polished';
 
 const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-radius: 5px;
-  padding: 16px;
-  margin-bottom: 25px;
-  background: #fff;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
-  position: relative;
-
   width: 100%;
   height: 449px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border-radius: 5px;
+  margin-bottom: 25px;
+  position: relative;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 5px;
+  /* border: solid 1px ${colors.separation}; */
+  box-shadow: 1px 0 2px 0 rgba(0, 0, 0, .05);
+  transition: all 200ms ease;
 
   &.archived {
     background: #f6f6f6;
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, .1);
+    transform: translate(0px, -2px);
   }
 
   ${media.biggerThanMaxTablet`
@@ -61,22 +69,25 @@ const Container = styled.div`
 `;
 
 const ProjectImageContainer =  styled.div`
-  width: 190px;
-  height: 190px;
+  width: 573px;
+  height: 449px;
   flex-grow: 0;
   flex-shrink: 0;
-  flex-basis: 190px;
+  flex-basis: 573px;
   display: flex;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
   margin-right: 10px;
   overflow: hidden;
   position: relative;
 
+  /*
   ${media.smallerThanMaxTablet`
     width: 100%;
     flex-basis: 150px;
     margin: 0;
   `}
+  */
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -93,8 +104,8 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectImage = styled<LazyImageProps>(LazyImage)`
-  width: 190px;
-  height: 190px;
+  width: 573px;
+  height: 449px;
   position: absolute;
   top: 0;
   left: 0;
@@ -127,11 +138,12 @@ const ProjectContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 10px;
-  padding-bottom: 15px;
-  margin-right: 40px;
-  margin-left: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 68px;
+  margin-right: 32px;
 
+  /*
   ${media.smallerThanMaxTablet`
     flex-grow: 1;
     flex-shrink: 1;
@@ -140,7 +152,91 @@ const ProjectContent = styled.div`
     padding: 15px;
     padding-top: 20px;
   `}
+  */
 `;
+
+const ContentHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 22px;
+  border-bottom: solid 1px #e8e8e8;
+`;
+
+const ContentHeaderLeft = styled.div``;
+
+const ContentHeaderRight = styled.div``;
+
+const Countdown = styled.div``;
+
+const TimeRemaining = styled.div`
+  color: ${({ theme }) => theme.colorMain};
+  font-size: ${fontSizes.small};
+  font-weight: 400;
+  margin-bottom: 5px;
+`;
+
+const ProgressBar = styled.div`
+  width: 112px;
+  height: 5px;
+  border-radius: 5px;
+  background: #d6dade;
+`;
+
+const ProgressBarOverlay: any = styled.div`
+  width: ${(props: any) => props.progress}%;
+  height: 100%;
+  border-radius: 5px;
+  background: #fc3428;
+`;
+
+const ProjectLabel = styled.div`
+  color: ${({ theme }) => theme.colorSecondary};
+  font-size: ${fontSizes.small};
+  font-weight: 400;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  border-radius: 5px;
+  background: ${({ theme }) => rgba(theme.colorSecondary, 0.05)};
+  transition: all 200ms ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #448943;
+    background: #DFEADF;
+
+    color: ${darken(0.15, colors.clBlueDark)};
+  }
+`;
+
+const ContentBody = styled.div`
+  width: 100%;
+  max-width: 320px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+// const ProjectTitle = styled.h2``;
+
+// const ProjectDescription = styled.p``;
+
+const ContentFooter = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 22px;
+  border-top: solid 1px #e8e8e8;
+`;
+
+const ContentFooterLeft = styled.div``;
+
+const ContentFooterRight = styled.div``;
 
 const ArchivedLabelWrapper = styled.div`
   margin-bottom: 8px;
@@ -162,19 +258,19 @@ const ArchivedLabel = styled.span`
 `;
 
 const ProjectTitle = styled.h3`
-  color: #333;
-  font-size: ${fontSizes.xxl}px;
-  line-height: 29px;
+  color: ${({ theme }) => theme.colorMain};
+  font-size: ${fontSizes.xl}px;
+  line-height: normal;
   font-weight: 500;
   margin: 0;
   padding: 0;
 `;
 
 const ProjectDescription = styled.div`
-  color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSizes.medium}px;
-  line-height: 24px;
-  font-weight: 400;
+  color: ${(props) => props.theme.colors.secondaryText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 300;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -245,7 +341,7 @@ const ProjectButtonWrapper = styled.div`
   `}
 `;
 
-const ProjectButton = styled(Button) ``;
+const ProjectButton = styled(Button)``;
 
 export interface InputProps {
   projectId: string;
@@ -274,6 +370,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const ideasCount = project.attributes.ideas_count;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
 
+      const timeRemaining = '5 days';
+
       return (
         <Container className={`${className} e2e-project-card ${isArchived ? 'archived' : ''}`}>
           <ProjectImageContainer>
@@ -288,6 +386,86 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             }
           </ProjectImageContainer>
 
+          <ProjectContent>
+            <ContentHeader>
+              <ContentHeaderLeft>
+                <Countdown>
+                  <TimeRemaining>
+                  <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
+                  </TimeRemaining>
+                  <ProgressBar>
+                    <ProgressBarOverlay progress={80} />
+                  </ProgressBar>
+                </Countdown>
+
+                {isArchived &&
+                  <ArchivedLabelWrapper>
+                    <ArchivedLabel>
+                      <FormattedMessage {...messages.archived} />
+                    </ArchivedLabel>
+                  </ArchivedLabelWrapper>
+                }
+              </ContentHeaderLeft>
+
+              <ContentHeaderRight>
+                <ProjectLabel>
+                  <span>Allocate your budget</span>
+                </ProjectLabel>
+              </ContentHeaderRight>
+            </ContentHeader>
+
+            <ContentBody>
+              <ProjectTitle>
+                <T value={project.attributes.title_multiloc} />
+              </ProjectTitle>
+
+              <T value={project.attributes.description_preview_multiloc}>
+                {(description) => {
+                  if (!isEmpty(description)) {
+                    return (
+                    <ProjectDescription>
+                      {description}
+                    </ProjectDescription>
+                    );
+                  }
+
+                  return null;
+                }}
+              </T>
+            </ContentBody>
+
+            <ContentFooter>
+              <ContentFooterLeft>
+                <AvatarBubbles
+                  size={25}
+                  context={{
+                    type: 'project',
+                    id: project.id
+                  }}
+                />
+              </ContentFooterLeft>
+
+              <ContentFooterRight>
+                {showIdeasCount && ideasCount > 0 &&
+                  <ProjectMetaItems>
+                      <IdeaCount to={projectIdeasUrl}>
+                        <IdeaCountIcon name="idea" />
+                        <IdeaCountText>
+                          <FormattedMessage
+                            {...messages.xIdeas}
+                            values={{
+                              ideasCount,
+                            }}
+                          />
+                        </IdeaCountText>
+                      </IdeaCount>
+                  </ProjectMetaItems>
+                }
+              </ContentFooterRight>
+            </ContentFooter>
+          </ProjectContent>
+
+          {/*
           <ProjectContent>
             {isArchived &&
               <ArchivedLabelWrapper>
@@ -344,6 +522,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
           {authUser && project && project.id && isProjectModerator({ data: authUser }, project.id) && (
             <ProjectModeratorIcon name="shield" />
           )}
+          */}
         </Container>
       );
     }

@@ -88,6 +88,7 @@ export const media = {
 export const colors = {
   background: '#F9F9FA',
   text: '#222',
+  secondaryText: '#84939E',
   label: '#596B7A',
   placeholder: '#aaa',
   separation: '#e0e0e0',

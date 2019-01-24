@@ -42,7 +42,8 @@ const Container: any = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  background: #fff;
+  /* background: #fff; */
+  background: #f3f3f3;
 
   ${media.smallerThanMaxTablet`
     min-height: auto;
