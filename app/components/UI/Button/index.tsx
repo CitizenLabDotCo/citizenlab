@@ -301,12 +301,13 @@ type State = {};
 class Button extends PureComponent<Props, State> {
 
   handleOnClick = (event: FormEvent<HTMLButtonElement>) => {
-    if (this.props.onClick && !this.props.disabled && !this.props.processing) {
-      event.preventDefault();
-      this.props.onClick(event);
-    } else if (this.props.onClick && (this.props.disabled || this.props.processing)) {
+    const { onClick, processing, disabled } = this.props;
+    if (onClick) {
       event.preventDefault();
       event.stopPropagation();
+      if (!disabled && !processing) {
+        onClick(event);
+      }
     }
   }
 

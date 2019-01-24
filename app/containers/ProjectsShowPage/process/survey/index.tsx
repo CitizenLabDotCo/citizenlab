@@ -22,7 +22,9 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 30px;
+`;
 
 interface InputProps {
   projectId: string | null;

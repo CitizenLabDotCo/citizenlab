@@ -17,37 +17,29 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: 350px;
+  min-height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding-left: 20px;
   padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
   position: relative;
   z-index: 3;
   background: #767676;
 
   ${media.smallerThanMinTablet`
-    height: 200px;
+    min-height: 200px;
   `}
 `;
 
-const HeaderContent = styled(ContentContainer)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: -40px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 0px;
-  `}
-`;
+const HeaderContent = styled(ContentContainer)``;
 
 const ArchivedLabelWrapper = styled.div`
   display: flex;
@@ -67,8 +59,8 @@ const ArchivedLabel = styled.span`
 
 const HeaderTitle = styled.h2`
   color: #fff;
-  font-size: 42px;
-  line-height: 52px;
+  font-size: ${fontSizes.xxxxxl}px;
+  line-height: normal;
   font-weight: 500;
   text-align: center;
   overflow-wrap: break-word;
@@ -78,15 +70,14 @@ const HeaderTitle = styled.h2`
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-weight: 600;
     font-size: ${fontSizes.xxxl}px;
-    line-height: 36px;
+    font-weight: 600;
   `}
 `;
 
 const HeaderOverlay = styled.div`
   background: #000;
-  opacity: 0.5;
+  opacity: 0.55;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -106,8 +97,13 @@ const HeaderImage: any = styled.div`
   right: 0;
 `;
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
 const StyledIdeaButton = styled(IdeaButton)`
-  margin-top: 20px;
+  margin-top: 30px;
 
   ${media.biggerThanMinTablet`
     display: none;
@@ -124,13 +120,15 @@ interface DataProps {
   events: GetEventsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {}
 
 class ProjectsShowPage extends PureComponent<Props, State> {
   render() {
-    const { projectSlug, phaseId, project } = this.props;
+    const { projectSlug, phaseId, project, theme } = this.props;
 
     if (!isNilOrError(project)) {
       const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
@@ -144,26 +142,30 @@ class ProjectsShowPage extends PureComponent<Props, State> {
           <Container className={projectType}>
             <HeaderImage src={projectHeaderImageLarge} />
             <HeaderOverlay />
-            <ContentContainer>
-              <HeaderContent className={projectType}>
-                <HeaderTitle>
-                  <T value={project.attributes.title_multiloc} />
-                </HeaderTitle>
-                {projectPublicationStatus === 'archived' &&
-                  <ArchivedLabelWrapper>
-                    <ArchivedLabel>
-                      <FormattedMessage {...messages.archived} />
-                    </ArchivedLabel>
-                  </ArchivedLabelWrapper>
-                }
-                {/* Continuous Ideation Idea Button */}
-                {projectType === 'continuous' && projectMethod === 'ideation' &&
+            <HeaderContent className={projectType}>
+              <HeaderTitle>
+                <T value={project.attributes.title_multiloc} />
+              </HeaderTitle>
+              {projectPublicationStatus === 'archived' &&
+                <ArchivedLabelWrapper>
+                  <ArchivedLabel>
+                    <FormattedMessage {...messages.archived} />
+                  </ArchivedLabel>
+                </ArchivedLabelWrapper>
+              }
+              {/* Continuous Ideation Idea Button */}
+              {projectType === 'continuous' && projectMethod === 'ideation' &&
+                <ButtonWrapper>
                   <StyledIdeaButton
                     projectId={project.id}
+                    bgColor="#fff"
+                    textColor={theme.colorMain}
+                    fontWeight="500"
+                    padding="13px 22px"
                   />
-                }
-              </HeaderContent>
-            </ContentContainer>
+                </ButtonWrapper>
+              }
+            </HeaderContent>
           </Container>
         </>
       );
@@ -178,8 +180,10 @@ const Data = adopt<DataProps, InputProps>({
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
+const ProjectsShowPageWithHoC = withTheme<Props, State>(ProjectsShowPage);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectsShowPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

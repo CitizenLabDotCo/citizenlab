@@ -1,3 +1,5 @@
+import { isNil } from 'lodash-es';
+import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
 import { darken } from 'polished';
 
@@ -172,7 +174,8 @@ export const fontSizes = {
   xl: 21,
   xxl: 25,
   xxxl: 30,
-  xxxxl: 34
+  xxxxl: 34,
+  xxxxxl: 42
 };
 
 export const stylingConsts = {
@@ -302,14 +305,15 @@ export function quillEditedContent() {
 }
 
 // Main theme passed through any styled component
-export function getTheme(tenant) {
+export function getTheme(tenant: ITenant | null) {
+  const core = tenant && tenant.data.attributes.settings.core;
   return ({
     colors,
     fontSizes,
-    colorMain: (tenant ? tenant.data.attributes.settings.core.color_main : '#ef0071'),
-    headerOverlayOpacity: (tenant ? tenant.data.attributes.settings.core.header_overlay_opacity : 90),
-    colorSecondary: (tenant ? tenant.data.attributes.settings.core.color_secondary : '#000000'),
-    colorText: (tenant ? tenant.data.attributes.settings.core.color_text : '#000000'),
+    colorMain: (core ? core.color_main : '#ef0071'),
+    headerOverlayOpacity: (core && !isNil(core.header_overlay_opacity) ? core.header_overlay_opacity / 100.0 : 0.9),
+    colorSecondary: (core ? core.color_secondary : '#000000'),
+    colorText: (core ? core.color_text : '#000000'),
     ...stylingConsts
   });
 }
