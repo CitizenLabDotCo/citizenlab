@@ -26,6 +26,7 @@ const AvatarImage: any = styled.img`
   height: ${(props: any) => props.size}px;
   width: ${(props: any) => props.size}px;
   border-radius: 50%;
+  text-indent: -9999px;
 `;
 
 const Container: any = styled.div`
@@ -46,7 +47,7 @@ const Container: any = styled.div`
   `) : css``};
 `;
 
-const SSpan: any = styled.span`
+const StyledSpan: any = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +55,7 @@ const SSpan: any = styled.span`
   line-height: ${(props: any) => props.size}px;
   width: ${(props: any) => props.size}px;
   padding-bottom: 0;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   background: ${colors.clIconSecondary};
   border-radius: 50%;
   color: white;
@@ -105,8 +106,8 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarCount = avatarList.length;
       const userCount = avatars.meta.total;
       const usersWithoutAvatar = userCount - avatarCount;
-      const definedSize = size || 40;
-      const definedOverlap = overlap || 7;
+      const definedSize = size || 34;
+      const definedOverlap = overlap || 6;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
@@ -129,10 +130,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
               </AvatarWrapper>
             ))}
             <AvatarWrapper key={avatarCount}>
-              <SSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
+              <StyledSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
                 <PlusIcon name="plus" />
                 {usersWithoutAvatar}
-              </SSpan>
+              </StyledSpan>
             </AvatarWrapper>
           </Container>
         );
@@ -146,7 +147,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => (
-  <GetAvatars limit={inputProps.limit || 3} context={inputProps.context}>
+  <GetAvatars limit={inputProps.limit || 4} context={inputProps.context}>
     {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
   </GetAvatars>
 );

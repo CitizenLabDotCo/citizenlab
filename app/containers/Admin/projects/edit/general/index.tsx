@@ -859,6 +859,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   </Label>
                   <ButtonWrapper>
                     <Button
+                      type="button"
                       icon="delete"
                       style="delete"
                       onClick={this.deleteProject}
