@@ -149,12 +149,14 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
                 </LoadingContainer>
               }
             >
-              {notifications && notifications.length > 0 && notifications.map((notification) => (
-                <Notification
-                  notification={notification}
-                  key={notification.id}
-                />
-              ))}
+              {notifications && notifications.length > 0 && notifications.map((notification) => {
+                return (
+                  <Notification
+                    notification={notification}
+                    key={notification.id}
+                  />
+                );
+              })}
               {notifications && notifications.length === 0 &&
                 <EmptyStateContainer>
                   <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
