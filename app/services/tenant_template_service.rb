@@ -54,6 +54,17 @@ class TenantTemplateService
     nil
   end
 
+  def tenant_to_template tenant
+    @refs = {}
+    template = {'models' => {}}
+
+    Apartment::Tenant.switch(tenant.schema_name) do
+      yml_models['models']['user'] = yml_users
+    end
+    template.to_yaml
+  end
+
+
   private
   
   def resolve_template template_name, is_path=false
@@ -69,5 +80,18 @@ class TenantTemplateService
     else
       throw "Could not resolve template"
     end
+  end
+
+  def lookup_ref id, model_name
+    @refs[model_name][id]
+  end
+
+  def store_ref yml_obj, id, model_name
+    @refs[model_name] ||= {}
+    @refs[model_name][id] = yml_obj
+  end
+
+  def yml_users
+    []
   end
 end

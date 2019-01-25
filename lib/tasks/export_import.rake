@@ -3,7 +3,9 @@ require 'yaml'
 
 namespace :migrate do
   desc "Creates a YML file for migration of Vancouver."
-  task :export, [:host,:file,:as_tenant_template] => [:environment] do |t, args|
+  task :export, [:host,:file] => [:environment] do |t, args|
+    @refs = {}
+
     host = args[:host] ## 'vancouver_citizenlab_co'
     yml_models = args[:as_tenant_template] ? YAML.load_file('config/tenant_templates/base.yml') : { 'models' => {} }
     areas_hash = {}
@@ -46,6 +48,15 @@ namespace :migrate do
       yml_models['models']['groups_permission'] = encode_groups_permissions_ei groups_hash, permissions_hash
     end
     File.open(args[:file], 'w') { |f| f.write yml_models.to_yaml }
+  end
+
+  def lookup_ref id, model_name
+    @refs[model_name][id]
+  end
+
+  def store_ref yml_obj, id, model_name
+    @refs[model_name] ||= {}
+    @refs[model_name][id] = yml_obj
   end
 
   def init_base_hashes yml_models, idea_statuses_hash, topics_hash
@@ -335,67 +346,6 @@ namespace :migrate do
     end
   end
 
-
-
-
-  def encode_users_ei users_hash
-    User.where.not(invite_status: 'pending').map do |u|
-      yml_user = { 'email'             => u.email, 
-                   'first_name'        => u.first_name,
-                   'last_name'         => u.last_name,
-                   'cl1_migrated'      => u.cl1_migrated,
-                   'locale'            => u.locale,
-                   'bio_multiloc'      => u.bio_multiloc,
-                   'gender'            => u.gender,
-                   'birthyear'         => u.birthyear,
-                   'domicile'          => u.domicile,
-                   'education'         => u.education,
-                   'password_digest'   => u.password_digest,
-                   'remote_avatar_url' => u.avatar_url,
-                   'roles'             => u.roles,
-                   'created_at'        => u.created_at.to_s,
-                   'updated_at'        => u.updated_at.to_s
-                 }
-      if !yml_user['password_digest']
-        yml_user['password'] = SecureRandom.urlsafe_base64 32
-      end
-      users_hash[u.id] = yml_user
-      yml_user
-    end
-  end
-
-  
-
-  
-
-  
-
-  def encode_votes_ei users_hash, ideas_hash, comments_hash
-    Vote.all.map do |v|
-      yml_vote = { 'mode'         => v.mode,
-                   'user_ref'     => users_hash[v.user&.id],
-                   'votable_type' => v.votable_type,
-                   'created_at'   => v.created_at.to_s,
-                   'updated_at'   => v.updated_at.to_s
-                   }
-      yml_vote['votable_ref'] = case v.votable_type
-      when 'Idea'
-        ideas_hash[v.votable_id]
-      when 'Comment'
-        comments_hash[v.votable_id]
-      else
-        nil
-      end
-      if yml_vote['votable_ref']
-        yml_vote
-      else
-        nil
-      end
-    end.compact
-  end
-
-  
-
   def encode_ideas_phase_ei ideas_hash, phases_hash
     IdeasPhase.all.map do |ip|
       {
@@ -433,11 +383,55 @@ namespace :migrate do
     end.compact
   end
 
-  
+  def encode_users_ei users_hash
+    User.where.not(invite_status: 'pending').map do |u|
+      yml_user = { 'email'             => u.email, 
+                   'first_name'        => u.first_name,
+                   'last_name'         => u.last_name,
+                   'cl1_migrated'      => u.cl1_migrated,
+                   'locale'            => u.locale,
+                   'bio_multiloc'      => u.bio_multiloc,
+                   'gender'            => u.gender,
+                   'birthyear'         => u.birthyear,
+                   'domicile'          => u.domicile,
+                   'education'         => u.education,
+                   'password_digest'   => u.password_digest,
+                   'remote_avatar_url' => u.avatar_url,
+                   'roles'             => u.roles,
+                   'created_at'        => u.created_at.to_s,
+                   'updated_at'        => u.updated_at.to_s
+                 }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
+      users_hash[u.id] = yml_user
+      yml_user
+    end
+  end
 
-  
-
-  
+  def encode_votes_ei users_hash, ideas_hash, comments_hash
+    Vote.all.map do |v|
+      yml_vote = { 'mode'         => v.mode,
+                   'user_ref'     => users_hash[v.user&.id],
+                   'votable_type' => v.votable_type,
+                   'created_at'   => v.created_at.to_s,
+                   'updated_at'   => v.updated_at.to_s
+                   }
+      yml_vote['votable_ref'] = case v.votable_type
+      when 'Idea'
+        ideas_hash[v.votable_id]
+      when 'Comment'
+        comments_hash[v.votable_id]
+      else
+        nil
+      end
+      if yml_vote['votable_ref']
+        yml_vote
+      else
+        nil
+      end
+    end.compact
+  end
 
 
 
