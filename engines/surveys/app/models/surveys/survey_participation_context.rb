@@ -4,6 +4,7 @@ module Surveys::SurveyParticipationContext
   SURVEY_SERVICES = %w(typeform survey_monkey google_forms)
 
   included do
+    has_many :survey_responses, class_name: 'Surveys::Response', dependent: :destroy
     
     with_options if: :survey?, unless: :is_timeline_project? do |survey|
       survey.validates :survey_embed_url, presence: true

@@ -9,29 +9,31 @@ module Surveys
     # Gets called every time the participation context changed wrt
     # participation_method or survey_embed_url
 
-    def participation_context_changed pc_id, pm_from, pm_to, service_from, service_to, url_from, url_to
+    def participation_context_changed pc, pm_from, pm_to, service_from, service_to, url_from, url_to
       if pm_to == 'survey' && service_to == 'typeform' && url_to
         @tf_api.create_or_update_webhook(
           form_id: embed_url_to_form_id(url_to),
-          tag: pc_id,
-          url: tenant_to_webhook_url(Tenant.current, pc_id),
+          tag: pc.id,
+          url: tenant_to_webhook_url(Tenant.current, pc),
+          secret: ENV.fetch("SECRET_TOKEN_TYPEFORM")
         )
       else # we're not changing to typeform
         if pm_from == 'survey' && service_from == 'typeform'
           @tf_api.delete_webhook(
             form_id: embed_url_to_form_id(url_from),
-            tag: pc_id,
+            tag: pc.id,
           )
         end
       end
     end
 
-    def participation_context_created pc_id, pm, service, url
+    def participation_context_created pc, pm, service, url
       if pm == 'survey' && service == 'typeform' && url
         @tf_api.create_or_update_webhook(
           form_id: embed_url_to_form_id(url),
-          tag: pc_id,
-          url: tenant_to_webhook_url(Tenant.current, pc_id),
+          tag: pc.id,
+          url: tenant_to_webhook_url(Tenant.current, pc),
+          secret: ENV.fetch("SECRET_TOKEN_TYPEFORM")
         )
       end
     end
@@ -62,8 +64,13 @@ module Surveys
       embed_url.split('/').last
     end
 
-    def tenant_to_webhook_url tenant, pc_id
-      "#{tenant.base_backend_uri}/hooks/typeform_events?#{{pc_id: pc_id}.to_query}"
+    def tenant_to_webhook_url tenant, pc
+      url_params = {
+        tenant_id: tenant.id,
+        pc_id: pc.id,
+        pc_type: pc.class.name
+      }
+      "http://#{ENV.fetch('CLUSTER_HOST')}/hooks/typeform_events?#{url_params.to_query}"
     end
 
   end

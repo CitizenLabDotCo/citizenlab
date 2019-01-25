@@ -6,4 +6,7 @@ Surveys::Engine.routes.draw do
     end
   end
 
+  namespace :hooks, defaults: {format: :json} do
+    resources :typeform_events, only: [:create]
+  end
 end
