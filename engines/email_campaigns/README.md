@@ -109,9 +109,11 @@ end
 
 2. Create a notification file in `models/notifications`. Make sure to specify as many of the supported attributes (e.g. idea, comment...) as possible.
 
-3. Add a new factory for this type of notification.
+3. Create a serializer for the new notification in `serializers/web_api/v1/notifications`.
 
-4. Create a frontend task to support the new notification.
+4. Add a new factory for this type of notification.
+
+5. Create a frontend task to support the new notification.
 
 
 ## Add the Actual Campaign
