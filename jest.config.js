@@ -31,6 +31,7 @@ module.exports = {
   ],
   snapshotSerializers: ["enzyme-to-json/serializer"],
   reporters: ["default", "jest-junit"],
+  coverageReporters: ["json", "lcov", "text-summary", "clover"],
   moduleNameMapper: {
     "\\.(css|svg)$": "identity-obj-proxy"
   }
