@@ -170,7 +170,7 @@ export default defineMessages({
     defaultMessage: 'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
   },
   surveyServiceTooltipLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText',
     defaultMessage: 'here',
   },
   typeform: {
