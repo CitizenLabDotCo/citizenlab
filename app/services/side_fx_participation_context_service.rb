@@ -12,7 +12,7 @@ class SideFxParticipationContextService
   def after_create pc, user
     @permissions_service.update_permissions_for pc
     Surveys::WebhookManagerJob.perform_later('participation_context_created',
-      pc.id,
+      pc,
       pc.participation_method,
       pc.survey_service,
       pc.survey_embed_url
@@ -25,7 +25,7 @@ class SideFxParticipationContextService
   def after_update pc, user
     @permissions_service.update_permissions_for pc
     Surveys::WebhookManagerJob.perform_later('participation_context_changed',
-      pc.id,
+      pc,
       pc.participation_method_previous_change&.dig(0) || pc.participation_method,
       pc.participation_method,
       pc.survey_service_previous_change&.dig(0) || pc.survey_service,

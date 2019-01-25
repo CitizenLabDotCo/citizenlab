@@ -17,12 +17,13 @@ module Surveys
         )
       end
 
-      def create_or_update_webhook form_id:, tag:, url:, enabled: true
+      def create_or_update_webhook form_id:, tag:, url:, secret: nil, enabled: true
         self.class.put(
           "/forms/#{form_id}/webhooks/#{tag}",
           body: {
             url: url,
-            enabled: enabled
+            enabled: enabled,
+            secret: secret
           }.to_json,
           headers: authorized_headers.merge({
             'Content-Type' => 'application/json'

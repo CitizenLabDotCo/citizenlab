@@ -25,7 +25,7 @@ describe Surveys::Typeform::Api do
     it "creates a webhooks" do
       stub_request(:put, "https://api.typeform.com/forms/#{form_id}/webhooks/test-hook")
         .with(
-           body: "{\"url\":\"#{webhook_url}\",\"enabled\":true}",
+           body: "{\"url\":\"#{webhook_url}\",\"enabled\":true,\"secret\":\"wontsay\"}",
            headers: {
             'Authorization'=>"Bearer #{token}",
             'Content-Type'=>'application/json'
@@ -37,7 +37,7 @@ describe Surveys::Typeform::Api do
           headers: {"Content-Type" => "application/json"}
         )
 
-      response = api.create_or_update_webhook(form_id: form_id, tag: 'test-hook', url: webhook_url)
+      response = api.create_or_update_webhook(form_id: form_id, tag: 'test-hook', url: webhook_url, secret: 'wontsay')
       expect(response.success?).to be true
       expect(response.parsed_response).to eq ({
         "url" => webhook_url,
