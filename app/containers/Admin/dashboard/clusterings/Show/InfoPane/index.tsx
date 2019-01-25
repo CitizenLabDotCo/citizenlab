@@ -70,7 +70,6 @@ const Content = styled.div`
   padding-right: 10px;
   padding-top: 30px;
   padding-bottom: 10px;
-  overflow: hidden;
   overflow-y: scroll;
 `;
 
@@ -213,7 +212,7 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
                   onChange={this.handleOnChangeNormalization}
                   currentValue={this.state.normalization}
                   value="relative"
-                  label={<><FormattedMessage {...messages.relative} /><InfoTooltip {...messages.relativeTooltip} position="left" /></>}
+                  label={<><FormattedMessage {...messages.relative} /><InfoTooltip {...messages.relativeTooltip} position="down-left" size="xs" /></>}
                 />
               </RadioButtons>
               <ChartTitle>Gender</ChartTitle>

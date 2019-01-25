@@ -21,7 +21,7 @@ const Container = styled.div`
 
 const Content: any = styled(clickOutside)`
   position: absolute;
-  z-index: 10000000;
+  z-index: 3;
   &.down {
     top: ${(props: any) => props.offset || '0'}px;
     left: 50%;
@@ -38,6 +38,12 @@ const Content: any = styled(clickOutside)`
     bottom: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     transform-origin: bottom right;
+  }
+
+  &.down-left {
+    top: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    transform-origin: top right;
   }
 
   &.left {
@@ -74,6 +80,7 @@ const ContentInner: any = styled.div`
     left: -50%;
   }
 `;
+type IPosition = 'up' | 'left' | 'right' | 'down' | 'up-left' | 'down-left' | 'inline';
 
 export interface Props {
   children: JSX.Element;
@@ -85,7 +92,7 @@ export interface Props {
   onClickOutside: (Event) => void;
   dropdownOpened: boolean;
   className?: string;
-  position?: 'up' | 'left' | 'right' | 'down' | 'up-left';
+  position?: IPosition;
 }
 
 export default class Popover extends PureComponent<Props> {
