@@ -156,7 +156,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
                     <SDiv>
                       <FormattedMessage {...messages.deleteInvite} />
                       &nbsp;
-                      <InfoTooltip {...messages.deleteInviteTooltip} />
+                      <InfoTooltip {...messages.deleteInviteTooltip} position="up-left" size="small" />
                     </SDiv>
                   </Table.HeaderCell>
                 </Table.Row>

@@ -29,27 +29,41 @@ const TooltipWrapper: any = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 18px;
+  line-break: break;
+  white-space: normal;
+  text-align: justify;
 `;
 
-const getPxSize = (size: undefined | 'big' | 'small') => {
-  return size
-    ? (size === 'small' ? '300' : '500')
-    : '400';
+const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
+  if (size === 'big') {
+    return 500;
+  } else if (size === 'small') {
+    return 300;
+  } else if (size === 'xs') {
+    return 200;
+  } else {
+    return 400;
+  }
 };
 
-const InfoTooltip = (props: Props) => (
-  <Tooltip
-    enabled
-    content={(
-      <TooltipWrapper pxSize={getPxSize(props.size)}>
-        <FormattedMessage {...props} />
-      </TooltipWrapper>
-    )}
-    offset={20}
-    position={props.position}
-  >
-    <StyledIcon name="info3" />
-  </Tooltip >
-);
+const InfoTooltip = (props: Props) => {
+  const { position, size } = props;
+  const pxSize = getPxSize(size);
+
+  return (
+    <Tooltip
+      enabled
+      content={(
+        <TooltipWrapper pxSize={pxSize}>
+          <FormattedMessage {...props} />
+        </TooltipWrapper>
+      )}
+      offset={20}
+      position={position}
+    >
+      <StyledIcon name="info3" />
+    </Tooltip >
+  );
+};
 
 export default InfoTooltip;
