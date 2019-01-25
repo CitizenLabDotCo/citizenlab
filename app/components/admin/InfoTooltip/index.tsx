@@ -16,6 +16,7 @@ import { fontSizes } from 'utils/styleUtils';
 interface Props extends OriginalFormattedMessage.Props {
   size?: 'small' | 'big';
   position?: 'left' | 'right' | 'up' | 'down' | 'up-left';
+  className?: string;
 }
 
 const StyledIcon = styled(Icon)`
@@ -47,7 +48,7 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
 };
 
 const InfoTooltip = (props: Props) => {
-  const { position, size } = props;
+  const { position, size, className } = props;
   const pxSize = getPxSize(size);
 
   return (
@@ -60,6 +61,7 @@ const InfoTooltip = (props: Props) => {
       )}
       offset={20}
       position={position}
+      className={className}
     >
       <StyledIcon name="info3" />
     </Tooltip >

@@ -62,11 +62,14 @@ const FromToHeader = styled.span`
 `;
 
 const SendTestEmailButton = styled.button`
-  margin-bottom: 30px;
   text-decoration: underline;
   font-size: ${fontSizes.base}px;
   cursor: pointer;
+`;
+const StyledButtonContainer = styled.div`
+  margin-bottom: 30px;
   display: flex;
+  align-items: center;
 `;
 
 const PageTitleWrapper = styled.div`
@@ -108,7 +111,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, WithRouterProps, InjectedIntlProps, InjectedLocalized { }
 
-interface State {}
+interface State { }
 
 class Show extends React.Component<Props, State> {
 
@@ -167,7 +170,7 @@ class Show extends React.Component<Props, State> {
               </PageTitle>
               {isDraft(campaign) ?
                 <StatusLabel color="draftYellow" text={<FormattedMessage {...messages.draft} />} />
-              :
+                :
                 <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
               }
             </PageTitleWrapper>
@@ -192,14 +195,14 @@ class Show extends React.Component<Props, State> {
             <FromTo>
               <div>
                 <FromToHeader>
-                  <FormattedMessage {...messages.campaignFrom}/>
+                  <FormattedMessage {...messages.campaignFrom} />
                   &nbsp;
                 </FromToHeader>
                 <span>{senderName}</span>
               </div>
               <div>
                 <FromToHeader>
-                  <FormattedMessage {...messages.campaignTo}/>
+                  <FormattedMessage {...messages.campaignTo} />
                   &nbsp;
                 </FromToHeader>
                 {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>
@@ -218,19 +221,21 @@ class Show extends React.Component<Props, State> {
               </div>
             </FromTo>
             {isDraft(campaign) &&
-              <SendTestEmailButton
-                onClick={this.handleSendTestEmail}
-              >
-                <FormattedMessage {...messages.sendTestEmailButton} />
+              <StyledButtonContainer>
+                <SendTestEmailButton
+                  onClick={this.handleSendTestEmail}
+                >
+                  <FormattedMessage {...messages.sendTestEmailButton} />
+                </SendTestEmailButton>
                 &nbsp;
-                <InfoTooltip {...messages.sendTestEmailTooltip} position="left"/>
-              </SendTestEmailButton>
+                <InfoTooltip {...messages.sendTestEmailTooltip} position="down-left" />
+              </StyledButtonContainer>
             }
           </CampaignHeader>
 
           {isDraft(campaign) ?
             <DraftCampaignDetails campaignId={campaign.id} />
-          :
+            :
             <SentCampaignDetails campaignId={campaign.id} />
           }
         </div>
