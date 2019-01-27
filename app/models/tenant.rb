@@ -33,11 +33,11 @@ class Tenant < ApplicationRecord
   before_validation :validate_missing_feature_dependencies
 
   def self.current
-    Current.tenant || find_by(host: Apartment::Tenant.current.gsub(/_/, "."))
+    Current.tenant || find_by!(host: Apartment::Tenant.current.gsub(/_/, "."))
   end
 
   def self.settings *path
-   self.current&.settings.dig(*path)
+   self.current.settings.dig(*path)
   end
 
   def schema_name
