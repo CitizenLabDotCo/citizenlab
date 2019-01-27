@@ -5,7 +5,7 @@ class CreateResponses < ActiveRecord::Migration[5.2]
       t.string :participation_context_type, null: false
       t.string :survey_service, null: false
       t.string :external_survey_id, null: false
-      t.references :user, null: true
+      t.references :user, null: true, type: :uuid
       t.timestamp :started_at
       t.timestamp :submitted_at, null: false
       t.jsonb :answers, default: {}

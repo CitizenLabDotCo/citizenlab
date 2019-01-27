@@ -551,7 +551,7 @@ ActiveRecord::Schema.define(version: 2019_01_24_094814) do
     t.string "participation_context_type", null: false
     t.string "survey_service", null: false
     t.string "external_survey_id", null: false
-    t.bigint "user_id"
+    t.uuid "user_id"
     t.datetime "started_at"
     t.datetime "submitted_at", null: false
     t.jsonb "answers", default: {}
