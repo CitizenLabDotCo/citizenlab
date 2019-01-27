@@ -37,7 +37,7 @@ class Tenant < ApplicationRecord
   end
 
   def self.settings *path
-   self.current.settings.dig(*path)
+   self.current&.settings.dig(*path)
   end
 
   def schema_name
