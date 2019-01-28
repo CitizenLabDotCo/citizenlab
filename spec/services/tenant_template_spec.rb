@@ -91,8 +91,8 @@ describe TenantTemplateService do
       load Rails.root.join("db","seeds.rb")
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
 
-      # docker-compose run --rm web rspec ./spec/services/tenant_template_spec.rb -e SPEC_OPTS="tenant_to_template -t slow_test"
-      byebug
+      # docker-compose run --rm web rspec ./spec/services/tenant_template_spec.rb -e tenant_to_template
+      # byebug
     end
   end
 

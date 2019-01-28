@@ -59,7 +59,7 @@ class TenantTemplateService
     template = {'models' => {}}
 
     Apartment::Tenant.switch(tenant.schema_name) do
-      yml_models['models']['user'] = yml_users
+      template['models']['user'] = yml_users
     end
     template.to_yaml
   end
