@@ -24,11 +24,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
-    render json: @projects, include: ['project_images', 'current_phase']
+    render json: @projects, include: ['project_images', 'current_phase', 'avatars']
   end
 
   def show
-    render json: @project, include: ['project_images', 'current_phase']
+    render json: @project, include: ['project_images', 'current_phase', 'avatars']
   end
 
   def by_slug
@@ -47,7 +47,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       SideFxProjectService.new.after_create(@project, current_user)
       render json: @project, status: :created
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
+      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images', 'current_phase', 'avatars']
     end
   end
 
