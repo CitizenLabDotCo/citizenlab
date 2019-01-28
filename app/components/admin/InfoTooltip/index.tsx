@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typing
-import IPosition from 'components/UI/Popover';
+import { IPosition } from 'components/admin/Popover';
 
 interface Props extends OriginalFormattedMessage.Props {
   size?: 'small' | 'big';
