@@ -19,7 +19,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   
   has_one :action_descriptor
   has_one :user_basket
-  
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, unless: :is_participation_context?
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -27,6 +27,10 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def is_participation_context?
     object.is_participation_context?
+  end
+
+  def current_phase
+    TimelineService.new.current_phase(object)
   end
 
   def action_descriptor

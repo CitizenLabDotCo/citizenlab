@@ -24,11 +24,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
-    render json: @projects, include: ['project_images']
+    render json: @projects, include: ['project_images', 'current_phase']
   end
 
   def show
-    render json: @project, include: ['project_images']
+    render json: @project, include: ['project_images', 'current_phase']
   end
 
   def by_slug

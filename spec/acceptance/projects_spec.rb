@@ -130,6 +130,16 @@ resource "Projects" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :user_basket, :data, :id)).to eq basket.id
       end
+
+      example "Get a project on a timeline project includes the current_phase", document: false do
+        project = create(:project_with_current_phase)
+        current_phase = project.phases[2]
+        do_request( id: project.id)
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
+        expect(json_response.dig(:included).map{|i| i[:id]}).to include(current_phase.id)
+      end
     end
 
     get "web_api/v1/projects/by_slug/:slug" do
