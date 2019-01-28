@@ -63,17 +63,19 @@ class TenantTemplateService
     @template = {'models' => {}}
 
     Apartment::Tenant.switch(tenant.schema_name) do
-      @template['models']['area']          = yml_areas
-      @template['models']['project']       = yml_projects
-      @template['models']['phase']         = yml_phases
-      @template['models']['areas_project'] = yml_areas_projects
-      @template['models']['basket']        = yml_baskets
-      @template['models']['user']          = yml_users
-      @template['models']['idea_status']   = yml_idea_statuses
-      @template['models']['idea']          = yml_ideas
-      @template['models']['areas_idea']    = yml_areas_ideas
-      @template['models']['baskets_idea']  = yml_baskets_ideas
-      @template['models']['comment']       = yml_comments
+      @template['models']['area']                = yml_areas
+      @template['models']['custom_field']        = yml_custom_fields
+      @template['models']['custom_field_option'] = yml_custom_field_options
+      @template['models']['project']             = yml_projects
+      @template['models']['phase']               = yml_phases
+      @template['models']['areas_project']       = yml_areas_projects
+      @template['models']['basket']              = yml_baskets
+      @template['models']['user']                = yml_users
+      @template['models']['idea_status']         = yml_idea_statuses
+      @template['models']['idea']                = yml_ideas
+      @template['models']['areas_idea']          = yml_areas_ideas
+      @template['models']['baskets_idea']        = yml_baskets_ideas
+      @template['models']['comment']             = yml_comments
     end
     @template.to_yaml
   end
@@ -124,10 +126,45 @@ class TenantTemplateService
         'title_multiloc'       => a.title_multiloc,
         'description_multiloc' => a.description_multiloc,
         'created_at'           => a.created_at.to_s,
-        'updated_at'           => a.updated_at.to_s,
+        'updated_at'           => a.updated_at.to_s
       }
       store_ref yml_area, a.id, :area
       yml_area
+    end
+  end
+
+  def yml_custom_fields
+    CustomField.all.map do |c|
+      yml_custom_field = {
+        'resource_type'       => c.resource_type,
+        'key'                  => c.key,
+        'input_type'           => c.input_type,
+        'title_multiloc'       => c.title_multiloc,
+        'description_multiloc' => c.description_multiloc,
+        'required'             => c.required,
+        'ordering'             => c.ordering,
+        'created_at'           => c.created_at.to_s,
+        'updated_at'           => c.updated_at.to_s,
+        'enabled'              => c.enabled,
+        'code'                 => c.code
+      }
+      store_ref yml_custom_field, c.id, :custom_field
+      yml_custom_field
+    end
+  end
+
+  def yml_custom_field_options
+    CustomFieldOption.all.map do |c|
+      yml_custom_field_option = {
+        'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),
+        'key'                  => c.key,
+        'title_multiloc'       => c.title_multiloc,
+        'ordering'             => c.ordering,
+        'created_at'           => c.created_at.to_s,
+        'updated_at'           => c.updated_at.to_s
+      }
+      store_ref yml_custom_field_option, c.id, :custom_field_option
+      yml_custom_field_option
     end
   end
 
@@ -232,10 +269,7 @@ class TenantTemplateService
         'locale'                    => u.locale,
         'bio_multiloc'              => u.bio_multiloc,
         'cl1_migrated'              => u.cl1_migrated,
-        'gender'                    => u.gender,
-        'birthyear'                 => u.birthyear,
-        'domicile'                  => u.domicile,
-        'education'                 => u.education,
+        'custom_field_values'       => u.custom_field_values,
         'registration_completed_at' => u.registration_completed_at.to_s
       }
       if !yml_user['password_digest']
