@@ -89,7 +89,7 @@ describe TenantTemplateService do
   describe "tenant_to_template", slow_test: true do
     it "Successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
-      template = YAML.load(service.tenant_to_template Tenant.find_by(host: 'localhost'))
+      template = service.tenant_to_template Tenant.find_by(host: 'localhost')
 
       # docker-compose run --rm web rspec ./spec/services/tenant_template_spec.rb -e tenant_to_template
       # byebug
