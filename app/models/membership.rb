@@ -1,6 +1,6 @@
 class Membership < ApplicationRecord
   belongs_to :group
-  counter_culture :group
+  counter_culture :group, touch: true
   belongs_to :user
 
   validates :group, :user, presence: true
