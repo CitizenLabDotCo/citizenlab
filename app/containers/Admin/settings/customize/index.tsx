@@ -50,11 +50,11 @@ interface IAttributesDiff {
   header_bg?: UploadFile | undefined;
 }
 
-type Props  = {
+type Props = {
   lang: string;
 };
 
-type State  = {
+type State = {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
@@ -387,7 +387,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={<><FormattedMessage {...messages.headerTitleLabel} /><InfoTooltip {...messages.headerTitleTooltip} /></>}
+                label={(
+                  <>
+                    <FormattedMessage {...messages.headerTitleLabel} />
+                    <InfoTooltip {...messages.headerTitleTooltip} />
+                  </>
+                )}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -398,7 +403,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={<><FormattedMessage {...messages.headerSubtitleLabel} /><InfoTooltip {...messages.headerSubtitleTooltip} /></>}
+                label={(
+                  <>
+                    <FormattedMessage {...messages.headerSubtitleLabel} />
+                    <InfoTooltip {...messages.headerSubtitleTooltip} />
+                  </>
+                )}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
