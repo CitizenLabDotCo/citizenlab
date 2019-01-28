@@ -49,6 +49,7 @@ class TenantTemplateService
           model.save!
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
+          byebug
           raise e
         end
         obj_to_id_and_class[attributes] = [model.id, model_class]
@@ -72,6 +73,7 @@ class TenantTemplateService
       @template['models']['idea']          = yml_ideas
       @template['models']['areas_idea']    = yml_areas_ideas
       @template['models']['baskets_idea']  = yml_baskets_ideas
+      @template['models']['comment']       = yml_comments
     end
     @template.to_yaml
   end
@@ -104,6 +106,9 @@ class TenantTemplateService
         return @refs[n][id] if @refs[n][id]
       end
     else
+      if not @refs[model_name]
+        byebug
+      end
       @refs[model_name][id]
     end
   end
@@ -148,7 +153,7 @@ class TenantTemplateService
   end
 
   def yml_phases
-    Project.all.map do |p|
+    Phase.all.map do |p|
       yml_phase = yml_participation_context p
       yml_phase.merge!({
         'project_ref'          => lookup_ref(p.project_id, :project),
@@ -215,7 +220,7 @@ class TenantTemplateService
 
     # TODO properly copy project moderator roles
     # TODO properly copy all custom field values
-    User.where.not(invite_status: 'pending').map do |u|
+    User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
       yml_user = { 
         'email'                     => u.email, 
         'password_digest'           => u.password_digest,
@@ -237,13 +242,12 @@ class TenantTemplateService
         yml_user['password'] = SecureRandom.urlsafe_base64 32
       end
       store_ref yml_user, u.id, :user
-      users_hash[u.id] = yml_user
       yml_user
     end
   end
 
   def yml_idea_statuses
-    Idea.all.map do |is|
+    IdeaStatus.all.map do |is|
       yml_idea_status = {
         'title_multiloc'       => is.title_multiloc,
         'ordering'             => is.ordering,
@@ -259,7 +263,7 @@ class TenantTemplateService
   end
 
   def yml_ideas
-    Idea.all.map do |i|
+    Idea.published.map do |i|
       yml_idea = {
         'title_multiloc'         => i.title_multiloc,
         'body_multiloc'          => i.body_multiloc,
@@ -281,19 +285,43 @@ class TenantTemplateService
 
   def yml_areas_ideas
     AreasIdea.all.map do |ai|
-      {
-        'area_ref' => lookup_ref(ai.area_id, :area),
-        'idea_ref' => lookup_ref(ai.idea_id, :project)
-      }
-    end
+      if lookup_ref(ai.idea_id, :idea)
+        {
+          'area_ref' => lookup_ref(ai.area_id, :area),
+          'idea_ref' => lookup_ref(ai.idea_id, :idea)
+        }
+      end
+    end.compact
   end
 
   def yml_baskets_ideas
     BasketsIdea.all.map do |bi|
-      {
-        'basket_ref' => lookup_ref(bi.basket_id, :basket),
-        'idea_ref'   => lookup_ref(bi.idea_id, :project)
+      if lookup_ref(ai.idea_id, :idea)
+        {
+          'basket_ref' => lookup_ref(bi.basket_id, :basket),
+          'idea_ref'   => lookup_ref(bi.idea_id, :idea)
+        }
+      end.compact
+    end
+  end
+
+  def yml_comments
+    (Comment.where('parent_id IS NULL')+Comment.where('parent_id IS NOT NULL')).map do |c|
+      yml_comment = {
+        'author_ref'         => lookup_ref(c.author_id, :user),
+        'idea_ref'           => lookup_ref(c.idea_id, :idea),
+        'body_multiloc'      => c.body_multiloc,
+        'created_at'         => c.created_at.to_s,
+        'updated_at'         => c.updated_at.to_s,
+        'publication_status' => c.publication_status,
+        'body_updated_at'    => c.body_updated_at.to_s,
       }
+      if yml_comment['idea_ref'].blank?
+        byebug
+      end
+      yml_comment['parent_ref'] = lookup_ref(c.parent_id, :comment) if c.parent_id
+      store_ref yml_comment, c.id, :comment
+      yml_comment
     end
   end
 end
