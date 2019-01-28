@@ -62,12 +62,15 @@ class TenantTemplateService
 
     Apartment::Tenant.switch(tenant.schema_name) do
       @template['models']['area']          = yml_areas
-      @template['models']['project']       = yml_projects
+      # @template['models']['project']       = yml_projects
+      # @template['models']['phase']         = yml_phases
       @template['models']['areas_project'] = yml_areas_projects
+      @template['models']['basket']        = yml_baskets
       @template['models']['user']          = yml_users
       @template['models']['idea_status']   = yml_idea_statuses
       @template['models']['idea']          = yml_ideas
       @template['models']['areas_idea']    = yml_areas_ideas
+      @template['models']['baskets_idea']  = yml_baskets_ideas
     end
     @template.to_yaml
   end
@@ -124,34 +127,60 @@ class TenantTemplateService
 
   def yml_projects
     Project.all.map do |p|
-      yml_project = {
+      yml_project = yml_participation_context p
+      yml_project.merge!({
         'title_multiloc'               => p.title_multiloc,
         'description_multiloc'         => p.description_multiloc,
         'created_at'                   => p.created_at.to_s,
         'updated_at'                   => p.updated_at.to_s,
         'remote_header_bg_url'         => p.header_bg_url,
         'visible_to'                   => p.visible_to,
-        'description_preview_multiloc' => p.description_preview_multiloc,
-        'presentation_mode'            => p.presentation_mode,
-        'participation_method'         => p.participation_method,
-        'posting_enabled'              => p.posting_enabled,
-        'commenting_enabled'           => p.commenting_enabled,
-        'voting_enabled'               => p.voting_enabled,
-        'voting_method'                => p.voting_method,
-        'voting_limited_max'           => p.voting_limited_max,
+        'description_preview_multiloc' => p.description_preview_multiloc, 
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
-        'ordering'                     => p.ordering,
-        'max_budget'                   => p.max_budget
-      }
-      if yml_project['participation_method'] == 'survey'
-        yml_project['survey_embed_url'] = p.survey_embed_url
-        yml_project['survey_service']   = p.survey_service
-      end
+        'ordering'                     => p.ordering
+      })
       store_ref yml_project, p.id, :project
       yml_project
     end
+  end
+
+  def yml_phases
+    Project.all.map do |p|
+      yml_phase = yml_participation_context p
+      yml_phase.merge!({
+        'project_ref'          => lookup_ref(p.project_id, :project),
+        'title_multiloc'       => p.title_multiloc,
+        'description_multiloc' => p.description_multiloc,
+        'start_at'             => p.start_at.to_s,
+        'end_at'               => p.end_at.to_s,
+        'created_at'           => p.created_at.to_s,
+        'updated_at'           => p.updated_at.to_s
+      })
+      store_ref yml_phase, p.id, :phase
+      yml_phase
+    end
+  end
+
+  def yml_participation_context pc
+    yml_pc = {
+      'presentation_mode'            => pc.presentation_mode,
+      'participation_method'         => pc.participation_method,
+      'posting_enabled'              => pc.posting_enabled,
+      'commenting_enabled'           => pc.commenting_enabled,
+      'voting_enabled'               => pc.voting_enabled,
+      'voting_method'                => pc.voting_method,
+      'voting_limited_max'           => pc.voting_limited_max,
+      'max_budget'                   => pc.max_budget
+    }
+    if yml_pc['participation_method'] == 'survey'
+      yml_pc.merge!({
+        'survey_embed_url' => pc.survey_embed_url,
+        'survey_service'   => pc.survey_service
+      })
+    end
+    yml_pc
   end
 
   def yml_areas_projects
@@ -160,6 +189,20 @@ class TenantTemplateService
         'area_ref'    => lookup_ref(ap.area_id, :area),
         'project_ref' => lookup_ref(ap.project_id, :project)
       }
+    end
+  end
+
+  def yml_baskets
+    Basket.all.map do |b|
+      yml_basket = {
+        'submitted_at'              => b.submitted_at.to_s,
+        'user_ref'                  => lookup_ref(b.user_id, :user),
+        'participation_context_ref' => lookup_ref(b.participation_context_id, [:project, :phase]),
+        'created_at'                => b.created_at.to_s,
+        'updated_at'                => b.updated_at.to_s,
+      }
+      store_ref yml_basket, a.id, :basket
+      yml_basket
     end
   end
 
@@ -238,8 +281,17 @@ class TenantTemplateService
   def yml_areas_ideas
     AreasIdea.all.map do |ai|
       {
-        'area_ref'    => lookup_ref(ai.area_id, :area),
+        'area_ref' => lookup_ref(ai.area_id, :area),
         'idea_ref' => lookup_ref(ai.idea_id, :project)
+      }
+    end
+  end
+
+  def yml_baskets_ideas
+    BasketsIdea.all.map do |bi|
+      {
+        'basket_ref' => lookup_ref(bi.basket_id, :basket),
+        'idea_ref'   => lookup_ref(bi.idea_id, :project)
       }
     end
   end
