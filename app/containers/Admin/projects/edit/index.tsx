@@ -24,6 +24,10 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { adopt } from 'react-adopt';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import { isNilOrError } from 'utils/helperUtils';
 
 const ActionsContainer = styled.div`
   display: flex;
@@ -45,7 +49,15 @@ const TopContainer = styled.div`
   position: relative;
 `;
 
-type Props = {
+interface DataProps {
+  surveys_enabled: boolean | null;
+  typeform_enabled: boolean | null;
+  google_forms_enabled: boolean | null;
+  survey_monkey_enabled: boolean | null;
+  phases: GetPhasesChildProps;
+}
+
+type InputProps = {
   params: {
     projectId: string | null,
   },
@@ -62,6 +74,8 @@ type State = {
   project: IProjectData | null,
   loaded: boolean
 };
+
+interface Props extends InputProps, DataProps { }
 
 class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps & ITracks, State> {
   projectId$: BehaviorSubject<string | null>;
@@ -104,6 +118,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
+    const { typeform_enabled, surveys_enabled, phases } = this.props;
 
     let tabs: TabProps[] = [
       {
@@ -144,6 +159,22 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
         url: `${baseTabsUrl}/timeline`,
         className: 'phases',
       });
+    }
+
+    if (surveys_enabled && typeform_enabled) {
+      if (
+        (project.attributes.process_type === 'continuous'
+          && project.attributes.participation_method === 'survey'
+          && project.attributes.survey_service === 'typeform'
+        ) || (project.attributes.process_type === 'timeline'
+          && !isNilOrError(phases) && phases.filter(phase => phase.attributes.participation_method === 'survey' && phase.attributes.survey_service === 'typeform').length > 0
+        )) {
+        tabs.splice(3, 0, {
+          label: formatMessage(messages.surveyResultsTab),
+          url: `${baseTabsUrl}/survey-results`,
+          className: 'survey-results'
+        });
+      }
     }
 
     return tabs;
@@ -213,4 +244,16 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(AdminProjectEdition));
+const AdminProjectEditionWithHoCs = injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(AdminProjectEdition));
+
+const Data = adopt<DataProps, InputProps>({
+  surveys_enabled: <GetFeatureFlag name="surveys" />,
+  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
+  phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectEditionWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);

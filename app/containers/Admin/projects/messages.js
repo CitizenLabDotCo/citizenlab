@@ -325,4 +325,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.addNewIdea',
     defaultMessage: 'Add an idea',
   },
+  surveyResultsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyResultsTab',
+    defaultMessage: 'Survey results',
+  },
 });
