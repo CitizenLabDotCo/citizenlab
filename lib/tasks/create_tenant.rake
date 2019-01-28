@@ -78,6 +78,22 @@ namespace :cl2_back do
         geographic_dashboard: {
           enabled: true,
           allowed: true
+        },
+        surveys: {
+          enabled: true,
+          allowed: true
+        },
+        typeform_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        google_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        surveymonkey_surveys: {
+          enabled: true,
+          allowed: true
         }
       }
     })
