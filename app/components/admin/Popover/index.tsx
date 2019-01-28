@@ -81,7 +81,7 @@ const ContentInner: any = styled.div`
   }
 `;
 
-type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
+export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
 
 export interface Props {
   children: JSX.Element;
@@ -93,8 +93,8 @@ export interface Props {
   onClickOutside: (Event) => void;
   dropdownOpened: boolean;
   className?: string;
-  // position defaults to right when undefined
   position?: IPosition;
+  // position defaults to right when undefined
 }
 
 export default class Popover extends PureComponent<Props> {
