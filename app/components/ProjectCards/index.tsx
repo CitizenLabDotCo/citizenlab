@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { size } from 'lodash-es';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -77,32 +78,9 @@ const FilterArea = styled.div`
 
 const ProjectsList = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin-bottom: 43px;
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-left: -13px;
-    margin-right: -13px;
-  `};
-
-  ${media.largePhone`
-    margin-bottom: 23px;
-  `};
-`;
-
-const StyledProjectCard = styled(ProjectCard)`
-  ${media.smallerThanMaxTablet`
-    flex-grow: 0;
-    width: calc(100% * (1/2) - 26px);
-    margin-left: 13px;
-    margin-right: 13px;
-  `};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `}
 `;
 
 const EmptyContainer = styled.div`
@@ -300,9 +278,34 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
           {!querying && hasProjects && projectsList &&
             <ProjectsList id="e2e-projects-list">
-              {projectsList.map((project) => (
-                <StyledProjectCard key={project.id} projectId={project.id} />
-              ))}
+              {projectsList.map((project, index) => {
+                const listCount = size(projectsList);
+                let cardSize: 'small' | 'medium' | 'large' = 'small';
+
+                if (listCount === 1 && index === 0) {
+                  cardSize = 'large';
+                } else if (listCount === 2) {
+                  cardSize = 'medium';
+                } else if (listCount === 3) {
+                  if (index === 0) {
+                    cardSize = 'large';
+                  } else {
+                    cardSize = 'medium';
+                  }
+                } else if (listCount === 4 && index === 0) {
+                  cardSize = 'large';
+                } else if (listCount === 5 && (index === 0 || index === 1)) {
+                  cardSize = 'medium';
+                } else if (listCount >= 6) {
+                  if (index === 0) {
+                    cardSize = 'large';
+                  } else if (index === 1 || index === 2) {
+                    cardSize = 'medium';
+                  }
+                }
+
+                return <ProjectCard key={project.id} projectId={project.id} size={cardSize} />;
+              })}
             </ProjectsList>
           }
 

@@ -43,7 +43,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               id="description-preview"
               label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
               rows={5}
-              maxCharCount={280}
+              maxCharCount={150}
             />
             <Error fieldName="description_preview_multiloc" apiErrors={errors.description_preview_multiloc as any} />
           </SectionField>
