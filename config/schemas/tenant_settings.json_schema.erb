@@ -378,9 +378,29 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "user_token": {
-            "description": "The user token",
+            "description": "The user token that can be generated from your typeform profile",
             "type": "string"
           }
+        }
+      },
+      "google_forms_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of Google Form surveys",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "surveymonkey_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
       "maps": {
@@ -540,7 +560,9 @@
     "projects_events": ["projects"],
     "projects_phases": ["projects"],
     "private_projects": ["groups"],
-    "typeform_surveys": ["surveys"]
+    "typeform_surveys": ["surveys"],
+    "google_forms_surveys": ["surveys"],
+    "surveymonkey_surveys": ["surveys"]
   },
   "definitions": {
     "multiloc_string": {
