@@ -438,7 +438,7 @@ namespace :migrate do
   task :import, [:host,:file] => [:environment] do |t, args|
     host = args[:host] ## 'vancouver_citizenlab_co'
     Apartment::Tenant.switch(host.gsub('.', '_')) do
-      TenantTemplateService.new.apply_template args[:file], is_path=true ## 'tmp/vancouver.yml'
+      TenantTemplateService.new.resolve_and_apply_template args[:file], is_path=true ## 'tmp/vancouver.yml'
     end
   end
 
