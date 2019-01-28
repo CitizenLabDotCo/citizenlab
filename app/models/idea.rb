@@ -102,7 +102,7 @@ class Idea < ApplicationRecord
 
 
   def location_point_geojson
-    RGeo::GeoJSON.encode(location_point)
+    RGeo::GeoJSON.encode(location_point) if location_point.present?
   end
 
   def location_point_geojson= geojson_point
