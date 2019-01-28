@@ -85,6 +85,8 @@ class TenantTemplateService
     elsif template_name.kind_of? String
       throw "Unknown template '#{template_name}'" unless available_templates.include? template_name
       open(Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")).read
+    elsif template_name.kind_of? Hash
+      template_name.to_yaml
     elsif template_name.nil?
       open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
     else
