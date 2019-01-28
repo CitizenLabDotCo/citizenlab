@@ -13,6 +13,7 @@ class TenantTemplateService
   end
 
   def apply_template template
+    template = YAML.load template
     start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
@@ -80,14 +81,12 @@ class TenantTemplateService
   
   def resolve_template template_name, is_path=false
     if is_path
-      YAML.load_file(template_name)
+      open(template_name).read
     elsif template_name.kind_of? String
       throw "Unknown template '#{template_name}'" unless available_templates.include? template_name
-      YAML.load_file(Rails.root.join('config', 'tenant_templates', "#{template_name}.yml"))
-    elsif template_name.kind_of? Hash
-      template_name
+      open(Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")).read
     elsif template_name.nil?
-      YAML.load_file(Rails.root.join('config', 'tenant_templates', "base.yml"))
+      open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
     else
       throw "Could not resolve template"
     end
