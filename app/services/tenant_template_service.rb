@@ -62,8 +62,8 @@ class TenantTemplateService
 
     Apartment::Tenant.switch(tenant.schema_name) do
       @template['models']['area']          = yml_areas
-      # @template['models']['project']       = yml_projects
-      # @template['models']['phase']         = yml_phases
+      @template['models']['project']       = yml_projects
+      @template['models']['phase']         = yml_phases
       @template['models']['areas_project'] = yml_areas_projects
       @template['models']['basket']        = yml_baskets
       @template['models']['user']          = yml_users
