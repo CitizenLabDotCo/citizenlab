@@ -13,10 +13,12 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typing
+import IPosition from 'components/UI/Popover';
+
 interface Props extends OriginalFormattedMessage.Props {
   size?: 'small' | 'big';
-  position?: 'left' | 'right' | 'up' | 'down' | 'up-left';
   className?: string;
+  position? : IPosition;
 }
 
 const StyledIcon = styled(Icon)`
