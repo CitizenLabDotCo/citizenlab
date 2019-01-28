@@ -140,6 +140,18 @@ resource "Projects" do
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
         expect(json_response.dig(:included).map{|i| i[:id]}).to include(current_phase.id)
       end
+
+      example "Get a project includes the avatars and avatars_count", document: false do
+        idea = create(:idea)
+        author = idea.author
+        project = idea.project
+        do_request(id: project.id)
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
+        expect(json_response.dig(:data, :relationships, :avatars, :data).map{|d| d[:id]}).to include author.id
+        expect(json_response.dig(:included).map{|i| i[:id]}).to include author.id
+      end
     end
 
     get "web_api/v1/projects/by_slug/:slug" do

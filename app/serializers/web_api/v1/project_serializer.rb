@@ -1,5 +1,5 @@
 class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
-  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :internal_role, :publication_status, :created_at, :updated_at, :ordering
+  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :avatars_count, :internal_role, :publication_status, :created_at, :updated_at, :ordering
   # ParticipationContext attributes
   attribute :participation_method, if: :is_participation_context?
   attribute :posting_enabled, if: :is_participation_context?
@@ -16,6 +16,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   has_many :areas
   has_many :topics
   has_many :permissions
+  has_many :avatars, serializer: WebApi::V1::AvatarSerializer
   
   has_one :action_descriptor
   has_one :user_basket
@@ -52,6 +53,20 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
 
   def user_basket
     current_user&.baskets&.find_by participation_context_id: object.id
+  end
+
+  def avatars_count
+    avatars_for_project[:total_count]
+  end
+
+  def avatars
+    avatars_for_project[:users]
+  end
+
+  private
+
+  def avatars_for_project
+    @avatars_for_project ||= AvatarsService.new.avatars_for_project(object, limit: 3)
   end
 
 end
