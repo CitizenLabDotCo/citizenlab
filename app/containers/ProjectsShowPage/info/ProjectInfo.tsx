@@ -124,7 +124,6 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
           <ProjectDescriptionStyled>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
             {/* Have clearfix for aligned (floated) videos */}
-            <ClearFix />
           </ProjectDescriptionStyled>
           {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />
