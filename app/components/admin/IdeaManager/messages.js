@@ -61,17 +61,37 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.timelineTab',
     defaultMessage: 'Timeline',
   },
+  timelineTabTooltip: {
+    id: 'app.components.admin.IdeaManager.timelineTabTooltip',
+    defaultMessage: 'Drag and drop selected ideas to the phase you want to add them to. By doing so, they will also remain in the current phase(s).',
+  },
   topicsTab: {
     id: 'app.components.admin.IdeaManager.topicsTab',
     defaultMessage: 'Topics',
+  },
+  topicsTabTooltip: {
+    id: 'app.components.admin.IdeaManager.topicsTabTooltip',
+    defaultMessage: 'Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.',
   },
   projectsTab: {
     id: 'app.components.admin.IdeaManager.projectsTab',
     defaultMessage: 'Projects',
   },
+  projectsTabTooltip: {
+    id: 'app.components.admin.IdeaManager.projectsTabTooltip',
+    defaultMessage: 'Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.',
+  },
+  columnsTooltip: {
+    id: 'app.components.admin.IdeaManager.columnsTooltip',
+    defaultMessage: 'Order the ideas by any of the variables by clicking the respective column header.',
+  },
   statusesTab: {
     id: 'app.components.admin.IdeaManager.statusesTab',
     defaultMessage: 'Status',
+  },
+  statusesTabTooltip: {
+    id: 'app.components.admin.IdeaManager.statusesTabTooltip',
+    defaultMessage: 'Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.',
   },
   allIdeas: {
     id: 'app.components.admin.IdeaManager.allIdeas',

@@ -49,9 +49,13 @@ export const Checked = styled.div`
 `;
 
 const Text = styled.div`
+  display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
+  & > :not(last-child) {
+    margin-right: 7px;
+  }
 `;
 
 const HiddenInput = styled.input`
