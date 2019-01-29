@@ -49,7 +49,6 @@ class TenantTemplateService
           model.save!
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
-          byebug
           raise e
         end
         obj_to_id_and_class[attributes] = [model.id, model_class]
@@ -128,9 +127,6 @@ class TenantTemplateService
         return @refs[n][id] if @refs[n][id]
       end
     else
-      if not @refs[model_name]
-        byebug
-      end
       @refs[model_name][id]
     end
   end
@@ -443,8 +439,8 @@ class TenantTemplateService
   def yml_memberships
     Membership.all.map do |m|
       {
-        'group_ref'   => lookup_ref(m.group_id, :group),
-        'user_ref'  => lookup_ref(m.user_id, :user),
+        'group_ref'  => lookup_ref(m.group_id, :group),
+        'user_ref'   => lookup_ref(m.user_id, :user),
         'created_at' => m.created_at.to_s,
         'updated_at' => m.updated_at.to_s
       }
@@ -605,9 +601,6 @@ class TenantTemplateService
         'publication_status' => c.publication_status,
         'body_updated_at'    => c.body_updated_at.to_s,
       }
-      if yml_comment['idea_ref'].blank?
-        byebug
-      end
       yml_comment['parent_ref'] = lookup_ref(c.parent_id, :comment) if c.parent_id
       store_ref yml_comment, c.id, :comment
       yml_comment
