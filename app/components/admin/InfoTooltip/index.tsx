@@ -12,9 +12,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typing
+
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { Omit } from 'typings';
+import { IPosition } from 'components/admin/Popover';
 
 interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   size?: 'small' | 'big';
@@ -22,6 +24,7 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   children?: JSX.Element | null;
   offset?: number;
   openDelay?: number;
+  position?: IPosition;
 }
 
 const StyledIcon = styled(Icon)`

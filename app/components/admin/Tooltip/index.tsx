@@ -43,7 +43,6 @@ export default class Tooltip extends PureComponent<Props, State> {
 
   handleOnMouseEnter = () => {
     const { openDelay } = this.props;
-    console.log(openDelay);
     if (this.state.waiting) {
       this.setState({ waiting: false });
     } else {
