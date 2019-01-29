@@ -83,7 +83,7 @@ namespace :cl2_back do
     })
 
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.new.apply_template(tenant_template)
+      TenantTemplateService.new.resolve_and_apply_template(tenant_template)
     end
 
     SideFxTenantService.new.after_apply_template(tenant, nil)
