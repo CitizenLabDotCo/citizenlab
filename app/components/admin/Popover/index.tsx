@@ -22,25 +22,25 @@ const Container = styled.div`
 const Content: any = styled(clickOutside)`
   position: absolute;
   z-index: 3;
-  &.down {
+  &.bottom {
     top: ${(props: any) => props.offset || '0'}px;
     left: 50%;
     transform-origin: top left;
   }
 
-  &.up {
+  &.top {
     bottom: ${(props: any) => props.offset || '0'}px;
     left: 50%;
     transform-origin: bottom left;
   }
 
-  &.up-left {
+  &.top-left {
     bottom: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     transform-origin: bottom right;
   }
 
-  &.down-left {
+  &.bottom-left {
     top: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
     transform-origin: top right;
@@ -76,11 +76,12 @@ const ContentInner: any = styled.div`
   color: ${(props: any) => props.textColor};
   fill: ${(props: any) => props.textColor};
   border: solid 1px ${(props: any) => props.borderColor || colors.separation};
-  &.down, &.up {
+  &.bottom, &.top {
     left: -50%;
   }
 `;
-type IPosition = 'up' | 'left' | 'right' | 'down' | 'up-left' | 'down-left' | 'inline';
+
+export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
 
 export interface Props {
   children: JSX.Element;
@@ -93,6 +94,7 @@ export interface Props {
   dropdownOpened: boolean;
   className?: string;
   position?: IPosition;
+  // position defaults to right when undefined
 }
 
 export default class Popover extends PureComponent<Props> {
