@@ -1,22 +1,28 @@
 import React from 'react';
+import { omit } from 'lodash-es';
 
 import Icon from 'components/UI/Icon';
 import Tooltip from 'components/admin/Tooltip';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
-// tslint:disable-next-line:no-vanilla-formatted-messages
-import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typing
-interface Props extends OriginalFormattedMessage.Props {
+// tslint:disable-next-line:no-vanilla-formatted-messages
+import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
+import { Omit } from 'typings';
+
+interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   size?: 'small' | 'big';
   position?: 'left' | 'right' | 'up' | 'down' | 'up-left';
   className?: string;
+  children?: JSX.Element | null;
+  offset?: number;
+  openDelay?: number;
 }
 
 const StyledIcon = styled(Icon)`
@@ -48,22 +54,27 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
 };
 
 const InfoTooltip = (props: Props) => {
-  const { position, size, className } = props;
+  const { position, size, className, children, offset, openDelay } = props;
   const pxSize = getPxSize(size);
+  const passthroughProps = omit(props, ['size', 'position', 'className', 'children', 'offset']);
 
   return (
     <Tooltip
       enabled
       content={(
         <TooltipWrapper pxSize={pxSize}>
-          <FormattedMessage {...props} />
+          <FormattedMessage {...passthroughProps} />
         </TooltipWrapper>
       )}
-      offset={20}
+      offset={offset || 20}
       position={position}
       className={className}
+      openDelay={openDelay}
     >
-      <StyledIcon name="info3" />
+      {children
+        ? children
+        : <StyledIcon name="info3" />
+      }
     </Tooltip >
   );
 };
