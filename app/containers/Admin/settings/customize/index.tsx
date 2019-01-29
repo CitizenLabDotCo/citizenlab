@@ -11,6 +11,11 @@ import InputMultiloc from 'components/UI/InputMultiloc';
 import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
+import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import ErrorMessage from 'components/UI/Error';
+
+// resources
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // style
 import styled from 'styled-components';
@@ -19,6 +24,7 @@ import styled from 'styled-components';
 import { convertUrlToUploadFileObservable } from 'utils/imageTools';
 import getSubmitState from 'utils/getSubmitState';
 import { calculateContrastRatio, hexToRgb } from 'utils/styleUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -28,6 +34,7 @@ import messages from '../messages';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
+import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
@@ -40,19 +47,24 @@ const ContrastWarning = styled(Warning)`
   margin-top: 10px;
 `;
 
-const StyledSectionField = styled(SectionField)`
-  max-width: 500px;
+const WideSectionField = styled(SectionField)`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
+
+interface DataProps {
+  homepageInfoPage: GetPageChildProps;
+}
+
+interface Props extends DataProps {
+  lang: string;
+}
 
 interface IAttributesDiff {
   settings?: Partial<ITenantSettings>;
-  logo?: UploadFile | undefined;
-  header_bg?: UploadFile | undefined;
+  homepage_info?: Multiloc;
+  logo?: UploadFile;
+  header_bg?: UploadFile;
 }
-
-type Props = {
-  lang: string;
-};
 
 type State = {
   locale: Locale | null;
@@ -267,12 +279,19 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     event.preventDefault();
 
     const { currentTenant, attributesDiff } = this.state;
-
+    const { homepageInfoPage } = this.props;
     if (currentTenant && this.validate(currentTenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
+      const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
         await updateTenant(currentTenant.data.id, attributesDiff as IUpdatedTenantProperties);
+        if (!isNilOrError(homepageInfoPage)) {
+          const homepageInfoPageId = homepageInfoPage.id;
+          if (attributesDiff.homepage_info) {
+            await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+          }
+        }
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
         this.setState({ loading: false, errors: error.json.errors });
@@ -288,6 +307,14 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.setState({ colorPickerOpened: false });
   }
 
+  handleCustomSectionMultilocOnChange = (homepageInfoPageMultiloc: Multiloc) => {
+    this.setState((state) => {
+      return {
+        attributesDiff: set(cloneDeep(state.attributesDiff), 'homepage_info', homepageInfoPageMultiloc),
+      };
+    });
+  }
+
   render() {
     const {
       locale,
@@ -299,10 +326,15 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       saved
     } = this.state;
 
+    const { homepageInfoPage } = this.props;
+
     if (locale && currentTenant) {
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
+      const customSectionInfoMessage = this.props.intl.formatMessage(messages.customSectionInfo);
+
+      const homepageInfoPageBodyMultiloc = !isNilOrError(homepageInfoPage) ? { ...homepageInfoPage.attributes.body_multiloc, ...attributesDiff.homepage_info } : { ...attributesDiff.homepage_info };
 
       return (
         <form onSubmit={this.save}>
@@ -383,7 +415,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               />
             </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
@@ -397,9 +429,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
               />
-            </StyledSectionField>
+            </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
@@ -413,7 +445,25 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
               />
-            </StyledSectionField>
+            </SectionField>
+          </Section>
+
+          <Section>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.homePageCustomSection} />
+            </SubSectionTitle>
+
+            <WideSectionField>
+              <QuillMultiloc
+                id="custom-section"
+                inAdmin
+                label={<FormattedMessage {...messages.customSectionLabel} />}
+                valueMultiloc={homepageInfoPageBodyMultiloc}
+                onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
+                infoMessage={customSectionInfoMessage}
+              />
+              <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
+            </WideSectionField>
           </Section>
 
           <SubmitWrapper
@@ -435,4 +485,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-export default injectIntl<Props>(SettingsCustomizeTab);
+const SettingsCustomizeTabWithHOCs = injectIntl<Props>(SettingsCustomizeTab);
+
+export default (inputProps: Props) => (
+  <GetPage slug="homepage-info">
+    {page => <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />}
+  </GetPage>
+);
