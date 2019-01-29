@@ -1,5 +1,8 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
+  "app.components.AdminPage.SettingsPage.customSectionInfo": "",
+  "app.components.AdminPage.SettingsPage.customSectionLabel": "",
+  "app.components.AdminPage.SettingsPage.homePageCustomSection": "",
   "app.components.AssignBudgetControl.assign": "Voeg toe",
   "app.components.AssignBudgetControl.assigned": "Toegevoegd",
   "app.components.AssignBudgetControl.seeIdea": "Bekijk idee",

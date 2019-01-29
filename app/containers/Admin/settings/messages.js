@@ -185,4 +185,16 @@ export default defineMessages({
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast. This may result in text that\'s hard to read. Choose a darker color to optimize readability.',
   },
+  homePageCustomSection: {
+    id: 'app.components.AdminPage.SettingsPage.homePageCustomSection',
+    defaultMessage: 'Home page custom section',
+  },
+  customSectionLabel: {
+    id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
+    defaultMessage: 'Content',
+  },
+  customSectionInfo: {
+    id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
+    defaultMessage: 'The content of this field will be shown at the bottom of the platform\'s home page, visible to all visitors.',
+  },
 });
