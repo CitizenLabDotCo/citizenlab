@@ -73,14 +73,14 @@ class TenantTemplateService
       @template['models']['phase']               = yml_phases
       @template['models']['phase_file']          = yml_phase_files
       @template['models']['areas_project']       = yml_areas_projects
+      @template['models']['user']                = yml_users
       @template['models']['basket']              = yml_baskets
       @template['models']['event']               = yml_events
       @template['models']['event_file']          = yml_event_files
       @template['models']['group']               = yml_groups
       @template['models']['groups_project']      = yml_groups_projects
       @template['models']['permission']          = yml_permissions
-      @template['models']['groups_permission']   = yml_groups_permissions
-      @template['models']['user']                = yml_users
+      @template['models']['groups_permission']   = yml_groups_permissions 
       @template['models']['membership']          = yml_memberships
       @template['models']['page']                = yml_pages
       @template['models']['page_link']           = yml_page_links
@@ -312,6 +312,36 @@ class TenantTemplateService
     end
   end
 
+  def yml_users
+    # Roles are left out so first user to login becomes
+    # admin and because project ids of moderators would
+    # become invalid.
+    # Pending invitations are cleared out.
+
+    # TODO properly copy project moderator roles
+    User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
+      yml_user = { 
+        'email'                     => u.email, 
+        'password_digest'           => u.password_digest,
+        'created_at'                => u.created_at.to_s,
+        'updated_at'                => u.updated_at.to_s,
+        'remote_avatar_url'         => u.avatar_url,
+        'first_name'                => u.first_name,
+        'last_name'                 => u.last_name,
+        'locale'                    => u.locale,
+        'bio_multiloc'              => u.bio_multiloc,
+        'cl1_migrated'              => u.cl1_migrated,
+        'custom_field_values'       => u.custom_field_values,
+        'registration_completed_at' => u.registration_completed_at.to_s
+      }
+      if !yml_user['password_digest']
+        yml_user['password'] = SecureRandom.urlsafe_base64 32
+      end
+      store_ref yml_user, u.id, :user
+      yml_user
+    end
+  end
+
   def yml_baskets
     Basket.all.map do |b|
       yml_basket = {
@@ -321,7 +351,7 @@ class TenantTemplateService
         'created_at'                => b.created_at.to_s,
         'updated_at'                => b.updated_at.to_s,
       }
-      store_ref yml_basket, a.id, :basket
+      store_ref yml_basket, b.id, :basket
       yml_basket
     end
   end
@@ -403,36 +433,6 @@ class TenantTemplateService
         'created_at'     => g.created_at.to_s,
         'updated_at'     => g.updated_at.to_s
       }
-    end
-  end
-
-  def yml_users
-    # Roles are left out so first user to login becomes
-    # admin and because project ids of moderators would
-    # become invalid.
-    # Pending invitations are cleared out.
-
-    # TODO properly copy project moderator roles
-    User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
-      yml_user = { 
-        'email'                     => u.email, 
-        'password_digest'           => u.password_digest,
-        'created_at'                => u.created_at.to_s,
-        'updated_at'                => u.updated_at.to_s,
-        'remote_avatar_url'         => u.avatar_url,
-        'first_name'                => u.first_name,
-        'last_name'                 => u.last_name,
-        'locale'                    => u.locale,
-        'bio_multiloc'              => u.bio_multiloc,
-        'cl1_migrated'              => u.cl1_migrated,
-        'custom_field_values'       => u.custom_field_values,
-        'registration_completed_at' => u.registration_completed_at.to_s
-      }
-      if !yml_user['password_digest']
-        yml_user['password'] = SecureRandom.urlsafe_base64 32
-      end
-      store_ref yml_user, u.id, :user
-      yml_user
     end
   end
 
