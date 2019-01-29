@@ -197,7 +197,7 @@ class TenantTemplateService
         'created_at'           => t.created_at.to_s,
         'updated_at'           => t.updated_at.to_s
       }
-      store_ref yml_topic, t.id, :yml_topic
+      store_ref yml_topic, t.id, :topic
       yml_topic
     end
   end
@@ -252,9 +252,7 @@ class TenantTemplateService
     ProjectsTopic.all.map do |p|
       {
         'project_ref' => lookup_ref(p.project_id, :project),
-        'topic_ref'   => lookup_ref(p.topic_id, :topic),
-        'created_at'  => p.created_at.to_s,
-        'updated_at'  => p.updated_at.to_s
+        'topic_ref'   => lookup_ref(p.topic_id, :topic)
       }
     end
   end
@@ -590,9 +588,7 @@ class TenantTemplateService
     IdeasTopic.all.map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
-        'topic_ref'  => lookup_ref(i.topic_id, :topic),
-        'created_at' => i.created_at.to_s,
-        'updated_at' => i.updated_at.to_s
+        'topic_ref'  => lookup_ref(i.topic_id, :topic)
       }
     end
   end
