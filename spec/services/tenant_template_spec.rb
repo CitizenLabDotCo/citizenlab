@@ -93,12 +93,20 @@ describe TenantTemplateService do
         service.resolve_and_apply_template('spec/fixtures/template_without_images.yml', is_path=true)
       end
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
-
-      # docker-compose run --rm web rspec ./spec/services/tenant_template_spec.rb -e tenant_to_template
       service.apply_template template
 
       Apartment::Tenant.switch('localhost') do
-        expect(Comment.count).to be > 0
+        expect(Area.count).to eq 13
+        expect(AreasIdea.count).to eq 37
+        expect(Comment.count).to eq 119
+        expect(CustomFieldOption.count).to eq 13
+        expect(Event.count).to eq 11
+        expect(Group.count).to eq 4
+        expect(GroupsProject.count).to eq 12
+        expect(IdeaStatus.count).to eq 5
+        expect(Notification.count).to eq 0
+        expect(User.admin.count).to eq 0
+        expect(Vote.count).to eq 439
       end
     end
   end
