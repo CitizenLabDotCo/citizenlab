@@ -62,7 +62,7 @@ describe TenantTemplateService do
     end
 
     it "Successfully generates and applies tenant templates (those acquired from spreadsheets)" do
-      tenant = service.resolve_and_apply_template('spec/services/tenant_template.yml', is_path=true)
+      tenant = service.resolve_and_apply_template('spec/fixtures/tenant_template.yml', is_path=true)
       expect(IdeaStatus.count).to be 5
       expect(Topic.count).to be 14
       expect(User.count).to be 2
@@ -82,7 +82,7 @@ describe TenantTemplateService do
     end
 
     it "raises an error if the requested template was not found" do
-      expect{service.load_and_apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
+      expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
     end
   end
 
@@ -90,7 +90,7 @@ describe TenantTemplateService do
     it "Successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
       Apartment::Tenant.switch('localhost') do
-        load Rails.root.join("db","seeds.rb")
+        service.resolve_and_apply_template('spec/fixtures/template_without_images.yml', is_path=true)
       end
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
 
