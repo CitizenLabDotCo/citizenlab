@@ -66,16 +66,36 @@ class TenantTemplateService
       @template['models']['area']                = yml_areas
       @template['models']['custom_field']        = yml_custom_fields
       @template['models']['custom_field_option'] = yml_custom_field_options
+      @template['models']['topic']               = yml_topics
       @template['models']['project']             = yml_projects
+      @template['models']['project_file']        = yml_project_files
+      @template['models']['project_image']       = yml_project_images
+      @template['models']['projects_topic']      = yml_projects_topics
       @template['models']['phase']               = yml_phases
+      @template['models']['phase_file']          = yml_phase_files
       @template['models']['areas_project']       = yml_areas_projects
       @template['models']['basket']              = yml_baskets
+      @template['models']['event']               = yml_events
+      @template['models']['event_file']          = yml_event_files
+      @template['models']['group']               = yml_groups
+      @template['models']['groups_project']      = yml_groups_projects
+      @template['models']['permission']          = yml_permissions
+      @template['models']['groups_permission']   = yml_groups_permissions
       @template['models']['user']                = yml_users
+      @template['models']['membership']          = yml_memberships
+      @template['models']['page']                = yml_pages
+      @template['models']['page_link']           = yml_page_links
+      @template['models']['page_file']           = yml_page_files
       @template['models']['idea_status']         = yml_idea_statuses
       @template['models']['idea']                = yml_ideas
       @template['models']['areas_idea']          = yml_areas_ideas
       @template['models']['baskets_idea']        = yml_baskets_ideas
+      @template['models']['idea_file']           = yml_idea_files
+      @template['models']['idea_image']          = yml_idea_images
+      @template['models']['ideas_phase']         = yml_ideas_phases
+      @template['models']['ideas_topic']         = yml_ideas_topics
       @template['models']['comment']             = yml_comments
+      @template['models']['vote']                = yml_votes
     end
     @template.to_yaml
   end
@@ -136,7 +156,7 @@ class TenantTemplateService
   def yml_custom_fields
     CustomField.all.map do |c|
       yml_custom_field = {
-        'resource_type'       => c.resource_type,
+        'resource_type'        => c.resource_type,
         'key'                  => c.key,
         'input_type'           => c.input_type,
         'title_multiloc'       => c.title_multiloc,
@@ -168,6 +188,20 @@ class TenantTemplateService
     end
   end
 
+  def yml_topics
+    Topic.all.map do |t|
+      yml_topic = {
+        'title_multiloc'       => t.title_multiloc,
+        'description_multiloc' => t.description_multiloc,
+        'icon'                 => t.icon,
+        'created_at'           => t.created_at.to_s,
+        'updated_at'           => t.updated_at.to_s
+      }
+      store_ref yml_topic, t.id, :yml_topic
+      yml_topic
+    end
+  end
+
   def yml_projects
     Project.all.map do |p|
       yml_project = yml_participation_context p
@@ -189,6 +223,42 @@ class TenantTemplateService
     end
   end
 
+  def yml_project_files
+    ProjectFile.all.map do |p|
+      {
+        'project_ref'     => lookup_ref(p.project_id, :project),
+        'remote_file_url' => p.file_url,
+        'ordering'        => p.ordering,
+        'created_at'      => p.created_at.to_s,
+        'updated_at'      => p.updated_at.to_s,
+        'name'            => p.name
+      }
+    end
+  end
+
+  def yml_project_images
+    ProjectImage.all.map do |p|
+      {
+        'project_ref'      => lookup_ref(p.project_id, :project),
+        'remote_image_url' => p.image_url,
+        'ordering'         => p.ordering,
+        'created_at'       => p.created_at.to_s,
+        'updated_at'       => p.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_projects_topics
+    ProjectsTopic.all.map do |p|
+      {
+        'project_ref' => lookup_ref(p.project_id, :project),
+        'topic_ref'   => lookup_ref(p.topic_id, :topic),
+        'created_at'  => p.created_at.to_s,
+        'updated_at'  => p.updated_at.to_s
+      }
+    end
+  end
+
   def yml_phases
     Phase.all.map do |p|
       yml_phase = yml_participation_context p
@@ -203,6 +273,19 @@ class TenantTemplateService
       })
       store_ref yml_phase, p.id, :phase
       yml_phase
+    end
+  end
+
+  def yml_phase_files
+    PhaseFile.all.map do |p|
+      {
+        'phase_ref'       => lookup_ref(p.phase_id, :phase),
+        'remote_file_url' => p.file_url,
+        'ordering'        => p.ordering,
+        'created_at'      => p.created_at.to_s,
+        'updated_at'      => p.updated_at.to_s,
+        'name'            => p.name
+      }
     end
   end
 
@@ -227,10 +310,10 @@ class TenantTemplateService
   end
 
   def yml_areas_projects
-    AreasProject.all.map do |ap|
+    AreasProject.all.map do |a|
       {
-        'area_ref'    => lookup_ref(ap.area_id, :area),
-        'project_ref' => lookup_ref(ap.project_id, :project)
+        'area_ref'    => lookup_ref(a.area_id, :area),
+        'project_ref' => lookup_ref(a.project_id, :project)
       }
     end
   end
@@ -249,6 +332,86 @@ class TenantTemplateService
     end
   end
 
+  def yml_events
+    Event.all.map do |e|
+      yml_event = {
+        'project_ref'          => lookup_ref(e.project_id, :project),
+        'title_multiloc'       => e.title_multiloc,
+        'description_multiloc' => e.description_multiloc,
+        'location_multiloc'    => e.location_multiloc,
+        'start_at'             => e.start_at.to_s,
+        'end_at'               => e.end_at.to_s,
+        'created_at'           => e.created_at.to_s,
+        'updated_at'           => e.updated_at.to_s
+      }
+      store_ref yml_event, e.id, :event
+      yml_event
+    end
+  end
+
+  def yml_event_files
+    EventFile.all.map do |e|
+      {
+        'event_ref'       => lookup_ref(e.event_id, :event),
+        'remote_file_url' => e.file_url,
+        'ordering'        => e.ordering,
+        'created_at'      => e.created_at.to_s,
+        'updated_at'      => e.updated_at.to_s,
+        'name'            => e.name
+      }
+    end
+  end
+
+  def yml_groups
+    Group.all.map do |g|
+      yml_group = {
+        'title_multiloc'  => g.title_multiloc,
+        'created_at'      => g.created_at.to_s,
+        'updated_at'      => g.updated_at.to_s,
+        'membership_type' => g.membership_type,
+        'rules'           => g.rules
+      }
+      store_ref yml_group, g.id, :group
+      yml_group
+    end
+  end
+
+  def yml_groups_projects
+    GroupsProject.all.map do |g|
+      {
+        'group_ref'   => lookup_ref(g.group_id, :group),
+        'project_ref' => lookup_ref(g.project_id, :project),
+        'created_at'  => g.created_at.to_s,
+        'updated_at'  => g.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_permissions
+    Permission.all.map do |p|
+      yml_permission = {
+        'action'          => p.action,
+        'permitted_by'    => p.permitted_by,
+        'permittable_ref' => lookup_ref(p.permittable_id, [:project, :phase]),
+        'created_at'      => p.created_at.to_s,
+        'updated_at'      => p.updated_at.to_s
+      }
+      store_ref yml_permission, p.id, :permission
+      yml_permission
+    end
+  end
+
+  def yml_groups_permissions
+    GroupsPermission.all.map do |g|
+      {
+        'permission_ref' => lookup_ref(g.permission_id, :permission),
+        'group_ref'      => lookup_ref(g.group_id, :group),
+        'created_at'     => g.created_at.to_s,
+        'updated_at'     => g.updated_at.to_s
+      }
+    end
+  end
+
   def yml_users
     # Roles are left out so first user to login becomes
     # admin and because project ids of moderators would
@@ -256,7 +419,6 @@ class TenantTemplateService
     # Pending invitations are cleared out.
 
     # TODO properly copy project moderator roles
-    # TODO properly copy all custom field values
     User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
       yml_user = { 
         'email'                     => u.email, 
@@ -280,18 +442,67 @@ class TenantTemplateService
     end
   end
 
-  def yml_idea_statuses
-    IdeaStatus.all.map do |is|
-      yml_idea_status = {
-        'title_multiloc'       => is.title_multiloc,
-        'ordering'             => is.ordering,
-        'code'                 => is.code,
-        'color'                => is.color,
-        'created_at'           => is.created_at.to_s,
-        'updated_at'           => is.updated_at.to_s,
-        'description_multiloc' => is.description_multiloc
+  def yml_memberships
+    Membership.all.map do |m|
+      {
+        'group_ref'   => lookup_ref(m.group_id, :group),
+        'user_ref'  => lookup_ref(m.user_id, :user),
+        'created_at' => m.created_at.to_s,
+        'updated_at' => m.updated_at.to_s
       }
-      store_ref yml_idea_status, is.id, :idea_status
+    end
+  end
+
+  def yml_pages
+    Page.all.map do |p|
+      yml_page = {
+        'title_multiloc'     => p.title_multiloc,
+        'body_multiloc'      => p.body_multiloc,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s,
+        'project_ref'        => lookup_ref(p.project_id, :project),
+        'publication_status' => p.publication_status
+      }
+      store_ref yml_page, p.id, :page
+      yml_page
+    end
+  end
+
+  def yml_page_links
+    PageLink.all.map do |p|
+      {
+        'linking_page_ref' => lookup_ref(p.linking_page_id, :page),
+        'linked_page_ref'  => lookup_ref(p.linked_page_id, :page),
+        'ordering'         => p.ordering
+      }
+    end
+  end
+
+  def yml_page_files
+    PageFile.all.map do |p|
+      {
+        'page_ref'        => lookup_ref(p.page_id, :page),
+        'remote_file_url' => p.file_url,
+        'ordering'        => p.ordering,
+        'name'            => p.name,
+        'created_at'      => p.created_at.to_s,
+        'updated_at'      => p.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_idea_statuses
+    IdeaStatus.all.map do |i|
+      yml_idea_status = {
+        'title_multiloc'       => i.title_multiloc,
+        'ordering'             => i.ordering,
+        'code'                 => i.code,
+        'color'                => i.color,
+        'created_at'           => i.created_at.to_s,
+        'updated_at'           => i.updated_at.to_s,
+        'description_multiloc' => i.description_multiloc
+      }
+      store_ref yml_idea_status, i.id, :idea_status
       yml_idea_status
     end
   end
@@ -318,24 +529,71 @@ class TenantTemplateService
   end
 
   def yml_areas_ideas
-    AreasIdea.all.map do |ai|
-      if lookup_ref(ai.idea_id, :idea)
+    AreasIdea.all.map do |a|
+      if lookup_ref(a.idea_id, :idea)
         {
-          'area_ref' => lookup_ref(ai.area_id, :area),
-          'idea_ref' => lookup_ref(ai.idea_id, :idea)
+          'area_ref' => lookup_ref(a.area_id, :area),
+          'idea_ref' => lookup_ref(a.idea_id, :idea)
         }
       end
     end.compact
   end
 
   def yml_baskets_ideas
-    BasketsIdea.all.map do |bi|
-      if lookup_ref(ai.idea_id, :idea)
+    BasketsIdea.all.map do |b|
+      if lookup_ref(b.idea_id, :idea)
         {
-          'basket_ref' => lookup_ref(bi.basket_id, :basket),
-          'idea_ref'   => lookup_ref(bi.idea_id, :idea)
+          'basket_ref' => lookup_ref(b.basket_id, :basket),
+          'idea_ref'   => lookup_ref(b.idea_id, :idea)
         }
       end.compact
+    end
+  end
+
+  def yml_idea_files
+    IdeaFile.all.map do |i|
+      {
+        'idea_ref'        => lookup_ref(i.idea_id, :idea),
+        'remote_file_url' => i.file_url,
+        'ordering'        => i.ordering,
+        'created_at'      => i.created_at.to_s,
+        'updated_at'      => i.updated_at.to_s,
+        'name'            => i.name
+      }
+    end
+  end
+      
+  def yml_idea_images
+    IdeaImage.all.map do |i|
+      {
+        'idea_ref'         => lookup_ref(i.idea_id, :idea),
+        'remote_image_url' => i.image_url,
+        'ordering'         => i.ordering,
+        'created_at'       => i.created_at.to_s,
+        'updated_at'       => i.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_ideas_phases
+    IdeasPhase.all.map do |i|
+      {
+        'idea_ref'   => lookup_ref(i.idea_id, :idea),
+        'phase_ref'  => lookup_ref(i.phase_id, :phase),
+        'created_at' => i.created_at.to_s,
+        'updated_at' => i.updated_at.to_s
+      }
+    end
+  end 
+
+  def yml_ideas_topics
+    IdeasTopic.all.map do |i|
+      {
+        'idea_ref'   => lookup_ref(i.idea_id, :idea),
+        'topic_ref'  => lookup_ref(i.topic_id, :topic),
+        'created_at' => i.created_at.to_s,
+        'updated_at' => i.updated_at.to_s
+      }
     end
   end
 
@@ -358,4 +616,19 @@ class TenantTemplateService
       yml_comment
     end
   end
+
+  def yml_votes
+    Vote.all.map do |v|
+      yml_vote = {
+        'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
+        'user_ref'    => lookup_ref(v.user_id, :user),
+        'mode'        => v.mode,
+        'created_at'  => v.created_at.to_s,
+        'updated_at'  => v.updated_at.to_s
+      }
+      store_ref yml_vote, v.id, :vote
+      yml_vote
+    end
+  end
+
 end
