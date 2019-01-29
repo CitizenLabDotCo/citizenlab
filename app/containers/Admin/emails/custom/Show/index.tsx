@@ -228,7 +228,7 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.sendTestEmailButton} />
                 </SendTestEmailButton>
                 &nbsp;
-                <InfoTooltip {...messages.sendTestEmailTooltip} position="down-left" />
+                <InfoTooltip {...messages.sendTestEmailTooltip} position="bottom-left" />
               </StyledButtonContainer>
             }
           </CampaignHeader>

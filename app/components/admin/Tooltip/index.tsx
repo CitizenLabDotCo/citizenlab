@@ -78,11 +78,7 @@ export default class Tooltip extends PureComponent<Props, State> {
     const { enabled, children, content, className } = this.props;
     const passthroughProps = omit(this.props, ['dropdownOpened', 'onClickOutside']);
 
-    if (!enabled) {
-      return children;
-    }
-
-    if (!content) {
+    if (!enabled || !content) {
       return children;
     }
 

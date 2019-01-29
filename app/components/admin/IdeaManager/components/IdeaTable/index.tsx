@@ -152,7 +152,7 @@ export default class IdeaTable extends React.Component<Props, State> {
                 >
                   <FormattedMessage {...messages.participatoryBudgettingPicks} />
                   &nbsp;
-                  <InfoTooltip {...messages.basketsCountTooltip} size="small" position="up-left" />
+                  <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
                 </SortableTableHeader>
               </Table.HeaderCell>
             </FeatureFlag>

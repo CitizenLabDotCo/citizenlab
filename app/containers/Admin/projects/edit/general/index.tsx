@@ -687,7 +687,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <>
                     <FormattedMessage {...messages.titleLabel} />
                     <InfoTooltip {...messages.titleLabelTooltip} />
-                  </>)}
+                  </>
+                )}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -769,7 +770,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     areasLabelTooltipLink: (
                       <Link to="/admin/settings/areas">
                         <FormattedMessage {...messages.areasLabelTooltipLinkText} />
-                      </Link>)
+                      </Link>
+                    )
                   }}
                 />
               </Label>

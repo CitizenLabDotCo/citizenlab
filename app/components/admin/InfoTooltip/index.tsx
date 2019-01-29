@@ -18,7 +18,6 @@ import { Omit } from 'typings';
 
 interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
   size?: 'small' | 'big';
-  position?: 'left' | 'right' | 'up' | 'down' | 'up-left';
   className?: string;
   children?: JSX.Element | null;
   offset?: number;

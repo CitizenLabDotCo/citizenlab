@@ -212,7 +212,12 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
                   onChange={this.handleOnChangeNormalization}
                   currentValue={this.state.normalization}
                   value="relative"
-                  label={<><FormattedMessage {...messages.relative} /><InfoTooltip {...messages.relativeTooltip} position="down-left" size="xs" /></>}
+                  label={(
+                    <>
+                      <FormattedMessage {...messages.relative} />
+                      <InfoTooltip {...messages.relativeTooltip} position="bottom-left" size="xs" />
+                    </>
+                  )}
                 />
               </RadioButtons>
               <ChartTitle>Gender</ChartTitle>

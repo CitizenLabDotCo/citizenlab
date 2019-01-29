@@ -39,6 +39,7 @@ const GraphCardTitle = styled.h3`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   margin: 0;
+
   & > :not(last-child) {
     margin-right: 7px;
   }
@@ -67,40 +68,40 @@ class CampaignStats extends React.Component<Props, State> {
 
   relevantsStats = ['sent', 'delivered', 'opened', 'clicked'] as IRelevantStats[];
 
-    render() {
-      const { stats, className } = this.props;
-      if (isNilOrError(stats)) return null;
+  render() {
+    const { stats, className } = this.props;
+    if (isNilOrError(stats)) return null;
 
-      return (
-        <Container className={className}>
-          <GraphCard key="failed">
+    return (
+      <Container className={className}>
+        <GraphCard key="failed">
+          <GraphCardPercentage>
+            <FormattedNumber style="percent" value={(stats.failed + stats.bounced) / stats['total']} />
+          </GraphCardPercentage>
+          <GraphCardCount>
+            {stats.failed + stats.bounced}
+          </GraphCardCount>
+          <GraphCardTitle>
+            <FormattedMessage {...messages.deliveryStatus_failed} />
+          </GraphCardTitle>
+        </GraphCard>
+        {this.relevantsStats.map((status) => (
+          <GraphCard key={status}>
             <GraphCardPercentage>
-              <FormattedNumber style="percent" value={(stats.failed + stats.bounced) / stats['total']} />
+              {stats[status]}
             </GraphCardPercentage>
             <GraphCardCount>
-              {stats.failed + stats.bounced}
+              <FormattedNumber style="percent" value={stats[status] / stats['total']} />
             </GraphCardCount>
             <GraphCardTitle>
-              <FormattedMessage {...messages.deliveryStatus_failed} />
+              <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
+              {status === 'clicked' && <InfoTooltip {...messages.deliveryStatus_clickedTooltip} />}
             </GraphCardTitle>
           </GraphCard>
-          {this.relevantsStats.map((status) => (
-            <GraphCard key={status}>
-              <GraphCardPercentage>
-                {stats[status]}
-              </GraphCardPercentage>
-              <GraphCardCount>
-                <FormattedNumber style="percent" value={stats[status] / stats['total']} />
-              </GraphCardCount>
-              <GraphCardTitle>
-                <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-                {status === 'clicked' && <InfoTooltip {...messages.deliveryStatus_clickedTooltip} />}
-              </GraphCardTitle>
-            </GraphCard>
-          ))}
-        </Container>
-      );
-    }
+        ))}
+      </Container>
+    );
+  }
 }
 
 export default (inputProps: InputProps) => (

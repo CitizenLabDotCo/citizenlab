@@ -374,8 +374,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 id="participationmethod-ideation"
                 label={(
                   <LabelText>
-                    <FormattedMessage tagName="h3" {...messages.ideation} />
-                    <FormattedMessage tagName="p" {...messages.ideationDescription} />
+                    <h3>
+                      <FormattedMessage {...messages.ideation} />
+                    </h3>
+                    <p>
+                      <FormattedMessage {...messages.ideationDescription} />
+                    </p>
                   </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
@@ -387,8 +391,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-budgeting'}
                   label={(
                     <LabelText>
-                      <FormattedMessage tagName="h3" {...messages.participatoryBudgeting} />
-                      <FormattedMessage tagName="p" {...messages.participatoryBudgetingDescription} />
+                      <h3>
+                        <FormattedMessage {...messages.participatoryBudgeting} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.participatoryBudgetingDescription} />
+                      </p>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -401,8 +409,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-survey'}
                   label={(
                     <LabelText>
-                      <FormattedMessage tagName="h3" {...messages.survey} />
-                      <FormattedMessage tagName="p" {...messages.surveyDescription} />
+                      <h3>
+                        <FormattedMessage {...messages.survey} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.surveyDescription} />
+                      </p>
                     </LabelText>)}
                 />
               </FeatureFlag>
