@@ -18,6 +18,7 @@ import { quillEditedContent, fontSizes, colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 import { darken } from 'polished';
 import { isUndefined } from 'util';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   border-radius: 5px;
@@ -75,9 +76,10 @@ class PhaseAbout extends PureComponent<Props, State> {
         return (
           <Container className={className}>
             <InformationBody>
-               <T value={phase.attributes.description_multiloc} supportHtml={true} />
+              <QuillEditedContent>
+                <T value={phase.attributes.description_multiloc} supportHtml={true} />
+              </QuillEditedContent>
                {/* Have clearfix for aligned (floated) videos */}
-               <ClearFix />
             </InformationBody>
             {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
               <StyledFileAttachments files={phaseFiles} />
