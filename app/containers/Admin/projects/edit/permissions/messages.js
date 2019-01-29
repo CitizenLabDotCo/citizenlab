@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.permissionTypeLabel',
     defaultMessage: 'Who can view this project?',
   },
+  permissionsTypeTooltip: {
+    id: 'app.containers.admin.project.permissions.permissionsTypeTooltip',
+    defaultMessage: 'Choose for whom this project will be visible: all, users with admin rights only or a specific selection of users. All other users simply won’t see the project nor its content.',
+  },
   permissionsEveryoneLabel: {
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
     defaultMessage: 'Everyone',
@@ -73,6 +77,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'Who can take which action?',
   },
+  granularPermissionsTooltip: {
+    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTooltip',
+    defaultMessage: 'The users that aren’t part of the selection will see an information message when trying to access the respective action, explaining them that they don’t have access to the action.',
+  },
   permissionAction_commenting: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
     defaultMessage: 'Commenting',
@@ -120,5 +128,25 @@ export default defineMessages({
   moderatorsNotFound: {
     id: 'app.containers.AdminPage.groups.permissions.moderatorsNotFound',
     defaultMessage: 'Moderators not found',
+  },
+  moderatorsSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
+    defaultMessage: 'Who can moderate this project?',
+  },
+  moderatorsRoleExplanation: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation',
+    defaultMessage: 'Moderation rights grant somebody who\'s not an admin the rights to alter the project settings and moderate ideas and comments which belong to this project. Admins always have Moderation rights over all projects.',
+  },
+  moderatorsSectionTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip',
+    defaultMessage: 'Select those users who will be given moderator rights, allowing them to work on this project, process its ideas, email its participants, etc.. They will receive a personal message to inform them. More on the role of project moderator can be found {moreInfoModeratorLink}.',
+  },
+  moreInfoModeratorLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
+    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+  },
+  moreInfoModeratorLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText',
+    defaultMessage: 'here',
   },
 });

@@ -14,6 +14,7 @@ import Label from 'components/UI/Label';
 import Warning from 'components/UI/Warning';
 import Link from 'utils/cl-router/Link';
 import FileUploader from 'components/UI/FileUploader';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // Resources
 // import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -162,11 +163,16 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
               </Warning>
             </SectionField>
           }
-
-          <Field
-            name="page_files"
-            render={this.renderFileUploader(values)}
-          />
+          <SectionField>
+            <Label>
+              <FormattedMessage {...messages.fileUploadLabel} />
+              <InfoTooltip {...messages.fileUploadLabelTooltip} />
+            </Label>
+            <Field
+              name="page_files"
+              render={this.renderFileUploader(values)}
+            />
+          </SectionField>
 
         </StyledSection>
 

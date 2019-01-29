@@ -51,17 +51,33 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.fieldSender',
     defaultMessage: 'From',
   },
+  fieldSenderTooltip: {
+    id: 'app.containers.Admin.emails.fieldSenderTooltip',
+    defaultMessage: 'Choose whom users will see as the sender of the email.',
+  },
   fieldReplyTo: {
     id: 'app.containers.Admin.emails.fieldReplyTo',
     defaultMessage: 'Replies should go to',
+  },
+  fieldReplyToTooltip: {
+    id: 'app.containers.Admin.emails.fieldReplyToTooltip',
+    defaultMessage: 'Choose what email address should receive direct replies from users on your email.',
   },
   fieldTo: {
     id: 'app.containers.Admin.emails.fieldTo',
     defaultMessage: 'To',
   },
+  fieldToTooltip: {
+    id: 'app.containers.Admin.emails.fieldToTooltip',
+    defaultMessage: 'Choose the group(s) of users who will receive your email.',
+  },
   fieldSubject: {
     id: 'app.containers.Admin.emails.fieldSubject',
     defaultMessage: 'Email Subject',
+  },
+  fieldSubjectTooltip: {
+    id: 'app.containers.Admin.emails.fieldSubjectTooltip',
+    defaultMessage: 'This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.',
   },
   fieldBody: {
     id: 'app.containers.Admin.emails.fieldBody',
@@ -102,6 +118,10 @@ export default defineMessages({
   sendTestEmailButton: {
     id: 'app.containers.Admin.emails.sendTestEmailButton',
     defaultMessage: 'Send a preview',
+  },
+  sendTestEmailTooltip: {
+    id: 'app.containers.Admin.emails.sendTestEmailTooltip',
+    defaultMessage: 'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
@@ -162,6 +182,10 @@ export default defineMessages({
   deliveryStatus_clicked: {
     id: 'app.containers.Admin.Campaigns.deliveryStatus_clicked',
     defaultMessage: 'Clicked',
+  },
+  deliveryStatus_clickedTooltip: {
+    id: 'app.containers.Admin.Campaigns.deliveryStatus_clickedTooltip',
+    defaultMessage: 'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
   tabCustom: {
     id: 'app.containers.Admin.Campaigns.tabCustom',

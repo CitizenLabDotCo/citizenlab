@@ -23,9 +23,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDescription.descriptionLabel',
     defaultMessage: 'Description',
   },
+  descriptionTooltip: {
+    id: 'app.containers.AdminPage.ProjectDescription.descriptionTooltip',
+    defaultMessage: 'Shown on the project page. Clearly describe what the project is about, what you expect from your users and what they can expect from you.',
+  },
   descriptionPreviewLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.descriptionPreviewLabel',
     defaultMessage: 'Description Preview',
+  },
+  descriptionPreviewTooltip: {
+    id: 'app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip',
+    defaultMessage: 'Shown on the project card on the home page.',
   },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.ProjectDescription.saveSuccessMessage',

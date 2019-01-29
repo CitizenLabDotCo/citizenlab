@@ -69,6 +69,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.fileUploadLabel',
     defaultMessage: 'Add files to this event',
   },
+  fileUploadLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip',
+    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the event card directly.',
+  },
   titleEvents: {
     id: 'app.containers.AdminPage.ProjectEvents.titleEvents',
     defaultMessage: 'Manage events',

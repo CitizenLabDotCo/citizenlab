@@ -21,10 +21,40 @@ const Container = styled.div`
 
 const Content: any = styled(clickOutside)`
   position: absolute;
-  top: ${(props: any) => props.top || '0px'};
-  left: 50%;
-  transform-origin: top left;
   z-index: 3;
+  &.bottom {
+    top: ${(props: any) => props.offset || '0'}px;
+    left: 50%;
+    transform-origin: top left;
+  }
+
+  &.top {
+    bottom: ${(props: any) => props.offset || '0'}px;
+    left: 50%;
+    transform-origin: bottom left;
+  }
+
+  &.top-left {
+    bottom: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    transform-origin: bottom right;
+  }
+
+  &.bottom-left {
+    top: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    right: ${(props: any) => Math.round(props.offset / 1.5) || '0'}px;
+    transform-origin: top right;
+  }
+
+  &.left {
+    right: ${(props: any) => props.offset || '0'}px;
+    transform-origin: bottom right;
+  }
+
+  &.right {
+    left: ${(props: any) => props.offset || '0'}px;
+    transform-origin: bottom left;
+  }
 
   &.dropdown-enter {
     opacity: 0;
@@ -40,58 +70,36 @@ const Content: any = styled(clickOutside)`
 
 const ContentInner: any = styled.div`
   position: relative;
-  left: -50%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   background-color: ${(props: any) => props.backgroundColor};
   color: ${(props: any) => props.textColor};
   fill: ${(props: any) => props.textColor};
   border: solid 1px ${(props: any) => props.borderColor || colors.separation};
-
-  ::before,
-  ::after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-  }
-
-  ::after {
-    top: -20px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    border-color: transparent transparent ${(props: any) => props.backgroundColor} transparent;
-    border-width: 10px;
-  }
-
-  ::before {
-    top: -22px;
-    left: 0;
-    right: 0;
-    margin: 0 auto;
-    border-color: transparent transparent ${(props: any) => props.borderColor || colors.separation} transparent;
-    border-width: 11px;
+  &.bottom, &.top {
+    left: -50%;
   }
 `;
+
+export type IPosition = 'top' | 'left' | 'right' | 'bottom' | 'top-left' | 'bottom-left';
 
 export interface Props {
   children: JSX.Element;
   content: JSX.Element;
-  top: string;
+  offset: number;
   backgroundColor: string;
   borderColor?: string;
   textColor?: string;
   onClickOutside: (Event) => void;
   dropdownOpened: boolean;
   className?: string;
+  position?: IPosition;
+  // position defaults to right when undefined
 }
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, offset, position } = this.props;
 
     return (
       <Container className={this.props['className']}>
@@ -105,8 +113,8 @@ export default class Popover extends PureComponent<Props> {
           classNames="dropdown"
           exit={false}
         >
-          <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
-            <ContentInner backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content">
+          <Content onClickOutside={onClickOutside} offset={offset} className={`${position || 'right'} tooltip-container`} >
+            <ContentInner className={`${position || 'right'} tooltip-content`} backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor}>
               {content}
             </ContentInner>
           </Content>
