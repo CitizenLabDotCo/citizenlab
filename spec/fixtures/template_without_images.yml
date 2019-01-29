@@ -2319,6 +2319,7 @@ models:
       nb-NO: Privacy Policy
       nl-BE: Privacybeleid
       nl-NL: Privacybeleid
+    slug: privacy-policy
     body_multiloc:
       en: "<h3>1. Privacy policy</h3> <p>This Privacy Policy applies to the personal
         data collected by CitizenLab via this website.</p> <h3>2. WHAT ARE PERSONAL
@@ -3524,6 +3525,7 @@ models:
       nb-NO: Terms & conditions
       nl-BE: Gebruiksvoorwaarden
       nl-NL: Gebruiksvoorwaarden
+    slug: terms-and-conditions
     body_multiloc:
       en: '<p>This online engagement platform aims to give as many people as possible
         the opportunity to think about the future of the city or institution that,
@@ -4769,6 +4771,7 @@ models:
       nb-NO: Information Page
       nl-BE: Over
       nl-NL: Over
+    slug: information
     body_multiloc:
       en: Discover more information related to the platform.
       da-DK: Discover more information related to the platform.
@@ -5045,6 +5048,7 @@ models:
       nb-NO: Cookie Policy
       nl-BE: Cookiebeleid
       nl-NL: Cookiebeleid
+    slug: cookie-policy
     body_multiloc:
       en: '<h3>What Are Cookies</h3><p>As is common practice with almost all professional
         websites this site uses cookies, which are tiny files that are downloaded
