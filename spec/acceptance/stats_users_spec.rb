@@ -438,7 +438,7 @@ resource "Stats - Users" do
 
     before(:all) do
       Apartment::Tenant.switch!('example_org')
-      TenantTemplateService.new.apply_template('base')
+      TenantTemplateService.new.resolve_and_apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
     end
 

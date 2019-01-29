@@ -1003,8 +1003,6 @@ models:
     education: 
     password_digest: "$2a$10$F4MZkuWRT7095Js74SHHB.LFkQyWDmHTQCcQ5054Io9cBwNIU5fvi"
     remote_avatar_url: https://cl2-tenant-template-content.s3.amazonaws.com/fr2_tenant_template/user/avatar/e492cd63-a632-4525-b5a6-4dc1fb708475/b9a11a50ed3acb04d48eccd9e0395f3e.png
-    roles:
-    - type: admin
     created_at: !ruby/object:ActiveSupport::TimeWithZone
       utc: &70 2018-01-17 20:37:16.562782000 Z
       zone: *2

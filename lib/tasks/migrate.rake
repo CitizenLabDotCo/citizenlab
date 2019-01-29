@@ -45,7 +45,7 @@ namespace :migrate do
     client = connect(platform: platform, db_user: db_user, password: password)
     create_tenant(platform, host, client['settings'].find.first, client['meteor_accounts_loginServiceConfiguration'], migration_settings, locales_mapping, keep_settings=keep_settings)
     Apartment::Tenant.switch(host.gsub '.', '_') do
-      TenantTemplateService.new.apply_template 'base'
+      TenantTemplateService.new.resolve_and_apply_template 'base'
     
       topics_code_hash = create_topics_code_hash
       topics_hash = {}
