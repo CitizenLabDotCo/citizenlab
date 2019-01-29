@@ -1,5 +1,8 @@
 {
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
+  "app.components.AdminPage.SettingsPage.customSectionInfo": "",
+  "app.components.AdminPage.SettingsPage.customSectionLabel": "",
+  "app.components.AdminPage.SettingsPage.homePageCustomSection": "",
   "app.components.AssignBudgetControl.assign": "Tildel",
   "app.components.AssignBudgetControl.assigned": "Tildelt",
   "app.components.AssignBudgetControl.seeIdea": "Se idé",
