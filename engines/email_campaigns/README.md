@@ -99,3 +99,41 @@ end
 ### Schedulable
 ### SenderConfigurable
 ### Trackable
+
+
+# Adding New Email Campaign (Optional: With Notifications)
+
+## Optional: Create a Notification
+
+1. If not yet exisiting, add a new `LogActivityJob` to the appropriate side FX service.
+
+2. Create a notification file in `models/notifications`. Make sure to specify as many of the supported attributes (e.g. idea, comment...) as possible.
+
+3. Create a serializer for the new notification in `serializers/web_api/v1/notifications`.
+
+4. Add a new factory for this type of notification.
+
+5. Create a frontend task to support the new notification.
+
+
+## Add the Actual Campaign
+
+1. Create campaign file in `engines/email_campaigns/app/models/email_campaigns/campaigns`. If with notification, inherit from `Campaigns::NotificationCampaign`. Include the desired concerns (e.g. `Consentable`, `RecipientConfigurable`, `Disableable`); `ContentConfigurable`, `SenderConfigurable` and `Trackable` only work for manual campaigns. If `Disableable` is not included, the campaign will still be listed by the frontend, but it will not be disableable. The `enabled` attribute can be set before validation to specify whether the campaign is enabled or disabled by default.
+
+2. If the campaign is triggered by a notification, add a serializer to `engines/email_campaigns/app/serializers/email_campaigns/campaigns`
+
+3. Add the campaign class to `delivery_service.rb`
+
+4. Add entries for the translations to `engines/email_campaigns/config/locales/en.yml` only.
+
+5. Run `rake email_campaigns:assure_campaign_records` to test it in development.
+
+
+## Update the Specs
+
+1. Add a factory to `./engines/email_campaigns/spec/factories/campaigns.rb`
+
+2. Add a factory instance to `@campaigns` in `./engines/email_campaigns/spec/acceptance/consents_spec.rb`
+
+## Deployement
+
