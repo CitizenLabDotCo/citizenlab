@@ -43,6 +43,10 @@ const StyledRemoveButton = styled(Button)`
   }
 `;
 
+const StyledPredicateSelector = styled(PredicateSelector)`
+  z-index: 10;
+`;
+
 type Props = {
   rule: TRule;
   onChange: (rule: TRule) => void;
@@ -109,7 +113,7 @@ class Rule extends PureComponent<Props, State> {
           {rule.ruleType &&
             <>
               {showLabels && <FormattedMessage {...messages.rulesFormLabelPredicate} />}
-              <PredicateSelector
+              <StyledPredicateSelector
                 ruleType={rule.ruleType}
                 predicate={rule.predicate}
                 onChange={this.handleChangePredicate}
