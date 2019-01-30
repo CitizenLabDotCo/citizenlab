@@ -228,6 +228,12 @@ export function quillEditedContent() {
     font-weight: 300;
     line-height: 27px;
 
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
     h1 {
       font-size: ${fontSizes.xxxl - 2}px;
       line-height: 33px;
