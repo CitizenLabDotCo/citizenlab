@@ -8,7 +8,6 @@ import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
 import FileAttachments from 'components/UI/FileAttachments';
-import ClearFix from 'components/ClearFix';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -24,7 +23,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, quillEditedContent, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   display: flex;
@@ -59,10 +59,6 @@ const Right = styled.div`
     margin-left: 0;
     margin-top: 20px;
   `}
-`;
-
-const ProjectDescriptionStyled = styled.div`
-  ${quillEditedContent()}
 `;
 
 const ProjectImages = styled.div`
@@ -121,11 +117,9 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
     <Container>
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
-          <ProjectDescriptionStyled>
+          <QuillEditedContent>
             <T value={project.attributes.description_multiloc} supportHtml={true}/>
-            {/* Have clearfix for aligned (floated) videos */}
-            <ClearFix />
-          </ProjectDescriptionStyled>
+          </QuillEditedContent>
           {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />
           }
