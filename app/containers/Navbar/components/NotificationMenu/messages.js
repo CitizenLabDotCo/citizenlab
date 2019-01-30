@@ -85,7 +85,7 @@ export default defineMessages({
     defaultMessage: '{ideaAuthorFirstName} posted {idea}',
   },
   userPostedComment: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
+    id: 'app.containers.NotificationMenu.userPostedComment',
     defaultMessage: '{commentAuthorFirstName} commented on {idea}',
   },
 });
