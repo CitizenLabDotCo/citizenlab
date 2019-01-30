@@ -37,7 +37,7 @@ type DataProps = {
 type Props = InputProps & DataProps;
 
 interface ITracks {
-  clickChangeEmailNotificationSettings: () => void;
+  clickChangeEmailNotificationSettings: (arg: any) => void;
 }
 
 interface State {
@@ -86,7 +86,7 @@ class CampaignsConsentForm extends PureComponent<Props & ITracks, State> {
     let consentUpdates: Promise<IConsent>[] = [];
 
     // analytics
-    this.props.clickChangeEmailNotificationSettings();
+    this.props.clickChangeEmailNotificationSettings({ extra: { consentChanges } });
 
     this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
