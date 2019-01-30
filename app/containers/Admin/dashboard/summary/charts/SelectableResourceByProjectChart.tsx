@@ -84,8 +84,9 @@ class SelectableResourceByProjectChart extends PureComponent<PropsWithHoCs> {
       const convertedSerie = serie
       .filter(item => item.code !== currentProjectFilter)
       .map(item => {
-        const { value, ...rest } = item;
-        return { value: value - selectedCount, ...rest };
+        const { value, name, ...rest } = item;
+        const shortenedName = name.length > 60 ? `${name.substring(0, 61)}...` : name;
+        return { value: value - selectedCount, name: shortenedName, ...rest };
       });
 
       return { convertedSerie, selectedCount, selectedName };

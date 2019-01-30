@@ -248,7 +248,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const isDescriptionEmpty = (!description || description === '');
     this.setState(({ descriptionError }) => ({
       description,
-      descriptionError: (isDescriptionEmpty ?  descriptionError : null) })
+      descriptionError: (isDescriptionEmpty ? descriptionError : null)
+    })
     );
   }
 
@@ -298,7 +299,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     if (pbContext) {
       if (budget === null && (pbContext.type === 'projects' || (pbContext.type === 'phases' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
         budgetError = <FormattedMessage {...messages.noBudgetError} />;
-      }  else if (budget === 0) {
+      } else if (budget === 0) {
         budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
       } else if (pbMaxBudget && budget && budget > pbMaxBudget) {
         budgetError = <FormattedMessage {...messages.budgetIsTooBig} />;
@@ -469,7 +470,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </HasPermission>
           </FeatureFlag>
         }
+
         <FormElement>
+          <Label>
+            <FormattedMessage {...messages.fileUploadLabel} />
+          </Label>
           <FileUploader
             onFileAdd={this.handleIdeaFileOnAdd}
             onFileRemove={this.handleIdeaFileOnRemove}

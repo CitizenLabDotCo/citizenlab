@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.languages',
     defaultMessage: 'Languages',
   },
+  languagesTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.languagesTooltip',
+    defaultMessage: 'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
+  },
   color_main: {
     id: 'app.containers.AdminPage.SettingsPage.color_main',
     defaultMessage: 'Main color',
@@ -88,6 +92,10 @@ export default defineMessages({
   header_bg: {
     id: 'app.containers.AdminPage.SettingsPage.header_bg',
     defaultMessage: 'Header image',
+  },
+  header_bgTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
+    defaultMessage: 'Shown on the home page. Recommended dimensions are 1440x480.',
   },
   headerSlogan: {
     id: 'app.containers.AdminPage.SettingsPage.headerSlogan',
@@ -117,6 +125,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.headerTitleLabel',
     defaultMessage: 'Header title',
   },
+  headerTitleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.headerTitleTooltip',
+    defaultMessage: 'Shown on the header image on the home page. Tell your users what this platform is about.',
+  },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
     defaultMessage: 'The provided title exceeds the maximum allowed character limit',
@@ -124,6 +136,10 @@ export default defineMessages({
   headerSubtitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.headerSubtitleLabel',
     defaultMessage: 'Header subtitle',
+  },
+  headerSubtitleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.headerSubtitleTooltip',
+    defaultMessage: 'Shown below the header title on the home page. Tell your users why they should register on your platform.',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
@@ -181,8 +197,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.urlTitle',
     defaultMessage: 'Website (URL)',
   },
+  urlTitleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.urlTitleTooltip',
+    defaultMessage: 'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
+  },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
     defaultMessage: 'Warning: the color you selected doesn\'t have a high enough contrast. This may result in text that\'s hard to read. Choose a darker color to optimize readability.',
+  },
+  homePageCustomSection: {
+    id: 'app.components.AdminPage.SettingsPage.homePageCustomSection',
+    defaultMessage: 'Home page custom section',
+  },
+  customSectionLabel: {
+    id: 'app.components.AdminPage.SettingsPage.customSectionLabel',
+    defaultMessage: 'Content',
+  },
+  customSectionInfo: {
+    id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
+    defaultMessage: 'The content of this field will be shown at the bottom of the platform\'s home page, visible to all visitors.',
   },
 });

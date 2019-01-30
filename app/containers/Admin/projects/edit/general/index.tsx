@@ -17,8 +17,10 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from './participationContext';
+import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
+import InfoTooltip from 'components/admin/InfoTooltip';
+import Link from 'utils/cl-router/Link';
 
 // animation
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -27,7 +29,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { getLocalized } from 'utils/i18n';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // services
 import {
@@ -59,7 +61,7 @@ import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
 
 const timeout = 350;
 
-const StyledInputMultiloc = styled(InputMultiloc) `
+const StyledInputMultiloc = styled(InputMultiloc)`
   width: 497px;
 `;
 
@@ -70,11 +72,11 @@ const ProjectType = styled.div`
   text-transform: capitalize;
 `;
 
-const StyledSectionField = styled(SectionField) `
+const StyledSectionField = styled(SectionField)`
   max-width: 100%;
 `;
 
-const StyledImagesDropzone = styled(ImagesDropzone) `
+const StyledImagesDropzone = styled(ImagesDropzone)`
   margin-top: 2px;
   padding-right: 100px;
 `;
@@ -228,7 +230,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           this.setState((state) => {
             const publicationStatus = (project ? project.data.attributes.publication_status : state.publicationStatus);
             const projectType = (project ? project.data.attributes.process_type : state.projectType);
-            const areaType =  ((project && project.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
+            const areaType = ((project && project.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
             const areasOptions = areas.data.map((area) => ({
               value: area.id,
               label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
@@ -645,6 +647,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.statusLabel} />
+                <InfoTooltip {...messages.publicationStatusTooltip} />
               </Label>
               <Radio
                 onChange={this.handleStatusChange}
@@ -680,7 +683,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
-                label={<FormattedMessage {...messages.titleLabel} />}
+                label={(
+                  <>
+                    <FormattedMessage {...messages.titleLabel} />
+                    <InfoTooltip {...messages.titleLabelTooltip} />
+                  </>
+                )}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
@@ -688,11 +696,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             </SectionField>
 
             <SectionField>
-              <Label htmlFor="project-area">
-                <FormattedMessage {...messages.projectType} />
-              </Label>
               {!project ? (
                 <>
+                  <Label htmlFor="projectype-timeline">
+                    <FormattedMessage {...messages.projectType} />
+                    <InfoTooltip {...messages.projectTypeTooltip} />
+                  </Label>
                   <Radio
                     className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
@@ -714,6 +723,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 </>
               ) : (
                   <>
+                    <Label>
+                      <FormattedMessage {...messages.projectTypeEdit} />
+                      <InfoTooltip {...messages.projectTypeEditTooltip} />
+                    </Label>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
                 )}
@@ -751,6 +764,16 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <SectionField>
               <Label htmlFor="project-area">
                 <FormattedMessage {...messages.areasLabel} />
+                <InfoTooltip
+                  {...messages.areasLabelTooltip}
+                  values={{
+                    areasLabelTooltipLink: (
+                      <Link to="/admin/settings/areas">
+                        <FormattedMessage {...messages.areasLabelTooltipLinkText} />
+                      </Link>
+                    )
+                  }}
+                />
               </Label>
               <Radio
                 onChange={this.handleAreaTypeChange}
@@ -785,6 +808,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.headerImageLabel} />
+                <InfoTooltip {...messages.headerImageLabelTooltip} />
               </Label>
               <StyledImagesDropzone
                 images={projectHeaderImage}
@@ -801,6 +825,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <Label>
                 <FormattedMessage {...messages.projectImageLabel} />
+                <InfoTooltip {...messages.projectImageLabelTooltip} />
               </Label>
               <StyledImagesDropzone
                 images={projectImages}
@@ -815,6 +840,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             </StyledSectionField>
 
             <SectionField>
+              <Label>
+                <FormattedMessage {...messages.fileUploadLabel} />
+                <InfoTooltip {...messages.fileUploadLabelTooltip} />
+              </Label>
               <FileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
                 onFileRemove={this.handleProjectFileOnRemove}
@@ -828,6 +857,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
+                    <InfoTooltip {...messages.deleteProjectLabelTooltip} />
                   </Label>
                   <ButtonWrapper>
                     <Button

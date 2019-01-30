@@ -1,4 +1,26 @@
 # Changelog
+
+## 2019-01-30
+
+### Fixed
+
+- Long topic names no longer overlap in the admin dashboards
+- Video no longer pops out of the phase description text
+- Added event tracking for widget code copy and changing notification settings
+- Saving admin settings no longer fails because of a mismatch between platform and user languages
+- The password reset message now renders correctly on IE11
+- It's easier to delete a selected image in the rich text editor
+- The copy in the modal to create a new group now renders correctly in IE11
+- Texts used in the the dashboard insights are no longer only shown in English
+- Tracking of the 'Did you find what you're looking for?' footer not works correctly
+
+### Added
+
+- Tooltips have been added throughout the whole admin interface
+- A new homepage custom text section can be configured in the admin settings, it will appear on the landing page in a future release
+- New experimental notifications have been added that notify admins/moderators on every single idea and comment
+- New tenant properties are being logged to Google Analytics
+
 ## 2019-01-19
 
 ### Fixed
