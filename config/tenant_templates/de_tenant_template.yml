@@ -78,6 +78,10 @@ models:
     title_multiloc: pages.terms_and_conditions_title
     body_multiloc: pages.terms_and_conditions_body
     slug: terms-and-conditions
+  - &5
+    title_multiloc: pages.homepage_info_title
+    body_multiloc: pages.homepage_info_body
+    slug: homepage-info
   page_link:
   - linking_page_ref: *1
     linked_page_ref: *2
