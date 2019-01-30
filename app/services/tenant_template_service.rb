@@ -49,6 +49,7 @@ class TenantTemplateService
           model.save!
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
+          # byebug
           raise e
         end
         obj_to_id_and_class[attributes] = [model.id, model_class]
@@ -331,7 +332,7 @@ class TenantTemplateService
         'locale'                    => u.locale,
         'bio_multiloc'              => u.bio_multiloc,
         'cl1_migrated'              => u.cl1_migrated,
-        'custom_field_values'       => u.custom_field_values,
+        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil?},
         'registration_completed_at' => u.registration_completed_at.to_s
       }
       if !yml_user['password_digest']
