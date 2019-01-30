@@ -22,7 +22,7 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`

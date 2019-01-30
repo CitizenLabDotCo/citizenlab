@@ -21,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
