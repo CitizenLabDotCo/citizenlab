@@ -16,6 +16,10 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import T from 'components/T';
 import Checkbox from 'components/UI/Checkbox';
 
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from './tracks';
+
 const CheckboxContainer = styled.div`
   padding-bottom: 0.5rem;
 `;
@@ -32,20 +36,24 @@ type DataProps = {
 
 type Props = InputProps & DataProps;
 
+interface ITracks {
+  clickChangeEmailNotificationSettings: (arg: any) => void;
+}
+
 interface State {
   consentChanges: {};
   isSaving: boolean;
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
 }
 
-class CampaignsConsentForm extends PureComponent<Props, State> {
+class CampaignsConsentForm extends PureComponent<Props & ITracks, State> {
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       consentChanges: {},
       isSaving: false,
-      saveButtonStatus: 'enabled',
+      saveButtonStatus: 'disabled',
     };
   }
 
@@ -76,6 +84,9 @@ class CampaignsConsentForm extends PureComponent<Props, State> {
   handleOnSubmit = () => {
     const { consentChanges } = this.state;
     let consentUpdates: Promise<IConsent>[] = [];
+
+    // analytics
+    this.props.clickChangeEmailNotificationSettings({ extra: { consentChanges } });
 
     this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
@@ -134,8 +145,10 @@ class CampaignsConsentForm extends PureComponent<Props, State> {
   }
 }
 
+const CampaignsConsentFormWithHOCs = injectTracks<Props>(tracks)(CampaignsConsentForm);
+
 export default (inputProps) => (
   <GetCampaignConsents>
-    {(consents) => <CampaignsConsentForm {...inputProps} consents={consents} />}
+    {(consents) => <CampaignsConsentFormWithHOCs {...inputProps} consents={consents} />}
   </GetCampaignConsents>
 );
