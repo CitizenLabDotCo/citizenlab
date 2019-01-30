@@ -38,6 +38,28 @@ module Surveys
         )
       end
 
+      def responses form_id:, **params
+        self.class.get(
+          "/forms/#{form_id}/responses",
+          query: params,
+          headers: authorized_headers
+        )
+      end
+
+      def all_responses form_id:, **params
+        page_size = params[:page_size] || 1000
+        before = nil
+        output = []
+        while true
+          page_params = before ? params.merge(before: before) : params
+          responses_page = responses(form_id: form_id, **page_params.merge(page_size: page_size))
+          output += responses_page.parsed_response['items']
+          before = output.last['token']
+          break if responses_page['page_count'] <= 1
+        end
+        output
+      end
+
       private 
 
       def authorized_headers
