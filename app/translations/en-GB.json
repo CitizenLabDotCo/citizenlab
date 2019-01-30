@@ -974,6 +974,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "",
+  "app.containers.NotificationMenu.userPostedComment": "",
+  "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "",
   "app.containers.PasswordRecovery.emailError": "",
   "app.containers.PasswordRecovery.emailPlaceholder": "",
