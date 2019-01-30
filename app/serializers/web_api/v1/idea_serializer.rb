@@ -18,10 +18,6 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
   has_one :action_descriptor
 
 
-  def location_point_geojson
-    RGeo::GeoJSON.encode(object.location_point)
-  end
-
   def signed_in?
     scope
   end
