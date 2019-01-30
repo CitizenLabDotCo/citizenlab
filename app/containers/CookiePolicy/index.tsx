@@ -22,8 +22,9 @@ import Fragment from 'components/Fragment';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, quillEditedContent } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // these styled components should be imported from PagesShowPage for consistency.
 // but : https://github.com/styled-components/styled-components/issues/1063
@@ -72,7 +73,6 @@ const PageTitle = styled.h1`
 `;
 
 const PageDescription = styled.div`
-  ${quillEditedContent()}
 `;
 
 const StyledButton = styled.button`
@@ -147,93 +147,95 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
               <FormattedMessage {...messages.cookiePolicyTitle} />
             </PageTitle>
             <PageDescription>
-              <FormattedMessage tagName="p" {...messages.intro} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.changePreferences}
-                className="cookiePreferencesMessage"
-                values={{
-                  changePreferencesButton: (
-                    <StyledButton onClick={openConsentManager}>
-                      <FormattedMessage {...messages.changePreferencesButtonText} />
-                    </StyledButton>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="h2" {...messages.whoAreWeTitle} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.whoAreWeContent}
-                values={{
-                  citizenLabLink: (
-                    <a target="_blank" href={formatMessage(messages.citizenLabHref)}>
-                      CitizenLab
-                    </a>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="h2" {...messages.whatAreCookiesTitle} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.whatAreCookiesContent}
-                values={{
-                  wikipediaCookieLink: (
-                    <a target="_blank" href={props.intl.formatMessage(messages.wikipediaCookieLinkHref)}>
-                      {formatMessage(messages.wikipediaCookieLinkText)}
-                    </a>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
-              <FormattedMessage {...messages.whatCookiesContent} />
-              <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.analyticsContent}
-                values={{
-                  analyticsLink: (
-                    <a target="_blank" href={formatMessage(messages.analyticsHref)}>
-                      {formatMessage(messages.analyticsLinkText)}
-                    </a>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="h3" {...messages.advertisingTitle} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.advertisingContent}
-                values={{
-                  advertisingLink: (
-                    <a target="_blank" href={formatMessage(messages.advertisingHref)}>
-                      {formatMessage(messages.advertisingLinkText)}
-                    </a>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="h3" {...messages.functionalTitle} />
-              <FormattedMessage
-                tagName="p"
-                {...messages.functionalContent}
-                values={{
-                  functionalLink: (
-                    <a target="_blank" href={formatMessage(messages.functionalHref)}>
-                      {formatMessage(messages.functionalLinkText)}
-                    </a>
-                  )
-                }}
-              />
-              <FormattedMessage
-                tagName="p"
-                {...messages.cookiesList}
-                values={{
-                  cookiesListButton: (
-                    <StyledButton onClick={openConsentManager} className="cookieList" >
-                      {formatMessage(messages.cookiesListButtonText)}
-                    </StyledButton>
-                  )
-                }}
-              />
-              <FormattedMessage tagName="p" {...messages.contactInfo} />
+              <QuillEditedContent>
+                <FormattedMessage tagName="p" {...messages.intro} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.changePreferences}
+                  className="cookiePreferencesMessage"
+                  values={{
+                    changePreferencesButton: (
+                      <StyledButton onClick={openConsentManager}>
+                        <FormattedMessage {...messages.changePreferencesButtonText} />
+                      </StyledButton>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="h2" {...messages.whoAreWeTitle} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.whoAreWeContent}
+                  values={{
+                    citizenLabLink: (
+                      <a target="_blank" href={formatMessage(messages.citizenLabHref)}>
+                        CitizenLab
+                      </a>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="h2" {...messages.whatAreCookiesTitle} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.whatAreCookiesContent}
+                  values={{
+                    wikipediaCookieLink: (
+                      <a target="_blank" href={props.intl.formatMessage(messages.wikipediaCookieLinkHref)}>
+                        {formatMessage(messages.wikipediaCookieLinkText)}
+                      </a>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
+                <FormattedMessage {...messages.whatCookiesContent} />
+                <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.analyticsContent}
+                  values={{
+                    analyticsLink: (
+                      <a target="_blank" href={formatMessage(messages.analyticsHref)}>
+                        {formatMessage(messages.analyticsLinkText)}
+                      </a>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="h3" {...messages.advertisingTitle} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.advertisingContent}
+                  values={{
+                    advertisingLink: (
+                      <a target="_blank" href={formatMessage(messages.advertisingHref)}>
+                        {formatMessage(messages.advertisingLinkText)}
+                      </a>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="h3" {...messages.functionalTitle} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.functionalContent}
+                  values={{
+                    functionalLink: (
+                      <a target="_blank" href={formatMessage(messages.functionalHref)}>
+                        {formatMessage(messages.functionalLinkText)}
+                      </a>
+                    )
+                  }}
+                />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.cookiesList}
+                  values={{
+                    cookiesListButton: (
+                      <StyledButton onClick={openConsentManager} className="cookieList" >
+                        {formatMessage(messages.cookiesListButtonText)}
+                      </StyledButton>
+                    )
+                  }}
+                />
+                <FormattedMessage tagName="p" {...messages.contactInfo} />
+              </QuillEditedContent>
             </PageDescription>
           </Fragment>
         </SContentContainer>
