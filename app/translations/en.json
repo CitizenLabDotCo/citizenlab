@@ -974,6 +974,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} commented on your idea",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} reported a comment on '{ideaTitle}' as spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} reported '{ideaTitle}' as spam",
+  "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} commented on {idea}",
+  "app.containers.NotificationMenu.userPostedIdea": "{ideaAuthorFirstName} posted {idea}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reacted to your comment",
   "app.containers.PasswordRecovery.emailError": "Please enter a valid email address",
   "app.containers.PasswordRecovery.emailPlaceholder": "My email address",

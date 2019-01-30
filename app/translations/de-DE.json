@@ -974,6 +974,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{orgName, select, München {{name} kommentierte Ihre Mängelmeldung}} other {{name} kommentierte Ihre Idee}}",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} meldete einen Kommentar zu '{ideaTitle}' als Spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} meldete '{ideaTitle}' als Spam",
+  "app.containers.NotificationMenu.userPostedComment": "",
+  "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reagierte auf Ihren Kommentar",
   "app.containers.PasswordRecovery.emailError": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
   "app.containers.PasswordRecovery.emailPlaceholder": "Meine E-Mail-Adresse",
