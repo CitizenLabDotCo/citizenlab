@@ -32,7 +32,7 @@ namespace :templates do
     template['models'].each do |_, instances|
       instances.each do |attributes|
         attributes.each do |field_name, multiloc|
-          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[args[:locale_to]].blank?
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[args[:locale_to]].blank? && multiloc[args[:locale_from]].present?
             multiloc[args[:locale_to]] = multiloc[args[:locale_from]]
           end
         end
