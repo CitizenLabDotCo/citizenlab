@@ -492,6 +492,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Bepaal welke boodschap je wilt brengen. Bewerk je project en verrijk het met afbeeldingen, video's, bijlagen,..... Deze informatie helpt bezoekers om te begrijpen waar je project over gaat.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Projectbeschrijving",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults": "",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Voeg een idee toe",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Voeg een project toe",
   "app.containers.AdminPage.ProjectEdit.addUser": "Voeg een moderator toe",

@@ -492,6 +492,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,… This information helps visitors to understand what your project is about.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Project description",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults": "",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Add an idea",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "{orgName, select, München {Fügen Sie einen Bezirk oder ein Projekt hinzu} other {Fügen Sie ein Projekt hinzu}}",
   "app.containers.AdminPage.ProjectEdit.addUser": "Moderator hinzufügen",

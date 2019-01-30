@@ -492,6 +492,8 @@
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Choisissez le message que vous voulez paratager à votre public. Améliorez vos projets en ajoutant des images, des vidéos, des fichiers joints... Ces informations permettent aux visiteurs de comprendre le sujet et l'objectif de votre projet .",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Description du projet",
   "app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults": "",
+  "app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults": "",
   "app.containers.AdminPage.ProjectEdit.addNewIdea": "Ajouter une idée",
   "app.containers.AdminPage.ProjectEdit.addNewProject": "Ajouter un projet",
   "app.containers.AdminPage.ProjectEdit.addUser": "Ajouter un Modérateur",
