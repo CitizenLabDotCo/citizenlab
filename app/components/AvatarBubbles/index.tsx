@@ -48,7 +48,7 @@ const Container: any = styled.div`
   `) : css``};
 `;
 
-const StyledSpan: any = styled.span`
+const UserCount: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,7 +57,7 @@ const StyledSpan: any = styled.span`
   width: ${(props: any) => props.size}px;
   padding-bottom: 0;
   font-size: ${fontSizes.small}px;
-  background: ${colors.clIconSecondary};
+  background: ${(props: any) => props.bgColor};
   border-radius: 50%;
   color: white;
   font-weight: 500;
@@ -87,6 +87,7 @@ interface InputProps {
   };
   size?: number;
   overlap?: number;
+  userCountBgColor?: string;
   className?: string;
 }
 
@@ -106,6 +107,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarList = avatars.data;
       const avatarCount = avatarList.length;
       const userCount = avatars.meta.total;
+      const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const usersWithoutAvatar = userCount - avatarCount;
       const definedSize = size || 34;
       const definedOverlap = overlap || 6;
@@ -131,10 +133,14 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
               </AvatarWrapper>
             ))}
             <AvatarWrapper key={avatarCount}>
-              <StyledSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
+              <UserCount
+                className={(usersWithoutAvatar > 999) ? 'too-many-users' : ''}
+                size={definedSize}
+                bgColor={userCountBgColor}
+              >
                 <PlusIcon name="plus" />
                 {usersWithoutAvatar}
-              </StyledSpan>
+              </UserCount>
             </AvatarWrapper>
           </Container>
         );

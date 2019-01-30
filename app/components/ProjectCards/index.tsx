@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size } from 'lodash-es';
+import { size, isEqual } from 'lodash-es';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -10,11 +10,13 @@ import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
 import SendFeedback from 'components/SendFeedback';
+// import MediaQuery from 'react-responsive';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -24,7 +26,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -191,6 +193,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface InputProps extends GetProjectsInputProps {
@@ -201,14 +204,85 @@ interface InputProps extends GetProjectsInputProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  cardSizes: ('small' | 'medium' | 'large')[];
+}
 
 class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   emptyArray: string[] = [];
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cardSizes: []
+    };
+  }
+
+  componentDidMount() {
+    this.calculateProjectCardsLayout();
+  }
+
+  componentDidUpdate() {
+    this.calculateProjectCardsLayout();
+  }
+
+  calculateProjectCardsLayout = () => {
+    const { projects, windowSize } = this.props;
+
+    if (
+      !isNilOrError(projects) &&
+      projects.projectsList &&
+      projects.projectsList.length > 0 &&
+      windowSize
+    ) {
+      const { projectsList } = projects;
+      const initialProjectsCount = size(projectsList.slice(0, 6));
+      const isOdd = (number: number) => number % 2 === 1;
+      const biggerThanSmallTablet = (windowSize >= viewportWidths.smallTablet);
+      const biggerThanLargeTablet = (windowSize >= viewportWidths.largeTablet);
+
+      const cardSizes = projectsList.map((_project, index) => {
+        let cardSize: 'small' | 'medium' | 'large' = (biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small');
+
+        if (index < 6) {
+          if (biggerThanSmallTablet && !biggerThanLargeTablet) {
+            if ((!isOdd(initialProjectsCount) && (index === 0 || index === 1)) || (isOdd(initialProjectsCount) && index === 0)) {
+              cardSize = 'large';
+            }
+          }
+
+          if (biggerThanLargeTablet) {
+            if (initialProjectsCount === 1 && index === 0) {
+              cardSize = 'large';
+            } else if (initialProjectsCount === 2) {
+              cardSize = 'medium';
+            } else if (initialProjectsCount === 3) {
+              if (index === 0) {
+                cardSize = 'large';
+              } else {
+                cardSize = 'medium';
+              }
+            } else if (initialProjectsCount === 4 && index === 0) {
+              cardSize = 'large';
+            } else if (initialProjectsCount === 5 && (index === 0 || index === 1)) {
+              cardSize = 'medium';
+            } else if (initialProjectsCount === 6) {
+              if (index === 0) {
+                cardSize = 'large';
+              } else if (index === 1 || index === 2) {
+                cardSize = 'medium';
+              }
+            }
+          }
+        }
+
+        return cardSize;
+      });
+
+      if (!isEqual(this.state.cardSizes, cardSizes)) {
+        this.setState({ cardSizes });
+      }
+    }
   }
 
   showMore = () => {
@@ -276,38 +350,13 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
             </EmptyContainer>
           }
 
-          {!querying && hasProjects && projectsList &&
+          {!querying && hasProjects && projectsList && (
             <ProjectsList id="e2e-projects-list">
               {projectsList.map((project, index) => {
-                const listCount = size(projectsList);
-                let cardSize: 'small' | 'medium' | 'large' = 'small';
-
-                if (listCount === 1 && index === 0) {
-                  cardSize = 'large';
-                } else if (listCount === 2) {
-                  cardSize = 'medium';
-                } else if (listCount === 3) {
-                  if (index === 0) {
-                    cardSize = 'large';
-                  } else {
-                    cardSize = 'medium';
-                  }
-                } else if (listCount === 4 && index === 0) {
-                  cardSize = 'large';
-                } else if (listCount === 5 && (index === 0 || index === 1)) {
-                  cardSize = 'medium';
-                } else if (listCount >= 6) {
-                  if (index === 0) {
-                    cardSize = 'large';
-                  } else if (index === 1 || index === 2) {
-                    cardSize = 'medium';
-                  }
-                }
-
-                return <ProjectCard key={project.id} projectId={project.id} size={cardSize} />;
+                return <ProjectCard key={project.id} projectId={project.id} size={this.state.cardSizes[index]} />;
               })}
             </ProjectsList>
-          }
+          )}
 
           <Footer>
             {/* Hipster way to center and right-align the other two items in this container */}
@@ -347,7 +396,8 @@ const ProjectCardsWithHOCs = injectIntl(withTheme(ProjectCards) as any);
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
+  windowSize: <GetWindowSize debounce={50} />,
+  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>,
 });
 
 export default (inputProps: InputProps) => (

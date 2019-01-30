@@ -42,11 +42,9 @@ export class LazyImage extends PureComponent<Props, State> {
 
   observeImage = (image: HTMLImageElement) => {
     if (image) {
-      console.log('observe');
       lazyImageObserver.observe(image);
       this.image = image;
     } else if (this.image) {
-      console.log('unobserve');
       lazyImageObserver.unobserve(this.image);
     }
   }
