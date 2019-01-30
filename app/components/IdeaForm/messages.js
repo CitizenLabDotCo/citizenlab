@@ -77,4 +77,8 @@ export default defineMessages({
     id: 'app.container.IdeaForm.budgetIsTooBig',
     defaultMessage: `The provided budget is too big`,
   },
+  fileUploadLabel: {
+    id: 'app.container.IdeaForm.fileUploadLabel',
+    defaultMessage: 'Add files to your idea',
+  }
 });

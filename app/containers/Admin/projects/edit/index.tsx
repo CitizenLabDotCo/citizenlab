@@ -16,7 +16,7 @@ import clHistory from 'utils/cl-router/history';
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import messages from './messages';
 
 // tracks
 import { injectTracks } from 'utils/analytics';
@@ -176,7 +176,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
       const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
         resource: {
-          title: project ? project.attributes.title_multiloc : formatMessage(messages.addNewProject),
+          title: project ? project.attributes.title_multiloc : formatMessage(messages.newProject),
         },
         tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
       };

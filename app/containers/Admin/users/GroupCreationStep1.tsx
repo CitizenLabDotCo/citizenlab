@@ -28,17 +28,7 @@ const GroupType = styled.div`
   flex-direction: column;
   padding: 85px 20px;
   align-items: center;
-
-  .groupName {
-    font-size: ${fontSizes.xl}px;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .groupDescription {
-    flex: 1;
-    text-align: center;
-  }
+  text-align: center;
 
   &.manual {
     background: ${colors.lightGreyishBlue};
@@ -62,7 +52,17 @@ const GroupIcon = styled(Icon)`
   }
 `;
 
-const MoreInfoLink = styled.a``;
+const GroupName = styled.p`
+  font-size: ${fontSizes.xl}px;
+  font-weight: 600;
+`;
+
+const GroupDescription = styled.p`
+  align-self: stretch;
+`;
+
+const MoreInfoLink = styled.a`
+`;
 
 const Step2Button = styled(Button)`
   margin-top: 60px;
@@ -92,12 +92,12 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
       <TypesWrapper>
         <GroupType className="manual">
           <GroupIcon name="database" />
-          <p className="groupName">
+          <GroupName>
             <FormattedMessage {...messages.step1TypeNameNormal} />
-          </p>
-          <p className="groupDescription">
+          </GroupName>
+          <GroupDescription>
             <FormattedMessage {...messages.step1TypeDescriptionNormal} />
-          </p>
+          </GroupDescription>
           <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button className="e2e-create-normal-group-button" style="cl-blue" onClick={this.createStep2Handler('manual')} circularCorners={false}>
             <FormattedMessage {...messages.step1CreateButtonNormal} />
@@ -105,12 +105,12 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
         </GroupType>
         <GroupType className="rules">
           <GroupIcon name="lightingBolt" />
-          <p className="groupName">
+          <GroupName>
             <FormattedMessage {...messages.step1TypeNameSmart} />
-          </p>
-          <p className="groupDescription">
+          </GroupName>
+          <GroupDescription>
             <FormattedMessage {...messages.step1TypeDescriptionSmart} />
-          </p>
+          </GroupDescription>
           <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
           <Step2Button className="e2e-create-rules-group-button" style="cl-blue" onClick={this.createStep2Handler('rules')} circularCorners={false}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />

@@ -16,7 +16,7 @@ import messages from './messages';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from 'containers/Admin/users/tracks';
+import tracks from './tracks';
 
 // services
 import { localeStream } from 'services/locale';

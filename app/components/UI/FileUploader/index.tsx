@@ -1,11 +1,6 @@
 import React from 'react';
 
-// i18n
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // components
-import Label from 'components/UI/Label';
 import FileInput from './FileInput';
 import FileDisplay from './FileDisplay';
 import Error from 'components/UI/Error';
@@ -41,9 +36,6 @@ export default class FileUploader extends React.PureComponent<Props, State>{
 
     return (
       <>
-        <Label>
-          <FormattedMessage {...messages.fileUploadLabel} />
-        </Label>
         <FileInput
           onAdd={this.handleFileOnAdd}
         />
