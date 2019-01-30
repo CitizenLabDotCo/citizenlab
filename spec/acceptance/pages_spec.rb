@@ -119,12 +119,12 @@ resource "Pages" do
     end
 
     describe do
-      let (:title_multiloc) { {"en" => ""}}
+      let (:slug) { '' }
       
       example_request "[error] Create an invalid page", document: false do
         expect(response_status).to eq 422
         json_response = json_parse(response_body)
-        expect(json_response.dig(:errors,:title_multiloc)).to eq [{error: 'blank'}]
+        expect(json_response.dig(:errors,:slug)).to eq [{:error=>"blank"}, {:error=>"invalid", :value=>""}]
       end
     end
   end
