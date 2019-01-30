@@ -10,6 +10,8 @@ import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
+import LinesEllipsis from 'react-lines-ellipsis';
+import Observer from '@researchgate/react-intersection-observer';
 
 // services
 import { getProjectUrl } from 'services/projects';
@@ -28,10 +30,9 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
-import LinesEllipsis from 'react-lines-ellipsis';
 
 const Container = styled(Link)`
   width: calc(33% - 11px);
@@ -53,24 +54,36 @@ const Container = styled(Link)`
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
+
+    ${media.smallerThanMinTablet`
+      width: 100%;
+    `}
   }
 
   &.medium {
     width: calc(50% - 12px);
-    padding-left: 48px;
-    padding-right: 48px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    ${media.smallerThanMinTablet`
+      width: 100%;
+    `}
   }
 
   &.small,
   &.medium {
-    padding-top: 15px;
-    padding-bottom: 34px;
+    padding-top: 20px;
+    padding-bottom: 30px;
   }
 
   &:hover {
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
     transform: translate(0px, -2px);
   }
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+  `}
 `;
 
 const ProjectImageContainer =  styled.div`
@@ -85,9 +98,9 @@ const ProjectImageContainer =  styled.div`
   position: relative;
 
   &.large {
-    width: 573px;
+    width: 50%;
     height: 100%;
-    flex-basis: 573px;
+    flex-basis: 50%;
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
@@ -111,8 +124,8 @@ const ProjectImagePlaceholderIcon = styled(Icon) `
 `;
 
 const ProjectImage = styled<LazyImageProps>(LazyImage)`
-  width: 573px;
-  height: 449px;
+  width: 100%;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -183,10 +196,16 @@ const ProgressBar = styled.div`
 `;
 
 const ProgressBarOverlay: any = styled.div`
-  width: ${(props: any) => props.progress}%;
+  width: 0px;
   height: 100%;
   border-radius: 5px;
   background: #fc3428;
+  transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
+  will-change: width;
+
+  &.visible {
+    width: ${(props: any) => props.progress}%;
+  }
 `;
 
 const ProjectLabel = styled.div`
@@ -326,13 +345,32 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme?: any;
+}
 
-interface State {}
+interface State {
+  visible: boolean;
+}
 
 class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visible: false
+    };
+  }
+
+  handleIntersectionObserverOnChange = (event, unobserve) => {
+    if (event.isIntersecting) {
+      this.setState({ visible: true });
+      unobserve();
+    }
+  }
+
   render() {
     const className = this.props['className'];
+    const { visible } = this.state;
     const { project, size, projectImages, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(project)) {
@@ -351,9 +389,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <TimeRemaining>
                 <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
               </TimeRemaining>
-              <ProgressBar>
-                <ProgressBarOverlay progress={80} />
-              </ProgressBar>
+              <Observer onChange={this.handleIntersectionObserverOnChange}>
+                <ProgressBar>
+                  <ProgressBarOverlay progress={80} className={visible ? 'visible' : ''} />
+                </ProgressBar>
+              </Observer>
             </Countdown>
 
             {isArchived &&
@@ -410,18 +450,18 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                    <ProjectDescription>
-                      {size === 'large'
-                        ? description
-                        : (
-                          <LinesEllipsis
-                            text={description}
-                            maxLine="4"
-                            basedOn="words"
-                          />
-                        )
-                      }
-                    </ProjectDescription>
+                      <ProjectDescription>
+                        {size === 'large'
+                          ? description
+                          : (
+                            <LinesEllipsis
+                              text={description}
+                              maxLine="4"
+                              basedOn="words"
+                            />
+                          )
+                        }
+                      </ProjectDescription>
                     );
                   }
 
@@ -434,6 +474,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 <AvatarBubbles
                   size={30}
+                  userCountBgColor={this.props.theme.colorMain}
                   // context={{
                   //   type: 'project',
                   //   id: project.id
@@ -473,10 +514,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  windowSize: <GetWindowSize />,
 });
 
-const ProjectCardWithHoC = injectIntl(ProjectCard);
+const ProjectCardWithHoC = injectIntl<Props>(withTheme(ProjectCard as any) as any);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
