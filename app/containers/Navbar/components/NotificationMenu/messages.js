@@ -81,7 +81,7 @@ export default defineMessages({
     defaultMessage: 'Deleted user',
   },
   userPostedIdea: {
-    id: 'app.containers.NotificationMenu.userCommentedOnYourIdea',
+    id: 'app.containers.NotificationMenu.userPostedIdea',
     defaultMessage: '{ideaAuthorFirstName} posted {idea}',
   },
   userPostedComment: {
