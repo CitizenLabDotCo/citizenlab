@@ -1,30 +1,32 @@
 module EmailCampaigns
   class DeliveryService
 
-    CAMPAIGN_CLASSES = [
-      Campaigns::Manual,
+    CAMPAIGN_CLASSES = [   
+      Campaigns::AdminDigest,
+      Campaigns::AdminRightsReceived,
+      # Campaigns::CommentDeletedByAdmin,   
+      Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
       Campaigns::CommentOnYourIdea,
-      Campaigns::CommentMarkedAsSpam,
-      Campaigns::IdeaMarkedAsSpam,
-      Campaigns::StatusChangeOfYourIdea,
-      Campaigns::MentionInComment,
-      # Campaigns::CommentDeletedByAdmin,
-      Campaigns::AdminRightsReceived,
-      Campaigns::ProjectModerationRightsReceived,
-      Campaigns::InviteReceived,
-      Campaigns::InviteAccepted,
-      Campaigns::Welcome,
-      Campaigns::PasswordReset,
       Campaigns::FirstIdeaPublished,
+      Campaigns::IdeaMarkedAsSpam,
       # Campaigns::IdeaPublished,
+      Campaigns::InviteAccepted,
+      Campaigns::InviteReceived,
+      Campaigns::Manual,      
+      Campaigns::MentionInComment,
+      Campaigns::ModeratorDigest,
+      Campaigns::NewCommentForAdmin,
       Campaigns::NewCommentOnCommentedIdea,
       Campaigns::NewCommentOnVotedIdea,
+      Campaigns::NewIdeaForAdmin,
+      Campaigns::PasswordReset,
+      Campaigns::ProjectModerationRightsReceived,
       Campaigns::StatusChangeOfCommentedIdea,
       Campaigns::StatusChangeOfVotedIdea,
-      Campaigns::AdminDigest,
-      Campaigns::ModeratorDigest,
-      Campaigns::UserDigest
+      Campaigns::StatusChangeOfYourIdea,
+      Campaigns::UserDigest,
+      Campaigns::Welcome
     ]
 
     def campaign_types
