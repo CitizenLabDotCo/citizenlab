@@ -331,7 +331,7 @@ class TenantTemplateService
         'locale'                    => u.locale,
         'bio_multiloc'              => u.bio_multiloc,
         'cl1_migrated'              => u.cl1_migrated,
-        'custom_field_values'       => u.custom_field_values,
+        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil?},
         'registration_completed_at' => u.registration_completed_at.to_s
       }
       if !yml_user['password_digest']
