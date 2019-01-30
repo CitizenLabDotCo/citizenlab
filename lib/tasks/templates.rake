@@ -27,4 +27,21 @@ namespace :templates do
     end
   end
 
+  task :change_locale, [:template_name,:locale_from,:locale_to] => [:environment] do |t, args|
+    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
+    template['models'].each do |_, instances|
+      instances.each do |attributes|
+        attributes.each do |field_name, multiloc|
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[args[:locale_to]].blank?
+            multiloc[args[:locale_to]] = multiloc[args[:locale_from]]
+          end
+        end
+      end
+    end
+    template['models']['user'].each do |attributes|
+      attributes['locale'] = args[:locale_to]
+    end
+    File.open("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", 'w') { |f| f.write template.to_yaml }
+  end
+
 end
