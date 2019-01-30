@@ -1,21 +1,31 @@
-
+// libraries
 import React, { PureComponent, MouseEvent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 import { map, flatten, uniq } from 'lodash-es';
+
+// styling
+import { colors, fontSizes } from 'utils/styleUtils';
+
+// typings
 import { Node, ParentNode, ideasUnder } from 'services/clusterings';
+
+// components
 import GenderChart from './GenderChart';
 import AgeChart from './AgeChart';
 import DomicileChart from './DomicileChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
 import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
+import InfoTooltip from 'components/admin/InfoTooltip';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
+
+// analytics
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../tracks';
-import InfoTooltip from 'components/admin/InfoTooltip';
 
 const Container = styled.div`
   width: 100%;
@@ -220,11 +230,11 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
                   )}
                 />
               </RadioButtons>
-              <ChartTitle>Gender</ChartTitle>
+              <ChartTitle><FormattedMessage {...messages.gender} /></ChartTitle>
               <StyledGenderChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
-              <ChartTitle>Age</ChartTitle>
+              <ChartTitle><FormattedMessage {...messages.age} /></ChartTitle>
               <StyledAgeChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
-              <ChartTitle>Domicile</ChartTitle>
+              <ChartTitle><FormattedMessage {...messages.domicile} /></ChartTitle>
               <StyledDomicileChart ideaIdsComparisons={this.comparisonIdeas()} normalization={normalization} />
             </>
           }
