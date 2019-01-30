@@ -1030,6 +1030,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} a commenté sur votre idée",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} a signalé un commentaire sur « {ideaTitle} » comme spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} a signé l'idée « {ideaTitle} » comme spam",
+  "app.containers.NotificationMenu.userPostedComment": "",
+  "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} a répondu à votre commentaire",
   "app.containers.PasswordRecovery.emailError": "Veuillez entrer une adresse e-mail valide",
   "app.containers.PasswordRecovery.emailPlaceholder": "Adresse e-mail",

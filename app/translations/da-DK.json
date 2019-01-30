@@ -1030,6 +1030,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommenterede på din idé",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} rapporterede en kommentar på '{ideaTitle}' som spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} rapporterede '{ideaTitle}' som spam",
+  "app.containers.NotificationMenu.userPostedComment": "",
+  "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reagerede på din kommentar",
   "app.containers.PasswordRecovery.emailError": "Indtast venligst en gyldig e-mailadresse",
   "app.containers.PasswordRecovery.emailPlaceholder": "Min e-mailadresse",
