@@ -17,8 +17,10 @@ en-GB:
       "password_reset": I request a password reset for my account
       "first_idea_published": My first idea gets published
       "idea_published": My idea gets published
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
+      "new_idea_for_admin": When an idea is published in a project I can moderate
       "status_change_of_commented_idea": When the status of an idea I commented on has been changed
       "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": A weekly overview (for administrators)
@@ -41,8 +43,10 @@ en-GB:
       "password_reset": When a user requests a password reset
       "first_idea_published": When a user’s first idea gets published
       "idea_published": When my idea gets published
+      "new_comment_for_admin": When a new comment was written in a project I can moderate
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
+      "new_idea_for_admin": When an idea is published in a project I can moderate
       "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
       "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
