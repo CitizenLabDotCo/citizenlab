@@ -9,6 +9,7 @@ import IdeaCards from 'components/IdeaCards';
 import ContentContainer from 'components/ContentContainer';
 import Avatar from 'components/Avatar';
 import Footer from 'components/Footer';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -20,7 +21,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -90,7 +91,6 @@ const Bio = styled.div`
   text-align: center;
   font-weight: 300;
   margin: 23px auto;
-  ${quillEditedContent()}
 `;
 
 const UserIdeas = styled.div`
@@ -130,7 +130,9 @@ class UsersShowPage extends PureComponent<Props, State> {
               </JoinedAt>
               {!isEmpty(user.attributes.bio_multiloc) &&
                 <Bio>
-                  {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
+                  <QuillEditedContent>
+                    {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
+                  </QuillEditedContent>
                 </Bio>
               }
             </UserInfo>
