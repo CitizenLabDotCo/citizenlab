@@ -9,7 +9,7 @@ class Page < ApplicationRecord
 
   PUBLICATION_STATUSES = %w(draft published)
 
-  validates :title_multiloc, :body_multiloc, presence: true, multiloc: {presence: true}
+  validates :title_multiloc, :body_multiloc, presence: true
   validates :slug, presence: true, uniqueness: true, format: {with: SlugService.new.regex }
   validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
