@@ -61,6 +61,8 @@ const Right = styled.div`
   `}
 `;
 
+const ProjectDescription = styled.div``;
+
 const ProjectImages = styled.div`
   align-items: flex-start;
   display: flex;
@@ -117,9 +119,11 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
     <Container>
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
-          <QuillEditedContent>
-            <T value={project.attributes.description_multiloc} supportHtml={true}/>
-          </QuillEditedContent>
+          <ProjectDescription>
+            <QuillEditedContent>
+              <T value={project.attributes.description_multiloc} supportHtml={true}/>
+            </QuillEditedContent>
+          </ProjectDescription>
           {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />
           }
