@@ -1030,6 +1030,8 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} heeft gereageerd op je idee",
   "app.containers.NotificationMenu.userMarkedCommentAsSpam": "{name} markeerde een commentaar op '{ideaTitle}' als spam",
   "app.containers.NotificationMenu.userMarkedIdeaAsSpam": "{name} markeerde '{ideaTitle}' als spam",
+  "app.containers.NotificationMenu.userPostedComment": "",
+  "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} heeft gereageerd op je reactie",
   "app.containers.PasswordRecovery.emailError": "Gelieve een geldig e-mailadres in te vullen",
   "app.containers.PasswordRecovery.emailPlaceholder": "Mijn e-mailadres",
