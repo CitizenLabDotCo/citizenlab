@@ -333,4 +333,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export the survey results (.xslx)',
   },
+  titleSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.titleSurveyResults',
+    defaultMessage: 'Consult the survey answers',
+  },
+  subtitleSurveyResults: {
+    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
+    defaultMessage: 'Here, you can download the results of the surveys within this project as an exel file. For now, you can only see here the typeform surveys.',
+  },
 });

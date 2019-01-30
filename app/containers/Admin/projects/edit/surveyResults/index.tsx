@@ -3,6 +3,7 @@ import React, { Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 
 // Services / Data loading
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -12,6 +13,17 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Components
 import ExportSurveyButton from './ExportSurveyButton';
 import T from 'components/T';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+
+// i18n
+import messages from '../../messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+`;
 
 interface InputProps { }
 
@@ -26,7 +38,7 @@ interface Props extends InputProps, DataProps { }
 
 class SurveyResults extends React.PureComponent<Props> {
 
-  render() {
+  renderButtons = () => {
     const { project, surveys_enabled, typeform_enabled, phases } = this.props;
     if (!isNilOrError(project) && surveys_enabled && typeform_enabled) {
       if (project.attributes.process_type === 'continuous'
@@ -46,7 +58,9 @@ class SurveyResults extends React.PureComponent<Props> {
           && phase.attributes.survey_service === 'typeform').map(phase => {
             return (
               <Fragment key={phase.id}>
-                <T value={phase.attributes.title_multiloc} />
+                <h3>
+                  <T value={phase.attributes.title_multiloc} />
+                </h3>
                 <ExportSurveyButton
                   id={phase.id}
                   type="phases"
@@ -58,6 +72,22 @@ class SurveyResults extends React.PureComponent<Props> {
       return null;
     }
     return null;
+  }
+
+  render() {
+    return (
+      <>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleSurveyResults} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleSurveyResults} />
+        </SectionSubtitle>
+        <Container>
+          {this.renderButtons()}
+        </Container>
+      </>
+    );
   }
 }
 
