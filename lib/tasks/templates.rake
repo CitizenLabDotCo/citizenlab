@@ -23,7 +23,7 @@ namespace :templates do
 
     template_hosts.each do |host|
       template = TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: host))
-      File.open("config/tenant_templates/#{host.split('.').first}_template.yml", 'w') { |f| f.write template }
+      File.open("config/tenant_templates/generated/#{host.split('.').first}_template.yml", 'w') { |f| f.write template }
     end
   end
 
