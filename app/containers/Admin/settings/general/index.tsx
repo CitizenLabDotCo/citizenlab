@@ -28,6 +28,7 @@ import {
 
 // Utils
 import getSubmitState from 'utils/getSubmitState';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 interface Props {}
 
@@ -201,6 +202,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.languages} />
+                <InfoTooltip {...messages.languagesTooltip} />
               </Label>
               <MultipleSelect
                 placeholder=""
@@ -213,6 +215,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.urlTitle} />
+                <InfoTooltip {...messages.urlTitleTooltip} />
               </Label>
               <Input
                 type="text"

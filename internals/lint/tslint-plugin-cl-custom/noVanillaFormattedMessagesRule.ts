@@ -11,7 +11,7 @@ export class Rule extends Rules.AbstractRule {
 // The walker takes care of all the work.
 class NoImportsWalker extends RuleWalker {
   public visitImportDeclaration(node: ImportDeclaration) {
-    const moduleName = node.moduleSpecifier.getText().slice(1,-1);
+    const moduleName = node.moduleSpecifier.getText().slice(1, -1);
 
     if (moduleName === 'react-intl') {
 

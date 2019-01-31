@@ -27,4 +27,12 @@ export default defineMessages({
     id: 'app.components.PagesForm.dontChange',
     defaultMessage: 'Don\'t change this! (unless you really know what you\'re doing)',
   },
+  fileUploadLabel: {
+    id: 'app.components.PagesForm.fileUploadLabel',
+    defaultMessage: 'Add files to this page',
+  },
+  fileUploadLabelTooltip: {
+    id: 'app.components.PagesForm.fileUploadLabelTooltip',
+    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the bottom of this page.',
+  },
 });

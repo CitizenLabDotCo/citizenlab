@@ -128,7 +128,7 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
-  padding-top: 90px;
+  padding-top: 65px;
   padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`

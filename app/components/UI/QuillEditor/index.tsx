@@ -6,7 +6,7 @@ import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
 // Image & video resize modules
-import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction } from 'quill-blot-formatter';
+import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction, DeleteAction } from 'quill-blot-formatter';
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 // BEGIN allow image alignment styles
@@ -74,12 +74,12 @@ Quill.register(VideoFormat, true);
 // END allow image & video resizing styles
 class CustomImageSpec extends ImageSpec {
   getActions() {
-    return [ResizeAction, AlignAction];
+    return [ResizeAction, AlignAction, DeleteAction];
   }
 }
 class CustomIframeVideoSpec extends IframeVideoSpec {
   getActions() {
-    return [ResizeAction, AlignAction];
+    return [ResizeAction, AlignAction, DeleteAction];
   }
 }
 

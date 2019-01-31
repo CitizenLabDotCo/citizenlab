@@ -22,7 +22,8 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   width: 100%;
@@ -139,9 +140,7 @@ const EventTitle = styled.div`
   font-weight: 500;
 `;
 
-const EventDescription = styled.div`
-  ${quillEditedContent()}
-`;
+const EventDescription = styled.div``;
 
 const EventLocationWrapper = styled.div`
   width: 300px;
@@ -269,7 +268,9 @@ class Event extends React.PureComponent<Props, State> {
             </EventTitle>
 
             <EventDescription>
-              <T value={event.attributes.description_multiloc} supportHtml={true} />
+              <QuillEditedContent>
+                <T value={event.attributes.description_multiloc} supportHtml={true} />
+              </QuillEditedContent>
             </EventDescription>
 
             {!isNilOrError(eventFiles) && eventFiles.length > 0 &&

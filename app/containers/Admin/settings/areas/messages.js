@@ -29,9 +29,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldTitle',
     defaultMessage: 'Area name',
   },
+  fieldTitleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTitleTooltip',
+    defaultMessage: 'The name you choose for each area will be visible for citizens during signup and when filtering projects.',
+  },
   fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.fieldDescription',
     defaultMessage: 'Area description',
+  },
+  fieldDescriptionTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip',
+    defaultMessage: 'This description is only for internal collaboration with other administrators, to have a clear understanding what is meant by each area.',
   },
   editFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
