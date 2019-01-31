@@ -37,7 +37,7 @@ const Container = styled.div`
 type Props = {
   id?: string;
   name: string;
-  value: string;
+  value: string | null | undefined;
   placeholder?: string | undefined;
   rows: number;
   ideaId?: string | undefined
@@ -195,7 +195,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             className="textareaWrapper"
             name={name || ''}
             rows={rows}
-            value={value}
+            value={value || ''}
             placeholder={placeholder}
             displayTransform={this.mentionDisplayTransform}
             markup={'@[__display__](__id__)'}
