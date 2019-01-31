@@ -57,7 +57,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
 
     return (
       <Form>
-        <StyledFill>
+        <StyledFill id="rules-group-inner-form">
           <SSectionField>
             <Field
               id="group-title-field"
