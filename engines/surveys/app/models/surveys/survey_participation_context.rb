@@ -28,6 +28,14 @@ module Surveys::SurveyParticipationContext
     self.participation_method == 'survey'
   end
 
+  def typeform_form_id
+    if survey? && typeform?
+      survey_embed_url.split('/').last
+    else
+      nil
+    end
+  end
+
   private
 
   def typeform?
