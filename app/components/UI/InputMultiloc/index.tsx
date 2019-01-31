@@ -43,6 +43,7 @@ export type Props = {
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
   disabled?: boolean;
+  shownLocale?: Locale;
 };
 
 type State = {
@@ -91,45 +92,72 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
+    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc  } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
 
-      return (
-        <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-input`} >
-          {currentTenantLocales.map((currentTenantLocale, index) => {
-            const { label, placeholder, valueMultiloc, errorMultiloc } = this.props;
-            const value = get(valueMultiloc, [currentTenantLocale], null);
-            const error = get(errorMultiloc, [currentTenantLocale], null);
-            const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
+      if (shownLocale) {
+        const value = get(valueMultiloc, [shownLocale], null);
+        const error = get(errorMultiloc, [shownLocale], null);
+        const id = this.props.id && `${this.props.id}-${shownLocale}`;
+        return (
+          <InputWrapper>
+            {label &&
+              <LabelWrapper>
+                <Label htmlFor={id}>{label}</Label>
+              </LabelWrapper>
+            }
 
-            return (
-              <InputWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
-                {label &&
-                  <LabelWrapper>
-                    <Label htmlFor={id}>{label}</Label>
-                    {currentTenantLocales.length > 1 &&
-                      <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                    }
-                  </LabelWrapper>
-                }
+            <Input
+              id={id}
+              value={value}
+              type={this.props.type}
+              placeholder={placeholder}
+              error={error}
+              onChange={this.handleOnChange(shownLocale)}
+              onBlur={this.props.onBlur}
+              maxCharCount={this.props.maxCharCount}
+              disabled={this.props.disabled}
+            />
+          </InputWrapper>
+        );
+      } else {
+        return (
+          <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-input`} >
+            {currentTenantLocales.map((currentTenantLocale, index) => {
+              const value = get(valueMultiloc, [currentTenantLocale], null);
+              const error = get(errorMultiloc, [currentTenantLocale], null);
+              const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
 
-                <Input
-                  id={id}
-                  value={value}
-                  type={this.props.type}
-                  placeholder={placeholder}
-                  error={error}
-                  onChange={this.handleOnChange(currentTenantLocale)}
-                  onBlur={this.props.onBlur}
-                  maxCharCount={this.props.maxCharCount}
-                  disabled={this.props.disabled}
-                />
-              </InputWrapper>
-            );
-          })}
+              return (
+                <InputWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
+                  {label &&
+                    <LabelWrapper>
+                      <Label htmlFor={id}>{label}</Label>
+                      {currentTenantLocales.length > 1 &&
+                        <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
+                      }
+                    </LabelWrapper>
+                  }
+
+                  <Input
+                    id={id}
+                    value={value}
+                    type={this.props.type}
+                    placeholder={placeholder}
+                    error={error}
+                    onChange={this.handleOnChange(currentTenantLocale)}
+                    onBlur={this.props.onBlur}
+                    maxCharCount={this.props.maxCharCount}
+                    disabled={this.props.disabled}
+                  />
+                </InputWrapper>
+              );
+            })}}
         </Container>
-      );
+        );
+      }
     }
 
     return null;
