@@ -25,24 +25,22 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 
+const Container = styled.div`
+  width: 100%;
+  margin-top: -5px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+`;
+
 const ActionsContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  position: absolute;
-  top: 50px;
-  right: 0;
 
   & > *:not(:last-child) {
     margin-right: 15px;
   }
-`;
-
-const TopContainer = styled.div`
-  width: 100%;
-  margin-bottom: 30px;
-  position: relative;
 `;
 
 type Props = {
@@ -182,7 +180,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
       };
       return (
         <>
-          <TopContainer>
+          <Container>
             <GoBackButton onClick={this.goBack} />
             <ActionsContainer>
               {/^.*\/ideas$/.test(pathname) &&
@@ -201,7 +199,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
                 <FormattedMessage {...messages.viewPublicProject} />
               </Button>
             </ActionsContainer>
-          </TopContainer>
+          </Container>
           <TabbedResource {...tabbedProps}>
             {childrenWithExtraProps}
           </TabbedResource>

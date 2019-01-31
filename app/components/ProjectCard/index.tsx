@@ -36,8 +36,7 @@ import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
   width: calc(33% - 11px);
-  height: 576px;
-  height: 630px;
+  min-height: 580px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -50,7 +49,7 @@ const Container = styled(Link)`
 
   &.large {
     width: 100%;
-    height: 449px;
+    min-height: 450px;
     flex-direction: row;
     align-items: stretch;
     justify-content: space-between;
@@ -62,6 +61,7 @@ const Container = styled(Link)`
 
   &.medium {
     width: calc(50% - 12px);
+    min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
 
@@ -142,9 +142,7 @@ const ProjectImage = styled<LazyImageProps>(LazyImage)`
 // `;
 
 const ProjectContent = styled.div`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -154,6 +152,11 @@ const ProjectContent = styled.div`
     margin-bottom: 35px;
     margin-left: 68px;
     margin-right: 32px;
+
+    ${media.smallerThanMaxTablet`
+      margin-left: 20px;
+      margin-right: 20px;
+    `}
   }
 
   &.small {
@@ -175,7 +178,12 @@ const ContentHeader = styled.div`
   }
 `;
 
-const ContentHeaderLeft = styled.div``;
+const ContentHeaderLeft = styled.div`
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: 112px;
+  margin-right: 15px;
+`;
 
 const ContentHeaderRight = styled.div``;
 
@@ -189,7 +197,7 @@ const TimeRemaining = styled.div`
 `;
 
 const ProgressBar = styled.div`
-  width: 112px;
+  width: 100%;
   height: 5px;
   border-radius: 5px;
   background: #d6dade;
@@ -212,6 +220,7 @@ const ProjectLabel = styled.div`
   color: ${({ theme }) => theme.colorSecondary};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
+  white-space: nowrap;
   padding-left: 18px;
   padding-right: 18px;
   padding-top: 10px;
@@ -229,9 +238,7 @@ const ProjectLabel = styled.div`
 
 const ContentBody = styled.div`
   width: 100%;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding-top: 15px;
@@ -239,10 +246,6 @@ const ContentBody = styled.div`
   &.large {
     max-width: 400px;
     justify-content: center;
-  }
-
-  &.medium {
-
   }
 `;
 
@@ -256,7 +259,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${(props) => props.theme.colors.secondaryText};
+  color: ${({ theme }) => theme.colors.secondaryText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
@@ -271,6 +274,7 @@ const ContentFooter = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-top: 16px;
+  margin-top: 30px;
   border-top: solid 1px #e8e8e8;
 `;
 
@@ -301,7 +305,7 @@ const ArchivedLabel = styled.span`
 
 const ProjectMetaItems = styled.div`
   height: 100%;
-  color: ${(props) => props.theme.colors.label};
+  color: ${({ theme }) => theme.colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -451,7 +455,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   if (!isEmpty(description)) {
                     return (
                       <ProjectDescription>
-                        {size === 'large'
+                        {description}
+                        {/* {size === 'large'
                           ? description
                           : (
                             <LinesEllipsis
@@ -460,7 +465,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                               basedOn="words"
                             />
                           )
-                        }
+                        } */}
                       </ProjectDescription>
                     );
                   }
@@ -514,8 +519,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize />,
+  authUser: <GetAuthUser />
 });
 
 const ProjectCardWithHoC = injectIntl<Props>(withTheme(ProjectCard as any) as any);

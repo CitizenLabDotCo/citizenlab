@@ -101,7 +101,7 @@ const HeaderContent = styled.div`
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 75px;
@@ -156,6 +156,8 @@ const HeaderContent = styled.div`
 const HeaderContentCompleteProfile = HeaderContent.extend``;
 const HeaderContentCustomCta = HeaderContent.extend``;
 const HeaderContentDefault = HeaderContent.extend`
+  justify-content: center;
+
   p {
     text-align: center;
   }

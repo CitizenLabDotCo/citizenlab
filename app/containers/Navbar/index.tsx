@@ -452,11 +452,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     )}
                     footer={
                       <>
-                        {projectsList.length > 9 &&
+                        {/* {projectsList.length > 9 && */}
                           <ProjectsListFooter to={'/projects'}>
                             <FormattedMessage {...messages.allProjects} />
                           </ProjectsListFooter>
-                        }
+                        {/* } */}
                       </>
                     }
                   />
