@@ -60,6 +60,13 @@ module Surveys
         output
       end
 
+      def form form_id:
+        self.class.get(
+          "/forms/#{form_id}",
+          headers: authorized_headers
+        )
+      end
+
       private 
 
       def authorized_headers
