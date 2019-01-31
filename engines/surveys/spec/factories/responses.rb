@@ -3,6 +3,7 @@ FactoryBot.define do
     association :participation_context, factory: :continuous_survey_project
     survey_service { "typeform" }
     external_survey_id { "ABCDE12" }
+    external_response_id { "a3a12ec67a1365927098a606107fac15" }
     started_at { "2019-01-27 08:30" }
     submitted_at { "2019-01-27 08:31" }
     answers {[
