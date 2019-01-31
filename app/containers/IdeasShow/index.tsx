@@ -76,6 +76,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import HasPermission from 'components/HasPermission';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -832,7 +833,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     clickGoBackToOriginalIdeaCopyButton();
 
     this.setState({
-       translateFromOriginalButtonClicked: false,
+      translateFromOriginalButtonClicked: false,
     });
   }
 
@@ -877,9 +878,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
         campaign: 'share_content',
         content: auth.data.id
       } : {
-        source: 'share_idea',
-        campaign: 'share_content'
-      };
+          source: 'share_idea',
+          campaign: 'share_content'
+        };
       const upvotesCount = idea.data.attributes.upvotes_count;
       const downvotesCount = idea.data.attributes.downvotes_count;
       const votingEnabled = idea.data.relationships.action_descriptor.data.voting.enabled;
@@ -1069,7 +1070,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                           {translation => {
                             if (!isNilOrError(translation)) {
                               this.setState({ bodyTranslationLoading: false });
-                              return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                              return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
                             }
 
                             return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
@@ -1108,11 +1109,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   utmParams={utmParams}
                 />
 
+                {project &&
+                  <HasPermission item={project.data} action="moderate">
+                    Admin feedback form goes here
+                  </HasPermission>
+                }
+
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
                 </CommentsTitle>
 
-                <ParentCommentForm ideaId={idea.data.id} />
+                {project &&
+                  <HasPermission item={project.data} action="moderate">
+                    <HasPermission.No>
+                      <ParentCommentForm ideaId={idea.data.id} />
+                    </HasPermission.No>
+                  </HasPermission>
+                }
 
                 {ideaComments && <Comments ideaId={idea.data.id} />}
               </LeftColumn>
