@@ -50,17 +50,17 @@ const Header = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 33px;
-  border-bottom: 1px solid #D1D1D1;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #d1d1d1;
 `;
 
 const Title = styled.h2`
   display: flex;
   align-items: center;
-  color: ${(props: any) => props.theme.colorText};
+  color: ${({ theme }) => theme.colorSecondary};
   margin-bottom: 0;
   margin-right: 40px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: ${fontSizes.xl}px;
 
   ${media.largePhone`
