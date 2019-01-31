@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { omit } from 'lodash-es';
 import Popover, { Props as PopoverProps } from 'components/UI/Popover';
 import { Omit } from 'typings';
+import styled from 'styled-components';
 
 interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'|'content'> {
   /** whether the tooltip should be active at all. NOT it's opened state */
@@ -13,6 +14,11 @@ interface Props extends Omit<PopoverProps, 'onClickOutside'|'dropdownOpened'|'co
 interface State {
   opened: boolean;
 }
+
+const StyledDiv = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
 export default class Tooltip extends PureComponent<Props, State> {
 
@@ -55,7 +61,7 @@ export default class Tooltip extends PureComponent<Props, State> {
       }
 
       return (
-        <div
+        <StyledDiv
           className={className}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
@@ -68,7 +74,7 @@ export default class Tooltip extends PureComponent<Props, State> {
             dropdownOpened={opened}
             onClickOutside={this.handleOnMouseLeave}
           />
-        </div>
+        </StyledDiv>
       );
     }
 }

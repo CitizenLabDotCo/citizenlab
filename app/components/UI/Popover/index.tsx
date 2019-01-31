@@ -10,6 +10,8 @@ import { colors } from 'utils/styleUtils';
 const Container = styled.div`
   position: relative;
   outline: none;
+  display: flex;
+  align-items: center;
 
   * {
     outline: none;
@@ -42,6 +44,8 @@ const ContentInner: any = styled.div`
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
   background-color: ${(props: any) => props.backgroundColor};
+  color: ${(props: any) => props.textColor};
+  fill: ${(props: any) => props.textColor};
   border: solid 1px ${(props: any) => props.borderColor || colors.separation};
 
   ::before,
@@ -79,6 +83,7 @@ export interface Props {
   top: string;
   backgroundColor: string;
   borderColor?: string;
+  textColor?: string;
   onClickOutside: (Event) => void;
   dropdownOpened: boolean;
   className?: string;
@@ -86,7 +91,7 @@ export interface Props {
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, backgroundColor, borderColor, top } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top } = this.props;
 
     return (
       <Container className={this.props['className']}>
@@ -101,7 +106,7 @@ export default class Popover extends PureComponent<Props> {
           exit={false}
         >
           <Content onClickOutside={onClickOutside} top={top} className="tooltip-container">
-            <ContentInner backgroundColor={backgroundColor} borderColor={borderColor} className="tooltip-content">
+            <ContentInner backgroundColor={backgroundColor} textColor={textColor} borderColor={borderColor} className="tooltip-content">
               {content}
             </ContentInner>
           </Content>

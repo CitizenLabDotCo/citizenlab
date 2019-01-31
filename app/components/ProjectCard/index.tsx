@@ -10,7 +10,6 @@ import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
-import LinesEllipsis from 'react-lines-ellipsis';
 import Observer from '@researchgate/react-intersection-observer';
 
 // services
@@ -241,7 +240,7 @@ const ContentBody = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 15px;
+  padding-top: 20px;
 
   &.large {
     max-width: 400px;
@@ -262,7 +261,7 @@ const ProjectDescription = styled.div`
   color: ${({ theme }) => theme.colors.secondaryText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
-  font-weight: 400;
+  font-weight: 300;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -456,16 +455,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                     return (
                       <ProjectDescription>
                         {description}
-                        {/* {size === 'large'
-                          ? description
-                          : (
-                            <LinesEllipsis
-                              text={description}
-                              maxLine="4"
-                              basedOn="words"
-                            />
-                          )
-                        } */}
                       </ProjectDescription>
                     );
                   }

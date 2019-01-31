@@ -71,9 +71,25 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.adminLabel',
     defaultMessage: `Grant administrator rights to the invited people?`,
   },
+  adminLabelTooltip: {
+    id: 'app.containers.Admin.Invitations.adminLabelTooltip',
+    defaultMessage: `When toggled on, people receiving and accepting your invitation will also have access to all admin settings of the platform.`,
+  },
   moderatorLabel: {
     id: 'app.containers.Admin.Invitations.moderatorLabel',
     defaultMessage: `Grant project moderator rights to the invited people?`,
+  },
+  moderatorLabelTooltip: {
+    id: 'app.containers.Admin.Invitations.moderatorLabelTooltip',
+    defaultMessage: `When toggled on, people receiving and accepting your invitation will also have moderator rights to one or multiple projects. More info on the project moderator role {moderatorLabelTooltipLink}.`,
+  },
+  moderatorLabelTooltipLink: {
+    id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLink',
+    defaultMessage: `http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators`,
+  },
+  moderatorLabelTooltipLinkText: {
+    id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLinkText',
+    defaultMessage: `here`,
   },
   projectSelectorPlaceholder: {
     id: 'app.containers.Admin.Invitations.projectSelectorPlaceholder',
@@ -134,6 +150,10 @@ export default defineMessages({
   deleteInvite: {
     id: 'app.containers.Admin.Invitations.deleteInvite',
     defaultMessage: 'Delete',
+  },
+  deleteInviteTooltip: {
+    id: 'app.containers.Admin.Invitations.deleteInviteTooltip',
+    defaultMessage: 'Cancelling an invitation will allow you to resend an invitation to these persons.',
   },
   exportInvites: {
     id: 'app.containers.Admin.Invitations.exportInvites',

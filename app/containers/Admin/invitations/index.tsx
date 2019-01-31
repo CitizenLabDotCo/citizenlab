@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
-import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
@@ -17,6 +16,7 @@ import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/ad
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -28,8 +28,8 @@ import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { FormattedHTMLMessage } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedHTMLMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
@@ -111,7 +111,7 @@ const Processing = styled.div`
   margin-left: 15px;
 `;
 
-const SInvitesTable = styled(InvitesTable) `
+const SInvitesTable = styled(InvitesTable)`
   margin-top: 80px;
   margin-bottom: 80px;
 `;
@@ -146,7 +146,7 @@ type State = {
   unknownError: JSX.Element | null;
 };
 
-class Invitations extends React.PureComponent<Props, State> {
+class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> {
   fileInputElement: HTMLInputElement | null;
 
   constructor(props) {
@@ -399,7 +399,7 @@ class Invitations extends React.PureComponent<Props, State> {
     }
   }
 
-  render () {
+  render() {
     const { projects, locale, tenantLocales, groups } = this.props;
     const {
       selectedEmails,
@@ -433,28 +433,26 @@ class Invitations extends React.PureComponent<Props, State> {
       <Collapse
         opened={invitationOptionsOpened}
         onToggle={this.toggleOptions}
-        label={<FormattedMessage {...messages.invitationOptions} />}
+        label={(
+          <>
+            <FormattedMessage {...messages.invitationOptions} />
+            {selectedView === 'import' &&
+              <InfoTooltip
+                {...messages.importOptionsInfo}
+                values={{
+                  // tslint:disable-next-line
+                  supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                }}
+              />
+            }
+          </>
+        )}
       >
         <>
-          {selectedView === 'import' &&
-            <SectionField>
-              <Warning
-                text={
-                  <FormattedMessage
-                    {...messages.importOptionsInfo}
-                    values={{
-                      // tslint:disable-next-line
-                      supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                    }}
-                  />
-                }
-              />
-            </SectionField>
-          }
-
           <SectionField>
             <Label>
               <FormattedMessage {...messages.adminLabel} />
+              <InfoTooltip {...messages.adminLabelTooltip} />
             </Label>
             <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
           </SectionField>
@@ -462,9 +460,19 @@ class Invitations extends React.PureComponent<Props, State> {
           <SectionField>
             <Label>
               <FormattedMessage {...messages.moderatorLabel} />
+              <InfoTooltip
+                {...messages.moderatorLabelTooltip}
+                values={{
+                  moderatorLabelTooltipLink: (
+                    // tslint:disable-next-line
+                    <a href={this.props.intl.formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                      <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
+                    </a>)
+                }}
+              />
             </Label>
             <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
-            { hasModeratorRights &&
+            {hasModeratorRights &&
               <MultipleSelect
                 value={selectedProjects}
                 options={projectOptions}
@@ -524,10 +532,10 @@ class Invitations extends React.PureComponent<Props, State> {
 
     return (
       <>
-      <HelmetIntl
-        title={messages.helmetTitle}
-        description={messages.helmetDescription}
-      />
+        <HelmetIntl
+          title={messages.helmetTitle}
+          description={messages.helmetDescription}
+        />
         <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
             <PageTitle>
@@ -552,20 +560,15 @@ class Invitations extends React.PureComponent<Props, State> {
                 <SectionField>
                   <Label>
                     <FormattedHTMLMessage {...messages.importLabel} />
+                    <InfoTooltip
+                      {...messages.importInfo}
+                      values={{
+                        emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                        downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                        supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                      }}
+                    />
                   </Label>
-
-                  <Warning
-                    text={
-                      <FormattedMessage
-                        {...messages.importInfo}
-                        values={{
-                          emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                          downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                          supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                        }}
-                      />
-                    }
-                  />
 
                   <FileInputWrapper>
                     <input
@@ -637,6 +640,8 @@ class Invitations extends React.PureComponent<Props, State> {
   }
 }
 
+const InvitationsWithIntl = injectIntl(Invitations);
+
 const Data = adopt<DataProps, {}>({
   projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
   locale: <GetLocale />,
@@ -646,6 +651,6 @@ const Data = adopt<DataProps, {}>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Invitations {...inputProps} {...dataProps} />}
+    {dataProps => <InvitationsWithIntl {...inputProps} {...dataProps} />}
   </Data>
 );

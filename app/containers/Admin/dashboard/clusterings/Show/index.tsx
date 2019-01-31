@@ -1,20 +1,31 @@
+// libraries
 import React, { PureComponent } from 'react';
 import { clone } from 'lodash-es';
-import Circles from './Circles';
-import { Node } from 'services/clusterings';
-import InfoPane from './InfoPane';
-import styled, { ThemeProvider } from 'styled-components';
-import { isNilOrError } from 'utils/helperUtils';
-import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
 import { withRouter, WithRouterProps } from 'react-router';
-import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
-import { colors, media } from 'utils/styleUtils';
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
+import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+
+// components
+import Circles from './Circles';
+import InfoPane from './InfoPane';
 import GoBackButton from 'components/UI/GoBackButton';
 import { PageTitle } from 'components/admin/Section';
 import T from 'components/T';
+
+// typings
+import { Node } from 'services/clusterings';
+import { globalState, IGlobalStateService, IAdminFullWidth } from 'services/globalState';
+
+// resources
+import GetClustering, { GetClusteringChildProps } from 'resources/GetClustering';
+
+// styling
+import styled, { ThemeProvider } from 'styled-components';
+import { colors, media } from 'utils/styleUtils';
+
+// analytics
+import { injectTracks } from 'utils/analytics';
+import tracks from '../tracks';
 
 const TwoColumns = styled.div`
   flex-shrink: 0;
@@ -39,7 +50,6 @@ const StyledCircles = styled(Circles)`
   border: solid 1px ${colors.separation};
   border-radius: 5px;
   padding: 25px;
-  /* overflow: hidden; */
 `;
 
 const StyledInfoPane = styled(InfoPane)`

@@ -12,6 +12,7 @@ import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // services
 import { PageLink } from 'services/pageLink';
@@ -32,7 +33,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -97,9 +98,7 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const PageDescription = styled.div`
-  ${quillEditedContent()}
-`;
+const PageDescription = styled.div``;
 
 const PagesNavWrapper = styled.div`
   width: 100%;
@@ -199,7 +198,9 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
                     {pageTitle}
                   </PageTitle>
                   <PageDescription>
-                    {pageDescription}
+                    <QuillEditedContent>
+                      {pageDescription}
+                    </QuillEditedContent>
                   </PageDescription>
                 </Fragment>
               </StyledContentContainer>

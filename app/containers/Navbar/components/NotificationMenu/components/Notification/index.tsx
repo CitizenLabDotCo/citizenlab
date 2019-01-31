@@ -9,6 +9,9 @@ import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotific
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
+import NewIdeaForAdmin from '../NewIdeaForAdmin';
+import NewCommentForAdmin from '../NewCommentForAdmin';
+
 import {
   TNotificationData,
   ICommentOnYourCommentNotificationData,
@@ -20,7 +23,9 @@ import {
   IStatusChangeOfYourIdeaNotificationData,
   ICommentDeletedByAdminNotificationData,
   IProjectModerationRightsReceivedNotificationData,
-  IAdminRightsReceivedNotificationData
+  IAdminRightsReceivedNotificationData,
+  IIdeaForAdminData,
+  ICommentForAdminData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -57,6 +62,10 @@ export default class Notification extends PureComponent<Props> {
         return <ProjectModerationRightsReceivedNotification notification={notification as IProjectModerationRightsReceivedNotificationData} />;
       case 'admin_rights_received':
         return <AdminRightsReceivedNotification notification={notification as IAdminRightsReceivedNotificationData} />;
+      case 'new_idea_for_admin':
+        return <NewIdeaForAdmin notification={notification as IIdeaForAdminData} />;
+      case 'new_comment_for_admin':
+        return <NewCommentForAdmin notification={notification as ICommentForAdminData} />;
       default: return null;
     }
   }

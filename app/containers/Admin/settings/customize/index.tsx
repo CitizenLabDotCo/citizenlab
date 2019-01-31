@@ -38,6 +38,7 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const ColorPickerSectionField = styled(SectionField)`
 `;
@@ -46,8 +47,8 @@ const ContrastWarning = styled(Warning)`
   margin-top: 10px;
 `;
 
-const StyledSectionField = styled(SectionField)`
-  max-width: 500px;
+const WideSectionField = styled(SectionField)`
+  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
 `;
 
 interface DataProps {
@@ -65,7 +66,14 @@ interface IAttributesDiff {
   header_bg?: UploadFile;
 }
 
-type State  = {
+interface IAttributesDiff {
+  settings?: Partial<ITenantSettings>;
+  homepage_info?: Multiloc;
+  logo?: UploadFile;
+  header_bg?: UploadFile;
+}
+
+type State = {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
@@ -287,7 +295,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         await updateTenant(currentTenant.data.id, attributesDiff as IUpdatedTenantProperties);
         if (!isNilOrError(homepageInfoPage)) {
           const homepageInfoPageId = homepageInfoPage.id;
-          await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+          if (attributesDiff.homepage_info) {
+            await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+          }
         }
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
@@ -393,7 +403,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
             <SectionField key={'header_bg'}>
               <Label>
-                <FormattedMessage {...messages['header_bg']} />
+                <FormattedMessage {...messages.header_bg} />
+                <InfoTooltip {...messages.header_bgTooltip} />
               </Label>
               <ImagesDropzone
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -409,27 +420,59 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               />
             </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={<FormattedMessage {...messages.headerTitleLabel} />}
+                label={(
+                  <>
+                    <FormattedMessage {...messages.headerTitleLabel} />
+                    <InfoTooltip {...messages.headerTitleTooltip} />
+                  </>
+                )}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
               />
-            </StyledSectionField>
+            </SectionField>
 
-            <StyledSectionField>
+            <SectionField>
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
+                label={(
+                  <>
+                    <FormattedMessage {...messages.headerSubtitleLabel} />
+                    <InfoTooltip {...messages.headerSubtitleTooltip} />
+                  </>
+                )}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
               />
-            </StyledSectionField>
+            </SectionField>
+          </Section>
+
+          <Section>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.homePageCustomSection} />
+            </SubSectionTitle>
+
+            <WideSectionField>
+              <QuillMultiloc
+                id="custom-section"
+                inAdmin
+                label={(
+                  <>
+                  <FormattedMessage {...messages.customSectionLabel} />
+                  <InfoTooltip {...messages.customSectionInfo} />
+                  </>
+                )}
+                valueMultiloc={homepageInfoPageBodyMultiloc}
+                onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
+              />
+              <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
+            </WideSectionField>
           </Section>
 
           <Section>
