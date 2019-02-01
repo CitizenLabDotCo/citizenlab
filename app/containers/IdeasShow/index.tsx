@@ -1116,6 +1116,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   </HasPermission>
                 }
 
+                {adminFeedbackPosts &&
+                  <AdminFeedbackFeed adminFeedbackPosts={adminFeedbackPosts} />
+                }
+
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
                 </CommentsTitle>
