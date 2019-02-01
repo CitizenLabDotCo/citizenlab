@@ -77,6 +77,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import HasPermission from 'components/HasPermission';
+import AdminFeedbackNew from './AdminFeedbackNew';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -1111,7 +1112,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                 {project &&
                   <HasPermission item={project.data} action="moderate">
-                    Admin feedback form goes here
+                    <AdminFeedbackNew />
                   </HasPermission>
                 }
 
