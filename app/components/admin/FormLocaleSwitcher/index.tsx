@@ -1,8 +1,48 @@
 import React, { PureComponent } from 'react';
-import { Locale, Multiloc, MultilocFormValues } from 'typings';
+import { Locale, MultilocFormValues } from 'typings';
 import { adopt } from 'react-adopt';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import Icon from 'components/UI/Icon';
+
+const Container = styled.div`
+  display: flex;
+  margin-bottom: 10px;
+  width: 100%;
+  justify-content: flex-end;
+  & > :not(:last-child) {
+    margin-right: 5px;
+  }
+`;
+
+const StyledButton = styled.button`
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+  padding: 7px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover, &:focus, &.isSelected:hover, &.isSelected.focus {
+    background: ${colors.adminBackground};
+    outline: none;
+  }
+  svg {
+    fill: ${colors.clRed};
+  }
+  & >:first-child {
+    margin-right: 7px;
+  }
+  &.isComplete {
+    svg {
+      fill: ${colors.clGreen};
+    }
+  }
+  &.isSelected {
+    background: ${colors.background};
+  }
+`;
 
 interface InputProps {
   onLocaleChange: (loc: Locale) => () => void;
@@ -28,13 +68,22 @@ class FormLocaleSwitcher extends PureComponent<Props> {
     const { tenantLocales, onLocaleChange, selectedLocale } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
-      return tenantLocales.map(locale => (
-        <button key={locale} onClick={onLocaleChange(locale)} type="button">
-          {locale === selectedLocale && 'Here'}
-          {this.validatePerLocale(locale) && 'yay'}
-          {locale}
-        </button>
-      ));
+      return (
+        <Container>
+          {tenantLocales.map(locale => (
+            <StyledButton
+              key={locale}
+              onClick={onLocaleChange(locale)}
+              type="button"
+              className={`${locale === selectedLocale && 'isSelected'} ${this.validatePerLocale(locale) && 'isComplete'}`}
+            >
+              <Icon name="dot" />
+              {locale}
+            </StyledButton>
+          ))
+          }
+        </Container>
+      );
     }
     return null;
   }

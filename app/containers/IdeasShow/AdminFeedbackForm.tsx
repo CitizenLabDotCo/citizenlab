@@ -76,7 +76,6 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
             selectedLocale={selectedLocale}
             values={values}
           />
-          <SectionField>
             <Field
               name="author_multiloc"
               render={this.renderFormikInputMultiloc}
@@ -85,8 +84,7 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
               fieldName="author_multiloc"
               apiErrors={errors.author_multiloc as any}
             />}
-          </SectionField>
-          <SectionField>
+
             <Field
               render={this.renderFormikMentionsTextAreaMultiloc}
               name="body_multiloc"
@@ -95,7 +93,6 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
               fieldName="body_multiloc"
               apiErrors={errors.body_multiloc as any}
             />}
-          </SectionField>
         </Section>
 
         <FormikSubmitWrapper
