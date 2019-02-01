@@ -326,4 +326,12 @@ export default defineMessages({
     id: 'app.components.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
+  editAdminFeedbackPost: {
+    id: 'app.components.IdeasShow.editAdminFeedbackPost',
+    defaultMessage: 'Edit',
+  },
+  loadPreviousUpdates: {
+    id: 'app.components.IdeasShow.loadPreviousUpdates',
+    defaultMessage: 'Load previous updates',
+  }
 });
