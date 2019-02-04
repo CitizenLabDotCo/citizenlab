@@ -20,8 +20,8 @@ models:
     description_multiloc: {}
     required: false
     ordering: 0
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
     enabled: true
     code: gender
   - resource_type: User
@@ -41,8 +41,8 @@ models:
     description_multiloc: {}
     required: false
     ordering: 1
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
     enabled: true
     code: birthyear
   - resource_type: User
@@ -62,8 +62,8 @@ models:
     description_multiloc: {}
     required: false
     ordering: 2
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
     enabled: true
     code: domicile
   - &2
@@ -84,8 +84,8 @@ models:
     description_multiloc: {}
     required: false
     ordering: 3
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
     enabled: false
     code: education
   custom_field_option:
@@ -103,8 +103,8 @@ models:
       nl-BE: Man
       nl-NL: Man
     ordering: 0
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *1
     key: female
     title_multiloc:
@@ -119,8 +119,8 @@ models:
       nl-BE: Vrouw
       nl-NL: Vrouw
     ordering: 1
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *1
     key: unspecified
     title_multiloc:
@@ -135,8 +135,8 @@ models:
       nl-BE: Onbepaald
       nl-NL: Onbepaald
     ordering: 2
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '2'
     title_multiloc:
@@ -151,8 +151,8 @@ models:
       nl-BE: Lager secundair onderwijs
       nl-NL: Lager secundair onderwijs
     ordering: 0
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '3'
     title_multiloc:
@@ -167,8 +167,8 @@ models:
       nl-BE: Hoger secundair onderwijs
       nl-NL: Hoger secundair onderwijs
     ordering: 1
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '4'
     title_multiloc:
@@ -183,8 +183,8 @@ models:
       nl-BE: Postsecundair niet-hoger onderwijs
       nl-NL: Postsecundair niet-hoger onderwijs
     ordering: 2
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '5'
     title_multiloc:
@@ -199,8 +199,8 @@ models:
       nl-BE: Tertiair onderwijs met korte cyclus
       nl-NL: Tertiair onderwijs met korte cyclus
     ordering: 3
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '6'
     title_multiloc:
@@ -215,8 +215,8 @@ models:
       nl-BE: Bachelor of gelijkwaardig
       nl-NL: Bachelor of gelijkwaardig
     ordering: 4
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '7'
     title_multiloc:
@@ -231,8 +231,8 @@ models:
       nl-BE: Master of gelijkwaardig
       nl-NL: Master of gelijkwaardig
     ordering: 5
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   - custom_field_ref: *2
     key: '8'
     title_multiloc:
@@ -247,8 +247,8 @@ models:
       nl-BE: Doctoraat of gelijkwaardig
       nl-NL: Doctoraat of gelijkwaardig
     ordering: 6
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   topic:
   - &56
     title_multiloc:
@@ -274,8 +274,8 @@ models:
       nl-BE: Straten en pleinen
       nl-NL: Straten en pleinen
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - &55
     title_multiloc:
       en: Cleanliness and waste
@@ -300,8 +300,8 @@ models:
       nl-BE: Netheid en afval
       nl-NL: Netheid en afval
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - &54
     title_multiloc:
       en: Mobility
@@ -326,8 +326,8 @@ models:
       nl-BE: Mobiliteit
       nl-NL: Mobiliteit
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Technology
       da-DK: Technology
@@ -351,8 +351,8 @@ models:
       nl-BE: Technologie
       nl-NL: Technologie
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Work, economy and commerce
       da-DK: Work, economy and commerce
@@ -376,8 +376,8 @@ models:
       nl-BE: Werk, economie en handel
       nl-NL: Werk, economie en handel
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Nature and biodiversity
       da-DK: Nature and biodiversity
@@ -401,8 +401,8 @@ models:
       nl-BE: Natuur en biodiversiteit
       nl-NL: Natuur en biodiversiteit
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Sustainable development
       da-DK: Sustainable development
@@ -426,8 +426,8 @@ models:
       nl-BE: Duurzame ontwikkeling
       nl-NL: Duurzame ontwikkeling
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Housing
       da-DK: Housing
@@ -451,8 +451,8 @@ models:
       nl-BE: Wonen
       nl-NL: Wonen
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Arts, culture and events
       da-DK: Arts, culture and events
@@ -476,8 +476,8 @@ models:
       nl-BE: Kunst, cultuur en evenementen
       nl-NL: Kunst, cultuur en evenementen
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Citizenship
       da-DK: Citizenship
@@ -501,8 +501,8 @@ models:
       nl-BE: Burgerschap
       nl-NL: Burgerschap
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - &57
     title_multiloc:
       en: Social inclusion
@@ -527,8 +527,8 @@ models:
       nl-BE: Sociale inclusie
       nl-NL: Sociale inclusie
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Care and welfare
       da-DK: Care and welfare
@@ -552,8 +552,8 @@ models:
       nl-BE: Zorg en welzijn
       nl-NL: Zorg en welzijn
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Sports
       da-DK: Sports
@@ -577,8 +577,8 @@ models:
       nl-BE: Sport
       nl-NL: Sport
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   - title_multiloc:
       en: Education and youth
       da-DK: Education and youth
@@ -602,8 +602,8 @@ models:
       nl-BE: Onderwijs en jeugd
       nl-NL: Onderwijs en jeugd
     icon: 
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
   project:
   - &5
     presentation_mode: card
@@ -615,18 +615,13 @@ models:
     voting_limited_max: 10
     max_budget: 
     title_multiloc:
-      en: Make the city centre more lively
-      en-CA: Make the city centre more lively
-      en-GB: Make the city centre more lively
+      nl-BE: Laat het centrum heropleven
     description_multiloc:
-      en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
-        shops and the park. You can share here your ideas to make it more lively!</p>\n"
-      en-CA: "<p>Unfortunately, less and less people visit the city centre to enjoy
-        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
-      en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
-        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+      nl-BE: "<p>Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
+        te doen. Dit veroorzaakt heel wat leegstand. Je kunt hier je ideeën delen
+        om het centrum levendiger te maken!</p>\n"
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc: {}
@@ -644,24 +639,13 @@ models:
     voting_limited_max: 10
     max_budget: 
     title_multiloc:
-      en: For a better waste management
-      en-CA: For a better waste management
-      en-GB: For a better waste management
+      nl-BE: Op naar een beter afvalbeheer
     description_multiloc:
-      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
-        to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-CA: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+      nl-BE: "<p>Elk jaar produceert elke bewoner enkele honderden kilo's afval. Het
+        verminderen van de hoeveelheid afval is een uitdaging voor het milieu die
+        ook een financiële en maatschappelijke impact heeft.</p>\n"
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc: {}
@@ -669,79 +653,6 @@ models:
     internal_role: 
     publication_status: published
     ordering: 2
-  - &4
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    title_multiloc:
-      en: Reducing air pollution in the city
-      en-CA: Reducing air pollution in the city
-      en-GB: Reducing air pollution in the city
-    description_multiloc:
-      en: |
-        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
-
-        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
-
-        <p><em>Let's do this!</em></p>
-      en-CA: |
-        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
-
-        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
-
-        <p><em>Let's do this!</em></p>
-      en-GB: |
-        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
-
-        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
-
-        <p><em>Let's do this!</em></p>
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
-    remote_header_bg_url: 
-    visible_to: public
-    description_preview_multiloc: {}
-    process_type: timeline
-    internal_role: 
-    publication_status: published
-    ordering: 4
-  - &8
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    title_multiloc:
-      en: Make the city more digital
-      en-CA: Make the city more digital
-      en-GB: Make the city more digital
-    description_multiloc:
-      en: "<p>We should try to modernize the way the city works, including the administration,
-        etc. Share here how digital installations could make our lives easier in the
-        city.</p>\n"
-      en-CA: "<p>We should try to modernize the way the city works, including the
-        administration, etc. Share here how digital installations could make our lives
-        easier in the city.</p>\n"
-      en-GB: "<p>We should try to modernize the way the city works, including the
-        administration, etc. Share here how digital installations could make our lives
-        easier in the city.</p>\n"
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
-    remote_header_bg_url: 
-    visible_to: public
-    description_preview_multiloc: {}
-    process_type: timeline
-    internal_role: 
-    publication_status: published
-    ordering: 0
   - &3
     presentation_mode: card
     participation_method: ideation
@@ -772,7 +683,7 @@ models:
         information, ... After you''ve done that, start sharing your idea on social
         media or through email. Invite people to join the discussion on your idea,
         or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/dfa2f4e8-9c29-4551-af28-fc16992152ac/image_h6upkl.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/9dcd6c6a-3fef-437e-a763-917c89cb64d4/image_h6upkl.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
         what?</strong> Your idea can be about a lot of things, as long as it is related
         to your city and its policy. It can be a problem you experience, a solution
@@ -796,7 +707,7 @@ models:
         information, ... After you''ve done that, start sharing your idea on social
         media or through email. Invite people to join the discussion on your idea,
         or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/48f16ebf-09dc-4e95-a732-40c6d5e7fe15/image_h6upkl.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/a7315979-0fb6-4e7c-92f1-98a1dc284cba/image_h6upkl.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
         what?</strong> Your idea can be about a lot of things, as long as it is related
         to your city and its policy. It can be a problem you experience, a solution
@@ -823,7 +734,7 @@ models:
         information, ... After you''ve done that, start sharing your idea on social
         media or through email. Invite people to join the discussion on your idea,
         or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/9f7350e5-e29f-404e-917d-ae3d1d5a5127/image_h6upkl.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/acc91bd4-b111-4475-9bb9-50cbee91c0cc/image_h6upkl.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
         what?</strong> Your idea can be about a lot of things, as long as it is related
         to your city and its policy. It can be a problem you experience, a solution
@@ -847,7 +758,7 @@ models:
         information, ... After you''ve done that, start sharing your idea on social
         media or through email. Invite people to join the discussion on your idea,
         or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/63af7edf-1ce9-4351-91d3-2debfcd74049/image_h6upkl.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/e3941a4a-db8b-4c2b-9aa9-f06621ca352c/image_h6upkl.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
         what?</strong> Your idea can be about a lot of things, as long as it is related
         to your city and its policy. It can be a problem you experience, a solution
@@ -871,7 +782,7 @@ models:
         plus de détails. Ensuite, partagez votre idée sur les réseaux sociaux ou par
         e-mail et invitez des gens à rejoindre la discussion sur votre idée ou simplement
         pour le convaincre de voter en votre faveur.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/292c87a0-79e1-486c-a1a4-d9402bf92a8c/lancezide%CC%81e_zcddtw.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/d673cfbe-9456-4017-a087-40ff98563b3d/lancezide%CC%81e_zcddtw.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>A
         propos de quoi?</strong> Votre idée peut être à propos de pleins de choses,
         tant que c’est lié à votre ville. Cela peut être un problème que vous experiencez,
@@ -895,7 +806,7 @@ models:
         plus de détails. Ensuite, partagez votre idée sur les réseaux sociaux ou par
         e-mail et invitez des gens à rejoindre la discussion sur votre idée ou simplement
         pour le convaincre de voter en votre faveur.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/787e81a7-0b08-4be8-8c08-c7ab1ab6a67a/lancezide%CC%81e_zcddtw.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/ae429837-dbcc-43e5-bd7c-3d64795abb94/lancezide%CC%81e_zcddtw.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>A
         propos de quoi?</strong> Votre idée peut être à propos de pleins de choses,
         tant que c’est lié à votre ville. Cela peut être un problème que vous experiencez,
@@ -919,7 +830,7 @@ models:
         information, ... After you''ve done that, start sharing your idea on social
         media or through email. Invite people to join the discussion on your idea,
         or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/d8308f1c-798a-4471-b016-17558b9a021a/image_h6upkl.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/18c87190-3478-48a2-8a41-cc815df515ad/image_h6upkl.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
         what?</strong> Your idea can be about a lot of things, as long as it is related
         to your city and its policy. It can be a problem you experience, a solution
@@ -943,7 +854,7 @@ models:
         details geven, ... Daarna kun je je idee delen op sociale media of via e-mail.
         Nodig mensen uit om feedback te geven op jouw idee of om je idee te steunen
         door hun stem uit te brengen.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/5bf29d62-25ef-41cd-884c-cdc891c9d266/lanceerjeidee_wpkpcj.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/a10f84d3-b076-4fed-bbb4-f57cbb8186c7/lanceerjeidee_wpkpcj.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>Waarover?</strong>
         Je idee kan over zowat van alles en nog wat gaan, zolang het maar een link
         heeft met je gemeente en haar beleid. Het kan een probleem zijn dat je ervaart,
@@ -968,7 +879,7 @@ models:
         details geven, ... Daarna kun je je idee delen op sociale media of via e-mail.
         Nodig mensen uit om feedback te geven op jouw idee of om je idee te steunen
         door hun stem uit te brengen.</p><p><a href="/en/projects/open-idea-project/ideas/new"
-        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/b919c300-979c-4a7e-91e5-45f2adb9bb9c/lanceerjeidee_wpkpcj.png"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/63d1e4d0-b354-4ea6-9786-9da368f735c0/lanceerjeidee_wpkpcj.png"
         data-align="center" style="display: block;margin:auto;"></a></p><p><strong>Waarover?</strong>
         Je idee kan over zowat van alles en nog wat gaan, zolang het maar een link
         heeft met je gemeente en haar beleid. Het kan een probleem zijn dat je ervaart,
@@ -984,9 +895,9 @@ models:
         kijken ernaar uit om je ideeën te horen!</p>
 
 '
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:54 UTC
-    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project/header_bg/e9bf01eb-4568-4028-a07b-c74268d454af/carrying-casual-cheerful-1162964_dxubq6.jpg
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:39 UTC
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project/header_bg/eeca2e23-37b8-4c83-b695-450fe17bebb6/carrying-casual-cheerful-1162964_dxubq6.jpg
     visible_to: public
     description_preview_multiloc:
       en: Maybe you have an idea that doesn't fit with one of the existing projects?
@@ -1015,6 +926,33 @@ models:
     internal_role: open_idea_box
     publication_status: published
     ordering: 5
+  - &4
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    title_multiloc:
+      nl-BE: Luchtvervuiling aanpakken
+    description_multiloc:
+      nl-BE: |
+        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Klimaatopwarming</a> wordt een groten en groter gevaar voor onze samenleving. De gemeente wil dit mee aanpakken door  luchtvervuiling tegen te gaan! </p>
+
+        <p>Je kan dit initiatief ondersteunen door hieronder je ideeën voor te stellen.</p>
+
+        <p><em>Let's do this!</em></p>
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
+    remote_header_bg_url: 
+    visible_to: public
+    description_preview_multiloc: {}
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    ordering: 4
   - &7
     presentation_mode: card
     participation_method: ideation
@@ -1025,29 +963,14 @@ models:
     voting_limited_max: 10
     max_budget: 
     title_multiloc:
-      en: Reshaping Abbey Park
-      en-CA: Reshaping Abbey Park
-      en-GB: Reshaping Abbey Park
+      nl-BE: Heraanleg centrale park
     description_multiloc:
-      en: "<p>The city takes green spaces very much at heart because they should be
-        the lively spaces of a neighbourghood. \nThat's why we are planning to reorganize
-        Abbey Park in order to make it a more welcoming and a meeting point for inhabitants
-        of all ages! \nWho better than you, the citizens, to say what you want to
-        see in this park?\nShare your ideas below of what the park should look like.</p>\n"
-      en-CA: "<p>The city takes green spaces very much at heart because they should
-        be the lively spaces of a neighbourghood. \nThat's why we are planning to
-        reorganize Abbey Park in order to make it a more welcoming and a meeting point
-        for inhabitants of all ages! \nWho better than you, the citizens, to say what
-        you want to see in this park?\nShare your ideas below of what the park should
-        look like.</p>\n"
-      en-GB: "<p>The city takes green spaces very much at heart because they should
-        be the lively spaces of a neighbourghood. \nThat's why we are planning to
-        reorganize Abbey Park in order to make it a more welcoming and a meeting point
-        for inhabitants of all ages! \nWho better than you, the citizens, to say what
-        you want to see in this park?\nShare your ideas below of what the park should
-        look like.</p>\n"
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+      nl-BE: |
+        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.</p>
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc: {}
@@ -1055,38 +978,62 @@ models:
     internal_role: 
     publication_status: published
     ordering: 1
+  - &8
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    title_multiloc:
+      nl-BE: De digitale kloof dichten
+    description_multiloc:
+      nl-BE: "<p>Het is een verantwoordelijkheid van ons allen om de niet digitaal
+        geletterde te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf
+        je steentje kan bijdragen? Laat het ons weten!</p>\n"
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
+    remote_header_bg_url: 
+    visible_to: public
+    description_preview_multiloc: {}
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    ordering: 0
   project_file: []
   project_image:
   - project_ref: *3
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/5d78c478-96b1-4a6c-af62-974b5e2c168a/undraw_brainstorming_49d4_iaimmn.png
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/223fe293-3230-4376-b910-9cb4d0639020/undraw_brainstorming_49d4_iaimmn.png
     ordering: 
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    created_at: 2019-01-31 16:13:15 UTC
+    updated_at: 2019-01-31 16:13:15 UTC
   - project_ref: *4
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/faf74b0d-f099-4f81-b563-85993a095d1b/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/2f94a759-3815-49b1-9475-f21a7e591c8e/rsz_fd6e28f288acfdc7a88b43f8bd3181af57f3cf8a_i7y6hj.png
     ordering: 
-    created_at: 2019-01-29 15:39:30 UTC
-    updated_at: 2019-01-29 15:39:30 UTC
+    created_at: 2019-01-31 16:13:17 UTC
+    updated_at: 2019-01-31 16:13:17 UTC
   - project_ref: *5
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/bc20cc31-0f42-4ba6-8426-37e3aad2a22a/Rugby_town_centre-2ay0y80_yza0pu.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/fcdf170e-3926-4621-9352-7e5ca1aba97c/Rugby_town_centre-2ay0y80_yza0pu.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:31 UTC
-    updated_at: 2019-01-29 15:39:31 UTC
+    created_at: 2019-01-31 16:13:18 UTC
+    updated_at: 2019-01-31 16:13:18 UTC
   - project_ref: *6
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/2713f819-70f1-472a-99ba-32ef30d7da7c/nature_parcdegerland_ldaniere_860_sdkqs1.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/0f652dc3-8104-4163-82e8-2f405ff8b531/nature_parcdegerland_ldaniere_860_sdkqs1.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:31 UTC
-    updated_at: 2019-01-29 15:39:31 UTC
+    created_at: 2019-01-31 16:13:19 UTC
+    updated_at: 2019-01-31 16:13:19 UTC
   - project_ref: *7
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/64b5b6a5-966b-4a91-9b7c-a3481951538c/IMG_1921_2_wrdghk.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/413b4b21-05a4-4721-9472-e1c00f985a07/IMG_1921_2_wrdghk.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:32 UTC
-    updated_at: 2019-01-29 15:39:32 UTC
+    created_at: 2019-01-31 16:13:20 UTC
+    updated_at: 2019-01-31 16:13:20 UTC
   - project_ref: *8
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/a5ebdbef-fbae-4a78-9d74-06edaa694b53/featured_lxse5u.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/f13fc16a-f145-4ad7-a230-0950cb964889/featured_lxse5u.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:33 UTC
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
   projects_topic: []
   phase:
   - &17
@@ -1100,20 +1047,13 @@ models:
     max_budget: 
     project_ref: *4
     title_multiloc:
-      en: Collecting ideas
-      en-CA: Collecting ideas
-      en-GB: Collecting ideas
+      nl-BE: Ideeën verzamelen
     description_multiloc:
-      en: "<p>Share your ideas to fight global warming within the city, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-      en-CA: "<p>Share your ideas to fight global warming within the city, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
-      en-GB: "<p>Share your ideas to fight global warming within the city, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
-    start_at: '2018-03-28'
-    end_at: '2018-04-18'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Deel je ideeën om de luchtvervuiling aan te pakken!</p>\n"
+    start_at: '2018-05-02'
+    end_at: '2018-05-26'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &18
     presentation_mode: card
     participation_method: ideation
@@ -1125,22 +1065,13 @@ models:
     max_budget: 
     project_ref: *4
     title_multiloc:
-      en: Vote period
-      en-CA: Vote period
-      en-GB: Vote period
+      nl-BE: Stemmen maar!
     description_multiloc:
-      en: "<p>This period is dedicated to assessing which are the most popular proposals:
-        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
-      en-CA: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-      en-GB: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-    start_at: '2018-04-19'
-    end_at: '2018-05-01'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    start_at: '2018-05-27'
+    end_at: '2018-06-17'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &19
     presentation_mode: card
     participation_method: ideation
@@ -1152,20 +1083,14 @@ models:
     max_budget: 
     project_ref: *4
     title_multiloc:
-      en: Presentation of most succesful ideas at the townhall
-      en-CA: Presentation of most succesful ideas at the townhall
-      en-GB: Presentation of most succesful ideas at the townhall
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
     description_multiloc:
-      en: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-CA: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-GB: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-    start_at: '2018-05-02'
-    end_at: '2018-05-04'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    start_at: '2018-06-18'
+    end_at: '2018-06-20'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &20
     presentation_mode: card
     participation_method: ideation
@@ -1177,17 +1102,13 @@ models:
     max_budget: 
     project_ref: *4
     title_multiloc:
-      en: Implementation of ideas
-      en-CA: Implementation of ideas
-      en-GB: Implementation of ideas
+      nl-BE: Implementatie
     description_multiloc:
-      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-    start_at: '2018-05-05'
-    end_at: '2018-06-01'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    start_at: '2018-06-21'
+    end_at: '2018-07-01'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &9
     presentation_mode: card
     participation_method: ideation
@@ -1199,20 +1120,13 @@ models:
     max_budget: 
     project_ref: *5
     title_multiloc:
-      en: Collecting ideas
-      en-CA: Collecting ideas
-      en-GB: Collecting ideas
+      nl-BE: Ideeën verzamelen
     description_multiloc:
-      en: "<p>Share your ideas to make the city centre more lively, this is your time
-        to brainstorm and discuss around your ideas!</p>\n"
-      en-CA: "<p>Share your ideas to make the city centre more lively, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-      en-GB: "<p>Share your ideas to make the city centre more lively, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-    start_at: '2018-06-15'
-    end_at: '2018-07-09'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Deel je ideeën om de leefbaarheid in het centrum aan te pakken!</p>\n"
+    start_at: '2018-03-06'
+    end_at: '2018-03-25'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &10
     presentation_mode: card
     participation_method: ideation
@@ -1224,22 +1138,13 @@ models:
     max_budget: 
     project_ref: *5
     title_multiloc:
-      en: Vote period
-      en-CA: Vote period
-      en-GB: Vote period
+      nl-BE: Stemmen maar!
     description_multiloc:
-      en: "<p>This period is dedicated to assessing which are the most popular proposals:
-        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
-      en-CA: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-      en-GB: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-    start_at: '2018-07-10'
-    end_at: '2018-07-28'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    start_at: '2018-03-26'
+    end_at: '2018-04-06'
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - &11
     presentation_mode: card
     participation_method: ideation
@@ -1251,20 +1156,14 @@ models:
     max_budget: 
     project_ref: *5
     title_multiloc:
-      en: Presentation of most succesful ideas at the townhall
-      en-CA: Presentation of most succesful ideas at the townhall
-      en-GB: Presentation of most succesful ideas at the townhall
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
     description_multiloc:
-      en: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-CA: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-GB: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-    start_at: '2018-07-29'
-    end_at: '2018-08-01'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    start_at: '2018-04-07'
+    end_at: '2018-04-24'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &12
     presentation_mode: card
     participation_method: ideation
@@ -1276,17 +1175,13 @@ models:
     max_budget: 
     project_ref: *5
     title_multiloc:
-      en: Implementation of ideas
-      en-CA: Implementation of ideas
-      en-GB: Implementation of ideas
+      nl-BE: Implementatie
     description_multiloc:
-      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-    start_at: '2018-08-02'
-    end_at: '2018-08-14'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    start_at: '2018-04-25'
+    end_at: '2018-05-04'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &13
     presentation_mode: card
     participation_method: ideation
@@ -1298,20 +1193,13 @@ models:
     max_budget: 
     project_ref: *6
     title_multiloc:
-      en: Collecting ideas
-      en-CA: Collecting ideas
-      en-GB: Collecting ideas
+      nl-BE: Ideeën verzamelen
     description_multiloc:
-      en: "<p>Share your ideas to improve the way we manage garbage, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-      en-CA: "<p>Share your ideas to improve the way we manage garbage, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-      en-GB: "<p>Share your ideas to improve the way we manage garbage, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-    start_at: '2018-04-15'
-    end_at: '2018-05-02'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Deel je ideeën om het afvalbeheer te verbeteren!</p>\n"
+    start_at: '2018-03-22'
+    end_at: '2018-03-29'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &14
     presentation_mode: card
     participation_method: ideation
@@ -1323,22 +1211,13 @@ models:
     max_budget: 
     project_ref: *6
     title_multiloc:
-      en: Vote period
-      en-CA: Vote period
-      en-GB: Vote period
+      nl-BE: Stemmen maar!
     description_multiloc:
-      en: "<p>This period is dedicated to assessing which are the most popular proposals:
-        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
-      en-CA: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-      en-GB: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-    start_at: '2018-05-03'
-    end_at: '2018-05-18'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    start_at: '2018-03-30'
+    end_at: '2018-04-09'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &15
     presentation_mode: card
     participation_method: ideation
@@ -1350,20 +1229,14 @@ models:
     max_budget: 
     project_ref: *6
     title_multiloc:
-      en: Presentation of most succesful ideas at the townhall
-      en-CA: Presentation of most succesful ideas at the townhall
-      en-GB: Presentation of most succesful ideas at the townhall
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
     description_multiloc:
-      en: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-CA: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-GB: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-    start_at: '2018-05-19'
-    end_at: '2018-06-12'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    start_at: '2018-04-10'
+    end_at: '2018-04-11'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &16
     presentation_mode: card
     participation_method: ideation
@@ -1375,119 +1248,13 @@ models:
     max_budget: 
     project_ref: *6
     title_multiloc:
-      en: Implementation of ideas
-      en-CA: Implementation of ideas
-      en-GB: Implementation of ideas
+      nl-BE: Implementatie
     description_multiloc:
-      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-    start_at: '2018-06-13'
-    end_at: '2018-07-12'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - &25
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    project_ref: *7
-    title_multiloc:
-      en: Collecting ideas
-      en-CA: Collecting ideas
-      en-GB: Collecting ideas
-    description_multiloc:
-      en: "<p>Share your ideas on how the Abbey Park should be reorganised, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
-      en-CA: "<p>Share your ideas on how the Abbey Park should be reorganised, this
-        is your time to brainstorm and discuss around your ideas!</p>\n"
-      en-GB: "<p>Share your ideas on how the Abbey Park should be reorganised, this
-        is your time to brainstorm and discuss around your ideas!</p>\n"
-    start_at: '2018-06-03'
-    end_at: '2018-06-13'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - &26
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    project_ref: *7
-    title_multiloc:
-      en: Vote period
-      en-CA: Vote period
-      en-GB: Vote period
-    description_multiloc:
-      en: "<p>This period is dedicated to assessing which are the most popular proposals:
-        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
-      en-CA: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-      en-GB: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-    start_at: '2018-06-14'
-    end_at: '2018-07-06'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - &27
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    project_ref: *7
-    title_multiloc:
-      en: Analysis period
-      en-CA: Analysis period
-      en-GB: Analysis period
-    description_multiloc:
-      en: "<p>The most voted ideas will be examined and included (or not) into the
-        mapping of the new park</p>\n"
-      en-CA: "<p>The most voted ideas will be examined and included (or not) into
-        the mapping of the new park</p>\n"
-      en-GB: "<p>The most voted ideas will be examined and included (or not) into
-        the mapping of the new park</p>\n"
-    start_at: '2018-07-07'
-    end_at: '2018-08-06'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - &28
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    project_ref: *7
-    title_multiloc:
-      en: Start of the reshaping of the park
-      en-CA: Start of the reshaping of the park
-      en-GB: Start of the reshaping of the park
-    description_multiloc:
-      en: "<p>The selected ideas will be put into place and implemented in the new
-        park</p>\n"
-      en-CA: "<p>The selected ideas will be put into place and implemented in the
-        new park</p>\n"
-      en-GB: "<p>The selected ideas will be put into place and implemented in the
-        new park</p>\n"
-    start_at: '2018-08-07'
-    end_at: '2018-08-28'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    start_at: '2018-04-12'
+    end_at: '2018-04-19'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &21
     presentation_mode: card
     participation_method: ideation
@@ -1497,22 +1264,15 @@ models:
     voting_method: unlimited
     voting_limited_max: 10
     max_budget: 
-    project_ref: *8
+    project_ref: *7
     title_multiloc:
-      en: Collecting ideas
-      en-CA: Collecting ideas
-      en-GB: Collecting ideas
+      nl-BE: Ideeën verzamelen
     description_multiloc:
-      en: "<p>Share your ideas to make the city more modern and digital, this is your
-        time to brainstorm and discuss around your ideas!</p>\n"
-      en-CA: "<p>Share your ideas to make the city more modern and digital, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
-      en-GB: "<p>Share your ideas to make the city more modern and digital, this is
-        your time to brainstorm and discuss around your ideas!</p>\n"
-    start_at: '2018-04-16'
-    end_at: '2018-04-22'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Deel je ideeën voor het park!</p>\n"
+    start_at: '2018-02-21'
+    end_at: '2018-03-13'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &22
     presentation_mode: card
     participation_method: ideation
@@ -1522,24 +1282,15 @@ models:
     voting_method: unlimited
     voting_limited_max: 10
     max_budget: 
-    project_ref: *8
+    project_ref: *7
     title_multiloc:
-      en: Vote period
-      en-CA: Vote period
-      en-GB: Vote period
+      nl-BE: Stemmen maar!
     description_multiloc:
-      en: "<p>This period is dedicated to assessing which are the most popular proposals:
-        like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
-      en-CA: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-      en-GB: "<p>This period is dedicated to assessing which are the most popular
-        proposals: like or dislike the ideas, in order to make the most successful
-        ones emerge</p>\n"
-    start_at: '2018-04-23'
-    end_at: '2018-05-12'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    start_at: '2018-03-14'
+    end_at: '2018-04-03'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &23
     presentation_mode: card
     participation_method: ideation
@@ -1549,23 +1300,35 @@ models:
     voting_method: unlimited
     voting_limited_max: 10
     max_budget: 
-    project_ref: *8
+    project_ref: *7
     title_multiloc:
-      en: Presentation of most succesful ideas at the townhall
-      en-CA: Presentation of most succesful ideas at the townhall
-      en-GB: Presentation of most succesful ideas at the townhall
+      nl-BE: Analyse
     description_multiloc:
-      en: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-CA: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-      en-GB: "<p>The ideas who gathered the most positive votes will be added to the
-        city agenda and presented at the townhall by the citizen who launched it</p>\n"
-    start_at: '2018-05-13'
-    end_at: '2018-06-12'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>De populairste voorstellen worden geanalyseerd op basis van enkele
+        criteria.</p>\n"
+    start_at: '2018-04-04'
+    end_at: '2018-04-11'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - &24
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *7
+    title_multiloc:
+      nl-BE: Start van de heraanleg
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden opgenomen in de plannen.</p>\n"
+    start_at: '2018-04-12'
+    end_at: '2018-05-01'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - &25
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1576,94 +1339,138 @@ models:
     max_budget: 
     project_ref: *8
     title_multiloc:
-      en: Implementation of ideas
-      en-CA: Implementation of ideas
-      en-GB: Implementation of ideas
+      nl-BE: Ideeën verzamelen
     description_multiloc:
-      en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-      en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
-    start_at: '2018-06-13'
-    end_at: '2018-06-29'
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Deel je ideeën om de digitale kloof te dichten!</p>\n"
+    start_at: '2018-03-19'
+    end_at: '2018-04-09'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - &26
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *8
+    title_multiloc:
+      nl-BE: Stemmen maar!
+    description_multiloc:
+      nl-BE: "<p>Wat zijn de populairste voorstellen? Geef ze een stem voor of tegen.</p>\n"
+    start_at: '2018-04-10'
+    end_at: '2018-04-17'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - &27
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *8
+    title_multiloc:
+      nl-BE: Presentatie van de voorstellen op de gemeenteraad
+    description_multiloc:
+      nl-BE: "<p>De populairste voorstellen worden ingepland op de gemeenteraad en
+        zullen gepresenteerd worden door de inwoners!</p>\n"
+    start_at: '2018-04-18'
+    end_at: '2018-04-23'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - &28
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *8
+    title_multiloc:
+      nl-BE: Implementatie
+    description_multiloc:
+      nl-BE: "<p>Na deliberatie zullen de gekozen ideeën meteen worden geïmplementeerd.</p>\n"
+    start_at: '2018-04-24'
+    end_at: '2018-04-29'
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   phase_file: []
   areas_project: []
   user:
-  - &33
+  - &35
     email: citizenlab+1@citizenlab.co
-    password_digest: "$2a$10$R5sk7o2.kCugYJQ4VGMHw.rHLG86qDDpLle49vgi7lWjv1hvrLUeC"
-    created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
-    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/aa6c47a2-2458-40dc-aaab-10f97ce4a778/man-388104_960_720_dfehjy.jpg
+    password_digest: "$2a$10$mpFRO3BL/yxxnxPAhzeidO.8EUeZufszFq5S0U.Vw587E4GO0K7F6"
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/user/avatar/f1ed18c4-4fb3-422c-9694-fbd2bfbbc69d/man-388104_960_720_dfehjy.jpg
     first_name: Max
-    last_name: Walker
-    locale: en
+    last_name: Van Vossem
+    locale: nl-BE
     bio_multiloc:
-      en: 
-      en-CA: 
-      en-GB: 
+      nl-BE: 
     cl1_migrated: false
     custom_field_values:
       gender: male
       domicile: outside
+      birthyear: 1952
     registration_completed_at: ''
-  - &37
-    email: citizenlab+2@citizenlab.co
-    password_digest: "$2a$10$hZMLp7t1y6/EXSL88IQ8LOnpEVzYcdf6xtxyR0Ne/8Rf18/AJhzNO"
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
-    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/d7c7d4c4-de31-4272-af08-356af27255ef/smiling-woman_kdsaal.jpg
-    first_name: Annie
-    last_name: Smith
-    locale: en
+  - &33
+    email: citizenlab+4@citizenlab.co
+    password_digest: "$2a$10$Otzojkumt9PB5zP.YGhcXecimAaavdQS5gCretdtN1.9LbaQo5YBu"
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:23 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/user/avatar/67513451-f255-4145-bff9-052203e1245d/man-838636_960_720_f3i6ki.jpg
+    first_name: Luc
+    last_name: Vertongen
+    locale: nl-BE
     bio_multiloc:
-      en: 
-      en-CA: 
-      en-GB: 
+      nl-BE: 
+    cl1_migrated: false
+    custom_field_values:
+      gender: male
+      domicile: outside
+      birthyear: 1981
+    registration_completed_at: ''
+  - &39
+    email: citizenlab+2@citizenlab.co
+    password_digest: "$2a$10$LHigjLOi7nYM8FiiYmqXoOjGezTbOPKCU68wlLoQ.C5x14GZwFuHi"
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:23 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/user/avatar/b0eb918a-e46f-4d4f-a734-f11e58c5ea84/smiling-woman_kdsaal.jpg
+    first_name: Annie
+    last_name: Janssens
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
+    cl1_migrated: false
+    custom_field_values:
+      gender: female
+      domicile: outside
+      birthyear: 1962
+    registration_completed_at: ''
+  - &38
+    email: citizenlab+3@citizenlab.co
+    password_digest: "$2a$10$OFp5e6mnJwdEdrymvjS7XOF9hmXqyTFcCLzT..GYMU2JtdF8DJs8e"
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:24 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/user/avatar/70485b2a-f893-42c3-a3e4-d028dfb5955f/tiamorrison-profile-photo-2-copy_pcnsxm.png
+    first_name: Emma
+    last_name: De Duycker
+    locale: nl-BE
+    bio_multiloc:
+      nl-BE: 
     cl1_migrated: false
     custom_field_values:
       gender: female
       domicile: outside
       birthyear: 1944
-    registration_completed_at: ''
-  - &40
-    email: citizenlab+4@citizenlab.co
-    password_digest: "$2a$10$Gc8hjD7OWhpIZywl3p.QJOp.KemCfbLUOCz7fHZn7/Ve74qEyqABa"
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:36 UTC
-    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/5aedf10b-87c5-413a-9d61-6a29efbfb460/man-838636_960_720_f3i6ki.jpg
-    first_name: Chad
-    last_name: Williams
-    locale: en
-    bio_multiloc:
-      en: 
-      en-CA: 
-      en-GB: 
-    cl1_migrated: false
-    custom_field_values:
-      gender: male
-      domicile: outside
-      birthyear: 1979
-    registration_completed_at: ''
-  - &35
-    email: citizenlab+3@citizenlab.co
-    password_digest: "$2a$10$Qyz1FyvQ39r36thu.ku9.OfMBw7gmx4zczIjhsC9UcgH8VUM6xzta"
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:36 UTC
-    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/8e9a94fe-9672-40cd-8d04-7a1116c16f7c/tiamorrison-profile-photo-2-copy_pcnsxm.png
-    first_name: Emma
-    last_name: Murphy
-    locale: en
-    bio_multiloc:
-      en: 
-      en-CA: 
-      en-GB: 
-    cl1_migrated: false
-    custom_field_values:
-      gender: female
-      domicile: outside
-      birthyear: 1965
     registration_completed_at: ''
   basket: []
   event:
@@ -1713,8 +1520,8 @@ models:
     location_multiloc: {}
     start_at: 2019-03-26 18:00:00 UTC
     end_at: 2019-03-26 20:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *3
     title_multiloc:
       en: Council Meeting
@@ -1761,8 +1568,8 @@ models:
     location_multiloc: {}
     start_at: 2019-06-25 17:00:00 UTC
     end_at: 2019-06-25 19:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *3
     title_multiloc:
       en: Council Meeting
@@ -1809,8 +1616,8 @@ models:
     location_multiloc: {}
     start_at: 2019-09-24 17:00:00 UTC
     end_at: 2019-09-24 19:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *3
     title_multiloc:
       en: Council Meeting
@@ -1857,396 +1664,365 @@ models:
     location_multiloc: {}
     start_at: 2019-12-24 18:00:00 UTC
     end_at: 2019-12-24 20:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *4
     title_multiloc:
-      en: Pub Crawl
-      en-CA: Pub Crawl
-      en-GB: Pub Crawl
+      nl-BE: Kroegentocht
     description_multiloc:
-      en: |
-        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
+      nl-BE: |
+        <p>Pak je fiets en ga met ons op een kroegentocht. Inschrijving kost 15 €, alle drankjes zijn gratis!</p>
 
-        <p>No animals allowed.</p>
-      en-CA: |
-        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
-
-        <p>No animals allowed.</p>
-      en-GB: |
-        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
-
-        <p>No animals allowed.</p>
+        <p>Geen dieren toegelaten.</p>
     location_multiloc:
-      en: Many different pubs, we start from the central place.
-      en-GB: Many different pubs, we start from the central place.
-      en-CA: Many different pubs, we start from the central place.
-    start_at: 2018-08-01 00:00:00 UTC
-    end_at: 2018-08-02 00:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: Veel verschillende cafés, we vertrekken vanop het kerkplein.
+    start_at: 2017-06-29 00:00:00 UTC
+    end_at: 2017-06-30 00:00:00 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *5
     title_multiloc:
-      en: Sunday Brunch in the city centre
-      en-CA: Sunday Brunch in the city centre
-      en-GB: Sunday Brunch in the city centre
+      nl-BE: Brunch op zondag
     description_multiloc:
-      en: "<p>Let's all meet together at the coffee shop on the main square to discuss
-        all the ideas we have to make the city centre more lively.</p>\n"
-      en-CA: "<p>Let's all meet together at the coffee shop on the main square to
-        discuss all the ideas we have to make the city centre more lively.</p>\n"
-      en-GB: "<p>Let's all meet together at the coffee shop on the main square to
-        discuss all the ideas we have to make the city centre more lively.</p>\n"
+      nl-BE: "<p>Waarom niet wat ideeën te bespreken bij een zondagse brunch?</p>\n"
     location_multiloc:
-      en: The coffee shop on the main square
-      en-GB: The coffee shop on the main square
-      en-CA: The coffee shop on the main square
-    start_at: 2018-04-01 00:00:00 UTC
-    end_at: 2018-04-02 00:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: De brasserie op het centrale plein
+    start_at: 2018-04-14 00:00:00 UTC
+    end_at: 2018-04-15 00:00:00 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   - project_ref: *7
     title_multiloc:
-      en: Walk in Abbey Park
-      en-CA: Walk in Abbey Park
-      en-GB: Walk in Abbey Park
+      nl-BE: Wandeling door het park
     description_multiloc:
-      en: "<p>What better way to imagine the future of the park than go through it
-        togethe and share our ideas in a spacial manner? It is also a nice way to
-        meet all the nature enthusiasts who are involved in this project!</p>\n"
-      en-CA: "<p>What better way to imagine the future of the park than go through
-        it togethe and share our ideas in a spacial manner? It is also a nice way
-        to meet all the nature enthusiasts who are involved in this project!</p>\n"
-      en-GB: "<p>What better way to imagine the future of the park than go through
-        it togethe and share our ideas in a spacial manner? It is also a nice way
-        to meet all the nature enthusiasts who are involved in this project!</p>\n"
+      nl-BE: "<p>Welke betere manier om de toekomst van het park te verbeelden dan
+        er door te wandelen? Het is ook een leuke manier om alle natuurliefhebbers
+        te ontmoeten die bij dit project betrokken zijn!</p>\n"
     location_multiloc:
-      en: Entrance of Abbey Park
-      en-GB: Entrance of Abbey Park
-      en-CA: Entrance of Abbey Park
-    start_at: 2018-05-01 00:00:00 UTC
-    end_at: 2018-05-02 00:00:00 UTC
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: Toegangspoort van het park
+    start_at: 2019-01-08 00:00:00 UTC
+    end_at: 2019-01-09 00:00:00 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
   event_file: []
   group: []
   groups_project: []
   permission:
   - action: posting
     permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *14
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *14
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *14
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *15
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *15
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *15
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *16
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *16
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *16
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *17
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *17
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *17
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *18
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *18
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *18
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *19
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *19
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *19
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *20
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *20
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *20
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
     permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *9
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *9
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *9
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *10
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *10
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *10
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *11
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *11
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *11
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *12
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *12
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *12
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *13
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *13
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *13
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *14
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *14
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *14
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *15
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *15
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *15
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *16
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *16
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *16
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *17
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *17
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *17
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *18
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *18
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *18
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *19
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *19
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *19
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *20
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *20
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *20
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *21
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *21
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *21
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *25
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *25
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *25
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *26
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *26
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *26
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *27
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *27
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *27
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: posting
     permitted_by: everyone
     permittable_ref: *28
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: voting
     permitted_by: everyone
     permittable_ref: *28
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   - action: commenting
     permitted_by: everyone
     permittable_ref: *28
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:37 UTC
+    updated_at: 2019-01-31 16:13:37 UTC
   groups_permission: []
   membership: []
   page:
@@ -3297,71 +3073,71 @@ models:
         Verordening Gegevensbescherming) van 27 april 2016 (Verordening EU 2016/679). </strong></p>
 
 '
-      nl-NL: '<p>Verantwoordelijke voor de verwerking van de Gegevens en Eigenaar </p><p>CitizenLab
-        NV - Meusegemstraat 105 - 1861 Wolvertem </p><p>Contact e-mailadres: support@citizenlab.co</p><p> </p><p><strong>1.
-        PRIVACYVERKLARING </strong></p><p><br></p><p>Deze privacyverklaring is van
-        toepassing op de persoonsgegevens die worden verzameld door CitizenLab via
-        deze website. </p><p>  </p><p><strong>2. WAT ZIJN PERSOONSGEGEVENS? </strong></p><p><br></p><p>In
-        deze privacyverklaring slaan persoonsgegevens terug op informaties of deeltjes
-        informaties die het mogelijk maken om u te identificeren. Een identificeerbaar
-        persoon is iemand die geïdentificeerd kan worden, het zij direct of indirect,
-        in het bijzonder door het refereren naar een identificatienummer of naar één
-        of meerdere factoren die gelinkt zijn aan fysieke, fysiologische, mentale,
-        economische, culturele of sociale identiteit. Een typisch voorbeeld van persoonlijke
-        gegevens zijn uw naam en emailadres. </p><p><strong> </strong></p><p><strong>3.
-        WELKE PERSOONSGEGEVENS</strong></p><p><strong> VERZAMELEN WE?</strong> </p><p><br></p><p>We
-        verzamelen mogelijk uw persoonsgegevens vanuit de volgende twee bronnen: </p><p><br></p><p>3.1
-        Persoonsgegevens die u ons aanreikt tijdens het registratieproces op het platform. </p><p>De
-        persoonsgegevens die we mogelijk van u verzamelen zijn: </p><p><br></p><ul>
-        <li>E-mailadres (verplicht); </li> <li>Naam en voornaam (verplicht); </li>
-        <li>Leeftijd (optioneel); </li> <li>Opleidingsniveau (optioneel); </li> <li>Regio
-        waar u woont (optioneel). </li> </ul><p><br></p><p><strong>3.2 Persoonsgegevens
-        die we verzamelen wanneer u onze website bezoekt. </strong></p><p>Wij (en
-        dienstenverschaffende verwerkers die handelen in onze opdracht) gebruiken
-        cookies die automatisch persoonlijke gegevens verzamelen over u wanneer u
-        deze website bezoekt. Voor meer informatie kan u ons cookiebeleid consulteren. </p><p><br></p><p><strong>4.
-        HOE GEBRUIKEN WE PERSOONSGEGEVENS? </strong></p><p>We gebruiken mogelijk uw
-        persoonsgegevens voor de volgende doeleinden: </p><p><br></p><ul> <li>Voor
-        het creëren en onderhouden van uw gebruikersprofiel op deze website; </li>
-        <li>Voor het aanleveren van informatie betreffende uw community en/of meldingen
-        vanop het platform die u</li> <li>kunnen interesseren;</li> <li>Voor het verifiëren
-        van uw gebruikersprofiel in het kader van de nodige beveiliging te garanderen; </li>
-        <li>Voor het beheren van de identificatie en authenticatie van gebruikers. </li>
-        </ul><p>De persoonsgegevens zullen enkel bewaard en verwerkt worden voor de
-        periode nodig om het doel van de verwerkingen te bereiken. Daarna zullen de
-        gegevens gewist worden of geanonimiseerd. </p><p><br></p><p><strong>5. MET
-        WIE DELEN WE UW PERSOONSGEGEVENS? </strong></p><p><br></p><p>We delen mogelijk
-        uw persoonsgegevens met uw lokale overheid, die de verwerkingsverantwoordelijke
-        zijn van de persoonsgegevens. Zij beschikken over een beheerdersfunctie op
-        deze website We zullen echter nooit of te nimmer uw persoonsgegevens verkopen
-        of verhuren aan andere dienstenverleners, noch zullen wij uw gegevens delen
-        met derde partijen die niet voldoen aan de GDPR. </p><p>  </p><p><strong>6.
-        NAAR WAAR TRANSFEREREN WE UW PERSOONSGEGEVENS? </strong></p><p><br></p><p>We
-        transfereren enkel persoonsgegeven aan dienstverleners die gevestigd zijn
-        buiten de Europees Economische Ruimte indien zij voldoen aan art. 44 en volgende
-        van de GDPR. Alle VS-gevestigde dienstverleners voldoen aan PrivacyShield. </p><p>  </p><p><strong>7.
-        WELKE RECHTEN HEEFT U? </strong></p><p>  </p><p>U hebt het recht om op elk
-        moment gratis kennis te nemen van uw persoonsgegevens, alsook van het gebruik
-        dat Citizenlab met uw persoonsgegevens maken. </p><p>  </p><p><strong>7.1
+      nl-NL: '<p>Verantwoordelijke voor de verwerking van de Gegevens en Eigenaar
+        </p><p>CitizenLab NV - Meusegemstraat 105 - 1861 Wolvertem </p><p>Contact
+        e-mailadres: support@citizenlab.co</p><p> </p><p><strong>1. PRIVACYVERKLARING
+        </strong></p><p><br></p><p>Deze privacyverklaring is van toepassing op de
+        persoonsgegevens die worden verzameld door CitizenLab via deze website. </p><p>  </p><p><strong>2.
+        WAT ZIJN PERSOONSGEGEVENS? </strong></p><p><br></p><p>In deze privacyverklaring
+        slaan persoonsgegevens terug op informaties of deeltjes informaties die het
+        mogelijk maken om u te identificeren. Een identificeerbaar persoon is iemand
+        die geïdentificeerd kan worden, het zij direct of indirect, in het bijzonder
+        door het refereren naar een identificatienummer of naar één of meerdere factoren
+        die gelinkt zijn aan fysieke, fysiologische, mentale, economische, culturele
+        of sociale identiteit. Een typisch voorbeeld van persoonlijke gegevens zijn
+        uw naam en emailadres. </p><p><strong> </strong></p><p><strong>3. WELKE PERSOONSGEGEVENS</strong></p><p><strong>
+        VERZAMELEN WE?</strong> </p><p><br></p><p>We verzamelen mogelijk uw persoonsgegevens
+        vanuit de volgende twee bronnen: </p><p><br></p><p>3.1 Persoonsgegevens die
+        u ons aanreikt tijdens het registratieproces op het platform. </p><p>De persoonsgegevens
+        die we mogelijk van u verzamelen zijn: </p><p><br></p><ul> <li>E-mailadres
+        (verplicht); </li> <li>Naam en voornaam (verplicht); </li> <li>Leeftijd (optioneel);
+        </li> <li>Opleidingsniveau (optioneel); </li> <li>Regio waar u woont (optioneel).
+        </li> </ul><p><br></p><p><strong>3.2 Persoonsgegevens die we verzamelen wanneer
+        u onze website bezoekt. </strong></p><p>Wij (en dienstenverschaffende verwerkers
+        die handelen in onze opdracht) gebruiken cookies die automatisch persoonlijke
+        gegevens verzamelen over u wanneer u deze website bezoekt. Voor meer informatie
+        kan u ons cookiebeleid consulteren. </p><p><br></p><p><strong>4. HOE GEBRUIKEN
+        WE PERSOONSGEGEVENS? </strong></p><p>We gebruiken mogelijk uw persoonsgegevens
+        voor de volgende doeleinden: </p><p><br></p><ul> <li>Voor het creëren en onderhouden
+        van uw gebruikersprofiel op deze website; </li> <li>Voor het aanleveren van
+        informatie betreffende uw community en/of meldingen vanop het platform die
+        u</li> <li>kunnen interesseren;</li> <li>Voor het verifiëren van uw gebruikersprofiel
+        in het kader van de nodige beveiliging te garanderen; </li> <li>Voor het beheren
+        van de identificatie en authenticatie van gebruikers. </li> </ul><p>De persoonsgegevens
+        zullen enkel bewaard en verwerkt worden voor de periode nodig om het doel
+        van de verwerkingen te bereiken. Daarna zullen de gegevens gewist worden of
+        geanonimiseerd. </p><p><br></p><p><strong>5. MET WIE DELEN WE UW PERSOONSGEGEVENS?
+        </strong></p><p><br></p><p>We delen mogelijk uw persoonsgegevens met uw lokale
+        overheid, die de verwerkingsverantwoordelijke zijn van de persoonsgegevens.
+        Zij beschikken over een beheerdersfunctie op deze website We zullen echter
+        nooit of te nimmer uw persoonsgegevens verkopen of verhuren aan andere dienstenverleners,
+        noch zullen wij uw gegevens delen met derde partijen die niet voldoen aan
+        de GDPR. </p><p>  </p><p><strong>6. NAAR WAAR TRANSFEREREN WE UW PERSOONSGEGEVENS?
+        </strong></p><p><br></p><p>We transfereren enkel persoonsgegeven aan dienstverleners
+        die gevestigd zijn buiten de Europees Economische Ruimte indien zij voldoen
+        aan art. 44 en volgende van de GDPR. Alle VS-gevestigde dienstverleners voldoen
+        aan PrivacyShield. </p><p>  </p><p><strong>7. WELKE RECHTEN HEEFT U? </strong></p><p>  </p><p>U
+        hebt het recht om op elk moment gratis kennis te nemen van uw persoonsgegevens,
+        alsook van het gebruik dat Citizenlab met uw persoonsgegevens maken. </p><p>  </p><p><strong>7.1
         Recht van verbetering, verwijdering en beperking</strong></p><p><br></p><p>U
         bent vrij om uw persoonsgegevens al dan niet mee te delen aan Citizenlab.
         Daarnaast heeft u steeds het recht om Citizenlab te verzoeken uw persoonsgegevens
         te verbeteren, aan te vullen of te verwijderen. U erkent dat bij weigering
         van mededeling of verzoek tot verwijdering van persoonsgegevens, bepaalde
         diensten mogelijks niet leverbaar zijn.</p><p><br></p><p>U mag eveneens vragen
-        om de verwerking van uw persoonsgegevens te beperken. </p><p>  </p><p><strong>7.2
-        Recht van verzet </strong></p><p><br></p><p>U beschikt over een recht van
+        om de verwerking van uw persoonsgegevens te beperken. </p><p>  </p><p><strong>7.2
+        Recht van verzet </strong></p><p><br></p><p>U beschikt over een recht van
         verzet tegen de verwerking van uw persoonsgegevens om ernstige en</p><p>legitieme
         redenen.</p><p><br></p><p>Daarnaast hebt usteeds het recht om u te verzetten
-        tegen het gebruik van  voor doeleinden van direct marketing; in dergelijk
+        tegen het gebruik van  voor doeleinden van direct marketing; in dergelijk
         geval hoeft u zelfs geen redenen op te geven.</p><p><br></p><p><strong>7.3
-        Recht van vrije gegevensoverdracht </strong></p><p><br></p><p>U beschikt over
+        Recht van vrije gegevensoverdracht </strong></p><p><br></p><p>U beschikt over
         het recht om uw persoonsgegevens die door u verstrekt zijn aan Citizenlab
         in een gestructureerde, gangbare en machineleesbare vorm te verkrijgen en/of
         aan andere verantwoordelijken over te laten dragen.</p><p><br></p><p><strong>7.4
-        Recht van intrekking van de toestemming </strong></p><p><br></p><p>Voor zover
+        Recht van intrekking van de toestemming </strong></p><p><br></p><p>Voor zover
         de verwerking gebaseerd is op uw voorafgaande toestemming, beschikt u over
-        het recht om die toestemming in te trekken. </p><p>  </p><p><strong>7.5 Uitoefening
+        het recht om die toestemming in te trekken. </p><p>  </p><p><strong>7.5 Uitoefening
         van uw rechten</strong></p><p><br></p><p>U kan uw rechten uitoefenen door
         Citizenlab daartoe te contacteren, hetzij per e-mail naar koen@citizenlab.co,
         per post naar Meusegemstraat 105, 1861 Wolvertem, of door gebruik te maken
@@ -3376,43 +3152,44 @@ models:
         274 48 00, Fax +32 (0)2 274 48 35, e-mail: <a href="mailto:commission@privacycommission.be"
         target="_blank">commission@privacycommission.be</a>.</p><p><br></p><p>Dit
         laat een voorziening voor een burgerlijke rechtbank onverlet.</p><p><br></p><p><strong>8.BIJKOMENDE
-        INFORMATIE OVER GEGEVENSVERZAMELING EN VERWERKING</strong> </p><p>  </p><p><strong>Juridische
-        procedures </strong></p><p>  </p><p>De Verwerker en de Verantwoordelijke voor
+        INFORMATIE OVER GEGEVENSVERZAMELING EN VERWERKING</strong> </p><p>  </p><p><strong>Juridische
+        procedures </strong></p><p>  </p><p>De Verwerker en de Verantwoordelijke voor
         de verwerking van de Gegevens kan de Persoonsgegevens van de Gebruiker gebruiken
         voor juridische doeleinden, voor de rechter of aan gerechtelijke procedures
         voorafgaande fasen in het geval van onrechtmatig gebruik van deze Applicatie
         of de hieraan gerelateerde diensten.</p><p><br></p><p>De Gebruiker is ervan
         op de hoogte dat de Verwerker en de Verantwoordelijke voor de verwerking van
         de Gegevens genoodzaakt kan zijn de persoonsgegevens bekend te maken op verzoek
-        van bevoegde overheidsinstellingen. </p><p>  </p><p><strong>Veiligheidsmaatregelen </strong></p><p>  </p><p>Citizenlab
-        heeft veiligheidsmaatregelen ontwikkeld die aangepast zijn op technisch en
-        organisatorisch vlak, om de vernietiging, het verlies, de vervalsing, de wijziging,
-        de niet-toegestane toegang of de kennisgeving per vergissing aan derden van
-        persoonsgegevens verzameld te vermijden alsook elke andere niet toegestane
-        verwerking van deze gegevens. </p><p>  </p><p>In geen geval kan Citizenlab
-        aansprakelijk worden geacht voor enige directe of indirecte schade die voortvloeit
-        uit een foutief of onrechtmatig gebruik door een derde van uw persoonsgegevens. </p><p>  </p><p>U
-        dient te allen tijde de veiligheidsvoorschriften na te leven, onder andere
-        door elke niet toegestane toegang tot uw login en code te voorkomen. U bent
-        als enige verantwoordelijk voor het gebruik dat wordt gemaakt vanaf de Website
-        van uw computer, IP-adres en van uw identificatiegegevens, alsook voor de
-        vertrouwelijkheid ervan. </p><p>  </p><p><strong>Wijzigingen van dit privacybeleid </strong></p><p>  </p><p>De
-        Verantwoordelijke voor de verwerking van de Gegevens behoudt zich het recht
-        voor om dit privacybeleid op enig moment te wijzigen door kennisgeving hiervan
-        aan Gebruikers op deze pagina. We raden u aan om deze pagina vaak te controleren
-        op eventuele wijzigingen. De datum van de laatste wijziging wordt onderaan
-        de pagina aangegeven. Als een Gebruiker bezwaar heeft tegen enige wijziging
-        in het beleid, dient de Gebruiker deze Applicatie niet verder te gebruiken.
-        Hij kan de Verantwoordelijke voor de verwerking van de Gegevens verzoeken
-        om de</p><p>Persoonsgegevens te verwijderen. Tenzij anderszins wordt aangegeven,
-        is het op dat moment geldige privacybeleid van toepassing op alle Persoonsgegevens
-        die de Verantwoordelijke voor de verwerking van de Gegevens over Gebruikers
-        heeft</p><p>opgeslagen. </p><p>  </p><p>Meest recente update: 03/02/2018 </p><p>  </p><p><strong>DEFINITIES
-        EN JURIDISCH KADER </strong></p><p><strong>  </strong></p><p><strong>Persoonsgegevens
+        van bevoegde overheidsinstellingen. </p><p>  </p><p><strong>Veiligheidsmaatregelen
+        </strong></p><p>  </p><p>Citizenlab heeft veiligheidsmaatregelen ontwikkeld
+        die aangepast zijn op technisch en organisatorisch vlak, om de vernietiging,
+        het verlies, de vervalsing, de wijziging, de niet-toegestane toegang of de
+        kennisgeving per vergissing aan derden van persoonsgegevens verzameld te vermijden
+        alsook elke andere niet toegestane verwerking van deze gegevens. </p><p>  </p><p>In
+        geen geval kan Citizenlab aansprakelijk worden geacht voor enige directe of
+        indirecte schade die voortvloeit uit een foutief of onrechtmatig gebruik door
+        een derde van uw persoonsgegevens. </p><p>  </p><p>U dient te allen tijde
+        de veiligheidsvoorschriften na te leven, onder andere door elke niet toegestane
+        toegang tot uw login en code te voorkomen. U bent als enige verantwoordelijk
+        voor het gebruik dat wordt gemaakt vanaf de Website van uw computer, IP-adres
+        en van uw identificatiegegevens, alsook voor de vertrouwelijkheid ervan. </p><p>  </p><p><strong>Wijzigingen
+        van dit privacybeleid </strong></p><p>  </p><p>De Verantwoordelijke voor de
+        verwerking van de Gegevens behoudt zich het recht voor om dit privacybeleid
+        op enig moment te wijzigen door kennisgeving hiervan aan Gebruikers op deze
+        pagina. We raden u aan om deze pagina vaak te controleren op eventuele wijzigingen.
+        De datum van de laatste wijziging wordt onderaan de pagina aangegeven. Als
+        een Gebruiker bezwaar heeft tegen enige wijziging in het beleid, dient de
+        Gebruiker deze Applicatie niet verder te gebruiken. Hij kan de Verantwoordelijke
+        voor de verwerking van de Gegevens verzoeken om de</p><p>Persoonsgegevens
+        te verwijderen. Tenzij anderszins wordt aangegeven, is het op dat moment geldige
+        privacybeleid van toepassing op alle Persoonsgegevens die de Verantwoordelijke
+        voor de verwerking van de Gegevens over Gebruikers heeft</p><p>opgeslagen.
+        </p><p>  </p><p>Meest recente update: 03/02/2018 </p><p>  </p><p><strong>DEFINITIES
+        EN JURIDISCH KADER </strong></p><p><strong>  </strong></p><p><strong>Persoonsgegevens
         (of Gegevens)</strong></p><p><br></p><p>Alle informatie ten aanzien van een
         natuurlijk persoon, een rechtspersoon, een instelling of een vereniging die
         rechtstreeks of zelfs onrechtstreeks geïdentificeerd is of kan worden door
-        verwijzing naar andere informatie, waaronder een persoonlijk ID-nummer. </p><p>  </p><p><strong>Gebruiksgegevens</strong></p><p><br></p><p>Informatie
+        verwijzing naar andere informatie, waaronder een persoonlijk ID-nummer. </p><p>  </p><p><strong>Gebruiksgegevens</strong></p><p><br></p><p>Informatie
         die automatisch wordt verzameld vanuit deze Applicatie (of externe diensten
         die worden ingezet in deze Applicatie), waaronder: de IP-adressen of domeinnamen
         van de computers die door de Gebruikers van deze Applicatie worden gebruikt,
@@ -3422,18 +3199,18 @@ models:
         van het</p><p>antwoord van de server aangeeft (geslaagd, fout, enz.), het
         land van oorsprong, de functies van de browser en het besturingssysteem van
         de Gebruiker, de verschillende tijdsgegevens per bezoek (zoals de tijd die
-        op elke pagina van de applicatie wordt doorgebracht) en de gegevens </p><p>over
+        op elke pagina van de applicatie wordt doorgebracht) en de gegevens </p><p>over
         het gevolgde pas binnen de applicatie, in het bijzonder gericht op de volgorde
         van de bezochte pagina''s en andere parameters over het besturingssysteem
-        van het apparaat en/of de IT-omgeving van de Gebruiker. </p><p>  </p><p><strong>Gebruiker</strong></p><p><br></p><p>De
+        van het apparaat en/of de IT-omgeving van de Gebruiker. </p><p>  </p><p><strong>Gebruiker</strong></p><p><br></p><p>De
         persoon die deze Applicatie gebruikt en die moet overeenkomen met of gemachtigd
-        zijn door de Betrokkene naar wie de Persoonsgegevens verwijzen. </p><p>  </p><p><strong>Betrokkene</strong></p><p><br></p><p>De
+        zijn door de Betrokkene naar wie de Persoonsgegevens verwijzen. </p><p>  </p><p><strong>Betrokkene</strong></p><p><br></p><p>De
         rechtspersoon of natuurlijke persoon waarop/op wie de Persoonsgegevens betrekking
-        hebben.</p><p><br></p><p><strong>Gegevensverwerker (of Gegevenssupervisor) </strong></p><p>  </p><p>De
-        natuurlijke persoon, rechtspersoon, overheidsadministratie of enige andere
-        instelling, vereniging of organisatie die door de Verantwoordelijke voor de
-        verwerking van de Gegevens is gemachtigd om de Persoonsgegevens te verwerken
-        in overeenstemming met dit privacybeleid. </p><p><br></p><p><strong>Verantwoordelijke
+        hebben.</p><p><br></p><p><strong>Gegevensverwerker (of Gegevenssupervisor)
+        </strong></p><p>  </p><p>De natuurlijke persoon, rechtspersoon, overheidsadministratie
+        of enige andere instelling, vereniging of organisatie die door de Verantwoordelijke
+        voor de verwerking van de Gegevens is gemachtigd om de Persoonsgegevens te
+        verwerken in overeenstemming met dit privacybeleid. </p><p><br></p><p><strong>Verantwoordelijke
         voor de verwerking van de Gegevens (of Eigenaar)</strong></p><p><br></p><p>De
         natuurlijke persoon, rechtspersoon, overheidsadministratie of enige andere
         instelling, vereniging of organisatie met het recht, ook gezamenlijk met de
@@ -3448,12 +3225,13 @@ models:
         onderdeel met gegevens dat op het apparaat van de Gebruiker wordt opgeslagen.</p><p><br></p><p><strong>JURIDISCHE
         INFORMATIE</strong></p><p><br></p><p><strong>Kennisgeving aan Europese Gebruikers:
         deze privacyverklaring is opgesteld met inachtneming van de GDPR (Algemene
-        Verordening Gegevensbescherming) van 27 april 2016 (Verordening EU 2016/679). </strong></p>
+        Verordening Gegevensbescherming) van 27 april 2016 (Verordening EU 2016/679).
+        </strong></p>
 
 '
     slug: privacy-policy
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     project_ref: 
     publication_status: published
   - &32
@@ -4568,10 +4346,10 @@ models:
         een aantal regels om het debat open en constructief te kunnen houden. Hierbij
         kan u de algemene voorwaarden en privacy policy vinden van ons platform, daar
         wij van oordeel zijn dat duidelijke spelregels de grootste garantie geven
-        op een constructieve online gemeenschap. </p><p><br></p><p>Omdat CitizenLab
+        op een constructieve online gemeenschap. </p><p><br></p><p>Omdat CitizenLab
         de mening van de gebruikers van hun platform erg apprecieert, en alle ideeën
         welkom zijn om het platform verder te verbeteren, kan u uw suggesties steeds
-        doorsturen naar support@citizenlab.co. </p><p><br></p><p><strong>Wie kan zich
+        doorsturen naar support@citizenlab.co. </p><p><br></p><p><strong>Wie kan zich
         registreren op het online ideeënplatform? </strong></p><p><strong> </strong></p><p>Iedereen
         die wil, kan het debat online volgen. Iedereen kan de ingediende ideeën en
         reacties lezen. Wil je zelf meedoen aan het debat (eigen ideeën geven, reageren
@@ -4584,19 +4362,19 @@ models:
         accounts te weigeren, te schorsen of te verwijderen, bijvoorbeeld als de gebruiker
         zich niet aan de hierna genoemde regels houdt of als reeds eerder een account
         van deze gebruiker geweigerd of verwijderd werd. Al de rechten over een aangemaakte
-        accounts blijven CitizenLab toebehoren. </p><p><br></p><p>Iedere account moet
+        accounts blijven CitizenLab toebehoren. </p><p><br></p><p>Iedere account moet
         aan volgende regels voldoen:</p><p><br></p><p><strong>Iedere account is strikt
         persoonlijk</strong></p><p>Iedere account dient uniek te zijn en gekoppeld
         aan een natuurlijke persoon. Iedere gebruiker heeft het recht één account
         aan te maken. Indien wordt vastgesteld dat één persoon meerdere accounts heeft
         behoudt CitizenLab zich het recht voor al deze accounts te verwijderen. Iedere
-        gebruiker moet minimaal de leeftijd van 16 jaar bereikt hebben. </p><p><br></p><p><strong>Een
+        gebruiker moet minimaal de leeftijd van 16 jaar bereikt hebben. </p><p><br></p><p><strong>Een
         account is niet overdraagbaar aan een andere persoon</strong></p><p>Omdat
         iedere account strikt gekoppeld is aan één bepaalde persoon, kan deze account
         ook niet overgedragen worden op een andere persoon, zonder de toestemming
         van CitizenLab. Dit overdracht-verbod moet in de meest ruime zin aanzien worden.
         Bij vastgestelde inbreuken behoudt CitizenLab zich het recht voor deze account
-        te weigeren of te verwijderen. </p><p><br></p><p><strong>Een account mag niet
+        te weigeren of te verwijderen. </p><p><br></p><p><strong>Een account mag niet
         gebruikt worden voor commerciële doeleinden</strong></p><p>Het platform dat
         CitizenLab aanbiedt heeft als doel de participatie te verhogen. Een account
         kan dan ook enkel in die zin gebruikt worden. Ieder gebruik van de account
@@ -4663,7 +4441,7 @@ models:
         doel om de browsers of computers van iemand anders te beschadigen of te verstoren,
         of om iemands privacy te schenden.</li> <li>Spam: Je mag het CitizenLab platform
         niet gebruiken om personen te spammen.</li> </ul><p><br></p><p><strong>Inbreuk
-        op geldende wetten </strong></p><p><br></p><p>Het gebruik van het account
+        op geldende wetten </strong></p><p><br></p><p>Het gebruik van het account
         in welke zin dan ook, mag geenszins een inbreuk maken op de geldende wetten.
         Daarbij inbegrepen inbreuken tegen Privacy wetgeving, intellectuele eigendomsrechten,
         het strafwetboek,…</p><p><br></p><p>Het account mag geenszins gebruikt worden
@@ -4698,8 +4476,35 @@ models:
         is aldus verboden om het platform en haar inhoud te reproduceren, verspreiden,
         wijzigen of door te geven zonder toestemming.</p>\n"
     slug: terms-and-conditions
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
+    project_ref: 
+    publication_status: published
+  - title_multiloc:
+      en: ''
+      da-DK: ''
+      de-DE: ''
+      en-CA: ''
+      en-GB: ''
+      fr-BE: ''
+      fr-FR: ''
+      nb-NO: ''
+      nl-BE: ''
+      nl-NL: ''
+    body_multiloc:
+      en: ''
+      da-DK: ''
+      de-DE: ''
+      en-CA: ''
+      en-GB: ''
+      fr-BE: ''
+      fr-FR: ''
+      nb-NO: ''
+      nl-BE: ''
+      nl-NL: ''
+    slug: homepage-info
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     project_ref: 
     publication_status: published
   - &29
@@ -4765,7 +4570,7 @@ models:
         participatory budgeting, online mapping, scenario planning, support for advisory
         boards and committees, ...</p><p>On the home page, you''ll see which <strong>processes
         are active </strong>and in which <strong>phase </strong>they currently are.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/5fcd46a4-8a4c-48d4-aaf3-b5164aefdee9/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/6ef08472-d1dc-477d-a24c-dfb7527d37bf/image_nwmsub.png"
         alt="Horizontal separation rule" data-align="center" style="display: block;
         margin: auto;"></p><ul><li><strong>How do I sign in on the platform?</strong></li></ul><p>Signing
         in is done easily by giving your first and last name and your e-mail address.
@@ -4787,7 +4592,7 @@ models:
         is improving and updating this platform on a daily basis. Even the smallest
         bug gets tackled immediately and if you have creative proposals, they can
         help you pointing out which features of the platform can be used for this
-        or which ones are in the pipeline.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/d4ff0c8e-6157-409f-8a39-88a63f636713/image.png"
+        or which ones are in the pipeline.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/891ec12f-1ed8-46bc-8217-9106016f17a6/image_nwmsub.png"
         alt="Horizontal separation rule"></p><p><strong><em>Need more information?
         </em></strong><em>Do you want to use the platform? Questions or feedback?
         Contact the responsible within your municipality or organisation. Or contact
@@ -4798,7 +4603,7 @@ models:
         participatory budgeting, online mapping, scenario planning, support for advisory
         boards and committees, ...</p><p>On the home page, you''ll see which <strong>processes
         are active </strong>and in which <strong>phase </strong>they currently are.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/1ddbb9b0-84e0-4d75-aac5-ed9ffb568f0c/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/e359f036-372c-4d63-8536-5cbb0a34e970/image_nwmsub.png"
         alt="Horizontal separation rule" data-align="center" style="display: block;
         margin: auto;"></p><ul><li><strong>How do I sign in on the platform?</strong></li></ul><p>Signing
         in is done easily by giving your first and last name and your e-mail address.
@@ -4820,7 +4625,7 @@ models:
         is improving and updating this platform on a daily basis. Even the smallest
         bug gets tackled immediately and if you have creative proposals, they can
         help you pointing out which features of the platform can be used for this
-        or which ones are in the pipeline.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/4250f594-8e7d-411d-b93c-810331355916/image.png"
+        or which ones are in the pipeline.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/9d160eb5-f25d-4118-94ce-b38adbb3cfda/image_nwmsub.png"
         alt="Horizontal separation rule"></p><p><strong><em>Need more information?
         </em></strong><em>Do you want to use the platform? Questions or feedback?
         Contact the responsible within your municipality or organisation. Or contact
@@ -4833,7 +4638,7 @@ models:
         pour les conseils communaux, municipaux, ou les comités, etc.</p><p>Sur la
         page d''accueil, vous verrez quels sont <strong>les processus actifs</strong>
         et dans quelle <strong>phase</strong> ils se trouvent actuellement.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/0dd75cb5-35d1-455c-b011-5ae34aac4aa7/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/e9f2e9cb-d2ff-4353-bb64-b177fab71e42/image_nwmsub.png"
         alt="Ligne de séparation horizontale" data-align="center" style="display:
         block; margin: auto;"></p><ul><li><strong>Comment puis-je me connecter sur
         la plateforme ?</strong></li></ul><p>Il est très simple de s''inscrire en
@@ -4859,7 +4664,7 @@ models:
         au quotidien. Chaque bug notifié est résolu immédiatement et si vous avez
         des propositions créatives, ils peuvent vous aider en vous indiquant quelles
         fonctionnalités sont les plus adaptées ou lesquelles sont sur le point de
-        sortir.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/e495278a-36a0-4a17-92d1-9261591a076c/image.png"
+        sortir.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/78f7d7f3-8907-4d3a-b256-ea709f05a66c/image_nwmsub.png"
         alt="Ligne de séparation horizontale"></p><p><strong><em>Besoin de plus d’informations
         ? </em></strong><em>Envie d’utiliser la plateforme ? Une question ou un commentaire
         ? Contactez le responsable de votre commune ou organisation. Ou contactez
@@ -4872,7 +4677,7 @@ models:
         pour les conseils communaux, municipaux, ou les comités, etc.</p><p>Sur la
         page d''accueil, vous verrez quels sont <strong>les processus actifs</strong>
         et dans quelle <strong>phase</strong> ils se trouvent actuellement.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/d5a39651-cfc5-48a5-a92c-a1ad042f90d2/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/8a27ad8f-91ea-49de-ba08-9d52a931bdb4/image_nwmsub.png"
         alt="Ligne de séparation horizontale" data-align="center" style="display:
         block; margin: auto;"></p><ul><li><strong>Comment puis-je me connecter sur
         la plateforme ?</strong></li></ul><p>Il est très simple de s''inscrire en
@@ -4898,7 +4703,7 @@ models:
         au quotidien. Chaque bug notifié est résolu immédiatement et si vous avez
         des propositions créatives, ils peuvent vous aider en vous indiquant quelles
         fonctionnalités sont les plus adaptées ou lesquelles sont sur le point de
-        sortir.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/b3c4b8c9-c4f5-4bd2-a8fc-589e9c5811d8/image.png"
+        sortir.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/6a98f39f-7261-4e8e-80e6-89c053947134/image_nwmsub.png"
         alt="Ligne de séparation horizontale"></p><p><strong><em>Besoin de plus d’informations
         ? </em></strong><em>Envie d’utiliser la plateforme ? Une question ou un commentaire
         ? Contactez le responsable de votre commune ou organisation. Ou contactez
@@ -4910,7 +4715,7 @@ models:
         onderzoeken, online mapping, scenarioplanning, ondersteuning voor adviesraden
         en comités, etc.</p><p>Op de homepagina zie je welke <strong>processen actief</strong>
         zijn of in welke <strong>fase</strong> een proces zich bevindt.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/895ccc87-953f-4f33-be15-ab032ce9d747/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/49ef6eec-6826-43aa-bc09-11ff23d269e5/image_nwmsub.png"
         alt="Horizontale scheidingsregel" data-align="center" style="display: block;
         margin: auto;"></p><ul><li><strong>Hoe log ik in op het platform?</strong></li></ul><p>Inloggen
         kan eenvoudig door je aan te melden met je voornaam, naam en e-mailadres.
@@ -4934,7 +4739,7 @@ models:
         is dagelijks bezig met dit platform te verbeteren en te updaten. De kleinste
         bug wordt direct aangepakt en als je zelf creatieve voorstellen hebt, kunnen
         we je zeggen welke toepassingen van het platform je hiervoor kunt gebruiken
-        of welke er in de pijplijn zitten.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/cd64c22f-3154-480c-81f1-e6509c58e6da/image.png"
+        of welke er in de pijplijn zitten.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/5af8304c-86d3-4b3c-88d4-d250e127565e/image_nwmsub.png"
         alt="Horizontale scheidingsregel"></p><p><strong><em>Meer informatie nodig?
         </em></strong><em>Wil je het platform gebruiken? Vragen of feedback? Contacteer
         de verantwoordelijke dienst of persoon van je gemeente of organisatie of neem
@@ -4945,7 +4750,7 @@ models:
         onderzoeken, online mapping, scenarioplanning, ondersteuning voor adviesraden
         en comités, etc.</p><p>Op de homepagina zie je welke <strong>processen actief</strong>
         zijn of in welke <strong>fase</strong> een proces zich bevindt.</p><p><img
-        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/388d55e2-2ee8-4842-a137-7a7bf9ce660f/image.png"
+        src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/01d87522-a82f-4914-a0c7-906aedbf9b83/image_nwmsub.png"
         alt="Horizontale scheidingsregel" data-align="center" style="display: block;
         margin: auto;"></p><ul><li><strong>Hoe log ik in op het platform?</strong></li></ul><p>Inloggen
         kan eenvoudig door je aan te melden met je voornaam, naam en e-mailadres.
@@ -4969,14 +4774,14 @@ models:
         is dagelijks bezig met dit platform te verbeteren en te updaten. De kleinste
         bug wordt direct aangepakt en als je zelf creatieve voorstellen hebt, kunnen
         we je zeggen welke toepassingen van het platform je hiervoor kunt gebruiken
-        of welke er in de pijplijn zitten.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/text_image/image/55f0c6b8-1844-479f-b0ed-3a652220dcfe/image.png"
+        of welke er in de pijplijn zitten.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/text_image/image/f1a7ff3d-41f5-4b4f-bf36-019ed61c79d6/image_nwmsub.png"
         alt="Horizontale scheidingsregel"></p><p><strong><em>Meer informatie nodig?
         </em></strong><em>Wil je het platform gebruiken? Vragen of feedback? Contacteer
         de verantwoordelijke dienst of persoon van je gemeente of organisatie of neem
         contact met CitizenLab via support@citizenlab.co</em></p>'
     slug: information
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:56 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:40 UTC
     project_ref: 
     publication_status: published
   - &30
@@ -5849,7 +5654,7 @@ models:
         deze cookies noodzakelijk om op een veilige manier uw identiteit te controleren
         vooraleer we toegang geven tot uw persoonlijke informatie. Indien u deze cookies
         weigert zullen bepaalde onderdelen van de website mogelijk niet of niet optimaal
-        werken. </p><p><br></p><p><strong>2/ Functionele cookies</strong></p><p><strong>
+        werken. </p><p><br></p><p><strong>2/ Functionele cookies</strong></p><p><strong>
         </strong></p><p>De functionele cookies zijn de cookies die het functioneren
         van onze websites vergemakkelijken en aangenamer maken voor de bezoeker en
         er voor zorgen dat u een meer gepersonaliseerde surfervaring krijgt. Zo maakt
@@ -5895,20 +5700,11 @@ models:
         vink dan de optie die zegt: ‘Blokkeer cookies van derden en reclame cookies’
         aan.</p><p>- Click ‘Save’.</p><p><br></p><p>Mocht je na het lezen van deze
         Cookieverklaring toch nog vragen of opmerkingen rond cookies hebben, kan je
-        steeds contact opnemen via support@citizenlab.co. </p><p><br></p><p>Laatst
+        steeds contact opnemen via support@citizenlab.co. </p><p><br></p><p>Laatst
         bijgewerkte versie: 08/02/2018</p>\n"
     slug: cookie-policy
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:56 UTC
-    project_ref: 
-    publication_status: published
-  - title_multiloc:
-      en: ''
-    body_multiloc:
-      en: ''
-    slug: homepage-info
-    created_at: 2019-01-30 17:25:30 UTC
-    updated_at: 2019-01-30 17:25:30 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:40 UTC
     project_ref: 
     publication_status: published
   page_link:
@@ -5950,7 +5746,7 @@ models:
     ordering: 3
   page_file: []
   idea_status:
-  - &38
+  - &36
     title_multiloc:
       en: proposed
       da-DK: proposed
@@ -5965,8 +5761,8 @@ models:
     ordering: 100
     code: proposed
     color: "#687782"
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     description_multiloc:
       en: This idea has been proposed to the city
       da-DK: This idea has been proposed to the city
@@ -5978,7 +5774,7 @@ models:
       nb-NO: This idea has been proposed to the city
       nl-BE: Dit idee is voorgesteld
       nl-NL: Dit idee is voorgesteld
-  - &34
+  - &40
     title_multiloc:
       en: under consideration
       da-DK: under consideration
@@ -5993,8 +5789,8 @@ models:
     ordering: 200
     code: under_consideration
     color: "#0080A5"
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     description_multiloc:
       en: This idea has been taken into consideration by the city
       da-DK: This idea has been taken into consideration by the city
@@ -6006,7 +5802,7 @@ models:
       nb-NO: This idea has been taken into consideration by the city
       nl-BE: Dit idee is in overweging genomen
       nl-NL: Dit idee is in overweging genomen
-  - &39
+  - &41
     title_multiloc:
       en: accepted
       da-DK: accepted
@@ -6021,8 +5817,8 @@ models:
     ordering: 300
     code: accepted
     color: "#04884C"
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     description_multiloc:
       en: This idea has been accepted and will be implemented by the city
       da-DK: This idea has been accepted and will be implemented by the city
@@ -6035,7 +5831,7 @@ models:
       nb-NO: This idea has been accepted and will be implemented by the city
       nl-BE: Dit idee is aanvaard en zal worden uitgevoerd
       nl-NL: Dit idee is aanvaard en zal worden uitgevoerd
-  - &36
+  - &37
     title_multiloc:
       en: rejected
       da-DK: rejected
@@ -6050,8 +5846,8 @@ models:
     ordering: 400
     code: rejected
     color: "#E52516"
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     description_multiloc:
       en: This idea has been rejected
       da-DK: This idea has been rejected
@@ -6063,7 +5859,7 @@ models:
       nb-NO: This idea has been rejected
       nl-BE: Dit idee is afgewezen
       nl-NL: Dit idee is afgewezen
-  - &41
+  - &34
     title_multiloc:
       en: implemented
       da-DK: implemented
@@ -6078,8 +5874,8 @@ models:
     ordering: 500
     code: implemented
     color: "#04884C"
-    created_at: 2019-01-29 15:39:27 UTC
-    updated_at: 2019-01-29 15:39:27 UTC
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-01-31 16:13:14 UTC
     description_multiloc:
       en: This idea has been implemented by the city
       da-DK: This idea has been implemented by the city
@@ -6092,647 +5888,298 @@ models:
       nl-BE: Dit idee is uitgevoerd
       nl-NL: Dit idee is uitgevoerd
   idea:
+  - &49
+    title_multiloc:
+      nl-BE: Ontmoetingsplaats voor asielhonden
+    body_multiloc:
+      nl-BE: "<p>Dierenwelzijn ligt veel mensen nauw aan het hart. Dierenasiels zitten
+        vol met hondjes die op een baasje wachten maar niet iedereen kan zomaar eentje
+        bij zich in huis nemen. Nu zijn er al veel vrijwillgers die met de beestjes
+        gaan wandelen. Om dit verder aan te wakkeren, zou je in het park een plek
+        kunnen creëren waar de vrijwilligers elke week samen komen. Wanneer voorbijgangers
+        dit zien, zouden ze kunnen aansluiten.</p>\n"
+    publication_status: published
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *7
+    author_ref: *33
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *34
+    budget: 
   - &44
     title_multiloc:
-      en: Add more night buses
-      en-CA: Add more night buses
-      en-GB: Add more night buses
+      nl-BE: Nachtbussen tijdens het weekend
     body_multiloc:
-      en: "<p>The service of buses to and from the city centre stops early at night
-        (last bus at 11PM). There should be more buses at night to encourage people
-        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
-        more lively.</p>\n"
-      en-CA: "<p>The service of buses to and from the city centre stops early at night
-        (last bus at 11PM). There should be more buses at night to encourage people
-        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
-        more lively.</p>\n"
-      en-GB: "<p>The service of buses to and from the city centre stops early at night
-        (last bus at 11PM). There should be more buses at night to encourage people
-        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
-        more lively.</p>\n"
+      nl-BE: "<p>De bussen van en naar het stadscentrum stoppen net voor middernacht
+        (laatste bus om 11 uur). Er zouden 's nachts meer bussen moeten zijn om mensen
+        aan te moedigen naar de restaurants en bars in het centrum te komen. Het zou
+        de buurt levendiger houden.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:22 UTC
     project_ref: *5
-    author_ref: *33
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-    location_point_geojson: 
-    location_description: 
-    idea_status_ref: *34
-    budget: 
-  - &46
-    title_multiloc:
-      en: Organise a crafts market in the city centre
-      en-CA: Organise a crafts market in the city centre
-      en-GB: Organise a crafts market in the city centre
-    body_multiloc:
-      en: "<p>The shops that we can find in the city centre are quite common and can
-        be found in other places in the city (shopping centre, etc.). So to make the
-        city centre shopping experience more original, we should organise a crafts
-        market there, gather all kind of stands such as food, accessories, etc. in
-        order to promote local crafts and have the inhabitants discover new ways of
-        doing their shopping. </p>\n"
-      en-CA: "<p>The shops that we can find in the city centre are quite common and
-        can be found in other places in the city (shopping centre, etc.). So to make
-        the city centre shopping experience more original, we should organise a crafts
-        market there, gather all kind of stands such as food, accessories, etc. in
-        order to promote local crafts and have the inhabitants discover new ways of
-        doing their shopping. </p>\n"
-      en-GB: "<p>The shops that we can find in the city centre are quite common and
-        can be found in other places in the city (shopping centre, etc.). So to make
-        the city centre shopping experience more original, we should organise a crafts
-        market there, gather all kind of stands such as food, accessories, etc. in
-        order to promote local crafts and have the inhabitants discover new ways of
-        doing their shopping. </p>\n"
-    publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *5
-    author_ref: *33
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-    location_point_geojson: 
-    location_description: 
-    idea_status_ref: *34
-    budget: 
-  - &50
-    title_multiloc:
-      en: Install a little coffee corner in the park
-      en-CA: Install a little coffee corner in the park
-      en-GB: Install a little coffee corner in the park
-    body_multiloc:
-      en: "<p>What the park currently misses is an area where people can meet, get
-        some tea or coffee, and sit doing together. It would attract more people of
-        all ages because it could become a meeting point. There should be a little
-        cart, truck or corner selling hot beverages and maybe some snacks, with a
-        few chairs and tables. It would really attract more people to the park and
-        it would be a nice place to take a break during long park walks at the weekend.
-        Maybe one of the local coffee shops in town could run this place?</p>\n"
-      en-CA: "<p>What the park currently misses is an area where people can meet,
-        get some tea or coffee, and sit doing together. It would attract more people
-        of all ages because it could become a meeting point. There should be a little
-        cart, truck or corner selling hot beverages and maybe some snacks, with a
-        few chairs and tables. It would really attract more people to the park and
-        it would be a nice place to take a break during long park walks at the weekend.
-        Maybe one of the local coffee shops in town could run this place?</p>\n"
-      en-GB: "<p>What the park currently misses is an area where people can meet,
-        get some tea or coffee, and sit doing together. It would attract more people
-        of all ages because it could become a meeting point. There should be a little
-        cart, truck or corner selling hot beverages and maybe some snacks, with a
-        few chairs and tables. It would really attract more people to the park and
-        it would be a nice place to take a break during long park walks at the weekend.
-        Maybe one of the local coffee shops in town could run this place?</p>\n"
-    publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *7
     author_ref: *35
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
     idea_status_ref: *36
     budget: 
-  - &42
+  - &46
     title_multiloc:
-      en: More bicycle racks
-      en-CA: More bicycle racks
-      en-GB: More bicycle racks
+      nl-BE: Organiseer een ambachtsmarkt in het weekend
     body_multiloc:
-      en: "<p>A lot of people are aware of how beneficial for the environment it is
-        to use their bikes to go around town. However, most of them are discouraged
-        because they can't park them because the racks are often full. It would be
-        nice to install more bicycle racks at the strategic points where they are
-        always busy: city centre, in front of the cinema, etc.</p>\n"
-      en-CA: "<p>A lot of people are aware of how beneficial for the environment it
-        is to use their bikes to go around town. However, most of them are discouraged
-        because they can't park them because the racks are often full. It would be
-        nice to install more bicycle racks at the strategic points where they are
-        always busy: city centre, in front of the cinema, etc.</p>\n"
-      en-GB: "<p>A lot of people are aware of how beneficial for the environment it
-        is to use their bikes to go around town. However, most of them are discouraged
-        because they can't park them because the racks are often full. It would be
-        nice to install more bicycle racks at the strategic points where they are
-        always busy: city centre, in front of the cinema, etc.</p>\n"
+      nl-BE: "<p>De winkels die we in het centrum van de stad kunnen vinden zijn vrij
+        gebruikelijk. Om de winkelervaring in het centrum origineler te maken, kunnen
+        we een ambachtelijke markt organiseren met allerlei standjes zoals eten, accessoires,
+        enz. Op deze manier promoten we de lokale ambachten en laten we de inwoners
+        nieuwe manieren ontdekken om boodschappen te doen.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *4
-    author_ref: *37
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *5
+    author_ref: *35
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *37
+    budget: 
+  - &45
+    title_multiloc:
+      nl-BE: "Regenboog zebrapaden \U0001F308"
+    body_multiloc:
+      nl-BE: "<p>Zebrapaden kleuren in de regenboogkleuren is een speelse manier om
+        de holebirechten in de kijker te zettten.</p>\n"
+    publication_status: published
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *5
+    author_ref: *38
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
     idea_status_ref: *34
     budget: 
-  - &51
+  - &47
     title_multiloc:
-      en: Have more computers in the library
-      en-CA: Have more computers in the library
-      en-GB: Have more computers in the library
+      nl-BE: Organiseer leuke bijeenkomsten rond het sorteren van afval
     body_multiloc:
-      en: "<p>To make technology more inclusive, and especially internet access, there
-        should be more computers in the public library. Indeed, today there are only
-        two and the spots they are often occupied. It could be nice to have more monitors,
-        or even a room at the library with computers only. It could help people who
-        dn't have internet at home to look for a job for example.</p>\n"
-      en-CA: "<p>To make technology more inclusive, and especially internet access,
-        there should be more computers in the public library. Indeed, today there
-        are only two and the spots they are often occupied. It could be nice to have
-        more monitors, or even a room at the library with computers only. It could
-        help people who dn't have internet at home to look for a job for example.</p>\n"
-      en-GB: "<p>To make technology more inclusive, and especially internet access,
-        there should be more computers in the public library. Indeed, today there
-        are only two and the spots they are often occupied. It could be nice to have
-        more monitors, or even a room at the library with computers only. It could
-        help people who dn't have internet at home to look for a job for example.</p>\n"
+      nl-BE: "<p>Als mensen hun afval beter zouden sorteren, zou het afvalbeheer hier
+        veel mee geholpen zijn. Sommige mensen weten soms niet hoe ze het goed moeten
+        doen, dus doen ze het helemaal niet. Een idee zou zijn om leuke sociale bijeenkomsten
+        te organiseren om mensen bewust te maken van hoe belangrijk dit is. Ik denk
+        aan spelletjes, infosessies, activiteiten voor het gezin, enz.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *8
-    author_ref: *33
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *6
+    author_ref: *39
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *38
+    idea_status_ref: *36
     budget: 
-  - &52
+  - &48
     title_multiloc:
-      en: Have internet trainings for elderly people
-      en-CA: Have internet trainings for elderly people
-      en-GB: Have internet trainings for elderly people
+      nl-BE: Afvalrecuperatie van voedsel
     body_multiloc:
-      en: "<p>It would be interesting to have a small course given to elderly people
-        on how to use the internet. For instance, there could be a training that shows
-        how to send emails, read the news online, and other basic online activities.
-        I think if we want our city to be more modern and digital, we should make
-        sure beforehand that all the citizens can understand these tools properly.</p>\n"
-      en-CA: "<p>It would be interesting to have a small course given to elderly people
-        on how to use the internet. For instance, there could be a training that shows
-        how to send emails, read the news online, and other basic online activities.
-        I think if we want our city to be more modern and digital, we should make
-        sure beforehand that all the citizens can understand these tools properly.</p>\n"
-      en-GB: "<p>It would be interesting to have a small course given to elderly people
-        on how to use the internet. For instance, there could be a training that shows
-        how to send emails, read the news online, and other basic online activities.
-        I think if we want our city to be more modern and digital, we should make
-        sure beforehand that all the citizens can understand these tools properly.</p>\n"
+      nl-BE: "<p>We moeten meer mensen aanmoedigen om hun organisch afval en voedsel
+        te sorteren. Vaak gaan etensresten, planten, enz. bij het gewone huishoudaf.
+        Zeker bij mensen die in een appartement leven. Wanneer het opzij zou worden
+        gezet, kan dit nog tot een ander doel dienen zoals bijv. organische meststoffen.
+        Het uitdelen van speciale dozen of tassen zou hierbij kunnen helpen.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *8
-    author_ref: *37
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *6
+    author_ref: *38
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *38
-    budget: 
-  - &53
-    title_multiloc:
-      en: Send a weekly agenda of the city by email
-      en-CA: Send a weekly agenda of the city by email
-      en-GB: Send a weekly agenda of the city by email
-    body_multiloc:
-      en: "<p>Many events are organised throughout the week but we are not aware of
-        it because we don't pass by the posters or go to the places where they are
-        advertised. Therefore it would be nice to receive an agenda of what's happening
-        in the city during the week, right into their inbox: cultural events, towhalls,
-        etc. to be able to access it all in one place from the comfort of your own
-        house.</p>\n"
-      en-CA: "<p>Many events are organised throughout the week but we are not aware
-        of it because we don't pass by the posters or go to the places where they
-        are advertised. Therefore it would be nice to receive an agenda of what's
-        happening in the city during the week, right into their inbox: cultural events,
-        towhalls, etc. to be able to access it all in one place from the comfort of
-        your own house.</p>\n"
-      en-GB: "<p>Many events are organised throughout the week but we are not aware
-        of it because we don't pass by the posters or go to the places where they
-        are advertised. Therefore it would be nice to receive an agenda of what's
-        happening in the city during the week, right into their inbox: cultural events,
-        towhalls, etc. to be able to access it all in one place from the comfort of
-        your own house.</p>\n"
-    publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *8
-    author_ref: *33
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-    location_point_geojson: 
-    location_description: 
-    idea_status_ref: *39
+    idea_status_ref: *40
     budget: 
   - &43
     title_multiloc:
-      en: Organise one car-free day per month
-      en-CA: Organise one car-free day per month
-      en-GB: Organise one car-free day per month
+      nl-BE: Organiseer een autoloze zondag
     body_multiloc:
-      en: "<p>It would be nice once a month, to be able to curculate freely by foot
-        or by bike without worrying about cars or air pollution. It could be a great
-        way to raise awareness around cleaner ways to move around the city. Ideally
-        it would be on the weekends so that everyone can enjoy it!</p>\n"
-      en-CA: "<p>It would be nice once a month, to be able to curculate freely by
-        foot or by bike without worrying about cars or air pollution. It could be
-        a great way to raise awareness around cleaner ways to move around the city.
-        Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
-      en-GB: "<p>It would be nice once a month, to be able to curculate freely by
-        foot or by bike without worrying about cars or air pollution. It could be
-        a great way to raise awareness around cleaner ways to move around the city.
-        Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
+      nl-BE: "<p>Het zou mooi zijn om eens per jaar vrij te kunnen fietsen, te voet
+        of met de fiets, zonder je zorgen te maken over auto's of luchtvervuiling.
+        Het is een geweldige manier om het bewustzijn te vergroten over duurzaam vervoer.
+        Idealiter zou het in het weekend zijn, zodat iedereen ervan kan genieten!
+        In grotere steden zoals Brussel is het alvast steeds een geslaagde zondag.
+        Met de #mobielemaandag die nu opkomt zou het pas een gedurfde zet zijn om
+        dit in de week door te voeren.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:22 UTC
     project_ref: *4
-    author_ref: *40
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    author_ref: *33
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *36
+    budget: 
+  - &50
+    title_multiloc:
+      nl-BE: Koffieplek in het park
+    body_multiloc:
+      nl-BE: "<p>Wat het park momenteel mist, is een plek waar mensen elkaar kunnen
+        ontmoeten, wat thee of koffie kunnen drinken en samen kunnen zitten. Het zou
+        meer mensen van alle leeftijden aantrekken, omdat het een ontmoetingsplaats
+        zou kunnen worden. Er zou een kleine foodtruck of chalet moeten zijn met warme
+        dranken en misschien wat snacks, met een paar stoelen en tafels. Misschien
+        kan een van de koffiebars in de buurt deze plek runnen?</p>\n"
+    publication_status: published
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *7
+    author_ref: *38
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *36
+    budget: 
+  - &51
+    title_multiloc:
+      nl-BE: Meer computers in de bibliotheek
+    body_multiloc:
+      nl-BE: "<p>Om technologie inclusiever te maken, zouden er meer computers in
+        de openbare bibliotheek moeten zijn. Vandaag zijn er maar twee computers en
+        de plekken zijn vaak bezet. Het zou leuk kunnen zijn om meer monitors of zelfs
+        een kamer in de bibliotheek met alleen computers te hebben. Het kan mensen
+        helpen die thuis geen internet hebben om bijvoorbeeld een baan te zoeken.</p>\n"
+    publication_status: published
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *8
+    author_ref: *35
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *40
+    budget: 
+  - &52
+    title_multiloc:
+      nl-BE: Internet trainingen voor senioren
+    body_multiloc:
+      nl-BE: "<p>Het zou interessant zijn om een kleine cursus te geven aan ouderen
+        over hoe ze het internet kunnen gebruiken. Er kan bijvoorbeeld een training
+        zijn voor het verzenden van e-mails, het nieuws online lezen en andere eenvoudige
+        online activiteiten. Als we willen dat onze gemeente moderner en digitaaler
+        wordt, moeten we er op letten dat alle burgers de technologie goed begrijpen.</p>\n"
+    publication_status: published
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *8
+    author_ref: *39
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
     idea_status_ref: *41
     budget: 
-  - &45
+  - &53
     title_multiloc:
-      en: Make the city centre more accessible thanks to free shuttles
-      en-CA: Make the city centre more accessible thanks to free shuttles
-      en-GB: Make the city centre more accessible thanks to free shuttles
+      nl-BE: Een gepersonaliseerde wekelijkse culturele nieuwsbrief
     body_multiloc:
-      en: "<p>One of the reason why people are not visiting the city centre as much
-        as before could be because it's hard to reach (hard to park or expensive parking,
-        limited public transportation, etc.). I suggest that the city launches a free
-        shuttle to go from the biggest residential areas to the city centre. They
-        can be electrical as well in order to remain an eco-friendly solution.</p>\n"
-      en-CA: "<p>One of the reason why people are not visiting the city centre as
-        much as before could be because it's hard to reach (hard to park or expensive
-        parking, limited public transportation, etc.). I suggest that the city launches
-        a free shuttle to go from the biggest residential areas to the city centre.
-        They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
-      en-GB: "<p>One of the reason why people are not visiting the city centre as
-        much as before could be because it's hard to reach (hard to park or expensive
-        parking, limited public transportation, etc.). I suggest that the city launches
-        a free shuttle to go from the biggest residential areas to the city centre.
-        They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
+      nl-BE: "<p>Er zijn heel wat evenementen maar we zijn ons er niet van bewust
+        omdat we de posters zien of de niet langs de culturele centra passeren. Daarom
+        zou het leuk zijn om een agenda te ontvangen in de inbox: culturele evenementen,
+        infoavonden, enz.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *5
+    published_at: 2019-01-31 16:13:22 UTC
+    project_ref: *8
     author_ref: *35
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *39
+    idea_status_ref: *37
     budget: 
-  - &48
+  - &42
     title_multiloc:
-      en: Start an organic and food waste recovery
-      en-CA: Start an organic and food waste recovery
-      en-GB: Start an organic and food waste recovery
+      nl-BE: Meer fietsenstallingen
     body_multiloc:
-      en: "<p>We should encourage more people to sort their organic waste and food.
-        Often, food leftovers, plants, etc. go in the ordinary household waste bin
-        when they could be set aside and serve another purpose like organic fertilizer
-        for instance. To do so, we should provide the citizens with special boxes
-        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
-      en-CA: "<p>We should encourage more people to sort their organic waste and food.
-        Often, food leftovers, plants, etc. go in the ordinary household waste bin
-        when they could be set aside and serve another purpose like organic fertilizer
-        for instance. To do so, we should provide the citizens with special boxes
-        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
-      en-GB: "<p>We should encourage more people to sort their organic waste and food.
-        Often, food leftovers, plants, etc. go in the ordinary household waste bin
-        when they could be set aside and serve another purpose like organic fertilizer
-        for instance. To do so, we should provide the citizens with special boxes
-        or bags, then it could be collected with the usual garbage and sorted afterwards.</p>\n"
+      nl-BE: "<p>Iedereen weet hoe milieuvriendelijk het is om de fiets te gebruiken
+        om korte afstanden af te leggen. Sommigen worden echter ontmoedigd door het
+        gebrek aan (veilige) fietsenstallingen. Het zou leuk zijn om meer fietsenstallingen
+        te installeren op strategische plekken waar het altijd druk is: het kerkplein,
+        aan het CC, enz.</p>\n"
     publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *6
-    author_ref: *35
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    published_at: 2019-01-31 16:13:21 UTC
+    project_ref: *4
+    author_ref: *39
+    created_at: 2019-01-31 16:13:21 UTC
+    updated_at: 2019-01-31 16:13:21 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *39
-    budget: 
-  - &49
-    title_multiloc:
-      en: Create a dog area within the park
-      en-CA: Create a dog area within the park
-      en-GB: Create a dog area within the park
-    body_multiloc:
-      en: "<p>There are not many spaces dedicated to dogs in parks. This project would
-        aim at having specific spaces within the park where dogs can run freely, leash-free,
-        in a closed area dedicated to this purpose only. It would allow the dogs to
-        go around in this « free but controlled » area, and also it would encourage
-        interactions with dog owners. In this space there could be benches, and games
-        for dogs.</p>\n"
-      en-CA: "<p>There are not many spaces dedicated to dogs in parks. This project
-        would aim at having specific spaces within the park where dogs can run freely,
-        leash-free, in a closed area dedicated to this purpose only. It would allow
-        the dogs to go around in this « free but controlled » area, and also it would
-        encourage interactions with dog owners. In this space there could be benches,
-        and games for dogs.</p>\n"
-      en-GB: "<p>There are not many spaces dedicated to dogs in parks. This project
-        would aim at having specific spaces within the park where dogs can run freely,
-        leash-free, in a closed area dedicated to this purpose only. It would allow
-        the dogs to go around in this « free but controlled » area, and also it would
-        encourage interactions with dog owners. In this space there could be benches,
-        and games for dogs.</p>\n"
-    publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *7
-    author_ref: *40
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-    location_point_geojson: 
-    location_description: 
-    idea_status_ref: *36
-    budget: 
-  - &47
-    title_multiloc:
-      en: Organise fun gatherings to raise awareness about waste sorting
-      en-CA: Organise fun gatherings to raise awareness about waste sorting
-      en-GB: Organise fun gatherings to raise awareness about waste sorting
-    body_multiloc:
-      en: "<p>I think if people sorted their waste better it would help waste management
-        a lot. The general feeling is that most people sometimes don't know how to
-        do it properly, so they don't do it at all. One idea would be to organise
-        fun social gatherings with activities to raise awareness on how important
-        this is, it could be done through games, info sessions, activities for the
-        family, etc. </p>\n"
-      en-CA: "<p>I think if people sorted their waste better it would help waste management
-        a lot. The general feeling is that most people sometimes don't know how to
-        do it properly, so they don't do it at all. One idea would be to organise
-        fun social gatherings with activities to raise awareness on how important
-        this is, it could be done through games, info sessions, activities for the
-        family, etc. </p>\n"
-      en-GB: "<p>I think if people sorted their waste better it would help waste management
-        a lot. The general feeling is that most people sometimes don't know how to
-        do it properly, so they don't do it at all. One idea would be to organise
-        fun social gatherings with activities to raise awareness on how important
-        this is, it could be done through games, info sessions, activities for the
-        family, etc. </p>\n"
-    publication_status: published
-    published_at: 2019-01-29 15:39:34 UTC
-    project_ref: *6
-    author_ref: *37
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-    location_point_geojson: 
-    location_description: 
-    idea_status_ref: *38
+    idea_status_ref: *37
     budget: 
   areas_idea: []
   baskets_idea: []
   idea_file: []
   idea_image:
   - idea_ref: *42
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/df9de462-8716-4da2-9478-f713c8e23964/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/81cab844-88cf-488e-a683-fe5d6d27660e/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:35 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
+    created_at: 2019-01-31 16:13:23 UTC
+    updated_at: 2019-01-31 16:13:23 UTC
   - idea_ref: *43
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/9de3095e-58e2-42d1-937a-6d138d4b5526/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/4bf43afe-b273-4431-b89c-a2f47bcb6370/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:38 UTC
-    updated_at: 2019-01-29 15:39:38 UTC
+    created_at: 2019-01-31 16:13:26 UTC
+    updated_at: 2019-01-31 16:13:26 UTC
   - idea_ref: *44
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/5baa1a7a-f003-4cc6-932e-31c1040f6458/night-bus_l5xc4n.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/c53d528f-5206-4575-8daa-0259a0209f17/night-bus_l5xc4n.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:39 UTC
-    updated_at: 2019-01-29 15:39:39 UTC
+    created_at: 2019-01-31 16:13:27 UTC
+    updated_at: 2019-01-31 16:13:27 UTC
   - idea_ref: *45
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/2b1605d1-4289-43de-8ef8-78bef24c74bd/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/3cec00b7-04aa-4f76-a231-4079c06221a2/DGsM8mIWsAAS3_T_ag0r14.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:40 UTC
-    updated_at: 2019-01-29 15:39:40 UTC
+    created_at: 2019-01-31 16:13:28 UTC
+    updated_at: 2019-01-31 16:13:28 UTC
   - idea_ref: *46
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/0d1c7128-1032-4ee0-970d-456e54e23204/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/a7ef0601-32c9-43ad-9ba8-cb963a564d22/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:41 UTC
-    updated_at: 2019-01-29 15:39:41 UTC
+    created_at: 2019-01-31 16:13:29 UTC
+    updated_at: 2019-01-31 16:13:29 UTC
   - idea_ref: *47
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/784ff8b6-44ae-4f14-bc0e-66748313f8ab/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/2531b85f-20ca-4ea1-99ac-bca1a6a8faef/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:43 UTC
-    updated_at: 2019-01-29 15:39:43 UTC
+    created_at: 2019-01-31 16:13:30 UTC
+    updated_at: 2019-01-31 16:13:30 UTC
   - idea_ref: *48
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/34c3e292-f1e8-4539-a254-298a662e1ef0/organic-waste_g0nyf1.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/77926991-7b00-43b0-8d74-06887d467837/organic-waste_g0nyf1.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:46 UTC
-    updated_at: 2019-01-29 15:39:46 UTC
+    created_at: 2019-01-31 16:13:32 UTC
+    updated_at: 2019-01-31 16:13:32 UTC
   - idea_ref: *49
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/d4e0515e-d875-4adc-a0ef-df82d3c5c65d/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/b3fefeb8-137f-4e0d-8b69-50eea55f7a30/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:47 UTC
-    updated_at: 2019-01-29 15:39:47 UTC
+    created_at: 2019-01-31 16:13:32 UTC
+    updated_at: 2019-01-31 16:13:32 UTC
   - idea_ref: *50
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/128fff6e-7365-4fed-bf8c-425b8d85b0ba/4015932979_f495f4e5cf_z_o1cjo7.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/c7edc5c5-d73c-4e1d-8545-9787a7f1e546/4015932979_f495f4e5cf_z_o1cjo7.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:48 UTC
-    updated_at: 2019-01-29 15:39:48 UTC
+    created_at: 2019-01-31 16:13:33 UTC
+    updated_at: 2019-01-31 16:13:33 UTC
   - idea_ref: *51
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/8356b683-b283-445e-8c52-5ec9a5f41be8/zzzfirstfloor_zffpzz.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/4871f274-5261-4245-ab38-9e85561a98e6/zzzfirstfloor_zffpzz.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:49 UTC
-    updated_at: 2019-01-29 15:39:49 UTC
+    created_at: 2019-01-31 16:13:34 UTC
+    updated_at: 2019-01-31 16:13:34 UTC
   - idea_ref: *52
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/07e080f5-0dce-489c-87aa-89af77cdf0bd/hqdefault_rltrx8.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/4fc9324f-782b-4d9e-8c60-36f691c19351/hqdefault_rltrx8.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:49 UTC
-    updated_at: 2019-01-29 15:39:49 UTC
+    created_at: 2019-01-31 16:13:35 UTC
+    updated_at: 2019-01-31 16:13:35 UTC
   - idea_ref: *53
-    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/5e9322f2-f4c8-4ede-b760-f4458098478a/emailing1_lv8sxz.jpg
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/idea_image/image/57c0dd7d-809d-497e-b0ed-ad5d445efca4/emailing1_lv8sxz.jpg
     ordering: 
-    created_at: 2019-01-29 15:39:50 UTC
-    updated_at: 2019-01-29 15:39:50 UTC
-  ideas_phase:
-  - idea_ref: *42
-    phase_ref: *17
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *18
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *19
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *20
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *17
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *18
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *19
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *20
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *13
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *14
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *15
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *16
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *13
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *14
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *15
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *16
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *25
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *26
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *27
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *28
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
-    phase_ref: *25
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
-    phase_ref: *26
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
-    phase_ref: *27
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
-    phase_ref: *28
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *21
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *22
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *23
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *24
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *52
-    phase_ref: *21
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *52
-    phase_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *52
-    phase_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *52
-    phase_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *21
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
+  ideas_phase: []
   ideas_topic:
   - idea_ref: *42
     topic_ref: *54
@@ -6751,344 +6198,303 @@ models:
   - idea_ref: *50
     topic_ref: *57
   comment:
-  - author_ref: *37
+  - author_ref: *39
     idea_ref: *42
     body_multiloc:
-      en: "<p>Great idea, we stand behind you!</p>\n"
-      en-CA: "<p>Great idea, we stand behind you!</p>\n"
-      en-GB: "<p>Great idea, we stand behind you!</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Top idee, ben ik helemaal mee akkoord!</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
+    publication_status: published
+    body_updated_at: ''
+  - author_ref: *35
+    idea_ref: *42
+    body_multiloc:
+      nl-BE: "<p>Ik heb je wel nog nooit op een fiets gezien ;-)</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
   - author_ref: *33
     idea_ref: *42
     body_multiloc:
-      en: "<p>I've never seen you riding a bicycle...</p>\n"
-      en-CA: "<p>I've never seen you riding a bicycle...</p>\n"
-      en-GB: "<p>I've never seen you riding a bicycle...</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Goed idee maar het moet verder gaan dan dit. Ik vind ook dat er afsluitbare
+        fietsboxen moeten komen.</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *40
-    idea_ref: *42
-    body_multiloc:
-      en: "<p>Why stop there? The city also lacks bike stables. There should at least
-        be one near the river.</p>\n"
-      en-CA: "<p>Why stop there? The city also lacks bike stables. There should at
-        least be one near the river.</p>\n"
-      en-GB: "<p>Why stop there? The city also lacks bike stables. There should at
-        least be one near the river.</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-    publication_status: published
-    body_updated_at: ''
-  - author_ref: *33
+  - author_ref: *35
     idea_ref: *43
     body_multiloc:
-      en: "<p>What about those who work on weekends? There should be at least public
-        transportation available...</p>\n"
-      en-CA: "<p>What about those who work on weekends? There should be at least public
-        transportation available...</p>\n"
-      en-GB: "<p>What about those who work on weekends? There should be at least public
-        transportation available...</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>En wat met diegene die in het weekend werken?</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *37
+  - author_ref: *39
     idea_ref: *44
     body_multiloc:
-      en: "<p>It would also be nice for the kids, it gives them more independance
-        and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
-      en-CA: "<p>It would also be nice for the kids, it gives them more independance
-        and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
-      en-GB: "<p>It would also be nice for the kids, it gives them more independance
-        and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Het is ook een goede oplossing voor ouders met tienerkinderen. Dan
+        hoeven we ze niet 's avonds laat gaan oppikken.</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *35
+  - author_ref: *38
     idea_ref: *46
     body_multiloc:
-      en: "<p>It would be a great way to promote local creators and make the city
-        centre experience more fun I agree!</p>\n"
-      en-CA: "<p>It would be a great way to promote local creators and make the city
-        centre experience more fun I agree!</p>\n"
-      en-GB: "<p>It would be a great way to promote local creators and make the city
-        centre experience more fun I agree!</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Het is een heel goede manier om lokale ambachtslui in de kijker te
+        zetten!</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
+    publication_status: published
+    body_updated_at: ''
+  - author_ref: *38
+    idea_ref: *47
+    body_multiloc:
+      nl-BE: "<p>Leuk idee, maar het zou een soort evenement moeten zijn dat echt
+        aanslaat, zoals een familiedag?</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
+    publication_status: published
+    body_updated_at: ''
+  - author_ref: *39
+    idea_ref: *48
+    body_multiloc:
+      nl-BE: "<p>Het is een heel goed idee. Ik ben dit zelf beginnen doen in mijn
+        tuin. Maar ik weet dat niet iedereen dit kan of dat ze niet eens weten dat
+        het mogelijk is. Het zou een goede zaak zijn om hierrond bewustmaking te genereren.</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
   - author_ref: *35
-    idea_ref: *47
-    body_multiloc:
-      en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
-        like a family day? Something people are excited to go to</p>\n"
-      en-CA: "<p>Cool idea but it would have to be a a kind of event that is really
-        engaging, like a family day? Something people are excited to go to</p>\n"
-      en-GB: "<p>Cool idea but it would have to be a a kind of event that is really
-        engaging, like a family day? Something people are excited to go to</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-    publication_status: published
-    body_updated_at: ''
-  - author_ref: *37
-    idea_ref: *48
-    body_multiloc:
-      en: "<p>It's a very good idea. I have started to do this myself in my garden.
-        But I know that not everybody has this possibility or they don't even know
-        it's possible. It would be a good thing to raise awareness around this also.</p>\n"
-      en-CA: "<p>It's a very good idea. I have started to do this myself in my garden.
-        But I know that not everybody has this possibility or they don't even know
-        it's possible. It would be a good thing to raise awareness around this also.</p>\n"
-      en-GB: "<p>It's a very good idea. I have started to do this myself in my garden.
-        But I know that not everybody has this possibility or they don't even know
-        it's possible. It would be a good thing to raise awareness around this also.</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-    publication_status: published
-    body_updated_at: ''
-  - author_ref: *33
     idea_ref: *49
     body_multiloc:
-      en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
-        it is sometimes scary to see dogs running around kids that are playing on
-        the playground. Having this space for the dogs to run freely would also be
-        a peace of mind for us!</p>\n"
-      en-CA: "<p>I really like the idea. I am not a dog owner myself but as a parent,
-        it is sometimes scary to see dogs running around kids that are playing on
-        the playground. Having this space for the dogs to run freely would also be
-        a peace of mind for us!</p>\n"
-      en-GB: "<p>I really like the idea. I am not a dog owner myself but as a parent,
-        it is sometimes scary to see dogs running around kids that are playing on
-        the playground. Having this space for the dogs to run freely would also be
-        a peace of mind for us!</p>\n"
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
+      nl-BE: "<p>Ik vind het een heel goed idee. Zal mensen inspireren om met asielhonden
+        te gaan wandelen of er misschien zelfs eentje te adopteren.</p>\n"
+    created_at: 2019-01-31 16:13:36 UTC
+    updated_at: 2019-01-31 16:13:36 UTC
     publication_status: published
     body_updated_at: ''
   vote:
   - votable_ref: *42
-    user_ref: *40
+    user_ref: *38
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *42
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *42
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *42
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *42
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *43
-    user_ref: *37
+    user_ref: *39
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *43
+    user_ref: *38
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *43
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *43
-    user_ref: *40
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *43
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *44
-    user_ref: *40
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *44
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *44
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *44
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *44
-    user_ref: *37
+    user_ref: *38
     mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *40
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *35
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *45
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *45
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *45
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
-    user_ref: *37
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *45
+    user_ref: *38
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *46
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *46
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *46
-    user_ref: *40
+    user_ref: *38
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *47
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *46
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *47
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *47
-    user_ref: *37
+    user_ref: *38
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *47
-    user_ref: *40
+    user_ref: *35
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *47
+    user_ref: *39
     mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *48
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *48
-    user_ref: *40
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *48
     user_ref: *33
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *48
+    user_ref: *35
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *48
+    user_ref: *39
     mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *49
+    user_ref: *38
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *49
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *49
     user_ref: *35
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *49
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *49
-    user_ref: *33
     mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *50
+    user_ref: *39
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *50
+    user_ref: *38
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *50
+    user_ref: *33
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *50
     user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *33
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *40
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *51
-    user_ref: *40
+    user_ref: *39
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *51
-    user_ref: *35
+    user_ref: *38
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *51
-    user_ref: *37
-    mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *51
     user_ref: *33
     mode: down
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *52
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *51
     user_ref: *35
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    mode: down
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *52
-    user_ref: *37
+    user_ref: *39
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *52
+    user_ref: *38
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *52
     user_ref: *33
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *52
-    user_ref: *40
+    user_ref: *35
     mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *53
-    user_ref: *37
-    mode: up
-    created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:34 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
   - votable_ref: *53
     user_ref: *35
+    mode: up
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
+  - votable_ref: *53
+    user_ref: *33
     mode: down
-    created_at: 2019-01-29 15:39:35 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
+    created_at: 2019-01-31 16:13:22 UTC
+    updated_at: 2019-01-31 16:13:22 UTC
