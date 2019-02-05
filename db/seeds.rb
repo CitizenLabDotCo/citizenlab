@@ -117,8 +117,8 @@ if ['public','example_org'].include? Apartment::Tenant.current
       google_login: {
         allowed: true,
         enabled: true,
-        client_id: '692484441813-98clbuerpm01bonc06htv95mec0pu1d3.apps.googleusercontent.com',
-        client_secret: 'ueqXBAfEy7j7D_2Ge8d16a6v'
+        client_id: '898046778216-8hddufu4irag1bu1sfvsjjaah4i53fpf.apps.googleusercontent.com',
+        client_secret: '-Kh_Hx325Pj02t1i50LHsRR6'
       },
       franceconnect_login: {
         allowed: true, 
