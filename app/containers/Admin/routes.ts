@@ -17,6 +17,9 @@ import emailsRoutes from './emails/routes';
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
+
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
   const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
@@ -33,10 +36,16 @@ const isUserAuthorized = (nextState, replace) => {
 export default () => ({
   path: 'admin',
   name: 'Admin page',
-  getComponent: loadAndRender(import('containers/Admin')),
+  component: Loadable({
+    loader: () => import('containers/Admin'),
+    loading: Spinner
+  }),
   onEnter: isUserAuthorized,
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/guide'))
+    component: Loadable({
+      loader: () => import('containers/Admin/guide'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     dashboardRoutes(),

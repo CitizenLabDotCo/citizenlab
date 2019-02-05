@@ -1,11 +1,19 @@
-import loadAndRender from 'utils/loadAndRender';
+// import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
   path: 'ideas',
   name: 'admin Ideas',
-  getComponent: loadAndRender(import('containers/Admin/ideas')),
+  component: Loadable({
+    loader: () => import('containers/Admin/ideas'),
+    loading: Spinner
+  }),
   indexRoute: {
     name: 'admin ideas index',
-    getComponent: loadAndRender(import('containers/Admin/ideas/all')),
+    component: Loadable({
+      loader: () => import('containers/Admin/ideas/all'),
+      loading: Spinner
+    }),
   },
 });
