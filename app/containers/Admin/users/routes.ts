@@ -1,16 +1,27 @@
-import loadAndRender from 'utils/loadAndRender';
+// import loadAndRender from 'utils/loadAndRender';
+
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
   path: 'users',
   name: 'admin users',
-  getComponent: loadAndRender(import('containers/Admin/users')),
+  component: Loadable({
+    loader: () => import('containers/Admin/users'),
+    loading: Spinner
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/users/AllUsers')),
-  },
+    component: Loadable({
+      loader: () => import('containers/Admin/users/AllUsers'),
+      loading: Spinner
+    }),  },
   childRoutes: [
     {
       path: '/:locale/admin/users/:groupId',
-      getComponent: loadAndRender(import('containers/Admin/users/UsersGroup')),
+      component: Loadable({
+        loader: () => import('containers/Admin/users/UsersGroup'),
+        loading: Spinner
+      }),
     },
   ],
 });
