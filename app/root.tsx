@@ -13,7 +13,7 @@ import { init } from '@sentry/browser';
 import 'file-loader?name=[name].[ext]!./.htaccess';
 
 // Import i18n messages
-import { translationMessages } from './i18n';
+import { getTranslationMessages } from './i18n';
 
 // Import CSS reset and Global Styles
 import 'assets/css/reset.min.css';
@@ -45,7 +45,7 @@ const rootRoute = {
 };
 
 const Root = () => (
-  <LanguageProvider messages={translationMessages}>
+  <LanguageProvider getMessages={getTranslationMessages}>
     <Router
       history={browserHistory}
       routes={rootRoute}

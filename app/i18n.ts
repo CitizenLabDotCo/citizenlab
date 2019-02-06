@@ -7,6 +7,7 @@ import daLocaleData from 'react-intl/locale-data/da';
 import nbLocaleData from 'react-intl/locale-data/nb';
 import achLocaleData from 'utils/ach';
 import { DEFAULT_LOCALE } from 'containers/App/constants';
+import { Locale } from 'typings';
 
 const enTranslationMessages = require('translations/en.json');
 const enGBTranslationMessages = require('translations/en-GB.json');
@@ -62,4 +63,10 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
   translationMessages['nb-NO'] = formatTranslationMessages('nb-NO', nbNOTranslationMessages);
 }
 
-export { translationMessages };
+// export { translationMessages };
+
+export function getTranslationMessages(locale: Locale) {
+  if (translationMessages[locale]) {
+    return translationMessages[locale];
+  }
+}
