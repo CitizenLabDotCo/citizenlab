@@ -1,31 +1,53 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
   path: 'emails',
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: Spinner
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./custom/All')),
+    component: Loadable({
+      loader: () => import('./custom/All'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     {
       path: 'custom',
-      getComponent: loadAndRender(import('./custom/All')),
+      component: Loadable({
+        loader: () => import('./custom/All'),
+        loading: Spinner
+      }),
     },
     {
       path: 'custom/new',
-      getComponent: loadAndRender(import('./custom/New')),
+      component: Loadable({
+        loader: () => import('./custom/New'),
+        loading: Spinner
+      }),
     },
     {
       path: 'custom/:campaignId/edit',
-      getComponent: loadAndRender(import('./custom/Edit')),
+      component: Loadable({
+        loader: () => import('./custom/Edit'),
+        loading: Spinner
+      }),
     },
     {
       path: 'custom/:campaignId',
-      getComponent: loadAndRender(import('./custom/Show')),
+      component: Loadable({
+        loader: () => import('./custom/Show'),
+        loading: Spinner
+      }),
     },
     {
       path: 'automated',
-      getComponent: loadAndRender(import('./automated')),
+      component: Loadable({
+        loader: () => import('./automated'),
+        loading: Spinner
+      }),
     },
   ],
 });

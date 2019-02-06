@@ -1,8 +1,7 @@
 import adminRoutes from 'containers/Admin/routes';
-import loadAndRender from 'utils/loadAndRender';
-import LandingPage from 'containers/LandingPage';
-import IdeasShowPage from 'containers/IdeasShowPage';
-import ProjectShowPage from 'containers/ProjectsShowPage';
+
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default function createRoutes() {
   return [
@@ -11,140 +10,221 @@ export default function createRoutes() {
       name: 'LocaleWrapper',
       indexRoute: {
         name: 'home',
-        component: LandingPage,
+        component: Loadable({
+          loader: () => import('containers/LandingPage'),
+          loading: Spinner
+        })
       },
       childRoutes: [
         {
           path: 'sign-in',
           name: 'signInPage',
-          getComponent: loadAndRender(import('containers/SignInPage')),
+          component: Loadable({
+            loader: () => import('containers/SignInPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'sign-up',
           name: 'signUpPage',
-          getComponent: loadAndRender(import('containers/SignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/SignUpPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'invite',
           name: 'signUpPage',
-          getComponent: loadAndRender(import('containers/SignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/SignUpPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'complete-signup',
           name: 'completeSignUpPage',
-          getComponent: loadAndRender(import('containers/CompleteSignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/CompleteSignUpPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'authentication-error',
           name: 'completeSignUpPage',
-          getComponent: loadAndRender(import('containers/CompleteSignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/CompleteSignUpPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'profile/edit',
           name: 'usersEditPage',
-          getComponent: loadAndRender(import('containers/UsersEditPage')),
+          component: Loadable({
+            loader: () => import('containers/UsersEditPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'profile/:slug',
           name: 'usersShowPage',
-          getComponent: loadAndRender(import('containers/UsersShowPage')),
+          component: Loadable({
+            loader: () => import('containers/UsersShowPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'ideas/new',
           name: 'IdeasProjectSelectPage',
-          getComponent: loadAndRender(import('containers/IdeasProjectSelectPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasProjectSelectPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'ideas/edit/:ideaId',
           name: 'IdeasEditPage',
-          getComponent: loadAndRender(import('containers/IdeasEditPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasEditPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'ideas',
           name: 'ideasPage',
-          getComponent: loadAndRender(import('containers/IdeasIndexPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasIndexPage'),
+            loading: Spinner
+          }),
         },
         {
           path: 'ideas/:slug',
           name: 'ideasShow',
-          component: IdeasShowPage,
+          component: Loadable({
+            loader: () => import('containers/IdeasShowPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'projects/:slug/ideas/new',
           name: 'IdeasNewPage2',
-          getComponent: loadAndRender(import('containers/IdeasNewPage2')),
+          component: Loadable({
+            loader: () => import('containers/IdeasNewPage2'),
+            loading: Spinner
+          })
         },
         adminRoutes(),
         {
           path: 'projects',
           name: 'Project page',
-          getComponent: loadAndRender(import('containers/ProjectsIndexPage')),
+          component: Loadable({
+            loader: () => import('containers/ProjectsIndexPage'),
+            loading: Spinner
+          })
         },
         {
           path: 'projects/:slug',
           name: 'Project page',
-          component: ProjectShowPage,
+          component: Loadable({
+            loader: () => import('containers/ProjectsShowPage'),
+            loading: Spinner
+          }),
           indexRoute: {
             name: 'Project page',
-            getComponent: loadAndRender(import('containers/ProjectsShowPage/main')),
+            component: Loadable({
+              loader: () => import('containers/ProjectsShowPage/main'),
+              loading: Spinner
+            })
           },
           childRoutes: [
             {
               path: 'process',
               name: 'Project\'s process page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/process')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/process'),
+                loading: Spinner
+              })
             },
             {
               path: 'timeline',
               name: 'Project\'s process page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/process')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/process'),
+                loading: Spinner
+              })
             },
             {
               path: 'info',
               name: 'Project\'s info page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/info')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/info'),
+                loading: Spinner
+              }),
             },
             {
               path: 'events',
               name: 'Project\'s events page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/events')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/events'),
+                loading: Spinner
+              })
             },
             {
               path: 'ideas',
               name: 'Project\'s ideas page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/ideas')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/ideas'),
+                loading: Spinner
+              })
             },
             {
               path: 'survey',
               name: 'Project\'s survey page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/survey')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/survey'),
+                loading: Spinner
+              })
             },
           ],
         },
         {
           path: 'pages/cookie-policy',
           name: 'cookiePolicy',
-          getComponent: loadAndRender(import('containers/CookiePolicy')),
+          component: Loadable({
+            loader: () => import('containers/CookiePolicy'),
+            loading: Spinner
+          })
         },
         {
           path: 'pages/:slug',
           name: 'pagesShowPage',
-          getComponent: loadAndRender(import('containers/PagesShowPage')),
+          component: Loadable({
+            loader: () => import('containers/PagesShowPage'),
+            loading: Spinner
+          }),
         },
         {
           path: 'password-recovery',
           name: 'passwordRecovery',
-          getComponent: loadAndRender(import('containers/PasswordRecovery')),
+          component: Loadable({
+            loader: () => import('containers/PasswordRecovery'),
+            loading: Spinner
+          }),
         },
         {
           path: 'reset-password',
           name: 'passwordReset',
-          getComponent: loadAndRender(import('containers/PasswordReset')),
+          component: Loadable({
+            loader: () => import('containers/PasswordReset'),
+            loading: Spinner
+          }),
         },
         {
           path: '*',
           name: 'notfound',
-          getComponent: loadAndRender(import('containers/PagesShowPage')),
+          component: Loadable({
+            loader: () => import('containers/PagesShowPage'),
+            loading: Spinner
+          }),
         },
       ],
     }

@@ -1,15 +1,25 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
   path: 'insights',
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: Spinner
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./All')),
+    component: Loadable({
+      loader: () => import('./All'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: Spinner
+      }),
     },
   ],
 });

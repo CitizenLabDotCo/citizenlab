@@ -2,7 +2,6 @@
 // They are all wrapped in the App component, which should contain the navbar etc
 // See http://blog.mxstbr.com/2016/01/react-apps-with-pages for more information
 // about the code splitting business
-import loadAndRender from 'utils/loadAndRender';
 import dashboardRoutes from './dashboard/routes';
 import ideasRoutes from './ideas/routes';
 import usersRoutes from './users/routes';
@@ -16,6 +15,9 @@ import emailsRoutes from './emails/routes';
 
 import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -33,10 +35,16 @@ const isUserAuthorized = (nextState, replace) => {
 export default () => ({
   path: 'admin',
   name: 'Admin page',
-  getComponent: loadAndRender(import('containers/Admin')),
+  component: Loadable({
+    loader: () => import('containers/Admin'),
+    loading: Spinner
+  }),
   onEnter: isUserAuthorized,
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/guide'))
+    component: Loadable({
+      loader: () => import('containers/Admin/guide'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     dashboardRoutes(),
@@ -54,11 +62,17 @@ export default () => ({
     emailsRoutes(),
     {
       path: 'favicon',
-      getComponent: loadAndRender(import('containers/Admin/favicon')),
+      component: Loadable({
+        loader: () => import('containers/Admin/favicon'),
+        loading: Spinner
+      }),
     },
     {
       path: 'dashboard/insights/:clusteringId',
-      getComponent: loadAndRender(import('./dashboard/clusterings/Show')),
+      component: Loadable({
+        loader: () => import('./dashboard/clusterings/Show'),
+        loading: Spinner
+      }),
     },
   ],
 });
