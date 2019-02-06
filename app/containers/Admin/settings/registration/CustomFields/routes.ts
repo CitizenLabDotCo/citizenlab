@@ -1,26 +1,45 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: Spinner
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./All')),
+    component: Loadable({
+      loader: () => import('./All'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: Spinner
+      }),
     },
     {
       path: ':customFieldId',
-      getComponent: loadAndRender(import('./Edit')),
+      component: Loadable({
+        loader: () => import('./Edit'),
+        loading: Spinner
+      }),
       childRoutes: [
         {
           path: 'general',
-          getComponent: loadAndRender(import('./Edit/General')),
+          component: Loadable({
+            loader: () => import('./Edit/General'),
+            loading: Spinner
+          }),
         },
         {
           path: 'options',
-          getComponent: loadAndRender(import('./Edit/Options')),
+          component: Loadable({
+            loader: () => import('./Edit/Options'),
+            loading: Spinner
+          }),
         },
       ],
     },

@@ -1,23 +1,36 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import Spinner from 'components/UI/Spinner';
 
 export default () => ({
   path: 'settings/areas',
   name: 'admin settings areas',
-  getComponent: loadAndRender(import('../')),
+  component: Loadable({
+    loader: () => import('../'),
+    loading: Spinner
+  }),
   indexRoute: {
     name: 'admin setting areas index',
-    getComponent: loadAndRender(import('./all')),
+    component: Loadable({
+      loader: () => import('./all'),
+      loading: Spinner
+    }),
   },
   childRoutes: [
     {
       path: 'new',
       name: 'admin setting areas new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: Spinner
+      }),
     },
     {
       path: ':areaId',
       name: 'admin setting area edit',
-      getComponent: loadAndRender(import('./Edit')),
+      component: Loadable({
+        loader: () => import('./Edit'),
+        loading: Spinner
+      }),
     },
   ],
 });
