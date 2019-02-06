@@ -5,7 +5,8 @@ import { localeStream } from 'services/locale';
 import { Locale } from 'typings';
 
 type Props = {
-  messages: { [key: string]: any };
+  getMessages: Function;
+  // messages: { [key: string]: any };
 };
 
 type State = {
@@ -37,12 +38,10 @@ export default class LanguageProvider extends React.PureComponent<Props, State> 
 
   render() {
     const { locale } = this.state;
-
+    const messages = this.props.getMessages(locale);
     if (locale) {
-      const { messages } = this.props;
-
       return (
-        <IntlProvider locale={locale} key={locale} messages={messages[locale]}>
+        <IntlProvider locale={locale} key={locale} messages={messages}>
           {React.Children.only(this.props.children)}
         </IntlProvider>
       );
