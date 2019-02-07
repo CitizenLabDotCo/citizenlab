@@ -12,10 +12,6 @@ import { init } from '@sentry/browser';
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
 
-// Import i18n messages
-// import { translationMessages } from './i18n';
-import { getTranslationMessages } from './i18n';
-
 // Import CSS reset and Global Styles
 import 'assets/css/reset.min.css';
 import './global-styles';
@@ -45,14 +41,16 @@ const rootRoute = {
   childRoutes: createRoutes(),
 };
 
-const Root = () => (
-  <LanguageProvider getMessages={getTranslationMessages}>
-    <Router
-      history={browserHistory}
-      routes={rootRoute}
-      render={applyRouterMiddleware(useScroll())}
-    />
-  </LanguageProvider>
-);
+const Root = () => {
+  return (
+    <LanguageProvider>
+      <Router
+        history={browserHistory}
+        routes={rootRoute}
+        render={applyRouterMiddleware(useScroll())}
+      />
+    </LanguageProvider>
+  );
+};
 
 render(<Root />, document.getElementById('app'));
