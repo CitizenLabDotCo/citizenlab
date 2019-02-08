@@ -3,15 +3,17 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import Loadable from 'react-loadable';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-import LanguageSelector from './components/LanguageSelector';
+// import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
+import Spinner from 'components/UI/Spinner';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -330,13 +332,13 @@ const SignUpLink = NavigationItem.extend`
   `}
 `;
 
-const StyledLanguageSelector = styled(LanguageSelector)`
-  padding-left: 40px;
+// const StyledLanguageSelector = styled(LanguageSelector)`
+//   padding-left: 40px;
 
-  &.notLoggedIn {
-    padding-left: 20px;
-  }
-`;
+//   &.notLoggedIn {
+//     padding-left: 20px;
+//   }
+// `;
 
 interface InputProps {}
 
@@ -356,6 +358,23 @@ interface Props extends InputProps, DataProps {}
 interface State {
   projectsDropdownOpened: boolean;
 }
+
+const LoadableLanguageSelector = Loadable({
+  loading: Spinner,
+  loader: () => import('./components/LanguageSelector'),
+  render(loaded, props) {
+    const LanguageSelector = loaded.default;
+    const StyledLanguageSelector = styled(LanguageSelector)`
+      padding-left: 40px;
+
+      &.notLoggedIn {
+        padding-left: 20px;
+      }
+    `;
+
+    return <StyledLanguageSelector {...props} />;
+  }
+});
 
 class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & ITracks, State> {
   constructor(props) {
@@ -379,6 +398,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
   trackSignUpLinkClick = () => {
     // track click for analytics
     this.props.clickSignUpLink();
+  }
+
+  onMouseOverLanguageSelector = () => {
+    LoadableLanguageSelector.preload();
   }
 
   render() {
@@ -514,7 +537,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
             {tenantLocales.length > 1 && locale &&
               <RightItem className="noLeftMargin">
-                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+                <LoadableLanguageSelector onMouseOver={this.onMouseOverLanguageSelector} className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>
