@@ -11,14 +11,7 @@ FactoryBot.define do
       "en" => "Time to check it all out!"  
     }}
   end
-
-  factory :comment_on_your_comment_campaign, class: EmailCampaigns::Campaigns::CommentOnYourComment do
-    enabled { true }
-  end
-
-  factory :comment_on_your_idea_campaign, class: EmailCampaigns::Campaigns::CommentOnYourIdea do
-    enabled { true }
-  end
+  
 
   factory :admin_rights_received_campaign, class: EmailCampaigns::Campaigns::AdminRightsReceived do
     enabled { true }
@@ -32,35 +25,11 @@ FactoryBot.define do
     enabled { true }
   end
 
-  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
+  factory :comment_on_your_comment_campaign, class: EmailCampaigns::Campaigns::CommentOnYourComment do
     enabled { true }
   end
 
-  factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
-    enabled { true }
-  end
-
-  factory :invite_accepted_campaign, class: EmailCampaigns::Campaigns::InviteAccepted do
-    enabled { true }
-  end
-
-  factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
-    enabled { true }
-  end
-
-  factory :project_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
-    enabled { true }
-  end
-
-  factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
-    enabled { true }
-  end
-
-  factory :welcome_campaign, class: EmailCampaigns::Campaigns::Welcome do
-    enabled { true }
-  end
-
-  factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
+  factory :comment_on_your_idea_campaign, class: EmailCampaigns::Campaigns::CommentOnYourIdea do
     enabled { true }
   end
 
@@ -68,7 +37,27 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :idea_marked_as_spam_campaign, class: EmailCampaigns::Campaigns::IdeaMarkedAsSpam do
+    enabled { true }
+  end
+
   factory :idea_published_campaign, class: EmailCampaigns::Campaigns::IdeaPublished do
+    enabled { true }
+  end
+
+  factory :invite_accepted_campaign, class: EmailCampaigns::Campaigns::InviteAccepted do
+    enabled { true }
+  end
+
+  factory :invite_received_campaign, class: EmailCampaigns::Campaigns::InviteReceived do
+    enabled { true }
+  end
+
+  factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
+    enabled { true }
+  end
+
+  factory :new_comment_for_admin_campaign, class: EmailCampaigns::Campaigns::NewCommentForAdmin do
     enabled { true }
   end
 
@@ -80,6 +69,18 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+    enabled { true }
+  end
+
+  factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
+    enabled { true }
+  end
+
+  factory :project_moderation_rights_received_campaign, class: EmailCampaigns::Campaigns::ProjectModerationRightsReceived do
+    enabled { true }
+  end
+
   factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
     enabled { true }
   end
@@ -88,6 +89,15 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :status_change_of_your_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfYourIdea do
+    enabled { true }
+  end
+
+  factory :welcome_campaign, class: EmailCampaigns::Campaigns::Welcome do
+    enabled { true }
+  end
+
+  
   factory :admin_digest_campaign, class: EmailCampaigns::Campaigns::AdminDigest do
     enabled { true }
     schedule { weekly_schedule }
@@ -102,9 +112,6 @@ FactoryBot.define do
     enabled { true }
     schedule { weekly_schedule }
   end
-
-  
-
 end
 
 def weekly_schedule
