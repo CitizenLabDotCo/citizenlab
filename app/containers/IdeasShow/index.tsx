@@ -1117,7 +1117,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   </HasPermission>
                 }
 
-                {adminFeedbackPosts &&
+                {true /* {adminFeedbackPosts */ &&
                   <AdminFeedbackFeed
                     feedSize={1}
                   />
