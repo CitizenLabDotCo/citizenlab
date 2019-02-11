@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_123605) do
+ActiveRecord::Schema.define(version: 2019_02_11_134223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,6 +29,17 @@ ActiveRecord::Schema.define(version: 2019_01_07_123605) do
     t.index ["acted_at"], name: "index_activities_on_acted_at"
     t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "admin_feedbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "body_multiloc", default: {}
+    t.jsonb "author_multiloc", default: {}
+    t.uuid "user_id"
+    t.uuid "idea_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_admin_feedbacks_on_idea_id"
+    t.index ["user_id"], name: "index_admin_feedbacks_on_user_id"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -296,6 +307,7 @@ ActiveRecord::Schema.define(version: 2019_01_07_123605) do
     t.string "slug", null: false
     t.integer "budget"
     t.integer "baskets_count", default: 0, null: false
+    t.integer "admin_feedbacks_count", default: 0, null: false
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -610,6 +622,8 @@ ActiveRecord::Schema.define(version: 2019_01_07_123605) do
   end
 
   add_foreign_key "activities", "users"
+  add_foreign_key "admin_feedbacks", "ideas"
+  add_foreign_key "admin_feedbacks", "users"
   add_foreign_key "areas_ideas", "areas"
   add_foreign_key "areas_ideas", "ideas"
   add_foreign_key "areas_projects", "areas"

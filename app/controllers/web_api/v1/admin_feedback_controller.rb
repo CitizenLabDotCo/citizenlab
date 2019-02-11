@@ -1,4 +1,4 @@
-class WebApi::V1::AdminFeedbacksController < ApplicationController
+class WebApi::V1::AdminFeedbackController < ApplicationController
 
   before_action :set_feedback, only: [:show, :update, :destroy]
 
@@ -17,7 +17,7 @@ class WebApi::V1::AdminFeedbacksController < ApplicationController
   end
 
   def create
-    @feedback = Comment.new comment_params
+    @feedback = AdminFeedback.new admin_feedback_params
     @feedback.idea_id = params[:idea_id]
     @feedback.user ||= current_user
     authorize @feedback
