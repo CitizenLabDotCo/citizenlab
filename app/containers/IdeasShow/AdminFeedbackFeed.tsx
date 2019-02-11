@@ -11,9 +11,15 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-interface Props {
+interface InputProps {
   feedSize: Number;
 }
+
+interface DataProps {
+  adminFeedback: GetAdminFeedbackChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -63,7 +69,7 @@ export default class AdminFeedbackFeed extends React.Component<Props, State> {
   }
 
   loadPreviousUpdates = () => {
-
+    this.props.adminFeedbackPosts.onLoadMore();
   }
 
   render() {
@@ -77,11 +83,17 @@ export default class AdminFeedbackFeed extends React.Component<Props, State> {
             text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
           />
           <Body>
-            Hi everyone! First off, thanks to those who filled out our survey from earlier this summer. User accounts is a big, big undertaking, and we’re still in the research phase, working to determine which use-cases would be most impactful to tackle first.
+            <p>
+              Hi everyone! First off, thanks to those who filled out our survey from earlier this summer. User accounts is a big, big undertaking, and we’re still in the research phase, working to determine which use-cases would be most impactful to tackle first.
+            </p>
 
-            Our first steps down this path will likely be in the realm of ecommerce, as we’re planning to build a login system for customers on your ecommerce site. The good news here is that nearly all of the work on this ecommerce customer portal will lay the foundation for larger work around a general user login/account system in Webflow.
+            <p>
+              Our first steps down this path will likely be in the realm of ecommerce, as we’re planning to build a login system for customers on your ecommerce site. The good news here is that nearly all of the work on this ecommerce customer portal will lay the foundation for larger work around a general user login/account system in Webflow.
+            </p>
 
-            So, in summary: we’re still researching, but our planned work on ecommerce will continue moving us closer to the day when a more general user login/account system is possible in Webflow.
+            <p>
+              So, in summary: we’re still researching, but our planned work on ecommerce will continue moving us closer to the day when a more general user login/account system is possible in Webflow.
+            </p>
           </Body>
           <Footer>
             <Author>Sarah from Mobility Department</Author>
