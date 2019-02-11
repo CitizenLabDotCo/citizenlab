@@ -85,6 +85,7 @@
     "react-jsonschema-form": "1.0.6",
     "react-leaflet": "2.1.4",
     "react-leaflet-markercluster": "1.1.8",
+    "react-loadable": "5.5.0",
     "react-medium-image-zoom": "3.0.15",
     "react-mentions": "2.4.1",
     "react-places-autocomplete": "6.1.3",
