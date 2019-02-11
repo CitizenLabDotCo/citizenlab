@@ -231,6 +231,7 @@ type Props = {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   label?: string;
+  children?: any;
 };
 
 type State = {};

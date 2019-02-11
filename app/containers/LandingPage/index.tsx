@@ -5,7 +5,6 @@ import { get } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
@@ -54,7 +53,7 @@ const Container: any = styled.div`
 `;
 
 const FooterBanner: any = styled.div`
-  background: ${props => props.theme.colorMain};
+  background: ${({ theme }) => theme.colorMain};
   width: 100%;
   min-height: 300px;
   margin: 0;
@@ -80,7 +79,7 @@ const FooterBanner: any = styled.div`
   }
 
   .Button.button.primary-inverse {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${({ theme }) => theme.colorText};
   }
 `;
 
@@ -98,22 +97,21 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
+  padding-bottom: 40px;
   background: ${colors.background};
-`;
-
-const IdeasStyledContentContainer = StyledContentContainer.extend`
-  background: #f9f9fa;
+  border-bottom: solid 1px #eaeaea;
 `;
 
 const CustomSectionContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  ${quillEditedContent()}
+
+  width: 100%;
+  max-width: 730px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 30px;
   padding-top: 60px;
   padding-bottom: 60px;
-
-  ${quillEditedContent()}
+  background: #fff;
 `;
 
 const Section = styled.div`
@@ -133,36 +131,6 @@ const ProjectSection = Section.extend`
 
   ${media.smallerThanMinTablet`
     padding-top: 40px;
-  `}
-`;
-
-const SectionHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 35px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
-  `}
-`;
-
-const SectionTitle = styled.h2`
-  color: #333;
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 32px;
-  font-weight: 500;
-  white-space: normal;
-  display: flex;
-  align-items: flex-end;
-  margin: 0;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 30px;
   `}
 `;
 
@@ -256,31 +224,13 @@ class LandingPage extends PureComponent<Props, State> {
                 </ProjectSection>
               </ProjectsStyledContentContainer>
 
-              <IdeasStyledContentContainer>
-                <Section className="ideas">
-                  <SectionHeader>
-                    <SectionTitle>
-                      <FormattedMessage {...messages.trendingIdeas} />
-                    </SectionTitle>
-                  </SectionHeader>
-                  <SectionContainer>
-                    <IdeaCards
-                      type="load-more"
-                      sort="trending"
-                      pageSize={9}
-                    />
-                  </SectionContainer>
-                </Section>
-              </IdeasStyledContentContainer>
-
-              <CustomSectionContentContainer>
-                <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
-
-                {showCustomSection &&
-                  <T value={customSectionBodyMultiloc} supportHtml={true} />
-                }
-                </Fragment>
-              </CustomSectionContentContainer>
+              {showCustomSection &&
+                <CustomSectionContentContainer>
+                  <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+                    <T value={customSectionBodyMultiloc} supportHtml={true} />
+                  </Fragment>
+                </CustomSectionContentContainer>
+              }
 
               {!authUser &&
                 <FooterBanner>

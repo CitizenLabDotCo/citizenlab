@@ -2,11 +2,10 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import { Message } from 'typings';
 
 type Props = {
-  title: Message;
-  description: Message;
+  title: ReactIntl.FormattedMessage.MessageDescriptor;
+  description: ReactIntl.FormattedMessage.MessageDescriptor;
 };
 
 type State = {};

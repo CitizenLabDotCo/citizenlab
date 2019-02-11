@@ -94,7 +94,7 @@ const SecondLine = styled.div`
 
 const ShortFeedback = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 13px 25px;
   background-color: ${colors.adminBackground};
@@ -103,7 +103,7 @@ const ShortFeedback = styled.div`
   top: -49px;
   left: 0;
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     width: 100%;
   `}
 `;
@@ -117,10 +117,11 @@ const ThankYouNote = styled.span`
 
 const FeedbackQuestion = styled.span`
   font-size: ${fontSizes.base}px;
+  line-height: normal;
+  text-align: left;
   margin-right: 12px;
 
-  ${media.largePhone`
-    font-size: ${fontSizes.small}px;
+  ${media.smallerThanMinTablet`
     margin-right: 5px;
   `}
 `;
@@ -140,7 +141,7 @@ const FeedbackButton = styled.button`
   margin-bottom: -3px;
   z-index: 1;
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     padding: 0 8px;
   `}
 
@@ -172,7 +173,7 @@ const PagesNav = styled.nav`
     text-align: center;
     justify-content: center;
     margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
   `}
 `;
 
@@ -224,8 +225,10 @@ const Right = styled.div`
     margin-bottom: 10px;
   `}
 
-  ${media.largePhone`
-    margin-top: 25px;
+  ${media.smallerThanMinTablet`
+    padding: 0px;
+    margin: 0px;
+    margin-top: 35px;
   `}
 `;
 
@@ -245,36 +248,35 @@ const PoweredBy = styled.div`
     color: #333;
   `}
 
-  ${media.largePhone`
-    color: #333;
-    margin-right: 20px;
-    padding-right: 15px;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 22px;
+    border: none;
   `}
 `;
 
 const PoweredByText = styled.span`
   margin-right: 5px;
 
-  ${media.largePhone`
-    margin-right: 0;
-    font-size: ${fontSizes.small}px;
+  ${media.smallerThanMinTablet`
+    margin: 0px;
+    margin-bottom: 10px;
   `}
 `;
 
 const CitizenlabLink = styled.a`
   width: 151px;
   height: 27px;
-  flex: 0 0 151px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   margin-left: 8px;
 
-  ${media.largePhone`
-    width: 111.85px;
-    height: 20px;
-    flex: 0 0 111.85px;
+  ${media.smallerThanMinTablet`
+    margin: 0px;
   `}
 `;
 
@@ -290,13 +292,15 @@ const CitizenlabLogo: any = styled.svg`
   height: 27px;
   fill: ${colors.clIconSecondary};
   transition: all 150ms ease-out;
+
   &:hover {
     fill: #000;
   }
+`;
 
-  ${media.largePhone`
-    width: 111.85px;
-    height: 20px;
+const StyledSendFeedback = styled(SendFeedback)`
+  ${media.smallerThanMinTablet`
+    display: none;
   `}
 `;
 
@@ -459,7 +463,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback showFeedbackText={false} />
+              <StyledSendFeedback showFeedbackText={false} />
             </Right>
           </SecondLine>
         </Container>

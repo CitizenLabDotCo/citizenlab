@@ -34,8 +34,8 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
-  width: calc(33% - 11px);
-  min-height: 580px;
+  width: calc(33% - 12px);
+  min-height: 560px;
   display: flex;
   flex-direction: column;
   margin-bottom: 25px;
@@ -59,7 +59,7 @@ const Container = styled(Link)`
   }
 
   &.medium {
-    width: calc(50% - 12px);
+    width: calc(50% - 13px);
     min-height: 580px;
     padding-left: 30px;
     padding-right: 30px;
@@ -82,6 +82,7 @@ const Container = styled(Link)`
 
   ${media.smallerThanMinTablet`
     width: 100%;
+    min-height: 500px;
   `}
 `;
 
@@ -182,14 +183,23 @@ const ContentHeaderLeft = styled.div`
   flex-shrink: 1;
   flex-basis: 112px;
   margin-right: 15px;
+
+  ${media.smallerThanMinTablet`
+    flex: 1;
+    margin-right: 0px;
+  `};
 `;
 
-const ContentHeaderRight = styled.div``;
+const ContentHeaderRight = styled.div`
+  ${media.smallerThanMinTablet`
+    display: none;
+  `};
+`;
 
 const Countdown = styled.div``;
 
 const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colorMain};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   margin-bottom: 6px;
@@ -249,7 +259,7 @@ const ContentBody = styled.div`
 `;
 
 const ProjectTitle = styled.h3`
-  color: ${({ theme }) => theme.colorMain};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
@@ -304,7 +314,7 @@ const ArchivedLabel = styled.span`
 
 const ProjectMetaItems = styled.div`
   height: 100%;
-  color: ${({ theme }) => theme.colors.label};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
@@ -330,7 +340,7 @@ const CommentIcon = MetaItemIcon.extend`
 `;
 
 const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colorMain};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -468,6 +478,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 <AvatarBubbles
                   size={30}
+                  limit={2}
                   userCountBgColor={this.props.theme.colorMain}
                   // context={{
                   //   type: 'project',

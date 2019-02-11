@@ -43,7 +43,7 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMinTablet`
-    height: 220px;
+    height: 340px;
   `}
 `;
 
@@ -149,7 +149,9 @@ const HeaderContent = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
-    padding: 20px;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
   `}
 `;
 

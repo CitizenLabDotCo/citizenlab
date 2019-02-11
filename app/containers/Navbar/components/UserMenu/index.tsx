@@ -31,7 +31,7 @@ const Container = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${({ theme }) => theme.colorText};
   margin-right: 5px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
@@ -39,7 +39,7 @@ const StyledUserName = styled(UserName)`
   transition: all 100ms ease-out;
 
   &:hover {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${({ theme }) => theme.colorText};
   }
 
   ${media.smallerThanMinTablet`
@@ -149,7 +149,7 @@ export default class UserMenu extends PureComponent<Props, State> {
             width="220px"
             mobileWidth="220px"
             top="68px"
-            right="-17px"
+            right="-12px"
             mobileRight="-5px"
             opened={opened}
             onClickOutside={this.toggleDropdown}

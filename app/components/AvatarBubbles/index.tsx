@@ -101,7 +101,7 @@ interface State {}
 
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { avatars, size, overlap, context, className } = this.props;
+    const { avatars, size, overlap, context, limit, className } = this.props;
 
     if (!isNilOrError(avatars)) {
       const avatarList = avatars.data;
@@ -114,7 +114,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if ((!context && userCount > 10 && avatarCount > 3) || (context && avatarCount > 3)) {
+      if ((!context && userCount > 10) || (context)) {
         return (
           <Container
             className={className}
