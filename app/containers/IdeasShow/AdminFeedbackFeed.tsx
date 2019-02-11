@@ -72,13 +72,13 @@ export default class AdminFeedbackFeed extends React.Component<Props, State> {
             <DatePosted>{}</DatePosted>
           </Footer>
         </AdminFeedbackPost>
-        {!querying && hasMore &&
+        {true /* !querying && hasMore && */ &&
             <LoadMoreButton
               onClick={this.loadPreviousUpdates}
               size="1"
               style="secondary-outlined"
               text={<FormattedMessage {...messages.loadPreviousUpdates} />}
-              processing={processing}
+              processing={false} /* change this */
               height="50px"
               icon="showMore"
               iconPos="left"
