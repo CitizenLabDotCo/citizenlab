@@ -26,7 +26,8 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.separation};
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
 `;
 
 const Header = styled.div`
@@ -52,19 +53,26 @@ const Header = styled.div`
   justify-content: space-between;
   margin-bottom: 35px;
   border-bottom: 1px solid #d1d1d1;
+
+  ${media.smallerThanMinTablet`
+    justify-content: center;
+    border: none;
+  `};
 `;
 
 const Title = styled.h2`
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colorSecondary};
-  margin-bottom: 0;
-  margin-right: 40px;
+  color: ${({ theme }) => theme.colorText};
+  margin: 0;
+  margin-right: 45px;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
+    margin: 0;
     font-size: ${fontSizes.large}px;
+    text-align: center;
   `};
 `;
 
@@ -76,18 +84,22 @@ const FilterArea = styled.div`
   &.publicationstatus {
     margin-right: 30px;
   }
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `};
 `;
 
 const ProjectsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-bottom: 43px;
 `;
 
 const EmptyContainer = styled.div`
   width: 100%;
   min-height: 200px;
+  color: ${({ theme }) => theme.colorText};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,9 +108,8 @@ const EmptyContainer = styled.div`
   margin: 0;
   margin-bottom: 43px;
   border-radius: 5px;
-  border: 1px solid ${colors.adminSeparation};
   background: #fff;
-  color: ${(props: any) => props.theme.colorText};
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
   position: relative;
 `;
 
@@ -121,11 +132,11 @@ const EmptyProjectsImage = styled.img`
 `;
 
 const EmptyMessage = styled.div`
+  color: ${({ theme }) => theme.colorText};
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: ${(props: any) => props.theme.colorText};
 `;
 
 const EmptyMessageTitle = styled.h2`
@@ -140,7 +151,7 @@ const EmptyMessageTitle = styled.h2`
 `;
 
 const EmptyMessageLine = styled.p`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 25px;
@@ -152,9 +163,11 @@ const Footer = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-top: 40px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
+    margin-top: 20px;
   `}
 `;
 
@@ -168,9 +181,7 @@ const ShowMoreButtonWrapper = styled.div`
   `}
 `;
 
-const ShowMoreButton = styled(Button)`
-  color: ${(props: any) => props.theme.colorText};
-`;
+const ShowMoreButton = styled(Button)``;
 
 const SendFeedbackGhostItem = styled(SendFeedback)`
   visibility: hidden;
@@ -181,7 +192,7 @@ const SendFeedbackGhostItem = styled(SendFeedback)`
   `}
 `;
 
-const SSendFeedback = styled(SendFeedback)`
+const StyledSendFeedback = styled(SendFeedback)`
   margin-left: auto;
 
   ${media.smallerThanMinTablet`
@@ -202,7 +213,9 @@ interface InputProps extends GetProjectsInputProps {
   showSendFeedback: boolean;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   cardSizes: ('small' | 'medium' | 'large')[];
@@ -298,7 +311,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback } = this.props;
+    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback, theme } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -360,7 +373,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
           <Footer>
             {/* Hipster way to center and right-align the other two items in this container */}
-            <SendFeedbackGhostItem showFeedbackText={true}/>
+            <SendFeedbackGhostItem showFeedbackText={true} />
 
             {!querying && hasMore &&
               <ShowMoreButtonWrapper>
@@ -373,14 +386,17 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
                   height="50px"
                   icon="showMore"
                   iconPos="left"
-                  textColor={this.props['theme'].colorText}
+                  textColor={theme.colorText}
+                  textHoverColor={darken(0.1, theme.colorText)}
+                  bgColor={rgba(theme.colorMain, 0.05)}
+                  bgHoverColor={rgba(theme.colorMain, 0.1)}
                   fontWeight="500"
                 />
               </ShowMoreButtonWrapper>
             }
 
             {showSendFeedback &&
-              <SSendFeedback showFeedbackText={true} />
+              <StyledSendFeedback showFeedbackText={true} />
             }
           </Footer>
         </Container>

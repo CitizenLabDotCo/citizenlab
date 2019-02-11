@@ -1,8 +1,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-
 import { shallow, mount } from 'enzyme';
+
 const theme = {
   colors,
   fontSizes,

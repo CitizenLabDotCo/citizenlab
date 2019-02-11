@@ -14,43 +14,43 @@ import { FormattedMessage } from 'utils/cl-intl';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
+const SendFeedbackText = styled.span`
+  color: ${colors.clIconSecondary};
+  font-size: ${fontSizes.base}px;
+  transition: all 100ms ease-out;
+
+  &:not(.show) {
+    display: none;
+  }
+`;
+
+const SendFeedbackIcon = styled(Icon)`
+  fill: ${colors.clIconSecondary};
+  width: 18px;
+  height: 20px;
+  margin-top: 3px;
+  margin-right: 10px;
+  transition: all 100ms ease-out;
+`;
+
 const SendFeedback = styled.a`
   display: flex;
-  align-items; center;
+  align-items: center;
+  cursor: pointer;
 
   ${media.largePhone`
     margin-right: 0;
   `}
 
   &:hover {
-    cursor: pointer;
-
-    .send-feedback-text {
+    ${SendFeedbackText} {
       color: #000;
     }
 
-    .send-feedback-icon {
+    ${SendFeedbackIcon} {
       fill: #000;
     }
   }
-`;
-
-const SendFeedbackText = styled.span`
-  display: none;
-  font-size: ${fontSizes.base}px;
-  color: ${colors.clIconSecondary};
-  margin-top: -3px;
-
-  &.show {
-    display: flex;
-    align-items: center;
-  }
-`;
-
-const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.clIconSecondary};
-  height: 34px;
-  margin-right: 10px;
 `;
 
 interface InputProps {
