@@ -31,7 +31,8 @@ class WebApi::V1::AdminFeedbackController < ApplicationController
   end
 
   def update
-    @feedback.attributes = permitted_attributes @feedback
+    authorize @feedback
+    @feedback.assign_attributes admin_feedback_params
     authorize @feedback
     SideFxAdminFeedbackService.new.before_update @feedback, current_user
     if @feedback.save

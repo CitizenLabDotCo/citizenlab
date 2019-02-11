@@ -80,45 +80,59 @@ resource "AdminFeedback" do
       end
     end
 
-    # patch "web_api/v1/comments/:id" do
-    #   with_options scope: :comment do
-    #     parameter :author_id, "The user id of the user owning the comment. Signed in user by default"
-    #     parameter :body_multiloc, "Multi-locale field with the comment body"
-    #     parameter :parent_id, "The id of the comment this comment is a response to"
-    #   end
-    #   ValidationErrorHelper.new.error_fields(self, Comment)
-    #   response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::COMMENTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
+    patch "web_api/v1/admin_feedback/:id" do
+      with_options scope: :admin_feedback do
+        parameter :body_multiloc, "Multi-locale field with the feedback body", required: true
+        parameter :author_multiloc, "Multi-locale field with describing the author", required: true
+      end
+      ValidationErrorHelper.new.error_fields(self, AdminFeedback)
 
-    #   let(:comment) { create(:comment, author: @user, idea: @idea) }
-    #   let(:id) { comment.id }
-    #   let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
+      let(:admin_feedback) { create(:admin_feedback, user: @user, idea: @idea) }
+      let(:id) { admin_feedback.id }
+      let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-    #   example_request "Update a comment" do
-    #     expect(response_status).to eq 200
-    #     json_response = json_parse(response_body)
-    #     expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-    #     expect(@idea.reload.comments_count).to eq 3
-    #   end
+      example_request "Update a comment" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
+        expect(@idea.reload.admin_feedbacks_count).to eq 3
+      end
+    end
 
-    #   example "Admins cannot modify a comment", document: false do
-    #     @admin = create(:admin)
-    #     token = Knock::AuthToken.new(payload: { sub: @admin.id }).token
-    #     header 'Authorization', "Bearer #{token}"
-    #     do_request
-    #     expect(comment.reload.body_multiloc).not_to eq body_multiloc
-    #   end
-    # end
+    delete "web_api/v1/admin_feedback/:id" do
+      let(:admin_feedback) { create(:admin_feedback, user: @user, idea: @idea) }
+      let(:id) { admin_feedback.id }
+      example_request "Delete an admin feedback" do
+        expect(response_status).to eq 200
+        expect{AdminFeedback.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(@idea.reload.admin_feedbacks_count).to eq 2
+      end
+    end
 
-    ## Currently not allowed by anyone, but works at the moment of writing (if permitted, that is)
-    # delete "web_api/v1/comments/:id" do
-    #   let(:comment) { create(:comment, author: @user, idea: @idea) }
-    #   let(:id) { comment.id }
-    #   example_request "Delete a comment" do
-    #     expect(response_status).to eq 200
-    #     expect{Comment.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-    #     expect(@idea.reload.comments_count).to eq 2
-    #   end
-    # end
+  end
 
+  context "when authenticated as normal user" do
+    before do
+      @user = create(:user)
+      token = Knock::AuthToken.new(payload: { sub: @user.id }).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
+    post "web_api/v1/ideas/:idea_id/admin_feedback" do
+      with_options scope: :admin_feedback do
+        parameter :body_multiloc, "Multi-locale field with the feedback body", required: true
+        parameter :author_multiloc, "Multi-locale field with describing the author", required: true
+      end
+      ValidationErrorHelper.new.error_fields(self, AdminFeedback)
+
+      let(:idea_id) { @idea.id }
+      let(:feedback) { build(:admin_feedback) }
+      let(:body_multiloc) { feedback.body_multiloc }
+      let(:author_multiloc) { feedback.author_multiloc }
+
+      example_request "[error] Create an admin feedback on an idea" do
+        expect(response_status).to eq 401
+      end
+    end
   end
 end
