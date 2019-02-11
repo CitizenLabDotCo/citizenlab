@@ -422,6 +422,10 @@ const TranslateButton = styled(Button)`
 const IdeaBody = styled.div`
 `;
 
+const AdminFeedbackFeedWrapper = styled.div`
+  margin-bottom: 112px;
+`;
+
 const CommentsTitle = styled.h2`
   color: ${colors.text};
   font-size: ${fontSizes.xxl}px;
@@ -1118,9 +1122,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 }
 
                 {true /* {adminFeedbackPosts */ &&
-                  <AdminFeedbackFeed
-                    feedSize={1}
-                  />
+                  <AdminFeedbackFeedWrapper>
+                    <AdminFeedbackFeed
+                      feedSize={1}
+                    />
+                  </AdminFeedbackFeedWrapper>
                 }
 
                 <CommentsTitle>
