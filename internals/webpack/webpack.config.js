@@ -3,7 +3,7 @@ const isDev = process.env.NODE_ENV === 'development';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PreloadWebpackPlugin = require("preload-webpack-plugin");
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
