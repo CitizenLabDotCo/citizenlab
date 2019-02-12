@@ -58,7 +58,7 @@ const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {
 const InfoTooltip = (props: Props) => {
   const { position, size, className, children, offset, openDelay } = props;
   const pxSize = getPxSize(size);
-  const passthroughProps = omit(props, ['size', 'position', 'className', 'children', 'offset']);
+  const passthroughProps = omit(props, ['size', 'position', 'className', 'children', 'offset', 'openDelay']);
 
   return (
     <Tooltip
