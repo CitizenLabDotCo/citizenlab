@@ -19,7 +19,7 @@ describe UserService do
     it "anonymizes confidential parts of the user's attributes" do 
       10.times do 
         user = create(:user)
-        attributes = service.anonymized_attributes 'en', user: user
+        attributes = service.anonymized_attributes ['en'], user: user
         expect(User.new(attributes)).to be_valid
       end
     end
