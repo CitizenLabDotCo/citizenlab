@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { customFieldsForUsersStream, ICustomFieldData } from 'services/userCustomFields';
+import { isBoolean } from 'lodash-es';
 
 interface InputProps { }
 
@@ -11,7 +12,7 @@ type IInputType = 'select' | 'multiselect' | 'checkbox';
 interface Props extends InputProps {
   children?: children;
   inputTypes?: IInputType[];
-  noCache?: boolean;
+  cache?: boolean;
 }
 
 interface State {
@@ -31,8 +32,9 @@ export default class GetCustomFields extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { inputTypes, noCache } = this.props;
-    const customFields$ = customFieldsForUsersStream({ queryParameters: { input_types: inputTypes }, cacheStream: !noCache }).observable;
+    const { inputTypes, cache } = this.props;
+    const cacheStream = (isBoolean(cache) ? cache : true);
+    const customFields$ = customFieldsForUsersStream({ cacheStream, queryParameters: { input_types: inputTypes } }).observable;
 
     this.subscriptions = [
       customFields$.subscribe((customFields) => {

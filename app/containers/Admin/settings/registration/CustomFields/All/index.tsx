@@ -213,7 +213,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(CustomFields));
 
 export default (inputProps: InputProps) => (
-  <GetCustomFields noCache>
+  <GetCustomFields cache={false}>
     {customFields => <CustomFieldsListWithHoCs {...inputProps} customFields={customFields} />}
   </GetCustomFields>
 );
