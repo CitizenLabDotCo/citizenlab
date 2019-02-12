@@ -1,5 +1,3 @@
-import { GetPhasesChildProps } from 'resources/GetPhases';
-
 export const mockPhaseInformationData = {
   id: 'MockPhaseInformationId',
   type: 'phase',
