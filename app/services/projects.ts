@@ -7,7 +7,7 @@ import { SurveyServices, ParticipationMethod } from './participationContexts';
 const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
-type ProcessType = 'continuous' | 'timeline';
+export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
