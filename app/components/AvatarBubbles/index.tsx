@@ -100,8 +100,12 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
+  static defaultProps = {
+    limit: 4
+  };
+
   render() {
-    const { avatars, size, overlap, context, limit, className } = this.props;
+    const { avatars, size, overlap, context, className } = this.props;
 
     if (!isNilOrError(avatars)) {
       const avatarList = avatars.data;
@@ -110,7 +114,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const usersWithoutAvatar = userCount - avatarCount;
       const definedSize = size || 34;
-      const definedOverlap = overlap || 6;
+      const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
@@ -154,7 +158,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => (
-  <GetAvatars limit={inputProps.limit || 4} context={inputProps.context}>
+  <GetAvatars limit={inputProps.limit} context={inputProps.context}>
     {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
   </GetAvatars>
 );

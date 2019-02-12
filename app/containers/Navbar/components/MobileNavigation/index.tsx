@@ -28,6 +28,7 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
+
   @media print {
     display: none;
   }
@@ -37,6 +38,7 @@ const NavigationIcon = styled(Icon)`
   fill: #999;
   height: 24px;
   width: 24px;
+
   .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary {
     fill: #999;
   }
@@ -55,7 +57,7 @@ const NavigationLabel = styled.div`
   color: #999;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
-  margin-left: 10px;
+  margin-left: 6px;
 `;
 
 const NavigationItem = styled(Link)`
