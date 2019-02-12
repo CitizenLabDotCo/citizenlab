@@ -9,6 +9,7 @@ interface Props extends Omit<PopoverProps, 'onClickOutside' | 'dropdownOpened' |
   enabled: boolean;
   content: PopoverProps['content'] | null;
   className?: string;
+  openDelay?: number;
 }
 
 interface State {
@@ -29,6 +30,7 @@ export default class Tooltip extends PureComponent<Props, State> {
     borderColor: '#FFF',
     textColor: '#FFF',
     enabled: true,
+    openDelay: 300
   };
 
   constructor(props) {
@@ -40,6 +42,7 @@ export default class Tooltip extends PureComponent<Props, State> {
   }
 
   handleOnMouseEnter = () => {
+    const { openDelay } = this.props;
     if (this.state.waiting) {
       this.setState({ waiting: false });
     } else {
@@ -48,7 +51,7 @@ export default class Tooltip extends PureComponent<Props, State> {
         if (this.state.waiting) {
           this.setState({ opened: true, waiting: false });
         }
-      }, 300);
+      }, openDelay);
     }
   }
 
