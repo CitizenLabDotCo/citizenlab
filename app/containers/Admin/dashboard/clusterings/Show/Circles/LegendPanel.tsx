@@ -161,19 +161,19 @@ export default class LegendPanel extends PureComponent<Props, State> {
           <ListItem>
             <span className="key">
               Click
-                </span>
+            </span>
             <FormattedMessage {...messages.clickLegend} />
           </ListItem>
           <ListItem>
             <span className="key">
               Shift
-                </span>
+            </span>
             <FormattedMessage {...messages.shiftLegend} />
           </ListItem>
           <ListItem>
             <span className="key">
               Ctrl
-                </span>
+            </span>
             <FormattedMessage {...messages.ctrlLegend} />
           </ListItem>
         </Content>
