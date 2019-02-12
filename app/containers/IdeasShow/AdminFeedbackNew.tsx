@@ -14,7 +14,6 @@ import { addArea } from 'services/areas';
 import { Formik } from 'formik';
 import AdminFeedbackForm, { FormValues } from './AdminFeedbackForm';
 
-import { CLErrorsJSON } from 'typings';
 type Props = {};
 
 export default class AdminFeedbackNew extends React.Component<Props> {
@@ -34,14 +33,12 @@ export default class AdminFeedbackNew extends React.Component<Props> {
 
   render() {
     return (
-      <Section>
         <Formik
           initialValues={this.initialValues()}
           render={this.renderFn}
           onSubmit={this.handleSubmit}
           validate={AdminFeedbackForm.validate}
         />
-      </Section>
     );
   }
 }
