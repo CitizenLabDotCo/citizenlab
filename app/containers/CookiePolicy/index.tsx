@@ -187,7 +187,7 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
                   }}
                 />
                 <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
-                <FormattedMessage {...messages.whatCookiesContent} />
+                <FormattedMessage tagName="p" {...messages.whatCookiesContent} />
                 <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
                 <FormattedMessage
                   tagName="p"
