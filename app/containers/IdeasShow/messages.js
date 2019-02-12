@@ -333,5 +333,33 @@ export default defineMessages({
   loadPreviousUpdates: {
     id: 'app.components.IdeasShow.loadPreviousUpdates',
     defaultMessage: 'Load previous updates',
+  },
+  adminNamePlaceholder: {
+    id: 'app.components.IdeasShow.adminNamePlaceholder',
+    defaultMessage: 'Your name or title',
+  },
+  adminFeedbackPlaceholder: {
+    id: 'app.components.IdeasShow.adminFeedbackPlaceholder',
+    defaultMessage: 'Give an update about this idea status and processing',
+  },
+  updateButtonSave: {
+    id: 'app.components.IdeasShow.updateButtonSave',
+    defaultMessage: 'Give an update',
+  },
+  updateButtonError: {
+    id: 'app.components.IdeasShow.updateButtonError',
+    defaultMessage: 'Sorry, there was a problem',
+  },
+  updateButtonSuccess: {
+    id: 'app.components.IdeasShow.updateButtonSuccess',
+    defaultMessage: 'Update saved !',
+  },
+  updateMessageError: {
+    id: 'app.components.IdeasShow.updateMessageError',
+    defaultMessage: 'Please try again later or report the issue',
+  },
+  updateMessaageSuccess: {
+    id: 'app.components.IdeasShow.updateMessaageSuccess',
+    defaultMessage: 'Your update was successfuly saved !',
   }
 });
