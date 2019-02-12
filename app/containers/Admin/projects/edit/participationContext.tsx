@@ -11,6 +11,7 @@ import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField } from 'components/admin/Section';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';
@@ -22,13 +23,14 @@ import eventEmitter from 'utils/eventEmitter';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import FeatureFlag from 'components/FeatureFlag';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // Typings
 import { CLError } from 'typings';
@@ -78,6 +80,21 @@ const VotingLimitInput = styled(Input)`
 const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
+const StyledA = styled.a`
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+const LabelText = styled.div`
+  margin-top: 15px;
+  h3 {
+    margin-bottom: 0;
+    font-weight: 600;
+  }
+  p {
+    color: ${colors.adminSecondaryTextColor};
+  }
+`;
 
 export interface IParticipationContextConfig {
   participation_method: ParticipationMethod;
@@ -116,10 +133,10 @@ interface State extends IParticipationContextConfig {
   loaded: boolean;
 }
 
-class ParticipationContext extends PureComponent<Props, State> {
+class ParticipationContext extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props) {
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       participation_method: 'ideation',
@@ -360,6 +377,7 @@ class ParticipationContext extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.participationMethod} />
+                <InfoTooltip {...messages.participationMethodTooltip} size="small" />
               </Label>
               <Radio
                 onChange={this.handleParticipationMethodOnChange}
@@ -367,7 +385,15 @@ class ParticipationContext extends PureComponent<Props, State> {
                 value="ideation"
                 name="participationmethod"
                 id="participationmethod-ideation"
-                label={<FormattedMessage {...messages.ideation} />}
+                label={(
+                  <LabelText>
+                    <h3>
+                      <FormattedMessage {...messages.ideation} />
+                    </h3>
+                    <p>
+                      <FormattedMessage {...messages.ideationDescription} />
+                    </p>
+                  </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
                 <Radio
@@ -376,7 +402,15 @@ class ParticipationContext extends PureComponent<Props, State> {
                   value="budgeting"
                   name="participationmethod"
                   id={'participationmethod-budgeting'}
-                  label={<FormattedMessage {...messages.participatoryBudgeting} />}
+                  label={(
+                    <LabelText>
+                      <h3>
+                        <FormattedMessage {...messages.participatoryBudgeting} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.participatoryBudgetingDescription} />
+                      </p>
+                    </LabelText>)}
                 />
               </FeatureFlag>
               {surveys_enabled && (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
@@ -386,7 +420,15 @@ class ParticipationContext extends PureComponent<Props, State> {
                   value="survey"
                   name="participationmethod"
                   id={'participationmethod-survey'}
-                  label={<FormattedMessage {...messages.survey} />}
+                  label={(
+                    <LabelText>
+                      <h3>
+                        <FormattedMessage {...messages.survey} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.surveyDescription} />
+                      </p>
+                    </LabelText>)}
                 />
               }
               <Radio
@@ -395,7 +437,11 @@ class ParticipationContext extends PureComponent<Props, State> {
                 value="information"
                 name="participationmethod"
                 id="participationmethod-information"
-                label={<FormattedMessage {...messages.information} />}
+                label={(
+                  <LabelText>
+                    <FormattedMessage tagName="h3" {...messages.information} />
+                    <FormattedMessage tagName="p" {...messages.informationDescription} />
+                  </LabelText>)}
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
             </SectionField>
@@ -439,6 +485,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                 <StyledSectionField>
                   <Label>
                     <FormattedMessage {...messages.phasePermissions} />
+                    <InfoTooltip {...messages.phasePermissionsTooltip} />
                   </Label>
 
                   <ToggleRow>
@@ -469,6 +516,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                   <SectionField>
                     <Label>
                       <FormattedMessage {...messages.votingMethod} />
+                      <InfoTooltip {...messages.votingMethodTooltip} />
                     </Label>
                     <Radio
                       onChange={this.handeVotingMethodOnChange}
@@ -509,6 +557,7 @@ class ParticipationContext extends PureComponent<Props, State> {
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.defaultDisplay} />
+                    <InfoTooltip {...messages.defaultDisplayTooltip} />
                   </Label>
                   {['card', 'map'].map((key) => (
                     <Radio
@@ -531,6 +580,15 @@ class ParticipationContext extends PureComponent<Props, State> {
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.surveyService} />
+                    <InfoTooltip
+                      {...messages.surveyServiceTooltip}
+                      values={{
+                        surveyServiceTooltipLink: (
+                          <StyledA href={this.props.intl.formatMessage(messages.surveyServiceTooltipLink)} target="_blank">
+                            <FormattedMessage {...messages.surveyServiceTooltipLinkText} />
+                          </StyledA>)
+                      }}
+                    />
                   </Label>
                   {['typeform', 'survey_monkey', 'google_forms'].map((provider) => {
                     if (this.props[`${provider}_enabled`]) {
@@ -568,7 +626,6 @@ class ParticipationContext extends PureComponent<Props, State> {
         </Container>
       );
     }
-
     return null;
   }
 }
@@ -581,8 +638,10 @@ const Data = adopt<DataProps, {}>({
   tenant: <GetTenant />,
 });
 
+const ParticipationContextWithIntl = injectIntl(ParticipationContext);
+
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <ParticipationContext {...inputProps} {...dataProps} />}
+    {dataProps => <ParticipationContextWithIntl {...inputProps} {...dataProps} />}
   </Data>
 );
