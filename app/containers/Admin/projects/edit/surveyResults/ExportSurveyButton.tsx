@@ -11,7 +11,7 @@ import { exportSurveyResults } from 'services/surveyResults';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 
 interface Props {
   type: 'projects' | 'phases';
