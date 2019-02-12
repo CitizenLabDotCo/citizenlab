@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, pick, omit } from 'lodash-es';
+import { isEmpty, omit } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
 import { ButtonStyles, Props as OriginalButtonProps } from 'components/UI/Button';

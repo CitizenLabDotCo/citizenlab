@@ -5,7 +5,6 @@ import { FieldProps } from 'formik';
 class FormikMentionsTextAreaMultiloc extends PureComponent<FieldProps & VanillaMentionsTextAreaMultilocProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
-    this.props.form.setStatus('enabled');
   }
 
   handleOnBlur = () => {
