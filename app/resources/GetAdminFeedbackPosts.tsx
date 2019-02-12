@@ -18,9 +18,12 @@ interface Props extends InputProps {
 
 interface State {
   adminFeedbackPosts: IAdminFeedbackData[] | undefined | null | Error;
+  loadingMore: boolean;
 }
 
-export type GetAdminFeedbackChildProps = IAdminFeedbackData[] | undefined | null | Error;
+export type GetAdminFeedbackChildProps = State & {
+  onLoadMore: () => void;
+};
 
 export default class GetAdminFeedbackPosts extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +32,8 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
   constructor(props: Props) {
     super(props);
     this.state = {
-      adminFeedbackPosts: undefined
+      adminFeedbackPosts: undefined,
+      loadingMore: false
     };
   }
 
@@ -57,9 +61,15 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  loadMore = () => {
+
+  }
+
   render() {
     const { children } = this.props;
-    const { adminFeedbackPosts } = this.state;
-    return (children as children)(adminFeedbackPosts);
+    return (children as children)({
+      ...this.state,
+      onLoadMore: this.loadMore,
+    });
   }
 }
