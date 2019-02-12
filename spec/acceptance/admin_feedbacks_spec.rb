@@ -91,7 +91,7 @@ resource "AdminFeedback" do
       let(:id) { admin_feedback.id }
       let(:body_multiloc) { {'en' => "His hair is not blond, it's orange. Get your facts straight!"} }
 
-      example_request "Update a comment" do
+      example_request "Update an admin feedback" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
