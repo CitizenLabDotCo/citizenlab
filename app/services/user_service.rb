@@ -45,14 +45,15 @@ class UserService
   ]
 
 
-  def anonymized_attributes locale, user: nil, start_at: nil
+  def anonymized_attributes locales, user: nil, start_at: nil
+    locale = locales.shuffle.first
     custom_field_values = random_custom_field_values user: user
     gender = custom_field_values['gender']
     first_name = random_first_name gender
     last_name = random_last_name locale
     email = random_email first_name, last_name
     avatar_url = random_avatar_url gender
-    bio = random_bio [locale]
+    bio = random_bio locales
     registration = random_registration user: user, start_at: nil
     {
       'first_name'                => first_name,
