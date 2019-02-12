@@ -73,8 +73,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, quillEditedContent } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -416,7 +417,6 @@ const TranslateButton = styled(Button)`
 `;
 
 const IdeaBody = styled.div`
-  ${quillEditedContent()}
 `;
 
 const CommentsTitle = styled.h2`
@@ -1063,20 +1063,22 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                 <Fragment name={`ideas/${idea.data.id}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
-                  {translateFromOriginalButtonClicked ?
-                    <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
-                      {translation => {
-                        if (!isNilOrError(translation)) {
-                          this.setState({ bodyTranslationLoading: false });
-                          return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
-                        }
+                    <QuillEditedContent>
+                      {translateFromOriginalButtonClicked ?
+                        <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                          {translation => {
+                            if (!isNilOrError(translation)) {
+                              this.setState({ bodyTranslationLoading: false });
+                              return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }}/>;
+                            }
 
-                        return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
-                      }}
-                    </GetMachineTranslation>
-                    :
-                    <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
-                  }
+                            return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+                          }}
+                        </GetMachineTranslation>
+                        :
+                        <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+                      }
+                    </QuillEditedContent>
                   </IdeaBody>
                 </Fragment>
 

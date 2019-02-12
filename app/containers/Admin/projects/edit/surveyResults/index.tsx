@@ -16,7 +16,7 @@ import T from 'components/T';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
-import messages from '../../messages';
+import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`

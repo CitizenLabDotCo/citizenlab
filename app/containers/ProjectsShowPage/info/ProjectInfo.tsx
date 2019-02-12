@@ -23,7 +23,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, quillEditedContent, colors } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   display: flex;
@@ -60,9 +61,7 @@ const Right = styled.div`
   `}
 `;
 
-const ProjectDescriptionStyled = styled.div`
-  ${quillEditedContent()}
-`;
+const ProjectDescription = styled.div``;
 
 const ProjectImages = styled.div`
   align-items: flex-start;
@@ -120,9 +119,11 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
     <Container>
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
-          <ProjectDescriptionStyled>
-            <T value={project.attributes.description_multiloc} supportHtml={true}/>
-          </ProjectDescriptionStyled>
+          <ProjectDescription>
+            <QuillEditedContent>
+              <T value={project.attributes.description_multiloc} supportHtml={true}/>
+            </QuillEditedContent>
+          </ProjectDescription>
           {!isNilOrError(projectFiles) &&
             <FileAttachments files={projectFiles} />
           }

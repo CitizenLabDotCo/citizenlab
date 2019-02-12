@@ -14,6 +14,12 @@ export const SubSectionTitle = styled.h3`
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   line-height: ${remCalc(30)};
+  display: flex;
+  align-items: center;
+
+  & > :not(last-child) {
+    margin-right: 7px;
+  }
 `;
 
 export const SectionTitle = styled.h2`
@@ -49,12 +55,15 @@ export const SectionField = styled.div`
   transition: all 200ms ease-in-out;
   width: 100%;
   max-width: 500px;
+
   &.fullWidth {
     max-width: 100%;
   }
+
   .editor {
     width: 120%;
   }
+
   .CLInputComponent,
   .CLTextareaComponent {
     width: 100%;
@@ -68,13 +77,16 @@ export const SectionField = styled.div`
     line-height: 24px;
     outline: none;
     padding: 12px;
+
     &::placeholder {
       color: #aaa;
       opacity: 1;
     }
+
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }
+
     ${media.biggerThanPhone`
       padding-right: ${props => props.error && '40px'};
     `}
