@@ -2,12 +2,12 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { ICommentData, commentsForIdeaStream } from 'services/comments';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { IAdminFeedbackData, adminFeedbackForIdeaStream } from 'services/adminFeedback';
 
 interface InputProps {
-  ideaId?: string | null | undefined;
+  ideaId: string | null | undefined;
 }
 
 type children = (renderProps: GetAdminFeedbackChildProps) => JSX.Element | null;
@@ -17,10 +17,13 @@ interface Props extends InputProps {
 }
 
 interface State {
-  adminFeedbackPosts: ICommentData[] | undefined | null | Error;
+  adminFeedbackPosts: IAdminFeedbackData[] | undefined | null | Error;
+  loadingMore: boolean;
 }
 
-export type GetAdminFeedbackChildProps = ICommentData[] | undefined | null | Error;
+export type GetAdminFeedbackChildProps = State & {
+  onLoadMore: () => void;
+};
 
 export default class GetAdminFeedbackPosts extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -29,7 +32,8 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
   constructor(props: Props) {
     super(props);
     this.state = {
-      adminFeedbackPosts: undefined
+      adminFeedbackPosts: undefined,
+      loadingMore: false
     };
   }
 
@@ -42,9 +46,9 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         filter(({ ideaId }) => isString(ideaId)),
-        switchMap(({ ideaId }: { ideaId: string }) => commentsForIdeaStream(ideaId).observable)
+        switchMap(({ ideaId }: { ideaId: string }) => adminFeedbackForIdeaStream(ideaId).observable)
       )
-      .subscribe((comments) => this.setState({ comments: !isNilOrError(comments) ? comments.data : comments }))
+      .subscribe((adminFeedbackPosts) => this.setState({ adminFeedbackPosts: !isNilOrError(adminFeedbackPosts) ? adminFeedbackPosts.data : adminFeedbackPosts }))
     ];
   }
 
@@ -57,9 +61,15 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  loadMore = () => {
+
+  }
+
   render() {
     const { children } = this.props;
-    const { comments } = this.state;
-    return (children as children)(comments);
+    return (children as children)({
+      ...this.state,
+      onLoadMore: this.loadMore,
+    });
   }
 }
