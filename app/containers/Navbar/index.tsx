@@ -161,6 +161,8 @@ const NavigationItem = styled(Link)`
 `;
 
 const NavigationItemText = styled.span`
+  white-space: nowrap;
+
   &:not(.sign-up-span) {
     background-color: #fff;
   }
@@ -289,20 +291,21 @@ const RightItem: any = styled.div`
   align-items: center;
   justify-content: center;
   margin-left: 40px;
+  white-space: nowrap;
 
   &.noLeftMargin {
     margin-left: 0px;
   }
 
   ${media.smallerThanMinTablet`
-    margin-left: 30px;
+    margin-left: 25px;
   `}
 `;
 
 const LogInLink = NavigationItem.extend`
   &:focus,
   &:hover {
-    border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
+    border-top-color: ${({ theme }) => rgba(theme.colorSecondary, .3)};
   }
 
   ${media.smallerThanMinTablet`
@@ -335,7 +338,15 @@ const StyledLanguageSelector = styled(LanguageSelector)`
 
   &.notLoggedIn {
     padding-left: 20px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 10px;
+    `}
   }
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+  `}
 `;
 
 interface InputProps {}

@@ -159,13 +159,24 @@ const PagesNav = styled.nav`
   text-align: left;
 
   ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    display:inline-block;
+    padding:0;
+    text-align: center;
   }
 
   li {
-    display: inline-block;
+    display: inline;
+
+    &:after {
+      content:" ";
+      letter-spacing: 2em;
+      background:center center no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwAAADsABataJCQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xMkMEa+wAAAAnSURBVBhXY/Dz89MA4sNA/B9Ka4AEYQIwfBgkiCwAxjhVopnppwEApxQqhnyQ+VkAAAAASUVORK5CYII=);
+    }
+
+    a,
+    button {
+      white-space:nowrap
+    }
   }
 
   ${media.smallerThanMaxTablet`
@@ -435,16 +446,16 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
               <ul>
                 {LEGAL_PAGES.map((slug, index) => (
                   <li key={slug}>
-                    {index !== 0 &&
+                    {/* {index !== 0 &&
                       <Separator>•</Separator>
-                    }
+                    } */}
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
                 ))}
                 <li>
-                  <Separator>•</Separator>
+                  {/* <Separator>•</Separator> */}
                   <StyledButton onClick={openConsentManager}>
                     <FormattedMessage {...messages.cookieSettings} />
                   </StyledButton>

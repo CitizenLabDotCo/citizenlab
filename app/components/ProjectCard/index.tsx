@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, get, capitalize, isNumber, round } from 'lodash-es';
+import moment from 'moment';
+import Observer from '@researchgate/react-intersection-observer';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -10,7 +12,6 @@ import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 import AvatarBubbles from 'components/AvatarBubbles';
-import Observer from '@researchgate/react-intersection-observer';
 
 // services
 import { getProjectUrl } from 'services/projects';
@@ -20,6 +21,7 @@ import { getProjectUrl } from 'services/projects';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import T from 'components/T';
@@ -32,6 +34,7 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
+import { start } from 'repl';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -180,9 +183,9 @@ const ContentHeader = styled.div`
 
 const ContentHeaderLeft = styled.div`
   flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 112px;
-  margin-right: 15px;
+  flex-shrink: 0;
+  flex-basis: 120px;
+  margin-right: 0px;
 
   ${media.smallerThanMinTablet`
     flex: 1;
@@ -201,7 +204,7 @@ const Countdown = styled.div``;
 const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 6px;
 `;
 
@@ -326,6 +329,14 @@ const MetaItem = styled.div`
   text-decoration: none;
   cursor: pointer;
   margin-left: 24px;
+
+  &.first {
+    margin-left: 0px;
+  }
+
+  ${media.smallerThanMinTablet`
+    margin-left: 20px;
+  `};
 `;
 
 const MetaItemIcon = styled(Icon)`
@@ -344,7 +355,7 @@ const MetaItemText = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
-  margin-left: 4px;
+  margin-left: 3px;
 `;
 
 export interface InputProps {
@@ -356,6 +367,7 @@ interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
+  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -384,7 +396,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const className = this.props['className'];
     const { visible } = this.state;
-    const { project, size, projectImages, intl: { formatMessage } } = this.props;
+    const { project, phase, size, projectImages, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
@@ -392,22 +404,28 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
-
-      const timeRemaining = '5 days';
+      const startAt = get(phase, 'attributes.start_at');
+      const endAt = get(phase, 'attributes.end_at');
+      const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
+      const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
+      const pastDays = (timeRemaining ? moment.duration(moment(moment()).diff(moment(startAt))).asDays() : null);
+      const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
 
       const contentHeader = (
         <ContentHeader className={size}>
           <ContentHeaderLeft>
-            <Countdown>
-              <TimeRemaining>
-                <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
-              </TimeRemaining>
-              <Observer onChange={this.handleIntersectionObserverOnChange}>
-                <ProgressBar>
-                  <ProgressBarOverlay progress={80} className={visible ? 'visible' : ''} />
-                </ProgressBar>
-              </Observer>
-            </Countdown>
+            {timeRemaining &&
+              <Countdown>
+                <TimeRemaining>
+                  <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
+                </TimeRemaining>
+                <Observer onChange={this.handleIntersectionObserverOnChange}>
+                  <ProgressBar>
+                    <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
+                  </ProgressBar>
+                </Observer>
+              </Countdown>
+            }
 
             {isArchived &&
               <ArchivedLabelWrapper>
@@ -478,7 +496,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterLeft>
                 <AvatarBubbles
                   size={30}
-                  limit={2}
+                  limit={3}
                   userCountBgColor={this.props.theme.colorMain}
                   // context={{
                   //   type: 'project',
@@ -490,7 +508,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <ContentFooterRight>
                 {showIdeasCount && ideasCount > 0 &&
                   <ProjectMetaItems>
-                      <MetaItem>
+                      <MetaItem className="first">
                         <MetaItemIcon name="idea2" />
                         <MetaItemText>
                           {ideasCount}
@@ -517,9 +535,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  authUser: <GetAuthUser />
+  phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>,
 });
 
 const ProjectCardWithHoC = injectIntl<Props>(withTheme(ProjectCard as any) as any);

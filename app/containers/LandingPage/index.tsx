@@ -106,11 +106,11 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   ${quillEditedContent()}
 
   width: 100%;
-  max-width: 730px;
+  max-width: 750px;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 80px;
+  padding-bottom: 100px;
   background: #fff;
 `;
 
@@ -209,7 +209,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-              <ProjectsStyledContentContainer maxWidth={1148}>
+              <ProjectsStyledContentContainer maxWidth={1150}>
                 <ProjectSection>
                   <SectionContainer>
                     <ProjectCards
