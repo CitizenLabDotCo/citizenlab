@@ -32,6 +32,11 @@ export interface IUpdatedAdminFeedback {
   body_multiloc: Multiloc;
 }
 
+export interface INewFeedback {
+  author_multiloc: Multiloc;
+  body_multiloc: Multiloc;
+}
+
 export function adminFeedbackStream(adminFeedbackId: string) {
   return streams.get<IAdminFeedback>({ apiEndpoint: `${API_PATH}/admin_feedback/${adminFeedbackId }` });
 }
@@ -40,12 +45,9 @@ export function adminFeedbackForIdeaStream(ideaId: string) {
   return streams.get<IAdminFeedback>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/admin_feedback` });
 }
 
-export async function addAdminFeedbackToIdea(ideaId: string, author_multiloc: Multiloc, body_multiloc: Multiloc) {
+export async function addAdminFeedbackToIdea(ideaId: string, feedBack: INewFeedback) {
   const bodyData = {
-    admin_feedback: {
-      author_multiloc,
-      body_multiloc
-    }
+    admin_feedback: feedBack
   };
 
   return streams.add<IAdminFeedback>(`${API_PATH}/ideas/${ideaId}/admin_feedback`, bodyData);
