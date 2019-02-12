@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
-import { Form, Field, InjectedFormikProps, FormikErrors, FormikProps } from 'formik';
+import { Form, Field, FormikErrors, FormikProps } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
-import { Section, SectionField } from 'components/admin/Section';
+import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // Typings
@@ -31,19 +31,6 @@ interface State {
 }
 
 class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
-  public static validate = (values: FormValues): FormikErrors<FormValues> => {
-    const errors: FormikErrors<FormValues> = {};
-
-    if (every(getValues(values.author_multiloc), isEmpty)) {
-      errors.author_multiloc = [{ error: 'blank' }] as any;
-    }
-    if (every(getValues(values.body_multiloc), isEmpty)) {
-      errors.body_multiloc = [{ error: 'blank' }] as any;
-    }
-    console.log(errors);
-    return errors;
-  }
-
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
@@ -62,6 +49,7 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
       {...props}
     />
   )
+
   renderFormikMentionsTextAreaMultiloc = (props) => (
     <FormikMentionsTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
@@ -123,4 +111,23 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
   }
 }
 
-export default injectIntl(AdminFeedbackForm);
+const AdminFeedbackFormWithIntl = injectIntl(AdminFeedbackForm);
+class AdminFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
+  public static validate = (values: FormValues): FormikErrors<FormValues> => {
+    const errors: FormikErrors<FormValues> = {};
+
+    if (every(getValues(values.author_multiloc), isEmpty)) {
+      errors.author_multiloc = [{ error: 'blank' }] as any;
+    }
+    if (every(getValues(values.body_multiloc), isEmpty)) {
+      errors.body_multiloc = [{ error: 'blank' }] as any;
+    }
+    return errors;
+  }
+
+  render() {
+    return <AdminFeedbackFormWithIntl {...this.props} />;
+  }
+}
+
+export default AdminFeedbackFormWithHoCs;

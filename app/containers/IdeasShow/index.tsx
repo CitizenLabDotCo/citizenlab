@@ -1117,7 +1117,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                 {project &&
                   <HasPermission item={project.data} action="moderate">
-                    <AdminFeedbackNew />
+                    <AdminFeedbackNew ideaId={idea.data.id}/>
                   </HasPermission>
                 }
 
