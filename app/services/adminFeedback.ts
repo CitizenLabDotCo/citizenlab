@@ -1,5 +1,4 @@
 import { API_PATH } from 'containers/App/constants';
-import request from 'utils/request';
 import streams from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
@@ -29,8 +28,8 @@ export interface IAdminFeedback {
 }
 
 export interface IUpdatedAdminFeedback {
-  author_id?: Multiloc;
-  body_multiloc?: Multiloc;
+  author_id: Multiloc;
+  body_multiloc: Multiloc;
 }
 
 export function adminFeedbackStream(adminFeedbackId: string) {
@@ -49,17 +48,13 @@ export async function addAdminFeedbackToIdea(ideaId: string, author_multiloc: Mu
     }
   };
 
-  const response = await streams.add<IAdminFeedback>(`${API_PATH}/ideas/${ideaId}/admin_feedback`, bodyData);
-  streams.fetchAllWith({ dataId: [ideaId] });
-  return response;
+  return streams.add<IAdminFeedback>(`${API_PATH}/ideas/${ideaId}/admin_feedback`, bodyData);
 }
 
-export function updateComment(commentId: string, object: IUpdatedAdminFeedback) {
-  return streams.update<IAdminFeedback>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
+export function updateAdminFeedback(adminFeedbackId: string, object: IUpdatedAdminFeedback) {
+  return streams.update<IAdminFeedback>(`${API_PATH}/admin_feedback/${adminFeedbackId}`, adminFeedbackId, { comment: object });
 }
 
-export async function deleteAdminfeedback(projectId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
-  return response;
+export function deleteAdminfeedback(projectId: string) {
+  return streams.delete(`${API_PATH}/admin_feedback/${projectId}`, projectId);
 }
