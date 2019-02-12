@@ -1,7 +1,7 @@
 import React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
@@ -15,6 +15,8 @@ import Error from 'components/UI/Error';
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
+import { InjectedIntlProps } from 'react-intl';
+import { colors } from 'utils/styleUtils';
 export interface Props {
   locales: Locale[];
 }
@@ -28,7 +30,7 @@ interface State {
   selectedLocale: Locale;
 }
 
-export default class AdminFeedbackForm extends React.Component<InjectedFormikProps<Props, FormValues>, State> {
+class AdminFeedbackForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -54,18 +56,22 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
   renderFormikInputMultiloc = (props) => (
     <FormikInputMultiloc
       shownLocale={this.state.selectedLocale}
+      placeholder={this.props.intl.formatMessage(messages.adminNamePlaceholder)}
       {...props}
     />
   )
   renderFormikMentionsTextAreaMultiloc = (props) => (
     <FormikMentionsTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
+      placeholder={this.props.intl.formatMessage(messages.adminFeedbackPlaceholder)}
+      rows={8}
+      padding="12px"
       {...props}
     />
   )
 
   render() {
-    const { isSubmitting, errors, isValid, touched, values } = this.props;
+    const { isSubmitting, errors, isValid, touched, values, intl: { formatMessage } } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -96,6 +102,17 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
         </Section>
 
         <FormikSubmitWrapper
+          bgColor={colors.clRed}
+          icon="pen"
+          textColor="white"
+          fullWidth
+          messages={{
+            buttonSave: messages.updateButtonSave,
+            buttonError: messages.updateButtonError,
+            buttonSuccess: messages.updateButtonSuccess,
+            messageError: messages.updateMessageError,
+            messageSuccess: messages.updateMessaageSuccess
+          }}
           {...{ isValid, isSubmitting, status, touched }}
         />
 
@@ -103,3 +120,5 @@ export default class AdminFeedbackForm extends React.Component<InjectedFormikPro
     );
   }
 }
+
+export default injectIntl(AdminFeedbackForm);

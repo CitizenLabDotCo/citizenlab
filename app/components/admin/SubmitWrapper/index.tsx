@@ -7,7 +7,9 @@ import { colors } from 'utils/styleUtils';
 
 // Components
 import { FormattedMessage } from 'utils/cl-intl';
-import Button, { ButtonStyles } from 'components/UI/Button';
+import Button, { ButtonStyles, Props as OriginalButtonProps } from 'components/UI/Button';
+import { Omit } from 'typings';
+import { omit } from 'lodash-es';
 
 const Wrapper = styled.div`
   display: flex;
@@ -27,7 +29,7 @@ const Message = styled.p`
 `;
 
 // Typing
-interface Props {
+interface Props extends Omit<OriginalButtonProps, 'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'> {
   status: 'disabled' | 'enabled' | 'error' | 'success';
   loading: boolean;
   messages: {
@@ -67,6 +69,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
     if (this.props.status === 'error') {
       this.removeFocus(this.submitButton);
     }
+    const buttonProps = omit(this.props, ['className', 'style', 'processing', 'disabled', 'onClick', 'setSubmitButtonRef', 'messages']);
 
     return (
       <Wrapper>
@@ -77,6 +80,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
           disabled={this.props.status === 'disabled'}
           onClick={this.props.onClick}
           setSubmitButtonRef={this.setSubmitButtonRef}
+          {...buttonProps}
         >
           {(this.props.status === 'enabled' ||
             this.props.status === 'disabled' ||
