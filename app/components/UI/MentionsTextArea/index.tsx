@@ -13,7 +13,7 @@ import Error from 'components/UI/Error';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -46,6 +46,7 @@ type Props = {
   onChange?: (arg: string) => void | undefined;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
+  fontSize?: number;
 };
 
 type State = {
@@ -69,6 +70,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     const { rows } = this.props;
     const lineHeight = 24;
     const padding = (this.props.padding || '25px');
+    const fontSize = (this.props.fontSize || fontSizes.base);
 
     const style = {
       '&multiLine': {
@@ -83,7 +85,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           padding,
           margin: 0,
           color: colors.text,
-          fontSize: '18px',
+          fontSize: `${fontSize}px`,
           lineHeight: `${lineHeight}px`,
           minHeight: `${rows * lineHeight}px`,
           outline: 'none',

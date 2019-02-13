@@ -46,6 +46,7 @@ export type Props = {
   padding?: string | undefined;
   onBlur?: () => void;
   onFocus?: () => void | undefined;
+  fontSize?: number;
 };
 
 type State = {
@@ -94,7 +95,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { onBlur, onFocus, padding, ideaId, rows, shownLocale, label, placeholder, valueMultiloc, errorMultiloc  } = this.props;
+    const { onBlur, onFocus, padding, ideaId, rows, shownLocale, label, placeholder, valueMultiloc, errorMultiloc, fontSize } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -123,6 +124,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
               onChange={this.handleOnChange(shownLocale)}
               onBlur={onBlur}
               onFocus={onFocus}
+              fontSize={fontSize}
             />
           </MentionsTextAreaWrapper>
         );
