@@ -213,7 +213,7 @@ RSpec.describe User, type: :model do
 
   describe "demographic fields", slow_test: true do
     before do
-      TenantTemplateService.new.apply_template 'base'
+      TenantTemplateService.new.resolve_and_apply_template 'base'
     end
 
     it "(gender) is valid when male, female or unspecified" do

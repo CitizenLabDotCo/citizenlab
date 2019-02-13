@@ -2,7 +2,7 @@ namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
   task :create_tenant, [:host,:template] => [:environment] do |t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
-    tenant_template = args[:template] || 'en_tenant_template'
+    tenant_template = args[:template] || 'en_template'
 
     Tenant.find_by(host: host)&.destroy!
 
@@ -15,17 +15,20 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en-GB','nl-BE'],
+          locales: ['en','nl-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en-GB" => 'Wonderville',
+            "en" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Europe/Brussels",
           currency: 'EUR',
           color_main: '#163A7D',
           color_secondary: '#CF4040',
-          color_text: '#163A7D'
+          color_text: '#163A7D',
+          signup_helper_text: {
+            en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
+          }
         },
         groups: {
           enabled: true,
@@ -86,9 +89,20 @@ namespace :cl2_back do
       }
     })
 
+
     Apartment::Tenant.switch tenant.schema_name do
-      TenantTemplateService.new.apply_template(tenant_template)
+      TenantTemplateService.new.resolve_and_apply_template(tenant_template)
+      User.create(
+        roles: [{type: 'admin'}],
+        first_name: 'Citizen',
+        last_name: 'Lab',
+        email: 'hello@citizenlab.co',
+        password: 'democrazy',
+        locale: 'en',
+        registration_completed_at: Time.now
+      )
     end
+
 
     SideFxTenantService.new.after_apply_template(tenant, nil)
     SideFxTenantService.new.after_create(tenant, nil)

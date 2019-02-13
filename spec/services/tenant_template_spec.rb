@@ -14,7 +14,7 @@ describe TenantTemplateService do
 
   end
 
-  describe "apply_template", slow_test: true do
+  describe "resolve_and_apply_template", slow_test: true do
     
     TenantTemplateService.new.available_templates.map do |template|
       it "Successfully applies '#{template}' template" do 
@@ -56,13 +56,13 @@ describe TenantTemplateService do
           }
          })
         Apartment::Tenant.switch("#{name}_localhost") do
-          service.apply_template template
+          service.resolve_and_apply_template template
         end
       end
     end
 
     it "Successfully generates and applies tenant templates (those acquired from spreadsheets)" do
-      tenant = service.apply_template('spec/services/tenant_template.yml', is_path=true)
+      tenant = service.resolve_and_apply_template('spec/fixtures/tenant_template.yml', is_path=true)
       expect(IdeaStatus.count).to be 5
       expect(Topic.count).to be 14
       expect(User.count).to be 2
@@ -82,7 +82,32 @@ describe TenantTemplateService do
     end
 
     it "raises an error if the requested template was not found" do
-      expect{service.apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
+      expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
+    end
+  end
+
+  describe "tenant_to_template", slow_test: true do
+    it "Successfully generates a tenant template from a given tenant" do
+      load Rails.root.join("db","seeds.rb")
+      Apartment::Tenant.switch('localhost') do
+        service.resolve_and_apply_template('spec/fixtures/template_without_images.yml', is_path=true)
+      end
+      template = service.tenant_to_template Tenant.find_by(host: 'localhost')
+      service.apply_template template
+
+      Apartment::Tenant.switch('localhost') do
+        expect(Area.count).to eq 13
+        expect(AreasIdea.count).to eq 37
+        expect(Comment.count).to eq 119
+        expect(CustomFieldOption.count).to eq 13
+        expect(Event.count).to eq 11
+        expect(Group.count).to eq 4
+        expect(GroupsProject.count).to eq 12
+        expect(IdeaStatus.count).to eq 5
+        expect(Notification.count).to eq 0
+        expect(User.admin.count).to eq 0
+        expect(Vote.count).to eq 439
+      end
     end
   end
 
