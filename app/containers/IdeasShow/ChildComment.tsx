@@ -31,6 +31,7 @@ import { media } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import GetPermission from 'resources/GetPermission';
 
 const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
@@ -161,6 +162,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
             createdAt={createdAt}
             message={messages.childCommentAuthor}
             size="40px"
+            projectId={projectId}
           />
 
           <CommentBody

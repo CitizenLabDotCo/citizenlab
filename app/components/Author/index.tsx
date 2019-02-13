@@ -20,13 +20,15 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 import { Message } from 'typings';
 
-const AuthorContainer = styled.div`
+import { canModerate } from 'services/permissions/rules/projectPermissions';
+
+const AuthorContainer: any = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
@@ -52,7 +54,7 @@ const AuthorNameContainer = styled.div`
   hyphens: manual;
 `;
 
-const AuthorNameLink = styled(Link)`
+const AuthorNameLink: any = styled(Link)`
   color: ${colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
@@ -61,6 +63,12 @@ const AuthorNameLink = styled(Link)`
     color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
   }
+
+  ${props => (props as any).authorCanModerate ? css
+    `color: ${colors.clRed};
+    &:hover {
+      color: ${darken(0.15, colors.clRed)};
+    }` : ''}
 `;
 
 const TimeAgo = styled.div`
@@ -71,13 +79,20 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-type Props = {
+interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
   message?: Message;
-};
+  projectId?: string;
+}
+
+interface DataProps {
+  canModerate: boolean;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   author: IUser | null;
@@ -129,19 +144,21 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, size, notALink, message } = this.props;
+    const { authorId, createdAt, size, notALink, message, projectId } = this.props;
     const { author } = this.state;
+
+    const authorCanModerate = author && canModerate(projectId, author);
 
     const authorNameComponent = notALink ? (
       <UserName user={(author ? author.data : null)} />
     ) : (
-        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} authorCanModerate={authorCanModerate}>
           <UserName user={(author ? author.data : null)} />
         </AuthorNameLink>
       );
 
     return (
-      <AuthorContainer className={className}>
+      <AuthorContainer className={className} authorCanModerate={authorCanModerate}>
         <StyledAvatar
           userId={authorId}
           size={size}
