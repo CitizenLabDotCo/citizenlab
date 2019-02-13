@@ -1,5 +1,26 @@
 # Changelog
 
+## 2019-02-13
+
+### Fixed
+
+- Texts written with the rich text editor are shown more consistently in and outside of the editor
+- Opening a dropdown of the smart group conditions form now scrolls down the modal
+- When changing the sorting method in the ideas overview, the pagination now resets as expected
+
+### Added
+
+- Typeform survey for typeform can now be downloaded as xlsx from a tab in the project settings
+  - The Segment user token needs to be filled out in Admin HQ
+  - New survey responses generate an event in segment
+- Survey providers can be feature flagged individually
+- New \*.template.citizenlab.co platforms now serve as definitions of the tenant template
+- The registration fields overview in admin now shows a badge when fields are required
+
+### Changed
+
+- Surveymonkey is now feature-flagged off by default for new platforms
+
 ## 2019-01-30
 
 ### Fixed
