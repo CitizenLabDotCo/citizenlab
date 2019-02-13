@@ -18,18 +18,20 @@ class ProjectCopyService
     @template['models']['project_image']       = yml_project_images
     @template['models']['phase']               = yml_phases
     @template['models']['phase_file']          = yml_phase_files
-    @template['models']['user']                = yml_users anonymize_users
-    @template['models']['basket']              = yml_baskets
     @template['models']['event']               = yml_events
     @template['models']['event_file']          = yml_event_files
     @template['models']['permission']          = yml_permissions
-    @template['models']['idea']                = yml_ideas
-    @template['models']['baskets_idea']        = yml_baskets_ideas
-    @template['models']['idea_file']           = yml_idea_files
-    @template['models']['idea_image']          = yml_idea_images
-    @template['models']['ideas_phase']         = yml_ideas_phases
-    @template['models']['comment']             = yml_comments
-    @template['models']['vote']                = yml_votes
+    if include_ideas
+      @template['models']['user']                = yml_users anonymize_users
+      @template['models']['basket']              = yml_baskets
+      @template['models']['idea']                = yml_ideas
+      @template['models']['baskets_idea']        = yml_baskets_ideas
+      @template['models']['idea_file']           = yml_idea_files
+      @template['models']['idea_image']          = yml_idea_images
+      @template['models']['ideas_phase']         = yml_ideas_phases
+      @template['models']['comment']             = yml_comments
+      @template['models']['vote']                = yml_votes
+    end
   end
 
 
@@ -65,7 +67,6 @@ class ProjectCopyService
       'visible_to'                   => @project.visible_to,
       'description_preview_multiloc' => @project.description_preview_multiloc, 
       'process_type'                 => @project.process_type,
-      'internal_role'                => @project.internal_role,
       'publication_status'           => @project.publication_status,
       'ordering'                     => @project.ordering
     })
@@ -160,7 +161,7 @@ class ProjectCopyService
 
     User.where(id: user_ids).map do |u|
       yml_user = if anonymize_users
-        yml_user = service.anonymized_attributes Tenant.current.settings.dig(:core, :locales), user: u
+        yml_user = service.anonymized_attributes Tenant.settings('core', 'locales'), user: u
         yml_user.delete 'custom_field_values'
         yml_user
       else
@@ -189,7 +190,7 @@ class ProjectCopyService
   end
 
   def yml_baskets
-    participation_context_ids = [@project.id + @project.phases.ids]
+    participation_context_ids = [@project.id] + @project.phases.ids
     Basket.where(participation_context_id: participation_context_ids).map do |b|
       yml_basket = {
         'submitted_at'              => b.submitted_at.to_s,
@@ -234,7 +235,7 @@ class ProjectCopyService
   end
 
   def yml_permissions
-    permittable_ids = [@project.id + @project.phases.ids]
+    permittable_ids = [@project.id] + @project.phases.ids
     Permission.where(permittable_id: permittable_ids).map do |p|
       yml_permission = {
         'action'          => p.action,
@@ -261,7 +262,6 @@ class ProjectCopyService
         'updated_at'             => i.updated_at.to_s,
         'location_point_geojson' => i.location_point_geojson,
         'location_description'   => i.location_description,
-        'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
         'budget'                 => i.budget
       }
       store_ref yml_idea, i.id, :idea
@@ -317,7 +317,7 @@ class ProjectCopyService
   end
 
   def yml_comments
-    (Comment.where('parent_id IS NULL')+Comment.where('parent_id IS NOT NULL')).where(idea_id: @project.ideas.published.ids).map do |c|
+    (Comment.where('parent_id IS NULL').where(idea_id: @project.ideas.published.ids)+Comment.where('parent_id IS NOT NULL').where(idea_id: @project.ideas.published.ids)).map do |c|
       yml_comment = {
         'author_ref'         => lookup_ref(c.author_id, :user),
         'idea_ref'           => lookup_ref(c.idea_id, :idea),
