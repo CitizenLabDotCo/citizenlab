@@ -15,6 +15,8 @@ definePermissionRule('projects', 'reorder', (_project: IProjectData, user: IUser
   return isAdmin(user);
 });
 
+export const canModerate = (projectId: string | null | undefined, user: IUser) => isAdmin(user) || isProjectModerator(user, projectId);
+
 definePermissionRule('projects', 'moderate', (project: IProjectData, user: IUser) => {
-  return isAdmin(user) || isProjectModerator(user, project.id);
+  return canModerate(project.id, user);
 });
