@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import { withTheme } from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
@@ -35,6 +35,13 @@ interface QueryProps {
 interface Props extends QueryProps {
   className?: string;
 }
+const StyleFixesDiv = styled.div`
+  overflow: hidden;
+  .recharts-surface, .recharts-wrapper, .recharts-responsive-container {
+    height: 190px !important;
+    min-width: 190;
+  }
+`;
 
 const labelColors = {
   male: '#5D99C6 ',
@@ -126,32 +133,35 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.usersByGenderTitle} />
             </GraphCardTitle>
           </GraphCardHeader>
-          {!serie ?
+          {!serie
+            ?
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  isAnimationActive={true}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  data={serie}
-                  dataKey="value"
-                  innerRadius={60}
-                  fill={colorMain}
-                  label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
-                >
-                  {serie.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
-                  ))}
-                </Pie>
-                <Tooltip isAnimationActive={false} />
-              </PieChart>
-            </ResponsiveContainer>
-          }
-        </GraphCardInner>
+            <StyleFixesDiv>
+              <ResponsiveContainer height={175} width="100%" minWidth={175}>
+                <PieChart>
+                  <Pie
+                    isAnimationActive={false}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
+                    data={serie}
+                    dataKey="value"
+                    innerRadius={60}
+                    fill={colorMain}
+                    label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                  >
+                    {serie.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={labelColors[entry.code]} />
+                    ))}
+                  </Pie>
+                  <Tooltip isAnimationActive={false} />
+                </PieChart>
+              </ResponsiveContainer>
+              </StyleFixesDiv>
+            }
+          </GraphCardInner>
       </GraphCard>
     );
   }
