@@ -1,5 +1,5 @@
 import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
 interface IAdminFeedbackPost {
@@ -41,8 +41,8 @@ export function adminFeedbackStream(adminFeedbackId: string) {
   return streams.get<IAdminFeedback>({ apiEndpoint: `${API_PATH}/admin_feedback/${adminFeedbackId }` });
 }
 
-export function adminFeedbackForIdeaStream(ideaId: string) {
-  return streams.get<IAdminFeedback>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/admin_feedback` });
+export function adminFeedbackForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IAdminFeedback>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/admin_feedback`, ...streamParams });
 }
 
 export async function addAdminFeedbackToIdea(ideaId: string, feedBack: INewFeedback) {
