@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
+import { darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -24,10 +25,6 @@ const StyledButton = styled.button`
   padding: 7px 9px;
   border-radius: 5px;
   cursor: pointer;
-  &:hover, &:focus, &.isSelected:hover, &.isSelected.focus {
-    background: ${colors.adminBackground};
-    outline: none;
-  }
   svg {
     fill: ${colors.clRed};
   }
@@ -40,7 +37,11 @@ const StyledButton = styled.button`
     }
   }
   &.isSelected {
-    background: ${colors.background};
+    background: ${colors.emailBg};
+  }
+  &:hover, &:focus, &.isSelected:hover, &.isSelected:focus {
+    background: ${(darken(0.1, colors.emailBg))};
+    outline: none;
   }
 `;
 
