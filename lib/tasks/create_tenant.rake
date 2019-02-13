@@ -38,10 +38,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        surveys: {
-         enabled: true,
-         allowed: true,
-        },
         user_custom_fields: {
           enabled: true,
           allowed: true
