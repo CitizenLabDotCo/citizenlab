@@ -7,6 +7,7 @@
 - Texts written with the rich text editor are shown more consistently in and outside of the editor
 - Opening a dropdown of the smart group conditions form now scrolls down the modal
 - When changing the sorting method in the ideas overview, the pagination now resets as expected
+- Google login no longer uses the deprecated Google+ authentication API
 
 ### Added
 
