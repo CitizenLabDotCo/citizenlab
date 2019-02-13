@@ -16,7 +16,8 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
 import { InjectedIntlProps } from 'react-intl';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+
 export interface Props {
   locales: Locale[];
 }
@@ -56,6 +57,7 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
       placeholder={this.props.intl.formatMessage(messages.adminFeedbackPlaceholder)}
       rows={8}
       padding="12px"
+      fontSize={fontSizes.base}
       {...props}
     />
   )
@@ -72,23 +74,25 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
             selectedLocale={selectedLocale}
             values={values}
           />
-            <Field
-              name="author_multiloc"
-              render={this.renderFormikInputMultiloc}
-            />
-            {touched.author_multiloc && <Error
-              fieldName="author_multiloc"
-              apiErrors={errors.author_multiloc as any}
-            />}
+          <Field
+            name="author_multiloc"
+            render={this.renderFormikInputMultiloc}
+          />
+          {touched.author_multiloc && <Error
+            fieldName="author_multiloc"
+            marginBottom="20px"
+            apiErrors={errors.author_multiloc as any}
+          />}
 
-            <Field
-              render={this.renderFormikMentionsTextAreaMultiloc}
-              name="body_multiloc"
-            />
-            {touched.body_multiloc && <Error
-              fieldName="body_multiloc"
-              apiErrors={errors.body_multiloc as any}
-            />}
+          <Field
+            render={this.renderFormikMentionsTextAreaMultiloc}
+            name="body_multiloc"
+          />
+          {touched.body_multiloc && <Error
+            fieldName="body_multiloc"
+            marginBottom="20px"
+            apiErrors={errors.body_multiloc as any}
+          />}
         </Section>
 
         <FormikSubmitWrapper
