@@ -38,10 +38,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        surveys: {
-         enabled: true,
-         allowed: true,
-        },
         user_custom_fields: {
           enabled: true,
           allowed: true
@@ -79,6 +75,22 @@ namespace :cl2_back do
           allowed: true
         },
         geographic_dashboard: {
+          enabled: true,
+          allowed: true
+        },
+        surveys: {
+          enabled: true,
+          allowed: true
+        },
+        typeform_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        google_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        surveymonkey_surveys: {
           enabled: true,
           allowed: true
         }
