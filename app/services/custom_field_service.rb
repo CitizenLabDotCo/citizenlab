@@ -219,7 +219,7 @@ class CustomFieldService
 
   def domicile_to_json_schema_field field, locale
     normal_field = select_to_json_schema_field(field, locale)
-    areas = Area.all
+    areas = Area.all.order(created_at: :desc)
     normal_field[:enum] = areas.map(&:id).push('outside')
     I18n.with_locale(locale) do
       normal_field[:enumNames] = areas.map do |area|
