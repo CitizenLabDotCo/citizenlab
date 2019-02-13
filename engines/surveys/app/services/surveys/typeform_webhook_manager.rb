@@ -17,13 +17,11 @@ module Surveys
           url: tenant_to_webhook_url(Tenant.current, pc),
           secret: ENV.fetch("SECRET_TOKEN_TYPEFORM")
         )
-      else # we're not changing to typeform
-        if pm_from == 'survey' && service_from == 'typeform'
-          @tf_api.delete_webhook(
-            form_id: embed_url_to_form_id(url_from),
-            tag: pc.id,
-          )
-        end
+      elsif pm_from == 'survey' && service_from == 'typeform'
+        @tf_api.delete_webhook(
+          form_id: embed_url_to_form_id(url_from),
+          tag: pc.id,
+        )
       end
     end
 
