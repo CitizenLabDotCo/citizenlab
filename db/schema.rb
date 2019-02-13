@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_123605) do
+ActiveRecord::Schema.define(version: 2019_01_24_094814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -544,6 +544,22 @@ ActiveRecord::Schema.define(version: 2019_01_07_123605) do
     t.index ["reported_at"], name: "index_spam_reports_on_reported_at"
     t.index ["spam_reportable_type", "spam_reportable_id"], name: "spam_reportable_index"
     t.index ["user_id"], name: "index_spam_reports_on_user_id"
+  end
+
+  create_table "surveys_responses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.string "survey_service", null: false
+    t.string "external_survey_id", null: false
+    t.string "external_response_id", null: false
+    t.uuid "user_id"
+    t.datetime "started_at"
+    t.datetime "submitted_at", null: false
+    t.jsonb "answers", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["participation_context_type", "participation_context_id"], name: "index_surveys_responses_on_participation_context"
+    t.index ["user_id"], name: "index_surveys_responses_on_user_id"
   end
 
   create_table "tenants", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
