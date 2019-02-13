@@ -159,9 +159,9 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                   <Tooltip isAnimationActive={false} />
                 </PieChart>
               </ResponsiveContainer>
-              </StyleFixesDiv>
-            }
-          </GraphCardInner>
+            </StyleFixesDiv>
+          }
+        </GraphCardInner>
       </GraphCard>
     );
   }
