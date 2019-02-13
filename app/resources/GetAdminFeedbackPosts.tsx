@@ -11,7 +11,7 @@ import { start } from 'repl';
 interface InputProps {
   pageNumber?: number;
   pageSize: number;
-  ideaId: string | undefined;
+  ideaId: string;
 }
 
 type children = (renderProps: GetAdminFeedbackChildProps) => JSX.Element | null;
@@ -19,7 +19,6 @@ type children = (renderProps: GetAdminFeedbackChildProps) => JSX.Element | null;
 interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
-  ideaId: string | undefined;
 }
 
 interface IAccumulator {
@@ -54,7 +53,6 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
       queryParameters: {
         'page[number]': 1,
         'page[size]': this.props.pageSize,
-        ideaId: undefined
       },
       adminFeedbackPosts: undefined,
       loadingMore: false,
@@ -67,6 +65,7 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
   }
 
   componentDidMount() {
+    const { ideaId } = this.props;
     const queryParameters = this.getQueryParameters(this.state, this.props);
 
     const startAccumulatorValue: IAccumulator = { queryParameters, adminFeedbackPosts: null, hasMore: false };
@@ -74,9 +73,9 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     this.subscriptions = [
       this.queryParameters$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ ideaId }) => isString(ideaId)),
-        adminFeedbackForIdeaStream(ideaId, { queryParameters}).observable
-
+        switchMap(queryParameters => {
+          return adminFeedbackForIdeaStream(ideaId, { queryParameters }).observable
+        })
       ).subscribe(({ adminFeedbackPosts, hasMore }) => {
         this.setState({
           hasMore,
@@ -116,7 +115,6 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     const inputPropsQueryParameters: IQueryParameters = {
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize,
-      ideaId: props.ideaId
     };
 
     return ({
