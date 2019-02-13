@@ -19,6 +19,7 @@ namespace :cl2_back do
           organization_type: 'medium_city',
           organization_name: {
             "en" => 'Wonderville',
+            "en-GB" => "Wondershershire",
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Europe/Brussels",
