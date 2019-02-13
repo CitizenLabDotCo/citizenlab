@@ -10,7 +10,7 @@ namespace :cl2back do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         puts "Adding custom fields for tenant #{tenant.name}"
-        tts.apply_template(template)
+        tts.resolve_and_apply_template(template)
       end
     end
   end

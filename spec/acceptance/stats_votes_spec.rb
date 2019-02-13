@@ -35,7 +35,7 @@ resource "Stats - Votes" do
     token = Knock::AuthToken.new(payload: { sub: @current_user.id }).token
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
-    Tenant.update(created_at: now - 3.month)
+    Tenant.current.update!(created_at: now - 3.month)
     @timezone = Tenant.settings('core','timezone')
     @idea_status = create(:idea_status)
   end
@@ -62,7 +62,7 @@ resource "Stats - Votes" do
   context "with dependency on custom_fields" do
     before(:all) do
       Apartment::Tenant.switch!('example_org')
-      TenantTemplateService.new.apply_template('base')
+      TenantTemplateService.new.resolve_and_apply_template('base')
       CustomField.find_by(code: 'education').update(enabled: true)
     end
 

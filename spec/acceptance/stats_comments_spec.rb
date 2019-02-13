@@ -37,7 +37,7 @@ resource "Stats - Comments" do
     header 'Authorization', "Bearer #{token}"
     header "Content-Type", "application/json"
     @timezone = Tenant.settings('core','timezone')
-    Tenant.update(created_at: now - 3.month)
+    Tenant.current.update!(created_at: now - 3.month)
     create(:comment, publication_status: 'deleted')
   end
 
