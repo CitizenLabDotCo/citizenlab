@@ -395,7 +395,7 @@
             "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
             "type": "string",
             "private": true,
-            "default": <%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN') %> 
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>" 
           }
         }
       },
