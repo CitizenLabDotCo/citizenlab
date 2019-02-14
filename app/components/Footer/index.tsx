@@ -211,20 +211,6 @@ const StyledThing = styled(Polymorph)`
 const StyledButton = StyledThing.withComponent('button');
 const StyledLink = StyledThing.withComponent(Link);
 
-const Separator = styled.span`
-  color: ${colors.label};
-  font-weight: 400;
-  font-size: ${fontSizes.base}px;
-  line-height: 19px;
-  padding-left: 10px;
-  padding-right: 10px;
-
-  ${media.smallerThanMaxTablet`
-    padding-left: 8px;
-    padding-right: 8px;
-  `}
-`;
-
 const Right = styled.div`
   display: flex;
   align-items: center;
@@ -444,18 +430,14 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
             </ShortFeedback>
             <PagesNav>
               <ul>
-                {LEGAL_PAGES.map((slug, index) => (
+                {LEGAL_PAGES.map((slug) => (
                   <li key={slug}>
-                    {/* {index !== 0 &&
-                      <Separator>•</Separator>
-                    } */}
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
                 ))}
                 <li>
-                  {/* <Separator>•</Separator> */}
                   <StyledButton onClick={openConsentManager}>
                     <FormattedMessage {...messages.cookieSettings} />
                   </StyledButton>
