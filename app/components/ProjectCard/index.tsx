@@ -34,7 +34,6 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
-import { start } from 'repl';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
