@@ -8,7 +8,7 @@ import streams from 'utils/streams';
 import { IAreaData } from 'services/areas';
 import { updateUser, IUserData, mapUserToDiff } from 'services/users';
 import { ITenantData } from 'services/tenant';
-import { localeStream, updateLocale } from 'services/locale';
+import { localeStream } from 'services/locale';
 import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
 
 // utils
@@ -160,7 +160,6 @@ class ProfileForm extends PureComponent<Props, State> {
       streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
       resetForm();
       setStatus('success');
-      updateLocale(user.data.attributes.locale);
     } catch (errorResponse) {
       if (errorResponse.json) {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
