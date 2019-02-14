@@ -392,9 +392,10 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "user_token": {
-            "description": "The user token that can be generated from your typeform profile",
+            "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
             "type": "string",
-            "private": true
+            "private": true,
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>" 
           }
         }
       },
