@@ -168,10 +168,10 @@ const ProjectContent = styled.div`
 `;
 
 const ContentHeader = styled.div`
+  min-height: 56px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding-bottom: 16px;
   border-bottom: solid 1px #e8e8e8;
 
   &.small {
@@ -184,21 +184,24 @@ const ContentHeaderLeft = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
   flex-basis: 120px;
-  margin-right: 0px;
+  margin-right: 20px;
 
   ${media.smallerThanMinTablet`
-    flex: 1;
     margin-right: 0px;
   `};
 `;
 
 const ContentHeaderRight = styled.div`
-  ${media.smallerThanMinTablet`
-    display: none;
-  `};
+  &.small {
+    ${media.largePhone`
+      display: none;
+    `};
+  }
 `;
 
-const Countdown = styled.div``;
+const Countdown = styled.div`
+  margin-top: 4px;
+`;
 
 const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -398,6 +401,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { project, phase, size, projectImages, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(project)) {
+      const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
+      const postingEnabled = (!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled);
+      const votingEnabled = (!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled);
+      const commentingEnabled = (!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled);
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
       const isArchived = (project.attributes.publication_status === 'archived');
@@ -406,39 +413,66 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
-      const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
-      const pastDays = (timeRemaining ? moment.duration(moment(moment()).diff(moment(startAt))).asDays() : null);
-      const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
+      let countdown: JSX.Element | null = null;
+      let ctaMessage: JSX.Element | null = null;
+
+      if (isArchived) {
+        countdown = (
+          <ArchivedLabelWrapper>
+            <ArchivedLabel>
+              <FormattedMessage {...messages.archived} />
+            </ArchivedLabel>
+          </ArchivedLabelWrapper>
+        );
+      } else if (timeRemaining) {
+        const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
+        const pastDays = (timeRemaining ? moment.duration(moment(moment()).diff(moment(startAt))).asDays() : null);
+        const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
+
+        countdown = (
+          <Countdown>
+            <TimeRemaining>
+              <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
+            </TimeRemaining>
+            <Observer onChange={this.handleIntersectionObserverOnChange}>
+              <ProgressBar>
+                <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
+              </ProgressBar>
+            </Observer>
+          </Countdown>
+        );
+      }
+
+      if (participationMethod === 'budgeting') {
+        ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
+      } else if (participationMethod === 'information') {
+        ctaMessage = <FormattedMessage {...messages.learnMore} />;
+      } else if (participationMethod === 'survey') {
+        ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
+      } else if (participationMethod === 'ideation' && postingEnabled) {
+        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
+      } else if (participationMethod === 'ideation' && votingEnabled) {
+        ctaMessage = <FormattedMessage {...messages.vote} />;
+      } else if (participationMethod === 'ideation' && commentingEnabled) {
+        ctaMessage = <FormattedMessage {...messages.comment} />;
+      } else if (participationMethod === 'ideation') {
+        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
+      }
 
       const contentHeader = (
         <ContentHeader className={size}>
           <ContentHeaderLeft>
-            {timeRemaining &&
-              <Countdown>
-                <TimeRemaining>
-                  <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
-                </TimeRemaining>
-                <Observer onChange={this.handleIntersectionObserverOnChange}>
-                  <ProgressBar>
-                    <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
-                  </ProgressBar>
-                </Observer>
-              </Countdown>
-            }
-
-            {isArchived &&
-              <ArchivedLabelWrapper>
-                <ArchivedLabel>
-                  <FormattedMessage {...messages.archived} />
-                </ArchivedLabel>
-              </ArchivedLabelWrapper>
-            }
+            {countdown}
           </ContentHeaderLeft>
 
-          <ContentHeaderRight>
-            <ProjectLabel>
-              <span>Allocate your budget</span>
-            </ProjectLabel>
+          <ContentHeaderRight className={size}>
+            {ctaMessage &&
+              <>
+                <ProjectLabel>
+                  {ctaMessage}
+                </ProjectLabel>
+              </>
+            }
           </ContentHeaderRight>
         </ContentHeader>
       );
