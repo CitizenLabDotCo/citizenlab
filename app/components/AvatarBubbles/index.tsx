@@ -99,9 +99,11 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
+const defaultLimit = 4;
+
 class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    limit: 4
+    limit: defaultLimit
   };
 
   render() {
@@ -157,8 +159,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
-export default (inputProps: InputProps) => (
-  <GetAvatars limit={inputProps.limit} context={inputProps.context}>
-    {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
-  </GetAvatars>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <GetAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
+      {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
+    </GetAvatars>
+  );
+};
