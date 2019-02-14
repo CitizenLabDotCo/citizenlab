@@ -137,10 +137,10 @@ class LanguageSelector extends PureComponent<Props, State> {
   handleLanguageSelect = (selectedLocale: Locale) => () => {
     const { authUser } = this.props;
 
-    updateLocale(selectedLocale);
-
     if (!isNilOrError(authUser)) {
       updateUser(authUser.id, { locale: selectedLocale });
+    } else {
+      updateLocale(selectedLocale);
     }
 
     this.setState({ dropdownOpened: false });

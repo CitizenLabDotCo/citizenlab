@@ -7,12 +7,17 @@ export const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrc
 export const API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 export const API_PORT = process.env.API_PORT || 4000;
 export const DEFAULT_LOCALE = 'en';
+
+// the locales we "support" :
+// platformBaseUrl/{oneOfTheseStrings}/{anything we have a route for}
+// - won't 404
+// - will replace the locale with authUser's locale if there is one
+// - will replace the locale with default locale is not logged in
 export const locales = [
   'en',
   'fr',
   'de',
   'nl',
-  'nb',
   'nb',
   'da',
   'de-DE',
@@ -25,6 +30,8 @@ export const locales = [
   'da-DK',
   'nb-NO'
 ];
+
+// the locales we really support, ie we have translations for these ect
 export const appLocalePairs = {
   en: 'English',
   'en-GB': 'English (Great Britain)',
