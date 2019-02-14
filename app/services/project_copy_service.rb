@@ -13,7 +13,7 @@ class ProjectCopyService
     @template = {'models' => {}}
 
     # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-    @template['models']['project']             = yml_projects
+    @template['models']['project']             = yml_projects new_slug
     @template['models']['project_file']        = yml_project_files
     @template['models']['project_image']       = yml_project_images
     @template['models']['phase']               = yml_phases
@@ -32,6 +32,7 @@ class ProjectCopyService
       @template['models']['comment']             = yml_comments
       @template['models']['vote']                = yml_votes
     end
+    @template
   end
 
 
@@ -56,7 +57,7 @@ class ProjectCopyService
     @refs[model_name][id] = yml_obj
   end
 
-  def yml_projects
+  def yml_projects new_slug
     yml_project = yml_participation_context @project
     yml_project.merge!({
       'title_multiloc'               => @project.title_multiloc,
@@ -70,6 +71,7 @@ class ProjectCopyService
       'publication_status'           => @project.publication_status,
       'ordering'                     => @project.ordering
     })
+    yml_project['slug'] = new_slug if new_slug
     store_ref yml_project, @project.id, :project
     [yml_project]
   end

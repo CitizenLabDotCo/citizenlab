@@ -49,6 +49,7 @@ class TenantTemplateService
           model.save!
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
+          byebug
           raise e
         end
         obj_to_id_and_class[attributes] = [model.id, model_class]
