@@ -39,16 +39,12 @@ combineLatest(
   $tenantLocales
 ).subscribe(([user, tenantLocales]) => {
   const urlLocale = getUrlLocale(location.pathname);
-  const urlSegments = location.pathname.replace(/^\/|\/$/g, '').split('/');
-  const lastUrlSegment = urlSegments[urlSegments.length - 1];
   const userLocale = (user && user.data.attributes.locale && includes(tenantLocales, user.data.attributes.locale) ? user.data.attributes.locale : null);
 
-  if (lastUrlSegment === 'sign-in' && userLocale) {
+  if (userLocale) {
     LocaleSubject.next(userLocale);
   } else if (includes(tenantLocales, urlLocale)) {
     LocaleSubject.next(urlLocale as Locale);
-  } else if (userLocale) {
-    LocaleSubject.next(userLocale);
   } else if (tenantLocales && tenantLocales.length > 0) {
     LocaleSubject.next(tenantLocales[0]);
   }
