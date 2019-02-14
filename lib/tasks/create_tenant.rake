@@ -15,10 +15,10 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','nl-BE'],
+          locales: ['en-GB','nl-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en" => 'Wonderville',
+            "en-GB" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Europe/Brussels",
@@ -37,10 +37,6 @@ namespace :cl2_back do
         private_projects: {
           enabled: true,
           allowed: true
-        },
-        surveys: {
-         enabled: true,
-         allowed: true,
         },
         user_custom_fields: {
           enabled: true,
@@ -79,6 +75,22 @@ namespace :cl2_back do
           allowed: true
         },
         geographic_dashboard: {
+          enabled: true,
+          allowed: true
+        },
+        surveys: {
+          enabled: true,
+          allowed: true
+        },
+        typeform_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        google_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        surveymonkey_surveys: {
           enabled: true,
           allowed: true
         }
