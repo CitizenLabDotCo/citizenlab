@@ -40,6 +40,7 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def destroy
+    SideFxPhaseService.new.before_destroy(@phase, current_user)
     phase = @phase.destroy
     if phase.destroyed?
       SideFxPhaseService.new.after_destroy(@phase, current_user)

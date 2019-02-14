@@ -63,9 +63,12 @@ end
 gem "pundit", "~> 2.0"
 gem "active_model_serializers", "~> 0.10.8"
 
-# Not clear why we are using this fork, to be investigated
-# https://github.com/ngty/knock/commits/master
-gem "knock", "~> 2.1.1", github: 'ngty/knock', ref: '97fb32f59b2027c808964b875be2fff22400da1d'
+# Fork was made for the following reasons:
+# 1) To update the version of jws which is required for
+#    the google omniauth gem.
+# 2) To not auto load Generators::Base which would result
+#    in an error.
+gem "knock", github: 'CitizenLabDotCo/knock'
 gem "sidekiq" # , "~> 5.0.5"
 gem "apartment", "~> 2.2.0"
 gem "apartment-sidekiq", "~> 1.2.0"
@@ -95,7 +98,9 @@ gem 'omniauth' # , '~> 1.7.1'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-gem 'omniauth-azure-activedirectory'
+# This fork was made to update the version of jws which is
+# required for the google omniauth gem.
+gem 'omniauth-azure-activedirectory', github: 'CitizenLabDotCo/omniauth-azure-activedirectory'
 gem 'omniauth_openid_connect'
 gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
@@ -116,3 +121,4 @@ gem 'machine_translations', path: 'engines/machine_translations'
 gem 'nlp', path: 'engines/nlp'
 gem 'public_api', path: 'engines/public_api'
 gem 'onboarding', path: 'engines/onboarding'
+gem 'surveys', path: 'engines/surveys'
