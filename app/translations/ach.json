@@ -252,6 +252,7 @@
   "app.components.admin.pagination.back": "",
   "app.components.admin.pagination.next": "",
   "app.components.author.byAuthorNameComponent": "",
+  "app.components.author.official": "",
   "app.components.avatar.avatarAltText": "",
   "app.components.avatar.noAvatarAltText": "",
   "app.container.IdeaForm.budgetIsTooBig": "",

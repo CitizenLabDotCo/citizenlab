@@ -252,6 +252,7 @@
   "app.components.admin.pagination.back": "Retour",
   "app.components.admin.pagination.next": "Suivant",
   "app.components.author.byAuthorNameComponent": "par {authorNameComponent}",
+  "app.components.author.official": "",
   "app.components.avatar.avatarAltText": "Avatar de {userName}",
   "app.components.avatar.noAvatarAltText": "Avatar par défaut pour les utilisateurs qui n'en disposent pas",
   "app.container.IdeaForm.budgetIsTooBig": "Le budget attribué est trop grand",
