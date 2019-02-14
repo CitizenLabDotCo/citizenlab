@@ -6,4 +6,8 @@ export default defineMessages({
     id: 'app.components.author.byAuthorNameComponent',
     defaultMessage: 'by {authorNameComponent}',
   },
+  official: {
+    id: 'app.components.author.official',
+    defaultMessage: 'official',
+  },
 });
