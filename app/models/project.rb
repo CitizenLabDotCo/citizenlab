@@ -75,6 +75,10 @@ class Project < ApplicationRecord
     .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
   }
 
+  scope :is_participation_context, -> {
+    where.not(process_type: 'timeline')
+  }
+
   def continuous?
     self.process_type == 'continuous'
   end
