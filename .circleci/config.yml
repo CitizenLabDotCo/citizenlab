@@ -166,7 +166,7 @@ jobs:
 
   test_a11y:
     docker:
-      - image: citizenlabdotco/cl2-devops-front-buildenv
+      - image: circleci/node:latest-browsers
         user: pptruser
     working_directory: ~/cl2-front
     steps:
