@@ -163,6 +163,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
             message={messages.childCommentAuthor}
             size="40px"
             projectId={projectId}
+            showModeration
           />
 
           <CommentBody
