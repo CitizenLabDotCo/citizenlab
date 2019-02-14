@@ -23,13 +23,45 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitle',
     defaultMessage: 'Label',
   },
+  fieldTitleTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldTitleTooltip',
+    defaultMessage: 'This is the name of the field users will see during signup.',
+  },
   fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescription',
     defaultMessage: 'Description',
   },
+  fieldDescriptionTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldDescriptionTooltip',
+    defaultMessage: 'If confusion is possible, or you want to explain why you ask this information. This is shown below the field label during signup.',
+  },
   fieldRequired: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.fieldRequired',
     defaultMessage: 'Required?',
+  },
+  requiredFields: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFields',
+    defaultMessage: 'Required Fields',
+  },
+  requiredFieldsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.requiredFieldsTooltip',
+    defaultMessage: 'When enabled, this field is mandatory to fill in for users during signup.',
+  },
+  optionalFields: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFields',
+    defaultMessage: 'Optional Fields',
+  },
+  optionalFieldsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.optionalFieldsTooltip',
+    defaultMessage: 'When enabled, this field is optional to fill in for users during signup.',
+  },
+  isEnabledTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.isEnabledTooltip',
+    defaultMessage: 'Switching a toggle to green will add the registration field to a user’s signup flow, allowing you to collect this information from new users. Switching it back to grey will remove it from the flow.',
+  },
+  orderingTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.orderingTooltip',
+    defaultMessage: 'Drag and drop registration fields to choose the order in which users will see them during signup.',
   },
   inputType_text: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.inputType_text',
@@ -114,5 +146,9 @@ export default defineMessages({
   systemField: {
     id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.systemField',
     defaultMessage: 'System field',
+  },
+  required: {
+    id: 'app.containers.AdminPage.SettingsPage.CustomSignupFields.required',
+    defaultMessage: 'Required',
   },
 });

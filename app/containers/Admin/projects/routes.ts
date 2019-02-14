@@ -73,6 +73,11 @@ export default () => ({
           name: 'admin projects edit permissions',
           getComponent: loadAndRender(import('containers/Admin/projects/edit/permissions')),
         },
+        {
+          path: '/:locale/admin/projects/:projectId/survey-results',
+          name: 'admin projects edit survey results',
+          getComponent: loadAndRender(import('containers/Admin/projects/edit/surveyResults')),
+        },
       ],
     },
   ],
