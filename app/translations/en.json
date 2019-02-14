@@ -252,6 +252,7 @@
   "app.components.admin.pagination.back": "Back",
   "app.components.admin.pagination.next": "Next",
   "app.components.author.byAuthorNameComponent": "by {authorNameComponent}",
+  "app.components.author.official": "official",
   "app.components.avatar.avatarAltText": "Avatar of {userName}",
   "app.components.avatar.noAvatarAltText": "Default avatar icon for people without a custom one",
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
