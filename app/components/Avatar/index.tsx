@@ -35,6 +35,7 @@ import { colors } from 'utils/styleUtils';
   border-radius: 50%;
   transition: all 100ms ease-out;
   background: #fff;
+  position: relative;
 
   &.hasHoverEffect {
     cursor: pointer;
@@ -68,6 +69,27 @@ const AvatarIcon: any = styled(Icon)`
   }
 `;
 
+const ModeratorIconContainer: any = styled.div`
+  position: absolute;
+  right: -${(props: any) => props.size / 20}px;
+  bottom: -${(props: any) => props.size / 20}px;
+  background: white;
+  border-radius: 50%;
+  flex: 0 0 ${(props: any) => props.size / 2}px;
+  width: ${(props: any) => props.size / 2}px;
+  height: ${(props: any) => props.size / 2}px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+`;
+
+const ModeratorIcon: any = styled(Icon)`
+  color: ${colors.clRed};
+  fill: ${colors.clRed};
+  height: ${(props: any) => (props.size / 2) - 5}px;
+`;
+
 interface InputProps {
   userId: string | null;
   size: string;
@@ -81,6 +103,7 @@ interface InputProps {
   borderColor?: string;
   borderHoverColor?: string;
   className?: string;
+  moderator?: boolean | null;
 }
 
 interface DataProps {
@@ -110,7 +133,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, className } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, moderator, className } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
@@ -118,6 +141,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarSrc = user.attributes.avatar[imageSize];
       const userName = getUserName(user);
       const outerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
+      const numberSize = parseInt(size, 10);
 
       return (
         <AvatarContainer
@@ -127,7 +151,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           padding={padding}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={borderHoverColor}
+          borderHoverColor={moderator ? colors.clRed : borderHoverColor}
         >
           {avatarSrc ? (
             <AvatarImage
@@ -145,6 +169,11 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               fillColor={fillColor}
               fillHoverColor={fillHoverColor}
             />
+          )}
+          {moderator && (
+            <ModeratorIconContainer size={numberSize}>
+              <ModeratorIcon name="clLogo" size={numberSize} />
+            </ModeratorIconContainer>
           )}
         </AvatarContainer>
       );

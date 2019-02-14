@@ -235,6 +235,8 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                       createdAt={createdAt}
                       size="40px"
                       message={messages.parentCommentAuthor}
+                      projectId={projectId}
+                      showModeration
                     />
                     <CommentBody
                       commentBody={comment.attributes.body_multiloc}

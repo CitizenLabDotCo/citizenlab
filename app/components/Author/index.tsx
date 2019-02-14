@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { darken } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
@@ -64,11 +64,12 @@ const AuthorNameLink: any = styled(Link)`
     text-decoration: underline;
   }
 
-  ${props => (props as any).authorCanModerate ? css
-    `color: ${colors.clRed};
+  &.canModerate {
+    color: ${colors.clRed};
     &:hover {
       color: ${darken(0.15, colors.clRed)};
-    }` : ''}
+    }
+  }
 `;
 
 const TimeAgo = styled.div`
@@ -86,11 +87,10 @@ interface InputProps {
   notALink?: boolean;
   message?: Message;
   projectId?: string;
+  showModeration?: boolean; // will show red styling on admins and moderators of projectId
 }
 
-interface DataProps {
-  canModerate: boolean;
-}
+interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
@@ -144,15 +144,15 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, size, notALink, message, projectId } = this.props;
+    const { authorId, createdAt, size, notALink, message, projectId, showModeration } = this.props;
     const { author } = this.state;
 
-    const authorCanModerate = author && canModerate(projectId, author);
+    const authorCanModerate = author && showModeration && canModerate(projectId, author);
 
     const authorNameComponent = notALink ? (
       <UserName user={(author ? author.data : null)} />
     ) : (
-        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} authorCanModerate={authorCanModerate}>
+        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} className={authorCanModerate ? 'canModerate' : ''}>
           <UserName user={(author ? author.data : null)} />
         </AuthorNameLink>
       );
@@ -163,6 +163,7 @@ class Author extends React.PureComponent<Props, State> {
           userId={authorId}
           size={size}
           onClick={notALink ? undefined : this.goToUserProfile}
+          moderator={authorCanModerate}
         />
         <AuthorMeta>
           <AuthorNameContainer>
