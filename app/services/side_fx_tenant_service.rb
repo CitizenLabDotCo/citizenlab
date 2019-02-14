@@ -50,6 +50,12 @@ class SideFxTenantService
     end
   end
 
+  def before_destroy tenant, current_user
+    Apartment::Tenant.switch(tenant.schema_name) do
+      Surveys::TypeformWebhookManager.new.tenant_to_be_destroyed(tenant)
+    end
+  end
+
   def after_destroy frozen_tenant, current_user
     serialized_tenant = clean_time_attributes(frozen_tenant.attributes)
     LogActivityJob.perform_later(encode_frozen_resource(frozen_tenant), 'deleted', current_user, Time.now.to_i, payload: {tenant: serialized_tenant})

@@ -3,7 +3,7 @@ class ProjectCopyService
   def import template
     # template is a hash
     ActiveRecord::Base.transaction do
-      TenantTemplateService.new.apply_template template
+      TenantTemplateService.new.resolve_and_apply_template template
     end
   end
 

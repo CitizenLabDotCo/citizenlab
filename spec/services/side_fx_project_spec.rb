@@ -1,7 +1,8 @@
 require "rails_helper"
 
 describe SideFxProjectService do
-  let(:service) { SideFxProjectService.new }
+  let(:sfx_pc) { instance_double(SideFxParticipationContextService) }
+  let(:service) { SideFxProjectService.new(sfx_pc) }
   let(:user) { create(:user) }
   let(:project) { create(:project) }
 
@@ -17,6 +18,16 @@ describe SideFxProjectService do
       expect {service.after_create(project, user)}.
         to have_enqueued_job(LogActivityJob).with(project, 'created', user, project.created_at.to_i)
     end
+
+    it "calls after_create on SideFxParticipationContextService for a continuous project" do
+      continuous_project = create(:continuous_project)
+      expect(sfx_pc).to receive(:after_create).with(continuous_project, user)
+      service.after_create(continuous_project, user)
+    end
+
+    it "doesn't call after_create on SideFxParticipationContextService for a timeline project" do
+      service.after_create(project, user)
+    end
   end
 
   describe "before_update" do
@@ -31,6 +42,28 @@ describe SideFxProjectService do
       project.update(title_multiloc: {'en': 'changed'})
       expect {service.after_update(project, user)}.
         to have_enqueued_job(LogActivityJob).with(project, 'changed', user, project.updated_at.to_i)
+    end
+
+    it "calls before_update on SideFxParticipationContextService for a continuous project" do
+      continuous_project = build(:continuous_project)
+      expect(sfx_pc).to receive(:before_update).with(continuous_project, user)
+      service.before_update(continuous_project, user)
+    end
+
+    it "doesn't call before_update on SideFxParticipationContextService for a timeline project" do
+      service.before_update(project, user)
+    end
+  end
+
+  describe "before_destroy" do
+    it "calls before_destroy on SideFxParticipationContextService for a continuous project" do
+      continuous_project = build(:continuous_project)
+      expect(sfx_pc).to receive(:before_destroy).with(continuous_project, user)
+      service.before_destroy(continuous_project, user)
+    end
+
+    it "doesn't call before_destroy on SideFxParticipationContextService for a timeline project" do
+      service.before_destroy(project, user)
     end
   end
 

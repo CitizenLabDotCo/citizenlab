@@ -57,13 +57,16 @@ describe CustomFieldService do
         create(:custom_field, key: 'field4', input_type: 'multiselect'),
         create(:custom_field, key: 'field5', input_type: 'checkbox'),
         create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
-        create(:custom_field, key: 'field7', input_type: 'number')
+        create(:custom_field, key: 'field7', input_type: 'number'),
+        create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
       ]
       create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1) 
       create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3) 
       create(:custom_field_option, key: 'option_2', custom_field: fields[2], ordering: 2)
       create(:custom_field_option, key: 'option_a', custom_field: fields[3], ordering: 1)
       create(:custom_field_option, key: 'option_b', custom_field: fields[3], ordering: 2)
+      create(:custom_field_option, key: 'option_a', custom_field: fields[7], ordering: 1)
+      create(:custom_field_option, key: 'option_b', custom_field: fields[7], ordering: 2)
 
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
@@ -107,8 +110,19 @@ describe CustomFieldService do
             "field7"=>
             {:title=>"Did you attend",
              :description=>"Which councils are you attending in our city?",
-             :type=>"number"}},
-         :required=>["field2"]}
+             :type=>"number"},
+           "field8"=>
+            {:title=>"Did you attend",
+             :description=>"Which councils are you attending in our city?",
+             :type=>"array",
+             :uniqueItems=>true,
+             :items=>
+              {:type=>"string",
+               :enum=>["option_a", "option_b"],
+               :enumNames=>["youth council", "youth council"]},
+             :minItems=>1},
+           },
+         :required=>["field2","field8"]}
       )
     end
 
@@ -124,7 +138,7 @@ describe CustomFieldService do
       create_list(:area, 5)
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
-      expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.map(&:id).push('outside'))
+      expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
     end
   end
 

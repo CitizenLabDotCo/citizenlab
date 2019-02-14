@@ -20,7 +20,7 @@ module AdminApi
       if @tenant.save
         SideFxTenantService.new.after_create @tenant, nil
         Apartment::Tenant.switch(@tenant.schema_name) do
-          TenantTemplateService.new.apply_template(params[:template] || 'base')
+          TenantTemplateService.new.resolve_and_apply_template(params[:template] || 'base')
         end
         SideFxTenantService.new.after_apply_template @tenant, nil
         render json: @tenant, status: :created
@@ -49,6 +49,7 @@ module AdminApi
     end
 
     def destroy
+      SideFxTenantService.new.before_destroy(@tenant)
       tenant = @tenant.destroy
       if tenant.destroyed?
         SideFxTenantService.new.after_destroy(tenant, nil)
