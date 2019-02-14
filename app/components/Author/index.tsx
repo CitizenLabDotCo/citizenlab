@@ -21,12 +21,17 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 import { Message } from 'typings';
 
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const AuthorContainer: any = styled.div`
   display: flex;
@@ -78,6 +83,21 @@ const TimeAgo = styled.div`
   margin-top: 1px;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
+`;
+
+const Badge = styled.span`
+  color: ${colors.clRed};
+  font-size: ${fontSizes.xs}px;
+  line-height: 16px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  background-color: ${lighten(.45, colors.clRed)};
+  border: none;
+  padding: 4px 8px;
+  margin-top: 10px;
+  height: 24px;
 `;
 
 interface InputProps {
@@ -158,35 +178,41 @@ class Author extends React.PureComponent<Props, State> {
       );
 
     return (
-      <AuthorContainer className={className} authorCanModerate={authorCanModerate}>
-        <StyledAvatar
-          userId={authorId}
-          size={size}
-          onClick={notALink ? undefined : this.goToUserProfile}
-          moderator={authorCanModerate}
-        />
-        <AuthorMeta>
-          <AuthorNameContainer>
-            {message ? (
-              <FormattedMessage
-                {...message}
-                values={{ authorNameComponent }}
-              />
-            ) : (
+      <Container>
+        <AuthorContainer className={className} authorCanModerate={authorCanModerate}>
+          <StyledAvatar
+            userId={authorId}
+            size={size}
+            onClick={notALink ? undefined : this.goToUserProfile}
+            moderator={authorCanModerate}
+          />
+          <AuthorMeta>
+            <AuthorNameContainer>
+              {message ? (
                 <FormattedMessage
-                  {...messages.byAuthorNameComponent}
+                  {...message}
                   values={{ authorNameComponent }}
                 />
-              )
+              ) : (
+                  <FormattedMessage
+                    {...messages.byAuthorNameComponent}
+                    values={{ authorNameComponent }}
+                  />
+                )
+              }
+            </AuthorNameContainer>
+            {createdAt &&
+              <TimeAgo>
+                <FormattedRelative value={createdAt} />
+              </TimeAgo>
             }
-          </AuthorNameContainer>
-          {createdAt &&
-            <TimeAgo>
-              <FormattedRelative value={createdAt} />
-            </TimeAgo>
-          }
-        </AuthorMeta>
-      </AuthorContainer>
+          </AuthorMeta>
+        </AuthorContainer>
+        {authorCanModerate &&
+          <Badge>
+          <FormattedMessage {...messages.official} />
+        </Badge>}
+      </Container>
     );
   }
 }
