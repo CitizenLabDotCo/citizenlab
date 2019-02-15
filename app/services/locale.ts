@@ -3,21 +3,25 @@
 /*
   Locale management outline:
 
-  source of truth for setting currentLocale stream (depends on ordering defined in 1):
+  The locale stream is the source of truth, not the url's locale.
+    - all links are dynamically updated to inlude the freshest value of the stream
+    - changes to the stream change the urls locale
+
+  Preference for setting currentLocale stream (depends on ordering defined in 1):
     - if logged in, the locale in the authUser object
+    - else, the locale in the cookie if it exists
     - else, the url's locale
     - falls back to the first tenant locale
 
   The locale stream receives a new value :
     - when authUser changes : on log in, or when the locale field of the user object has changed.
     - when the tenant changes its supported locales : on first load, or on real change
-      cf 1. Setting locale depending on user and tenant
+      cf 1. Setting locale depending on user, cookie and tenant
 
     - when updateLocale has been called : on using the langage dropdown.
       (does not go through 1, so ignores the source of truth in order to change it)
-      This will update the authUser with new locale if logged in, or push the new locale to the
-      stream to change an unauth users locale.
-      // Possible improvement: if we want unauth user to keep their locale, we could write it to a cookie
+      If logged in his will update the authUser with new locale
+      else, it will push the new locale to the stream and set a cookie to remember this choice.
       cf 2. Pushing a locale to the stream
 
   When the stream has received a new value, it updates the url accordingly.
@@ -34,6 +38,7 @@ import { authUserStream } from 'services/auth';
 import { updateUser } from 'services/users';
 import { Locale } from 'typings';
 import { locales } from 'containers/App/constants';
+import { setCookieLocale, getCookieLocale } from 'utils/localeCookie';
 
 const LocaleSubject: BehaviorSubject<Locale> = new BehaviorSubject(null as any);
 const $tenantLocales = currentTenantStream().observable.pipe(
@@ -51,17 +56,11 @@ const $locale = LocaleSubject.pipe(
 // -----------------------------------------------------------------------------
 // main functionalities - 3 parts
 
-// 1 . Setting locale depending on user and tenant
+// 1. Setting locale depending on user, cookie and tenant
 combineLatest(
   $authUser,
   $tenantLocales
 ).subscribe(([user, tenantLocales]) => {
-
-  // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
-  const urlLocale: string | null = getUrlLocale(location.pathname);
-  // and checks if it's a possible locale to have on this tenant
-  // the tenant only allows Locales so we can cast the Locale type safely here
-  const safeUrlLocale: Locale | false = includes(tenantLocales, urlLocale) && (urlLocale as Locale);
 
   // gets the current user's locale of choice if they both exist
   // and checks if it's a possible locale to have on this tenant
@@ -70,11 +69,26 @@ combineLatest(
     && user.data.attributes.locale
     && includes(tenantLocales, user.data.attributes.locale) ? user.data.attributes.locale : null);
 
+  // gets the locale in the cookie
+  const cookieLocale = getCookieLocale();
+  // and checks if it's a possible locale to have on this tenant
+  // the tenant only allows Locales so we can cast the Locale type safely here
+  const safeCookieLocale: Locale | false = includes(tenantLocales, cookieLocale) && (cookieLocale as Locale);
+
+  // gets the first part of the url if it resembles a locale enough (cf getUrlLocale's comments)
+  const urlLocale: string | null = getUrlLocale(location.pathname);
+  // and checks if it's a possible locale to have on this tenant
+  // the tenant only allows Locales so we can cast the Locale type safely here
+  const safeUrlLocale: Locale | false = includes(tenantLocales, urlLocale) && (urlLocale as Locale);
+
   // - use userLocale if it's valid and supported
+  // - else use cookieLocale if it's valid and supported
   // - else, use urlLocale if it's valid and supported
   // - fall back to the first tenant locale
   if (userLocale) {
     LocaleSubject.next(userLocale);
+  } else if (safeCookieLocale) {
+    LocaleSubject.next(safeCookieLocale);
   } else if (safeUrlLocale) {
     LocaleSubject.next(safeUrlLocale);
   } else if (tenantLocales && tenantLocales.length > 0) {
@@ -85,11 +99,8 @@ combineLatest(
 // 2. Pushing a locale to the stream
 
 /*  @param locale : the locale you want to set as the current locale
-*
 *   !! only used in the LanguageSelector component. Chances are it should only be used there.
-*
 *   Checks the locale is supported by this tenant before tying to set the new locale
-*
 */
 export function updateLocale(locale: Locale) {
   // "gets" the tenants locale and authUser
@@ -110,7 +121,9 @@ export function updateLocale(locale: Locale) {
         // which will trigger 3 that will change the url accordingly
         updateUser(authUser.data.id, { locale });
       } else {
-        // if there's no auth user, push the locale to the stream, which will trigger
+        // if there's no auth user, set a cookie to remember this choice
+        setCookieLocale(locale);
+        // and push the locale to the stream, which will trigger
         // 3 which will change the url accordingly
         LocaleSubject.next(locale);
       }
