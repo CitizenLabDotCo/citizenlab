@@ -100,6 +100,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
             <FormattedMessage
               defaultMessage="Several third party tools are used on each of our participation platforms. These tools in turn use cookies to be able to function."
               id="app.containers.CookiePolicy.whatCookiesContent"
+              tagName="p"
             />
             <FormattedMessage
               defaultMessage="Analytics"

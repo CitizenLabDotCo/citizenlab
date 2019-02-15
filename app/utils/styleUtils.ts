@@ -194,8 +194,8 @@ export function quillEditedContent() {
   return `
     max-width: 100%;
     color: ${colors.text};
-    font-size: ${fontSizes.large}px;
-    font-weight: 300;
+    font-size: ${fontSizes.base}px;
+    font-weight: 400;
     line-height: 27px;
 
     &:after {
@@ -210,7 +210,7 @@ export function quillEditedContent() {
       font-weight: 500;
       padding: 0;
       margin: 0;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     h2 {
@@ -243,7 +243,7 @@ export function quillEditedContent() {
 
     p {
       line-height: 27px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
 
       &:last-child {
         margin-bottom: 0px;
@@ -274,12 +274,11 @@ export function quillEditedContent() {
       padding: 0;
       padding-left: 21px;
       margin: 0;
-      margin-bottom: 23px;
+      margin-bottom: 15px;
 
       li {
-        padding: 0;
+        padding-left: 0 !important;
         padding-top: 7px;
-        padding-bottom: 7px;
         margin: 0;
 
         &:first-child {
@@ -289,7 +288,7 @@ export function quillEditedContent() {
     }
 
     strong {
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .ql-align-right {
