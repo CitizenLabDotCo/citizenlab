@@ -528,7 +528,7 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       rand(5).times do
-        idea.admin_feedback.create!(
+        idea.admin_feedbacks.create!(
           body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
