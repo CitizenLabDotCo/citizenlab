@@ -8,7 +8,6 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
-import { updateUser } from 'services/users';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
