@@ -13,7 +13,7 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import T from 'components/T';
 import { darken } from 'polished';
 import { isUndefined } from 'util';
@@ -30,17 +30,7 @@ const Container = styled.div`
   `}
 `;
 
-const InformationBody = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 23px;
-
-  p {
-    font-size: ${fontSizes.base}px;
-    line-height: 23px;
-  }
-`;
+const InformationBody = styled.div``;
 
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;

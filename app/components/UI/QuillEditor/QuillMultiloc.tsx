@@ -24,7 +24,7 @@ const Container = styled.div``;
 
 const EditorWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -37,10 +37,16 @@ const LanguageExtension = styled(Label)`
   font-weight: 500;
 `;
 
+const LabelTooltip = styled.div`
+  margin-left: 10px;
+  margin-top: 2px;
+`;
+
 export type InputProps = {
   id: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null;
+  labelTooltip?: JSX.Element;
   onChangeMultiloc?: (value: Multiloc, locale: Locale) => void;
   renderPerLocale?: (locale: string) => JSX.Element;
 };
@@ -66,15 +72,13 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
   }
 
   render() {
-    const { tenantLocales, id, label, valueMultiloc, renderPerLocale, ...otherProps } = this.props;
+    const { tenantLocales, id, label, labelTooltip, valueMultiloc, renderPerLocale, ...otherProps } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
-
       return (
         <Container id={id} className={`${this.props['className']} e2e-multiloc-editor`} >
           {tenantLocales.map((currentTenantLocale, index) => {
             const value = get(valueMultiloc, [currentTenantLocale], undefined);
-
             const idLocale = id && `${id}-${currentTenantLocale}`;
 
             return (
@@ -85,6 +89,7 @@ class EditorMultiloc extends React.PureComponent<Props & VanillaProps, State> {
                     {tenantLocales.length > 1 &&
                       <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
                     }
+                    {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
                   </LabelWrapper>
                 }
 

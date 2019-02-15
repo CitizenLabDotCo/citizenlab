@@ -42,12 +42,8 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
-              label={(
-                <>
-                  <FormattedMessage {...messages.fieldTitle} />
-                  <InfoTooltip {...messages.fieldTitleTooltip} />
-                </>
-              )}
+              label={<FormattedMessage {...messages.fieldTitle} />}
+              labelTooltip={<InfoTooltip {...messages.fieldTitleTooltip} />}
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"
@@ -59,11 +55,8 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
               component={FormikQuillMultiloc}
               inAdmin
               name="description_multiloc"
-              label={(<>
-                <FormattedMessage {...messages.fieldDescription} />
-                <InfoTooltip {...messages.fieldDescriptionTooltip} />
-              </>
-              )}
+              label={<FormattedMessage {...messages.fieldDescription} />}
+              labelTooltip={<InfoTooltip {...messages.fieldDescriptionTooltip} />}
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"

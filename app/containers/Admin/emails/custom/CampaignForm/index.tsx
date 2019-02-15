@@ -90,12 +90,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   renderFormikQuillMultiloc = (props) => {
     return (
       <FormikQuillMultiloc
-        label={(
-          <>
-            <FormattedMessage {...messages.fieldBody} />
-            <InfoTooltip {...messages.nameVariablesInfo} />
-          </>
-        )}
+        label={<FormattedMessage {...messages.fieldBody} />}
+        labelTooltip={<InfoTooltip {...messages.nameVariablesInfo} />}
         noVideos
         noAlign
         {...props}
@@ -175,12 +171,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             <FastField
               name="subject_multiloc"
               component={FormikInputMultiloc}
-              label={(
-                <>
-                  <FormattedMessage {...messages.fieldSubject} />
-                  <InfoTooltip {...messages.fieldSubjectTooltip} />
-                </>
-              )}
+              label={<FormattedMessage {...messages.fieldSubject} />}
+              labelTooltip={<InfoTooltip {...messages.fieldSubjectTooltip} />}
               maxCharCount={80}
             />
             {touched.subject_multiloc && <Error

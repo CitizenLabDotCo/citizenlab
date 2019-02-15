@@ -87,7 +87,7 @@ export const media = {
 
 export const colors = {
   background: '#f8f8f9',
-  text: '#222',
+  text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
   placeholder: '#aaa',
@@ -191,12 +191,19 @@ export const stylingConsts = {
 
 // Reusable text styling
 export function quillEditedContent() {
-  return `
-    max-width: 100%;
+  const defaultFontStyle = `
     color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 27px;
+    font-size: ${fontSizes.large}px;
+    font-weight: 300;
+    line-height: 29px;
+  `;
+
+  return `
+    ${defaultFontStyle}
+
+    a, li, p {
+      ${defaultFontStyle}
+    }
 
     &:after {
       content: "";
@@ -220,7 +227,7 @@ export function quillEditedContent() {
       padding: 0;
       margin: 0;
       margin-top: 5px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     h3 {
@@ -242,8 +249,7 @@ export function quillEditedContent() {
     }
 
     p {
-      line-height: 27px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
 
       &:last-child {
         margin-bottom: 0px;
@@ -274,11 +280,11 @@ export function quillEditedContent() {
       padding: 0;
       padding-left: 21px;
       margin: 0;
-      margin-bottom: 15px;
+      margin-bottom: 24px;
 
       li {
         padding-left: 0 !important;
-        padding-top: 7px;
+        padding-top: 6px;
         margin: 0;
 
         &:first-child {

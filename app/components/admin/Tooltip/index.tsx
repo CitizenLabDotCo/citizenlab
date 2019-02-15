@@ -23,14 +23,13 @@ const StyledDiv = styled.div`
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
-
   public static defaultProps = {
     offset: '0px',
     backgroundColor: 'rgba(34, 34, 34, 0.95)',
-    borderColor: '#FFF',
-    textColor: '#FFF',
+    borderColor: '#fff',
+    textColor: '#fff',
     enabled: true,
-    openDelay: 300
+    openDelay: 200
   };
 
   constructor(props) {
@@ -43,6 +42,7 @@ export default class Tooltip extends PureComponent<Props, State> {
 
   handleOnMouseEnter = () => {
     const { openDelay } = this.props;
+
     if (this.state.waiting) {
       this.setState({ waiting: false });
     } else {
