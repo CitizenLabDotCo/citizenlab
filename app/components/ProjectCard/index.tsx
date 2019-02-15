@@ -443,13 +443,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         );
       }
 
-      console.log('-------');
-      console.log(project.attributes.title_multiloc['en']);
-      console.log('participationMethod: ' + participationMethod);
-      console.log('postingEnabled: ' + postingEnabled);
-      console.log('votingEnabled: ' + votingEnabled);
-      console.log('commentingEnabled: ' + commentingEnabled);
-
       if (participationMethod === 'budgeting') {
         ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
       } else if (participationMethod === 'information') {

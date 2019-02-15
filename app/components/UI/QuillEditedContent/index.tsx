@@ -8,11 +8,12 @@ const Styles = styled.div`
 
 interface Props {
   children: JSX.Element | JSX.Element[] | string;
+  className?: string;
 }
 
-const QuillEditedContent = ({ children }: Props) => {
+const QuillEditedContent = ({ children, className }: Props) => {
   return (
-    <Styles>
+    <Styles className={className}>
       {children}
     </Styles>
   );

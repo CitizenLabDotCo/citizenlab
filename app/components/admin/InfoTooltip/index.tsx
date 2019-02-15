@@ -1,18 +1,18 @@
 import React from 'react';
 import { omit } from 'lodash-es';
 
+// components
 import Icon from 'components/UI/Icon';
 import Tooltip from 'components/admin/Tooltip';
 
-// intl
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
-// typing
-
+// typings
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { FormattedMessage as OriginalFormattedMessage } from 'react-intl';
 import { Omit } from 'typings';
@@ -28,8 +28,14 @@ interface Props extends Omit<OriginalFormattedMessage.Props, 'children'> {
 }
 
 const StyledIcon = styled(Icon)`
-  height: 14px;
-  width: 14px;
+  height: 16px;
+  width: 16px;
+  cursor: pointer;
+  fill: ${colors.label};
+
+  &:hover {
+    fill: #000;
+  }
 `;
 
 const TooltipWrapper: any = styled.div`
@@ -38,9 +44,7 @@ const TooltipWrapper: any = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 18px;
-  line-break: break;
-  white-space: normal;
-  text-align: justify;
+  text-align: left;
 `;
 
 const getPxSize = (size: undefined | 'big' | 'small' | 'xs') => {

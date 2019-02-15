@@ -61,7 +61,7 @@ export interface IProjectData {
       }
     }
     current_phase: {
-      data: IRelationship
+      data: IRelationship | null;
     }
     user_basket: {
       data: IRelationship | null;

@@ -424,12 +424,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={(
-                  <>
-                    <FormattedMessage {...messages.headerTitleLabel} />
-                    <InfoTooltip {...messages.headerTitleTooltip} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.headerTitleLabel} />}
+                labelTooltip={<InfoTooltip {...messages.headerTitleTooltip} />}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -440,12 +436,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={(
-                  <>
-                    <FormattedMessage {...messages.headerSubtitleLabel} />
-                    <InfoTooltip {...messages.headerSubtitleTooltip} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
+                labelTooltip={<InfoTooltip {...messages.headerSubtitleTooltip} />}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
@@ -462,34 +454,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <QuillMultiloc
                 id="custom-section"
                 inAdmin
-                label={(
-                  <>
-                    <FormattedMessage {...messages.customSectionLabel} />
-                    <InfoTooltip {...messages.customSectionInfo} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.customSectionLabel} />}
+                labelTooltip={<InfoTooltip {...messages.customSectionInfo} />}
                 valueMultiloc={homepageInfoPageBodyMultiloc}
                 onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
             </WideSectionField>
-          </Section>
-
-          <Section>
-            <SectionTitle>
-              <FormattedMessage {...messages.homePageCustomSection} />
-            </SectionTitle>
-
-            <SectionField>
-              <QuillMultiloc
-                id="custom-section"
-                inAdmin
-                label={<FormattedMessage {...messages.customSectionLabel} />}
-                valueMultiloc={homepageInfoPageBodyMultiloc}
-                onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
-              />
-              <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
-            </SectionField>
           </Section>
 
           <SubmitWrapper

@@ -13,6 +13,7 @@ import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -32,7 +33,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes, quillEditedContent, colors } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -103,8 +104,6 @@ const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
 `;
 
 const CustomSectionContentContainer = styled(ContentContainer)`
-  ${quillEditedContent()}
-
   width: 100%;
   max-width: 750px;
   margin-left: auto;
@@ -226,9 +225,11 @@ class LandingPage extends PureComponent<Props, State> {
 
               {showCustomSection &&
                 <CustomSectionContentContainer>
-                  <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
-                    <T value={customSectionBodyMultiloc} supportHtml={true} />
-                  </Fragment>
+                  <QuillEditedContent>
+                    <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+                      <T value={customSectionBodyMultiloc} supportHtml={true} />
+                    </Fragment>
+                  </QuillEditedContent>
                 </CustomSectionContentContainer>
               }
 
