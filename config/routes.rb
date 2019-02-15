@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   mount MachineTranslations::Engine => "", as: 'machine_translations'
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
+  mount Surveys::Engine => "", as: 'surveys'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
