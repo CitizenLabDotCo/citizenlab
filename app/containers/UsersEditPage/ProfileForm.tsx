@@ -156,7 +156,7 @@ class ProfileForm extends PureComponent<Props, State> {
     setStatus('');
 
     try {
-      const user = await updateUser(this.props.user.id, newValues);
+      await updateUser(this.props.user.id, newValues);
       streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
       resetForm();
       setStatus('success');

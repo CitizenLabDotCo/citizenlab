@@ -158,26 +158,52 @@ export function getUrlLocale(pathname: string): string | null {
 *   !! this function should not leave this component (no importing it except for tests)
 */
 function setUrlLocale(locale: Locale): void {
-  const newLocalizedUrl = `/${locale}${location.pathname}${location.search}`;
+  const newLocalizedUrl = setPathnameLocale(location.pathname, locale, location.search);
   window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+}
+
+/*  @param pathname: a string representing a pathname, without a starting locale
+*   @param locale: the locale you want to add to the pathname
+*   @param search: optional string representing query parameters, starting with '?'
+*
+*   @returns a valid pathname starting with a locale
+*/
+export function setPathnameLocale(pathname: string, locale: Locale, search?: string): string {
+  return `/${locale}${pathname}${search || ''}`;
 }
 
 /*  @param: locale : the locale you want to replace the one in the current pathname with
 *   prerequisite : the current pathname includes one locale, and the url starts with it.
-*   handles well starting and/or finishing and/or no starting and/or no finish '/'
-*   !! this function should not leave this component (no importing it except for tests)
+*   handles well starting and/or finishing and/or not starting and/or not finishing with '/'
+*   !! this function overrides the browsers url and should not leave this component
+*   (no importing it except for tests)
 */
 function replaceUrlLocale(locale: Locale) {
+  const newLocalizedUrl = replacePathnameLocale(location.pathname, locale, location.search);
+  // replaces current location with updated url
+  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+}
+
+/*  @param pathname: a string representing a pathname, with a first part we want to replace
+*     starting and/or finishing and/or not starting and/or not finishing with '/'
+*     ie resembling (/|''){gottaGo}( /{aValidRoute} | (/|'') )
+*   @param locale: the locale you want to replace the one in the pathname with
+*   @param search: optional string representing query parameters, starting with '?'
+*
+*   @returns a valid pathname with the first part replaced by the locale parameter, without a dangling '/'
+*/
+export function replacePathnameLocale(pathname: string, locale: Locale, search?: string) {
   // strips beginning and ending '/', breaks down the string at '/'
-  const urlSegments = location.pathname.replace(/^\/|\/$/g, '').split('/');
+  const urlSegments = pathname.replace(/^\/|\/$/g, '').split('/');
   // replaces first segment (the old url locale) with the url we want
   urlSegments[0] = locale;
   // puts back the pieces together
   const newPathname = urlSegments.join('/');
-  // adds a first '/' and other query arguments if any
-  const newLocalizedUrl = `/${newPathname}${location.search}`;
-  // replaces current location with updated url
-  window.history.replaceState({ path: newLocalizedUrl }, '', newLocalizedUrl);
+
+  // if the route is '/'...
+  return urlSegments.length === 1
+  ? `/${newPathname}/` // adds a dangling '/' after the locale, for consistency
+  : `/${newPathname}${search || ''}`; // else adds a first '/' and other query arguments if any
 }
 
 // -----------------------------------------------------------------------------
