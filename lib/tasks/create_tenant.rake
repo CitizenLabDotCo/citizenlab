@@ -2,7 +2,7 @@ namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
   task :create_tenant, [:host,:template] => [:environment] do |t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
-    tenant_template = args[:template] || 'en_tenant_template'
+    tenant_template = args[:template] || 'en_template'
 
     Tenant.find_by(host: host)&.destroy!
 
@@ -25,7 +25,10 @@ namespace :cl2_back do
           currency: 'EUR',
           color_main: '#163A7D',
           color_secondary: '#CF4040',
-          color_text: '#163A7D'
+          color_text: '#163A7D',
+          signup_helper_text: {
+            en: 'If you don\'t want to register, use hello@citizenlab.co/democrazy as email/password'
+          }
         },
         groups: {
           enabled: true,
@@ -34,10 +37,6 @@ namespace :cl2_back do
         private_projects: {
           enabled: true,
           allowed: true
-        },
-        surveys: {
-         enabled: true,
-         allowed: true,
         },
         user_custom_fields: {
           enabled: true,
@@ -78,13 +77,40 @@ namespace :cl2_back do
         geographic_dashboard: {
           enabled: true,
           allowed: true
+        },
+        surveys: {
+          enabled: true,
+          allowed: true
+        },
+        typeform_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        google_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        surveymonkey_surveys: {
+          enabled: true,
+          allowed: true
         }
       }
     })
 
+
     Apartment::Tenant.switch tenant.schema_name do
       TenantTemplateService.new.resolve_and_apply_template(tenant_template)
+      User.create(
+        roles: [{type: 'admin'}],
+        first_name: 'Citizen',
+        last_name: 'Lab',
+        email: 'hello@citizenlab.co',
+        password: 'democrazy',
+        locale: 'en',
+        registration_completed_at: Time.now
+      )
     end
+
 
     SideFxTenantService.new.after_apply_template(tenant, nil)
     SideFxTenantService.new.after_create(tenant, nil)
