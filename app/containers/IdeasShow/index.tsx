@@ -79,6 +79,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import HasPermission from 'components/HasPermission';
+import GetAdminFeedback from 'resources/GetAdminFeedback';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -687,10 +688,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
         tap(() => this.setState({ opened: true })),
         switchMap((ideaId) => ideaByIdStream(ideaId).observable),
         switchMap((idea) => {
+          const ideaId = idea.data.id;
           const ideaImages = idea.data.relationships.idea_images.data;
           const ideaImageId = (ideaImages.length > 0 ? ideaImages[0].id : null);
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
-          const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
+          const ideaImage$ = (ideaImageId ? ideaImageStream(ideaId, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
           let phases$: Observable<IPhase[] | null> = of(null);
@@ -878,6 +880,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       const projectId = idea.data.relationships.project.data.id;
       const ideaAuthorName = ideaAuthor && `${ideaAuthor.data.attributes.first_name} ${ideaAuthor.data.attributes.last_name}`;
       const ideaUrl = location.href;
+      const ideaId = idea.data.id;
       const auth = this.state.authUser;
       const utmParams = auth ? {
         source: 'share_idea',
@@ -949,7 +952,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       content = (
         <>
           <IdeaMeta
-            ideaId={idea.data.id}
+            ideaId={ideaId}
             titleMultiloc={titleMultiloc}
             bodyMultiloc={idea.data.attributes.body_multiloc}
             ideaAuthorName={ideaAuthorName}
@@ -976,7 +979,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
               <Header>
                 {translateFromOriginalButtonClicked ?
-                  <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                  <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
                     {translation => {
                       if (!isNilOrError(translation)) {
                         this.setState({ titleTranslationLoading: false });
@@ -1003,7 +1006,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl
-                      ideaId={idea.data.id}
+                      ideaId={ideaId}
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       size="1"
                     />
@@ -1037,7 +1040,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                       {createdAt &&
                         <TimeAgo>
                           <FormattedRelative value={createdAt} />
-                          <Activities ideaId={idea.data.id} />
+                          <Activities ideaId={ideaId} />
                         </TimeAgo>
                       }
                     </AuthorMeta>
@@ -1058,7 +1061,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                     exit={true}
                   >
                     <MapWrapper innerRef={this.handleMapWrapperSetRef}>
-                      <IdeaMap location={ideaLocation} id={idea.data.id} />
+                      <IdeaMap location={ideaLocation} id={ideaId} />
                       {ideaAdress && <AddressWrapper>{ideaAdress}</AddressWrapper>}
                     </MapWrapper>
                   </CSSTransition>
@@ -1068,11 +1071,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   <MapPaddingBottom />
                 }
 
-                <Fragment name={`ideas/${idea.data.id}/body`}>
+                <Fragment name={`ideas/${ideaId}/body`}>
                   <IdeaBody className={`${!ideaImageLarge && 'noImage'}`}>
                     <QuillEditedContent>
                       {translateFromOriginalButtonClicked ?
-                        <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={idea.data.id}>
+                        <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
                           {translation => {
                             if (!isNilOrError(translation)) {
                               this.setState({ bodyTranslationLoading: false });
@@ -1098,7 +1101,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                   <AssignBudgetControlMobile>
                     <AssignBudgetWrapper
-                      ideaId={idea.data.id}
+                      ideaId={ideaId}
                       projectId={projectId}
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
@@ -1117,14 +1120,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                 {project &&
                   <HasPermission item={project.data} action="moderate">
-                    <AdminFeedbackNew ideaId={idea.data.id}/>
+                    <AdminFeedbackNew ideaId={ideaId}/>
                   </HasPermission>
                 }
 
                 {true /* {adminFeedbackPosts */ &&
                   <AdminFeedbackFeedWrapper>
                     <AdminFeedbackFeed
-                      feedSize={1}
+                      ideaId={ideaId}
+                      pageSize={1}
                     />
                   </AdminFeedbackFeedWrapper>
                 }
@@ -1136,12 +1140,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 {project &&
                   <HasPermission item={project.data} action="moderate">
                     <HasPermission.No>
-                      <ParentCommentForm ideaId={idea.data.id} />
+                      <ParentCommentForm ideaId={ideaId} />
                     </HasPermission.No>
                   </HasPermission>
                 }
 
-                {ideaComments && <Comments ideaId={idea.data.id} />}
+                {ideaComments && <Comments ideaId={ideaId} />}
               </LeftColumn>
 
               <RightColumnDesktop>
@@ -1156,7 +1160,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                           </VoteLabel>
 
                           <VoteWrapper
-                            ideaId={idea.data.id}
+                            ideaId={ideaId}
                             votingDescriptor={idea.data.relationships.action_descriptor.data.voting}
                             projectId={projectId}
                           />
@@ -1165,7 +1169,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                       {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                         <AssignBudgetWrapper
-                          ideaId={idea.data.id}
+                          ideaId={ideaId}
                           projectId={projectId}
                           participationContextId={participationContextId}
                           participationContextType={participationContextType}
@@ -1225,7 +1229,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                     }
                   </MetaButtons>
                   <FeatureFlag name="similar_ideas">
-                    <SimilarIdeas ideaId={idea.data.id} />
+                    <SimilarIdeas ideaId={ideaId} />
                   </FeatureFlag>
                 </MetaContent>
               </RightColumnDesktop>
@@ -1238,7 +1242,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
             label={formatMessage(messages.spanModalLabelIdea)}
           >
             <SpamReportForm
-              resourceId={idea.data.id}
+              resourceId={ideaId}
               resourceType="ideas"
             />
           </Modal>
@@ -1297,6 +1301,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
+  // adminFeedback: ({ ideaId, render }) => <GetAdminFeedback pageSize={1} ideaId={ideaId}>{render}</GetAdminFeedback>,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
