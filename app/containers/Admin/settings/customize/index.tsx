@@ -464,8 +464,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 inAdmin
                 label={(
                   <>
-                  <FormattedMessage {...messages.customSectionLabel} />
-                  <InfoTooltip {...messages.customSectionInfo} />
+                    <FormattedMessage {...messages.customSectionLabel} />
+                    <InfoTooltip {...messages.customSectionInfo} />
                   </>
                 )}
                 valueMultiloc={homepageInfoPageBodyMultiloc}

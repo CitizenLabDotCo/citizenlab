@@ -1,11 +1,6 @@
 // Libraries
-import React from 'react';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { isString, reject } from 'lodash-es';
-
-// Services
-import { projectByIdStream, IProjectData } from 'services/projects';
+import React, { PureComponent } from 'react';
+import { reject } from 'lodash-es';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
@@ -19,11 +14,18 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // tracks
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { adopt } from 'react-adopt';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+import { IProjectData } from 'services/projects';
 
 const Container = styled.div`
   width: 100%;
@@ -43,65 +45,29 @@ const ActionsContainer = styled.div`
   }
 `;
 
-type Props = {
-  params: {
-    projectId: string | null,
-  },
-  location: {
-    pathname: string
-  }
-};
-
 interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-type State = {
-  project: IProjectData | null,
-  loaded: boolean
-};
+interface InputProps {}
 
-class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps & ITracks, State> {
-  projectId$: BehaviorSubject<string | null>;
-  subscriptions: Subscription[];
+interface DataProps {
+  surveys_enabled: boolean | null;
+  typeform_enabled: boolean | null;
+  phases: GetPhasesChildProps;
+  project: GetProjectChildProps;
+}
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      project: null,
-      loaded: false
-    };
-    this.projectId$ = new BehaviorSubject(null);
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    this.projectId$.next(this.props.params.projectId);
+interface Props extends InputProps, DataProps { }
 
-    this.subscriptions = [
-      this.projectId$.pipe(
-        distinctUntilChanged(),
-        switchMap(projectId => isString(projectId) ? projectByIdStream(projectId).observable : of(null))
-      ).subscribe((project) => {
-        this.setState({
-          project: (project ? project.data : null),
-          loaded: true
-        });
-      })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.projectId$.next(this.props.params.projectId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & WithRouterProps & ITracks, State> {
 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
+    const { typeform_enabled, surveys_enabled, phases } = this.props;
 
     let tabs: TabProps[] = [
       {
@@ -144,6 +110,22 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
       });
     }
 
+    if (surveys_enabled && typeform_enabled) {
+      if (
+        (project.attributes.process_type === 'continuous'
+          && project.attributes.participation_method === 'survey'
+          && project.attributes.survey_service === 'typeform'
+        ) || (project.attributes.process_type === 'timeline'
+          && !isNilOrError(phases) && phases.filter(phase => phase.attributes.participation_method === 'survey' && phase.attributes.survey_service === 'typeform').length > 0
+        )) {
+        tabs.splice(3, 0, {
+          label: formatMessage(messages.surveyResultsTab),
+          url: `${baseTabsUrl}/survey-results`,
+          className: 'survey-results'
+        });
+      }
+    }
+
     return tabs;
   }
 
@@ -161,15 +143,14 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
   }
 
   onNewIdea = (pathname) => (_event) => {
-    this.props.clickNewIdea({ extra: { pathnameFrom: pathname } });
+    trackEventByName(tracks.clickNewIdea.name, { extra: { pathnameFrom: pathname } });
   }
 
   render() {
     const { projectId } = this.props.params;
-    const { project, loaded } = this.state;
-    const { formatMessage } = this.props.intl;
+    const { project, intl: { formatMessage } } = this.props;
 
-    if (loaded) {
+    if (!isNilOrError(project)) {
       const { children, location: { pathname } } = this.props;
       const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
       const tabbedProps = {
@@ -185,6 +166,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
             <ActionsContainer>
               {/^.*\/ideas$/.test(pathname) &&
                 <Button
+                  id="new-idea"
                   linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
                   text={formatMessage(messages.addNewIdea)}
                   onClick={this.onNewIdea(pathname)}
@@ -193,6 +175,7 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
               <Button
                 style="cl-blue"
                 icon="eye"
+                id="to-project"
                 linkTo={project ? `/projects/${project.attributes.slug}` : ''}
                 circularCorners={false}
               >
@@ -211,4 +194,17 @@ class AdminProjectEdition extends React.PureComponent<Props & InjectedIntlProps 
   }
 }
 
-export default injectTracks<Props>(tracks)(injectIntl<Props & ITracks>(AdminProjectEdition));
+const AdminProjectEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProps>(AdminProjectEdition));
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  surveys_enabled: <GetFeatureFlag name="surveys" />,
+  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
+  phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
+  project: ({ params, render }) => <GetProject id={params.projectId}>{render}</GetProject>,
+});
+
+export default (inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectEditionWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);
