@@ -1,5 +1,11 @@
 # Changelog
 
+## 2019-02-14
+
+### Fixed
+
+- Project/new is no longer a blank page
+
 ## 2019-02-13
 
 ### Fixed
