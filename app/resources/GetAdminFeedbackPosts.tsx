@@ -1,12 +1,10 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, scan, switchMap, filter } from 'rxjs/operators';
+import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { isString, omitBy, isNil } from 'lodash-es';
+import { omitBy, isNil, get, isString, isEqual } from 'lodash-es';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { IAdminFeedbackData, adminFeedbackForIdeaStream } from 'services/adminFeedback';
-import { start } from 'repl';
 
 interface InputProps {
   pageNumber?: number;
@@ -73,10 +71,26 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     this.subscriptions = [
       this.queryParameters$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(queryParameters => {
-          return adminFeedbackForIdeaStream(ideaId, { queryParameters }).observable
-        })
-      ).subscribe(({ adminFeedbackPosts, hasMore }) => {
+        mergeScan<IQueryParameters, IAccumulator>((_acc, queryParameters) => {
+          this.setState({
+            loadingMore: true,
+          });
+
+          return adminFeedbackForIdeaStream(ideaId, { queryParameters }).observable.pipe(
+            map(adminFeedback => {
+              const selfLink = get(adminFeedback, 'links.self');
+              const lastLink = get(adminFeedback, 'links.last');
+              const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+
+              return {
+                hasMore,
+                queryParameters,
+                adminFeedbackPosts: adminFeedback.data,
+              };
+            })
+          );
+        }, startAccumulatorValue)
+      ).subscribe(({ hasMore, adminFeedbackPosts, queryParameters }) => {
         this.setState({
           hasMore,
           queryParameters,
@@ -84,18 +98,17 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
           loadingMore: false,
         });
       })
-      // this.inputProps$.pipe(
-      //   distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-      //   filter(({ ideaId }) => isString(ideaId)),
-      //   switchMap(({ ideaId }: { ideaId: string }) => adminFeedbackForIdeaStream(ideaId).observable)
-      // )
-      // .subscribe((adminFeedbackPosts) => this.setState({ adminFeedbackPosts: !isNilOrError(adminFeedbackPosts) ? adminFeedbackPosts.data : adminFeedbackPosts }))
     ];
   }
 
-  componentDidUpdate() {
-    const { ideaId } = this.props;
-    this.inputProps$.next({ ideaId });
+  componentDidUpdate(prevProps) {
+    const { children: prevChildren, ...prevPropsWithoutChildren } = prevProps;
+    const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
+
+    if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
+      const queryParameters = this.getQueryParameters(this.state, this.props);
+      this.queryParameters$.next(queryParameters);
+    }
   }
 
   componentWillUnmount() {
