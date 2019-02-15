@@ -1,6 +1,6 @@
 import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
+import { distinctUntilChanged, mergeScan, map, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { omitBy, isNil, get, isString, isEqual } from 'lodash-es';
 
@@ -34,14 +34,13 @@ interface State {
   adminFeedbackPosts: IAdminFeedbackData[] | undefined | null | Error;
   loadingMore: boolean;
   hasMore: boolean;
-  querying: boolean;
 }
 
 export type GetAdminFeedbackChildProps = State & {
   onLoadMore: () => void;
 };
 
-export default class GetAdminFeedbackPosts extends React.Component<Props, State> {
+export default class GetAdminFeedback extends React.Component<Props, State> {
   private queryParameters$: BehaviorSubject<IQueryParameters>;
   private subscriptions: Subscription[];
 
@@ -55,7 +54,6 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
       adminFeedbackPosts: undefined,
       loadingMore: false,
       hasMore: false,
-      querying: false
     };
 
     const queryParameters = this.getQueryParameters(this.state, this.props);
@@ -71,6 +69,7 @@ export default class GetAdminFeedbackPosts extends React.Component<Props, State>
     this.subscriptions = [
       this.queryParameters$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(),
         mergeScan<IQueryParameters, IAccumulator>((_acc, queryParameters) => {
           this.setState({
             loadingMore: true,
