@@ -53,5 +53,6 @@ class ApplicationController < ActionController::API
 
   def set_current
     Current.tenant = Tenant.current
+  rescue ActiveRecord::RecordNotFound
   end
 end
