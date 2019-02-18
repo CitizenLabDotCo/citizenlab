@@ -9,8 +9,6 @@ export interface InputProps {
 }
 
 interface IAccumulator {
-  ideaId: string | null;
-  pageNumber: number;
   hasMore: boolean;
   adminFeedbackList: IAdminFeedbackData[] | null | Error;
 }
@@ -26,7 +24,6 @@ export type GetAdminFeedbackChildProps = State & {
 };
 
 interface State {
-  ideaId?: string | null;
   pageNumber: number;
   adminFeedbackList: IAdminFeedbackData[] | null | Error;
   hasMore: boolean;
@@ -95,24 +92,19 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
                   }
 
                   return {
-                    ideaId,
-                    pageNumber,
-                    hasMore,
-                    adminFeedbackList
+                    adminFeedbackList,
+                    hasMore
                   };
                 })
               );
             }, {
-              ideaId: null,
-              pageNumber: 1,
               adminFeedbackList: null,
               hasMore: false
             })
           );
         })
-      ).subscribe(({ ideaId, hasMore, adminFeedbackList }) => {
+      ).subscribe(({ hasMore, adminFeedbackList }) => {
         this.setState({
-          ideaId,
           hasMore,
           adminFeedbackList,
           querying: false,
@@ -135,7 +127,8 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
 
   loadMore = () => {
     if (!this.state.loadingMore && this.state.hasMore) {
-      this.pageNumber$.next(this.state.pageNumber + 1);
+      const pageNumber = this.pageNumber$.getValue();
+      this.pageNumber$.next(pageNumber + 1);
     }
   }
 
