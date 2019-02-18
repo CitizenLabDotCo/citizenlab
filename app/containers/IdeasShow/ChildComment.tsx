@@ -31,7 +31,6 @@ import { media } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import GetPermission from 'resources/GetPermission';
 
 const StyledMoreActionsMenu = styled(CommentsMoreActions)`
   position: absolute;
