@@ -21,7 +21,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   border-radius: 5px;
-  padding: 32px;
+  padding: 40px;
   background: ${darken(0.006, colors.background)};
 
   ${media.smallerThanMaxTablet`
