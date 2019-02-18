@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -69,35 +70,34 @@ interface State {}
 class AdminFeedbackFeed extends PureComponent<Props, State> {
   render() {
     if (this.props.adminFeedback) {
-      const { querying, hasMore, loadingMore, onLoadMore } = this.props.adminFeedback;
+      const { adminFeedbackList, querying, hasMore, loadingMore, onLoadMore } = this.props.adminFeedback;
 
       return (
         <>
-          <AdminFeedbackPost>
-            <EditPostButton
-              fullWidth={false}
-              style="text"
-              textColor={colors.text}
-              text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
-            />
-            <Body>
-              <p>
-                Hi everyone! First off, thanks to those who filled out our survey from earlier this summer. User accounts is a big, big undertaking, and we’re still in the research phase, working to determine which use-cases would be most impactful to tackle first.
-              </p>
+          {!isNilOrError(adminFeedbackList) && adminFeedbackList.map(adminFeedbackPost => {
+            const bodyTextMultiloc = adminFeedbackPost.attributes.body_multiloc;
+            const authorNameMultiloc = adminFeedbackPost.attributes.author_multiloc;
 
-              <p>
-                Our first steps down this path will likely be in the realm of ecommerce, as we’re planning to build a login system for customers on your ecommerce site. The good news here is that nearly all of the work on this ecommerce customer portal will lay the foundation for larger work around a general user login/account system in Webflow.
-              </p>
-
-              <p>
-                So, in summary: we’re still researching, but our planned work on ecommerce will continue moving us closer to the day when a more general user login/account system is possible in Webflow.
-              </p>
-            </Body>
-            <Footer>
-              <Author>Sarah from Mobility Department</Author>
-              <DatePosted>02 jan 2019</DatePosted>
-            </Footer>
-          </AdminFeedbackPost>
+            return (
+              <AdminFeedbackPost key={adminFeedbackPost.id}>
+                <EditPostButton
+                  fullWidth={false}
+                  style="text"
+                  textColor={colors.text}
+                  text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
+                />
+                <Body>
+                  <T value={bodyTextMultiloc} />
+                </Body>
+                <Footer>
+                  <Author>
+                    <T value={authorNameMultiloc} />
+                  </Author>
+                  <DatePosted>02 jan 2019</DatePosted>
+                </Footer>
+              </AdminFeedbackPost>
+            );
+          })}
 
           {!querying && hasMore &&
             <LoadMoreButton
