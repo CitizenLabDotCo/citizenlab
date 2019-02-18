@@ -23,6 +23,9 @@ resource "Campaign consents" do
         create(:manual_campaign),
         create(:new_comment_for_admin),
         create(:new_idea_for_admin),
+        create(:official_feedback_on_commented_idea),
+        create(:official_feedback_on_voted_idea),
+        create(:official_feedback_on_your_idea),
         create(:status_change_of_your_idea_campaign),
         create(:user_digest_campaign)
       ]
