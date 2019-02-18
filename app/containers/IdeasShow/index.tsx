@@ -79,7 +79,6 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import HasPermission from 'components/HasPermission';
-import GetAdminFeedback from 'resources/GetAdminFeedback';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -1124,14 +1123,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   </HasPermission>
                 }
 
-                {true /* {adminFeedbackPosts */ &&
-                  <AdminFeedbackFeedWrapper>
-                    <AdminFeedbackFeed
-                      ideaId={ideaId}
-                      pageSize={1}
-                    />
-                  </AdminFeedbackFeedWrapper>
-                }
+                <AdminFeedbackFeedWrapper>
+                  <AdminFeedbackFeed
+                    ideaId={ideaId}
+                  />
+                </AdminFeedbackFeedWrapper>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
@@ -1301,7 +1297,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 const IdeasShowWithHOCs = injectTracks<Props>(tracks)(injectIntl(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
-  // adminFeedback: ({ ideaId, render }) => <GetAdminFeedback pageSize={1} ideaId={ideaId}>{render}</GetAdminFeedback>,
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
