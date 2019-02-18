@@ -82,15 +82,14 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
                   const selfLink = get(adminFeedback, 'links.self');
                   const lastLink = get(adminFeedback, 'links.last');
                   const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-                  const accAdminFeedbackList = acc.adminFeedbackList;
                   let adminFeedbackList: IAdminFeedbackData[] | null | Error = null;
 
                   if (isError(adminFeedback)) {
                     adminFeedbackList = adminFeedback;
-                  } else if (isError(accAdminFeedbackList)) {
-                    adminFeedbackList = accAdminFeedbackList;
-                  } else if (isLoadingMore && !isNil(accAdminFeedbackList)) {
-                    adminFeedbackList = [...accAdminFeedbackList, ...adminFeedback.data];
+                  } else if (isError(acc.adminFeedbackList)) {
+                    adminFeedbackList = acc.adminFeedbackList;
+                  } else if (isLoadingMore && !isNil(acc.adminFeedbackList)) {
+                    adminFeedbackList = [...acc.adminFeedbackList, ...adminFeedback.data];
                   } else {
                     adminFeedbackList = adminFeedback.data;
                   }
