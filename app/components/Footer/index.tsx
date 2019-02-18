@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
+import MediaQuery from 'react-responsive';
 
-// libraries
+// utils
 import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Fragment from 'components/Fragment';
@@ -23,12 +25,10 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
-import eventEmitter from 'utils/eventEmitter';
-
 // style
 import styled from 'styled-components';
 import Polymorph from 'components/Polymorph';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -89,6 +89,12 @@ const SecondLine = styled.div`
     text-align: center;
     flex-direction: column;
     justify-content: center;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+    padding-bottom: 30px;
+    padding-top: 50px;
   `}
 `;
 
@@ -155,12 +161,11 @@ const FeedbackButton = styled.button`
 
 const PagesNav = styled.nav`
   color: ${colors.label};
-  flex: 1;
   text-align: left;
 
   ul {
     display:inline-block;
-    padding:0;
+    padding: 0px;
     text-align: center;
   }
 
@@ -175,7 +180,7 @@ const PagesNav = styled.nav`
 
     a,
     button {
-      white-space:nowrap
+      white-space: nowrap;
     }
   }
 
@@ -183,8 +188,7 @@ const PagesNav = styled.nav`
     order: 2;
     text-align: center;
     justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 25px;
+    margin-top: 20px;
   `}
 `;
 
@@ -218,14 +222,15 @@ const Right = styled.div`
 
   ${media.smallerThanMaxTablet`
     order: 1;
+    padding: 0px;
+    margin: 0px;
     margin-top: 15px;
-    margin-bottom: 10px;
   `}
 
   ${media.smallerThanMinTablet`
+    flex-direction: column;
     padding: 0px;
     margin: 0px;
-    margin-top: 35px;
   `}
 `;
 
@@ -249,7 +254,7 @@ const PoweredBy = styled.div`
     flex-direction: column;
     padding: 0px;
     margin: 0px;
-    margin-bottom: 22px;
+    margin-bottom: 15px;
     border: none;
   `}
 `;
@@ -258,7 +263,7 @@ const PoweredByText = styled.span`
   margin-right: 5px;
 
   ${media.smallerThanMinTablet`
-    margin: 0px;
+    margin: 0;
     margin-bottom: 10px;
   `}
 `;
@@ -270,11 +275,6 @@ const CitizenlabLink = styled.a`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-left: 8px;
-
-  ${media.smallerThanMinTablet`
-    margin: 0px;
-  `}
 `;
 
 const CitizenlabName = styled.span`
@@ -297,7 +297,7 @@ const CitizenlabLogo: any = styled.svg`
 
 const StyledSendFeedback = styled(SendFeedback)`
   ${media.smallerThanMinTablet`
-    display: none;
+    margin-top: 25px;
   `}
 `;
 
@@ -428,6 +428,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </>
               }
             </ShortFeedback>
+
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug) => (
@@ -456,7 +457,9 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <StyledSendFeedback showFeedbackText={false} />
+              <MediaQuery minWidth={viewportWidths.smallTablet}>
+                {matches => <StyledSendFeedback showFeedbackText={!matches} />}
+              </MediaQuery>
             </Right>
           </SecondLine>
         </Container>

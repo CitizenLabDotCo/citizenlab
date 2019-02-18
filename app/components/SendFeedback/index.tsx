@@ -26,8 +26,8 @@ const SendFeedbackText = styled.span`
 
 const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.clIconSecondary};
-  width: 18px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   margin-top: 3px;
   margin-right: 10px;
   transition: all 100ms ease-out;

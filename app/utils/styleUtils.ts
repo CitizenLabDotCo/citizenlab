@@ -190,15 +190,26 @@ export const stylingConsts = {
 };
 
 // Reusable text styling
-export function quillEditedContent() {
+export function quillEditedContent(fontSize: 'base' | 'medium' | 'large' = 'base') {
+  let lineHeight = 27;
+
+  switch (fontSize) {
+    case 'medium':
+      lineHeight = 28;
+    case 'large':
+      lineHeight = 29;
+    default:
+      lineHeight = 27;
+  }
+
   const defaultFontStyle = `
     color: ${colors.text};
-    font-size: ${fontSizes.large}px;
+    font-size: ${fontSizes[fontSize]}px;
     font-weight: 300;
-    line-height: 29px;
+    line-height: ${lineHeight}px;
   `;
 
-  return `
+  return`
     ${defaultFontStyle}
 
     a, li, p {

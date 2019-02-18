@@ -101,6 +101,10 @@ const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
   padding-bottom: 40px;
   background: ${colors.background};
   border-bottom: solid 1px #eaeaea;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 25px;
+  `}
 `;
 
 const CustomSectionContentContainer = styled(ContentContainer)`
@@ -111,6 +115,11 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   padding-top: 80px;
   padding-bottom: 100px;
   background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 40px;
+    padding-bottom: 40px;
+  `}
 `;
 
 const Section = styled.div`

@@ -49,6 +49,10 @@ const ListHeaderTitle = styled.h3`
   margin-right: 7px;
 `;
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 const ToggleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -192,6 +196,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 <ListHeaderTitle>
                   <FormattedMessage {...messages.published} />
                 </ListHeaderTitle>
+                <InfoTooltip {...messages.publishedTooltip} />
+
+                <Spacer />
+
                 <FeatureFlag name="manual_project_sorting">
                   <ToggleWrapper>
                     <ToggleLabel htmlFor="manual-sorting-toggle">
@@ -204,7 +212,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
                     />
                   </ToggleWrapper>
                 </FeatureFlag>
-                <InfoTooltip {...messages.publishedTooltip} />
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 {manualProjectSorting ?
