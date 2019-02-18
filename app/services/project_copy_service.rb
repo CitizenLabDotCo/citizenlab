@@ -71,7 +71,7 @@ class ProjectCopyService
       'publication_status'           => @project.publication_status,
       'ordering'                     => @project.ordering
     })
-    yml_project['slug'] = new_slug if new_slug
+    yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
     [yml_project]
   end
@@ -336,7 +336,9 @@ class ProjectCopyService
   end
 
   def yml_votes
-    Vote.all.map do |v|
+    idea_ids = @project.ideas.published.ids
+    comment_ids = Comment.where(idea_id: idea_ids)
+    Vote.where(votable_id: idea_ids + comment_ids).map do |v|
       yml_vote = {
         'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
         'user_ref'    => lookup_ref(v.user_id, :user),
