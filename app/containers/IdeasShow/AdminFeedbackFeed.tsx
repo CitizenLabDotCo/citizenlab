@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 
 // components
 import Button from 'components/UI/Button';
+
+// resources
+import GetAdminFeedback, { GetAdminFeedbackChildProps } from 'resources/GetAdminFeedback';
 
 // styles
 import styled from 'styled-components';
@@ -10,18 +14,6 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-interface InputProps {
-  feedSize: Number;
-}
-
-interface DataProps {
-  adminFeedback: GetAdminFeedbackChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-interface State {}
 
 const AdminFeedbackPost = styled.div`
   display: flex;
@@ -61,52 +53,58 @@ const DatePosted = styled.span`
 const LoadMoreButton = styled(Button)`
 `;
 
-export default class AdminFeedbackFeed extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-    };
-  }
+interface InputProps {
+  feedSize: Number;
+}
 
-  loadPreviousUpdates = () => {
-    this.props.adminFeedbackPosts.onLoadMore();
-  }
+interface DataProps {
+  adminFeedback: GetAdminFeedbackChildProps;
+}
 
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class AdminFeedbackFeed extends PureComponent<Props, State> {
   render() {
-    return (
-      <>
-        <AdminFeedbackPost>
-          <EditPostButton
-            fullWidth={false}
-            style="text"
-            textColor={colors.text}
-            text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
-          />
-          <Body>
-            <p>
-              Hi everyone! First off, thanks to those who filled out our survey from earlier this summer. User accounts is a big, big undertaking, and we’re still in the research phase, working to determine which use-cases would be most impactful to tackle first.
-            </p>
+    if (this.props.adminFeedback) {
+      const { querying, hasMore, loadingMore, onLoadMore } = this.props.adminFeedback;
 
-            <p>
-              Our first steps down this path will likely be in the realm of ecommerce, as we’re planning to build a login system for customers on your ecommerce site. The good news here is that nearly all of the work on this ecommerce customer portal will lay the foundation for larger work around a general user login/account system in Webflow.
-            </p>
+      return (
+        <>
+          <AdminFeedbackPost>
+            <EditPostButton
+              fullWidth={false}
+              style="text"
+              textColor={colors.text}
+              text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
+            />
+            <Body>
+              <p>
+                Hi everyone! First off, thanks to those who filled out our survey from earlier this summer. User accounts is a big, big undertaking, and we’re still in the research phase, working to determine which use-cases would be most impactful to tackle first.
+              </p>
 
-            <p>
-              So, in summary: we’re still researching, but our planned work on ecommerce will continue moving us closer to the day when a more general user login/account system is possible in Webflow.
-            </p>
-          </Body>
-          <Footer>
-            <Author>Sarah from Mobility Department</Author>
-            <DatePosted>02 jan 2019</DatePosted>
-          </Footer>
-        </AdminFeedbackPost>
-        {true /* !querying && hasMore && */ &&
+              <p>
+                Our first steps down this path will likely be in the realm of ecommerce, as we’re planning to build a login system for customers on your ecommerce site. The good news here is that nearly all of the work on this ecommerce customer portal will lay the foundation for larger work around a general user login/account system in Webflow.
+              </p>
+
+              <p>
+                So, in summary: we’re still researching, but our planned work on ecommerce will continue moving us closer to the day when a more general user login/account system is possible in Webflow.
+              </p>
+            </Body>
+            <Footer>
+              <Author>Sarah from Mobility Department</Author>
+              <DatePosted>02 jan 2019</DatePosted>
+            </Footer>
+          </AdminFeedbackPost>
+
+          {!querying && hasMore &&
             <LoadMoreButton
-              onClick={this.loadPreviousUpdates}
+              onClick={onLoadMore}
               size="1"
               style="secondary-outlined"
               text={<FormattedMessage {...messages.loadPreviousUpdates} />}
-              processing={false} /* change this */
+              processing={loadingMore}
               height="50px"
               icon="showMore"
               iconPos="left"
@@ -114,8 +112,21 @@ export default class AdminFeedbackFeed extends React.Component<Props, State> {
               fontWeight="500"
               borderColor="#ccc"
             />
-        }
-      </>
-    );
+          }
+        </>
+      );
+    }
+
+    return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  adminFeedback: <GetAdminFeedback />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AdminFeedbackFeed {...inputProps} {...dataProps} />}
+  </Data>
+);
