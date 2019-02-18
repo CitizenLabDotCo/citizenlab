@@ -60,6 +60,24 @@ FactoryBot.define do
     idea
   end
 
+  factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
+    initiating_user
+    admin_feedback
+    idea
+  end
+
+  factory :official_feedback_on_voted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedIdea' do
+    initiating_user
+    admin_feedback
+    idea
+  end
+
+  factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
+    initiating_user
+    admin_feedback
+    idea
+  end
+
   factory :project_moderation_rights_received, parent: :notification, class: 'Notifications::ProjectModerationRightsReceived' do
     initiating_user
     project
