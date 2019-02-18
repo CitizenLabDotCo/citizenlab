@@ -5,15 +5,14 @@ import { distinctUntilChanged, switchMap, mergeScan, map, filter, tap } from 'rx
 import { IAdminFeedback, IAdminFeedbackData, adminFeedbackForIdeaStream } from 'services/adminFeedback';
 
 export interface InputProps {
-  ideaId?: string | null;
+  ideaId: string | null;
 }
 
 interface IAccumulator {
-  ideaId?: string | null;
-  pageNumber?: number;
-  pageSize?: number;
-  adminFeedbackList: IAdminFeedbackData[] | undefined | null | Error;
+  ideaId: string | null;
+  pageNumber: number;
   hasMore: boolean;
+  adminFeedbackList: IAdminFeedbackData[] | null | Error;
 }
 
 type children = (renderProps: GetAdminFeedbackChildProps) => JSX.Element | null;
@@ -28,8 +27,8 @@ export type GetAdminFeedbackChildProps = State & {
 
 interface State {
   ideaId?: string | null;
-  pageNumber?: number;
-  adminFeedbackList: IAdminFeedbackData[] | undefined | null | Error;
+  pageNumber: number;
+  adminFeedbackList: IAdminFeedbackData[] | null | Error;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
@@ -37,7 +36,7 @@ interface State {
 
 export default class GetAdminFeedback extends React.Component<Props, State> {
   private initialState: State;
-  private ideaId$: BehaviorSubject<string | null | undefined>;
+  private ideaId$: BehaviorSubject<string | null>;
   private pageNumber$: BehaviorSubject<number>;
   private subscriptions: Subscription[];
 
@@ -84,7 +83,7 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
                   const lastLink = get(adminFeedback, 'links.last');
                   const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
                   const accAdminFeedbackList = acc.adminFeedbackList;
-                  let adminFeedbackList: IAdminFeedbackData[] | undefined | null | Error = undefined;
+                  let adminFeedbackList: IAdminFeedbackData[] | null | Error = null;
 
                   if (isError(adminFeedback)) {
                     adminFeedbackList = adminFeedback;
@@ -98,6 +97,7 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
 
                   return {
                     ideaId,
+                    pageNumber,
                     hasMore,
                     adminFeedbackList
                   };
@@ -135,9 +135,8 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
   }
 
   loadMore = () => {
-    if (!this.state.loadingMore) {
-      const pageNumber = (this.state.pageNumber || 0) + 1;
-      this.pageNumber$.next(pageNumber);
+    if (!this.state.loadingMore && this.state.hasMore) {
+      this.pageNumber$.next(this.state.pageNumber + 1);
     }
   }
 
