@@ -56,7 +56,7 @@ const LoadMoreButton = styled(Button)`
 `;
 
 interface InputProps {
-  feedSize: Number;
+  ideaId: string;
 }
 
 interface DataProps {
@@ -123,7 +123,7 @@ class AdminFeedbackFeed extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  adminFeedback: <GetAdminFeedback />
+  adminFeedback: ({ ideaId, render }) => <GetAdminFeedback ideaId={ideaId}>{render}</GetAdminFeedback>,
 });
 
 export default (inputProps: InputProps) => (
