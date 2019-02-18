@@ -69,7 +69,7 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
               const isLoadingMore = (pageNumber !== 1);
               const queryParameters = {
                 'page[number]': pageNumber,
-                'page[size]': 10
+                'page[size]': 1
               };
 
               this.setState({
