@@ -87,7 +87,7 @@ class AdminFeedbackFeed extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
                 />
                 <Body>
-                  <T value={bodyTextMultiloc} />
+                  <T value={bodyTextMultiloc} supportHtml />
                 </Body>
                 <Footer>
                   <Author>
