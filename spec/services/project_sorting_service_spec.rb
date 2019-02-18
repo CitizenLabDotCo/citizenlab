@@ -12,10 +12,13 @@ describe ProjectSortingService do
       end
 
       it "respects the saved ordering" do
-        p1 = create(:project, ordering: 2)
-        p2 = create(:project, ordering: 1)
-        p3 = create(:project, ordering: 3)
-        expect(service.sort(Project.all).ids).to eq [p1, p2, p3].map(&:id)
+        Project.acts_as_list_no_update do
+          p4 = create(:project, ordering: 0, publication_status: 'archived')
+          p1 = create(:project, ordering: 2)
+          p2 = create(:project, ordering: 1)
+          p3 = create(:project, ordering: 3)
+          expect(service.sort(Project.all).ids).to eq [p2, p1, p3, p4].map(&:id)
+        end
       end
     end
 
