@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Button from 'components/UI/Button';
+import T from 'components/T';
 
 // resources
 import GetAdminFeedback, { GetAdminFeedbackChildProps } from 'resources/GetAdminFeedback';
