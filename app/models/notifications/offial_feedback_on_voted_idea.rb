@@ -36,6 +36,7 @@ module Notifications
               project_id: project_id
               )
           end
+        end
       else
         []
       end.compact
