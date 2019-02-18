@@ -25,7 +25,7 @@ module Notifications
       project_id = idea&.project_id
 
       if admin_feedback_id && idea_id && recipient_id && initiator_id
-        idea.comments.pluck(&:author_id) do |recipient_id|
+        idea.comments.pluck(&:author_id).map do |recipient_id|
           if (recipient_id != initiator_id) && (recipient_id != idea.author_id)
             self.create(
               recipient_id: recipient_id,
