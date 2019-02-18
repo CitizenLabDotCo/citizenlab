@@ -21,6 +21,9 @@ fr:
       "new_comment_on_commented_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai commenté
       "new_comment_on_voted_idea": Lorsqu’un nouveau commentaire a été posté sur une idée que j’ai voté
       "new_idea_for_admin": Lorsqu’une idée est publiée dans un projet je peux modérer
+      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
       "status_change_of_commented_idea": Lorsque le status d'une idée que j'ai commenté a changé
       "status_change_of_voted_idea": Lorsque le status d'une idée que j'ai voté a changé
       "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
@@ -47,6 +50,9 @@ fr:
       "new_comment_on_commented_idea": Lorsqu'un nouveau commentaire a été posté sur une idée que l'utilisateur a commenté
       "new_comment_on_voted_idea": Lorsqu'un commentaire a été posté sur une idée que l'utilisateur à voté
       "new_idea_for_admin": Lorsqu’une idée est publiée dans un projet je peux modérer
+      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
       "status_change_of_commented_idea": Lorsque le status d'une idée que l'utilisateur a commenté a changé
       "status_change_of_voted_idea": Lorsque le status d'une idée que l'utilisateur a voté a été changé
       "admin_digest": Un aperçu hebdomadaire de l’activité sur la plate-forme (uniquement pour les administrateurs)

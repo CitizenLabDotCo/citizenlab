@@ -73,6 +73,18 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
+    enabled { true }
+  end
+
   factory :password_reset_campaign, class: EmailCampaigns::Campaigns::PasswordReset do
     enabled { true }
   end

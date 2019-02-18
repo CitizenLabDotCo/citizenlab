@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_11_134223) do
+ActiveRecord::Schema.define(version: 2019_02_15_155920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -392,6 +392,8 @@ ActiveRecord::Schema.define(version: 2019_02_11_134223) do
     t.string "reason_code"
     t.string "other_reason"
     t.uuid "idea_status_id"
+    t.uuid "admin_feedback_id"
+    t.index ["admin_feedback_id"], name: "index_notifications_on_admin_feedback_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
@@ -674,6 +676,7 @@ ActiveRecord::Schema.define(version: 2019_02_11_134223) do
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "admin_feedbacks"
   add_foreign_key "notifications", "comments"
   add_foreign_key "notifications", "idea_statuses"
   add_foreign_key "notifications", "ideas"

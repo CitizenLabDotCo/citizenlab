@@ -528,11 +528,12 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       rand(5).times do
-        idea.admin_feedbacks.create!(
+        admin_feedback = idea.admin_feedbacks.create!(
           body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
           )
+        LogActivityJob.perform_later(admin_feedback, 'created', admin_feedback.user, admin_feedback.created_at.to_i)
       end
 
       create_comment_tree(idea, nil)
