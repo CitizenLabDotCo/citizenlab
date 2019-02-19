@@ -32,7 +32,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
 
   def update
     authorize @feedback
-    @feedback.assign_attributes admin_feedback_params
+    @feedback.assign_attributes official_feedback_params
     authorize @feedback
     SideFxOfficialFeedbackService.new.before_update @feedback, current_user
     if @feedback.save
