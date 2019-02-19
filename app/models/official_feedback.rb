@@ -3,9 +3,7 @@ class OfficialFeedback < ApplicationRecord
   
   belongs_to :user
   belongs_to :idea
-  # has_many :notifications, foreign_key: :admin_feedback_id, dependent: :nullify
-  
-  # counter_culture :idea
+  has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_multiloc, presence: true, multiloc: {presence: true}
