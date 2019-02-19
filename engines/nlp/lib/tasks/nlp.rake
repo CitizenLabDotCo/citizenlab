@@ -11,15 +11,7 @@ namespace :nlp do
 
   task :dump_all_tenants_to_nlp, [] => [:environment] do |t, args|
     Tenant.all.each do |tn|
-      # Not doing #perform_later, because the database layer of cl2-nlp
-      # currently can't seem to handle concurrent write requests. Doing it
-      # like this makes sure the data is loaded sequentially. Since we don't
-      # want one tenant to fail them all, we manually deal with faillures here
-      begin
-        DumpTenantJob.perform_now tn
-      rescue Exception => e
-        Raven.capture_exception(e, extra: {tenant: tn})
-      end
+      DumpTenantJob.perform_later tn
     end
   end
 
