@@ -39,7 +39,7 @@ module EmailCampaigns
       }]
     end
 
-    def is_content_worth_sending?
+    def is_content_worth_sending? _
       @is_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
         ).count('*') >= N_TOP_IDEAS
@@ -54,18 +54,17 @@ module EmailCampaigns
       top_ideas = IdeaPolicy::Scope.new(recipient, Idea).resolve
         .published
 
-      top_ideas = ti_service.filter_trending top_ideas
-      top_ideas = ti_service.sort_trending top_ideas
-      top_ideas = top_ideas.take N_TOP_IDEAS
+      truly_trending_ids = ti_service.filter_trending(top_ideas).ids
+      top_ideas = ti_service.sort_trending top_ideas.where(id: truly_trending_ids)
+      top_ideas = top_ideas.limit N_TOP_IDEAS
     end
 
     def discover_projects recipient
       ProjectPolicy::Scope.new(recipient, Project)
         .resolve
         .where(publication_status: 'published')
-        .sort_by(&:created_at)
-        .reverse
-        .take(N_DISCOVER_PROJECTS)
+        .order(created_at: :desc)
+        .limit(N_DISCOVER_PROJECTS)
     end
 
     def top_idea_payload idea, recipient
