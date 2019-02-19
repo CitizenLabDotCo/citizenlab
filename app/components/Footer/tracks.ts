@@ -5,4 +5,7 @@ export default {
   clickShortFeedbackNo: {
     name: 'Short feedback in footer answered: NO',
   },
+  sendShortFeedbackForm: {
+    name: 'Short feedback form answered',
+  },
 };
