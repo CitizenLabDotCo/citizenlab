@@ -149,7 +149,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
       return (
         <Container className={className} onClick={this.toggleDropdown}>
-          <OpenMenuButton>
+          <OpenMenuButton className="e2e-langage-dropdown-toggle">
             {currentlySelectedLocale.substr(0, 2).toUpperCase()}
             <DropdownItemIcon name="dropdown" />
           </OpenMenuButton>
@@ -170,7 +170,7 @@ class LanguageSelector extends PureComponent<Props, State> {
                     <ListItem
                       key={tenantLocale}
                       onClick={this.handleLanguageSelect(tenantLocale)}
-                      className={`${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                      className={`e2e-langage-${tenantLocale} ${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
                     >
                       <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
                     </ListItem>
