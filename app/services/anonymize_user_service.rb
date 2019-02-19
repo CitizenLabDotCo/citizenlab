@@ -1,4 +1,4 @@
-class UserService
+class AnonymizeUserService
 
   MALE_AVATAR_URLS = [
     'http://res.cloudinary.com/citizenlabco/image/upload/v1515573977/man-388104_960_720_dfehjy.jpg',

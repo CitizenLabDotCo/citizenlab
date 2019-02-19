@@ -152,7 +152,7 @@ class ProjectCopyService
   end
 
   def yml_users anonymize_users
-    service = UserService.new
+    service = AnonymizeUserService.new
     user_ids = []
     idea_ids = @project.ideas.ids
     user_ids += Idea.where(id: idea_ids).pluck(:author_id)

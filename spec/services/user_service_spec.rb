@@ -1,7 +1,7 @@
 require "rails_helper"
 
-describe UserService do
-  let(:service) { UserService.new }
+describe AnonymizeUserService do
+  let(:service) { AnonymizeUserService.new }
 
   describe "#anonymized_attributes" do
     before(:all) do
