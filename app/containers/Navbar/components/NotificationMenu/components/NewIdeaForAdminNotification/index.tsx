@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ICommentForAdminData } from 'services/notifications';
+import { IIdeaForAdminNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
 // i18n
@@ -16,14 +16,14 @@ import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
 type Props = {
-  notification: ICommentForAdminData;
+  notification: IIdeaForAdminNotificationData;
 };
 
 type State = {
   ideaSlug?: string,
 };
 
-export default class CommentOnYourIdeaNotification extends React.PureComponent<Props, State> {
+export default class NewIdeaForAdminNotification extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -67,9 +67,9 @@ export default class CommentOnYourIdeaNotification extends React.PureComponent<P
         isRead={!!notification.attributes.read_at}
       >
         <FormattedMessage
-          {...messages.userPostedComment}
+          {...messages.userPostedIdea}
           values={{
-            commentAuthorFirstName: deletedUser ?
+            ideaAuthorFirstName: deletedUser ?
               <DeletedUser>
                 <FormattedMessage {...messages.deletedUser} />
               </DeletedUser>
