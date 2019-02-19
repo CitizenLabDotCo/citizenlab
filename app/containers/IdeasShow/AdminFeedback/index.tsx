@@ -6,7 +6,7 @@ import { IProject } from 'services/projects';
 
 // components
 import HasPermission from 'components/HasPermission';
-import AdminFeedbackNew from './Form/New';
+import OfficialFeedbackNew from './Form/New';
 import Feed from './Feed';
 
 interface Props {
@@ -14,12 +14,12 @@ interface Props {
   project: IProject | null;
 }
 
-const AdminFeedback = ({ ideaId, project }: Props) => {
+const OfficialFeedback = ({ ideaId, project }: Props) => {
   return (
     <>
       {!isNilOrError(project) &&
         <HasPermission item={project.data} action="moderate">
-          <AdminFeedbackNew ideaId={ideaId}/>
+          <OfficialFeedbackNew ideaId={ideaId}/>
         </HasPermission>
       }
 
@@ -30,4 +30,4 @@ const AdminFeedback = ({ ideaId, project }: Props) => {
   );
 };
 
-export default AdminFeedback;
+export default OfficialFeedback;

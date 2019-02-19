@@ -17,7 +17,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import messages from '../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-const AdminFeedbackPost = styled.div`
+const OfficialFeedbackPost = styled.div`
   display: flex;
   flex-direction: column;
   background-color: rgba(236, 90, 36, 0.06);
@@ -60,17 +60,17 @@ interface InputProps {
 }
 
 interface DataProps {
-  adminFeedback: GetAdminFeedbackChildProps;
+  officialFeedback: GetAdminFeedbackChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AdminFeedbackFeed extends PureComponent<Props, State> {
+class OfficialFeedbackFeed extends PureComponent<Props, State> {
   render() {
-    if (this.props.adminFeedback) {
-      const { adminFeedbackList, querying, hasMore, loadingMore, onLoadMore } = this.props.adminFeedback;
+    if (this.props.officialFeedback) {
+      const { adminFeedbackList, querying, hasMore, loadingMore, onLoadMore } = this.props.officialFeedback;
 
       return (
         <>
@@ -79,12 +79,12 @@ class AdminFeedbackFeed extends PureComponent<Props, State> {
             const authorNameMultiloc = adminFeedbackPost.attributes.author_multiloc;
 
             return (
-              <AdminFeedbackPost key={adminFeedbackPost.id}>
+              <OfficialFeedbackPost key={adminFeedbackPost.id}>
                 <EditPostButton
                   fullWidth={false}
                   style="text"
                   textColor={colors.text}
-                  text={<FormattedMessage {...messages.editAdminFeedbackPost} />}
+                  text={<FormattedMessage {...messages.editOfficialFeedbackPost} />}
                 />
                 <Body>
                   <T value={bodyTextMultiloc} supportHtml />
@@ -95,7 +95,7 @@ class AdminFeedbackFeed extends PureComponent<Props, State> {
                   </Author>
                   <DatePosted>02 jan 2019</DatePosted>
                 </Footer>
-              </AdminFeedbackPost>
+              </OfficialFeedbackPost>
             );
           })}
 
@@ -123,11 +123,11 @@ class AdminFeedbackFeed extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  adminFeedback: ({ ideaId, render }) => <GetAdminFeedback ideaId={ideaId}>{render}</GetAdminFeedback>,
+  officialFeedback: ({ ideaId, render }) => <GetAdminFeedback ideaId={ideaId}>{render}</GetAdminFeedback>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AdminFeedbackFeed {...inputProps} {...dataProps} />}
+    {dataProps => <OfficialFeedbackFeed {...inputProps} {...dataProps} />}
   </Data>
 );
