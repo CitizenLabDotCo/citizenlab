@@ -38,8 +38,7 @@ import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import SimilarIdeas from './SimilarIdeas';
-import AdminFeedbackNew from './AdminFeedbackNew';
-import AdminFeedbackFeed from './AdminFeedbackFeed';
+import AdminFeedback from './AdminFeedback';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -422,7 +421,7 @@ const TranslateButton = styled(Button)`
 const IdeaBody = styled.div`
 `;
 
-const AdminFeedbackFeedWrapper = styled.div`
+const AdminFeedbackWrapper = styled.div`
   margin-bottom: 112px;
 `;
 
@@ -1118,16 +1117,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 />
 
                 {project &&
-                  <HasPermission item={project.data} action="moderate">
-                    <AdminFeedbackNew ideaId={ideaId}/>
-                  </HasPermission>
+                  <AdminFeedbackWrapper>
+                    <AdminFeedback
+                      project={project}
+                      ideaId={ideaId}
+                    />
+                  </AdminFeedbackWrapper>
                 }
-
-                <AdminFeedbackFeedWrapper>
-                  <AdminFeedbackFeed
-                    ideaId={ideaId}
-                  />
-                </AdminFeedbackFeedWrapper>
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
