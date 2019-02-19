@@ -28,10 +28,10 @@ const OfficialFeedbackPost = styled.div`
 `;
 
 const EditPostButton = styled(Button)`
-  margin-left: auto;
   text-decoration: underline;
   padding: 0;
   margin-bottom: 10px;
+  align-self: flex-end;
 `;
 
 const Body = styled.div`
