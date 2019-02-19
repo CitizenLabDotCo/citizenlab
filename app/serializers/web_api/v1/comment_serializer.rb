@@ -34,7 +34,7 @@ class WebApi::V1::CommentSerializer < ActiveModel::Serializer
   end
 
   def is_admin_comment
-    object.author.admin?
+    object.author&.admin?
   end
 
 end

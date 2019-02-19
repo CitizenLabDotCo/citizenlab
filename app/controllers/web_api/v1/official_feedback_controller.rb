@@ -7,7 +7,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
       .where(idea_id: params[:idea_id])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(updated_at: :desc)
+      .order(created_at: :desc)
 
     render json: @feedbacks
   end
