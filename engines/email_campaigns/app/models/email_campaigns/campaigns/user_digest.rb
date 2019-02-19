@@ -39,7 +39,7 @@ module EmailCampaigns
       }]
     end
 
-    def is_content_worth_sending?
+    def is_content_worth_sending? _
       @is_worth_sending ||= TrendingIdeaService.new.filter_trending(
         IdeaPolicy::Scope.new(nil, Idea).resolve.where(publication_status: 'published')
         ).count('*') >= N_TOP_IDEAS
