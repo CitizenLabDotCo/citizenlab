@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :admin_feedback do
+  factory :official_feedback do
     user
     idea
     body_multiloc {{

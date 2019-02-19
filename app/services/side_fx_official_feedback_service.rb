@@ -1,4 +1,4 @@
-class SideFxAdminFeedbackService
+class SideFxOfficialFeedbackService
   include SideFxHelper
 
   def before_create feedback, user

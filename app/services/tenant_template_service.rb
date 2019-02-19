@@ -93,7 +93,7 @@ class TenantTemplateService
       @template['models']['idea_image']          = yml_idea_images
       @template['models']['ideas_phase']         = yml_ideas_phases
       @template['models']['ideas_topic']         = yml_ideas_topics
-      @template['models']['admin_feedback']      = yml_admin_feedback
+      @template['models']['official_feedback']   = yml_official_feedback
       @template['models']['comment']             = yml_comments
       @template['models']['vote']                = yml_votes
     end
@@ -591,9 +591,9 @@ class TenantTemplateService
     end
   end
 
-  def yml_admin_feedback
-    AdminFeedback.all.map do |a|
-      yml_admin_feedback = {
+  def yml_official_feedback
+    OfficialFeedback.all.map do |a|
+      yml_official_feedback = {
         'user_ref'        => lookup_ref(a.user_id, :user),
         'idea_ref'        => lookup_ref(a.idea_id, :idea),
         'body_multiloc'   => a.body_multiloc,
@@ -601,8 +601,8 @@ class TenantTemplateService
         'created_at'      => a.created_at.to_s,
         'updated_at'      => a.updated_at.to_s
       }
-      store_ref yml_admin_feedback, a.id, :admin_feedback
-      yml_admin_feedback
+      store_ref yml_official_feedback, a.id, :admin_feedback
+      yml_official_feedback
     end
   end
 

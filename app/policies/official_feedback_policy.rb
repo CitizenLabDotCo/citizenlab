@@ -1,4 +1,4 @@
-class AdminFeedbackPolicy < ApplicationPolicy
+class OfficialFeedbackPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
