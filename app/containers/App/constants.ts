@@ -11,8 +11,9 @@ export const DEFAULT_LOCALE = 'en';
 // the locales we "support" :
 // platformBaseUrl/{oneOfTheseStrings}/{anything we have a route for}
 // - won't 404
-// - will replace the locale with authUser's locale if there is one
-// - will replace the locale with default locale is not logged in
+// - will replace the oneOfTheseStrings with authUser's locale if there is one
+// - else, will replace the oneOfTheseStrings with the one if the cookie if it exists
+// - else, will replce the oneOfTheseStrings with the first locale of the platfom (default)
 export const locales = [
   'en',
   'fr',
