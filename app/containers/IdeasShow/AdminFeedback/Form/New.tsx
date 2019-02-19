@@ -3,7 +3,7 @@ import React from 'react';
 import { addAdminFeedbackToIdea } from 'services/adminFeedback';
 
 import { Formik } from 'formik';
-import AdminFeedbackForm, { FormValues } from './AdminFeedbackForm';
+import AdminFeedbackForm, { FormValues } from './';
 import { CLErrorsJSON } from 'typings';
 
 interface Props {
@@ -17,7 +17,6 @@ export default class AdminFeedbackNew extends React.Component<Props> {
     setSubmitting(true);
     addAdminFeedbackToIdea(ideaId, values)
       .then(() => {
-        console.log('hi');
         setSubmitting(false);
       }).catch((errorResponse) => {
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
 import { injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../../messages';
 
 import { Form, Field, FormikErrors, FormikProps } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
