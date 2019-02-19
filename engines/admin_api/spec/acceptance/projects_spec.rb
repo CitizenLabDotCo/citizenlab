@@ -10,9 +10,17 @@ resource "Project" do
 
   get "admin_api/projects/:id/template_export" do
     parameter :tenant_id, "The tenant id from which to export the project", required: true
+    with_options scope: :project do
+      parameter :include_ideas, "Whether to also include the project's ideas, comments, votes and participants", required: false
+      parameter :anonymize_users, "Generate new first and last name, email etc.", required: false
+      parameter :translate_content, "Translate the content to other languages", required: false
+      parameter :shift_timestamps, "Change the timestamps by the specified number of days", required: false
+      parameter :new_slug, "The new slug for the copied project", required: false
+    end
 
     let(:tenant_id) { Tenant.current.id }
     let(:project) { create(:project_xl, phases_count: 8) }
+    let(:new_slug) { 'awesome-project' }
     let(:id) { project.id } 
 
     example_request "Export a project template" do
@@ -22,7 +30,7 @@ resource "Project" do
 
       expect(template['models']['project'].first.dig('title_multiloc','en')).to eq project.title_multiloc['en']
       expect(template['models']['phase'].size).to eq project.phases.count
-      expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at)
+      expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at).map(&:iso8601)
       expect(template['models']['project_image'].map{|h| h['remote_image_url']}).to match project.project_images.map(&:image_url)
     end
   end
@@ -34,8 +42,8 @@ resource "Project" do
     end
 
     example "Import a project template" do
-      tn1 = create(:test_tenant, name: 'Abu Dhabi', host: 'abudhabi.citizenlab.co')
-      tn2 = create(:test_tenant, name: 'Las Vegas', host: 'lasvegas.citizenlab.co')
+      tn1 = create(:test_tenant, host: 'abu-dhabi.citizenlab.co')
+      tn2 = create(:test_tenant, host: 'las-vegas.citizenlab.co')
 
       template, project = nil
       Apartment::Tenant.switch(tn1.schema_name) do
@@ -49,7 +57,7 @@ resource "Project" do
 
         expect(template['models']['project'].first.dig('title_multiloc','en')).to eq project_copy.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project_copy.phases.count
-        expect(template['models']['phase'].map{|h| h['start_at']}).to match project_copy.phases.map(&:start_at)
+        expect(template['models']['phase'].map{|h| h['start_at']}).to match project_copy.phases.map(&:start_at).map(&:iso8601)
       end
     end
 
