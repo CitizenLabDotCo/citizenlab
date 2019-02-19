@@ -326,20 +326,20 @@ export default defineMessages({
     id: 'app.components.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
-  editAdminFeedbackPost: {
-    id: 'app.components.IdeasShow.editAdminFeedbackPost',
+  editOfficialFeedbackPost: {
+    id: 'app.components.IdeasShow.editOfficialFeedbackPost',
     defaultMessage: 'Edit',
   },
   loadPreviousUpdates: {
     id: 'app.components.IdeasShow.loadPreviousUpdates',
     defaultMessage: 'Load previous updates',
   },
-  adminNamePlaceholder: {
-    id: 'app.components.IdeasShow.adminNamePlaceholder',
+  officialNamePlaceholder: {
+    id: 'app.components.IdeasShow.officialNamePlaceholder',
     defaultMessage: 'Your name or title',
   },
-  adminFeedbackPlaceholder: {
-    id: 'app.components.IdeasShow.adminFeedbackPlaceholder',
+  officialFeedbackPlaceholder: {
+    id: 'app.components.IdeasShow.officialFeedbackPlaceholder',
     defaultMessage: 'Give an update about this idea status and processing',
   },
   updateButtonSave: {

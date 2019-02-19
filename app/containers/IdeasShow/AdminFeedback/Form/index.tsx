@@ -31,7 +31,7 @@ interface State {
   selectedLocale: Locale;
 }
 
-class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
+class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
@@ -46,7 +46,7 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
   renderFormikInputMultiloc = (props) => (
     <FormikInputMultiloc
       shownLocale={this.state.selectedLocale}
-      placeholder={this.props.intl.formatMessage(messages.adminNamePlaceholder)}
+      placeholder={this.props.intl.formatMessage(messages.officialNamePlaceholder)}
       {...props}
     />
   )
@@ -54,7 +54,7 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
   renderFormikMentionsTextAreaMultiloc = (props) => (
     <FormikMentionsTextAreaMultiloc
       shownLocale={this.state.selectedLocale}
-      placeholder={this.props.intl.formatMessage(messages.adminFeedbackPlaceholder)}
+      placeholder={this.props.intl.formatMessage(messages.officialFeedbackPlaceholder)}
       rows={8}
       padding="12px"
       fontSize={fontSizes.base}
@@ -115,8 +115,8 @@ class AdminFeedbackForm extends Component<Props & InjectedIntlProps & FormikProp
   }
 }
 
-const AdminFeedbackFormWithIntl = injectIntl(AdminFeedbackForm);
-class AdminFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
+const OfficialFeedbackFormWithIntl = injectIntl(OfficialFeedbackForm);
+class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues>> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
@@ -130,8 +130,8 @@ class AdminFeedbackFormWithHoCs extends Component<Props & FormikProps<FormValues
   }
 
   render() {
-    return <AdminFeedbackFormWithIntl {...this.props} />;
+    return <OfficialFeedbackFormWithIntl {...this.props} />;
   }
 }
 
-export default AdminFeedbackFormWithHoCs;
+export default OfficialFeedbackFormWithHoCs;

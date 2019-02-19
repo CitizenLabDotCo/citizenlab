@@ -3,14 +3,14 @@ import React from 'react';
 import { addAdminFeedbackToIdea } from 'services/adminFeedback';
 
 import { Formik } from 'formik';
-import AdminFeedbackForm, { FormValues } from './';
+import OfficialFeedbackForm, { FormValues } from './';
 import { CLErrorsJSON } from 'typings';
 
 interface Props {
   ideaId: string;
 }
 
-export default class AdminFeedbackNew extends React.Component<Props> {
+export default class OfficialFeedbackNew extends React.Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     const { ideaId } = this.props;
@@ -26,7 +26,7 @@ export default class AdminFeedbackNew extends React.Component<Props> {
   }
 
   renderFn = (props) => {
-    return <AdminFeedbackForm {...props} />;
+    return <OfficialFeedbackForm {...props} />;
   }
 
   initialValues = () => ({
@@ -40,7 +40,7 @@ export default class AdminFeedbackNew extends React.Component<Props> {
           initialValues={this.initialValues()}
           render={this.renderFn}
           onSubmit={this.handleSubmit}
-          validate={AdminFeedbackForm.validate}
+          validate={OfficialFeedbackForm.validate}
         />
     );
   }
