@@ -11,7 +11,9 @@ import ProjectModerationRightsReceivedNotification from '../ProjectModerationRig
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
 import NewIdeaForAdminNotification from '../NewIdeaForAdminNotification';
 import NewCommentForAdminNotification from '../NewCommentForAdminNotification';
-// import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
+import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
+import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
+import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
 
 import {
   TNotificationData,
@@ -27,7 +29,9 @@ import {
   IAdminRightsReceivedNotificationData,
   IIdeaForAdminNotificationData,
   ICommentForAdminNotificationData,
-  // IOfficialFeedbackOnYourIdeaNotificationData
+  IOfficialFeedbackOnYourIdeaNotificationData,
+  IOfficialFeedbackOnVotedIdeaNotificationData,
+  IOfficialFeedbackOnCommentedIdeaNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -68,6 +72,12 @@ export default class Notification extends PureComponent<Props> {
         return <NewIdeaForAdminNotification notification={notification as IIdeaForAdminNotificationData} />;
       case 'new_comment_for_admin':
         return <NewCommentForAdminNotification notification={notification as ICommentForAdminNotificationData} />;
+      case 'official_feedback_on_your_idea':
+        return <OfficialFeedbackOnYourIdeaNotification notification={notification as IOfficialFeedbackOnYourIdeaNotificationData} />;
+      case 'official_feedback_on_voted_idea':
+        return <OfficialFeedbackOnVotedIdeaNotification notification={notification as IOfficialFeedbackOnVotedIdeaNotificationData} />;
+      case 'official_feedback_on_commented_idea':
+        return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
       default: return null;
     }
   }
