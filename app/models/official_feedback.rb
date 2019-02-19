@@ -1,4 +1,4 @@
-class AdminFeedback < ApplicationRecord
+class OfficialFeedback < ApplicationRecord
   counter_culture :idea
   
   belongs_to :user

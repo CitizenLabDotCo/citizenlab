@@ -2,7 +2,7 @@ class WebApi::V1::Notifications::OfficialFeedbackOnCommentedIdea < WebApi::V1::N
 
   belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   belongs_to :idea, serializer: WebApi::V1::IdeaSerializer
-  belongs_to :admin_feedback, serializer: WebApi::V1::AdminFeedbackSerializer  
+  belongs_to :official_feedback, serializer: WebApi::V1::OfficialFeedbackSerializer  
   belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 
   attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug, :idea_title

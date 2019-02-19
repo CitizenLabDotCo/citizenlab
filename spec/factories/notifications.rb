@@ -62,19 +62,19 @@ FactoryBot.define do
 
   factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
     initiating_user
-    admin_feedback
+    official_feedback
     idea
   end
 
   factory :official_feedback_on_voted_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnVotedIdea' do
     initiating_user
-    admin_feedback
+    official_feedback
     idea
   end
 
   factory :official_feedback_on_your_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnYourIdea' do
     initiating_user
-    admin_feedback
+    official_feedback
     idea
   end
 
