@@ -596,6 +596,13 @@ resource "Stats - Users" do
           @group = create(:group)
           @custom_field = create(:custom_field_select)
           @option1, @option2, @option3 = create_list(:custom_field_option, 3, custom_field: @custom_field)
+
+          # We create an option on a different custom_field, but with the same
+          # key. This covers a regressions that mixed up custom field options
+          # between fields
+          @custom_field2 = create(:custom_field_select)
+          create(:custom_field_option, key: @option1.key, title_multiloc: {en: 'different'}, custom_field: @custom_field2)
+
           travel_to(start_at - 1.day) do
             create(:user, custom_field_values: { @custom_field.key => @option1.key}, manual_groups: [@group])
           end
