@@ -121,7 +121,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
               buttonError: messages.updateButtonError,
               buttonSuccess: messages.updateButtonSuccess,
               messageError: messages.updateMessageError,
-              messageSuccess: messages.updateMessaageSuccess
+              messageSuccess: messages.updateMessageSuccess
             }}
             {...{ isValid, isSubmitting, status, touched }}
           />
