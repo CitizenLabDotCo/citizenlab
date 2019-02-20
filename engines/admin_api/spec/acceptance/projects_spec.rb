@@ -48,7 +48,7 @@ resource "Project" do
       template, project = nil
       Apartment::Tenant.switch(tn1.schema_name) do
         project = create(:project_xl, phases_count: 8, images_count: 0, files_count: 0) # no images nor files because URL's will not be available
-        template = ProjectCopyService.new.export(project)
+        template = AdminApi::ProjectCopyService.new.export(project)
       end
 
       do_request(tenant_id: tn2.id, project: {template_yaml: template.to_yaml})

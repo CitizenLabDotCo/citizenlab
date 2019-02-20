@@ -8,7 +8,7 @@ module AdminApi
 
     def template_export
       project = Project.find(params[:id])
-      template = ProjectCopyService.new.export project, **template_export_params.symbolify_keys
+      template = ProjectCopyService.new.export project, **template_export_params.to_h.symbolize_keys
       render json: {template_yaml: template.to_yaml}
     end
 
