@@ -27,11 +27,6 @@ export interface IOfficialFeedback {
   data: IOfficialFeedbackData[];
 }
 
-export interface IUpdatedOfficialFeedback {
-  author_id: Multiloc;
-  body_multiloc: Multiloc;
-}
-
 export interface INewFeedback {
   author_multiloc: Multiloc;
   body_multiloc: Multiloc;
@@ -53,8 +48,11 @@ export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFe
   return streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
 }
 
-export function updateOfficialFeedback(officialFeedbackId: string, object: IUpdatedOfficialFeedback) {
-  return streams.update<IOfficialFeedback>(`${API_PATH}/official_feedback/${officialFeedbackId}`, officialFeedbackId, { comment: object });
+export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {
+  const bodyData = {
+    official_feedback: object
+  };
+  return streams.update<IOfficialFeedback>(`${API_PATH}/official_feedback/${officialFeedbackId}`, officialFeedbackId, bodyData);
 }
 
 export function deleteOfficialfeedback(projectId: string) {

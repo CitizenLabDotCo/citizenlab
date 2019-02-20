@@ -1116,12 +1116,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   utmParams={utmParams}
                 />
 
-                {project &&
-                  <StyledOfficialFeedback
-                    project={project}
-                    ideaId={ideaId}
-                  />
-                }
+                <StyledOfficialFeedback
+                  project={project}
+                  ideaId={ideaId}
+                />
 
                 <CommentsTitle>
                   <FormattedMessage {...messages.commentsTitle} />
