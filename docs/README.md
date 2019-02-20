@@ -2,6 +2,20 @@
 
 ## 2019-02-20
 
+### Fixed
+
+- User digest email events are send out again
+- The user statistics on the admin dashboard are back to the correct values
+- Creating a new project as an admin does not result in a blank page anymore
+
+### Added
+
+- Project copy feature now also supports copying ideas (including comments and votes) and allows you to specify a new slug for the project URL
+
+### Changed
+
+- Speed up tenant dumping in cl2-nlp
+
 ## 2019-02-14
 
 ### Fixed
