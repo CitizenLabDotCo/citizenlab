@@ -1,4 +1,4 @@
-SELECT sub.id AS project_id, CONCAT(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score) AS score FROM (
+SELECT sub.id AS project_id, CONCAT(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score, sub.action_score) AS score FROM (
   SELECT
     projects.id as id,
     CASE publication_status
@@ -42,12 +42,54 @@ SELECT sub.id AS project_id, CONCAT(sub.status_score, sub.active_score, sub.hot_
       END::text,
       5,
       '0'
-    ) AS recency_score
+    ) AS recency_score,
+
+    CASE publication_status
+      WHEN 'archived' THEN 9
+      ELSE
+        CASE process_type
+          WHEN 'continuous' THEN
+            CASE projects.participation_method
+              WHEN 'ideation' THEN
+                CASE
+                  WHEN projects.posting_enabled THEN 1
+                  WHEN projects.commenting_enabled THEN 4
+                  WHEN projects.voting_enabled THEN 5
+                  ELSE 6
+                END
+              WHEN 'budgeting' THEN 2
+              WHEN 'survey' THEN 3
+              WHEN 'information' THEN 7
+              ELSE 8
+            END
+          WHEN 'timeline' THEN
+            CASE COALESCE(max(active_phases.participation_method), 'no_active_pc') /*,bool_or(active_phases.posting_enabled),bool_or(active_phases.commenting_enabled),bool_or(active_phases.voting_enabled))*/
+              WHEN 'no_active_pc' THEN 9
+              WHEN 'ideation' THEN
+                CASE
+                  WHEN bool_or(active_phases.posting_enabled) THEN 1
+                  WHEN bool_or(active_phases.commenting_enabled) THEN 4
+                  WHEN bool_or(active_phases.voting_enabled) THEN 5
+                  ELSE 6
+                END
+              WHEN 'budgeting' THEN 2
+              WHEN 'survey' THEN 3
+              WHEN 'information' THEN 7
+              ELSE 8
+            END
+        END
+    END AS action_score
+
   FROM 
     projects
   LEFT OUTER JOIN 
     (
-      SELECT project_id, LEAST(ABS(NOW()::date - start_at), ABS(NOW()::date - end_at)) AS recency_diff FROM phases
+      SELECT id, project_id, LEAST(ABS(NOW()::date - start_at), ABS(NOW()::date - end_at)) AS recency_diff FROM phases
     ) AS joined_phases ON joined_phases.project_id = projects.id
+    LEFT JOIN
+    (
+      SELECT * FROM phases WHERE start_at <= NOW()::date AND end_at >= NOW()::date
+    ) AS active_phases
+    ON active_phases.id = joined_phases.id
   GROUP BY projects.id
 ) AS sub

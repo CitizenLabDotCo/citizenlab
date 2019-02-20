@@ -102,13 +102,14 @@ FactoryBot.define do
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }
+        last_end_at { Faker::Date.between(1.year.ago, Time.now) }
       end
       after(:create) do |project, evaluator|
-        start_at = Faker::Date.between(2.year.ago, 1.year.ago)
+        end_at = evaluator.last_end_at
         evaluator.phases_count.times do |i|
           project.phases << create(:phase,
-            start_at: start_at + 1,
-            end_at: start_at += (1+ rand(72)).days,
+            end_at: end_at - 1,
+            start_at: end_at -= (1+ rand(72)).days,
             project: project,
             with_permissions: evaluator.with_permissions
           )
@@ -169,9 +170,10 @@ FactoryBot.define do
     factory :project_with_future_phases do
       transient do
         phases_count { 5 }
+        first_start_at { Faker::Date.between(Time.now, 1.year.from_now) }
       end
       after(:create) do |project, evaluator|
-        start_at = Faker::Date.between(Time.now, 1.year.from_now)
+        start_at = evaluator.first_start_at
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
@@ -240,7 +242,7 @@ FactoryBot.define do
       end
       after(:create) do |project, evaluator|
         evaluator.groups_count.times do |i|
-          group = create(:group, project: project)
+          group = create(:group)
           project.groups << group
           if evaluator&.user
             group.members << evaluator&.user
