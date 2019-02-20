@@ -13,6 +13,7 @@ import UserName from 'components/UI/UserName';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
@@ -22,15 +23,17 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 import { Message } from 'typings';
-
-import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+
+  ${media.smallPhone`
+    flex-direction: column;
+  `}
 `;
 
 const AuthorContainer: any = styled.div`
@@ -38,10 +41,6 @@ const AuthorContainer: any = styled.div`
   align-items: center;
   margin: 0;
   padding: 0;
-`;
-
-const StyledAvatar = styled(Avatar)`
-  margin-top: 3px;
 `;
 
 const AuthorMeta = styled.div`
@@ -53,10 +52,11 @@ const AuthorMeta = styled.div`
 const AuthorNameContainer = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  line-height: 19px;
+  line-height: 23px;
   font-weight: 400;
   text-decoration: none;
   hyphens: manual;
+  margin-bottom: 2px;
 `;
 
 const AuthorNameLink: any = styled(Link)`
@@ -85,20 +85,25 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-const Badge = styled.span`
-  color: ${colors.clRed};
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  background-color: ${lighten(.45, colors.clRed)};
-  border: none;
-  padding: 4px 8px;
-  margin-top: 10px;
-  height: 24px;
-`;
+// const Badge = styled.span`
+//   color: ${colors.clRed};
+//   font-size: ${fontSizes.xs}px;
+//   line-height: 16px;
+//   border-radius: 5px;
+//   text-transform: uppercase;
+//   text-align: center;
+//   font-weight: 600;
+//   background-color: ${lighten(.45, colors.clRed)};
+//   border: none;
+//   padding: 4px 8px;
+//   margin-top: 10px;
+//   height: 24px;
+
+//   ${media.smallPhone`
+//     margin-bottom: 20px;
+//     margin-top: 0;
+//   `}
+// `;
 
 interface InputProps {
   authorId: string | null;
@@ -178,9 +183,9 @@ class Author extends React.PureComponent<Props, State> {
       );
 
     return (
-      <Container>
-        <AuthorContainer className={className} authorCanModerate={authorCanModerate}>
-          <StyledAvatar
+      <Container className={className}>
+        <AuthorContainer authorCanModerate={authorCanModerate}>
+          <Avatar
             userId={authorId}
             size={size}
             onClick={notALink ? undefined : this.goToUserProfile}
@@ -208,10 +213,11 @@ class Author extends React.PureComponent<Props, State> {
             }
           </AuthorMeta>
         </AuthorContainer>
-        {authorCanModerate &&
+        {/* {authorCanModerate &&
           <Badge>
-          <FormattedMessage {...messages.official} />
-        </Badge>}
+            <FormattedMessage {...messages.official} />
+          </Badge>
+        } */}
       </Container>
     );
   }
