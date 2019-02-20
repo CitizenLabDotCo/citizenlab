@@ -23,6 +23,8 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
+  has_one :project_sort_score
+
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
   INTERNAL_ROLES = %w(open_idea_box)

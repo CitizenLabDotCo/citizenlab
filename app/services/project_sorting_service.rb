@@ -10,6 +10,16 @@ class ProjectSortingService
     end
   end
 
+  def sort_score project
+    [
+      calculate_status_score(project),
+      calculate_active_score(project),
+      calculate_hot_score(project),
+      calculate_recency_score(project),
+      calculate_action_score(project),
+    ].join
+  end
+
   private
 
   # Slow ruby implementation, to help nail down the spec
@@ -22,15 +32,6 @@ class ProjectSortingService
 
   end
 
-  def sort_score project
-    [
-      calculate_status_score(project),
-      calculate_active_score(project),
-      calculate_hot_score(project),
-      calculate_recency_score(project),
-      calculate_action_score(project),
-    ].join
-  end
 
   def calculate_status_score  project
     if project.draft? then 1
@@ -64,23 +65,17 @@ class ProjectSortingService
     end
   end
 
-  def calculate_process_type_score project
-    if project.timeline?
-      1
-    elsif project.continuous?
-      2
-    else
-      3
-    end
-  end
-
   def calculate_active_score project
     pcs = ParticipationContextService.new
     pc = pcs.get_participation_context project
     if pc
-      1
+      if project.timeline?
+        1
+      else
+        2
+      end
     else
-      2
+      3
     end
   end
 
