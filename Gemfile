@@ -38,10 +38,6 @@ group :development, :test do
   gem 'simplecov-rcov'
 end
 
-group :development, :staging do
-  gem 'faker'
-end
-
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
@@ -106,6 +102,7 @@ gem "bunny", ">= 2.7.2"
 gem 'carrierwave-imageoptimizer'
 gem 'scenic'
 gem 'acts_as_list'
+gem 'faker'
 
 # Using a fork while waiting for release/merge of these 2 PRs
 # https://github.com/seejohnrun/ice_cube/pull/458
