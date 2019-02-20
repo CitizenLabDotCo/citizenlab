@@ -38,7 +38,7 @@ const AgeChart = (props: Props & InjectedIntlProps) => {
             const age = currentYear - parseInt(birthYear, 10);
 
             if (age >= minAge && age <= maxAge) {
-              numberOfUsers = userCount;
+              numberOfUsers += userCount;
             }
           });
 
