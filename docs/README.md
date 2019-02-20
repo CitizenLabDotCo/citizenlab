@@ -8,10 +8,12 @@
 - The user statistics on the admin dashboard are back to the correct values
 - Creating a new project page as an admin does not result in a blank page anymore
 - Improved saving behaviour when saving images in a phase's description
+- When logged in and visiting a url containing another locale than the one you previously picked, your locale choice is no longer overwritten
 
 ### Added
 
 - Project copy feature (in admin HQ) now also supports copying ideas (including comments and votes) and allows you to specify a new slug for the project URL
+- Unlogged users locale preference is saved in their browser
 
 ## 2019-02-14
 
