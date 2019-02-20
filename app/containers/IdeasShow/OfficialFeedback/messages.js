@@ -49,8 +49,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.OfficialFeedback.updateMessageError',
     defaultMessage: 'Please try again later or report the issue',
   },
-  updateMessaageSuccess: {
-    id: 'app.components.IdeasShow.OfficialFeedback.updateMessaageSuccess',
+  updateMessageSuccess: {
+    id: 'app.components.IdeasShow.OfficialFeedback.updateMessageSuccess',
     defaultMessage: 'Your update was successfuly saved !',
   },
   cancel: {
