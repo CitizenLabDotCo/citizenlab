@@ -1,6 +1,6 @@
 require "rails_helper"
 
-describe TimelineService do
+describe ParticipantsService do
   let(:service) { ParticipantsService.new }
 
   describe "participants" do
