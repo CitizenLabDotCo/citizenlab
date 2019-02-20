@@ -289,6 +289,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
 
         if (phase && !isEmpty(attributeDiff)) {
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
+          this.setState({ attributeDiff: {} });
         } else if (projectId && !isEmpty(attributeDiff)) {
           phaseResponse = await addPhase(projectId, attributeDiff);
           redirect = true;
@@ -306,7 +307,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
         }
 
         this.setState({
-          attributeDiff: {},
           phaseFilesToRemove: [],
           saving: false,
           saved: true,
