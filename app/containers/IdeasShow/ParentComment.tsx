@@ -15,6 +15,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { updateComment } from 'services/comments';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -23,6 +24,7 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -35,23 +37,13 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, fontSizes } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
   margin-right: 1rem;
   width: 1em;
-`;
-
-const StyledMoreActionsMenu = styled(CommentsMoreActions)`
-  position: absolute;
-  top: 10px;
-  right: 20px;
-
-  ${media.smallerThanMinTablet`
-    top: 4px;
-    right: 10px;
-  `}
 `;
 
 const Container = styled.div`
@@ -87,8 +79,59 @@ const CommentContainerInner = styled.div`
   }
 `;
 
-const StyledAuthor = styled(Author)`
+const Header = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
   margin-bottom: 20px;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+  `}
+`;
+
+const StyledAuthor = styled(Author)`
+  margin-right: 20px;
+  ${media.smallerThanMinTablet`
+    align-self: flex-start;
+    order: 2;
+  `}
+`;
+
+const Extra = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+
+  ${media.smallerThanMinTablet`
+    order: 1;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  `}
+`;
+
+const Badge = styled.span`
+  color: ${colors.clRed};
+  font-size: ${fontSizes.xs}px;
+  line-height: 16px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 600;
+  background-color: ${lighten(.45, colors.clRed)};
+  border: none;
+  padding: 4px 8px;
+  height: 24px;
+  margin-right: 5px;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledMoreActionsMenu = styled(CommentsMoreActions)`
+  ${media.smallerThanMinTablet`
+    margin-left: auto;
+  `}
 `;
 
 export const TranslateButton = styled.button`
@@ -228,16 +271,34 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
                 {comment.attributes.publication_status === 'published' &&
                   <>
-                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-                    <StyledAuthor
-                      authorId={authorId}
-                      notALink={authorId ? false : true}
-                      createdAt={createdAt}
-                      size="40px"
-                      message={messages.parentCommentAuthor}
-                      projectId={projectId}
-                      showModeration
-                    />
+                    <Header>
+                      <StyledAuthor
+                        authorId={authorId}
+                        notALink={authorId ? false : true}
+                        createdAt={createdAt}
+                        size="40px"
+                        message={messages.parentCommentAuthor}
+                        projectId={projectId}
+                        showModeration
+                      />
+                      <Extra>
+                        <GetUser id={authorId}>
+                          {author => {
+                            const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+                            if (authorCanModerate) {
+                              return (
+                                <Badge>
+                                  <FormattedMessage {...messages.official} />
+                                </Badge>
+                              );
+                            }
+
+                            return null;
+                          }}
+                        </GetUser>
+                        <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                      </Extra>
+                    </Header>
                     <CommentBody
                       commentBody={comment.attributes.body_multiloc}
                       editionMode={this.state.editionMode}

@@ -27,6 +27,7 @@ import styled from 'styled-components';
 
 const ButtonsWrapper = styled.div`
   display: flex;
+  align-items: center;
   justify-content: flex-start;
   margin-top: 1rem;
   width: 100%;

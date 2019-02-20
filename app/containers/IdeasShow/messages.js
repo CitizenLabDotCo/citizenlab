@@ -361,5 +361,9 @@ export default defineMessages({
   updateMessaageSuccess: {
     id: 'app.components.IdeasShow.updateMessaageSuccess',
     defaultMessage: 'Your update was successfuly saved !',
-  }
+  },
+  official: {
+    id: 'app.components.IdeasShow.official',
+    defaultMessage: 'Official',
+  },
 });
