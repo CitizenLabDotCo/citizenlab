@@ -326,38 +326,6 @@ export default defineMessages({
     id: 'app.components.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
-  editOfficialFeedbackPost: {
-    id: 'app.components.IdeasShow.editOfficialFeedbackPost',
-    defaultMessage: 'Edit',
-  },
-  loadPreviousUpdates: {
-    id: 'app.components.IdeasShow.loadPreviousUpdates',
-    defaultMessage: 'Load previous updates',
-  },
-  officialNamePlaceholder: {
-    id: 'app.components.IdeasShow.officialNamePlaceholder',
-    defaultMessage: 'Your name or title',
-  },
-  officialFeedbackPlaceholder: {
-    id: 'app.components.IdeasShow.officialFeedbackPlaceholder',
-    defaultMessage: 'Give an update about this idea status and processing',
-  },
-  updateButtonSave: {
-    id: 'app.components.IdeasShow.updateButtonSave',
-    defaultMessage: 'Give an update',
-  },
-  updateButtonError: {
-    id: 'app.components.IdeasShow.updateButtonError',
-    defaultMessage: 'Sorry, there was a problem',
-  },
-  updateButtonSuccess: {
-    id: 'app.components.IdeasShow.updateButtonSuccess',
-    defaultMessage: 'Update saved!',
-  },
-  updateMessageError: {
-    id: 'app.components.IdeasShow.updateMessageError',
-    defaultMessage: 'Please try again later or report the issue',
-  },
   official: {
     id: 'app.components.IdeasShow.official',
     defaultMessage: 'Official',
