@@ -87,6 +87,14 @@ class Project < ApplicationRecord
     publication_status == 'archived'
   end
 
+  def published?
+    publication_status == 'published'
+  end
+
+  def draft?
+    publication_status == 'draft'
+  end
+
   def project
     self
   end
