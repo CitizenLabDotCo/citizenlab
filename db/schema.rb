@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_29_100321) do
+ActiveRecord::Schema.define(version: 2019_02_20_152327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -685,6 +685,55 @@ ActiveRecord::Schema.define(version: 2019_01_29_100321) do
              FROM votes
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+  SQL
+
+  create_view "project_sort_scores",  sql_definition: <<-SQL
+      SELECT sub.id AS project_id,
+      concat(sub.status_score, sub.active_score) AS score
+     FROM ( SELECT projects.id,
+                  CASE projects.publication_status
+                      WHEN 'draft'::text THEN 1
+                      WHEN 'published'::text THEN 2
+                      WHEN 'archived'::text THEN 3
+                      ELSE 4
+                  END AS status_score,
+                  CASE projects.publication_status
+                      WHEN 'archived'::text THEN 3
+                      ELSE
+                      CASE projects.process_type
+                          WHEN 'continuous'::text THEN 2
+                          WHEN 'timeline'::text THEN
+                          CASE
+                              WHEN (EXISTS ( SELECT 1
+                                 FROM phases
+                                WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date) AND (phases.id = projects.id)))) THEN 1
+                              ELSE 3
+                          END
+                          ELSE NULL::integer
+                      END
+                  END AS active_score
+             FROM projects,
+              ( SELECT phases.id,
+                      phases.project_id,
+                      phases.title_multiloc,
+                      phases.description_multiloc,
+                      phases.start_at,
+                      phases.end_at,
+                      phases.created_at,
+                      phases.updated_at,
+                      phases.participation_method,
+                      phases.posting_enabled,
+                      phases.commenting_enabled,
+                      phases.voting_enabled,
+                      phases.voting_method,
+                      phases.voting_limited_max,
+                      phases.survey_embed_url,
+                      phases.survey_service,
+                      phases.presentation_mode,
+                      phases.max_budget
+                     FROM phases
+                    WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases
+            WHERE (active_phases.project_id = projects.id)) sub;
   SQL
 
 end

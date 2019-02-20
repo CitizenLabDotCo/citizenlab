@@ -138,7 +138,32 @@ describe ProjectSortingService do
         expect(sorted_projects.size).to eq Project.count
         # expect(sorted_projects.pluck(:slug)).to eq projects.map(&:slug)
         expect(sorted_projects.map(&:slug)).to eq projects.map(&:slug)
+        projects.each do |project|
+          expect(project.project_sort_score.score).to eq service.sort_score(project)
+        end
       end
     end
   end
+
+  # describe "project_sort_scores database view" do
+  #   it "generates the same scores than the ruby implementation" do
+  #     t = Time.now
+
+  #     projects = [
+  #       create(:project_with_current_phase,
+  #         phases_config: { sequence: 'xcx' },
+  #         current_phase_attrs: {
+  #           start_at: t-2.weeks,
+  #           end_at: t+2.weeks,
+  #           participation_method: 'ideation',
+  #           posting_enabled: false
+  #         }
+  #       )
+  #     ]
+
+  #     projects.each do |project|
+  #       expect(project.project_sort_score.score).to eq service.sort_score(project)
+  #     end
+  #   end
+  # end
 end
