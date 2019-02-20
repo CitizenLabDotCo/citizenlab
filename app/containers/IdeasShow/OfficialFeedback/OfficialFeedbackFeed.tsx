@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import T from 'components/T';
-import Edit from './Form/Edit';
+import Edit from './Form/OfficialFeedbackEdit';
 
 // resources
 import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
-import messages from '../messages';
+import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const OfficialFeedbackPost = styled.div`
@@ -72,12 +72,14 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props, State> {
+
   changeForm = (postId: string) => () => {
     this.props.showForm(postId);
   }
+
   render() {
     const { officialFeedback, editingAllowed, editingPost } = this.props;
-    console.log(editingPost);
+
     if (officialFeedback) {
       const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = officialFeedback;
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { updateOfficialFeedback, IOfficialFeedbackData } from 'services/officialFeedback';
 
 import { Formik } from 'formik';
-import OfficialFeedbackForm, { FormValues } from './';
+import OfficialFeedbackForm, { FormValues } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 
 interface Props {
