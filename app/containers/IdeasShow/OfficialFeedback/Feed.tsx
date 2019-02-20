@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 
 // resources
-import GetAdminFeedback, { GetAdminFeedbackChildProps } from 'resources/GetAdminFeedback';
+import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
 
 // styles
 import styled from 'styled-components';
@@ -60,7 +60,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  officialFeedback: GetAdminFeedbackChildProps;
+  officialFeedback: GetOfficialFeedbackChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -70,16 +70,16 @@ interface State {}
 class OfficialFeedbackFeed extends PureComponent<Props, State> {
   render() {
     if (this.props.officialFeedback) {
-      const { adminFeedbackList, querying, hasMore, loadingMore, onLoadMore } = this.props.officialFeedback;
+      const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = this.props.officialFeedback;
 
       return (
         <>
-          {!isNilOrError(adminFeedbackList) && adminFeedbackList.map(adminFeedbackPost => {
-            const bodyTextMultiloc = adminFeedbackPost.attributes.body_multiloc;
-            const authorNameMultiloc = adminFeedbackPost.attributes.author_multiloc;
+          {!isNilOrError(officialFeedbackList) && officialFeedbackList.map(officialFeedbackPost => {
+            const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
+            const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
 
             return (
-              <OfficialFeedbackPost key={adminFeedbackPost.id}>
+              <OfficialFeedbackPost key={officialFeedbackPost.id}>
                 <EditPostButton
                   fullWidth={false}
                   style="text"
@@ -123,7 +123,7 @@ class OfficialFeedbackFeed extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  officialFeedback: ({ ideaId, render }) => <GetAdminFeedback ideaId={ideaId}>{render}</GetAdminFeedback>,
+  officialFeedback: ({ ideaId, render }) => <GetOfficialFeedback ideaId={ideaId}>{render}</GetOfficialFeedback>,
 });
 
 export default (inputProps: InputProps) => (

@@ -2,7 +2,7 @@ import React from 'react';
 import { get, isString, isNil, isError } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, mergeScan, map, filter, tap } from 'rxjs/operators';
-import { IAdminFeedback, IAdminFeedbackData, adminFeedbackForIdeaStream } from 'services/adminFeedback';
+import { IOfficialFeedback, IOfficialFeedbackData, officialFeedbackForIdeaStream } from 'services/officialFeedback';
 
 export interface InputProps {
   ideaId: string | null;
@@ -10,28 +10,28 @@ export interface InputProps {
 
 interface IAccumulator {
   hasMore: boolean;
-  adminFeedbackList: IAdminFeedbackData[] | null | Error;
+  officialFeedbackList: IOfficialFeedbackData[] | null | Error;
 }
 
-type children = (renderProps: GetAdminFeedbackChildProps) => JSX.Element | null;
+type children = (renderProps: GetOfficialFeedbackChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
-export type GetAdminFeedbackChildProps = State & {
+export type GetOfficialFeedbackChildProps = State & {
   onLoadMore: () => void;
 };
 
 interface State {
   pageNumber: number;
-  adminFeedbackList: IAdminFeedbackData[] | null | Error;
+  officialFeedbackList: IOfficialFeedbackData[] | null | Error;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;
 }
 
-export default class GetAdminFeedback extends React.Component<Props, State> {
+export default class GetOfficialFeedback extends React.Component<Props, State> {
   private initialState: State;
   private ideaId$: BehaviorSubject<string | null>;
   private pageNumber$: BehaviorSubject<number>;
@@ -41,7 +41,7 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
     super(props);
     const initialState = {
       pageNumber: 1,
-      adminFeedbackList: null,
+      officialFeedbackList: null,
       hasMore: false,
       querying: true,
       loadingMore: false
@@ -74,39 +74,39 @@ export default class GetAdminFeedback extends React.Component<Props, State> {
                 loadingMore: isLoadingMore,
               });
 
-              return adminFeedbackForIdeaStream(ideaId as string, { queryParameters }).observable.pipe(
-                map((adminFeedback: IAdminFeedback | Error) => {
-                  const selfLink = get(adminFeedback, 'links.self');
-                  const lastLink = get(adminFeedback, 'links.last');
+              return officialFeedbackForIdeaStream(ideaId as string, { queryParameters }).observable.pipe(
+                map((officialFeedback: IOfficialFeedback | Error) => {
+                  const selfLink = get(officialFeedback, 'links.self');
+                  const lastLink = get(officialFeedback, 'links.last');
                   const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-                  let adminFeedbackList: IAdminFeedbackData[] | null | Error = null;
+                  let officialFeedbackList: IOfficialFeedbackData[] | null | Error = null;
 
-                  if (isError(adminFeedback)) {
-                    adminFeedbackList = adminFeedback;
-                  } else if (isError(acc.adminFeedbackList)) {
-                    adminFeedbackList = acc.adminFeedbackList;
-                  } else if (isLoadingMore && !isNil(acc.adminFeedbackList)) {
-                    adminFeedbackList = [...acc.adminFeedbackList, ...adminFeedback.data];
+                  if (isError(officialFeedback)) {
+                    officialFeedbackList = officialFeedback;
+                  } else if (isError(acc.officialFeedbackList)) {
+                    officialFeedbackList = acc.officialFeedbackList;
+                  } else if (isLoadingMore && !isNil(acc.officialFeedbackList)) {
+                    officialFeedbackList = [...acc.officialFeedbackList, ...officialFeedback.data];
                   } else {
-                    adminFeedbackList = adminFeedback.data;
+                    officialFeedbackList = officialFeedback.data;
                   }
 
                   return {
-                    adminFeedbackList,
+                    officialFeedbackList,
                     hasMore
                   };
                 })
               );
             }, {
-              adminFeedbackList: null,
+              officialFeedbackList: null,
               hasMore: false
             })
           );
         })
-      ).subscribe(({ hasMore, adminFeedbackList }) => {
+      ).subscribe(({ hasMore, officialFeedbackList }) => {
         this.setState({
           hasMore,
-          adminFeedbackList,
+          officialFeedbackList,
           querying: false,
           loadingMore: false
         });

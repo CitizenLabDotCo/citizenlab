@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { addAdminFeedbackToIdea } from 'services/adminFeedback';
+import { addOfficialFeedbackToIdea } from 'services/officialFeedback';
 
 import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues } from './';
@@ -12,13 +12,15 @@ interface Props {
 
 export default class OfficialFeedbackNew extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
+  handleSubmit = (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
     const { ideaId } = this.props;
     setSubmitting(true);
-    addAdminFeedbackToIdea(ideaId, values)
+    addOfficialFeedbackToIdea(ideaId, values)
       .then(() => {
         setSubmitting(false);
+        resetForm();
       }).catch((errorResponse) => {
+
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);

@@ -38,7 +38,7 @@ import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
 import SimilarIdeas from './SimilarIdeas';
-import AdminFeedback from './AdminFeedback';
+import OfficialFeedback from './OfficialFeedback';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -421,7 +421,7 @@ const TranslateButton = styled(Button)`
 const IdeaBody = styled.div`
 `;
 
-const AdminFeedbackWrapper = styled.div`
+const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-bottom: 112px;
 `;
 
@@ -1117,12 +1117,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 />
 
                 {project &&
-                  <AdminFeedbackWrapper>
-                    <AdminFeedback
-                      project={project}
-                      ideaId={ideaId}
-                    />
-                  </AdminFeedbackWrapper>
+                  <StyledOfficialFeedback
+                    project={project}
+                    ideaId={ideaId}
+                  />
                 }
 
                 <CommentsTitle>
