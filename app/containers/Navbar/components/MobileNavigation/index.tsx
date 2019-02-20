@@ -5,9 +5,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -83,15 +82,13 @@ interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  location: GetLocationChildProps;
-}
+interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class MobileNavigation extends PureComponent<Props, State> {
+class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location, className } = this.props;
     const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
@@ -132,12 +129,4 @@ class MobileNavigation extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  location: <GetLocation />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <MobileNavigation {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default withRouter<Props>(MobileNavigation);
