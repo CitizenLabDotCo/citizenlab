@@ -21,6 +21,10 @@ import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedDate } from 'react-intl';
 
+const Container = styled.div`
+  margin-bottom: 100px;
+`;
+
 const OfficialFeedbackPost = styled.div`
   display: flex;
   flex-direction: column;
@@ -101,7 +105,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
       const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = officialFeedback;
 
       return (
-        <>
+        <Container>
           {!isNilOrError(officialFeedbackList) && officialFeedbackList.map(officialFeedbackPost => {
             const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
             const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
@@ -149,7 +153,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               borderColor="#ccc"
             />
           }
-        </>
+        </Container>
       );
     }
 

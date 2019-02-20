@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -11,9 +11,13 @@ import Button, { ButtonStyles, Props as OriginalButtonProps } from 'components/U
 import { Omit } from 'typings';
 import { omit } from 'lodash-es';
 
-const Wrapper = styled.div`
+const Wrapper: any = styled.div`
   display: flex;
   align-items: center;
+  ${(props: any) => props.fullWidth ? css`
+    width: 100%;
+    flex: 1;
+  ` : ''}
 `;
 
 const Message = styled.p`
@@ -72,7 +76,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
     const buttonProps = omit(this.props, ['className', 'style', 'processing', 'disabled', 'onClick', 'setSubmitButtonRef', 'messages']);
 
     return (
-      <Wrapper>
+      <Wrapper fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           style={style}
