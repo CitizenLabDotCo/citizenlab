@@ -56,5 +56,9 @@ export default defineMessages({
   cancel: {
     id: 'app.components.IdeasShow.OfficialFeedback.cancel',
     defaultMessage: 'Cancel',
+  },
+  official: {
+    id: 'app.components.IdeasShow.OfficialFeedback.official',
+    defaultMessage: 'Official',
   }
 });

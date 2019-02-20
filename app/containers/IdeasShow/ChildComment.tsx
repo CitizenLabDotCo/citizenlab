@@ -5,10 +5,9 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Author from 'components/Author';
 import CommentBody from './CommentBody';
-import { TranslateButton } from './ParentComment';
 import FeatureFlag from 'components/FeatureFlag';
+import { Extra, Header, Badge, Spacer, StyledMoreActionsMenu, StyledAuthor, TranslateButton } from './CommentsStyles';
 
 // services
 import { updateComment } from 'services/comments';
@@ -24,34 +23,18 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import CommentsMoreActions from './CommentsMoreActions';
 import { CLErrorsJSON } from 'typings';
-import { media } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-const StyledMoreActionsMenu = styled(CommentsMoreActions)`
-  position: absolute;
-  top: 10px;
-  right: 20px;
-
-  ${media.smallerThanMinTablet`
-    top: 4px;
-    right: 10px;
-  `}
-`;
+import GetUser from 'resources/GetUser';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 const CommentContainer = styled.div`
   padding: 20px;
   border-top: solid 1px #d0d0d0;
   position: relative;
-`;
-
-const StyledAuthor = styled(Author)`
-  margin-bottom: 20px;
-  margin-right: 60px;
 `;
 
 interface ITracks {
@@ -149,21 +132,38 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
 
       return (
         <CommentContainer className={className}>
-          <StyledMoreActionsMenu
-            comment={comment}
-            onCommentEdit={this.onCommentEdit}
-            projectId={projectId}
-          />
 
-          <StyledAuthor
-            authorId={authorId}
-            notALink={authorId ? false : true}
-            createdAt={createdAt}
-            message={messages.childCommentAuthor}
-            size="40px"
-            projectId={projectId}
-            showModeration
-          />
+          <Header>
+            <StyledAuthor
+              authorId={authorId}
+              notALink={authorId ? false : true}
+              createdAt={createdAt}
+              message={messages.childCommentAuthor}
+              size="40px"
+              projectId={projectId}
+              showModeration
+            />
+            <Extra>
+              <GetUser id={authorId}>
+                {author => {
+                  const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+                  if (authorCanModerate) {
+                    return (
+                      <>
+                      <Spacer/>
+                        <Badge>
+                          <FormattedMessage {...messages.official} />
+                        </Badge>
+                      </>
+                    );
+                  }
+
+                  return null;
+                }}
+              </GetUser>
+              <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+            </Extra>
+          </Header>
 
           <CommentBody
             commentBody={comment.attributes.body_multiloc}

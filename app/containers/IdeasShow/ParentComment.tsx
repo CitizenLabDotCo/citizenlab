@@ -39,6 +39,7 @@ import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+import { Header, StyledAuthor, Extra, Spacer, Badge, StyledMoreActionsMenu } from './CommentsStyles';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -76,72 +77,6 @@ const CommentContainerInner = styled.div`
     display: flex;
     font-style: italic;
     font-weight: 500;
-  }
-`;
-
-const Header = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 20px;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-  `}
-`;
-
-const StyledAuthor = styled(Author)`
-  margin-right: 20px;
-  ${media.smallerThanMinTablet`
-    align-self: flex-start;
-    order: 2;
-  `}
-`;
-
-const Extra = styled.div`
-  display: flex;
-  align-items: center;
-  padding-top: 5px;
-
-  ${media.smallerThanMinTablet`
-    order: 1;
-    width: 100%;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  `}
-`;
-
-const Badge = styled.span`
-  color: ${colors.clRed};
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  background-color: ${lighten(.45, colors.clRed)};
-  border: none;
-  padding: 4px 8px;
-  height: 24px;
-  margin-right: 5px;
-  display: flex;
-  align-items: center;
-`;
-
-const StyledMoreActionsMenu = styled(CommentsMoreActions)`
-  ${media.smallerThanMinTablet`
-    margin-left: auto;
-  `}
-`;
-
-export const TranslateButton = styled.button`
-  padding: 0;
-  color: ${colors.clBlue};
-  text-decoration: underline;
-  margin-top: 10px;
-
-  &:hover {
-    cursor: pointer;
   }
 `;
 
@@ -287,9 +222,12 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                             const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
                             if (authorCanModerate) {
                               return (
-                                <Badge>
-                                  <FormattedMessage {...messages.official} />
-                                </Badge>
+                                <>
+                                <Spacer/>
+                                  <Badge>
+                                    <FormattedMessage {...messages.official} />
+                                  </Badge>
+                                </>
                               );
                             }
 
@@ -299,6 +237,7 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                         <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                       </Extra>
                     </Header>
+
                     <CommentBody
                       commentBody={comment.attributes.body_multiloc}
                       editionMode={this.state.editionMode}
