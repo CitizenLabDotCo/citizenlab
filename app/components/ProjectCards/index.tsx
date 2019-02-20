@@ -26,8 +26,10 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
 import { darken, rgba } from 'polished';
+
+const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
 
 const Container = styled.div`
   display: flex;
@@ -37,11 +39,11 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  background: #fff;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
 `;
 
@@ -108,9 +110,9 @@ const EmptyContainer = styled.div`
   margin: 0;
   margin-bottom: 43px;
   border-radius: 5px;
-  background: #fff;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
   position: relative;
+  background: #fff;
+  border: solid 1px ${colors.separation};
 `;
 
 const EmptyProjectsImage = styled.img`
@@ -315,7 +317,6 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
-    const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant) && locale) {
@@ -375,7 +376,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
             {/* Hipster way to center and right-align the other two items in this container */}
             <SendFeedbackGhostItem showFeedbackText={true} />
 
-            {!querying && hasMore &&
+            {!querying && hasProjects && hasMore &&
               <ShowMoreButtonWrapper>
                 <ShowMoreButton
                   onClick={this.showMore}

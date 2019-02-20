@@ -47,10 +47,6 @@ const Container: any = styled.div`
   ${media.smallerThanMaxTablet`
     min-height: auto;
   `}
-
-  ${media.smallerThanMinTablet`
-    background: #f9f9fa;
-  `}
 `;
 
 const FooterBanner: any = styled.div`
@@ -98,7 +94,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
-  padding-bottom: 40px;
+  padding-bottom: 30px;
   background: ${colors.background};
   border-bottom: solid 1px #eaeaea;
 
@@ -234,7 +230,7 @@ class LandingPage extends PureComponent<Props, State> {
 
               {showCustomSection &&
                 <CustomSectionContentContainer>
-                  <QuillEditedContent>
+                  <QuillEditedContent fontSize="large">
                     <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
                       <T value={customSectionBodyMultiloc} supportHtml={true} />
                     </Fragment>

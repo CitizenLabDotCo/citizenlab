@@ -15,9 +15,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.clIconSecondary};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   transition: all 100ms ease-out;
+  margin-left: 8px;
 
   &:not(.show) {
     display: none;
@@ -25,11 +26,10 @@ const SendFeedbackText = styled.span`
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.clIconSecondary};
+  fill: ${colors.label};
   width: 22px;
   height: 22px;
   margin-top: 3px;
-  margin-right: 10px;
   transition: all 100ms ease-out;
 `;
 

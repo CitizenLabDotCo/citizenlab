@@ -44,6 +44,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #fff;
   border: solid 1px ${colors.separation};
 `;
 
@@ -133,7 +134,7 @@ const ViewButtons = styled.div`
   display: flex;
 
   &.cardView {
-    margin-left: 30px;
+    margin-left: 35px;
 
     ${media.smallerThanMinTablet`
       margin-left: 0px;
@@ -142,28 +143,34 @@ const ViewButtons = styled.div`
 `;
 
 const ViewButton = styled.div`
-  min-width: 85px;
-  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: #fff;
-  border: solid 1px ${colors.separation};
+  background: transparent;
+  border: solid 1px ${(props) => props.theme.colorMain};
 
-  &:hover,
-  &.active {
+  &:not(.active):hover {
     background: #f0f0f0;
   }
 
+  &.active {
+    background: ${(props) => props.theme.colorMain};
+
+    > span {
+      color: #fff;
+    }
+  }
+
   > span {
-    color: ${(props) => props.theme.colors.label};
-    color: #333;
-    font-size: ${fontSizes.medium}px;
+    color: ${(props) => props.theme.colorText};
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
-    line-height: 24px;
-    padding-left: 15px;
-    padding-right: 15px;
+    line-height: normal;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 11px;
+    padding-bottom: 11px;
   }
 
   ${media.smallerThanMinTablet`
@@ -174,6 +181,7 @@ const ViewButton = styled.div`
 const CardsButton = ViewButton.extend`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  border-right: none;
 `;
 
 const MapButton = ViewButton.extend`
@@ -212,14 +220,15 @@ const EmptyContainer = styled.div`
   margin: 0;
   padding-top: 100px;
   padding-bottom: 100px;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
+  border: solid 1px ${colors.separation};
+  border-radius: 5px;
 `;
 
 const IdeaIcon = styled(Icon)`
-  height: 45px;
-  fill: #999;
+  width: 43px;
+  height: 43px;
+  fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
@@ -230,10 +239,10 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: #767676;
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
-  line-height: 22px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
   text-align: center;
 `;
 
@@ -341,12 +350,12 @@ class IdeaCards extends PureComponent<Props, State> {
             {showViewToggle &&
               <FeatureFlag name="maps">
                 <ViewButtons className={`${showCardView && 'cardView'}`}>
-                    <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                      <FormattedMessage {...messages.cards} />
-                    </CardsButton>
-                    <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                      <FormattedMessage {...messages.map} />
-                    </MapButton>
+                  <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
+                    <FormattedMessage {...messages.cards} />
+                  </CardsButton>
+                  <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
+                    <FormattedMessage {...messages.map} />
+                  </MapButton>
                 </ViewButtons>
               </FeatureFlag>
             }

@@ -53,8 +53,7 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid #EAEAEA;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
   z-index: 999;
   -webkit-transform: translateZ(0);
 
@@ -290,7 +289,7 @@ const RightItem: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 40px;
+  margin-left: 42px;
   white-space: nowrap;
 
   &.noLeftMargin {
@@ -334,7 +333,7 @@ const SignUpLink = NavigationItem.extend`
 `;
 
 const StyledLanguageSelector = styled(LanguageSelector)`
-  padding-left: 40px;
+  padding-left: 36px;
 
   &.notLoggedIn {
     padding-left: 20px;

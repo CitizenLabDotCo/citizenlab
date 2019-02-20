@@ -190,7 +190,11 @@ export const stylingConsts = {
 };
 
 // Reusable text styling
-export function quillEditedContent(fontSize: 'base' | 'medium' | 'large' = 'base') {
+export function quillEditedContent(
+  fontSize: 'base' | 'medium' | 'large' = 'base',
+  color: string = colors.text,
+  fontWeight: 300 | 400 = 300
+) {
   let lineHeight = 27;
 
   switch (fontSize) {
@@ -203,10 +207,13 @@ export function quillEditedContent(fontSize: 'base' | 'medium' | 'large' = 'base
   }
 
   const defaultFontStyle = `
-    color: ${colors.text};
+    color: ${color};
     font-size: ${fontSizes[fontSize]}px;
-    font-weight: 300;
+    font-weight: ${fontWeight};
     line-height: ${lineHeight}px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
   `;
 
   return`

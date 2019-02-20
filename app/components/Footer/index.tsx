@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import MediaQuery from 'react-responsive';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -27,6 +28,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
+import { darken } from 'polished';
 import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
@@ -79,10 +81,10 @@ const SecondLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
   position: relative;
+  background: #fff;
+  border-top: 5px solid ${darken(0.02, colors.adminBackground)};
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -94,37 +96,53 @@ const SecondLine = styled.div`
   ${media.smallerThanMinTablet`
     padding: 20px;
     padding-bottom: 30px;
-    padding-top: 50px;
+    padding-top: 30px;
+    border-top: none;
   `}
 `;
 
 const ShortFeedback = styled.div`
+  width: 100%;
+  background: ${colors.background};
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 13px 25px;
-  background-color: ${colors.adminBackground};
-  color: ${(props) => props.theme.colorText};
-  position: absolute;
-  top: -49px;
-  left: 0;
+
+  &:not(.whiteBg) {
+    margin-top: 50px;
+
+    ${media.smallerThanMinTablet`
+      margin-top: 0px;
+  ` }
+  }
+
+  &.whiteBg {
+    background: #fff;
+
+    ${media.smallerThanMinTablet`
+      background: ${darken(0.02, colors.adminBackground)};
+    `}
+  }
 
   ${media.smallerThanMinTablet`
-    width: 100%;
+    background: ${darken(0.02, colors.adminBackground)};
+    justify-content: center;
   `}
 `;
 
-const ThankYouNote = styled.span`
-  display: block;
-  padding: 1.5px 0;
+const ShortFeedbackInner = styled.div`
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  font-weight: 600;
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  padding: 13px 25px;
+  background: ${darken(0.02, colors.adminBackground)};
+`;
+
+const ThankYouNote = styled.span`
+  font-weight: 500;
 `;
 
 const FeedbackQuestion = styled.span`
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  text-align: left;
   margin-right: 12px;
 
   ${media.smallerThanMinTablet`
@@ -141,7 +159,7 @@ const FeedbackButton = styled.button`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.colorText};
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   padding: 0 12px;
   margin-bottom: -3px;
@@ -218,19 +236,14 @@ const StyledLink = StyledThing.withComponent(Link);
 const Right = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 20px;
 
   ${media.smallerThanMaxTablet`
     order: 1;
-    padding: 0px;
-    margin: 0px;
     margin-top: 15px;
   `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
-    padding: 0px;
-    margin: 0px;
   `}
 `;
 
@@ -245,10 +258,6 @@ const PoweredBy = styled.div`
   padding: 10px 25px 10px 0;
   margin-right: 30px;
   border-right: 1px solid #E8E8E8;
-
-  ${media.smallerThanMaxTablet`
-    color: #333;
-  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -287,7 +296,7 @@ const CitizenlabName = styled.span`
 const CitizenlabLogo: any = styled.svg`
   width: 151px;
   height: 27px;
-  fill: ${colors.clIconSecondary};
+  fill: ${colors.label};
   transition: all 150ms ease-out;
 
   &:hover {
@@ -321,7 +330,7 @@ type State = {
   shortFeedbackButtonClicked: boolean;
 };
 
-class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRouterProps, State> {
   static displayName = 'Footer';
   subscriptions: Subscription[];
 
@@ -377,6 +386,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
 
   render() {
     const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
+    const { location } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
@@ -389,6 +399,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
+      const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
@@ -406,8 +417,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
             </Fragment>
           }
 
-          <SecondLine>
-            <ShortFeedback>
+          <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
+            <ShortFeedbackInner>
               {shortFeedbackButtonClicked ?
                 <ThankYouNote>
                   <FormattedMessage {...messages.thanksForFeedback} />
@@ -427,8 +438,10 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                   </Buttons>
                 </>
               }
-            </ShortFeedback>
+            </ShortFeedbackInner>
+          </ShortFeedback>
 
+          <SecondLine>
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug) => (
@@ -470,7 +483,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
   }
 }
 
-const WrappedFooter = injectTracks<Props>(tracks)(injectIntl(Footer));
+const WrappedFooter = withRouter<Props>(injectTracks<Props>(tracks)(injectIntl(Footer)));
 Object.assign(WrappedFooter).displayName = 'WrappedFooter';
 
 export default WrappedFooter;
