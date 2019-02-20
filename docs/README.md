@@ -6,7 +6,7 @@
 
 - User digest email events are sent out again
 - The user statistics on the admin dashboard are back to the correct values
-- Creating a new project as an admin does not result in a blank page anymore
+- Creating a new project page as an admin does not result in a blank page anymore
 
 ### Added
 
