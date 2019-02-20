@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
 import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 
 import { Form, Field, FormikErrors, FormikProps } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
@@ -17,7 +17,6 @@ import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
 import { InjectedIntlProps } from 'react-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled from 'styled-components';
 
 export interface Props {
   locales: Locale[];
@@ -31,10 +30,6 @@ export interface FormValues extends MultilocFormValues {
 interface State {
   selectedLocale: Locale;
 }
-
-const StyledFormikSubmitWrapper = styled(FormikSubmitWrapper)`
-  margin-bottom: 30px;
-`;
 
 class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikProps<FormValues>, State> {
   constructor(props: Props & InjectedIntlProps) {
@@ -100,7 +95,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
           />}
         </Section>
 
-        <StyledFormikSubmitWrapper
+        <FormikSubmitWrapper
           bgColor={colors.clRed}
           icon="pen"
           textColor="white"

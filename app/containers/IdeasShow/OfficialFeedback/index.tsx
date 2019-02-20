@@ -1,15 +1,42 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // services
 import { IProject } from 'services/projects';
 
 // components
-import OfficialFeedbackNew from './Form/New';
-import Feed from './Feed';
+import OfficialFeedbackNew from './Form/OfficialFeedbackNew';
+import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+
+// resources
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
-import GetOfficialFeedback from 'resources/GetOfficialFeedback';
-import { adopt } from 'react-adopt';
+import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedDate } from 'react-intl';
+
+const FeedbackHeader = styled.div`
+  color: ${colors.clRed};
+  margin-top: 50px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const StyledSpan = styled.span`
+  font-weight: 500;
+`;
+
+const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
+  margin-bottom: 20px;
+`;
 
 interface InputProps {
   ideaId: string;
@@ -18,6 +45,7 @@ interface InputProps {
 
 interface DataProps {
   permission: GetPermissionChildProps;
+  officialFeedback: GetOfficialFeedbackChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -41,20 +69,34 @@ class OfficialFeedback extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, permission } = this.props;
+    const { ideaId, permission, officialFeedback } = this.props;
+    const { officialFeedbackList } = officialFeedback;
     const { editingPost } = this.state;
-    console.log(editingPost);
+    const updateDate = !isNilOrError(officialFeedbackList) && (officialFeedbackList[0].attributes.updated_at || officialFeedbackList[0].attributes.created_at);
+
     return (
       <>
+        <FeedbackHeader>
+          <h4>
+            <FormattedMessage {...messages.ideaUpdate} />
+          </h4>
+          {updateDate &&
+            <FormattedMessage
+              {...messages.lastUpdate}
+              values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
+            />
+          }
+        </FeedbackHeader>
+
         {permission && editingPost === 'new' &&
-          <OfficialFeedbackNew ideaId={ideaId}/>
+          <StyledOfficialFeedbackNew ideaId={ideaId}/>
         }
 
-        <Feed
+        <OfficialFeedbackFeed
+          ideaId={ideaId}
           showForm={this.switchForm}
           editingAllowed={permission}
           editingPost={editingPost}
-          ideaId={ideaId}
         />
       </>
     );
