@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost',
     defaultMessage: 'Edit',
   },
+  deleteOfficialFeedbackPost: {
+    id: 'app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost',
+    defaultMessage: 'delete',
+  },
+  deletionConfirmation: {
+    id: 'app.components.IdeasShow.OfficialFeedback.deletionConfirmation',
+    defaultMessage: 'Are you sure you want to delete this official update?',
+  },
   loadPreviousUpdates: {
     id: 'app.components.IdeasShow.OfficialFeedback.loadPreviousUpdates',
     defaultMessage: 'Load previous updates',
@@ -44,5 +52,9 @@ export default defineMessages({
   updateMessaageSuccess: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateMessaageSuccess',
     defaultMessage: 'Your update was successfuly saved !',
+  },
+  cancel: {
+    id: 'app.components.IdeasShow.OfficialFeedback.cancel',
+    defaultMessage: 'Cancel',
   }
 });

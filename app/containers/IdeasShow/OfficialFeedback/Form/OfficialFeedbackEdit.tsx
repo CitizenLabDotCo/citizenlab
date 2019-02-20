@@ -8,18 +8,18 @@ import { CLErrorsJSON } from 'typings';
 
 interface Props {
   feedback: IOfficialFeedbackData;
-  submitSuccessCallback: () => void;
+  closeForm: () => void;
 }
 
 export default class OfficialFeedbackNew extends React.Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
-    const { feedback: { id }, submitSuccessCallback } = this.props;
+    const { feedback: { id }, closeForm } = this.props;
     setSubmitting(true);
     updateOfficialFeedback(id, values)
       .then(() => {
         setSubmitting(false);
-        submitSuccessCallback();
+        closeForm();
       }).catch((errorResponse) => {
 
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
@@ -29,7 +29,7 @@ export default class OfficialFeedbackNew extends React.Component<Props> {
   }
 
   renderFn = (props) => {
-    return <OfficialFeedbackForm {...props} />;
+    return <OfficialFeedbackForm {...props} onCancel={this.props.closeForm}/>;
   }
 
   initialValues = () => ({
