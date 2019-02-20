@@ -22,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 import { Message } from 'typings';

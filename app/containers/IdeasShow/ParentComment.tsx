@@ -5,9 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ChildComment from './ChildComment';
-import Author from 'components/Author';
 import ChildCommentForm from './ChildCommentForm';
-import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
 import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
@@ -37,9 +35,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
-import { colors, media, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
-import { Header, StyledAuthor, Extra, Spacer, Badge, StyledMoreActionsMenu } from './CommentsStyles';
+import { Header, StyledAuthor, Extra, Spacer, Badge, StyledMoreActionsMenu, TranslateButton } from './CommentsStyles';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
