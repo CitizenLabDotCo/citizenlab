@@ -5,10 +5,12 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import T from 'components/T';
-import Edit from './Form/OfficialFeedbackEdit';
+import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
+import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 
 // resources
 import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
+import { deleteOfficialfeedback } from 'services/officialFeedback';
 
 // styles
 import styled from 'styled-components';
@@ -16,7 +18,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps, FormattedDate } from 'react-intl';
 
 const OfficialFeedbackPost = styled.div`
   display: flex;
@@ -28,10 +31,8 @@ const OfficialFeedbackPost = styled.div`
   margin-bottom: 10px;
 `;
 
-const EditPostButton = styled(Button)`
+const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   margin-left: auto;
-  text-decoration: underline;
-  padding: 0;
   margin-bottom: 10px;
 `;
 
@@ -71,11 +72,27 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class OfficialFeedbackFeed extends PureComponent<Props, State> {
+class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
 
   changeForm = (postId: string) => () => {
     this.props.showForm(postId);
   }
+
+  deletePost = (postId: string) => () => {
+    if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
+      deleteOfficialfeedback(postId);
+    }
+  }
+
+  getActions = (postId: string) => [
+    {
+      label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
+      handler: this.changeForm(postId),
+    },
+    {
+      label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
+      handler: this.deletePost(postId),
+    }] as IAction[]
 
   render() {
     const { officialFeedback, editingAllowed, editingPost } = this.props;
@@ -88,22 +105,16 @@ class OfficialFeedbackFeed extends PureComponent<Props, State> {
           {!isNilOrError(officialFeedbackList) && officialFeedbackList.map(officialFeedbackPost => {
             const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
             const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
-            console.log(editingPost === officialFeedbackPost.id);
-            console.log(officialFeedbackPost.id);
+
             return (
               <OfficialFeedbackPost key={officialFeedbackPost.id}>
                 {editingAllowed &&
-                  <EditPostButton
-                    fullWidth={false}
-                    style="text"
-                    textColor={colors.text}
-                    text={<FormattedMessage {...messages.editOfficialFeedbackPost} />}
-                    onClick={this.changeForm(officialFeedbackPost.id)}
-                  />}
+                  <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
+                }
                 {editingAllowed && editingPost === officialFeedbackPost.id ? (
-                    <Edit
+                    <OfficialFeedbackEdit
                       feedback={officialFeedbackPost}
-                      submitSuccessCallback={this.changeForm('new')}
+                      closeForm={this.changeForm('new')}
                     />
                   ) : (
                     <>
@@ -114,7 +125,7 @@ class OfficialFeedbackFeed extends PureComponent<Props, State> {
                         <Author>
                           <T value={authorNameMultiloc} />
                         </Author>
-                        <DatePosted>02 jan 2019</DatePosted>
+                        <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
                       </Footer>
                     </>
                   )
@@ -150,8 +161,10 @@ const Data = adopt<DataProps, InputProps>({
   officialFeedback: ({ ideaId, render }) => <GetOfficialFeedback ideaId={ideaId}>{render}</GetOfficialFeedback>,
 });
 
+const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <OfficialFeedbackFeed {...inputProps} {...dataProps} />}
+    {dataProps => <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -72,7 +72,9 @@ class OfficialFeedback extends PureComponent<Props, State> {
     const { ideaId, permission, officialFeedback } = this.props;
     const { officialFeedbackList } = officialFeedback;
     const { editingPost } = this.state;
-    const updateDate = !isNilOrError(officialFeedbackList) && (officialFeedbackList[0].attributes.updated_at || officialFeedbackList[0].attributes.created_at);
+    const updateDate = !isNilOrError(officialFeedbackList)
+      && officialFeedbackList.length > 0
+      && (officialFeedbackList[0].attributes.updated_at || officialFeedbackList[0].attributes.created_at);
 
     return (
       <>
