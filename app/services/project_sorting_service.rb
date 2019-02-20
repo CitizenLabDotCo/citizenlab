@@ -2,14 +2,25 @@ class ProjectSortingService
 
   def sort projects_scope
     if Tenant.current.has_feature? 'manual_project_sorting'
-      projects_scope
-        .publication_status_ordered
+      order_by_publication_status(projects_scope)
         .order(:ordering)
     else
-      sort_projects_automatic(projects_scope)
+      projects_scope
+        .joins(:project_sort_score)
+        .order(Arel.sql('project_sort_scores.score'))
     end
   end
 
+  def order_by_publication_status projects_scope
+    # Triggering a subquery instead of building on the scope, in order to make
+    # the order by play nicely with previous distinct operations
+    Project.where(id: projects_scope)
+    .distinct(false)
+    .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
+  end
+
+  # Slow ruby implementation, to help nail down the spec and test SQL
+  # implementation
   def sort_score project
     [
       calculate_status_score(project),
@@ -21,17 +32,6 @@ class ProjectSortingService
   end
 
   private
-
-  # Slow ruby implementation, to help nail down the spec
-  def sort_projects_automatic projects_scope
-    projects_scope.sort_by do |project|
-      sort_score(project)
-    end.tap do |projects|
-      projects.each{|project| puts sort_score(project)}
-    end
-
-  end
-
 
   def calculate_status_score  project
     if project.draft? then 1

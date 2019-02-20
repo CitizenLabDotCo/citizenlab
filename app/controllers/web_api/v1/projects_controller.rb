@@ -10,10 +10,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end.includes(:project_images, :phases)
-      .publication_status_ordered
-      .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
+
+    @projects = ProjectSortingService.new.sort(@projects)
       
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
