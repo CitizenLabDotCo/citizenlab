@@ -36,7 +36,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { IModalInfo } from 'containers/App';
@@ -145,43 +145,18 @@ const IdeaContainer = styled(Link)`
   height: 375px;
   margin-bottom: 24px;
   cursor: pointer;
-  position: relative;
-
-  ${media.biggerThanMaxTablet`
-    &::after {
-      content: '';
-      border-radius: 5px;
-      position: absolute;
-      z-index: -1;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.12);
-      transition: opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
-      will-change: opacity;
-    }
-
-    &:hover::after {
-      opacity: 1;
-    }
-  `};
-`;
-
-const IdeaContainerInner = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   border-radius: 5px;
   background: #fff;
-  border: solid 1px ${colors.separation};
   position: relative;
-  overflow: hidden;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
+  transition: all 200ms ease;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+    transform: translate(0px, -2px);
+  }
 `;
 
 const VotingDisabledWrapper = styled.div`
@@ -313,7 +288,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
-          <IdeaContainerInner>
             {ideaImageUrl &&
               <IdeaImageContainer>
                 <T value={idea.attributes.title_multiloc}>
@@ -407,7 +381,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
                 </AssignBudgetDisabledWrapper>
               </BottomBounceUp>
             }
-          </IdeaContainerInner>
         </IdeaContainer>
       );
     }

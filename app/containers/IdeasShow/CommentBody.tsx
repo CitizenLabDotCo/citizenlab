@@ -10,63 +10,32 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
+// i18n
 import { getLocalized } from 'utils/i18n';
 
 // Components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
 import styled from 'styled-components';
-import { transparentize, darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { transparentize } from 'polished';
+import { colors } from 'utils/styleUtils';
+
+// Typings
+import { Multiloc, Locale } from 'typings';
+import { IUpdatedComment } from 'services/comments';
 
 const CommentWrapper = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.base}px;
-  line-height: 25px;
-  font-weight: 300;
-  white-space: pre-line;
-
-  span,
-  p {
-    margin-bottom: 26px;
-
-    &:last-child {
-      margin-bottom: 10px;
-    }
-  }
-
-  a {
-    color: ${colors.clBlueDark};
-
-    &.mention {
-      background: ${transparentize(0.9, colors.clBlueDark)};
-      padding-left: 4px;
-      padding-right: 4px;
-
-      &:hover {
-        background: ${transparentize(0.8, colors.clBlueDark)};
-      }
-    }
-
-    &:not(.mention){
-      text-decoration: underline;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      word-break: break-all;
-      word-break: break-word;
-      hyphens: auto;
-
-      &:hover {
-        text-decoration: underline;
-        color: ${darken(0.15, colors.clBlueDark)};
-      }
-    }
+  .mention {
+    background: ${transparentize(0.9, colors.clBlueDark)};
+    padding-left: 4px;
+    padding-right: 4px;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      background: ${transparentize(0.8, colors.clBlueDark)};
     }
   }
 `;
@@ -84,10 +53,6 @@ const ButtonsWrapper = styled.div`
     margin-left: .5rem;
   }
 `;
-
-// Typings
-import { Multiloc, Locale } from 'typings';
-import { IUpdatedComment } from 'services/comments';
 
 interface InputProps {
   commentBody: Multiloc;
@@ -151,19 +116,21 @@ class CommentBody extends React.PureComponent<Props, State> {
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !editionMode) {
       return (
         <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>
-        {translateButtonClicked ?
-          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
-            {translation => {
-              if (!isNilOrError(translation)) {
-                return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
-              }
+          <QuillEditedContent>
+            {translateButtonClicked ?
+              <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
+                {translation => {
+                  if (!isNilOrError(translation)) {
+                    return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
+                  }
 
-              return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
-            }}
-          </GetMachineTranslation>
-          :
-          <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
-        }
+                  return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
+                }}
+              </GetMachineTranslation>
+              :
+              <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
+            }
+          </QuillEditedContent>
         </CommentWrapper>
       );
     }

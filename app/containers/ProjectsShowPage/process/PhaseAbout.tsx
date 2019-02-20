@@ -22,7 +22,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 const Container = styled.div`
   border-radius: 5px;
   padding: 40px;
-  background: ${darken(0.006, colors.background)};
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
@@ -30,7 +30,11 @@ const Container = styled.div`
   `}
 `;
 
-const InformationBody = styled.div``;
+const InformationBody = styled.div`
+  h1, h2, h3, h4 {
+    color: ${colors.text} !important;
+  }
+`;
 
 const StyledFileAttachments = styled(FileAttachments)`
   margin-top: 20px;
@@ -64,8 +68,8 @@ class PhaseAbout extends PureComponent<Props, State> {
         return (
           <Container className={className}>
             <InformationBody>
-              <QuillEditedContent>
-                <T value={phase.attributes.description_multiloc} supportHtml={true} />
+              <QuillEditedContent color="#5E6B75">
+                <T value={phase.attributes.description_multiloc} supportHtml={true} linkify={true} />
               </QuillEditedContent>
             </InformationBody>
             {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&

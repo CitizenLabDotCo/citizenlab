@@ -57,7 +57,7 @@ const NavigationLabel = styled.div`
   color: #999;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
-  margin-left: 6px;
+  margin-left: 5px;
 `;
 
 const NavigationItem = styled(Link)`
@@ -69,6 +69,7 @@ const NavigationItem = styled(Link)`
   &.active {
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
+
       .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary  {
         fill: ${(props) => props.theme.colorMain};
       }

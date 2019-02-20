@@ -363,6 +363,7 @@ const MetaItemText = styled.div`
 export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
+  className?: string;
 }
 
 interface DataProps {
@@ -396,9 +397,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const className = this.props['className'];
     const { visible } = this.state;
-    const { project, phase, size, projectImages, intl: { formatMessage } } = this.props;
+    const { project, phase, size, projectImages, intl: { formatMessage }, className } = this.props;
 
     if (!isNilOrError(project)) {
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);

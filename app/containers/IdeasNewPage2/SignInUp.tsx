@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -22,7 +22,7 @@ const Container = styled.div`
   flex-direction: row;
   align-items: stretch;
   border-top: solid 1px #ddd;
-  background: #f9f9fa;
+  background: ${colors.background};
   position: relative;
 
   ${media.biggerThanMaxTablet`

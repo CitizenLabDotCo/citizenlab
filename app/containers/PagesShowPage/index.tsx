@@ -126,13 +126,14 @@ const StyledLink = styled(Link)`
   margin-bottom: 15px;
   padding: 20px 23px;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
   transition: all 100ms ease-out;
 
   &:hover {
     color: #000;
-    border-color: #999;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+    transform: translate(0px, -2px);
   }
 `;
 

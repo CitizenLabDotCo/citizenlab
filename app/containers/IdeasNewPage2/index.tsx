@@ -31,13 +31,13 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
 
 // style
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const timeout = 600;
 
 const Container = styled.div`
-  background: #f9f9fa;
+  background: ${colors.background};
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
 
   ${media.smallerThanMaxTablet`

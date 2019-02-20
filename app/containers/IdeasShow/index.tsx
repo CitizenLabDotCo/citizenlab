@@ -76,7 +76,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const loadingTimeout = 400;
@@ -693,7 +693,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           const ideaAuthorId = idea.data.relationships.author.data ? idea.data.relationships.author.data.id : null;
           const ideaImage$ = (ideaImageId ? ideaImageStream(idea.data.id, ideaImageId).observable : of(null));
           const ideaAuthor$ = ideaAuthorId ? userByIdStream(ideaAuthorId).observable : of(null);
-          const ideaComments$ = commentsForIdeaStream(idea.data.id).observable;
           const project$ = (idea.data.relationships.project && idea.data.relationships.project.data ? projectByIdStream(idea.data.relationships.project.data.id).observable : of(null));
           let phases$: Observable<IPhase[] | null> = of(null);
 
@@ -709,26 +708,25 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
             authUser$,
             ideaImage$,
             ideaAuthor$,
-            ideaComments$,
             project$,
             phases$
           ).pipe(
-            map(([locale, tenantLocales, authUser, ideaImage, ideaAuthor, ideaComments, project, phases]) => ({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, ideaComments, project, phases }))
+            map(([locale, tenantLocales, authUser, ideaImage, ideaAuthor, project, phases]) => ({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
-      ).subscribe(({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, ideaComments, project, phases }) => {
+      ).subscribe(({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
         let ideaBody = getLocalized(idea.data.attributes.body_multiloc, locale, tenantLocales);
         ideaBody = trimEnd(ideaBody, '<p><br></p>');
         ideaBody = trimEnd(ideaBody, '<p></p>');
         ideaBody = linkifyHtml(ideaBody);
-        this.setState({ authUser, idea, ideaBody, ideaImage, ideaAuthor, ideaComments, project, phases, loaded: true });
+        this.setState({ authUser, idea, ideaBody, ideaImage, ideaAuthor, project, phases, loaded: true });
       }),
 
-      // ideaId$.pipe(
-      //   switchMap((ideaId) => commentsForIdeaStream(ideaId).observable)
-      // ).subscribe((ideaComments) => {
-      //   this.setState({ ideaComments });
-      // }),
+      ideaId$.pipe(
+        switchMap((ideaId) => commentsForIdeaStream(ideaId).observable)
+      ).subscribe((ideaComments) => {
+        this.setState({ ideaComments });
+      }),
 
       combineLatest(
         ideaId$.pipe(
@@ -925,6 +923,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               onClick={this.translateIdea}
               processing={translationsLoading}
               spinnerColor={colors.label}
+              borderColor={lighten(.4, colors.label)}
             >
               <FormattedMessage {...messages.translateIdea} />
             </TranslateButton>
@@ -936,6 +935,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               onClick={this.backToOriginalContent}
               processing={translationsLoading}
               spinnerColor={colors.label}
+              borderColor={lighten(.4, colors.label)}
             >
               <FormattedMessage {...messages.backToOriginalContent} />
             </TranslateButton>

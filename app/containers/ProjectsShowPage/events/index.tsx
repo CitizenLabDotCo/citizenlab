@@ -26,9 +26,9 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const EventsContainer = styled(ContentContainer)`
-  background: #f9f9fa;
   padding-top: 50px;
   padding-bottom: 40px;
+  background: ${colors.background};
 
   ${media.smallerThanMinTablet`
     padding-top: 30px;
@@ -51,9 +51,9 @@ const EventList = styled.div``;
 
 const NoEvents = styled.div`
   color: ${colors.clGreyOnGreyBackground};
-  font-size: ${fontSizes.large}px;
-  font-weight: 300;
-  line-height: 26px;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
 `;
 
 interface InputProps {}
