@@ -1,24 +1,27 @@
 import React from 'react';
 
-import { addAdminFeedbackToIdea } from 'services/adminFeedback';
+import { updateOfficialFeedback, IOfficialFeedbackData } from 'services/officialFeedback';
 
 import { Formik } from 'formik';
-import OfficialFeedbackForm, { FormValues } from './';
+import OfficialFeedbackForm, { FormValues } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 
 interface Props {
-  ideaId: string;
+  feedback: IOfficialFeedbackData;
+  closeForm: () => void;
 }
 
 export default class OfficialFeedbackNew extends React.Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
-    const { ideaId } = this.props;
+    const { feedback: { id }, closeForm } = this.props;
     setSubmitting(true);
-    addAdminFeedbackToIdea(ideaId, values)
+    updateOfficialFeedback(id, values)
       .then(() => {
         setSubmitting(false);
+        closeForm();
       }).catch((errorResponse) => {
+
         const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
         setErrors(apiErrors);
         setSubmitting(false);
@@ -26,12 +29,12 @@ export default class OfficialFeedbackNew extends React.Component<Props> {
   }
 
   renderFn = (props) => {
-    return <OfficialFeedbackForm {...props} />;
+    return <OfficialFeedbackForm {...props} onCancel={this.props.closeForm}/>;
   }
 
   initialValues = () => ({
-    author_multiloc: {},
-    body_multiloc: {}
+    author_multiloc: this.props.feedback.attributes.author_multiloc,
+    body_multiloc: this.props.feedback.attributes.body_multiloc
   })
 
   render() {

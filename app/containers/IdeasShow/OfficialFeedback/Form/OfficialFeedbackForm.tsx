@@ -1,25 +1,39 @@
+// libraries
 import React, { Component } from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
-import { injectIntl } from 'utils/cl-intl';
-import messages from '../../messages';
+// intl
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+import { InjectedIntlProps } from 'react-intl';
 
+// components
 import { Form, Field, FormikErrors, FormikProps } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
-
+import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 // Typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
-import { InjectedIntlProps } from 'react-intl';
+
+// stylings
 import { colors, fontSizes } from 'utils/styleUtils';
+import styled from 'styled-components';
+import Button from 'components/UI/Button';
+
+const ButtonContainer = styled.div`
+  display: flex;
+  >:not(:last-child) {
+    margin-right: 5px;
+  }
+`;
 
 export interface Props {
   locales: Locale[];
+  onCancel?: () => void;
 }
 
 export interface FormValues extends MultilocFormValues {
@@ -58,12 +72,13 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
       rows={8}
       padding="12px"
       fontSize={fontSizes.base}
+      backgroundColor="#FFF"
       {...props}
     />
   )
 
   render() {
-    const { isSubmitting, errors, isValid, touched, values } = this.props;
+    const { isSubmitting, errors, isValid, touched, values, onCancel } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -95,20 +110,27 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
           />}
         </Section>
 
-        <FormikSubmitWrapper
-          bgColor={colors.clRed}
-          icon="pen"
-          textColor="white"
-          fullWidth
-          messages={{
-            buttonSave: messages.updateButtonSave,
-            buttonError: messages.updateButtonError,
-            buttonSuccess: messages.updateButtonSuccess,
-            messageError: messages.updateMessageError,
-            messageSuccess: messages.updateMessaageSuccess
-          }}
-          {...{ isValid, isSubmitting, status, touched }}
-        />
+        <ButtonContainer>
+          <FormikSubmitWrapper
+            bgColor={colors.clRed}
+            icon="pen"
+            textColor="white"
+            fullWidth
+            messages={{
+              buttonSave: messages.updateButtonSave,
+              buttonError: messages.updateButtonError,
+              buttonSuccess: messages.updateButtonSuccess,
+              messageError: messages.updateMessageError,
+              messageSuccess: messages.updateMessaageSuccess
+            }}
+            {...{ isValid, isSubmitting, status, touched }}
+          />
+          {onCancel &&
+            <Button onClick={onCancel} bgColor="white" textColor={colors.clRed}>
+              <FormattedMessage {...messages.cancel} />
+            </Button>
+          }
+        </ButtonContainer>
 
       </Form>
     );

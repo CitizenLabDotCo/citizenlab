@@ -47,6 +47,7 @@ type Props = {
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   fontSize?: number;
+  backgroundColor?: string;
 };
 
 type State = {
@@ -71,6 +72,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     const lineHeight = 24;
     const padding = (this.props.padding || '25px');
     const fontSize = (this.props.fontSize || fontSizes.base);
+    const backgroundColor = (this.props.backgroundColor || 'transparent');
 
     const style = {
       '&multiLine': {
@@ -92,7 +94,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           border: '1px solid #ccc',
           borderRadius: '5px',
           boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-          background: 'transparent',
+          background: `${backgroundColor}`,
           appearance: 'none',
           WebkitAppearance: 'none'
         },

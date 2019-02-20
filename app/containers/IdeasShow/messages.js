@@ -352,15 +352,11 @@ export default defineMessages({
   },
   updateButtonSuccess: {
     id: 'app.components.IdeasShow.updateButtonSuccess',
-    defaultMessage: 'Update saved !',
+    defaultMessage: 'Update saved!',
   },
   updateMessageError: {
     id: 'app.components.IdeasShow.updateMessageError',
     defaultMessage: 'Please try again later or report the issue',
-  },
-  updateMessaageSuccess: {
-    id: 'app.components.IdeasShow.updateMessaageSuccess',
-    defaultMessage: 'Your update was successfuly saved !',
   },
   official: {
     id: 'app.components.IdeasShow.official',
