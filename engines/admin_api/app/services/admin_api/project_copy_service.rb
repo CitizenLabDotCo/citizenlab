@@ -169,6 +169,7 @@ module AdminApi
       user_ids += Vote.where(id: vote_ids).pluck(:user_id)
       participation_context_ids = [@project.id] + @project.phases.ids
       user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
+      user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
