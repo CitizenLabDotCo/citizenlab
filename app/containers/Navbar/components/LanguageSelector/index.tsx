@@ -8,7 +8,6 @@ import Icon from 'components/UI/Icon';
 
 // services
 import { updateLocale } from 'services/locale';
-import { updateUser } from 'services/users';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -135,13 +134,7 @@ class LanguageSelector extends PureComponent<Props, State> {
   }
 
   handleLanguageSelect = (selectedLocale: Locale) => () => {
-    const { authUser } = this.props;
-
     updateLocale(selectedLocale);
-
-    if (!isNilOrError(authUser)) {
-      updateUser(authUser.id, { locale: selectedLocale });
-    }
 
     this.setState({ dropdownOpened: false });
   }
@@ -156,7 +149,7 @@ class LanguageSelector extends PureComponent<Props, State> {
 
       return (
         <Container className={className} onClick={this.toggleDropdown}>
-          <OpenMenuButton>
+          <OpenMenuButton className="e2e-langage-dropdown-toggle">
             {currentlySelectedLocale.substr(0, 2).toUpperCase()}
             <DropdownItemIcon name="dropdown" />
           </OpenMenuButton>
@@ -177,7 +170,7 @@ class LanguageSelector extends PureComponent<Props, State> {
                     <ListItem
                       key={tenantLocale}
                       onClick={this.handleLanguageSelect(tenantLocale)}
-                      className={`${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                      className={`e2e-langage-${tenantLocale} ${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
                     >
                       <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
                     </ListItem>

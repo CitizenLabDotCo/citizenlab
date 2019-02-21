@@ -38,7 +38,7 @@ const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, te
           ${projectsIndexTitle}`
         }
       </title>
-      {getAlternateLinks(tenantLocales, location)}
+      {getAlternateLinks(tenantLocales)}
       <meta name="title" content={projectsIndexTitle} />
       <meta name="description" content={projectsIndexDescription} />
       <meta property="og:title" content={projectsIndexTitle} />
