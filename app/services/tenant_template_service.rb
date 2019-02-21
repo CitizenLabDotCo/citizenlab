@@ -99,6 +99,47 @@ class TenantTemplateService
     @template.to_yaml
   end
 
+  def template_locales template
+    template = YAML.load template
+    locales = Set.new
+    template['models'].each do |_, instances|
+      instances.each do |attributes|
+        attributes.each do |field_name, multiloc|
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash)
+            multiloc.keys.each do |locale|
+              locales.add locale
+            end
+          end
+        end
+      end
+    end
+    template['models']['user']&.each do |attributes|
+      locales.add attributes['locale']
+    end
+    locales.to_a
+  end
+
+  def change_locales template, locale_from, locale_to
+    template = YAML.load template
+    template['models'].each do |_, instances|
+      instances.each do |attributes|
+        attributes.each do |field_name, multiloc|
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
+            if locale_from.blank?
+              multiloc[locale_to] = multiloc.values.first
+            else
+              multiloc[locale_to] = multiloc[locale_from]
+            end
+          end
+        end
+      end
+    end
+    template['models']['user']&.each do |attributes|
+      attributes['locale'] = locale_to
+    end
+    template.to_yaml
+  end
+
 
   private
   

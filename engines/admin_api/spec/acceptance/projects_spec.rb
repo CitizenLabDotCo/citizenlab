@@ -24,7 +24,7 @@ resource "Project" do
     let(:id) { project.id } 
 
     example_request "Export a project template" do
-      expect(status).to eq(200)
+      expect(status).to eq 200
       json_response = json_parse(response_body)
       template = YAML.load(json_response[:template_yaml])
 
@@ -52,6 +52,7 @@ resource "Project" do
       end
 
       do_request(tenant_id: tn2.id, project: {template_yaml: template.to_yaml})
+      expect(status).to eq 200
       Apartment::Tenant.switch(tn2.schema_name) do
         project_copy = Project.first
 
