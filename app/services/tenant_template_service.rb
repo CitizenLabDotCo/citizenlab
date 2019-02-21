@@ -113,7 +113,7 @@ class TenantTemplateService
         end
       end
     end
-    template['models']['user'].each do |attributes|
+    template['models']['user']&.each do |attributes|
       locales.add attributes['locale']
     end
     locales.to_a
@@ -134,7 +134,7 @@ class TenantTemplateService
         end
       end
     end
-    template['models']['user'].each do |attributes|
+    template['models']['user']&.each do |attributes|
       attributes['locale'] = locale_to
     end
     template.to_yaml
