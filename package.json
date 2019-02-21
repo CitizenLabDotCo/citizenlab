@@ -41,7 +41,7 @@
     "@researchgate/react-intersection-observer": "0.7.4",
     "@segment/consent-manager": "1.2.0",
     "@segment/snippet": "4.4.0",
-    "@sentry/browser": "4.6.2",
+    "@sentry/browser": "4.6.3",
     "ajv": "6.6.2",
     "body-scroll-lock": "2.6.1",
     "bowser": "1.9.4",

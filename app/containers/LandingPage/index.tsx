@@ -109,7 +109,7 @@ const CustomSectionContentContainer = styled(ContentContainer)`
   margin-left: auto;
   margin-right: auto;
   padding-top: 80px;
-  padding-bottom: 100px;
+  padding-bottom: 80px;
   background: #fff;
 
   ${media.smallerThanMinTablet`
@@ -230,7 +230,7 @@ class LandingPage extends PureComponent<Props, State> {
 
               {showCustomSection &&
                 <CustomSectionContentContainer>
-                  <QuillEditedContent fontSize="large">
+                  <QuillEditedContent>
                     <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
                       <T value={customSectionBodyMultiloc} supportHtml={true} />
                     </Fragment>
