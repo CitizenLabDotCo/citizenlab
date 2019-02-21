@@ -1,16 +1,5 @@
 import { isAdmin, isModerator, isProjectModerator, isSuperAdmin } from './roles';
-
-const makeUser : any = (attributes = {}) => {
-  return {
-    data: {
-      attributes: {
-        roles: [],
-        highest_role: 'user',
-        ...attributes
-      }
-    }
-  };
-};
+import { makeUser } from 'services/__mocks__/users';
 
 describe('isAdmin', () => {
   it('returns true when a user is an admin', () => {
