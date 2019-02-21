@@ -23,7 +23,10 @@ class IdentifyToSegmentJob < ApplicationJob
       locale: user.locale,
       birthday: user.birthyear,
       gender: user.gender,
+      is_super_admin: user.super_admin?,
       is_admin: user.admin?,
+      is_project_moderator: user.project_moderator?,
+      highest_role: user.highest_role,
       timezone: tenant.settings.dig('core', 'timezone')
     }
     if tenant
