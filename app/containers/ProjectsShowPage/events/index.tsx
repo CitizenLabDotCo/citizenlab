@@ -52,7 +52,7 @@ const EventList = styled.div``;
 const NoEvents = styled.div`
   color: ${colors.clGreyOnGreyBackground};
   font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-weight: 300;
   line-height: normal;
 `;
 

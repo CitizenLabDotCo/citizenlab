@@ -65,14 +65,17 @@ const ProjectNavbarItems = styled.ul`
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
-  flex: 0 0 18px;
-  height: 18px;
   width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
   fill: #fff;
   margin-right: 9px;
   transition: fill 100ms ease-out;
 
   &.idea {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
     margin-top: -2px;
   }
 `;
