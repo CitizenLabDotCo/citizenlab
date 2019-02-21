@@ -3,12 +3,13 @@ module AdminApi
 
     def import template
       service = TenantTemplateService.new
+      template = template.to_yaml
       tenant_locales = Tenant.current.settings.dig('core', 'locales')
-      (sevice.template_locales(template) - tenant_locales).each do |locale_from|
+      (service.template_locales(template) - tenant_locales).each do |locale_from|
         template = service.change_locales template, locale_from, tenant_locales.first
       end
       ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template template
+        service.resolve_and_apply_template YAML.load(template)
       end
     end
 
