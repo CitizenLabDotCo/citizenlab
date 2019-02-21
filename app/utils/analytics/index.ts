@@ -4,7 +4,8 @@ import { mapValues } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isSuperAdmin, isProjectModerator } from 'services/permissions/roles';
+import { IUser } from 'services/users';
 
 interface IEvent {
   name: string;
@@ -104,10 +105,23 @@ export function trackPage(path: string, properties: {} = {}) {
   });
 }
 
-export function trackIdentification(userId: string, properties: {} = {}) {
+export function trackIdentification(user: IUser) {
   identifications$.next({
-    userId,
-    properties,
+    userId: user.data.id,
+    properties: {
+      email: user.data.attributes.email,
+      firstName: user.data.attributes.first_name,
+      lastName: user.data.attributes.last_name,
+      createdAt: user.data.attributes.created_at,
+      avatar: user.data.attributes.avatar.large,
+      birthday: user.data.attributes.birthyear,
+      gender: user.data.attributes.gender,
+      locale: user.data.attributes.locale,
+      isSuperAdmin: isSuperAdmin(user),
+      isAdmin: isAdmin(user),
+      isProjectModerator: isProjectModerator(user),
+      highestRole: user.data.attributes.highest_role,
+    }
   });
 }
 
