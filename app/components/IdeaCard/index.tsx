@@ -17,7 +17,6 @@ import Author from 'components/Author';
 import LazyImage from 'components/LazyImage';
 
 // resources
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -177,7 +176,6 @@ export interface InputProps {
 }
 
 interface DataProps {
-  location: GetLocationChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
@@ -252,7 +250,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       tenant,
       locale,
       authUser,
-      location,
       participationMethod,
       participationContextId,
       participationContextType,
@@ -261,7 +258,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
-      !isNilOrError(location) &&
       !isNilOrError(tenant) &&
       !isNilOrError(locale) &&
       !isUndefined(authUser) &&
@@ -390,7 +386,6 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  location: <GetLocation />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
