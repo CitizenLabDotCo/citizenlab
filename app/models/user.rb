@@ -159,6 +159,18 @@ class User < ApplicationRecord
     active? && (admin? || project_moderator?(project_id))
   end
 
+  def highest_role
+    if super_admin?
+      :super_admin
+    elsif admin?
+      :admin
+    elsif project_moderator?
+      :project_moderator
+    else
+      :user
+    end
+  end
+
   def moderatable_project_ids
     self.roles
       .select{|role| role['type'] == 'project_moderator'}
