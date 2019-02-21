@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import CommentBody from './CommentBody';
 import FeatureFlag from 'components/FeatureFlag';
-import { Extra, Header, Badge, Spacer, StyledMoreActionsMenu, StyledAuthor, TranslateButton } from './CommentsStyles';
+import { Extra, OfficialHeader, Header, Badge, StyledMoreActionsMenu, OfficialStyledAuthor, StyledAuthor, TranslateButton } from './CommentsStyles';
 
 // services
 import { updateComment } from 'services/comments';
@@ -133,37 +133,46 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
       return (
         <CommentContainer className={className}>
 
-          <Header>
-            <StyledAuthor
-              authorId={authorId}
-              notALink={authorId ? false : true}
-              createdAt={createdAt}
-              message={messages.childCommentAuthor}
-              size="40px"
-              projectId={projectId}
-              showModeration
-            />
-            <Extra>
-              <GetUser id={authorId}>
-                {author => {
-                  const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-                  if (authorCanModerate) {
-                    return (
-                      <>
-                      <Spacer/>
-                        <Badge>
-                          <FormattedMessage {...messages.official} />
-                        </Badge>
-                      </>
-                    );
-                  }
-
-                  return null;
-                }}
-              </GetUser>
-              <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-            </Extra>
-          </Header>
+          <GetUser id={authorId}>
+            {author => {
+              const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+              if (authorCanModerate) {
+                return (
+                  <OfficialHeader>
+                    <OfficialStyledAuthor
+                      authorId={authorId}
+                      notALink={authorId ? false : true}
+                      createdAt={createdAt}
+                      size="40px"
+                      message={messages.parentCommentAuthor}
+                      projectId={projectId}
+                      showModeration
+                    />
+                    <Extra>
+                      <Badge>
+                        <FormattedMessage {...messages.official} />
+                      </Badge>
+                      <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                    </Extra>
+                  </OfficialHeader>
+                );
+              } else {
+                return (
+                  <Header>
+                    <StyledAuthor
+                      authorId={authorId}
+                      notALink={authorId ? false : true}
+                      createdAt={createdAt}
+                      size="40px"
+                      message={messages.parentCommentAuthor}
+                      projectId={projectId}
+                    />
+                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                  </Header>
+                );
+              }
+            }}
+          </GetUser>
 
           <CommentBody
             commentBody={comment.attributes.body_multiloc}
