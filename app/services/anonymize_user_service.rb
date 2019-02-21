@@ -54,7 +54,11 @@ class AnonymizeUserService
     email = random_email first_name, last_name
     avatar_url = random_avatar_url gender
     bio = random_bio locales
-    registration = random_registration user: user, start_at: nil
+    registration = if start_at.present?
+      random_registration user: user, start_at: start_at
+    else
+      random_registration user: user
+    end
     {
       'first_name'                => first_name,
       'last_name'                 => last_name,
