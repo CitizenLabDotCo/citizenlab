@@ -35,7 +35,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
-import { Header, StyledAuthor, Extra, Spacer, Badge, StyledMoreActionsMenu, TranslateButton } from './CommentsStyles';
+import { OfficialHeader, Header, OfficialStyledAuthor, StyledAuthor, Extra, Badge, StyledMoreActionsMenu, TranslateButton } from './CommentsStyles';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
@@ -202,38 +202,46 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
                 {comment.attributes.publication_status === 'published' &&
                   <>
-                    <Header>
-                      <StyledAuthor
-                        authorId={authorId}
-                        notALink={authorId ? false : true}
-                        createdAt={createdAt}
-                        size="40px"
-                        message={messages.parentCommentAuthor}
-                        projectId={projectId}
-                        showModeration
-                      />
-                      <Extra>
-                        <GetUser id={authorId}>
-                          {author => {
-                            const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-                            if (authorCanModerate) {
-                              return (
-                                <>
-                                <Spacer/>
-                                  <Badge>
-                                    <FormattedMessage {...messages.official} />
-                                  </Badge>
-                                </>
-                              );
-                            }
-
-                            return null;
-                          }}
-                        </GetUser>
-                        <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-                      </Extra>
-                    </Header>
-
+                    <GetUser id={authorId}>
+                      {author => {
+                        const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+                        if (authorCanModerate) {
+                          return (
+                            <OfficialHeader>
+                              <OfficialStyledAuthor
+                                authorId={authorId}
+                                notALink={authorId ? false : true}
+                                createdAt={createdAt}
+                                size="40px"
+                                message={messages.parentCommentAuthor}
+                                projectId={projectId}
+                                showModeration
+                              />
+                              <Extra>
+                                <Badge>
+                                  <FormattedMessage {...messages.official} />
+                                </Badge>
+                                <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                              </Extra>
+                            </OfficialHeader>
+                          );
+                        } else {
+                          return (
+                            <Header>
+                              <StyledAuthor
+                                authorId={authorId}
+                                notALink={authorId ? false : true}
+                                createdAt={createdAt}
+                                size="40px"
+                                message={messages.parentCommentAuthor}
+                                projectId={projectId}
+                              />
+                              <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                            </Header>
+                          );
+                        }
+                      }}
+                    </GetUser>
                     <CommentBody
                       commentBody={comment.attributes.body_multiloc}
                       editionMode={this.state.editionMode}
