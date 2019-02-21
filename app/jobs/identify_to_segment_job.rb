@@ -27,11 +27,10 @@ class IdentifyToSegmentJob < ApplicationJob
       is_admin: user.admin?,
       is_project_moderator: user.project_moderator?,
       highest_role: user.highest_role,
-      timezone: tenant.settings.dig('core', 'timezone')
     }
     if tenant
       LogToSegmentService.new.add_tenant_properties(traits, tenant)
-      traits[:timezone] = Tenant.settings('core', 'timezone')
+      traits[:timezone] = tenant.settings.dig('core', 'timezone')
     end
 
     Analytics && Analytics.identify(
