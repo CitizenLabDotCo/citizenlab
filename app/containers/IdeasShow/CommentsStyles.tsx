@@ -4,7 +4,7 @@ import Author from 'components/Author';
 import { lighten } from 'polished';
 import CommentsMoreActions from './CommentsMoreActions';
 
-export const Header = styled.div`
+export const OfficialHeader = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -15,22 +15,35 @@ export const Header = styled.div`
   `}
 `;
 
-export const StyledAuthor = styled(Author)`
+export const Header = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+`;
+
+export const OfficialStyledAuthor = styled(Author)`
   margin-right: 20px;
+
   ${media.smallerThanMinTablet`
     align-self: flex-start;
     order: 2;
   `}
 `;
 
-export const Spacer = styled.div`
-  flex: 1;
+export const StyledAuthor = styled(Author)`
+  margin-right: 20px;
+
+  ${media.smallerThanMinTablet`
+    align-self: flex-start;
+  `}
 `;
 
 export const Extra = styled.div`
   display: flex;
   align-items: center;
   padding-top: 5px;
+  margin-bottom: 20px;
 
   ${media.smallerThanMinTablet`
     order: 1;
