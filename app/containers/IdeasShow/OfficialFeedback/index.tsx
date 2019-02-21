@@ -30,6 +30,10 @@ const FeedbackHeader = styled.div`
   justify-content: space-between;
 `;
 
+const FeedbackTitle = styled.h4`
+  margin-bottom: 0;
+`;
+
 const StyledSpan = styled.span`
   font-weight: 500;
 `;
@@ -79,9 +83,9 @@ class OfficialFeedback extends PureComponent<Props, State> {
     return (
       <>
         <FeedbackHeader>
-          <h4>
+          <FeedbackTitle>
             <FormattedMessage {...messages.ideaUpdate} />
-          </h4>
+          </FeedbackTitle>
           {updateDate &&
             <FormattedMessage
               {...messages.lastUpdate}
