@@ -25,7 +25,7 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
             :is_super_admin=>false,
             :is_admin=>false,
             :is_project_moderator=>false,
-            :highest_role=>:user
+            :highest_role=>:user,
             :timezone=>"Europe/Brussels",
             :tenantId=>Tenant.current.id,
             :tenantName=>"test-tenant",
