@@ -147,6 +147,10 @@ class User < ApplicationRecord
     !!self.roles.find{|r| r["type"] == "admin"}
   end
 
+  def super_admin?
+    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us)$/i)
+  end
+
   def project_moderator? project_id=nil
     !!self.roles.find{|r| r["type"] == "project_moderator" && (project_id.nil? || r["project_id"] == project_id)}
   end
