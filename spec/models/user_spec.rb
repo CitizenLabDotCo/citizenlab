@@ -408,4 +408,36 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "super_admin?" do
+    it "returns true for admins with various citizenlab email variations" do
+      users = [
+        build(:admin, email: 'hello@citizenlab.co'),
+        build(:admin, email: 'hello+admin@citizenLab.co'),
+        build(:admin, email: 'hello@citizenlab.eu'),
+        build(:admin, email: 'moderator+admin@citizenlab.be'),
+        build(:admin, email: 'some.person@citizen-lab.fr'),
+        build(:admin, email: 'cheese.lover@CitizenLab.ch'),
+        build(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
+        build(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
+        build(:admin, email: 'bigger@citizenlab.us'),
+        build(:admin, email: 'hello+admin@CITIZENLAB.UK'),
+      ]
+
+      expect(users).to all be_super_admin
+    end
+
+    it "returns false for non-citizenlab emails" do
+      strangers = [
+        build(:admin, email: 'hello@citizenlab.com'),
+        *3.times.map{build(:admin)}
+      ]
+      expect(strangers).not_to include(be_super_admin)
+    end
+
+    it "returns false for non-admins" do
+      user = build(:user, email: 'hello@citizenlab.co')
+      expect(user).not_to be_super_admin
+    end
+  end
+
 end
