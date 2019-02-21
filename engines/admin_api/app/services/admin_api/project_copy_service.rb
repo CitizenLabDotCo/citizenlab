@@ -2,9 +2,13 @@ module AdminApi
   class ProjectCopyService
 
     def import template
-      # template is a hash
+      service = TenantTemplateService.new
+      tenant_locales = Tenant.current.settings.dig('core', 'locales')
+      (sevice.template_locales(template) - tenant_locales).each do |locale_from|
+        template = service.change_locales template, locale_from, tenant_locales.first
+      end
       ActiveRecord::Base.transaction do
-        TenantTemplateService.new.resolve_and_apply_template template
+        service.resolve_and_apply_template template
       end
     end
 
