@@ -15,7 +15,7 @@ export default defineMessages({
   },
   deleteOfficialFeedbackPost: {
     id: 'app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost',
-    defaultMessage: 'delete',
+    defaultMessage: 'Delete',
   },
   deletionConfirmation: {
     id: 'app.components.IdeasShow.OfficialFeedback.deletionConfirmation',
