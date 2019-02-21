@@ -32,6 +32,7 @@ const FeedbackHeader = styled.div`
 
 const FeedbackTitle = styled.h4`
   margin-bottom: 0;
+  font-weight: 500;
 `;
 
 const StyledSpan = styled.span`
