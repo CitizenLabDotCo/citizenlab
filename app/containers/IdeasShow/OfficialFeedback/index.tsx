@@ -83,17 +83,19 @@ class OfficialFeedback extends PureComponent<Props, State> {
 
     return (
       <>
-        <FeedbackHeader>
-          <FeedbackTitle>
-            <FormattedMessage {...messages.ideaUpdate} />
-          </FeedbackTitle>
-          {updateDate &&
-            <FormattedMessage
-              {...messages.lastUpdate}
-              values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
-            />
-          }
-        </FeedbackHeader>
+        {(updateDate || permission) &&
+          <FeedbackHeader>
+            <FeedbackTitle>
+              <FormattedMessage {...messages.ideaUpdate} />
+            </FeedbackTitle>
+            {updateDate &&
+              <FormattedMessage
+                {...messages.lastUpdate}
+                values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
+              />
+            }
+          </FeedbackHeader>
+        }
 
         {permission && editingPost === 'new' &&
           <StyledOfficialFeedbackNew ideaId={ideaId}/>
