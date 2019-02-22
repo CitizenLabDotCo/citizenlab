@@ -173,14 +173,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.author',
     defaultMessage: '{authorNameComponent}',
   },
-  parentCommentAuthor: {
-    id: 'app.containers.IdeasShow.parentCommentAuthor',
-    defaultMessage: '{authorNameComponent} said',
-  },
-  childCommentAuthor: {
-    id: 'app.containers.IdeasShow.childCommentAuthor',
-    defaultMessage: '{authorNameComponent} replied',
-  },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',

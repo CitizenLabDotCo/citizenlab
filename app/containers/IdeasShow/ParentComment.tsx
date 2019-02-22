@@ -213,7 +213,6 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                                 notALink={authorId ? false : true}
                                 createdAt={createdAt}
                                 size="40px"
-                                message={messages.parentCommentAuthor}
                                 projectId={projectId}
                                 showModeration
                               />
@@ -233,7 +232,6 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                                 notALink={authorId ? false : true}
                                 createdAt={createdAt}
                                 size="40px"
-                                message={messages.parentCommentAuthor}
                                 projectId={projectId}
                               />
                               <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
