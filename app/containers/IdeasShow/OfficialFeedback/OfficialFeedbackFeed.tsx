@@ -36,7 +36,7 @@ const OfficialFeedbackPost = styled.div`
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
-  margin-left: auto;
+  align-self: flex-end;
   margin-bottom: 10px;
 `;
 
