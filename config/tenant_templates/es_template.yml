@@ -3118,18 +3118,6 @@ models:
     updated_at: 2019-02-15 02:40:15 UTC
     membership_type: manual
     rules: []
-  - title_multiloc:
-      en: Plan verano 2019
-    created_at: 2019-02-15 02:42:28 UTC
-    updated_at: 2019-02-21 11:21:05 UTC
-    membership_type: rules
-    rules:
-    - ruleType: lives_in
-      predicate: not_is_empty
-    - value: 4569fb37-50da-4174-8a4d-9f853e77f567
-      ruleType: custom_field_select
-      predicate: has_value
-      customFieldId: 2d260795-a5e1-45ed-b8ee-dc81c2a850c1
   groups_project: []
   permission:
   - action: posting
