@@ -1,4 +1,9 @@
 {
+  "//": [
+    "** Use this section to describe why certain dependencies are used and versioned as they are **",
+    "",
+    "- Using puppeteer 12.x breaks pa11y on running it againt cl2-front. See https://citizenlab.atlassian.net/browse/CL2-3238"
+  ],
   "name": "cl2-front",
   "version": "1.0.0",
   "description": "Citizenlab is a ready-to-use citizen participation platform for local governments",
