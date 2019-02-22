@@ -16,11 +16,20 @@ describe('Project ideas page', () => {
       });
     });
 
+    // TODO define and use a non-admin account and tast accordingly
     describe('authorised admin', () => {
       beforeEach(() => {
         cy.login(email, password);
         cy.visit('/ideas/controversial-idea');
         cy.acceptCookies();
+      });
+      describe('Feedback', () => {
+        it('has a functional name field', () => {
+          cy.get('input').first().type('test').should('have.value', 'test');
+        });
+        it('has a functional body field', () => {
+          cy.get('textarea').first().type('test').should('have.value', 'test');
+        });
       });
       describe('Comment', () => {
         it('lets authorized users reply to comments and delete their answer', () => {
