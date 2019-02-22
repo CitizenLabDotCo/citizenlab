@@ -131,7 +131,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
       if (comment.attributes.publication_status !== 'published') return null;
 
       return (
-        <CommentContainer className={className}>
+        <CommentContainer className={`${className} e2e-child-comment`}>
 
           <GetUser id={authorId}>
             {author => {
@@ -152,7 +152,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
                       <Badge>
                         <FormattedMessage {...messages.official} />
                       </Badge>
-                      <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                      <StyledMoreActionsMenu className="e2e-more-actions" comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                     </Extra>
                   </OfficialHeader>
                 );
@@ -167,7 +167,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
                       message={messages.parentCommentAuthor}
                       projectId={projectId}
                     />
-                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                    <StyledMoreActionsMenu className="e2e-more-actions" comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
                   </Header>
                 );
               }

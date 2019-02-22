@@ -967,7 +967,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                     {...messages.postedIn}
                     values={{
                       projectLink:
-                        <ProjectLink to={`/projects/${project.data.attributes.slug}`}>
+                        <ProjectLink className="e2e-project-link" to={`/projects/${project.data.attributes.slug}`}>
                           <T value={projectTitleMultiloc} />
                         </ProjectLink>
                     }}
@@ -1012,7 +1012,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} />
+                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
                 }
 
                 <AuthorAndAdressWrapper>
@@ -1028,7 +1028,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                           {...messages.byAuthorName}
                           values={{
                             authorName: (
-                              <AuthorName to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
+                              <AuthorName className="e2e-author-link" to={ideaAuthor ? `/profile/${ideaAuthor.data.attributes.slug}` : ''}>
                                 <UserName user={(ideaAuthor ? ideaAuthor.data : null)} />
                               </AuthorName>
                             )
@@ -1140,7 +1140,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 <MetaContent>
 
                   {(showVoteControl || showBudgetControl) &&
-                    <ControlWrapper>
+                    <ControlWrapper className="e2e-vote-controls-desktop">
                       {showVoteControl &&
                         <>
                           <VoteLabel>
