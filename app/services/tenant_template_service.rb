@@ -428,7 +428,7 @@ class TenantTemplateService
   end
 
   def yml_groups
-    Group.all.map do |g|
+    Group.where(membership_type: 'manual').map do |g|
       yml_group = {
         'title_multiloc'  => g.title_multiloc,
         'created_at'      => g.created_at.to_s,
