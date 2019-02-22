@@ -65,6 +65,7 @@
     "moment": "2.23.0",
     "moment-timezone": "0.5.23",
     "polished": "2.3.3",
+    "puppeteer": "^1.11.0",
     "qs": "6.6.0",
     "quill-blot-formatter": "1.0.5",
     "quill-image-drop-module": "1.0.3",
