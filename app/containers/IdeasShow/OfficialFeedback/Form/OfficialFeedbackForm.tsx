@@ -93,21 +93,11 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             name="author_multiloc"
             render={this.renderFormikInputMultiloc}
           />
-          {touched.author_multiloc && <Error
-            fieldName="author_multiloc"
-            marginBottom="20px"
-            apiErrors={errors.author_multiloc as any}
-          />}
 
           <Field
             render={this.renderFormikMentionsTextAreaMultiloc}
             name="body_multiloc"
           />
-          {touched.body_multiloc && <Error
-            fieldName="body_multiloc"
-            marginBottom="20px"
-            apiErrors={errors.body_multiloc as any}
-          />}
         </Section>
 
         <ButtonContainer>
