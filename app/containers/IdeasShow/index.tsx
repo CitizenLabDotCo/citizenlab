@@ -1121,9 +1121,19 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   ideaId={ideaId}
                 />
 
-                <CommentsTitle>
-                  <FormattedMessage {...messages.commentsTitle} />
-                </CommentsTitle>
+                {ideaComments && ideaComments.data.length > 0 ?
+                  <CommentsTitle>
+                    <FormattedMessage {...messages.commentsTitle} />
+                  </CommentsTitle>
+                  :
+                  <HasPermission item={project && project.data} action="moderate">
+                    <HasPermission.No>
+                      <CommentsTitle>
+                        <FormattedMessage {...messages.commentsTitle} />
+                      </CommentsTitle>
+                    </HasPermission.No>
+                  </HasPermission>
+                }
 
                 {project &&
                   <HasPermission item={project.data} action="moderate">
