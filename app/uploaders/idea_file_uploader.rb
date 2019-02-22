@@ -48,7 +48,9 @@ class IdeaFileUploader < CarrierWave::Uploader::Base
   # end
 
   def fog_attributes
-    {"Content-Disposition" => "attachment; filename=\"#{model.name}\""}
+    # Deleting consecutive whitespaces in filename because of
+    # https://github.com/fog/fog-aws/issues/160
+    {"Content-Disposition" => "attachment; filename=\"#{model.name.strip.gsub(/\s+/, ' ')}\""}
   end
 
   def size_range
