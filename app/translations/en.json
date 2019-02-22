@@ -82,7 +82,7 @@
   "app.components.IdeasShow.OfficialFeedback.loadPreviousUpdates": "Load previous updates",
   "app.components.IdeasShow.OfficialFeedback.official": "Official",
   "app.components.IdeasShow.OfficialFeedback.officialFeedbackPlaceholder": "Give an update about this idea status and processing",
-  "app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder": "Your name or title",
+   "app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder": "Name and role to display",
   "app.components.IdeasShow.OfficialFeedback.updateButtonError": "Sorry, there was a problem",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSave": "Give an update",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSuccess": "Update saved !",

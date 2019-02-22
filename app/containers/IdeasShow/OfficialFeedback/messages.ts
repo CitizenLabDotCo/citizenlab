@@ -27,7 +27,7 @@ export default defineMessages({
   },
   officialNamePlaceholder: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder',
-    defaultMessage: 'Your name or title',
+    defaultMessage: 'Name and role to display',
   },
   officialFeedbackPlaceholder: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialFeedbackPlaceholder',
