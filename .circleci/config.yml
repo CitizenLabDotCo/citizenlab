@@ -170,7 +170,17 @@ jobs:
     working_directory: ~/cl2-front
     steps:
       - checkout
-      - run: npm install puppeteer@1.11.0 pa11y-ci
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
           command: npm run test:pa11y --silent
           environment:
