@@ -18,7 +18,6 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
@@ -44,8 +43,6 @@ const AuthorContainer: any = styled.div`
 `;
 
 const AuthorMeta = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-left: 7px;
 `;
 
@@ -56,7 +53,6 @@ const AuthorNameContainer = styled.div`
   font-weight: 400;
   text-decoration: none;
   hyphens: manual;
-  margin-bottom: 2px;
 `;
 
 const AuthorNameLink: any = styled(Link)`
@@ -84,26 +80,6 @@ const TimeAgo = styled.div`
   font-size: ${fontSizes.small}px;
   line-height: 17px;
 `;
-
-// const Badge = styled.span`
-//   color: ${colors.clRed};
-//   font-size: ${fontSizes.xs}px;
-//   line-height: 16px;
-//   border-radius: 5px;
-//   text-transform: uppercase;
-//   text-align: center;
-//   font-weight: 600;
-//   background-color: ${lighten(.45, colors.clRed)};
-//   border: none;
-//   padding: 4px 8px;
-//   margin-top: 10px;
-//   height: 24px;
-
-//   ${media.smallPhone`
-//     margin-bottom: 20px;
-//     margin-top: 0;
-//   `}
-// `;
 
 interface InputProps {
   authorId: string | null;
@@ -198,13 +174,7 @@ class Author extends React.PureComponent<Props, State> {
                   {...message}
                   values={{ authorNameComponent }}
                 />
-              ) : (
-                  <FormattedMessage
-                    {...messages.byAuthorNameComponent}
-                    values={{ authorNameComponent }}
-                  />
-                )
-              }
+              ) : authorNameComponent}
             </AuthorNameContainer>
             {createdAt &&
               <TimeAgo>
@@ -213,11 +183,6 @@ class Author extends React.PureComponent<Props, State> {
             }
           </AuthorMeta>
         </AuthorContainer>
-        {/* {authorCanModerate &&
-          <Badge>
-            <FormattedMessage {...messages.official} />
-          </Badge>
-        } */}
       </Container>
     );
   }
