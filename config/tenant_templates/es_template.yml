@@ -1686,7 +1686,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1965
     registration_completed_at: ''
   - &89
@@ -1702,7 +1701,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: f8bb6f66-d928-48dd-9db7-703865403379
       birthyear: 1992
       education: '2'
     registration_completed_at: 2019-02-21 11:21:05 UTC
@@ -1719,7 +1717,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1979
     registration_completed_at: 2018-12-11 03:48:21 UTC
   - &31
@@ -1735,7 +1732,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1931
     registration_completed_at: 2018-12-10 17:08:16 UTC
   - &29
@@ -1751,7 +1747,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1979
     registration_completed_at: 2018-12-11 03:42:47 UTC
   - &84
@@ -1783,7 +1778,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
     registration_completed_at: ''
   - &38
     email: citizenlab+2+admin@citizenlab.co
@@ -1801,7 +1795,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1944
     registration_completed_at: ''
   - &41
@@ -1820,7 +1813,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1979
     registration_completed_at: ''
   - &68
@@ -1852,7 +1844,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: f8bb6f66-d928-48dd-9db7-703865403379
       birthyear: 1979
       education: '7'
     registration_completed_at: 2019-02-21 01:30:49 UTC
