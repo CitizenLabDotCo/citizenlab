@@ -250,14 +250,12 @@ workflows:
               only:
                 - master
       - test_a11y:
-          # requires:
-          #   - deploy_demo
-          #   - reset_ci_tenants
+          requires:
+            - deploy_demo
+            - reset_ci_tenants
           filters:
             branches:
-              only:
-                - master
-                - fix/CL2-3238-pa11y-ci
+              only: master
       - test_lighthouse:
           requires:
             - deploy_demo
