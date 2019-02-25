@@ -11,15 +11,12 @@ import { mockOfficialFeedback } from 'services/officialFeedback';
 // jest.mock('services/projects');
 jest.mock('services/officialFeedback');
 jest.mock('utils/cl-intl');
-// // jest.mock('resources/GetPermission');
-//
-// import 'jest-styled-components';
-//
-// const mockProject = getMockProject('projectId', 'continuous', 'ideation');
+const Intl = require('utils/cl-intl/__mocks__/');
+const { intl } = Intl;
 
 const mockOfficialFeedbackPost = mockOfficialFeedback.data[0];
 
-import OfficialFeedbackPost from './OfficialFeedbackPost';
+import { OfficialFeedbackPost } from './OfficialFeedbackPost';
 
 describe('<OfficialFeedbackPost />', () => {
   let showForm: jest.Mock;
@@ -33,6 +30,7 @@ describe('<OfficialFeedbackPost />', () => {
         editingAllowed={false}
         officialFeedbackPost={mockOfficialFeedbackPost}
         showForm={showForm}
+        intl={intl}
       />);
     expect(wrapper).toMatchSnapshot();
   });
@@ -43,6 +41,7 @@ describe('<OfficialFeedbackPost />', () => {
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
         showForm={showForm}
+        intl={intl}
       />);
     expect(wrapper).toMatchSnapshot();
   });
@@ -53,6 +52,7 @@ describe('<OfficialFeedbackPost />', () => {
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
         showForm={showForm}
+        intl={intl}
       />);
     wrapper.find('MoreActionsMenu').find('button').simulate('click');
     wrapper.find('.e2e-action-edit').find('button').simulate('click');
