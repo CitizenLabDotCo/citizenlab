@@ -167,8 +167,12 @@ const Data = adopt<DataProps, InputProps>({
 
 const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
 
-export default (inputProps: InputProps) => (
+const WrappedOfficialFeedBack = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />}
   </Data>
 );
+
+Object.assign(WrappedOfficialFeedBack).displayName = 'WrappedOfficialFeedBack';
+
+export default WrappedOfficialFeedBack;
