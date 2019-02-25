@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
+<Fragment>
+  <OfficialFeedback__FeedbackHeader>
+    <OfficialFeedback__FeedbackTitle>
+      <FormattedMessage
+        defaultMessage="Idea Update"
+        id="app.components.IdeasShow.OfficialFeedback.ideaUpdate"
+      />
+    </OfficialFeedback__FeedbackTitle>
+    <FormattedMessage
+      defaultMessage="Last update: {lastUpdateDate}"
+      id="app.components.IdeasShow.OfficialFeedback.lastUpdate"
+      values={
+        Object {
+          "lastUpdateDate": <OfficialFeedback__StyledSpan>
+            <FormattedDate
+              value="Some shorter time ago"
+            />
+          </OfficialFeedback__StyledSpan>,
+        }
+      }
+    />
+  </OfficialFeedback__FeedbackHeader>
+  <OfficialFeedback__StyledOfficialFeedbackNew
+    ideaId="ideaId"
+  />
+  <WrappedOfficialFeedBack
+    editingAllowed={true}
+    editingPost="new"
+    ideaId="ideaId"
+    showForm={[Function]}
+  />
+</Fragment>
+`;
+
+exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
+<Fragment>
+  <OfficialFeedback__FeedbackHeader>
+    <OfficialFeedback__FeedbackTitle>
+      <FormattedMessage
+        defaultMessage="Idea Update"
+        id="app.components.IdeasShow.OfficialFeedback.ideaUpdate"
+      />
+    </OfficialFeedback__FeedbackTitle>
+    <FormattedMessage
+      defaultMessage="Last update: {lastUpdateDate}"
+      id="app.components.IdeasShow.OfficialFeedback.lastUpdate"
+      values={
+        Object {
+          "lastUpdateDate": <OfficialFeedback__StyledSpan>
+            <FormattedDate
+              value="Some shorter time ago"
+            />
+          </OfficialFeedback__StyledSpan>,
+        }
+      }
+    />
+  </OfficialFeedback__FeedbackHeader>
+  <WrappedOfficialFeedBack
+    editingAllowed={false}
+    editingPost="new"
+    ideaId="ideaId"
+    showForm={[Function]}
+  />
+</Fragment>
+`;

@@ -61,7 +61,7 @@ interface State {
   editingPost: string;
 }
 
-class OfficialFeedback extends PureComponent<Props, State> {
+export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
