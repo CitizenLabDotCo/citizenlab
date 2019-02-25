@@ -73,12 +73,13 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
       padding="12px"
       fontSize={fontSizes.base}
       backgroundColor="#FFF"
+      placeholderFontWeight="500"
       {...props}
     />
   )
 
   render() {
-    const { isSubmitting, errors, isValid, touched, values, onCancel } = this.props;
+    const { isSubmitting, isValid, touched, values, onCancel } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -89,14 +90,15 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             selectedLocale={selectedLocale}
             values={values}
           />
-          <Field
-            name="author_multiloc"
-            render={this.renderFormikInputMultiloc}
-          />
 
           <Field
             render={this.renderFormikMentionsTextAreaMultiloc}
             name="body_multiloc"
+          />
+
+          <Field
+            name="author_multiloc"
+            render={this.renderFormikInputMultiloc}
           />
         </Section>
 
