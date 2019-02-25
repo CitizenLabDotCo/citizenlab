@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { find, isString, isObject } from 'lodash-es';
+import { isString, isObject } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
@@ -143,17 +143,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           if (isNilOrError(authUser)) {
             signOut();
           } else {
-            trackIdentification(authUser.data.id, {
-              email: authUser.data.attributes.email,
-              firstName: authUser.data.attributes.first_name,
-              lastName: authUser.data.attributes.last_name,
-              createdAt: authUser.data.attributes.created_at,
-              avatar: authUser.data.attributes.avatar.large,
-              birthday: authUser.data.attributes.birthyear,
-              gender: authUser.data.attributes.gender,
-              locale: authUser.data.attributes.locale,
-              isAdmin: !!find(authUser.data.attributes.roles, { type: 'admin' })
-            });
+            trackIdentification(authUser);
           }
         })),
         locale$.pipe(tap((locale) => {
