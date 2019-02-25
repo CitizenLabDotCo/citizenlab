@@ -43,8 +43,7 @@ describe('Project ideas page', () => {
           cy.get('.e2e-official-feedback-post').contains('delete').click();
 
           cy.wait(100);
-          cy.get('.e2e-official-feedback-post').contains(`test title ${salt}`).should('not.exist');
-          cy.get('.e2e-official-feedback-post').contains(`test body ${salt}`).should('not.exist');
+          cy.get('.e2e-official-feedback-post').should('not.exist');
         });
       });
       describe('Comment', () => {
@@ -59,7 +58,7 @@ describe('Project ideas page', () => {
           getMyComment().find('.e2e-more-actions').click();
           getMyComment().find('.e2e-more-actions').find('.tooltip-content').find('button').first().click();
           cy.get('.e2e-confirm-deletion').click();
-          commentThread.get('.e2e-child-comment').should('have.length', 2);
+          getMyComment().contains(commentBody).should('not.exist');
         });
       });
       describe('Vote', () => {
