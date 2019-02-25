@@ -28,11 +28,11 @@ describe('<OfficialFeedback />', () => {
   it('renders correctly for admin', () => {
     const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={true} officialFeedback={mockOfficialFeedbackChild} />);
     expect(wrapper).toMatchSnapshot();
-    expect(wrapper.find('FeedBackOfficialFeedback__StyledOfficialFeedbackNew')).toHaveLength(0);
   });
   it('hides the new form when showing an edit form', () => {
     const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={true} officialFeedback={mockOfficialFeedbackChild} />);
+    expect(wrapper.find('OfficialFeedback__StyledOfficialFeedbackNew').length).toEqual(1);
     wrapper.instance().switchForm('anotherForm');
-    expect(wrapper.find('FeedBackOfficialFeedback__StyledOfficialFeedbackNew')).toHaveLength(0);
+    expect(wrapper.find('OfficialFeedback__StyledOfficialFeedbackNew').length).toEqual(0);
   });
 });
