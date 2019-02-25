@@ -154,7 +154,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
                   />
                 </InputWrapper>
               );
-            })}}
+            })}
         </Container>
         );
       }
