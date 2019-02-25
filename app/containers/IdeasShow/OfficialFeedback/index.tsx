@@ -85,7 +85,7 @@ class OfficialFeedback extends PureComponent<Props, State> {
       <>
         <FeedbackHeader>
           <FeedbackTitle>
-            <FormattedMessage {...messages.ideaUpdate} />
+            <FormattedMessage {...messages.officialUpdate} />
           </FeedbackTitle>
           {updateDate &&
             <FormattedMessage
