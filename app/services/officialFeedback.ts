@@ -2,17 +2,15 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 
-interface IOfficialFeedbackPost {
-  body_multiloc: Multiloc;
-  author_multiloc: Multiloc;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface IOfficialFeedbackData {
   id: string;
   type: 'official_feedbacks';
-  attributes: IOfficialFeedbackPost;
+  attributes: {
+    body_multiloc: Multiloc;
+    author_multiloc: Multiloc;
+    created_at: string;
+    updated_at: string;
+  };
   relationships: {
     idea: {
       data: IRelationship;
