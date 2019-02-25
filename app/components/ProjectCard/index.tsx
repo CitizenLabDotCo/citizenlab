@@ -15,7 +15,6 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-// import { isProjectModerator } from 'services/permissions/roles';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -71,6 +70,12 @@ const Container = styled(Link)`
     `}
   }
 
+  &.small {
+    ${media.smallerThanMinTablet`
+      min-height: auto;
+    `}
+  }
+
   &.small,
   &.medium {
     padding-top: 20px;
@@ -79,6 +84,11 @@ const Container = styled(Link)`
 
   &:hover {
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+    transform: translate(0px, -2px);
+  }
+
+  &:focus {
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
     transform: translate(0px, -2px);
   }
 
@@ -106,10 +116,6 @@ const ProjectImageContainer =  styled.div`
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
   }
-
-  &.small {
-
-  }
 `;
 
 const ProjectImagePlaceholder = styled.div`
@@ -134,15 +140,6 @@ const ProjectImage = styled<LazyImageProps>(LazyImage)`
   background: #fff;
 `;
 
-// const ProjectModeratorIcon = styled(Icon)`
-//   width: 24px;
-//   height: 24px;
-//   fill: ${colors.draftYellow};
-//   position: absolute;
-//   top: 12px;
-//   right: 12px;
-// `;
-
 const ProjectContent = styled.div`
   flex: 1;
   display: flex;
@@ -164,15 +161,39 @@ const ProjectContent = styled.div`
   &.small {
     padding-left: 30px;
     padding-right: 30px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 20px;
+      padding-right: 20px;
+    `};
   }
 `;
 
+const ContentHeaderHeight = 39;
+const ContentHeaderPadding = 13;
+
 const ContentHeader = styled.div`
-  min-height: 56px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  border-bottom: solid 1px #e8e8e8;
+
+  &.noContent {
+    ${media.biggerThanMinTablet`
+      height: ${ContentHeaderHeight + ContentHeaderPadding}px;
+    `}
+  }
+
+  &.hasRightContent.noLeftContent {
+    justify-content: flex-end;
+  }
+
+  &.hasContent {
+    padding-bottom: ${ContentHeaderPadding}px;
+
+    &.large {
+      border-bottom: solid 1px #e8e8e8;
+    }
+  }
 
   &.small {
     padding-left: 30px;
@@ -181,8 +202,9 @@ const ContentHeader = styled.div`
 `;
 
 const ContentHeaderLeft = styled.div`
+  min-height: ${ContentHeaderHeight}px;
   flex-grow: 0;
-  flex-shrink: 0;
+  flex-shrink: 1;
   flex-basis: 120px;
   margin-right: 20px;
 
@@ -192,11 +214,11 @@ const ContentHeaderLeft = styled.div`
 `;
 
 const ContentHeaderRight = styled.div`
-  &.small {
-    ${media.largePhone`
-      display: none;
-    `};
-  }
+  min-height: ${ContentHeaderHeight}px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `};
 `;
 
 const Countdown = styled.div`
@@ -208,11 +230,12 @@ const TimeRemaining = styled.div`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   margin-bottom: 6px;
+  white-space: nowrap;
 `;
 
 const ProgressBar = styled.div`
   width: 100%;
-  height: 5px;
+  height: 6px;
   border-radius: 5px;
   background: #d6dade;
 `;
@@ -302,19 +325,14 @@ const ContentFooterLeft = ContentFooterSection.extend``;
 
 const ContentFooterRight = ContentFooterSection.extend``;
 
-const ArchivedLabelWrapper = styled.div`
-  margin-bottom: 8px;
-  display: flex;
-`;
-
 const ArchivedLabel = styled.span`
-  color: ${colors.text};
-  font-size: ${fontSizes.xs}px;
+  height: ${ContentHeaderHeight}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
   font-weight: 500;
   text-transform: uppercase;
-  border-radius: 5px;
-  padding: 6px 12px;
-  background: #e1e3e7;
+  display: flex;
+  align-items: center;
 `;
 
 const ProjectMetaItems = styled.div`
@@ -409,6 +427,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const projectUrl = getProjectUrl(project);
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
+      const commentsCount = project.attributes.comments_count;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
@@ -418,11 +437,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       if (isArchived) {
         countdown = (
-          <ArchivedLabelWrapper>
-            <ArchivedLabel>
-              <FormattedMessage {...messages.archived} />
-            </ArchivedLabel>
-          </ArchivedLabelWrapper>
+          <ArchivedLabel>
+            <FormattedMessage {...messages.archived} />
+          </ArchivedLabel>
         );
       } else if (timeRemaining) {
         const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
@@ -431,7 +448,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
         countdown = (
           <Countdown>
-            <TimeRemaining>
+            <TimeRemaining className={size}>
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
             <Observer onChange={this.handleIntersectionObserverOnChange}>
@@ -460,20 +477,20 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       const contentHeader = (
-        <ContentHeader className={size}>
-          <ContentHeaderLeft>
-            {countdown}
-          </ContentHeaderLeft>
+        <ContentHeader className={`${size} ${!ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'} ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!ctaMessage && !countdown ? 'noContent' : ''}`}>
+          {countdown !== null &&
+            <ContentHeaderLeft className={size}>
+              {countdown}
+            </ContentHeaderLeft>
+          }
 
-          <ContentHeaderRight className={size}>
-            {ctaMessage &&
-              <>
-                <ProjectLabel>
-                  {ctaMessage}
-                </ProjectLabel>
-              </>
-            }
-          </ContentHeaderRight>
+          {ctaMessage !== null &&
+            <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
+              <ProjectLabel>
+                {ctaMessage}
+              </ProjectLabel>
+            </ContentHeaderRight>
+          }
         </ContentHeader>
       );
 
@@ -531,31 +548,33 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                   size={30}
                   limit={3}
                   userCountBgColor={this.props.theme.colorMain}
-                  // context={{
-                  //   type: 'project',
-                  //   id: project.id
-                  // }}
+                  context={{
+                    type: 'project',
+                    id: project.id
+                  }}
                 />
               </ContentFooterLeft>
 
               <ContentFooterRight>
-                {showIdeasCount && ideasCount > 0 &&
                   <ProjectMetaItems>
+                    {showIdeasCount && ideasCount > 0 &&
                       <MetaItem className="first">
                         <MetaItemIcon name="idea2" />
                         <MetaItemText>
                           {ideasCount}
                         </MetaItemText>
                       </MetaItem>
+                    }
 
+                    {commentsCount &&
                       <MetaItem>
                         <CommentIcon name="comment2" />
                         <MetaItemText>
-                          {ideasCount}
+                          {commentsCount}
                         </MetaItemText>
                       </MetaItem>
+                    }
                   </ProjectMetaItems>
-                }
               </ContentFooterRight>
             </ContentFooter>
           </ProjectContent>

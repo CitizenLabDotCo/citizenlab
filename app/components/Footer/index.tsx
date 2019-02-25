@@ -84,7 +84,7 @@ const SecondLine = styled.div`
   padding: 12px 28px;
   position: relative;
   background: #fff;
-  border-top: 5px solid ${darken(0.025, colors.adminBackground)};
+  border-top: 5px solid ${darken(0.023, colors.adminBackground)};
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -117,25 +117,25 @@ const ShortFeedback = styled.div`
     background: #fff;
 
     ${media.smallerThanMinTablet`
-      background: ${darken(0.025, colors.adminBackground)};
+      background: ${darken(0.023, colors.adminBackground)};
     `}
   }
 
   ${media.smallerThanMinTablet`
-    background: ${darken(0.025, colors.adminBackground)};
+    background: ${darken(0.023, colors.adminBackground)};
     justify-content: center;
   `}
 `;
 
 const ShortFeedbackInner = styled.div`
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 300;
   display: flex;
   align-items: center;
-  padding: 10px 25px;
-  padding-top: 13px;
-  background: ${darken(0.025, colors.adminBackground)};
+  padding: 8px 25px;
+  padding-top: 11px;
+  background: ${darken(0.023, colors.adminBackground)};
 `;
 
 const ThankYouNote = styled.span`
@@ -159,7 +159,6 @@ const FeedbackButton = styled.button`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
   font-weight: 500;
   text-transform: uppercase;
   padding: 0 12px;

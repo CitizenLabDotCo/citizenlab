@@ -22,6 +22,7 @@ export interface IProjectData {
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;
+    comments_count: number;
     created_at: string;
     updated_at: string;
     visible_to: Visibility;
