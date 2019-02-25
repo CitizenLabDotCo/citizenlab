@@ -73,6 +73,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
       padding="12px"
       fontSize={fontSizes.base}
       backgroundColor="#FFF"
+      placeholderFontWeight="500"
       {...props}
     />
   )
