@@ -53,7 +53,7 @@ export default () => (
   <>
     <ProjectsIndexMeta />
     <Container>
-      <StyledContentContainer>
+      <StyledContentContainer maxWidth={1150}>
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
@@ -64,6 +64,7 @@ export default () => (
           showTitle={false}
           showPublicationStatusFilter={true}
           showSendFeedback={false}
+          layout="3columns"
         />
       </StyledContentContainer>
       <Footer />

@@ -10,7 +10,6 @@ import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
 import SendFeedback from 'components/SendFeedback';
-// import MediaQuery from 'react-responsive';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
@@ -96,6 +95,13 @@ const ProjectsList = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+`;
+
+const MockProjectCard = styled.div`
+  height: 1px;
+  background: transparent;
+  background: red;
+  width: calc(33% - 12px);
 `;
 
 const EmptyContainer = styled.div`
@@ -202,17 +208,18 @@ const StyledSendFeedback = styled(SendFeedback)`
   `}
 `;
 
+interface InputProps extends GetProjectsInputProps {
+  showTitle: boolean;
+  showPublicationStatusFilter: boolean;
+  showSendFeedback: boolean;
+  layout: 'dynamic' | '3columns';
+}
+
 interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
-}
-
-interface InputProps extends GetProjectsInputProps {
-  showTitle: boolean;
-  showPublicationStatusFilter: boolean;
-  showSendFeedback: boolean;
 }
 
 interface Props extends InputProps, DataProps {
@@ -242,13 +249,14 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   calculateProjectCardsLayout = () => {
-    const { projects, windowSize } = this.props;
+    const { projects, windowSize, layout } = this.props;
 
     if (
       !isNilOrError(projects) &&
       projects.projectsList &&
       projects.projectsList.length > 0 &&
-      windowSize
+      windowSize &&
+      layout === 'dynamic'
     ) {
       const { projectsList } = projects;
       const initialProjectsCount = size(projectsList.slice(0, 6));
@@ -313,7 +321,8 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback, theme } = this.props;
+    const { cardSizes } = this.state;
+    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback, layout, theme } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -367,8 +376,28 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
           {!querying && hasProjects && projectsList && (
             <ProjectsList id="e2e-projects-list">
               {projectsList.map((project, index) => {
-                return <ProjectCard key={project.id} projectId={project.id} size={this.state.cardSizes[index]} />;
+                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                return <ProjectCard key={project.id} projectId={project.id} size={size} />;
               })}
+
+              {/*
+              // A bit of a hack (but the most elegant one I could think of) to
+              // make the 3-column layout work for the last row of items when not divisible by 3
+              */}
+              {!hasMore && layout === '3columns' &&
+                <>
+                  {(projectsList.length + 1) % 3 === 0 &&
+                    <MockProjectCard />
+                  }
+
+                  {(projectsList.length - 1) % 3 === 0 &&
+                    <>
+                      <MockProjectCard />
+                      <MockProjectCard />
+                    </>
+                  }
+                </>
+              }
             </ProjectsList>
           )}
 
@@ -414,7 +443,9 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   windowSize: <GetWindowSize debounce={50} />,
-  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>,
+  projects: ({ render, ...getProjectsInputProps }) => {
+    return <GetProjects {...getProjectsInputProps}>{render}</GetProjects>;
+  }
 });
 
 export default (inputProps: InputProps) => (

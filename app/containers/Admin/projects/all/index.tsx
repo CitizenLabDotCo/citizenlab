@@ -1,10 +1,18 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { isBoolean } from 'lodash-es';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
+import { updateTenant, IUpdatedTenantProperties, ITenantData } from 'services/tenant';
+
+// resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetProjectGroups from 'resources/GetProjectGroups';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,7 +33,6 @@ import InfoTooltip from 'components/admin/InfoTooltip';
 // style
 import { fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
-// import FeatureFlag from 'components/FeatureFlag';
 
 const ListHeader = styled.div`
   display: flex;
@@ -92,43 +99,46 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   projects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-interface State {
-  manualProjectSorting: boolean;
-}
+interface State {}
 
 class AdminProjectsList extends PureComponent<Props, State> {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      manualProjectSorting: false,
-    };
-  }
-
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
   }
 
-  handleToggleManualProjectSorting = () => {
-    this.setState(prevState => {
-      return { manualProjectSorting: !prevState.manualProjectSorting };
-    });
+  handleToggleManualProjectSorting = async () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant) && tenant.attributes.settings.manual_project_sorting && isBoolean(tenant.attributes.settings.manual_project_sorting.enabled)) {
+      const manualProjectSorting = !tenant.attributes.settings.manual_project_sorting.enabled;
+
+      await updateTenant(tenant.id,     {
+        settings: {
+          manual_project_sorting: {
+            allowed: true,
+            enabled: manualProjectSorting
+          }
+        }
+      });
+
+      await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`] });
+    }
   }
 
   render () {
-    const { projects } = this.props;
-    const { manualProjectSorting } = this.state;
+    const { tenant, projects } = this.props;
     let lists: JSX.Element | null = null;
 
-    if (projects && !isNilOrError(projects.projectsList)) {
+    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
       const { projectsList } = projects;
       const publishedProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'published';
@@ -200,21 +210,21 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <FeatureFlag name="manual_project_sorting">
+                {/* <FeatureFlag name="manual_project_sorting"> */}
                   <ToggleWrapper>
                     <ToggleLabel htmlFor="manual-sorting-toggle">
                       <FormattedMessage {...messages.manualSortingProjects} />
                     </ToggleLabel>
                     <Toggle
                       id="manual-sorting-toggle"
-                      value={manualProjectSorting}
+                      value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
                       onChange={this.handleToggleManualProjectSorting}
                     />
                   </ToggleWrapper>
-                </FeatureFlag>
+                {/* </FeatureFlag> */}
               </ListHeader>
               <HasPermission item="projects" action="reorder">
-                {manualProjectSorting ?
+                {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
                   <SortableList
                     items={publishedProjects}
                     onReorder={this.handleReorder}
@@ -352,8 +362,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />
+});
+
 export default (inputProps: InputProps) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
-    {projects => <AdminProjectsList {...inputProps} projects={projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectsList {...inputProps} {...dataProps} />}
+  </Data>
 );

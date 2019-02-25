@@ -34,8 +34,6 @@ describe('<UsersDashboard />', () => {
 
     // you can access the instance and read its props and state like this
 
-    // console.log(wrapper.instance().props);
-
     // you need to update the filter object to reflect the changes
     filters = wrapper.find('ChartFilters');
     expect(filters.prop('groupFilterOptions')).toMatchSnapshot();

@@ -120,7 +120,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if ((!context && userCount > 10) || (context)) {
+      if ((!context && userCount > 4) || (context)) {
         return (
           <Container
             className={className}
