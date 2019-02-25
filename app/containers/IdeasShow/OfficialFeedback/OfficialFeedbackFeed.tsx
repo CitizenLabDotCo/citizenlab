@@ -4,58 +4,22 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import T from 'components/T';
-import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import OfficialFeedbackPost from './OfficialFeedbackPost';
 
 // resources
 import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
-import { deleteOfficialfeedback } from 'services/officialFeedback';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps, FormattedDate } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 const Container = styled.div`
   margin-bottom: 100px;
-`;
-
-const OfficialFeedbackPost = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: rgba(236, 90, 36, 0.06);
-  color: ${colors.text};
-  font-size: ${fontSizes.base}px;
-  padding: 17px 34px 27px 34px;
-  margin-bottom: 10px;
-`;
-
-const StyledMoreActionsMenu = styled(MoreActionsMenu)`
-  align-self: flex-end;
-  margin-bottom: 10px;
-`;
-
-const Body = styled.div`
-  line-height: 23px;
-  margin-bottom: 16px;
-`;
-
-const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Author = styled.span`
-  font-weight: 600;
-`;
-
-const DatePosted = styled.span`
-  color: ${colors.label};
 `;
 
 const LoadMoreButton = styled(Button)`
@@ -77,29 +41,8 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
-
-  changeForm = (postId: string) => () => {
-    this.props.showForm(postId);
-  }
-
-  deletePost = (postId: string) => () => {
-    if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
-      deleteOfficialfeedback(postId);
-    }
-  }
-
-  getActions = (postId: string) => [
-    {
-      label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
-      handler: this.changeForm(postId),
-    },
-    {
-      label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
-      handler: this.deletePost(postId),
-    }] as IAction[]
-
   render() {
-    const { officialFeedback, editingAllowed, editingPost } = this.props;
+    const { officialFeedback, editingAllowed, editingPost, showForm } = this.props;
 
     if (officialFeedback) {
       const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = officialFeedback;
@@ -107,34 +50,14 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
       return (
         <Container>
           {!isNilOrError(officialFeedbackList) && officialFeedbackList.map(officialFeedbackPost => {
-            const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
-            const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
-
             return (
-              <OfficialFeedbackPost className="e2e-official-feedback-post" key={officialFeedbackPost.id}>
-                {editingAllowed &&
-                  <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
-                }
-                {editingAllowed && editingPost === officialFeedbackPost.id ? (
-                    <OfficialFeedbackEdit
-                      feedback={officialFeedbackPost}
-                      closeForm={this.changeForm('new')}
-                    />
-                  ) : (
-                    <>
-                      <Body>
-                        <T value={bodyTextMultiloc} supportHtml />
-                      </Body>
-                      <Footer>
-                        <Author>
-                          <T value={authorNameMultiloc} />
-                        </Author>
-                        <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
-                      </Footer>
-                    </>
-                  )
-                }
-              </OfficialFeedbackPost>
+              <OfficialFeedbackPost
+                key={officialFeedbackPost.id}
+                editingAllowed={editingAllowed}
+                editingPost={editingPost}
+                officialFeedbackPost={officialFeedbackPost}
+                showForm={showForm}
+              />
             );
           })}
 

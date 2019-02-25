@@ -27,21 +27,18 @@ const Container: any = styled.div`
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#666'} !important;
     }
+
+    &::placeholder {
+      color: ${colors.clIconSecondary} !important;
+      opacity: 1;
+      font-weight: ${(props: any) => props.placeholderFontWeight ? props.placeholderFontWeight : '300'} !important;
+    }
   }
 
   .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
   }
 
-  .textareaWrapper__input {
-    ::-webkit-input-placeholder,
-    ::-moz-placeholder,
-    :-ms-input-placeholder,
-    :-moz-placeholder,
-     {
-      font-weight: ${(props: any) => props.placeholderFontWeight ? props.placeholderFontWeight : '300'} !important;
-    }
-  }
 `;
 
 type Props = {
