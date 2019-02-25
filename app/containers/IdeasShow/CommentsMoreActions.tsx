@@ -157,7 +157,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
               </p>
               <ButtonsWrapper>
                 <Button style="secondary" circularCorners={false} onClick={this.closeDeleteModal}><FormattedMessage {...messages.commentDeletionCancelButton} /></Button>
-                <Button style="primary" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
+                <Button style="primary" className="e2e-confirm-deletion" processing={this.state.loading_deleteComment} circularCorners={false} onClick={this.deleteComment}><FormattedMessage {...messages.commentDeletionConfirmButton} /></Button>
               </ButtonsWrapper>
             </HasPermission.No>
           </HasPermission>

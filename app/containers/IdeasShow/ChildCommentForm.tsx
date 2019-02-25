@@ -206,6 +206,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
             </HiddenLabel>
             <StyledTextArea
               name="comment"
+              id="e2e-reply"
               placeholder={placeholder}
               rows={1}
               padding="12px 30px"
@@ -216,7 +217,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
               onFocus={this.handleTextareaOnFocus}
               onBlur={this.handleTextareaOnBlur}
             >
-              <SendIconWrapper aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
+              <SendIconWrapper className="e2e-send-reply" aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
                 <SendIcon name="send" />
               </SendIconWrapper>
             </StyledTextArea>
