@@ -14,7 +14,6 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
 import { Section } from 'components/admin/Section';
-import Error from 'components/UI/Error';
 
 // Typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
@@ -73,7 +72,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
       padding="12px"
       fontSize={fontSizes.base}
       backgroundColor="#FFF"
-      placeholderFontWeight="500"
+      placeholderFontWeight="400"
       {...props}
     />
   )
