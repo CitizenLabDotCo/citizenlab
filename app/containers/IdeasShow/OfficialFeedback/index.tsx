@@ -86,7 +86,7 @@ export class OfficialFeedback extends PureComponent<Props, State> {
         {(updateDate || permission) &&
           <FeedbackHeader>
             <FeedbackTitle>
-              <FormattedMessage {...messages.ideaUpdate} />
+              <FormattedMessage {...messages.officialUpdate} />
             </FeedbackTitle>
             {updateDate &&
               <FormattedMessage

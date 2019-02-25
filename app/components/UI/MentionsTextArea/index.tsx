@@ -16,12 +16,12 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
-const Container = styled.div`
+const Container: any = styled.div`
   position: relative;
 
   textarea {
     &:hover {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
+      border-color: ${(props: any) => props.error && props.theme.colors.clRedError} !important;
     }
 
     &:focus {
@@ -31,6 +31,16 @@ const Container = styled.div`
 
   .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
+  }
+
+  .textareaWrapper__input {
+    ::-webkit-input-placeholder,
+    ::-moz-placeholder,
+    :-ms-input-placeholder,
+    :-moz-placeholder,
+     {
+      font-weight: ${(props: any) => props.placeholderFontWeight ? props.placeholderFontWeight : '300'} !important;
+    }
   }
 `;
 
@@ -48,6 +58,7 @@ type Props = {
   onBlur?: () => void | undefined;
   fontSize?: number;
   backgroundColor?: string;
+  placeholderFontWeight?: string;
 };
 
 type State = {
@@ -187,12 +198,12 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id } = this.props;
+    const { name, placeholder, value, error, children, rows, id, placeholderFontWeight } = this.props;
     const className = this.props['className'];
 
     if (style) {
       return (
-        <Container className={className}>
+        <Container className={className} placeholderFontWeight={placeholderFontWeight}>
           <MentionsInput
             id={id}
             style={style}
