@@ -2,7 +2,7 @@ namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
   task :create_tenant, [:host,:template] => [:environment] do |t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
-    tenant_template = args[:template] || 'en_template'
+    tenant_template = args[:template] || 'e2etests_template'
 
     Tenant.find_by(host: host)&.destroy!
 
@@ -106,7 +106,7 @@ namespace :cl2_back do
         last_name: 'Lab',
         email: 'hello@citizenlab.co',
         password: 'democrazy',
-        locale: 'en',
+        locale: tenant.settings.dig('core', 'locales')&.first || 'en',
         registration_completed_at: Time.now
       )
     end
