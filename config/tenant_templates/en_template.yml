@@ -250,7 +250,7 @@ models:
     created_at: 2019-01-29 15:39:33 UTC
     updated_at: 2019-01-29 15:39:33 UTC
   topic:
-  - &56
+  - &83
     title_multiloc:
       en: Squares and streets
       da-DK: Squares and streets
@@ -276,7 +276,7 @@ models:
     icon: 
     created_at: 2019-01-29 15:39:27 UTC
     updated_at: 2019-01-29 15:39:27 UTC
-  - &55
+  - &82
     title_multiloc:
       en: Cleanliness and waste
       da-DK: Cleanliness and waste
@@ -302,7 +302,7 @@ models:
     icon: 
     created_at: 2019-01-29 15:39:27 UTC
     updated_at: 2019-01-29 15:39:27 UTC
-  - &54
+  - &81
     title_multiloc:
       en: Mobility
       da-DK: Mobility
@@ -503,7 +503,7 @@ models:
     icon: 
     created_at: 2019-01-29 15:39:27 UTC
     updated_at: 2019-01-29 15:39:27 UTC
-  - &57
+  - &84
     title_multiloc:
       en: Social inclusion
       da-DK: Social inclusion
@@ -626,14 +626,20 @@ models:
       en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-22 09:23:13 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
+        shops and the park. You can share here your ideas to make it more lively!</p>\n"
+      en-CA: "<p>Unfortunately, less and less people visit the city centre to enjoy
+        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
+      en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
+        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
     process_type: timeline
     internal_role: 
     publication_status: published
-    ordering: 3
+    ordering: 4
   - &6
     presentation_mode: card
     participation_method: ideation
@@ -661,14 +667,26 @@ models:
         Reducing the amount of waste is a challenge for the environment that also
         has a financial and societal impact.</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-22 09:23:13 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
+      en-CA: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
+        up to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
+      en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
+        up to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
     process_type: timeline
     internal_role: 
     publication_status: published
-    ordering: 2
+    ordering: 3
   - &4
     presentation_mode: card
     participation_method: ideation
@@ -702,14 +720,14 @@ models:
 
         <p><em>Let's do this!</em></p>
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-21 14:31:54 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc: {}
     process_type: timeline
     internal_role: 
     publication_status: published
-    ordering: 4
+    ordering: 5
   - &8
     presentation_mode: card
     participation_method: ideation
@@ -734,14 +752,23 @@ models:
         administration, etc. Share here how digital installations could make our lives
         easier in the city.</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      en: "<p>We should try to modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.</p>\n"
+      en-CA: "<p>We should try to modernize the way the city works, including the
+        administration, etc. Share here how digital installations could make our lives
+        easier in the city.</p>\n"
+      en-GB: "<p>We should try to modernize the way the city works, including the
+        administration, etc. Share here how digital installations could make our lives
+        easier in the city.</p>\n"
     process_type: timeline
     internal_role: 
     publication_status: published
-    ordering: 0
+    ordering: 1
   - &3
     presentation_mode: card
     participation_method: ideation
@@ -985,7 +1012,7 @@ models:
 
 '
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:54 UTC
+    updated_at: 2019-02-21 14:31:54 UTC
     remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project/header_bg/e9bf01eb-4568-4028-a07b-c74268d454af/carrying-casual-cheerful-1162964_dxubq6.jpg
     visible_to: public
     description_preview_multiloc:
@@ -1014,7 +1041,7 @@ models:
     process_type: continuous
     internal_role: open_idea_box
     publication_status: published
-    ordering: 5
+    ordering: 6
   - &7
     presentation_mode: card
     participation_method: ideation
@@ -1047,14 +1074,50 @@ models:
         you want to see in this park?\nShare your ideas below of what the park should
         look like.</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-21 14:31:54 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc: {}
     process_type: timeline
     internal_role: 
     publication_status: published
-    ordering: 1
+    ordering: 2
+  - &9
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    title_multiloc:
+      en: 'Your say on the budget for: parks & streets in District 1'
+      da-DK: Participatory Budgeting
+      de-DE: Participatory Budgeting
+      en-CA: Participatory Budgeting
+      en-GB: Participatory Budgeting
+      fr-BE: Budget Participatif
+      fr-FR: Budget Participatif
+      nb-NO: Participatory Budgeting
+      nl-BE: Burgerbegroting
+      nl-NL: Burgerbegroting
+    description_multiloc:
+      en: |-
+        <h2>Delridge Way SW and SW Oregon St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Fast paced traffic along this residential corridor creates a challenging crossing for pedestrians. This year, we're installing a signalized crosswalk and updating curb ramps. Per the public vote, these fixes will enhance access to the existing pedestrian bridge and create an at-grade option for crossing Delridge Way SW.</p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a signalized crosswalk at Delridge Way SW and SW Oregon St to supplement the current pedestrian bridge</p><p><br></p><p>Install enhanced pedestrian curb ramps and maintain ADA accessibility</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/cc9d2c35-561b-491a-a1d9-d626bd0c0151/2018_0110_Delridge_Oregon_Map_v8_2_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Delridge Way SW and SW Barton St</h2><p>“Barton Bus Triangle” Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>The "Delridge Bus Triangle" is a City managed property in the heart of the Westwood Highland Park Urban Village. The location serves as a connection between Metro routes to the east, and the Westwood Village Transit mall to the west, along Barton Street SW. Installing sidewalks, and trimming the overgrown landscape, creates a safer space.</p><p>The project supports plans for upgrading local Metro Routes and improving connections for people walking and biking in 2020.</p><p>We have partnered with a "Friends of the Delridge Bus Triangle" to document the history, needs and collective vision of the space.</p><p><strong>Project Solution(s):</strong></p><p>Install an interim walking path on the south side of SW Barton St</p><p>Enhance and maintain the existing landscape</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/02fb0ded-67bf-4290-b70b-940632def86a/2018_0110_Delridge_Barton_Map_v5_0_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>SW Orchard St between Delridge Way SW and Sylvan Way SW</h2><p>Walkway Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Delridge Way SW contains a segment of road with a blind corner that lacks a walkway. This segment is regularly used by people traveling to a nearby school and the Vietnamese Cultural Center. Installing a walkway increases predictability, safety and accessibility for all travelers.</p><p><br></p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a painted walkway that parallels the road</p><p><br></p><p>Install new asphalt</p><p>Install wheel stops</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/776b798c-0c85-4372-9e94-9fe316119ef9/2018_Orchard-Sylvan_Map.png"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>12th Ave S, 8th Ave S and S Cloverdale St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>South Cloverdale Street experiences high traffic volumes from people driving and walking, making several intersections challenging to cross. The intersections along Cloverdale provide a connection to South Park Playground, South Park Community Center, Concord International School and the SR-99 freeway. Modifying them increases predictability, accessibility, and safety for travelers.</p><p><strong>Project Solution(s):</strong></p><p>Install a new marked crosswalk</p><p>Upgrade the current signal to meet ADA standards</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><br></p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/b6db464e-d8b3-412d-b834-cdd38684dc55/2018_0123_12th_Cloverdale_v4.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Materials</h2><ul><li>
+        <a href="https://www.seattle.gov/Documents/Departments/SDOT/PedestrianProgram/2018_YVYC_District_1_Postcards.pdf" target="_blank"><strong>District 1 Postcard Mailers</strong></a> (March 2018)</li></ul>
+    created_at: 2018-11-13 08:48:09 UTC
+    updated_at: 2019-02-21 14:32:34 UTC
+    remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project/header_bg/38cc3055-2179-460b-a87c-1f66bc21b78d/header_bg.jpeg
+    visible_to: public
+    description_preview_multiloc:
+      en: 'Your Voice, Your Choice: Parks and Streets is a participatory budgeting
+        initiative in which residents democratically decide how to spend a portion
+        of the City''s budget on small-scale park and street improvements.'
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    ordering: 0
   project_file: []
   project_image:
   - project_ref: *3
@@ -1087,9 +1150,14 @@ models:
     ordering: 
     created_at: 2019-01-29 15:39:33 UTC
     updated_at: 2019-01-29 15:39:33 UTC
+  - project_ref: *9
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/project_image/image/5d25cc22-682b-4e11-a6a8-e84eb6710b0b/image.png
+    ordering: 
+    created_at: 2018-11-13 08:48:11 UTC
+    updated_at: 2018-11-13 08:48:11 UTC
   projects_topic: []
   phase:
-  - &17
+  - &22
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1114,7 +1182,7 @@ models:
     end_at: '2018-04-18'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &18
+  - &23
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1141,7 +1209,7 @@ models:
     end_at: '2018-05-01'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &19
+  - &24
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1166,7 +1234,7 @@ models:
     end_at: '2018-05-04'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &20
+  - &25
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1188,7 +1256,7 @@ models:
     end_at: '2018-06-01'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &9
+  - &14
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1213,7 +1281,7 @@ models:
     end_at: '2018-07-09'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &10
+  - &15
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1240,7 +1308,7 @@ models:
     end_at: '2018-07-28'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &11
+  - &16
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1265,7 +1333,7 @@ models:
     end_at: '2018-08-01'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &12
+  - &17
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1287,7 +1355,7 @@ models:
     end_at: '2018-08-14'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &13
+  - &18
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1312,7 +1380,7 @@ models:
     end_at: '2018-05-02'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &14
+  - &19
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1339,7 +1407,7 @@ models:
     end_at: '2018-05-18'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &15
+  - &20
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1364,7 +1432,7 @@ models:
     end_at: '2018-06-12'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &16
+  - &21
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1386,7 +1454,7 @@ models:
     end_at: '2018-07-12'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &25
+  - &30
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1411,7 +1479,7 @@ models:
     end_at: '2018-06-13'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &26
+  - &31
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1438,7 +1506,7 @@ models:
     end_at: '2018-07-06'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &27
+  - &32
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1463,7 +1531,7 @@ models:
     end_at: '2018-08-06'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &28
+  - &33
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1488,7 +1556,7 @@ models:
     end_at: '2018-08-28'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &21
+  - &26
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1513,7 +1581,7 @@ models:
     end_at: '2018-04-22'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &22
+  - &27
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1540,7 +1608,7 @@ models:
     end_at: '2018-05-12'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &23
+  - &28
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1565,7 +1633,7 @@ models:
     end_at: '2018-06-12'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - &24
+  - &29
     presentation_mode: card
     participation_method: ideation
     posting_enabled: true
@@ -1587,14 +1655,123 @@ models:
     end_at: '2018-06-29'
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
+  - &34
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *9
+    title_multiloc:
+      en: Idea collection
+    description_multiloc:
+      en: "<p><strong>Project ideas will be collected January 2 - February 2.</strong> Community
+        members can brainstorm and submit potential project ideas to be funded. Anyone
+        is welcome to propose project ideas. Ideas may be submitted online or in-person
+        at any Seattle Public Library branch or various public outreach events.</p>"
+    start_at: '2018-08-01'
+    end_at: '2018-09-30'
+    created_at: 2018-11-13 08:50:16 UTC
+    updated_at: 2018-11-13 08:50:16 UTC
+  - presentation_mode: card
+    participation_method: information
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *9
+    title_multiloc:
+      en: Analysis & development
+    description_multiloc:
+      en: |-
+        <p><strong>Project Development took place from February 23 - March 28.</strong> This page is an overview of the 2018 process. Please visit <a href="https://www.seattle.gov/neighborhoods/programs-and-services/your-voice-your-choice/get-involved/vote" target="_blank"><strong>our Vote page</strong></a> to learn about the Vote phase, which will take place from June 16 - July 16.</p><p>In Project Development, community members take the ideas submitted during the Idea Collection phase and prioritize them to 8-10 ideas per Council District.</p><ul>
+        <li>There will be opportunities to participate in Project Development meetings in each Council District. Participants are responsible for evaluating the project ideas that are submitted based on need at the project location &amp; community benefit of the proposed project and giving projects numerical ratings.</li>
+        <li>Each Project Development meeting will be supported by Your Voice, Your Choice staff who will ensure that community members have the necessary resources and tools to evaluate projects.</li>
+        <li>Anyone can participate in Project Development if they live, work, go to school, receive services, volunteer, or have a connection to the City of Seattle.</li>
+        <li>Project lists will be divided geographically within Council Districts. We will provide information in advance on which lists will be discussed at which meetings. If you cannot attend a particular meeting, but would like to evaluate the Project List that will be discussed at that meeting, you may attend another meeting in the same Council District. For example, if you are interested in Rainier Beach projects, but cannot attend the meeting at the Rainier Beach Branch Library, you can access that Project List at any other meeting in District 2: Georgetown Stables, Columbia Branch Library, El Centro de la Raza, or New Holly Gathering Hall.</li>
+        </ul><h2><strong>Project Development Meetings</strong></h2><p><a href="https://drive.google.com/open?id=1IB5yJ10WYmF9wmaK9Vk0ilBG0-DyK7MA&amp;usp=sharing" target="_blank"><strong>View a map of the 2018 ideas</strong></a> sorted by the Project Development meeting at which they will be discussed.</p><p>Meeting times, dates and locations are subject to change.</p><p>You may click on the date/time of a meeting below to download a PDF of the Project List for that meeting. Please note that Project Lists are subject to change due to feasibility reviews by Seattle Department of Transportation (SDOT) &amp; Seattle Parks and Recreation (SPR).</p>
+    start_at: '2018-10-01'
+    end_at: '2018-10-31'
+    created_at: 2018-11-13 08:50:53 UTC
+    updated_at: 2018-11-21 10:52:16 UTC
+  - &11
+    presentation_mode: card
+    participation_method: budgeting
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 50000
+    project_ref: *9
+    title_multiloc:
+      en: Voting
+    description_multiloc:
+      en: |-
+        <p>The 2018 Your Voice, Your Choice Vote took place June 16 to July 16:</p><ul>
+        <li>Voting is open to anyone age 11 and up (must be 13 and up to vote online) who lives, works, goes to school, worships, receives services, volunteers, or is part of a program in the City of Seattle.</li>
+        <li>Each voter may cast one ballot per City Council district, and may choose up to three (3) projects per district.</li>
+        <li>You can vote online or by paper ballot at any <a href="https://www.spl.org/hours-and-locations" target="_blank"><strong>Seattle Public Library branch.</strong></a>
+        </li>
+        </ul><p class="ql-align-justify">More than 7,200 community members voted on their favorite park and street projects this year.</p>
+    start_at: '2018-11-01'
+    end_at: '2019-02-28'
+    created_at: 2018-11-13 08:52:34 UTC
+    updated_at: 2019-01-28 19:58:04 UTC
+  - presentation_mode: card
+    participation_method: information
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    project_ref: *9
+    title_multiloc:
+      en: Funding & implementation
+    description_multiloc:
+      en: '<h2>Project Implementation</h2><p>Your Voice, Your Choice: Parks &amp;
+        Streets is a participatory budgeting initiative in which Seattle residents
+        democratically decide how to spend a portion of the City''s budget on small-scale
+        park and street improvements.</p><p>This project implementation website will
+        allow you to track the status of winning transportation projects through design
+        and construction. No two projects are the same and each follows a different
+        timeline for completion. We''ll provide updates and information as each project
+        progresses towards completion.</p><p>Click on the map below to view project
+        updates specific to each district.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/2c541fe9-5b1c-4723-8c15-f84fac4d1d93/SeattleDistrict_Map-01.jpg"></p><p
+        class="ql-align-center"><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1"
+        target="_blank"><strong>District 1</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-2"
+        target="_blank"><strong>District 2</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-3"
+        target="_blank"><strong>District 3</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-4"
+        target="_blank"><strong>District 4</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-5"
+        target="_blank"><strong>District 5</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-6"
+        target="_blank"><strong>District 6</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-7"
+        target="_blank"><strong>District 7</strong></a></p><h2>Get Involved</h2><p>Learn
+        more about the program and how to submit or vote on projects at <a href="https://www.seattle.gov/neighborhoods/programs-and-services/your-voice-your-choice"
+        target="_blank"><strong>Your Voice Your Choice</strong></a>. This program
+        is a partnership between The Department of Neighborhoods, Transportation and
+        Parks.</p><p>If you need this information translated, please call (206) 684-8105.</p><p>Servicios
+        de traducción e interpretación disponibles bajo petición (206) 684-8105.</p><p>Matutulungan
+        ka naming maintindihan kung hihingi kang tulong (206) 684-8105.</p><p>요청하시면 번역이나 통역을 제공해드립니다 (206)
+        684-8105.</p><p>Dịch và thông dịch viên sẵn sàng nếu có sự yêu cầu (206) 684-8105.</p><p>Haddii
+        aad dooneyso turjubeen fadlen wac (206) 684-8105.</p>'
+    start_at: '2019-03-01'
+    end_at: '2019-03-31'
+    created_at: 2018-11-13 08:53:17 UTC
+    updated_at: 2019-01-28 19:11:24 UTC
   phase_file: []
   areas_project: []
   user:
-  - &33
-    email: citizenlab+1@citizenlab.co
+  - &39
+    email: citizenlab+1+admin@citizenlab.co
     password_digest: "$2a$10$R5sk7o2.kCugYJQ4VGMHw.rHLG86qDDpLle49vgi7lWjv1hvrLUeC"
     created_at: 2019-01-29 15:39:33 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
+    updated_at: 2019-02-13 10:18:21 UTC
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/aa6c47a2-2458-40dc-aaab-10f97ce4a778/man-388104_960_720_dfehjy.jpg
     first_name: Max
     last_name: Walker
@@ -1608,11 +1785,11 @@ models:
       gender: male
       domicile: outside
     registration_completed_at: ''
-  - &37
-    email: citizenlab+2@citizenlab.co
+  - &44
+    email: citizenlab+2+admin@citizenlab.co
     password_digest: "$2a$10$hZMLp7t1y6/EXSL88IQ8LOnpEVzYcdf6xtxyR0Ne/8Rf18/AJhzNO"
     created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:35 UTC
+    updated_at: 2019-02-13 10:18:21 UTC
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/d7c7d4c4-de31-4272-af08-356af27255ef/smiling-woman_kdsaal.jpg
     first_name: Annie
     last_name: Smith
@@ -1627,11 +1804,11 @@ models:
       domicile: outside
       birthyear: 1944
     registration_completed_at: ''
-  - &40
-    email: citizenlab+4@citizenlab.co
+  - &46
+    email: citizenlab+4+admin@citizenlab.co
     password_digest: "$2a$10$Gc8hjD7OWhpIZywl3p.QJOp.KemCfbLUOCz7fHZn7/Ve74qEyqABa"
     created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:36 UTC
+    updated_at: 2019-02-13 10:18:21 UTC
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/5aedf10b-87c5-413a-9d61-6a29efbfb460/man-838636_960_720_f3i6ki.jpg
     first_name: Chad
     last_name: Williams
@@ -1646,11 +1823,11 @@ models:
       domicile: outside
       birthyear: 1979
     registration_completed_at: ''
-  - &35
-    email: citizenlab+3@citizenlab.co
+  - &42
+    email: citizenlab+3+admin@citizenlab.co
     password_digest: "$2a$10$Qyz1FyvQ39r36thu.ku9.OfMBw7gmx4zczIjhsC9UcgH8VUM6xzta"
     created_at: 2019-01-29 15:39:34 UTC
-    updated_at: 2019-01-29 15:39:36 UTC
+    updated_at: 2019-02-13 10:18:21 UTC
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/8e9a94fe-9672-40cd-8d04-7a1116c16f7c/tiamorrison-profile-photo-2-copy_pcnsxm.png
     first_name: Emma
     last_name: Murphy
@@ -1665,7 +1842,110 @@ models:
       domicile: outside
       birthyear: 1965
     registration_completed_at: ''
-  basket: []
+  - &12
+    email: sheron@simonis.io
+    password_digest: "$2a$10$DaBQCvNOpmLotHytrWLg0uC/oaQZwjZYeyccdK1/5cEXdbnCj58lS"
+    created_at: 2018-11-24 20:04:44 UTC
+    updated_at: 2019-02-21 14:32:20 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/d52f14bd-d5ad-4771-b5b3-592029b41d2c/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
+    first_name: Bryan
+    last_name: Frami
+    locale: en
+    bio_multiloc:
+      en: 
+      da-DK: 
+      de-DE: 
+      en-CA: 
+      en-GB: 
+      fr-BE: 
+      fr-FR: 
+      nb-NO: 
+      nl-BE: 
+      nl-NL: 
+    cl1_migrated: false
+    custom_field_values: {}
+    registration_completed_at: 2018-11-24 20:04:44 UTC
+  - &13
+    email: ru@douglaspadberg.com
+    password_digest: "$2a$10$fvfMeYqaXmdMSCNfuMsoXOi9ew5kBpZZGMkKEzt5IiHTs695Q/hm2"
+    created_at: 2018-07-18 16:41:31 UTC
+    updated_at: 2019-02-21 14:32:29 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/61a8082f-4ee3-42cc-8983-39648bf92c28/83857__portrait-tips2.jpg
+    first_name: Classie
+    last_name: Williamson
+    locale: en
+    bio_multiloc:
+      en: 
+      da-DK: 
+      de-DE: 
+      en-CA: 
+      en-GB: 
+      fr-BE: 
+      fr-FR: 
+      nb-NO: 
+      nl-BE: 
+      nl-NL: 
+    cl1_migrated: false
+    custom_field_values: {}
+    registration_completed_at: 2018-07-18 16:41:31 UTC
+  - &10
+    email: thaddeusbeier@kemmer.com
+    password_digest: "$2a$10$Dq3YVu6MiN1R6xNhoSSyOOHbmQaVLPKtMOmDIM49dxkcgOWwjvo/i"
+    created_at: 2018-08-03 14:41:00 UTC
+    updated_at: 2019-02-21 14:32:40 UTC
+    remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/user/avatar/83fc81f4-a70b-4a3a-9bc3-eda277792a6c/20170601183357-5506a2c2-cu_e355.jpg
+    first_name: Haywood
+    last_name: Howe
+    locale: en
+    bio_multiloc:
+      en: 
+      da-DK: 
+      de-DE: 
+      en-CA: 
+      en-GB: 
+      fr-BE: 
+      fr-FR: 
+      nb-NO: 
+      nl-BE: 
+      nl-NL: 
+    cl1_migrated: false
+    custom_field_values: {}
+    registration_completed_at: 2018-08-03 14:41:00 UTC
+  basket:
+  - &48
+    submitted_at: ''
+    user_ref: *10
+    participation_context_ref: *11
+    created_at: 2018-11-13 16:28:16 UTC
+    updated_at: 2018-11-13 16:28:16 UTC
+  - &50
+    submitted_at: ''
+    user_ref: *10
+    participation_context_ref: *11
+    created_at: 2018-11-13 16:28:17 UTC
+    updated_at: 2018-11-13 16:28:17 UTC
+  - &51
+    submitted_at: ''
+    user_ref: *10
+    participation_context_ref: *11
+    created_at: 2018-11-13 16:28:18 UTC
+    updated_at: 2018-11-13 16:28:18 UTC
+  - submitted_at: ''
+    user_ref: *10
+    participation_context_ref: *11
+    created_at: 2018-11-13 16:28:13 UTC
+    updated_at: 2018-11-24 14:47:30 UTC
+  - submitted_at: ''
+    user_ref: *12
+    participation_context_ref: *11
+    created_at: 2018-11-24 20:21:57 UTC
+    updated_at: 2018-11-24 20:21:57 UTC
+  - &52
+    submitted_at: ''
+    user_ref: *13
+    participation_context_ref: *11
+    created_at: 2018-11-13 09:27:05 UTC
+    updated_at: 2019-02-19 14:21:42 UTC
   event:
   - project_ref: *3
     title_multiloc:
@@ -1928,87 +2208,47 @@ models:
     end_at: 2018-05-02 00:00:00 UTC
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
+  - project_ref: *9
+    title_multiloc:
+      en: Neighborhood meeting
+    description_multiloc:
+      en: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/d692b0aa-ec3d-4e26-9d08-5558e0892522#"
+        target="_blank">Register here</a></p>
+    location_multiloc:
+      en: South Seattle College, Chan Education Center, Rm 202 - 6000 16th Ave SW
+    start_at: 2018-08-01 17:53:00 UTC
+    end_at: 2018-08-01 19:53:00 UTC
+    created_at: 2018-11-13 08:54:21 UTC
+    updated_at: 2018-11-13 08:54:21 UTC
+  - project_ref: *9
+    title_multiloc:
+      en: Neighborhood meeting
+    description_multiloc:
+      en: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/92283996-0955-4021-a7df-006034c6fcbc#"
+        target="_blank">Register here</a></p>
+    location_multiloc:
+      en: South Park Community Center - 8319 8th Ave S
+    start_at: 2018-09-01 17:54:00 UTC
+    end_at: 2018-09-01 19:54:00 UTC
+    created_at: 2018-11-13 08:55:06 UTC
+    updated_at: 2018-11-13 08:55:06 UTC
+  - project_ref: *9
+    title_multiloc:
+      en: Neighborhood meeting
+    description_multiloc:
+      en: 
+    location_multiloc:
+      en: South Park Community Center - 8319 8th Ave S
+    start_at: 2018-10-01 17:55:00 UTC
+    end_at: 2018-10-01 19:55:00 UTC
+    created_at: 2018-11-13 08:55:37 UTC
+    updated_at: 2018-11-13 08:55:37 UTC
   event_file: []
   group: []
   groups_project: []
   permission:
   - action: posting
     permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *9
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *10
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *11
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *12
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *13
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
     permittable_ref: *14
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
@@ -2114,21 +2354,6 @@ models:
     updated_at: 2019-01-29 15:39:52 UTC
   - action: posting
     permitted_by: everyone
-    permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: voting
-    permitted_by: everyone
-    permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: commenting
-    permitted_by: everyone
-    permittable_ref: *3
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - action: posting
-    permitted_by: everyone
     permittable_ref: *21
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
@@ -2204,6 +2429,21 @@ models:
     updated_at: 2019-01-29 15:39:52 UTC
   - action: posting
     permitted_by: everyone
+    permittable_ref: *3
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *3
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *3
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
     permittable_ref: *26
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
@@ -2247,10 +2487,110 @@ models:
     permittable_ref: *28
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *29
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *29
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *29
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *30
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *30
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *30
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *31
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *31
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *31
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *32
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *32
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *32
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *33
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *33
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *33
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - action: posting
+    permitted_by: everyone
+    permittable_ref: *34
+    created_at: 2018-11-13 08:50:16 UTC
+    updated_at: 2018-11-13 08:50:16 UTC
+  - action: voting
+    permitted_by: everyone
+    permittable_ref: *34
+    created_at: 2018-11-13 08:50:16 UTC
+    updated_at: 2018-11-13 08:50:16 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *34
+    created_at: 2018-11-13 08:50:16 UTC
+    updated_at: 2018-11-13 08:50:16 UTC
+  - action: commenting
+    permitted_by: everyone
+    permittable_ref: *11
+    created_at: 2018-11-13 08:52:34 UTC
+    updated_at: 2018-11-13 08:52:34 UTC
+  - action: budgeting
+    permitted_by: everyone
+    permittable_ref: *11
+    created_at: 2018-11-13 09:13:47 UTC
+    updated_at: 2018-11-13 09:13:47 UTC
   groups_permission: []
   membership: []
   page:
-  - &31
+  - &37
     title_multiloc:
       en: Privacy Policy
       da-DK: Privacy Policy
@@ -3456,7 +3796,7 @@ models:
     updated_at: 2019-01-29 15:39:27 UTC
     project_ref: 
     publication_status: published
-  - &32
+  - &38
     title_multiloc:
       en: Terms & conditions
       da-DK: Terms & conditions
@@ -4702,7 +5042,7 @@ models:
     updated_at: 2019-01-29 15:39:27 UTC
     project_ref: 
     publication_status: published
-  - &29
+  - &35
     title_multiloc:
       en: Information Page
       da-DK: Information Page
@@ -4979,7 +5319,7 @@ models:
     updated_at: 2019-01-29 15:39:56 UTC
     project_ref: 
     publication_status: published
-  - &30
+  - &36
     title_multiloc:
       en: Cookie Policy
       da-DK: Cookie Policy
@@ -5912,45 +6252,45 @@ models:
     project_ref: 
     publication_status: published
   page_link:
-  - linking_page_ref: *29
-    linked_page_ref: *30
+  - linking_page_ref: *35
+    linked_page_ref: *36
     ordering: 1
-  - linking_page_ref: *29
-    linked_page_ref: *31
+  - linking_page_ref: *35
+    linked_page_ref: *37
     ordering: 2
-  - linking_page_ref: *29
-    linked_page_ref: *32
+  - linking_page_ref: *35
+    linked_page_ref: *38
     ordering: 3
-  - linking_page_ref: *30
-    linked_page_ref: *29
+  - linking_page_ref: *36
+    linked_page_ref: *35
     ordering: 1
-  - linking_page_ref: *30
-    linked_page_ref: *31
+  - linking_page_ref: *36
+    linked_page_ref: *37
     ordering: 2
-  - linking_page_ref: *30
-    linked_page_ref: *32
+  - linking_page_ref: *36
+    linked_page_ref: *38
     ordering: 3
-  - linking_page_ref: *31
-    linked_page_ref: *29
+  - linking_page_ref: *37
+    linked_page_ref: *35
     ordering: 1
-  - linking_page_ref: *31
-    linked_page_ref: *30
+  - linking_page_ref: *37
+    linked_page_ref: *36
     ordering: 2
-  - linking_page_ref: *31
-    linked_page_ref: *32
+  - linking_page_ref: *37
+    linked_page_ref: *38
     ordering: 3
-  - linking_page_ref: *32
-    linked_page_ref: *29
+  - linking_page_ref: *38
+    linked_page_ref: *35
     ordering: 1
-  - linking_page_ref: *32
-    linked_page_ref: *30
+  - linking_page_ref: *38
+    linked_page_ref: *36
     ordering: 2
-  - linking_page_ref: *32
-    linked_page_ref: *31
+  - linking_page_ref: *38
+    linked_page_ref: *37
     ordering: 3
   page_file: []
   idea_status:
-  - &38
+  - &41
     title_multiloc:
       en: proposed
       da-DK: proposed
@@ -5978,7 +6318,7 @@ models:
       nb-NO: This idea has been proposed to the city
       nl-BE: Dit idee is voorgesteld
       nl-NL: Dit idee is voorgesteld
-  - &34
+  - &40
     title_multiloc:
       en: under consideration
       da-DK: under consideration
@@ -6006,7 +6346,7 @@ models:
       nb-NO: This idea has been taken into consideration by the city
       nl-BE: Dit idee is in overweging genomen
       nl-NL: Dit idee is in overweging genomen
-  - &39
+  - &45
     title_multiloc:
       en: accepted
       da-DK: accepted
@@ -6035,7 +6375,7 @@ models:
       nb-NO: This idea has been accepted and will be implemented by the city
       nl-BE: Dit idee is aanvaard en zal worden uitgevoerd
       nl-NL: Dit idee is aanvaard en zal worden uitgevoerd
-  - &36
+  - &43
     title_multiloc:
       en: rejected
       da-DK: rejected
@@ -6063,7 +6403,7 @@ models:
       nb-NO: This idea has been rejected
       nl-BE: Dit idee is afgewezen
       nl-NL: Dit idee is afgewezen
-  - &41
+  - &47
     title_multiloc:
       en: implemented
       da-DK: implemented
@@ -6092,7 +6432,7 @@ models:
       nl-BE: Dit idee is uitgevoerd
       nl-NL: Dit idee is uitgevoerd
   idea:
-  - &44
+  - &57
     title_multiloc:
       en: Add more night buses
       en-CA: Add more night buses
@@ -6113,14 +6453,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *5
-    author_ref: *33
+    author_ref: *39
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *34
+    idea_status_ref: *40
     budget: 
-  - &46
+  - &59
     title_multiloc:
       en: Organise a crafts market in the city centre
       en-CA: Organise a crafts market in the city centre
@@ -6147,14 +6487,184 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *5
-    author_ref: *33
+    author_ref: *39
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *34
+    idea_status_ref: *40
     budget: 
-  - &50
+  - &54
+    title_multiloc:
+      en: Low Cost Sidewalks
+    body_multiloc:
+      en: "<p>Sidewalk constructed with lower-cost materials, such as stamped and
+        stained asphalt. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:01:16 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:01:16 UTC
+    updated_at: 2018-11-13 09:16:04 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30274550000001
+      - 47.6100287
+    location_description: 23rd Avenue, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 12002
+  - &67
+    title_multiloc:
+      en: Traffic Circles
+    body_multiloc:
+      en: "<p>Circles installed at intersections of non- arterial streets, intended
+        to reduce collisions, reduce speeding and improve bicycle and pedestrian safety. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:02:16 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:02:16 UTC
+    updated_at: 2018-11-13 09:16:27 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30274550000001
+      - 47.6100287
+    location_description: 23rd Avenue, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 25000
+  - &68
+    title_multiloc:
+      en: Trail Improvements
+    body_multiloc:
+      en: "<p>Existing trails can be renovated to be more user-friendly, including
+        adding box steps for trails on hillsides and crushed surfacing for accessibility. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:03:09 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:03:09 UTC
+    updated_at: 2019-01-30 17:14:54 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *41
+    budget: 23490
+  - &69
+    title_multiloc:
+      en: Median Pedestrian Crossings
+    body_multiloc:
+      en: "<p>Raised islands in the middle of the street that provide a safe place
+        for pe- destrians to stop before crossing the second half of the road. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:04:02 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:04:02 UTC
+    updated_at: 2018-12-12 13:47:19 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.3050164
+      - 47.6090327
+    location_description: 21st Avenue, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 3500
+  - &53
+    title_multiloc:
+      en: Asphalt Paths
+    body_multiloc:
+      en: "<p>Surfaced walkways, separated from the roadway, that are not traditional
+        sidewalks. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:04:46 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:04:46 UTC
+    updated_at: 2018-11-13 09:20:28 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.29791999999998
+      - 47.706689
+    location_description: 28th Avenue Northeast, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 12480
+  - &70
+    title_multiloc:
+      en: Park Benches
+    body_multiloc:
+      en: "<p>Benches can be installed to provide seating options within parks. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:05:26 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:05:26 UTC
+    updated_at: 2019-01-30 17:14:54 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30161049999998
+      - 47.7046685
+    location_description: 24th Avenue Northeast, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 3400
+  - &71
+    title_multiloc:
+      en: Equipment Refurbishment
+    body_multiloc:
+      en: "<p>Existing equipment, such as basketball poles, hoops, and backboards,
+        as well as fences, can be replaced, and courts can be restriped. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:06:09 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:06:09 UTC
+    updated_at: 2019-01-11 13:34:57 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.39084869999999
+      - 47.6890103
+    location_description: 27th Avenue Northwest, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 18000
+  - &72
+    title_multiloc:
+      en: Park Entrances
+    body_multiloc:
+      en: "<p>Existing park entrances can be improved to be more accessible and user-friendly. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:06:52 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:06:52 UTC
+    updated_at: 2019-01-11 13:34:57 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.294939
+      - 47.61005309999999
+    location_description: 29th Avenue, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 4985
+  - &80
+    title_multiloc:
+      en: Accessible Picnic Tables
+    body_multiloc:
+      en: "<p>Tables can be added to provide seating inclusive of people using mobility
+        devices. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:13:02 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:13:02 UTC
+    updated_at: 2018-11-13 09:13:02 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *41
+    budget: 
+  - &63
     title_multiloc:
       en: Install a little coffee corner in the park
       en-CA: Install a little coffee corner in the park
@@ -6184,14 +6694,172 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *7
-    author_ref: *35
+    author_ref: *42
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *36
+    idea_status_ref: *43
     budget: 
-  - &42
+  - &73
+    title_multiloc:
+      en: Low Cost Curbing
+    body_multiloc:
+      en: "<p>Wheel stops that separate the planting strip from the road and provide
+        safe distance from traffic. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:07:35 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:07:35 UTC
+    updated_at: 2019-01-29 10:20:14 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.2998341
+      - 47.693883
+    location_description: 26th Avenue Northeast, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 23000
+  - &79
+    title_multiloc:
+      en: Have more computers in the library
+    body_multiloc:
+      en: "<p>To make technology more inclusive, and especially internet access, there
+        should be more computers in the public library. Indeed, today there are only
+        two and the spots they are often occupied. It could be nice to have more monitors,
+        or even a room at the library with computers only. It could help people who
+        dn't have internet at home to look for a job for example.</p>"
+    publication_status: published
+    published_at: 2018-11-13 09:12:26 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:12:26 UTC
+    updated_at: 2018-11-13 09:12:26 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *41
+    budget: 
+  - &49
+    title_multiloc:
+      en: Speed Humps/Speed Tables
+    body_multiloc:
+      en: "<p>Mounds that extend the full width of the street, used to reduce traffic
+        speed. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:08:11 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:08:11 UTC
+    updated_at: 2019-02-19 13:57:53 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30149470000003
+      - 47.696632
+    location_description: 25th Avenue Northeast, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 23500
+  - &74
+    title_multiloc:
+      en: Curb Bulbs
+    body_multiloc:
+      en: "<p>Sidewalk extensions used to shorten crossing distance, provide access
+        to transit and expand landscape or walkable zones. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:09:07 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:09:07 UTC
+    updated_at: 2019-02-19 13:57:53 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.2998341
+      - 47.693883
+    location_description: 26th Avenue Northeast, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 24997
+  - &75
+    title_multiloc:
+      en: Flashing Beacons
+    body_multiloc:
+      en: "<p>Lights with highly visible flashing patterns, installed at crosswalks
+        and activated by pedestrians and bicyclists by manually pushing a button. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:09:46 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:09:46 UTC
+    updated_at: 2018-11-13 09:09:46 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30176130000001
+      - 47.5719123
+    location_description: 24th Avenue South, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 
+  - &76
+    title_multiloc:
+      en: Send a weekly agenda of the city by email
+    body_multiloc:
+      en: "<p>Many events are organised throughout the week but we are not aware of
+        it because we don't pass by the posters or go to the places where they are
+        advertised. Therefore it would be nice to receive an agenda of what's happening
+        in the city during the week, right into their inbox: cultural events, towhalls,
+        etc. to be able to access it all in one place from the comfort of your own
+        house.</p>"
+    publication_status: published
+    published_at: 2018-11-13 09:10:23 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:10:23 UTC
+    updated_at: 2018-11-13 09:10:23 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *41
+    budget: 
+  - &77
+    title_multiloc:
+      en: Have internet trainings for elderly people
+    body_multiloc:
+      en: "<p>It would be interesting to have a small course given to elderly people
+        on how to use the internet. For instance, there could be a training that shows
+        how to send emails, read the news online, and other basic online activities.
+        I think if we want our city to be more modern and digital, we should make
+        sure beforehand that all the citizens can understand these tools properly.</p>"
+    publication_status: published
+    published_at: 2018-11-13 09:10:55 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:10:55 UTC
+    updated_at: 2018-11-13 09:10:55 UTC
+    location_point_geojson: 
+    location_description: 
+    idea_status_ref: *41
+    budget: 
+  - &78
+    title_multiloc:
+      en: Minor Improvements to Structures
+    body_multiloc:
+      en: "<p>Existing structures such as comfort sta- tions or shelter houses in
+        good structur- al condition can receive finishes and fixtures to improve usability. </p>"
+    publication_status: published
+    published_at: 2018-11-13 09:11:54 UTC
+    project_ref: *9
+    author_ref: *13
+    created_at: 2018-11-13 09:11:54 UTC
+    updated_at: 2019-01-16 14:45:58 UTC
+    location_point_geojson:
+      type: Point
+      coordinates:
+      - -122.30176130000001
+      - 47.5719123
+    location_description: 24th Avenue South, Seattle, WA, USA
+    idea_status_ref: *41
+    budget: 
+  - &55
     title_multiloc:
       en: More bicycle racks
       en-CA: More bicycle racks
@@ -6215,14 +6883,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *4
-    author_ref: *37
+    author_ref: *44
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *34
+    idea_status_ref: *40
     budget: 
-  - &51
+  - &64
     title_multiloc:
       en: Have more computers in the library
       en-CA: Have more computers in the library
@@ -6246,14 +6914,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *8
-    author_ref: *33
+    author_ref: *39
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *38
+    idea_status_ref: *41
     budget: 
-  - &52
+  - &65
     title_multiloc:
       en: Have internet trainings for elderly people
       en-CA: Have internet trainings for elderly people
@@ -6277,14 +6945,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *8
-    author_ref: *37
+    author_ref: *44
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *38
+    idea_status_ref: *41
     budget: 
-  - &53
+  - &66
     title_multiloc:
       en: Send a weekly agenda of the city by email
       en-CA: Send a weekly agenda of the city by email
@@ -6311,14 +6979,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *8
-    author_ref: *33
+    author_ref: *39
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *39
+    idea_status_ref: *45
     budget: 
-  - &43
+  - &56
     title_multiloc:
       en: Organise one car-free day per month
       en-CA: Organise one car-free day per month
@@ -6339,14 +7007,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *4
-    author_ref: *40
+    author_ref: *46
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *41
+    idea_status_ref: *47
     budget: 
-  - &45
+  - &58
     title_multiloc:
       en: Make the city centre more accessible thanks to free shuttles
       en-CA: Make the city centre more accessible thanks to free shuttles
@@ -6370,14 +7038,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *5
-    author_ref: *35
+    author_ref: *42
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *39
+    idea_status_ref: *45
     budget: 
-  - &48
+  - &61
     title_multiloc:
       en: Start an organic and food waste recovery
       en-CA: Start an organic and food waste recovery
@@ -6401,14 +7069,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *6
-    author_ref: *35
+    author_ref: *42
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *39
+    idea_status_ref: *45
     budget: 
-  - &49
+  - &62
     title_multiloc:
       en: Create a dog area within the park
       en-CA: Create a dog area within the park
@@ -6435,14 +7103,14 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *7
-    author_ref: *40
+    author_ref: *46
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *36
+    idea_status_ref: *43
     budget: 
-  - &47
+  - &60
     title_multiloc:
       en: Organise fun gatherings to raise awareness about waste sorting
       en-CA: Organise fun gatherings to raise awareness about waste sorting
@@ -6469,290 +7137,521 @@ models:
     publication_status: published
     published_at: 2019-01-29 15:39:34 UTC
     project_ref: *6
-    author_ref: *37
+    author_ref: *44
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
     location_point_geojson: 
     location_description: 
-    idea_status_ref: *38
+    idea_status_ref: *41
     budget: 
   areas_idea: []
-  baskets_idea: []
+  baskets_idea:
+  - basket_ref: *48
+    idea_ref: *49
+  - basket_ref: *50
+    idea_ref: *49
+  - basket_ref: *51
+    idea_ref: *49
+  - basket_ref: *52
+    idea_ref: *53
+  - basket_ref: *52
+    idea_ref: *54
   idea_file: []
   idea_image:
-  - idea_ref: *42
+  - idea_ref: *55
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/df9de462-8716-4da2-9478-f713c8e23964/5.5.2_bike_garden_setting_4057_05152012_geoe3e.jpg
     ordering: 
     created_at: 2019-01-29 15:39:35 UTC
     updated_at: 2019-01-29 15:39:35 UTC
-  - idea_ref: *43
+  - idea_ref: *56
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/9de3095e-58e2-42d1-937a-6d138d4b5526/empty_city_road_by_spooky_dream-d4avkt3_nhl6yf.jpg
     ordering: 
     created_at: 2019-01-29 15:39:38 UTC
     updated_at: 2019-01-29 15:39:38 UTC
-  - idea_ref: *44
+  - idea_ref: *57
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/5baa1a7a-f003-4cc6-932e-31c1040f6458/night-bus_l5xc4n.jpg
     ordering: 
     created_at: 2019-01-29 15:39:39 UTC
     updated_at: 2019-01-29 15:39:39 UTC
-  - idea_ref: *45
+  - idea_ref: *58
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/2b1605d1-4289-43de-8ef8-78bef24c74bd/Electric-Shuttle-Bus-SHT-T14-_ehqq6n.jpg
     ordering: 
     created_at: 2019-01-29 15:39:40 UTC
     updated_at: 2019-01-29 15:39:40 UTC
-  - idea_ref: *46
+  - idea_ref: *59
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/0d1c7128-1032-4ee0-970d-456e54e23204/norwich-market-city-centre-street-scene-in-the-evening-norfolk-england-D0KXFH_bixl7v.jpg
     ordering: 
     created_at: 2019-01-29 15:39:41 UTC
     updated_at: 2019-01-29 15:39:41 UTC
-  - idea_ref: *47
+  - idea_ref: *60
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/784ff8b6-44ae-4f14-bc0e-66748313f8ab/1200px-NEA_recycling_bins_2C_Orchard_Road_pwpncj.jpg
     ordering: 
     created_at: 2019-01-29 15:39:43 UTC
     updated_at: 2019-01-29 15:39:43 UTC
-  - idea_ref: *48
+  - idea_ref: *61
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/34c3e292-f1e8-4539-a254-298a662e1ef0/organic-waste_g0nyf1.jpg
     ordering: 
     created_at: 2019-01-29 15:39:46 UTC
     updated_at: 2019-01-29 15:39:46 UTC
-  - idea_ref: *49
+  - idea_ref: *62
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/d4e0515e-d875-4adc-a0ef-df82d3c5c65d/dans-un-premier-temps-il-s-agira-de-rappels-a-l-ordre_2245789_667x333_i86nvl.jpg
     ordering: 
     created_at: 2019-01-29 15:39:47 UTC
     updated_at: 2019-01-29 15:39:47 UTC
-  - idea_ref: *50
+  - idea_ref: *63
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/128fff6e-7365-4fed-bf8c-425b8d85b0ba/4015932979_f495f4e5cf_z_o1cjo7.jpg
     ordering: 
     created_at: 2019-01-29 15:39:48 UTC
     updated_at: 2019-01-29 15:39:48 UTC
-  - idea_ref: *51
+  - idea_ref: *64
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/8356b683-b283-445e-8c52-5ec9a5f41be8/zzzfirstfloor_zffpzz.jpg
     ordering: 
     created_at: 2019-01-29 15:39:49 UTC
     updated_at: 2019-01-29 15:39:49 UTC
-  - idea_ref: *52
+  - idea_ref: *65
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/07e080f5-0dce-489c-87aa-89af77cdf0bd/hqdefault_rltrx8.jpg
     ordering: 
     created_at: 2019-01-29 15:39:49 UTC
     updated_at: 2019-01-29 15:39:49 UTC
-  - idea_ref: *53
+  - idea_ref: *66
     remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/5e9322f2-f4c8-4ede-b760-f4458098478a/emailing1_lv8sxz.jpg
     ordering: 
     created_at: 2019-01-29 15:39:50 UTC
     updated_at: 2019-01-29 15:39:50 UTC
+  - idea_ref: *54
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/4690842b-5034-42c1-aec4-3363e31411dd/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:01:19 UTC
+    updated_at: 2018-11-13 09:01:19 UTC
+  - idea_ref: *67
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/ad853119-44fd-4d10-a9c6-5f77edf140f1/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:02:18 UTC
+    updated_at: 2018-11-13 09:02:18 UTC
+  - idea_ref: *68
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/257499a6-13c9-44ef-a75a-c4d1b6e15557/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:03:11 UTC
+    updated_at: 2018-11-13 09:03:11 UTC
+  - idea_ref: *69
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/a95f7b26-9fca-40a3-8ace-c47e220ce887/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:04:04 UTC
+    updated_at: 2018-11-13 09:04:04 UTC
+  - idea_ref: *53
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/9d5f3fec-7a34-42e2-be01-ba15b0849ed1/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:04:48 UTC
+    updated_at: 2018-11-13 09:04:48 UTC
+  - idea_ref: *70
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/bf691468-5d4e-4614-8ddb-3c2d7a51cf49/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:05:27 UTC
+    updated_at: 2018-11-13 09:05:27 UTC
+  - idea_ref: *71
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/bc4a34b5-9f5e-4a4b-b3f4-adf5a2cde4a7/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:06:11 UTC
+    updated_at: 2018-11-13 09:06:11 UTC
+  - idea_ref: *72
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/0b9e5cb6-ac4e-4b58-8b4d-c65694e4b3aa/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:06:54 UTC
+    updated_at: 2018-11-13 09:06:54 UTC
+  - idea_ref: *73
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/ff287198-38af-421f-8753-86edad7130f2/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:07:37 UTC
+    updated_at: 2018-11-13 09:07:37 UTC
+  - idea_ref: *49
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/839ae79d-a8e7-4e0e-b261-60d038461b1d/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:08:13 UTC
+    updated_at: 2018-11-13 09:08:13 UTC
+  - idea_ref: *74
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/22d20b23-b017-4931-b99c-33b716942708/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:09:09 UTC
+    updated_at: 2018-11-13 09:09:09 UTC
+  - idea_ref: *75
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/5e589a03-b677-40cc-be1a-089409797dab/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:09:48 UTC
+    updated_at: 2018-11-13 09:09:48 UTC
+  - idea_ref: *76
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/651b1644-0947-4458-9821-8cba9abe5e40/image.jpeg
+    ordering: 0
+    created_at: 2018-11-13 09:10:24 UTC
+    updated_at: 2018-11-13 09:10:24 UTC
+  - idea_ref: *77
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/899be0c7-c55d-4d9e-9455-9742e87beb74/image.jpeg
+    ordering: 0
+    created_at: 2018-11-13 09:10:56 UTC
+    updated_at: 2018-11-13 09:10:56 UTC
+  - idea_ref: *78
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/645214e5-600f-444e-b4a0-974979cd24f1/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:11:56 UTC
+    updated_at: 2018-11-13 09:11:56 UTC
+  - idea_ref: *79
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/afd5f111-cc5e-4971-b28f-70ed24cf718a/image.jpeg
+    ordering: 0
+    created_at: 2018-11-13 09:12:27 UTC
+    updated_at: 2018-11-13 09:12:27 UTC
+  - idea_ref: *80
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/e3863286-c159-40e8-80c5-e3963d3e34c7/idea_image/image/db36c5b2-7dbf-4962-b11b-3ee23b7aa6d7/image.png
+    ordering: 0
+    created_at: 2018-11-13 09:13:03 UTC
+    updated_at: 2018-11-13 09:13:03 UTC
   ideas_phase:
-  - idea_ref: *42
-    phase_ref: *17
+  - idea_ref: *55
+    phase_ref: *22
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *18
+  - idea_ref: *55
+    phase_ref: *23
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *19
+  - idea_ref: *55
+    phase_ref: *24
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *42
-    phase_ref: *20
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *17
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *18
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *19
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *43
-    phase_ref: *20
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *44
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *45
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *9
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *10
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *11
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *46
-    phase_ref: *12
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *13
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *14
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *15
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *47
-    phase_ref: *16
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *13
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *14
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *15
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *48
-    phase_ref: *16
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
+  - idea_ref: *55
     phase_ref: *25
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *26
+  - idea_ref: *56
+    phase_ref: *22
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *27
+  - idea_ref: *56
+    phase_ref: *23
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *49
-    phase_ref: *28
+  - idea_ref: *56
+    phase_ref: *24
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
+  - idea_ref: *56
     phase_ref: *25
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
+  - idea_ref: *57
+    phase_ref: *14
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *57
+    phase_ref: *15
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *57
+    phase_ref: *16
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *57
+    phase_ref: *17
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *58
+    phase_ref: *14
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *58
+    phase_ref: *15
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *58
+    phase_ref: *16
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *58
+    phase_ref: *17
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *59
+    phase_ref: *14
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *59
+    phase_ref: *15
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *59
+    phase_ref: *16
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *59
+    phase_ref: *17
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *60
+    phase_ref: *18
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *60
+    phase_ref: *19
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *60
+    phase_ref: *20
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *60
+    phase_ref: *21
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *61
+    phase_ref: *18
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *61
+    phase_ref: *19
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *61
+    phase_ref: *20
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *61
+    phase_ref: *21
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *62
+    phase_ref: *30
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *62
+    phase_ref: *31
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *62
+    phase_ref: *32
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *62
+    phase_ref: *33
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *63
+    phase_ref: *30
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *63
+    phase_ref: *31
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *63
+    phase_ref: *32
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *63
+    phase_ref: *33
+    created_at: 2019-01-29 15:39:51 UTC
+    updated_at: 2019-01-29 15:39:51 UTC
+  - idea_ref: *64
     phase_ref: *26
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
+  - idea_ref: *64
     phase_ref: *27
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *50
+  - idea_ref: *64
     phase_ref: *28
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *21
+  - idea_ref: *64
+    phase_ref: *29
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *22
+  - idea_ref: *65
+    phase_ref: *26
     created_at: 2019-01-29 15:39:51 UTC
     updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *23
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *51
-    phase_ref: *24
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *52
-    phase_ref: *21
-    created_at: 2019-01-29 15:39:51 UTC
-    updated_at: 2019-01-29 15:39:51 UTC
-  - idea_ref: *52
-    phase_ref: *22
+  - idea_ref: *65
+    phase_ref: *27
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *52
-    phase_ref: *23
+  - idea_ref: *65
+    phase_ref: *28
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *52
-    phase_ref: *24
+  - idea_ref: *65
+    phase_ref: *29
     created_at: 2019-01-29 15:39:52 UTC
     updated_at: 2019-01-29 15:39:52 UTC
+  - idea_ref: *66
+    phase_ref: *26
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - idea_ref: *66
+    phase_ref: *27
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - idea_ref: *66
+    phase_ref: *28
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - idea_ref: *66
+    phase_ref: *29
+    created_at: 2019-01-29 15:39:52 UTC
+    updated_at: 2019-01-29 15:39:52 UTC
+  - idea_ref: *54
+    phase_ref: *11
+    created_at: 2018-11-13 09:01:16 UTC
+    updated_at: 2018-11-13 09:01:16 UTC
+  - idea_ref: *67
+    phase_ref: *11
+    created_at: 2018-11-13 09:02:16 UTC
+    updated_at: 2018-11-13 09:02:16 UTC
+  - idea_ref: *68
+    phase_ref: *11
+    created_at: 2018-11-13 09:03:09 UTC
+    updated_at: 2018-11-13 09:03:09 UTC
+  - idea_ref: *69
+    phase_ref: *11
+    created_at: 2018-11-13 09:04:02 UTC
+    updated_at: 2018-11-13 09:04:02 UTC
   - idea_ref: *53
-    phase_ref: *21
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    phase_ref: *11
+    created_at: 2018-11-13 09:04:46 UTC
+    updated_at: 2018-11-13 09:04:46 UTC
+  - idea_ref: *70
+    phase_ref: *11
+    created_at: 2018-11-13 09:05:26 UTC
+    updated_at: 2018-11-13 09:05:26 UTC
+  - idea_ref: *71
+    phase_ref: *11
+    created_at: 2018-11-13 09:06:09 UTC
+    updated_at: 2018-11-13 09:06:09 UTC
+  - idea_ref: *72
+    phase_ref: *11
+    created_at: 2018-11-13 09:06:52 UTC
+    updated_at: 2018-11-13 09:06:52 UTC
+  - idea_ref: *73
+    phase_ref: *11
+    created_at: 2018-11-13 09:07:35 UTC
+    updated_at: 2018-11-13 09:07:35 UTC
+  - idea_ref: *49
+    phase_ref: *11
+    created_at: 2018-11-13 09:08:11 UTC
+    updated_at: 2018-11-13 09:08:11 UTC
+  - idea_ref: *74
+    phase_ref: *11
+    created_at: 2018-11-13 09:09:07 UTC
+    updated_at: 2018-11-13 09:09:07 UTC
+  - idea_ref: *80
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:18 UTC
+    updated_at: 2018-11-13 09:14:18 UTC
+  - idea_ref: *79
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:25 UTC
+    updated_at: 2018-11-13 09:14:25 UTC
+  - idea_ref: *78
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:26 UTC
+    updated_at: 2018-11-13 09:14:26 UTC
+  - idea_ref: *77
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:33 UTC
+    updated_at: 2018-11-13 09:14:33 UTC
+  - idea_ref: *76
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:38 UTC
+    updated_at: 2018-11-13 09:14:38 UTC
+  - idea_ref: *75
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:41 UTC
+    updated_at: 2018-11-13 09:14:41 UTC
+  - idea_ref: *74
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:43 UTC
+    updated_at: 2018-11-13 09:14:43 UTC
+  - idea_ref: *49
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:46 UTC
+    updated_at: 2018-11-13 09:14:46 UTC
+  - idea_ref: *73
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:48 UTC
+    updated_at: 2018-11-13 09:14:48 UTC
+  - idea_ref: *72
+    phase_ref: *34
+    created_at: 2018-11-13 09:14:50 UTC
+    updated_at: 2018-11-13 09:14:50 UTC
+  - idea_ref: *71
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:01 UTC
+    updated_at: 2018-11-13 09:15:01 UTC
+  - idea_ref: *70
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:02 UTC
+    updated_at: 2018-11-13 09:15:02 UTC
   - idea_ref: *53
-    phase_ref: *22
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *23
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
-  - idea_ref: *53
-    phase_ref: *24
-    created_at: 2019-01-29 15:39:52 UTC
-    updated_at: 2019-01-29 15:39:52 UTC
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:06 UTC
+    updated_at: 2018-11-13 09:15:06 UTC
+  - idea_ref: *69
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:09 UTC
+    updated_at: 2018-11-13 09:15:09 UTC
+  - idea_ref: *54
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:11 UTC
+    updated_at: 2018-11-13 09:15:11 UTC
+  - idea_ref: *67
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:12 UTC
+    updated_at: 2018-11-13 09:15:12 UTC
+  - idea_ref: *68
+    phase_ref: *34
+    created_at: 2018-11-13 09:15:14 UTC
+    updated_at: 2018-11-13 09:15:14 UTC
+  - idea_ref: *80
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
+  - idea_ref: *79
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
+  - idea_ref: *75
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
+  - idea_ref: *76
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
+  - idea_ref: *77
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
+  - idea_ref: *78
+    phase_ref: *11
+    created_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-22 09:23:44 UTC
   ideas_topic:
-  - idea_ref: *42
-    topic_ref: *54
-  - idea_ref: *43
-    topic_ref: *54
-  - idea_ref: *44
-    topic_ref: *54
-  - idea_ref: *45
-    topic_ref: *54
-  - idea_ref: *47
-    topic_ref: *55
-  - idea_ref: *48
-    topic_ref: *55
-  - idea_ref: *49
-    topic_ref: *56
-  - idea_ref: *50
-    topic_ref: *57
+  - idea_ref: *55
+    topic_ref: *81
+  - idea_ref: *56
+    topic_ref: *81
+  - idea_ref: *57
+    topic_ref: *81
+  - idea_ref: *58
+    topic_ref: *81
+  - idea_ref: *60
+    topic_ref: *82
+  - idea_ref: *61
+    topic_ref: *82
+  - idea_ref: *62
+    topic_ref: *83
+  - idea_ref: *63
+    topic_ref: *84
   comment:
-  - author_ref: *37
-    idea_ref: *42
+  - author_ref: *44
+    idea_ref: *55
     body_multiloc:
       en: "<p>Great idea, we stand behind you!</p>\n"
       en-CA: "<p>Great idea, we stand behind you!</p>\n"
@@ -6761,8 +7660,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *33
-    idea_ref: *42
+  - author_ref: *39
+    idea_ref: *55
     body_multiloc:
       en: "<p>I've never seen you riding a bicycle...</p>\n"
       en-CA: "<p>I've never seen you riding a bicycle...</p>\n"
@@ -6771,8 +7670,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *40
-    idea_ref: *42
+  - author_ref: *46
+    idea_ref: *55
     body_multiloc:
       en: "<p>Why stop there? The city also lacks bike stables. There should at least
         be one near the river.</p>\n"
@@ -6784,8 +7683,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *33
-    idea_ref: *43
+  - author_ref: *39
+    idea_ref: *56
     body_multiloc:
       en: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
@@ -6797,8 +7696,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *37
-    idea_ref: *44
+  - author_ref: *44
+    idea_ref: *57
     body_multiloc:
       en: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
@@ -6810,8 +7709,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *35
-    idea_ref: *46
+  - author_ref: *42
+    idea_ref: *59
     body_multiloc:
       en: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
@@ -6823,8 +7722,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *35
-    idea_ref: *47
+  - author_ref: *42
+    idea_ref: *60
     body_multiloc:
       en: "<p>Cool idea but it would have to be a a kind of event that is really engaging,
         like a family day? Something people are excited to go to</p>\n"
@@ -6836,8 +7735,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *37
-    idea_ref: *48
+  - author_ref: *44
+    idea_ref: *61
     body_multiloc:
       en: "<p>It's a very good idea. I have started to do this myself in my garden.
         But I know that not everybody has this possibility or they don't even know
@@ -6852,8 +7751,8 @@ models:
     updated_at: 2019-01-29 15:39:51 UTC
     publication_status: published
     body_updated_at: ''
-  - author_ref: *33
-    idea_ref: *49
+  - author_ref: *39
+    idea_ref: *62
     body_multiloc:
       en: "<p>I really like the idea. I am not a dog owner myself but as a parent,
         it is sometimes scary to see dogs running around kids that are playing on
@@ -6872,223 +7771,308 @@ models:
     publication_status: published
     body_updated_at: ''
   vote:
-  - votable_ref: *42
-    user_ref: *40
+  - votable_ref: *55
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *42
-    user_ref: *33
+  - votable_ref: *55
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *42
-    user_ref: *37
+  - votable_ref: *55
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *42
-    user_ref: *35
+  - votable_ref: *55
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *43
-    user_ref: *37
+  - votable_ref: *56
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *43
-    user_ref: *33
+  - votable_ref: *56
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *43
-    user_ref: *40
+  - votable_ref: *56
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *43
-    user_ref: *35
+  - votable_ref: *56
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *44
-    user_ref: *40
+  - votable_ref: *57
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *44
-    user_ref: *33
+  - votable_ref: *57
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *44
-    user_ref: *35
+  - votable_ref: *57
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *44
-    user_ref: *37
+  - votable_ref: *57
+    user_ref: *44
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *40
+  - votable_ref: *58
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *37
+  - votable_ref: *58
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *35
+  - votable_ref: *58
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *45
-    user_ref: *33
+  - votable_ref: *58
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
-    user_ref: *35
+  - votable_ref: *59
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
-    user_ref: *37
+  - votable_ref: *59
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
-    user_ref: *33
+  - votable_ref: *59
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *46
-    user_ref: *40
+  - votable_ref: *59
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *47
-    user_ref: *35
+  - votable_ref: *60
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *47
-    user_ref: *33
+  - votable_ref: *60
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *47
-    user_ref: *37
+  - votable_ref: *60
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *47
-    user_ref: *40
+  - votable_ref: *60
+    user_ref: *46
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *48
-    user_ref: *37
+  - votable_ref: *61
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *48
-    user_ref: *40
+  - votable_ref: *61
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *48
-    user_ref: *33
+  - votable_ref: *61
+    user_ref: *39
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *49
-    user_ref: *35
+  - votable_ref: *62
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *49
-    user_ref: *37
+  - votable_ref: *62
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *49
-    user_ref: *33
+  - votable_ref: *62
+    user_ref: *39
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *35
+  - votable_ref: *63
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *37
+  - votable_ref: *63
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *33
+  - votable_ref: *63
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *50
-    user_ref: *40
+  - votable_ref: *63
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *51
-    user_ref: *40
+  - votable_ref: *64
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *51
-    user_ref: *35
+  - votable_ref: *64
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *51
-    user_ref: *37
+  - votable_ref: *64
+    user_ref: *44
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *51
-    user_ref: *33
+  - votable_ref: *64
+    user_ref: *39
     mode: down
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *52
-    user_ref: *35
+  - votable_ref: *65
+    user_ref: *42
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *52
-    user_ref: *37
+  - votable_ref: *65
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *52
-    user_ref: *33
+  - votable_ref: *65
+    user_ref: *39
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *52
-    user_ref: *40
+  - votable_ref: *65
+    user_ref: *46
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *53
-    user_ref: *37
+  - votable_ref: *66
+    user_ref: *44
     mode: up
     created_at: 2019-01-29 15:39:34 UTC
     updated_at: 2019-01-29 15:39:34 UTC
-  - votable_ref: *53
-    user_ref: *35
+  - votable_ref: *66
+    user_ref: *42
     mode: down
     created_at: 2019-01-29 15:39:35 UTC
     updated_at: 2019-01-29 15:39:35 UTC
+  - votable_ref: *54
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:01:16 UTC
+    updated_at: 2018-11-13 09:01:16 UTC
+  - votable_ref: *67
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:02:16 UTC
+    updated_at: 2018-11-13 09:02:16 UTC
+  - votable_ref: *68
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:03:09 UTC
+    updated_at: 2018-11-13 09:03:09 UTC
+  - votable_ref: *69
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:04:02 UTC
+    updated_at: 2018-11-13 09:04:02 UTC
+  - votable_ref: *53
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:04:46 UTC
+    updated_at: 2018-11-13 09:04:46 UTC
+  - votable_ref: *70
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:05:26 UTC
+    updated_at: 2018-11-13 09:05:26 UTC
+  - votable_ref: *71
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:06:09 UTC
+    updated_at: 2018-11-13 09:06:09 UTC
+  - votable_ref: *72
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:06:52 UTC
+    updated_at: 2018-11-13 09:06:52 UTC
+  - votable_ref: *80
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:13:02 UTC
+    updated_at: 2018-11-13 09:13:02 UTC
+  - votable_ref: *73
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:07:35 UTC
+    updated_at: 2018-11-13 09:07:35 UTC
+  - votable_ref: *49
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:08:11 UTC
+    updated_at: 2018-11-13 09:08:11 UTC
+  - votable_ref: *74
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:09:07 UTC
+    updated_at: 2018-11-13 09:09:07 UTC
+  - votable_ref: *75
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:09:46 UTC
+    updated_at: 2018-11-13 09:09:46 UTC
+  - votable_ref: *76
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:10:23 UTC
+    updated_at: 2018-11-13 09:10:23 UTC
+  - votable_ref: *77
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:10:55 UTC
+    updated_at: 2018-11-13 09:10:55 UTC
+  - votable_ref: *78
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:11:54 UTC
+    updated_at: 2018-11-13 09:11:54 UTC
+  - votable_ref: *79
+    user_ref: *13
+    mode: up
+    created_at: 2018-11-13 09:12:26 UTC
+    updated_at: 2018-11-13 09:12:26 UTC
