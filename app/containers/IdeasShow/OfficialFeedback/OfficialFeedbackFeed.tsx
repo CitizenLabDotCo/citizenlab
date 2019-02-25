@@ -111,7 +111,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
             const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
 
             return (
-              <OfficialFeedbackPost key={officialFeedbackPost.id}>
+              <OfficialFeedbackPost className="e2e-official-feedback-post" key={officialFeedbackPost.id}>
                 {editingAllowed &&
                   <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
                 }
