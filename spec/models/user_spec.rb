@@ -408,4 +408,46 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "super_admin?" do
+    it "returns true for admins with various citizenlab email variations" do
+      users = [
+        build_stubbed(:admin, email: 'hello@citizenlab.co'),
+        build_stubbed(:admin, email: 'hello+admin@citizenLab.co'),
+        build_stubbed(:admin, email: 'hello@citizenlab.eu'),
+        build_stubbed(:admin, email: 'moderator+admin@citizenlab.be'),
+        build_stubbed(:admin, email: 'some.person@citizen-lab.fr'),
+        build_stubbed(:admin, email: 'cheese.lover@CitizenLab.ch'),
+        build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
+        build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
+        build_stubbed(:admin, email: 'bigger@citizenlab.us'),
+        build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK'),
+      ]
+
+      expect(users).to all be_super_admin
+    end
+
+    it "returns false for non-citizenlab emails" do
+      strangers = [
+        build_stubbed(:admin, email: 'hello@citizenlab.com'),
+        build_stubbed(:admin, email: 'citizenlab.co@gmail.com'),
+        *3.times.map{build_stubbed(:admin)}
+      ]
+      expect(strangers).not_to include(be_super_admin)
+    end
+
+    it "returns false for non-admins" do
+      user = build_stubbed(:user, email: 'hello@citizenlab.co')
+      expect(user).not_to be_super_admin
+    end
+  end
+
+  describe "highest_role" do
+    it "correctly returns the highest role the user posesses" do
+      expect(build_stubbed(:admin, email: 'hello@citizenlab.co').highest_role).to eq :super_admin
+      expect(build_stubbed(:admin).highest_role).to eq :admin
+      expect(build_stubbed(:moderator).highest_role).to eq :project_moderator
+      expect(build_stubbed(:user).highest_role).to eq :user
+    end
+  end
+
 end

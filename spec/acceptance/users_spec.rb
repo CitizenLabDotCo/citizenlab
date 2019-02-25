@@ -196,6 +196,8 @@ resource "Users" do
       example_request "Get one user by id" do
         do_request
         expect(status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :highest_role)).to eq 'user'
       end
     end
 
