@@ -57,13 +57,16 @@ interface Props {
   showForm: (postId: string) => void;
 }
 
-export const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeedbackPost, showForm, intl }: Props & InjectedIntlProps) => {
+const OfficialFeedbackPost = (props: Props & InjectedIntlProps) => {
+  const { editingAllowed, editingPost, officialFeedbackPost, showForm } = props;
+  const { formatMessage } = props.intl;
+
   const changeForm = (postId: string) => () => {
     showForm(postId);
   };
 
   const deletePost = (postId: string) => () => {
-    if (window.confirm(intl.formatMessage(messages.deletionConfirmation))) {
+    if (window.confirm(formatMessage(messages.deletionConfirmation))) {
       deleteOfficialfeedback(postId);
     }
   };
@@ -111,4 +114,6 @@ export const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeed
   );
 };
 
-export default injectIntl(OfficialFeedbackPost);
+const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+
+export default OfficialFeedbackPostWithIntl;
