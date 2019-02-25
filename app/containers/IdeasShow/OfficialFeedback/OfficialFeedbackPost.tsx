@@ -57,7 +57,7 @@ interface Props {
   showForm: (postId: string) => void;
 }
 
-const OfficialFeedbackPost = (props: Props & InjectedIntlProps) => {
+export const OfficialFeedbackPost = (props: Props & InjectedIntlProps) => {
   const { editingAllowed, editingPost, officialFeedbackPost, showForm } = props;
   const { formatMessage } = props.intl;
 
