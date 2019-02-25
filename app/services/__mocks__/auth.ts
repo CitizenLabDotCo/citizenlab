@@ -1,4 +1,6 @@
 import { IUser } from 'services/users';
+import { makeUser } from './users';
+import { BehaviorSubject } from 'rxjs';
 export const mockUser = {
   data: {
     id: '522ae8cc-a5ed-4d31-9aa0-470904934ec6',
@@ -14,6 +16,7 @@ export const mockUser = {
         large: null
       },
       roles: [],
+      highest_role: 'user',
       bio_multiloc: {},
       registration_completed_at: '2018-11-26T15:40:54.355Z',
       invite_status: null,
@@ -46,3 +49,16 @@ function setRoles(roles) {
 export const mockAdmin = setRoles(adminRole) as IUser;
 
 export const mockProjectModerator = (projectId: string) => setRoles([{ type: 'project_moderator', project_id: projectId }]) as IUser;
+
+let mockAuthUser: IUser = makeUser();
+
+export const __setMockAuthUser = (user: IUser) => {
+  mockAuthUser = user;
+};
+
+export const authUserStream = jest.fn(() => {
+  const observable = new BehaviorSubject(mockAuthUser);
+  return {
+    observable
+  };
+});
