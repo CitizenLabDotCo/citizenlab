@@ -21,6 +21,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: rgba(236, 90, 36, 0.06);
+  border-radius: 3px;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   padding: 17px 34px 27px 34px;
