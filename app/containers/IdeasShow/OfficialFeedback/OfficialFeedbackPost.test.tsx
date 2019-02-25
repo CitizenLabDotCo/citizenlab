@@ -65,6 +65,7 @@ describe('<OfficialFeedbackPost />', () => {
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
         showForm={showForm}
+        intl={intl}
       />);
     expect(wrapper.find('OfficialFeedbackEdit').length).toEqual(1);
   });
