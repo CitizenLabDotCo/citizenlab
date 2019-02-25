@@ -5,8 +5,8 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
   <OfficialFeedback__FeedbackHeader>
     <OfficialFeedback__FeedbackTitle>
       <FormattedMessage
-        defaultMessage="Idea Update"
-        id="app.components.IdeasShow.OfficialFeedback.ideaUpdate"
+        defaultMessage="Official Update"
+        id="app.components.IdeasShow.OfficialFeedback.officialUpdate"
       />
     </OfficialFeedback__FeedbackTitle>
     <FormattedMessage
@@ -40,8 +40,8 @@ exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
   <OfficialFeedback__FeedbackHeader>
     <OfficialFeedback__FeedbackTitle>
       <FormattedMessage
-        defaultMessage="Idea Update"
-        id="app.components.IdeasShow.OfficialFeedback.ideaUpdate"
+        defaultMessage="Official Update"
+        id="app.components.IdeasShow.OfficialFeedback.officialUpdate"
       />
     </OfficialFeedback__FeedbackTitle>
     <FormattedMessage
