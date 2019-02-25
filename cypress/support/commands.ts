@@ -2,6 +2,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       login: typeof login;
+      headlessLogin: typeof headlessLogin;
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
@@ -19,6 +20,14 @@ export function login(email: string, password: string) {
 export function logout() {
   cy.get('#e2e-user-menu-container button').click();
   cy.get('#e2e-sign-out-link').click();
+}
+
+export function headlessLogin() {
+  cy.request('/web_api/v1/user_token', { auth: { email: 'admin@citizenlab.co', password: 'testtest' } })
+    .then(response => {
+      console.log(response);
+      cy.setCookie('cl2_jwt', JSON.parse(response.body).jwt);
+    });
 }
 
 export function signup(firstName: string, lastName: string, email: string, password: string) {
