@@ -32,6 +32,10 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
             :tenantHost=>"example.org",
             :tenantOrganizationType=>"medium_city",
             :tenantLifecycleStage=>"active"
+          },
+          integrations: {
+            All: true,
+            Intercom: false
           }
         })
       end
@@ -56,6 +60,10 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
             :tenantHost=>"example.org",
             :tenantOrganizationType=>"medium_city",
             :tenantLifecycleStage=>"active"
+          },
+          integrations: {
+            All: true,
+            Intercom: false
           }
         })
       end
