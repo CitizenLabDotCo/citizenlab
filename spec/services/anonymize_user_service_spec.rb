@@ -21,6 +21,9 @@ describe AnonymizeUserService do
         user = create(:user)
         attributes = service.anonymized_attributes ['en'], user: user
         expect(User.new(attributes)).to be_valid
+
+        attributes = service.anonymized_attributes ['en']
+        expect(User.new(attributes)).to be_valid
       end
     end
 
