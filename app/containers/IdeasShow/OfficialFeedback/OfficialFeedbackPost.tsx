@@ -72,17 +72,19 @@ const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeedbackPos
     {
       label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
       handler: changeForm(postId),
+      name: 'edit'
     },
     {
       label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
       handler: deletePost(postId),
+      name: 'delete'
     }] as IAction[];
 
   const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
   const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
 
   return (
-    <Container key={officialFeedbackPost.id} className="e2e-official-feedback-post">
+    <Container className="e2e-official-feedback-post">
       {editingAllowed &&
         <StyledMoreActionsMenu actions={getActions(officialFeedbackPost.id)} />
       }
