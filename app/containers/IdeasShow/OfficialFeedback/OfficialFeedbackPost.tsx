@@ -11,8 +11,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedDate } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedDate, InjectedIntlProps } from 'react-intl';
 
 // services
 import { IOfficialFeedbackData, deleteOfficialfeedback } from 'services/officialFeedback';
@@ -57,13 +57,13 @@ interface Props {
   showForm: (postId: string) => void;
 }
 
-const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeedbackPost, showForm }: Props) => {
+const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeedbackPost, showForm, intl }: Props & InjectedIntlProps) => {
   const changeForm = (postId: string) => () => {
     showForm(postId);
   };
 
   const deletePost = (postId: string) => () => {
-    if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
+    if (window.confirm(intl.formatMessage(messages.deletionConfirmation))) {
       deleteOfficialfeedback(postId);
     }
   };
@@ -111,4 +111,4 @@ const OfficialFeedbackPost = ({ editingAllowed, editingPost, officialFeedbackPos
   );
 };
 
-export default OfficialFeedbackPost;
+export default injectIntl(OfficialFeedbackPost);
