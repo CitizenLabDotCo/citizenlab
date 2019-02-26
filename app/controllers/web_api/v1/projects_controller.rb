@@ -5,7 +5,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
 
   def index
-    byebug
     @projects = if params[:filter_can_moderate]
       ProjectPolicy::Scope.new(current_user, Project).moderatable 
     else 

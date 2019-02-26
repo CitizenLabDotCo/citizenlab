@@ -126,7 +126,7 @@ describe ProjectSortingService do
           -> {create(:project_with_future_phases, first_start_at: t + 1.month)},
           -> {create(:project_with_past_phases, last_end_at: t - 2.months)},
           -> {create(:continuous_project, publication_status: 'archived', created_at: t-5.weeks)},
-          -> {create(:project_with_past_phases, publication_status: 'archived')},
+          -> {create(:project_with_past_phases, publication_status: 'archived', last_end_at: t-6.weeks)},
           -> {create(:continuous_project, publication_status: 'archived', created_at: t-3.year)},
         ].map.with_index{|lambda, i| [i, lambda]}
           .shuffle
