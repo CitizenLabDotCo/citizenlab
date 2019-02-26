@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import { trackEventByName } from 'utils/analytics';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -14,7 +15,6 @@ import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // resources
@@ -357,17 +357,13 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface ITracks {
-  clickSignUpLink: () => void;
-}
-
 interface Props extends InputProps, DataProps {}
 
 interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & ITracks, State> {
+class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -387,8 +383,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
   }
 
   trackSignUpLinkClick = () => {
-    // track click for analytics
-    this.props.clickSignUpLink();
+    trackEventByName(tracks.clickSignUpLink.name);
   }
 
   render() {
@@ -462,11 +457,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     )}
                     footer={
                       <>
-                        {/* {projectsList.length > 9 && */}
+                        {projectsList.length > 9 &&
                           <ProjectsListFooter to={'/projects'}>
                             <FormattedMessage {...messages.allProjects} />
                           </ProjectsListFooter>
-                        {/* } */}
+                        }
                       </>
                     }
                   />
@@ -545,10 +540,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
-const NavbarWithHOCs = withRouter(injectTracks(tracks)(injectIntl(Navbar)));
+const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <NavbarWithHOCs {...(inputProps as InputProps & WithRouterProps & InjectedIntlProps)} {...dataProps} />}
+    {dataProps => <NavbarWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

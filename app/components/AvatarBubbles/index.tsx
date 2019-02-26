@@ -160,6 +160,10 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => {
+  // if (inputProps.context && inputProps.context.type === 'project') {
+
+  // }
+
   return (
     <GetAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
       {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}

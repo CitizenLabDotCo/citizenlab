@@ -34,7 +34,7 @@ const StyledContentContainer = styled(ContentContainer) `
 `;
 
 const PageTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -64,7 +64,7 @@ export default () => (
           showTitle={false}
           showPublicationStatusFilter={true}
           showSendFeedback={false}
-          layout="3columns"
+          layout="threecolumns"
         />
       </StyledContentContainer>
       <Footer />
