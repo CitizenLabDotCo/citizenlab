@@ -219,7 +219,7 @@ class LandingPage extends PureComponent<Props, State> {
                     <ProjectCards
                       pageSize={6}
                       sort="new"
-                      publicationStatuses={['published']}
+                      publicationStatuses={['published', 'archived']}
                       showTitle={true}
                       showPublicationStatusFilter={false}
                       showSendFeedback={true}

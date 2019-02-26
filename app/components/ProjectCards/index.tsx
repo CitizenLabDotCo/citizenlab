@@ -43,6 +43,7 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
+  border: solid 1px #f0f0f0;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
 `;
 
@@ -100,7 +101,6 @@ const ProjectsList = styled.div`
 const MockProjectCard = styled.div`
   height: 1px;
   background: transparent;
-  background: red;
   width: calc(33% - 12px);
 `;
 
@@ -212,7 +212,7 @@ interface InputProps extends GetProjectsInputProps {
   showTitle: boolean;
   showPublicationStatusFilter: boolean;
   showSendFeedback: boolean;
-  layout: 'dynamic' | '3columns';
+  layout: 'dynamic' | 'threecolumns';
 }
 
 interface DataProps {
@@ -377,23 +377,25 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
             <ProjectsList id="e2e-projects-list">
               {projectsList.map((project, index) => {
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
-                return <ProjectCard key={project.id} projectId={project.id} size={size} />;
+                return <ProjectCard key={project.id} projectId={project.id} size={size} layout={layout} />;
               })}
 
               {/*
               // A bit of a hack (but the most elegant one I could think of) to
-              // make the 3-column layout work for the last row of items when not divisible by 3
+              // make the 3-column layout work for the last row of project cards when
+              // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
+              // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && layout === '3columns' &&
+              {!hasMore && layout === 'threecolumns' &&
                 <>
                   {(projectsList.length + 1) % 3 === 0 &&
-                    <MockProjectCard />
+                    <MockProjectCard className={layout} />
                   }
 
                   {(projectsList.length - 1) % 3 === 0 &&
                     <>
-                      <MockProjectCard />
-                      <MockProjectCard />
+                      <MockProjectCard className={layout} />
+                      <MockProjectCard className={layout} />
                     </>
                   }
                 </>
@@ -437,15 +439,13 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const ProjectCardsWithHOCs = injectIntl(withTheme(ProjectCards) as any);
+const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(ProjectCards));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   windowSize: <GetWindowSize debounce={50} />,
-  projects: ({ render, ...getProjectsInputProps }) => {
-    return <GetProjects {...getProjectsInputProps}>{render}</GetProjects>;
-  }
+  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
 });
 
 export default (inputProps: InputProps) => (

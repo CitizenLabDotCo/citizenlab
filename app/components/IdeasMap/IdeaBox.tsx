@@ -35,7 +35,7 @@ const Container = styled.div`
   padding: 30px;
   position: relative;
   background: #fff;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
+  border: solid 1px #f0f0f0;
 `;
 
 const IdeaTitle: any = styled.h3`

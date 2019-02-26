@@ -44,6 +44,7 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
+  border: solid 1px #f0f0f0;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
   transition: all 200ms ease;
 
@@ -71,6 +72,17 @@ const Container = styled(Link)`
   }
 
   &.small {
+    &.threecolumns {
+      ${media.smallerThanMaxTablet`
+        width: calc(50% - 13px);
+      `}
+
+      ${media.smallerThanMinTablet`
+        width: 100%;
+        min-height: 460px;
+      `}
+    }
+
     ${media.smallerThanMinTablet`
       min-height: auto;
     `}
@@ -94,7 +106,7 @@ const Container = styled(Link)`
 
   ${media.smallerThanMinTablet`
     width: 100%;
-    min-height: 500px;
+    min-height: 460px;
   `}
 `;
 
@@ -206,7 +218,7 @@ const ContentHeaderLeft = styled.div`
   flex-grow: 0;
   flex-shrink: 1;
   flex-basis: 120px;
-  margin-right: 20px;
+  margin-right: 10px;
 
   ${media.smallerThanMinTablet`
     margin-right: 0px;
@@ -229,13 +241,13 @@ const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
   white-space: nowrap;
 `;
 
 const ProgressBar = styled.div`
   width: 100%;
-  height: 6px;
+  height: 5px;
   border-radius: 5px;
   background: #d6dade;
 `;
@@ -307,6 +319,7 @@ const ProjectDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
+  min-height: 53px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -366,8 +379,8 @@ const MetaItemIcon = styled(Icon)`
 `;
 
 const CommentIcon = MetaItemIcon.extend`
-  width: 22px;
-  height: 22px;
+  width: 23px;
+  height: 23px;
 `;
 
 const MetaItemText = styled.div`
@@ -381,6 +394,7 @@ const MetaItemText = styled.div`
 export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
+  layout?: 'dynamic' | 'threecolumns';
   className?: string;
 }
 
@@ -416,7 +430,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { visible } = this.state;
-    const { project, phase, size, projectImages, intl: { formatMessage }, className } = this.props;
+    const { project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
@@ -428,7 +442,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const commentsCount = project.attributes.comments_count;
-      const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation');
+      const showAvatars = project.relationships.avatars.data.length > 0;
+      const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
+      const showCommentsCount = (commentsCount > 0);
+      const showContentFooter = (showAvatars || showIdeasCount || showCommentsCount);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
@@ -496,7 +513,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${size} e2e-project-card ${isArchived ? 'archived' : ''}`}
+          className={`${className} ${layout} ${size} e2e-project-card ${isArchived ? 'archived' : ''}`}
           to={projectUrl}
         >
           {size !== 'large' && contentHeader}
@@ -542,41 +559,45 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               </T>
             </ContentBody>
 
-            <ContentFooter>
-              <ContentFooterLeft>
-                <AvatarBubbles
-                  size={30}
-                  limit={3}
-                  userCountBgColor={this.props.theme.colorMain}
-                  context={{
-                    type: 'project',
-                    id: project.id
-                  }}
-                />
-              </ContentFooterLeft>
+            {showContentFooter &&
+              <ContentFooter>
+                <ContentFooterLeft>
+                  {showAvatars &&
+                    <AvatarBubbles
+                      size={30}
+                      limit={3}
+                      userCountBgColor={this.props.theme.colorMain}
+                      context={{
+                        type: 'project',
+                        id: project.id
+                      }}
+                    />
+                  }
+                </ContentFooterLeft>
 
-              <ContentFooterRight>
-                  <ProjectMetaItems>
-                    {showIdeasCount && ideasCount > 0 &&
-                      <MetaItem className="first">
-                        <MetaItemIcon name="idea2" />
-                        <MetaItemText>
-                          {ideasCount}
-                        </MetaItemText>
-                      </MetaItem>
-                    }
+                <ContentFooterRight>
+                    <ProjectMetaItems>
+                      {showIdeasCount &&
+                        <MetaItem className="first">
+                          <MetaItemIcon name="idea2" />
+                          <MetaItemText>
+                            {ideasCount}
+                          </MetaItemText>
+                        </MetaItem>
+                      }
 
-                    {commentsCount &&
-                      <MetaItem>
-                        <CommentIcon name="comment2" />
-                        <MetaItemText>
-                          {commentsCount}
-                        </MetaItemText>
-                      </MetaItem>
-                    }
-                  </ProjectMetaItems>
-              </ContentFooterRight>
-            </ContentFooter>
+                      {showCommentsCount &&
+                        <MetaItem>
+                          <CommentIcon name="comment2" />
+                          <MetaItemText>
+                            {commentsCount}
+                          </MetaItemText>
+                        </MetaItem>
+                      }
+                    </ProjectMetaItems>
+                </ContentFooterRight>
+              </ContentFooter>
+            }
           </ProjectContent>
         </Container>
       );
@@ -593,7 +614,7 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>,
 });
 
-const ProjectCardWithHoC = injectIntl<Props>(withTheme(ProjectCard as any) as any);
+const ProjectCardWithHoC = withTheme<Props, State>(injectIntl<Props>(ProjectCard));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

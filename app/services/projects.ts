@@ -48,6 +48,9 @@ export interface IProjectData {
     areas: {
       data: IRelationship[]
     }
+    avatars: {
+      data: IRelationship[]
+    }
     action_descriptor: {
       data: {
         posting: {

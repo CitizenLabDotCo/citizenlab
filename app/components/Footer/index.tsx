@@ -84,7 +84,7 @@ const SecondLine = styled.div`
   padding: 12px 28px;
   position: relative;
   background: #fff;
-  border-top: 5px solid ${darken(0.023, colors.adminBackground)};
+  border-top: 1px solid #eaeaea;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -115,27 +115,27 @@ const ShortFeedback = styled.div`
 
   &.whiteBg {
     background: #fff;
-
-    ${media.smallerThanMinTablet`
-      background: ${darken(0.023, colors.adminBackground)};
-    `}
   }
-
-  ${media.smallerThanMinTablet`
-    background: ${darken(0.023, colors.adminBackground)};
-    justify-content: center;
-  `}
 `;
 
 const ShortFeedbackInner = styled.div`
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
+  line-height: normal;
   display: flex;
   align-items: center;
-  padding: 8px 25px;
-  padding-top: 11px;
-  background: ${darken(0.023, colors.adminBackground)};
+  padding: 14px 25px;
+  background: ${darken(0.018, '#F4F5F6')};
+
+  &.whiteBg {
+    background: #F4F5F6;
+  }
+
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    justify-content: center;
+  `}
 `;
 
 const ThankYouNote = styled.span`
@@ -143,10 +143,10 @@ const ThankYouNote = styled.span`
 `;
 
 const FeedbackQuestion = styled.span`
-  margin-right: 12px;
+  margin-right: 15px;
 
   ${media.smallerThanMinTablet`
-    margin-right: 5px;
+    margin-right: 10px;
   `}
 `;
 
@@ -255,7 +255,7 @@ const PoweredBy = styled.div`
   display: flex;
   align-items: center;
   outline: none;
-  padding: 10px 25px 10px 0;
+  padding-right: 20px;
   margin-right: 30px;
   border-right: 1px solid #E8E8E8;
 
@@ -296,7 +296,7 @@ const CitizenlabName = styled.span`
 const CitizenlabLogo: any = styled.svg`
   width: 151px;
   height: 27px;
-  fill: ${colors.label};
+  fill: ${colors.secondaryText};
   transition: all 150ms ease-out;
 
   &:hover {
@@ -418,7 +418,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
           }
 
           <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
-            <ShortFeedbackInner>
+            <ShortFeedbackInner className={whiteBg ? 'whiteBg' : ''}>
               {shortFeedbackButtonClicked ?
                 <ThankYouNote>
                   <FormattedMessage {...messages.thanksForFeedback} />

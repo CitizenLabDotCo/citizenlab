@@ -55,8 +55,8 @@ const NavigationLabel = styled.div`
   width: 100%;
   color: #999;
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  margin-left: 5px;
+  font-weight: 400;
+  margin-left: 6px;
 `;
 
 const NavigationItem = styled(Link)`
@@ -76,7 +76,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 `;

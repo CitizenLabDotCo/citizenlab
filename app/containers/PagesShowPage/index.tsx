@@ -128,7 +128,7 @@ const StyledLink = styled(Link)`
   border-radius: 5px;
   background: #fff;
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
-  transition: all 100ms ease-out;
+  transition: all 200ms ease;
 
   &:hover {
     color: #000;

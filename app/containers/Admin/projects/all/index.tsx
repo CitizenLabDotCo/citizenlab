@@ -7,7 +7,7 @@ import { API_PATH } from 'containers/App/constants';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { updateTenant, IUpdatedTenantProperties, ITenantData } from 'services/tenant';
+import { updateTenant } from 'services/tenant';
 
 // resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
@@ -210,7 +210,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                {/* <FeatureFlag name="manual_project_sorting"> */}
+                <FeatureFlag name="manual_project_sorting">
                   <ToggleWrapper>
                     <ToggleLabel htmlFor="manual-sorting-toggle">
                       <FormattedMessage {...messages.manualSortingProjects} />
@@ -221,7 +221,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                       onChange={this.handleToggleManualProjectSorting}
                     />
                   </ToggleWrapper>
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
               </ListHeader>
               <HasPermission item="projects" action="reorder">
                 {(tenant.attributes.settings.manual_project_sorting as any).enabled ?

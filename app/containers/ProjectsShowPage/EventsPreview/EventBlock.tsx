@@ -27,11 +27,10 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border: solid 1px ${colors.separation};
-  transition: all 200ms ease;
+  transition: all 120ms ease-out;
 
   &:hover {
-    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.15);
-    transform: translate(0px, -2px);
+    border-color: #666;
   }
 
   &:not(.last) {

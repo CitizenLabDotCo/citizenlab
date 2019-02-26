@@ -15,7 +15,6 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import T from 'components/T';
-import { darken } from 'polished';
 import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -25,8 +24,7 @@ const Container = styled.div`
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    padding: 20px;
-    background: ${darken(0.028, colors.background)};
+    padding: 0px;
   `}
 `;
 
@@ -72,6 +70,7 @@ class PhaseAbout extends PureComponent<Props, State> {
                 <T value={phase.attributes.description_multiloc} supportHtml={true} linkify={true} />
               </QuillEditedContent>
             </InformationBody>
+
             {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
               <StyledFileAttachments files={phaseFiles} />
             }
