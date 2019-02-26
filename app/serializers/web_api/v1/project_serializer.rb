@@ -56,15 +56,16 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     end
   end
 
+  # checked by included ParticipationContextSerializer
+  def is_participation_context?
+    object.is_participation_context?
+  end
+
   private
 
   def avatars_for_project
     @avatars_for_project ||= AvatarsService.new.avatars_for_project(object, limit: 3)
   end
 
-  # checked by included ParticipationContextSerializer
-  def is_participation_context?
-    object.is_participation_context?
-  end
 
 end
