@@ -42,7 +42,9 @@ module NLP
           areas:                idea.areas.map{|ar| ar.id},
           upvotes_count:        idea.upvotes_count,
           downvotes_count:      idea.downvotes_count,
-          comments:             encode_comments(idea)
+          comments:             encode_comments(idea),
+          updated_at:           idea.updated_at.iso8601,
+          published_at:         idea.published_at.iso8601
         }
         d
       end
@@ -62,7 +64,7 @@ module NLP
       comments.sort_by{|c| c.created_at.to_i}.map do |c|
         {
           id:            c.id,
-          created_at:    c.created_at.to_s,
+          created_at:    c.created_at.iso8601,
           body_multiloc: c.body_multiloc,
           author_name:   c.author_name,
           comments:      loop_encode_comments(children_map[c.id], children_map)
