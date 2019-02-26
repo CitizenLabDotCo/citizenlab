@@ -53,65 +53,82 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
 
 interface Props {
   editingAllowed: boolean | null;
-  editingPost: string;
   officialFeedbackPost: IOfficialFeedbackData;
-  showForm: (postId: string) => void;
 }
 
-const OfficialFeedbackPost = (props: Props & InjectedIntlProps) => {
-  const { editingAllowed, editingPost, officialFeedbackPost, showForm } = props;
-  const { formatMessage } = props.intl;
+interface State {
+  showMoreActions: boolean;
+  showEditForm: boolean;
+}
 
-  const changeForm = (postId: string) => () => {
-    showForm(postId);
-  };
+class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props: Props) {
+    super(props as any);
+    this.state = {
+      showMoreActions: true,
+      showEditForm: false
+    };
+  }
 
-  const deletePost = (postId: string) => () => {
-    if (window.confirm(formatMessage(messages.deletionConfirmation))) {
+  showEditForm = () => {
+    this.setState({ showMoreActions: false, showEditForm: true });
+  }
+
+  closeEditForm = () => {
+    this.setState({ showMoreActions: true, showEditForm: false });
+  }
+
+  deletePost = (postId: string) => () => {
+    if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
       deleteOfficialfeedback(postId);
     }
-  };
+  }
 
-  const getActions = (postId: string) => [
+  getActions = (postId: string) => [
     {
       label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
-      handler: changeForm(postId),
+      handler: this.showEditForm,
     },
     {
       label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
-      handler: deletePost(postId),
-    }] as IAction[];
+      handler: this.deletePost(postId),
+    }] as IAction[]
 
-  const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
-  const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
+  render() {
+    const { editingAllowed, officialFeedbackPost } = this.props;
+    const { showMoreActions, showEditForm } = this.state;
+    const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
+    const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
 
-  return (
-    <Container key={officialFeedbackPost.id}>
-      {editingAllowed &&
-        <StyledMoreActionsMenu actions={getActions(officialFeedbackPost.id)} />
-      }
-      {editingAllowed && editingPost === officialFeedbackPost.id ? (
-          <OfficialFeedbackEdit
-            feedback={officialFeedbackPost}
-            closeForm={changeForm('new')}
-          />
-        ) : (
-          <>
-            <Body>
-              <T value={bodyTextMultiloc} supportHtml />
-            </Body>
-            <Footer>
-              <Author>
-                <T value={authorNameMultiloc} />
-              </Author>
-              <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
-            </Footer>
-          </>
-        )
-      }
-    </Container>
-  );
-};
+    return (
+      <Container key={officialFeedbackPost.id}>
+        {editingAllowed && showMoreActions &&
+          <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
+        }
+
+        {showEditForm ? (
+            <OfficialFeedbackEdit
+              feedback={officialFeedbackPost}
+              closeForm={this.closeEditForm}
+            />
+          ) : (
+            <>
+              <Body>
+                <T value={bodyTextMultiloc} supportHtml />
+              </Body>
+              <Footer>
+                <Author>
+                  <T value={authorNameMultiloc} />
+                </Author>
+                <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
+              </Footer>
+            </>
+          )
+        }
+      </Container>
+    );
+  }
+}
 
 const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
 

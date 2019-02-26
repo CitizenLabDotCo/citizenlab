@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  officialUpdate: {
-    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdate',
-    defaultMessage: 'Official Update',
+  officialUpdates: {
+    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdates',
+    defaultMessage: 'Official updates',
   },
   lastUpdate: {
     id: 'app.components.IdeasShow.OfficialFeedback.lastUpdate',
