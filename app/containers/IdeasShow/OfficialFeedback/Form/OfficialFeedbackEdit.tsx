@@ -11,7 +11,7 @@ interface Props {
   closeForm: () => void;
 }
 
-export default class OfficialFeedbackNew extends React.Component<Props> {
+export default class OfficialFeedbackEdit extends React.Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting }) => {
     const { feedback: { id }, closeForm } = this.props;
