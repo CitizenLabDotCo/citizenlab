@@ -1,5 +1,6 @@
 const email = 'admin@citizenlab.co';
 const password = 'testtest';
+const salt = Math.random().toString(36).substr(2, 5);
 
 describe('Project ideas page', () => {
 
@@ -24,25 +25,40 @@ describe('Project ideas page', () => {
         cy.acceptCookies();
       });
       describe('Feedback', () => {
-        it('has a functional name field', () => {
-          cy.get('input').first().type('test').should('have.value', 'test');
-        });
-        it('has a functional body field', () => {
-          cy.get('textarea').first().type('test').should('have.value', 'test');
+        it('saves a new feedback and deletes it', () => {
+          // input
+          cy.get('input').first().type(`test title ${salt}`);
+          cy.get('textarea').first().type(`test body ${salt}`);
+
+          // save
+          cy.get('.e2e-submit-wrapper-button').click();
+          cy.get('.e2e-submit-wrapper-button').should('have.class', 'disabled');
+          cy.wait(100);
+
+          cy.get('.e2e-official-feedback-post').contains(`test title ${salt}`);
+          cy.get('.e2e-official-feedback-post').contains(`test body ${salt}`);
+
+          // delete
+          cy.get('.e2e-official-feedback-post').find('button').first().click();
+          cy.get('.e2e-official-feedback-post').contains('delete').click();
+
+          cy.wait(100);
+          cy.get('.e2e-official-feedback-post').should('not.exist');
         });
       });
       describe('Comment', () => {
         it('lets authorized users reply to comments and delete their answer', () => {
           const commentThread = cy.get('.e2e-comment-thread').first();
-          commentThread.get('#e2e-reply').type('test').should('have.value', 'test');
+          const commentBody = `test${salt}`;
+          commentThread.get('#e2e-reply').type(commentBody).should('have.value', commentBody);
           commentThread.get('.e2e-send-reply').first().click();
           cy.wait(100);
           const getMyComment = () => commentThread.get('.e2e-child-comment').last();
-          getMyComment().contains('test');
+          getMyComment().contains(commentBody);
           getMyComment().find('.e2e-more-actions').click();
           getMyComment().find('.e2e-more-actions').find('.tooltip-content').find('button').first().click();
           cy.get('.e2e-confirm-deletion').click();
-          commentThread.get('.e2e-child-comment').should('have.length', 2);
+          getMyComment().contains(commentBody).should('not.exist');
         });
       });
       describe('Vote', () => {

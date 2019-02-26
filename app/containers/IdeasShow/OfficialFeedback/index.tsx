@@ -59,8 +59,7 @@ interface State {
 
 }
 
-class OfficialFeedback extends PureComponent<Props, State> {
-
+export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -80,17 +79,19 @@ class OfficialFeedback extends PureComponent<Props, State> {
           <StyledOfficialFeedbackNew ideaId={ideaId}/>
         }
 
-        <FeedbackHeader>
-          <FeedbackTitle>
-            <FormattedMessage {...messages.officialUpdates} />
-          </FeedbackTitle>
-          {updateDate &&
-            <FormattedMessage
-              {...messages.lastUpdate}
-              values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
-            />
-          }
-        </FeedbackHeader>
+        {(updateDate || permission) &&
+          <FeedbackHeader>
+            <FeedbackTitle>
+              <FormattedMessage {...messages.officialUpdates} />
+            </FeedbackTitle>
+            {updateDate &&
+              <FormattedMessage
+                {...messages.lastUpdate}
+                values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
+              />
+            }
+          </FeedbackHeader>
+        }
 
         <OfficialFeedbackFeed
           ideaId={ideaId}

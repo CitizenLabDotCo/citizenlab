@@ -101,6 +101,7 @@ export interface IAction {
   label: string | JSX.Element;
   handler: { (): void };
   icon?: IconNames;
+  name?: string;
 }
 
 export interface Props {
@@ -146,14 +147,14 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           content={
             <List>
               {actions.map((action, index) => {
-                const { handler, label, icon } = action;
+                const { handler, label, icon, name } = action;
                 const onClick = () => {
                   this.setState({ visible: false });
                   handler();
                 };
 
                 return (
-                  <ListItem key={index} onClick={onClick}>
+                  <ListItem key={index} onClick={onClick} className={`e2e-action-${name}`}>
                     {label}
                     {icon && <StyledIcon name={icon} />}
                   </ListItem>

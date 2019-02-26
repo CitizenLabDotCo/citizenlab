@@ -11,8 +11,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
-import { FormattedDate, InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedDate, InjectedIntlProps } from 'react-intl';
 
 // services
 import { IOfficialFeedbackData, deleteOfficialfeedback } from 'services/officialFeedback';

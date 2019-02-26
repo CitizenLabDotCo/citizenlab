@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
+<OfficialFeedbackPost__Container
+  className="e2e-official-feedback-post"
+>
+  <OfficialFeedbackPost__StyledMoreActionsMenu
+    actions={
+      Array [
+        Object {
+          "handler": [Function],
+          "label": <FormattedMessage
+            defaultMessage="Edit"
+            id="app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost"
+          />,
+          "name": "edit",
+        },
+        Object {
+          "handler": [Function],
+          "label": <FormattedMessage
+            defaultMessage="Delete"
+            id="app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost"
+          />,
+          "name": "delete",
+        },
+      ]
+    }
+  />
+  <OfficialFeedbackPost__Body>
+    <T
+      supportHtml={true}
+      value={
+        Object {
+          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+        }
+      }
+    />
+  </OfficialFeedbackPost__Body>
+  <OfficialFeedbackPost__Footer>
+    <OfficialFeedbackPost__Author>
+      <T
+        value={
+          Object {
+            "en": "Testing Official Department",
+          }
+        }
+      />
+    </OfficialFeedbackPost__Author>
+    <OfficialFeedbackPost__DatePosted>
+      <FormattedDate
+        value="Some time ago"
+      />
+    </OfficialFeedbackPost__DatePosted>
+  </OfficialFeedbackPost__Footer>
+</OfficialFeedbackPost__Container>
+`;
+
+exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
+<OfficialFeedbackPost__Container
+  className="e2e-official-feedback-post"
+>
+  <OfficialFeedbackPost__Body>
+    <T
+      supportHtml={true}
+      value={
+        Object {
+          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+        }
+      }
+    />
+  </OfficialFeedbackPost__Body>
+  <OfficialFeedbackPost__Footer>
+    <OfficialFeedbackPost__Author>
+      <T
+        value={
+          Object {
+            "en": "Testing Official Department",
+          }
+        }
+      />
+    </OfficialFeedbackPost__Author>
+    <OfficialFeedbackPost__DatePosted>
+      <FormattedDate
+        value="Some time ago"
+      />
+    </OfficialFeedbackPost__DatePosted>
+  </OfficialFeedbackPost__Footer>
+</OfficialFeedbackPost__Container>
+`;
