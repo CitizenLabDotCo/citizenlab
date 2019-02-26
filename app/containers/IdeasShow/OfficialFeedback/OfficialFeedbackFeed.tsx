@@ -27,9 +27,7 @@ const LoadMoreButton = styled(Button)`
 
 interface InputProps {
   ideaId: string;
-  showForm: (postId: string) => void;
   editingAllowed: boolean | null;
-  editingPost: string;
 }
 
 interface DataProps {
@@ -42,7 +40,7 @@ interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedback, editingAllowed, editingPost, showForm } = this.props;
+    const { officialFeedback, editingAllowed } = this.props;
 
     if (officialFeedback) {
       const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = officialFeedback;
@@ -54,9 +52,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               <OfficialFeedbackPost
                 key={officialFeedbackPost.id}
                 editingAllowed={editingAllowed}
-                editingPost={editingPost}
                 officialFeedbackPost={officialFeedbackPost}
-                showForm={showForm}
               />
             );
           })}

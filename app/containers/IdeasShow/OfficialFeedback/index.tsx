@@ -40,7 +40,7 @@ const StyledSpan = styled.span`
 `;
 
 const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
-  margin-bottom: 20px;
+  margin-bottom: 70px;
 `;
 
 interface InputProps {
@@ -55,37 +55,34 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-// editingPost stores whether the form is visible and where it is currently shown
-// (hidden, new, editing post with id...)
 interface State {
-  editingPost: string;
+
 }
 
 class OfficialFeedback extends PureComponent<Props, State> {
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      editingPost: 'new'
     };
-  }
-
-  switchForm = (showForm: string) => {
-    this.setState({ editingPost: showForm });
   }
 
   render() {
     const { ideaId, permission, officialFeedback } = this.props;
     const { officialFeedbackList } = officialFeedback;
-    const { editingPost } = this.state;
     const updateDate = !isNilOrError(officialFeedbackList)
       && officialFeedbackList.length > 0
       && (officialFeedbackList[0].attributes.updated_at || officialFeedbackList[0].attributes.created_at);
 
     return (
       <>
+        {permission &&
+          <StyledOfficialFeedbackNew ideaId={ideaId}/>
+        }
+
         <FeedbackHeader>
           <FeedbackTitle>
-            <FormattedMessage {...messages.officialUpdate} />
+            <FormattedMessage {...messages.officialUpdates} />
           </FeedbackTitle>
           {updateDate &&
             <FormattedMessage
@@ -95,15 +92,9 @@ class OfficialFeedback extends PureComponent<Props, State> {
           }
         </FeedbackHeader>
 
-        {permission && editingPost === 'new' &&
-          <StyledOfficialFeedbackNew ideaId={ideaId}/>
-        }
-
         <OfficialFeedbackFeed
           ideaId={ideaId}
-          showForm={this.switchForm}
           editingAllowed={permission}
-          editingPost={editingPost}
         />
       </>
     );

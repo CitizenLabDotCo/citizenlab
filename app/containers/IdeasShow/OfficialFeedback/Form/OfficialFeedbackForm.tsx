@@ -14,6 +14,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import FormikMentionsTextAreaMultiloc from 'components/UI/FormikMentionsTextAreaMultiloc';
 import { Section } from 'components/admin/Section';
+import Button from 'components/UI/Button';
 
 // Typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
@@ -21,7 +22,6 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import Button from 'components/UI/Button';
 
 const ButtonContainer = styled.div`
   display: flex;
