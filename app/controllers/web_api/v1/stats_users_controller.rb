@@ -191,7 +191,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .order(Arel.sql("custom_field_values->'#{@custom_field.key}'"))
         .count
       serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-      options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
+      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     when 'multiselect'
       serie = users
@@ -201,7 +201,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
         .order("cfv.field_value")
         .count
       serie['_blank'] = serie.delete(nil) || 0 unless serie.empty?
-      options = CustomFieldOption.where(key: serie.keys).select(:key, :title_multiloc)
+      options = @custom_field.custom_field_options.where(key: serie.keys).select(:key, :title_multiloc)
       render json: {series: {users: serie}, options: options.map{|o| [o.key, o.attributes.except('key', 'id')]}.to_h}
     when 'checkbox'
       serie = users

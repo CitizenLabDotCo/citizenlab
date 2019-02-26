@@ -99,6 +99,47 @@ class TenantTemplateService
     @template.to_yaml
   end
 
+  def template_locales template
+    template = YAML.load template
+    locales = Set.new
+    template['models'].each do |_, instances|
+      instances.each do |attributes|
+        attributes.each do |field_name, multiloc|
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash)
+            multiloc.keys.each do |locale|
+              locales.add locale
+            end
+          end
+        end
+      end
+    end
+    template['models']['user']&.each do |attributes|
+      locales.add attributes['locale']
+    end
+    locales.to_a
+  end
+
+  def change_locales template, locale_from, locale_to
+    template = YAML.load template
+    template['models'].each do |_, instances|
+      instances.each do |attributes|
+        attributes.each do |field_name, multiloc|
+          if (field_name =~ /_multiloc$/) && multiloc.is_a?(Hash) && multiloc[locale_to].blank?
+            if locale_from.blank?
+              multiloc[locale_to] = multiloc.values.first
+            else
+              multiloc[locale_to] = multiloc[locale_from]
+            end
+          end
+        end
+      end
+    end
+    template['models']['user']&.each do |attributes|
+      attributes['locale'] = locale_to
+    end
+    template.to_yaml
+  end
+
 
   private
   
@@ -318,7 +359,7 @@ class TenantTemplateService
     # become invalid.
     # Pending invitations are cleared out.
 
-    # TODO properly copy project moderator roles
+    # TODO properly copy project moderator roles and domicile
     User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
       yml_user = { 
         'email'                     => u.email, 
@@ -331,7 +372,7 @@ class TenantTemplateService
         'locale'                    => u.locale,
         'bio_multiloc'              => u.bio_multiloc,
         'cl1_migrated'              => u.cl1_migrated,
-        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil?},
+        'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil? || (k == 'domicile')},
         'registration_completed_at' => u.registration_completed_at.to_s
       }
       if !yml_user['password_digest']
@@ -387,7 +428,7 @@ class TenantTemplateService
   end
 
   def yml_groups
-    Group.all.map do |g|
+    Group.where(membership_type: 'manual').map do |g|
       yml_group = {
         'title_multiloc'  => g.title_multiloc,
         'created_at'      => g.created_at.to_s,
@@ -426,7 +467,7 @@ class TenantTemplateService
   end
 
   def yml_groups_permissions
-    GroupsPermission.all.map do |g|
+    GroupsPermission.where(group_id: Group.where(membership_type: 'manual').ids).map do |g|
       {
         'permission_ref' => lookup_ref(g.permission_id, :permission),
         'group_ref'      => lookup_ref(g.group_id, :group),

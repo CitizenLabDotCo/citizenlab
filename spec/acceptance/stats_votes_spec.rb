@@ -260,7 +260,7 @@ resource "Stats - Votes" do
         example_request "Votes by time" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
-          expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.to_date).to_i+1)
+          expect(json_response[:series].map{|mode, values| values.size}.uniq.first).to eq ((now.in_time_zone(@timezone).to_date-start_at.in_time_zone(@timezone).to_date).to_i+1)
           expect(json_response[:series][:up].values.inject(&:+)).to eq 3
           expect(json_response[:series][:down].values.inject(&:+)).to eq 2
           expect(json_response[:series][:total].values.inject(&:+)).to eq 5

@@ -46,4 +46,14 @@ resource "Tenants" do
     end
   end
 
+  delete "admin_api/tenants/:tenant_id" do
+    let(:tenant) { create(:tenant)}
+    let(:tenant_id) { tenant.id }
+
+    example_request "Deleting a tenant", document: false do
+      expect(status).to eq 200
+      expect{tenant.reload}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
 end

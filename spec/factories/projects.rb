@@ -273,6 +273,13 @@ FactoryBot.define do
       survey_embed_url { "https://citizenlabco.typeform.com/to/HKGaPV" }
     end
 
+    factory :continuous_google_survey_project do
+      process_type { 'continuous' }
+      participation_method { 'survey' }
+      survey_service { 'google_forms' }
+      survey_embed_url { "https://docs.google.com/forms/d/e/fake/viewform?embedded=true" }
+    end
+
     factory :continuous_budgeting_project do
       process_type { 'continuous' }
       participation_method { 'budgeting' }

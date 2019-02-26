@@ -49,6 +49,7 @@ module AdminApi
     end
 
     def destroy
+      SideFxTenantService.new.before_destroy(@tenant, nil)
       tenant = @tenant.destroy
       if tenant.destroyed?
         SideFxTenantService.new.after_destroy(tenant, nil)

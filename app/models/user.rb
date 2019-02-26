@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   include PgSearch
 
+  GENDERS = %w(male female unspecified)
+  INVITE_STATUSES = %w(pending accepted)
+
   has_secure_password validations: false
   mount_base64_uploader :avatar, AvatarUploader
 
@@ -33,13 +36,12 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
-  validates :gender, inclusion: {in: %w(male female unspecified)}, allow_nil: true
+  validates :gender, inclusion: {in: GENDERS}, allow_nil: true
   validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
 
-  INVITE_STATUSES = %w(pending accepted)
   validates :invite_status, inclusion: {in: INVITE_STATUSES}, allow_nil: true
 
   validates :custom_field_values, json: {

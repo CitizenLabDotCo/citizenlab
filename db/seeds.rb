@@ -201,6 +201,22 @@ if ['public','example_org'].include? Apartment::Tenant.current
       geographic_dashboard: {
         enabled: true,
         allowed: true
+      },
+      surveys: {
+        enabled: true,
+        allowed: true
+      },
+      typeform_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      google_forms_surveys: {
+        enabled: true,
+        allowed: true
+      },
+      surveymonkey_surveys: {
+        enabled: true,
+        allowed: true
       }
     }
   })

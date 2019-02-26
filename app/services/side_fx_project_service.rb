@@ -2,22 +2,32 @@ class SideFxProjectService
 
   include SideFxHelper
 
+  def initialize sfx_pc=SideFxParticipationContextService.new
+    @sfx_pc = sfx_pc
+  end
+
   def before_create project, user
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
+    @sfx_pc.before_create project, user if project.is_participation_context?
   end
 
   def after_create project, user
-    PermissionsService.new.update_permissions_for project
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
+    @sfx_pc.after_create project, user if project.is_participation_context?
   end
 
   def before_update project, user
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
+    @sfx_pc.before_update project, user if project.is_participation_context?
   end
 
   def after_update project, user
-    PermissionsService.new.update_permissions_for project
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
+    @sfx_pc.after_update project, user if project.is_participation_context?
+  end
+
+  def before_destroy project, user
+    @sfx_pc.before_destroy project, user if project.is_participation_context?
   end
 
   def after_destroy frozen_project, user
@@ -27,7 +37,8 @@ class SideFxProjectService
       encode_frozen_resource(frozen_project), 'deleted',
       user, Time.now.to_i, 
       payload: {project: serialized_project}
-      )
+    )
+    @sfx_pc.after_destroy frozen_project, user if frozen_project.is_participation_context?
   end
 
 
