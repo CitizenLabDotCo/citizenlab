@@ -25,9 +25,16 @@ import styled from 'styled-components';
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-direction: column;
+
   >:not(:last-child) {
     margin-right: 5px;
   }
+
+`;
+
+const CancelButton = styled(Button)`
+  margin-top: 10px;
 `;
 
 export interface Props {
@@ -117,9 +124,9 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             {...{ isValid, isSubmitting, status, touched }}
           />
           {onCancel &&
-            <Button onClick={onCancel} bgColor="white" textColor={colors.clRed}>
+            <CancelButton style="text" onClick={onCancel} textColor={colors.clRed}>
               <FormattedMessage {...messages.cancel} />
-            </Button>
+            </CancelButton>
           }
         </ButtonContainer>
 
