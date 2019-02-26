@@ -40,6 +40,7 @@ const CancelButton = styled(Button)`
 export interface Props {
   locales: Locale[];
   onCancel?: () => void;
+  editForm?: boolean;
 }
 
 export interface FormValues extends MultilocFormValues {
@@ -85,7 +86,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   )
 
   render() {
-    const { isSubmitting, isValid, touched, values, onCancel } = this.props;
+    const { isSubmitting, isValid, touched, values, onCancel, editForm } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -110,7 +111,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
 
         <ButtonContainer>
           <FormikSubmitWrapper
-            bgColor={colors.clRed}
+            bgColor={editForm ? colors.adminTextColor : colors.clRed}
             icon="pen"
             textColor="white"
             fullWidth
@@ -124,7 +125,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             {...{ isValid, isSubmitting, status, touched }}
           />
           {onCancel &&
-            <CancelButton style="text" onClick={onCancel} textColor={colors.clRed}>
+            <CancelButton style="text" onClick={onCancel} textColor={editForm ? colors.adminTextColor : colors.clRed}>
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           }

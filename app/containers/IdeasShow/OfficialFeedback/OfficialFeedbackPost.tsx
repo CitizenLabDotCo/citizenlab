@@ -20,12 +20,19 @@ import { IOfficialFeedbackData, deleteOfficialfeedback } from 'services/official
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: rgba(236, 90, 36, 0.06);
   border-radius: 3px;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   padding: 17px 34px 27px 34px;
   margin-bottom: 10px;
+`;
+
+const PostContainer = Container.extend`
+  background-color: rgba(236, 90, 36, 0.06);
+`;
+
+const EditFormContainer = Container.extend`
+  background-color: ${colors.adminBackground};
 `;
 
 const Body = styled.div`
@@ -57,7 +64,6 @@ interface Props {
 }
 
 interface State {
-  showMoreActions: boolean;
   showEditForm: boolean;
 }
 
@@ -65,17 +71,16 @@ class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      showMoreActions: true,
       showEditForm: false
     };
   }
 
   showEditForm = () => {
-    this.setState({ showMoreActions: false, showEditForm: true });
+    this.setState({ showEditForm: true });
   }
 
   closeEditForm = () => {
-    this.setState({ showMoreActions: true, showEditForm: false });
+    this.setState({ showEditForm: false });
   }
 
   deletePost = (postId: string) => () => {
@@ -96,36 +101,39 @@ class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps
 
   render() {
     const { editingAllowed, officialFeedbackPost } = this.props;
-    const { showMoreActions, showEditForm } = this.state;
+    const { showEditForm } = this.state;
     const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
     const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
 
+    if (showEditForm) {
+      return (
+        <EditFormContainer key={officialFeedbackPost.id}>
+          <OfficialFeedbackEdit
+            feedback={officialFeedbackPost}
+            closeForm={this.closeEditForm}
+          />
+        </EditFormContainer>
+      );
+    }
+
     return (
-      <Container key={officialFeedbackPost.id}>
-        {editingAllowed && showMoreActions &&
+      <PostContainer key={officialFeedbackPost.id}>
+        {editingAllowed &&
           <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
         }
 
-        {showEditForm ? (
-            <OfficialFeedbackEdit
-              feedback={officialFeedbackPost}
-              closeForm={this.closeEditForm}
-            />
-          ) : (
-            <>
-              <Body>
-                <T value={bodyTextMultiloc} supportHtml />
-              </Body>
-              <Footer>
-                <Author>
-                  <T value={authorNameMultiloc} />
-                </Author>
-                <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
-              </Footer>
-            </>
-          )
-        }
-      </Container>
+        <>
+          <Body>
+            <T value={bodyTextMultiloc} supportHtml />
+          </Body>
+          <Footer>
+            <Author>
+              <T value={authorNameMultiloc} />
+            </Author>
+            <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
+          </Footer>
+        </>
+      </PostContainer>
     );
   }
 }

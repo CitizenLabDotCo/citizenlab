@@ -29,7 +29,7 @@ export default class OfficialFeedbackEdit extends React.Component<Props> {
   }
 
   renderFn = (props) => {
-    return <OfficialFeedbackForm {...props} onCancel={this.props.closeForm}/>;
+    return <OfficialFeedbackForm {...props} editForm onCancel={this.props.closeForm}/>;
   }
 
   initialValues = () => ({
