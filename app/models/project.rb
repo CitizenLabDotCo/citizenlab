@@ -76,6 +76,10 @@ class Project < ApplicationRecord
     where(id: subquery)
   end)
 
+  scope :is_participation_context, -> {
+    where.not(process_type: 'timeline')
+  }
+
   def continuous?
     self.process_type == 'continuous'
   end

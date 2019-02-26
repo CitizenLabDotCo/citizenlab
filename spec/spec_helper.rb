@@ -1,5 +1,8 @@
 require 'simplecov'
 require 'simplecov-rcov'
+require 'webmock/rspec'
+
+WebMock.allow_net_connect!
 
 SimpleCov.formatters = [
   SimpleCov::Formatter::HTMLFormatter,
@@ -116,6 +119,7 @@ RSpec.configure do |config|
     require './engines/email_campaigns/spec/factories/deliveries.rb'
     require './engines/email_campaigns/spec/factories/consents.rb'
     require './engines/machine_translations/spec/factories/machine_translations.rb'
+    require './engines/surveys/spec/factories/responses.rb'
     # Clean all tables to start
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     # Use transactions for tests

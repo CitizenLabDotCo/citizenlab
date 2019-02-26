@@ -394,6 +394,42 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "typeform_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of surveys from Typeform",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "user_token": {
+            "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
+            "type": "string",
+            "private": true,
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>" 
+          }
+        }
+      },
+      "google_forms_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of Google Form surveys",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+      "surveymonkey_surveys": {
+        "type": "object",
+        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
       "maps": {
         "type": "object",
         "description":  "Show maps throughout the platform",
@@ -550,7 +586,10 @@
     "projects_pages": ["projects"],
     "projects_events": ["projects"],
     "projects_phases": ["projects"],
-    "private_projects": ["groups"]
+    "private_projects": ["groups"],
+    "typeform_surveys": ["surveys"],
+    "google_forms_surveys": ["surveys"],
+    "surveymonkey_surveys": ["surveys"]
   },
   "definitions": {
     "multiloc_string": {

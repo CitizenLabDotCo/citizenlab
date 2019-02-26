@@ -2,11 +2,11 @@ require 'active_support/concern'
 
 module ParticipationContext
   extend ActiveSupport::Concern
+  include Surveys::SurveyParticipationContext
 
   PARTICIPATION_METHODS = %w(information ideation survey budgeting)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
-  SURVEY_SERVICES = %w(typeform survey_monkey google_forms)
 
   included do
     has_many :baskets, as: :participation_context, dependent: :destroy
@@ -24,22 +24,7 @@ module ParticipationContext
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
         ideation.validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
       end
-      with_options if: :survey? do |survey|
-        survey.validates :survey_embed_url, presence: true
-        survey.validates :survey_service, presence: true, inclusion: {in: SURVEY_SERVICES}
-        survey.validates :survey_embed_url, if: [:survey?, :typeform?], format: { 
-          with: /\Ahttps:\/\/.*\.typeform\.com\/to\/.*\z/,
-          message: "Not a valid Typeform embed URL"
-        }
-        survey.validates :survey_embed_url, if: [:survey?, :survey_monkey?], format: { 
-          with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
-          message: "Not a valid SurveyMonkey embed URL"
-        }
-        survey.validates :survey_embed_url, if: [:survey?, :google_forms?], format: { 
-          with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true\z/,
-          message: "Not a valid Google Forms embed URL"
-        }
-      end
+
       with_options if: :budgeting? do |budgeting|
         budgeting.validates :max_budget, presence: true
         budgeting.validates :posting_enabled, inclusion: {in: [true, false]}
@@ -65,10 +50,6 @@ module ParticipationContext
 
   def information?
     self.participation_method == 'information'
-  end
-
-  def survey?
-    self.participation_method == 'survey'
   end
 
   def budgeting?
@@ -108,18 +89,6 @@ module ParticipationContext
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
-  end
-
-  def typeform?
-    self.survey_service == 'typeform'
-  end
-
-  def survey_monkey?
-    self.survey_service == 'survey_monkey'
-  end
-
-  def google_forms?
-    self.survey_service == 'google_forms'
   end
 
 end

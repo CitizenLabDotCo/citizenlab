@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Schema for validating the answers attribute in a survey response",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["question_id", "question_text", "value"],
+    "properties": {
+      "question_id": {"type": "string"},
+      "question_text": {"type": "string"},
+      "value": {
+        "oneOf": [
+          {"type": "string"},
+          {"type": "boolean"},
+          {"type": "number"},
+          {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

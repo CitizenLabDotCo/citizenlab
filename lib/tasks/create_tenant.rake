@@ -2,7 +2,7 @@ namespace :cl2_back do
   desc "Create a tenant with given host and optional template"
   task :create_tenant, [:host,:template] => [:environment] do |t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
-    tenant_template = args[:template] || 'en_template'
+    tenant_template = args[:template] || 'e2etests_template'
 
     Tenant.find_by(host: host)&.destroy!
 
@@ -15,10 +15,10 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en','nl-BE'],
+          locales: ['en-GB','nl-BE'],
           organization_type: 'medium_city',
           organization_name: {
-            "en" => 'Wonderville',
+            "en-GB" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
           timezone: "Europe/Brussels",
@@ -41,10 +41,6 @@ namespace :cl2_back do
         manual_project_sorting: {
           enabled: true,
           allowed: true
-        },
-        surveys: {
-         enabled: true,
-         allowed: true,
         },
         user_custom_fields: {
           enabled: true,
@@ -85,6 +81,22 @@ namespace :cl2_back do
         geographic_dashboard: {
           enabled: true,
           allowed: true
+        },
+        surveys: {
+          enabled: true,
+          allowed: true
+        },
+        typeform_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        google_forms_surveys: {
+          enabled: true,
+          allowed: true
+        },
+        surveymonkey_surveys: {
+          enabled: true,
+          allowed: true
         }
       }
     })
@@ -98,7 +110,7 @@ namespace :cl2_back do
         last_name: 'Lab',
         email: 'hello@citizenlab.co',
         password: 'democrazy',
-        locale: 'en',
+        locale: tenant.settings.dig('core', 'locales')&.first || 'en',
         registration_completed_at: Time.now
       )
     end
