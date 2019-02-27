@@ -418,18 +418,14 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && layout === 'threecolumns' &&
-                <>
-                  {(projectsList.length + 1) % 3 === 0 &&
-                    <MockProjectCard className={layout} />
-                  }
+              {!hasMore && layout === 'threecolumns' && (projectsList.length + 1) % 3 === 0 &&
+                <MockProjectCard className={layout} />
+              }
 
-                  {(projectsList.length - 1) % 3 === 0 &&
-                    <>
-                      <MockProjectCard className={layout} />
-                      <MockProjectCard className={layout} />
-                    </>
-                  }
+              {!hasMore && layout === 'threecolumns' && (projectsList.length - 1) % 3 === 0 &&
+                <>
+                  <MockProjectCard className={layout} />
+                  <MockProjectCard className={layout} />
                 </>
               }
             </ProjectsList>

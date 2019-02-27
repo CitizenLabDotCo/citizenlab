@@ -21,6 +21,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
 
 // i18n
 import T from 'components/T';
@@ -157,7 +158,7 @@ const ProjectImage = styled<LazyImageProps>(LazyImage)`
 `;
 
 const ProjectContent = styled.div`
-  flex: 1;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -291,7 +292,7 @@ const ProjectLabel = styled.div`
 
 const ContentBody = styled.div`
   width: 100%;
-  flex: 1;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding-top: 20px;
@@ -327,7 +328,10 @@ const ProjectDescription = styled.div`
 `;
 
 const ContentFooter = styled.div`
-  min-height: 53px;
+  height: 53px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: 53px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -411,6 +415,7 @@ interface DataProps {
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
   phase: GetPhaseChildProps;
+  avatars: GetAvatarsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -475,6 +480,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+
+      console.log(this.props.avatars);
 
       if (isArchived) {
         countdown = (
@@ -638,6 +645,15 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>,
+  avatars: ({ project, render }) => {
+    let avatarIds: string[] = [];
+
+    if (!isNilOrError(project) && project.relationships.avatars.data) {
+      avatarIds = project.relationships.avatars.data.map(avatar => avatar.id);
+    }
+
+    return <GetAvatars ids={avatarIds}>{render}</GetAvatars>;
+  },
 });
 
 const ProjectCardWithHoC = withTheme<Props, State>(injectIntl<Props>(ProjectCard));

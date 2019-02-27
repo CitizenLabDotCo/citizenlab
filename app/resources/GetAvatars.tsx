@@ -1,16 +1,12 @@
 import React from 'react';
 import { isEqual } from 'lodash-es';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { IAvatars, avatarsStream } from 'services/avatars';
+import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
+import { IAvatarData, avatarByIdStream } from 'services/avatars';
 import { isNilOrError } from 'utils/helperUtils';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface InputProps {
-  limit?: number;
-  context?: {
-    type: 'project' | 'group';
-    id: string;
-  };
+  ids?: string[];
 }
 
 type children = (renderProps: GetAvatarsChildProps) => JSX.Element | null;
@@ -20,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  avatars: IAvatars | undefined | null;
+  avatars: (IAvatarData | Error)[] | undefined | null | Error;
 }
 
-export type GetAvatarsChildProps = IAvatars | undefined | null;
+export type GetAvatarsChildProps = (IAvatarData | Error)[] | undefined | null | Error;
 
 export default class GetAvatars extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -37,36 +33,28 @@ export default class GetAvatars extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { limit, context } = this.props;
-    this.inputProps$ = new BehaviorSubject({ limit, context });
+    const { ids } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ ids });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ limit, context }) => {
-          if (context) {
-            return avatarsStream({
-              queryParameters: {
-                limit,
-                context_type: context.type,
-                context_id: context.id
-              }
-            }).observable;
-          }
-
-          return avatarsStream({
-            queryParameters: {
-              limit
-            }
-          }).observable;
+        filter(({ ids }) => !!(ids && ids.length > 0)),
+        switchMap(({ ids }: { ids: string[] }) => {
+          return combineLatest(
+            ids.map(id => avatarByIdStream(id).observable.pipe(map(avatar => (!isNilOrError(avatar) ? avatar.data : avatar))))
+          );
         })
-      ).subscribe((avatars) => this.setState({ avatars: (!isNilOrError(avatars) ? avatars : null) }))
+      )
+      .subscribe((avatars) => {
+        this.setState({ avatars });
+      })
     ];
   }
 
   componentDidUpdate() {
-    const { limit, context } = this.props;
-    this.inputProps$.next({ limit, context });
+    this.inputProps$.next({ ids: this.props.ids });
   }
 
   componentWillUnmount() {
