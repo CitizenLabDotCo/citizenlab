@@ -81,7 +81,7 @@
   "app.components.IdeasShow.OfficialFeedback.loadPreviousUpdates": "Load previous updates",
   "app.components.IdeasShow.OfficialFeedback.official": "Official",
   "app.components.IdeasShow.OfficialFeedback.officialFeedbackPlaceholder": "Give an update about this idea status and processing",
-  "app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder": "Name and role to display",
+  "app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder": "Choose how people see your name",
   "app.components.IdeasShow.OfficialFeedback.officialUpdateAuthor": "Official update author name",
   "app.components.IdeasShow.OfficialFeedback.officialUpdateBody": "Official update body text",
   "app.components.IdeasShow.OfficialFeedback.officialUpdates": "Official updates",
