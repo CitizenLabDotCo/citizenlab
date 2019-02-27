@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -89,6 +89,7 @@ interface InputProps {
   overlap?: number;
   userCountBgColor?: string;
   className?: string;
+  onClick?: (event: MouseEvent) => void;
 }
 
 interface DataProps {
@@ -105,6 +106,12 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     limit: defaultLimit
   };
+
+  handleOnClick = (event: MouseEvent) => {
+    if (this.props.onClick) {
+      this.props.onClick(event);
+    }
+  }
 
   render() {
     const { avatars, size, overlap, context, className } = this.props;
@@ -128,6 +135,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             size={definedSize}
             width={calcWidth}
             overlap={definedOverlap}
+            onClick={this.handleOnClick}
           >
             {avatarList.map((avatar, index) => (
               <AvatarWrapper key={index}>
