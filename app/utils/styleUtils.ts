@@ -86,7 +86,7 @@ export const media = {
 };
 
 export const colors = {
-  background: '#f8f8f9',
+  background: '#f4f4f5',
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
@@ -193,7 +193,7 @@ export const stylingConsts = {
 export function quillEditedContent(
   fontSize: 'base' | 'medium' | 'large' = 'base',
   color: string = colors.text,
-  fontWeight: 300 | 400 = 300
+  fontWeight: 300 | 400 = 400
 ) {
   let lineHeight = 27;
 

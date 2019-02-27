@@ -48,8 +48,7 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
-  border: solid 1px #f0f0f0;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
   transition: all 200ms ease;
 
   &.large {

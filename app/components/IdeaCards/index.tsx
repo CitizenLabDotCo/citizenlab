@@ -26,8 +26,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -45,8 +46,7 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  border: solid 1px #f0f0f0;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const FiltersArea = styled.div`
@@ -243,18 +243,18 @@ const EmptyMessage = styled.div`
 const EmptyMessageLine = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   text-align: center;
 `;
 
-const LoadMoreButtonWrapper = styled.div`
+const ShowMoreButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
@@ -269,7 +269,9 @@ interface DataProps {
   ideas: GetIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   selectedView: 'card' | 'map';
@@ -319,7 +321,8 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextId,
       participationContextType,
       ideas,
-      className
+      className,
+      theme
     } = this.props;
     const {
       queryParameters,
@@ -400,17 +403,23 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showCardView && !querying && hasMore &&
-          <LoadMoreButtonWrapper>
-            <LoadMoreButton
+          <ShowMoreButtonWrapper>
+            <ShowMoreButton
               onClick={this.loadMore}
-              size="2"
+              size="1"
               style="secondary"
-              text={<FormattedMessage {...messages.loadMore} />}
+              text={<FormattedMessage {...messages.showMore} />}
               processing={loadingMore}
-              fullWidth={true}
-              height="58px"
+              height="50px"
+              icon="showMore"
+              iconPos="left"
+              textColor={theme.colorText}
+              textHoverColor={darken(0.1, theme.colorText)}
+              bgColor={rgba(theme.colorMain, 0.08)}
+              bgHoverColor={rgba(theme.colorMain, 0.12)}
+              fontWeight="500"
             />
-          </LoadMoreButtonWrapper>
+          </ShowMoreButtonWrapper>
         }
 
         {showMapView && hasIdeas &&
@@ -425,8 +434,10 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
 });
 
+const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCards {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

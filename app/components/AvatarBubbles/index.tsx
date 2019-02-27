@@ -1,4 +1,5 @@
 import React, { PureComponent, MouseEvent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
