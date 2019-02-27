@@ -172,11 +172,12 @@ const ViewButton = styled.div`
     padding-right: 20px;
     padding-top: 11px;
     padding-bottom: 11px;
-  }
 
-  ${media.smallerThanMinTablet`
-    height: 44px;
-  `}
+    ${media.smallerThanMinTablet`
+      padding-top: 9px;
+      padding-bottom: 9px;
+    `}
+  }
 `;
 
 const CardsButton = ViewButton.extend`
