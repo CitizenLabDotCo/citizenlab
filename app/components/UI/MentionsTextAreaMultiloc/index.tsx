@@ -49,6 +49,7 @@ export type Props = {
   fontSize?: number;
   backgroundColor?: string;
   placeholderFontWeight?: string;
+  ariaLabel?: string;
 };
 
 type State = {
@@ -109,7 +110,8 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
       errorMultiloc,
       fontSize,
       backgroundColor,
-      placeholderFontWeight
+      placeholderFontWeight,
+      ariaLabel
     } = this.props;
 
     if (locale && currentTenant) {
@@ -142,6 +144,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
               fontSize={fontSize}
               backgroundColor={backgroundColor}
               placeholderFontWeight={placeholderFontWeight}
+              ariaLabel={ariaLabel}
             />
           </MentionsTextAreaWrapper>
         );
@@ -176,6 +179,7 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
                     onChange={this.handleOnChange(currentTenantLocale)}
                     onBlur={onBlur}
                     onFocus={onFocus}
+                    ariaLabel={ariaLabel}
                   />
                 </MentionsTextAreaWrapper>
               );

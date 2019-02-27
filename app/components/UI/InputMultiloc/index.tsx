@@ -44,6 +44,7 @@ export type Props = {
   maxCharCount?: number | undefined;
   disabled?: boolean;
   shownLocale?: Locale;
+  ariaLabel?: string;
 };
 
 type State = {
@@ -92,7 +93,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
 
   render() {
     const { locale, currentTenant } = this.state;
-    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc  } = this.props;
+    const { shownLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel  } = this.props;
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -119,6 +120,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
               onBlur={this.props.onBlur}
               maxCharCount={this.props.maxCharCount}
               disabled={this.props.disabled}
+              ariaLabel={ariaLabel}
             />
           </InputWrapper>
         );
@@ -151,6 +153,7 @@ export default class InputMultiloc extends React.PureComponent<Props, State> {
                     onBlur={this.props.onBlur}
                     maxCharCount={this.props.maxCharCount}
                     disabled={this.props.disabled}
+                    ariaLabel={ariaLabel}
                   />
                 </InputWrapper>
               );

@@ -27,7 +27,7 @@ export default defineMessages({
   },
   officialNamePlaceholder: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder',
-    defaultMessage: 'Name and role to display',
+    defaultMessage: 'Choose how people see your name',
   },
   officialFeedbackPlaceholder: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialFeedbackPlaceholder',
@@ -36,6 +36,10 @@ export default defineMessages({
   updateButtonSave: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateButtonSave',
     defaultMessage: 'Give an update',
+  },
+  updateButtonSaveEditForm: {
+    id: 'app.components.IdeasShow.OfficialFeedback.updateButtonSaveEditForm',
+    defaultMessage: 'Update message',
   },
   updateButtonError: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateButtonError',
@@ -68,5 +72,13 @@ export default defineMessages({
   lastEdition: {
     id: 'app.components.IdeasShow.OfficialFeedback.lastEdition',
     defaultMessage: 'last edited on {date}',
-  }
+  },
+  officialUpdateBody: {
+    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdateBody',
+    defaultMessage: 'Official update body text',
+  },
+  officialUpdateAuthor: {
+    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdateAuthor',
+    defaultMessage: 'Official update author name',
+  },
 });

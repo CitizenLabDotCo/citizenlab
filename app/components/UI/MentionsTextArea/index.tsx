@@ -56,6 +56,7 @@ type Props = {
   fontSize?: number;
   backgroundColor?: string;
   placeholderFontWeight?: string;
+  ariaLabel?: string;
 };
 
 type State = {
@@ -195,7 +196,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id, placeholderFontWeight } = this.props;
+    const { name, placeholder, value, error, children, rows, id, placeholderFontWeight, ariaLabel } = this.props;
     const className = this.props['className'];
 
     if (style) {
@@ -215,6 +216,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             ref={this.setRef}
+            aria-label={ariaLabel}
           >
             <Mention
               trigger="@"
