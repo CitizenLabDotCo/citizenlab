@@ -23,6 +23,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
@@ -332,14 +336,17 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   showMore = () => {
+    trackEventByName(tracks.clickOnProjectsShowMoreButton);
     this.props.projects.onLoadMore();
   }
 
   handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
+    trackEventByName(tracks.clickOnProjectsPublicationStatusFilter);
     this.props.projects.onChangePublicationStatus(status);
   }
 
   handleAreasOnChange = (areas: string[]) => {
+    trackEventByName(tracks.clickOnProjectsAreaFilter);
     this.props.projects.onChangeAreas(areas);
   }
 

@@ -29,6 +29,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -305,6 +309,10 @@ const ProjectTitle = styled.h3`
   font-weight: 500;
   margin: 0;
   padding: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const ProjectDescription = styled.div`
@@ -428,6 +436,22 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleProjectCardOnClick = (projectId: string) => () => {
+    trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+  }
+
+  handleCTAOnClick = (projectId: string) => () => {
+    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+  }
+
+  handleProjectTitleOnClick = (projectId: string) => () => {
+    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+  }
+
+  handleAvatarBubblesOnClick = (projectId: string) => () => {
+    trackEventByName(tracks.clickOnAvatarBubbles, { extra: { projectId } });
+  }
+
   render() {
     const { visible } = this.state;
     const { project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
@@ -503,7 +527,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
           {ctaMessage !== null &&
             <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
-              <ProjectLabel>
+              <ProjectLabel onClick={this.handleCTAOnClick(project.id)}>
                 {ctaMessage}
               </ProjectLabel>
             </ContentHeaderRight>
@@ -513,8 +537,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} e2e-project-card ${isArchived ? 'archived' : ''}`}
+          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} e2e-project-card`}
           to={projectUrl}
+          onClick={this.handleProjectCardOnClick(project.id)}
         >
           {size !== 'large' && contentHeader}
 
@@ -540,7 +565,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             {size === 'large' && contentHeader}
 
             <ContentBody className={size}>
-              <ProjectTitle>
+              <ProjectTitle onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -564,6 +589,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 <ContentFooterLeft>
                   {showAvatars &&
                     <AvatarBubbles
+                      onClick={this.handleAvatarBubblesOnClick(project.id)}
                       size={30}
                       limit={3}
                       userCountBgColor={this.props.theme.colorMain}

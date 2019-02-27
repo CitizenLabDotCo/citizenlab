@@ -18,9 +18,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resources/GetOnboardingCampaigns';
 
 // utils
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 import CSSTransition from 'react-transition-group/CSSTransition';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -250,11 +252,12 @@ interface State { }
 
 class SignedInHeader extends PureComponent<Props, State> {
   goToSignUpPage = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
+    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-in header' } });
     clHistory.push('/sign-up');
   }
 
   handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
+    trackEventByName(tracks.clickSkipButton, { extra: { location: 'signed-in header', context: name } });
     dismissOnboardingCampaign(name);
   }
 
