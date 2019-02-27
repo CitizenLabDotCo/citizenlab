@@ -53,6 +53,11 @@ const DatePosted = styled.span`
   color: ${colors.label};
 `;
 
+const DateEdited = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+`;
+
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   align-self: flex-end;
   margin-bottom: 10px;
@@ -104,8 +109,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   render() {
     const { editingAllowed, officialFeedbackPost } = this.props;
     const { showEditForm } = this.state;
-    const bodyTextMultiloc = officialFeedbackPost.attributes.body_multiloc;
-    const authorNameMultiloc = officialFeedbackPost.attributes.author_multiloc;
+    const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
     if (showEditForm) {
       return (
@@ -126,13 +130,22 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
 
         <>
           <Body>
-            <T value={bodyTextMultiloc} supportHtml />
+            <T value={body_multiloc} supportHtml />
           </Body>
           <Footer>
             <Author>
-              <T value={authorNameMultiloc} />
+              <T value={author_multiloc} />
             </Author>
-            <DatePosted><FormattedDate value={officialFeedbackPost.attributes.created_at} /></DatePosted>
+            <DatePosted><FormattedDate value={created_at} /></DatePosted>
+            {updated_at && updated_at !== created_at && (
+              <DateEdited>
+                <FormattedMessage
+                  {...messages.lastEdition}
+                  values={{ date: <FormattedDate value={updated_at} /> }}
+                />
+              </DateEdited>
+            )
+          }
           </Footer>
         </>
       </PostContainer>

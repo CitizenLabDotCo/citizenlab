@@ -64,5 +64,9 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.components.IdeasShow.OfficialFeedback.showMoreActions',
     defaultMessage: 'Show more actions',
+  },
+  lastEdition: {
+    id: 'app.components.IdeasShow.OfficialFeedback.lastEdition',
+    defaultMessage: 'last edited on {date}',
   }
 });
