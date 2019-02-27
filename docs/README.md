@@ -1,5 +1,48 @@
 # Changelog
 
+## 2019-02-20
+
+### Fixed
+
+- User digest email events are sent out again
+- The user statistics on the admin dashboard are back to the correct values
+- Creating a new project page as an admin does not result in a blank page anymore
+- Improved saving behaviour when saving images in a phase's description
+- When logged in and visiting a url containing another locale than the one you previously picked, your locale choice is no longer overwritten
+
+### Added
+
+- Project copy feature (in admin HQ) now also supports copying ideas (including comments and votes) and allows you to specify a new slug for the project URL
+- Unlogged users locale preference is saved in their browser
+
+## 2019-02-14
+
+### Fixed
+
+- Project/new is no longer a blank page
+
+## 2019-02-13
+
+### Fixed
+
+- Texts written with the rich text editor are shown more consistently in and outside of the editor
+- Opening a dropdown of the smart group conditions form now scrolls down the modal
+- When changing the sorting method in the ideas overview, the pagination now resets as expected
+- Google login no longer uses the deprecated Google+ authentication API
+
+### Added
+
+- Typeform survey for typeform can now be downloaded as xlsx from a tab in the project settings
+  - The Segment user token needs to be filled out in Admin HQ
+  - New survey responses generate an event in segment
+- Survey providers can be feature flagged individually
+- New \*.template.citizenlab.co platforms now serve as definitions of the tenant template
+- The registration fields overview in admin now shows a badge when fields are required
+
+### Changed
+
+- Surveymonkey is now feature-flagged off by default for new platforms
+
 ## 2019-01-30
 
 ### Fixed

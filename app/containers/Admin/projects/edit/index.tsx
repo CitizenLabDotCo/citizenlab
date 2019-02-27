@@ -148,47 +148,45 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     const { projectId } = this.props.params;
     const { project, intl: { formatMessage } } = this.props;
 
-    if (!isNilOrError(project)) {
-      const { children, location: { pathname } } = this.props;
-      const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
-      const tabbedProps = {
-        resource: {
-          title: project ? project.attributes.title_multiloc : formatMessage(messages.newProject),
-        },
-        tabs: ((projectId && project) ? this.getTabs(projectId, project) : [])
-      };
-      return (
-        <>
-          <TopContainer>
-            <GoBackButton onClick={this.goBack} />
-            <ActionsContainer>
-              {/^.*\/ideas$/.test(pathname) &&
-                <Button
-                  id="new-idea"
-                  linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
-                  text={formatMessage(messages.addNewIdea)}
-                  onClick={this.onNewIdea(pathname)}
-                />
-              }
+    const { children, location: { pathname } } = this.props;
+    const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
+    const tabbedProps = {
+      resource: {
+        title: !isNilOrError(project) ? project.attributes.title_multiloc : formatMessage(messages.newProject),
+      },
+      tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
+    };
+    return (
+      <>
+        <TopContainer>
+          <GoBackButton onClick={this.goBack} />
+          <ActionsContainer>
+            {/^.*\/ideas$/.test(pathname) &&
+              <Button
+                id="new-idea"
+                linkTo={projectId ? `/projects/${projectId}/ideas/new` : '/ideas/new'}
+                text={formatMessage(messages.addNewIdea)}
+                onClick={this.onNewIdea(pathname)}
+              />
+            }
+            {!isNilOrError(project) &&
               <Button
                 style="cl-blue"
                 icon="eye"
                 id="to-project"
-                linkTo={project ? `/projects/${project.attributes.slug}` : ''}
+                linkTo={`/projects/${project.attributes.slug}`}
                 circularCorners={false}
               >
                 <FormattedMessage {...messages.viewPublicProject} />
               </Button>
-            </ActionsContainer>
-          </TopContainer>
-          <TabbedResource {...tabbedProps}>
-            {childrenWithExtraProps}
-          </TabbedResource>
-        </>
-      );
-    }
-
-    return null;
+            }
+          </ActionsContainer>
+        </TopContainer>
+        <TabbedResource {...tabbedProps}>
+          {childrenWithExtraProps}
+        </TabbedResource>
+      </>
+    );
   }
 }
 

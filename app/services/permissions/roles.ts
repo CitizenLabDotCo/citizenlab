@@ -14,6 +14,13 @@ export const isAdmin = (user?: IUser | null | undefined | Error)  => {
   return false;
 };
 
+export const isSuperAdmin = (user?: IUser | null | Error) => {
+  if (!isNilOrError(user)) {
+    return user.data.attributes.highest_role === 'super_admin';
+  }
+  return false;
+};
+
 export const isModerator = (user?: IUser | null) => {
   return !!user && hasRole(user, 'project_moderator');
 };

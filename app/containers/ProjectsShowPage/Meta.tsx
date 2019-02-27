@@ -50,7 +50,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
           {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
             ${metaTitle}`}
         </title>
-        {getAlternateLinks(tenantLocales, location)}
+        {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={description} />
         <meta property="og:title" content={metaTitle} />
