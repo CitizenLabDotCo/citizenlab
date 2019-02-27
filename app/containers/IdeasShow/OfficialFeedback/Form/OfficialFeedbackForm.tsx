@@ -22,6 +22,8 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 // stylings
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import GetLocale from 'resources/GetLocale';
+import { isNilOrError } from 'utils/helperUtils';
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -38,7 +40,7 @@ const CancelButton = styled(Button)`
 `;
 
 export interface Props {
-  locales: Locale[];
+  locale: Locale;
   onCancel?: () => void;
   editForm?: boolean;
 }
@@ -56,7 +58,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   constructor(props: Props & InjectedIntlProps) {
     super(props as any);
     this.state = {
-      selectedLocale: 'en',
+      selectedLocale: props.locale,
     };
   }
 
@@ -151,7 +153,11 @@ class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormVal
   }
 
   render() {
-    return <OfficialFeedbackFormWithIntl {...this.props} />;
+    return (
+      <GetLocale>
+        {locale => isNilOrError(locale) ? null :  <OfficialFeedbackFormWithIntl {...this.props} locale={locale} />}
+      </GetLocale>
+    );
   }
 }
 
