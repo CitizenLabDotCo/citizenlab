@@ -52,6 +52,19 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         value="Some time ago"
       />
     </OfficialFeedbackPost__DatePosted>
+    <OfficialFeedbackPost__DateEdited>
+      <FormattedMessage
+        defaultMessage="last edited on {date}"
+        id="app.components.IdeasShow.OfficialFeedback.lastEdition"
+        values={
+          Object {
+            "date": <FormattedDate
+              value="Some shorter time ago"
+            />,
+          }
+        }
+      />
+    </OfficialFeedbackPost__DateEdited>
   </OfficialFeedbackPost__Footer>
 </OfficialFeedbackPost__Container>
 `;
@@ -85,6 +98,19 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
         value="Some time ago"
       />
     </OfficialFeedbackPost__DatePosted>
+    <OfficialFeedbackPost__DateEdited>
+      <FormattedMessage
+        defaultMessage="last edited on {date}"
+        id="app.components.IdeasShow.OfficialFeedback.lastEdition"
+        values={
+          Object {
+            "date": <FormattedDate
+              value="Some shorter time ago"
+            />,
+          }
+        }
+      />
+    </OfficialFeedbackPost__DateEdited>
   </OfficialFeedbackPost__Footer>
 </OfficialFeedbackPost__Container>
 `;
