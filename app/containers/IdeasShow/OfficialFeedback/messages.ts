@@ -64,5 +64,13 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.components.IdeasShow.OfficialFeedback.showMoreActions',
     defaultMessage: 'Show more actions',
-  }
+  },
+  officialUpdateBody: {
+    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdateBody',
+    defaultMessage: 'Official update body text',
+  },
+  officialUpdateAuthor: {
+    id: 'app.components.IdeasShow.OfficialFeedback.officialUpdateAuthor',
+    defaultMessage: 'Official update author name',
+  },
 });
