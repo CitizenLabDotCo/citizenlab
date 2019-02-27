@@ -12,8 +12,8 @@ export const mockOfficialFeedback = {
         body_multiloc: {
           en: 'Update: Do Not Keep Calm, please panic now. End of transmission.',
         },
-        created_at: 'Some time ago',
-        updated_at: 'Some shorter time ago'
+        created_at: '2012-01-01T04:06:07.000Z',
+        updated_at: '2011-01-01T04:26:07.000Z'
       }
     },
     {
@@ -26,8 +26,8 @@ export const mockOfficialFeedback = {
         body_multiloc: {
           en: 'This is an important official communication from the testing department. Keep calm and read on.',
         },
-        created_at: 'Some longer time ago',
-        updated_at: 'Some longer shorter time ago'
+        created_at: '2010-01-01T04:06:07.000Z',
+        updated_at: '2000-01-01T04:06:07.000Z'
       }
     }
   ]

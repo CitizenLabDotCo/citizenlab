@@ -19,7 +19,7 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
         Object {
           "lastUpdateDate": <OfficialFeedback__StyledSpan>
             <FormattedDate
-              value="Some shorter time ago"
+              value="2011-01-01T04:26:07.000Z"
             />
           </OfficialFeedback__StyledSpan>,
         }
@@ -49,7 +49,7 @@ exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
         Object {
           "lastUpdateDate": <OfficialFeedback__StyledSpan>
             <FormattedDate
-              value="Some shorter time ago"
+              value="2011-01-01T04:26:07.000Z"
             />
           </OfficialFeedback__StyledSpan>,
         }
