@@ -18,6 +18,7 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     }, // ImageSizes,
     ideas_count: 25,
     comments_count: 10,
+    avatars_count: 23,
     created_at: 'yesterday',
     updated_at: 'yesterday but later', // should be a real time string
     visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
