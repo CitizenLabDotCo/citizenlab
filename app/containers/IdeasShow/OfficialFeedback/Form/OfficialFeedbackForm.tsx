@@ -68,6 +68,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
     <FormikInputMultiloc
       shownLocale={this.state.selectedLocale}
       placeholder={this.props.intl.formatMessage(messages.officialNamePlaceholder)}
+      ariaLabel={this.props.intl.formatMessage(messages.officialUpdateAuthor)}
       {...props}
     />
   )
@@ -81,6 +82,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
       fontSize={fontSizes.base}
       backgroundColor="#FFF"
       placeholderFontWeight="400"
+      ariaLabel={this.props.intl.formatMessage(messages.officialUpdateBody)}
       {...props}
     />
   )
