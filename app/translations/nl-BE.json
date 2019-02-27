@@ -77,6 +77,7 @@
   "app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost": "",
   "app.components.IdeasShow.OfficialFeedback.deletionConfirmation": "",
   "app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost": "",
+  "app.components.IdeasShow.OfficialFeedback.lastEdition": "",
   "app.components.IdeasShow.OfficialFeedback.lastUpdate": "",
   "app.components.IdeasShow.OfficialFeedback.loadPreviousUpdates": "",
   "app.components.IdeasShow.OfficialFeedback.official": "",
