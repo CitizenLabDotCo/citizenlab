@@ -22,7 +22,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // utils
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
@@ -154,9 +154,9 @@ interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class LandingPage extends PureComponent<Props, State> {
   componentDidMount() {
@@ -185,13 +185,8 @@ class LandingPage extends PureComponent<Props, State> {
     clHistory.push('/ideas/new');
   }
 
-  goToSignUpPage = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
-    clHistory.push('/sign-up');
-  }
-
   clickCreateAccountCTAFooter = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'footer' } } });
+    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
 
   render() {

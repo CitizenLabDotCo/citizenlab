@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Icon from 'components/UI/Icon';
 
 // resources
-import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
+import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -93,7 +93,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  avatars: GetAvatarsChildProps;
+  avatars: GetRandomAvatarsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -168,13 +168,9 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => {
-  // if (inputProps.context && inputProps.context.type === 'project') {
-
-  // }
-
   return (
-    <GetAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
+    <GetRandomAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
       {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
-    </GetAvatars>
+    </GetRandomAvatars>
   );
 };
