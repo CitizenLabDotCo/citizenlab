@@ -123,7 +123,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     }
 
     return (
-      <PostContainer key={officialFeedbackPost.id}>
+      <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
         {editingAllowed &&
           <StyledMoreActionsMenu hiddenLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
         }
