@@ -78,6 +78,29 @@ const Title = styled.h2`
   `};
 `;
 
+const FiltersArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.fullWidth {
+    width: 100%;
+    justify-content: space-between;
+
+    ${media.smallerThanMinTablet`
+      justify-content: flex-start;
+    `};
+  }
+
+  &.alignRight {
+    justify-content: flex-end;
+
+    ${media.smallerThanMinTablet`
+      display: none;
+    `};
+  }
+`;
+
 const FilterArea = styled.div`
   height: 60px;
   display: flex;
@@ -88,7 +111,7 @@ const FilterArea = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    display: none;
+    height: auto;
   `};
 `;
 
@@ -342,15 +365,17 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
               </Title>
             }
 
-            {showPublicationStatusFilter &&
-              <FilterArea className="publicationstatus">
-                <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
-              </FilterArea>
-            }
+            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
+              {showPublicationStatusFilter &&
+                <FilterArea className="publicationstatus">
+                  <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+                </FilterArea>
+              }
 
-            <FilterArea>
-              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-            </FilterArea>
+              <FilterArea>
+                <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+              </FilterArea>
+            </FiltersArea>
           </Header>
 
           {querying &&
