@@ -119,7 +119,7 @@ class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps
     return (
       <PostContainer key={officialFeedbackPost.id}>
         {editingAllowed &&
-          <StyledMoreActionsMenu actions={this.getActions(officialFeedbackPost.id)} />
+          <StyledMoreActionsMenu hiddenLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
         }
 
         <>

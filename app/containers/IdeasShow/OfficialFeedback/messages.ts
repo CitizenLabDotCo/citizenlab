@@ -60,5 +60,9 @@ export default defineMessages({
   official: {
     id: 'app.components.IdeasShow.OfficialFeedback.official',
     defaultMessage: 'Official',
+  },
+  showMoreActions: {
+    id: 'app.components.IdeasShow.OfficialFeedback.showMoreActions',
+    defaultMessage: 'Show more actions',
   }
 });

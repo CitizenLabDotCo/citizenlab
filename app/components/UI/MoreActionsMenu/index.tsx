@@ -106,7 +106,8 @@ export interface IAction {
 
 export interface Props {
   actions: IAction[];
-  label?: string | JSX.Element | undefined;
+  label?: string | JSX.Element;
+  hiddenLabel?: string;
   className?: string;
 }
 
@@ -168,7 +169,7 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
         >
-          <MoreOptions onClick={this.toggleMenu}>
+          <MoreOptions aria-label={this.props.hiddenLabel} onClick={this.toggleMenu}>
             <MoreOptionsIcon name="more-options" />
             {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>
