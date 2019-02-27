@@ -118,7 +118,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             textColor="white"
             fullWidth
             messages={{
-              buttonSave: messages.updateButtonSave,
+              buttonSave: editForm ? messages.updateButtonSaveEditForm : messages.updateButtonSave,
               buttonError: messages.updateButtonError,
               buttonSuccess: messages.updateButtonSuccess,
               messageError: messages.updateMessageError,

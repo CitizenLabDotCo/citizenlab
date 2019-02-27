@@ -37,6 +37,10 @@ export default defineMessages({
     id: 'app.components.IdeasShow.OfficialFeedback.updateButtonSave',
     defaultMessage: 'Give an update',
   },
+  updateButtonSaveEditForm: {
+    id: 'app.components.IdeasShow.OfficialFeedback.updateButtonSaveEditForm',
+    defaultMessage: 'Update message',
+  },
   updateButtonError: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateButtonError',
     defaultMessage: 'Sorry, there was a problem',
