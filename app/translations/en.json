@@ -88,6 +88,7 @@
   "app.components.IdeasShow.OfficialFeedback.showMoreActions": "Show more actions",
   "app.components.IdeasShow.OfficialFeedback.updateButtonError": "Sorry, there was a problem",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSave": "Give an update",
+  "app.components.IdeasShow.OfficialFeedback.updateButtonSaveEditForm": "Update message",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSuccess": "Update saved !",
   "app.components.IdeasShow.OfficialFeedback.updateMessageError": "Please try again later or report the issue",
   "app.components.IdeasShow.OfficialFeedback.updateMessageSuccess": "Your update was successfuly saved !",
