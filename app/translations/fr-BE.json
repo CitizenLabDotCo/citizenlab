@@ -88,6 +88,7 @@
   "app.components.IdeasShow.OfficialFeedback.showMoreActions": "",
   "app.components.IdeasShow.OfficialFeedback.updateButtonError": "",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSave": "",
+  "app.components.IdeasShow.OfficialFeedback.updateButtonSaveEditForm": "",
   "app.components.IdeasShow.OfficialFeedback.updateButtonSuccess": "",
   "app.components.IdeasShow.OfficialFeedback.updateMessageError": "",
   "app.components.IdeasShow.OfficialFeedback.updateMessageSuccess": "",
