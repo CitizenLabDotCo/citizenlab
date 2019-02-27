@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -67,7 +67,7 @@ interface State {
   showEditForm: boolean;
 }
 
-class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps, State> {
+export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -93,10 +93,12 @@ class OfficialFeedbackPost extends React.PureComponent<Props & InjectedIntlProps
     {
       label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
       handler: this.showEditForm,
+      name: 'edit'
     },
     {
       label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
       handler: this.deletePost(postId),
+      name: 'delete'
     }] as IAction[]
 
   render() {

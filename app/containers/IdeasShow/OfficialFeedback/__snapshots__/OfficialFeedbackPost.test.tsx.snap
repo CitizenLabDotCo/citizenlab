@@ -2,7 +2,7 @@
 
 exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
 <OfficialFeedbackPost__Container
-  className="e2e-official-feedback-post"
+  key="feedbackId1"
 >
   <OfficialFeedbackPost__StyledMoreActionsMenu
     actions={
@@ -25,6 +25,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
       ]
     }
+    hiddenLabel="Show more actions"
   />
   <OfficialFeedbackPost__Body>
     <T
@@ -57,7 +58,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
 
 exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
 <OfficialFeedbackPost__Container
-  className="e2e-official-feedback-post"
+  key="feedbackId1"
 >
   <OfficialFeedbackPost__Body>
     <T
