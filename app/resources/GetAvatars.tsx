@@ -1,6 +1,6 @@
 import React from 'react';
 import { isEqual } from 'lodash-es';
-import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 import { IAvatarData, avatarByIdStream } from 'services/avatars';
 import { isNilOrError } from 'utils/helperUtils';

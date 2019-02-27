@@ -21,7 +21,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
 
 // i18n
 import T from 'components/T';
@@ -415,7 +414,6 @@ interface DataProps {
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
   phase: GetPhaseChildProps;
-  avatars: GetAvatarsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -475,13 +473,17 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
       const showContentFooter = (showAvatars || showIdeasCount || showCommentsCount);
+      const avatarIds = (project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
-      console.log(this.props.avatars);
+      console.log(project.attributes.title_multiloc['en']);
+      console.log(project.relationships.avatars);
+      console.log(project.attributes.avatars_count);
+      console.log(avatarIds);
 
       if (isArchived) {
         countdown = (
@@ -600,10 +602,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                       size={30}
                       limit={3}
                       userCountBgColor={this.props.theme.colorMain}
-                      context={{
-                        type: 'project',
-                        id: project.id
-                      }}
+                      avatarIds={avatarIds}
+                      userCount={project.attributes.avatars_count}
                     />
                   }
                 </ContentFooterLeft>
@@ -644,16 +644,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>,
-  avatars: ({ project, render }) => {
-    let avatarIds: string[] = [];
-
-    if (!isNilOrError(project) && project.relationships.avatars.data) {
-      avatarIds = project.relationships.avatars.data.map(avatar => avatar.id);
-    }
-
-    return <GetAvatars ids={avatarIds}>{render}</GetAvatars>;
-  },
+  phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });
 
 const ProjectCardWithHoC = withTheme<Props, State>(injectIntl<Props>(ProjectCard));

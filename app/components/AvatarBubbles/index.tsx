@@ -1,11 +1,16 @@
 import React, { PureComponent, MouseEvent } from 'react';
+import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 
+// services
+import { IAvatarData } from 'services/avatars';
+
 // resources
-import GetRandomAvatars, { GetRandomAvatarsChildProps } from 'resources/GetRandomAvatars';
+import GetRandomAvatars from 'resources/GetRandomAvatars';
+import GetAvatars from 'resources/GetAvatars';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -87,13 +92,15 @@ interface InputProps {
   };
   size?: number;
   overlap?: number;
+  userCount?: number;
   userCountBgColor?: string;
+  avatarIds?: string[];
   className?: string;
   onClick?: (event: MouseEvent) => void;
 }
 
 interface DataProps {
-  avatars: GetRandomAvatarsChildProps;
+  avatars: (IAvatarData | Error)[] | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -114,51 +121,49 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { avatars, size, overlap, context, className } = this.props;
+    const { avatars, size, overlap, userCount, className } = this.props;
 
-    if (!isNilOrError(avatars)) {
-      const avatarList = avatars.data;
-      const avatarCount = avatarList.length;
-      const userCount = avatars.meta.total;
+    if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
+      const avatarCount = avatars.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
-      const usersWithoutAvatar = userCount - avatarCount;
+      const remainingUsers = userCount - avatarCount;
       const definedSize = size || 34;
       const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if ((!context && userCount > 4) || (context)) {
-        return (
-          <Container
-            className={className}
-            count={avatarCount}
-            size={definedSize}
-            width={calcWidth}
-            overlap={definedOverlap}
-            onClick={this.handleOnClick}
-          >
-            {avatarList.map((avatar, index) => (
-              <AvatarWrapper key={index}>
-                <AvatarImage
-                  src={avatar.attributes.avatar[imageSize]}
-                  alt={this.props.intl.formatMessage(messages.avatarAltText)}
-                  size={definedSize}
-                />
-              </AvatarWrapper>
-            ))}
+      return (
+        <Container
+          className={className}
+          count={avatarCount}
+          size={definedSize}
+          width={calcWidth}
+          overlap={definedOverlap}
+          onClick={this.handleOnClick}
+        >
+          {avatars.filter(avatar => !isError(avatar)).map((avatar: IAvatarData, index) => (
+            <AvatarWrapper key={index}>
+              <AvatarImage
+                src={avatar.attributes.avatar[imageSize]}
+                alt={this.props.intl.formatMessage(messages.avatarAltText)}
+                size={definedSize}
+              />
+            </AvatarWrapper>
+          ))}
+          {remainingUsers > 0 &&
             <AvatarWrapper key={avatarCount}>
               <UserCount
-                className={(usersWithoutAvatar > 999) ? 'too-many-users' : ''}
+                className={(remainingUsers > 999) ? 'too-many-users' : ''}
                 size={definedSize}
                 bgColor={userCountBgColor}
               >
                 <PlusIcon name="plus" />
-                {usersWithoutAvatar}
+                {remainingUsers}
               </UserCount>
             </AvatarWrapper>
-          </Container>
-        );
-      }
+          }
+        </Container>
+      );
     }
 
     return null;
@@ -168,9 +173,17 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
 export default (inputProps: InputProps) => {
+  if (inputProps.avatarIds) {
+    return (
+      <GetAvatars ids={inputProps.avatarIds}>
+        {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars : null} />}
+      </GetAvatars>
+    );
+  }
+
   return (
     <GetRandomAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
-      {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
+      {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars.data : null} userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined} />}
     </GetRandomAvatars>
   );
 };
