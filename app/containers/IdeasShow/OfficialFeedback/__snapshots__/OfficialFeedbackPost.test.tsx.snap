@@ -2,6 +2,7 @@
 
 exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
 <OfficialFeedbackPost__Container
+  className="e2e-official-feedback-post"
   key="feedbackId1"
 >
   <OfficialFeedbackPost__StyledMoreActionsMenu
@@ -25,7 +26,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         },
       ]
     }
-    hiddenLabel="Show more actions"
+    ariaLabel="Show more actions"
   />
   <OfficialFeedbackPost__Body>
     <T
@@ -49,7 +50,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     </OfficialFeedbackPost__Author>
     <OfficialFeedbackPost__DatePosted>
       <FormattedDate
-        value="Some time ago"
+        value="2012-01-01T04:06:07.000Z"
       />
     </OfficialFeedbackPost__DatePosted>
     <OfficialFeedbackPost__DateEdited>
@@ -59,7 +60,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
         values={
           Object {
             "date": <FormattedDate
-              value="Some shorter time ago"
+              value="2011-01-01T04:26:07.000Z"
             />,
           }
         }
@@ -71,6 +72,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
 
 exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
 <OfficialFeedbackPost__Container
+  className="e2e-official-feedback-post"
   key="feedbackId1"
 >
   <OfficialFeedbackPost__Body>
@@ -95,7 +97,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
     </OfficialFeedbackPost__Author>
     <OfficialFeedbackPost__DatePosted>
       <FormattedDate
-        value="Some time ago"
+        value="2012-01-01T04:06:07.000Z"
       />
     </OfficialFeedbackPost__DatePosted>
     <OfficialFeedbackPost__DateEdited>
@@ -105,7 +107,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
         values={
           Object {
             "date": <FormattedDate
-              value="Some shorter time ago"
+              value="2011-01-01T04:26:07.000Z"
             />,
           }
         }
