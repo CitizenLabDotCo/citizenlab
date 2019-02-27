@@ -3,8 +3,7 @@ class AvatarsService
   def avatars_for_project project, users: User.active, limit: 5
     Rails.cache.fetch("#{project.cache_key}/avatars", expires_in: 1.day) do
       users_in_project = users
-        .joins(:ideas)
-        .where(ideas: {project: project.id})
+        .where("EXISTS(SELECT 1 FROM ideas WHERE author_id = users.id AND project_id = ?)", project.id)
 
       add_count(users_in_project, limit)
     end
