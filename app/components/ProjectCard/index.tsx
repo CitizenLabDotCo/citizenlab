@@ -480,11 +480,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
-      console.log(project.attributes.title_multiloc['en']);
-      console.log(project.relationships.avatars);
-      console.log(project.attributes.avatars_count);
-      console.log(avatarIds);
-
       if (isArchived) {
         countdown = (
           <ArchivedLabel>
