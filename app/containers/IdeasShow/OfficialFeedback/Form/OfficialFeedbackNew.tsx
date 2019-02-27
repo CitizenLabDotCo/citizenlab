@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { addOfficialFeedbackToIdea } from 'services/officialFeedback';
 
@@ -11,7 +11,7 @@ interface Props {
   className?: string;
 }
 
-export default class OfficialFeedbackNew extends React.Component<Props> {
+export default class OfficialFeedbackNew extends Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
     const { ideaId } = this.props;
