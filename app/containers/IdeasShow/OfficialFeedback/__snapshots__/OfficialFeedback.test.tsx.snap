@@ -2,11 +2,14 @@
 
 exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
 <Fragment>
+  <OfficialFeedback__StyledOfficialFeedbackNew
+    ideaId="ideaId"
+  />
   <OfficialFeedback__FeedbackHeader>
     <OfficialFeedback__FeedbackTitle>
       <FormattedMessage
-        defaultMessage="Official Update"
-        id="app.components.IdeasShow.OfficialFeedback.officialUpdate"
+        defaultMessage="Official updates"
+        id="app.components.IdeasShow.OfficialFeedback.officialUpdates"
       />
     </OfficialFeedback__FeedbackTitle>
     <FormattedMessage
@@ -23,14 +26,9 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
       }
     />
   </OfficialFeedback__FeedbackHeader>
-  <OfficialFeedback__StyledOfficialFeedbackNew
-    ideaId="ideaId"
-  />
   <WrappedOfficialFeedBack
     editingAllowed={true}
-    editingPost="new"
     ideaId="ideaId"
-    showForm={[Function]}
   />
 </Fragment>
 `;
@@ -40,8 +38,8 @@ exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
   <OfficialFeedback__FeedbackHeader>
     <OfficialFeedback__FeedbackTitle>
       <FormattedMessage
-        defaultMessage="Official Update"
-        id="app.components.IdeasShow.OfficialFeedback.officialUpdate"
+        defaultMessage="Official updates"
+        id="app.components.IdeasShow.OfficialFeedback.officialUpdates"
       />
     </OfficialFeedback__FeedbackTitle>
     <FormattedMessage
@@ -60,9 +58,7 @@ exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
   </OfficialFeedback__FeedbackHeader>
   <WrappedOfficialFeedBack
     editingAllowed={false}
-    editingPost="new"
     ideaId="ideaId"
-    showForm={[Function]}
   />
 </Fragment>
 `;

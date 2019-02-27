@@ -79,17 +79,15 @@ export class OfficialFeedback extends PureComponent<Props, State> {
           <StyledOfficialFeedbackNew ideaId={ideaId}/>
         }
 
-        {(updateDate || permission) &&
+        {updateDate &&
           <FeedbackHeader>
             <FeedbackTitle>
               <FormattedMessage {...messages.officialUpdates} />
             </FeedbackTitle>
-            {updateDate &&
               <FormattedMessage
                 {...messages.lastUpdate}
                 values={{ lastUpdateDate: (<StyledSpan><FormattedDate value={updateDate} /></StyledSpan>) }}
               />
-            }
           </FeedbackHeader>
         }
 
