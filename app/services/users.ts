@@ -26,6 +26,7 @@ export interface IUserData {
     locale: Locale;
     avatar: ImageSizes,
     roles?: IRole[],
+    highest_role: 'super_admin' | 'admin' | 'project_moderator' | 'user',
     bio_multiloc: Multiloc,
     registration_completed_at: string | null;
     created_at: string;

@@ -45,6 +45,10 @@ export interface Message {
 
 export type Locale = keyof typeof appLocalePairs;
 
+export const isLocale = (test: any) => {
+  return Object.keys(appLocalePairs).includes(test);
+};
+
 export type Multiloc = {
   [key in Locale]?: string
 };
