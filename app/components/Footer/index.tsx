@@ -28,7 +28,7 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { darken } from 'polished';
+import { darken, rgba } from 'polished';
 import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
@@ -66,9 +66,9 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: normal;
   text-align: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -104,6 +104,7 @@ const ShortFeedback = styled.div`
   width: 100%;
   background: ${colors.background};
   display: flex;
+  border-bottom: solid 4px ${(props) => rgba(props.theme.colorMain, 0.08)};
 
   &:not(.whiteBg) {
     margin-top: 40px;
@@ -119,18 +120,19 @@ const ShortFeedback = styled.div`
 `;
 
 const ShortFeedbackInner = styled.div`
-  color: ${(props) => props.theme.colorText};
+  color: ${(props) => darken(0.1, props.theme.colorText)};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
   display: flex;
   align-items: center;
-  padding: 14px 25px;
-  background: ${darken(0.018, '#F4F5F6')};
+  padding: 12px 25px;
+  background: ${(props) => rgba(props.theme.colorMain, 0.08)};
 
-  &.whiteBg {
+  /* &.whiteBg {
     background: #F4F5F6;
-  }
+    background: red;
+  } */
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -178,7 +180,8 @@ const FeedbackButton = styled.button`
 `;
 
 const PagesNav = styled.nav`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
+  font-weight: 300;
   text-align: left;
 
   ul {
@@ -191,7 +194,7 @@ const PagesNav = styled.nav`
     display: inline;
 
     &:after {
-      content:" ";
+      content: " ";
       letter-spacing: 2em;
       background:center center no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwAAADsABataJCQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xMkMEa+wAAAAnSURBVBhXY/Dz89MA4sNA/B9Ka4AEYQIwfBgkiCwAxjhVopnppwEApxQqhnyQ+VkAAAAASUVORK5CYII=);
     }
@@ -211,10 +214,9 @@ const PagesNav = styled.nav`
 `;
 
 const StyledThing = styled(Polymorph)`
-  color: ${colors.label};
-  font-weight: 400;
+  color: ${colors.adminTextColor};
+  font-weight: 300;
   font-size: ${fontSizes.small}px;
-  line-height: 19px;
   text-decoration: none;
   padding: 0;
   cursor: pointer;
@@ -248,9 +250,9 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
+  font-weight: 300;
   text-decoration: none;
   display: flex;
   align-items: center;

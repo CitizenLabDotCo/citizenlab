@@ -47,8 +47,7 @@ const Loading = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  border: solid 1px #f0f0f0;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const Header = styled.div`
@@ -448,8 +447,8 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
                   iconPos="left"
                   textColor={theme.colorText}
                   textHoverColor={darken(0.1, theme.colorText)}
-                  bgColor={rgba(theme.colorMain, 0.05)}
-                  bgHoverColor={rgba(theme.colorMain, 0.1)}
+                  bgColor={rgba(theme.colorMain, 0.08)}
+                  bgHoverColor={rgba(theme.colorMain, 0.12)}
                   fontWeight="500"
                 />
               </ShowMoreButtonWrapper>

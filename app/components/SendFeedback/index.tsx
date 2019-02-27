@@ -15,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.label};
+  color: ${colors.secondaryText};
   font-size: ${fontSizes.base}px;
   transition: all 100ms ease-out;
   margin-left: 8px;
@@ -26,7 +26,7 @@ const SendFeedbackText = styled.span`
 `;
 
 const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.label};
+  fill: ${colors.secondaryText};
   width: 22px;
   height: 22px;
   margin-top: 3px;

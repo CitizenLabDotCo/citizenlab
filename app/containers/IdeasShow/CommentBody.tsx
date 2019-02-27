@@ -116,7 +116,7 @@ class CommentBody extends React.PureComponent<Props, State> {
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !editionMode) {
       return (
         <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>
-          <QuillEditedContent>
+          <QuillEditedContent fontWeight={300}>
             {translateButtonClicked ?
               <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
                 {translation => {

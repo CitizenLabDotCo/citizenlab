@@ -1,13 +1,18 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { stylingConsts } from 'utils/styleUtils';
+import { stylingConsts, media } from 'utils/styleUtils';
 import bowser from 'bowser';
 
 const Outer = styled.div`
   width: 100%;
   position: relative;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
 
   &:not(.ie) {
     display: flex;
