@@ -82,6 +82,8 @@
   "app.components.IdeasShow.OfficialFeedback.official": "Official",
   "app.components.IdeasShow.OfficialFeedback.officialFeedbackPlaceholder": "Give an update about this idea status and processing",
   "app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder": "Name and role to display",
+  "app.components.IdeasShow.OfficialFeedback.officialUpdateAuthor": "Official update author name",
+  "app.components.IdeasShow.OfficialFeedback.officialUpdateBody": "Official update body text",
   "app.components.IdeasShow.OfficialFeedback.officialUpdates": "Official updates",
   "app.components.IdeasShow.OfficialFeedback.showMoreActions": "Show more actions",
   "app.components.IdeasShow.OfficialFeedback.updateButtonError": "Sorry, there was a problem",
