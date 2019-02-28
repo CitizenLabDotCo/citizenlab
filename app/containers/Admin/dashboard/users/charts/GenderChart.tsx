@@ -13,7 +13,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // styling
-import styled, { withTheme } from 'styled-components';
+import { withTheme } from 'styled-components';
 
 // components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner, PieChartStyleFixesDiv } from '../..';
