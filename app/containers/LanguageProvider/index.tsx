@@ -4,7 +4,7 @@ import { IntlProvider } from 'react-intl';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
-// import translationMessages from 'i18n-test/en';
+import { Locale } from 'typings';
 
 interface InputProps {}
 
@@ -33,29 +33,11 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     const { locale, tenantLocales } = this.props;
 
     if (!isNilOrError(locale) && !this.state.messages[locale]) {
-      import(`i18n-test/${locale}`).then(translationMessages => {
-        this.setState(prevState => ({
-          messages: {
-            ...prevState.messages,
-            [locale]: translationMessages.default
-          }
-        }));
-      });
+      this.importLocale(locale);
     }
 
     if (!isNilOrError(tenantLocales)) {
-      for (const locale of tenantLocales) {
-        if (!this.state.messages[locale]) {
-          import(`i18n-test/${locale}`).then(translationMessages => {
-            this.setState(prevState => ({
-              messages: {
-                ...prevState.messages,
-                [locale]: translationMessages.default
-              }
-            }));
-          });
-        }
-      }
+      this.importTenantLocales(tenantLocales);
     }
   }
 
@@ -63,28 +45,36 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     const { locale, tenantLocales } = this.props;
 
     if (!isNilOrError(locale) && !this.state.messages[locale]) {
-      import(`i18n-test/${locale}`).then(translationMessages => {
-        this.setState(prevState => ({
-          messages: {
-            ...prevState.messages,
-            [locale]: translationMessages.default
-          }
-        }));
-      });
+      this.importLocale(locale);
     }
 
     if (!isNilOrError(tenantLocales)) {
-      for (const locale of tenantLocales) {
-        if (!this.state.messages[locale]) {
-          import(`i18n-test/${locale}`).then(translationMessages => {
-            this.setState(prevState => ({
-              messages: {
-                ...prevState.messages,
-                [locale]: translationMessages.default
-              }
-            }));
-          });
+      this.importTenantLocales(tenantLocales);
+    }
+  }
+
+  importLocale = (locale: Locale) => {
+    import(`i18n-test/${locale}`).then(translationMessages => {
+      this.setState(prevState => ({
+        messages: {
+          ...prevState.messages,
+          [locale]: translationMessages.default
         }
+      }));
+    });
+  }
+
+  importTenantLocales = (tenantLocales: Locale[]) => {
+    for (const locale of tenantLocales) {
+      if (!this.state.messages[locale]) {
+        import(`i18n-test/${locale}`).then(translationMessages => {
+          this.setState(prevState => ({
+            messages: {
+              ...prevState.messages,
+              [locale]: translationMessages.default
+            }
+          }));
+        });
       }
     }
   }
