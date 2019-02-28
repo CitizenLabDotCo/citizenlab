@@ -24,10 +24,10 @@ SELECT sub.id AS project_id, CONCAT(sub.status_score, sub.active_score, sub.hot_
 
     CASE process_type
       WHEN 'timeline' THEN
-  CASE
-    WHEN EXISTS(SELECT 1 FROM phases WHERE (ABS(start_at - NOW()::date) <= 7 OR ABS(end_at - NOW()::date) <= 7) AND project_id = projects.id) THEN 1
-    ELSE 2
-  END
+        CASE
+          WHEN EXISTS(SELECT 1 FROM phases WHERE (ABS(start_at - NOW()::date) <= 7 OR ABS(end_at - NOW()::date) <= 7) AND project_id = projects.id) THEN 1
+          ELSE 2
+        END
       WHEN 'continuous' THEN
         CASE
           WHEN (NOW()::date - projects.created_at::date) <= 7 THEN 1
