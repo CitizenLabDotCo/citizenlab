@@ -1,15 +1,15 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   component: Loadable({
     loader: () => import('./'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -17,28 +17,28 @@ export default () => ({
       path: 'new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: ':customFieldId',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
       childRoutes: [
         {
           path: 'general',
           component: Loadable({
             loader: () => import('./Edit/General'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
           path: 'options',
           component: Loadable({
             loader: () => import('./Edit/Options'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
       ],

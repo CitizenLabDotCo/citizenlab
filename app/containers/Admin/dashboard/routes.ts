@@ -1,19 +1,19 @@
 import clusteringsRoutes from './clusterings/routes';
 
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   name: 'Admin dashboard',
   path: 'dashboard',
   component: Loadable({
     loader: () => import('./'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./summary'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -21,7 +21,7 @@ export default () => ({
       path: 'users',
       component: Loadable({
         loader: () => import('./users'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     clusteringsRoutes(),
@@ -33,7 +33,7 @@ export default () => ({
       path: 'map',
       component: Loadable({
         loader: () => import('./map'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     }
   ],

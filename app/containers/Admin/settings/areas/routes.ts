@@ -1,18 +1,18 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   path: 'settings/areas',
   name: 'admin settings areas',
   component: Loadable({
     loader: () => import('../'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     name: 'admin setting areas index',
     component: Loadable({
       loader: () => import('./all'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -21,7 +21,7 @@ export default () => ({
       name: 'admin setting areas new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
@@ -29,7 +29,7 @@ export default () => ({
       name: 'admin setting area edit',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
   ],

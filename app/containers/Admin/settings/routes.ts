@@ -1,17 +1,17 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   path: 'settings',
   name: 'admin settings',
   component: Loadable({
     loader: () => import('containers/Admin/settings'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/settings/general'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -19,35 +19,35 @@ export default () => ({
       path: 'general',
       component: Loadable({
         loader: () => import('containers/Admin/settings/general'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'customize',
       component: Loadable({
         loader: () => import('containers/Admin/settings/customize'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'pages',
       component: Loadable({
         loader: () => import('containers/Admin/settings/pages'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'registration',
       component: Loadable({
         loader: () => import('containers/Admin/settings/registration'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'widgets',
       component: Loadable({
         loader: () => import('containers/Admin/settings/widgets'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
   ],
