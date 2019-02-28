@@ -1328,7 +1328,7 @@
   "app.containers.landing.completeProfile": "crwdns20128:0crwdne20128:0",
   "app.containers.landing.completeYourProfile": "crwdns20130:0{firstName}crwdne20130:0",
   "app.containers.landing.createAccount": "crwdns19250:0crwdne19250:0",
-  "app.containers.landing.defaultSignedInMessage": "crwdns20132:0{firstName}crwdne20132:0",
+  "app.containers.landing.defaultSignedInMessage": "crwdns20132:0{orgName}crwdne20132:0",
   "app.containers.landing.doItLater": "crwdns20134:0crwdne20134:0",
   "app.containers.landing.emailSharingBody": "crwdns19370:0{ideaTitle}crwdnd19370:0{ideaUrl}crwdne19370:0",
   "app.containers.landing.emailSharingSubject": "crwdns19371:0{ideaTitle}crwdne19371:0",
