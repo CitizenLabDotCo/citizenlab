@@ -177,13 +177,21 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
 
-              return (
-                <FeatureFlag key={tab.url} name={tab.feature}>
+              if (tab.feature) {
+                return (
+                  <FeatureFlag key={tab.url} name={tab.feature}>
+                    <Tab className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
+                      <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                    </Tab>
+                  </FeatureFlag>
+                );
+              } else {
+                return (
                   <Tab className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
                     <Link to={tab.url}>{showLabel(tab.label)}</Link>
                   </Tab>
-                </FeatureFlag>
-              );
+                );
+              }
             })}
           </TabbedNav>
         }

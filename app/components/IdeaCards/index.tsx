@@ -26,8 +26,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
@@ -44,7 +45,8 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.separation};
+  background: #fff;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const FiltersArea = styled.div`
@@ -133,7 +135,7 @@ const ViewButtons = styled.div`
   display: flex;
 
   &.cardView {
-    margin-left: 30px;
+    margin-left: 35px;
 
     ${media.smallerThanMinTablet`
       margin-left: 0px;
@@ -142,38 +144,46 @@ const ViewButtons = styled.div`
 `;
 
 const ViewButton = styled.div`
-  min-width: 85px;
-  height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  background: #fff;
-  border: solid 1px ${colors.separation};
+  background: transparent;
+  border: solid 1px ${(props) => props.theme.colorMain};
 
-  &:hover,
-  &.active {
+  &:not(.active):hover {
     background: #f0f0f0;
   }
 
-  > span {
-    color: ${(props) => props.theme.colors.label};
-    color: #333;
-    font-size: ${fontSizes.medium}px;
-    font-weight: 400;
-    line-height: 24px;
-    padding-left: 15px;
-    padding-right: 15px;
+  &.active {
+    background: ${(props) => props.theme.colorMain};
+
+    > span {
+      color: #fff;
+    }
   }
 
-  ${media.smallerThanMinTablet`
-    height: 44px;
-  `}
+  > span {
+    color: ${(props) => props.theme.colorText};
+    font-size: ${fontSizes.base}px;
+    font-weight: 400;
+    line-height: normal;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+
+    ${media.smallerThanMinTablet`
+      padding-top: 9px;
+      padding-bottom: 9px;
+    `}
+  }
 `;
 
 const CardsButton = ViewButton.extend`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
+  border-right: none;
 `;
 
 const MapButton = ViewButton.extend`
@@ -212,14 +222,15 @@ const EmptyContainer = styled.div`
   margin: 0;
   padding-top: 100px;
   padding-bottom: 100px;
-  border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
+  border: solid 1px ${colors.separation};
+  border-radius: 5px;
 `;
 
 const IdeaIcon = styled(Icon)`
-  height: 45px;
-  fill: #999;
+  width: 43px;
+  height: 43px;
+  fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
@@ -230,20 +241,30 @@ const EmptyMessage = styled.div`
 `;
 
 const EmptyMessageLine = styled.div`
-  color: #767676;
-  font-size: ${fontSizes.large}px;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 22px;
+  line-height: normal;
   text-align: center;
 `;
 
-const LoadMoreButtonWrapper = styled.div`
+const ShowMoreButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  ${media.biggerThanMinTablet`
+    margin-top: 40px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 20px;
+  `}
 `;
 
-const LoadMoreButton = styled(Button)``;
+const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
@@ -258,7 +279,9 @@ interface DataProps {
   ideas: GetIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   selectedView: 'card' | 'map';
@@ -308,7 +331,8 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextId,
       participationContextType,
       ideas,
-      className
+      className,
+      theme
     } = this.props;
     const {
       queryParameters,
@@ -341,12 +365,12 @@ class IdeaCards extends PureComponent<Props, State> {
             {showViewToggle &&
               <FeatureFlag name="maps">
                 <ViewButtons className={`${showCardView && 'cardView'}`}>
-                    <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
-                      <FormattedMessage {...messages.cards} />
-                    </CardsButton>
-                    <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
-                      <FormattedMessage {...messages.map} />
-                    </MapButton>
+                  <CardsButton onClick={this.selectView('card')} className={`${showCardView && 'active'}`}>
+                    <FormattedMessage {...messages.cards} />
+                  </CardsButton>
+                  <MapButton onClick={this.selectView('map')} className={`${showMapView && 'active'}`}>
+                    <FormattedMessage {...messages.map} />
+                  </MapButton>
                 </ViewButtons>
               </FeatureFlag>
             }
@@ -389,17 +413,23 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showCardView && !querying && hasMore &&
-          <LoadMoreButtonWrapper>
-            <LoadMoreButton
+          <ShowMoreButtonWrapper>
+            <ShowMoreButton
               onClick={this.loadMore}
-              size="2"
+              size="1"
               style="secondary"
-              text={<FormattedMessage {...messages.loadMore} />}
+              text={<FormattedMessage {...messages.showMore} />}
               processing={loadingMore}
-              fullWidth={true}
-              height="58px"
+              height="50px"
+              icon="showMore"
+              iconPos="left"
+              textColor={theme.colorText}
+              textHoverColor={darken(0.1, theme.colorText)}
+              bgColor={rgba(theme.colorMain, 0.08)}
+              bgHoverColor={rgba(theme.colorMain, 0.12)}
+              fontWeight="500"
             />
-          </LoadMoreButtonWrapper>
+          </ShowMoreButtonWrapper>
         }
 
         {showMapView && hasIdeas &&
@@ -414,8 +444,10 @@ const Data = adopt<DataProps, InputProps>({
   ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
 });
 
+const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaCards {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaCardsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

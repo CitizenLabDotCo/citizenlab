@@ -115,11 +115,11 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
     return ideaPoints;
   }
 
-  toggleIdea = (id: string) => {
-    trackEventByName(tracks.clickOnIdeaMapMarker, { ideaId: id });
+  toggleIdea = (ideaId: string) => {
+    trackEventByName(tracks.clickOnIdeaMapMarker, { extra: { ideaId } });
 
     this.setState(({ selectedIdeaId }) => {
-      return { selectedIdeaId: (id !== selectedIdeaId ? id : null) };
+      return { selectedIdeaId: (ideaId !== selectedIdeaId ? ideaId : null) };
     });
   }
 

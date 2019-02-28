@@ -33,11 +33,17 @@ const LanguageExtension = styled(Label)`
   margin-left: 5px;
 `;
 
+const LabelTooltip = styled.div`
+  margin-left: 10px;
+  margin-top: 2px;
+`;
+
 export type Props = {
   id?: string | undefined;
   name: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null | undefined;
+  labelTooltip?: JSX.Element;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
@@ -100,7 +106,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
       return (
         <Container id={this.props.id} className={this.props['className']} >
           {currentTenantLocales.map((currentTenantLocale, index) => {
-            const { label, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
+            const { label, labelTooltip, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
             const value = get(valueMultiloc, [currentTenantLocale], '') as string;
             const error = get(errorMultiloc, [currentTenantLocale], null);
             const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
@@ -113,6 +119,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
                     {currentTenantLocales.length > 1 &&
                       <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
                     }
+                    {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
                   </LabelWrapper>
                 }
 

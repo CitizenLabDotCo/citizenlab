@@ -30,11 +30,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-bottom: 80px;
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 40px;
-  `}
 `;
 
 const FirstRow = styled.div`
@@ -56,7 +51,7 @@ const SecondRow = styled.div`
 `;
 
 const StyledPhaseAbout = styled(PhaseAbout)`
-  margin-bottom: 70px;
+  margin-bottom: 80px;
 
   ${media.smallerThanMaxTablet`
     margin-bottom: 50px;
@@ -76,8 +71,8 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
-  margin-top: 80px;
-  margin-bottom: 80px;
+  margin-top: 95px;
+  margin-bottom: 90px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;

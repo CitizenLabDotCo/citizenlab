@@ -228,11 +228,15 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                   )}
                 </GetFeatureFlag>
               );
-            } else {
+            } else if (route.featureName) {
               return (
                 <FeatureFlag name={route.featureName} key={route.id}>
                   <MenuItem route={route} pathname={pathname} />
                 </FeatureFlag>
+              );
+            } else {
+              return (
+                <MenuItem route={route} pathname={pathname} />
               );
             }
           })}

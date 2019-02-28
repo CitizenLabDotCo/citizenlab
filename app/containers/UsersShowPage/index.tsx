@@ -29,7 +29,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
