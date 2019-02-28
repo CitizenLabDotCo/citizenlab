@@ -10,6 +10,7 @@ class Comment < ApplicationRecord
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
   
   counter_culture :idea
+  counter_culture [:idea, :project]
 
   PUBLICATION_STATUSES = %w(published deleted)
 

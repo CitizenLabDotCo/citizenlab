@@ -23,6 +23,8 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
 
+  has_one :project_sort_score
+
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
   INTERNAL_ROLES = %w(open_idea_box)
@@ -55,25 +57,24 @@ class Project < ApplicationRecord
 
   scope :with_all_areas, (Proc.new do |area_ids|
     uniq_area_ids = area_ids.uniq
-    joins(:areas)
-    .where(areas: {id: uniq_area_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_area_ids.size)
+    subquery = Project.unscoped.all
+      .joins(:areas)
+      .where(areas: {id: uniq_area_ids})
+      .group(:id)
+      .having("COUNT(*) = ?", uniq_area_ids.size)
+
+    where(id: subquery)
   end)
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
-    joins(:topics)
-    .where(topics: {id: uniq_topic_ids})
-    .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
-  end)
+    subquery = Project.unscoped.all
+      .joins(:topics)
+      .where(topics: {id: uniq_topic_ids})
+      .group(:id).having("COUNT(*) = ?", uniq_topic_ids.size)
 
-  scope :publication_status_ordered, -> {
-    # Triggering a subquery instead of building on the scope, in order to make
-    # the order by play nicely with previous distinct operations
-    where(id: all)
-    .distinct(false)
-    .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
-  }
+    where(id: subquery)
+  end)
 
   scope :is_participation_context, -> {
     where.not(process_type: 'timeline')
@@ -91,8 +92,20 @@ class Project < ApplicationRecord
     publication_status == 'archived'
   end
 
+  def published?
+    publication_status == 'published'
+  end
+
+  def draft?
+    publication_status == 'draft'
+  end
+
   def project
     self
+  end
+
+  def allocated_budget
+    Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
 
 

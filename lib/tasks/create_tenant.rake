@@ -38,6 +38,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        manual_project_sorting: {
+          enabled: true,
+          allowed: true
+        },
         user_custom_fields: {
           enabled: true,
           allowed: true
