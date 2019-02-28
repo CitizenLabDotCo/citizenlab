@@ -252,6 +252,16 @@ const ShowMoreButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
+
+  ${media.biggerThanMinTablet`
+    margin-top: 40px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 20px;
+  `}
 `;
 
 const ShowMoreButton = styled(Button)``;

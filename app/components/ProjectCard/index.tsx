@@ -471,7 +471,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const showAvatars = project.relationships.avatars.data.length > 0;
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
-      const showContentFooter = (showAvatars || showIdeasCount || showCommentsCount);
+      // const showContentFooter = (showAvatars || showIdeasCount || showCommentsCount);
       const avatarIds = (project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
@@ -587,44 +587,42 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               </T>
             </ContentBody>
 
-            {showContentFooter &&
-              <ContentFooter>
-                <ContentFooterLeft>
-                  {showAvatars &&
-                    <AvatarBubbles
-                      onClick={this.handleAvatarBubblesOnClick(project.id)}
-                      size={30}
-                      limit={3}
-                      userCountBgColor={this.props.theme.colorMain}
-                      avatarIds={avatarIds}
-                      userCount={project.attributes.avatars_count}
-                    />
-                  }
-                </ContentFooterLeft>
+            <ContentFooter>
+              <ContentFooterLeft>
+                {showAvatars &&
+                  <AvatarBubbles
+                    onClick={this.handleAvatarBubblesOnClick(project.id)}
+                    size={30}
+                    limit={3}
+                    userCountBgColor={this.props.theme.colorMain}
+                    avatarIds={avatarIds}
+                    userCount={project.attributes.avatars_count}
+                  />
+                }
+              </ContentFooterLeft>
 
-                <ContentFooterRight>
-                    <ProjectMetaItems>
-                      {showIdeasCount &&
-                        <MetaItem className="first">
-                          <MetaItemIcon name="idea2" />
-                          <MetaItemText>
-                            {ideasCount}
-                          </MetaItemText>
-                        </MetaItem>
-                      }
+              <ContentFooterRight>
+                  <ProjectMetaItems>
+                    {showIdeasCount &&
+                      <MetaItem className="first">
+                        <MetaItemIcon name="idea2" />
+                        <MetaItemText>
+                          {ideasCount}
+                        </MetaItemText>
+                      </MetaItem>
+                    }
 
-                      {showCommentsCount &&
-                        <MetaItem>
-                          <CommentIcon name="comment2" />
-                          <MetaItemText>
-                            {commentsCount}
-                          </MetaItemText>
-                        </MetaItem>
-                      }
-                    </ProjectMetaItems>
-                </ContentFooterRight>
-              </ContentFooter>
-            }
+                    {showCommentsCount &&
+                      <MetaItem>
+                        <CommentIcon name="comment2" />
+                        <MetaItemText>
+                          {commentsCount}
+                        </MetaItemText>
+                      </MetaItem>
+                    }
+                  </ProjectMetaItems>
+              </ContentFooterRight>
+            </ContentFooter>
           </ProjectContent>
         </Container>
       );

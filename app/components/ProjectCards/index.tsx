@@ -193,33 +193,26 @@ const EmptyMessageLine = styled.p`
 `;
 
 const Footer = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin-top: 40px;
+
+  ${media.biggerThanMinTablet`
+    justify-content: space-between;
+    margin-top: 40px;
+  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
-    margin-top: 20px;
-  `}
-`;
-
-const ShowMoreButtonWrapper = styled.div`
-  ${media.smallerThanMinTablet`
-    margin-bottom: 60px;
-  `}
-
-  ${media.largePhone`
-    margin-bottom: 40px;
+    align-items: stretch;
+    margin-top: 0px;
   `}
 `;
 
 const ShowMoreButton = styled(Button)``;
 
-const SendFeedbackGhostItem = styled(SendFeedback)`
+const HiddenSendFeedback = styled(SendFeedback)`
   visibility: hidden;
-  margin-right: auto;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -227,10 +220,14 @@ const SendFeedbackGhostItem = styled(SendFeedback)`
 `;
 
 const StyledSendFeedback = styled(SendFeedback)`
-  margin-left: auto;
-
   ${media.smallerThanMinTablet`
-    margin-left: 0;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+  `}
+
+  ${media.largePhone`
+    margin-top: 40px;
   `}
 `;
 
@@ -417,11 +414,11 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && layout === 'threecolumns' && (projectsList.length + 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6)  && (projectsList.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 
-              {!hasMore && layout === 'threecolumns' && (projectsList.length - 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length - 1) % 3 === 0 &&
                 <>
                   <MockProjectCard className={layout} />
                   <MockProjectCard className={layout} />
@@ -431,32 +428,27 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
           )}
 
           <Footer>
-            {/* Hipster way to center and right-align the other two items in this container */}
-            <SendFeedbackGhostItem showFeedbackText={true} />
+            {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
 
             {!querying && hasProjects && hasMore &&
-              <ShowMoreButtonWrapper>
-                <ShowMoreButton
-                  onClick={this.showMore}
-                  size="1"
-                  style="secondary"
-                  text={<FormattedMessage {...messages.showMore} />}
-                  processing={loadingMore}
-                  height="50px"
-                  icon="showMore"
-                  iconPos="left"
-                  textColor={theme.colorText}
-                  textHoverColor={darken(0.1, theme.colorText)}
-                  bgColor={rgba(theme.colorMain, 0.08)}
-                  bgHoverColor={rgba(theme.colorMain, 0.12)}
-                  fontWeight="500"
-                />
-              </ShowMoreButtonWrapper>
+              <ShowMoreButton
+                onClick={this.showMore}
+                size="1"
+                style="secondary"
+                text={<FormattedMessage {...messages.showMore} />}
+                processing={loadingMore}
+                height="50px"
+                icon="showMore"
+                iconPos="left"
+                textColor={theme.colorText}
+                textHoverColor={darken(0.1, theme.colorText)}
+                bgColor={rgba(theme.colorMain, 0.08)}
+                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                fontWeight="500"
+              />
             }
 
-            {showSendFeedback &&
-              <StyledSendFeedback showFeedbackText={true} />
-            }
+            {showSendFeedback && <StyledSendFeedback showFeedbackText={true} />}
           </Footer>
         </Container>
       );

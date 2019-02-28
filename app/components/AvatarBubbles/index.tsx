@@ -1,5 +1,4 @@
 import React, { PureComponent, MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { isNumber, isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -122,49 +121,53 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { avatars, size, overlap, userCount, className } = this.props;
+    const { avatars, avatarIds, context, size, overlap, userCount, className } = this.props;
 
     if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
-      const avatarCount = avatars.length;
-      const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
-      const remainingUsers = userCount - avatarCount;
       const definedSize = size || 34;
       const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
+      const avatarCount = avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]).length;
+      const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
+      const remainingUsers = userCount - avatarCount;
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      return (
-        <Container
-          className={className}
-          count={avatarCount}
-          size={definedSize}
-          width={calcWidth}
-          overlap={definedOverlap}
-          onClick={this.handleOnClick}
-        >
-          {avatars.filter(avatar => !isError(avatar)).map((avatar: IAvatarData, index) => (
-            <AvatarWrapper key={index}>
-              <AvatarImage
-                src={avatar.attributes.avatar[imageSize]}
-                alt={this.props.intl.formatMessage(messages.avatarAltText)}
-                size={definedSize}
-              />
-            </AvatarWrapper>
-          ))}
-          {remainingUsers > 0 &&
-            <AvatarWrapper key={avatarCount}>
-              <UserCount
-                className={(remainingUsers > 999) ? 'too-many-users' : ''}
-                size={definedSize}
-                bgColor={userCountBgColor}
-              >
-                <PlusIcon name="plus" />
-                {remainingUsers}
-              </UserCount>
-            </AvatarWrapper>
-          }
-        </Container>
-      );
+      if (avatarIds || context || (avatarCount > 0)) {
+        return (
+          <Container
+            className={className}
+            count={avatarCount}
+            size={definedSize}
+            width={calcWidth}
+            overlap={definedOverlap}
+            onClick={this.handleOnClick}
+          >
+            {avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]).map((avatar: IAvatarData, index) => (
+              <AvatarWrapper key={index}>
+                <AvatarImage
+                  src={avatar.attributes.avatar[imageSize]}
+                  alt={this.props.intl.formatMessage(messages.avatarAltText)}
+                  size={definedSize}
+                />
+              </AvatarWrapper>
+            ))}
+            {remainingUsers > 0 &&
+              <AvatarWrapper key={avatarCount}>
+                <UserCount
+                  className={(remainingUsers > 999) ? 'too-many-users' : ''}
+                  size={definedSize}
+                  bgColor={userCountBgColor}
+                >
+                  <PlusIcon name="plus" />
+                  {remainingUsers}
+                </UserCount>
+              </AvatarWrapper>
+            }
+          </Container>
+        );
+      }
+
+      return null;
     }
 
     return null;
