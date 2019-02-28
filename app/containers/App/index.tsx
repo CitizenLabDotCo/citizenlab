@@ -33,7 +33,6 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 // import FullscreenModal from 'components/UI/FullscreenModal';
 // import IdeasShow from 'containers/IdeasShow';
 // import VoteControl from 'components/VoteControl';
-import Spinner, { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -200,7 +199,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     const unauthenticatedVoteClick = this.unauthenticatedVoteClick;
     const LoadableVoteControl = Loadable({
-      loading: Spinner,
+      loading: () => null,
       loader: () => import('components/VoteControl'),
       render(loaded, props) {
         const VoteControl = loaded.default;
