@@ -44,6 +44,9 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     areas: {
       data: []// IRelationship[]
     },
+    avatars : {
+      data: []// IRelationship[]
+    },
     current_phase: {
       data: null
     },
