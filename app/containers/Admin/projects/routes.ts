@@ -1,18 +1,18 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   path: 'projects',
   name: 'admin projects',
   component: Loadable({
     loader: () => import('containers/Admin/projects'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     name: 'admin projects index',
     component: Loadable({
       loader: () => import('containers/Admin/projects/all'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -21,13 +21,13 @@ export default () => ({
       name: 'admin projects single project',
       component: Loadable({
         loader: () => import('containers/Admin/projects/edit'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
       indexRoute: {
         name: 'admin projects single edit',
         component: Loadable({
           loader: () => import('containers/Admin/projects/edit/general'),
-          loading: Spinner
+          loading: FullPageCenteredSpinner
         }),
       },
       childRoutes: [
@@ -36,7 +36,7 @@ export default () => ({
           name: 'admin projects description',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/description'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -44,7 +44,7 @@ export default () => ({
           name: 'admin projects ideas manager',
           component: Loadable({
             loader: () => import('components/admin/IdeaManager'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -52,7 +52,7 @@ export default () => ({
           name: 'admin projects timeline',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/timeline'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -60,7 +60,7 @@ export default () => ({
           name: 'admin projects timeline create',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/timeline/edit'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -68,7 +68,7 @@ export default () => ({
           name: 'admin projects timeline edit',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/timeline/edit'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -76,7 +76,7 @@ export default () => ({
           name: 'admin projects events',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -84,7 +84,7 @@ export default () => ({
           name: 'admin projects events create',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events/edit'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -92,7 +92,7 @@ export default () => ({
           name: 'admin projects events edit',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events/edit'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -100,7 +100,7 @@ export default () => ({
           name: 'admin projects create new',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/general'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -108,7 +108,7 @@ export default () => ({
           name: 'admin projects edit events',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
         {
@@ -116,7 +116,7 @@ export default () => ({
           name: 'admin projects edit permissions',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/permissions'),
-            loading: Spinner
+            loading: FullPageCenteredSpinner
           }),
         },
       ],

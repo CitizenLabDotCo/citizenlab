@@ -1,17 +1,17 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   path: 'users',
   name: 'admin users',
   component: Loadable({
     loader: () => import('containers/Admin/users'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/users/AllUsers'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -19,7 +19,7 @@ export default () => ({
       path: '/:locale/admin/users/:groupId',
       component: Loadable({
         loader: () => import('containers/Admin/users/UsersGroup'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
   ],

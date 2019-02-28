@@ -17,7 +17,7 @@ import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -37,13 +37,13 @@ export default () => ({
   name: 'Admin page',
   component: Loadable({
     loader: () => import('containers/Admin'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   onEnter: isUserAuthorized,
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/guide'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -64,14 +64,14 @@ export default () => ({
       path: 'favicon',
       component: Loadable({
         loader: () => import('containers/Admin/favicon'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'dashboard/insights/:clusteringId',
       component: Loadable({
         loader: () => import('./dashboard/clusterings/Show'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
   ],

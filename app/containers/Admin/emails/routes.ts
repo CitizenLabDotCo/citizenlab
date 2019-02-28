@@ -1,16 +1,16 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 export default () => ({
   path: 'emails',
   component: Loadable({
     loader: () => import('./'),
-    loading: Spinner
+    loading: FullPageCenteredSpinner
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./custom/All'),
-      loading: Spinner
+      loading: FullPageCenteredSpinner
     }),
   },
   childRoutes: [
@@ -18,35 +18,35 @@ export default () => ({
       path: 'custom',
       component: Loadable({
         loader: () => import('./custom/All'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'custom/new',
       component: Loadable({
         loader: () => import('./custom/New'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'custom/:campaignId/edit',
       component: Loadable({
         loader: () => import('./custom/Edit'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'custom/:campaignId',
       component: Loadable({
         loader: () => import('./custom/Show'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
     {
       path: 'automated',
       component: Loadable({
         loader: () => import('./automated'),
-        loading: Spinner
+        loading: FullPageCenteredSpinner
       }),
     },
   ],
