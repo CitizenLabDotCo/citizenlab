@@ -360,7 +360,7 @@ interface State {
 }
 
 const LoadableLanguageSelector = Loadable({
-  loading: Spinner,
+  loading: () => null,
   loader: () => import('./components/LanguageSelector'),
   render(loaded, props) {
     const LanguageSelector = loaded.default;
