@@ -428,7 +428,7 @@ class TenantTemplateService
   end
 
   def yml_groups
-    Group.all.map do |g|
+    Group.where(membership_type: 'manual').map do |g|
       yml_group = {
         'title_multiloc'  => g.title_multiloc,
         'created_at'      => g.created_at.to_s,
@@ -467,7 +467,7 @@ class TenantTemplateService
   end
 
   def yml_groups_permissions
-    GroupsPermission.all.map do |g|
+    GroupsPermission.where(group_id: Group.where(membership_type: 'manual').ids).map do |g|
       {
         'permission_ref' => lookup_ref(g.permission_id, :permission),
         'group_ref'      => lookup_ref(g.group_id, :group),
