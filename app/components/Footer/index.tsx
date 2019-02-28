@@ -84,7 +84,7 @@ const SecondLine = styled.div`
   padding: 12px 28px;
   position: relative;
   background: #fff;
-  border-top: 1px solid #eaeaea;
+  border-top: 1px solid #e8e8e8;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -185,7 +185,7 @@ const PagesNav = styled.nav`
   text-align: left;
 
   ul {
-    display:inline-block;
+    display: inline-block;
     padding: 0px;
     text-align: center;
   }
@@ -193,13 +193,12 @@ const PagesNav = styled.nav`
   li {
     display: inline;
 
-    &:after {
-      content: " ";
-      letter-spacing: 2em;
-      background:center center no-repeat url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAOwAAADsABataJCQAAABl0RVh0U29mdHdhcmUAcGFpbnQubmV0IDQuMC4xMkMEa+wAAAAnSURBVBhXY/Dz89MA4sNA/B9Ka4AEYQIwfBgkiCwAxjhVopnppwEApxQqhnyQ+VkAAAAASUVORK5CYII=);
+    &:not(:first-child):before {
+      content: '•';
+      margin-left: 10px;
+      margin-right: 10px;
     }
 
-    a,
     button {
       white-space: nowrap;
     }

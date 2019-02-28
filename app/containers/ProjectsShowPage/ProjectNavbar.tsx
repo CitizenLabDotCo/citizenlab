@@ -25,7 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const ProjectNavbarWrapper = styled.nav`
-  background-color: #002332;
+  background: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
   position: fixed; /* IE11 fallback */
