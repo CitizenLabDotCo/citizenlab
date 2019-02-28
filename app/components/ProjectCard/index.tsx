@@ -468,10 +468,10 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const commentsCount = project.attributes.comments_count;
-      const showAvatars = project.relationships.avatars.data.length > 0;
+      const hasAvatars = (project.relationships.avatars && project.relationships.avatars.data && project.relationships.avatars.data.length > 0);
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
-      const avatarIds = (project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
+      const avatarIds = (hasAvatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
@@ -588,7 +588,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentFooter>
               <ContentFooterLeft>
-                {showAvatars &&
+                {hasAvatars &&
                   <AvatarBubbles
                     onClick={this.handleAvatarBubblesOnClick(project.id)}
                     size={30}
