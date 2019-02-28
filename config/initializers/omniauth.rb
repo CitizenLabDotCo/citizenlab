@@ -1,6 +1,6 @@
 FACEBOOK_SETUP_PROC = lambda do |env| 
   tenant = Tenant.current
-  if tenant.has_feature('facebook_login')
+  if tenant.has_feature?('facebook_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("facebook_login", "app_id")
     env['omniauth.strategy'].options[:client_secret] = Tenant.settings("facebook_login", "app_secret")
     env['omniauth.strategy'].options[:info_fields] = "first_name,last_name,email,birthday,education,gender,locale,third_party_id,timezone,age_range,picture.width(640).height(640)"
@@ -9,7 +9,7 @@ end
 
 GOOGLE_SETUP_PROC = lambda do |env|
   tenant = Tenant.current
-  if tenant.has_feature('google_login')
+  if tenant.has_feature?('google_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("google_login", "client_id")
     env['omniauth.strategy'].options[:client_secret] = Tenant.settings("google_login", "client_secret")
     env['omniauth.strategy'].options[:image_size] = 640
@@ -19,7 +19,7 @@ end
 
 AZURE_AD_SETUP_PROC = lambda do |env|
   tenant = Tenant.current
-  if tenant.has_feature('azure_ad_login')
+  if tenant.has_feature?('azure_ad_login')
     env['omniauth.strategy'].options[:client_id] = Tenant.settings("azure_ad_login", "client_id")
     env['omniauth.strategy'].options[:tenant] = Tenant.settings("azure_ad_login", "tenant")
   end
@@ -27,7 +27,7 @@ end
 
 FRANCECONNECT_SETUP_PROC = lambda do |env|
   tenant = Tenant.current
-  if tenant.has_feature('franceconnect_login')
+  if tenant.has_feature?('franceconnect_login')
 
     host = SingleSignOnService::FranceConnect.new.host
 

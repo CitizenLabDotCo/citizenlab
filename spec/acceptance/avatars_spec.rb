@@ -26,7 +26,7 @@ resource "Avatars" do
       expect(json_response[:data].size).to eq 5
       expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
       expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
-      expect(json_response.dig(:data).map{|d| d.dig(:id)}).to_not include(@user_without_avatar.id)
+      expect(json_response.dig(:data).map{|d| d.dig(:id)}).to_not include("#{@user_without_avatar}.id-avatar")
       expect(json_response.dig(:meta, :total)).to eq 7
     end
 
@@ -44,7 +44,7 @@ resource "Avatars" do
         expect(json_response[:data].size).to eq 2
         expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
         expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
-        expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| author_ids.include?(id)})
+        expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| author_ids.map{|id| "#{id}-avatar"}.include?(id)})
         expect(json_response.dig(:meta, :total)).to eq 3
       end
     end
@@ -70,7 +70,7 @@ resource "Avatars" do
           expect(json_response[:data].size).to eq 4
           expect(json_response.dig(:data).map{|d| d.dig(:attributes, :avatar).keys}).to all(eq [:small, :medium, :large])
           expect(json_response.dig(:data).flat_map{|d| d.dig(:attributes, :avatar).values}).to all(be_present)
-          expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| member_ids.include?(id)})
+          expect(json_response.dig(:data).map{|d| d.dig(:id)}).to all(satisfy{|id| member_ids.map{|id| "#{id}-avatar"}.include?(id)})
           expect(json_response.dig(:meta, :total)).to eq 4
         end
       end
