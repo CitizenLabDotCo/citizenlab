@@ -55,9 +55,7 @@ const CreatedAt = styled.td`
 `;
 
 const Options = styled.td`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
 `;
 
 const DropdownList = styled.div`

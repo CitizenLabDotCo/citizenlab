@@ -13,32 +13,24 @@ import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResou
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import T from 'components/T';
-import { darken } from 'polished';
 import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
   border-radius: 5px;
-  padding: 32px;
-  background: ${darken(0.006, colors.background)};
+  padding: 40px;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    padding: 20px;
-    background: ${darken(0.028, colors.background)};
+    padding: 0px;
   `}
 `;
 
 const InformationBody = styled.div`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 23px;
-
-  p {
-    font-size: ${fontSizes.base}px;
-    line-height: 23px;
+  h1, h2, h3, h4 {
+    color: ${colors.text} !important;
   }
 `;
 
@@ -74,10 +66,11 @@ class PhaseAbout extends PureComponent<Props, State> {
         return (
           <Container className={className}>
             <InformationBody>
-              <QuillEditedContent>
-                <T value={phase.attributes.description_multiloc} supportHtml={true} />
+              <QuillEditedContent color="#5E6B75">
+                <T value={phase.attributes.description_multiloc} supportHtml={true} linkify={true} />
               </QuillEditedContent>
             </InformationBody>
+
             {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
               <StyledFileAttachments files={phaseFiles} />
             }

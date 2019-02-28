@@ -18,13 +18,13 @@ const Image: any = styled.img`
   }
 `;
 
-// Typings
 export interface Props {
   src: HTMLImageElement['src'];
   alt?: HTMLImageElement['alt'];
   srcset?: HTMLImageElement['srcset'];
   role?: string;
   cover?: boolean;
+  className?: string;
 }
 export interface State {
   loaded: boolean;
@@ -54,27 +54,29 @@ export class LazyImage extends PureComponent<Props, State> {
   }
 
   render() {
+    const { src, srcset, cover, className } = this.props;
     let { alt, role } = this.props;
+    const { loaded } = this.state;
 
-    // A11y requires a role "presentation"  on images without any alt text
+    // A11y requires a role "presentation" on images without any alt text
     if (!alt) {
       alt = '';
       role = 'presentation';
     }
 
-    if (this.props.cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
+    if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
       // Legacy browsers, no lazy-loading for you!
-      return <div className={this.props['className']} style={{ background: `center / cover no-repeat url("${this.props.src}")` }} />;
+      return <div className={className} style={{ background: `center / cover no-repeat url("${src}")` }} />;
     } else {
-      const style = this.props.cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
+      const style = cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
 
       return (
         <Image
           src=""
           {...{ alt, role, style }}
-          className={`${this.state.loaded ? 'loaded' : ''} ${this.props['className']}`}
-          data-src={this.props.src}
-          data-srcset={this.props.srcset || ''}
+          className={`${loaded ? 'loaded' : ''} ${className}`}
+          data-src={src}
+          data-srcset={srcset || ''}
           innerRef={this.observeImage}
           onLoad={this.handleImageLoaded}
         />

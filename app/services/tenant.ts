@@ -63,6 +63,10 @@ export interface ITenantSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
+  manual_project_sorting?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;

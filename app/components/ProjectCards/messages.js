@@ -1,13 +1,17 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  loadMore: {
-    id: 'app.components.ProjectCards.loadMore',
-    defaultMessage: 'Load more projects',
+  showMore: {
+    id: 'app.components.ProjectCards.showMore',
+    defaultMessage: 'Show more',
   },
-  noProjects: {
-    id: 'app.components.ProjectCards.noProjects',
-    defaultMessage: 'No projects were found',
+  noProjectYet: {
+    id: 'app.components.ProjectCards.noProjectYet',
+    defaultMessage: 'There is no project yet',
+  },
+  stayTuned: {
+    id: 'app.components.ProjectCards.stayTuned',
+    defaultMessage: 'Stay tuned, a project is gonna show up pretty soon.  ',
   },
   areasTitle: {
     id: 'app.containers.ProjectCards.areasTitle',
@@ -28,5 +32,9 @@ export default defineMessages({
   publicationStatus: {
     id: 'app.containers.ProjectCards.publicationStatus',
     defaultMessage: 'Publication status',
+  },
+  currentlyWorkingOn: {
+    id: 'app.containers.ProjectCards.currentlyWorkingOn',
+    defaultMessage: '{tenantName} is currently working on',
   },
 });
