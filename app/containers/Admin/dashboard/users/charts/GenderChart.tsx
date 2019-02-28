@@ -16,7 +16,7 @@ import messages from '../../messages';
 import styled, { withTheme } from 'styled-components';
 
 // components
-import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
+import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner, PieChartStyleFixesDiv } from '../..';
 import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
 
 // services
@@ -35,13 +35,6 @@ interface QueryProps {
 interface Props extends QueryProps {
   className?: string;
 }
-const StyleFixesDiv = styled.div`
-  overflow: hidden;
-  .recharts-surface, .recharts-wrapper, .recharts-responsive-container {
-    height: 190px !important;
-    min-width: 190;
-  }
-`;
 
 const labelColors = {
   male: '#5D99C6 ',
@@ -139,7 +132,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <StyleFixesDiv>
+            <PieChartStyleFixesDiv>
               <ResponsiveContainer height={175} width="100%" minWidth={175}>
                 <PieChart>
                   <Pie
@@ -159,7 +152,7 @@ class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
                   <Tooltip isAnimationActive={false} />
                 </PieChart>
               </ResponsiveContainer>
-            </StyleFixesDiv>
+            </PieChartStyleFixesDiv>
           }
         </GraphCardInner>
       </GraphCard>
