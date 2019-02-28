@@ -219,7 +219,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       <LoadableVoteControl />
     ) : undefined);
     const LoadableFullscreenModal = Loadable.Map({
-      loading: FullPageCenteredSpinner,
+      loading: () => null,
       loader: {
         FullscreenModal: () => import('components/UI/FullscreenModal'),
         IdeasShow: () => import('containers/IdeasShow'),
