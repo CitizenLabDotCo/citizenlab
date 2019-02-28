@@ -48,6 +48,7 @@
   "app.components.IdeaCard.register": "Maak een account aan",
   "app.components.IdeaCards.loadMore": "Toon meer ideeën",
   "app.components.IdeaCards.noIdea": "Blijkbaar zijn er hier (nog) geen ideeën toegevoegd.",
+  "app.components.IdeaCards.showMore": "",
   "app.components.IdeaCards.suggestIdea": "Voeg als eerste een idee toe!",
   "app.components.IdeaForm.descriptionEmptyError": "Gelieve een beschrijving te geven",
   "app.components.IdeaForm.descriptionLabel": "Beschrijving (verplicht)",

@@ -48,6 +48,7 @@
   "app.components.IdeaCard.register": "",
   "app.components.IdeaCards.loadMore": "",
   "app.components.IdeaCards.noIdea": "",
+  "app.components.IdeaCards.showMore": "",
   "app.components.IdeaCards.suggestIdea": "",
   "app.components.IdeaForm.descriptionEmptyError": "",
   "app.components.IdeaForm.descriptionLabel": "",

@@ -48,6 +48,7 @@
   "app.components.IdeaCard.register": "Opret en konto",
   "app.components.IdeaCards.loadMore": "Indlæs flere ideer",
   "app.components.IdeaCards.noIdea": "Det ser ud til at der (endnu) ikke er nogen ideer her",
+  "app.components.IdeaCards.showMore": "",
   "app.components.IdeaCards.suggestIdea": "Vær den første til at tilføje en!",
   "app.components.IdeaForm.descriptionEmptyError": "Angiv venligst en beskrivelse",
   "app.components.IdeaForm.descriptionLabel": "Beskrivelse (påkrævet)",
