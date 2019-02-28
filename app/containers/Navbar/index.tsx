@@ -7,13 +7,11 @@ import Loadable from 'react-loadable';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-// import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
-import Spinner from 'components/UI/Spinner';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -400,7 +398,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
     this.props.clickSignUpLink();
   }
 
-  onMouseOverLanguageSelector = () => {
+  preloadLanguageSelector = () => {
     LoadableLanguageSelector.preload();
   }
 
@@ -536,8 +534,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className="noLeftMargin">
-                <LoadableLanguageSelector onMouseOver={this.onMouseOverLanguageSelector} className={!authUser ? 'notLoggedIn' : ''} />
+              <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
+                <LoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>
