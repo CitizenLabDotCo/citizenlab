@@ -95,15 +95,13 @@ class CampaignsConsentForm extends PureComponent<Props & ITracks, State> {
       });
     }
 
-    Promise.all(consentUpdates)
-    .then(() => {
+    Promise.all(consentUpdates).then(() => {
       this.setState({
         consentChanges: {},
         isSaving: false,
         saveButtonStatus: 'success'
       });
-    })
-    .catch(() => {
+    }).catch(() => {
       this.setState({ saveButtonStatus: 'error' });
     });
   }
@@ -111,6 +109,7 @@ class CampaignsConsentForm extends PureComponent<Props & ITracks, State> {
   render() {
     const { consents } = this.props;
     const { isSaving, saveButtonStatus } = this.state;
+
     return (
       <ProfileSection>
         <form action="">

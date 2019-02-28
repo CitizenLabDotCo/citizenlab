@@ -23,10 +23,8 @@ import styled from 'styled-components';
 export const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: flex-end;
-  button {
-    margin : 4px !important;
-  }
 `;
 
 interface Props {
@@ -53,7 +51,7 @@ interface State {
 export class Container extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props) {
     super(props);
     this.state = {
       isDialogOpen: false,
@@ -65,6 +63,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
       }
     };
   }
+
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent('openConsentManager').subscribe(this.openDialog)
@@ -192,6 +191,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
       intl,
     } = this.props;
     const { isDialogOpen, isCancelling, categoryDestinations } = this.state;
+
     return (
       <>
         <Modal
@@ -199,7 +199,7 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
           close={this.closeDialog}
           label={intl.formatMessage(messages.modalLabel)}
           fixedHeight={false}
-          header={<FormattedMessage {...messages.title} tagName="h1" />}
+          header={<FormattedMessage {...messages.title} />}
           footer={<Footer
             validate={this.validate}
             isCancelling={this.state.isCancelling}

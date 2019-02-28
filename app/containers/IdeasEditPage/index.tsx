@@ -36,14 +36,14 @@ import { convertToGeoJson } from 'utils/locationTools';
 import { IOption, UploadFile, Multiloc, Locale } from 'typings';
 
 // style
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 // resource components
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 
 const Container = styled.div`
-  background: #f9f9fa;
+  background: ${colors.background};
 `;
 
 const FormContainer = styled.div`

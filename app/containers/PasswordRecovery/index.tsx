@@ -20,12 +20,12 @@ import { injectIntl } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import messages from './messages';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f9f9fa;
+  background: ${colors.background};
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
