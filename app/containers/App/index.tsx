@@ -33,7 +33,7 @@ import ForbiddenRoute from 'components/routing/forbiddenRoute';
 // import FullscreenModal from 'components/UI/FullscreenModal';
 // import IdeasShow from 'containers/IdeasShow';
 // import VoteControl from 'components/VoteControl';
-import Spinner from 'components/UI/Spinner';
+import Spinner, { FullPageCenteredSpinner } from 'components/UI/Spinner';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -219,7 +219,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       <LoadableVoteControl />
     ) : undefined);
     const LoadableFullscreenModal = Loadable.Map({
-      loading: Spinner,
+      loading: FullPageCenteredSpinner,
       loader: {
         FullscreenModal: () => import('components/UI/FullscreenModal'),
         IdeasShow: () => import('containers/IdeasShow'),
