@@ -576,16 +576,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                       <PreviousPhaseButton
                         onClick={this.goToPreviousPhase}
                         icon="chevron-left"
+                        iconSize="15px"
                         style="secondary"
-                        padding="10px 6px"
+                        padding="8px 8px"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
                       />
                       <NextPhaseButton
                         onClick={this.goToNextPhase}
                         icon="chevron-right"
+                        iconSize="15px"
                         style="secondary"
-                        padding="10px 6px"
+                        padding="8px 8px"
                         disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
                       />

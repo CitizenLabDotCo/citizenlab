@@ -1,10 +1,18 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { isBoolean } from 'lodash-es';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
+import { updateTenant } from 'services/tenant';
+
+// resources
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetProjectGroups from 'resources/GetProjectGroups';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -18,6 +26,8 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
+import Toggle from 'components/UI/Toggle';
+import FeatureFlag from 'components/FeatureFlag';
 import InfoTooltip from 'components/admin/InfoTooltip';
 
 // style
@@ -36,12 +46,28 @@ const ListHeader = styled.div`
 `;
 
 const ListHeaderTitle = styled.h3`
+  display: flex;
+  align-items: center;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.xl}px;
   font-weight: 400;
   padding: 0;
   margin: 0;
   margin-right: 7px;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
+`;
+
+const ToggleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ToggleLabel = styled.label`
+  font-size: ${fontSizes.base}px;
+  margin-right: 15px;
 `;
 
 const RowContent = styled.div`
@@ -73,31 +99,46 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   projects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-interface State {
-  publishedProjects: IProjectData[] | null;
-  draftProjects: IProjectData[] | null;
-  archivedProjects: IProjectData[] | null;
-}
+interface State {}
 
 class AdminProjectsList extends PureComponent<Props, State> {
-
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
   }
 
-  render() {
-    const { projects } = this.props;
+  handleToggleManualProjectSorting = async () => {
+    const { tenant } = this.props;
+
+    if (!isNilOrError(tenant) && tenant.attributes.settings.manual_project_sorting && isBoolean(tenant.attributes.settings.manual_project_sorting.enabled)) {
+      const manualProjectSorting = !tenant.attributes.settings.manual_project_sorting.enabled;
+
+      await updateTenant(tenant.id,     {
+        settings: {
+          manual_project_sorting: {
+            allowed: true,
+            enabled: manualProjectSorting
+          }
+        }
+      });
+
+      await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`] });
+    }
+  }
+
+  render () {
+    const { tenant, projects } = this.props;
     let lists: JSX.Element | null = null;
 
-    if (projects && !isNilOrError(projects.projectsList)) {
+    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
       const { projectsList } = projects;
       const publishedProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'published';
@@ -166,30 +207,53 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.published} />
                 </ListHeaderTitle>
                 <InfoTooltip {...messages.publishedTooltip} />
+
+                <Spacer />
+
+                <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
+                  <ToggleWrapper>
+                    <ToggleLabel htmlFor="manual-sorting-toggle">
+                      <FormattedMessage {...messages.manualSortingProjects} />
+                    </ToggleLabel>
+                    <Toggle
+                      id="manual-sorting-toggle"
+                      value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
+                      onChange={this.handleToggleManualProjectSorting}
+                    />
+                  </ToggleWrapper>
+                </FeatureFlag>
               </ListHeader>
               <HasPermission item="projects" action="reorder">
-                <SortableList
-                  items={publishedProjects}
-                  onReorder={this.handleReorder}
-                  id="e2e-admin-published-projects-list"
-                  className="e2e-admin-projects-list"
-                >
-                  {({ itemsList, handleDragRow, handleDropRow }) => (
-                    itemsList.map((project: IProjectData, index: number) => (
-                      <SortableRow
-                        className="e2e-admin-projects-list-item"
-                        key={project.id}
-                        id={project.id}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === publishedProjects.length - 1)}
-                      >
+                {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
+                  <SortableList
+                    items={publishedProjects}
+                    onReorder={this.handleReorder}
+                    className="e2e-admin-projects-list"
+                  >
+                    {({ itemsList, handleDragRow, handleDropRow }) => (
+                      itemsList.map((project: IProjectData, index: number) => (
+                        <SortableRow
+                          key={project.id}
+                          id={project.id}
+                          index={index}
+                          moveRow={handleDragRow}
+                          dropRow={handleDropRow}
+                          lastItem={(index === publishedProjects.length - 1)}
+                        >
+                          {row(project)}
+                        </SortableRow>
+                      ))
+                    )}
+                  </SortableList>
+                  :
+                  <List>
+                    {publishedProjects.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
                         {row(project)}
-                      </SortableRow>
-                    ))
-                  )}
-                </SortableList>
+                      </Row>
+                    ))}
+                  </List>
+                }
                 <HasPermission.No>
                   <List>
                     {publishedProjects.map((project, index) => (
@@ -298,8 +362,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true} />
+});
+
 export default (inputProps: InputProps) => (
-  <GetProjects publicationStatuses={['draft', 'published', 'archived']} filterCanModerate={true}>
-    {projects => <AdminProjectsList {...inputProps} projects={projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps => <AdminProjectsList {...inputProps} {...dataProps} />}
+  </Data>
 );

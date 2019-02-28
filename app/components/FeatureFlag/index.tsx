@@ -6,7 +6,9 @@ import { Subscription } from 'rxjs';
 import { currentTenantStream, ITenant } from 'services/tenant';
 
 interface Props {
-  name?: string;
+  name: string;
+  /** when this flag is set, the feature will show if it's allowed, regardless of whether it's enabled */
+  onlyCheckAllowed: boolean;
 }
 
 interface State {
@@ -14,6 +16,9 @@ interface State {
 }
 
 export default class FeatureFlag extends PureComponent<Props, State> {
+  public static defaultProps = {
+    onlyCheckAllowed: false,
+  };
   subscription: Subscription | null;
 
   constructor(props: Props) {
@@ -35,10 +40,10 @@ export default class FeatureFlag extends PureComponent<Props, State> {
 
   render() {
     const { currentTenant } = this.state;
-    const { name } = this.props;
+    const { name, onlyCheckAllowed } = this.props;
     const showFeature = (!name || (
       get(currentTenant, `data.attributes.settings.${name}.allowed`) === true &&
-      get(currentTenant, `data.attributes.settings.${name}.enabled`) === true
+      (onlyCheckAllowed || get(currentTenant, `data.attributes.settings.${name}.enabled`) === true)
     ));
 
     if (this.props.children && showFeature) {

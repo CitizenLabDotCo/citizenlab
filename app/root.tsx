@@ -5,6 +5,9 @@ import { render } from 'react-dom';
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
 import 'utils/lazyImagesObserver';
+// Import CSS reset and Global Styles
+import 'assets/css/reset.min.css';
+import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import { init } from '@sentry/browser';
@@ -14,10 +17,6 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-
-// Import CSS reset and Global Styles
-import 'assets/css/reset.min.css';
-import './global-styles';
 
 // Import root routes
 import createRoutes from './routes';

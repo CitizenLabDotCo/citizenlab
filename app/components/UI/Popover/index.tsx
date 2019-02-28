@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
+  width: 100%;
   position: relative;
   outline: none;
   display: flex;
@@ -91,10 +92,10 @@ export interface Props {
 
 export default class Popover extends PureComponent<Props> {
   render() {
-    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top } = this.props;
+    const { onClickOutside, dropdownOpened, children, content, textColor, backgroundColor, borderColor, top, className } = this.props;
 
     return (
-      <Container className={this.props['className']}>
+      <Container className={className}>
         {children}
 
         <CSSTransition

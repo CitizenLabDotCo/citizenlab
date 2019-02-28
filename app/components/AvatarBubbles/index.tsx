@@ -1,10 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
+import { isNumber, isError } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 
+// services
+import { IAvatarData } from 'services/avatars';
+
 // resources
-import GetAvatars, { GetAvatarsChildProps } from 'resources/GetAvatars';
+import GetRandomAvatars from 'resources/GetRandomAvatars';
+import GetAvatars from 'resources/GetAvatars';
 
 // i18n
 import injectIntl from 'utils/cl-intl/injectIntl';
@@ -47,7 +53,7 @@ const Container: any = styled.div`
   `) : css``};
 `;
 
-const StyledSpan: any = styled.span`
+const UserCount: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,7 +62,7 @@ const StyledSpan: any = styled.span`
   width: ${(props: any) => props.size}px;
   padding-bottom: 0;
   font-size: ${fontSizes.small}px;
-  background: ${colors.clIconSecondary};
+  background: ${(props: any) => props.bgColor};
   border-radius: 50%;
   color: white;
   font-weight: 500;
@@ -86,32 +92,48 @@ interface InputProps {
   };
   size?: number;
   overlap?: number;
+  userCount?: number;
+  userCountBgColor?: string;
+  avatarIds?: string[];
   className?: string;
+  onClick?: (event: MouseEvent) => void;
 }
 
 interface DataProps {
-  avatars: GetAvatarsChildProps;
+  avatars: (IAvatarData | Error)[] | null;
 }
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
-  render() {
-    const { avatars, size, overlap, className } = this.props;
+const defaultLimit = 4;
 
-    if (avatars) {
-      const avatarList = avatars.data;
-      const avatarCount = avatarList.length;
-      const userCount = avatars.meta.total;
-      const usersWithoutAvatar = userCount - avatarCount;
+class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
+  static defaultProps = {
+    limit: defaultLimit
+  };
+
+  handleOnClick = (event: MouseEvent) => {
+    if (this.props.onClick) {
+      this.props.onClick(event);
+    }
+  }
+
+  render() {
+    const { avatars, avatarIds, context, size, overlap, userCount, className } = this.props;
+
+    if (!isNilOrError(avatars) && isNumber(userCount) && userCount > 0) {
       const definedSize = size || 34;
-      const definedOverlap = overlap || 6;
+      const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
+      const avatarsWithImage = avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
+      const avatarCount = avatarsWithImage.length;
+      const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
+      const remainingUsers = userCount - avatarCount;
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
 
-      if (userCount > 10 && avatarCount > 2) {
+      if (avatarIds || context || (avatarCount > 0)) {
         return (
           <Container
             className={className}
@@ -119,8 +141,9 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             size={definedSize}
             width={calcWidth}
             overlap={definedOverlap}
+            onClick={this.handleOnClick}
           >
-            {avatarList.map((avatar, index) => (
+            {avatarsWithImage.map((avatar, index) => (
               <AvatarWrapper key={index}>
                 <AvatarImage
                   src={avatar.attributes.avatar[imageSize]}
@@ -129,15 +152,23 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </AvatarWrapper>
             ))}
-            <AvatarWrapper key={avatarCount}>
-              <StyledSpan className={(usersWithoutAvatar > 999) && 'too-many-users'} size={definedSize}>
-                <PlusIcon name="plus" />
-                {usersWithoutAvatar}
-              </StyledSpan>
-            </AvatarWrapper>
+            {remainingUsers > 0 &&
+              <AvatarWrapper key={avatarCount}>
+                <UserCount
+                  className={(remainingUsers > 999) ? 'too-many-users' : ''}
+                  size={definedSize}
+                  bgColor={userCountBgColor}
+                >
+                  <PlusIcon name="plus" />
+                  {remainingUsers}
+                </UserCount>
+              </AvatarWrapper>
+            }
           </Container>
         );
       }
+
+      return null;
     }
 
     return null;
@@ -146,8 +177,18 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
 
 const AvatarBubblesWithHoCs = injectIntl(AvatarBubbles);
 
-export default (inputProps: InputProps) => (
-  <GetAvatars limit={inputProps.limit || 4} context={inputProps.context}>
-    {avatars => <AvatarBubblesWithHoCs avatars={avatars} {...inputProps} />}
-  </GetAvatars>
-);
+export default (inputProps: InputProps) => {
+  if (inputProps.avatarIds) {
+    return (
+      <GetAvatars ids={inputProps.avatarIds}>
+        {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars : null} />}
+      </GetAvatars>
+    );
+  }
+
+  return (
+    <GetRandomAvatars limit={inputProps.limit || defaultLimit} context={inputProps.context}>
+      {avatars => <AvatarBubblesWithHoCs {...inputProps} avatars={!isNilOrError(avatars) ? avatars.data : null} userCount={!isNilOrError(avatars) ? avatars.meta.total : undefined} />}
+    </GetRandomAvatars>
+  );
+};
