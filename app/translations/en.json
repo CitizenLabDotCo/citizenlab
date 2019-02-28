@@ -48,6 +48,7 @@
   "app.components.IdeaCard.register": "Create an account",
   "app.components.IdeaCards.loadMore": "Load more ideas",
   "app.components.IdeaCards.noIdea": "It looks like there are no ideas here (yet)",
+  "app.components.IdeaCards.showMore": "Show more",
   "app.components.IdeaCards.suggestIdea": "Be the first to add one!",
   "app.components.IdeaForm.descriptionEmptyError": "Please provide a description",
   "app.components.IdeaForm.descriptionLabel": "Description (required)",

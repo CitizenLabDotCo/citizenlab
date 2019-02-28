@@ -48,6 +48,7 @@
   "app.components.IdeaCard.register": "Erstellen Sie ein Konto",
   "app.components.IdeaCards.loadMore": "{orgName, select, München {Weitere Mängel anzeigen} other {Laden Sie weitere Ideen}}",
   "app.components.IdeaCards.noIdea": "{orgName, select, München {Anscheinend gibt es hier noch keine gemeldeten Mängel} other {Anscheinend gibt es hier (noch) keine Ideen}}",
+  "app.components.IdeaCards.showMore": "",
   "app.components.IdeaCards.suggestIdea": "{orgName, select, München {Seien Sie die erste Person, die einen Mangel meldet!} other {Seien Sie die erste Person, die eine Idee hinzufügt!}",
   "app.components.IdeaForm.descriptionEmptyError": "Bitte geben Sie eine Beschreibung ein",
   "app.components.IdeaForm.descriptionLabel": "Beschreibung (erforderlich)",
