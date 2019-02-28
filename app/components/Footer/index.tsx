@@ -129,11 +129,6 @@ const ShortFeedbackInner = styled.div`
   padding: 12px 25px;
   background: ${(props) => rgba(props.theme.colorMain, 0.08)};
 
-  /* &.whiteBg {
-    background: #F4F5F6;
-    background: red;
-  } */
-
   ${media.smallerThanMinTablet`
     width: 100%;
     justify-content: center;
@@ -419,7 +414,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
           }
 
           <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
-            <ShortFeedbackInner className={whiteBg ? 'whiteBg' : ''}>
+            <ShortFeedbackInner>
               {shortFeedbackButtonClicked ?
                 <ThankYouNote>
                   <FormattedMessage {...messages.thanksForFeedback} />

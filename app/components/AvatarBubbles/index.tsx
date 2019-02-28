@@ -127,7 +127,8 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
       const definedSize = size || 34;
       const definedOverlap = overlap || 10;
       const imageSize = (definedSize > 160 ? 'large' : 'medium');
-      const avatarCount = avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]).length;
+      const avatarsWithImage = avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]) as IAvatarData[];
+      const avatarCount = avatarsWithImage.length;
       const userCountBgColor = this.props.userCountBgColor || colors.clIconSecondary;
       const remainingUsers = userCount - avatarCount;
       const calcWidth = avatarCount * (definedSize - definedOverlap) + definedSize + 8; // total component width is the highest left position offset plus the total width of last bubble
@@ -142,7 +143,7 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
             overlap={definedOverlap}
             onClick={this.handleOnClick}
           >
-            {avatars.filter(avatar => !isError(avatar) && avatar.attributes.avatar[imageSize]).map((avatar: IAvatarData, index) => (
+            {avatarsWithImage.map((avatar, index) => (
               <AvatarWrapper key={index}>
                 <AvatarImage
                   src={avatar.attributes.avatar[imageSize]}
