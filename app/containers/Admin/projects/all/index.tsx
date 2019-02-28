@@ -210,7 +210,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <FeatureFlag name="manual_project_sorting">
+                <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
                   <ToggleWrapper>
                     <ToggleLabel htmlFor="manual-sorting-toggle">
                       <FormattedMessage {...messages.manualSortingProjects} />
