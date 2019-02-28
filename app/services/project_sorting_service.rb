@@ -14,9 +14,10 @@ class ProjectSortingService
   def order_by_publication_status projects_scope
     # Triggering a subquery instead of building on the scope, in order to make
     # the order by play nicely with previous distinct operations
-    Project.where(id: projects_scope)
-    .distinct(false)
-    .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
+    Project
+      .where(id: projects_scope)
+      .distinct(false)
+      .order(Arel.sql("CASE projects.publication_status WHEN 'draft' then 1 WHEN 'published' then 2 WHEN 'archived' THEN 3 ELSE 5 END"))
   end
 
   # Slow ruby implementation, to help nail down the spec and test SQL
