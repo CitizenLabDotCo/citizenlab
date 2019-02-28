@@ -148,7 +148,6 @@ resource "Projects" do
         do_request(id: project.id)
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        byebug
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
         expect(json_response.dig(:data, :relationships, :avatars, :data).map{|d| d[:id]}).to include "#{author.id}-avatar"
         expect(json_response.dig(:included).map{|i| i[:id]}).to include "#{author.id}-avatar"
@@ -435,12 +434,19 @@ resource "Projects" do
         @user = create(:user, roles: [])
         token = Knock::AuthToken.new(payload: { sub: @user.id }).token
         header 'Authorization', "Bearer #{token}"
+      end
 
-        @projects = ['published','published','draft','published','archived','published','archived']
-          .map { |ps|  create(:project, publication_status: ps)}
+      example "Get projects with access rights" do
+        project = create(:project)
+        do_request
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
       end
 
       example "Normal users cannot moderate any projects", document: false do
+        ['published','published','draft','published','archived','published','archived']
+          .map {|ps|  create(:project, publication_status: ps)}
         do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
         expect(status).to eq(200)
         json_response = json_parse(response_body)

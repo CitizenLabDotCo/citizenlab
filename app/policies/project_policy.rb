@@ -36,10 +36,9 @@ class ProjectPolicy < ApplicationPolicy
     private
 
     def filter_for_normal_user scope, user
-      scope.distinct
-        .left_outer_joins(:groups_projects)
+      scope
         .where("projects.visible_to = 'public' OR \
-          (projects.visible_to = 'groups' AND groups_projects.group_id IN (?))", user.group_ids)
+          (projects.visible_to = 'groups' AND EXISTS(SELECT 1 FROM groups_projects WHERE project_id = projects.id AND group_id IN (?)))", user.group_ids)
     end
   end
 
