@@ -17,7 +17,7 @@ import { hasPermission } from 'services/permissions';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 import Loadable from 'react-loadable';
-import { FullPageCenteredSpinner } from 'components/UI/Spinner';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
@@ -37,13 +37,14 @@ export default () => ({
   name: 'Admin page',
   component: Loadable({
     loader: () => import('containers/Admin'),
-    loading: FullPageCenteredSpinner
+    loading: () => null,
   }),
   onEnter: isUserAuthorized,
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/guide'),
-      loading: FullPageCenteredSpinner
+      loading: LoadableLoadingAdmin,
+      delay: 500
     }),
   },
   childRoutes: [
@@ -64,14 +65,16 @@ export default () => ({
       path: 'favicon',
       component: Loadable({
         loader: () => import('containers/Admin/favicon'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin,
+        delay: 500
       }),
     },
     {
       path: 'dashboard/insights/:clusteringId',
       component: Loadable({
         loader: () => import('./dashboard/clusterings/Show'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin,
+        delay: 500
       }),
     },
   ],
