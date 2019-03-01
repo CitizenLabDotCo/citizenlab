@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { addOfficialFeedbackToIdea } from 'services/officialFeedback';
 
 import { Formik } from 'formik';
-import OfficialFeedbackForm, { FormValues } from './OfficialFeedbackForm';
+import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 
 interface Props {
@@ -14,9 +14,12 @@ interface Props {
 export default class OfficialFeedbackNew extends Component<Props> {
 
   handleSubmit = (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
+    const formattedMentionsBodyMultiloc = formatMentionsBodyMultiloc(values.body_multiloc);
     const { ideaId } = this.props;
+    const feedbackValues = { ...values, ...{ body_multiloc: formattedMentionsBodyMultiloc } };
+
     setSubmitting(true);
-    addOfficialFeedbackToIdea(ideaId, values)
+    addOfficialFeedbackToIdea(ideaId, feedbackValues)
       .then(() => {
         setSubmitting(false);
         resetForm();
