@@ -22,6 +22,7 @@ exports.locales = [
     'nl',
     'nb',
     'da',
+    'es',
     'de-DE',
     'en-GB',
     'en-CA',
