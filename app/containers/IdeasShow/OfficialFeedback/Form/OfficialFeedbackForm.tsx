@@ -26,9 +26,6 @@ import GetLocale from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
 
 const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-
   >:not(:last-child) {
     margin-right: 5px;
   }
