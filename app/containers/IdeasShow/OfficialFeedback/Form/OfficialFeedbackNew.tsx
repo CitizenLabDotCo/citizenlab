@@ -38,7 +38,7 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
   initialValues = () => ({
     author_multiloc: {},
     body_multiloc: {}
-  });
+  })
 
   render() {
     return (
