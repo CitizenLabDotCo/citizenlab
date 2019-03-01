@@ -898,16 +898,20 @@ models:
         te doen. Dit veroorzaakt heel wat leegstand. Je kunt hier je ideeën delen
         om het centrum levendiger te maken!</p>\n"
     created_at: 2019-01-31 16:13:14 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      nl-BE: "<p>Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
+      nl-BE: 'Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
         te doen. Dit veroorzaakt heel wat leegstand. Je kunt hier je ideeën delen
-        om het centrum levendiger te maken!</p>\n"
-      nl-NL: "<p>Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
+        om het centrum levendiger te maken!
+
+'
+      nl-NL: 'Helaas bezoeken steeds minder mensen het centrum om er hun boodschappen
         te doen. Dit veroorzaakt heel wat leegstand. Je kunt hier je ideeën delen
-        om het centrum levendiger te maken!</p>\n"
+        om het centrum levendiger te maken!
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -932,20 +936,62 @@ models:
         geletterde te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf
         je steentje kan bijdragen? Laat het ons weten!</p>\n"
     created_at: 2019-01-31 16:13:14 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      nl-BE: "<p>Het is een verantwoordelijkheid van ons allen om de niet digitaal
-        geletterde te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf
-        je steentje kan bijdragen? Laat het ons weten!</p>\n"
-      nl-NL: "<p>Het is een verantwoordelijkheid van ons allen om de niet digitaal
-        geletterde te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf
-        je steentje kan bijdragen? Laat het ons weten!</p>\n"
+      nl-BE: 'Het is een verantwoordelijkheid van ons allen om de niet digitaal geletterde
+        te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf je steentje
+        kan bijdragen? Laat het ons weten!
+
+'
+      nl-NL: 'Het is een verantwoordelijkheid van ons allen om de niet digitaal geletterde
+        te helpen en ondersteunen. Weet jij hoe de gemeente of jijzelf je steentje
+        kan bijdragen? Laat het ons weten!
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
     ordering: 0
+  - &7
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    title_multiloc:
+      nl-BE: Heraanleg centrale park
+      nl-NL: Heraanleg centrale park
+    description_multiloc:
+      nl-BE: |
+        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.</p>
+      nl-NL: |
+        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.</p>
+    created_at: 2019-01-31 16:13:14 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
+    remote_header_bg_url: 
+    visible_to: public
+    description_preview_multiloc:
+      nl-BE: |
+        We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.
+      nl-NL: |
+        We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
+        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
+        Deel je ideeën hieronder.
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    ordering: 2
   - &4
     presentation_mode: card
     participation_method: ideation
@@ -980,44 +1026,6 @@ models:
     internal_role: 
     publication_status: published
     ordering: 6
-  - &7
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    title_multiloc:
-      nl-BE: Heraanleg centrale park
-      nl-NL: Heraanleg centrale park
-    description_multiloc:
-      nl-BE: |
-        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
-        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
-        Deel je ideeën hieronder.</p>
-      nl-NL: |
-        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
-        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
-        Deel je ideeën hieronder.</p>
-    created_at: 2019-01-31 16:13:14 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
-    remote_header_bg_url: 
-    visible_to: public
-    description_preview_multiloc:
-      nl-BE: |
-        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
-        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
-        Deel je ideeën hieronder.</p>
-      nl-NL: |
-        <p>We leggen het centrale park aan om het een ontmoetingspunt te maken voor inwoners van alle leeftijden!
-        Wie beter dan jullie, de burgers, om te zeggen wat jullie willen zien in het park?
-        Deel je ideeën hieronder.</p>
-    process_type: timeline
-    internal_role: 
-    publication_status: published
-    ordering: 2
   - &6
     presentation_mode: card
     participation_method: ideation
@@ -1038,16 +1046,20 @@ models:
         verminderen van de hoeveelheid afval is een uitdaging voor het milieu die
         ook een financiële en maatschappelijke impact heeft.</p>\n"
     created_at: 2019-01-31 16:13:14 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      nl-BE: "<p>Elk jaar produceert elke bewoner enkele honderden kilo's afval. Het
+      nl-BE: 'Elk jaar produceert elke bewoner enkele honderden kilo''s afval. Het
         verminderen van de hoeveelheid afval is een uitdaging voor het milieu die
-        ook een financiële en maatschappelijke impact heeft.</p>\n"
-      nl-NL: "<p>Elk jaar produceert elke bewoner enkele honderden kilo's afval. Het
+        ook een financiële en maatschappelijke impact heeft.
+
+'
+      nl-NL: 'Elk jaar produceert elke bewoner enkele honderden kilo''s afval. Het
         verminderen van de hoeveelheid afval is een uitdaging voor het milieu die
-        ook een financiële en maatschappelijke impact heeft.</p>\n"
+        ook een financiële en maatschappelijke impact heeft.
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1513,7 +1525,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1981
     registration_completed_at: ''
   - &38
@@ -1530,7 +1541,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1952
     registration_completed_at: ''
   - &35
@@ -1547,7 +1557,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1962
     registration_completed_at: ''
   - &39
@@ -1564,7 +1573,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1944
     registration_completed_at: ''
   basket: []
