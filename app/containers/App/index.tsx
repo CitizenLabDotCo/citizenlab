@@ -20,7 +20,6 @@ import { PreviousPathnameContext } from 'context';
 // libraries
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
-import Loadable from 'react-loadable';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -30,9 +29,9 @@ import { trackPage, trackIdentification } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-// import FullscreenModal from 'components/UI/FullscreenModal';
-// import IdeasShow from 'containers/IdeasShow';
-// import VoteControl from 'components/VoteControl';
+import FullscreenModal from 'components/UI/FullscreenModal';
+import IdeasShow from 'containers/IdeasShow';
+import VoteControl from 'components/VoteControl';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -196,50 +195,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
-
-    const unauthenticatedVoteClick = this.unauthenticatedVoteClick;
-    const LoadableVoteControl = Loadable({
-      loading: () => null,
-      loader: () => import('components/VoteControl'),
-      render(loaded, props) {
-        const VoteControl = loaded.default;
-        return (
-          <VoteControl
-            {...props}
-            ideaId={modalId}
-            unauthenticatedVoteClick={unauthenticatedVoteClick}
-            size="1"
-          />
-        );
-      }
-    });
-    const closeModal = this.closeModal;
     const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
-      <LoadableVoteControl />
+      <VoteControl
+        ideaId={modalId}
+        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+        size="1"
+      />
     ) : undefined);
-    const LoadableFullscreenModal = Loadable.Map({
-      loading: () => null,
-      loader: {
-        FullscreenModal: () => import('components/UI/FullscreenModal'),
-        IdeasShow: () => import('containers/IdeasShow'),
-      },
-      render(loaded, props) {
-        const FullscreenModal = loaded.FullscreenModal.default;
-        const IdeasShow = loaded.IdeasShow.default;
-
-        return (
-          <FullscreenModal
-            opened={modalOpened}
-            close={closeModal}
-            url={modalUrl}
-            headerChild={fullscreenModalHeaderChild}
-            {...props}
-          >
-            {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-          </FullscreenModal>
-        );
-      }
-    });
 
     return (
       <>
@@ -249,15 +211,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
 
-                {/* <FullscreenModal
+                <FullscreenModal
                   opened={modalOpened}
                   close={this.closeModal}
                   url={modalUrl}
                   headerChild={fullscreenModalHeaderChild}
                 >
-                  {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-                </FullscreenModal> */}
-                <LoadableFullscreenModal />
+                  {modalId && <IdeasShow ideaId={modalId} inModal={true}/>}
+                </FullscreenModal>
 
                 <div id="modal-portal" />
 
