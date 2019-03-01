@@ -8222,6 +8222,11 @@ models:
     mode: down
     created_at: 2019-02-21 14:21:09 UTC
     updated_at: 2019-02-21 14:21:09 UTC
+  - votable_ref: *53
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:23:18 UTC
+    updated_at: 2019-02-21 14:23:18 UTC
   - votable_ref: *51
     user_ref: *68
     mode: up
@@ -8612,6 +8617,31 @@ models:
     mode: up
     created_at: 2019-02-21 14:28:42 UTC
     updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *54
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *46
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *50
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *55
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *49
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
   - votable_ref: *59
     user_ref: *82
     mode: down
@@ -8739,6 +8769,16 @@ models:
     updated_at: 2019-02-21 14:28:42 UTC
   - votable_ref: *58
     user_ref: *84
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *56
+    user_ref: 
+    mode: up
+    created_at: 2019-02-21 14:28:42 UTC
+    updated_at: 2019-02-21 14:28:42 UTC
+  - votable_ref: *51
+    user_ref: 
     mode: up
     created_at: 2019-02-21 14:28:42 UTC
     updated_at: 2019-02-21 14:28:42 UTC
