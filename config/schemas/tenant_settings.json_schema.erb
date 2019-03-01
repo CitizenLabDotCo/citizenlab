@@ -128,6 +128,10 @@
           "custom_onboarding_fallback_message": {
             "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "currently_working_on_text": {
+            "description": "Text shown on top of the project cards, leave empty for default",
+            "$ref": "#/definitions/multiloc_string"
           }
         }
       },
@@ -299,6 +303,17 @@
         }
       },
 
+      "manual_project_sorting": {
+        "type": "object",
+        "description":  "When active, projects are shown in the order that they've been manually drag&dropped in the admin. Otherwise the ordering is automated",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "projects_phases": {
         "type": "object",
         "description":	"",
@@ -392,9 +407,10 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "user_token": {
-            "description": "The user token that can be generated from your typeform profile",
+            "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
             "type": "string",
-            "private": true
+            "private": true,
+            "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>" 
           }
         }
       },

@@ -59,7 +59,7 @@ class Tenant < ApplicationRecord
     self.settings = ss.add_missing_settings(self.settings, SETTINGS_JSON_SCHEMA)
   end
 
-  def has_feature f
+  def has_feature? f
     settings.dig(f, 'allowed') && settings.dig(f, 'enabled')
   end
 

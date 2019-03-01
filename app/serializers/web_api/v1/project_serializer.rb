@@ -1,18 +1,24 @@
 class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :internal_role, :publication_status, :created_at, :updated_at, :ordering
+  attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :comments_count, :avatars_count, :allocated_budget, :internal_role, :publication_status, :created_at, :updated_at, :ordering
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
   has_many :topics
   has_many :permissions
+  has_many :avatars, serializer: WebApi::V1::AvatarSerializer
   
   has_one :action_descriptor
   has_one :user_basket
-  
+  has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, unless: :is_participation_context?
+
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+  end
+
+  def current_phase
+    TimelineService.new.current_phase(object)
   end
 
   def action_descriptor
@@ -36,9 +42,30 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     current_user&.baskets&.find_by participation_context_id: object.id
   end
 
+  def avatars_count
+    avatars_for_project[:total_count]
+  end
+
+  def avatars
+    avatars_for_project[:users]
+  end
+
+  def allocated_budget
+    Rails.cache.fetch("#{object.cache_key}/allocated_budget") do
+      object.allocated_budget
+    end
+  end
+
   # checked by included ParticipationContextSerializer
   def is_participation_context?
     object.is_participation_context?
   end
+
+  private
+
+  def avatars_for_project
+    @avatars_for_project ||= AvatarsService.new.avatars_for_project(object, limit: 3)
+  end
+
 
 end
