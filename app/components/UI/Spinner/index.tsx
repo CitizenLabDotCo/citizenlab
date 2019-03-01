@@ -5,13 +5,25 @@ import { media } from 'utils/styleUtils';
 // Centered spinner taking the navbar height into account
 const FullPageCenter = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${props => 2  * (props.theme.menuHeight)}px - 1px);
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => 2 * props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
+`;
+
+const FullPageCenterAdmin = styled.div`
+  width: 100%;
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 90px - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px - 90px);
   `}
 `;
 
@@ -73,5 +85,13 @@ export const FullPageCenteredSpinner = () => {
     <FullPageCenter>
       <Spinner />
     </FullPageCenter>
+  );
+};
+
+export const FullPageCenteredSpinnerAdmin = () => {
+  return (
+    <FullPageCenterAdmin>
+      <Spinner />
+    </FullPageCenterAdmin>
   );
 };
