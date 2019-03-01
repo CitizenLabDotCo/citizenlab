@@ -1,6 +1,8 @@
 class SideFxOfficialFeedbackService
   include SideFxHelper
 
+  @@mention_service = MentionService.new
+
   def before_create feedback, user
     process_mentions feedback
   end
