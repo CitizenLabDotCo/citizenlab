@@ -890,12 +890,14 @@ models:
       de-DE: "<p>Für eine Neuausrichtung des Stadtteilfestes am Harras im Sommer 2018
         ist das Kultur- und Veranstaltungsamt auf Ihre Ideen gespannt.</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Für eine Neuausrichtung des Stadtteilfestes am Harras im Sommer 2018
-        ist das Kultur- und Veranstaltungsamt auf Ihre Ideen gespannt.</p>\n"
+      de-DE: 'Für eine Neuausrichtung des Stadtteilfestes am Harras im Sommer 2018
+        ist das Kultur- und Veranstaltungsamt auf Ihre Ideen gespannt.
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -914,11 +916,13 @@ models:
     description_multiloc:
       de-DE: "<p>Mehr Spielplätze? Mehr Bäume? Mehr Bänke?</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Mehr Spielplätze? Mehr Bäume? Mehr Bänke?</p>\n"
+      de-DE: 'Mehr Spielplätze? Mehr Bäume? Mehr Bänke?
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -937,11 +941,13 @@ models:
     description_multiloc:
       de-DE: "<p>Welche Ampelschaltungen sind ausbaufähig?</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Welche Ampelschaltungen sind ausbaufähig?</p>\n"
+      de-DE: 'Welche Ampelschaltungen sind ausbaufähig?
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -961,12 +967,14 @@ models:
       de-DE: "<p>Wie stellen Sie den Floß-Kanal vor? Die Stadtverwaltung ist gespannt
         auf Ihre Ideen.</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Wie stellen Sie den Floß-Kanal vor? Die Stadtverwaltung ist gespannt
-        auf Ihre Ideen.</p>\n"
+      de-DE: 'Wie stellen Sie den Floß-Kanal vor? Die Stadtverwaltung ist gespannt
+        auf Ihre Ideen.
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -988,14 +996,16 @@ models:
         Zusätzliche Angebote, die den Nahverkehr unterstützen? Welche Rolle soll der
         Radverkehr einnehmen?</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Für die Ausarbeitung des neuen Verkehrsentwicklungsplan 2020+ möchten
+      de-DE: 'Für die Ausarbeitung des neuen Verkehrsentwicklungsplan 2020+ möchten
         wir gerne Ihre Ideen wissen. Welche neuen Linien? Verbesserung des Fahrplans?
         Zusätzliche Angebote, die den Nahverkehr unterstützen? Welche Rolle soll der
-        Radverkehr einnehmen?</p>\n"
+        Radverkehr einnehmen?
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1015,12 +1025,14 @@ models:
       de-DE: "<p>Wir bitten Sie um Ihre Stellungnahme und Anmerkungen. Wie kann die
         Friedrichstraße neu gestaltet werden?</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Wir bitten Sie um Ihre Stellungnahme und Anmerkungen. Wie kann die
-        Friedrichstraße neu gestaltet werden?</p>\n"
+      de-DE: 'Wir bitten Sie um Ihre Stellungnahme und Anmerkungen. Wie kann die Friedrichstraße
+        neu gestaltet werden?
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1041,13 +1053,15 @@ models:
         werden. Über Ihre Ideen und Anmerkungen freut sich das Dezernat für Stadtplanung
         sehr.</p>\n"
     created_at: 2019-01-31 16:09:06 UTC
-    updated_at: 2019-02-22 09:23:47 UTC
+    updated_at: 2019-02-26 14:31:24 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      de-DE: "<p>Im Jahr 2019 soll die Hauptstraße über ihre komplette Länge erneuert
+      de-DE: 'Im Jahr 2019 soll die Hauptstraße über ihre komplette Länge erneuert
         werden. Über Ihre Ideen und Anmerkungen freut sich das Dezernat für Stadtplanung
-        sehr.</p>\n"
+        sehr.
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1317,7 +1331,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1925
     registration_completed_at: ''
   - &30
@@ -1334,7 +1347,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1997
     registration_completed_at: ''
   - &33
@@ -1351,7 +1363,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1950
     registration_completed_at: ''
   - &73
@@ -1368,7 +1379,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
     registration_completed_at: ''
   - &62
     email: johannes+admin@citizenlab.co
@@ -1384,7 +1394,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 2003
     registration_completed_at: ''
   - &66
@@ -1401,7 +1410,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1953
     registration_completed_at: ''
   - &64
@@ -1418,7 +1426,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1940
     registration_completed_at: ''
   - &70
@@ -1435,7 +1442,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1990
     registration_completed_at: ''
   - &26
@@ -1467,7 +1473,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 2001
     registration_completed_at: ''
   - &24
@@ -1484,7 +1489,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
     registration_completed_at: ''
   - &36
     email: Jenni+admin@citizenlab.co
@@ -1500,7 +1504,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1996
     registration_completed_at: ''
   - &28
@@ -1517,7 +1520,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1961
     registration_completed_at: ''
   basket: []
