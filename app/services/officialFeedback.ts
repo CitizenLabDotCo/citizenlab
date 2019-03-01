@@ -22,6 +22,10 @@ export interface IOfficialFeedbackData {
 }
 
 export interface IOfficialFeedback {
+  data: IOfficialFeedbackData;
+}
+
+export interface IOfficialFeedbacks {
   data: IOfficialFeedbackData[];
 }
 
@@ -34,8 +38,8 @@ export function officialFeedbackStream(officialFeedbackId: string) {
   return streams.get<IOfficialFeedback>({ apiEndpoint: `${API_PATH}/official_feedback/${officialFeedbackId }` });
 }
 
-export function officialFeedbackForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IOfficialFeedback>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`, ...streamParams });
+export function officialFeedbacksForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`, ...streamParams });
 }
 
 export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFeedback) {
@@ -43,7 +47,9 @@ export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFe
     official_feedback: feedBack
   };
 
-  return streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
+  const response = await streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`] });
+  return response;
 }
 
 export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {
