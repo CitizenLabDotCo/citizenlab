@@ -56,6 +56,8 @@ const DatePosted = styled.span`
 const DateEdited = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-style: italic;
+  margin-top: 10px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
