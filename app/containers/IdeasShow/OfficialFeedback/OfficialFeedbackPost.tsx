@@ -38,6 +38,7 @@ const EditFormContainer = Container.extend`
 const Body = styled.div`
   line-height: 23px;
   margin-bottom: 16px;
+  white-space: pre-line;
 `;
 
 const Footer = styled.div`
@@ -123,6 +124,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
         </EditFormContainer>
       );
     }
+    console.log(body_multiloc);
 
     return (
       <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
