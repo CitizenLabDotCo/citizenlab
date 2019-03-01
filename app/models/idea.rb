@@ -7,12 +7,14 @@ class Idea < ApplicationRecord
     :against => [:title_multiloc, :body_multiloc, :author_name],
     :using => { :tsearch => {:prefix => true} }
 
-  belongs_to :project
+  belongs_to :project, touch: true
   counter_culture :project, 
     column_name: proc {|idea| idea.publication_status == 'published' ? "ideas_count" : nil},
     column_names: {
       ["ideas.publication_status = ?", 'published'] => 'ideas_count'
-    }
+    },
+    touch: true
+
   belongs_to :author, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy

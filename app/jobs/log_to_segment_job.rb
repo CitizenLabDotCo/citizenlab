@@ -11,8 +11,12 @@ class LogToSegmentJob < ApplicationJob
         source: 'cl2-back'
       }
     }
+
     if activity.user_id
       event[:user_id] = activity.user_id
+      if activity.user
+        event[:integrations] = service.integrations(activity.user)
+      end
     else
     	event[:anonymous_id] = SecureRandom.base64
     end

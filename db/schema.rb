@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_15_155920) do
+ActiveRecord::Schema.define(version: 2019_02_20_152327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -526,6 +526,7 @@ ActiveRecord::Schema.define(version: 2019_02_15_155920) do
     t.string "survey_service"
     t.integer "ordering"
     t.integer "max_budget"
+    t.integer "comments_count", default: 0, null: false
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -717,6 +718,116 @@ ActiveRecord::Schema.define(version: 2019_02_15_155920) do
              FROM votes
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
+  SQL
+
+  create_view "project_sort_scores",  sql_definition: <<-SQL
+      SELECT sub.id AS project_id,
+      concat(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score, sub.action_score) AS score
+     FROM ( SELECT projects.id,
+                  CASE projects.publication_status
+                      WHEN 'draft'::text THEN 1
+                      WHEN 'published'::text THEN 2
+                      WHEN 'archived'::text THEN 3
+                      ELSE 4
+                  END AS status_score,
+                  CASE projects.publication_status
+                      WHEN 'archived'::text THEN 3
+                      ELSE
+                      CASE projects.process_type
+                          WHEN 'continuous'::text THEN 2
+                          WHEN 'timeline'::text THEN
+                          CASE
+                              WHEN (EXISTS ( SELECT 1
+                                 FROM phases
+                                WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date) AND (phases.project_id = projects.id)))) THEN 1
+                              ELSE 3
+                          END
+                          ELSE NULL::integer
+                      END
+                  END AS active_score,
+                  CASE projects.process_type
+                      WHEN 'timeline'::text THEN
+                      CASE
+                          WHEN (EXISTS ( SELECT 1
+                             FROM phases
+                            WHERE (((abs((phases.start_at - (now())::date)) <= 7) OR (abs((phases.end_at - (now())::date)) <= 7)) AND (phases.project_id = projects.id)))) THEN 1
+                          ELSE 2
+                      END
+                      WHEN 'continuous'::text THEN
+                      CASE
+                          WHEN (((now())::date - (projects.created_at)::date) <= 7) THEN 1
+                          ELSE 2
+                      END
+                      ELSE NULL::integer
+                  END AS hot_score,
+              lpad((
+                  CASE projects.process_type
+                      WHEN 'timeline'::text THEN COALESCE(min(joined_phases.recency_diff), ((now())::date - (projects.created_at)::date))
+                      WHEN 'continuous'::text THEN ((now())::date - (projects.created_at)::date)
+                      ELSE NULL::integer
+                  END)::text, 5, '0'::text) AS recency_score,
+                  CASE projects.publication_status
+                      WHEN 'archived'::text THEN 9
+                      ELSE
+                      CASE projects.process_type
+                          WHEN 'continuous'::text THEN
+                          CASE projects.participation_method
+                              WHEN 'ideation'::text THEN
+                              CASE
+                                  WHEN projects.posting_enabled THEN 1
+                                  WHEN projects.commenting_enabled THEN 4
+                                  WHEN projects.voting_enabled THEN 5
+                                  ELSE 6
+                              END
+                              WHEN 'budgeting'::text THEN 2
+                              WHEN 'survey'::text THEN 3
+                              WHEN 'information'::text THEN 7
+                              ELSE 8
+                          END
+                          WHEN 'timeline'::text THEN
+                          CASE COALESCE(max((active_phases.participation_method)::text), 'no_active_pc'::text)
+                              WHEN 'no_active_pc'::text THEN 9
+                              WHEN 'ideation'::text THEN
+                              CASE
+                                  WHEN bool_or(active_phases.posting_enabled) THEN 1
+                                  WHEN bool_or(active_phases.commenting_enabled) THEN 4
+                                  WHEN bool_or(active_phases.voting_enabled) THEN 5
+                                  ELSE 6
+                              END
+                              WHEN 'budgeting'::text THEN 2
+                              WHEN 'survey'::text THEN 3
+                              WHEN 'information'::text THEN 7
+                              ELSE 8
+                          END
+                          ELSE NULL::integer
+                      END
+                  END AS action_score
+             FROM ((projects
+               LEFT JOIN ( SELECT phases.id,
+                      phases.project_id,
+                      LEAST(abs(((now())::date - phases.start_at)), abs(((now())::date - phases.end_at))) AS recency_diff
+                     FROM phases) joined_phases ON ((joined_phases.project_id = projects.id)))
+               LEFT JOIN ( SELECT phases.id,
+                      phases.project_id,
+                      phases.title_multiloc,
+                      phases.description_multiloc,
+                      phases.start_at,
+                      phases.end_at,
+                      phases.created_at,
+                      phases.updated_at,
+                      phases.participation_method,
+                      phases.posting_enabled,
+                      phases.commenting_enabled,
+                      phases.voting_enabled,
+                      phases.voting_method,
+                      phases.voting_limited_max,
+                      phases.survey_embed_url,
+                      phases.survey_service,
+                      phases.presentation_mode,
+                      phases.max_budget
+                     FROM phases
+                    WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
+            GROUP BY projects.id) sub;
   SQL
 
 end
