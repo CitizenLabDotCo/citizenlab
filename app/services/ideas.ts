@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
+import { first } from 'rxjs/operators';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -169,8 +170,11 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 }
 
 export async function deleteIdea(ideaId: string) {
-  const response = await streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
-  // await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  const [idea, response] = await Promise.all([
+    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
+    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId)
+  ]);
+  streams.fetchAllWith({ dataId: [idea.data.relationships.project.data.id] });
   return response;
 }
 

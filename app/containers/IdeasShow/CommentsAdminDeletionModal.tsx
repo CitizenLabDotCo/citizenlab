@@ -22,6 +22,10 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 // Styling
 import styled from 'styled-components';
 
+const Container = styled.div`
+  padding: 30px;
+`;
+
 const ButtonsWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -30,7 +34,7 @@ const ButtonsWrapper = styled.div`
   width: 100%;
 
   .Button {
-    margin-left: 1rem;
+    margin-right: 1rem;
     margin-bottom: 0.5rem;
   }
 `;
@@ -91,40 +95,42 @@ class CommentsAdminDeletionForm extends React.Component<Props, State> {
 
   render() {
     return (
-      <Formik initialValues={{ reason_code: null, other_reason: null }} onSubmit={this.props.onDeleteComment} validate={this.validateForm}>
-        {({ values, isSubmitting, isValid }) => (
-          <Form noValidate>
-            <SectionField>
-              {Object.keys(DeleteReasonCode).map((code) => (
-                <FormikRadio
-                  value={code}
-                  name="reason_code"
-                  id={`reason_code-${code}`}
-                  label={<FormattedMessage {...messages[`deleteReason_${code}`]} />}
-                  key={code}
-                />
-              ))}
-            </SectionField>
+      <Container>
+        <Formik initialValues={{ reason_code: null, other_reason: null }} onSubmit={this.props.onDeleteComment} validate={this.validateForm}>
+          {({ values, isSubmitting, isValid }) => (
+            <Form noValidate>
+              <SectionField>
+                {Object.keys(DeleteReasonCode).map((code) => (
+                  <FormikRadio
+                    value={code}
+                    name="reason_code"
+                    id={`reason_code-${code}`}
+                    label={<FormattedMessage {...messages[`deleteReason_${code}`]} />}
+                    key={code}
+                  />
+                ))}
+              </SectionField>
 
-            <TransitionGroup>
-              {(values.reason_code === 'other') ? (
-                <CSSTransition classNames="reason" timeout={timeout} enter={true} exit={true} >
-                  <DeleteReason>
-                    <SectionField>
-                      <FormikTextArea name="other_reason" />
-                    </SectionField>
-                  </DeleteReason>
-                </CSSTransition>
-              ) : null}
-            </TransitionGroup>
+              <TransitionGroup>
+                {(values.reason_code === 'other') ? (
+                  <CSSTransition classNames="reason" timeout={timeout} enter={true} exit={true} >
+                    <DeleteReason>
+                      <SectionField>
+                        <FormikTextArea name="other_reason" />
+                      </SectionField>
+                    </DeleteReason>
+                  </CSSTransition>
+                ) : null}
+              </TransitionGroup>
 
-            <ButtonsWrapper>
-              <Button style="secondary" circularCorners={false} onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
-              <Button disabled={!isValid} style="primary" processing={isSubmitting} circularCorners={false}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
-            </ButtonsWrapper>
-          </Form>
-        )}
-      </Formik>
+              <ButtonsWrapper>
+                <Button style="secondary" circularCorners={false} onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
+                <Button disabled={!isValid} style="primary" processing={isSubmitting} circularCorners={false}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
+              </ButtonsWrapper>
+            </Form>
+          )}
+        </Formik>
+      </Container>
     );
   }
 }

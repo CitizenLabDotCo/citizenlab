@@ -471,7 +471,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const hasAvatars = (project.relationships.avatars && project.relationships.avatars.data && project.relationships.avatars.data.length > 0);
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
-      const avatarIds = (hasAvatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
+      const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
