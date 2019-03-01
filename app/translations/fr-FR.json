@@ -1083,7 +1083,7 @@
   "app.containers.ProjectCards.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
   "app.containers.ProjectCards.archivedProjects": "Projets archivés",
   "app.containers.ProjectCards.areasTitle": "Lieux",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{tenantName} travaille sur",
+  "app.containers.ProjectCards.currentlyWorkingOn": "{tenantName} travaille actuellement sur",
   "app.containers.ProjectCards.publicationStatus": "Statut de publication",
   "app.containers.ProjectInfo.imageAltText": "Image du projet {index}",
   "app.containers.ProjectInfo.projectAttachments": "Pièces jointes",
