@@ -1,4 +1,4 @@
-import { IOfficialFeedback } from 'services/officialFeedback';
+import { IOfficialFeedbacks } from 'services/officialFeedback';
 
 export const mockOfficialFeedback = {
   data: [
@@ -31,4 +31,4 @@ export const mockOfficialFeedback = {
       }
     }
   ]
-} as IOfficialFeedback;
+} as IOfficialFeedbacks;

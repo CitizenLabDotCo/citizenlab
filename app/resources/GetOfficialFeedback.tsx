@@ -2,7 +2,7 @@ import React from 'react';
 import { get, isString, isNil, isError } from 'lodash-es';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, mergeScan, map, filter, tap } from 'rxjs/operators';
-import { IOfficialFeedback, IOfficialFeedbackData, officialFeedbackForIdeaStream } from 'services/officialFeedback';
+import { IOfficialFeedbackData, IOfficialFeedbacks, officialFeedbacksForIdeaStream } from 'services/officialFeedback';
 
 export interface InputProps {
   ideaId: string | null;
@@ -74,8 +74,8 @@ export default class GetOfficialFeedback extends React.Component<Props, State> {
                 loadingMore: isLoadingMore,
               });
 
-              return officialFeedbackForIdeaStream(ideaId as string, { queryParameters }).observable.pipe(
-                map((officialFeedback: IOfficialFeedback | Error) => {
+              return officialFeedbacksForIdeaStream(ideaId as string, { queryParameters }).observable.pipe(
+                map((officialFeedback: IOfficialFeedbacks | Error) => {
                   const selfLink = get(officialFeedback, 'links.self');
                   const lastLink = get(officialFeedback, 'links.last');
                   const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
