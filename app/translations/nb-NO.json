@@ -1083,7 +1083,7 @@
   "app.containers.ProjectCards.allProjects": "Alle prosjekter",
   "app.containers.ProjectCards.archivedProjects": "Arkiverte prosjekter",
   "app.containers.ProjectCards.areasTitle": "Områder",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{tenantName} is currently working on",
+  "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} is currently working on",
   "app.containers.ProjectCards.publicationStatus": "Publiseringsstatus",
   "app.containers.ProjectInfo.imageAltText": "Prosjektbilde {index}",
   "app.containers.ProjectInfo.projectAttachments": "Vedlegg",
