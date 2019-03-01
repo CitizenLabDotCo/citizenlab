@@ -105,6 +105,7 @@ const ShortFeedback = styled.div`
   background: ${colors.background};
   display: flex;
   border-bottom: solid 4px ${(props) => rgba(props.theme.colorMain, 0.08)};
+  /* border-bottom: solid 4px ${darken(0.03, colors.background)}; */
 
   &:not(.whiteBg) {
     margin-top: 40px;
@@ -120,7 +121,8 @@ const ShortFeedback = styled.div`
 `;
 
 const ShortFeedbackInner = styled.div`
-  color: ${(props) => darken(0.1, props.theme.colorText)};
+  color: ${({ theme }) => theme.colorText};
+  /* color: ${colors.label}; */
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
@@ -128,6 +130,7 @@ const ShortFeedbackInner = styled.div`
   align-items: center;
   padding: 12px 25px;
   background: ${(props) => rgba(props.theme.colorMain, 0.08)};
+  /* background: ${darken(0.03, colors.background)}; */
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -152,12 +155,13 @@ const Buttons = styled.div`
 `;
 
 const FeedbackButton = styled.button`
+  color: ${({ theme }) => theme.colorText};
+  /* color: ${colors.label}; */
+  font-weight: 500;
+  text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${(props) => props.theme.colorText};
-  font-weight: 500;
-  text-transform: uppercase;
   padding: 0 12px;
   margin-bottom: -3px;
   z-index: 1;
@@ -175,7 +179,7 @@ const FeedbackButton = styled.button`
 `;
 
 const PagesNav = styled.nav`
-  color: ${colors.adminTextColor};
+  color: ${colors.label};
   font-weight: 300;
   text-align: left;
 
@@ -193,10 +197,6 @@ const PagesNav = styled.nav`
       margin-left: 10px;
       margin-right: 10px;
     }
-
-    button {
-      white-space: nowrap;
-    }
   }
 
   ${media.smallerThanMaxTablet`
@@ -208,7 +208,7 @@ const PagesNav = styled.nav`
 `;
 
 const StyledThing = styled(Polymorph)`
-  color: ${colors.adminTextColor};
+  color: ${colors.label};
   font-weight: 300;
   font-size: ${fontSizes.small}px;
   text-decoration: none;
@@ -244,7 +244,7 @@ const Right = styled.div`
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.adminTextColor};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   text-decoration: none;

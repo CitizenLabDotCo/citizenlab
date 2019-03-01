@@ -248,19 +248,16 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const ShowMoreButtonWrapper = styled.div`
+const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    margin-top: 40px;
-  `}
+  margin-top: 20px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
-    margin-top: 20px;
+    margin-top: 0px;
   `}
 `;
 
@@ -413,7 +410,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showCardView && !querying && hasMore &&
-          <ShowMoreButtonWrapper>
+          <Footer>
             <ShowMoreButton
               onClick={this.loadMore}
               size="1"
@@ -429,7 +426,7 @@ class IdeaCards extends PureComponent<Props, State> {
               bgHoverColor={rgba(theme.colorMain, 0.12)}
               fontWeight="500"
             />
-          </ShowMoreButtonWrapper>
+          </Footer>
         }
 
         {showMapView && hasIdeas &&
