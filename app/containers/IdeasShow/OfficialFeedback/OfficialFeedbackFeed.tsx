@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -7,7 +6,7 @@ import Button from 'components/UI/Button';
 import OfficialFeedbackPost from './OfficialFeedbackPost';
 
 // resources
-import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
+import { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
 // styles
 import styled from 'styled-components';
@@ -25,29 +24,24 @@ const Container = styled.div`
 const LoadMoreButton = styled(Button)`
 `;
 
-interface InputProps {
+interface Props {
   ideaId: string;
   editingAllowed: boolean | null;
+  officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
-
-interface DataProps {
-  officialFeedback: GetOfficialFeedbackChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
 
 interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedback, editingAllowed } = this.props;
+    const { officialFeedbacks, editingAllowed } = this.props;
 
-    if (officialFeedback) {
-      const { officialFeedbackList, querying, hasMore, loadingMore, onLoadMore } = officialFeedback;
+    if (officialFeedbacks) {
+      const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
 
       return (
         <Container>
-          {!isNilOrError(officialFeedbackList) && officialFeedbackList.map(officialFeedbackPost => {
+          {!isNilOrError(officialFeedbacksList) && officialFeedbacksList.data && officialFeedbacksList.data.map(officialFeedbackPost => {
             return (
               <OfficialFeedbackPost
                 key={officialFeedbackPost.id}
@@ -80,18 +74,4 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  officialFeedback: ({ ideaId, render }) => <GetOfficialFeedback ideaId={ideaId}>{render}</GetOfficialFeedback>,
-});
-
-const OfficialFeedbackFeedWithIntl = injectIntl<Props>(OfficialFeedbackFeed);
-
-const WrappedOfficialFeedBack = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <OfficialFeedbackFeedWithIntl {...inputProps} {...dataProps} />}
-  </Data>
-);
-
-Object.assign(WrappedOfficialFeedBack).displayName = 'WrappedOfficialFeedBack';
-
-export default WrappedOfficialFeedBack;
+export default injectIntl<Props>(OfficialFeedbackFeed);

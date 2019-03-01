@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
-
+import React, { PureComponent } from 'react';
 import { addOfficialFeedbackToIdea } from 'services/officialFeedback';
-
 import { Formik } from 'formik';
 import OfficialFeedbackForm, { FormValues, formatMentionsBodyMultiloc } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
@@ -9,26 +7,28 @@ import { CLErrorsJSON } from 'typings';
 interface Props {
   ideaId: string;
   className?: string;
+  // newCommentPosted: () => void;
 }
 
-export default class OfficialFeedbackNew extends Component<Props> {
+interface State {}
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
+export default class OfficialFeedbackNew extends PureComponent<Props, State> {
+  handleSubmit = async (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
     const formattedMentionsBodyMultiloc = formatMentionsBodyMultiloc(values.body_multiloc);
     const { ideaId } = this.props;
     const feedbackValues = { ...values, ...{ body_multiloc: formattedMentionsBodyMultiloc } };
 
     setSubmitting(true);
-    addOfficialFeedbackToIdea(ideaId, feedbackValues)
-      .then(() => {
-        setSubmitting(false);
-        resetForm();
-      }).catch((errorResponse) => {
 
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      });
+    try {
+      await addOfficialFeedbackToIdea(ideaId, feedbackValues);
+      setSubmitting(false);
+      resetForm();
+    } catch (errorResponse) {
+      const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+      setErrors(apiErrors);
+      setSubmitting(false);
+    }
   }
 
   renderFn = (props) => {
@@ -38,7 +38,7 @@ export default class OfficialFeedbackNew extends Component<Props> {
   initialValues = () => ({
     author_multiloc: {},
     body_multiloc: {}
-  })
+  });
 
   render() {
     return (
