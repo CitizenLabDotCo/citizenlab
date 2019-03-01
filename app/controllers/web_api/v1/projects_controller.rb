@@ -9,11 +9,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       ProjectPolicy::Scope.new(current_user, Project).moderatable 
     else 
       policy_scope(Project)
-    end.includes(:project_images, :phases)
-      .publication_status_ordered
-      .order(:ordering)
-      .page(params.dig(:page, :number))
-      .per(params.dig(:page, :size))
+    end
       
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
@@ -24,11 +20,16 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
-    render json: @projects, include: ['project_images']
+    @projects = ProjectSortingService.new.sort(@projects)
+      .includes(:project_images, :phases)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: @projects, include: ['project_images', 'current_phase', 'avatars']
   end
 
   def show
-    render json: @project, include: ['project_images']
+    render json: @project, include: ['project_images', 'current_phase', 'avatars']
   end
 
   def by_slug
@@ -47,7 +48,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       SideFxProjectService.new.after_create(@project, current_user)
       render json: @project, status: :created
     else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
+      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images', 'current_phase', 'avatars']
     end
   end
 

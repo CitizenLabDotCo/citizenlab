@@ -128,6 +128,10 @@
           "custom_onboarding_fallback_message": {
             "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "currently_working_on_text": {
+            "description": "Text shown on top of the project cards, leave empty for default",
+            "$ref": "#/definitions/multiloc_string"
           }
         }
       },
@@ -296,6 +300,17 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "manual_project_sorting": {
+        "type": "object",
+        "description":  "When active, projects are shown in the order that they've been manually drag&dropped in the admin. Otherwise the ordering is automated",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
