@@ -29,7 +29,6 @@ const ButtonContainer = styled.div`
   >:not(:last-child) {
     margin-right: 5px;
   }
-
 `;
 
 const CancelButton = styled(Button)`
@@ -159,5 +158,16 @@ class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormVal
     );
   }
 }
+
+export const formatMentionsBodyMultiloc = (bodyMultiloc: Multiloc): Multiloc => {
+  const formattedMentionsBodyMultiloc = {};
+
+  for (const locale in bodyMultiloc) {
+    const bodyText = bodyMultiloc[locale];
+    formattedMentionsBodyMultiloc[locale] = bodyText.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2');
+  }
+
+  return formattedMentionsBodyMultiloc;
+};
 
 export default OfficialFeedbackFormWithHoCs;
