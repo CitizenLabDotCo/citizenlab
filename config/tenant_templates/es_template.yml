@@ -3,14 +3,18 @@ models:
   area:
   - title_multiloc:
       en: Renca 1
+      es-ES: Renca 1
     description_multiloc:
       en: "<p>Unidad vecinal 1</p>"
+      es-ES: "<p>Unidad vecinal 1</p>"
     created_at: 2019-02-21 00:33:12 UTC
     updated_at: 2019-02-21 00:33:12 UTC
   - title_multiloc:
       en: Renca 2
+      es-ES: Renca 2
     description_multiloc:
       en: "<p>Unidad Vecinal 2 </p>"
+      es-ES: "<p>Unidad Vecinal 2 </p>"
     created_at: 2019-02-21 00:33:32 UTC
     updated_at: 2019-02-21 00:33:32 UTC
   custom_field:
@@ -29,7 +33,9 @@ models:
       nb-NO: Gender
       nl-BE: Geslacht
       nl-NL: Geslacht
-    description_multiloc: {}
+      es-ES: Gender
+    description_multiloc:
+      es-ES: 
     required: false
     ordering: 0
     created_at: 2018-12-10 09:43:29 UTC
@@ -50,7 +56,9 @@ models:
       nb-NO: Year of birth
       nl-BE: Geboortejaar
       nl-NL: Geboortejaar
-    description_multiloc: {}
+      es-ES: Year of birth
+    description_multiloc:
+      es-ES: 
     required: false
     ordering: 1
     created_at: 2018-12-10 09:43:29 UTC
@@ -71,7 +79,9 @@ models:
       nb-NO: Place of residence
       nl-BE: Woonplaats
       nl-NL: Woonplaats
-    description_multiloc: {}
+      es-ES: Place of residence
+    description_multiloc:
+      es-ES: 
     required: false
     ordering: 2
     created_at: 2018-12-10 09:43:29 UTC
@@ -93,7 +103,9 @@ models:
       nb-NO: Education
       nl-BE: Opleiding
       nl-NL: Opleiding
-    description_multiloc: {}
+      es-ES: Education
+    description_multiloc:
+      es-ES: 
     required: false
     ordering: 3
     created_at: 2018-12-10 09:43:29 UTC
@@ -114,6 +126,7 @@ models:
       nb-NO: Male
       nl-BE: Man
       nl-NL: Man
+      es-ES: Male
     ordering: 0
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -130,6 +143,7 @@ models:
       nb-NO: Female
       nl-BE: Vrouw
       nl-NL: Vrouw
+      es-ES: Female
     ordering: 1
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -146,6 +160,7 @@ models:
       nb-NO: Unspecified
       nl-BE: Onbepaald
       nl-NL: Onbepaald
+      es-ES: Unspecified
     ordering: 2
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -162,6 +177,7 @@ models:
       nb-NO: Lower secondary education
       nl-BE: Lager secundair onderwijs
       nl-NL: Lager secundair onderwijs
+      es-ES: Lower secondary education
     ordering: 0
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -178,6 +194,7 @@ models:
       nb-NO: Upper secondary education
       nl-BE: Hoger secundair onderwijs
       nl-NL: Hoger secundair onderwijs
+      es-ES: Upper secondary education
     ordering: 1
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -194,6 +211,7 @@ models:
       nb-NO: Post-secondary non-tertiary education
       nl-BE: Postsecundair niet-hoger onderwijs
       nl-NL: Postsecundair niet-hoger onderwijs
+      es-ES: Post-secondary non-tertiary education
     ordering: 2
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -210,6 +228,7 @@ models:
       nb-NO: Short-cycle tertiary education
       nl-BE: Tertiair onderwijs met korte cyclus
       nl-NL: Tertiair onderwijs met korte cyclus
+      es-ES: Short-cycle tertiary education
     ordering: 3
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -226,6 +245,7 @@ models:
       nb-NO: Bachelor or equivalent
       nl-BE: Bachelor of gelijkwaardig
       nl-NL: Bachelor of gelijkwaardig
+      es-ES: Bachelor or equivalent
     ordering: 4
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -242,6 +262,7 @@ models:
       nb-NO: Master or equivalent
       nl-BE: Master of gelijkwaardig
       nl-NL: Master of gelijkwaardig
+      es-ES: Master or equivalent
     ordering: 5
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -258,6 +279,7 @@ models:
       nb-NO: Doctoral or equivalent
       nl-BE: Doctoraat of gelijkwaardig
       nl-NL: Doctoraat of gelijkwaardig
+      es-ES: Doctoral or equivalent
     ordering: 6
     created_at: 2018-12-10 09:43:29 UTC
     updated_at: 2018-12-10 09:43:29 UTC
@@ -273,6 +295,7 @@ models:
       nb-NO: Squares and streets
       nl-BE: Straten en pleinen
       nl-NL: Straten en pleinen
+      es-ES: Squares and streets
     description_multiloc:
       en: Squares and streets
       da-DK: Squares and streets
@@ -284,6 +307,7 @@ models:
       nb-NO: Squares and streets
       nl-BE: Straten en pleinen
       nl-NL: Straten en pleinen
+      es-ES: Squares and streets
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -298,6 +322,7 @@ models:
       nb-NO: Cleanliness and waste
       nl-BE: Netheid en afval
       nl-NL: Netheid en afval
+      es-ES: Cleanliness and waste
     description_multiloc:
       en: Cleanliness and waste
       da-DK: Cleanliness and waste
@@ -309,6 +334,7 @@ models:
       nb-NO: Cleanliness and waste
       nl-BE: Netheid en afval
       nl-NL: Netheid en afval
+      es-ES: Cleanliness and waste
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -324,6 +350,7 @@ models:
       nb-NO: Mobility
       nl-BE: Mobiliteit
       nl-NL: Mobiliteit
+      es-ES: Mobility
     description_multiloc:
       en: Mobility
       da-DK: Mobility
@@ -335,6 +362,7 @@ models:
       nb-NO: Mobility
       nl-BE: Mobiliteit
       nl-NL: Mobiliteit
+      es-ES: Mobility
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -349,6 +377,7 @@ models:
       nb-NO: Technology
       nl-BE: Technologie
       nl-NL: Technologie
+      es-ES: Technology
     description_multiloc:
       en: Technology
       da-DK: Technology
@@ -360,6 +389,7 @@ models:
       nb-NO: Technology
       nl-BE: Technologie
       nl-NL: Technologie
+      es-ES: Technology
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -374,6 +404,7 @@ models:
       nb-NO: Work, economy and commerce
       nl-BE: Werk, economie en handel
       nl-NL: Werk, economie en handel
+      es-ES: Work, economy and commerce
     description_multiloc:
       en: Work, economy and commerce
       da-DK: Work, economy and commerce
@@ -385,6 +416,7 @@ models:
       nb-NO: Work, economy and commerce
       nl-BE: Werk, economie en handel
       nl-NL: Werk, economie en handel
+      es-ES: Work, economy and commerce
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -400,6 +432,7 @@ models:
       nb-NO: Nature and biodiversity
       nl-BE: Natuur en biodiversiteit
       nl-NL: Natuur en biodiversiteit
+      es-ES: Nature and biodiversity
     description_multiloc:
       en: Nature and biodiversity
       da-DK: Nature and biodiversity
@@ -411,6 +444,7 @@ models:
       nb-NO: Nature and biodiversity
       nl-BE: Natuur en biodiversiteit
       nl-NL: Natuur en biodiversiteit
+      es-ES: Nature and biodiversity
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -426,6 +460,7 @@ models:
       nb-NO: Sustainable development
       nl-BE: Duurzame ontwikkeling
       nl-NL: Duurzame ontwikkeling
+      es-ES: Sustainable development
     description_multiloc:
       en: Sustainable development
       da-DK: Sustainable development
@@ -437,6 +472,7 @@ models:
       nb-NO: Sustainable development
       nl-BE: Duurzame ontwikkeling
       nl-NL: Duurzame ontwikkeling
+      es-ES: Sustainable development
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -451,6 +487,7 @@ models:
       nb-NO: Housing
       nl-BE: Wonen
       nl-NL: Wonen
+      es-ES: Housing
     description_multiloc:
       en: Housing
       da-DK: Housing
@@ -462,6 +499,7 @@ models:
       nb-NO: Housing
       nl-BE: Wonen
       nl-NL: Wonen
+      es-ES: Housing
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -477,6 +515,7 @@ models:
       nb-NO: Arts, culture and events
       nl-BE: Kunst, cultuur en evenementen
       nl-NL: Kunst, cultuur en evenementen
+      es-ES: Arts, culture and events
     description_multiloc:
       en: Arts, culture and events
       da-DK: Arts, culture and events
@@ -488,6 +527,7 @@ models:
       nb-NO: Arts, culture and events
       nl-BE: Kunst, cultuur en evenementen
       nl-NL: Kunst, cultuur en evenementen
+      es-ES: Arts, culture and events
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -502,6 +542,7 @@ models:
       nb-NO: Citizenship
       nl-BE: Burgerschap
       nl-NL: Burgerschap
+      es-ES: Citizenship
     description_multiloc:
       en: Citizenship
       da-DK: Citizenship
@@ -513,6 +554,7 @@ models:
       nb-NO: Citizenship
       nl-BE: Burgerschap
       nl-NL: Burgerschap
+      es-ES: Citizenship
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -528,6 +570,7 @@ models:
       nb-NO: Social inclusion
       nl-BE: Sociale inclusie
       nl-NL: Sociale inclusie
+      es-ES: Social inclusion
     description_multiloc:
       en: Social inclusion
       da-DK: Social inclusion
@@ -539,6 +582,7 @@ models:
       nb-NO: Social inclusion
       nl-BE: Sociale inclusie
       nl-NL: Sociale inclusie
+      es-ES: Social inclusion
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -553,6 +597,7 @@ models:
       nb-NO: Care and welfare
       nl-BE: Zorg en welzijn
       nl-NL: Zorg en welzijn
+      es-ES: Care and welfare
     description_multiloc:
       en: Care and welfare
       da-DK: Care and welfare
@@ -564,6 +609,7 @@ models:
       nb-NO: Care and welfare
       nl-BE: Zorg en welzijn
       nl-NL: Zorg en welzijn
+      es-ES: Care and welfare
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -579,6 +625,7 @@ models:
       nb-NO: Sports
       nl-BE: Sport
       nl-NL: Sport
+      es-ES: Sports
     description_multiloc:
       en: Sports
       da-DK: Sports
@@ -590,6 +637,7 @@ models:
       nb-NO: Sports
       nl-BE: Sport
       nl-NL: Sport
+      es-ES: Sports
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -604,6 +652,7 @@ models:
       nb-NO: Education and youth
       nl-BE: Onderwijs en jeugd
       nl-NL: Onderwijs en jeugd
+      es-ES: Education and youth
     description_multiloc:
       en: Education and youth
       da-DK: Education and youth
@@ -615,6 +664,7 @@ models:
       nb-NO: Education and youth
       nl-BE: Onderwijs en jeugd
       nl-NL: Onderwijs en jeugd
+      es-ES: Education and youth
     icon: 
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -632,6 +682,7 @@ models:
       en: "¿Cómo mejoramos el centro comercial de nuestra comuna?"
       en-CA: Make the city centre more lively
       en-GB: Make the city centre more lively
+      es-ES: "¿Cómo mejoramos el centro comercial de nuestra comuna?"
     description_multiloc:
       en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
         shops and the park. You can share here your ideas to make it more lively!</p>\n"
@@ -639,11 +690,14 @@ models:
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
       en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
+      es-ES: "<p>Unfortunately, less and less people visit the city centre to enjoy
+        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2019-02-21 00:43:59 UTC
     remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/project/header_bg/3d6f2f5a-35fe-4c96-8377-a3d19fb4f378/header_bg.jpeg
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      es-ES: 
     process_type: timeline
     internal_role: 
     publication_status: draft
@@ -668,8 +722,12 @@ models:
       nb-NO: Participatory Budgeting
       nl-BE: Burgerbegroting
       nl-NL: Burgerbegroting
+      es-ES: 'Your say on the budget for: parks & streets in District 1'
     description_multiloc:
       en: |-
+        <h2>Delridge Way SW and SW Oregon St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Fast paced traffic along this residential corridor creates a challenging crossing for pedestrians. This year, we're installing a signalized crosswalk and updating curb ramps. Per the public vote, these fixes will enhance access to the existing pedestrian bridge and create an at-grade option for crossing Delridge Way SW.</p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a signalized crosswalk at Delridge Way SW and SW Oregon St to supplement the current pedestrian bridge</p><p><br></p><p>Install enhanced pedestrian curb ramps and maintain ADA accessibility</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/cc9d2c35-561b-491a-a1d9-d626bd0c0151/2018_0110_Delridge_Oregon_Map_v8_2_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Delridge Way SW and SW Barton St</h2><p>“Barton Bus Triangle” Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>The "Delridge Bus Triangle" is a City managed property in the heart of the Westwood Highland Park Urban Village. The location serves as a connection between Metro routes to the east, and the Westwood Village Transit mall to the west, along Barton Street SW. Installing sidewalks, and trimming the overgrown landscape, creates a safer space.</p><p>The project supports plans for upgrading local Metro Routes and improving connections for people walking and biking in 2020.</p><p>We have partnered with a "Friends of the Delridge Bus Triangle" to document the history, needs and collective vision of the space.</p><p><strong>Project Solution(s):</strong></p><p>Install an interim walking path on the south side of SW Barton St</p><p>Enhance and maintain the existing landscape</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/02fb0ded-67bf-4290-b70b-940632def86a/2018_0110_Delridge_Barton_Map_v5_0_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>SW Orchard St between Delridge Way SW and Sylvan Way SW</h2><p>Walkway Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Delridge Way SW contains a segment of road with a blind corner that lacks a walkway. This segment is regularly used by people traveling to a nearby school and the Vietnamese Cultural Center. Installing a walkway increases predictability, safety and accessibility for all travelers.</p><p><br></p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a painted walkway that parallels the road</p><p><br></p><p>Install new asphalt</p><p>Install wheel stops</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/776b798c-0c85-4372-9e94-9fe316119ef9/2018_Orchard-Sylvan_Map.png"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>12th Ave S, 8th Ave S and S Cloverdale St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>South Cloverdale Street experiences high traffic volumes from people driving and walking, making several intersections challenging to cross. The intersections along Cloverdale provide a connection to South Park Playground, South Park Community Center, Concord International School and the SR-99 freeway. Modifying them increases predictability, accessibility, and safety for travelers.</p><p><strong>Project Solution(s):</strong></p><p>Install a new marked crosswalk</p><p>Upgrade the current signal to meet ADA standards</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><br></p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/b6db464e-d8b3-412d-b834-cdd38684dc55/2018_0123_12th_Cloverdale_v4.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Materials</h2><ul><li>
+        <a href="https://www.seattle.gov/Documents/Departments/SDOT/PedestrianProgram/2018_YVYC_District_1_Postcards.pdf" target="_blank"><strong>District 1 Postcard Mailers</strong></a> (March 2018)</li></ul>
+      es-ES: |-
         <h2>Delridge Way SW and SW Oregon St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Fast paced traffic along this residential corridor creates a challenging crossing for pedestrians. This year, we're installing a signalized crosswalk and updating curb ramps. Per the public vote, these fixes will enhance access to the existing pedestrian bridge and create an at-grade option for crossing Delridge Way SW.</p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a signalized crosswalk at Delridge Way SW and SW Oregon St to supplement the current pedestrian bridge</p><p><br></p><p>Install enhanced pedestrian curb ramps and maintain ADA accessibility</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/cc9d2c35-561b-491a-a1d9-d626bd0c0151/2018_0110_Delridge_Oregon_Map_v8_2_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Delridge Way SW and SW Barton St</h2><p>“Barton Bus Triangle” Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>The "Delridge Bus Triangle" is a City managed property in the heart of the Westwood Highland Park Urban Village. The location serves as a connection between Metro routes to the east, and the Westwood Village Transit mall to the west, along Barton Street SW. Installing sidewalks, and trimming the overgrown landscape, creates a safer space.</p><p>The project supports plans for upgrading local Metro Routes and improving connections for people walking and biking in 2020.</p><p>We have partnered with a "Friends of the Delridge Bus Triangle" to document the history, needs and collective vision of the space.</p><p><strong>Project Solution(s):</strong></p><p>Install an interim walking path on the south side of SW Barton St</p><p>Enhance and maintain the existing landscape</p><p>Construction anticipated October - December 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/02fb0ded-67bf-4290-b70b-940632def86a/2018_0110_Delridge_Barton_Map_v5_0_.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>SW Orchard St between Delridge Way SW and Sylvan Way SW</h2><p>Walkway Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>Delridge Way SW contains a segment of road with a blind corner that lacks a walkway. This segment is regularly used by people traveling to a nearby school and the Vietnamese Cultural Center. Installing a walkway increases predictability, safety and accessibility for all travelers.</p><p><br></p><p>The project supports plans for upgrading Metro Route 120 to RapidRide H and improving connections for people walking and biking in 2020.</p><p><strong>Project Solution(s):</strong></p><p>Install a painted walkway that parallels the road</p><p><br></p><p>Install new asphalt</p><p>Install wheel stops</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/776b798c-0c85-4372-9e94-9fe316119ef9/2018_Orchard-Sylvan_Map.png"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>12th Ave S, 8th Ave S and S Cloverdale St</h2><p>Crossing Upgrades</p><p><strong>Project Description and Goals:</strong></p><p>South Cloverdale Street experiences high traffic volumes from people driving and walking, making several intersections challenging to cross. The intersections along Cloverdale provide a connection to South Park Playground, South Park Community Center, Concord International School and the SR-99 freeway. Modifying them increases predictability, accessibility, and safety for travelers.</p><p><strong>Project Solution(s):</strong></p><p>Install a new marked crosswalk</p><p>Upgrade the current signal to meet ADA standards</p><p>Construction anticipated July - September 2018</p><p class="ql-align-center"><br></p><p class="ql-align-center"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/b6db464e-d8b3-412d-b834-cdd38684dc55/2018_0123_12th_Cloverdale_v4.jpg"></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1#BackToTop" target="_blank"><strong>Back to top</strong></a></p><p><br></p><p><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program" target="_blank"><strong>Back to program landing page</strong></a></p><h2>Materials</h2><ul><li>
         <a href="https://www.seattle.gov/Documents/Departments/SDOT/PedestrianProgram/2018_YVYC_District_1_Postcards.pdf" target="_blank"><strong>District 1 Postcard Mailers</strong></a> (March 2018)</li></ul>
     created_at: 2018-12-10 17:10:25 UTC
@@ -678,6 +736,9 @@ models:
     visible_to: public
     description_preview_multiloc:
       en: 'Your Voice, Your Choice: Parks and Streets is a participatory budgeting
+        initiative in which residents democratically decide how to spend a portion
+        of the City''s budget on small-scale park and street improvements.'
+      es-ES: 'Your Voice, Your Choice: Parks and Streets is a participatory budgeting
         initiative in which residents democratically decide how to spend a portion
         of the City''s budget on small-scale park and street improvements.'
     process_type: timeline
@@ -697,6 +758,7 @@ models:
       en: Make the city more digital
       en-CA: Make the city more digital
       en-GB: Make the city more digital
+      es-ES: Make the city more digital
     description_multiloc:
       en: "<p>We should try to modernize the way the city works, including the administration,
         etc. Share here how digital installations could make our lives easier in the
@@ -707,11 +769,15 @@ models:
       en-GB: "<p>We should try to modernize the way the city works, including the
         administration, etc. Share here how digital installations could make our lives
         easier in the city.</p>\n"
+      es-ES: "<p>We should try to modernize the way the city works, including the
+        administration, etc. Share here how digital installations could make our lives
+        easier in the city.</p>\n"
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2019-02-21 00:43:59 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      es-ES: 
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -736,6 +802,7 @@ models:
       nb-NO: An idea? Bring it to your council!
       nl-BE: Een idee? Breng het op de gemeenteraad!
       nl-NL: Een idee? Breng het op de gemeenteraad!
+      es-ES: An idea? Bring it to your council!
     description_multiloc:
       en: '<p>Here, you can start your own idea if it doesn''t fit within one of the
         existing projects.</p><p><strong>The objective?</strong> To get your idea
@@ -958,6 +1025,30 @@ models:
         kijken ernaar uit om je ideeën te horen!</p>
 
 '
+      es-ES: '<p>Here, you can start your own idea if it doesn''t fit within one of
+        the existing projects.</p><p><strong>The objective?</strong> To get your idea
+        on the political agenda.</p><p><strong>How?</strong> By gathering support,
+        namely at least 100 votes in 3 months. You can do that by first making your
+        idea ''attractive''. Write it in a clear and engaging way, add images, give
+        strong arguments based on facts, add attachments with further details or background
+        information, ... After you''ve done that, start sharing your idea on social
+        media or through email. Invite people to join the discussion on your idea,
+        or simply convince them to support it by voting in favour.</p><p><a href="/en/projects/open-idea-project/ideas/new"
+        target="_blank"><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/text_image/image/32487100-93f5-48cc-b5cd-ff1b47f1dfbb/image_h6upkl.png"
+        data-align="center" style="display: block;margin:auto;"></a></p><p><strong>About
+        what?</strong> Your idea can be about a lot of things, as long as it is related
+        to your city and its policy. It can be a problem you experience, a solution
+        you envision or even a combination of both. It can be wild and on the long
+        term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did
+        you reach 100 votes in 3 months? Congratulations! The city will now take your
+        idea in consideration. If your idea is considered to be feasible and does
+        not harm specific groups or individuals, you will get the chance to present
+        your proposal during the council meeting. During that same meeting, the council
+        members will give you direct feedback on what they will or won''t do with
+        your idea and why. If you don''t gather 100 votes in 3 months, your proposal
+        won''t be considered.</p><p>We''re curious to learn about your ideas!</p>
+
+'
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2019-02-21 00:43:59 UTC
     remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/project/header_bg/36c1961b-87b5-433b-ba85-fc41558e804c/carrying-casual-cheerful-1162964_dxubq6.jpg
@@ -985,6 +1076,8 @@ models:
         het dan hier, verzamel steun en krijg het op de politieke agenda!
       nl-NL: Misschien past je idee niet bij een van de bestaande projecten? Plaats
         het dan hier, verzamel steun en krijg het op de politieke agenda!
+      es-ES: Maybe you have an idea that doesn't fit with one of the existing projects?
+        Then post it here, gather support and get it on the political agenda!
     process_type: continuous
     internal_role: open_idea_box
     publication_status: published
@@ -1000,11 +1093,17 @@ models:
     max_budget: 
     title_multiloc:
       en: Presupuestos Participativos en Renca
+      es-ES: Presupuestos Participativos en Renca
     description_multiloc:
       en: "<h1>El 2019 Renca no sólo vota sino que también diseña sus proyectos juntos.</h1><p><strong>El
         alcalde Claudio Castro señaló que este nuevo proceso de toma de decisión,
         garantiza la transparencia en cómo un municipio gasta los recursos y además
         permite la creación conjunta, fomentando una participación más integral!</strong></p>"
+      es-ES: "<h1>El 2019 Renca no sólo vota sino que también diseña sus proyectos
+        juntos.</h1><p><strong>El alcalde Claudio Castro señaló que este nuevo proceso
+        de toma de decisión, garantiza la transparencia en cómo un municipio gasta
+        los recursos y además permite la creación conjunta, fomentando una participación
+        más integral!</strong></p>"
     created_at: 2019-02-21 00:43:59 UTC
     updated_at: 2019-02-21 01:17:52 UTC
     remote_header_bg_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/project/header_bg/c0df491c-b739-403c-893f-a4564239727e/header_bg.jpeg
@@ -1012,6 +1111,8 @@ models:
     description_preview_multiloc:
       en: Los prespuestos participativos de renca, son una excelente oportunidad de
         decidir juntos el destino de recursos de nuestra comuna
+      es-ES: Los prespuestos participativos de renca, son una excelente oportunidad
+        de decidir juntos el destino de recursos de nuestra comuna
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1027,10 +1128,15 @@ models:
     max_budget: 
     title_multiloc:
       en: Mejoramiento espacios públicos
+      es-ES: Mejoramiento espacios públicos
     description_multiloc:
       en: "<p>En la Municipalidad sabemos lo importante que es para ti y todos los
         vecinos contar con espacios seguros que inviten al encuentro alrededor de
         la comuna.</p><p>Por eso tenemos un plan de más de 200 obras para mejorar
+        el barrio en diferentes aspectos de la vía pública.</p>"
+      es-ES: "<p>En la Municipalidad sabemos lo importante que es para ti y todos
+        los vecinos contar con espacios seguros que inviten al encuentro alrededor
+        de la comuna.</p><p>Por eso tenemos un plan de más de 200 obras para mejorar
         el barrio en diferentes aspectos de la vía pública.</p>"
     created_at: 2019-02-14 12:51:40 UTC
     updated_at: 2019-02-21 00:43:59 UTC
@@ -1038,6 +1144,7 @@ models:
     visible_to: public
     description_preview_multiloc:
       en: Comenzamos con el Plan Verano 2019 en los espacios públicos de la municipalidad.
+      es-ES: Comenzamos con el Plan Verano 2019 en los espacios públicos de la municipalidad.
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1055,6 +1162,7 @@ models:
       en: Reduciendo la contaminación atmosférica en Barnechea.
       en-CA: Reducing air pollution in the city
       en-GB: Reducing air pollution in the city
+      es-ES: Reduciendo la contaminación atmosférica en Barnechea.
     description_multiloc:
       en: |
         <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
@@ -1074,11 +1182,18 @@ models:
         <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
 
         <p><em>Let's do this!</em></p>
+      es-ES: |
+        <p><a href="https://en.wikipedia.org/wiki/Global_warming">Global warming</a> is becoming an increasing concern of our society. Your city wants to <strong>fight</strong> the air pollution! </p>
+
+        <p>You can support this initiative by proposing your ideas on how to tackle this issue.</p>
+
+        <p><em>Let's do this!</em></p>
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2019-02-21 00:43:59 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      es-ES: 
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1094,8 +1209,16 @@ models:
     max_budget: 
     title_multiloc:
       en: Master plan parque metropolitano cerros de Renca
+      es-ES: Master plan parque metropolitano cerros de Renca
     description_multiloc:
       en: "<p>Este plan pretende ser la carta de navegación que guíe el desarrollo
+        del parque para los próximos 30 años, con el fin de ir concretando de manera
+        paulatina, a través de proyectos detonantes, y así dotar de infraestructura
+        de alto estándar a la principal área verde de la zona nor-poniente de la capital.
+        Al mismo tiempo el plan maestro debe considerar las áreas de reforestación
+        para los Cerros de Renca, con el fin de revertir las condiciones actuales
+        de la vegetación existente.</p>"
+      es-ES: "<p>Este plan pretende ser la carta de navegación que guíe el desarrollo
         del parque para los próximos 30 años, con el fin de ir concretando de manera
         paulatina, a través de proyectos detonantes, y así dotar de infraestructura
         de alto estándar a la principal área verde de la zona nor-poniente de la capital.
@@ -1108,6 +1231,9 @@ models:
     visible_to: public
     description_preview_multiloc:
       en: El objetivo del Plan Maestro es definir el programa y los proyectos detonantes,
+        a partir de procesos participativos con la comunidad, y del reconocimiento
+        de las pre-existencias de los cerros y su entorno.
+      es-ES: El objetivo del Plan Maestro es definir el programa y los proyectos detonantes,
         a partir de procesos participativos con la comunidad, y del reconocimiento
         de las pre-existencias de los cerros y su entorno.
     process_type: continuous
@@ -1124,12 +1250,15 @@ models:
     max_budget: 
     title_multiloc:
       en: Presupuesto Participativo, Ilustre Municipalidad de Quilicura
-    description_multiloc: {}
+      es-ES: Presupuesto Participativo, Ilustre Municipalidad de Quilicura
+    description_multiloc:
+      es-ES: 
     created_at: 2019-01-09 01:57:13 UTC
     updated_at: 2019-02-21 00:43:59 UTC
     remote_header_bg_url: 
     visible_to: public
-    description_preview_multiloc: {}
+    description_preview_multiloc:
+      es-ES: 
     process_type: timeline
     internal_role: 
     publication_status: draft
@@ -1203,12 +1332,15 @@ models:
       en: Collecting ideas
       en-CA: Collecting ideas
       en-GB: Collecting ideas
+      es-ES: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to fight global warming within the city, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to fight global warming within the city, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to fight global warming within the city, this is
+        your time to brainstorm and discuss around your ideas!</p>\n"
+      es-ES: "<p>Share your ideas to fight global warming within the city, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
     start_at: '2018-03-28'
     end_at: '2018-04-18'
@@ -1228,6 +1360,7 @@ models:
       en: Vote period
       en-CA: Vote period
       en-GB: Vote period
+      es-ES: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
@@ -1235,6 +1368,9 @@ models:
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
       en-GB: "<p>This period is dedicated to assessing which are the most popular
+        proposals: like or dislike the ideas, in order to make the most successful
+        ones emerge</p>\n"
+      es-ES: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     start_at: '2018-04-19'
@@ -1255,12 +1391,15 @@ models:
       en: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
+      es-ES: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+      es-ES: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     start_at: '2018-05-02'
     end_at: '2018-05-04'
@@ -1280,10 +1419,12 @@ models:
       en: Implementation of ideas
       en-CA: Implementation of ideas
       en-GB: Implementation of ideas
+      es-ES: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+      es-ES: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     start_at: '2018-05-05'
     end_at: '2018-06-01'
     created_at: 2018-12-10 09:43:48 UTC
@@ -1302,12 +1443,15 @@ models:
       en: Collecting ideas
       en-CA: Collecting ideas
       en-GB: Collecting ideas
+      es-ES: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city centre more lively, this is your time
         to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to make the city centre more lively, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to make the city centre more lively, this is your
+        time to brainstorm and discuss around your ideas!</p>\n"
+      es-ES: "<p>Share your ideas to make the city centre more lively, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
     start_at: '2018-06-15'
     end_at: '2018-07-09'
@@ -1327,6 +1471,7 @@ models:
       en: Vote period
       en-CA: Vote period
       en-GB: Vote period
+      es-ES: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
@@ -1334,6 +1479,9 @@ models:
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
       en-GB: "<p>This period is dedicated to assessing which are the most popular
+        proposals: like or dislike the ideas, in order to make the most successful
+        ones emerge</p>\n"
+      es-ES: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     start_at: '2018-07-10'
@@ -1354,12 +1502,15 @@ models:
       en: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
+      es-ES: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+      es-ES: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     start_at: '2018-07-29'
     end_at: '2018-08-01'
@@ -1379,10 +1530,12 @@ models:
       en: Implementation of ideas
       en-CA: Implementation of ideas
       en-GB: Implementation of ideas
+      es-ES: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+      es-ES: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     start_at: '2018-08-02'
     end_at: '2018-08-14'
     created_at: 2018-12-10 09:43:48 UTC
@@ -1401,12 +1554,15 @@ models:
       en: Collecting ideas
       en-CA: Collecting ideas
       en-GB: Collecting ideas
+      es-ES: Collecting ideas
     description_multiloc:
       en: "<p>Share your ideas to make the city more modern and digital, this is your
         time to brainstorm and discuss around your ideas!</p>\n"
       en-CA: "<p>Share your ideas to make the city more modern and digital, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
       en-GB: "<p>Share your ideas to make the city more modern and digital, this is
+        your time to brainstorm and discuss around your ideas!</p>\n"
+      es-ES: "<p>Share your ideas to make the city more modern and digital, this is
         your time to brainstorm and discuss around your ideas!</p>\n"
     start_at: '2018-04-16'
     end_at: '2018-04-22'
@@ -1426,6 +1582,7 @@ models:
       en: Vote period
       en-CA: Vote period
       en-GB: Vote period
+      es-ES: Vote period
     description_multiloc:
       en: "<p>This period is dedicated to assessing which are the most popular proposals:
         like or dislike the ideas, in order to make the most successful ones emerge</p>\n"
@@ -1433,6 +1590,9 @@ models:
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
       en-GB: "<p>This period is dedicated to assessing which are the most popular
+        proposals: like or dislike the ideas, in order to make the most successful
+        ones emerge</p>\n"
+      es-ES: "<p>This period is dedicated to assessing which are the most popular
         proposals: like or dislike the ideas, in order to make the most successful
         ones emerge</p>\n"
     start_at: '2018-04-23'
@@ -1453,12 +1613,15 @@ models:
       en: Presentation of most succesful ideas at the townhall
       en-CA: Presentation of most succesful ideas at the townhall
       en-GB: Presentation of most succesful ideas at the townhall
+      es-ES: Presentation of most succesful ideas at the townhall
     description_multiloc:
       en: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-CA: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
       en-GB: "<p>The ideas who gathered the most positive votes will be added to the
+        city agenda and presented at the townhall by the citizen who launched it</p>\n"
+      es-ES: "<p>The ideas who gathered the most positive votes will be added to the
         city agenda and presented at the townhall by the citizen who launched it</p>\n"
     start_at: '2018-05-13'
     end_at: '2018-06-12'
@@ -1478,10 +1641,12 @@ models:
       en: Implementation of ideas
       en-CA: Implementation of ideas
       en-GB: Implementation of ideas
+      es-ES: Implementation of ideas
     description_multiloc:
       en: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-CA: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
       en-GB: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
+      es-ES: "<p>After deliberation, the chosen ideas will be implemented by the city</p>\n"
     start_at: '2018-06-13'
     end_at: '2018-06-29'
     created_at: 2018-12-10 09:43:48 UTC
@@ -1498,8 +1663,13 @@ models:
     project_ref: *7
     title_multiloc:
       en: Idea collection
+      es-ES: Idea collection
     description_multiloc:
       en: "<p><strong>Project ideas will be collected January 2 - February 2.</strong> Community
+        members can brainstorm and submit potential project ideas to be funded. Anyone
+        is welcome to propose project ideas. Ideas may be submitted online or in-person
+        at any Seattle Public Library branch or various public outreach events.</p>"
+      es-ES: "<p><strong>Project ideas will be collected January 2 - February 2.</strong> Community
         members can brainstorm and submit potential project ideas to be funded. Anyone
         is welcome to propose project ideas. Ideas may be submitted online or in-person
         at any Seattle Public Library branch or various public outreach events.</p>"
@@ -1518,8 +1688,16 @@ models:
     project_ref: *7
     title_multiloc:
       en: Analysis & development
+      es-ES: Analysis & development
     description_multiloc:
       en: |-
+        <p><strong>Project Development took place from February 23 - March 28.</strong> This page is an overview of the 2018 process. Please visit <a href="https://www.seattle.gov/neighborhoods/programs-and-services/your-voice-your-choice/get-involved/vote" target="_blank"><strong>our Vote page</strong></a> to learn about the Vote phase, which will take place from June 16 - July 16.</p><p>In Project Development, community members take the ideas submitted during the Idea Collection phase and prioritize them to 8-10 ideas per Council District.</p><ul>
+        <li>There will be opportunities to participate in Project Development meetings in each Council District. Participants are responsible for evaluating the project ideas that are submitted based on need at the project location &amp; community benefit of the proposed project and giving projects numerical ratings.</li>
+        <li>Each Project Development meeting will be supported by Your Voice, Your Choice staff who will ensure that community members have the necessary resources and tools to evaluate projects.</li>
+        <li>Anyone can participate in Project Development if they live, work, go to school, receive services, volunteer, or have a connection to the City of Seattle.</li>
+        <li>Project lists will be divided geographically within Council Districts. We will provide information in advance on which lists will be discussed at which meetings. If you cannot attend a particular meeting, but would like to evaluate the Project List that will be discussed at that meeting, you may attend another meeting in the same Council District. For example, if you are interested in Rainier Beach projects, but cannot attend the meeting at the Rainier Beach Branch Library, you can access that Project List at any other meeting in District 2: Georgetown Stables, Columbia Branch Library, El Centro de la Raza, or New Holly Gathering Hall.</li>
+        </ul><h2><strong>Project Development Meetings</strong></h2><p><a href="https://drive.google.com/open?id=1IB5yJ10WYmF9wmaK9Vk0ilBG0-DyK7MA&amp;usp=sharing" target="_blank"><strong>View a map of the 2018 ideas</strong></a> sorted by the Project Development meeting at which they will be discussed.</p><p>Meeting times, dates and locations are subject to change.</p><p>You may click on the date/time of a meeting below to download a PDF of the Project List for that meeting. Please note that Project Lists are subject to change due to feasibility reviews by Seattle Department of Transportation (SDOT) &amp; Seattle Parks and Recreation (SPR).</p>
+      es-ES: |-
         <p><strong>Project Development took place from February 23 - March 28.</strong> This page is an overview of the 2018 process. Please visit <a href="https://www.seattle.gov/neighborhoods/programs-and-services/your-voice-your-choice/get-involved/vote" target="_blank"><strong>our Vote page</strong></a> to learn about the Vote phase, which will take place from June 16 - July 16.</p><p>In Project Development, community members take the ideas submitted during the Idea Collection phase and prioritize them to 8-10 ideas per Council District.</p><ul>
         <li>There will be opportunities to participate in Project Development meetings in each Council District. Participants are responsible for evaluating the project ideas that are submitted based on need at the project location &amp; community benefit of the proposed project and giving projects numerical ratings.</li>
         <li>Each Project Development meeting will be supported by Your Voice, Your Choice staff who will ensure that community members have the necessary resources and tools to evaluate projects.</li>
@@ -1542,8 +1720,16 @@ models:
     project_ref: *7
     title_multiloc:
       en: Voting
+      es-ES: Voting
     description_multiloc:
       en: |-
+        <p>The 2018 Your Voice, Your Choice Vote took place June 16 to July 16:</p><ul>
+        <li>Voting is open to anyone age 11 and up (must be 13 and up to vote online) who lives, works, goes to school, worships, receives services, volunteers, or is part of a program in the City of Seattle.</li>
+        <li>Each voter may cast one ballot per City Council district, and may choose up to three (3) projects per district.</li>
+        <li>You can vote online or by paper ballot at any <a href="https://www.spl.org/hours-and-locations" target="_blank"><strong>Seattle Public Library branch.</strong></a>
+        </li>
+        </ul><p class="ql-align-justify">More than 7,200 community members voted on their favorite park and street projects this year.</p>
+      es-ES: |-
         <p>The 2018 Your Voice, Your Choice Vote took place June 16 to July 16:</p><ul>
         <li>Voting is open to anyone age 11 and up (must be 13 and up to vote online) who lives, works, goes to school, worships, receives services, volunteers, or is part of a program in the City of Seattle.</li>
         <li>Each voter may cast one ballot per City Council district, and may choose up to three (3) projects per district.</li>
@@ -1565,8 +1751,34 @@ models:
     project_ref: *7
     title_multiloc:
       en: Funding & implementation
+      es-ES: Funding & implementation
     description_multiloc:
       en: '<h2>Project Implementation</h2><p>Your Voice, Your Choice: Parks &amp;
+        Streets is a participatory budgeting initiative in which Seattle residents
+        democratically decide how to spend a portion of the City''s budget on small-scale
+        park and street improvements.</p><p>This project implementation website will
+        allow you to track the status of winning transportation projects through design
+        and construction. No two projects are the same and each follows a different
+        timeline for completion. We''ll provide updates and information as each project
+        progresses towards completion.</p><p>Click on the map below to view project
+        updates specific to each district.</p><p><img src="https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/37d1d282-5bf1-479f-95a6-5dfd6332512e/text_image/image/b5872d41-2cdd-4011-a021-7a1a6667c262/SeattleDistrict_Map-01.jpg"></p><p
+        class="ql-align-center"><a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-1"
+        target="_blank"><strong>District 1</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-2"
+        target="_blank"><strong>District 2</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-3"
+        target="_blank"><strong>District 3</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-4"
+        target="_blank"><strong>District 4</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-5"
+        target="_blank"><strong>District 5</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-6"
+        target="_blank"><strong>District 6</strong></a> | <a href="https://www.seattle.gov/transportation/projects-and-programs/programs/pedestrian-program/yvyc-program/yvyc-district-7"
+        target="_blank"><strong>District 7</strong></a></p><h2>Get Involved</h2><p>Learn
+        more about the program and how to submit or vote on projects at <a href="https://www.seattle.gov/neighborhoods/programs-and-services/your-voice-your-choice"
+        target="_blank"><strong>Your Voice Your Choice</strong></a>. This program
+        is a partnership between The Department of Neighborhoods, Transportation and
+        Parks.</p><p>If you need this information translated, please call (206) 684-8105.</p><p>Servicios
+        de traducción e interpretación disponibles bajo petición (206) 684-8105.</p><p>Matutulungan
+        ka naming maintindihan kung hihingi kang tulong (206) 684-8105.</p><p>요청하시면 번역이나 통역을 제공해드립니다 (206)
+        684-8105.</p><p>Dịch và thông dịch viên sẵn sàng nếu có sự yêu cầu (206) 684-8105.</p><p>Haddii
+        aad dooneyso turjubeen fadlen wac (206) 684-8105.</p>'
+      es-ES: '<h2>Project Implementation</h2><p>Your Voice, Your Choice: Parks &amp;
         Streets is a participatory budgeting initiative in which Seattle residents
         democratically decide how to spend a portion of the City''s budget on small-scale
         park and street improvements.</p><p>This project implementation website will
@@ -1607,7 +1819,9 @@ models:
     project_ref: *9
     title_multiloc:
       en: Estamos esperando tú idea!
-    description_multiloc: {}
+      es-ES: Estamos esperando tú idea!
+    description_multiloc:
+      es-ES: 
     start_at: '2019-02-01'
     end_at: '2019-03-30'
     created_at: 2019-02-14 13:07:23 UTC
@@ -1624,8 +1838,11 @@ models:
     project_ref: *10
     title_multiloc:
       en: Presupuesto Participativo
+      es-ES: Presupuesto Participativo
     description_multiloc:
       en: "<p>Tenemos 10 millones de presupuesto participativos</p><p>De los proyectos
+        más votados en la fase anterior....¿cuál debiéramos ejecutar?</p><p>Tu decides!</p>"
+      es-ES: "<p>Tenemos 10 millones de presupuesto participativos</p><p>De los proyectos
         más votados en la fase anterior....¿cuál debiéramos ejecutar?</p><p>Tu decides!</p>"
     start_at: '2019-05-01'
     end_at: '2019-06-30'
@@ -1642,8 +1859,10 @@ models:
     project_ref: *10
     title_multiloc:
       en: Ejecución de proyectos!
+      es-ES: Ejecución de proyectos!
     description_multiloc:
       en: "<p>Informaremos la implementación de los proyectos ganadores!</p>"
+      es-ES: "<p>Informaremos la implementación de los proyectos ganadores!</p>"
     start_at: '2019-07-01'
     end_at: '2019-07-31'
     created_at: 2019-02-21 00:56:10 UTC
@@ -1660,9 +1879,12 @@ models:
     project_ref: *10
     title_multiloc:
       en: Propone tu idea!
+      es-ES: Propone tu idea!
     description_multiloc:
       en: "<p>Propone ideas!</p><p>Las más votadas serán las que vayan por los presupuestos
         participativos!</p>"
+      es-ES: "<p>Propone ideas!</p><p>Las más votadas serán las que vayan por los
+        presupuestos participativos!</p>"
     start_at: '2019-02-20'
     end_at: '2019-03-31'
     created_at: 2019-02-21 00:49:03 UTC
@@ -1678,11 +1900,12 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c9f42fa5-6ba3-48ef-80d0-801dc6a6223d/tiamorrison-profile-photo-2-copy_pcnsxm.png
     first_name: Emma
     last_name: Murphy
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
       en-CA: 
       en-GB: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1696,8 +1919,9 @@ models:
     remote_avatar_url: 
     first_name: carolina
     last_name: leiva
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1712,8 +1936,9 @@ models:
     remote_avatar_url: 
     first_name: Magdalena
     last_name: Gatica Montero
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1727,8 +1952,9 @@ models:
     remote_avatar_url: 
     first_name: Wietse
     last_name: Van Ransbeeck
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1742,8 +1968,9 @@ models:
     remote_avatar_url: 
     first_name: Pablo
     last_name: Valenzuela
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1757,8 +1984,9 @@ models:
     remote_avatar_url: 
     first_name: Javier
     last_name: Errazuriz
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values: {}
     registration_completed_at: 2019-02-21 11:33:20 UTC
@@ -1770,11 +1998,12 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/d527cf6d-06e8-4599-b4cc-52cf2ba178e2/man-388104_960_720_dfehjy.jpg
     first_name: Max
     last_name: Walker
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
       en-CA: 
       en-GB: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1787,11 +2016,12 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/5f10da99-8b59-41f9-8f17-0dd0fc6a1abb/smiling-woman_kdsaal.jpg
     first_name: Annie
     last_name: Smith
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
       en-CA: 
       en-GB: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1805,11 +2035,12 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/95aa9557-1418-4918-aad6-62e0fd2bdfb5/man-838636_960_720_f3i6ki.jpg
     first_name: Chad
     last_name: Williams
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
       en-CA: 
       en-GB: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1823,9 +2054,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1bc59b45-e4db-481b-a779-67e571ff47ba/popin_2016.jpg
     first_name: Jayme
     last_name: Purdy
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1839,8 +2071,9 @@ models:
     remote_avatar_url: 
     first_name: Paulo
     last_name: Mella
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1855,8 +2088,9 @@ models:
     remote_avatar_url: 
     first_name: Pamela
     last_name: Hernandez
-    locale: en
-    bio_multiloc: {}
+    locale: es-ES
+    bio_multiloc:
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1868,9 +2102,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/aae4607e-117a-4550-a469-d89796249474/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
     first_name: Randy
     last_name: Homenick
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1883,9 +2118,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/2efa1d50-1aac-46ef-a5bb-98d588af2a45/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography.jpg
     first_name: Yoko
     last_name: Hettinger
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -1899,9 +2135,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1b5fafd6-fdc3-4340-b23d-d4b7786b6df8/4164298-miranda-kerr-4.jpg
     first_name: Duncan
     last_name: Heller
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1968
@@ -1913,9 +2150,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/6a7dd9f4-1024-4678-8538-22efc9698dfe/TrollFace.jpg
     first_name: Esmeralda
     last_name: Dietrich
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -1929,9 +2167,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c423f064-85a4-4239-9921-3eefe44d4fa3/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
     first_name: Ardelia
     last_name: Kautzer
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -1945,9 +2184,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c8127ec7-12b9-42f4-97a2-ab903e484235/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
     first_name: Laverna
     last_name: Labadie
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -1961,9 +2201,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/51c1a2ed-1402-477a-8d9e-86cf930cd8a8/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos.jpg
     first_name: Graham
     last_name: Wisozk
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -1977,9 +2218,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/85cb5cae-0980-45a4-959b-b81f18cc8bd1/4164298-miranda-kerr-4.jpg
     first_name: Dolores
     last_name: McGlynn
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -1992,9 +2234,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/311616c4-fbea-410f-958c-d366bb15eff5/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
     first_name: Wesley
     last_name: Hahn
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2008,9 +2251,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/b19f4df2-d449-43a8-8853-6a1dbe052eb7/simoneveil1.jpg
     first_name: Carrol
     last_name: Steuber
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1983
@@ -2024,9 +2268,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/35454913-5c7a-40dd-821d-ed6121dcfa12/017840b7be8c4a19c57fd213eb8377a0--portrait-photography-men-face-photography.jpg
     first_name: Brady
     last_name: Cormier
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2040,9 +2285,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1644b331-3e64-433a-9241-937235fc0da0/simoneveil1.jpg
     first_name: Ronald
     last_name: Huel
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       education: '7'
@@ -2055,9 +2301,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/e045ba01-d55d-4569-b008-6d45636f47ae/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos.jpg
     first_name: Clark
     last_name: Kertzmann
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2071,9 +2318,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/b4f06fa0-3abf-4855-b66b-30d4e3a3dbb2/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art.jpg
     first_name: Cristopher
     last_name: Douglas
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2086,9 +2334,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/4b2afec4-f172-48f0-91bf-d19651f19413/500.jpg
     first_name: Antoine
     last_name: Erdman
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2102,9 +2351,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/290176d3-5003-476f-a566-b1f2a64ddba9/smiling-woman_kdsaal.jpg
     first_name: Daniel
     last_name: Jacobson
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1967
@@ -2117,9 +2367,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c17e2219-4c62-49ee-bafb-ac23ba3e937b/dof2.jpg
     first_name: Norberto
     last_name: Beahan
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2133,9 +2384,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/ed7ec48c-7c18-4f6d-8987-628af37c05ac/simoneveil1.jpg
     first_name: Lynelle
     last_name: Bergstrom
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2149,9 +2401,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1d3912d0-6b48-4635-a0b1-429f36591817/dof2.jpg
     first_name: Carol
     last_name: Mertz
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1995
@@ -2163,9 +2416,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/6b49c3ec-64be-4d5e-8f46-64d53bb6fc6a/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     first_name: Jamar
     last_name: Beier
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       education: '4'
@@ -2178,9 +2432,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/7aa44345-106c-45a9-b1ea-f44c6ced56eb/man-388104_960_720_dfehjy.jpg
     first_name: James
     last_name: Wunsch
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1981
@@ -2193,9 +2448,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c3d4c4b6-be82-48ad-a9e7-6364407fb784/BethanyR.jpg
     first_name: Cara
     last_name: Kohler
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2208,9 +2464,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/b82442fe-3271-42d9-b8e1-d98077607530/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg
     first_name: Leeanna
     last_name: Schroeder
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1986
@@ -2222,9 +2479,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/0471c2a6-da15-4451-aaac-99c835b2fca3/16992834140_99815ee4ac_m.jpg
     first_name: Londa
     last_name: Pollich
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1981
@@ -2237,9 +2495,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/6871b4f2-199b-49a8-96ec-0bc9f0629b2d/51DLRByNOXL._UX250_.jpg
     first_name: Mitchel
     last_name: Schuppe
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2253,9 +2512,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/32510679-2b78-4193-8627-a09aa8466ab3/TrollFace.jpg
     first_name: Chery
     last_name: Bechtelar
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1995
@@ -2268,9 +2528,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/534b0318-9ea1-437d-bfc9-e6a73c9c2884/5607404f-fb91-4e9f-9522-9e3363f404a6-mahmoud-benazzouk-dentiste-.jpg
     first_name: Hiram
     last_name: Ziemann
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 2000
@@ -2283,9 +2544,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/02253383-cb3f-4060-86e5-ea24d52e68b5/461482218-594x367.jpg
     first_name: Sergio
     last_name: Sauer
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2300,9 +2562,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/605991db-1cb7-4937-b882-57d077804555/461482218-594x367.jpg
     first_name: Zackary
     last_name: Welch
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2315,9 +2578,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/7842b7dc-c113-4eef-80ee-23ad8c16bb48/16992834140_99815ee4ac_m.jpg
     first_name: Ernesto
     last_name: Davis
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2330,9 +2594,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/7cc2307c-75fb-4204-9977-1b2ae2d2c08b/20170601183357-5506a2c2-cu_e355.jpg
     first_name: Jerold
     last_name: Schaden
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1987
@@ -2344,9 +2609,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/055ff0eb-0083-480f-b7df-2558ccd2e000/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
     first_name: Jonathan
     last_name: Kemmer
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2360,9 +2626,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/a0a06e67-10d4-4d13-aed8-96c2f618dcfc/Portrait-8.jpg
     first_name: Andrea
     last_name: Jenkins
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2376,9 +2643,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/7d59ff56-f8c5-4ace-b37b-15e791aeee1c/pexels-photo-247917.jpeg
     first_name: Evia
     last_name: Beer
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1979
@@ -2391,9 +2659,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/eca6eb99-75dc-4e55-bf2e-d112dae2f118/5dcf2c739263eb1e32ca1ef35d2664a8.jpg
     first_name: Dick
     last_name: Tremblay
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1963
@@ -2407,9 +2676,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/4adace33-94e4-4e87-b4ba-a620236c9599/16992834140_99815ee4ac_m.jpg
     first_name: Desmond
     last_name: Schinner
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2423,9 +2693,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/09becc7e-74ee-4e7c-b820-d0b3dc2dbb0e/juror-ford.jpg
     first_name: Dale
     last_name: Leannon
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2439,9 +2710,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/7334daa6-067c-4d13-a181-8c88c73dc80a/Prof_Ertl-Portrait.jpg
     first_name: Joe
     last_name: Stoltenberg
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values: {}
     registration_completed_at: 2019-01-30 00:00:00 UTC
@@ -2453,9 +2725,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/d3c0eb86-436f-4697-823e-a3774d32086a/89c81ca5da657d45d323eff5b8ad7c69.jpg
     first_name: Malinda
     last_name: Herman
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2470,9 +2743,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c5461ada-e8b7-429e-a3e2-5ccb9983e394/66c297f1dcd085d2304f63c5ed612c0a--beauty-portrait-male-portraits.jpg
     first_name: Jaye
     last_name: DuBuque
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1956
@@ -2486,9 +2760,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/af86e586-bb4b-46f0-9463-6af4786f5c3a/00d6436d2d9283f7ce61f87b07ae378e--portrait-men-male-portrait-photography.jpg
     first_name: Manuel
     last_name: Kirlin
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1971
@@ -2501,9 +2776,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/d4ac02ae-b5e1-40e2-ba3e-e7ba7ce3adeb/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     first_name: Raven
     last_name: Pfeffer
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2517,9 +2793,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/84f26541-b491-439f-98e5-2f12e56f4ce2/83857__portrait-tips2.jpg
     first_name: Shawnda
     last_name: Osinski
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2534,9 +2811,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/f739894d-34c8-4b88-a0cc-d06a93609f7d/man-388104_960_720_dfehjy.jpg
     first_name: Renato
     last_name: Skiles
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2550,9 +2828,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/8bc1500b-d1b5-4430-b6f4-36ae2f770999/49cd4c44d562e92d90a3a4c81ced02dc.jpg
     first_name: Augustine
     last_name: Erdman
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2566,9 +2845,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1cde5c96-c702-4715-bf4c-2f16c29e1391/tiamorrison-profile-photo-2-copy_pcnsxm.png
     first_name: Elroy
     last_name: Walter
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1999
@@ -2581,9 +2861,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/29e939a6-692f-4daa-b511-8555b6032cff/20170601183357-5506a2c2-cu_e355.jpg
     first_name: Lien
     last_name: Douglas
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1990
@@ -2597,9 +2878,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/ca915a88-4b01-457b-8a62-13e740e68fa4/portrait-camera-mode-e.jpg
     first_name: Denita
     last_name: Bode
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2612,9 +2894,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/f17f0592-a26a-4e3d-a79f-05df5473c589/5dcf2c739263eb1e32ca1ef35d2664a8.jpg
     first_name: Chia
     last_name: Nikolaus
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2628,9 +2911,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/c7bd0ba4-54c5-4a8a-9712-39298a8d1017/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     first_name: Emile
     last_name: O'Conner
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values: {}
     registration_completed_at: 2019-02-13 00:00:00 UTC
@@ -2641,9 +2925,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/79fc489f-4e6c-4ffc-93fc-ef5ae6e70285/pexels-photo-247917.jpeg
     first_name: Jefferey
     last_name: Cronin
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2657,9 +2942,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/5f22fef6-8cf3-4fa1-a920-f2e991afff4e/1_JvrUroQL_0QkqBqlY7Wb0A.jpeg
     first_name: Zachary
     last_name: Toy
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1954
@@ -2673,9 +2959,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/92c1c9d9-89d1-4a7c-9d41-364b63c877f6/3df459479af007fed226ae39b9464af8--portrait-photography-men-photography-photos.jpg
     first_name: Eladia
     last_name: Raynor
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2689,9 +2976,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/9c65fbed-e12a-4451-ad57-1c3e3c651196/1_JvrUroQL_0QkqBqlY7Wb0A.jpeg
     first_name: Loren
     last_name: Paucek
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2705,9 +2993,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/d83d320e-6f18-4f3a-be56-6bd872ca4214/smiling-woman_kdsaal.jpg
     first_name: Lucas
     last_name: Reinger
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1965
@@ -2720,9 +3009,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/e32a1cf7-2c79-4d16-a045-39f84e7b90b7/BethanyR.jpg
     first_name: Tressie
     last_name: Lockman
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2737,9 +3027,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/77cd64ba-6b5a-4f41-90c1-920e9b2e509c/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     first_name: Solomon
     last_name: Legros
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: male
@@ -2752,9 +3043,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/1f80a0ac-d35d-4663-8be9-1cc12cee4a16/csm_Karakasoglu_Yasemin1_360cb6e01f.jpg
     first_name: Ed
     last_name: Bernier
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: unspecified
@@ -2769,9 +3061,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/70cde4d4-bb67-4784-bf52-4b11d3335ca4/20170601183357-5506a2c2-cu_e355.jpg
     first_name: Larisa
     last_name: Kuvalis
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1980
@@ -2785,9 +3078,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/13f0b269-fa68-479e-906b-d8b73e5a5a6f/20170601183357-5506a2c2-cu_e355.jpg
     first_name: Margaretta
     last_name: Christiansen
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2802,9 +3096,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/02655f12-d11a-4177-9641-961e6c6c29c2/6c44f9503011a7dd186449bd25f49f4b--painting-portraits-portrait-art.jpg
     first_name: Genesis
     last_name: Nitzsche
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       gender: female
@@ -2817,9 +3112,10 @@ models:
     remote_avatar_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/b691e420-f7e9-47e9-84ec-ed747fd0de40/user/avatar/40ca9996-ac8b-4b19-a4d2-878d4fb3d607/5dcf2c739263eb1e32ca1ef35d2664a8.jpg
     first_name: Rodney
     last_name: Haag
-    locale: en
+    locale: es-ES
     bio_multiloc:
       en: 
+      es-ES: 
     cl1_migrated: false
     custom_field_values:
       birthyear: 1961
@@ -2838,6 +3134,7 @@ models:
       nb-NO: Council Meeting
       nl-BE: Gemeenteraad
       nl-NL: Gemeenteraad
+      es-ES: Council Meeting
     description_multiloc:
       en: "<p>During this council meeting, those citizen initiatives who gained 100
         votes in less than 3 months, will be presented.</p><p>The council will then
@@ -2869,7 +3166,11 @@ models:
       nl-NL: "<p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven
         voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De
         raad geeft daarna feedback op elk idee.</p>\n"
-    location_multiloc: {}
+      es-ES: "<p>During this council meeting, those citizen initiatives who gained
+        100 votes in less than 3 months, will be presented.</p><p>The council will
+        then shed light on their perspective on each idea.</p>\n"
+    location_multiloc:
+      es-ES: 
     start_at: 2019-03-26 18:00:00 UTC
     end_at: 2019-03-26 20:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -2886,6 +3187,7 @@ models:
       nb-NO: Council Meeting
       nl-BE: Gemeenteraad
       nl-NL: Gemeenteraad
+      es-ES: Council Meeting
     description_multiloc:
       en: "<p>During this council meeting, those citizen initiatives who gained 100
         votes in less than 3 months, will be presented.</p><p>The council will then
@@ -2917,7 +3219,11 @@ models:
       nl-NL: "<p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven
         voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De
         raad geeft daarna feedback op elk idee.</p>\n"
-    location_multiloc: {}
+      es-ES: "<p>During this council meeting, those citizen initiatives who gained
+        100 votes in less than 3 months, will be presented.</p><p>The council will
+        then shed light on their perspective on each idea.</p>\n"
+    location_multiloc:
+      es-ES: 
     start_at: 2019-06-25 17:00:00 UTC
     end_at: 2019-06-25 19:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -2934,6 +3240,7 @@ models:
       nb-NO: Council Meeting
       nl-BE: Gemeenteraad
       nl-NL: Gemeenteraad
+      es-ES: Council Meeting
     description_multiloc:
       en: "<p>During this council meeting, those citizen initiatives who gained 100
         votes in less than 3 months, will be presented.</p><p>The council will then
@@ -2965,7 +3272,11 @@ models:
       nl-NL: "<p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven
         voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De
         raad geeft daarna feedback op elk idee.</p>\n"
-    location_multiloc: {}
+      es-ES: "<p>During this council meeting, those citizen initiatives who gained
+        100 votes in less than 3 months, will be presented.</p><p>The council will
+        then shed light on their perspective on each idea.</p>\n"
+    location_multiloc:
+      es-ES: 
     start_at: 2019-09-24 17:00:00 UTC
     end_at: 2019-09-24 19:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -2982,6 +3293,7 @@ models:
       nb-NO: Council Meeting
       nl-BE: Gemeenteraad
       nl-NL: Gemeenteraad
+      es-ES: Council Meeting
     description_multiloc:
       en: "<p>During this council meeting, those citizen initiatives who gained 100
         votes in less than 3 months, will be presented.</p><p>The council will then
@@ -3013,7 +3325,11 @@ models:
       nl-NL: "<p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven
         voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De
         raad geeft daarna feedback op elk idee.</p>\n"
-    location_multiloc: {}
+      es-ES: "<p>During this council meeting, those citizen initiatives who gained
+        100 votes in less than 3 months, will be presented.</p><p>The council will
+        then shed light on their perspective on each idea.</p>\n"
+    location_multiloc:
+      es-ES: 
     start_at: 2019-12-24 18:00:00 UTC
     end_at: 2019-12-24 20:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -3023,6 +3339,7 @@ models:
       en: Pub Crawl
       en-CA: Pub Crawl
       en-GB: Pub Crawl
+      es-ES: Pub Crawl
     description_multiloc:
       en: |
         <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
@@ -3036,10 +3353,15 @@ models:
         <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
 
         <p>No animals allowed.</p>
+      es-ES: |
+        <p>Grab your bicycle and go on a pub crawl with us. Subscription fee is 15€, all drinks are free!</p>
+
+        <p>No animals allowed.</p>
     location_multiloc:
       en: Many different pubs, we start from the central place.
       en-GB: Many different pubs, we start from the central place.
       en-CA: Many different pubs, we start from the central place.
+      es-ES: Many different pubs, we start from the central place.
     start_at: 2018-08-01 00:00:00 UTC
     end_at: 2018-08-02 00:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -3049,6 +3371,7 @@ models:
       en: Sunday Brunch in the city centre
       en-CA: Sunday Brunch in the city centre
       en-GB: Sunday Brunch in the city centre
+      es-ES: Sunday Brunch in the city centre
     description_multiloc:
       en: "<p>Let's all meet together at the coffee shop on the main square to discuss
         all the ideas we have to make the city centre more lively.</p>\n"
@@ -3056,10 +3379,13 @@ models:
         discuss all the ideas we have to make the city centre more lively.</p>\n"
       en-GB: "<p>Let's all meet together at the coffee shop on the main square to
         discuss all the ideas we have to make the city centre more lively.</p>\n"
+      es-ES: "<p>Let's all meet together at the coffee shop on the main square to
+        discuss all the ideas we have to make the city centre more lively.</p>\n"
     location_multiloc:
       en: The coffee shop on the main square
       en-GB: The coffee shop on the main square
       en-CA: The coffee shop on the main square
+      es-ES: The coffee shop on the main square
     start_at: 2018-04-01 00:00:00 UTC
     end_at: 2018-04-02 00:00:00 UTC
     created_at: 2018-12-10 09:43:48 UTC
@@ -3067,11 +3393,16 @@ models:
   - project_ref: *7
     title_multiloc:
       en: Neighborhood meeting
+      es-ES: Neighborhood meeting
     description_multiloc:
       en: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/d692b0aa-ec3d-4e26-9d08-5558e0892522#"
         target="_blank">Register here</a></p>
+      es-ES: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/d692b0aa-ec3d-4e26-9d08-5558e0892522#"
+        target="_blank">Register here</a></p>
     location_multiloc:
       en: South Seattle College, Chan Education Center, Rm 202 - 6000 16th Ave SW
+      es-ES: South Seattle College, Chan Education Center, Rm 202 - 6000 16th Ave
+        SW
     start_at: 2018-08-01 17:53:00 UTC
     end_at: 2018-08-01 19:53:00 UTC
     created_at: 2018-12-10 17:10:27 UTC
@@ -3079,11 +3410,15 @@ models:
   - project_ref: *7
     title_multiloc:
       en: Neighborhood meeting
+      es-ES: Neighborhood meeting
     description_multiloc:
       en: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/92283996-0955-4021-a7df-006034c6fcbc#"
         target="_blank">Register here</a></p>
+      es-ES: <p><a href="http://2315.epic.citizenlab.co/en/admin/projects/d5ffa7ee-7474-4e7f-a5e7-d6d1a60e8ff6/events/92283996-0955-4021-a7df-006034c6fcbc#"
+        target="_blank">Register here</a></p>
     location_multiloc:
       en: South Park Community Center - 8319 8th Ave S
+      es-ES: South Park Community Center - 8319 8th Ave S
     start_at: 2018-09-01 17:54:00 UTC
     end_at: 2018-09-01 19:54:00 UTC
     created_at: 2018-12-10 17:10:27 UTC
@@ -3091,9 +3426,12 @@ models:
   - project_ref: *7
     title_multiloc:
       en: Neighborhood meeting
-    description_multiloc: {}
+      es-ES: Neighborhood meeting
+    description_multiloc:
+      es-ES: 
     location_multiloc:
       en: South Park Community Center - 8319 8th Ave S
+      es-ES: South Park Community Center - 8319 8th Ave S
     start_at: 2018-10-01 17:55:00 UTC
     end_at: 2018-10-01 19:55:00 UTC
     created_at: 2018-12-10 17:10:27 UTC
@@ -3101,10 +3439,13 @@ models:
   - project_ref: *10
     title_multiloc:
       en: Reunión Informativa
+      es-ES: Reunión Informativa
     description_multiloc:
       en: "<p>Reunión para informar sobre el proceso de presupuestos participativos.</p>"
+      es-ES: "<p>Reunión para informar sobre el proceso de presupuestos participativos.</p>"
     location_multiloc:
       en: Auditorio Municipal
+      es-ES: Auditorio Municipal
     start_at: 2019-03-02 22:30:00 UTC
     end_at: 2019-03-03 00:00:00 UTC
     created_at: 2019-02-21 00:57:54 UTC
@@ -3114,6 +3455,7 @@ models:
   - &28
     title_multiloc:
       en: Comité cerro de al medio
+      es-ES: Comité cerro de al medio
     created_at: 2019-02-15 02:40:15 UTC
     updated_at: 2019-02-15 02:40:15 UTC
     membership_type: manual
@@ -3422,6 +3764,7 @@ models:
       nb-NO: Privacy Policy
       nl-BE: Privacybeleid
       nl-NL: Privacybeleid
+      es-ES: Privacy Policy
     body_multiloc:
       en: "<h3>1. Privacy policy</h3> <p>This Privacy Policy applies to the personal
         data collected by CitizenLab via this website.</p> <h3>2. WHAT ARE PERSONAL
@@ -4611,6 +4954,60 @@ models:
         Verordening Gegevensbescherming) van 27 april 2016 (Verordening EU 2016/679). </strong></p>
 
 '
+      es-ES: "<h3>1. Privacy policy</h3> <p>This Privacy Policy applies to the personal
+        data collected by CitizenLab via this website.</p> <h3>2. WHAT ARE PERSONAL
+        DATA?</h3> <p> In this Privacy Policy personal data means information or pieces
+        of information that allow to identify you. An identifiable person is one who
+        can be identified, directly or indirectly, in particular by reference to an
+        identification number or to one or more factors specific to his physical,
+        physiological, mental, economic, cultural or social identity. Typical personal
+        data includes your name and email address.</p> <h3>3. What personal data do
+        we collect?</h3> <p>We may collect your personal data from the two following
+        sources: </p> <h4>3.1 Personal data you provide to us directly from registration
+        on the platform.</h4> <p> <ul> <li>The personal data we collect from you directly
+        may include your:</li> <li>User name (mandatory);</li> <li>E-mail address
+        (mandatory);</li> <li>Name (optional);</li> <li>Age (optional);</li> <li>Area
+        of residence (optional);</li> <li>Education level (optional).</li> </ul> </p>
+        <h4>3.2 Personal data we collect when you use this website.</h4> <p>We (and
+        third party service providers acting on our behalf) use cookies to automatically
+        collect personal data about you when you use this website. For more information,
+        please consult our Cookie Policy.</p> <h3>4. How do we use your personal data?</h3>
+        <p> We may use your personal data for the following purposes: <ul> <li>To
+        create and maintain your account on this website;</li> <li>To provide you
+        with information regarding product or city that may be of interest to you;</li>
+        <li>To verify your user account for the sake of security;</li> <li>To improve
+        our products and your experience on this website by: <ul> <li>evaluating the
+        use of this website;</li> <li>personalising the content you get to see based
+        on your area of residence.</li> </ul> </li> <li>To manage the identification
+        and authentication of users.</li> </ul> </p> <h3>5. Mode and place of processing
+        the data</h3> <h4>Methods of processing</h4> <p>The Data Controller processes
+        the Data of Users in a proper manner and shall take appropriate security measures
+        to prevent unauthorized access, disclosure, modification, or unauthorized
+        destruction of the Data.</p> <p>The Data processing is carried out using computers
+        and/or IT enabled tools, following organizational procedures and modes strictly
+        related to the purposes indicated. In addition to the Data Controller, in
+        some cases, the Data may be accessible to certain types of persons in charge,
+        involved with the operation of the site (administration, sales, marketing,
+        legal, system administration) or external parties (such as third party technical
+        service providers, mail carriers, hosting providers, IT companies, communications
+        agencies) appointed, if necessary, as Data Processors by the Owner. The updated
+        list of these parties may be requested from the Data Controller at any time.</p>
+        <h4>Place</h4> <p>The Data is processed at the Data Controller's operating
+        offices and in any other places where the parties involved with the processing
+        are located. For further information, please contact the Data Controller.</p>
+        <h4>Retention time</h4> <p>The Data is kept for the time necessary to provide
+        the service requested by the User, or stated by the purposes outlined in this
+        document, and the User can always request that the Data Controller suspend
+        or remove the data.</p> <h3>6. Where do we transfer your personal data?</h3>
+        <p>We do not transfer your personal data to service providers outside the
+        European Union.</p> <h3>7. What rights do you have?</h3> <p> You have the
+        right: <ul> <li>to request access to your personal data;</li> <li>to request
+        that we correct, update or delete your personal data;</li> <li>to oppose to
+        the processing of your personal data for direct communication purposes.</li>
+        </ul> </p> <p>In addition, you can opt-out from direct communications at any
+        time by following the relevant instructions at the bottom of the direct communications
+        (‘Manage your email notifications’).</p> <p>If you would need help to exercise
+        your rights, you may contact us by e-mail at support@citizenlab.co.</p>\n"
     slug: privacy-policy
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -4628,6 +5025,7 @@ models:
       nb-NO: Terms & conditions
       nl-BE: Gebruiksvoorwaarden
       nl-NL: Gebruiksvoorwaarden
+      es-ES: Terms & conditions
     body_multiloc:
       en: '<p>This online engagement platform aims to give as many people as possible
         the opportunity to think about the future of the city or institution that,
@@ -5857,6 +6255,119 @@ models:
         zijn van deze rechten en dient ook in die zin te handelen.</p><p><br></p><p>Het
         is aldus verboden om het platform en haar inhoud te reproduceren, verspreiden,
         wijzigen of door te geven zonder toestemming.</p>\n"
+      es-ES: '<p>This online engagement platform aims to give as many people as possible
+        the opportunity to think about the future of the city or institution that,
+        together with CitizenLab, has set up this platform. These contributions are
+        subject to a number of rules to keep the debate open and constructive. Below
+        you can find the general conditions of our platform, as we are convinced that
+        clear rules provide the best guarantee for a constructive online community.</p>
+        <p>Because CitizenLab appreciates the feedback of the users of their platform,
+        your ideas are welcomed to further improve the platform. You can forward your
+        suggestions to support@citizenlab.co.</p> <h3>Who can register on the online
+        engagement platform?</h3> <p>Anyone who wants to, can follow the debate online.
+        Everyone can read the submitted ideas and reactions. If you want to participate
+        in the debate yourself (sharing your own ideas, responding to other ideas
+        or supporting existing contributions), you have to create an account. Only
+        registered participants can make an active contribution to the online ideas
+        platform.</p> <p>You can register via your e-mail address or create an account
+        by simply linking it to your Facebook or Google profile.</p> <p>The creation
+        of an account by a user does not give this user ownership over the account.
+        CitizenLab reserves the right to refuse, suspend or delete accounts, for example
+        if the user does not comply with the following rules or has previously been
+        denied or removed from this user''s account.</p> <p>Each account must comply
+        with the following rules:</p> <h4>Every account is strictly personal</h4>
+        <p>Each account must be unique and linked to a natural person. Every user
+        has the right to create one account. If it is determined that one person has
+        multiple accounts, CitizenLab reserves the right to delete all these accounts.
+        Every user must have reached at least the age of 16 years.</p> <h4>An account
+        cannot be transferred to another person</h4> <p>Since each account is strictly
+        linked to one specific person, this account cannot be transferred to another
+        person without the permission of CitizenLab. This transfer ban must be considered
+        in the broadest sense. CitizenLab reserves the right to refuse or delete this
+        account in case of infringements.</p> <p>An account cannot be used for commercial
+        purposes. The CitizenLab platform is intended to increase participation. An
+        account can therefore only be used in that sense. Any use of the account for
+        the sole purpose of enjoying a commercial advantage is prohibited.</p> <h4>The
+        account information must always remain confidential</h4> <p>It is not allowed
+        for another person than the actual person who created the account, to use
+        this account. The person who creates the account must ensure that (s)he keeps
+        the password and login details. We advise you to use a "strong" password (a
+        password with a combination of lowercase, uppercase letters and numbers).
+        CitizenLab can under no circumstances be held responsible for any loss or
+        damage incurred to the account if the above conditions are not met by the
+        user. CitizenLab cannot be held responsible for theft of your account, for
+        example by ''phishing'', either. CitizenLab will never ask its users for personal
+        data such as a login or password via e-mail. If personal data is requested,
+        the user will always be redirected to the platform of CitizenLab.</p> <h3>Limitations
+        to content and use of the platform</h3> <p>To ensure that the CitizenLab platform
+        is working properly and that you can communicate and connect with others,
+        there are some restrictions on the type of content that can be published via
+        the platform:</p> <h4>Offensive behaviour:</h4> <p>We firmly believe in freedom
+        of speech. However, in order to ensure that the platform can be used in a
+        constructive way by the users, with respect for different opinions and without
+        people having to be afraid to express their opinions or convictions, we do
+        not allow offensive behaviour that harasses, intimidates or uses fear to silence
+        another user.</p> <p>Accounts and related accounts with which the actions
+        below are performed can be temporarily blocked and / or permanently deleted.</p>
+        <li>Violent threats (direct or indirect): You may not threaten or promote
+        violence, including the promotion of terrorism.</li> <li>Harassment: You may
+        not incite to or be involved in deliberately insulting or harassing others.
+        Here are some factors that we can take into account when assessing abusive
+        behaviour: whether the main purpose of the reported account is harassing or
+        sending offensive messages to others; whether the reported behaviour is unidirectional
+        or contains threats; whether the reported account encourages others to intimidate
+        another account; and whether the reported account sends intimidating messages
+        to an account from multiple accounts.</li> <li>Hatred: You may not promote
+        violence against other people or directly attack or threaten them on the basis
+        of race, ethnic background, nationality, sexual orientation, gender, gender
+        identity, philosophical affiliation, age, disability or illness. We also do
+        not allow accounts whose main purpose is to incite others to do harm on the
+        basis of these categories.</li> <li>Misuse of multiple accounts: Creating
+        multiple accounts for overlapping use to avoid temporary or permanent suspension
+        of an individual account is not allowed.</li> <li>Private data: you may not
+        publish or post confidential data and private information of others without
+        their express authorization and consent. These data include, for example,
+        credit card numbers, address details, telephone numbers or data that constitute
+        the personal privacy of a person.</li> <li>Impersonation: you may not be allowed
+        to enter via the platform if someone else deceives, confuses or threatens
+        in a manner that actually decks or threatens others.</li> <h3>Spam</h3> <p>We
+        strive at all times to protect the CitizenLab platform user from technical
+        abuse and spam. Accounts in which the actions below are performed can be temporarily
+        blocked or permanently deleted.</p> <li>Malware / phishing / viruses / worms
+        / Trojans: You may not post malicious content or links to such content for
+        the purpose of damaging or disrupting someone else''s browsers or computers,
+        or of violating someone''s privacy.</li> <li>Spam: You cannot use the CitizenLab
+        platform to spam people.</li> <h3>Infringement of applicable laws</h3> <p>The
+        use of the account may not in any way infringe applicable laws. This includes
+        infringements against privacy legislation, intellectual property rights, the
+        criminal code, etc.</p> <p>The account may not be used in any way to promote
+        illegal activities.</p> <h3>In case of breaches of the aforementioned rules</h3>
+        <p>Citizenlab reserves the right, if it detects infringements on the aforementioned
+        rules, to delete the relevant messages and even suspend or permanently delete
+        user profiles.</p> <p>CitizenLab cannot be held liable in any way for messages
+        posted by users or third parties, which violate the above rules. The web administrator
+        will strictly supervise that these rules are not violated. If a user detects
+        an infringement, one can always report this to the following e-mail address:
+        support@citizenlab.co.</p> <p>It is possible that files can be downloaded
+        via the platform, whether or not due to a user, or that users place harmful
+        hyperlinks. Every download by a user or click on a hyperlink, placed by a
+        user, is done at their own risk and any damage incurred is completely and
+        solely the responsibility of this user.</p> <h3>Intellectual property rights</h3>
+        <p>CitizenLab respects the intellectual property rights of others and expects
+        that users of this platform also respect these rights. CitizenLab reserves
+        the right to remove content that infringes intellectual property rights. Repeated
+        infringements of intellectual property rights of any kind by a user will give
+        rise to the suspension or removal of the account by CitizenLab.</p> <p>Infringements
+        against intellectual property rights can be reported via the following e-mail
+        address: support@citizenlab.co</p> <h3>Property rights CitizenLab</h3> <p>CitizenLab''s
+        platform is protected by intellectual property rights that relate to content,
+        source code, database, etc. The use of this platform in no way means a transfer
+        of these intellectual rights to the users of the platform. Every user must
+        be aware of these rights and must act accordingly.</p> <p>It is thus forbidden
+        to reproduce, distribute, modify or transmit the platform and its contents
+        without permission.</p>
+
+'
     slug: terms-and-conditions
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:22 UTC
@@ -5874,6 +6385,7 @@ models:
       nb-NO: Cookie Policy
       nl-BE: Cookiebeleid
       nl-NL: Cookiebeleid
+      es-ES: Cookie Policy
     body_multiloc:
       en: '<h3>What Are Cookies</h3><p>As is common practice with almost all professional
         websites this site uses cookies, which are tiny files that are downloaded
@@ -6780,6 +7292,76 @@ models:
         Cookieverklaring toch nog vragen of opmerkingen rond cookies hebben, kan je
         steeds contact opnemen via support@citizenlab.co. </p><p><br></p><p>Laatst
         bijgewerkte versie: 08/02/2018</p>\n"
+      es-ES: '<h3>What Are Cookies</h3><p>As is common practice with almost all professional
+        websites this site uses cookies, which are tiny files that are downloaded
+        to your computer, to improve your experience. This page describes what information
+        they gather, how we use it and why we sometimes need to store these cookies.
+        We will also share how you can prevent these cookies from being stored however
+        this may downgrade or ''break'' certain elements of the sites functionality.</p>
+        <p>For more general information on cookies <a href="https://en.wikipedia.org/wiki/HTTP_cookie">see
+        the Wikipedia article on HTTP Cookies</a>.</p> <h3>How We Use Cookies</h3>
+        <p>We use cookies for a variety of reasons detailed below. Unfortunately is
+        most cases there are no industry standard options for disabling cookies without
+        completely disabling the functionality and features they add to this site.
+        It is recommended that you leave on all cookies if you are not sure whether
+        you need them or not in case they are used to provide a service that you use.</p>
+        <h3>Disabling Cookies</h3> <p>You can prevent the setting of cookies by adjusting
+        the settings on your browser (see your browser Help for how to do this). Be
+        aware that disabling cookies will affect the functionality of this and many
+        other websites that you visit. Disabling cookies will usually result in also
+        disabling certain functionality and features of the this site. Therefore it
+        is recommended that you do not disable cookies.</p> <h3>The Cookies We Set</h3>
+        <p>If you create an account with us then we will use cookies for the management
+        of the signup process and general administration. These cookies will usually
+        be deleted when you log out however in some cases they may remain afterwards
+        to remember your site preferences when logged out.</p> <p>We use cookies when
+        you are logged in so that we can remember this fact. This prevents you from
+        having to log in every single time you visit a new page. These cookies are
+        typically removed or cleared when you log out to ensure that you can only
+        access restricted features and areas when logged in.</p> <p>This site offers
+        newsletter or email subscription services and cookies may be used to remember
+        if you are already registered and whether to show certain notifications which
+        might only be valid to subscribed/unsubscribed users.</p> <p>When you submit
+        data to through a form such as those found on contact pages or comment forms
+        cookies may be set to remember your user details for future correspondence.</p>
+        <p>In order to provide you with a great experience on this site we provide
+        the functionality to set your preferences for how this site runs when you
+        use it. In order to remember your preferences we need to set cookies so that
+        this information can be called whenever you interact with a page is affected
+        by your preferences.</p> <h3>Third Party Cookies</h3> <p>In some special cases
+        we also use cookies provided by trusted third parties. The following section
+        details which third party cookies you might encounter through this site.</p>
+        <p>This site uses Google Analytics which is one of the most widespread and
+        trusted analytics solution on the web for helping us to understand how you
+        use the site and ways that we can improve your experience. These cookies may
+        track things such as how long you spend on the site and the pages that you
+        visit so we can continue to produce engaging content.</p> <p>For more information
+        on Google Analytics cookies, <a href="https://developers.google.com/analytics/devguides/collection/analyticsjs/cookie-usage">see
+        the official Google Analytics page</a>.</p> <p>Third party analytics are used
+        to track and measure usage of this site so that we can continue to produce
+        engaging content. These cookies may track things such as how long you spend
+        on the site or pages you visit which helps us to understand how we can improve
+        the site for you. From time to time we test new features and make subtle changes
+        to the way that the site is delivered. When we are still testing new features
+        these cookies may be used to ensure that you receive a consistent experience
+        whilst on the site whilst ensuring we understand which optimisations our users
+        appreciate the most.</p> <p>As we sell products it''s important for us to
+        understand statistics about how many of the visitors to our site actually
+        make a purchase and as such this is the kind of data that these cookies will
+        track. This is important to you, as it means that we can accurately make business
+        predictions that allow us to monitor our advertising and product costs to
+        ensure the best possible price.</p> <p>In some cases we may provide you with
+        custom content based on what you tell us about yourself either directly or
+        indirectly by linking a social media account. These types of cookies simply
+        allow us to provide you with content that we feel may be of interest to you.</p>
+        <h3>More Information</h3> <p>Hopefully that has clarified things for you and
+        as was previously mentioned if there is something that you aren''t sure whether
+        you need or not it''s usually safer to leave cookies enabled in case it does
+        interact with one of the features you use on our site. However if you are
+        still looking for more information then you can contact us through one of
+        our preferred contact methods.</p> <p>Email: <a href="mailto:support@citizenlab.co">support@citizenlab.co</a></p>
+
+'
     slug: cookie-policy
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2018-12-10 09:43:52 UTC
@@ -6787,8 +7369,10 @@ models:
     publication_status: published
   - title_multiloc:
       en: ''
+      es-ES: ''
     body_multiloc:
       en: ''
+      es-ES: ''
     slug: homepage-info
     created_at: 2019-01-30 17:25:29 UTC
     updated_at: 2019-01-30 17:25:29 UTC
@@ -6806,6 +7390,7 @@ models:
       nb-NO: Information Page
       nl-BE: Over
       nl-NL: Over
+      es-ES: Renca Participa
     body_multiloc:
       en: "<p>Renca Participa es una plataforma para poder mejorar y fortalecer la
         participación ciudadana en Renca.</p>"
@@ -7047,6 +7632,8 @@ models:
         informatie nodig? </em></strong><em>Wil je het platform gebruiken? Vragen
         of feedback? Contacteer de verantwoordelijke dienst of persoon van je gemeente
         of organisatie of neem contact met CitizenLab via support@citizenlab.co</em></p>'
+      es-ES: "<p>Renca Participa es una plataforma para poder mejorar y fortalecer
+        la participación ciudadana en Renca.</p>"
     slug: information
     created_at: 2018-12-10 09:43:22 UTC
     updated_at: 2019-02-21 01:53:59 UTC
@@ -7103,6 +7690,7 @@ models:
       nb-NO: proposed
       nl-BE: voorgesteld
       nl-NL: voorgesteld
+      es-ES: proposed
     ordering: 100
     code: proposed
     color: "#687782"
@@ -7119,6 +7707,7 @@ models:
       nb-NO: This idea has been proposed to the city
       nl-BE: Dit idee is voorgesteld
       nl-NL: Dit idee is voorgesteld
+      es-ES: This idea has been proposed to the city
   - &37
     title_multiloc:
       en: under consideration
@@ -7131,6 +7720,7 @@ models:
       nb-NO: under consideration
       nl-BE: in overweging
       nl-NL: in overweging
+      es-ES: under consideration
     ordering: 200
     code: under_consideration
     color: "#0080A5"
@@ -7147,6 +7737,7 @@ models:
       nb-NO: This idea has been taken into consideration by the city
       nl-BE: Dit idee is in overweging genomen
       nl-NL: Dit idee is in overweging genomen
+      es-ES: This idea has been taken into consideration by the city
   - &40
     title_multiloc:
       en: accepted
@@ -7159,6 +7750,7 @@ models:
       nb-NO: accepted
       nl-BE: aangenomen
       nl-NL: aangenomen
+      es-ES: accepted
     ordering: 300
     code: accepted
     color: "#04884C"
@@ -7176,6 +7768,7 @@ models:
       nb-NO: This idea has been accepted and will be implemented by the city
       nl-BE: Dit idee is aanvaard en zal worden uitgevoerd
       nl-NL: Dit idee is aanvaard en zal worden uitgevoerd
+      es-ES: This idea has been accepted and will be implemented by the city
   - title_multiloc:
       en: rejected
       da-DK: rejected
@@ -7187,6 +7780,7 @@ models:
       nb-NO: rejected
       nl-BE: afgewezen
       nl-NL: afgewezen
+      es-ES: rejected
     ordering: 400
     code: rejected
     color: "#E52516"
@@ -7203,6 +7797,7 @@ models:
       nb-NO: This idea has been rejected
       nl-BE: Dit idee is afgewezen
       nl-NL: Dit idee is afgewezen
+      es-ES: This idea has been rejected
   - &42
     title_multiloc:
       en: implemented
@@ -7215,6 +7810,7 @@ models:
       nb-NO: implemented
       nl-BE: uitgevoerd
       nl-NL: uitgevoerd
+      es-ES: implemented
     ordering: 500
     code: implemented
     color: "#04884C"
@@ -7231,12 +7827,14 @@ models:
       nb-NO: This idea has been implemented by the city
       nl-BE: Dit idee is uitgevoerd
       nl-NL: Dit idee is uitgevoerd
+      es-ES: This idea has been implemented by the city
   idea:
   - &48
     title_multiloc:
       en: Add more night buses
       en-CA: Add more night buses
       en-GB: Add more night buses
+      es-ES: Add more night buses
     body_multiloc:
       en: "<p>The service of buses to and from the city centre stops early at night
         (last bus at 11PM). There should be more buses at night to encourage people
@@ -7247,6 +7845,10 @@ models:
         to go to the restaurants and bars of the city centre. It would keep the neighbourhood
         more lively.</p>\n"
       en-GB: "<p>The service of buses to and from the city centre stops early at night
+        (last bus at 11PM). There should be more buses at night to encourage people
+        to go to the restaurants and bars of the city centre. It would keep the neighbourhood
+        more lively.</p>\n"
+      es-ES: "<p>The service of buses to and from the city centre stops early at night
         (last bus at 11PM). There should be more buses at night to encourage people
         to go to the restaurants and bars of the city centre. It would keep the neighbourhood
         more lively.</p>\n"
@@ -7265,6 +7867,7 @@ models:
       en: Have internet trainings for elderly people
       en-CA: Have internet trainings for elderly people
       en-GB: Have internet trainings for elderly people
+      es-ES: Have internet trainings for elderly people
     body_multiloc:
       en: "<p>It would be interesting to have a small course given to elderly people
         on how to use the internet. For instance, there could be a training that shows
@@ -7277,6 +7880,11 @@ models:
         I think if we want our city to be more modern and digital, we should make
         sure beforehand that all the citizens can understand these tools properly.</p>\n"
       en-GB: "<p>It would be interesting to have a small course given to elderly people
+        on how to use the internet. For instance, there could be a training that shows
+        how to send emails, read the news online, and other basic online activities.
+        I think if we want our city to be more modern and digital, we should make
+        sure beforehand that all the citizens can understand these tools properly.</p>\n"
+      es-ES: "<p>It would be interesting to have a small course given to elderly people
         on how to use the internet. For instance, there could be a training that shows
         how to send emails, read the news online, and other basic online activities.
         I think if we want our city to be more modern and digital, we should make
@@ -7296,6 +7904,7 @@ models:
       en: Send a weekly agenda of the city by email
       en-CA: Send a weekly agenda of the city by email
       en-GB: Send a weekly agenda of the city by email
+      es-ES: Send a weekly agenda of the city by email
     body_multiloc:
       en: "<p>Many events are organised throughout the week but we are not aware of
         it because we don't pass by the posters or go to the places where they are
@@ -7310,6 +7919,12 @@ models:
         towhalls, etc. to be able to access it all in one place from the comfort of
         your own house.</p>\n"
       en-GB: "<p>Many events are organised throughout the week but we are not aware
+        of it because we don't pass by the posters or go to the places where they
+        are advertised. Therefore it would be nice to receive an agenda of what's
+        happening in the city during the week, right into their inbox: cultural events,
+        towhalls, etc. to be able to access it all in one place from the comfort of
+        your own house.</p>\n"
+      es-ES: "<p>Many events are organised throughout the week but we are not aware
         of it because we don't pass by the posters or go to the places where they
         are advertised. Therefore it would be nice to receive an agenda of what's
         happening in the city during the week, right into their inbox: cultural events,
@@ -7330,6 +7945,7 @@ models:
       en: Have more computers in the library
       en-CA: Have more computers in the library
       en-GB: Have more computers in the library
+      es-ES: Have more computers in the library
     body_multiloc:
       en: "<p>To make technology more inclusive, and especially internet access, there
         should be more computers in the public library. Indeed, today there are only
@@ -7342,6 +7958,11 @@ models:
         more monitors, or even a room at the library with computers only. It could
         help people who dn't have internet at home to look for a job for example.</p>\n"
       en-GB: "<p>To make technology more inclusive, and especially internet access,
+        there should be more computers in the public library. Indeed, today there
+        are only two and the spots they are often occupied. It could be nice to have
+        more monitors, or even a room at the library with computers only. It could
+        help people who dn't have internet at home to look for a job for example.</p>\n"
+      es-ES: "<p>To make technology more inclusive, and especially internet access,
         there should be more computers in the public library. Indeed, today there
         are only two and the spots they are often occupied. It could be nice to have
         more monitors, or even a room at the library with computers only. It could
@@ -7361,6 +7982,7 @@ models:
       en: More bicycle racks
       en-CA: More bicycle racks
       en-GB: More bicycle racks
+      es-ES: More bicycle racks
     body_multiloc:
       en: "<p>A lot of people are aware of how beneficial for the environment it is
         to use their bikes to go around town. However, most of them are discouraged
@@ -7373,6 +7995,11 @@ models:
         nice to install more bicycle racks at the strategic points where they are
         always busy: city centre, in front of the cinema, etc.</p>\n"
       en-GB: "<p>A lot of people are aware of how beneficial for the environment it
+        is to use their bikes to go around town. However, most of them are discouraged
+        because they can't park them because the racks are often full. It would be
+        nice to install more bicycle racks at the strategic points where they are
+        always busy: city centre, in front of the cinema, etc.</p>\n"
+      es-ES: "<p>A lot of people are aware of how beneficial for the environment it
         is to use their bikes to go around town. However, most of them are discouraged
         because they can't park them because the racks are often full. It would be
         nice to install more bicycle racks at the strategic points where they are
@@ -7392,6 +8019,7 @@ models:
       en: Organise one car-free day per month
       en-CA: Organise one car-free day per month
       en-GB: Organise one car-free day per month
+      es-ES: Organise one car-free day per month
     body_multiloc:
       en: "<p>It would be nice once a month, to be able to curculate freely by foot
         or by bike without worrying about cars or air pollution. It could be a great
@@ -7402,6 +8030,10 @@ models:
         a great way to raise awareness around cleaner ways to move around the city.
         Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
       en-GB: "<p>It would be nice once a month, to be able to curculate freely by
+        foot or by bike without worrying about cars or air pollution. It could be
+        a great way to raise awareness around cleaner ways to move around the city.
+        Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
+      es-ES: "<p>It would be nice once a month, to be able to curculate freely by
         foot or by bike without worrying about cars or air pollution. It could be
         a great way to raise awareness around cleaner ways to move around the city.
         Ideally it would be on the weekends so that everyone can enjoy it!</p>\n"
@@ -7418,12 +8050,18 @@ models:
   - &54
     title_multiloc:
       en: Espacios donde puedan almorzar las Personas Mayores
+      es-ES: Espacios donde puedan almorzar las Personas Mayores
     body_multiloc:
       en: "<p>Las personas mayores de la ciudad, reciben ayuda en alimentos de la
         Municipalidad, pero muchas veces esa caja con alimentos en conservas y abarrotes,
         queda acumulándose en la casa de una persona mayor que no tiene capacidad
         para cocinarlo y si lo cocina, como solo. Seria bueno que se instalaran espacios
         donde las personas mayores comieran juntas.</p>"
+      es-ES: "<p>Las personas mayores de la ciudad, reciben ayuda en alimentos de
+        la Municipalidad, pero muchas veces esa caja con alimentos en conservas y
+        abarrotes, queda acumulándose en la casa de una persona mayor que no tiene
+        capacidad para cocinarlo y si lo cocina, como solo. Seria bueno que se instalaran
+        espacios donde las personas mayores comieran juntas.</p>"
     publication_status: published
     published_at: 2018-12-12 03:08:07 UTC
     project_ref: *4
@@ -7441,8 +8079,13 @@ models:
   - &56
     title_multiloc:
       en: Huertos comunitarios urbanos
+      es-ES: Huertos comunitarios urbanos
     body_multiloc:
       en: "<p>Apoyo técnico y profesional municipal en la construcción de huertos
+        en la ciudad, en distintas modalidades y funcionalidades en relación a las
+        demandas de las comunidades organizadas y comprometidas en su manejo y cuidado
+        en el tiempo.</p>"
+      es-ES: "<p>Apoyo técnico y profesional municipal en la construcción de huertos
         en la ciudad, en distintas modalidades y funcionalidades en relación a las
         demandas de las comunidades organizadas y comprometidas en su manejo y cuidado
         en el tiempo.</p>"
@@ -7463,8 +8106,13 @@ models:
   - &55
     title_multiloc:
       en: Gimnasio al aire libre
+      es-ES: Gimnasio al aire libre
     body_multiloc:
       en: "<p><em>Propuesta para presupuestos participativos de la ilustre Municipalidad
+        de Quilicura. Se emplazará en Avenida Santa Luisa con Las Torres. Considera
+        la instalación de equipamiento deportivo con circuito, máquinas de ejercicios,
+        bicicleteros, tensoestructuras para proteger del sol y la lluvia, entre otros.</em></p>"
+      es-ES: "<p><em>Propuesta para presupuestos participativos de la ilustre Municipalidad
         de Quilicura. Se emplazará en Avenida Santa Luisa con Las Torres. Considera
         la instalación de equipamiento deportivo con circuito, máquinas de ejercicios,
         bicicleteros, tensoestructuras para proteger del sol y la lluvia, entre otros.</em></p>"
@@ -7485,8 +8133,10 @@ models:
   - &58
     title_multiloc:
       en: Baños naturales
+      es-ES: Baños naturales
     body_multiloc:
       en: "<p>Propongo baños con ahorradores de agua</p>"
+      es-ES: "<p>Propongo baños con ahorradores de agua</p>"
     publication_status: published
     published_at: 2019-02-21 14:15:31 UTC
     project_ref: *3
@@ -7504,12 +8154,18 @@ models:
   - &57
     title_multiloc:
       en: Señaletica Montaña
+      es-ES: Señaletica Montaña
     body_multiloc:
       en: <p class="ql-align-justify">Aprovechando el buen tiempo, trabajaremos en
         un Plan de Señalética en el sector de Montaña, el cual consistirá en la instalación
         de nuevas luminarias, arreglos de veredas y nuevas señaléticas.</p><p class="ql-align-justify">Además
         instalaremos nuevas casetas de basura en el Camino a Farellones para cuidar
         la naturaleza en nuestra cordillera.</p><p><br></p>
+      es-ES: <p class="ql-align-justify">Aprovechando el buen tiempo, trabajaremos
+        en un Plan de Señalética en el sector de Montaña, el cual consistirá en la
+        instalación de nuevas luminarias, arreglos de veredas y nuevas señaléticas.</p><p
+        class="ql-align-justify">Además instalaremos nuevas casetas de basura en el
+        Camino a Farellones para cuidar la naturaleza en nuestra cordillera.</p><p><br></p>
     publication_status: published
     published_at: 2019-02-15 00:59:43 UTC
     project_ref: *9
@@ -7523,8 +8179,13 @@ models:
   - &45
     title_multiloc:
       en: Mejor arbolado urbano, mejor confort térmico
+      es-ES: Mejor arbolado urbano, mejor confort térmico
     body_multiloc:
       en: "<p>Es de conocimiento público que nuestra comuna está afectada por las
+        altas y bajas temperaturas de nuestra ciudad, más que otras comunas!</p><p>Eso
+        en parte por la escasa vegetación!</p><p>Aumentemos el arbolado urbano para
+        una mejor calidad de vida!</p>"
+      es-ES: "<p>Es de conocimiento público que nuestra comuna está afectada por las
         altas y bajas temperaturas de nuestra ciudad, más que otras comunas!</p><p>Eso
         en parte por la escasa vegetación!</p><p>Aumentemos el arbolado urbano para
         una mejor calidad de vida!</p>"
@@ -7545,8 +8206,14 @@ models:
   - &59
     title_multiloc:
       en: UNA SALA DE TEATRO PARA RENCA
+      es-ES: UNA SALA DE TEATRO PARA RENCA
     body_multiloc:
       en: <p>En la comuna no existe un espacio para hacer/ver teatro y otras artes
+        escénicas. Propongo un lugar con dos salas...una tipo microcine (50 butacas)
+        y que sirva además para Seminarios, Talleres, Encuentros y otra sala con 300
+        butacas para teatro y cine.</p><h1 class="ql-align-center"><strong>Vecinos
+        y vecinas apoyenme¡¡</strong></h1>
+      es-ES: <p>En la comuna no existe un espacio para hacer/ver teatro y otras artes
         escénicas. Propongo un lugar con dos salas...una tipo microcine (50 butacas)
         y que sirva además para Seminarios, Talleres, Encuentros y otra sala con 300
         butacas para teatro y cine.</p><h1 class="ql-align-center"><strong>Vecinos
@@ -7570,6 +8237,7 @@ models:
       en: Organise a crafts market in the city centre
       en-CA: Organise a crafts market in the city centre
       en-GB: Organise a crafts market in the city centre
+      es-ES: Organise a crafts market in the city centre
     body_multiloc:
       en: "<p>The shops that we can find in the city centre are quite common and can
         be found in other places in the city (shopping centre, etc.). So to make the
@@ -7584,6 +8252,12 @@ models:
         order to promote local crafts and have the inhabitants discover new ways of
         doing their shopping. </p>\n"
       en-GB: "<p>The shops that we can find in the city centre are quite common and
+        can be found in other places in the city (shopping centre, etc.). So to make
+        the city centre shopping experience more original, we should organise a crafts
+        market there, gather all kind of stands such as food, accessories, etc. in
+        order to promote local crafts and have the inhabitants discover new ways of
+        doing their shopping. </p>\n"
+      es-ES: "<p>The shops that we can find in the city centre are quite common and
         can be found in other places in the city (shopping centre, etc.). So to make
         the city centre shopping experience more original, we should organise a crafts
         market there, gather all kind of stands such as food, accessories, etc. in
@@ -7604,6 +8278,7 @@ models:
       en: Make the city centre more accessible thanks to free shuttles
       en-CA: Make the city centre more accessible thanks to free shuttles
       en-GB: Make the city centre more accessible thanks to free shuttles
+      es-ES: Make the city centre more accessible thanks to free shuttles
     body_multiloc:
       en: "<p>One of the reason why people are not visiting the city centre as much
         as before could be because it's hard to reach (hard to park or expensive parking,
@@ -7616,6 +8291,11 @@ models:
         a free shuttle to go from the biggest residential areas to the city centre.
         They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
       en-GB: "<p>One of the reason why people are not visiting the city centre as
+        much as before could be because it's hard to reach (hard to park or expensive
+        parking, limited public transportation, etc.). I suggest that the city launches
+        a free shuttle to go from the biggest residential areas to the city centre.
+        They can be electrical as well in order to remain an eco-friendly solution.</p>\n"
+      es-ES: "<p>One of the reason why people are not visiting the city centre as
         much as before could be because it's hard to reach (hard to park or expensive
         parking, limited public transportation, etc.). I suggest that the city launches
         a free shuttle to go from the biggest residential areas to the city centre.
@@ -7886,6 +8566,7 @@ models:
       en: "<p>Great idea, we stand behind you!</p>\n"
       en-CA: "<p>Great idea, we stand behind you!</p>\n"
       en-GB: "<p>Great idea, we stand behind you!</p>\n"
+      es-ES: "<p>Great idea, we stand behind you!</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
     publication_status: published
@@ -7896,6 +8577,7 @@ models:
       en: "<p>I've never seen you riding a bicycle...</p>\n"
       en-CA: "<p>I've never seen you riding a bicycle...</p>\n"
       en-GB: "<p>I've never seen you riding a bicycle...</p>\n"
+      es-ES: "<p>I've never seen you riding a bicycle...</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
     publication_status: published
@@ -7908,6 +8590,8 @@ models:
       en-CA: "<p>Why stop there? The city also lacks bike stables. There should at
         least be one near the river.</p>\n"
       en-GB: "<p>Why stop there? The city also lacks bike stables. There should at
+        least be one near the river.</p>\n"
+      es-ES: "<p>Why stop there? The city also lacks bike stables. There should at
         least be one near the river.</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
@@ -7922,6 +8606,8 @@ models:
         transportation available...</p>\n"
       en-GB: "<p>What about those who work on weekends? There should be at least public
         transportation available...</p>\n"
+      es-ES: "<p>What about those who work on weekends? There should be at least public
+        transportation available...</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
     publication_status: published
@@ -7934,6 +8620,8 @@ models:
       en-CA: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
       en-GB: "<p>It would also be nice for the kids, it gives them more independance
+        and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
+      es-ES: "<p>It would also be nice for the kids, it gives them more independance
         and us, parents, don't have to go pick them up at midnight after the cinema!</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
@@ -7948,6 +8636,8 @@ models:
         centre experience more fun I agree!</p>\n"
       en-GB: "<p>It would be a great way to promote local creators and make the city
         centre experience more fun I agree!</p>\n"
+      es-ES: "<p>It would be a great way to promote local creators and make the city
+        centre experience more fun I agree!</p>\n"
     created_at: 2018-12-10 09:43:48 UTC
     updated_at: 2018-12-10 09:43:48 UTC
     publication_status: published
@@ -7956,6 +8646,7 @@ models:
     idea_ref: *45
     body_multiloc:
       en: Pucha que buena idea Pablo! Creo que al Alcalde le va a parecer cachilupi!
+      es-ES: Pucha que buena idea Pablo! Creo que al Alcalde le va a parecer cachilupi!
     created_at: 2019-02-21 01:10:17 UTC
     updated_at: 2019-02-21 01:10:17 UTC
     publication_status: published
@@ -7965,6 +8656,7 @@ models:
     idea_ref: *45
     body_multiloc:
       en: El alcalde escribió ayer sobre esto...tah buena
+      es-ES: El alcalde escribió ayer sobre esto...tah buena
     created_at: 2019-02-21 14:01:36 UTC
     updated_at: 2019-02-21 14:20:53 UTC
     publication_status: published
@@ -7973,6 +8665,7 @@ models:
     idea_ref: *59
     body_multiloc:
       en: Muy buena¡¡
+      es-ES: Muy buena¡¡
     created_at: 2019-02-21 14:09:19 UTC
     updated_at: 2019-02-21 14:20:53 UTC
     publication_status: published
@@ -7981,6 +8674,7 @@ models:
     idea_ref: *59
     body_multiloc:
       en: Buena idea! Cultura es dignidad y calidad de vida!
+      es-ES: Buena idea! Cultura es dignidad y calidad de vida!
     created_at: 2019-02-21 14:18:02 UTC
     updated_at: 2019-02-21 14:20:53 UTC
     publication_status: published
@@ -7989,6 +8683,9 @@ models:
     idea_ref: *45
     body_multiloc:
       en: 'Si pues tratamos de hacerlo actualizado
+
+'
+      es-ES: 'Si pues tratamos de hacerlo actualizado
 
 '
     created_at: 2019-02-21 14:20:53 UTC
