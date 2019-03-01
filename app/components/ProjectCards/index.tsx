@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual } from 'lodash-es';
+import { size, isEqual, isEmpty } from 'lodash-es';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -14,14 +14,13 @@ import SendFeedback from 'components/SendFeedback';
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import T from 'components/T';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -241,7 +240,6 @@ interface InputProps extends GetProjectsInputProps {
 interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
 }
 
@@ -348,23 +346,28 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { cardSizes } = this.state;
-    const { tenant, locale, showTitle, showPublicationStatusFilter, showSendFeedback, layout, theme } = this.props;
+    const { tenant, showTitle, showPublicationStatusFilter, showSendFeedback, layout, theme } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
-    if (!isNilOrError(tenant) && locale) {
-      const organizationNameMulitiLoc = tenant.attributes.settings.core.organization_name;
-      const tenantLocales = tenant.attributes.settings.core.locales;
-      const tenantName = getLocalized(organizationNameMulitiLoc, locale, tenantLocales);
+    if (!isNilOrError(tenant)) {
+      const customCurrentlyWorkingOn = tenant.attributes.settings.core.currently_working_on_text;
 
       return (
         <Container id="e2e-projects-container">
           <Header>
             {showTitle &&
               <Title>
-                {this.props.intl.formatMessage(messages.currentlyWorkingOn, { tenantName })}
+                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                  ?
+                    <T value={customCurrentlyWorkingOn} />
+                  :
+                    <FormattedMessage
+                      {...messages.currentlyWorkingOn}
+                    />
+                }
               </Title>
             }
 
@@ -462,7 +465,6 @@ const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(ProjectCa
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  locale: <GetLocale />,
   windowSize: <GetWindowSize debounce={50} />,
   projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
 });
