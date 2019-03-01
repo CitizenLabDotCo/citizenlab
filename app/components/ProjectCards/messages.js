@@ -35,6 +35,6 @@ export default defineMessages({
   },
   currentlyWorkingOn: {
     id: 'app.containers.ProjectCards.currentlyWorkingOn',
-    defaultMessage: '{tenantName} is currently working on',
+    defaultMessage: '{orgName} is currently working on',
   },
 });
