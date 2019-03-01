@@ -5,6 +5,7 @@ import nlLocaleData from 'react-intl/locale-data/nl';
 import deLocaleData from 'react-intl/locale-data/de';
 import daLocaleData from 'react-intl/locale-data/da';
 import nbLocaleData from 'react-intl/locale-data/nb';
+import esLocaleData from 'react-intl/locale-data/es';
 import achLocaleData from 'utils/ach';
 import { DEFAULT_LOCALE } from 'containers/App/constants';
 
@@ -18,6 +19,8 @@ const nlNLTranslationMessages = require('translations/nl-NL.json');
 const deDETranslationMessages = require('translations/de-DE.json');
 const daDKTranslationMessages = require('translations/da-DK.json');
 const nbNOTranslationMessages = require('translations/nb-NO.json');
+const esESTranslationMessages = require('translations/es-ES.json');
+const esCLTranslationMessages = require('translations/es-CL.json');
 const achTranslationMessages = require('translations/ach-UG.json');
 
 if (process.env.CROWDIN_PLUGIN_ENABLED) {
@@ -29,6 +32,7 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
   addLocaleData(deLocaleData);
   addLocaleData(daLocaleData);
   addLocaleData(nbLocaleData);
+  addLocaleData(esLocaleData);
 }
 
 export const formatTranslationMessages = (locale, messages) => {
@@ -60,6 +64,8 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
   translationMessages['de-DE'] = formatTranslationMessages('de-DE', deDETranslationMessages);
   translationMessages['da-DK'] = formatTranslationMessages('da-DK', daDKTranslationMessages);
   translationMessages['nb-NO'] = formatTranslationMessages('nb-NO', nbNOTranslationMessages);
+  translationMessages['es-ES'] = formatTranslationMessages('es-ES', esESTranslationMessages);
+  translationMessages['es-CL'] = formatTranslationMessages('es-CL', esCLTranslationMessages);
 }
 
 export { translationMessages };

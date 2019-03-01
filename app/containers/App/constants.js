@@ -22,6 +22,7 @@ exports.locales = [
     'nl',
     'nb',
     'da',
+    'es',
     'de-DE',
     'en-GB',
     'en-CA',
@@ -30,7 +31,9 @@ exports.locales = [
     'nl-BE',
     'nl-NL',
     'da-DK',
-    'nb-NO'
+    'nb-NO',
+    'es-ES',
+    'es-CL'
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -44,6 +47,8 @@ exports.appLocalePairs = {
     'de-DE': 'Deutsch',
     'da-DK': 'Dansk',
     'nb-NO': 'Norsk (Bokmål)',
+    'es-ES': 'Español (España)',
+    'es-CL': 'Español (Chile)',
     ach: 'Acholi'
 };
 exports.shortenedAppLocalePairs = {
@@ -57,5 +62,7 @@ exports.shortenedAppLocalePairs = {
     'de-DE': 'Deutsch',
     'da-DK': 'Dansk',
     'nb-NO': 'Norsk',
+    'es-ES': 'Español',
+    'es-CL': 'Español',
     ach: 'Acholi'
 };
