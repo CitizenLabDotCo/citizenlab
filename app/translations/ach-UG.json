@@ -1083,7 +1083,7 @@
   "app.containers.ProjectCards.allProjects": "crwdns19260:0crwdne19260:0",
   "app.containers.ProjectCards.archivedProjects": "crwdns19261:0crwdne19261:0",
   "app.containers.ProjectCards.areasTitle": "crwdns18430:0crwdne18430:0",
-  "app.containers.ProjectCards.currentlyWorkingOn": "crwdns25968:0{tenantName}crwdne25968:0",
+  "app.containers.ProjectCards.currentlyWorkingOn": "crwdns25968:0{orgName}crwdne25968:0",
   "app.containers.ProjectCards.publicationStatus": "crwdns19262:0crwdne19262:0",
   "app.containers.ProjectInfo.imageAltText": "crwdns19277:0{index}crwdne19277:0",
   "app.containers.ProjectInfo.projectAttachments": "crwdns19397:0crwdne19397:0",
