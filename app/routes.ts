@@ -1,7 +1,7 @@
 import adminRoutes from 'containers/Admin/routes';
 
 import Loadable from 'react-loadable';
-import { FullPageCenteredSpinner } from 'components/UI/Spinner';
+import LoadableLoading from 'components/UI/LoadableLoading';
 
 export default function createRoutes() {
   return [
@@ -12,7 +12,8 @@ export default function createRoutes() {
         name: 'home',
         component: Loadable({
           loader: () => import('containers/LandingPage'),
-          loading: FullPageCenteredSpinner,
+          loading: LoadableLoading,
+          delay: 500
         })
       },
       childRoutes: [
@@ -21,7 +22,8 @@ export default function createRoutes() {
           name: 'signInPage',
           component: Loadable({
             loader: () => import('containers/SignInPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -29,7 +31,8 @@ export default function createRoutes() {
           name: 'signUpPage',
           component: Loadable({
             loader: () => import('containers/SignUpPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -37,7 +40,8 @@ export default function createRoutes() {
           name: 'signUpPage',
           component: Loadable({
             loader: () => import('containers/SignUpPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -45,7 +49,8 @@ export default function createRoutes() {
           name: 'completeSignUpPage',
           component: Loadable({
             loader: () => import('containers/CompleteSignUpPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -53,7 +58,8 @@ export default function createRoutes() {
           name: 'completeSignUpPage',
           component: Loadable({
             loader: () => import('containers/CompleteSignUpPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -61,7 +67,8 @@ export default function createRoutes() {
           name: 'usersEditPage',
           component: Loadable({
             loader: () => import('containers/UsersEditPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -69,7 +76,8 @@ export default function createRoutes() {
           name: 'usersShowPage',
           component: Loadable({
             loader: () => import('containers/UsersShowPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -77,7 +85,8 @@ export default function createRoutes() {
           name: 'IdeasProjectSelectPage',
           component: Loadable({
             loader: () => import('containers/IdeasProjectSelectPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -85,7 +94,8 @@ export default function createRoutes() {
           name: 'IdeasEditPage',
           component: Loadable({
             loader: () => import('containers/IdeasEditPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -93,7 +103,8 @@ export default function createRoutes() {
           name: 'ideasPage',
           component: Loadable({
             loader: () => import('containers/IdeasIndexPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
         },
         {
@@ -101,7 +112,8 @@ export default function createRoutes() {
           name: 'ideasShow',
           component: Loadable({
             loader: () => import('containers/IdeasShowPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -109,7 +121,8 @@ export default function createRoutes() {
           name: 'IdeasNewPage2',
           component: Loadable({
             loader: () => import('containers/IdeasNewPage2'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         adminRoutes(),
@@ -118,7 +131,8 @@ export default function createRoutes() {
           name: 'Project page',
           component: Loadable({
             loader: () => import('containers/ProjectsIndexPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -126,13 +140,15 @@ export default function createRoutes() {
           name: 'Project page',
           component: Loadable({
             loader: () => import('containers/ProjectsShowPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
           indexRoute: {
             name: 'Project page',
             component: Loadable({
               loader: () => import('containers/ProjectsShowPage/main'),
-              loading: FullPageCenteredSpinner
+              loading: LoadableLoading,
+              delay: 500
             })
           },
           childRoutes: [
@@ -141,7 +157,8 @@ export default function createRoutes() {
               name: 'Project\'s process page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/process'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               })
             },
             {
@@ -149,7 +166,8 @@ export default function createRoutes() {
               name: 'Project\'s process page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/process'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               })
             },
             {
@@ -157,7 +175,8 @@ export default function createRoutes() {
               name: 'Project\'s info page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/info'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               }),
             },
             {
@@ -165,7 +184,8 @@ export default function createRoutes() {
               name: 'Project\'s events page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/events'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               })
             },
             {
@@ -173,7 +193,8 @@ export default function createRoutes() {
               name: 'Project\'s ideas page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/ideas'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               })
             },
             {
@@ -181,7 +202,8 @@ export default function createRoutes() {
               name: 'Project\'s survey page',
               component: Loadable({
                 loader: () => import('containers/ProjectsShowPage/survey'),
-                loading: FullPageCenteredSpinner
+                loading: LoadableLoading,
+                delay: 500
               })
             },
           ],
@@ -191,7 +213,8 @@ export default function createRoutes() {
           name: 'cookiePolicy',
           component: Loadable({
             loader: () => import('containers/CookiePolicy'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           })
         },
         {
@@ -199,7 +222,8 @@ export default function createRoutes() {
           name: 'pagesShowPage',
           component: Loadable({
             loader: () => import('containers/PagesShowPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
         },
         {
@@ -207,7 +231,8 @@ export default function createRoutes() {
           name: 'passwordRecovery',
           component: Loadable({
             loader: () => import('containers/PasswordRecovery'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
         },
         {
@@ -215,7 +240,8 @@ export default function createRoutes() {
           name: 'passwordReset',
           component: Loadable({
             loader: () => import('containers/PasswordReset'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
         },
         {
@@ -223,7 +249,8 @@ export default function createRoutes() {
           name: 'notfound',
           component: Loadable({
             loader: () => import('containers/PagesShowPage'),
-            loading: FullPageCenteredSpinner
+            loading: LoadableLoading,
+            delay: 500
           }),
         },
       ],
