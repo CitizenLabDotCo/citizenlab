@@ -70,7 +70,6 @@ class SideFxCommentService
       @@mention_service.extract_expanded_mention_users(body)
     end
 
-
     mentioned_users.uniq.each do |mentioned_user|
       LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
     end
@@ -87,7 +86,5 @@ class SideFxCommentService
       LogActivityJob.perform_later(comment, 'mentioned', user, comment.created_at.to_i, payload: {mentioned_user: mentioned_user.id})
     end
   end
-
-
 
 end
