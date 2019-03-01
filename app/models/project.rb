@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
+  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top, scope: [:publication_status]
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
