@@ -42,6 +42,13 @@ class LogToSegmentService
     end
   end
 
+  def integrations user, tenant=nil
+    {
+      All: true,
+      Intercom: [:admin, :project_moderator].include?(user.highest_role),
+    }
+  end
+
   def serialize serializer, object
     ActiveModelSerializers::SerializableResource.new(object, {
       serializer: serializer,

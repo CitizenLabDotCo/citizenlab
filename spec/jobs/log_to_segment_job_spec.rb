@@ -20,6 +20,8 @@ RSpec.describe LogToSegmentJob, type: :job do
         expect(event.dig(:properties, :item_id)).to eq(comment.id)
         expect(event.dig(:properties, :item_type)).to eq('Comment')
         expect(event.dig(:properties, :item_content, :comment, :id)).to eq(comment.id)
+        expect(event.dig(:integrations, :All)).to be true
+        expect(event.dig(:integrations, :Intercom)).to be false
       end
       job.perform activity
     end
