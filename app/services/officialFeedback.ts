@@ -47,7 +47,9 @@ export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFe
     official_feedback: feedBack
   };
 
-  return streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
+  const response = await streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, bodyData);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`] });
+  return response;
 }
 
 export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {

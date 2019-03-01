@@ -11,7 +11,7 @@ import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
 // resources
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
-import GetOfficialFeedback, { GetOfficialFeedbackChildProps } from 'resources/GetOfficialFeedback';
+import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
 // styling
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ interface InputProps {
 
 interface DataProps {
   permission: GetPermissionChildProps;
-  officialFeedback: GetOfficialFeedbackChildProps;
+  officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -67,16 +67,18 @@ export class OfficialFeedback extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, permission, officialFeedback } = this.props;
-    const { officialFeedbackList } = officialFeedback;
-    const updateDate = !isNilOrError(officialFeedbackList)
-      && officialFeedbackList.length > 0
-      && (officialFeedbackList[0].attributes.updated_at || officialFeedbackList[0].attributes.created_at);
+    const { ideaId, permission } = this.props;
+    const { officialFeedbacks } = this.props;
+    const { officialFeedbacksList } = officialFeedbacks;
+    const updateDate = !isNilOrError(officialFeedbacksList)
+      && officialFeedbacksList.data
+      && officialFeedbacksList.data.length > 0
+      && (officialFeedbacksList.data[0].attributes.updated_at || officialFeedbacksList.data[0].attributes.created_at);
 
     return (
       <>
         {permission &&
-          <StyledOfficialFeedbackNew ideaId={ideaId}/>
+          <StyledOfficialFeedbackNew ideaId={ideaId} />
         }
 
         {updateDate &&
@@ -94,6 +96,7 @@ export class OfficialFeedback extends PureComponent<Props, State> {
         <OfficialFeedbackFeed
           ideaId={ideaId}
           editingAllowed={permission}
+          officialFeedbacks={officialFeedbacks}
         />
       </>
     );
@@ -102,7 +105,7 @@ export class OfficialFeedback extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project.data} action="moderate" >{render}</GetPermission> : null,
-  officialFeedback: ({ ideaId, render }) => <GetOfficialFeedback ideaId={ideaId}>{render}</GetOfficialFeedback>,
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (
