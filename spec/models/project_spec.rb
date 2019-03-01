@@ -35,7 +35,6 @@ RSpec.describe Project, type: :model do
   end
 
   describe "description sanitizer" do
-
     it "sanitizes script tags in the description" do
       project = create(:project, description_multiloc: {
         "en" => '<p>Test</p><script>This should be removed!</script><h1>Title</h1><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
@@ -46,7 +45,6 @@ RSpec.describe Project, type: :model do
   end
 
   describe "slug" do
-
     it "is valid when it's only containing alphanumeric and hyphens" do
       project = build(:project, slug: 'aBc-123-g3S')
       expect(project).to be_valid
@@ -60,7 +58,6 @@ RSpec.describe Project, type: :model do
   end
 
   describe "visible_to" do
-
     it "gets set to 'public' when not specified on create" do
       project = create(:project, visible_to: nil)
       expect(project.visible_to).to eq 'public'
@@ -79,6 +76,23 @@ RSpec.describe Project, type: :model do
       p = create(:project_with_current_phase)
       p.presentation_mode = nil
       expect(p.save).to eq true
+    end
+  end
+
+  describe "finished?" do
+    it "returns false for a continuous project" do
+      project = create(:continuous_project)
+      expect(project.finished?).to be_falsy
+    end
+
+    it "returns false for a project with current phase" do
+      project = create(:project_with_current_phase)
+      expect(project.finished?).to be_falsy
+    end
+
+    it "returns true for a project with only past phases" do
+      project = create(:project_with_past_phases)
+      expect(project.finished?).to be_truthy
     end
   end
 
