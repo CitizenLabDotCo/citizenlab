@@ -1083,7 +1083,7 @@
   "app.containers.ProjectCards.allProjects": "Alle Projekte",
   "app.containers.ProjectCards.archivedProjects": "Archivierte Projekte",
   "app.containers.ProjectCards.areasTitle": "Gebiete",
-  "app.containers.ProjectCards.currentlyWorkingOn": "{tenantName} arbeitet derzeit an",
+  "app.containers.ProjectCards.currentlyWorkingOn": "{orgName} arbeitet derzeit an",
   "app.containers.ProjectCards.publicationStatus": "Veröffentlichungsstatus",
   "app.containers.ProjectInfo.imageAltText": "Projekt Bild {index}",
   "app.containers.ProjectInfo.projectAttachments": "Anhänge",
