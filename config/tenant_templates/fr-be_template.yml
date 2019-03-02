@@ -54643,10 +54643,6 @@ models:
     membership_type: manual
     rules: []
   groups_project:
-  - group_ref: 
-    project_ref: *13
-    created_at: 2019-01-25 09:31:55 UTC
-    updated_at: 2019-01-25 09:31:55 UTC
   - group_ref: *18
     project_ref: *13
     created_at: 2019-01-25 09:32:00 UTC
