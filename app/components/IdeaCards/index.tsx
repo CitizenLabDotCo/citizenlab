@@ -149,14 +149,14 @@ const ViewButton = styled.div`
   justify-content: center;
   cursor: pointer;
   background: transparent;
-  border: solid 1px ${(props) => props.theme.colorMain};
+  border: solid 1px ${({ theme }) => theme.colorText};
 
   &:not(.active):hover {
-    background: #f0f0f0;
+    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
   }
 
   &.active {
-    background: ${(props) => props.theme.colorMain};
+    background: ${({ theme }) => theme.colorText};
 
     > span {
       color: #fff;
@@ -164,7 +164,7 @@ const ViewButton = styled.div`
   }
 
   > span {
-    color: ${(props) => props.theme.colorText};
+    color: ${({ theme }) => theme.colorText};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
@@ -422,8 +422,8 @@ class IdeaCards extends PureComponent<Props, State> {
               iconPos="left"
               textColor={theme.colorText}
               textHoverColor={darken(0.1, theme.colorText)}
-              bgColor={rgba(theme.colorMain, 0.08)}
-              bgHoverColor={rgba(theme.colorMain, 0.12)}
+              bgColor={rgba(theme.colorText, 0.08)}
+              bgHoverColor={rgba(theme.colorText, 0.12)}
               fontWeight="500"
             />
           </Footer>

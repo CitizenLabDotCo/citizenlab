@@ -17,6 +17,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 const SendFeedbackText = styled.span`
   color: ${colors.secondaryText};
   font-size: ${fontSizes.base}px;
+  font-weight: 300;
   transition: all 100ms ease-out;
   margin-left: 8px;
 
@@ -29,11 +30,10 @@ const SendFeedbackIcon = styled(Icon)`
   fill: ${colors.secondaryText};
   width: 22px;
   height: 22px;
-  margin-top: 3px;
   transition: all 100ms ease-out;
 `;
 
-const SendFeedback = styled.a`
+const Container = styled.a`
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -79,13 +79,13 @@ const SendFeedbackComponent = (props: Props) => {
   }
 
   return (
-    <SendFeedback className={className} target="_blank" href={surveyLink}>
+    <Container className={className} target="_blank" href={surveyLink}>
       <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
       {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
       <SendFeedbackText className={`send-feedback-text  ${showFeedbackText ? 'show' : ''}`}>
         <FormattedMessage {...messages.sendFeedback} />
       </SendFeedbackText>
-    </SendFeedback>
+    </Container>
   );
 };
 

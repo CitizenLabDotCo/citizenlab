@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-import MediaQuery from 'react-responsive';
-import { withRouter, WithRouterProps } from 'react-router';
+// import MediaQuery from 'react-responsive';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -18,7 +17,7 @@ import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // services
@@ -28,9 +27,9 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // style
 import styled from 'styled-components';
-import { darken, rgba } from 'polished';
+import { darken } from 'polished';
 import Polymorph from 'components/Polymorph';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes /*, viewportWidths*/ } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -100,37 +99,32 @@ const SecondLine = styled.div`
   `}
 `;
 
-const ShortFeedback = styled.div`
+const ShortFeedback: any = styled.div`
   width: 100%;
   background: ${colors.background};
   display: flex;
-  border-bottom: solid 4px ${(props) => rgba(props.theme.colorMain, 0.08)};
-  /* border-bottom: solid 4px ${darken(0.03, colors.background)}; */
-
-  &:not(.whiteBg) {
-    margin-top: 40px;
-
-    ${media.smallerThanMinTablet`
-      margin-top: 0px;
-  ` }
-  }
+  margin-top: 50px;
+  border-bottom: solid 4px ${(props: any) => props.borderColor};
 
   &.whiteBg {
     background: #fff;
+    margin-top: 0px;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+  `}
 `;
 
-const ShortFeedbackInner = styled.div`
+const ShortFeedbackInner: any = styled.div`
   color: ${({ theme }) => theme.colorText};
-  /* color: ${colors.label}; */
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
   display: flex;
   align-items: center;
   padding: 12px 25px;
-  background: ${(props) => rgba(props.theme.colorMain, 0.08)};
-  /* background: ${darken(0.03, colors.background)}; */
+  background: ${(props: any) => props.bgColor};
 
   ${media.smallerThanMinTablet`
     width: 100%;
@@ -139,7 +133,7 @@ const ShortFeedbackInner = styled.div`
 `;
 
 const ThankYouNote = styled.span`
-  font-weight: 500;
+  font-weight: 300;
 `;
 
 const FeedbackQuestion = styled.span`
@@ -156,7 +150,6 @@ const Buttons = styled.div`
 
 const FeedbackButton = styled.button`
   color: ${({ theme }) => theme.colorText};
-  /* color: ${colors.label}; */
   font-weight: 500;
   text-transform: uppercase;
   display: flex;
@@ -308,25 +301,18 @@ const StyledSendFeedback = styled(SendFeedback)`
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
-interface ITracks {
-  clickShortFeedbackYes: () => void;
-  clickShortFeedbackNo: () => void;
-}
-
-interface InputProps {
+interface Props {
   showCityLogoSection?: boolean | undefined;
 }
 
-interface Props extends InputProps { }
-
-type State = {
+interface State {
   locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
   shortFeedbackButtonClicked: boolean;
-};
+}
 
-class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRouterProps, State> {
+class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   static displayName = 'Footer';
   subscriptions: Subscription[];
 
@@ -366,23 +352,18 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
   }
 
   handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
-    const { clickShortFeedbackYes, clickShortFeedbackNo } = this.props;
-
-    this.setState({
-      shortFeedbackButtonClicked: true
-    });
+    this.setState({ shortFeedbackButtonClicked: true });
 
     // tracking
     if (answer === 'yes') {
-      clickShortFeedbackYes();
+      trackEventByName(tracks.clickShortFeedbackYes);
     } else if (answer === 'no') {
-      clickShortFeedbackNo();
+      trackEventByName(tracks.clickShortFeedbackNo);
     }
   }
 
   render() {
     const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
-    const { location } = this.props;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
@@ -396,6 +377,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
       const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
+      const shortFeedBackColor = (whiteBg ? darken(0.01, colors.background) : darken(0.04, colors.background));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
@@ -413,8 +395,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
             </Fragment>
           }
 
-          <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
-            <ShortFeedbackInner>
+          <ShortFeedback className={whiteBg ? 'whiteBg' : ''} borderColor={shortFeedBackColor}>
+            <ShortFeedbackInner className={whiteBg ? 'whiteBg' : ''} bgColor={shortFeedBackColor}>
               {shortFeedbackButtonClicked ?
                 <ThankYouNote>
                   <FormattedMessage {...messages.thanksForFeedback} />
@@ -466,9 +448,13 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
                 </CitizenlabLink>
               </PoweredBy>
 
+              <StyledSendFeedback showFeedbackText={true} />
+
+              {/*
               <MediaQuery minWidth={viewportWidths.smallTablet}>
                 {matches => <StyledSendFeedback showFeedbackText={!matches} />}
               </MediaQuery>
+              */}
             </Right>
           </SecondLine>
         </Container>
@@ -479,7 +465,4 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
   }
 }
 
-const WrappedFooter = withRouter<Props>(injectTracks<Props>(tracks)(injectIntl(Footer)));
-Object.assign(WrappedFooter).displayName = 'WrappedFooter';
-
-export default WrappedFooter;
+export default injectIntl<Props>(Footer);
