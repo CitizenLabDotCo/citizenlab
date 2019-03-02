@@ -442,8 +442,8 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
                 iconPos="left"
                 textColor={theme.colorText}
                 textHoverColor={darken(0.1, theme.colorText)}
-                bgColor={rgba(theme.colorMain, 0.08)}
-                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
               />
             }

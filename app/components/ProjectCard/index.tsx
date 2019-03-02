@@ -315,7 +315,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${({ theme }) => theme.colors.secondaryText};
+  color: ${({ theme }) => darken(0.05, theme.colors.secondaryText)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -348,7 +348,7 @@ const ContentFooterLeft = ContentFooterSection.extend``;
 
 const ContentFooterRight = ContentFooterSection.extend``;
 
-const ArchivedLabel = styled.span`
+const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
@@ -465,6 +465,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingEnabled = (!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled);
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
+      const isFinished = (project.attributes.project_finished === true);
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const commentsCount = project.attributes.comments_count;
@@ -480,9 +481,15 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       if (isArchived) {
         countdown = (
-          <ArchivedLabel>
+          <ContentHeaderLabel>
             <FormattedMessage {...messages.archived} />
-          </ArchivedLabel>
+          </ContentHeaderLabel>
+        );
+      } else if (isFinished) {
+        countdown = (
+          <ContentHeaderLabel>
+            <FormattedMessage {...messages.finished} />
+          </ContentHeaderLabel>
         );
       } else if (timeRemaining) {
         const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
