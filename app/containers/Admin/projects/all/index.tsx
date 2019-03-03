@@ -155,6 +155,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
           <RowContent>
             <RowContentInner className="expand primary">
               <RowTitle value={project.attributes.title_multiloc} />
+              {project.attributes.ordering}
               {project.attributes.visible_to === 'groups' &&
                 <GetProjectGroups projectId={project.id}>
                   {(projectGroups) => {
