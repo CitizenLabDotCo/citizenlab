@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -20,7 +20,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -34,7 +34,7 @@ const StyledContentContainer = styled(ContentContainer) `
 `;
 
 const PageTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
   line-height: 40px;
   font-weight: 500;
@@ -53,7 +53,7 @@ export default () => (
   <>
     <ProjectsIndexMeta />
     <Container>
-      <StyledContentContainer>
+      <StyledContentContainer maxWidth={1150}>
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
@@ -61,6 +61,10 @@ export default () => (
           pageSize={50}
           publicationStatuses={['published', 'archived']}
           sort="new"
+          showTitle={false}
+          showPublicationStatusFilter={true}
+          showSendFeedback={false}
+          layout="threecolumns"
         />
       </StyledContentContainer>
       <Footer />

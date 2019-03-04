@@ -3,20 +3,18 @@ import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, readableColor } from 'polished';
-import { colors, invisibleA11yText } from 'utils/styleUtils';
+import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 function getFontSize(size) {
   switch (size) {
     case '2':
-      return '18px';
+      return `${fontSizes.large}px`;
     case '3':
-      return '20px';
-    case '4':
-      return '22px';
+      return `${fontSizes.xl}px`;
     default:
-      return '16px';
+      return `${fontSizes.base}px`;
   }
 }
 

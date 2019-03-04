@@ -22,10 +22,9 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  background: ${colors.background};
   padding-bottom: 10px;
 `;
 

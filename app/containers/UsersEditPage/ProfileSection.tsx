@@ -5,7 +5,7 @@ const StyledContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 700px;
+  max-width: 1000px;
   background: #fff;
   padding: 40px;
   border: 1px solid #ddd;

@@ -40,3 +40,18 @@ export const makeUser = (attributes = {}) : IUser => {
     }
   } as IUser;
 };
+
+export const makeAdmin = (attributes = {}) : IUser => {
+  return makeUser({
+    roles: [{ type: 'admin' }],
+    highest_role: 'admin',
+    ...attributes,
+  });
+};
+
+export const makeSuperAdmin = (attributes = {}) : IUser => {
+  return makeAdmin({
+    highest_role: 'super_admin',
+    ...attributes
+  });
+};

@@ -5,11 +5,12 @@ import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Text = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  color: ${(props: any) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 26px;
   transition: all 100ms ease-out;
@@ -18,7 +19,7 @@ const Text = styled.span`
 const DropdownIcon = styled(Icon)`
   width: 11px;
   height: 7px;
-  fill: ${colors.label};
+  fill: ${({ theme }) => theme.colorText};
   margin-left: 4px;
   margin-top: 2px;
   transition: all 100ms ease-out;
@@ -38,11 +39,11 @@ const Container = styled.button`
   &:focus,
   &.opened {
     ${Text} {
-      color: #000;
+      color: ${({ theme }) => darken(0.15, theme.colorText)};
     }
 
     ${DropdownIcon} {
-      fill: #000;
+      fill: ${({ theme }) => darken(0.15, theme.colorText)};
     }
   }
 

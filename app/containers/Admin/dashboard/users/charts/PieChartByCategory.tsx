@@ -11,7 +11,7 @@ import { withTheme } from 'styled-components';
 
 // components
 import { IGraphUnit, PieChart, Pie, Tooltip, Cell, ResponsiveContainer } from 'recharts';
-import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
+import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner, PieChartStyleFixesDiv } from '../..';
 
 // resources
 import GetSerieFromStream from 'resources/GetSerieFromStream';
@@ -76,25 +76,27 @@ class PieChartByCategory extends React.PureComponent<Props & InjectedIntlProps> 
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
             :
-            <ResponsiveContainer>
-              <PieChart>
-                <Pie
-                  isAnimationActive={true}
-                  animationDuration={animationDuration}
-                  animationBegin={animationBegin}
-                  data={serie}
-                  dataKey="value"
-                  innerRadius={60}
-                  fill={colorMain}
-                  label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
-                >
-                  {serie.map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={labelColors[index]} />
-                  ))}
-                </Pie>
-                <Tooltip isAnimationActive={false} />
-              </PieChart>
-            </ResponsiveContainer>
+            <PieChartStyleFixesDiv>
+              <ResponsiveContainer height={175} width="100%" minWidth={175}>
+                <PieChart>
+                  <Pie
+                    isAnimationActive={true}
+                    animationDuration={animationDuration}
+                    animationBegin={animationBegin}
+                    data={serie}
+                    dataKey="value"
+                    innerRadius={60}
+                    fill={colorMain}
+                    label={{ fill: chartLabelColor, fontSize: chartLabelSize }}
+                  >
+                    {serie.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={labelColors[index]} />
+                    ))}
+                  </Pie>
+                  <Tooltip isAnimationActive={false} />
+                </PieChart>
+              </ResponsiveContainer>
+            </PieChartStyleFixesDiv>
           }
         </GraphCardInner>
       </GraphCard>
