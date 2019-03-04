@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -20,7 +20,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);

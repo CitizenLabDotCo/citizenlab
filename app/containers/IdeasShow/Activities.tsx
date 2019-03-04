@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // resourcs
 import GetIdeaActivities, { GetIdeaActivitiesChildProps } from 'resources/GetIdeaActivities';
@@ -23,10 +23,17 @@ const LinkButton = styled.button`
   display: inline;
   margin: 0;
   padding: 0;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
 `;
 
-const Title = styled.h1`
-  margin-bottom: 60px;
+const Activities = styled.div`
+  padding: 30px;
 `;
 
 interface InputProps {
@@ -43,8 +50,8 @@ interface State {
   modalOpen: boolean;
 }
 
-class IdeaActivities extends React.Component<Props, State> {
-  constructor(props: Props) {
+class IdeaActivities extends PureComponent<Props, State> {
+  constructor(props) {
     super(props);
     this.state = {
       modalOpen: false
@@ -71,11 +78,16 @@ class IdeaActivities extends React.Component<Props, State> {
           <span> - <LinkButton onClick={this.openModal}>
             <FormattedMessage {...messages.lastUpdated} values={{ modificationTime: <FormattedRelative value={lastUpdated} /> }} />
           </LinkButton></span>
-          <Modal opened={this.state.modalOpen} close={this.closeModal} >
-            <Title><FormattedMessage {...messages.lastChangesTitle} /></Title>
-            {ideaActivities.map((activity) => (
-              <ActivitiesChangeLog key={activity.id} activity={activity} />
-            ))}
+          <Modal
+            opened={this.state.modalOpen}
+            close={this.closeModal}
+            header={<FormattedMessage {...messages.lastChangesTitle} />}
+          >
+            <Activities>
+              {ideaActivities.map((activity) => (
+                <ActivitiesChangeLog key={activity.id} activity={activity} />
+              ))}
+            </Activities>
           </Modal>
         </>
       );

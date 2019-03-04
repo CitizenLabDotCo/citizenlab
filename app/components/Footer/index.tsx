@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
+import MediaQuery from 'react-responsive';
+import { withRouter, WithRouterProps } from 'react-router';
 
-// libraries
+// utils
 import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
-import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
+import SendFeedback from 'components/SendFeedback';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -23,12 +26,11 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
-import eventEmitter from 'utils/eventEmitter';
-
 // style
 import styled from 'styled-components';
+import { darken, rgba } from 'polished';
 import Polymorph from 'components/Polymorph';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -64,9 +66,9 @@ const TenantSlogan = styled.div`
   width: 100%;
   max-width: 340px;
   color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.xxl}px;
   font-weight: 500;
-  line-height: 28px;
+  line-height: normal;
   text-align: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -79,10 +81,10 @@ const SecondLine = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #fff;
-  border-top: 6px solid ${colors.adminBackground};
   padding: 12px 28px;
   position: relative;
+  background: #fff;
+  border-top: 1px solid #e8e8e8;
 
   ${media.smallerThanMaxTablet`
     display: flex;
@@ -90,38 +92,58 @@ const SecondLine = styled.div`
     flex-direction: column;
     justify-content: center;
   `}
+
+  ${media.smallerThanMinTablet`
+    padding: 20px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+  `}
 `;
 
 const ShortFeedback = styled.div`
+  width: 100%;
+  background: ${colors.background};
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 13px 25px;
-  background-color: ${colors.adminBackground};
-  color: ${(props) => props.theme.colorText};
-  position: absolute;
-  top: -49px;
-  left: 0;
+  border-bottom: solid 4px ${(props) => rgba(props.theme.colorMain, 0.08)};
 
-  ${media.largePhone`
+  &:not(.whiteBg) {
+    margin-top: 40px;
+
+    ${media.smallerThanMinTablet`
+      margin-top: 0px;
+  ` }
+  }
+
+  &.whiteBg {
+    background: #fff;
+  }
+`;
+
+const ShortFeedbackInner = styled.div`
+  color: ${(props) => darken(0.1, props.theme.colorText)};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  padding: 12px 25px;
+  background: ${(props) => rgba(props.theme.colorMain, 0.08)};
+
+  ${media.smallerThanMinTablet`
     width: 100%;
+    justify-content: center;
   `}
 `;
 
 const ThankYouNote = styled.span`
-  display: block;
-  padding: 1.5px 0;
-  font-size: ${fontSizes.base}px;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const FeedbackQuestion = styled.span`
-  font-size: ${fontSizes.base}px;
-  margin-right: 12px;
+  margin-right: 15px;
 
-  ${media.largePhone`
-    font-size: ${fontSizes.small}px;
-    margin-right: 5px;
+  ${media.smallerThanMinTablet`
+    margin-right: 10px;
   `}
 `;
 
@@ -134,13 +156,13 @@ const FeedbackButton = styled.button`
   align-items: center;
   justify-content: center;
   color: ${(props) => props.theme.colorText};
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   padding: 0 12px;
   margin-bottom: -3px;
   z-index: 1;
 
-  ${media.largePhone`
+  ${media.smallerThanMinTablet`
     padding: 0 8px;
   `}
 
@@ -153,39 +175,49 @@ const FeedbackButton = styled.button`
 `;
 
 const PagesNav = styled.nav`
-  color: ${colors.label};
-  flex: 1;
+  color: ${colors.adminTextColor};
+  font-weight: 300;
   text-align: left;
 
   ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    display: inline-block;
+    padding: 0px;
+    text-align: center;
   }
 
   li {
-    display: inline-block;
+    display: inline;
+
+    &:not(:first-child):before {
+      content: '•';
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
+    button {
+      white-space: nowrap;
+    }
   }
 
   ${media.smallerThanMaxTablet`
     order: 2;
     text-align: center;
     justify-content: center;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-top: 20px;
   `}
 `;
 
 const StyledThing = styled(Polymorph)`
-  color: ${colors.label};
-  font-weight: 400;
+  color: ${colors.adminTextColor};
+  font-weight: 300;
   font-size: ${fontSizes.small}px;
-  line-height: 19px;
   text-decoration: none;
   padding: 0;
+  cursor: pointer;
 
   &:hover {
     color: #000;
+    text-decoration: underline;
   }
 
   ${media.smallerThanMaxTablet`
@@ -197,20 +229,6 @@ const StyledThing = styled(Polymorph)`
 const StyledButton = StyledThing.withComponent('button');
 const StyledLink = StyledThing.withComponent(Link);
 
-const Separator = styled.span`
-  color: ${colors.label};
-  font-weight: 400;
-  font-size: ${fontSizes.base}px;
-  line-height: 19px;
-  padding-left: 10px;
-  padding-right: 10px;
-
-  ${media.smallerThanMaxTablet`
-    padding-left: 8px;
-    padding-right: 8px;
-  `}
-`;
-
 const Right = styled.div`
   display: flex;
   align-items: center;
@@ -218,61 +236,50 @@ const Right = styled.div`
   ${media.smallerThanMaxTablet`
     order: 1;
     margin-top: 15px;
-    margin-bottom: 10px;
   `}
 
-  ${media.largePhone`
-    margin-top: 25px;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
   `}
 `;
 
 const PoweredBy = styled.div`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
+  font-weight: 300;
   text-decoration: none;
   display: flex;
   align-items: center;
   outline: none;
-  padding: 10px 25px 10px 0;
+  padding-right: 20px;
   margin-right: 30px;
   border-right: 1px solid #E8E8E8;
 
-  ${media.smallerThanMaxTablet`
-    color: #333;
-  `}
-
-  ${media.largePhone`
-    color: #333;
-    margin-right: 20px;
-    padding-right: 15px;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 15px;
+    border: none;
   `}
 `;
 
 const PoweredByText = styled.span`
   margin-right: 5px;
 
-  ${media.largePhone`
-    margin-right: 0;
-    font-size: ${fontSizes.small}px;
+  ${media.smallerThanMinTablet`
+    margin: 0;
+    margin-bottom: 10px;
   `}
 `;
 
 const CitizenlabLink = styled.a`
   width: 151px;
   height: 27px;
-  flex: 0 0 151px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  margin-left: 8px;
-
-  ${media.largePhone`
-    width: 111.85px;
-    height: 20px;
-    flex: 0 0 111.85px;
-  `}
 `;
 
 const CitizenlabName = styled.span`
@@ -285,38 +292,18 @@ const CitizenlabName = styled.span`
 const CitizenlabLogo: any = styled.svg`
   width: 151px;
   height: 27px;
-  fill: ${colors.clIconSecondary};
+  fill: ${colors.secondaryText};
   transition: all 150ms ease-out;
+
   &:hover {
     fill: #000;
   }
+`;
 
-  ${media.largePhone`
-    width: 111.85px;
-    height: 20px;
+const StyledSendFeedback = styled(SendFeedback)`
+  ${media.smallerThanMinTablet`
+    margin-top: 25px;
   `}
-`;
-
-const SendFeedback = styled.a`
-  margin-right: 20px;
-
-  ${media.largePhone`
-    margin-right: 0;
-  `}
-`;
-
-const SendFeedbackText = styled.span`
-  display: none;
-`;
-
-const SendFeedbackIcon = styled(Icon)`
-  fill: ${colors.clIconSecondary};
-  height: 34px;
-
-  &:hover {
-    cursor: pointer;
-    fill: #000;
-  }
 `;
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
@@ -339,7 +326,7 @@ type State = {
   shortFeedbackButtonClicked: boolean;
 };
 
-class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
+class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRouterProps, State> {
   static displayName = 'Footer';
   subscriptions: Subscription[];
 
@@ -395,18 +382,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
 
   render() {
     const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
+    const { location } = this.props;
     const { formatMessage } = this.props.intl;
-
-    let surveyLink: string | null = null;
-
-    if (locale === 'fr-BE' || locale === 'fr-FR') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/Cgn9hg';
-    } else if (locale === 'nl-BE' || locale === 'nl-NL') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/gOuYim';
-    } else {
-      // English survey when language is not French or Dutch
-      surveyLink = 'https://citizenlabco.typeform.com/to/z7baRP';
-    }
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
@@ -418,6 +395,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
+      const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
@@ -435,8 +413,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
             </Fragment>
           }
 
-          <SecondLine>
-            <ShortFeedback>
+          <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
+            <ShortFeedbackInner>
               {shortFeedbackButtonClicked ?
                 <ThankYouNote>
                   <FormattedMessage {...messages.thanksForFeedback} />
@@ -456,21 +434,20 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                   </Buttons>
                 </>
               }
-            </ShortFeedback>
+            </ShortFeedbackInner>
+          </ShortFeedback>
+
+          <SecondLine>
             <PagesNav>
               <ul>
-                {LEGAL_PAGES.map((slug, index) => (
+                {LEGAL_PAGES.map((slug) => (
                   <li key={slug}>
-                    {index !== 0 &&
-                      <Separator>•</Separator>
-                    }
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
                 ))}
                 <li>
-                  <Separator>•</Separator>
                   <StyledButton onClick={openConsentManager}>
                     <FormattedMessage {...messages.cookieSettings} />
                   </StyledButton>
@@ -489,12 +466,9 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback target="_blank" href={surveyLink}>
-                <SendFeedbackText>
-                  <FormattedMessage {...messages.sendFeedback} />
-                </SendFeedbackText>
-                <SendFeedbackIcon name="questionMark" />
-              </SendFeedback>
+              <MediaQuery minWidth={viewportWidths.smallTablet}>
+                {matches => <StyledSendFeedback showFeedbackText={!matches} />}
+              </MediaQuery>
             </Right>
           </SecondLine>
         </Container>
@@ -505,7 +479,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps, State> {
   }
 }
 
-const WrappedFooter = injectTracks<Props>(tracks)(injectIntl(Footer));
+const WrappedFooter = withRouter<Props>(injectTracks<Props>(tracks)(injectIntl(Footer)));
 Object.assign(WrappedFooter).displayName = 'WrappedFooter';
 
 export default WrappedFooter;

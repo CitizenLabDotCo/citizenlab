@@ -126,13 +126,15 @@ const StyledLink = styled(Link)`
   margin-bottom: 15px;
   padding: 20px 23px;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
-  transition: all 100ms ease-out;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  transition: all 200ms ease;
 
   &:hover {
     color: #000;
-    border-color: #999;
+    text-decoration: underline;
+    /* box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); */
+    /* transform: translate(0px, -2px); */
   }
 `;
 
@@ -151,9 +153,9 @@ interface DataProps {
   pageLinks: GetPageLinksChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class PagesShowPage extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   render() {

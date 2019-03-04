@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty } from 'lodash-es';
+import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { tap, filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import linkifyHtml from 'linkifyjs/html';
@@ -51,6 +51,8 @@ import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenan
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // services
+import { localeStream } from 'services/locale';
+import { currentTenantStream } from 'services/tenant';
 import { ideaByIdStream, updateIdea, IIdea } from 'services/ideas';
 import { userByIdStream, IUser } from 'services/users';
 import { ideaImageStream, IIdeaImage } from 'services/ideaImages';
@@ -74,7 +76,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const loadingTimeout = 400;
@@ -582,6 +584,7 @@ interface Props extends DataProps, InputProps { }
 type State = {
   authUser: IUser | null;
   idea: IIdea | null;
+  ideaBody: string;
   ideaAuthor: IUser | null;
   ideaImage: IIdeaImage | null;
   ideaComments: IComments | null;
@@ -612,6 +615,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     const initialState = {
       authUser: null,
       idea: null,
+      ideaBody: '',
       ideaAuthor: null,
       ideaImage: null,
       ideaComments: null,
@@ -640,6 +644,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       distinctUntilChanged(),
       filter<string>(ideaId => isString(ideaId))
     );
+    const locale$ = localeStream().observable;
+    const tenantLocales$ = currentTenantStream().observable.pipe(
+      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
+    );
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
     const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
@@ -657,7 +665,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           if (authUser) {
             setTimeout(() => {
               this.setState({ ideaIdForSocialSharing: newIdea.id });
-            }, 2500);
+            }, 2000);
 
             if (newIdea.publish === 'true') {
               await updateIdea(newIdea.id, { author_id: authUser.data.id, publication_status: 'published' });
@@ -695,17 +703,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           }
 
           return combineLatest(
+            locale$,
+            tenantLocales$,
             authUser$,
             ideaImage$,
             ideaAuthor$,
             project$,
             phases$
           ).pipe(
-            map(([authUser, ideaImage, ideaAuthor, project, phases]) => ({ authUser, idea, ideaImage, ideaAuthor, project, phases }))
+            map(([locale, tenantLocales, authUser, ideaImage, ideaAuthor, project, phases]) => ({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, project, phases }))
           );
         })
-      ).subscribe(({ authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
-        this.setState({ authUser, idea, ideaImage, ideaAuthor, project, phases, loaded: true });
+      ).subscribe(({ locale, tenantLocales, authUser, idea, ideaImage, ideaAuthor, project, phases }) => {
+        let ideaBody = getLocalized(idea.data.attributes.body_multiloc, locale, tenantLocales);
+        ideaBody = trimEnd(ideaBody, '<p><br></p>');
+        ideaBody = trimEnd(ideaBody, '<p></p>');
+        ideaBody = linkifyHtml(ideaBody);
+        this.setState({ authUser, idea, ideaBody, ideaImage, ideaAuthor, project, phases, loaded: true });
       }),
 
       ideaId$.pipe(
@@ -840,6 +854,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     const { inModal, animatePageEnter, intl: { formatMessage }, ideaFiles, locale, tenantLocales } = this.props;
     const {
       idea,
+      ideaBody,
       ideaImage,
       ideaAuthor,
       ideaComments,
@@ -862,7 +877,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       const createdAt = idea.data.attributes.created_at;
       const titleMultiloc = idea.data.attributes.title_multiloc;
       const ideaTitle = getLocalized(titleMultiloc, locale, tenantLocales);
-      const ideaBody = getLocalized(idea.data.attributes.body_multiloc, locale, tenantLocales);
       const statusId = (idea.data.relationships.idea_status && idea.data.relationships.idea_status.data ? idea.data.relationships.idea_status.data.id : null);
       const ideaImageLarge = (ideaImage && has(ideaImage, 'data.attributes.versions.large') ? ideaImage.data.attributes.versions.large : null);
       const ideaLocation = (idea.data.attributes.location_point_geojson || null);
@@ -909,6 +923,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               onClick={this.translateIdea}
               processing={translationsLoading}
               spinnerColor={colors.label}
+              borderColor={lighten(.4, colors.label)}
             >
               <FormattedMessage {...messages.translateIdea} />
             </TranslateButton>
@@ -920,6 +935,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               onClick={this.backToOriginalContent}
               processing={translationsLoading}
               spinnerColor={colors.label}
+              borderColor={lighten(.4, colors.label)}
             >
               <FormattedMessage {...messages.backToOriginalContent} />
             </TranslateButton>
@@ -1209,11 +1225,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
             opened={this.state.spamModalVisible}
             close={this.closeSpamModal}
             label={formatMessage(messages.spanModalLabelIdea)}
+            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
-            <SpamReportForm
-              resourceId={idea.data.id}
-              resourceType="ideas"
-            />
+            <SpamReportForm resourceId={idea.data.id} resourceType="ideas" />
           </Modal>
         </>
       );
