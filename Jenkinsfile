@@ -1,9 +1,10 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
+    stage('Test nothing') {
+      when { branch 'master' }
       steps {
-        echo 'Building containers'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t nothing_test" web bundle exec rake spec'
       }
     }
   }
