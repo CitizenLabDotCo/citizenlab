@@ -270,7 +270,7 @@ FactoryBot.define do
       process_type { 'continuous' }
       participation_method { 'survey' }
       survey_service { 'typeform' }
-      survey_embed_url { "https://citizenlabco.typeform.com/to/HKGaPV" }
+      survey_embed_url { "https://citizenlabco.typeform.com/to/HKGaPV?source=xxxxx" }
     end
 
     factory :continuous_google_survey_project do
