@@ -1,9 +1,16 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
+import MediaQuery from 'react-responsive';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// utils
+import Link from 'utils/cl-router/Link';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Fragment from 'components/Fragment';
 import ShortFeedback from './ShortFeedback';
+import SendFeedback from 'components/SendFeedback';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -41,6 +48,7 @@ import {
   SendFeedbackText,
   SendFeedbackIcon
  } from './StyledComponents';
+import { viewportWidths } from 'utils/styleUtils';
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
@@ -98,17 +106,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     const { locale, currentTenant, showCityLogoSection } = this.state;
     const { formatMessage } = this.props.intl;
 
-    let surveyLink: string | null = null;
-
-    if (locale === 'fr-BE' || locale === 'fr-FR') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/Cgn9hg';
-    } else if (locale === 'nl-BE' || locale === 'nl-NL') {
-      surveyLink = 'https://citizenlabco.typeform.com/to/gOuYim';
-    } else {
-      // English survey when language is not French or Dutch
-      surveyLink = 'https://citizenlabco.typeform.com/to/z7baRP';
-    }
-
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
       const currentTenantLogo = currentTenant.data.attributes.logo.medium;
@@ -119,6 +116,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
+      const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
@@ -140,18 +138,14 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             <ShortFeedback />
             <PagesNav>
               <ul>
-                {LEGAL_PAGES.map((slug, index) => (
+                {LEGAL_PAGES.map((slug) => (
                   <li key={slug}>
-                    {index !== 0 &&
-                      <Separator>•</Separator>
-                    }
                     <StyledLink to={`/pages/${slug}`}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                   </li>
                 ))}
                 <li>
-                  <Separator>•</Separator>
                   <StyledButton onClick={openConsentManager}>
                     <FormattedMessage {...messages.cookieSettings} />
                   </StyledButton>
@@ -170,12 +164,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 </CitizenlabLink>
               </PoweredBy>
 
-              <SendFeedback target="_blank" href={surveyLink}>
-                <SendFeedbackText>
-                  <FormattedMessage {...messages.sendFeedback} />
-                </SendFeedbackText>
-                <SendFeedbackIcon name="questionMark" />
-              </SendFeedback>
+              <MediaQuery minWidth={viewportWidths.smallTablet}>
+                {matches => <SendFeedback showFeedbackText={!matches} />}
+              </MediaQuery>
             </Right>
           </SecondLine>
         </Container>

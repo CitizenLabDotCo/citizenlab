@@ -33,7 +33,7 @@ import messages from './messages';
 // style
 import { darken } from 'polished';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON, Locale } from 'typings';
@@ -58,7 +58,7 @@ const ButtonWrapper = styled.div`
 const TermsAndConditionsWrapper: any = styled.div`
   padding: 15px 30px;
   border-radius: 5px;
-  background: #f0f1f3;
+  background: ${darken(0.035, colors.background)};
   border: solid 1px transparent;
 
   &.error {

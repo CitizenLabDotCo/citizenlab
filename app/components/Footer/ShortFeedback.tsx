@@ -84,7 +84,7 @@ export default class ShortFeedback extends PureComponent<Props, State>{
           fixedHeight={false}
           opened={feedbackModalOpen}
           close={this.closeFeedbackModal}
-          className="e2e-comment-deletion-modal"
+          className="e2e-feedback-modal"
         >
           <ShortFeedbackForm
             closeModal={this.closeFeedbackModal}

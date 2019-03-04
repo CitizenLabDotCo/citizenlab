@@ -18,9 +18,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resources/GetOnboardingCampaigns';
 
 // utils
-import { trackEvent } from 'utils/analytics';
-import tracks from './tracks';
 import CSSTransition from 'react-transition-group/CSSTransition';
+
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -43,7 +45,7 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMinTablet`
-    height: 220px;
+    height: 340px;
   `}
 `;
 
@@ -101,7 +103,7 @@ const HeaderContent = styled.div`
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 75px;
@@ -149,13 +151,17 @@ const HeaderContent = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
-    padding: 20px;
+    justify-content: center;
+    padding-left: 20px;
+    padding-right: 20px;
   `}
 `;
 
 const HeaderContentCompleteProfile = HeaderContent.extend``;
 const HeaderContentCustomCta = HeaderContent.extend``;
 const HeaderContentDefault = HeaderContent.extend`
+  justify-content: center;
+
   p {
     text-align: center;
   }
@@ -246,11 +252,12 @@ interface State { }
 
 class SignedInHeader extends PureComponent<Props, State> {
   goToSignUpPage = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
+    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-in header' } });
     clHistory.push('/sign-up');
   }
 
   handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
+    trackEventByName(tracks.clickSkipButton, { extra: { location: 'signed-in header', context: name } });
     dismissOnboardingCampaign(name);
   }
 

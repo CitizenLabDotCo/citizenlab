@@ -59,5 +59,4 @@ export default class HasPermission extends PureComponent<Props, State> {
       return <>{React.Children.map(children, (c: any) => c.type === HasPermission.No ? c : null)}</>;
     }
   }
-
 }
