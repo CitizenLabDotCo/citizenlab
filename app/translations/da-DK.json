@@ -124,7 +124,7 @@
   "app.components.ProjectCard.imageAltText": "{orgName} - hovedbillede for projektet '{projectTitle}'",
   "app.components.ProjectCard.learnMore": "Lær mere ",
   "app.components.ProjectCard.openProjectButton": "Opdag mere",
-  "app.components.ProjectCard.postYourIdea": "Slå din ide op ",
+  "app.components.ProjectCard.postYourIdea": "Start en idé",
   "app.components.ProjectCard.remaining": "{timeRemaining} tilbage ",
   "app.components.ProjectCard.takeTheSurvey": "Besvar spørgeskemaet ",
   "app.components.ProjectCard.viewTheIdeas": "Vis ideerne",
