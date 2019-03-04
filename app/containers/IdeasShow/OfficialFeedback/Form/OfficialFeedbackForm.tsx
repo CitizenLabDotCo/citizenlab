@@ -1,6 +1,6 @@
 // libraries
 import React, { Component } from 'react';
-import { isEmpty, values as getValues, every } from 'lodash-es';
+import { values as getValues, every } from 'lodash-es';
 
 // intl
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -23,7 +23,9 @@ import { Multiloc, Locale, MultilocFormValues } from 'typings';
 import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import GetLocale from 'resources/GetLocale';
-import { isNilOrError } from 'utils/helperUtils';
+
+// utils
+import { isNilOrError, isNonEmptyString } from 'utils/helperUtils';
 
 const ButtonContainer = styled.div`
   >:not(:last-child) {
@@ -141,12 +143,13 @@ class OfficialFeedbackFormWithHoCs extends Component<Props & FormikProps<FormVal
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
-    if (every(getValues(values.author_multiloc), isEmpty)) {
+    if (!every(getValues(values.author_multiloc), isNonEmptyString)) {
       errors.author_multiloc = [{ error: 'blank' }] as any;
     }
-    if (every(getValues(values.body_multiloc), isEmpty)) {
+    if (!every(getValues(values.body_multiloc), isNonEmptyString)) {
       errors.body_multiloc = [{ error: 'blank' }] as any;
     }
+
     return errors;
   }
 
