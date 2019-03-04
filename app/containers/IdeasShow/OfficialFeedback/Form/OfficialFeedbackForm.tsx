@@ -88,7 +88,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
   )
 
   render() {
-    const { isSubmitting, isValid, touched, values, onCancel, editForm } = this.props;
+    const { isSubmitting, isValid, touched, values, onCancel, editForm, status } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -113,6 +113,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
 
         <ButtonContainer>
           <FormikSubmitWrapper
+            animate
             bgColor={editForm ? colors.adminTextColor : colors.clRed}
             icon="pen"
             textColor="white"
