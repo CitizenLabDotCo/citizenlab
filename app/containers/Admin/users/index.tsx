@@ -33,12 +33,6 @@ const LeftPanel = styled(GroupsListPanel)`
   `}
 `;
 
-const ModalHeaderWrapper = styled.div`
-  h3 {
-    font-weight: 600;
-  }
-`;
-
 const ChildWrapper = styled.div`
   flex: 1;
   padding: 50px;
@@ -116,25 +110,13 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
     let ModalHeader;
     switch (groupCreationModal) {
       case 'step1':
-        ModalHeader = (
-          <ModalHeaderWrapper>
-            <FormattedMessage tagName="h3" {...messages.modalHeaderStep1} />
-          </ModalHeaderWrapper>
-        );
+        ModalHeader = <FormattedMessage {...messages.modalHeaderStep1} />;
         break;
       case 'manual':
-        ModalHeader = (
-          <ModalHeaderWrapper>
-            <FormattedMessage tagName="h3" {...messages.modalHeaderManual} />
-          </ModalHeaderWrapper>
-        );
+        ModalHeader = <FormattedMessage {...messages.modalHeaderManual} />;
         break;
       case 'rules':
-        ModalHeader = (
-          <ModalHeaderWrapper>
-            <FormattedMessage tagName="h3" {...messages.modalHeaderRules} />
-          </ModalHeaderWrapper>
-        );
+        ModalHeader = <FormattedMessage {...messages.modalHeaderRules} />;
         break;
     }
 

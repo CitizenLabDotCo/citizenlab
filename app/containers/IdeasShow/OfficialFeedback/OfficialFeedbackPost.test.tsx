@@ -20,6 +20,8 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={false}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        locale="en"
+        tenantLocales={['en', 'nl-BE']}
         intl={intl}
       />);
     expect(wrapper).toMatchSnapshot();
@@ -29,6 +31,8 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        locale="en"
+        tenantLocales={['en', 'nl-BE']}
         intl={intl}
       />);
     expect(wrapper).toMatchSnapshot();
@@ -38,6 +42,8 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        locale="en"
+        tenantLocales={['en', 'nl-BE']}
         intl={intl}
       />);
     wrapper.find('MoreActionsMenu').find('button').simulate('click');

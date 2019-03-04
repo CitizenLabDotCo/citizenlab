@@ -16,17 +16,17 @@ import 'jest-styled-components';
 
 const mockProject = getMockProject('projectId', 'continuous', 'ideation');
 
-const mockOfficialFeedbackChild = { officialFeedbackList: mockOfficialFeedback.data };
+const mockOfficialFeedbackChild = { officialFeedbackList: mockOfficialFeedback };
 
 import { OfficialFeedback } from './';
 
 describe('<OfficialFeedback />', () => {
   it('renders correctly for non-admin', () => {
-    const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={false} officialFeedback={mockOfficialFeedbackChild} />);
+    const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={false} officialFeedbacks={mockOfficialFeedbackChild} />);
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly for admin', () => {
-    const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={true} officialFeedback={mockOfficialFeedbackChild} />);
+    const wrapper = shallow(<OfficialFeedback ideaId="ideaId" project={mockProject} permission={true} officialFeedbacks={mockOfficialFeedbackChild} />);
     expect(wrapper).toMatchSnapshot();
   });
 });

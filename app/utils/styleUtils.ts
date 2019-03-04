@@ -86,8 +86,9 @@ export const media = {
 };
 
 export const colors = {
-  background: '#F9F9FA',
-  text: '#222',
+  background: '#f4f4f5',
+  text: '#333',
+  secondaryText: '#84939E',
   label: '#596B7A',
   placeholder: '#aaa',
   separation: '#e0e0e0',
@@ -189,13 +190,38 @@ export const stylingConsts = {
 };
 
 // Reusable text styling
-export function quillEditedContent() {
-  return `
-    max-width: 100%;
-    color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 27px;
+export function quillEditedContent(
+  fontSize: 'base' | 'medium' | 'large' = 'base',
+  color: string = colors.text,
+  fontWeight: 300 | 400 = 400
+) {
+  let lineHeight = 27;
+
+  switch (fontSize) {
+    case 'medium':
+      lineHeight = 28;
+    case 'large':
+      lineHeight = 29;
+    default:
+      lineHeight = 27;
+  }
+
+  const defaultFontStyle = `
+    color: ${color};
+    font-size: ${fontSizes[fontSize]}px;
+    font-weight: ${fontWeight};
+    line-height: ${lineHeight}px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+  `;
+
+  return`
+    ${defaultFontStyle}
+
+    a, li, p {
+      ${defaultFontStyle}
+    }
 
     &:after {
       content: "";
@@ -206,7 +232,7 @@ export function quillEditedContent() {
     h1 {
       font-size: ${fontSizes.xxxl - 2}px;
       line-height: 33px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0;
       margin: 0;
       margin-bottom: 20px;
@@ -215,17 +241,17 @@ export function quillEditedContent() {
     h2 {
       font-size: ${fontSizes.xxl - 2}px;
       line-height: 31px;
-      font-weight: 600;
+      font-weight: 500;
       padding: 0;
       margin: 0;
       margin-top: 5px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     h3 {
       font-size: ${fontSizes.xl}px;
       line-height: 26px;
-      font-weight: 600;
+      font-weight: 500;
       margin: 0;
       margin-top: 5px;
       margin-bottom: 15px;
@@ -234,15 +260,14 @@ export function quillEditedContent() {
     h4 {
       font-size: ${fontSizes.large}px;
       line-height: 26px;
-      font-weight: 600;
+      font-weight: 500;
       margin: 0;
       margin-top: 5px;
       margin-bottom: 15px;
     }
 
     p {
-      line-height: 27px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
 
       &:last-child {
         margin-bottom: 0px;
@@ -273,11 +298,11 @@ export function quillEditedContent() {
       padding: 0;
       padding-left: 21px;
       margin: 0;
-      margin-bottom: 15px;
+      margin-bottom: 24px;
 
       li {
         padding-left: 0 !important;
-        padding-top: 7px;
+        padding-top: 6px;
         margin: 0;
 
         &:first-child {

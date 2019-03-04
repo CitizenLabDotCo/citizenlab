@@ -1,23 +1,37 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+import { size, isEqual, isEmpty } from 'lodash-es';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
+import SendFeedback from 'components/SendFeedback';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import T from 'components/T';
 import messages from './messages';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
-import styled from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import styled, { withTheme } from 'styled-components';
+import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
+import { darken, rgba } from 'polished';
+
+const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
 
 const Container = styled.div`
   display: flex;
@@ -27,25 +41,66 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  background: #fff;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px ${colors.separation};
+  background: #fff;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
-const FiltersArea = styled.div`
+const Header = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #d1d1d1;
 
-  ${media.smallerThanMaxTablet`
-    justify-content: flex-start;
+  ${media.smallerThanMinTablet`
+    justify-content: center;
+    border: none;
   `};
+`;
+
+const Title = styled.h2`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colorText};
+  margin: 0;
+  margin-right: 45px;
+  font-weight: 500;
+  font-size: ${fontSizes.xl}px;
+
+  ${media.smallerThanMinTablet`
+    margin: 0;
+    font-size: ${fontSizes.large}px;
+    text-align: center;
+  `};
+`;
+
+const FiltersArea = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.fullWidth {
+    width: 100%;
+    justify-content: space-between;
+
+    ${media.smallerThanMinTablet`
+      justify-content: flex-start;
+    `};
+  }
+
+  &.alignRight {
+    justify-content: flex-end;
+
+    ${media.smallerThanMinTablet`
+      display: none;
+    `};
+  }
 `;
 
 const FilterArea = styled.div`
@@ -57,168 +112,365 @@ const FilterArea = styled.div`
     margin-right: 30px;
   }
 
-  ${media.smallerThanMaxTablet`
-    height: 30px;
-  `}
+  ${media.smallerThanMinTablet`
+    height: auto;
+  `};
 `;
 
 const ProjectsList = styled.div`
   display: flex;
-  flex-direction: column;
-
-  ${media.smallerThanMaxTablet`
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-left: -13px;
-    margin-right: -13px;
-  `};
+  flex-wrap: wrap;
+  justify-content: space-between;
 `;
 
-const StyledProjectCard = styled(ProjectCard)`
-  ${media.smallerThanMaxTablet`
-    flex-grow: 0;
-    width: calc(100% * (1/2) - 26px);
-    margin-left: 13px;
-    margin-right: 13px;
-  `};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-  `}
+const MockProjectCard = styled.div`
+  height: 1px;
+  background: transparent;
+  width: calc(33% - 12px);
 `;
 
 const EmptyContainer = styled.div`
   width: 100%;
+  min-height: 200px;
+  color: ${({ theme }) => theme.colorText};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   margin: 0;
-  padding-top: 100px;
-  padding-bottom: 100px;
+  margin-bottom: 43px;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
+  position: relative;
   background: #fff;
+  border: solid 1px ${colors.separation};
 `;
 
-const ProjectIcon = styled(Icon)`
-  height: 45px;
-  fill: #999;
+const EmptyProjectsImage = styled.img`
+  width: 100%;
+  height: auto;
+
+  ${media.smallerThanMaxTablet`
+    &.objectFitCoverSupported {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:not(.objectFitCoverSupported) {
+      width: auto;
+      height: 100%;
+    }
+  `}
 `;
 
 const EmptyMessage = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  color: ${({ theme }) => theme.colorText};
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
-const EmptyMessageLine = styled.div`
-  color: #999;
-  font-size: ${fontSizes.large}px;
+const EmptyMessageTitle = styled.h2`
+  font-weight: 600;
+  font-size: ${fontSizes.xl}px;
+  white-space: nowrap;
+  margin-bottom: 5px;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.large}px;
+  `};
+`;
+
+const EmptyMessageLine = styled.p`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 25px;
   text-align: center;
 `;
 
-const LoadMoreButtonWrapper = styled.div`
+const Footer = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  align-items: center;
+
+  ${media.biggerThanMinTablet`
+    justify-content: space-between;
+    margin-top: 40px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0px;
+  `}
 `;
 
-const LoadMoreButton = styled(Button)``;
+const ShowMoreButton = styled(Button)``;
 
-interface InputProps extends GetProjectsInputProps {}
+const HiddenSendFeedback = styled(SendFeedback)`
+  visibility: hidden;
 
-interface Props extends InputProps, GetProjectsChildProps {}
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
+`;
 
-interface State {}
+const StyledSendFeedback = styled(SendFeedback)`
+  ${media.smallerThanMinTablet`
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+  `}
 
-class ProjectCards extends PureComponent<Props, State> {
+  ${media.largePhone`
+    margin-top: 40px;
+  `}
+`;
+
+interface InputProps extends GetProjectsInputProps {
+  showTitle: boolean;
+  showPublicationStatusFilter: boolean;
+  showSendFeedback: boolean;
+  layout: 'dynamic' | 'threecolumns';
+}
+
+interface DataProps {
+  projects: GetProjectsChildProps;
+  tenant: GetTenantChildProps;
+  windowSize: GetWindowSizeChildProps;
+}
+
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
+
+interface State {
+  cardSizes: ('small' | 'medium' | 'large')[];
+}
+
+class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   emptyArray: string[] = [];
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      cardSizes: []
+    };
   }
 
-  loadMore = () => {
-    this.props.onLoadMore();
+  componentDidMount() {
+    this.calculateProjectCardsLayout();
   }
 
-  handleAreasOnChange = (areas: string[]) => {
-    this.props.onChangeAreas(areas);
+  componentDidUpdate() {
+    this.calculateProjectCardsLayout();
+  }
+
+  calculateProjectCardsLayout = () => {
+    const { projects, windowSize, layout } = this.props;
+
+    if (
+      !isNilOrError(projects) &&
+      projects.projectsList &&
+      projects.projectsList.length > 0 &&
+      windowSize &&
+      layout === 'dynamic'
+    ) {
+      const { projectsList } = projects;
+      const initialProjectsCount = size(projectsList.slice(0, 6));
+      const isOdd = (number: number) => number % 2 === 1;
+      const biggerThanSmallTablet = (windowSize >= viewportWidths.smallTablet);
+      const biggerThanLargeTablet = (windowSize >= viewportWidths.largeTablet);
+
+      const cardSizes = projectsList.map((_project, index) => {
+        let cardSize: 'small' | 'medium' | 'large' = (biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small');
+
+        if (index < 6) {
+          if (biggerThanSmallTablet && !biggerThanLargeTablet) {
+            if ((!isOdd(initialProjectsCount) && (index === 0 || index === 1)) || (isOdd(initialProjectsCount) && index === 0)) {
+              cardSize = 'large';
+            }
+          }
+
+          if (biggerThanLargeTablet) {
+            if (initialProjectsCount === 1 && index === 0) {
+              cardSize = 'large';
+            } else if (initialProjectsCount === 2) {
+              cardSize = 'medium';
+            } else if (initialProjectsCount === 3) {
+              if (index === 0) {
+                cardSize = 'large';
+              } else {
+                cardSize = 'medium';
+              }
+            } else if (initialProjectsCount === 4 && index === 0) {
+              cardSize = 'large';
+            } else if (initialProjectsCount === 5 && (index === 0 || index === 1)) {
+              cardSize = 'medium';
+            } else if (initialProjectsCount === 6) {
+              if (index === 0) {
+                cardSize = 'large';
+              } else if (index === 1 || index === 2) {
+                cardSize = 'medium';
+              }
+            }
+          }
+        }
+
+        return cardSize;
+      });
+
+      if (!isEqual(this.state.cardSizes, cardSizes)) {
+        this.setState({ cardSizes });
+      }
+    }
+  }
+
+  showMore = () => {
+    trackEventByName(tracks.clickOnProjectsShowMoreButton);
+    this.props.projects.onLoadMore();
   }
 
   handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
-    this.props.onChangePublicationStatus(status);
+    trackEventByName(tracks.clickOnProjectsPublicationStatusFilter);
+    this.props.projects.onChangePublicationStatus(status);
+  }
+
+  handleAreasOnChange = (areas: string[]) => {
+    trackEventByName(tracks.clickOnProjectsAreaFilter);
+    this.props.projects.onChangeAreas(areas);
   }
 
   render() {
-    const { queryParameters, projectsList, hasMore, querying, loadingMore, hideAllFilters } = this.props;
+    const { cardSizes } = this.state;
+    const { tenant, showTitle, showPublicationStatusFilter, showSendFeedback, layout, theme } = this.props;
+    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
+    const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
-    return (
-      <Container id="e2e-projects-container">
-        {hideAllFilters !== true &&
-          <FiltersArea id="e2e-projects-filters">
-            <FilterArea className="publicationstatus">
-              <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
-            </FilterArea>
+    if (!isNilOrError(tenant)) {
+      const customCurrentlyWorkingOn = tenant.attributes.settings.core.currently_working_on_text;
 
-            <FilterArea>
-              <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-            </FilterArea>
-          </FiltersArea>
-        }
+      return (
+        <Container id="e2e-projects-container">
+          <Header>
+            {showTitle &&
+              <Title>
+                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                  ?
+                    <T value={customCurrentlyWorkingOn} />
+                  :
+                    <FormattedMessage
+                      {...messages.currentlyWorkingOn}
+                    />
+                }
+              </Title>
+            }
 
-        {querying &&
-          <Loading id="projects-loading">
-            <Spinner />
-          </Loading>
-        }
+            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
+              {showPublicationStatusFilter &&
+                <FilterArea className="publicationstatus">
+                  <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
+                </FilterArea>
+              }
 
-        {!querying && !hasProjects &&
-          <EmptyContainer id="projects-empty">
-            <ProjectIcon name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage {...messages.noProjects} />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
-        }
+              <FilterArea>
+                <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
+              </FilterArea>
+            </FiltersArea>
+          </Header>
 
-        {!querying && hasProjects && projectsList &&
-          <ProjectsList id="e2e-projects-list">
-            {projectsList.map((project) => (
-              <StyledProjectCard key={project.id} projectId={project.id} />
-            ))}
-          </ProjectsList>
-        }
+          {querying &&
+            <Loading id="projects-loading">
+              <Spinner />
+            </Loading>
+          }
 
-        {!querying && hasMore &&
-          <LoadMoreButtonWrapper>
-            <LoadMoreButton
-              onClick={this.loadMore}
-              size="2"
-              style="secondary"
-              text={<FormattedMessage {...messages.loadMore} />}
-              processing={loadingMore}
-              fullWidth={true}
-              height="58px"
-            />
-          </LoadMoreButtonWrapper>
-        }
-      </Container>
-    );
+          {!querying && !hasProjects &&
+            <EmptyContainer id="projects-empty">
+              <EmptyProjectsImage src={EmptyProjectsImageSrc} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />
+              <EmptyMessage>
+                <EmptyMessageTitle>
+                  <FormattedMessage {...messages.noProjectYet} />
+                </EmptyMessageTitle>
+                <EmptyMessageLine>
+                  <FormattedMessage {...messages.stayTuned} />
+                </EmptyMessageLine>
+              </EmptyMessage>
+            </EmptyContainer>
+          }
+
+          {!querying && hasProjects && projectsList && (
+            <ProjectsList id="e2e-projects-list">
+              {projectsList.map((project, index) => {
+                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                return <ProjectCard key={project.id} projectId={project.id} size={size} layout={layout} />;
+              })}
+
+              {/*
+              // A bit of a hack (but the most elegant one I could think of) to
+              // make the 3-column layout work for the last row of project cards when
+              // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
+              // Ideally would have been solved with CSS grid, but... IE11
+              */}
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6)  && (projectsList.length + 1) % 3 === 0 &&
+                <MockProjectCard className={layout} />
+              }
+
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length - 1) % 3 === 0 &&
+                <>
+                  <MockProjectCard className={layout} />
+                  <MockProjectCard className={layout} />
+                </>
+              }
+            </ProjectsList>
+          )}
+
+          <Footer>
+            {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
+
+            {!querying && hasProjects && hasMore &&
+              <ShowMoreButton
+                onClick={this.showMore}
+                size="1"
+                style="secondary"
+                text={<FormattedMessage {...messages.showMore} />}
+                processing={loadingMore}
+                height="50px"
+                icon="showMore"
+                iconPos="left"
+                textColor={theme.colorText}
+                textHoverColor={darken(0.1, theme.colorText)}
+                bgColor={rgba(theme.colorMain, 0.08)}
+                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                fontWeight="500"
+              />
+            }
+
+            {showSendFeedback && <StyledSendFeedback showFeedbackText={true} />}
+          </Footer>
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
+const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(ProjectCards));
+
+const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  windowSize: <GetWindowSize debounce={50} />,
+  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
+});
+
 export default (inputProps: InputProps) => (
-  <GetProjects {...inputProps}>
-    {projects => <ProjectCards {...inputProps} {...projects} />}
-  </GetProjects>
+  <Data {...inputProps}>
+    {dataProps => <ProjectCardsWithHOCs {...inputProps} {...dataProps} />}
+  </Data>
 );

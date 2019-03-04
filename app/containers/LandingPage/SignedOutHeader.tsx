@@ -13,8 +13,8 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-// utils
-import { trackEvent } from 'utils/analytics';
+// tracking
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
@@ -122,7 +122,7 @@ const HeaderSubtitle: any = styled.h2`
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
   font-size: ${fontSizes.xl}px;
   line-height: 28px;
-  font-weight: 300;
+  font-weight: 400;
   max-width: 980px;
   text-align: center;
   text-decoration: none;
@@ -178,8 +178,12 @@ interface State {}
 
 class SignedOutHeader extends PureComponent<Props, State> {
   goToSignUpPage = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
+    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
     clHistory.push('/sign-up');
+  }
+
+  handleAvatarBubblesOnClick = () => {
+    trackEventByName(tracks.clickAvatarBubbles, { extra: { location: 'signed-out header' } });
   }
 
   render() {
@@ -215,7 +219,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
                 {subtitle}
               </HeaderSubtitle>
 
-              <StyledAvatarBubbles />
+              <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
               {authUser ? (
                 <StyledIdeaButton style="primary-inverse" />

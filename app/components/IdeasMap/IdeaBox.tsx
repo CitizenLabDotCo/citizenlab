@@ -35,7 +35,6 @@ const Container = styled.div`
   padding: 30px;
   position: relative;
   background: #fff;
-  border: solid 1px ${colors.separation};
 `;
 
 const IdeaTitle: any = styled.h3`

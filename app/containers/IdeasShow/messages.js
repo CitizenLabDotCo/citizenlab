@@ -322,4 +322,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.official',
     defaultMessage: 'Official',
   },
+  reportAsSpamModalTitle: {
+    id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
+    defaultMessage: 'Why do you want to report this as spam?',
+  },
 });
