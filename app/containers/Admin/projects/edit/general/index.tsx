@@ -683,12 +683,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 id="project-title"
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
-                label={(
-                  <>
-                    <FormattedMessage {...messages.titleLabel} />
-                    <InfoTooltip {...messages.titleLabelTooltip} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.titleLabel} />}
+                labelTooltip={<InfoTooltip {...messages.titleLabelTooltip} />}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />

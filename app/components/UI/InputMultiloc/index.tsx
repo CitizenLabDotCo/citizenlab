@@ -20,7 +20,7 @@ const Container = styled.div``;
 
 const InputWrapper = styled.div`
   &:not(.last) {
-    margin-bottom: 12px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -32,10 +32,16 @@ const LanguageExtension = styled(Label)`
   font-weight: 500;
 `;
 
+const LabelTooltip = styled.div`
+  margin-left: 10px;
+  margin-top: 2px;
+`;
+
 export type Props = {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
+  labelTooltip?: JSX.Element;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   type: 'text' | 'email' | 'password' | 'number';

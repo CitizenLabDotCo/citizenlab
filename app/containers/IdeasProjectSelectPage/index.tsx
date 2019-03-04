@@ -24,7 +24,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ const Loading = styled.div`
 const Container = styled.div`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  background: #f9f9fa;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);

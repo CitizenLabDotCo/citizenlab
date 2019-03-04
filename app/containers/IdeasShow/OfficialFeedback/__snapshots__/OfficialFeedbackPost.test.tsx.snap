@@ -29,11 +29,10 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     ariaLabel="Show more actions"
   />
   <OfficialFeedbackPost__Body>
-    <T
-      supportHtml={true}
-      value={
+    <div
+      dangerouslySetInnerHTML={
         Object {
-          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+          "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
         }
       }
     />
@@ -55,7 +54,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     </OfficialFeedbackPost__DatePosted>
     <OfficialFeedbackPost__DateEdited>
       <FormattedMessage
-        defaultMessage="last edited on {date}"
+        defaultMessage="Last edited on {date}"
         id="app.components.IdeasShow.OfficialFeedback.lastEdition"
         values={
           Object {
@@ -76,11 +75,10 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
   key="feedbackId1"
 >
   <OfficialFeedbackPost__Body>
-    <T
-      supportHtml={true}
-      value={
+    <div
+      dangerouslySetInnerHTML={
         Object {
-          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+          "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
         }
       }
     />
@@ -102,7 +100,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
     </OfficialFeedbackPost__DatePosted>
     <OfficialFeedbackPost__DateEdited>
       <FormattedMessage
-        defaultMessage="last edited on {date}"
+        defaultMessage="Last edited on {date}"
         id="app.components.IdeasShow.OfficialFeedback.lastEdition"
         values={
           Object {

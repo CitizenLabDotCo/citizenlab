@@ -51,4 +51,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.archivedTooltip',
     defaultMessage: 'Archived projects are over but still shown on the platform. It is clearly indicated to users that they are archived and participation is no longer possible.',
   },
+  manualSortingProjects: {
+    id: 'app.containers.AdminPage.ProjectEdit.manualSortingProjects',
+    defaultMessage: 'Manually sort projects',
+  }
 });
