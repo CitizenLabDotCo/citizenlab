@@ -71,7 +71,7 @@ export default defineMessages({
   },
   lastEdition: {
     id: 'app.components.IdeasShow.OfficialFeedback.lastEdition',
-    defaultMessage: 'last edited on {date}',
+    defaultMessage: 'Last edited on {date}',
   },
   officialUpdateBody: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialUpdateBody',
