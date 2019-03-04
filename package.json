@@ -40,7 +40,7 @@
     "@babel/runtime": "7.2.0",
     "@segment/consent-manager": "1.2.0",
     "@segment/snippet": "4.4.0",
-    "@sentry/browser": "4.6.4",
+    "@sentry/browser": "^4.6.4",
     "ajv": "6.6.2",
     "body-scroll-lock": "2.6.1",
     "bowser": "1.9.4",
