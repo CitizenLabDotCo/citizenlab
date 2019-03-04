@@ -3,7 +3,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import * as Sentry from '@sentry/browser';
 import messages from './messages';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -13,6 +13,14 @@ const Container = styled.div`
   text-align: center;
   margin-top: 50px;
   font-size: ${fontSizes.large}px;
+`;
+
+const StyledButton = styled.button`
+  outline: none;
+  color: ${colors.clBlue};
+  &.hover, &.focus {
+    text-decoration: underline;
+  }
 `;
 
 interface DataProps {
@@ -87,7 +95,10 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
           <FormattedMessage
             {...messages.genericErrorWithForm}
             values={{
-              openForm: (<a onClick={this.openDialog}><FormattedMessage {...messages.openFormText} /></a>)
+              openForm: (
+                <StyledButton onClick={this.openDialog}>
+                  <FormattedMessage {...messages.openFormText} />
+                </StyledButton>)
             }}
           />
         </Container>
