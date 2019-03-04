@@ -941,7 +941,7 @@
   "app.containers.IdeaButton.postingNotActivePhase": "No se pueden publicar ideas en una fase pasada o futura.",
   "app.containers.IdeaButton.postingNotPermitted": "Por desgracia, no tienes los permisos para publicar ideas aquí.",
   "app.containers.IdeaButton.postingProjectInactive": "Este proyecto aún no, o ya no acepta nuevas ideas.",
-  "app.containers.IdeaButton.startAnIdea": "Iniciar una idea",
+  "app.containers.IdeaButton.startAnIdea": "Publica tu idea",
   "app.containers.IdeaCards.areas": "Áreas",
   "app.containers.IdeaCards.cards": "Tarjetas",
   "app.containers.IdeaCards.map": "Mapa",
