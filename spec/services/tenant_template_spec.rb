@@ -12,6 +12,14 @@ describe TenantTemplateService do
       expect(service.available_templates).to_not be_empty
     end
 
+    it "has a template test", template_test: true do
+      expect(service.available_templates).to_not be_empty
+    end
+
+    it "has a nothing test", nothing_test: true do
+      expect(service.available_templates).to_not be_empty
+    end
+
   end
 
   describe "resolve_and_apply_template", slow_test: true do
