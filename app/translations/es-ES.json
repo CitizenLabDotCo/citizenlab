@@ -66,7 +66,7 @@
   "app.components.IdeaForm.topicsPlaceholder": "Seleccione uno o dos temas para su idea",
   "app.components.IdeasMap.login": "Iniciar sesión",
   "app.components.IdeasMap.noIdeasWithLocation": "Las ideas en este proyecto no tienen ninguna información de ubicación.",
-  "app.components.IdeasMap.postIdeaHere": "Agrega una idea aquí",
+  "app.components.IdeasMap.postIdeaHere": "Comparte una idea aquí",
   "app.components.IdeasMap.postingHereImpossible": "Actualmente no es posible publicar ideas aquí.",
   "app.components.IdeasMap.postingMaybeNotPermitted": "Sólo ciertos usuarios pueden publicar ideas aquí. Por favor regístrate primero.",
   "app.components.IdeasMap.postingNotActivePhase": "No se pueden publicar ideas en una fase pasada o futura.",
