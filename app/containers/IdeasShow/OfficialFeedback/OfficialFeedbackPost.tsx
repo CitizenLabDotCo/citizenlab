@@ -1,5 +1,11 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import styled from 'styled-components';
+import linkifyHtml from 'linkifyjs/html';
+import { isNilOrError } from 'utils/helperUtils';
+
+// typings
+import { Locale, Multiloc } from 'typings';
 
 // components
 import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
@@ -13,9 +19,14 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { FormattedDate, InjectedIntlProps } from 'react-intl';
+import { getLocalized } from 'utils/i18n';
 
 // services
 import { IOfficialFeedbackData, deleteOfficialfeedback } from 'services/officialFeedback';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 
 const Container = styled.div`
   display: flex;
@@ -38,6 +49,7 @@ const EditFormContainer = Container.extend`
 const Body = styled.div`
   line-height: 23px;
   margin-bottom: 16px;
+  white-space: pre-line;
 `;
 
 const Footer = styled.div`
@@ -56,6 +68,8 @@ const DatePosted = styled.span`
 const DateEdited = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-style: italic;
+  margin-top: 10px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
@@ -63,10 +77,17 @@ const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   margin-bottom: 10px;
 `;
 
-interface Props {
+interface DataProps {
+  locale: GetLocaleChildProps;
+  tenantLocales: GetTenantLocalesChildProps;
+}
+
+interface InputProps {
   editingAllowed: boolean | null;
   officialFeedbackPost: IOfficialFeedbackData;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showEditForm: boolean;
@@ -106,8 +127,17 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       name: 'delete'
     }] as IAction[]
 
+  getPostBodyText = (postBodyMultiloc: Multiloc, locale: Locale, tenantLocales: Locale[]) => {
+    const postBodyText = getLocalized(postBodyMultiloc, locale, tenantLocales);
+    const processedPostBodyText = linkifyHtml(postBodyText.replace(
+      /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+      '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+    ));
+    return processedPostBodyText;
+  }
+
   render() {
-    const { editingAllowed, officialFeedbackPost } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -122,37 +152,46 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
     }
 
-    return (
-      <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
-        {editingAllowed &&
-          <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
-        }
-
-        <>
-          <Body>
-            <T value={body_multiloc} supportHtml />
-          </Body>
-          <Footer>
-            <Author>
-              <T value={author_multiloc} />
-            </Author>
-            <DatePosted><FormattedDate value={created_at} /></DatePosted>
-            {updated_at && updated_at !== created_at && (
-              <DateEdited>
-                <FormattedMessage
-                  {...messages.lastEdition}
-                  values={{ date: <FormattedDate value={updated_at} /> }}
-                />
-              </DateEdited>
-            )
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+      return (
+        <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
+          {editingAllowed &&
+            <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
-          </Footer>
-        </>
-      </PostContainer>
-    );
+
+          <>
+            <Body>
+              <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
+            </Body>
+            <Footer>
+              <Author>
+                <T value={author_multiloc} />
+              </Author>
+              <DatePosted><FormattedDate value={created_at} /></DatePosted>
+              {updated_at && updated_at !== created_at && (
+                <DateEdited>
+                  <FormattedMessage
+                    {...messages.lastEdition}
+                    values={{ date: <FormattedDate value={updated_at} /> }}
+                  />
+                </DateEdited>
+              )
+            }
+            </Footer>
+          </>
+        </PostContainer>
+      );
+    }
+
+    return null;
   }
 }
 
 const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
 
-export default OfficialFeedbackPostWithIntl;
+const Data = adopt<DataProps, {}>({
+  locale: <GetLocale />,
+  tenantLocales: <GetTenantLocales />
+});
+
+export default (inputProps: InputProps) => <Data>{dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}</Data>;
