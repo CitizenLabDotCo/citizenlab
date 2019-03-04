@@ -1,6 +1,18 @@
 pipeline {
   agent any
   stages {
+    stage('Build') {
+      steps {
+        echo 'Building containers'
+        sh 'docker-compose build'
+        sh 'docker-compose up -d postgres redis'
+        sleep 10
+        echo 'Setting up database'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:create'
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rake db:migrate'
+      }
+    }
+    
     stage('Generate templates') {
       steps {
         echo 'Generating templates'
