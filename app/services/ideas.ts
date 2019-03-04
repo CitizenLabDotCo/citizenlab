@@ -156,16 +156,22 @@ export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) 
   return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks }>({ apiEndpoint: `${API_PATH}/ideas/geotagged`, ...streamParams, cacheStream: false });
 }
 
-export function addIdea(object: IIdeaAdd) {
-  return streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
+export async function addIdea(object: IIdeaAdd) {
+  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
+  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id] });
+  return response;
 }
 
-export function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
-  return streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
+export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
+  const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
+  streams.fetchAllWith({ dataId: [response.data.relationships.project.data.id] });
+  return response;
 }
 
-export function deleteIdea(ideaId: string) {
-  return streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
+export async function deleteIdea(ideaId: string) {
+  const response = await streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
+  // await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
 export function ideaActivities(ideaId: string) {

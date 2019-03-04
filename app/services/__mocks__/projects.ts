@@ -17,6 +17,8 @@ export const getMockProject = (id: string, processType: ProcessType, participati
       fb: `header${id}ImageUrlFb`,
     }, // ImageSizes,
     ideas_count: 25,
+    comments_count: 10,
+    avatars_count: 23,
     created_at: 'yesterday',
     updated_at: 'yesterday but later', // should be a real time string
     visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
@@ -41,6 +43,12 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     },
     areas: {
       data: []// IRelationship[]
+    },
+    avatars : {
+      data: []// IRelationship[]
+    },
+    current_phase: {
+      data: null
     },
     action_descriptor: {
       data: {

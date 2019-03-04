@@ -19,7 +19,6 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
       <FormattedMessage
         defaultMessage="Your cookie preferences"
         id="app.components.ConsentManager.Modal.PreferencesDialog.title"
-        tagName="h1"
       />
     }
     label="Your cookie preferences"
@@ -96,7 +95,6 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
       <FormattedMessage
         defaultMessage="Your cookie preferences"
         id="app.components.ConsentManager.Modal.PreferencesDialog.title"
-        tagName="h1"
       />
     }
     label="Your cookie preferences"
@@ -169,7 +167,6 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
       <FormattedMessage
         defaultMessage="Your cookie preferences"
         id="app.components.ConsentManager.Modal.PreferencesDialog.title"
-        tagName="h1"
       />
     }
     label="Your cookie preferences"

@@ -27,25 +27,29 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { IProjectData } from 'services/projects';
 
+const TopContainer = styled.div`
+  width: 100%;
+  margin-top: -5px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+`;
+
 const ActionsContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  position: absolute;
-  top: 50px;
-  right: 0;
 
   & > *:not(:last-child) {
     margin-right: 15px;
   }
 `;
 
-const TopContainer = styled.div`
-  width: 100%;
-  margin-bottom: 30px;
-  position: relative;
-`;
+interface ITracks {
+  clickNewIdea: ({ extra: object }) => void;
+}
+
+interface InputProps {}
 
 interface DataProps {
   surveys_enabled: boolean | null;
@@ -54,13 +58,11 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-type InputProps = { };
-
-type State = {};
+interface State {}
 
 interface Props extends InputProps, DataProps { }
 
-export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & WithRouterProps & ITracks, State> {
 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
