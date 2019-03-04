@@ -50,7 +50,6 @@ resource "Avatars" do
     end
 
     context "as an admin" do
-
       before do
         @user = create(:admin)
         token = Knock::AuthToken.new(payload: { sub: @user.id }).token
@@ -74,9 +73,33 @@ resource "Avatars" do
           expect(json_response.dig(:meta, :total)).to eq 4
         end
       end
-
     end
 
+  end
+
+  get "web_api/v1/avatars/:id" do
+    parameter :id, "The avatar id is the user id concatenated with the suffix '-avatar'", required: true
+
+    let(:user) { create(:user) }
+
+    describe do
+      let (:id) { "#{user.id}-avatar" }
+
+      example_request "Get a single avatar" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq id
+      end
+    end
+
+    describe do
+      let(:id) { user.id }
+
+      example "[error] Get a single avatar using the user id" do
+        do_request
+        expect(status).to eq 404
+      end
+    end
 
   end
 
