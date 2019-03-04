@@ -1,5 +1,55 @@
 # Changelog
 
+## 2019-03-03
+
+### Fixed
+- Manually sorting projects in the admin works as expected
+
+### Added
+- Support for Spanish
+- The copy of 'x is currently working on' can be customized in admin HQ
+- Extra caching layer in cl2-nlp speeds up similar ideas and creating clusters
+
+## 2019-02-28
+
+### Fixed
+
+- In the dashboard, the labels on the users by gender donut chart are no longer cut off
+- Adding file attachments with multiple consecutive spaces in the filename no longer fails
+- Project copy in admin HQ no longer fails when users have mismatching locales with the new platform
+
+### Added
+
+- New landing page redesign
+  - Project cards have a new layout and show the time remaining, a CTA and a metric related to the type of phase
+  - The bottom of the landing page displays a new custom info text, configurable in the admin settings
+  - New smarter project sorting algorithm, which can be changed to manual ordering in the projects admin
+  - Ideas are no longer shown on the landing page
+  - The `Show all projects` link is only shown when there are more than 10 projects
+- New attributes are added to segment, available in all downstream tools:
+  - `isSuperAdmin`: Set to true when the user is an admin with a citizenlab email
+  - `isModeratorModerator`
+  - `highestRole`: Either `super_admin`, `admin`, `project_moderator` or `user`
+
+### Changed
+
+- Intercom now only receives users that are admin or project moderator (excluding citizenlab users)
+
+## 2019-02-20
+
+### Fixed
+
+- User digest email events are sent out again
+- The user statistics on the admin dashboard are back to the correct values
+- Creating a new project page as an admin does not result in a blank page anymore
+- Improved saving behaviour when saving images in a phase's description
+- When logged in and visiting a url containing another locale than the one you previously picked, your locale choice is no longer overwritten
+
+### Added
+
+- Project copy feature (in admin HQ) now also supports copying ideas (including comments and votes) and allows you to specify a new slug for the project URL
+- Unlogged users locale preference is saved in their browser
+
 ## 2019-02-14
 
 ### Fixed

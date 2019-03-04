@@ -5,6 +5,7 @@ import { Multiloc, Locale } from 'typings';
 import { getLocalized } from 'utils/i18n';
 import { localeStream } from 'services/locale';
 import { currentTenantStream } from 'services/tenant';
+import linkifyHtml from 'linkifyjs/html';
 
 type children = (localizedText: string) => JSX.Element | null;
 
@@ -15,6 +16,7 @@ type Props = {
   children?: children;
   maxLength?: number;
   supportHtml?: boolean;
+  linkify?: boolean;
 };
 
 type State = {
@@ -55,11 +57,12 @@ export default class T extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { linkify } = this.props;
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
       const { value, as, children, maxLength, className, supportHtml } = this.props;
-      const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
+      const localizedText = (linkify ? linkifyHtml(getLocalized(value, locale, currentTenantLocales, maxLength)) : getLocalized(value, locale, currentTenantLocales, maxLength));
 
       if (children) {
         return ((children as children)(localizedText));

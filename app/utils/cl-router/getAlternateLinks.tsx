@@ -1,18 +1,12 @@
 import React from 'react';
 import{ GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import { Locale } from 'typings';
-
-function replaceLocale(pathname: string, locale: Locale) {
-  const localeRegexp = /^\/([a-zA-Z]{2,3}-[a-zA-Z]{2,3}?|en)\/([\S+]*)/;
-  const matches = pathname.match(localeRegexp);
-  return matches && `/${locale}/${matches[2]}`;
-}
+import { replacePathnameLocale } from 'services/locale';
 
 // https://github.com/nfl/react-helmet/issues/279 href comes first!
-export default function getAlternateLinks(tenantLocales: GetTenantLocalesChildProps, location) {
+export default function getAlternateLinks(tenantLocales: GetTenantLocalesChildProps) {
   if (Array.isArray(tenantLocales)) {
     return tenantLocales.map(loc => {
-      return <link href={`${location.origin}${replaceLocale(location.pathname, loc)}`} rel="alternate" hrefLang={loc} key={loc} />;
+      return <link href={`${location.origin}${replacePathnameLocale(location.pathname, loc)}`} rel="alternate" hrefLang={loc} key={loc} />;
     });
   }
 

@@ -4,9 +4,10 @@ import { mapValues } from 'lodash-es';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isSuperAdmin, isProjectModerator } from 'services/permissions/roles';
+import { IUser } from 'services/users';
 
-interface IEvent {
+export interface IEvent {
   name: string;
   properties?: {
     [key: string]: any,
@@ -20,7 +21,7 @@ interface IIdentification {
   };
 }
 
-interface IPageChange {
+export interface IPageChange {
   path: string;
   properties?: {
     [key: string]: any,
@@ -33,16 +34,17 @@ const events$ = new Subject<IEvent>();
 const identifications$ = new Subject<IIdentification>();
 const pageChanges$ = new Subject<IPageChange>();
 
-combineLatest(tenant$, events$).subscribe(([tenant, event]) => {
+combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
   if (analytics) {
     analytics.track(
       event.name,
       addTenantInfo(event.properties, tenant.data),
+      { integrations: integrations(user) },
     );
   }
 });
 
-combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
+combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageChange]) => {
   if (analytics) {
     analytics.page(
       '',
@@ -51,26 +53,35 @@ combineLatest(tenant$, pageChanges$).subscribe(([tenant, pageChange]) => {
         url: `https://${tenant.data.attributes.host}${pageChange.path}`,
         title: null,
         ...addTenantInfo(pageChange.properties, tenant.data),
-      }
+      },
+      { integrations: integrations(user) },
     );
   }
 });
 
-combineLatest(tenant$, identifications$).subscribe(([tenant, identification]) => {
+combineLatest(tenant$, authUser$, identifications$).subscribe(([tenant, user, identification]) => {
   if (analytics) {
     analytics.identify(
       identification.userId,
       addTenantInfo(identification.properties, tenant.data),
+      { integrations: integrations(user) },
     );
 
-    analytics.group(
-      tenant && tenant.data.id,
-      tenant && {
-        name: tenant.data.attributes.name,
-        host: tenant.data.attributes.host,
-        type: tenant.data.attributes.settings.core.organization_type
-      }
-    );
+    if (tenant) {
+      analytics.group(
+        tenant.data.id,
+        addTenantInfo(
+          {
+            name: tenant.data.attributes.name,
+            website: tenant.data.attributes.settings.core.organization_site,
+            avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
+            tenantLocales: tenant.data.attributes.settings.core.locales,
+          },
+          tenant.data
+        ),
+        { integrations: integrations(user) },
+      );
+    }
   }
 });
 
@@ -97,6 +108,18 @@ export function addTenantInfo(properties, tenant: ITenantData) {
   };
 }
 
+export function integrations(user: IUser | null) {
+  const output = {
+    All: true,
+    Intercom: false,
+  };
+  if (user) {
+    const highestRole = user.data.attributes.highest_role;
+    output['Intercom'] = highestRole === 'admin' || highestRole === 'project_moderator';
+  }
+  return output;
+}
+
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
@@ -104,10 +127,23 @@ export function trackPage(path: string, properties: {} = {}) {
   });
 }
 
-export function trackIdentification(userId: string, properties: {} = {}) {
+export function trackIdentification(user: IUser) {
   identifications$.next({
-    userId,
-    properties,
+    userId: user.data.id,
+    properties: {
+      email: user.data.attributes.email,
+      firstName: user.data.attributes.first_name,
+      lastName: user.data.attributes.last_name,
+      createdAt: user.data.attributes.created_at,
+      avatar: user.data.attributes.avatar.large,
+      birthday: user.data.attributes.birthyear,
+      gender: user.data.attributes.gender,
+      locale: user.data.attributes.locale,
+      isSuperAdmin: isSuperAdmin(user),
+      isAdmin: isAdmin(user),
+      isProjectModerator: isProjectModerator(user),
+      highestRole: user.data.attributes.highest_role,
+    },
   });
 }
 

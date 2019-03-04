@@ -42,12 +42,8 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               name="description_preview_multiloc"
               component={FormikTextAreaMultiloc}
               id="description-preview"
-              label={(
-                <>
-                  <FormattedMessage {...messages.descriptionPreviewLabel} />
-                  <InfoTooltip {...messages.descriptionPreviewTooltip} size="small" />
-                </>
-              )}
+              label={<FormattedMessage {...messages.descriptionPreviewLabel} />}
+              labelTooltip={<InfoTooltip {...messages.descriptionPreviewTooltip} size="small" />}
               rows={5}
               maxCharCount={280}
             />
@@ -60,12 +56,8 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
               inAdmin
               id="project-description"
               name="description_multiloc"
-              label={(
-                <>
-                  <FormattedMessage {...messages.descriptionLabel} />
-                  <InfoTooltip {...messages.descriptionTooltip} size="small" />
-                </>
-              )}
+              label={<FormattedMessage {...messages.descriptionLabel} />}
+              labelTooltip={<InfoTooltip {...messages.descriptionTooltip} size="small" />}
             />
             <Error fieldName="description_multiloc" apiErrors={errors.description_multiloc as any} />
           </SectionField>

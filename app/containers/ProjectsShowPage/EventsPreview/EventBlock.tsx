@@ -25,11 +25,12 @@ const Container = styled(Link)`
   display: flex;
   padding: 15px;
   cursor: pointer;
+  background: #fff;
   border: solid 1px ${colors.separation};
+  transition: all 120ms ease-out;
 
   &:hover {
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    transition: all 350ms cubic-bezier(0.19, 1, 0.22, 1);
+    border-color: #666;
   }
 
   &:not(.last) {

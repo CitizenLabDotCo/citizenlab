@@ -42,8 +42,8 @@ const InnerContainer = styled.div`
   align-items: strech;
   padding: 30px;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
+  border: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
     padding: 20px;
