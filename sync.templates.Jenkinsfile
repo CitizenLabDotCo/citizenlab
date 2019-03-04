@@ -6,6 +6,13 @@ pipeline {
         echo 'Generating templates'
       }
     }
+
+    stage('Test tenant templates') {
+      when { branch 'master' }
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t template_test" web bundle exec rake spec'
+      }
+    }
   }
 
   post {
