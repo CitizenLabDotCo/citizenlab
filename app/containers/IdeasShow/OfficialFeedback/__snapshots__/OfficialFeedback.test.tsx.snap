@@ -5,28 +5,7 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
   <OfficialFeedback__StyledOfficialFeedbackNew
     ideaId="ideaId"
   />
-  <OfficialFeedback__FeedbackHeader>
-    <OfficialFeedback__FeedbackTitle>
-      <FormattedMessage
-        defaultMessage="Official updates"
-        id="app.components.IdeasShow.OfficialFeedback.officialUpdates"
-      />
-    </OfficialFeedback__FeedbackTitle>
-    <FormattedMessage
-      defaultMessage="Last update: {lastUpdateDate}"
-      id="app.components.IdeasShow.OfficialFeedback.lastUpdate"
-      values={
-        Object {
-          "lastUpdateDate": <OfficialFeedback__StyledSpan>
-            <FormattedDate
-              value="2011-01-01T04:26:07.000Z"
-            />
-          </OfficialFeedback__StyledSpan>,
-        }
-      }
-    />
-  </OfficialFeedback__FeedbackHeader>
-  <WrappedOfficialFeedBack
+  <WrappedOfficialFeedback
     editingAllowed={true}
     ideaId="ideaId"
   />
@@ -35,28 +14,7 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
 
 exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
 <Fragment>
-  <OfficialFeedback__FeedbackHeader>
-    <OfficialFeedback__FeedbackTitle>
-      <FormattedMessage
-        defaultMessage="Official updates"
-        id="app.components.IdeasShow.OfficialFeedback.officialUpdates"
-      />
-    </OfficialFeedback__FeedbackTitle>
-    <FormattedMessage
-      defaultMessage="Last update: {lastUpdateDate}"
-      id="app.components.IdeasShow.OfficialFeedback.lastUpdate"
-      values={
-        Object {
-          "lastUpdateDate": <OfficialFeedback__StyledSpan>
-            <FormattedDate
-              value="2011-01-01T04:26:07.000Z"
-            />
-          </OfficialFeedback__StyledSpan>,
-        }
-      }
-    />
-  </OfficialFeedback__FeedbackHeader>
-  <WrappedOfficialFeedBack
+  <WrappedOfficialFeedback
     editingAllowed={false}
     ideaId="ideaId"
   />
