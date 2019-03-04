@@ -13,7 +13,7 @@ interface Props {
 interface State {}
 
 export default class OfficialFeedbackNew extends PureComponent<Props, State> {
-  handleSubmit = async (values: FormValues, { setErrors, setSubmitting, resetForm }) => {
+  handleSubmit = async (values: FormValues, { setErrors, setSubmitting, setStatus, resetForm }) => {
     const formattedMentionsBodyMultiloc = formatMentionsBodyMultiloc(values.body_multiloc);
     const { ideaId } = this.props;
     const feedbackValues = { ...values, ...{ body_multiloc: formattedMentionsBodyMultiloc } };
@@ -24,6 +24,7 @@ export default class OfficialFeedbackNew extends PureComponent<Props, State> {
       await addOfficialFeedbackToIdea(ideaId, feedbackValues);
       setSubmitting(false);
       resetForm();
+      setStatus('success');
     } catch (errorResponse) {
       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
       setErrors(apiErrors);

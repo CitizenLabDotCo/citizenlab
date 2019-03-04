@@ -1,6 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import styled, { css } from 'styled-components';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styles
 import { colors } from 'utils/styleUtils';
@@ -24,11 +25,35 @@ const Message = styled.p`
   margin-left: 2rem;
 
   &.error {
-  color: ${colors.clRedError};
+    color: ${colors.clRedError};
   }
 
   &.success {
     color: ${colors.clGreenSuccess};
+  }
+
+  &.success-enter {
+    max-width: 0;
+    opacity: 0;
+
+    &.success-enter-active {
+      max-width: 100%;
+      opacity: 1;
+      transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+  }
+
+  &.success-exit {
+    max-width: 100%;
+    opacity: 1;
+
+    &.success-exit-active {
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
+    }
   }
 `;
 
@@ -44,6 +69,7 @@ interface Props extends Omit<OriginalButtonProps, 'className' | 'text' | 'disabl
   };
   onClick?: (event: FormEvent<any>) => void;
   style?: ButtonStyles;
+  animate?: boolean;
 }
 
 export default class SubmitWrapper extends PureComponent<Props> {
@@ -74,38 +100,46 @@ export default class SubmitWrapper extends PureComponent<Props> {
       this.removeFocus(this.submitButton);
     }
     const buttonProps = omit(this.props, ['className', 'style', 'processing', 'disabled', 'onClick', 'setSubmitButtonRef', 'messages']);
+    const { loading, status, onClick, messages, animate } = this.props;
 
     return (
       <Wrapper fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
           style={style}
-          processing={this.props.loading}
-          disabled={this.props.status === 'disabled'}
-          onClick={this.props.onClick}
+          processing={loading}
+          disabled={status === 'disabled' || status === 'success'}
+          onClick={onClick}
           setSubmitButtonRef={this.setSubmitButtonRef}
           {...buttonProps}
         >
-          {(this.props.status === 'enabled' ||
-            this.props.status === 'disabled' ||
-            this.props.status === 'error') &&
-            <FormattedMessage {...this.props.messages.buttonSave} />
+          {(status === 'enabled' ||
+            status === 'disabled' ||
+            status === 'error') &&
+            <FormattedMessage {...messages.buttonSave} />
           }
-          {this.props.status === 'success' &&
-            <FormattedMessage {...this.props.messages.buttonSuccess} />
+          {status === 'success' &&
+            <FormattedMessage {...messages.buttonSuccess} />
           }
         </Button>
 
-        {this.props.status === 'error' &&
+        {status === 'error' &&
           <Message className="error">
-            <FormattedMessage {...this.props.messages.messageError}/>
+            <FormattedMessage {...messages.messageError}/>
           </Message>
         }
 
-        {this.props.status === 'success' &&
-          <Message className="success">
-            <FormattedMessage {...this.props.messages.messageSuccess}/>
-          </Message>
+        {status === 'success' &&
+          <CSSTransition
+            classNames="success"
+            timeout={0}
+            enter={animate}
+            exit={animate}
+          >
+            <Message className="success">
+              <FormattedMessage {...messages.messageSuccess}/>
+            </Message>
+          </CSSTransition>
         }
       </Wrapper>
     );
