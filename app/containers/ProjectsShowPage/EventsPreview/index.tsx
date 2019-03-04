@@ -25,9 +25,9 @@ import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
+  padding-top: 60px;
+  padding-bottom: 80px;
   background: #fff;
-  padding-top: 80px;
-  padding-bottom: 100px;
 `;
 
 const Header = styled.div`

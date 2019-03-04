@@ -150,6 +150,15 @@ export const GraphCardHeader = styled.div`
   }
 `;
 
+export const PieChartStyleFixesDiv = styled.div`
+  overflow: hidden;
+  .recharts-surface, .recharts-wrapper, .recharts-responsive-container {
+    height: 195px !important;
+    min-width: 190px;
+    overflow: visible;
+  }
+`;
+
 export const GraphCardHeaderWithFilter = styled(GraphCardHeader)`
   align-items: center;
 

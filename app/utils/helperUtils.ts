@@ -1,7 +1,21 @@
-import { Locale } from 'typings';
+import { Locale, Multiloc } from 'typings';
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
+}
+
+export function isEmptyMultiloc(multiloc: Multiloc) {
+  let validTranslation = false;
+
+  for (const lang in multiloc) {
+    if (Object.prototype.hasOwnProperty.call(multiloc, lang)) {
+      if (multiloc[lang].length > 0) {
+        validTranslation = true;
+      }
+    }
+  }
+
+  return !validTranslation;
 }
 
 export function isMobileDevice() {

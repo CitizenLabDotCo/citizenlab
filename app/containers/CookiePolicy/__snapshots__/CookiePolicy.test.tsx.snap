@@ -238,6 +238,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
 exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
 .c0 {
   color: #147985;
+  font-weight: 300;
   -webkit-text-decoration: underline;
   text-decoration: underline;
   margin: 0;

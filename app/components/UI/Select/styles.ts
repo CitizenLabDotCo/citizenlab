@@ -1,4 +1,4 @@
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 export function getSelectStyles(borderColor = '#ccc') {
   return {
@@ -7,7 +7,7 @@ export function getSelectStyles(borderColor = '#ccc') {
     }),
     control: (base, { isFocused }) => ({
       ...base,
-      fontSize: '16px',
+      fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
       borderColor: isFocused ? '#000' : `${borderColor}`,
       borderRadius: '5px',
@@ -26,12 +26,12 @@ export function getSelectStyles(borderColor = '#ccc') {
     option: (base, { isFocused }) => ({
       ...base,
       ':active': null,
-      fontSize: '16px',
+      fontSize: `${fontSizes.base}px`,
       color: isFocused ? colors.text : colors.label,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
     }),
     multiValueLabel: () => ({
-      fontSize: '16px',
+      fontSize: `${fontSizes.base}px`,
       padding: '6px',
     }),
   };

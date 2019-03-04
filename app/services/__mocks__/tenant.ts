@@ -18,6 +18,8 @@ export const makeTenant = (attributes = {}) : ITenant => ({
             en: 'Wonderville'
           },
           organization_type: 'medium_city',
+          organization_site: 'https://www.wonder.ville',
+          lifecycle_stage: 'active',
           color_main: '#225522',
           header_overlay_opacity: 20,
           color_secondary: '#551122',

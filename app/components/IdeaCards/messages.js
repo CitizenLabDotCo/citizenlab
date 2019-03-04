@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.components.IdeaCards.loadMore',
     defaultMessage: 'Load more ideas',
   },
+  showMore: {
+    id: 'app.components.IdeaCards.showMore',
+    defaultMessage: 'Show more',
+  },
   noIdea: {
     id: 'app.components.IdeaCards.noIdea',
     defaultMessage: 'It looks like there are no ideas yet.',
