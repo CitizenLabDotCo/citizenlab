@@ -207,20 +207,27 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+                <ErrorBoundary>
+                  <FullscreenModal
+                    opened={modalOpened}
+                    close={this.closeModal}
+                    url={modalUrl}
+                    headerChild={fullscreenModalHeaderChild}
+                  >
+                    {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
+                  </FullscreenModal>
+                </ErrorBoundary>
 
-                <FullscreenModal
-                  opened={modalOpened}
-                  close={this.closeModal}
-                  url={modalUrl}
-                  headerChild={fullscreenModalHeaderChild}
-                >
-                  {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-                </FullscreenModal>
+                <ErrorBoundary>
+                  <div id="modal-portal" />
+                </ErrorBoundary>
 
-                <div id="modal-portal" />
-
-                <Navbar />
-                <ConsentManager />
+                <ErrorBoundary>
+                  <Navbar />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <ConsentManager />
+                </ErrorBoundary>
 
                 <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
