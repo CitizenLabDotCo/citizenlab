@@ -14,6 +14,7 @@ import T from 'components/T';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
+import { transparentize, darken } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -40,6 +41,38 @@ const Container = styled.div`
 
 const PostContainer = Container.extend`
   background-color: rgba(236, 90, 36, 0.06);
+
+  a {
+    color: ${colors.clBlueDark};
+
+    &.mention {
+      background: ${transparentize(0.9, colors.clBlueDark)};
+      padding-left: 4px;
+      padding-right: 4px;
+
+      &:hover {
+        background: ${transparentize(0.8, colors.clBlueDark)};
+      }
+    }
+
+    &:not(.mention){
+      text-decoration: underline;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      word-break: break-all;
+      word-break: break-word;
+      hyphens: auto;
+
+      &:hover {
+        text-decoration: underline;
+        color: ${darken(0.15, colors.clBlueDark)};
+      }
+    }
+
+    &:hover {
+      color: ${darken(0.15, colors.clBlueDark)};
+    }
+  }
 `;
 
 const EditFormContainer = Container.extend`
