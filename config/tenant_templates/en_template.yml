@@ -626,67 +626,26 @@ models:
       en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
         the shops and the park. You can share here your ideas to make it more lively!</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-02-22 09:23:13 UTC
+    updated_at: 2019-02-26 14:31:23 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      en: "<p>Unfortunately, less and less people visit the city centre to enjoy the
-        shops and the park. You can share here your ideas to make it more lively!</p>\n"
-      en-CA: "<p>Unfortunately, less and less people visit the city centre to enjoy
-        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
-      en-GB: "<p>Unfortunately, less and less people visit the city centre to enjoy
-        the shops and the park. You can share here your ideas to make it more lively!</p>\n"
+      en: 'Unfortunately, less and less people visit the city centre to enjoy the
+        shops and the park. You can share here your ideas to make it more lively!
+
+'
+      en-CA: 'Unfortunately, less and less people visit the city centre to enjoy the
+        shops and the park. You can share here your ideas to make it more lively!
+
+'
+      en-GB: 'Unfortunately, less and less people visit the city centre to enjoy the
+        shops and the park. You can share here your ideas to make it more lively!
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
     ordering: 4
-  - &6
-    presentation_mode: card
-    participation_method: ideation
-    posting_enabled: true
-    commenting_enabled: true
-    voting_enabled: true
-    voting_method: unlimited
-    voting_limited_max: 10
-    max_budget: 
-    title_multiloc:
-      en: For a better waste management
-      en-CA: For a better waste management
-      en-GB: For a better waste management
-    description_multiloc:
-      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
-        to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-CA: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-    created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-02-22 09:23:13 UTC
-    remote_header_bg_url: 
-    visible_to: public
-    description_preview_multiloc:
-      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
-        to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-CA: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-      en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
-        up to 536 kg when you take into account the waste produced by the municipality.
-        Reducing the amount of waste is a challenge for the environment that also
-        has a financial and societal impact.</p>\n"
-    process_type: timeline
-    internal_role: 
-    publication_status: published
-    ordering: 3
   - &4
     presentation_mode: card
     participation_method: ideation
@@ -752,19 +711,25 @@ models:
         administration, etc. Share here how digital installations could make our lives
         easier in the city.</p>\n"
     created_at: 2019-01-29 15:39:28 UTC
-    updated_at: 2019-02-22 09:23:44 UTC
+    updated_at: 2019-02-26 14:31:23 UTC
     remote_header_bg_url: 
     visible_to: public
     description_preview_multiloc:
-      en: "<p>We should try to modernize the way the city works, including the administration,
+      en: 'We should try to modernize the way the city works, including the administration,
         etc. Share here how digital installations could make our lives easier in the
-        city.</p>\n"
-      en-CA: "<p>We should try to modernize the way the city works, including the
-        administration, etc. Share here how digital installations could make our lives
-        easier in the city.</p>\n"
-      en-GB: "<p>We should try to modernize the way the city works, including the
-        administration, etc. Share here how digital installations could make our lives
-        easier in the city.</p>\n"
+        city.
+
+'
+      en-CA: 'We should try to modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.
+
+'
+      en-GB: 'We should try to modernize the way the city works, including the administration,
+        etc. Share here how digital installations could make our lives easier in the
+        city.
+
+'
     process_type: timeline
     internal_role: 
     publication_status: published
@@ -1118,6 +1083,59 @@ models:
     internal_role: 
     publication_status: published
     ordering: 0
+  - &6
+    presentation_mode: card
+    participation_method: ideation
+    posting_enabled: true
+    commenting_enabled: true
+    voting_enabled: true
+    voting_method: unlimited
+    voting_limited_max: 10
+    max_budget: 
+    title_multiloc:
+      en: For a better waste management
+      en-CA: For a better waste management
+      en-GB: For a better waste management
+    description_multiloc:
+      en: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
+      en-CA: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
+        up to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
+      en-GB: "<p>Every year, each inhabitant produce 354 kg of waste. And it goes
+        up to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.</p>\n"
+    created_at: 2019-01-29 15:39:28 UTC
+    updated_at: 2019-02-26 14:31:23 UTC
+    remote_header_bg_url: 
+    visible_to: public
+    description_preview_multiloc:
+      en: 'Every year, each inhabitant produce 354 kg of waste. And it goes up to
+        536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.
+
+'
+      en-CA: 'Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.
+
+'
+      en-GB: 'Every year, each inhabitant produce 354 kg of waste. And it goes up
+        to 536 kg when you take into account the waste produced by the municipality.
+        Reducing the amount of waste is a challenge for the environment that also
+        has a financial and societal impact.
+
+'
+    process_type: timeline
+    internal_role: 
+    publication_status: published
+    ordering: 3
   project_file: []
   project_image:
   - project_ref: *3
@@ -1783,7 +1801,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
     registration_completed_at: ''
   - &44
     email: citizenlab+2+admin@citizenlab.co
@@ -1801,7 +1818,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1944
     registration_completed_at: ''
   - &46
@@ -1820,7 +1836,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: male
-      domicile: outside
       birthyear: 1979
     registration_completed_at: ''
   - &42
@@ -1839,7 +1854,6 @@ models:
     cl1_migrated: false
     custom_field_values:
       gender: female
-      domicile: outside
       birthyear: 1965
     registration_completed_at: ''
   - &12
