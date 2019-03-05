@@ -116,7 +116,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
   };
 
   return (
-    <Container>
+    <Container className="e2e-project-info">
       <Fragment name={`projects/${project.id}/info`}>
         <Left>
           <ProjectDescription>
@@ -131,7 +131,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 
         <Right>
           {!isNilOrError(projectImages) && projectImages.length > 0 &&
-            <ProjectImages>
+            <ProjectImages className="e2e-project-images">
               {projectImages.filter(projectImage => projectImage).map((projectImage, index) => (
                 <ImageZoom
                   key={projectImage.id}
