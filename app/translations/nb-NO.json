@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "Last inn mer...",
   "app.containers.NotificationMenu.loading": "Laster inn varsler...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nevnte deg i en kommentar",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "Du har ingen varsler ennå",
   "app.containers.NotificationMenu.notificationsLabel": "Varsler",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",

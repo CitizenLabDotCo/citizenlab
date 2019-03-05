@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "Indlæs flere...",
   "app.containers.NotificationMenu.loading": "Indlæser notifikationer...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nævnte dig i en kommentar",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "Du har ikke nogen notifikationer endnu",
   "app.containers.NotificationMenu.notificationsLabel": "Notifikationer",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",

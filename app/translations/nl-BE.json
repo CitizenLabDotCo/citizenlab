@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "Laad meer...",
   "app.containers.NotificationMenu.loading": "Meldingen laden...",
   "app.containers.NotificationMenu.mentionInComment": "{name} heeft u vermeld in een reactie",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "U hebt nog geen meldingen",
   "app.containers.NotificationMenu.notificationsLabel": "Meldingen",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",
