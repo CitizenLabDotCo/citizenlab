@@ -1,10 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import MediaQuery from 'react-responsive';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
-import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
@@ -26,7 +24,6 @@ import { LEGAL_PAGES } from 'services/pages';
 // typings
 import { Locale } from 'typings';
 
-import eventEmitter from 'utils/eventEmitter';
 import {
   Container,
   FirstLine,
@@ -35,7 +32,6 @@ import {
   TenantSlogan,
   SecondLine,
   PagesNav,
-  Separator,
   StyledLink,
   StyledButton,
   Right,
@@ -44,9 +40,6 @@ import {
   PoweredByText,
   CitizenlabName,
   CitizenlabLogo,
-  SendFeedback,
-  SendFeedbackText,
-  SendFeedbackIcon
  } from './StyledComponents';
 import { viewportWidths } from 'utils/styleUtils';
 
@@ -116,7 +109,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
-      const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">

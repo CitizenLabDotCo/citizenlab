@@ -15,17 +15,27 @@ import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Se
 import Label from 'components/UI/Label';
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
+import { adopt } from 'react-adopt';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { postProductFeedback } from 'services/productFeedback';
+import { removeUrlLocale } from 'services/locale';
 
-interface Props {
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
+
+interface InputProps {
   closeModal: () => void;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   emailValue: string;
   feedbackValue: string;
 }
 
-export default class ShortFeedback extends PureComponent<Props, State>{
+class ShortFeedbackForm extends PureComponent<Props, State>{
   constructor(props) {
     super(props);
     this.state = {
@@ -49,9 +59,17 @@ export default class ShortFeedback extends PureComponent<Props, State>{
   onSubmit = () => {
     const { emailValue, feedbackValue } = this.state;
     if (this.validate) {
-      trackEventByName(tracks.sendShortFeedbackForm.name, { extra: { feedbackValue, emailValue } });
+      postProductFeedback({
+        question: 'found_what_youre_looking_for?',
+        page: removeUrlLocale(location.pathname),
+        locale: this.props.locale || undefined,
+        answer: 'no',
+        email: emailValue.length > 0 ? emailValue : null,
+        message: feedbackValue
+      })
+      .then(() => this.props.closeModal())
+      .catch(err => console.log(err));
     }
-    this.props.closeModal();
   }
 
   render() {
@@ -93,3 +111,13 @@ export default class ShortFeedback extends PureComponent<Props, State>{
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale/>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ShortFeedbackForm {...inputProps} {...dataProps} />}
+  </Data>
+);

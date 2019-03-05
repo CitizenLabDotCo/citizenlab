@@ -5,23 +5,29 @@ import React, { PureComponent } from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // components
 import { ShortFeedbackContainer, ThankYouNote, FeedbackQuestion, Buttons, FeedbackButton } from './StyledComponents';
 import Modal from 'components/UI/Modal';
 import ShortFeedbackForm from './ShortFeedbackForm';
+import { postProductFeedback } from 'services/productFeedback';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { adopt } from 'react-adopt';
+import { removeUrlLocale } from 'services/locale';
 
-interface Props {}
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
+
+interface InputProps {}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   shortFeedbackButtonClicked: boolean;
   feedbackModalOpen: boolean;
 }
 
-export default class ShortFeedback extends PureComponent<Props, State>{
+class ShortFeedback extends PureComponent<Props, State>{
   constructor(props) {
     super(props);
     this.state = {
@@ -31,17 +37,18 @@ export default class ShortFeedback extends PureComponent<Props, State>{
   }
 
   handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
-    const { clickShortFeedbackYes, clickShortFeedbackNo } = tracks;
-
     this.setState({
       shortFeedbackButtonClicked: true
     });
 
-    // tracking
     if (answer === 'yes') {
-      trackEventByName(clickShortFeedbackYes.name);
+      postProductFeedback({
+        question: 'found_what_youre_looking_for?',
+        page: removeUrlLocale(location.pathname),
+        locale: this.props.locale || undefined,
+        answer: 'yes'
+      }).catch(err => console.log(err));
     } else if (answer === 'no') {
-      trackEventByName(clickShortFeedbackNo.name);
       this.openFeedbackModal();
     }
   }
@@ -94,3 +101,13 @@ export default class ShortFeedback extends PureComponent<Props, State>{
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale/>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ShortFeedback {...inputProps} {...dataProps} />}
+  </Data>
+);
