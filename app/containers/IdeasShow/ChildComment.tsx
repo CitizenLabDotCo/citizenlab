@@ -26,10 +26,11 @@ import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import GetUser from 'resources/GetUser';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { InjectedIntlProps } from 'react-intl';
 
 const CommentContainer = styled.div`
   padding: 20px;
@@ -60,7 +61,7 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-class ChildComment extends React.PureComponent<Props & ITracks, State> {
+class ChildComment extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -151,7 +152,14 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
                       <Badge>
                         <FormattedMessage {...messages.official} />
                       </Badge>
-                      <StyledMoreActionsMenu className="e2e-more-actions" comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                      <StyledMoreActionsMenu
+                        ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                        className="e2e-more-actions"
+                        comment={comment}
+                        onCommentEdit={this.onCommentEdit}
+                        projectId={projectId}
+
+                      />
                     </Extra>
                   </OfficialHeader>
                 );
@@ -165,7 +173,14 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
                       size="40px"
                       projectId={projectId}
                     />
-                    <StyledMoreActionsMenu className="e2e-more-actions" comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                    <StyledMoreActionsMenu
+                      ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                      className="e2e-more-actions"
+                      comment={comment}
+                      onCommentEdit={this.onCommentEdit}
+                      projectId={projectId}
+
+                    />
                   </Header>
                 );
               }
@@ -202,7 +217,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-const ChildCommentWithHOCs = injectTracks<Props>(tracks)(ChildComment);
+const ChildCommentWithHOCs = injectTracks<Props>(tracks)(injectIntl<Props>(ChildComment));
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
