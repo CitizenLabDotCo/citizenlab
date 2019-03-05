@@ -39,7 +39,7 @@ const Container = styled.div`
   margin-bottom: 10px;
 `;
 
-const PostContainer = Container.extend`
+const PostContainer = styled(Container)`
   background-color: rgba(236, 90, 36, 0.06);
 
   a {
@@ -75,7 +75,7 @@ const PostContainer = Container.extend`
   }
 `;
 
-const EditFormContainer = Container.extend`
+const EditFormContainer = styled(Container)`
   background-color: ${colors.adminBackground};
 `;
 
