@@ -109,7 +109,7 @@ class Project < ApplicationRecord
   end
 
   def timeline_active
-    if continuous?
+    if continuous? || phases.blank?
       nil
     elsif Date.today > phases.maximum(:end_at)  
       :past
