@@ -1,5 +1,5 @@
 module Notifications
-  class MentionInComment < Notification
+  class MentionInOfficialFeedback < Notification
     
     belongs_to :initiating_user, class_name: 'User'
     belongs_to :official_feedback
