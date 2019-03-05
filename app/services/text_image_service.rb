@@ -27,7 +27,7 @@ class TextImageService
     doc.css("img")
       .select do |img| 
         ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-          !img.attr('src').start_with?(FrontendService.new.home_url)
+          !img.attr('src').start_with?(Frontend::UrlService.new.home_url)
           )
       end
       .each do |img|

@@ -17,7 +17,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
 
       def header_bg
@@ -34,7 +34,7 @@ module EmailCampaigns
 
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
 
       def author_avatar
@@ -54,7 +54,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
     end
 
@@ -74,7 +74,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object.spam_reportable
+        Frontend::UrlService.new.model_to_url object.spam_reportable
       end
     end
 
@@ -86,7 +86,7 @@ module EmailCampaigns
       end
 
       def activate_invite_url
-        FrontendService.new.invite_url object.token, locale: object.invitee.locale
+        Frontend::UrlService.new.invite_url object.token, locale: object.invitee.locale
       end
     end
 
