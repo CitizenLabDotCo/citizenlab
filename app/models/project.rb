@@ -108,8 +108,16 @@ class Project < ApplicationRecord
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
 
-  def finished?
-    timeline? && (phases.maximum(:end_at) < Time.now)
+  def timeline_active
+    if continuous?
+      :present
+    elsif Date.today > phases.maximum(:end_at)  
+      :past
+    elsif Date.today < phases.minimum(:start_at)
+      :future
+    else
+      :present
+    end
   end
 
 
