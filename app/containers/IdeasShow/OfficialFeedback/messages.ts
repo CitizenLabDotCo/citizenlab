@@ -47,7 +47,7 @@ export default defineMessages({
   },
   updateButtonSuccess: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateButtonSuccess',
-    defaultMessage: 'Update saved !',
+    defaultMessage: 'Update saved!',
   },
   updateMessageError: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateMessageError',
@@ -55,7 +55,7 @@ export default defineMessages({
   },
   updateMessageSuccess: {
     id: 'app.components.IdeasShow.OfficialFeedback.updateMessageSuccess',
-    defaultMessage: 'Your update was successfuly saved !',
+    defaultMessage: 'Your update was published successfully!',
   },
   cancel: {
     id: 'app.components.IdeasShow.OfficialFeedback.cancel',
