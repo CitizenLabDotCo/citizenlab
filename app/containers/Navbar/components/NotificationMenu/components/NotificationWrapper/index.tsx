@@ -46,6 +46,7 @@ const Message = styled.div`
   flex-grow: 1;
   font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
   padding-bottom: 3px;
+  white-space: normal;
 
   a {
     color: ${colors.clBlueDark};
