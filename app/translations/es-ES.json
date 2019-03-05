@@ -1033,7 +1033,7 @@
   "app.containers.IdeasShow.postedIn": "Publicado en {projectLink}",
   "app.containers.IdeasShow.publishComment": "Postea tu comentario",
   "app.containers.IdeasShow.reportAsSpamModalTitle": "¿Por qué quiere reportar esto como spam?",
-  "app.containers.IdeasShow.shareByEmail": "Compartir por correo electrónico",
+  "app.containers.IdeasShow.shareByEmail": "Compartir por correo",
   "app.containers.IdeasShow.shareCTA": "Compartir esta idea",
   "app.containers.IdeasShow.shareOnFacebook": "Compartir en Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Compartir en Twitter",
