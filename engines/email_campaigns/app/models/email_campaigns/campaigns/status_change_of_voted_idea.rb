@@ -27,7 +27,7 @@ module EmailCampaigns
             id: idea.id,
             title_multiloc: idea.title_multiloc,
             body_multiloc: idea.body_multiloc,
-            url: FrontendService.new.model_to_url(idea, locale: recipient.locale),
+            url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
             idea_images: idea.idea_images.map{ |image|
               {
                 ordering: image.ordering,
