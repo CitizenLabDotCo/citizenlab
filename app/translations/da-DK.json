@@ -119,6 +119,7 @@
   "app.components.ProjectCard.allocateYourBudget": "Fordel dit budget ",
   "app.components.ProjectCard.archived": "Arkiveret",
   "app.components.ProjectCard.comment": "Comment",
+  "app.components.ProjectCard.finished": "",
   "app.components.ProjectCard.idea": "idé",
   "app.components.ProjectCard.ideas": "ideer",
   "app.components.ProjectCard.imageAltText": "{orgName} - hovedbillede for projektet '{projectTitle}'",
