@@ -119,6 +119,7 @@
   "app.components.ProjectCard.allocateYourBudget": "Allocate your budget",
   "app.components.ProjectCard.archived": "Archived",
   "app.components.ProjectCard.comment": "Comment",
+  "app.components.ProjectCard.finished": "Finished",
   "app.components.ProjectCard.idea": "idea",
   "app.components.ProjectCard.ideas": "ideas",
   "app.components.ProjectCard.imageAltText": "{orgName} - main image for the project '{projectTitle}'",

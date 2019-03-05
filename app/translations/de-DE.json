@@ -119,6 +119,7 @@
   "app.components.ProjectCard.allocateYourBudget": "Geben Sie Ihr Budget",
   "app.components.ProjectCard.archived": "Archiviert",
   "app.components.ProjectCard.comment": "Comment",
+  "app.components.ProjectCard.finished": "",
   "app.components.ProjectCard.idea": "{orgName, select, München {Mangel} other {Idee}}",
   "app.components.ProjectCard.ideas": "{orgName, select, München {Mängel} other {Ideen}}",
   "app.components.ProjectCard.imageAltText": "{orgName} - Hauptbild für das Projekt {projectTitle}",
