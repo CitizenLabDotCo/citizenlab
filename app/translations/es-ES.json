@@ -1058,6 +1058,7 @@
   "app.containers.IdeasShow.shareOnFacebook": "Compartir en Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Compartir en Twitter",
   "app.containers.IdeasShow.shareViaMessenger": "Compartir a través de Messenger",
+  "app.containers.IdeasShow.showMoreActions": "",
   "app.containers.IdeasShow.signInLinkText": "inicia sesión",
   "app.containers.IdeasShow.signInToComment": "Please {signInLink} to spread your wisdom.",
   "app.containers.IdeasShow.submittingComment": "Publicado...",
