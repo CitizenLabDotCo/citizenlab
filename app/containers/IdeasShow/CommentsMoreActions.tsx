@@ -53,6 +53,7 @@ export type Props = {
   projectId: IProjectData['id'];
   className?: string,
   onCommentEdit: {(): void};
+  ariaLabel?: string;
 };
 
 export type State = {
@@ -135,6 +136,8 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   }
 
   render() {
+    const { ariaLabel } = this.props;
+
     if (!this.props.comment) {
       return null;
     }
@@ -146,6 +149,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     return (
       <>
         <MoreActionsMenu
+          ariaLabel={ariaLabel}
           className={this.props.className}
           actions={this.state.actions}
         />

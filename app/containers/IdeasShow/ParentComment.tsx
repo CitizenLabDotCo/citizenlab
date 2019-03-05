@@ -29,8 +29,9 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
@@ -108,7 +109,7 @@ interface ITracks {
   clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & ITracks, State> {
+class ParentComment extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -220,7 +221,12 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                                 <Badge>
                                   <FormattedMessage {...messages.official} />
                                 </Badge>
-                                <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                                <StyledMoreActionsMenu
+                                  ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                                  comment={comment}
+                                  onCommentEdit={this.onCommentEdit}
+                                  projectId={projectId}
+                                />
                               </Extra>
                             </OfficialHeader>
                           );
@@ -234,7 +240,12 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
                                 size="40px"
                                 projectId={projectId}
                               />
-                              <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
+                              <StyledMoreActionsMenu
+                                ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                                comment={comment}
+                                onCommentEdit={this.onCommentEdit}
+                                projectId={projectId}
+                              />
                             </Header>
                           );
                         }
@@ -297,7 +308,7 @@ const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
   clickTranslateCommentButton: tracks.clickTranslateCommentButton,
   clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
-})(ParentComment);
+})(injectIntl<Props>(ParentComment));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
