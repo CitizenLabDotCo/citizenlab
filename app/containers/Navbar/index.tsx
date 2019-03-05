@@ -53,8 +53,8 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  /* box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06); */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: solid 1px #eaeaea;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 999;
   -webkit-transform: translateZ(0);
 

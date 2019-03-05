@@ -6,6 +6,7 @@ import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
+import { captureException } from '@sentry/browser';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -248,7 +249,7 @@ class Streams {
 
           from(promise).pipe(
             retry(3),
-            catchError(() => of(new Error(`promise for stream ${streamId} did not resolve`)))
+            catchError((error) => of(new Error(error)))
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
               console.log(`no stream exists for ${streamId}`);
@@ -264,6 +265,11 @@ class Streams {
                 } else {
                   this.streams[streamId].observer.next(null);
                 }
+
+                // Report to Sentry
+                // if (process.env.NODE_ENV !== 'development') {
+                  captureException(response);
+                // }
 
                 reject();
               }

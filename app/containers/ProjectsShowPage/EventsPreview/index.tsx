@@ -27,8 +27,12 @@ import { darken } from 'polished';
 const Container = styled.div`
   width: 100%;
   padding-top: 60px;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
   background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 60px;
+  `}
 `;
 
 const Header = styled.div`

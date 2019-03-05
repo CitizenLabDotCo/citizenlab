@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty, get, capitalize, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
+import bowser from 'bowser';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -15,6 +16,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
+import { getPostingPermission } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -49,7 +51,6 @@ const Container = styled(Link)`
   background: #fff;
   border-radius: 5px;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
-  transition: all 200ms ease;
 
   &.large {
     width: 100%;
@@ -97,14 +98,18 @@ const Container = styled(Link)`
     padding-bottom: 30px;
   }
 
-  &:hover {
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
-    transform: translate(0px, -2px);
-  }
+  &.desktop {
+    transition: all 200ms ease;
 
-  &:focus {
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
-    transform: translate(0px, -2px);
+    &:hover {
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+      transform: translate(0px, -2px);
+    }
+
+    &:focus {
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+      transform: translate(0px, -2px);
+    }
   }
 
   ${media.smallerThanMinTablet`
@@ -185,16 +190,16 @@ const ProjectContent = styled.div`
 `;
 
 const ContentHeaderHeight = 39;
-const ContentHeaderPadding = 13;
+const ContentHeaderBottomMargin = 13;
 
 const ContentHeader = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 
   &.noContent {
     ${media.biggerThanMinTablet`
-      height: ${ContentHeaderHeight + ContentHeaderPadding}px;
+      height: ${ContentHeaderHeight + ContentHeaderBottomMargin}px;
     `}
   }
 
@@ -203,9 +208,11 @@ const ContentHeader = styled.div`
   }
 
   &.hasContent {
-    padding-bottom: ${ContentHeaderPadding}px;
+    margin-bottom: ${ContentHeaderBottomMargin}px;
 
     &.large {
+      margin-bottom: 0px;
+      padding-bottom: ${ContentHeaderBottomMargin}px;
       border-bottom: solid 1px #e8e8e8;
     }
   }
@@ -213,6 +220,11 @@ const ContentHeader = styled.div`
   &.small {
     padding-left: 30px;
     padding-right: 30px;
+
+    ${media.smallPhone`
+      padding-left: 10px;
+      padding-right: 10px;
+    `}
   }
 `;
 
@@ -221,19 +233,11 @@ const ContentHeaderLeft = styled.div`
   flex-grow: 0;
   flex-shrink: 1;
   flex-basis: 120px;
-  margin-right: 10px;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 0px;
-  `};
+  margin-right: 15px;
 `;
 
 const ContentHeaderRight = styled.div`
   min-height: ${ContentHeaderHeight}px;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `};
 `;
 
 const Countdown = styled.div`
@@ -244,8 +248,7 @@ const TimeRemaining = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  margin-bottom: 7px;
-  white-space: nowrap;
+  margin-bottom: 8px;
 `;
 
 const ProgressBar = styled.div`
@@ -272,9 +275,10 @@ const ProjectLabel = styled.div`
   color: ${({ theme }) => theme.colorSecondary};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
+  text-align: center;
   white-space: nowrap;
-  padding-left: 18px;
-  padding-right: 18px;
+  padding-left: 16px;
+  padding-right: 16px;
   padding-top: 10px;
   padding-bottom: 10px;
   border-radius: 5px;
@@ -456,7 +460,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { visible } = this.state;
-    const { project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
+    const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
@@ -465,7 +469,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const commentingEnabled = (!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled);
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
-      const isFinished = (project.attributes.project_finished === true);
+      const isFinished = (project.attributes.timeline_active === 'past');
       const isArchived = (project.attributes.publication_status === 'archived');
       const ideasCount = project.attributes.ideas_count;
       const commentsCount = project.attributes.comments_count;
@@ -478,6 +482,12 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
+
+      const postingPermission = getPostingPermission({
+        project,
+        phase,
+        authUser
+      });
 
       if (isArchived) {
         countdown = (
@@ -516,7 +526,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (participationMethod === 'survey') {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-      } else if (participationMethod === 'ideation' && postingEnabled) {
+      } else if (participationMethod === 'ideation' && postingEnabled && postingPermission.enabled) {
         ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
       } else if (participationMethod === 'ideation' && votingEnabled) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
@@ -546,7 +556,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} e2e-project-card`}
+          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card`}
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >

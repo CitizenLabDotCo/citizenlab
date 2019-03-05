@@ -32,6 +32,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background: ${colors.background};
+  background: #fff;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -39,25 +40,24 @@ const Container = styled.div`
 `;
 
 const Loading = styled.div`
+  /* height: 100%; */
   flex: 1 0 auto;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const Content = styled.div`
+  /* height: 100%; */
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  height: 100%;
-  margin-bottom: 0px;
 `;
 
 const ProjectNotFoundWrapper = styled.div`
-  flex: 1 0 auto;
   height: 100%;
+  flex: 1 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -23,7 +23,7 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     updated_at: 'yesterday but later', // should be a real time string
     visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
     process_type: processType,
-    project_finished: false,
+    timeline_active: 'past',
     participation_method: participationMethod || null,
     posting_enabled: true,
     commenting_enabled: true,

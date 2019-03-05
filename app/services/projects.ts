@@ -28,7 +28,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
-    project_finished: boolean;
+    timeline_active: 'past' | 'present' | 'future' | null;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
