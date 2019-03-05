@@ -1,13 +1,11 @@
 // libraries
 import React, { PureComponent } from 'react';
+import { omit } from 'lodash-es';
+import { adopt } from 'react-adopt';
 
 // translations
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 // components
 import Input from 'components/UI/Input';
@@ -15,10 +13,13 @@ import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Se
 import Label from 'components/UI/Label';
 import TextArea from 'components/UI/TextArea';
 import Button from 'components/UI/Button';
-import { adopt } from 'react-adopt';
+import Error from 'components/UI/Error';
+
+// resources, services, typings
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { postProductFeedback } from 'services/productFeedback';
 import { removeUrlLocale } from 'services/locale';
+import { CLError } from 'typings';
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -33,6 +34,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   emailValue: string;
   feedbackValue: string;
+  apiErrors?: { [fieldName: string]: CLError[] };
 }
 
 class ShortFeedbackForm extends PureComponent<Props, State>{
@@ -40,16 +42,16 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     super(props);
     this.state = {
       emailValue: '',
-      feedbackValue: ''
+      feedbackValue: '',
     };
   }
 
   onChangeFeedback = (feedbackValue: string) => {
-    this.setState({ feedbackValue });
+    this.setState(prev => ({ feedbackValue, apiErrors: omit(prev.apiErrors, 'message') }));
   }
 
   onChangeEmail = (emailValue: string) => {
-    this.setState({ emailValue });
+    this.setState(prev => ({ emailValue, apiErrors: omit(prev.apiErrors, 'email') }));
   }
 
   validate = () => {
@@ -68,7 +70,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         message: feedbackValue
       })
       .then(() => this.props.closeModal())
-      .catch(err => console.log(err));
+      .catch(err => err && err.json && this.setState({ apiErrors: err.json.errors }));
     }
   }
 
@@ -88,6 +90,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
             value={feedbackValue}
             onChange={this.onChangeFeedback}
           />
+          {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.message} />}
         </SectionField>
 
         <SectionField>
@@ -97,6 +100,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
             value={emailValue}
             onChange={this.onChangeEmail}
           />
+          {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.email} />}
         </SectionField>
 
         <SectionField>
