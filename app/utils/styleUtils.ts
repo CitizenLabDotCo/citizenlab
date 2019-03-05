@@ -289,26 +289,25 @@ export function quillEditedContent(
       }
     }
 
-    ul {
-      list-style-type: disc;
-    }
-
     ul, ol {
-      list-style-position: outside;
       padding: 0;
-      padding-left: 21px;
       margin: 0;
+      list-style-position: outside;
       margin-bottom: 24px;
 
       li {
-        padding-left: 0 !important;
-        padding-top: 6px;
+        padding: 0;
+        padding-top: 8px;
         margin: 0;
-
-        &:first-child {
-          padding-top: 0px;
-        }
       }
+    }
+
+    ul  {
+      margin-left: 17px;
+    }
+
+    ol {
+      margin-left: 15px;
     }
 
     strong {
