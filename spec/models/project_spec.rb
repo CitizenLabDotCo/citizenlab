@@ -82,7 +82,7 @@ RSpec.describe Project, type: :model do
   describe "timeline_active" do
     it "returns :present for a continuous project" do
       project = create(:continuous_project)
-      expect(project.timeline_active).to eq :present
+      expect(project.timeline_active).to eq nil
     end
 
     it "returns :present for a project with current phase" do
