@@ -46,7 +46,7 @@ const PostContainer = styled(Container)`
     color: ${colors.clBlueDark};
 
     &.mention {
-      background: ${transparentize(0.9, colors.clBlueDark)};
+      background: ${transparentize(0.94, colors.clBlueDark)};
       padding-left: 4px;
       padding-right: 4px;
 
