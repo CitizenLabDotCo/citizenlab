@@ -14,6 +14,7 @@ import NewCommentForAdminNotification from '../NewCommentForAdminNotification';
 import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
 import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
 import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
+import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 
 import {
   TNotificationData,
@@ -31,7 +32,8 @@ import {
   ICommentForAdminNotificationData,
   IOfficialFeedbackOnYourIdeaNotificationData,
   IOfficialFeedbackOnVotedIdeaNotificationData,
-  IOfficialFeedbackOnCommentedIdeaNotificationData
+  IOfficialFeedbackOnCommentedIdeaNotificationData,
+  IMentionInOfficialFeedbackNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -78,6 +80,8 @@ export default class Notification extends PureComponent<Props> {
         return <OfficialFeedbackOnVotedIdeaNotification notification={notification as IOfficialFeedbackOnVotedIdeaNotificationData} />;
       case 'official_feedback_on_commented_idea':
         return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
+      case 'mention_in_official_feedback':
+        return <MentionInOfficialFeedbackNotification notification={notification as IMentionInOfficialFeedbackNotificationData} />;
       default: return null;
     }
   }
