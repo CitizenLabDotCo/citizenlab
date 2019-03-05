@@ -15,6 +15,7 @@ module EmailCampaigns
       Campaigns::InviteReceived,
       Campaigns::Manual,      
       Campaigns::MentionInComment,
+      Campaigns::MentionInOfficialFeedback,
       Campaigns::ModeratorDigest,
       Campaigns::NewCommentForAdmin,
       Campaigns::NewCommentOnCommentedIdea,

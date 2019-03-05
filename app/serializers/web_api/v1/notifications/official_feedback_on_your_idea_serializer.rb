@@ -1,4 +1,4 @@
-class WebApi::V1::Notifications::OfficialFeedbackOnYourIdea < WebApi::V1::Notifications::NotificationSerializer
+class WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer < WebApi::V1::Notifications::NotificationSerializer
 
   belongs_to :initiating_user, serializer: WebApi::V1::UserSerializer
   belongs_to :idea, serializer: WebApi::V1::IdeaSerializer

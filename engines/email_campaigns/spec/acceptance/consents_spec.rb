@@ -20,6 +20,7 @@ resource "Campaign consents" do
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
         create(:mention_in_comment_campaign),
+        create(:mention_in_official_feedback_campaign),
         create(:manual_campaign),
         create(:new_comment_for_admin),
         create(:new_idea_for_admin),

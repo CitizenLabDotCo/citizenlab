@@ -49,6 +49,12 @@ FactoryBot.define do
     idea
   end
 
+  factory :mention_in_official_feedback, parent: :notification, class: 'Notifications::MentionInOfficialFeedback' do
+    initiating_user
+    official_feedback
+    idea
+  end
+
   factory :new_comment_for_admin, parent: :notification, class: 'Notifications::NewCommentForAdmin' do
     initiating_user
     comment

@@ -57,6 +57,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :mention_in_official_feedback_campaign, class: EmailCampaigns::Campaigns::MentionInOfficialFeedback do
+    enabled { true }
+  end
+
   factory :new_comment_for_admin_campaign, class: EmailCampaigns::Campaigns::NewCommentForAdmin do
     enabled { true }
   end
