@@ -1058,6 +1058,7 @@
   "app.containers.IdeasShow.shareOnFacebook": "Delen op Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Delen op Twitter",
   "app.containers.IdeasShow.shareViaMessenger": "Deel via Messenger",
+  "app.containers.IdeasShow.showMoreActions": "",
   "app.containers.IdeasShow.signInLinkText": "Log in",
   "app.containers.IdeasShow.signInToComment": "{signInLink} om je mening te geven.",
   "app.containers.IdeasShow.submittingComment": "Publiceren...",

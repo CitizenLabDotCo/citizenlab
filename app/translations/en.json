@@ -1058,6 +1058,7 @@
   "app.containers.IdeasShow.shareOnFacebook": "Share on Facebook",
   "app.containers.IdeasShow.shareOnTwitter": "Share on Twitter",
   "app.containers.IdeasShow.shareViaMessenger": "Share via Messenger",
+  "app.containers.IdeasShow.showMoreActions": "Show more actions",
   "app.containers.IdeasShow.signInLinkText": "log in",
   "app.containers.IdeasShow.signInToComment": "Please {signInLink} to share your opinion.",
   "app.containers.IdeasShow.submittingComment": "Publishing...",
