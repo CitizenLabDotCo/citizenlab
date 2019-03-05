@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "Afficher la suite...",
   "app.containers.NotificationMenu.loading": "Chargement des notifications...",
   "app.containers.NotificationMenu.mentionInComment": "{name} vous a mentionné dans un commentaire",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "Vous n'avez pas de notifications",
   "app.containers.NotificationMenu.notificationsLabel": "Notifications",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",

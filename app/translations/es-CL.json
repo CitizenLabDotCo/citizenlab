@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "Carga más...",
   "app.containers.NotificationMenu.loading": "Cargando las notificaciones...",
   "app.containers.NotificationMenu.mentionInComment": "{name} te mencionó en un comentario",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "No tienes notificaciones por ahora",
   "app.containers.NotificationMenu.notificationsLabel": "Notificaciones",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",

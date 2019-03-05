@@ -1072,6 +1072,7 @@
   "app.containers.NotificationMenu.loadMore": "",
   "app.containers.NotificationMenu.loading": "",
   "app.containers.NotificationMenu.mentionInComment": "",
+  "app.containers.NotificationMenu.mentionInOfficialFeedback": "",
   "app.containers.NotificationMenu.noNotifications": "",
   "app.containers.NotificationMenu.notificationsLabel": "",
   "app.containers.NotificationMenu.officialFeedbackOnCommentedIdea": "",
