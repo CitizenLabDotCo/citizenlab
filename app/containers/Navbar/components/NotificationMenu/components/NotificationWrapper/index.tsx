@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'utils/cl-router/Link';
 import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -7,14 +6,17 @@ import Icon from 'components/UI/Icon';
 import { injectTracks } from 'utils/analytics';
 import tracks from '../../../../tracks';
 import { darken } from 'polished';
+import clHistory from 'utils/cl-router/history';
 
-const Container = styled(Link)`
+const Container = styled.button`
   padding: 10px 0px;
   display: flex;
   flex-direction: row;
   cursor: pointer;
   color: ${colors.label};
   border-radius: 5px;
+  text-align: left;
+  outline: none;
 
   &:hover,
   &:focus {
@@ -83,16 +85,19 @@ type Props = {
 
 class NotificationWrapper extends React.PureComponent<Props & ITracks> {
 
-    track = () => {
+    navigate = () => {
       const { linkTo } = this.props;
-      if (linkTo) this.props.clickNotification({ extra: { linkTo } });
+      if (linkTo) {
+        this.props.clickNotification({ extra: { linkTo } });
+        clHistory.push(linkTo);
+      }
     }
 
     render() {
-      const { icon, children, timing, isRead, linkTo } = this.props;
+      const { icon, children, timing, isRead } = this.props;
 
       return (
-        <Container to={linkTo} onClick={this.track}>
+        <Container role="link" onClick={this.navigate}>
           <IconContainer>
             {icon && <StyledIcon name={icon} isRead={isRead} />}
           </IconContainer>
