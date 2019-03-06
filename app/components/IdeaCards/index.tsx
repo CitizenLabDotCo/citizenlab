@@ -168,10 +168,10 @@ const ViewButton = styled.div`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 
     ${media.smallerThanMinTablet`
       padding-top: 9px;

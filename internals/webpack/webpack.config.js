@@ -109,7 +109,7 @@ const config = {
       silent: !!argv.json, // silent when trying to profile the chunks sizes
     }),
 
-    new CleanWebpackPlugin(['build']),
+    new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
       template: 'app/index.html',
