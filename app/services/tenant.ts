@@ -31,6 +31,7 @@ export interface ITenantSettings {
     color_menu_bg?: string | null;
     currency: string;
     custom_onboarding_fallback_message?: Multiloc | null;
+    currently_working_on_text?: Multiloc | null;
   };
   demographic_fields?: {
     allowed: boolean;
