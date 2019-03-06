@@ -119,6 +119,7 @@
   "app.components.ProjectCard.allocateYourBudget": "Verdeel je budget",
   "app.components.ProjectCard.archived": "Gearchiveerd",
   "app.components.ProjectCard.comment": "Reageer",
+  "app.components.ProjectCard.finished": "",
   "app.components.ProjectCard.idea": "idee",
   "app.components.ProjectCard.ideas": "ideeën",
   "app.components.ProjectCard.imageAltText": "{orgName} - hoofdafbeelding voor project {projectTitle}",
