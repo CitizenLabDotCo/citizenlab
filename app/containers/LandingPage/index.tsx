@@ -63,7 +63,7 @@ const FooterBanner: any = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   p {
     color: #fff;
