@@ -270,7 +270,7 @@ class SignedInHeader extends PureComponent<Props, State> {
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
       return (
-        <Header className={className} id="hook-header">
+        <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
           <HeaderImageContainer>
             <HeaderImageContainerInner>
               {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />}

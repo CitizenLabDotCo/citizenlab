@@ -1,4 +1,4 @@
-describe('About page', () => {
+describe('Locale switcher', () => {
   beforeEach(() => {
     cy.visit('/');
   });

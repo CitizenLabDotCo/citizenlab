@@ -203,19 +203,19 @@ class SignedOutHeader extends PureComponent<Props, State> {
       const hasHeaderImage = (tenantHeaderImage !== null);
 
       return (
-        <Container className={className}>
+        <Container className={`e2e-signed-out-header ${className}`}>
           <Header id="hook-header">
             <HeaderImage id="hook-header-image">
               <HeaderImageBackground src={tenantHeaderImage} />
               <HeaderImageOverlay />
             </HeaderImage>
 
-            <HeaderContent id="hook-header-content">
+            <HeaderContent id="hook-header-content" className="e2e-signed-out-header-title">
               <HeaderTitle hasHeader={hasHeaderImage}>
                 {title}
               </HeaderTitle>
 
-              <HeaderSubtitle hasHeader={hasHeaderImage}>
+              <HeaderSubtitle hasHeader={hasHeaderImage} className="e2e-signed-out-header-subtitle">
                 {subtitle}
               </HeaderSubtitle>
 
@@ -230,6 +230,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
                   padding="13px 22px"
                   onClick={this.goToSignUpPage}
                   text={<FormattedMessage {...messages.createAccount} />}
+                  className="e2e-signed-out-header-cta-button"
                 />
               )}
             </HeaderContent>

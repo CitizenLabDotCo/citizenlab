@@ -448,6 +448,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
                 bgColor={rgba(theme.colorText, 0.08)}
                 bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
+                className="e2e-project-cards-show-more-button"
               />
             }
 

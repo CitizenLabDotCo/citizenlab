@@ -351,7 +351,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
-                  <CommentCount>
+                  <CommentCount className="e2e-ideacard-comment-count">
                     <span>{idea.attributes.comments_count}</span>
                   </CommentCount>
                 </CommentInfo>
