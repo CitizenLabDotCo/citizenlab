@@ -98,10 +98,10 @@ export default defineMessages({
   },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
-     defaultMessage: '{officialName} gave an official update on an idea you commented on',
+    defaultMessage: '{officialName} gave an official update on an idea you commented on',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
-    defaultMessage: '{name} mentioned you in an official update',
+    defaultMessage: '{officialName} mentioned you in an official update',
   },
 });
