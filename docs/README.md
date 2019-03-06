@@ -1,5 +1,15 @@
 # Changelog
 
+## 2019-03-03
+
+### Fixed
+- Manually sorting projects in the admin works as expected
+
+### Added
+- Support for Spanish
+- The copy of 'x is currently working on' can be customized in admin HQ
+- Extra caching layer in cl2-nlp speeds up similar ideas and creating clusters
+
 ## 2019-02-28
 
 ### Fixed
