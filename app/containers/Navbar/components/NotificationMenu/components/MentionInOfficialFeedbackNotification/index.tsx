@@ -69,7 +69,7 @@ export default class MentionInCommentNotification extends PureComponent<Props, S
         <FormattedMessage
           {...messages.mentionInOfficialFeedback}
           values={{
-            name: deletedUser ?
+            officialName: deletedUser ?
               <DeletedUser>
                 <FormattedMessage {...messages.deletedUser} />
               </DeletedUser>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 import { IOfficialFeedbackOnYourIdeaNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -69,7 +70,7 @@ export default class OfficialFeedbackOnYourIdeaNotification extends React.PureCo
         <FormattedMessage
           {...messages.officialFeedbackOnYourIdea}
           values={{
-            name: deletedUser ?
+            officialName: deletedUser ?
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
@@ -82,7 +83,6 @@ export default class OfficialFeedbackOnYourIdeaNotification extends React.PureCo
             </Link>,
             idea: <Link
               to={`/ideas/${ideaSlug}`}
-              // onClick={this.onClickIdeaTitle}
             >
               <T value={notification.attributes.idea_title} />
             </Link>

@@ -13,7 +13,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
-import T from 'components/T';
 
 type Props = {
   notification: IOfficialFeedbackOnVotedIdeaNotificationData;
@@ -69,7 +68,7 @@ export default class OfficialFeedbackOnVotedIdeaNotification extends React.PureC
         <FormattedMessage
           {...messages.officialFeedbackOnVotedIdea}
           values={{
-            name: deletedUser ?
+            officialName: deletedUser ?
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
@@ -79,12 +78,6 @@ export default class OfficialFeedbackOnVotedIdeaNotification extends React.PureC
               onClick={this.onClickUserName}
             >
               {notification.attributes.initiating_user_first_name}
-            </Link>,
-            idea: <Link
-              to={`/ideas/${ideaSlug}`}
-              // onClick={this.onClickIdeaTitle}
-            >
-              <T value={notification.attributes.idea_title} />
             </Link>
           }}
         />
