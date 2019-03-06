@@ -69,7 +69,7 @@ export default class OfficialFeedbackOnCommentedIdeaNotification extends React.P
         <FormattedMessage
           {...messages.officialFeedbackOnCommentedIdea}
           values={{
-            name: deletedUser ?
+            officialName: deletedUser ?
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
@@ -79,12 +79,6 @@ export default class OfficialFeedbackOnCommentedIdeaNotification extends React.P
               onClick={this.onClickUserName}
             >
               {notification.attributes.initiating_user_first_name}
-            </Link>,
-            idea: <Link
-              to={`/ideas/${ideaSlug}`}
-              // onClick={this.onClickIdeaTitle}
-            >
-              <T value={notification.attributes.idea_title} />
             </Link>
           }}
         />
