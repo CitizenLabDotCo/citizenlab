@@ -249,7 +249,9 @@ class Streams {
 
           from(promise).pipe(
             retry(3),
-            catchError((error) => of(new Error(error)))
+            catchError((error) => {
+              return of(new Error(error));
+            })
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
               console.log(`no stream exists for ${streamId}`);
@@ -266,15 +268,16 @@ class Streams {
                   this.streams[streamId].observer.next(null);
                 }
 
-                // Report to Sentry
-                // if (process.env.NODE_ENV !== 'development') {
-                  captureException(response);
-                // }
-
-                reject();
+                reject(response);
               }
             }
           });
+        }).catch((error) => {
+          if (error && process.env.NODE_ENV !== 'development') {
+            captureException(error);
+          }
+
+          return error;
         });
       };
 
