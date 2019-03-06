@@ -90,15 +90,15 @@ export default defineMessages({
   },
   officialFeedbackOnYourIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea',
-    defaultMessage: '{officialName} gave feedback on your {idea}',
+    defaultMessage: '{officialName} gave an official update on {idea}',
   },
   officialFeedbackOnVotedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
-    defaultMessage: '{officialName} gave feedback on an {idea} you voted for',
+    defaultMessage: '{officialName} gave an official update on an idea you voted for',
   },
   officialFeedbackOnCommentedIdea: {
     id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
-    defaultMessage: '{officialName} gave feedback on an {idea} you commented on',
+     defaultMessage: '{officialName} gave an official update on an idea you commented on',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
