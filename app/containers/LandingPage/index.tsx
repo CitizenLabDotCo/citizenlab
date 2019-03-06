@@ -209,7 +209,7 @@ class LandingPage extends PureComponent<Props, State> {
 
             <Content>
               <ProjectsStyledContentContainer maxWidth={1150}>
-                <ProjectSection>
+                <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <ProjectCards
                       pageSize={6}

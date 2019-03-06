@@ -34,43 +34,8 @@ describe('Sign up step 2 page', () => {
     });
   };
 
-  const signup = (firstName: string, lastName: string, email: string, password: string) => {
-    cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en-GB',
-          first_name: firstName,
-          last_name: lastName
-        }
-      }
-    });
-  };
-
-  const login = (email: string, password: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-      url: 'web_api/v1/user_token',
-      body: {
-        auth: {
-          email,
-          password
-        }
-      }
-    });
-  };
-
   before(() => {
-    login('admin@citizenlab.co', 'testtest').then((response) => {
+    cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
       adminJwt = response.body.jwt;
     });
   });
@@ -82,7 +47,7 @@ describe('Sign up step 2 page', () => {
     const password = Math.random().toString(36).substr(2, 12).toLowerCase();
 
     // before
-    signup(firstName, lastName, email, password);
+    cy.apiSignup(firstName, lastName, email, password);
     cy.login(email, password);
     cy.wait(1000);
     cy.visit('/');
@@ -105,7 +70,7 @@ describe('Sign up step 2 page', () => {
     // before
     createCustomField(randomFieldName, true, false).then((response) => {
       const customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
+      cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.wait(1000);
       cy.visit('/');
@@ -135,7 +100,7 @@ describe('Sign up step 2 page', () => {
     // before
     createCustomField(randomFieldName, true, true).then((response) => {
       customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
+      cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.wait(1000);
       cy.visit('/');
@@ -163,7 +128,7 @@ describe('Sign up step 2 page', () => {
     // before
     createCustomField(randomFieldName, true, true).then((response) => {
       const customFieldId = response.body.data.id;
-      signup(firstName, lastName, email, password);
+      cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.wait(1000);
       cy.visit('/');
