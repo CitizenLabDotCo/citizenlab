@@ -128,6 +128,7 @@
     "@types/jwt-decode": "2.2.1",
     "@types/leaflet": "1.2.14",
     "@types/leaflet.markercluster": "1.0.3",
+    "@types/react-loadable": "5.5.0",
     "@types/lodash-es": "4.17.1",
     "@types/moment-timezone": "0.5.10",
     "@types/node": "10.12.18",
