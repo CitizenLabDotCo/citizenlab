@@ -5,7 +5,7 @@ class WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer < WebApi::
   belongs_to :official_feedback, serializer: WebApi::V1::OfficialFeedbackSerializer  
   belongs_to :project, serializer: WebApi::V1::ProjectSerializer
 
-  attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug, :idea_title
+  attributes :initiating_user_first_name, :initiating_user_last_name, :initiating_user_slug, :idea_title, :official_feedback_author
 
 
   def initiating_user_first_name
@@ -22,6 +22,14 @@ class WebApi::V1::Notifications::OfficialFeedbackOnYourIdeaSerializer < WebApi::
 
   def idea_title
     object.idea&.title_multiloc
+  end
+
+  def initiating_user_first_name
+    object.initiating_user&.first_name
+  end
+
+  def official_feedback_author
+    object.official_feedback&.author_multiloc
   end
 
 end
