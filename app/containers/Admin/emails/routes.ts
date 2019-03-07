@@ -1,16 +1,16 @@
 import Loadable from 'react-loadable';
-import { FullPageCenteredSpinner } from 'components/UI/Spinner';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'emails',
   component: Loadable({
     loader: () => import('./'),
-    loading: FullPageCenteredSpinner
+    loading: LoadableLoadingAdmin
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./custom/All'),
-      loading: FullPageCenteredSpinner
+      loading: LoadableLoadingAdmin
     }),
   },
   childRoutes: [
@@ -18,35 +18,35 @@ export default () => ({
       path: 'custom',
       component: Loadable({
         loader: () => import('./custom/All'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: 'custom/new',
       component: Loadable({
         loader: () => import('./custom/New'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: 'custom/:campaignId/edit',
       component: Loadable({
         loader: () => import('./custom/Edit'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: 'custom/:campaignId',
       component: Loadable({
         loader: () => import('./custom/Show'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: 'automated',
       component: Loadable({
         loader: () => import('./automated'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
   ],

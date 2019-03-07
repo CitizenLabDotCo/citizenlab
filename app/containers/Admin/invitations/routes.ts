@@ -1,11 +1,11 @@
 import Loadable from 'react-loadable';
-import { FullPageCenteredSpinner } from 'components/UI/Spinner';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'invitations',
   name: 'admin invitations',
   component: Loadable({
     loader: () => import('containers/Admin/invitations'),
-    loading: FullPageCenteredSpinner
+    loading: LoadableLoadingAdmin
   }),
 });

@@ -1,16 +1,16 @@
 import Loadable from 'react-loadable';
-import Spinner from 'components/UI/Spinner';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'insights',
   component: Loadable({
     loader: () => import('./'),
-    loading: Spinner
+    loading: LoadableLoadingAdmin
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
-      loading: Spinner
+      loading: LoadableLoadingAdmin
     }),
   },
   childRoutes: [
@@ -18,7 +18,7 @@ export default () => ({
       path: 'new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: Spinner
+        loading: LoadableLoadingAdmin
       }),
     },
   ],
