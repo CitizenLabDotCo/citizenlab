@@ -21,9 +21,13 @@ namespace :templates do
       host.ends_with? ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost') # '.template.citizenlab.co'
     end
 
+    s3 = Aws::S3::Resource.new
     template_hosts.each do |host|
       template = TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: host))
-      File.open("config/tenant_templates/generated/#{host.split('.').first}_template.yml", 'w') { |f| f.write template }
+      template_name = "#{host.split('.').first}_template.yml"
+      file_path = "config/tenant_templates/generated/#{template_name}"
+      File.open(file_path, 'w') { |f| f.write template }
+      s3.bucket('cl2-tenant-templates').object("test/#{template_name}").upload_file(file_path)
     end
   end
 
