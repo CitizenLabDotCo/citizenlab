@@ -16,22 +16,22 @@ describe('Landing page', () => {
       cy.get('.e2e-signed-out-header');
     });
 
-    it('shows the signed-out header title when not logged in', () => {
+    it('shows the signed-out header title', () => {
       cy.get('.e2e-signed-out-header-title');
     });
 
-    it('shows the signed-out header subtitle when not logged in', () => {
+    it('shows the signed-out header subtitle', () => {
       cy.get('.e2e-signed-out-header-subtitle');
     });
 
-    it('shows the signed-out header CTA button when not logged in, and redirects to /sign-up on click', () => {
+    it('shows the signed-out header CTA button, and redirects to /sign-up when clicked', () => {
       cy.get('.e2e-signed-out-header-cta-button').click();
       cy.location('pathname').should('eq', '/en-GB/sign-up');
     });
   });
 
   describe('Signed in header', () => {
-    it('shows the signed-in header when logged in', () => {
+    beforeEach(() => {
       const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
       const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
       const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@${Math.random().toString(36).substr(2, 12).toLowerCase()}.co`;
@@ -39,7 +39,21 @@ describe('Landing page', () => {
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.visit('/');
-      cy.get('.e2e-signed-in-header');
+    });
+
+    it('shows the "complete your profile" header by default', () => {
+      cy.get('.e2e-signed-in-header').get('#e2e-singed-in-header-complete-profile');
+    });
+
+    it('navigates to the edit profile page when clicking the "Complete your profile" button', () => {
+      cy.get('#e2e-singed-in-header-complete-profile').get('.e2e-singed-in-header-accept-btn').click();
+      cy.location('pathname').should('eq', '/en-GB/profile/edit');
+    });
+
+    it('shows the "custom CTA" header when skipping the "complete your profile" header', () => {
+      cy.get('#e2e-singed-in-header-complete-profile').get('.e2e-singed-in-header-skip-btn').click();
+      cy.wait(500);
+      cy.get('#e2e-singed-in-header-custom-cta');
     });
   });
 

@@ -288,7 +288,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCompleteProfile>
+            <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
               <Left>
                 <Icons>
                   <NoAvatarUserIcon name="noAvatar" />
@@ -306,12 +306,14 @@ class SignedInHeader extends PureComponent<Props, State> {
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
+                  className="e2e-singed-in-header-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
                   linkTo="/profile/edit"
                   bgColor="#fff"
                   textColor={theme.colorMain}
+                  className="e2e-singed-in-header-accept-btn"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -327,7 +329,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCustomCta>
+            <HeaderContentCustomCta id="e2e-singed-in-header-custom-cta">
               <Left>
                 <Text>
                   <T as="p" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
