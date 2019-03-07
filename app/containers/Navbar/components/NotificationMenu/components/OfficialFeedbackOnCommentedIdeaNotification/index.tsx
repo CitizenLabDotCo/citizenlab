@@ -58,6 +58,7 @@ export default class OfficialFeedbackOnCommentedIdeaNotification extends React.P
     const { notification } = this.props;
     const { ideaSlug } = this.state;
     const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
 
     return (
       <NotificationWrapper
@@ -78,7 +79,7 @@ export default class OfficialFeedbackOnCommentedIdeaNotification extends React.P
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={this.onClickUserName}
             >
-              {notification.attributes.initiating_user_first_name}
+              <T value={officialFeedbackAuthorMultiloc} />
             </Link>
           }}
         />
