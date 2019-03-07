@@ -442,7 +442,7 @@ class TenantTemplateService
   end
 
   def yml_groups_projects
-    GroupsProject.all.map do |g|
+    GroupsProject.where(group_id: Group.where(membership_type: 'manual').ids).map do |g|
       {
         'group_ref'   => lookup_ref(g.group_id, :group),
         'project_ref' => lookup_ref(g.project_id, :project),
