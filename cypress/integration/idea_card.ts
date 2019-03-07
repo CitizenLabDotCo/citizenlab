@@ -131,9 +131,7 @@ describe('Idea card component', () => {
 
       ...
       return apiRemoveComment(childCommentId);
-    });
-
-    .then(() => {
+    }).then(() => {
       cy.visit('/ideas');
       cy.get('@commentCount').contains('1');
       return apiRemoveComment(parentCommentId);
