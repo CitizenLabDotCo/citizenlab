@@ -1,16 +1,16 @@
 import Loadable from 'react-loadable';
-import { FullPageCenteredSpinner } from 'components/UI/Spinner';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'pages',
   component: Loadable({
     loader: () => import('./'),
-    loading: FullPageCenteredSpinner
+    loading: LoadableLoadingAdmin
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
-      loading: FullPageCenteredSpinner
+      loading: LoadableLoadingAdmin
     }),
   },
   childRoutes: [
@@ -18,21 +18,21 @@ export default () => ({
       path: 'new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: ':pageId/editor/:locale',
       component: Loadable({
         loader: () => import('./BodyEditor'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
     {
       path: ':pageId',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: FullPageCenteredSpinner
+        loading: LoadableLoadingAdmin
       }),
     },
   ],
