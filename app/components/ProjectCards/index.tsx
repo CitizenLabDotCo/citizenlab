@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty } from 'lodash-es';
+import { size, isEqual, isEmpty, isString, isArray } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -263,6 +265,11 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   componentDidMount() {
     this.calculateProjectCardsLayout();
+    const query = clHistory.getCurrentLocation().query;
+
+    if (query && query.area && isString(query.area)) {
+      this.handleAreasOnChange(query.area);
+    }
   }
 
   componentDidUpdate() {
