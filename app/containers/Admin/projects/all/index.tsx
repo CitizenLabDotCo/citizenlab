@@ -73,7 +73,7 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 const StyledButton = styled(Button)``;
 
-interface InputProps { }
+export interface InputProps { }
 
 interface DataProps {
   projects: GetProjectsChildProps;
