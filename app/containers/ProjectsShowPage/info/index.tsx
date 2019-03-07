@@ -13,7 +13,7 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // resources
 import GetProject from 'resources/GetProject';
 
-interface InputProps {}
+export interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>

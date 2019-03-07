@@ -1,5 +1,4 @@
 import adminRoutes from 'containers/Admin/routes';
-
 import Loadable from 'react-loadable';
 import LoadableLoading from 'components/UI/LoadableLoading';
 
