@@ -1,31 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { media } from 'utils/styleUtils';
-
-// Centered spinner taking the navbar height into account
-const FullPageCenter = styled.div`
-  width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-  `}
-`;
-
-const FullPageCenterAdmin = styled.div`
-  width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 90px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px - 90px);
-  `}
-`;
 
 const rotate = keyframes`
   0%    { transform: rotate(0deg); }
@@ -79,19 +53,3 @@ export default class Spinner extends PureComponent<Props, State> {
     );
   }
 }
-
-export const FullPageCenteredSpinner = () => {
-  return (
-    <FullPageCenter>
-      <Spinner />
-    </FullPageCenter>
-  );
-};
-
-export const FullPageCenteredSpinnerAdmin = () => {
-  return (
-    <FullPageCenterAdmin>
-      <Spinner />
-    </FullPageCenterAdmin>
-  );
-};
