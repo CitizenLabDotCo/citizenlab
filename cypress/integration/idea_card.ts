@@ -89,7 +89,6 @@ describe('Idea card component', () => {
 
     getProjectBySlug('an-idea-bring-it-to-your-council').then((projectResponse) => {
       const projectId = projectResponse.body.data.id;
-      console.log(projectId);
       return apiCreateIdea(projectId, ideaTitle, ideaContent);
     }).then(() => {
       cy.visit('/ideas');
@@ -127,7 +126,10 @@ describe('Idea card component', () => {
     let parentCommentId: string = null as any;
     let childCommentId: string = null as any;
 
-    apiCreateIdea('ece7ed65-cc38-4950-87a3-3ec3bb29e2de', ideaTitle, ideaContent).then((ideaResponse) => {
+    getProjectBySlug('an-idea-bring-it-to-your-council').then((projectResponse) => {
+      const projectId = projectResponse.body.data.id;
+      return apiCreateIdea(projectId, ideaTitle, ideaContent);
+    }).then((ideaResponse) => {
       ideaId = ideaResponse.body.data.id;
       return apiAddComment(ideaId, commentContent);
     }).then((parentCommentResponse) => {
