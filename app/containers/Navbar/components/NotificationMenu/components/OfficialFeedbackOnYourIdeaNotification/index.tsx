@@ -1,7 +1,6 @@
 import React from 'react';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 import { IOfficialFeedbackOnYourIdeaNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
@@ -59,6 +58,7 @@ export default class OfficialFeedbackOnYourIdeaNotification extends React.PureCo
     const { notification } = this.props;
     const { ideaSlug } = this.state;
     const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
 
     return (
       <NotificationWrapper
@@ -79,7 +79,7 @@ export default class OfficialFeedbackOnYourIdeaNotification extends React.PureCo
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={this.onClickUserName}
             >
-              {notification.attributes.initiating_user_first_name}
+              <T value={officialFeedbackAuthorMultiloc} />
             </Link>,
             idea: <Link
               to={`/ideas/${ideaSlug}`}

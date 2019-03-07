@@ -13,6 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
+import T from 'components/T';
 
 type Props = {
   notification: IOfficialFeedbackOnVotedIdeaNotificationData;
@@ -57,6 +58,7 @@ export default class OfficialFeedbackOnVotedIdeaNotification extends React.PureC
     const { notification } = this.props;
     const { ideaSlug } = this.state;
     const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
 
     return (
       <NotificationWrapper
@@ -77,7 +79,7 @@ export default class OfficialFeedbackOnVotedIdeaNotification extends React.PureC
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={this.onClickUserName}
             >
-              {notification.attributes.initiating_user_first_name}
+              <T value={officialFeedbackAuthorMultiloc} />
             </Link>
           }}
         />
