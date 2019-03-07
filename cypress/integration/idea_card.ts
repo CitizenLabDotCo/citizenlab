@@ -1,6 +1,17 @@
 describe('Idea card component', () => {
   let adminJwt: string = null as any;
 
+  const getProjectBySlug = (projectSlug: string) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/by_slug/${projectSlug}`
+    });
+  };
+
   const apiCreateIdea = (projectId: string, ideaTitle: string, ideaContent: string) => {
     return cy.request({
       headers: {
@@ -75,7 +86,12 @@ describe('Idea card component', () => {
 
     cy.apiSignup(firstName, lastName, email, password);
     cy.login(email, password);
-    apiCreateIdea('ece7ed65-cc38-4950-87a3-3ec3bb29e2de', ideaTitle, ideaContent).then(() => {
+
+    getProjectBySlug('an-idea-bring-it-to-your-council').then((projectResponse) => {
+      const projectId = projectResponse.body.data.id;
+      console.log(projectId);
+      return apiCreateIdea(projectId, ideaTitle, ideaContent);
+    }).then(() => {
       cy.visit('/ideas');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
@@ -124,12 +140,6 @@ describe('Idea card component', () => {
       childCommentId = childCommentResponse.body.data.id;
       cy.visit('/ideas');
       cy.get('@commentCount').contains('2');
-    });
-
-    /*
-    // TODO: Wait for back-end to fix the comment count on comment deletion
-
-      ...
       return apiRemoveComment(childCommentId);
     }).then(() => {
       cy.visit('/ideas');
@@ -139,6 +149,5 @@ describe('Idea card component', () => {
       cy.visit('/ideas');
       cy.get('@commentCount').contains('0');
     });
-    */
   });
 });
