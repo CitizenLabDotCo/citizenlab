@@ -66,6 +66,10 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
     object.timeline?
   end
 
+  def timeline_active
+    TimelineService.new.timeline_active object
+  end
+
 
   private
 

@@ -79,26 +79,4 @@ RSpec.describe Project, type: :model do
     end
   end
 
-  describe "timeline_active" do
-    it "returns :present for a continuous project" do
-      project = create(:continuous_project)
-      expect(project.timeline_active).to eq nil
-    end
-
-    it "returns :present for a project with current phase" do
-      project = create(:project_with_current_phase)
-      expect(project.timeline_active).to eq :present
-    end
-
-    it "returns :past for a project with only past phases" do
-      project = create(:project_with_past_phases)
-      expect(project.timeline_active).to eq :past
-    end
-
-    it "returns :future for a project with only future phases" do
-      project = create(:project_with_future_phases)
-      expect(project.timeline_active).to eq :future
-    end
-  end
-
 end
