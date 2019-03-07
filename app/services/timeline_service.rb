@@ -35,4 +35,16 @@ class TimelineService
     Phase.where(project_id: phase.project_id).all.select{|p| p.id != phase.id}
   end
 
+  def timeline_active project
+    if project.continuous? || project.phases.blank?
+      nil
+    elsif Date.today > project.phases.maximum(:end_at)  
+      :past
+    elsif Date.today < project.phases.minimum(:start_at)
+      :future
+    else
+      :present
+    end
+  end
+
 end
