@@ -1,20 +1,19 @@
 import React from 'react';
-import { FullPageCenteredSpinner, FullPageCenteredSpinnerAdmin } from '../Spinner';
+import FullPageSpinner from '../FullPageSpinner';
+import { LoadingComponentProps } from 'react-loadable';
 
-const LoadableLoading = (props) => {
+export const LoadableLoadingCitizen = (props: LoadingComponentProps) => {
   if (props.pastDelay) {
-    return <FullPageCenteredSpinner />;
+    return <FullPageSpinner />;
   }
 
   return null;
 };
 
-export const LoadableLoadingAdmin = (props) => {
+export const LoadableLoadingAdmin = (props: LoadingComponentProps) => {
   if (props.pastDelay) {
-    return <FullPageCenteredSpinnerAdmin />;
+    return <FullPageSpinner admin={true} />;
   }
 
   return null;
 };
-
-export default LoadableLoading;
