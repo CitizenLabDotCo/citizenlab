@@ -30,6 +30,7 @@ pipeline {
 
     stage('Release tenant templates') {
       steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake templates:release'
         slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} generated new tenant templates!\nMore info at ${env.BUILD_URL}"
       }
     }
