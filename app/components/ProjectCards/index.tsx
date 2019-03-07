@@ -267,8 +267,11 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.calculateProjectCardsLayout();
     const query = clHistory.getCurrentLocation().query;
 
+    // fcf86454-ee5b-4aeb-aee5-da44ca3f6fc5
+
     if (query && query.area && isString(query.area)) {
-      this.handleAreasOnChange(query.area);
+      const area: string = query.area;
+      this.handleAreasOnChange([area]);
     }
   }
 
@@ -348,6 +351,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleAreasOnChange = (areas: string[]) => {
     trackEventByName(tracks.clickOnProjectsAreaFilter);
+    console.log(areas);
     this.props.projects.onChangeAreas(areas);
   }
 
