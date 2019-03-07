@@ -94,25 +94,38 @@ describe('Idea card component', () => {
       cy.visit('/ideas');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
-      cy.get('@upvoteBtn')
-        .contains('1')
-        .click()
-        .wait(500)
-        .contains('2')
-        .click()
-        .wait(500)
-        .contains('1');
-      cy.get('@downvoteBtn')
-        .contains('0')
-        .click()
-        .wait(500)
-        .contains('1')
-        .click()
-        .wait(500)
-        .contains('0')
-        .click()
-        .wait(500);
-      cy.get('@upvoteBtn').click().wait(500);
+
+      // initial upvote value
+      cy.get('@upvoteBtn').contains('1');
+
+      // add upvote
+      cy.get('@upvoteBtn').click();
+      cy.wait(500);
+      cy.get('@upvoteBtn').contains('2');
+
+      // remove upvote
+      cy.get('@upvoteBtn').click();
+      cy.wait(500);
+      cy.get('@upvoteBtn').contains('1');
+
+      // initial downvote
+      cy.get('@downvoteBtn').contains('0');
+
+      // add downvote
+      cy.get('@downvoteBtn').click();
+      cy.wait(500);
+      cy.get('@downvoteBtn').contains('1');
+
+      // remove downvote
+      cy.get('@downvoteBtn').click();
+      cy.wait(500);
+      cy.get('@downvoteBtn').contains('0');
+
+      // add downvote, then upvote
+      cy.get('@downvoteBtn').click();
+      cy.wait(500);
+      cy.get('@upvoteBtn').click();
+      cy.wait(500);
       cy.get('@downvoteBtn').contains('0');
       cy.get('@upvoteBtn').contains('2');
     });
@@ -131,21 +144,29 @@ describe('Idea card component', () => {
       return apiCreateIdea(projectId, ideaTitle, ideaContent);
     }).then((ideaResponse) => {
       ideaId = ideaResponse.body.data.id;
+
+      // add parent comment
       return apiAddComment(ideaId, commentContent);
     }).then((parentCommentResponse) => {
       parentCommentId = parentCommentResponse.body.data.id;
       cy.visit('/ideas');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-comment-count').as('commentCount');
       cy.get('@commentCount').contains('1');
+
+      // add child comment
       return apiAddComment(ideaId, commentContent, parentCommentId);
     }).then((childCommentResponse) => {
       childCommentId = childCommentResponse.body.data.id;
       cy.visit('/ideas');
       cy.get('@commentCount').contains('2');
+
+      // remove child comment
       return apiRemoveComment(childCommentId);
     }).then(() => {
       cy.visit('/ideas');
       cy.get('@commentCount').contains('1');
+
+      // remove parent comment
       return apiRemoveComment(parentCommentId);
     }).then(() => {
       cy.visit('/ideas');
