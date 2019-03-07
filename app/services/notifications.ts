@@ -400,6 +400,7 @@ export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotifi
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     idea_title: Multiloc;
+    official_feedback_author: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -438,6 +439,7 @@ export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotif
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     idea_title: Multiloc;
+    official_feedback_author: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -476,6 +478,7 @@ export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseN
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     idea_title: Multiloc;
+    official_feedback_author: Multiloc;
   };
   relationships: {
     initiating_user: {
@@ -514,6 +517,7 @@ export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotific
     initiating_user_last_name: string | null;
     initiating_user_slug: string | null;
     idea_title: Multiloc;
+    official_feedback_author: Multiloc;
   };
   relationships: {
     initiating_user: {
