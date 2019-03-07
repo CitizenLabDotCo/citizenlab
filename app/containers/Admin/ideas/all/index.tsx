@@ -30,9 +30,9 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-interface Props {}
+export interface Props {}
 
-interface ITracks {
+export interface ITracks {
   clickExportAllIdeas: () => void;
   clickExportAllComments: () => void;
 }

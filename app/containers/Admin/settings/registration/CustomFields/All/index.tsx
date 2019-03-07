@@ -20,7 +20,7 @@ const Buttons = styled.div`
   align-items: center;
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   customFields: GetCustomFieldsChildProps;
