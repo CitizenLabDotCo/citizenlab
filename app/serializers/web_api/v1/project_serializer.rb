@@ -2,6 +2,7 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   include WebApi::V1::ParticipationContextSerializer
 
   attributes :id, :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :header_bg, :visible_to, :process_type, :ideas_count, :comments_count, :avatars_count, :allocated_budget, :internal_role, :publication_status, :created_at, :updated_at, :ordering
+  attribute :timeline_active, if: :timeline?
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
@@ -60,6 +61,15 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   def is_participation_context?
     object.is_participation_context?
   end
+
+  def timeline?
+    object.timeline?
+  end
+
+  def timeline_active
+    TimelineService.new.timeline_active object
+  end
+
 
   private
 

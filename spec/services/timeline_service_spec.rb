@@ -32,7 +32,6 @@ describe TimelineService do
   end
 
   describe "is_in_active_phase?" do
-    
     it "returns truthy when the given idea is in the active phase" do
       project = create(:project_with_current_phase)
       idea = create(:idea, project: project, phases: [service.current_phase(project)])
@@ -44,7 +43,28 @@ describe TimelineService do
       idea = create(:idea, project: project, phases: [project.phases.find{|p| p != service.current_phase(project)}])
       expect(service.is_in_active_phase?(idea)).to be_falsy
     end
+  end
 
+  describe "timeline_active" do
+    it "returns :present for a continuous project" do
+      project = create(:continuous_project)
+      expect(service.timeline_active project).to eq nil
+    end
+
+    it "returns :present for a project with current phase" do
+      project = create(:project_with_current_phase)
+      expect(service.timeline_active project).to eq :present
+    end
+
+    it "returns :past for a project with only past phases" do
+      project = create(:project_with_past_phases)
+      expect(service.timeline_active project).to eq :past
+    end
+
+    it "returns :future for a project with only future phases" do
+      project = create(:project_with_future_phases)
+      expect(service.timeline_active project).to eq :future
+    end
   end
 
 
