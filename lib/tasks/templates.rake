@@ -31,6 +31,18 @@ namespace :templates do
     end
   end
 
+  task :release, [] => [:environment] do |t, args|
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket('cl2-tenant-templates')
+    bucket.objects(prefix: 'test').each do |template|
+      template_name = "#{template.key}"
+      template_name.slice! 'test/'
+      if template_name.present?
+        template.copy_to(bucket: 'cl2-tenant-templates', key: "release/#{template_name}")
+      end
+    end
+  end
+
   task :change_locale, [:template_name,:locale_from,:locale_to] => [:environment] do |t, args|
     template = open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
     service = TenantTemplateService.new

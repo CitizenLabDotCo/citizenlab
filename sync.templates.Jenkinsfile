@@ -13,6 +13,20 @@ pipeline {
       }
     }
 
+    stage('Push tenant templates to backup repository prrt') {
+      steps {
+        sh 'git clone git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+        withAWS(credentials: 'aws') {
+          s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
+        }
+        sh 'cd cl2-tenant-templates'
+        sh 'git checkout master'
+        sh 'git add -A'
+        sh 'git commit -am \'New tenant templates\''
+        sh 'git push'
+      }
+    }
+
     stage('Generate tenant templates') {
       steps {
         echo 'Generating templates'
@@ -25,6 +39,20 @@ pipeline {
     stage('Test tenant templates') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t template_test" web bundle exec rake spec'
+      }
+    }
+
+    stage('Push tenant templates to backup repository') {
+      steps {
+        sh 'git clone git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+        withAWS(credentials: 'aws') {
+          s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
+        }
+        sh 'cd cl2-tenant-templates'
+        sh 'git checkout master'
+        sh 'git add -A'
+        sh 'git commit -am \'New tenant templates\''
+        sh 'git push'
       }
     }
 
