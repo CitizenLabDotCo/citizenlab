@@ -6,6 +6,7 @@ export default () => ({
   name: 'admin invitations',
   component: Loadable({
     loader: () => import('containers/Admin/invitations'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
 });

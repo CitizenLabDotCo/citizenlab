@@ -5,12 +5,14 @@ export default () => ({
   path: 'pages',
   component: Loadable({
     loader: () => import('./'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
-      loading: LoadableLoadingAdmin
+      loading: LoadableLoadingAdmin,
+      delay: 500
     }),
   },
   childRoutes: [
@@ -18,21 +20,24 @@ export default () => ({
       path: 'new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: LoadableLoadingAdmin
+        loading: LoadableLoadingAdmin,
+        delay: 500
       }),
     },
     {
       path: ':pageId/editor/:locale',
       component: Loadable({
         loader: () => import('./BodyEditor'),
-        loading: LoadableLoadingAdmin
+        loading: LoadableLoadingAdmin,
+        delay: 500
       }),
     },
     {
       path: ':pageId',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: LoadableLoadingAdmin
+        loading: LoadableLoadingAdmin,
+        delay: 500
       }),
     },
   ],

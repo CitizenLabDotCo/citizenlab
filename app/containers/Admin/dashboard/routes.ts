@@ -8,12 +8,13 @@ export default () => ({
   path: 'dashboard',
   component: Loadable({
     loader: () => import('./'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./summary'),
-      loading: LoadableLoadingAdmin
+      loading: () => null
     }),
   },
   childRoutes: [
@@ -21,7 +22,7 @@ export default () => ({
       path: 'users',
       component: Loadable({
         loader: () => import('./users'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     clusteringsRoutes(),
@@ -33,7 +34,7 @@ export default () => ({
       path: 'map',
       component: Loadable({
         loader: () => import('./map'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     }
   ],

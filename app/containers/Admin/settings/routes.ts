@@ -6,12 +6,14 @@ export default () => ({
   name: 'admin settings',
   component: Loadable({
     loader: () => import('containers/Admin/settings'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/settings/general'),
-      loading: LoadableLoadingAdmin
+      loading: LoadableLoadingAdmin,
+      delay: 500
     }),
   },
   childRoutes: [
@@ -19,35 +21,35 @@ export default () => ({
       path: 'general',
       component: Loadable({
         loader: () => import('containers/Admin/settings/general'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     {
       path: 'customize',
       component: Loadable({
         loader: () => import('containers/Admin/settings/customize'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     {
       path: 'pages',
       component: Loadable({
         loader: () => import('containers/Admin/settings/pages'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     {
       path: 'registration',
       component: Loadable({
         loader: () => import('containers/Admin/settings/registration'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     {
       path: 'widgets',
       component: Loadable({
         loader: () => import('containers/Admin/settings/widgets'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
   ],

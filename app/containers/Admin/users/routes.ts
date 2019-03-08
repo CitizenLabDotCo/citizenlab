@@ -6,12 +6,13 @@ export default () => ({
   name: 'admin users',
   component: Loadable({
     loader: () => import('containers/Admin/users'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('containers/Admin/users/AllUsers'),
-      loading: LoadableLoadingAdmin
+      loading: () => null
     }),
   },
   childRoutes: [
@@ -19,7 +20,7 @@ export default () => ({
       path: '/:locale/admin/users/:groupId',
       component: Loadable({
         loader: () => import('containers/Admin/users/UsersGroup'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
   ],
