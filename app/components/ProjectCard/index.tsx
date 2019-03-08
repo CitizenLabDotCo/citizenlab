@@ -484,8 +484,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
-      console.log(project);
-
       if (isArchived) {
         countdown = (
           <ContentHeaderLabel>
@@ -504,7 +502,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
 
         countdown = (
-          <Countdown>
+          <Countdown className="e2e-project-card-time-remaining">
             <TimeRemaining className={size}>
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
@@ -543,7 +541,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
           {ctaMessage !== null &&
             <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
-              <ProjectLabel onClick={this.handleCTAOnClick(project.id)}>
+              <ProjectLabel onClick={this.handleCTAOnClick(project.id)} className="e2e-project-card-cta">
                 {ctaMessage}
               </ProjectLabel>
             </ContentHeaderRight>
@@ -581,7 +579,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             {size === 'large' && contentHeader}
 
             <ContentBody className={size}>
-              <ProjectTitle onClick={this.handleProjectTitleOnClick(project.id)}>
+              <ProjectTitle id="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -589,7 +587,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                      <ProjectDescription>
+                      <ProjectDescription id="e2e-project-card-project-description-preview">
                         {description}
                       </ProjectDescription>
                     );

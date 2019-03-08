@@ -1,73 +1,6 @@
 describe('Idea card component', () => {
   let adminJwt: string = null as any;
 
-  const getProjectBySlug = (projectSlug: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'GET',
-      url: `web_api/v1/projects/by_slug/${projectSlug}`
-    });
-  };
-
-  const apiCreateIdea = (projectId: string, ideaTitle: string, ideaContent: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'POST',
-      url: 'web_api/v1/ideas',
-      body: {
-        idea: {
-          project_id: projectId,
-          publication_status: 'published',
-          title_multiloc: {
-            'en-GB': ideaTitle,
-            'nl-BE': ideaTitle
-          },
-          body_multiloc: {
-            'en-GB': ideaContent,
-            'nl-BE': ideaContent
-          }
-        }
-      }
-    });
-  };
-
-  const apiAddComment = (ideaId: string, commentContent: string, commentParentId?: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'POST',
-      url: `web_api/v1/ideas/${ideaId}/comments`,
-      body: {
-        comment: {
-          body_multiloc: {
-            'en-GB': commentContent,
-            'nl-BE': commentContent
-          },
-          parent_id: commentParentId
-        }
-      }
-    });
-  };
-
-  const apiRemoveComment = (commentId: string) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'POST',
-      url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
-    });
-  };
-
   before(() => {
     cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => adminJwt = response.body.jwt);
   });
@@ -84,13 +17,12 @@ describe('Idea card component', () => {
     const ideaTitle = Math.random().toString(36);
     const ideaContent = Math.random().toString(36);
 
-    cy.apiSignup(firstName, lastName, email, password);
-    cy.login(email, password);
-
-    getProjectBySlug('an-idea-bring-it-to-your-council').then((projectResponse) => {
+    cy.getProjectBySlug(adminJwt, 'an-idea-bring-it-to-your-council').then((projectResponse) => {
       const projectId = projectResponse.body.data.id;
-      return apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then(() => {
+      cy.apiCreateIdea(adminJwt, projectId, ideaTitle, ideaContent);
+      cy.apiSignup(firstName, lastName, email, password);
+      cy.login(email, password);
+
       cy.visit('/ideas');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
@@ -98,30 +30,30 @@ describe('Idea card component', () => {
       // initial upvote value
       cy.get('@upvoteBtn').contains('1');
 
-      // add upvote
+      // initial downvote
+      cy.get('@downvoteBtn').contains('0');
+
+      // click upvote
       cy.get('@upvoteBtn').click();
       cy.wait(500);
       cy.get('@upvoteBtn').contains('2');
 
-      // remove upvote
+      // click upvote
       cy.get('@upvoteBtn').click();
       cy.wait(500);
       cy.get('@upvoteBtn').contains('1');
 
-      // initial downvote
-      cy.get('@downvoteBtn').contains('0');
-
-      // add downvote
+      // click downvote
       cy.get('@downvoteBtn').click();
       cy.wait(500);
       cy.get('@downvoteBtn').contains('1');
 
-      // remove downvote
+      // click downvote
       cy.get('@downvoteBtn').click();
       cy.wait(500);
       cy.get('@downvoteBtn').contains('0');
 
-      // add downvote, then upvote
+      // click downvote, then upvote
       cy.get('@downvoteBtn').click();
       cy.wait(500);
       cy.get('@upvoteBtn').click();
@@ -139,14 +71,14 @@ describe('Idea card component', () => {
     let parentCommentId: string = null as any;
     let childCommentId: string = null as any;
 
-    getProjectBySlug('an-idea-bring-it-to-your-council').then((projectResponse) => {
+    cy.getProjectBySlug(adminJwt, 'an-idea-bring-it-to-your-council').then((projectResponse) => {
       const projectId = projectResponse.body.data.id;
-      return apiCreateIdea(projectId, ideaTitle, ideaContent);
+      return cy.apiCreateIdea(adminJwt, projectId, ideaTitle, ideaContent);
     }).then((ideaResponse) => {
       ideaId = ideaResponse.body.data.id;
 
       // add parent comment
-      return apiAddComment(ideaId, commentContent);
+      return cy.apiAddComment(adminJwt, ideaId, commentContent);
     }).then((parentCommentResponse) => {
       parentCommentId = parentCommentResponse.body.data.id;
       cy.visit('/ideas');
@@ -154,20 +86,20 @@ describe('Idea card component', () => {
       cy.get('@commentCount').contains('1');
 
       // add child comment
-      return apiAddComment(ideaId, commentContent, parentCommentId);
+      return cy.apiAddComment(adminJwt, ideaId, commentContent, parentCommentId);
     }).then((childCommentResponse) => {
       childCommentId = childCommentResponse.body.data.id;
       cy.visit('/ideas');
       cy.get('@commentCount').contains('2');
 
       // remove child comment
-      return apiRemoveComment(childCommentId);
+      return cy.apiRemoveComment(adminJwt, childCommentId);
     }).then(() => {
       cy.visit('/ideas');
       cy.get('@commentCount').contains('1');
 
       // remove parent comment
-      return apiRemoveComment(parentCommentId);
+      return cy.apiRemoveComment(adminJwt, parentCommentId);
     }).then(() => {
       cy.visit('/ideas');
       cy.get('@commentCount').contains('0');

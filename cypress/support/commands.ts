@@ -7,6 +7,10 @@ declare global {
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
+      getProjectBySlug: typeof getProjectBySlug;
+      apiCreateIdea: typeof apiCreateIdea;
+      apiAddComment: typeof apiAddComment;
+      apiRemoveComment: typeof apiRemoveComment;
     }
   }
 }
@@ -76,9 +80,80 @@ export function acceptCookies() {
   });
 }
 
+export function getProjectBySlug(adminJwt: string, projectSlug: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${adminJwt}`
+    },
+    method: 'GET',
+    url: `web_api/v1/projects/by_slug/${projectSlug}`
+  });
+}
+
+export function apiCreateIdea(adminJwt: string, projectId: string, ideaTitle: string, ideaContent: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${adminJwt}`
+    },
+    method: 'POST',
+    url: 'web_api/v1/ideas',
+    body: {
+      idea: {
+        project_id: projectId,
+        publication_status: 'published',
+        title_multiloc: {
+          'en-GB': ideaTitle,
+          'nl-BE': ideaTitle
+        },
+        body_multiloc: {
+          'en-GB': ideaContent,
+          'nl-BE': ideaContent
+        }
+      }
+    }
+  });
+}
+
+export function apiAddComment(adminJwt: string, ideaId: string, commentContent: string, commentParentId?: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${adminJwt}`
+    },
+    method: 'POST',
+    url: `web_api/v1/ideas/${ideaId}/comments`,
+    body: {
+      comment: {
+        body_multiloc: {
+          'en-GB': commentContent,
+          'nl-BE': commentContent
+        },
+        parent_id: commentParentId
+      }
+    }
+  });
+}
+
+export function apiRemoveComment(adminJwt: string, commentId: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${adminJwt}`
+    },
+    method: 'POST',
+    url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
+  });
+}
+
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
+Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
+Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
+Cypress.Commands.add('apiAddComment', apiAddComment);
+Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
