@@ -94,7 +94,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 onClick={onLoadMore}
                 size="1"
                 style="secondary-outlined"
-                text={<FormattedMessage {...messages.loadPreviousUpdates} />}
+                text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
                 height="50px"
                 icon="showMore"

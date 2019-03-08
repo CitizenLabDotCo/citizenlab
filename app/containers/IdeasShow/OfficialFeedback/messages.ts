@@ -21,9 +21,9 @@ export default defineMessages({
     id: 'app.components.IdeasShow.OfficialFeedback.deletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this official update?',
   },
-  loadPreviousUpdates: {
-    id: 'app.components.IdeasShow.OfficialFeedback.loadPreviousUpdates',
-    defaultMessage: 'Load previous updates',
+  showPreviousUpdates: {
+    id: 'app.components.IdeasShow.OfficialFeedback.showPreviousUpdates',
+    defaultMessage: 'Show previous updates',
   },
   officialNamePlaceholder: {
     id: 'app.components.IdeasShow.OfficialFeedback.officialNamePlaceholder',
