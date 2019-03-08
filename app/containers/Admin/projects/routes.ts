@@ -126,7 +126,10 @@ export default () => ({
         {
           path: '/:locale/admin/projects/:projectId/survey-results',
           name: 'admin projects edit survey results',
-          getComponent: loadAndRender(import('containers/Admin/projects/edit/surveyResults')),
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/surveyResults'),
+            loading: () => null
+          }),
         },
       ],
     },
