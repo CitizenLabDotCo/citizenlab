@@ -25,12 +25,18 @@ class WebApi::V1::ProjectSerializer < ActiveModel::Serializer
   def action_descriptor
     @participation_context_service ||= ParticipationContextService.new
     posting_disabled_reason = @participation_context_service.posting_disabled_reason object, current_user
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_project object, current_user
     taking_survey_disabled_reason = @participation_context_service.taking_survey_disabled_reason object, current_user
     {
       posting: {
         enabled: !posting_disabled_reason,
         disabled_reason: posting_disabled_reason,
         future_enabled: posting_disabled_reason && @participation_context_service.future_posting_enabled_phase(object, current_user)&.start_at
+      },
+      commenting: {
+        enabled: !commenting_disabled_reason,
+        disabled_reason: commenting_disabled_reason,
+        future_enabled: commenting_disabled_reason && @participation_context_service.future_commenting_enabled_phase(object, current_user)&.start_at
       },
       taking_survey: {
         enabled:!taking_survey_disabled_reason,

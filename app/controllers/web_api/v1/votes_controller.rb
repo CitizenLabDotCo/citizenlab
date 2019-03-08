@@ -116,7 +116,7 @@ class WebApi::V1::VotesController < ApplicationController
 
   def user_not_authorized exception
     pcs = ParticipationContextService.new
-    reason = pcs.voting_disabled_reason(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
+    reason = pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) || pcs.cancelling_votes_disabled_reason(exception.record.votable, exception.record.user)
     if reason
       render json: { errors: { base: [{ error: reason }] } }, status: :unauthorized
       return

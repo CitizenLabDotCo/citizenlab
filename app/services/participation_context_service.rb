@@ -21,13 +21,13 @@ class ParticipationContextService
     voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
     voting_limited_max_reached: 'voting_limited_max_reached',
-    not_in_active_context: 'not_in_active_context'
+    idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   BUDGETING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
-    not_in_active_context: 'not_in_active_context'
+    idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   TAKING_SURVEY_DISABLED_REASONS = {
@@ -83,12 +83,8 @@ class ParticipationContextService
       COMMENTING_DISABLED_REASONS[:project_inactive]
     elsif !in_current_context? idea, active_context
       COMMENTING_DISABLED_REASONS[:idea_not_in_current_phase]
-    elsif !active_context.commenting_enabled
-      COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    elsif !context_permission(active_context, 'commenting')&.granted_to?(user)
-      COMMENTING_DISABLED_REASONS[:not_permitted]
     else
-      nil
+      commenting_disabled_reason_for_project(idea.project, user)
     end
   end
 
@@ -107,14 +103,23 @@ class ParticipationContextService
     end
   end
 
-  def voting_disabled_reason idea, user
+  def voting_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
+    if !context
+      VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    else
+      voting_disabled_reason_for_project(idea.project, user)
+    end
+  end
+
+  def voting_disabled_reason_for_project project, user
+    context = get_participation_context project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
-    elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:not_in_active_context]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
@@ -137,7 +142,7 @@ class ParticipationContextService
     elsif !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:not_in_active_context]
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
@@ -163,7 +168,7 @@ class ParticipationContextService
   def budgeting_disabled_reason idea, user
     context = get_participation_context idea.project
     if context && !in_current_context?(idea, context)
-      BUDGETING_DISABLED_REASONS[:not_in_active_context]
+      BUDGETING_DISABLED_REASONS[:idea_not_in_current_phase]
     else
       budgeting_disabled_reason_in_context context, user
     end
