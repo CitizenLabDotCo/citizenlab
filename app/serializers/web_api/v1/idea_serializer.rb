@@ -32,7 +32,7 @@ class WebApi::V1::IdeaSerializer < ActiveModel::Serializer
 
   def action_descriptor
     @participation_context_service = @instance_options[:pcs] || ParticipationContextService.new
-    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason(object, current_user)
+    commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user)
     voting_disabled_reason = @participation_context_service.voting_disabled_reason(object, current_user)
     cancelling_votes_disabled_reason = @participation_context_service.cancelling_votes_disabled_reason(object, current_user)
     budgeting_disabled_reason = @participation_context_service.budgeting_disabled_reason(object, current_user)

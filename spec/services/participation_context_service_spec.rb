@@ -88,19 +88,24 @@ describe ParticipationContextService do
     end
   end
 
-  describe "commenting_disabled_reasons" do
+  describe "commenting_disabled_reason" do
+    let (:user) { create(:user) }
 
     context "for timeline projects" do
       it "returns nil when the commenting is allowed in the current phase" do
         project = create(:project_with_current_phase, with_permissions: true)
-        expect(service.commenting_disabled_reason(project, create(:user))).to be_nil
+        expect(service.commenting_disabled_reason_for_project(project, user)).to be_nil
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to be_nil
       end
 
       it "returns `commenting_disabled` when commenting is disabled in the current phase" do
         project = create(:project_with_current_phase, 
           current_phase_attrs: {commenting_enabled: false},
         )
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'commenting_disabled'
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'commenting_disabled'
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'commenting_disabled'
       end
 
       it "returns `not_permitted` commenting is not permitted for the user" do
@@ -109,22 +114,30 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: create_list(:group, 2).map(&:id)
           )
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'not_permitted'
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
       end
 
       it "returns 'project_inactive' when the timeline hasn't started" do
         project = create(:project_with_future_phases, with_permissions: true)
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
       end
 
       it "returns 'project_inactive' when the timeline is over" do
         project = create(:project_with_past_phases, with_permissions: true)
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:project_with_current_phase, with_permissions: true, publication_status: 'archived')
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
       end
 
       it "returns nil when we're in a participatory budgeting context" do
@@ -132,14 +145,25 @@ describe ParticipationContextService do
           with_permissions: true, 
           current_phase_attrs: {participation_method: 'budgeting', max_budget: 1200}
           )
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq nil
+        expect(service.commenting_disabled_reason_for_project(project, user)).to eq nil
+        idea = create(:idea, project: project, phases: [project.phases[2]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq nil
+      end
+
+      it "returns 'idea_not_in_current_phase' for an idea when it's not in the current phase" do
+        project = create(:project_with_current_phase, with_permissions: true,
+          current_phase_attrs: {participation_method: 'information'})
+        idea = create(:idea, project: project, phases: [project.phases[1]])
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'idea_not_in_current_phase'
       end
     end
 
     context " for continuous project" do
       it "returns 'commenting_disabled' when commenting is disabled in a continuous project" do
         project = create(:continuous_project, commenting_enabled: false)
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'commenting_disabled'
+        expect(service.commenting_disabled_reason_for_project(project, create(:user))).to eq 'commenting_disabled'
+        idea = create(:idea, project: project)
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'commenting_disabled'
       end
 
       it "returns 'not_permitted' when commenting is disabled in a continuous project" do
@@ -148,22 +172,28 @@ describe ParticipationContextService do
         permission.update!(permitted_by: 'groups', 
           group_ids: create_list(:group, 2).map(&:id)
           )
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'not_permitted'
+        expect(service.commenting_disabled_reason_for_project(project, create(:user))).to eq 'not_permitted'
+        idea = create(:idea, project: project)
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
       end
 
       it "returns nil when commenting is permitted in a continuous project" do
         project = create(:continuous_project, with_permissions: true)
-        expect(service.commenting_disabled_reason(project, create(:user))).to be_nil
+        expect(service.commenting_disabled_reason_for_project(project, create(:user))).to be_nil
+        idea = create(:idea, project: project)
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to be_nil
       end
 
       it "returns not_supported when in a survey project" do
         project = create(:continuous_survey_project, with_permissions: true)
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'not_supported'
+        expect(service.commenting_disabled_reason_for_project(project, create(:user))).to eq 'not_supported'
       end
 
       it "returns 'project_inactive' when the project is archived" do
         project = create(:continuous_project, publication_status: 'archived')
-        expect(service.commenting_disabled_reason(project, create(:user))).to eq 'project_inactive'
+        expect(service.commenting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
+        idea = create(:idea, project: project)
+        expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
       end
     end
   end
