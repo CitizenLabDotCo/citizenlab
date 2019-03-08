@@ -100,6 +100,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
             <FormattedMessage
               defaultMessage="Several third party tools are used on each of our participation platforms. These tools in turn use cookies to be able to function."
               id="app.containers.CookiePolicy.whatCookiesContent"
+              tagName="p"
             />
             <FormattedMessage
               defaultMessage="Analytics"
@@ -237,6 +238,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
 exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
 .c0 {
   color: #147985;
+  font-weight: 300;
   -webkit-text-decoration: underline;
   text-decoration: underline;
   margin: 0;

@@ -1,24 +1,41 @@
+// libraries
 import React, { Component } from 'react';
-import { clone, isEqual } from 'lodash-es';
-import { deleteCustomField, ICustomFieldData, updateCustomFieldForUsers, reorderCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import T from 'components/T';
-import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import styled from 'styled-components';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import Button from 'components/UI/Button';
-import Toggle from 'components/UI/Toggle';
+import { isEqual, clone } from 'lodash-es';
+
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import T from 'components/T';
+
+// components
 import FeatureFlag from 'components/FeatureFlag';
+import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import styled from 'styled-components';
+import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
+import Badge from 'components/admin/Badge';
+import Toggle from 'components/UI/Toggle';
+
+// services
+import { ICustomFieldData, deleteCustomField, updateCustomFieldForUsers, reorderCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 
 const Buttons = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const StyledBadge = styled(Badge)`
+  margin-left: 10px;
+`;
+
+interface State {
+  itemsWhileDragging: ICustomFieldData[] | null;
+  isProcessing: boolean;
+}
 
 export interface InputProps {}
 
@@ -26,11 +43,7 @@ interface DataProps {
   customFields: GetCustomFieldsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
-
-interface State {
-  itemsWhileDragging: ICustomFieldData[] | null;
-}
+interface Props extends InputProps, DataProps { }
 
 class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
@@ -38,6 +51,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       itemsWhileDragging: null,
+      isProcessing: false
     };
   }
 
@@ -52,24 +66,46 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   }
 
   handleOnDeleteClick = (customFieldId) => (event) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.customFieldDeletionConfirmation);
-    event.preventDefault();
+    if (!this.state.isProcessing) {
+      const deleteMessage = this.props.intl.formatMessage(messages.customFieldDeletionConfirmation);
+      event.preventDefault();
 
-    if (window.confirm(deleteMessage)) {
-      this.setState({ itemsWhileDragging: null });
-      deleteCustomField(customFieldId);
+      if (window.confirm(deleteMessage)) {
+        this.setState({ itemsWhileDragging: null, isProcessing: true });
+        deleteCustomField(customFieldId).then(() => {
+          this.setState({ isProcessing: false });
+        });
+      }
+    }
+  }
+
+  handleOnEnabledToggle = (field: ICustomFieldData) => () => {
+    if (!this.state.isProcessing) {
+      this.setState({ isProcessing: true });
+      updateCustomFieldForUsers(field.id, {
+        enabled: !field.attributes.enabled,
+      }).then(() => {
+        const listItems = this.listItems();
+
+        if (!listItems) return;
+        const newListItems = clone(listItems);
+        newListItems.splice(field.attributes.ordering, 1, { ...field, attributes: { ...field.attributes, enabled: !field.attributes.enabled } });
+        this.setState({ itemsWhileDragging: newListItems, isProcessing: false });
+      });
     }
   }
 
   handleDragRow = (fromIndex, toIndex) => {
-    const listItems = this.listItems();
+    if (!this.state.isProcessing) {
+      const listItems = this.listItems();
 
-    if (!listItems) return;
+      if (!listItems) return;
 
-    const itemsWhileDragging = clone(listItems);
-    itemsWhileDragging.splice(fromIndex, 1);
-    itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-    this.setState({ itemsWhileDragging });
+      const itemsWhileDragging = clone(listItems);
+      itemsWhileDragging.splice(fromIndex, 1);
+      itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
+      this.setState({ itemsWhileDragging });
+    }
   }
 
   handleDropRow = (fieldId: string, toIndex: number) => {
@@ -80,16 +116,11 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
     const field = listItems.find(listItem => listItem.id === fieldId);
 
     if (field && field.attributes.ordering !== toIndex) {
-      reorderCustomFieldForUsers(fieldId, { ordering: toIndex });
+      this.setState({ isProcessing: true });
+      reorderCustomFieldForUsers(fieldId, { ordering: toIndex }).then(() => this.setState({ isProcessing: false }));
     } else {
       this.setState({ itemsWhileDragging: null });
     }
-  }
-
-  handleOnEnabledToggle = (field) => () => {
-    updateCustomFieldForUsers(field.id, {
-      enabled: !field.attributes.enabled,
-    });
   }
 
   listItems = () => {
@@ -117,6 +148,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
             </Button>
           </ButtonWrapper>
         </FeatureFlag>
+
         <List key={listItems.length}>
           {
             listItems.map((field, index) => {
@@ -140,31 +172,34 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                   />
                   <TextCell className="expand">
                     <T value={field.attributes.title_multiloc} />
-                  </TextCell>
-                    {isBuiltInField(field) &&
-                      <div><FormattedMessage {...messages.systemField} /></div>
+                    {field.attributes.required &&
+                      <StyledBadge className="inverse"><FormattedMessage {...messages.required} /></StyledBadge>
                     }
-                    <Buttons>
-                      {!isBuiltInField(field) &&
-                        <Button
-                          className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                          onClick={this.handleOnDeleteClick(field.id)}
-                          style="text"
-                          icon="delete"
-                        >
-                          <FormattedMessage {...messages.deleteButtonLabel} />
-                        </Button>
-                      }
-
+                  </TextCell>
+                  {isBuiltInField(field) &&
+                    <div><FormattedMessage {...messages.systemField} /></div>
+                  }
+                  <Buttons>
+                    {!isBuiltInField(field) &&
                       <Button
-                        className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
-                        linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
-                        style="secondary"
-                        icon="edit"
+                        className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                        onClick={this.handleOnDeleteClick(field.id)}
+                        style="text"
+                        icon="delete"
                       >
-                        <FormattedMessage {...messages.editButtonLabel} />
+                        <FormattedMessage {...messages.deleteButtonLabel} />
                       </Button>
-                    </Buttons>
+                    }
+
+                    <Button
+                      className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
+                      linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
+                      style="secondary"
+                      icon="edit"
+                    >
+                      <FormattedMessage {...messages.editButtonLabel} />
+                    </Button>
+                  </Buttons>
                 </SortableRow>
               );
             })
@@ -175,10 +210,10 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
   }
 }
 
-const CustomFieldsWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(CustomFields));
+const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(CustomFields));
 
 export default (inputProps: InputProps) => (
-  <GetCustomFields>
-    {customFields => <CustomFieldsWithHoCs {...inputProps} customFields={customFields} />}
+  <GetCustomFields cache={false}>
+    {customFields => <CustomFieldsListWithHoCs {...inputProps} customFields={customFields} />}
   </GetCustomFields>
 );

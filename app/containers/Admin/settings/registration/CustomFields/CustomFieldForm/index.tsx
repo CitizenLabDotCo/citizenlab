@@ -16,6 +16,7 @@ import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { FormattedMessage } from 'utils/cl-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 export interface FormValues {
   enabled: boolean;
@@ -92,7 +93,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
-              label={<FormattedMessage {...messages.fieldTitle} />}
+              label={<><FormattedMessage {...messages.fieldTitle} /><InfoTooltip {...messages.fieldTitleTooltip} size="small" /></>}
               disabled={builtInField}
             />
             {touched.title_multiloc && <Error
@@ -105,7 +106,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props, FormVal
             <Field
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
-              label={<FormattedMessage {...messages.fieldDescription} />}
+              label={<><FormattedMessage {...messages.fieldDescription} /><InfoTooltip {...messages.fieldDescriptionTooltip} /></>}
               disabled={builtInField}
             />
             {touched.description_multiloc && <Error

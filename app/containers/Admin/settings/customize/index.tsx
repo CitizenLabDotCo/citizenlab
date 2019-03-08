@@ -66,6 +66,13 @@ interface IAttributesDiff {
   header_bg?: UploadFile;
 }
 
+interface IAttributesDiff {
+  settings?: Partial<ITenantSettings>;
+  homepage_info?: Multiloc;
+  logo?: UploadFile;
+  header_bg?: UploadFile;
+}
+
 type State = {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
@@ -332,7 +339,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       const { formatMessage } = this.props.intl;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
       const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
-
       const homepageInfoPageBodyMultiloc = !isNilOrError(homepageInfoPage) ? { ...homepageInfoPage.attributes.body_multiloc, ...attributesDiff.homepage_info } : { ...attributesDiff.homepage_info };
 
       return (
@@ -418,12 +424,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={(
-                  <>
-                    <FormattedMessage {...messages.headerTitleLabel} />
-                    <InfoTooltip {...messages.headerTitleTooltip} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.headerTitleLabel} />}
+                labelTooltip={<InfoTooltip {...messages.headerTitleTooltip} />}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -434,12 +436,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <InputMultiloc
                 type="text"
                 valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={(
-                  <>
-                    <FormattedMessage {...messages.headerSubtitleLabel} />
-                    <InfoTooltip {...messages.headerSubtitleTooltip} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
+                labelTooltip={<InfoTooltip {...messages.headerSubtitleTooltip} />}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
@@ -456,12 +454,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <QuillMultiloc
                 id="custom-section"
                 inAdmin
-                label={(
-                  <>
-                  <FormattedMessage {...messages.customSectionLabel} />
-                  <InfoTooltip {...messages.customSectionInfo} />
-                  </>
-                )}
+                label={<FormattedMessage {...messages.customSectionLabel} />}
+                labelTooltip={<InfoTooltip {...messages.customSectionInfo} />}
                 valueMultiloc={homepageInfoPageBodyMultiloc}
                 onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
               />

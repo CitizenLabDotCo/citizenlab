@@ -5,9 +5,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 import messages from '../../messages';
-import GetLocation, { GetLocationChildProps } from 'resources/GetLocation';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -28,6 +27,7 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     display: none;
   `}
+
   @media print {
     display: none;
   }
@@ -37,6 +37,7 @@ const NavigationIcon = styled(Icon)`
   fill: #999;
   height: 24px;
   width: 24px;
+
   .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary {
     fill: #999;
   }
@@ -54,8 +55,8 @@ const NavigationLabel = styled.div`
   width: 100%;
   color: #999;
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  margin-left: 10px;
+  font-weight: 400;
+  margin-left: 6px;
 `;
 
 const NavigationItem = styled(Link)`
@@ -67,6 +68,7 @@ const NavigationItem = styled(Link)`
   &.active {
     ${NavigationIcon} {
       fill: ${(props) => props.theme.colorMain};
+
       .cl-icon-primary, .cl-icon-accent, .cl-icon-secondary  {
         fill: ${(props) => props.theme.colorMain};
       }
@@ -74,7 +76,7 @@ const NavigationItem = styled(Link)`
 
     ${NavigationLabel} {
       color: ${(props) => props.theme.colorMain};
-      font-weight: 500;
+      font-weight: 400;
     }
   }
 `;
@@ -83,15 +85,13 @@ interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  location: GetLocationChildProps;
-}
+interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class MobileNavigation extends PureComponent<Props, State> {
+class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { location, className } = this.props;
     const urlSegments = (!isNilOrError(location) ? location.pathname.replace(/^\/|\/$/g, '').split('/') : ['']);
@@ -132,12 +132,4 @@ class MobileNavigation extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  location: <GetLocation />
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <MobileNavigation {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default withRouter<Props>(MobileNavigation);

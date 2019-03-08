@@ -34,6 +34,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // Typings
 import { CLError } from 'typings';
+import { adopt } from 'react-adopt';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const Container = styled.div``;
 
@@ -109,6 +111,10 @@ export interface IParticipationContextConfig {
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  surveys_enabled: boolean | null;
+  typeform_enabled: boolean | null;
+  google_forms_enabled: boolean | null;
+  survey_monkey_enabled: boolean | null;
 }
 
 interface InputProps {
@@ -338,7 +344,14 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { tenant, apiErrors } = this.props;
+    const {
+      tenant,
+      apiErrors,
+      surveys_enabled,
+      typeform_enabled,
+      survey_monkey_enabled,
+      google_forms_enabled
+    } = this.props;
     const className = this.props['className'];
     const {
       participation_method,
@@ -400,7 +413,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     </LabelText>)}
                 />
               </FeatureFlag>
-              <FeatureFlag name="surveys">
+              {surveys_enabled && (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
                 <Radio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
@@ -417,7 +430,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                       </p>
                     </LabelText>)}
                 />
-              </FeatureFlag>
+              }
               <Radio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
@@ -577,17 +590,22 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                       }}
                     />
                   </Label>
-                  {['typeform', 'survey_monkey', 'google_forms'].map((provider) => (
-                    <Radio
-                      onChange={this.handleSurveyProviderChange}
-                      currentValue={survey_service}
-                      value={provider}
-                      name="survey-provider"
-                      id={`survey-provider-${provider}`}
-                      label={<FormattedMessage {...messages[provider]} />}
-                      key={provider}
-                    />
-                  ))}
+                  {['typeform', 'survey_monkey', 'google_forms'].map((provider) => {
+                    if (this.props[`${provider}_enabled`]) {
+                      return (
+                        <Radio
+                          onChange={this.handleSurveyProviderChange}
+                          currentValue={survey_service}
+                          value={provider}
+                          name="survey-provider"
+                          id={`survey-provider-${provider}`}
+                          label={<FormattedMessage {...messages[provider]} />}
+                          key={provider}
+                        />
+                      );
+                    }
+                    return null;
+                  })}
                   <Error apiErrors={apiErrors && apiErrors.survey_service} />
                 </SectionField>
                 <SectionField>
@@ -612,10 +630,18 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
+const Data = adopt<DataProps, {}>({
+  surveys_enabled: <GetFeatureFlag name="surveys" />,
+  typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
+  google_forms_enabled: <GetFeatureFlag name="google_forms_surveys" />,
+  survey_monkey_enabled: <GetFeatureFlag name="surveymonkey_surveys" />,
+  tenant: <GetTenant />,
+});
+
 const ParticipationContextWithIntl = injectIntl(ParticipationContext);
 
 export default (inputProps: InputProps) => (
-  <GetTenant>
-    {tenant => <ParticipationContextWithIntl {...inputProps} tenant={tenant} />}
-  </GetTenant>
+  <Data>
+    {dataProps => <ParticipationContextWithIntl {...inputProps} {...dataProps} />}
+  </Data>
 );

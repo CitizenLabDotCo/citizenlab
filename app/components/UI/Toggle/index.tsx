@@ -16,7 +16,8 @@ const Container = styled.div`
 
 const ToggleContainer: any = styled.div`
   height: ${size + padding * 2}px;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 
   ${(props: any) => props.disabled && css`
     opacity: 0.25;
@@ -76,6 +77,7 @@ export type Props = {
   size?: 'small' | 'normal' | 'large';
   onChange: (event: React.FormEvent<any>) => void;
   className?: string;
+  id?: string;
 };
 
 type State = {};
@@ -88,10 +90,10 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, disabled, label, className } = this.props;
+    const { value, disabled, label, className, id } = this.props;
 
     return (
-      <Container className={`${className} ${label && 'hasLabel'}`}>
+      <Container id={id} className={`${className} ${label && 'hasLabel'}`}>
         <ToggleContainer onClick={this.handleOnClick} checked={value} disabled={disabled}>
           <input type="checkbox" role="checkbox" aria-checked={value} />
           <i />

@@ -12,4 +12,12 @@ export default styled.div`
   text-align: center;
   font-weight: 500;
   border: solid 1px ${(props: any) => props.color || colors.mediumGrey};
+
+  &.inverse {
+    color: #fff;
+    font-weight: 600;
+    background-color: ${(props: any) => props.color || colors.mediumGrey};
+    border: none;
+    padding: 4px 8px;
+  }
 `;

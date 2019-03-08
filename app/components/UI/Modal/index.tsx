@@ -26,11 +26,14 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
+const timeout = 400;
+const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+
 const ModalContent = styled.div`
-  -webkit-overflow-scroll: auto;
+  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  width: 100%;
+  -webkit-overflow-scrolling: touch;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -38,14 +41,20 @@ const CloseIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.mediumGrey};
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+  `}
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 15px;
-  right: 15px;
-  height: 32px;
-  width: 32px;
+  top: 20px;
+  right: 20px;
+  height: 30px;
+  width: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -55,10 +64,15 @@ const CloseButton = styled.button`
   &:hover,
   &:focus,
   &:active {
-    svg {
-      fill: ${colors.clBlueDark};
+    ${CloseIcon} {
+      fill: #000;
     }
   }
+
+  ${media.smallerThanMinTablet`
+    height: 18px;
+    width: 18px;
+  `}
 `;
 
 const HiddenSpan = styled.span`${hideVisually()}`;
@@ -83,15 +97,15 @@ const ModalContainer: any = styled(clickOutside)`
     &.fixedHeight {
       height: 80vh;
     }
+
     ${media.smallerThanMinTablet`
-      height: 100vh;
-      width: 100vw;
-      max-width: 100%;
+      width: 85vw;
+      max-height: 85vh;
     `}
   `}
 `;
 
-const Overlay = styled.div`
+const Overlay = styled(FocusTrap)`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -118,45 +132,76 @@ const Overlay = styled.div`
   &.modal-enter {
     opacity: 0;
 
-    ${ModalContent} {
+    ${ModalContainer} {
       opacity: 0;
       transform: translateY(-40px);
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: opacity ${timeout}ms ${easing};
 
-      ${ModalContent} {
+      ${ModalContainer} {
         opacity: 1;
         transform: translateY(0px);
-        transition: opacity 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                    transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+        transition: opacity ${timeout}ms ${easing},
+                    transform ${timeout}ms ${easing};
       }
     }
   }
 `;
 
 const HeaderContainer = styled.div`
-  background: white;
   width: 100%;
-  flex: 0 0 54px;
-  border-bottom: 2px solid ${colors.separation};
   display: flex;
+  flex-shrink: 0;
   flex-direction: row;
   align-items: center;
-  padding-left: 40px;
-  padding-right: 40px;
-  h1 {
-    font-size: ${fontSizes.medium}px;
-  }
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px ${colors.separation};
+  background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
 `;
 
-const FooterContainer = styled(HeaderContainer)`
-  border-bottom: none;
-  border-top: 2px solid ${colors.separation};
-  padding-left: 20px;
-  padding-right: 20px;
+const HeaderTitle = styled.h1`
+  color: ${colors.text};
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  margin-right: 45px;
+  padding: 0;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.xl}px;
+    margin-right: 35px;
+  `}
+`;
+
+const FooterContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border-top: solid 1px ${colors.separation};
+  background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
 `;
 
 const Skip = styled.div`
@@ -193,6 +238,7 @@ type Props = {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   label?: string;
+  children?: any;
 };
 
 type State = {};
@@ -315,48 +361,58 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     width = (isString(width) ? width : '650px');
 
     const element = (opened ? (
-      <CSSTransition classNames="modal" timeout={350} exit={false}>
-        <FocusTrap>
-          <Overlay
-            id="e2e-modal-container"
-            className={this.props.className}
-            aria-modal="true"
-            role="dialog"
-            aria-label={label}
+      <CSSTransition
+        classNames="modal"
+        in={opened}
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        exit={false}
+      >
+        <Overlay
+          id="e2e-modal-container"
+          className={this.props.className}
+          aria-modal="true"
+          role="dialog"
+          aria-label={label}
+        >
+          <ModalContainer
+            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+            width={width}
+            onClickOutside={this.clickOutsideModal}
+            hasHeaderOrFooter={header !== undefined || footer !== undefined}
           >
-            <ModalContainer
-              className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
-              width={width}
-              onClickOutside={this.clickOutsideModal}
-              hasHeaderOrFooter={header !== undefined || footer !== undefined}
+            <CloseButton
+              className="e2e-modal-close-button"
+              onClick={this.clickCloseButton}
+              innerRef={this.setCloseButtonRef}
             >
-              <CloseButton
-                className="e2e-modal-close-button"
-                onClick={this.clickCloseButton}
-                innerRef={this.setCloseButtonRef}
-              >
-                <HiddenSpan>
-                  <FormattedMessage {...messages.closeButtonLabel} />
-                </HiddenSpan>
-                <CloseIcon name="close3" />
-              </CloseButton >
+              <HiddenSpan>
+                <FormattedMessage {...messages.closeButtonLabel} />
+              </HiddenSpan>
+              <CloseIcon name="close3" />
+            </CloseButton >
 
-              {header && <HeaderContainer> {header} </HeaderContainer>}
-              <ModalContent
-                innerRef={this.setContentRef}
-              >
-                {children}
-              </ModalContent>
-              <Spacer />
+            {header &&
+              <HeaderContainer>
+                <HeaderTitle>{header}</HeaderTitle>
+              </HeaderContainer>
+            }
 
-              {footer && <FooterContainer> {footer} </FooterContainer>}
+            <ModalContent
+              innerRef={this.setContentRef}
+            >
+              {children}
+            </ModalContent>
+            <Spacer />
 
-              {hasSkipButton && skipText &&
-                <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
-              }
-            </ModalContainer>
-          </Overlay>
-        </FocusTrap>
+            {footer && <FooterContainer>{footer}</FooterContainer>}
+
+            {hasSkipButton && skipText &&
+              <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
+            }
+          </ModalContainer>
+        </Overlay>
       </CSSTransition>
     ) : undefined);
 

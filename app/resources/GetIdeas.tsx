@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean } from 'lodash-es';
+import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
@@ -91,8 +91,8 @@ export default class GetIdeas extends React.Component<Props, State> {
       // defaults
       queryParameters: {
         'page[number]': 1,
-        'page[size]': this.props.pageSize,
-        sort: this.props.sort,
+        'page[size]': props.pageSize,
+        sort: props.sort,
         project: undefined,
         phase: undefined,
         author: undefined,
@@ -108,12 +108,12 @@ export default class GetIdeas extends React.Component<Props, State> {
       hasMore: false,
       querying: true,
       loadingMore: false,
-      sortAttribute: getSortAttribute<Sort, SortAttribute>(this.props.sort),
-      sortDirection: getSortDirection<Sort>(this.props.sort),
+      sortAttribute: getSortAttribute<Sort, SortAttribute>(props.sort),
+      sortDirection: getSortDirection<Sort>(props.sort),
       currentPage: 1,
       lastPage: 1
     };
-    const queryParameters = this.getQueryParameters(this.state, this.props);
+    const queryParameters = this.getQueryParameters(this.state, props);
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
     this.subscriptions = [];
@@ -123,7 +123,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     const queryParameters = this.getQueryParameters(this.state, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
     const queryParametersInput$ = this.queryParameters$.pipe(
-      distinctUntilChanged((x, y) => shallowCompare(x, y))
+      distinctUntilChanged((x, y) => shallowCompare(x, y)),
     );
     const queryParametersSearch$ = queryParametersInput$.pipe(
       map(queryParameters => queryParameters.search),
@@ -153,11 +153,15 @@ export default class GetIdeas extends React.Component<Props, State> {
     if (!this.props.type || this.props.type === 'load-more') {
       this.subscriptions = [
         queryParametersOutput$.pipe(
-          mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-            const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-            const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-            const newQueryParameters: IQueryParameters = {
-              ...queryParameters,
+          mergeScan<IQueryParameters, IAccumulator>((acc, newQueryParameters) => {
+            const oldQueryParamsWithoutPageNumber = omit(cloneDeep(acc.queryParameters), 'page[number]');
+            const newQueryParamsWithoutPageNumber = omit(cloneDeep(newQueryParameters), 'page[number]');
+            const oldPageNumber = acc.queryParameters['page[number]'];
+            const newPageNumber = newQueryParameters['page[number]'];
+            const isLoadingMore = isEqual(oldQueryParamsWithoutPageNumber, newQueryParamsWithoutPageNumber) && oldPageNumber !== newPageNumber;
+            const pageNumber = (isLoadingMore ? newQueryParameters['page[number]'] : 1);
+            const queryParameters: IQueryParameters = {
+              ...newQueryParameters,
               'page[number]': pageNumber
             };
 
@@ -166,7 +170,7 @@ export default class GetIdeas extends React.Component<Props, State> {
               loadingMore: isLoadingMore,
             });
 
-            return ideasStream({ queryParameters: newQueryParameters }).observable.pipe(
+            return ideasStream({ queryParameters }).observable.pipe(
               map((ideas) => {
                 const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
                 const selfLink = get(ideas, 'links.self');
@@ -292,35 +296,40 @@ export default class GetIdeas extends React.Component<Props, State> {
   handleSortOnChange = (sort: Sort) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      sort
+      sort,
+      'page[number]': 1
     });
   }
 
   handleTopicsOnChange = (topics: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      topics
+      topics,
+      'page[number]': 1
     });
   }
 
   handleAreasOnchange = (areas: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      areas
+      areas,
+      'page[number]': 1
     });
   }
 
   handleIdeaStatusOnChange = (ideaStatus: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      idea_status: ideaStatus
+      idea_status: ideaStatus,
+      'page[number]': 1
     });
   }
 
   handlePublicationStatusOnChange = (publicationStatus: PublicationStatus) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      publication_status: publicationStatus
+      publication_status: publicationStatus,
+      'page[number]': 1
     });
   }
 
