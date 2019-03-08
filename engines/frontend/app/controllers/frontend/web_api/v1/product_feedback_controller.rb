@@ -8,9 +8,14 @@ module Frontend
         def create
           @product_feedback = ProductFeedback.new(product_feedback_params)
 
+          if current_user
+            @product_feedback.email ||= current_user.email
+            @product_feedback.locale ||= current_user.locale
+          end
+
           if @product_feedback.valid?
             event = {
-              event: 'product feedback created',
+              event: 'ProductFeedback created',
               properties: {
                 source: 'cl2-back',
                 **@product_feedback.attributes.symbolize_keys
