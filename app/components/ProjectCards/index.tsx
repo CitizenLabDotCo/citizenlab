@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty } from 'lodash-es';
+import { size, isEqual, isEmpty, isString } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'react-router';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -249,15 +253,17 @@ interface Props extends InputProps, DataProps {
 
 interface State {
   cardSizes: ('small' | 'medium' | 'large')[];
+  areas: string[];
 }
 
-class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   emptyArray: string[] = [];
 
   constructor(props) {
     super(props);
     this.state = {
-      cardSizes: []
+      cardSizes: [],
+      areas: []
     };
   }
 
@@ -265,8 +271,29 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.calculateProjectCardsLayout();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.calculateProjectCardsLayout();
+
+    const areas = this.getAreasFromQueryParams();
+
+    if (!isEqual(this.state.areas, areas)) {
+      this.setState({ areas });
+    }
+
+    if (!isEqual(prevState.areas, this.state.areas)) {
+      this.props.projects.onChangeAreas(this.state.areas);
+    }
+  }
+
+  getAreasFromQueryParams = () => {
+    let areas: string[] = [];
+    const { query } = this.props.location;
+
+    if (query.areas && !isEmpty(query.areas)) {
+      areas = (isString(query.areas) ? [query.areas] : query.areas);
+    }
+
+    return areas;
   }
 
   calculateProjectCardsLayout = () => {
@@ -340,8 +367,13 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleAreasOnChange = (areas: string[]) => {
-    trackEventByName(tracks.clickOnProjectsAreaFilter);
-    this.props.projects.onChangeAreas(areas);
+    if (!isEqual(this.state.areas, areas)) {
+      trackEventByName(tracks.clickOnProjectsAreaFilter);
+      const { pathname } = removeLocale(this.props.location.pathname);
+      const query = { ...this.props.location.query, areas };
+      const search = `?${stringify(query, { indices: false, encode: false })}`;
+      clHistory.replace({ pathname, search });
+    }
   }
 
   render() {
@@ -461,7 +493,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(ProjectCards));
+const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(withRouter(ProjectCards)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
