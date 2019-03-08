@@ -16,7 +16,7 @@ pipeline {
     stage('Push tenant templates to backup repository prrt') {
       steps {
         git branch: 'master',
-            credentialsId: 'b5b0b617-aa27-42ad-a760-1badcb1647d1',
+            credentialsId: 'local-ssh-user',
             url: 'ssh://git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         echo 'Prrt'
         sh 'git clone git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
