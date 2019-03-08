@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
+import MediaQuery from 'react-responsive';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -28,7 +29,7 @@ import { LEGAL_PAGES } from 'services/pages';
 import styled from 'styled-components';
 import { rgba } from 'polished';
 import Polymorph from 'components/Polymorph';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -187,6 +188,10 @@ const PagesNav = styled.nav`
 
   li {
     display: inline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
 
     &:not(:first-child):before {
       content: '•';
@@ -200,6 +205,8 @@ const PagesNav = styled.nav`
     text-align: center;
     justify-content: center;
     margin-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   `}
 `;
 
@@ -450,7 +457,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                   </CitizenlabLink>
                 </PoweredBy>
 
-                <StyledSendFeedback showFeedbackText={true} />
+                <MediaQuery minWidth={viewportWidths.smallTablet}>
+                  {matches => <StyledSendFeedback showFeedbackText={!matches} />}
+                 </MediaQuery>
               </Right>
             </SecondLineInner>
           </SecondLine>
