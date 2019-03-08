@@ -15,6 +15,7 @@ export interface Props {
 const FullPageContainer: any = styled.div`
   position: fixed;
   top: ${props => props.theme.menuHeight}px;
+  // 260px is the width of the admin sidebar
   left: ${(props: Props) => props.admin ? '260px' : '0'};
   width: ${(props: Props) => props.admin ? 'calc(100% - 260px)' : '100%'}; ;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
