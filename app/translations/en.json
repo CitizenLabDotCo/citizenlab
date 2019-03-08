@@ -75,7 +75,7 @@
   "app.components.IdeasMap.register": "Create an account",
   "app.components.IdeasMap.seeIdea": "See the full idea",
   "app.components.IdeasShow.OfficialFeedback.cancel": "Cancel",
-  "app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost": "delete",
+  "app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost": "Delete",
   "app.components.IdeasShow.OfficialFeedback.deletionConfirmation": "Are you sure you want to delete this official update?",
   "app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost": "Edit",
   "app.components.IdeasShow.OfficialFeedback.lastEdition": "last edited on {date}",
