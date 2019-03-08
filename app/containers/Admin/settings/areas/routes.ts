@@ -1,18 +1,17 @@
 import Loadable from 'react-loadable';
-import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'settings/areas',
   name: 'admin settings areas',
   component: Loadable({
     loader: () => import('../'),
-    loading: LoadableLoadingAdmin
+    loading: () => null
   }),
   indexRoute: {
     name: 'admin setting areas index',
     component: Loadable({
       loader: () => import('./all'),
-      loading: LoadableLoadingAdmin
+      loading: () => null
     }),
   },
   childRoutes: [
@@ -21,7 +20,7 @@ export default () => ({
       name: 'admin setting areas new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
     {
@@ -29,7 +28,7 @@ export default () => ({
       name: 'admin setting area edit',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: LoadableLoadingAdmin
+        loading: () => null
       }),
     },
   ],

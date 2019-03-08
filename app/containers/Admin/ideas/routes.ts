@@ -6,13 +6,15 @@ export default () => ({
   name: 'admin Ideas',
   component: Loadable({
     loader: () => import('containers/Admin/ideas'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
+    delay: 500
   }),
   indexRoute: {
     name: 'admin ideas index',
     component: Loadable({
       loader: () => import('containers/Admin/ideas/all'),
-      loading: LoadableLoadingAdmin
+      loading: LoadableLoadingAdmin,
+      delay: 500
     }),
   },
 });
