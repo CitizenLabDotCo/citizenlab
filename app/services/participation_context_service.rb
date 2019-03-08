@@ -10,6 +10,7 @@ class ParticipationContextService
   COMMENTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_supported: 'not_supported',
+    idea_not_in_current_phase: 'idea_not_in_current_phase',
     commenting_disabled: 'commenting_disabled',
     not_permitted: 'not_permitted'
   }
@@ -76,7 +77,22 @@ class ParticipationContextService
     end
   end
 
-  def commenting_disabled_reason project, user
+  def commenting_disabled_reason_for_idea idea, user
+    active_context = get_participation_context idea.project
+    if !active_context
+      COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, active_context
+      COMMENTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    elsif !active_context.commenting_enabled
+      COMMENTING_DISABLED_REASONS[:commenting_disabled]
+    elsif !context_permission(active_context, 'commenting')&.granted_to?(user)
+      COMMENTING_DISABLED_REASONS[:not_permitted]
+    else
+      nil
+    end
+  end
+
+  def commenting_disabled_reason_for_project project, user
     context = get_participation_context project
     if !context
       COMMENTING_DISABLED_REASONS[:project_inactive]
@@ -173,7 +189,7 @@ class ParticipationContextService
   def future_commenting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
     end
   end
 
