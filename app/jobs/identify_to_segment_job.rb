@@ -24,10 +24,10 @@ class IdentifyToSegmentJob < ApplicationJob
       locale: user.locale,
       birthday: user.birthyear,
       gender: user.gender,
-      is_super_admin: user.super_admin?,
-      is_admin: user.admin?,
-      is_project_moderator: user.project_moderator?,
-      highest_role: user.highest_role,
+      isSuperAdmin: user.super_admin?,
+      isAdmin: user.admin?,
+      isProjectModerator: user.project_moderator?,
+      highestRole: user.highest_role,
     }
     if tenant
       log_to_segment_service.add_tenant_properties(traits, tenant)
