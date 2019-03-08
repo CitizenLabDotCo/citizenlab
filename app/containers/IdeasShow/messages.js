@@ -272,7 +272,7 @@ export default defineMessages({
   },
   commentingDisabledIdeaNotInCurrentPhase: {
     id: 'app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase',
-    defaultMessage: 'Commenting on this idea is impossible since it\'s no longer or net yet in consideration',
+    defaultMessage: 'Commenting on this idea is impossible since it\'s no longer or not yet in consideration.',
   },
   commentingNotPermitted: {
     id: 'app.components.IdeasShow.commentingNotPermitted',
