@@ -55,18 +55,18 @@ export interface IIdeaData {
         voting:{
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'not_in_active_context' | 'not_permitted' | null
+          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | null
           cancelling_enabled: boolean,
         },
         commenting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | null,
+          disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null,
         },
         budgeting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'not_in_active_context' | 'not_permitted' | null,
+          disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | null,
         }
       }
     }
