@@ -9,6 +9,7 @@ class ParticipationContextService
 
   COMMENTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    not_supported: 'not_supported',
     commenting_disabled: 'commenting_disabled',
     not_permitted: 'not_permitted'
   }
@@ -50,15 +51,6 @@ class ParticipationContextService
     end
   end
 
-  def get_last_active_participation_context idea
-    project = idea.project
-    if project.continuous?
-      project
-    elsif project.timeline?
-      idea.phases.sort_by(&:end_at).last
-    end
-  end
-
   def in_current_context? idea, current_context=nil
     project = idea.project
     current_context ||= get_participation_context project
@@ -84,18 +76,15 @@ class ParticipationContextService
     end
   end
 
-  def commenting_disabled_reason idea, user
-    context = get_participation_context idea.project
-    last_context = get_last_active_participation_context idea
-    if !context || !last_context
+  def commenting_disabled_reason project, user
+    context = get_participation_context project
+    if !context
       COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.can_contain_ideas?
+      COMMENTING_DISABLED_REASONS[:not_supported]
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      COMMENTING_DISABLED_REASONS[:not_permitted]
-    elsif !last_context.commenting_enabled
-      COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    elsif !context_permission(last_context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
     else
       nil
