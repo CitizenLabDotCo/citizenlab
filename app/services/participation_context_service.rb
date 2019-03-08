@@ -201,7 +201,7 @@ class ParticipationContextService
   def future_voting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
     end
   end
 
@@ -230,7 +230,7 @@ class ParticipationContextService
   end
 
   def context_permission context, action
-    context.permissions.where(action: action).first
+    context.permissions.find{|permission| permission.action == action}
   end
 
 end
