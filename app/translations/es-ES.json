@@ -76,6 +76,7 @@
   "app.components.IdeasMap.seeIdea": "Ver la idea completa",
   "app.components.IdeasShow.backToOriginalContent": "Mostrar contenido original",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} has actualizado el estatus de esta idea} published {{userName} creaste una idea} changed_title {{userName} actualizaste el título de esta idea} changed_body {{userName} actualizaste la descripción de esta idea}}",
+  "app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase": "",
   "app.components.IdeasShow.commentingDisabledInContext": "Comentar ideas en '{projectName}' ahora no es posible.",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Comentar esta idea no es posible ya que '{projectName}' ya no está activo.",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "No todos los usuarios pueden comentar. Por favor {signInLink} para verificar si puedes hacerlo.",

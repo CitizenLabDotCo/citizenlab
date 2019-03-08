@@ -76,6 +76,7 @@
   "app.components.IdeasMap.seeIdea": "Se hele ideen",
   "app.components.IdeasShow.backToOriginalContent": "Vis originalt indhold",
   "app.components.IdeasShow.changeLogEntry": "{changeType, select, changed_status {{userName} har opdateret status på denne idé} published {{userName} oprettede denne idé} changed_title {{userName} opdaterede titlen på denne idé} changed_body {{userName} opdaterede beskrivelsen af denne idé}}",
+  "app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase": "",
   "app.components.IdeasShow.commentingDisabledInContext": "Kommentering på ideer i '{projectName}' er deaktiveret i øjeblikket.",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Det er ikke muligt at kommentere på denne idé, da '{projectName}' ikke længere er aktivt eller ikke aktivt endnu.",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "Ikke alle brugere har tilladelse til at kommentere. Brug venligst {signInLink} for at se om du har tilladelse.",

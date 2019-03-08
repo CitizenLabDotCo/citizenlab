@@ -76,6 +76,7 @@
   "app.components.IdeasMap.seeIdea": "",
   "app.components.IdeasShow.backToOriginalContent": "",
   "app.components.IdeasShow.changeLogEntry": "",
+  "app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase": "",
   "app.components.IdeasShow.commentingDisabledInContext": "",
   "app.components.IdeasShow.commentingDisabledProjectInactive": "",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "",
