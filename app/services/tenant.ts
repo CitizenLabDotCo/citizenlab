@@ -31,6 +31,7 @@ export interface ITenantSettings {
     color_menu_bg?: string | null;
     currency: string;
     custom_onboarding_fallback_message?: Multiloc | null;
+    currently_working_on_text?: Multiloc | null;
   };
   demographic_fields?: {
     allowed: boolean;
@@ -62,6 +63,10 @@ export interface ITenantSettings {
     client_id: string;
     logo_url: string;
     login_mechanism_name: string;
+  };
+  manual_project_sorting?: {
+    allowed: boolean;
+    enabled: boolean;
   };
   pages?: TenantFeature;
   groups?: TenantFeature;

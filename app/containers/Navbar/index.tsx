@@ -4,6 +4,7 @@ import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import Loadable from 'react-loadable';
+import { trackEventByName } from 'utils/analytics';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -14,7 +15,6 @@ import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // resources
@@ -53,8 +53,8 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
-  border-bottom: 1px solid #EAEAEA;
+  /* box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06); */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   z-index: 999;
   -webkit-transform: translateZ(0);
 
@@ -161,6 +161,8 @@ const NavigationItem = styled(Link)`
 `;
 
 const NavigationItemText = styled.span`
+  white-space: nowrap;
+
   &:not(.sign-up-span) {
     background-color: #fff;
   }
@@ -288,21 +290,22 @@ const RightItem: any = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 40px;
+  margin-left: 42px;
+  white-space: nowrap;
 
   &.noLeftMargin {
     margin-left: 0px;
   }
 
   ${media.smallerThanMinTablet`
-    margin-left: 30px;
+    margin-left: 25px;
   `}
 `;
 
 const LogInLink = NavigationItem.extend`
   &:focus,
   &:hover {
-    border-top-color: ${(props) => rgba(props.theme.colorSecondary, .3)};
+    border-top-color: ${({ theme }) => rgba(theme.colorSecondary, .3)};
   }
 
   ${media.smallerThanMinTablet`
@@ -330,14 +333,6 @@ const SignUpLink = NavigationItem.extend`
   `}
 `;
 
-// const StyledLanguageSelector = styled(LanguageSelector)`
-//   padding-left: 40px;
-
-//   &.notLoggedIn {
-//     padding-left: 20px;
-//   }
-// `;
-
 interface InputProps {}
 
 interface DataProps {
@@ -345,10 +340,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   projects: GetProjectsChildProps;
-}
-
-interface ITracks {
-  clickSignUpLink: () => void;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -363,18 +354,26 @@ const LoadableLanguageSelector = Loadable({
   render(loaded, props) {
     const LanguageSelector = loaded.default;
     const StyledLanguageSelector = styled(LanguageSelector)`
-      padding-left: 40px;
+      padding-left: 36px;
 
       &.notLoggedIn {
         padding-left: 20px;
+
+        ${media.smallerThanMinTablet`
+          padding-left: 10px;
+        `}
       }
+
+      ${media.smallerThanMinTablet`
+        padding-left: 15px;
+      `}
     `;
 
     return <StyledLanguageSelector {...props} />;
   }
 });
 
-class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & ITracks, State> {
+class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -394,8 +393,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
   }
 
   trackSignUpLinkClick = () => {
-    // track click for analytics
-    this.props.clickSignUpLink();
+    trackEventByName(tracks.clickSignUpLink.name);
   }
 
   preloadLanguageSelector = () => {
@@ -471,11 +469,15 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                         ))}
                       </>
                     )}
-                    footer={(
-                      <ProjectsListFooter to={'/projects'}>
-                        <FormattedMessage {...messages.allProjects} />
-                      </ProjectsListFooter>
-                    )}
+                    footer={
+                      <>
+                        {projectsList.length > 9 &&
+                          <ProjectsListFooter to={'/projects'}>
+                            <FormattedMessage {...messages.allProjects} />
+                          </ProjectsListFooter>
+                        }
+                      </>
+                    }
                   />
                 </NavigationDropdown>
               }
@@ -552,10 +554,10 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
 });
 
-const NavbarWithHOCs = withRouter(injectTracks(tracks)(injectIntl(Navbar)));
+const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <NavbarWithHOCs {...(inputProps as InputProps & WithRouterProps & InjectedIntlProps)} {...dataProps} />}
+    {dataProps => <NavbarWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

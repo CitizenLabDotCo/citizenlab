@@ -6,7 +6,7 @@ module.exports = {
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
   },
-  setupTestFrameworkScriptFile: "<rootDir>/internals/jest/setup.js",
+  setupFilesAfterEnv: ["<rootDir>/internals/jest/setup.js"],
   testMatch: [
     "**/?(*.)+(spec|test).(js|jsx|ts|tsx)"
   ],

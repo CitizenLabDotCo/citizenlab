@@ -7,7 +7,7 @@ import { SurveyServices, ParticipationMethod } from './participationContexts';
 const apiEndpoint = `${API_PATH}/projects`;
 
 type Visibility = 'public' | 'groups' | 'admins';
-type ProcessType = 'continuous' | 'timeline';
+export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
@@ -22,6 +22,8 @@ export interface IProjectData {
     slug: string;
     header_bg: ImageSizes;
     ideas_count: number;
+    comments_count: number;
+    avatars_count: number;
     created_at: string;
     updated_at: string;
     visible_to: Visibility;
@@ -47,6 +49,9 @@ export interface IProjectData {
     areas: {
       data: IRelationship[]
     }
+    avatars: {
+      data: IRelationship[]
+    }
     action_descriptor: {
       data: {
         posting: {
@@ -59,6 +64,9 @@ export interface IProjectData {
           disabled_reason: SurveyDisabledReasons | null;
         }
       }
+    }
+    current_phase: {
+      data: IRelationship | null;
     }
     user_basket: {
       data: IRelationship | null;

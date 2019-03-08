@@ -32,8 +32,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   border-radius: 5px;
-  border: solid 1px ${colors.separation};
   background: #fff;
+  border: solid 1px ${colors.separation};
 
   ${media.smallerThanMaxTablet`
     flex-direction: column;
@@ -70,8 +70,8 @@ const EventDates = styled.div`
 
 const EventDate = styled.div`
   color: #fff;
-  font-size: ${fontSizes.xxl}px;
-  line-height: 27px;
+  font-size: ${fontSizes.xl}px;
+  line-height: 25px;
   font-weight: 500;
   display: flex;
   flex-direction: column;
@@ -81,8 +81,8 @@ const EventDate = styled.div`
 
 const EventDatesSeparator = styled.div`
   color: #fff;
-  font-size: ${fontSizes.xxl}px;
-  line-height: 27px;
+  font-size: ${fontSizes.xl}px;
+  line-height: normal;
   font-weight: 500;
   text-align: center;
   padding-top: 5px;
@@ -190,9 +190,9 @@ const MapIcon = styled(Icon)`
 
 const EventLocationAddress = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.large}px;
-  font-weight: 500;
-  line-height: 24px;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
   display: flex;
   align-items: center;
   overflow-wrap: break-word;

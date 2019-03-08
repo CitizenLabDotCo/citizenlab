@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { isString, isEqual, get, omitBy, isNil } from 'lodash-es';
+import { isString, isEqual, get, omitBy, isNil, omit, cloneDeep } from 'lodash-es';
 import { Subscription, BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, mergeScan, map } from 'rxjs/operators';
 import { projectsStream, IProjectData } from 'services/projects';
@@ -17,7 +17,6 @@ export interface InputProps {
   areas?: string[];
   topics?: string[];
   publicationStatuses: PublicationStatus[];
-  hideAllFilters?: boolean;
   filterCanModerate?: boolean;
 }
 
@@ -68,7 +67,7 @@ export default class GetProjects extends Component<Props, State> {
     this.state = {
       // defaults
       queryParameters: {
-        'page[number]': (props.pageNumber || 1),
+        'page[number]': 1,
         'page[size]': (props.pageSize || 250),
         sort: props.sort,
         areas: props.areas,
@@ -81,7 +80,7 @@ export default class GetProjects extends Component<Props, State> {
       loadingMore: false
     };
 
-    const queryParameters = this.getQueryParameters(this.state, this.props);
+    const queryParameters = this.getQueryParameters(this.state, props);
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.subscriptions = [];
   }
@@ -93,11 +92,15 @@ export default class GetProjects extends Component<Props, State> {
     this.subscriptions = [
       this.queryParameters$.pipe(
         distinctUntilChanged((x, y) => shallowCompare(x, y)),
-        mergeScan<IQueryParameters, IAccumulator>((acc, queryParameters) => {
-          const isLoadingMore = (acc.queryParameters['page[number]'] !== queryParameters['page[number]']);
-          const pageNumber = (isLoadingMore ? queryParameters['page[number]'] : 1);
-          const newQueryParameters: IQueryParameters = {
-            ...queryParameters,
+        mergeScan<IQueryParameters, IAccumulator>((acc, newQueryParameters) => {
+          const oldQueryParamsWithoutPageNumber = omit(cloneDeep(acc.queryParameters), 'page[number]');
+          const newQueryParamsWithoutPageNumber = omit(cloneDeep(newQueryParameters), 'page[number]');
+          const oldPageNumber = acc.queryParameters['page[number]'];
+          const newPageNumber = newQueryParameters['page[number]'];
+          const isLoadingMore = isEqual(oldQueryParamsWithoutPageNumber, newQueryParamsWithoutPageNumber) && oldPageNumber !== newPageNumber;
+          const pageNumber = (isLoadingMore ? newQueryParameters['page[number]'] : 1);
+          const queryParameters: IQueryParameters = {
+            ...newQueryParameters,
             'page[number]': pageNumber
           };
 
@@ -106,7 +109,7 @@ export default class GetProjects extends Component<Props, State> {
             loadingMore: isLoadingMore,
           });
 
-          return projectsStream({ queryParameters: newQueryParameters }).observable.pipe(map((projects) => {
+          return projectsStream({ queryParameters }).observable.pipe(map((projects) => {
             const selfLink = get(projects, 'links.self');
             const lastLink = get(projects, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
@@ -171,28 +174,32 @@ export default class GetProjects extends Component<Props, State> {
   handleSortOnChange = (sort: Sort) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      sort
+      sort,
+      'page[number]': 1
     });
   }
 
   handleAreasOnChange = (areas: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      areas
+      areas,
+      'page[number]': 1
     });
   }
 
   handleTopicsOnChange = (topics: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      topics
+      topics,
+      'page[number]': 1
     });
   }
 
   handlePublicationStatusOnChange = (publicationStatus: SelectedPublicationStatus) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      publication_statuses: (publicationStatus === 'all' ? ['published', 'archived'] : [publicationStatus])
+      publication_statuses: (publicationStatus === 'all' ? ['published', 'archived'] : [publicationStatus]),
+      'page[number]': 1
     });
   }
 

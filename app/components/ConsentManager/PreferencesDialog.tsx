@@ -11,20 +11,20 @@ import styled from 'styled-components';
 import { fontSizes, media } from 'utils/styleUtils';
 
 export const ContentContainer = styled.div`
+  padding: 30px;
   background: white;
-  padding: 20px;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+
   h1 {
     font-size: ${fontSizes.medium}px;
   }
+
   h2 {
     font-size: ${fontSizes.large}px;
   }
+
   ${media.smallerThanMaxTablet`
     margin: 0;
+    padding: 20px;
   `}
 `;
 

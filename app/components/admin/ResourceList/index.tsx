@@ -74,7 +74,7 @@ export const StyledRow = styled.div`
   }
 
   > .primary {
-    font-size: ${fontSizes.base}px
+    font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 20px;
   }

@@ -15,6 +15,10 @@ export interface IAvatarData {
   };
 }
 
+export interface IAvatar {
+  data: IAvatarData;
+}
+
 export interface IAvatars {
   data: IAvatarData[];
   meta: {
@@ -25,7 +29,7 @@ export interface IAvatars {
 /*
 * cf http://developers.citizenlab.co/api-docs/frontweb_api/epic/CL2-2838-landing-page-i1/avatars/list_random_user_avatars.html
 * limit: number of avaters returned, defaults to 5, max 10.
-* context_type: when null, context is the wwhole platform.
+* context_type: when null, context is the whole platform.
 */
 interface IAvatarsQueryParams {
   limit?: number | null;
@@ -37,6 +41,10 @@ interface IStreamAvatarsParams extends IStreamParams {
   queryParameters?: IAvatarsQueryParams;
 }
 
-export function avatarsStream(streamParams: IStreamAvatarsParams | null = null) {
+export function avatarByIdStream(avatarId: string) {
+  return streams.get<IAvatar>({ apiEndpoint: `${API_PATH}/avatars/${avatarId}` });
+}
+
+export function randomAvatarsStream(streamParams: IStreamAvatarsParams | null = null) {
   return streams.get<IAvatars>({ apiEndpoint, ...streamParams, cacheStream: false });
 }

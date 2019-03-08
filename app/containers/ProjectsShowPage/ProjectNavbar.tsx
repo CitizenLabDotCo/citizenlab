@@ -25,7 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const ProjectNavbarWrapper = styled.nav`
-  background-color: #002332;
+  background: #002332;
   color: #fff;
   font-size: ${fontSizes.base}px;
   position: fixed; /* IE11 fallback */
@@ -33,7 +33,7 @@ const ProjectNavbarWrapper = styled.nav`
   top: ${(props) => props.theme.menuHeight}px;
   z-index: 10;
   width: 100%;
-  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMinTablet`
     overflow-x: scroll;
@@ -65,16 +65,21 @@ const ProjectNavbarItems = styled.ul`
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
-  flex: 0 0 18px;
-  height: 18px;
   width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
   fill: #fff;
   margin-right: 9px;
   transition: fill 100ms ease-out;
 
+  /*
   &.idea {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
     margin-top: -2px;
   }
+  */
 `;
 
 const InfoIcon = ProjectNavbarIcon.extend`
@@ -260,7 +265,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-ideas-link"
                   >
-                    <ProjectNavbarIcon name="idea" className="idea" />
+                    <ProjectNavbarIcon name="idea2" className="idea" />
                     <FormattedMessage {...messages.navIdeas} />
                   </ProjectNavbarLink>
                 }

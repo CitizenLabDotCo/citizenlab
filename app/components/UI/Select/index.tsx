@@ -46,6 +46,16 @@ export default class Select extends React.PureComponent<Props, State> {
     }
   }
 
+  handleOpen = () => {
+    const innerForm = document.getElementById('rules-group-inner-form');
+
+    if (innerForm) {
+      setTimeout(() => {
+        innerForm.scrollTop = innerForm.scrollHeight;
+      }, 10);
+    }
+  }
+
   render() {
     const className = this.props['className'];
     const { id, borderColor } = this.props;
@@ -77,6 +87,7 @@ export default class Select extends React.PureComponent<Props, State> {
         onBlur={this.props.onBlur}
         isDisabled={disabled}
         styles={styles}
+        onMenuOpen={this.handleOpen}
       />
     );
   }

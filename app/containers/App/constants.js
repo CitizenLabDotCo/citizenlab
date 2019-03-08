@@ -9,14 +9,20 @@ exports.CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz
 exports.API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 exports.API_PORT = process.env.API_PORT || 4000;
 exports.DEFAULT_LOCALE = 'en';
+// the locales we "support" :
+// platformBaseUrl/{oneOfTheseStrings}/{anything we have a route for}
+// - won't 404
+// - will replace the oneOfTheseStrings with authUser's locale if there is one
+// - else, will replace the oneOfTheseStrings with the one if the cookie if it exists
+// - else, will replce the oneOfTheseStrings with the first locale of the platfom (default)
 exports.locales = [
     'en',
     'fr',
     'de',
     'nl',
     'nb',
-    'nb',
     'da',
+    'es',
     'de-DE',
     'en-GB',
     'en-CA',
@@ -25,8 +31,11 @@ exports.locales = [
     'nl-BE',
     'nl-NL',
     'da-DK',
-    'nb-NO'
+    'nb-NO',
+    'es-ES',
+    'es-CL'
 ];
+// the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
     en: 'English',
     'en-GB': 'English (Great Britain)',
@@ -38,6 +47,8 @@ exports.appLocalePairs = {
     'de-DE': 'Deutsch',
     'da-DK': 'Dansk',
     'nb-NO': 'Norsk (Bokmål)',
+    'es-ES': 'Español (España)',
+    'es-CL': 'Español (Chile)',
     ach: 'Acholi'
 };
 exports.shortenedAppLocalePairs = {
@@ -51,5 +62,7 @@ exports.shortenedAppLocalePairs = {
     'de-DE': 'Deutsch',
     'da-DK': 'Dansk',
     'nb-NO': 'Norsk',
+    'es-ES': 'Español',
+    'es-CL': 'Español',
     ach: 'Acholi'
 };

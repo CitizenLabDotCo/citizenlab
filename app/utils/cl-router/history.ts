@@ -5,10 +5,13 @@ import updateLocationDescriptor from 'utils/cl-router/updateLocationDescriptor';
 // tslint:disable-next-line:no-vanilla-routing
 import { browserHistory } from 'react-router';
 
+// overrides push and replace methods so they update the location with the current locale from the locale stream
 function historyMethod(method: 'push' | 'replace', location: LocationDescriptor): void {
+  // 'gets' current locale
   localeStream().observable.pipe(
     first()
   ).subscribe((locale) => {
+    // calls the vanilla react-router method with updated location
     browserHistory[method](updateLocationDescriptor(location, locale));
   });
 }

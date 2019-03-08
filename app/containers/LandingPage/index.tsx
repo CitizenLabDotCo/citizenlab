@@ -1,28 +1,30 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
-import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaCards from 'components/IdeaCards';
 import ProjectCards from 'components/ProjectCards';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import SignedOutHeader from './SignedOutHeader';
 import SignedInHeader from './SignedInHeader';
+import T from 'components/T';
+import Fragment from 'components/Fragment';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetPage, { GetPageChildProps } from 'resources/GetPage';
 
 // utils
-import { trackEvent } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +33,7 @@ import { getLocalized } from 'utils/i18n';
 
 // style
 import styled from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
   height: 100%;
@@ -45,14 +47,10 @@ const Container: any = styled.div`
   ${media.smallerThanMaxTablet`
     min-height: auto;
   `}
-
-  ${media.smallerThanMinTablet`
-    background: #f9f9fa;
-  `}
 `;
 
 const FooterBanner: any = styled.div`
-  background: ${props => props.theme.colorMain};
+  background: ${({ theme }) => theme.colorMain};
   width: 100%;
   min-height: 300px;
   margin: 0;
@@ -78,7 +76,7 @@ const FooterBanner: any = styled.div`
   }
 
   .Button.button.primary-inverse {
-    color: ${(props: any) => props.theme.colorText};
+    color: ${({ theme }) => theme.colorText};
   }
 `;
 
@@ -95,10 +93,29 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-bottom: 10px;
 `;
 
-const ProjectsStyledContentContainer = StyledContentContainer.extend``;
+const ProjectsStyledContentContainer: any = StyledContentContainer.extend`
+  padding-bottom: 30px;
+  background: ${colors.background};
+  border-bottom: solid 1px #eaeaea;
 
-const IdeasStyledContentContainer = StyledContentContainer.extend`
-  background: #f9f9fa;
+  ${media.smallerThanMinTablet`
+    padding-bottom: 25px;
+  `}
+`;
+
+const CustomSectionContentContainer = styled(ContentContainer)`
+  width: 100%;
+  max-width: 750px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 80px;
+  padding-bottom: 80px;
+  background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 40px;
+    padding-bottom: 40px;
+  `}
 `;
 
 const Section = styled.div`
@@ -113,41 +130,11 @@ const Section = styled.div`
 `;
 
 const ProjectSection = Section.extend`
-  padding-top: 90px;
+  padding-top: 65px;
   padding-bottom: 90px;
 
   ${media.smallerThanMinTablet`
     padding-top: 40px;
-  `}
-`;
-
-const SectionHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 35px;
-
-  ${media.smallerThanMaxTablet`
-    margin-bottom: 20px;
-  `}
-`;
-
-const SectionTitle = styled.h2`
-  color: #333;
-  font-size: ${fontSizes.xxxl}px;
-  line-height: 32px;
-  font-weight: 500;
-  white-space: normal;
-  display: flex;
-  align-items: flex-end;
-  margin: 0;
-  padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    width: 100%;
-    font-size: ${fontSizes.xxl}px;
-    line-height: 30px;
   `}
 `;
 
@@ -163,13 +150,13 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  projects: GetProjectsChildProps;
   authUser: GetAuthUserChildProps;
+  homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class LandingPage extends PureComponent<Props, State> {
   componentDidMount() {
@@ -198,26 +185,22 @@ class LandingPage extends PureComponent<Props, State> {
     clHistory.push('/ideas/new');
   }
 
-  goToSignUpPage = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'header' } } });
-    clHistory.push('/sign-up');
-  }
-
   clickCreateAccountCTAFooter = () => {
-    trackEvent({ ...tracks.clickCreateAccountCTA, properties: { extra: { location: 'footer' } } });
+    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
 
   render() {
-    const { locale, tenant, projects, authUser } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
       const tenantHeaderSlogan = (headerSloganMultiLoc ? getLocalized(headerSloganMultiLoc, locale, tenantLocales) : null);
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const subtitle = (tenantHeaderSlogan ? tenantHeaderSlogan : <FormattedMessage {...messages.subtitleCity} />);
       const hasHeaderImage = (tenantHeaderImage !== null);
-      const hasProjects = (projects.projectsList && projects.projectsList.length === 0 ? false : true);
+      const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
+      const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
 
       return (
         <>
@@ -225,37 +208,31 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-              <ProjectsStyledContentContainer>
-                {hasProjects &&
-                  <ProjectSection>
-                    <SectionContainer>
-                      <ProjectCards
-                        pageSize={3}
-                        sort="new"
-                        publicationStatuses={['published']}
-                        hideAllFilters={true}
-                      />
-                    </SectionContainer>
-                  </ProjectSection>
-                }
-              </ProjectsStyledContentContainer>
-
-              <IdeasStyledContentContainer>
-                <Section className="ideas">
-                  <SectionHeader>
-                    <SectionTitle>
-                      <FormattedMessage {...messages.trendingIdeas} />
-                    </SectionTitle>
-                  </SectionHeader>
+              <ProjectsStyledContentContainer maxWidth={1150}>
+                <ProjectSection>
                   <SectionContainer>
-                    <IdeaCards
-                      type="load-more"
-                      sort="trending"
-                      pageSize={9}
+                    <ProjectCards
+                      pageSize={6}
+                      sort="new"
+                      publicationStatuses={['published', 'archived']}
+                      showTitle={true}
+                      showPublicationStatusFilter={false}
+                      showSendFeedback={true}
+                      layout="dynamic"
                     />
                   </SectionContainer>
-                </Section>
-              </IdeasStyledContentContainer>
+                </ProjectSection>
+              </ProjectsStyledContentContainer>
+
+              {showCustomSection &&
+                <CustomSectionContentContainer>
+                  <QuillEditedContent>
+                    <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+                      <T value={customSectionBodyMultiloc} supportHtml={true} />
+                    </Fragment>
+                  </QuillEditedContent>
+                </CustomSectionContentContainer>
+              }
 
               {!authUser &&
                 <FooterBanner>
@@ -287,7 +264,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published']} sort="new" />,
+  homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
 export default (inputProps: InputProps) => (
