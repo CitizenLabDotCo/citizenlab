@@ -67,7 +67,7 @@ const Container = styled.div`
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 10px;
   `}
 
   @media print {
@@ -78,11 +78,11 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  flex-grow: 1;
   height: ${(props) => props.theme.menuHeight}px;
 `;
 
-const LogoLink = styled(Link) `
+const LogoLink = styled(Link)`
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,22 +90,11 @@ const LogoLink = styled(Link) `
 `;
 
 const Logo = styled.img`
-  max-height: 42px;
+  max-width: 100%;
+  max-height: 46px;
   margin: 0;
   padding: 0px;
   cursor: pointer;
-
-  ${media.smallerThanMinTablet`
-    max-width: 180px;
-  `}
-
-  ${media.phone`
-    max-width: 140px;
-  `}
-
-  ${media.largePhone`
-    max-width: 120px;
-  `}
 `;
 
 const NavigationItems = styled.div`
@@ -122,7 +111,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link)`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 500;
   padding: 0 30px;
   display: flex;

@@ -463,10 +463,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
+      const postingPermission = getPostingPermission({ project, phase, authUser });
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
-      const postingEnabled = (!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled);
-      const votingEnabled = (!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled);
-      const commentingEnabled = (!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled);
+      const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
+      const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'relationships.action_descriptor.data.voting.enabled'));
+      const canComment = !!((!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled) && get(project, 'relationships.action_descriptor.data.commenting.enabled'));
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
       const isFinished = (project.attributes.timeline_active === 'past');
@@ -483,11 +484,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
-      const postingPermission = getPostingPermission({
-        project,
-        phase,
-        authUser
-      });
+      console.log(project);
 
       if (isArchived) {
         countdown = (
@@ -526,11 +523,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         ctaMessage = <FormattedMessage {...messages.learnMore} />;
       } else if (participationMethod === 'survey') {
         ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-      } else if (participationMethod === 'ideation' && postingEnabled && postingPermission.enabled) {
+      } else if (participationMethod === 'ideation' && canPost) {
         ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
-      } else if (participationMethod === 'ideation' && votingEnabled) {
+      } else if (participationMethod === 'ideation' && canVote) {
         ctaMessage = <FormattedMessage {...messages.vote} />;
-      } else if (participationMethod === 'ideation' && commentingEnabled) {
+      } else if (participationMethod === 'ideation' && canComment) {
         ctaMessage = <FormattedMessage {...messages.comment} />;
       } else if (participationMethod === 'ideation') {
         ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
