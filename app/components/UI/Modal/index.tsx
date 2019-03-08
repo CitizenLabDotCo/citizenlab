@@ -154,6 +154,7 @@ const Overlay = styled(FocusTrap)`
 const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
+  flex-shrink: 0;
   flex-direction: row;
   align-items: center;
   padding-left: 30px;
@@ -187,6 +188,7 @@ const HeaderTitle = styled.h1`
 const FooterContainer = styled.div`
   width: 100%;
   display: flex;
+  flex-shrink: 0;
   flex-direction: row;
   align-items: center;
   padding-left: 30px;
@@ -195,6 +197,11 @@ const FooterContainer = styled.div`
   padding-bottom: 15px;
   border-top: solid 1px ${colors.separation};
   background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
 `;
 
 const Skip = styled.div`
