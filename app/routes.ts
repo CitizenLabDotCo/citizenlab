@@ -235,6 +235,7 @@ export default function createRoutes() {
           }),
         },
         {
+          // Used as link in email received for password recovery
           path: 'reset-password',
           name: 'passwordReset',
           component: Loadable({
