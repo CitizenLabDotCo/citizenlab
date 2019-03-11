@@ -63,7 +63,7 @@ const FooterBanner: any = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   p {
     color: #fff;
@@ -209,7 +209,7 @@ class LandingPage extends PureComponent<Props, State> {
 
             <Content>
               <ProjectsStyledContentContainer maxWidth={1150}>
-                <ProjectSection>
+                <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <ProjectCards
                       pageSize={6}

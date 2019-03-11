@@ -4,6 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import clHistory from 'utils/cl-router/history';
+import bowser from 'bowser';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -150,11 +151,14 @@ const IdeaContainer = styled(Link)`
   background: #fff;
   position: relative;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
-  transition: all 200ms ease;
 
-  &:hover {
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
-    transform: translate(0px, -2px);
+  &.desktop {
+    transition: all 200ms ease;
+
+    &:hover {
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+      transform: translate(0px, -2px);
+    }
   }
 `;
 
@@ -283,7 +287,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       `;
 
       return (
-        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
+        <IdeaContainer
+          onClick={this.onCardClick}
+          to={`/ideas/${idea.attributes.slug}`}
+          className={`${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+        >
             {ideaImageUrl &&
               <IdeaImageContainer>
                 <T value={idea.attributes.title_multiloc}>
@@ -344,7 +352,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
                 <CommentInfo className={`${commentingEnabled && 'enabled'}`}>
                   <CommentIcon name="comments2" />
-                  <CommentCount>
+                  <CommentCount className="e2e-ideacard-comment-count">
                     <span>{idea.attributes.comments_count}</span>
                   </CommentCount>
                 </CommentInfo>

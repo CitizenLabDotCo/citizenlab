@@ -1,3 +1,5 @@
+import { randomString, randomEmail } from '../support/commands';
+
 describe('Sign in page', () => {
   beforeEach(() => {
     cy.visit('/sign-in');
@@ -51,8 +53,8 @@ describe('Sign in page', () => {
   });
 
   it('shows an error when trying to log in with invalid credentials', () => {
-    const email = `${Math.random().toString(36).substr(2, 5)}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 5);
+    const email = randomEmail();
+    const password = randomString();
 
     cy.login(email, password);
     cy.get('.e2e-error-message').should('contain', 'This combination of e-mail and password is not correct');

@@ -35,10 +35,15 @@ const isResource = (object: any): object is IResourceData => {
 };
 
 const definePermissionRule = (resourceType: TResourceType, action: TAction, rule: IPermissionRule) => {
-  permissionRules[resourceType] = { ...(permissionRules[resourceType] || {}), [action]: rule };
+  permissionRules[resourceType] = {
+    ...(permissionRules[resourceType] || {}),
+    [action]: rule
+  };
 };
 
-const getPermissionRule = (resourceType: TResourceType, action: TAction) => (permissionRules[resourceType][action]);
+const getPermissionRule = (resourceType: TResourceType, action: TAction) => {
+  return permissionRules[resourceType][action];
+};
 
 /**
  *

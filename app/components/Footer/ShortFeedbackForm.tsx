@@ -67,6 +67,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
 
   onSubmit = () => {
     const { emailValue, feedbackValue } = this.state;
+
     if (this.validate) {
       postProductFeedback({
         question: 'found_what_youre_looking_for?',
@@ -76,7 +77,9 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         email: emailValue.length > 0 ? emailValue : null,
         message: feedbackValue
       })
-      .then(() => this.props.closeModal())
+      .then(() => {
+        this.props.closeModal();
+      })
       .catch(err => err && err.json && this.setState({ apiErrors: err.json.errors }));
     }
   }

@@ -1,11 +1,5 @@
 export default {
-  clickShortFeedbackYes: {
-    name: 'Short feedback in footer answered: YES',
-  },
-  clickShortFeedbackNo: {
-    name: 'Short feedback in footer answered: NO',
-  },
-  sendShortFeedbackForm: {
-    name: 'Short feedback form answered',
-  },
+  clickShortFeedbackYes: 'Short feedback in footer answered: YES',
+  clickShortFeedbackNo: 'Short feedback in footer answered: NO',
+  sendShortFeedbackForm: 'Short feedback form answered'
 };

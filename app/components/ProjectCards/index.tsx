@@ -199,10 +199,10 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  margin-top: 20px;
 
   ${media.biggerThanMinTablet`
     justify-content: space-between;
-    margin-top: 40px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -478,9 +478,10 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 iconPos="left"
                 textColor={theme.colorText}
                 textHoverColor={darken(0.1, theme.colorText)}
-                bgColor={rgba(theme.colorMain, 0.08)}
-                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
+                className="e2e-project-cards-show-more-button"
               />
             }
 

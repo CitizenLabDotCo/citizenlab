@@ -11,7 +11,9 @@ export type ProcessType = 'continuous' | 'timeline';
 type PresentationMode = 'map' | 'card';
 type PublicationStatus = 'draft' | 'published' | 'archived';
 export type PostingDisabledReasons = 'project_inactive' | 'not_ideation' | 'posting_disabled' | 'not_permitted';
-export type SurveyDisabledReasons = 'project_inactive' | 'not_permitted' | 'not_survey';
+export type CommentingDisabledReasons = 'project_inactive' | 'not_supported' | 'commenting_disabled' | 'not_permitted';
+export type VotingDisabledReasons = 'project_inactive' | 'not_ideation' | 'voting_disabled' | 'not_permitted' | 'voting_limited_max_reached';
+export type SurveyDisabledReasons = 'project_inactive' | 'not_survey' | 'not_permitted';
 export interface IProjectData {
   id: string;
   type: 'projects';
@@ -28,6 +30,7 @@ export interface IProjectData {
     updated_at: string;
     visible_to: Visibility;
     process_type: ProcessType;
+    timeline_active: 'past' | 'present' | 'future' | null;
     participation_method: ParticipationMethod | null;
     posting_enabled: boolean;
     commenting_enabled: boolean;
@@ -49,8 +52,8 @@ export interface IProjectData {
     areas: {
       data: IRelationship[]
     }
-    avatars: {
-      data: IRelationship[]
+    avatars?: {
+      data?: IRelationship[]
     }
     action_descriptor: {
       data: {
@@ -58,6 +61,14 @@ export interface IProjectData {
           enabled: boolean,
           future_enabled: string | null,
           disabled_reason: PostingDisabledReasons | null,
+        }
+        commenting: {
+          enabled: boolean,
+          disabled_reason: CommentingDisabledReasons | null,
+        }
+        voting: {
+          enabled: boolean,
+          disabled_reason: VotingDisabledReasons | null,
         }
         taking_survey: {
           enabled: boolean;

@@ -1,6 +1,7 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
+import { first } from 'rxjs/operators';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
 
@@ -54,18 +55,18 @@ export interface IIdeaData {
         voting:{
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'not_in_active_context' | 'not_permitted' | null
+          disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | null
           cancelling_enabled: boolean,
         },
         commenting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | null,
+          disabled_reason: 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | null,
         },
         budgeting: {
           enabled: boolean,
           future_enabled: string | null,
-          disabled_reason: 'project_inactive' | 'not_in_active_context' | 'not_permitted' | null,
+          disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | null,
         }
       }
     }
@@ -169,8 +170,11 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 }
 
 export async function deleteIdea(ideaId: string) {
-  const response = await streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId);
-  // await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  const [idea, response] = await Promise.all([
+    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
+    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId)
+  ]);
+  streams.fetchAllWith({ dataId: [idea.data.relationships.project.data.id] });
   return response;
 }
 

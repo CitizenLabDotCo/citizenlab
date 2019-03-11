@@ -4,7 +4,7 @@ import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // components
-import Link from 'utils/cl-router/Link';
+// import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
 
 export const Container = styled.div`
@@ -179,7 +179,7 @@ export const StyledThing = styled(Polymorph)`
 `;
 
 export const StyledButton = StyledThing.withComponent('button');
-export const StyledLink = StyledThing.withComponent(Link);
+// export const StyledLink = StyledThing.withComponent(Link);
 
 export const Separator = styled.span`
   color: ${colors.label};

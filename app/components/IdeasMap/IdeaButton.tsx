@@ -7,7 +7,7 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 
 // services
-import { postingButtonState, DisabledReasons } from 'services/ideaPostingRules';
+import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -72,7 +72,7 @@ class IdeaButton extends React.PureComponent<Props, State> {
 
     if (isNilOrError(project)) return null;
 
-    const { show, enabled, disabledReason } = postingButtonState({
+    const { show, enabled, disabledReason } = getPostingPermission({
       project,
       phase,
       authUser
