@@ -2,7 +2,7 @@ import React from 'react';
 import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { ICommentForAdminData } from 'services/notifications';
+import { ICommentForAdminNotificationData } from 'services/notifications';
 import { ideaByIdStream } from 'services/ideas';
 
 // i18n
@@ -16,14 +16,14 @@ import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
 type Props = {
-  notification: ICommentForAdminData;
+  notification: ICommentForAdminNotificationData;
 };
 
 type State = {
   ideaSlug?: string,
 };
 
-export default class CommentOnYourIdeaNotification extends React.PureComponent<Props, State> {
+export default class NewCommentForAdminNotification extends React.PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {

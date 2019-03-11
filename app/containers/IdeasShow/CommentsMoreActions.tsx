@@ -26,6 +26,10 @@ import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 import styled from 'styled-components';
 
 const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -49,6 +53,7 @@ export type Props = {
   projectId: IProjectData['id'];
   className?: string,
   onCommentEdit: {(): void};
+  ariaLabel?: string;
 };
 
 export type State = {
@@ -131,6 +136,8 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   }
 
   render() {
+    const { ariaLabel } = this.props;
+
     if (!this.props.comment) {
       return null;
     }
@@ -142,6 +149,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     return (
       <>
         <MoreActionsMenu
+          ariaLabel={ariaLabel}
           className={this.props.className}
           actions={this.state.actions}
         />
@@ -170,6 +178,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
                 <AcceptButton
                   style="primary"
                   processing={this.state.loading_deleteComment}
+                  className="e2e-confirm-deletion"
                   circularCorners={false}
                   onClick={this.deleteComment}
                 >
