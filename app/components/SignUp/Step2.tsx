@@ -21,7 +21,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // style
 import styled from 'styled-components';
@@ -33,7 +33,9 @@ const Loading = styled.div`
   padding-top: 15px;
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin-bottom: 170px;
+`;
 
 const FormElement = styled.div`
   margin-bottom: 20px;
@@ -43,6 +45,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  `}
 `;
 
 const SkipButton = styled.div`
@@ -56,6 +64,12 @@ const SkipButton = styled.div`
   &:hover {
     color: #000;
   }
+
+  ${media.smallerThanMinTablet`
+    margin-left: 0px;
+    margin-top: 30px;
+    text-align: center;
+  `}
 `;
 
 type Props = {

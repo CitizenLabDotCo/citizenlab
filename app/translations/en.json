@@ -964,6 +964,7 @@
   "app.containers.IdeaButton.postingProjectInactive": "This project is not yet or no longer accepting new ideas.",
   "app.containers.IdeaButton.startAnIdea": "Start an idea",
   "app.containers.IdeaCard.byAuthorName": "by {authorNameComponent}",
+  "app.containers.IdeaButton.startAnIdea": "Post your idea",
   "app.containers.IdeaCards.areas": "Areas",
   "app.containers.IdeaCards.cards": "Cards",
   "app.containers.IdeaCards.map": "Map",
