@@ -1,3 +1,5 @@
+import { randomString } from '../support/commands';
+
 describe('Idea form page', () => {
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas/new');
@@ -43,8 +45,8 @@ describe('Idea form page', () => {
   });
 
   it('creates an idea when submitting the form with a title and description, and redirects to the sign-in form', () => {
-    const ideaTtle = Math.random().toString(36).substr(2, 5).toLowerCase();
-    const ideaDescription = Math.random().toString(36).substr(2, 5).toLowerCase();
+    const ideaTtle = randomString();
+    const ideaDescription = randomString();
 
     cy.get('#title').type(ideaTtle);
     cy.get('.ql-editor').type(ideaDescription);

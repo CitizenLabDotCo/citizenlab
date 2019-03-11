@@ -1,3 +1,5 @@
+import { randomString, randomEmail } from '../support/commands';
+
 describe('Sign up step 1 page', () => {
   beforeEach(() => {
     cy.visit('/sign-up');
@@ -29,10 +31,10 @@ describe('Sign up step 1 page', () => {
   });
 
   it('signs up with valid credentials and navigates to the landing page', () => {
-    const firstName = Math.random().toString(36).substr(2, 12);
-    const lastName = Math.random().toString(36).substr(2, 12);
-    const email = `${Math.random().toString(36).substr(2, 12)}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12);
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
     cy.signup(firstName, lastName, email, password);
     cy.location('pathname').should('eq', '/en-GB/');

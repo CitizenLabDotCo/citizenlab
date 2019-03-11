@@ -1,50 +1,11 @@
+import { randomString, randomEmail } from '../support/commands';
+
 describe('Sign up step 2 page', () => {
-  let adminJwt: string = null as any;
-
-  const createCustomField = (fieldName: string, enabled: boolean, required: boolean) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'POST',
-      url: 'web_api/v1/users/custom_fields',
-      body: {
-        custom_field: {
-          enabled,
-          required,
-          input_type: 'text',
-          title_multiloc: {
-            'en-GB': fieldName,
-            'nl-BE': fieldName
-          }
-        }
-      }
-    });
-  };
-
-  const deleteCustomField = (fieldId: string) => {
-    cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'DELETE',
-      url: `web_api/v1/users/custom_fields/${fieldId}`
-    });
-  };
-
-  before(() => {
-    cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
-      adminJwt = response.body.jwt;
-    });
-  });
-
   it('does not show it when no custom fields are enabled', () => {
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
     // before
     cy.apiSignup(firstName, lastName, email, password);
@@ -61,14 +22,14 @@ describe('Sign up step 2 page', () => {
   });
 
   it('can skip it when an optional custom field is enabled', () => {
-    const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const randomFieldName = randomString();
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
     // before
-    createCustomField(randomFieldName, true, false).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
       const customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
@@ -85,20 +46,20 @@ describe('Sign up step 2 page', () => {
       cy.get('#e2e-landing-page');
 
       // after
-      deleteCustomField(customFieldId);
+      cy.apiRemoveCustomField(customFieldId);
     });
   });
 
   it('shows an error message when submitting an empty form that contains a required custom field', () => {
     let customFieldId: string = null as any;
-    const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const randomFieldName = randomString();
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
     // before
-    createCustomField(randomFieldName, true, true).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
       customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
@@ -114,19 +75,19 @@ describe('Sign up step 2 page', () => {
       cy.get('.e2e-error-message').should('contain', 'This field is required');
 
       // after
-      deleteCustomField(customFieldId);
+      cy.apiRemoveCustomField(customFieldId);
     });
   });
 
   it('successfully completes when submitting a filled-in form that contains a required custom field', () => {
-    const randomFieldName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-    const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+    const randomFieldName = randomString();
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
     // before
-    createCustomField(randomFieldName, true, true).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
       const customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
@@ -144,7 +105,7 @@ describe('Sign up step 2 page', () => {
       cy.get('#e2e-landing-page');
 
       // after
-      deleteCustomField(customFieldId);
+      cy.apiRemoveCustomField(customFieldId);
     });
   });
 });

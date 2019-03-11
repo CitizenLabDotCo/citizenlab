@@ -11,8 +11,20 @@ declare global {
       apiCreateIdea: typeof apiCreateIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
+      apiCreateProject: typeof apiCreateProject;
+      apiCreatePhase: typeof apiCreatePhase;
+      apiCreateCustomField: typeof apiCreateCustomField;
+      apiRemoveCustomField: typeof apiRemoveCustomField;
     }
   }
+}
+
+export function randomString() {
+  return Math.random().toString(36).substring(2, 12).toLowerCase();
+}
+
+export function randomEmail() {
+  return `${Math.random().toString(36).substr(2, 12).toLowerCase()}@${Math.random().toString(36).substr(2, 12).toLowerCase()}.com`;
 }
 
 export function login(email: string, password: string) {
@@ -80,70 +92,197 @@ export function acceptCookies() {
   });
 }
 
-export function getProjectBySlug(adminJwt: string, projectSlug: string) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${adminJwt}`
-    },
-    method: 'GET',
-    url: `web_api/v1/projects/by_slug/${projectSlug}`
+export function getProjectBySlug(projectSlug: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: `web_api/v1/projects/by_slug/${projectSlug}`
+    });
   });
 }
 
-export function apiCreateIdea(adminJwt: string, projectId: string, ideaTitle: string, ideaContent: string) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${adminJwt}`
-    },
-    method: 'POST',
-    url: 'web_api/v1/ideas',
-    body: {
-      idea: {
-        project_id: projectId,
-        publication_status: 'published',
-        title_multiloc: {
-          'en-GB': ideaTitle,
-          'nl-BE': ideaTitle
-        },
-        body_multiloc: {
-          'en-GB': ideaContent,
-          'nl-BE': ideaContent
+export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/ideas',
+      body: {
+        idea: {
+          project_id: projectId,
+          publication_status: 'published',
+          title_multiloc: {
+            'en-GB': ideaTitle,
+            'nl-BE': ideaTitle
+          },
+          body_multiloc: {
+            'en-GB': ideaContent,
+            'nl-BE': ideaContent
+          }
         }
       }
-    }
+    });
   });
 }
 
-export function apiAddComment(adminJwt: string, ideaId: string, commentContent: string, commentParentId?: string) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${adminJwt}`
-    },
-    method: 'POST',
-    url: `web_api/v1/ideas/${ideaId}/comments`,
-    body: {
-      comment: {
-        body_multiloc: {
-          'en-GB': commentContent,
-          'nl-BE': commentContent
-        },
-        parent_id: commentParentId
+export function apiAddComment(ideaId: string, commentContent: string, commentParentId?: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/comments`,
+      body: {
+        comment: {
+          body_multiloc: {
+            'en-GB': commentContent,
+            'nl-BE': commentContent
+          },
+          parent_id: commentParentId
+        }
       }
-    }
+    });
   });
 }
 
-export function apiRemoveComment(adminJwt: string, commentId: string) {
-  return cy.request({
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${adminJwt}`
-    },
-    method: 'POST',
-    url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
+export function apiRemoveComment(commentId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/comments/${commentId}/mark_as_deleted`,
+    });
+  });
+}
+
+export function apiCreateProject(type: 'timeline' | 'continuous', title: string, descriptionPreview: string, description: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/projects',
+      body: {
+        project: {
+          process_type: type,
+          title_multiloc: {
+            'en-GB': title,
+            'nl-BE': title
+          },
+          description_preview_multiloc: {
+            'en-GB': descriptionPreview,
+            'nl-BE': descriptionPreview
+          },
+          description_multiloc: {
+            'en-GB': description,
+            'nl-BE': description
+          }
+        }
+      }
+    });
+  });
+}
+
+export function apiCreatePhase(
+  projectId: string,
+  title: string,
+  startAt: string,
+  endAt: string,
+  participationMethod: 'ideation' | 'information' | 'survey' | 'budgeting',
+  canPost: boolean,
+  canVote: boolean,
+  canComment: boolean
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/phases`,
+      body: {
+        phase: {
+          start_at: startAt,
+          end_at: endAt,
+          title_multiloc: {
+            'en-GB': title,
+            'nl-BE': title
+          },
+          participation_method: participationMethod,
+          posting_enabled: canPost,
+          voting_enabled: canVote,
+          commenting_enabled: canComment
+        }
+      }
+    });
+  });
+}
+
+export function apiCreateCustomField(fieldName: string, enabled: boolean, required: boolean) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/users/custom_fields',
+      body: {
+        custom_field: {
+          enabled,
+          required,
+          input_type: 'text',
+          title_multiloc: {
+            'en-GB': fieldName,
+            'nl-BE': fieldName
+          }
+        }
+      }
+    });
+  });
+}
+
+export function apiRemoveCustomField(fieldId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/users/custom_fields/${fieldId}`
+    });
   });
 }
 
@@ -157,3 +296,7 @@ Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
+Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
+Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
+Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);
