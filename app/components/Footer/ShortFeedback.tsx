@@ -1,5 +1,6 @@
 // libraries
 import React, { PureComponent } from 'react';
+import * as Sentry from '@sentry/browser';
 
 // translations
 import { FormattedMessage } from 'utils/cl-intl';
@@ -47,14 +48,23 @@ class ShortFeedback extends PureComponent<Props, State>{
         page: removeUrlLocale(location.pathname),
         locale: this.props.locale || undefined,
         answer: 'yes'
-      }).catch(err => console.log(err));
+      }).catch(err => Sentry.captureException(err));
     } else if (answer === 'no') {
       this.openFeedbackModal();
     }
   }
 
   openFeedbackModal = () => this.setState({ feedbackModalOpen: true });
-  closeFeedbackModal = () => this.setState({ feedbackModalOpen: false });
+  closeFeedbackModalSuccess = () => this.setState({ feedbackModalOpen: false });
+  closeFeedbackModalCancel = () => {
+    this.setState({ feedbackModalOpen: false });
+    postProductFeedback({
+      question: 'found_what_youre_looking_for?',
+      page: removeUrlLocale(location.pathname),
+      locale: this.props.locale || undefined,
+      answer: 'no'
+    }).catch(err => Sentry.captureException(err));
+  }
 
   render() {
     const { shortFeedbackButtonClicked, feedbackModalOpen } = this.state;
@@ -90,11 +100,11 @@ class ShortFeedback extends PureComponent<Props, State>{
         <Modal
           fixedHeight={false}
           opened={feedbackModalOpen}
-          close={this.closeFeedbackModal}
+          close={this.closeFeedbackModalCancel}
           className="e2e-feedback-modal"
         >
           <ShortFeedbackForm
-            closeModal={this.closeFeedbackModal}
+            closeModal={this.closeFeedbackModalSuccess}
           />
         </Modal>
       </>

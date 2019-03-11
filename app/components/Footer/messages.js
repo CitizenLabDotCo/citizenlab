@@ -63,11 +63,11 @@ export default defineMessages({
   },
   feedbackModalTitle: {
     id: 'app.containers.footer.feedbackModalTitle',
-    defaultMessage: 'Let us fix the problem'
+    defaultMessage: 'What were you looking for?'
   },
   feedbackModalSubtitle: {
     id: 'app.containers.footer.feedbackModalSubtitle',
-    defaultMessage: '...What were you looking for?'
+    defaultMessage: 'Your feedback helps us to improve the platform.'
   },
   email: {
     id: 'app.containers.footer.email',
@@ -75,7 +75,7 @@ export default defineMessages({
   },
   feedback: {
     id: 'app.containers.footer.feedback',
-    defaultMessage: 'Your precious input'
+    defaultMessage: 'Let us know what you didn’t find on this page:'
   },
   submit: {
     id: 'app.containers.footer.submit',
