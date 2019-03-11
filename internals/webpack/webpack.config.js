@@ -149,7 +149,6 @@ if (isDev) {
     include: path.resolve(process.cwd(), 'app'),
     ignoreFile: '.gitignore',
     ignore: ['node_modules', 'internals', 'docs', 'cypress', '.circleci'],
-    configFile: 'sentry.properties',
     release: process.env.CIRCLE_BUILD_NUM,
     ext: ['js', 'ts', 'map', 'bundle', 'jsbundle']
   }));
