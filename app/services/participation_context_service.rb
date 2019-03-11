@@ -230,6 +230,9 @@ class ParticipationContextService
   end
 
   def context_permission context, action
+    # We use ruby #find instead of SQL to have a higher chance of hitting
+    # ActiveRecord's query cache, since this can be repeated a lot for the
+    # same context.
     context.permissions.find{|permission| permission.action == action}
   end
 
