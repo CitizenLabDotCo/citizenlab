@@ -964,6 +964,7 @@
   "app.containers.IdeaButton.postingProjectInactive": "Ce projet n’accepte pas encore ou plus de nouvelles idées.",
   "app.containers.IdeaButton.startAnIdea": "Lancez une idée",
   "app.containers.IdeaCard.byAuthorName": "",
+  "app.containers.IdeaButton.startAnIdea": "Ajouter une idée",
   "app.containers.IdeaCards.areas": "Lieux",
   "app.containers.IdeaCards.cards": "Idées",
   "app.containers.IdeaCards.map": "Carte",

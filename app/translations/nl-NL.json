@@ -964,6 +964,7 @@
   "app.containers.IdeaButton.postingProjectInactive": "Dit project aanvaardt nog geen of niet langer ideeën.",
   "app.containers.IdeaButton.startAnIdea": "Lanceer je idee",
   "app.containers.IdeaCard.byAuthorName": "",
+  "app.containers.IdeaButton.startAnIdea": "Voeg een idee toe",
   "app.containers.IdeaCards.areas": "Gebieden",
   "app.containers.IdeaCards.cards": "In raster",
   "app.containers.IdeaCards.map": "Kaart",
