@@ -17,9 +17,8 @@ pipeline {
       steps {
         git branch: 'master',
             credentialsId: 'local-ssh-user',
-            url: 'ssh://git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+            url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         echo 'Prrt'
-        sh 'git clone git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         withAWS(credentials: 'aws') {
           s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
         }
