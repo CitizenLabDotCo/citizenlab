@@ -35,13 +35,6 @@ pipeline {
         git branch: 'master',
             credentialsId: 'local-ssh-user',
             url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
-        withAWS(credentials: 'aws') {
-          s3Download(file:'/', bucket:'cl2-tenant-templates', path:'test/', force:true)
-        }
-        sh '( git checkout master && git add -A && ( git diff-index --quiet HEAD || git commit -am \'New tenant templates\' ) )'
-        sshagent(credentials: ['local-ssh-user']) {
-          sh 'git push --set-upstream origin master'
-        }
       }
     }
 
