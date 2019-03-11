@@ -5,10 +5,6 @@ describe('Project ideas page', () => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
   });
 
-  it('shows the page', () => {
-    cy.get('.e2e-project-ideas-page');
-  });
-
   it('shows where you are', () => {
     cy.get('.e2e-projects-dropdown-link').should('have.class', 'active').should('be.visible');
     cy.get('.e2e-project-ideas-link').should('have.class', 'active').should('be.visible');

@@ -28,7 +28,7 @@ const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 70px;
   background: ${colors.background};
 `;
 
@@ -59,7 +59,7 @@ interface State {}
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
 
   render () {
-    const { project, params, className } = this.props;
+    const { project, params } = this.props;
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'continuous') {
@@ -69,7 +69,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         const isPBProject = (project.attributes.participation_method === 'budgeting');
 
         return (
-          <Container className={`${className} e2e-project-ideas-page`}>
+          <>
             <Header projectSlug={params.slug} />
             <ProjectModeratorIndicator projectId={project.id} />
             <ProjectArchivedIndicator projectId={project.id} />
@@ -96,7 +96,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               />
             </StyledContentContainer>
             <EventsPreview projectId={project.id} />
-          </Container>
+          </>
         );
       }
     }
