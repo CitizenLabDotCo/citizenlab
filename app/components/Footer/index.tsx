@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import MediaQuery from 'react-responsive';
-import { withRouter, WithRouterProps } from 'react-router';
 
 // utils
-import Link from 'utils/cl-router/Link';
 import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Fragment from 'components/Fragment';
+import ShortFeedback from './ShortFeedback';
 import SendFeedback from 'components/SendFeedback';
 
 // i18n
@@ -17,301 +16,34 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 
-// tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
-
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
-// style
-import styled from 'styled-components';
-import { darken, rgba } from 'polished';
-import Polymorph from 'components/Polymorph';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`;
-
-const FirstLine = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 110px;
-  padding-bottom: 130px;
-  background: #fff;
-`;
-
-const LogoLink = styled.a`
-  cursor: pointer;
-`;
-
-const TenantLogo = styled.img`
-  height: 50px;
-  margin-bottom: 20px;
-`;
-
-const TenantSlogan = styled.div`
-  width: 100%;
-  max-width: 340px;
-  color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 500;
-  line-height: normal;
-  text-align: center;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-`;
-
-const SecondLine = styled.div`
-  width: 100%;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 28px;
-  position: relative;
-  background: #fff;
-  border-top: 1px solid #e8e8e8;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding: 20px;
-    padding-bottom: 30px;
-    padding-top: 30px;
-  `}
-`;
-
-const ShortFeedback = styled.div`
-  width: 100%;
-  background: ${colors.background};
-  display: flex;
-  border-bottom: solid 4px ${(props) => rgba(props.theme.colorMain, 0.08)};
-
-  &:not(.whiteBg) {
-    margin-top: 40px;
-
-    ${media.smallerThanMinTablet`
-      margin-top: 0px;
-  ` }
-  }
-
-  &.whiteBg {
-    background: #fff;
-  }
-`;
-
-const ShortFeedbackInner = styled.div`
-  color: ${(props) => darken(0.1, props.theme.colorText)};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: normal;
-  display: flex;
-  align-items: center;
-  padding: 12px 25px;
-  background: ${(props) => rgba(props.theme.colorMain, 0.08)};
-
-  ${media.smallerThanMinTablet`
-    width: 100%;
-    justify-content: center;
-  `}
-`;
-
-const ThankYouNote = styled.span`
-  font-weight: 500;
-`;
-
-const FeedbackQuestion = styled.span`
-  margin-right: 15px;
-
-  ${media.smallerThanMinTablet`
-    margin-right: 10px;
-  `}
-`;
-
-const Buttons = styled.div`
-  display: flex;
-`;
-
-const FeedbackButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${(props) => props.theme.colorText};
-  font-weight: 500;
-  text-transform: uppercase;
-  padding: 0 12px;
-  margin-bottom: -3px;
-  z-index: 1;
-
-  ${media.smallerThanMinTablet`
-    padding: 0 8px;
-  `}
-
-  &:focus,
-  &:hover {
-    outline: none;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-`;
-
-const PagesNav = styled.nav`
-  color: ${colors.adminTextColor};
-  font-weight: 300;
-  text-align: left;
-
-  ul {
-    display: inline-block;
-    padding: 0px;
-    text-align: center;
-  }
-
-  li {
-    display: inline;
-
-    &:not(:first-child):before {
-      content: '•';
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-
-    button {
-      white-space: nowrap;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    order: 2;
-    text-align: center;
-    justify-content: center;
-    margin-top: 20px;
-  `}
-`;
-
-const StyledThing = styled(Polymorph)`
-  color: ${colors.adminTextColor};
-  font-weight: 300;
-  font-size: ${fontSizes.small}px;
-  text-decoration: none;
-  padding: 0;
-  cursor: pointer;
-
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-  }
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small}px;
-    line-height: 16px;
-  `}
-`;
-
-const StyledButton = StyledThing.withComponent('button');
-const StyledLink = StyledThing.withComponent(Link);
-
-const Right = styled.div`
-  display: flex;
-  align-items: center;
-
-  ${media.smallerThanMaxTablet`
-    order: 1;
-    margin-top: 15px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-  `}
-`;
-
-const PoweredBy = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  outline: none;
-  padding-right: 20px;
-  margin-right: 30px;
-  border-right: 1px solid #E8E8E8;
-
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    padding: 0px;
-    margin: 0px;
-    margin-bottom: 15px;
-    border: none;
-  `}
-`;
-
-const PoweredByText = styled.span`
-  margin-right: 5px;
-
-  ${media.smallerThanMinTablet`
-    margin: 0;
-    margin-bottom: 10px;
-  `}
-`;
-
-const CitizenlabLink = styled.a`
-  width: 151px;
-  height: 27px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const CitizenlabName = styled.span`
-  color: #000;
-  white-space: nowrap;
-  overflow: hidden;
-  text-indent: -9999px;
-`;
-
-const CitizenlabLogo: any = styled.svg`
-  width: 151px;
-  height: 27px;
-  fill: ${colors.secondaryText};
-  transition: all 150ms ease-out;
-
-  &:hover {
-    fill: #000;
-  }
-`;
-
-const StyledSendFeedback = styled(SendFeedback)`
-  ${media.smallerThanMinTablet`
-    margin-top: 25px;
-  `}
-`;
+import {
+  Container,
+  FirstLine,
+  LogoLink,
+  TenantLogo,
+  TenantSlogan,
+  SecondLine,
+  PagesNav,
+  StyledLink,
+  StyledButton,
+  Right,
+  PoweredBy,
+  CitizenlabLink,
+  PoweredByText,
+  CitizenlabName,
+  CitizenlabLogo,
+ } from './StyledComponents';
+import { viewportWidths } from 'utils/styleUtils';
 
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
-
-interface ITracks {
-  clickShortFeedbackYes: () => void;
-  clickShortFeedbackNo: () => void;
-}
 
 interface InputProps {
   showCityLogoSection?: boolean | undefined;
@@ -323,10 +55,9 @@ type State = {
   locale: Locale | null;
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
-  shortFeedbackButtonClicked: boolean;
 };
 
-class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRouterProps, State> {
+class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   static displayName = 'Footer';
   subscriptions: Subscription[];
 
@@ -340,7 +71,6 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
       locale: null,
       currentTenant: null,
       showCityLogoSection: false,
-      shortFeedbackButtonClicked: false
     };
     this.subscriptions = [];
   }
@@ -365,24 +95,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
-    const { clickShortFeedbackYes, clickShortFeedbackNo } = this.props;
-
-    this.setState({
-      shortFeedbackButtonClicked: true
-    });
-
-    // tracking
-    if (answer === 'yes') {
-      clickShortFeedbackYes();
-    } else if (answer === 'no') {
-      clickShortFeedbackNo();
-    }
-  }
-
   render() {
-    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
-    const { location } = this.props;
+    const { locale, currentTenant, showCityLogoSection } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
@@ -395,7 +109,6 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
       const slogan = currentTenantName ? <FormattedMessage {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
       const poweredBy = <FormattedMessage {...messages.poweredBy} />;
       const footerLocale = `footer-city-logo-${locale}`;
-      const whiteBg = (showCityLogoSection || (location.pathname.replace(/\/$/, '') === `/${locale}`));
 
       return (
         <Container role="contentinfo" className={this.props['className']} id="hook-footer">
@@ -413,31 +126,8 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
             </Fragment>
           }
 
-          <ShortFeedback className={whiteBg ? 'whiteBg' : ''}>
-            <ShortFeedbackInner>
-              {shortFeedbackButtonClicked ?
-                <ThankYouNote>
-                  <FormattedMessage {...messages.thanksForFeedback} />
-                </ThankYouNote>
-                :
-                <>
-                  <FeedbackQuestion>
-                    <FormattedMessage {...messages.feedbackQuestion} />
-                  </FeedbackQuestion>
-                  <Buttons>
-                    <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
-                      <FormattedMessage {...messages.yes} />
-                    </FeedbackButton>
-                    <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
-                      <FormattedMessage {...messages.no} />
-                    </FeedbackButton>
-                  </Buttons>
-                </>
-              }
-            </ShortFeedbackInner>
-          </ShortFeedback>
-
           <SecondLine>
+            <ShortFeedback />
             <PagesNav>
               <ul>
                 {LEGAL_PAGES.map((slug) => (
@@ -467,7 +157,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
               </PoweredBy>
 
               <MediaQuery minWidth={viewportWidths.smallTablet}>
-                {matches => <StyledSendFeedback showFeedbackText={!matches} />}
+                {matches => <SendFeedback showFeedbackText={!matches} />}
               </MediaQuery>
             </Right>
           </SecondLine>
@@ -479,7 +169,7 @@ class Footer extends PureComponent<Props & ITracks & InjectedIntlProps & WithRou
   }
 }
 
-const WrappedFooter = withRouter<Props>(injectTracks<Props>(tracks)(injectIntl(Footer)));
+const WrappedFooter = injectIntl(Footer);
 Object.assign(WrappedFooter).displayName = 'WrappedFooter';
 
 export default WrappedFooter;
