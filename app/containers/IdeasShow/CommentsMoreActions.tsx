@@ -29,7 +29,7 @@ const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 1rem;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

@@ -32,11 +32,6 @@ const LanguageExtension = styled(Label)`
   font-weight: 500;
 `;
 
-const LabelTooltip = styled.div`
-  margin-left: 10px;
-  margin-top: 2px;
-`;
-
 export type Props = {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
