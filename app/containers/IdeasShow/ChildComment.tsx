@@ -3,12 +3,12 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // components
-import Author from 'components/Author';
 import CommentBody from './CommentBody';
-import { TranslateButton } from './ParentComment';
 import FeatureFlag from 'components/FeatureFlag';
+import { Extra, OfficialHeader, Header, Badge, StyledMoreActionsMenu, OfficialStyledAuthor, StyledAuthor, TranslateButton } from './CommentsStyles';
 
 // services
 import { updateComment } from 'services/comments';
@@ -17,6 +17,7 @@ import { updateComment } from 'services/comments';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -24,33 +25,18 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import CommentsMoreActions from './CommentsMoreActions';
 import { CLErrorsJSON } from 'typings';
-import { media } from 'utils/styleUtils';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-
-const StyledMoreActionsMenu = styled(CommentsMoreActions)`
-  position: absolute;
-  top: 10px;
-  right: 20px;
-
-  ${media.smallerThanMinTablet`
-    top: 4px;
-    right: 10px;
-  `}
-`;
+import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { InjectedIntlProps } from 'react-intl';
 
 const CommentContainer = styled.div`
   padding: 20px;
   border-top: solid 1px #d0d0d0;
   position: relative;
-`;
-
-const StyledAuthor = styled(Author)`
-  margin-bottom: 20px;
 `;
 
 interface ITracks {
@@ -66,6 +52,7 @@ interface DataProps {
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -76,7 +63,7 @@ interface State {
   translateButtonClicked: boolean;
 }
 
-class ChildComment extends React.PureComponent<Props & ITracks, State> {
+class ChildComment extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -132,7 +119,7 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    const { comment, idea, locale } = this.props;
+    const { comment, idea, locale, author } = this.props;
     const { editionMode, translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
@@ -147,20 +134,49 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
       if (comment.attributes.publication_status !== 'published') return null;
 
       return (
-        <CommentContainer className={className}>
-          <StyledMoreActionsMenu
-            comment={comment}
-            onCommentEdit={this.onCommentEdit}
-            projectId={projectId}
-          />
+        <CommentContainer className={`${className} e2e-child-comment`}>
+          {!isNilOrError(author) && canModerate(projectId, { data: author }) ?
+            <OfficialHeader>
+              <OfficialStyledAuthor
+                authorId={authorId}
+                notALink={authorId ? false : true}
+                createdAt={createdAt}
+                size="40px"
+                projectId={projectId}
+                showModeration
+              />
+              <Extra>
+                <Badge>
+                  <FormattedMessage {...messages.official} />
+                </Badge>
+                <StyledMoreActionsMenu
+                  ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                  className="e2e-more-actions"
+                  comment={comment}
+                  onCommentEdit={this.onCommentEdit}
+                  projectId={projectId}
 
-          <StyledAuthor
-            authorId={authorId}
-            notALink={authorId ? false : true}
-            createdAt={createdAt}
-            message={messages.childCommentAuthor}
-            size="40px"
-          />
+                />
+              </Extra>
+            </OfficialHeader>
+          :
+            <Header>
+              <StyledAuthor
+                authorId={authorId}
+                notALink={authorId ? false : true}
+                createdAt={createdAt}
+                size="40px"
+                projectId={projectId}
+              />
+              <StyledMoreActionsMenu
+                ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                className="e2e-more-actions"
+                comment={comment}
+                onCommentEdit={this.onCommentEdit}
+                projectId={projectId}
+
+              />
+            </Header>}
 
           <CommentBody
             commentBody={comment.attributes.body_multiloc}
@@ -192,12 +208,13 @@ class ChildComment extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-const ChildCommentWithHOCs = injectTracks<Props>(tracks)(ChildComment);
+const ChildCommentWithHOCs = injectTracks<Props>(tracks)(injectIntl<Props>(ChildComment));
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
   locale: <GetLocale />,
+  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>,
 });
 
 export default (inputProps: InputProps) => (

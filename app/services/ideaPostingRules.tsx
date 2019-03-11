@@ -33,7 +33,7 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
  *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  authUser: The currently authenticated user
  */
-export const postingButtonState = ({ project, phase, authUser }: PostingButtonStateArg) => {
+export const getPostingPermission = ({ project, phase, authUser }: PostingButtonStateArg) => {
   const signedIn = !isNilOrError(authUser);
   const loggedInAsAdmin = (!isNilOrError(authUser) ? isAdmin({ data: authUser }) : false);
 

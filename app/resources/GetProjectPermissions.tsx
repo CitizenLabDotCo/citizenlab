@@ -1,10 +1,13 @@
-import { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { IPermissionData, projectPermissions } from 'services/participationContextPermissions';
+import React from 'react';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
+import { IPermissionData, projectPermissions } from 'services/participationContextPermissions';
 
 interface InputProps {
-  projectId: string;
+  projectId?: string | null;
 }
 
 type children = (renderProps: GetProjectPermissionsChildProps) => JSX.Element | null;
@@ -19,7 +22,8 @@ interface State {
 
 export type GetProjectPermissionsChildProps = IPermissionData[] | undefined | null | Error;
 
-export default class GetProjectPermissions extends PureComponent<Props, State> {
+export default class GetProjectPermissions extends React.Component<Props, State> {
+  private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -31,9 +35,24 @@ export default class GetProjectPermissions extends PureComponent<Props, State> {
 
   componentDidMount() {
     const { projectId } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ projectId });
+
     this.subscriptions = [
-      projectPermissions(projectId).observable.subscribe(permissions => this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ projectId }: { projectId: string }) => isString(projectId)),
+        switchMap(({ projectId }) => projectPermissions(projectId).observable)
+      )
+      .subscribe((permissions) => {
+        this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions });
+      })
     ];
+  }
+
+  componentDidUpdate() {
+    const { projectId } = this.props;
+    this.inputProps$.next({ projectId });
   }
 
   componentWillUnmount() {

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
+<Fragment>
+  <OfficialFeedback__StyledOfficialFeedbackNew
+    ideaId="ideaId"
+  />
+  <WrappedOfficialFeedback
+    editingAllowed={true}
+    ideaId="ideaId"
+  />
+</Fragment>
+`;
+
+exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
+<Fragment>
+  <WrappedOfficialFeedback
+    editingAllowed={false}
+    ideaId="ideaId"
+  />
+</Fragment>
+`;

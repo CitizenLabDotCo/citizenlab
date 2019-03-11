@@ -13,32 +13,50 @@ import messages from '../messages';
 
 // components
 import EventBlock from './EventBlock';
-import Button from 'components/UI/Button';
 import ContentContainer from 'components/ContentContainer';
+import Link from 'utils/cl-router/Link';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
   padding-top: 60px;
-  padding-bottom: 80px;
+  padding-bottom: 100px;
   background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 60px;
+  `}
 `;
 
 const Header = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   margin-bottom: 20px;
 
   h2 {
     padding: 0;
     margin: 0;
+  }
+`;
+
+const AllEvents = styled(Link)`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  text-decoration: underline;
+  margin-left: 20px;
+
+  &:hover {
+    color: ${({ theme }) => darken(0.2, theme.colorText)};
+    text-decoration: underline;
   }
 `;
 
@@ -84,9 +102,9 @@ export default (inputProps: InputProps) => (
                   <h2>
                     <FormattedMessage {...messages.upcomingEvents} />
                   </h2>
-                  <Button circularCorners={false} style="primary-outlined" linkTo={`/projects/${project.attributes.slug}/events`}>
+                  <AllEvents to={`/projects/${project.attributes.slug}/events`}>
                     <FormattedMessage {...messages.allEvents} />
-                  </Button>
+                  </AllEvents>
                 </Header>
 
                 <Events>

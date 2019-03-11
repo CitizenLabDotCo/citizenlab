@@ -40,7 +40,7 @@ const Container = styled.div`
   `}
 `;
 
-const SContentContainer = styled(ContentContainer)`
+const StyledContentContainer = styled(ContentContainer)`
   max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
@@ -77,7 +77,7 @@ const PageDescription = styled.div`
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
-  font-weight: 300;
+  font-weight: inherit;
   text-decoration: underline;
   margin: 0;
   padding: 0;
@@ -145,7 +145,7 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
       </Helmet>
 
       <PageContent>
-        <SContentContainer>
+        <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>
               <FormattedMessage {...messages.cookiePolicyTitle} />
@@ -242,19 +242,19 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
               </QuillEditedContent>
             </PageDescription>
           </Fragment>
-        </SContentContainer>
+        </StyledContentContainer>
       </PageContent>
 
       <PagesNavWrapper>
         <PagesNav>
-          <SContentContainer>
+          <StyledContentContainer>
             {LEGAL_PAGES.map((pageSlug) => (
               <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
                 <FormattedMessage {...messages[`${pageSlug}PageName`]} />
                 <LinkIcon name="chevron-right" />
               </StyledLink>
             ))}
-          </SContentContainer>
+          </StyledContentContainer>
         </PagesNav>
       </PagesNavWrapper>
 

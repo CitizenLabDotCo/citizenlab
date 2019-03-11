@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.components.ProjectCard.archived',
     defaultMessage: 'Archived',
   },
+  finished: {
+    id: 'app.components.ProjectCard.finished',
+    defaultMessage: 'Finished',
+  },
   remaining: {
     id: 'app.components.ProjectCard.remaining',
     defaultMessage: '{timeRemaining} remaining',

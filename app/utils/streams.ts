@@ -6,6 +6,7 @@ import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
+import { captureException } from '@sentry/browser';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -248,7 +249,9 @@ class Streams {
 
           from(promise).pipe(
             retry(3),
-            catchError(() => of(new Error(`promise for stream ${streamId} did not resolve`)))
+            catchError((error) => {
+              return of(new Error(error));
+            })
           ).subscribe((response) => {
             if (!this.streams[streamId]) {
               console.log(`no stream exists for ${streamId}`);
@@ -265,10 +268,16 @@ class Streams {
                   this.streams[streamId].observer.next(null);
                 }
 
-                reject();
+                reject(response);
               }
             }
           });
+        }).catch((error) => {
+          if (error && process.env.NODE_ENV !== 'development') {
+            captureException(error);
+          }
+
+          return error;
         });
       };
 
@@ -484,10 +493,12 @@ class Streams {
   async fetchAllWith({
     dataId,
     apiEndpoint,
+    partialApiEndpoint,
     onlyFetchActiveStreams
   }: {
     dataId?: string[],
     apiEndpoint?: string[],
+    partialApiEndpoint?: string[],
     onlyFetchActiveStreams?: boolean
   }) {
     const keys = [
@@ -496,14 +507,33 @@ class Streams {
     ];
     const promises: Promise<any>[] = [];
 
-    uniq(
-      flatten(keys.map((key) => [
-        ...(this.streamIdsByDataIdWithQuery[key] || []),
-        ...(this.streamIdsByDataIdWithoutQuery[key] || []),
-        ...(this.streamIdsByApiEndPointWithQuery[key] || []),
-        ...(this.streamIdsByApiEndPointWithoutQuery[key] || [])
-      ]))
-    ).forEach((streamId) => {
+    const streamIds1 = flatten(keys.map((key) => [
+      ...(this.streamIdsByDataIdWithQuery[key] || []),
+      ...(this.streamIdsByDataIdWithoutQuery[key] || []),
+      ...(this.streamIdsByApiEndPointWithQuery[key] || []),
+      ...(this.streamIdsByApiEndPointWithoutQuery[key] || [])
+    ]));
+
+    const streamIds2: string[] = [];
+    if (partialApiEndpoint && partialApiEndpoint.length > 0) {
+      forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
+        partialApiEndpoint.forEach((endpoint) => {
+          if (key.includes(endpoint) && this.streamIdsByApiEndPointWithQuery[key]) {
+            streamIds2.push(...this.streamIdsByApiEndPointWithQuery[key]);
+          }
+        });
+      });
+
+      forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
+        partialApiEndpoint.forEach((endpoint) => {
+          if (key.includes(endpoint) && this.streamIdsByApiEndPointWithoutQuery[key]) {
+            streamIds2.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
+          }
+        });
+      });
+    }
+
+    uniq([...streamIds1, ...streamIds2]).forEach((streamId) => {
       if (!onlyFetchActiveStreams || this.isActiveStream(streamId)) {
         promises.push(this.streams[streamId].fetch());
       }

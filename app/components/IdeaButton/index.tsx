@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // services
-import { postingButtonState, DisabledReasons } from 'services/ideaPostingRules';
+import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -96,7 +96,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
 
   render() {
     const { project, phase, authUser, className } = this.props;
-    const { show, enabled, disabledReason } = postingButtonState({
+    const { show, enabled, disabledReason } = getPostingPermission({
       project,
       phase,
       authUser
