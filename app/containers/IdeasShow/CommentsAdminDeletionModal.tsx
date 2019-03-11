@@ -23,8 +23,7 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  padding: 20px;
-  padding-bottom: 15px;
+  padding: 30px;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -34,8 +33,8 @@ const ButtonsWrapper = styled.div`
   width: 100%;
 
   .Button {
-    margin-right: 15px;
-    margin-bottom: 5px;
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -95,9 +94,9 @@ class CommentsAdminDeletionForm extends React.Component<Props, State> {
 
   render() {
     return (
-      <Formik initialValues={{ reason_code: null, other_reason: null }} onSubmit={this.props.onDeleteComment} validate={this.validateForm}>
-        {({ values, isSubmitting, isValid }) => (
-          <Container>
+      <Container>
+        <Formik initialValues={{ reason_code: null, other_reason: null }} onSubmit={this.props.onDeleteComment} validate={this.validateForm}>
+          {({ values, isSubmitting, isValid }) => (
             <Form noValidate>
               <SectionField>
                 {Object.keys(DeleteReasonCode).map((code) => (
@@ -128,9 +127,9 @@ class CommentsAdminDeletionForm extends React.Component<Props, State> {
                 <Button disabled={!isValid} style="primary" processing={isSubmitting} circularCorners={false}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
               </ButtonsWrapper>
             </Form>
-          </Container>
-        )}
-      </Formik>
+          )}
+        </Formik>
+      </Container>
     );
   }
 }

@@ -22,15 +22,14 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  padding-bottom: 10px;
-`;
+const Container = styled.div``;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 50px;
+  background: ${colors.background};
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`

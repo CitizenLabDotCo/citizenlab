@@ -23,6 +23,7 @@ export const getMockProject = (id: string, processType: ProcessType, participati
     updated_at: 'yesterday but later', // should be a real time string
     visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
     process_type: processType,
+    timeline_active: 'past',
     participation_method: participationMethod || null,
     posting_enabled: true,
     commenting_enabled: true,
@@ -56,6 +57,14 @@ export const getMockProject = (id: string, processType: ProcessType, participati
           enabled: true,
           future_enabled: null, // string | null,
           disabled_reason: null // PostingDisabledReasons | null,
+        },
+        commenting: {
+          enabled: true,
+          disabled_reason: null,
+        },
+        voting: {
+          enabled: true,
+          disabled_reason: null,
         },
         taking_survey: {
           enabled: true,
