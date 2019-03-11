@@ -761,6 +761,18 @@ models:
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
   idea:
+  - &controversial_idea
+    title_multiloc:
+      en-GB: Controversial Idea
+    body_multiloc:
+      en-GB: "With a lot of comments"
+    publication_status: published
+    project_ref: *76
+    author_ref: *mortal1
+    location_description: 8185 Austen Green
+    published_at: '2018-03-03 00:00:00'
+    created_at: '2018-02-22 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
   - &206
     title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
@@ -1414,6 +1426,26 @@ models:
     created_at: '2018-02-04 00:00:00'
     updated_at: '2018-03-28 13:35:24'
   comment:
+  - &bicycle_comment
+    body_multiloc:
+      en-GB: "Great idea, we stand behind you! I'll come riding a bicycle"
+    author_ref: *86
+    idea_ref: *controversial_idea
+    created_at: '2018-02-12 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
+  - body_multiloc:
+      en-GB: "I've never seen you riding a bicycle.."
+    author_ref: *mortal1
+    idea_ref: *controversial_idea
+    created_at: '2018-02-12 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
+    parent_ref: *bicycle_comment
+  - body_multiloc:
+      en-GB: "No no no no no"
+    author_ref: *86
+    idea_ref: *controversial_idea
+    created_at: '2018-02-12 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
   - body_multiloc:
       en-GB: "<p>Consequatur eligendi sint. Necessitatibus ut consequuntur dicta nemo
         at sint. Fugiat dolor maiores eum sit fuga qui iste.</p><p>Suscipit et pariatur
@@ -6264,6 +6296,9 @@ models:
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
     votable_ref: *209
+  idea_image:
+  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+    idea_ref: *controversial_idea
   phase:
   - title_multiloc:
       en-GB: Quidem corrupti et ab ducimus ratione saepe illo doloribus.
