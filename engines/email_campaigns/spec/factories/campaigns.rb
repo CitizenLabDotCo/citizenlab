@@ -57,6 +57,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :mention_in_official_feedback_campaign, class: EmailCampaigns::Campaigns::MentionInOfficialFeedback do
+    enabled { true }
+  end
+
   factory :new_comment_for_admin_campaign, class: EmailCampaigns::Campaigns::NewCommentForAdmin do
     enabled { true }
   end
@@ -70,6 +74,18 @@ FactoryBot.define do
   end
 
   factory :new_idea_for_admin_campaign, class: EmailCampaigns::Campaigns::NewIdeaForAdmin do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_commented_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnCommentedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_voted_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnVotedIdea do
+    enabled { true }
+  end
+
+  factory :official_feedback_on_your_idea_campaign, class: EmailCampaigns::Campaigns::OfficialFeedbackOnYourIdea do
     enabled { true }
   end
 

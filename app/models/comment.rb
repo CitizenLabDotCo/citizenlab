@@ -9,8 +9,8 @@ class Comment < ApplicationRecord
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
   
-  counter_culture :idea
-  counter_culture [:idea, :project]
+  counter_culture :idea, column_name: proc {|model| model.published? ? 'comments_count' : nil }
+  counter_culture [:idea, :project], column_name: proc {|model| model.published? ? 'comments_count' : nil }
 
   PUBLICATION_STATUSES = %w(published deleted)
 
@@ -30,6 +30,10 @@ class Comment < ApplicationRecord
 
   def project
     self.idea&.project
+  end
+
+  def published?
+    self.publication_status == 'published'
   end
 
   private

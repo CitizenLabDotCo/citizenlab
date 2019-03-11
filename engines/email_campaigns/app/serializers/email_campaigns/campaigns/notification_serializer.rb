@@ -17,11 +17,23 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
 
       def header_bg
         object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
+      end
+    end
+
+    class CustomOfficialFeedbackSerializer < ActiveModel::Serializer
+      attributes :id, :body_multiloc, :author_multiloc, :url, :created_at
+
+      def created_at
+        object.created_at.iso8601
+      end
+
+      def url
+        FrontendService.new.model_to_url object
       end
     end
 
@@ -32,9 +44,8 @@ module EmailCampaigns
         object.created_at.iso8601
       end
 
-
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
 
       def author_avatar
@@ -54,7 +65,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
     end
 
@@ -74,7 +85,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object.spam_reportable
+        Frontend::UrlService.new.model_to_url object.spam_reportable
       end
     end
 
@@ -86,7 +97,7 @@ module EmailCampaigns
       end
 
       def activate_invite_url
-        FrontendService.new.invite_url object.token, locale: object.invitee.locale
+        Frontend::UrlService.new.invite_url object.token, locale: object.invitee.locale
       end
     end
 

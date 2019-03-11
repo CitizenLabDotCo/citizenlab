@@ -6,7 +6,7 @@ class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
 
   def url
-    FrontendService.new.model_to_url object
+    Frontend::UrlService.new.model_to_url object
   end
 
   def latitude

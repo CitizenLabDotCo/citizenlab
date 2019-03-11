@@ -1,7 +1,6 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-
 resource "Manifest" do
  
   explanation "Small endpoint that generates Web App Manifest for the tenant. See https://developers.google.com/web/fundamentals/web-app-manifest/"
