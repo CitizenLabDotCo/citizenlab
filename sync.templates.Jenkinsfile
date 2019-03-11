@@ -25,23 +25,7 @@ pipeline {
     stage('Test tenant templates') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t template_test" web bundle exec rake spec'
-      }
-    }
-
-    stage('Push tenant templates to backup repository') {
-      steps {
-        git branch: 'master',
-            credentialsId: 'local-ssh-user',
-            url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
-        withAWS(credentials: 'aws') {
-          s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
-        }
-        dir('cl2-tenant-templates') {
-          sh '( git checkout master && git add -A && ( git diff-index --quiet HEAD || git commit -am \'New tenant templates\' ) )'
-          sshagent(credentials: ['local-ssh-user']) {
-            sh 'git push --set-upstream origin master'
-          }
-        }
+        sh 'pwd'
       }
     }
 
