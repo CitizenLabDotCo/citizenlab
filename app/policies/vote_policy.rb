@@ -52,7 +52,7 @@ class VotePolicy < ApplicationPolicy
     pcs = ParticipationContextService.new
 
     idea = vote.votable
-    idea && !pcs.voting_disabled_reason(idea, user)
+    idea && !pcs.voting_disabled_reason_for_idea(idea, user)
   end
 
   def check_cancelling_votes_allowed vote, user

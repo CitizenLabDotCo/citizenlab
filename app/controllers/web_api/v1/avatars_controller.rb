@@ -1,7 +1,8 @@
 class WebApi::V1::AvatarsController < ApplicationController
 
   skip_after_action :verify_policy_scoped
-
+  before_action :set_avatar, only: [:show]
+  
   def index
     avatars_service = AvatarsService.new
 
@@ -24,7 +25,16 @@ class WebApi::V1::AvatarsController < ApplicationController
     render json: avatars[:users], each_serializer: WebApi::V1::AvatarSerializer, meta: { total: avatars[:total_count] }
   end
 
+  def show
+    render json: @user, serializer: WebApi::V1::AvatarSerializer
+  end
+
   private
+
+  def set_avatar
+    @user = User.find(params[:id][0..-8])
+    authorize @user
+  end
 
   def secure_controller?
     false
