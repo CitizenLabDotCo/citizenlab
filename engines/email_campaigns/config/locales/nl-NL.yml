@@ -11,7 +11,7 @@ nl:
       "invite_received": Iemand mij uitnodigt op het platform
       "invite_accepted": Iemand aanvaardt mijn uitnodiging
       "mention_in_comment": Iemand vernoemt me in een reactie
-      "mention_in_official_feedback": When someone mentions me in official feedback
+      "mention_in_official_feedback": Iemand vernoemt me in een officiële update
       "project_moderation_rights_received": Projectmoderatorrechten ontvangen
       "status_change_of_your_idea": De status van mijn idee verandert
       "welcome": Ik registreer me op het platform
@@ -22,7 +22,7 @@ nl:
       "new_comment_on_commented_idea": Iemand reageert op een idee waar ik ook op reageerde
       "new_comment_on_voted_idea": Iemand reageerde op een idee waarvoor ik heb gestemd
       "new_idea_for_admin": Bij een nieuw idee in een project dat ik modereer
-      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_commented_idea": Er werd een officiële update geplaatst bij een idee waar ik op reageerde
       "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
       "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
       "status_change_of_commented_idea": De status van een idee waarop ik reageerde, verandert
