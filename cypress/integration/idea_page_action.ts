@@ -40,7 +40,7 @@ describe('Project ideas page', () => {
 
           // delete
           cy.get('.e2e-official-feedback-post').find('button').first().click();
-          cy.get('.e2e-official-feedback-post').contains('delete').click();
+          cy.get('.e2e-official-feedback-post').find('.e2e-action-delete').click();
 
           cy.wait(100);
           cy.get('.e2e-official-feedback-post').should('not.exist');
