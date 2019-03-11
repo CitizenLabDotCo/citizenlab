@@ -5,14 +5,20 @@ class ParticipantsService
     since = options[:since]
     if project
       ideas = Idea.where(project: project)
-      comments = Comment.where(idea_id: ideas.ids)
-      votes = Vote.where(votable_id: (ideas.ids + comments.ids))
+      comments = Comment.where(idea_id: ideas)
+      votes = Vote.where(votable_id: ideas).or(Vote.where(votable_id: comments))
+      baskets = Basket.submitted.where(participation_context_id: [project.id, *project.phases.ids])
       if since
         ideas = ideas.where('created_at::date >= (?)::date', since)
         comments = comments.where('created_at::date >= (?)::date', since)
         votes = votes.where('created_at::date >= (?)::date', since)
+        baskets = baskets.where('created_at::date >= (?)::date', since)
       end
-      User.where(id: (ideas.distinct.pluck(:author_id) + comments.distinct.pluck(:author_id) + votes.distinct.pluck(:user_id)).uniq)
+      User
+        .where(id: ideas.select(:author_id))
+        .or(User.where(id: comments.select(:author_id)))
+        .or(User.where(id: votes.select(:user_id)))
+        .or(User.where(id: baskets.select(:user_id)))
     else
       users = User
         .joins(:activities)
@@ -30,7 +36,8 @@ class ParticipantsService
     {item_type: 'Comment', action: 'created', score: 3},
     {item_type: 'Idea', action: 'published', score: 5},
     {item_type: 'Vote', action: 'idea_upvoted', score: 1},
-    {item_type: 'Vote', action: 'idea_downvoted', score: 1}
+    {item_type: 'Vote', action: 'idea_downvoted', score: 1},
+    {item_type: 'Basket', action: 'created', score: 3},
   ]
 
   # Adapts the passed activities_scope to only take into account activities

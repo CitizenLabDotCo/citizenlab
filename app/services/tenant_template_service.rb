@@ -93,6 +93,7 @@ class TenantTemplateService
       @template['models']['idea_image']          = yml_idea_images
       @template['models']['ideas_phase']         = yml_ideas_phases
       @template['models']['ideas_topic']         = yml_ideas_topics
+      @template['models']['official_feedback']   = yml_official_feedback
       @template['models']['comment']             = yml_comments
       @template['models']['vote']                = yml_votes
     end
@@ -631,6 +632,21 @@ class TenantTemplateService
     end
   end
 
+  def yml_official_feedback
+    OfficialFeedback.all.map do |a|
+      yml_official_feedback = {
+        'user_ref'        => lookup_ref(a.user_id, :user),
+        'idea_ref'        => lookup_ref(a.idea_id, :idea),
+        'body_multiloc'   => a.body_multiloc,
+        'author_multiloc' => a.author_multiloc,
+        'created_at'      => a.created_at.to_s,
+        'updated_at'      => a.updated_at.to_s
+      }
+      store_ref yml_official_feedback, a.id, :admin_feedback
+      yml_official_feedback
+    end
+  end
+
   def yml_comments
     (Comment.where('parent_id IS NULL')+Comment.where('parent_id IS NOT NULL')).map do |c|
       yml_comment = {
@@ -640,7 +656,7 @@ class TenantTemplateService
         'created_at'         => c.created_at.to_s,
         'updated_at'         => c.updated_at.to_s,
         'publication_status' => c.publication_status,
-        'body_updated_at'    => c.body_updated_at.to_s,
+        'body_updated_at'    => c.body_updated_at.to_s
       }
       yml_comment['parent_ref'] = lookup_ref(c.parent_id, :comment) if c.parent_id
       store_ref yml_comment, c.id, :comment

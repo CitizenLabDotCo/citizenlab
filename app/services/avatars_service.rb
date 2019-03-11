@@ -1,11 +1,13 @@
 class AvatarsService
 
+  def initialize participants_service=ParticipantsService.new
+    @participants_service = participants_service
+  end
+
   def avatars_for_project project, users: User.active, limit: 5
     Rails.cache.fetch("#{project.cache_key}/avatars", expires_in: 1.day) do
-      users_in_project = users
-        .where("EXISTS(SELECT 1 FROM ideas WHERE author_id = users.id AND project_id = ?)", project.id)
-
-      add_count(users_in_project, limit)
+      participants = @participants_service.participants(project: project)
+      add_count(users.merge(participants), limit)
     end
   end
 

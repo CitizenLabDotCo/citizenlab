@@ -290,13 +290,13 @@ de:
     homepage_info_body: ""
   projects:
     open_idea_project_title: Offene Ideen-Box
-    open_idea_project_description_preview: Maybe you have an idea that doesn't fit with one of the existing projects? Then post it here, gather support and get it on the political agenda!
+    open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie es hier, sammeln Sie Unterstützung und bringen Sie es auf die politische Agenda!
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Ratssitzung
     council_meeting_description: >
-      <p>During this council meeting, those citizen initiatives who gained 100 votes in less than 3 months, will be presented.</p><p>The council will then shed light on their perspective on each idea.</p>
+      <p>Während dieser Ratssitzung werden diejenigen Bürgerinitiativen vorgestellt, die in weniger als 3 Monaten 100 Stimmen gewonnen haben.</p><p> Der Rat wird dann seine Sichtweise auf jede Idee darlegen.</p>
   custom_fields:
     gender: Geschlecht
     birthyear: Geburtsjahr
