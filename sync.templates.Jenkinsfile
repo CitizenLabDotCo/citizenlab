@@ -36,7 +36,7 @@ pipeline {
             credentialsId: 'local-ssh-user',
             url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         withAWS(credentials: 'aws') {
-          s3Download(file:'.', bucket:'cl2-tenant-templates', path:'test/', force:true)
+          s3Download(file:'prrt/', bucket:'cl2-tenant-templates', path:'test/', force:true)
         }
         sh 'pwd'
         sh 'ls -A'
