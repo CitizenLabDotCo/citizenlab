@@ -7,7 +7,7 @@ import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
-  ideaId?: string | null | undefined;
+  ideaId: string | null | undefined;
 }
 
 type children = (renderProps: GetCommentsChildProps) => JSX.Element | null;

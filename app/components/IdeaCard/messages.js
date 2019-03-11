@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.components.IdeaCard.register',
     defaultMessage: 'Create an account',
   },
+  byAuthorName: {
+    id: 'app.containers.IdeaCard.byAuthorName',
+    defaultMessage: 'by {authorNameComponent}',
+  },
 });

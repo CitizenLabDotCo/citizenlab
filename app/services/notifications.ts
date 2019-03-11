@@ -321,7 +321,7 @@ export interface IAdminRightsReceivedNotificationData extends IBaseNotificationD
   };
 }
 
-export interface IIdeaForAdminData extends IBaseNotificationData {
+export interface IIdeaForAdminNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'new_idea_for_admin';
     read_at: string | null;
@@ -344,10 +344,16 @@ export interface IIdeaForAdminData extends IBaseNotificationData {
         type: string;
       }
     }
+    idea_author: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
   };
 }
 
-export interface ICommentForAdminData extends IBaseNotificationData {
+export interface ICommentForAdminNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'new_comment_for_admin';
     read_at: string | null;
@@ -376,6 +382,168 @@ export interface ICommentForAdminData extends IBaseNotificationData {
         type: string;
       }
     }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_your_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    idea_title: Multiloc;
+    official_feedback_author: Multiloc;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    official_feedback: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_voted_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    idea_title: Multiloc;
+    official_feedback_author: Multiloc;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    official_feedback: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'official_feedback_on_commented_idea';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    idea_title: Multiloc;
+    official_feedback_author: Multiloc;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    official_feedback: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'mention_in_official_feedback';
+    read_at: string | null;
+    created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
+    idea_title: Multiloc;
+    official_feedback_author: Multiloc;
+  };
+  relationships: {
+    initiating_user: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    idea: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    official_feedback: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
   };
 }
 
@@ -390,8 +558,12 @@ export type TNotificationData =
   ICommentDeletedByAdminNotificationData |
   IProjectModerationRightsReceivedNotificationData |
   IAdminRightsReceivedNotificationData |
-  IIdeaForAdminData |
-  ICommentForAdminData;
+  IIdeaForAdminNotificationData |
+  ICommentForAdminNotificationData |
+  IOfficialFeedbackOnYourIdeaNotificationData |
+  IOfficialFeedbackOnVotedIdeaNotificationData |
+  IOfficialFeedbackOnCommentedIdeaNotificationData |
+  IMentionInOfficialFeedbackNotificationData;
 
 export interface INotificationLinks {
   self: string;
