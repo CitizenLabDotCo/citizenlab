@@ -3,6 +3,7 @@
 ## 2019-03-11
 
 ### Fixed
+
 - Similar ideas is now fast enough to enable in production
 - NLP insights will no longer keep on loading when creating a new clusgtering graph
 - The comment count on project cards now correctly updates on deleted comments
@@ -17,6 +18,7 @@
 - The `isSuperAdmin`, `isProjectModerator` and `highestRole` user properties are now always named using camelCasing
 
 ### Added
+
 - Official feedback
   - Admins and moderators can react to ideas with official feedback from the idea page
   - Users contributing to the idea receive a notification and email
@@ -30,6 +32,7 @@
 - Projects on the landing page and all projects page can now be filtered on area through the URL
 
 ### Changed
+
 - The avatars on a project card now include all users that posted, voted or commented
 - Commenting is no longer possible on ideas not in the active phase
 
