@@ -22,9 +22,9 @@ en-CA:
       "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
       "new_idea_for_admin": When an idea is published in a project I moderate
-      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
-      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
-      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
+      "official_feedback_on_commented_idea": When an official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When an official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When an official feedback has been placed on my idea
       "status_change_of_commented_idea": When the status of an idea I commented on has been changed
       "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": A weekly overview (for administrators)
@@ -52,9 +52,9 @@ en-CA:
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
       "new_idea_for_admin": When an idea is published in a project I moderate
-      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
-      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
-      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
+      "official_feedback_on_commented_idea": When an official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When an official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When an official feedback has been placed on my idea
       "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
       "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
