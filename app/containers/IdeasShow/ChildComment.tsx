@@ -3,6 +3,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 // components
 import CommentBody from './CommentBody';
@@ -16,6 +17,7 @@ import { updateComment } from 'services/comments';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
@@ -28,7 +30,6 @@ import { CLErrorsJSON } from 'typings';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import GetUser from 'resources/GetUser';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -51,6 +52,7 @@ interface DataProps {
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -117,7 +119,7 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedIntlPro
   }
 
   render() {
-    const { comment, idea, locale } = this.props;
+    const { comment, idea, locale, author } = this.props;
     const { editionMode, translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
@@ -133,59 +135,48 @@ class ChildComment extends React.PureComponent<Props & ITracks & InjectedIntlPro
 
       return (
         <CommentContainer className={`${className} e2e-child-comment`}>
+          {!isNilOrError(author) && canModerate(projectId, { data: author }) ?
+            <OfficialHeader>
+              <OfficialStyledAuthor
+                authorId={authorId}
+                notALink={authorId ? false : true}
+                createdAt={createdAt}
+                size="40px"
+                projectId={projectId}
+                showModeration
+              />
+              <Extra>
+                <Badge>
+                  <FormattedMessage {...messages.official} />
+                </Badge>
+                <StyledMoreActionsMenu
+                  ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                  className="e2e-more-actions"
+                  comment={comment}
+                  onCommentEdit={this.onCommentEdit}
+                  projectId={projectId}
 
-          <GetUser id={authorId}>
-            {author => {
-              const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-              if (authorCanModerate) {
-                return (
-                  <OfficialHeader>
-                    <OfficialStyledAuthor
-                      authorId={authorId}
-                      notALink={authorId ? false : true}
-                      createdAt={createdAt}
-                      size="40px"
-                      projectId={projectId}
-                      showModeration
-                    />
-                    <Extra>
-                      <Badge>
-                        <FormattedMessage {...messages.official} />
-                      </Badge>
-                      <StyledMoreActionsMenu
-                        ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
-                        className="e2e-more-actions"
-                        comment={comment}
-                        onCommentEdit={this.onCommentEdit}
-                        projectId={projectId}
+                />
+              </Extra>
+            </OfficialHeader>
+          :
+            <Header>
+              <StyledAuthor
+                authorId={authorId}
+                notALink={authorId ? false : true}
+                createdAt={createdAt}
+                size="40px"
+                projectId={projectId}
+              />
+              <StyledMoreActionsMenu
+                ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                className="e2e-more-actions"
+                comment={comment}
+                onCommentEdit={this.onCommentEdit}
+                projectId={projectId}
 
-                      />
-                    </Extra>
-                  </OfficialHeader>
-                );
-              } else {
-                return (
-                  <Header>
-                    <StyledAuthor
-                      authorId={authorId}
-                      notALink={authorId ? false : true}
-                      createdAt={createdAt}
-                      size="40px"
-                      projectId={projectId}
-                    />
-                    <StyledMoreActionsMenu
-                      ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
-                      className="e2e-more-actions"
-                      comment={comment}
-                      onCommentEdit={this.onCommentEdit}
-                      projectId={projectId}
-
-                    />
-                  </Header>
-                );
-              }
-            }}
-          </GetUser>
+              />
+            </Header>}
 
           <CommentBody
             commentBody={comment.attributes.body_multiloc}
@@ -223,6 +214,7 @@ const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={(!isNilOrError(comment) ? comment.relationships.idea.data.id : null)}>{render}</GetIdea>,
   locale: <GetLocale />,
+  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>,
 });
 
 export default (inputProps: InputProps) => (

@@ -25,7 +25,6 @@ export function logout() {
 export function headlessLogin() {
   cy.request('/web_api/v1/user_token', { auth: { email: 'admin@citizenlab.co', password: 'testtest' } })
     .then(response => {
-      console.log(response);
       cy.setCookie('cl2_jwt', JSON.parse(response.body).jwt);
     });
 }
