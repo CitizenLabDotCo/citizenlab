@@ -253,6 +253,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 <ProjectNavbarLink
                   to={`/projects/${projectSlug}/info`}
                   activeClassName="active"
+                  className="e2e-project-info-link"
                 >
                   <InfoIcon name="info2" />
                   <FormattedMessage {...messages.navInformation} />
@@ -275,6 +276,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/survey`}
                     activeClassName="active"
+                    className="e2e-project-survey-link"
                   >
                     <ProjectNavbarIcon name="survey" />
                     <FormattedMessage {...messages.navSurvey} />
@@ -286,6 +288,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/events`}
                     activeClassName="active"
+                    className="e2e-project-event-link"
                   >
                     <ProjectNavbarIcon name="calendar" />
                     <FormattedMessage {...messages.navEvents} />
@@ -299,6 +302,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   <StyledPBNavbarButton
                     participationContextType={participationContextType}
                     participationContextId={participationContextId}
+                    className="e2e-project-pb-button"
                   />
                 }
 
