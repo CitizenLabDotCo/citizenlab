@@ -27,6 +27,7 @@ class Idea < ApplicationRecord
   has_many :baskets, through: :baskets_ideas
 
   has_many :comments, dependent: :destroy
+  has_many :official_feedbacks, dependent: :destroy
   has_many :votes, as: :votable, dependent: :destroy
   has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'

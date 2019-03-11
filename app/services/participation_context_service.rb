@@ -9,6 +9,8 @@ class ParticipationContextService
 
   COMMENTING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
+    not_supported: 'not_supported',
+    idea_not_in_current_phase: 'idea_not_in_current_phase',
     commenting_disabled: 'commenting_disabled',
     not_permitted: 'not_permitted'
   }
@@ -19,13 +21,13 @@ class ParticipationContextService
     voting_disabled: 'voting_disabled',
     not_permitted: 'not_permitted',
     voting_limited_max_reached: 'voting_limited_max_reached',
-    not_in_active_context: 'not_in_active_context'
+    idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   BUDGETING_DISABLED_REASONS = {
     project_inactive: 'project_inactive',
     not_permitted: 'not_permitted',
-    not_in_active_context: 'not_in_active_context'
+    idea_not_in_current_phase: 'idea_not_in_current_phase'
   }
 
   TAKING_SURVEY_DISABLED_REASONS = {
@@ -47,15 +49,6 @@ class ParticipationContextService
       project
     elsif project.timeline?
       @timeline_service.current_phase project
-    end
-  end
-
-  def get_last_active_participation_context idea
-    project = idea.project
-    if project.continuous?
-      project
-    elsif project.timeline?
-      idea.phases.sort_by(&:end_at).last
     end
   end
 
@@ -84,32 +77,49 @@ class ParticipationContextService
     end
   end
 
-  def commenting_disabled_reason idea, user
-    context = get_participation_context idea.project
-    last_context = get_last_active_participation_context idea
-    if !context || !last_context
+  def commenting_disabled_reason_for_idea idea, user
+    active_context = get_participation_context idea.project
+    if !active_context
       COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, active_context
+      COMMENTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    else
+      commenting_disabled_reason_for_project(idea.project, user)
+    end
+  end
+
+  def commenting_disabled_reason_for_project project, user
+    context = get_participation_context project
+    if !context
+      COMMENTING_DISABLED_REASONS[:project_inactive]
+    elsif !context.can_contain_ideas?
+      COMMENTING_DISABLED_REASONS[:not_supported]
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
     elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      COMMENTING_DISABLED_REASONS[:not_permitted]
-    elsif !last_context.commenting_enabled
-      COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    elsif !context_permission(last_context, 'commenting')&.granted_to?(user)
       COMMENTING_DISABLED_REASONS[:not_permitted]
     else
       nil
     end
   end
 
-  def voting_disabled_reason idea, user
+  def voting_disabled_reason_for_idea idea, user
     context = get_participation_context idea.project
+    if !context
+      VOTING_DISABLED_REASONS[:project_inactive]
+    elsif !in_current_context? idea, context
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
+    else
+      voting_disabled_reason_for_project(idea.project, user)
+    end
+  end
+
+  def voting_disabled_reason_for_project project, user
+    context = get_participation_context project
     if !context
       VOTING_DISABLED_REASONS[:project_inactive]
     elsif !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
-    elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:not_in_active_context]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
@@ -132,7 +142,7 @@ class ParticipationContextService
     elsif !context.ideation?
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !in_current_context? idea, context
-      VOTING_DISABLED_REASONS[:not_in_active_context]
+      VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
     elsif !context_permission(context, 'voting')&.granted_to?(user)
@@ -158,7 +168,7 @@ class ParticipationContextService
   def budgeting_disabled_reason idea, user
     context = get_participation_context idea.project
     if context && !in_current_context?(idea, context)
-      BUDGETING_DISABLED_REASONS[:not_in_active_context]
+      BUDGETING_DISABLED_REASONS[:idea_not_in_current_phase]
     else
       budgeting_disabled_reason_in_context context, user
     end
@@ -184,14 +194,14 @@ class ParticipationContextService
   def future_commenting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.commenting_enabled && context_permission(phase, 'commenting')&.granted_to?(user)
     end
   end
 
   def future_voting_enabled_phase project, user, time=Time.now
     return nil if !project.timeline?
     @timeline_service.future_phases(project, time).find do |phase|
-      phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
+      phase.can_contain_ideas? && phase.voting_enabled && context_permission(phase, 'voting')&.granted_to?(user)
     end
   end
 
@@ -220,7 +230,10 @@ class ParticipationContextService
   end
 
   def context_permission context, action
-    context.permissions.where(action: action).first
+    # We use ruby #find instead of SQL to have a higher chance of hitting
+    # ActiveRecord's query cache, since this can be repeated a lot for the
+    # same context.
+    context.permissions.find{|permission| permission.action == action}
   end
 
 end

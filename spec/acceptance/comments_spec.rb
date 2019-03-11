@@ -122,7 +122,7 @@ resource "Comments" do
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
         expect(json_response.dig(:data,:relationships,:parent,:data)).to be_nil
         expect(json_response.dig(:data,:relationships,:idea,:data,:id)).to eq idea_id
-        expect(@idea.reload.comments_count).to eq 3
+        expect(@idea.reload.comments_count).to eq 2
       end
 
       describe do
@@ -135,7 +135,7 @@ resource "Comments" do
           expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
           expect(json_response.dig(:data,:relationships,:parent,:data, :id)).to eq parent_id
           expect(json_response.dig(:data,:relationships,:idea,:data,:id)).to eq idea_id
-          expect(@idea.reload.comments_count).to eq 3
+          expect(@idea.reload.comments_count).to eq 2
         end
       end
 
@@ -215,7 +215,7 @@ resource "Comments" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:body_multiloc).stringify_keys).to match body_multiloc
-        expect(@idea.reload.comments_count).to eq 3
+        expect(@idea.reload.comments_count).to eq 2
       end
 
       example "Admins cannot modify a comment", document: false do
