@@ -1,5 +1,42 @@
 # Changelog
 
+## 2019-03-11
+
+### Fixed
+
+- Similar ideas is now fast enough to enable in production
+- NLP insights will no longer keep on loading when creating a new clusgtering graph
+- The comment count on project cards now correctly updates on deleted comments
+- Various spacing issues with the new landing page on mobile are fixed
+- When logging out, the avatars on the project card no longer disappear
+- The widget no longer cuts off the title when it's too long
+- In admin > settings > pages, all inputs are now correctly displayed using the rich text editor
+- The notifications are no longer indented inconsistently
+- Exporting typeform survey results now also work when the survey embed url contains `?source=xxxxx`
+- When there's a dropdown with a lot of options during signup, these options are no longer unreachable when scrolling down
+- The cookie policy no longer displays overlapping text on mobile
+- The `isSuperAdmin`, `isProjectModerator` and `highestRole` user properties are now always named using camelCasing
+
+### Added
+
+- Official feedback
+  - Admins and moderators can react to ideas with official feedback from the idea page
+  - Users contributing to the idea receive a notification and email
+  - Feedback can be posted using a free text name
+  - Feedback can be updated later on
+  - Admin and moderators can no longer write top-level comments
+  - Comments by admins or moderators carry an `Official` badge
+- When giving product feedback from the footer, a message and email can be provided for negative feedback
+- CTA on project card now takes granular permissions into account
+- CTA on project card is now also shown on mobile
+- Projects for which the final phase has finished are marked as finished on their project card
+- Projects on the landing page and all projects page can now be filtered on area through the URL
+
+### Changed
+
+- The avatars on a project card now include all users that posted, voted or commented
+- Commenting is no longer possible on ideas not in the active phase
+
 ## 2019-03-03
 
 ### Fixed
@@ -28,7 +65,7 @@
   - The `Show all projects` link is only shown when there are more than 10 projects
 - New attributes are added to segment, available in all downstream tools:
   - `isSuperAdmin`: Set to true when the user is an admin with a citizenlab email
-  - `isModeratorModerator`
+  - `isProjectModerator`
   - `highestRole`: Either `super_admin`, `admin`, `project_moderator` or `user`
 
 ### Changed
