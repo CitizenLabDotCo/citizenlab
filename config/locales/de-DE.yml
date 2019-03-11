@@ -294,7 +294,7 @@ de:
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
   events:
-    council_meeting_title: Council Meeting
+    council_meeting_title: Ratssitzung
     council_meeting_description: >
       <p>Während dieser Ratssitzung werden diejenigen Bürgerinitiativen vorgestellt, die in weniger als 3 Monaten 100 Stimmen gewonnen haben.</p><p> Der Rat wird dann seine Sichtweise auf jede Idee darlegen.</p>
   custom_fields:
