@@ -33,7 +33,7 @@ module EmailCampaigns
       end
 
       def url
-        FrontendService.new.model_to_url object
+        Frontend::UrlService.new.model_to_url object
       end
     end
 
