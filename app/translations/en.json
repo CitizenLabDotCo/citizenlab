@@ -268,6 +268,7 @@
   "app.components.avatar.avatarAltText": "Avatar of {userName}",
   "app.components.avatar.noAvatarAltText": "Default avatar icon for people without a custom one",
   "app.components.sendFeedback": "Send your feedback",
+  "app.components.sendFeedbackLink": "https://citizenlabco.typeform.com/to/z7baRP?source={url}",
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
