@@ -25,13 +25,24 @@ module EmailCampaigns
       end
     end
 
+    class CustomOfficialFeedbackSerializer < ActiveModel::Serializer
+      attributes :id, :body_multiloc, :author_multiloc, :url, :created_at
+
+      def created_at
+        object.created_at.iso8601
+      end
+
+      def url
+        FrontendService.new.model_to_url object
+      end
+    end
+
     class CustomCommentSerializer < ActiveModel::Serializer
       attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :url, :created_at, :author_name, :author_avatar
 
       def created_at
         object.created_at.iso8601
       end
-
 
       def url
         Frontend::UrlService.new.model_to_url object
