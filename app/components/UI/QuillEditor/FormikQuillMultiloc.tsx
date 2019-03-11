@@ -16,11 +16,11 @@ export default class FormikQuillMultiloc extends PureComponent<FieldProps & Mult
   }
 
   render() {
-    const { value } = this.props.field;
+    const { field: { value, name }, id } = this.props;
     return (
       <QuillMultiloc
         {...this.props}
-        id={this.props.field.name}
+        id={id ? id : name} // id is not required if there is only one field with the same name on the page.
         valueMultiloc={value}
         onChangeMultiloc={this.handleOnChange}
         onBlur={this.handleOnBlur}

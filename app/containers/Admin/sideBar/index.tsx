@@ -220,7 +220,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                   {(manualEmailing) => (
                     <GetFeatureFlag name="automated_emailing_control">
                       {(automatedEmailing) => manualEmailing || automatedEmailing ?
-                        <MenuItem route={route} pathname={pathname} />
+                        <MenuItem route={route} pathname={pathname} key={route.id} />
                       :
                         null
                       }
@@ -230,13 +230,13 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
               );
             } else if (route.featureName) {
               return (
-                <FeatureFlag name={route.featureName} key={route.id}>
-                  <MenuItem route={route} pathname={pathname} />
+                <FeatureFlag name={route.featureName}>
+                  <MenuItem route={route} key={route.id} pathname={pathname} />
                 </FeatureFlag>
               );
             } else {
               return (
-                <MenuItem route={route} pathname={pathname} />
+                <MenuItem route={route} key={route.id} pathname={pathname} />
               );
             }
           })}

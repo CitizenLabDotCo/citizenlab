@@ -60,5 +60,29 @@ export default defineMessages({
   sendFeedback: {
     id: 'app.containers.footer.sendFeedback',
     defaultMessage: 'Send your feedback'
+  },
+  feedbackModalTitle: {
+    id: 'app.containers.footer.feedbackModalTitle',
+    defaultMessage: 'What were you looking for?'
+  },
+  feedbackModalSubtitle: {
+    id: 'app.containers.footer.feedbackModalSubtitle',
+    defaultMessage: 'Your feedback helps us to improve the platform.'
+  },
+  email: {
+    id: 'app.containers.footer.email',
+    defaultMessage: 'Email (optional)'
+  },
+  feedback: {
+    id: 'app.containers.footer.feedback',
+    defaultMessage: 'Let us know what you didn’t find on this page:'
+  },
+  submit: {
+    id: 'app.containers.footer.submit',
+    defaultMessage: 'Submit'
+  },
+  moreInfo: {
+    id: 'app.containers.footer.moreInfo',
+    defaultMessage: '... let us know more'
   }
 });
