@@ -15,6 +15,9 @@ module Frontend
       elsif model_instance.kind_of? Comment ### comments do not have a URL yet, we return the idea URL for now
         subroute = 'ideas'
         slug = model_instance.idea.slug
+      elsif model_instance.kind_of? OfficialFeedback ### official feedbacks do not have a URL yet, we return the idea URL for now
+        subroute = 'ideas'
+        slug = model_instance.idea.slug
       elsif model_instance.kind_of? Page
         subroute = 'pages'
         slug = model_instance.slug
