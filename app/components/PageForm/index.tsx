@@ -34,6 +34,7 @@ export interface FormValues {
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   local_page_files: UploadFile[] | [];
+  slug?: any;
 }
 
 export interface Props {
