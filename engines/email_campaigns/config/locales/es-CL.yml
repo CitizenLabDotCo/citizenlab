@@ -11,6 +11,7 @@ es-CL:
       "invite_received": When someone invites me to the platform
       "invite_accepted": When someone accepts my invitation
       "mention_in_comment": When someone mentions me in a comment
+      "mention_in_official_feedback": When someone mentions me in official feedback
       "project_moderation_rights_received": When I'm given project moderation rights
       "status_change_of_your_idea": When the status of my idea changes
       "welcome": When I register on the platform
@@ -21,6 +22,9 @@ es-CL:
       "new_comment_on_commented_idea": When a new comment has been placed on an idea I commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea I voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
+      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
       "status_change_of_commented_idea": When the status of an idea I commented on has been changed
       "status_change_of_voted_idea": When the status of an idea I voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
@@ -37,6 +41,7 @@ es-CL:
       "invite_received": When a user gets invited to the platform
       "invite_accepted": When a user accepts my invitation
       "mention_in_comment": When a user is mentioned in a comment
+      "mention_in_official_feedback": When someone mentions me in official feedback
       "project_moderation_rights_received": When a user is given project moderation rights
       "status_change_of_your_idea": When the status of my idea changes
       "welcome": When a user registers on the platform
@@ -47,6 +52,9 @@ es-CL:
       "new_comment_on_commented_idea": When a new comment has been placed on an idea the user commented on
       "new_comment_on_voted_idea": When a new comment has been placed on an idea the user voted for
       "new_idea_for_admin": When an idea is published in a project I can moderate
+      "official_feedback_on_commented_idea": When a new official feedback has been placed on an idea I commented on
+      "official_feedback_on_voted_idea": When a new official feedback has been placed on an idea I voted for
+      "official_feedback_on_your_idea": When a new official feedback has been placed on my idea
       "status_change_of_commented_idea": When the status of an idea the user commented on has been changed
       "status_change_of_voted_idea": When the status of an idea the user voted for has been changed
       "admin_digest": A weekly overview of the activity on the platform (only for administrators)
