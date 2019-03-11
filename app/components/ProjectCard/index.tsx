@@ -486,7 +486,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       if (isArchived) {
         countdown = (
-          <ContentHeaderLabel>
+          <ContentHeaderLabel className="e2e-project-card-archived-label">
             <FormattedMessage {...messages.archived} />
           </ContentHeaderLabel>
         );
