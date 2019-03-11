@@ -127,7 +127,7 @@
     "@types/file-saver": "2.0.0",
     "@types/geojson": "7946.0.6",
     "@types/googlemaps": "3.30.18",
-    "@types/jest": "24.0.9",
+    "@types/jest": "24.0.11",
     "@types/js-cookie": "2.2.1",
     "@types/json-stable-stringify": "1.0.32",
     "@types/jwt-decode": "2.2.1",

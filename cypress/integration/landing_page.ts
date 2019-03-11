@@ -54,8 +54,8 @@ describe('Landing page', () => {
 
     it('shows the "custom CTA" header when skipping the "complete your profile" header', () => {
       cy.get('#e2e-singed-in-header-complete-profile').get('.e2e-singed-in-header-skip-btn').click();
-      cy.wait(500);
-      cy.get('#e2e-singed-in-header-custom-cta');
+      cy.wait(1000);
+      cy.get('#e2e-singed-in-header-default-cta');
     });
   });
 
