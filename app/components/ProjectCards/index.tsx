@@ -463,6 +463,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
           )}
 
           <Footer>
+            {/* nice visual hack, please don't remove*/}
             {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
 
             {!querying && hasProjects && hasMore &&

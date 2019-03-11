@@ -9,10 +9,8 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // import i18n
 import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
-// resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
   color: ${colors.secondaryText};
@@ -58,28 +56,15 @@ interface InputProps {
   className?: string;
 }
 
-interface DataProps {
-  locale: GetLocaleChildProps;
-}
+interface DataProps {}
 
 interface Props extends InputProps, DataProps {}
 
-const SendFeedbackComponent = (props: Props) => {
-  const { locale, showFeedbackText, className } = props;
-
-  let surveyLink: string | null = null;
-
-  if (locale === 'fr-BE' || locale === 'fr-FR') {
-    surveyLink = 'https://citizenlabco.typeform.com/to/Cgn9hg';
-  } else if (locale === 'nl-BE' || locale === 'nl-NL') {
-    surveyLink = 'https://citizenlabco.typeform.com/to/gOuYim';
-  } else {
-    // English survey when language is not French or Dutch
-    surveyLink = 'https://citizenlabco.typeform.com/to/z7baRP';
-  }
+const SendFeedbackComponent = (props: Props & InjectedIntlProps) => {
+  const { showFeedbackText, className, intl: { formatMessage } } = props;
 
   return (
-    <Container className={className} target="_blank" href={surveyLink}>
+    <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
       <SendFeedbackIcon name="questionMark" className="send-feedback-icon" />
       {/* Text has to be always here for pa11y, so we use a class and not conditional render to display it */}
       <SendFeedbackText className={`send-feedback-text  ${showFeedbackText ? 'show' : ''}`}>
@@ -89,12 +74,4 @@ const SendFeedbackComponent = (props: Props) => {
   );
 };
 
- export default (inputProps: InputProps) => (
-  <GetLocale>
-    {locale => <SendFeedbackComponent
-      showFeedbackText={inputProps.showFeedbackText}
-      locale={locale}
-      {...inputProps}
-    />}
-  </GetLocale>
-);
+ export default injectIntl(SendFeedbackComponent);

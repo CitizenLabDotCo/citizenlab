@@ -270,6 +270,7 @@
   "app.components.avatar.avatarAltText": "Avatar van {userName}",
   "app.components.avatar.noAvatarAltText": "Standaard avatar pictogram weergeven voor mensen zonder pictogram",
   "app.components.sendFeedback": "Stuur je feedback",
+  "app.components.sendFeedbackLink": "",
   "app.container.IdeaForm.budgetIsTooBig": "Het voorziene bedrag is te groot",
   "app.container.IdeaForm.budgetIsZeroError": "Geef een bedrag groter dan 0",
   "app.container.IdeaForm.budgetLabel": "Bedrag",

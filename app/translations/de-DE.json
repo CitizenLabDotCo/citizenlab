@@ -270,6 +270,7 @@
   "app.components.avatar.avatarAltText": "Avatar von {userName}",
   "app.components.avatar.noAvatarAltText": "Standard-Avatar-Symbol",
   "app.components.sendFeedback": "Reichen Sie Ihr Feedback ein",
+  "app.components.sendFeedbackLink": "",
   "app.container.IdeaForm.budgetIsTooBig": "Das angegebene Budget ist zu groß",
   "app.container.IdeaForm.budgetIsZeroError": "Bitte geben Sie ein Budget größer als 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
