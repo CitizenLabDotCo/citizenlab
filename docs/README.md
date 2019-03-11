@@ -25,6 +25,7 @@
   - Feedback can be posted using a free text name
   - Feedback can be updated later on
   - Admin and moderators can no longer write top-level comments
+  - Comments by admins or moderators carry an `Official` badge
 - When giving product feedback from the footer, a message and email can be provided for negative feedback
 - CTA on project card now takes granular permissions into account
 - CTA on project card is now also shown on mobile
