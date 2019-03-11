@@ -252,7 +252,7 @@ const HiddenText = styled.span`
 
 export type ButtonStyles = 'primary' | 'primary-inverse' | 'primary-outlined' | 'secondary' | 'secondary-outlined' | 'success' | 'text' | 'cl-blue' | 'admin-dark' | 'delete';
 
-type Props = {
+export type Props = {
   children?: any;
   circularCorners?: boolean;
   className?: string;
@@ -354,7 +354,6 @@ class Button extends PureComponent<Props, State> {
     const spinnerColor = this.props.spinnerColor || this.getSpinnerColor(style);
     const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
-
     const childContent = (
       <>
         {icon && iconPos === 'left' && <StyledIcon name={icon} className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`} title={iconTitle} colorTheme={iconTheme} />}

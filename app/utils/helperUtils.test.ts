@@ -1,4 +1,4 @@
-import { sum, isNilOrError, isEmptyMultiloc } from './helperUtils';
+import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString } from './helperUtils';
 
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
@@ -30,5 +30,23 @@ describe('isEmptyMultiloc', () => {
 
   it('returns false when the Multiloc\'s second language key has no corresponding value, but the first has', () => {
     expect(isEmptyMultiloc({ 'en-GB': 'Bla', 'nl-BE': '' })).toBe(false);
+  });
+});
+
+describe('isNonEmptyString', () => {
+  it('returns true for a string containing text', () => {
+    expect(isNonEmptyString('This is text')).toBe(true);
+  });
+
+  it('returns true for a string containing text starts/ends with a whitespace', () => {
+    expect(isNonEmptyString(' This is text ')).toBe(true);
+  });
+
+  it('returns false for an empty string', () => {
+    expect(isNonEmptyString('')).toBe(false);
+  });
+
+  it('returns false for a string containing only a whitespace', () => {
+    expect(isNonEmptyString(' ')).toBe(false);
   });
 });

@@ -30,7 +30,7 @@ import { IUpdatedComment } from 'services/comments';
 
 const CommentWrapper = styled.div`
   .mention {
-    background: ${transparentize(0.9, colors.clBlueDark)};
+    background: ${transparentize(0.91, colors.clBlueDark)};
     padding-left: 4px;
     padding-right: 4px;
 
