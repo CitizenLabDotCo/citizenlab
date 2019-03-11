@@ -13,31 +13,38 @@ import Error from 'components/UI/Error';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
-const Container = styled.div`
+const Container: any = styled.div`
   position: relative;
 
   textarea {
     &:hover {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
+      border-color: ${(props: any) => props.error && props.theme.colors.clRedError} !important;
     }
 
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#666'} !important;
+    }
+
+    &::placeholder {
+      color: ${colors.clIconSecondary} !important;
+      opacity: 1;
+      font-weight: ${(props: any) => props.placeholderFontWeight ? props.placeholderFontWeight : '300'} !important;
     }
   }
 
   .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
   }
+
 `;
 
 type Props = {
   id?: string;
   name: string;
-  value: string;
+  value: string | null | undefined;
   placeholder?: string | undefined;
   rows: number;
   ideaId?: string | undefined
@@ -46,6 +53,10 @@ type Props = {
   onChange?: (arg: string) => void | undefined;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
+  fontSize?: number;
+  backgroundColor?: string;
+  placeholderFontWeight?: string;
+  ariaLabel?: string;
 };
 
 type State = {
@@ -69,6 +80,8 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
     const { rows } = this.props;
     const lineHeight = 24;
     const padding = (this.props.padding || '25px');
+    const fontSize = (this.props.fontSize || fontSizes.base);
+    const backgroundColor = (this.props.backgroundColor || 'transparent');
 
     const style = {
       '&multiLine': {
@@ -83,14 +96,14 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           padding,
           margin: 0,
           color: colors.text,
-          fontSize: '18px',
+          fontSize: `${fontSize}px`,
           lineHeight: `${lineHeight}px`,
           minHeight: `${rows * lineHeight}px`,
           outline: 'none',
           border: '1px solid #ccc',
           borderRadius: '5px',
           boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-          background: 'transparent',
+          background: `${backgroundColor}`,
           appearance: 'none',
           WebkitAppearance: 'none'
         },
@@ -183,19 +196,19 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id } = this.props;
+    const { name, placeholder, value, error, children, rows, id, placeholderFontWeight, ariaLabel } = this.props;
     const className = this.props['className'];
 
     if (style) {
       return (
-        <Container className={className}>
+        <Container className={className} placeholderFontWeight={placeholderFontWeight}>
           <MentionsInput
             id={id}
             style={style}
             className="textareaWrapper"
             name={name || ''}
             rows={rows}
-            value={value}
+            value={value || ''}
             placeholder={placeholder}
             displayTransform={this.mentionDisplayTransform}
             markup={'@[__display__](__id__)'}
@@ -203,6 +216,7 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             ref={this.setRef}
+            aria-label={ariaLabel}
           >
             <Mention
               trigger="@"

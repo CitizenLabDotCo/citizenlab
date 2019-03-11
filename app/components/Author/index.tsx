@@ -13,46 +13,49 @@ import UserName from 'components/UI/UserName';
 
 // services
 import { userByIdStream, IUser } from 'services/users';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 import { Message } from 'typings';
 
-const AuthorContainer = styled.div`
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${media.smallPhone`
+    flex-direction: column;
+  `}
+`;
+
+const AuthorContainer: any = styled.div`
   display: flex;
   align-items: center;
   margin: 0;
   padding: 0;
 `;
 
-const StyledAvatar = styled(Avatar)`
-  margin-top: 3px;
-`;
-
 const AuthorMeta = styled.div`
-  display: flex;
-  flex-direction: column;
   margin-left: 7px;
 `;
 
 const AuthorNameContainer = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  line-height: 19px;
+  line-height: 23px;
   font-weight: 400;
   text-decoration: none;
   hyphens: manual;
 `;
 
-const AuthorNameLink = styled(Link)`
+const AuthorNameLink: any = styled(Link)`
   color: ${colors.clBlueDark};
   text-decoration: none;
   cursor: pointer;
@@ -60,6 +63,13 @@ const AuthorNameLink = styled(Link)`
   &:hover {
     color: ${darken(0.15, colors.clBlueDark)};
     text-decoration: underline;
+  }
+
+  &.canModerate {
+    color: ${colors.clRed};
+    &:hover {
+      color: ${darken(0.15, colors.clRed)};
+    }
   }
 `;
 
@@ -71,13 +81,19 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-type Props = {
+interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
   message?: Message;
-};
+  projectId?: string;
+  showModeration?: boolean; // will show red styling on admins and moderators of projectId
+}
+
+interface DataProps {}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {
   author: IUser | null;
@@ -129,46 +145,45 @@ class Author extends React.PureComponent<Props, State> {
 
   render() {
     const className = this.props['className'];
-    const { authorId, createdAt, size, notALink, message } = this.props;
+    const { authorId, createdAt, size, notALink, message, projectId, showModeration } = this.props;
     const { author } = this.state;
+
+    const authorCanModerate = author && showModeration && canModerate(projectId, author);
 
     const authorNameComponent = notALink ? (
       <UserName user={(author ? author.data : null)} />
     ) : (
-        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''}>
+        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} className={authorCanModerate ? 'canModerate' : ''}>
           <UserName user={(author ? author.data : null)} />
         </AuthorNameLink>
       );
 
     return (
-      <AuthorContainer className={className}>
-        <StyledAvatar
-          userId={authorId}
-          size={size}
-          onClick={notALink ? undefined : this.goToUserProfile}
-        />
-        <AuthorMeta>
-          <AuthorNameContainer>
-            {message ? (
-              <FormattedMessage
-                {...message}
-                values={{ authorNameComponent }}
-              />
-            ) : (
+      <Container className={className}>
+        <AuthorContainer authorCanModerate={authorCanModerate}>
+          <Avatar
+            userId={authorId}
+            size={size}
+            onClick={notALink ? undefined : this.goToUserProfile}
+            moderator={authorCanModerate}
+          />
+          <AuthorMeta>
+            <AuthorNameContainer>
+              {message ? (
                 <FormattedMessage
-                  {...messages.byAuthorNameComponent}
+                  {...message}
                   values={{ authorNameComponent }}
                 />
-              )
+              ) : authorNameComponent}
+            </AuthorNameContainer>
+            {createdAt &&
+              <TimeAgo>
+                <FormattedRelative value={createdAt} />
+              </TimeAgo>
             }
-          </AuthorNameContainer>
-          {createdAt &&
-            <TimeAgo>
-              <FormattedRelative value={createdAt} />
-            </TimeAgo>
-          }
-        </AuthorMeta>
-      </AuthorContainer>
+          </AuthorMeta>
+        </AuthorContainer>
+      </Container>
     );
   }
 }

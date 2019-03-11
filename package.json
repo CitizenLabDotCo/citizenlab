@@ -153,6 +153,7 @@
     "@types/segment-analytics": "0.0.30",
     "@types/shelljs": "0.8.3",
     "@types/webpack": "4.4.24",
+    "@types/styled-components": "^4.1.9",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "24.1.0",
     "babel-loader": "8.0.5",

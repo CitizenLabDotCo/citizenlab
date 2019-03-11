@@ -57,6 +57,10 @@ export type MultilocStringOrJSX = {
   [key in Locale]?: string | JSX.Element;
 };
 
+export type MultilocFormValues = {
+  [field: string]: Multiloc;
+};
+
 export interface CLError {
   error: string;
   value?: string;

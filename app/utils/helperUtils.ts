@@ -1,4 +1,6 @@
 import { Locale, Multiloc } from 'typings';
+import { isString } from 'util';
+import { trim } from 'lodash-es';
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
@@ -16,6 +18,10 @@ export function isEmptyMultiloc(multiloc: Multiloc) {
   }
 
   return !validTranslation;
+}
+
+export function isNonEmptyString(str: string) {
+  return isString(str) && trim(str) !== '';
 }
 
 export function isMobileDevice() {
