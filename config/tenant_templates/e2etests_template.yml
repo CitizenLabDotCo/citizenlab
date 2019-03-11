@@ -550,7 +550,7 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url:
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
     description_preview_multiloc:
       en-GB: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -753,6 +753,13 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
+  project_file:
+  - project_ref: *project1
+    remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
+    ordering:
+    created_at: 2019-01-14 13:46:54 UTC
+    updated_at: 2019-01-14 13:46:54 UTC
+    name: 20190110_rueil_intermediaire.pdf
   idea:
   - &206
     title_multiloc:
@@ -1259,18 +1266,6 @@ models:
       en-GB: The idea about waste
     body_multiloc:
       nl-BE: "<p>We should make less of it</p>"
-    publication_status: published
-    project_ref: *76
-    author_ref: *mortal1
-    location_description:
-    published_at: '2017-09-01 00:00:00'
-    created_at: '2017-10-15 00:00:00'
-    updated_at: '2018-03-28 13:35:21'
-  - &comments_idea
-    title_multiloc:
-      en-GB: Controversial idea
-    body_multiloc:
-      nl-BE: "<p>With a lot of comments</p>"
     publication_status: published
     project_ref: *76
     author_ref: *mortal1
@@ -3541,12 +3536,15 @@ models:
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
     parent_ref: *490
-  idea_image:
-  - idea_ref: *comments_idea
-    remote_image_url: https://images.unsplash.com/photo-1504610926078-a1611febcad3?auto=format&fit=crop&ixid=eyJhcHBfaWQiOjEyMDd9&ixlib=rb-0.3.5&q=80&s=e1c8fe0c9197d66232511525bfd1cc82&w=400
   project_image:
   - project_ref: *76
     remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/223fe293-3230-4376-b910-9cb4d0639020/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/fcdf170e-3926-4621-9352-7e5ca1aba97c/Rugby_town_centre-2ay0y80_yza0pu.jpg
   votes:
   - mode: down
     user_ref: *admin
@@ -7319,20 +7317,3 @@ models:
     - title_multiloc:
         en-GB: Carrotgem
         nl-BE: Wortelgem
-  comment:
-  - &9
-    body_multiloc:
-      en: "<p>Great idea, we stand behind you! I'll come riding a bicycle</p>\n"
-    author_ref: *mortal3
-    idea_ref: *comments_idea
-    parent_ref:
-  - body_multiloc:
-      en: "<p>I&#39;ve never seen you riding a bicycle...</p>\n"
-    author_ref: *mortal2
-    idea_ref: *comments_idea
-    parent_ref: *9
-  - body_multiloc:
-      en: "<p>No no no no no no</p>\n"
-    author_ref: *mortal3
-    idea_ref: *comments_idea
-    parent_ref:
