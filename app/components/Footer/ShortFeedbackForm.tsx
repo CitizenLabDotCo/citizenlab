@@ -2,6 +2,7 @@
 import React, { PureComponent } from 'react';
 import { omit } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import styled from 'styled-components';
 
 // translations
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,6 +21,12 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { postProductFeedback } from 'services/productFeedback';
 import { removeUrlLocale } from 'services/locale';
 import { CLError } from 'typings';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 interface DataProps {
   locale: GetLocaleChildProps;
@@ -78,40 +85,42 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     const { emailValue, feedbackValue } = this.state;
 
     return (
-      <form>
-        <SectionTitle><FormattedMessage {...messages.feedbackModalTitle} /></SectionTitle>
-        <SectionSubtitle><FormattedMessage {...messages.feedbackModalSubtitle} /></SectionSubtitle>
+      <Container>
+        <form>
+          <SectionTitle><FormattedMessage {...messages.feedbackModalTitle} /></SectionTitle>
+          <SectionSubtitle><FormattedMessage {...messages.feedbackModalSubtitle} /></SectionSubtitle>
 
-        <SectionField>
-          <Label value={<FormattedMessage {...messages.feedback} />} />
-          <TextArea
-            autofocus={true}
-            name="feedback"
-            value={feedbackValue}
-            onChange={this.onChangeFeedback}
-          />
-          {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.message} />}
-        </SectionField>
+          <SectionField>
+            <Label value={<FormattedMessage {...messages.feedback} />} />
+            <TextArea
+              autofocus={true}
+              name="feedback"
+              value={feedbackValue}
+              onChange={this.onChangeFeedback}
+            />
+            {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.message} />}
+          </SectionField>
 
-        <SectionField>
-          <Label value={<FormattedMessage {...messages.email} />} />
-          <Input
-            type="text"
-            value={emailValue}
-            onChange={this.onChangeEmail}
-          />
-          {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.email} />}
-        </SectionField>
+          <SectionField>
+            <Label value={<FormattedMessage {...messages.email} />} />
+            <Input
+              type="text"
+              value={emailValue}
+              onChange={this.onChangeEmail}
+            />
+            {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.email} />}
+          </SectionField>
 
-        <SectionField>
-          <Button
-            onClick={this.onSubmit}
-            disabled={!this.validate()}
-          >
-            <FormattedMessage {...messages.submit} />
-          </Button>
-        </SectionField>
-      </form>
+          <SectionField>
+            <Button
+              onClick={this.onSubmit}
+              disabled={!this.validate()}
+            >
+              <FormattedMessage {...messages.submit} />
+            </Button>
+          </SectionField>
+        </form>
+      </Container>
     );
   }
 }

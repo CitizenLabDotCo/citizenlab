@@ -139,6 +139,16 @@ export const PagesNav = styled.nav`
 
   li {
     display: inline-block;
+
+    &:not(:first-child):before {
+      content: '•';
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    button {
+      white-space: nowrap;
+      cursor: pointer;
+    }
   }
 
   ${media.smallerThanMaxTablet`
