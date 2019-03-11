@@ -22,7 +22,7 @@ describe('Project selection page', () => {
   });
 
   it('shows a functional download buton for the project file', () => {
-    cy.get('.e2e-project-info').contains('20190110_rueil_intermediaire.pdf').should('have.attr', 'href').should('match', new RegExp('\/uploads\/081e7996-4a4b-4633-ae03-30211874f798\/project_file\/file\/77ce2a1e-6df6-4ede-8357-c20f42c9032d\/20190110_rueil_intermediaire\.pdf$'));
+    cy.get('.e2e-project-info').contains('20190110_rueil_intermediaire.pdf').should('have.attr', 'href');
   });
 
   it('shows the project images', () => {

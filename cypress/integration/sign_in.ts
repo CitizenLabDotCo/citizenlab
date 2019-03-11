@@ -48,7 +48,10 @@ describe('Sign in page', () => {
     const email = 'admin@citizenlab.co';
     const password = 'testtest';
 
-    cy.login(email, password);
+    cy.visit('/sign-in');
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-submit-signin').click();
     cy.location('pathname').should('eq', '/en-GB/');
   });
 
@@ -56,7 +59,10 @@ describe('Sign in page', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.login(email, password);
+    cy.visit('/sign-in');
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-submit-signin').click();
     cy.get('.e2e-error-message').should('contain', 'This combination of e-mail and password is not correct');
   });
 });

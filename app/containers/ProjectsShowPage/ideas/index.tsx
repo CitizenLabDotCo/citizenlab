@@ -24,8 +24,6 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div``;
-
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 70px;
