@@ -80,7 +80,7 @@ class XlsxService
             idea.upvotes_count,
             idea.downvotes_count,
             idea.baskets_count,
-            FrontendService.new.model_to_url(idea),
+            Frontend::UrlService.new.model_to_url(idea),
             @@multiloc_service.t(idea&.project&.title_multiloc),
             idea.topics.map{|t| @@multiloc_service.t(t.title_multiloc)}.join(','),
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
