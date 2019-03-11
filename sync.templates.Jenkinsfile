@@ -13,25 +13,6 @@ pipeline {
       }
     }
 
-    stage('Push tenant templates to backup repository prrt') {
-      steps {
-        git branch: 'master',
-            credentialsId: 'local-ssh-user',
-            url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
-        echo 'Prrt'
-        withAWS(credentials: 'aws') {
-          s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
-        }
-        sh 'cd cl2-tenant-templates'
-        sh 'git checkout master'
-        sh 'git add -A'
-        sh 'git commit -am \'New tenant templates\''
-        sshagent('local-ssh-user') {
-          sh 'git push --set-upstream origin master'
-        }
-      }
-    }
-
     stage('Generate tenant templates') {
       steps {
         echo 'Generating templates'
@@ -49,7 +30,9 @@ pipeline {
 
     stage('Push tenant templates to backup repository') {
       steps {
-        sh 'git clone git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+        git branch: 'master',
+            credentialsId: 'local-ssh-user',
+            url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         withAWS(credentials: 'aws') {
           s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
         }
@@ -57,7 +40,9 @@ pipeline {
         sh 'git checkout master'
         sh 'git add -A'
         sh 'git commit -am \'New tenant templates\''
-        sh 'git push'
+        sshagent('local-ssh-user') {
+          sh 'git push --set-upstream origin master'
+        }
       }
     }
 
