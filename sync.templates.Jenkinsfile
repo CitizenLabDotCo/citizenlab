@@ -58,7 +58,7 @@ pipeline {
         sh 'git checkout master'
         sh 'git add -A'
         sh 'git commit -am \'New tenant templates\''
-        sshagent('local-ssh-user') {
+        sshagent(credentials: ['local-ssh-user']) {
           sh 'git push --set-upstream origin master'
         }
       }
