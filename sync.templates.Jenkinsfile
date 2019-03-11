@@ -42,14 +42,14 @@ pipeline {
         sshagent(credentials: ['local-ssh-user']) {
           sh 'git push --set-upstream origin master'
         }
-        git branch: 'master',
-            credentialsId: 'local-ssh-user',
-            url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
       }
     }
 
     stage('Release tenant templates') {
       steps {
+        git branch: 'master',
+            credentialsId: 'local-ssh-user',
+            url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
         sh 'pwd'
         sh 'ls'
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake templates:release'
