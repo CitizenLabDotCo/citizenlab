@@ -1,3 +1,5 @@
+import { randomString, randomEmail } from '../support/commands';
+
 describe('Landing page', () => {
   beforeEach(() => {
     cy.visit('/');
@@ -32,10 +34,10 @@ describe('Landing page', () => {
 
   describe('Signed in header', () => {
     beforeEach(() => {
-      const firstName = Math.random().toString(36).substr(2, 12).toLowerCase();
-      const lastName = Math.random().toString(36).substr(2, 12).toLowerCase();
-      const email = `${Math.random().toString(36).substr(2, 12).toLowerCase()}@${Math.random().toString(36).substr(2, 12).toLowerCase()}.co`;
-      const password = Math.random().toString(36).substr(2, 12).toLowerCase();
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.visit('/');
