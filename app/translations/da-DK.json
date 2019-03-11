@@ -268,6 +268,7 @@
   "app.components.avatar.avatarAltText": "Avatar for {userName}",
   "app.components.avatar.noAvatarAltText": "Standard avatarsymbol for personer uden et tilpasset symbol",
   "app.components.sendFeedback": "Send din feedback",
+  "app.components.sendFeedbackLink": "",
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
