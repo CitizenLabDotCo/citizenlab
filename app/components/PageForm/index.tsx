@@ -31,13 +31,13 @@ const StyledSection = styled(Section)`
 `;
 
 export interface FormValues {
-  slug?: string;
   title_multiloc: Multiloc;
   body_multiloc: Multiloc;
   local_page_files: UploadFile[] | [];
 }
 
 export interface Props {
+  slug?: string;
   mode: 'simple' | 'edit';
   hideTitle?: boolean;
   pageId?: string;
@@ -59,7 +59,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     return errors;
   }
 
-  renderAdavancedEditorLink = (locale) => {
+  renderAdvancedEditorLink = (locale) => {
     if (this.props.mode === 'edit') {
       return (
         <Link to={`/admin/pages/${this.props.pageId}/editor/${locale}`}>
@@ -76,6 +76,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
       <FormikQuillMultiloc
         label={<FormattedMessage {...messages.editContent} />}
         inAdmin
+        id={`${this.props.slug}-${props.fieldName}`}
         {...props}
       />
     );
@@ -134,7 +135,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
             <Field
               name="body_multiloc"
               render={this.renderQuill}
-              renderPerLocale={this.renderAdavancedEditorLink}
+              renderPerLocale={this.renderAdvancedEditorLink}
             />
             {touched.body_multiloc &&
               <ErrorComponent
