@@ -269,6 +269,7 @@ class PageEditor extends PureComponent<Props, State>{
                   return (
                     <PageForm
                       {...props}
+                      slug={slug}
                       mode="simple"
                       hideTitle={slug !== 'information'}
                     />
