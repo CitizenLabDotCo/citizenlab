@@ -33,6 +33,7 @@ Rails.application.routes.draw do
 
           post :mark_as_deleted, on: :member
         end
+        resources :official_feedback, shallow: true
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         resources :activities, only: [:index]

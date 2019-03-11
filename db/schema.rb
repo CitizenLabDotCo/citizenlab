@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
     t.string "slug", null: false
     t.integer "budget"
     t.integer "baskets_count", default: 0, null: false
+    t.integer "official_feedbacks_count", default: 0, null: false
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -380,13 +381,26 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
     t.string "reason_code"
     t.string "other_reason"
     t.uuid "idea_status_id"
+    t.uuid "official_feedback_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
+    t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
+  end
+
+  create_table "official_feedbacks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "body_multiloc", default: {}
+    t.jsonb "author_multiloc", default: {}
+    t.uuid "user_id"
+    t.uuid "idea_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["idea_id"], name: "index_official_feedbacks_on_idea_id"
+    t.index ["user_id"], name: "index_official_feedbacks_on_user_id"
   end
 
   create_table "onboarding_campaign_dismissals", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -665,10 +679,13 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
   add_foreign_key "notifications", "idea_statuses"
   add_foreign_key "notifications", "ideas"
   add_foreign_key "notifications", "invites"
+  add_foreign_key "notifications", "official_feedbacks"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"
   add_foreign_key "notifications", "users", column: "recipient_id"
+  add_foreign_key "official_feedbacks", "ideas"
+  add_foreign_key "official_feedbacks", "users"
   add_foreign_key "page_files", "pages"
   add_foreign_key "page_links", "pages", column: "linked_page_id"
   add_foreign_key "page_links", "pages", column: "linking_page_id"
