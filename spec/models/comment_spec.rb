@@ -58,5 +58,9 @@ RSpec.describe Comment, type: :model do
       expect(idea.reload.comments_count).to eq 0
     end
 
+    it "support bulk counter fixing" do
+      expect{Comment.counter_culture_fix_counts}.not_to raise_error
+    end
+
   end
 end
