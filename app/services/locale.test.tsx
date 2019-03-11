@@ -1,4 +1,4 @@
-import { setPathnameLocale, replacePathnameLocale, getUrlLocale } from './locale';
+import { setPathnameLocale, replacePathnameLocale, getUrlLocale, removeUrlLocale } from './locale';
 
 describe('setPathnameLocale', () => {
   it('sets /', () => {
@@ -48,5 +48,20 @@ describe('getUrlLocale', () => {
   });
   it('gets fr/projects/projects-slug/lalalal', () => {
     expect(getUrlLocale('fr/projects/projects-slug/lalalal')).toEqual('fr');
+  });
+});
+
+describe('removeUrlLocale', () => {
+  it('removes url from /fr/', () => {
+    expect(removeUrlLocale('/fr/')).toEqual('/');
+  });
+  it('removes url from /en/projects/projects-slug/lalalal', () => {
+    expect(removeUrlLocale('/en/projects/projects-slug/lalalal')).toEqual('/projects/projects-slug/lalalal');
+  });
+  it('removes url from /nl-BE/projects/projects-slug/lalalal/', () => {
+    expect(removeUrlLocale('/nl-BE/projects/projects-slug/lalalal/')).toEqual('/projects/projects-slug/lalalal');
+  });
+  it('removes url from fr/projects/projects-slug/lalalal/', () => {
+    expect(removeUrlLocale('fr/projects/projects-slug/lalalal/')).toEqual('/projects/projects-slug/lalalal');
   });
 });

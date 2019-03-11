@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import MediaQuery from 'react-responsive';
+import * as Sentry from '@sentry/browser';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -9,6 +10,9 @@ import eventEmitter from 'utils/eventEmitter';
 // components
 import Fragment from 'components/Fragment';
 import SendFeedback from 'components/SendFeedback';
+import Modal from 'components/UI/Modal';
+import ShortFeedbackForm from './ShortFeedbackForm';
+import { postProductFeedback } from 'services/productFeedback';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -21,7 +25,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // services
-import { localeStream } from 'services/locale';
+import { localeStream, removeUrlLocale } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { LEGAL_PAGES } from 'services/pages';
 
@@ -320,6 +324,7 @@ interface State {
   currentTenant: ITenant | null;
   showCityLogoSection: boolean;
   shortFeedbackButtonClicked: boolean;
+  feedbackModalOpen: boolean;
 }
 
 class Footer extends PureComponent<Props & InjectedIntlProps, State> {
@@ -336,7 +341,8 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       locale: null,
       currentTenant: null,
       showCityLogoSection: false,
-      shortFeedbackButtonClicked: false
+      shortFeedbackButtonClicked: false,
+      feedbackModalOpen: false
     };
     this.subscriptions = [];
   }
@@ -362,18 +368,46 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
-    this.setState({ shortFeedbackButtonClicked: true });
+    this.setState({
+      shortFeedbackButtonClicked: true
+    });
 
     // tracking
     if (answer === 'yes') {
       trackEventByName(tracks.clickShortFeedbackYes);
+      postProductFeedback({
+        question: 'found_what_youre_looking_for?',
+        page: removeUrlLocale(location.pathname),
+        locale: this.state.locale || undefined,
+        answer: 'yes'
+      }).catch(err => Sentry.captureException(err));
     } else if (answer === 'no') {
       trackEventByName(tracks.clickShortFeedbackNo);
+      this.openFeedbackModal();
     }
   }
 
+  openFeedbackModal = () => {
+    this.setState({ feedbackModalOpen: true });
+  }
+
+  closeFeedbackModalSuccess = () => {
+    this.setState({ feedbackModalOpen: false });
+  }
+
+  closeFeedbackModalCancel = () => {
+    this.setState({ feedbackModalOpen: false });
+
+    postProductFeedback({
+      question: 'found_what_youre_looking_for?',
+      page: removeUrlLocale(location.pathname),
+      locale: this.state.locale || undefined,
+      answer: 'no'
+    }).catch(err => Sentry.captureException(err));
+  }
+
   render() {
-    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked } = this.state;
+    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked, feedbackModalOpen } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
@@ -407,9 +441,15 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             <ShortFeedback>
               <ShortFeedbackInner>
                 {shortFeedbackButtonClicked ?
-                  <ThankYouNote>
-                    <FormattedMessage {...messages.thanksForFeedback} />
-                  </ThankYouNote>
+                  (feedbackModalOpen ?
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.moreInfo} />
+                    </ThankYouNote>
+                    :
+                    <ThankYouNote>
+                      <FormattedMessage {...messages.thanksForFeedback} />
+                    </ThankYouNote>
+                  )
                   :
                   <>
                     <FeedbackQuestion>
@@ -427,6 +467,17 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 }
               </ShortFeedbackInner>
             </ShortFeedback>
+
+            <Modal
+              fixedHeight={false}
+              opened={feedbackModalOpen}
+              close={this.closeFeedbackModalCancel}
+              className="e2e-feedback-modal"
+            >
+              <ShortFeedbackForm
+                closeModal={this.closeFeedbackModalSuccess}
+              />
+            </Modal>
 
             <SecondLineInner>
               <PagesNav>
