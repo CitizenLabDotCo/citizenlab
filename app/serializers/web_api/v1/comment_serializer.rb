@@ -1,5 +1,5 @@
 class WebApi::V1::CommentSerializer < ActiveModel::Serializer
-  attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :publication_status, :created_at, :updated_at
+  attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :publication_status, :created_at, :updated_at, :is_admin_comment
 
   belongs_to :idea
   belongs_to :author
@@ -31,6 +31,10 @@ class WebApi::V1::CommentSerializer < ActiveModel::Serializer
     else
       nil
     end
+  end
+
+  def is_admin_comment
+    object.author&.admin?
   end
 
 end

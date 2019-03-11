@@ -86,7 +86,7 @@ class SingleSignOnService
 
       url_params = {
         id_token_hint: id_token,
-        post_logout_redirect_uri: FrontendService.new.home_url
+        post_logout_redirect_uri: Frontend::UrlService.new.home_url
       }
 
       "https://#{host}/api/v1/logout?#{url_params.to_query}"

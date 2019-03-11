@@ -28,15 +28,16 @@ module AdminApi
       @template['models']['event_file']          = yml_event_files
       @template['models']['permission']          = yml_permissions
       if include_ideas
-        @template['models']['user']                = yml_users anonymize_users
-        @template['models']['basket']              = yml_baskets
-        @template['models']['idea']                = yml_ideas
-        @template['models']['baskets_idea']        = yml_baskets_ideas
-        @template['models']['idea_file']           = yml_idea_files
-        @template['models']['idea_image']          = yml_idea_images
-        @template['models']['ideas_phase']         = yml_ideas_phases
-        @template['models']['comment']             = yml_comments
-        @template['models']['vote']                = yml_votes
+        @template['models']['user']              = yml_users anonymize_users
+        @template['models']['basket']            = yml_baskets
+        @template['models']['idea']              = yml_ideas
+        @template['models']['baskets_idea']      = yml_baskets_ideas
+        @template['models']['idea_file']         = yml_idea_files
+        @template['models']['idea_image']        = yml_idea_images
+        @template['models']['ideas_phase']       = yml_ideas_phases
+        @template['models']['comment']           = yml_comments
+        @template['models']['official_feedback'] = yml_official_feedback
+        @template['models']['vote']              = yml_votes
       end
       @template
     end
@@ -168,6 +169,7 @@ module AdminApi
       user_ids += Vote.where(id: vote_ids).pluck(:user_id)
       participation_context_ids = [@project.id] + @project.phases.ids
       user_ids += Basket.where(participation_context_id: participation_context_ids).pluck(:user_id)
+      user_ids += OfficialFeedback.where(idea_id: idea_ids).pluck(:user_id)
 
       User.where(id: user_ids.uniq).map do |u|
         yml_user = if anonymize_users
@@ -340,6 +342,23 @@ module AdminApi
         yml_comment['parent_ref'] = lookup_ref(c.parent_id, :comment) if c.parent_id
         store_ref yml_comment, c.id, :comment
         yml_comment
+      end
+    end
+
+    def yml_official_feedback
+      OfficialFeedback.where(idea_id: @project.ideas.published.ids).map do |o|
+        yml_official_feedback = {
+          'idea_ref'           => lookup_ref(o.idea_id, :idea),
+          'user_ref'           => lookup_ref(o.user_id, :user),
+          'body_multiloc'      => o.body_multiloc,
+          'author_multiloc'    => o.author_multiloc,
+          'created_at'         => o.created_at.to_s,
+          'updated_at'         => o.updated_at.to_s,
+          'publication_status' => o.publication_status,
+          'body_updated_at'    => o.body_updated_at.to_s,
+        }
+        store_ref yml_official_feedback, o.id, :official_feedback
+        yml_official_feedback
       end
     end
 

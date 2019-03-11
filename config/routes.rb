@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Surveys::Engine => "", as: 'surveys'
+  mount Frontend::Engine => "", as: 'frontend'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -33,6 +34,7 @@ Rails.application.routes.draw do
 
           post :mark_as_deleted, on: :member
         end
+        resources :official_feedback, shallow: true
         resources :images, defaults: {container_class: Idea, image_class: IdeaImage}
         resources :files, defaults: {container_class: Idea, file_class: IdeaFile}
         resources :activities, only: [:index]
@@ -182,10 +184,7 @@ Rails.application.routes.draw do
       resources :baskets, except: [:index]
       resources :clusterings
 
-      resources :avatars, only: [:index]
-
-      match 'manifest.json', to: 'manifest#show', via: :get
-      
+      resources :avatars, only: [:index, :show]      
     end
 
 

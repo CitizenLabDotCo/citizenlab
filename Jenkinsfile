@@ -69,7 +69,18 @@ pipeline {
     stage('Test NLP') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/nlp/spec/'
+      }
+    }
 
+    stage('Test surveys') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/surveys/spec/'
+      }
+    }
+
+    stage('Test frontend') {
+      steps {
+        sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e RAILS_ENV=test web bundle exec rspec engines/frontend/spec/'
       }
     }
 
