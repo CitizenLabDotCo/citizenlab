@@ -36,14 +36,10 @@ pipeline {
         withAWS(credentials: 'aws') {
           s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
         }
-        sh 'cd cl2-tenant-templates'
-        sh 'git checkout master'
-        sh 'git add -A'
-        sh 'git commit -am \'New tenant templates\''
+        sh '( cd cl2-tenant-templates && git checkout master && git add -A && git commit -am \'New tenant templates\' )'
         sshagent(credentials: ['local-ssh-user']) {
-          sh 'git push --set-upstream origin master'
+          sh '( cd cl2-tenant-templates && git push --set-upstream origin master )'
         }
-        sh 'cd ..'
       }
     }
 
