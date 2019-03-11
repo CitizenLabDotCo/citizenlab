@@ -32,7 +32,7 @@ module EmailCampaigns
           comment: {
             id: comment.id,
             body_multiloc: comment.body_multiloc,
-            url: FrontendService.new.model_to_url(comment, locale: recipient.locale),
+            url: Frontend::UrlService.new.model_to_url(comment, locale: recipient.locale),
             created_at: comment.created_at.iso8601
           },
           comment_author: {
@@ -45,7 +45,7 @@ module EmailCampaigns
             id: idea.id,
             title_multiloc: idea.title_multiloc,
             body_multiloc: idea.body_multiloc,
-            url: FrontendService.new.model_to_url(idea, locale: recipient.locale),
+            url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
             published_at: idea.published_at.iso8601,
             idea_images: idea.idea_images.map{ |image|
               {

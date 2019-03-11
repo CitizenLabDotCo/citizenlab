@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   mount NLP::Engine => "", as: 'nlp'
   mount Onboarding::Engine => "", as: 'onboarding'
   mount Surveys::Engine => "", as: 'surveys'
+  mount Frontend::Engine => "", as: 'frontend'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -183,10 +184,7 @@ Rails.application.routes.draw do
       resources :baskets, except: [:index]
       resources :clusterings
 
-      resources :avatars, only: [:index, :show]
-
-      match 'manifest.json', to: 'manifest#show', via: :get
-      
+      resources :avatars, only: [:index, :show]      
     end
 
 

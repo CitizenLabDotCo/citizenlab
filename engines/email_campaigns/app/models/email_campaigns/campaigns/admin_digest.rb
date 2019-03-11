@@ -138,7 +138,7 @@ module EmailCampaigns
           project: {
             id: project_id,
             title_multiloc: project.title_multiloc,
-            url: FrontendService.new.model_to_url(project)
+            url: Frontend::UrlService.new.model_to_url(project)
             
           },
           current_phase: phase && {
@@ -152,7 +152,7 @@ module EmailCampaigns
             {
               id: idea.id,
               title_multiloc: idea.title_multiloc,
-              url: FrontendService.new.model_to_url(idea),
+              url: Frontend::UrlService.new.model_to_url(idea),
               published_at: idea.published_at.iso8601,
               author_name: idea.author_name,
               upvotes_count: idea.upvotes_count,
