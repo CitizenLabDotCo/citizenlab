@@ -25,13 +25,30 @@ pipeline {
     stage('Test tenant templates') {
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t template_test" web bundle exec rake spec'
-        sh 'pwd'
+        sh 'ls'
+      }
+    }
+
+    stage('Push tenant templates to backup repository') {
+      steps {
+        git branch: 'master',
+            credentialsId: 'local-ssh-user',
+            url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+        withAWS(credentials: 'aws') {
+          s3Download(file:'cl2-tenant-templates/', bucket:'cl2-tenant-templates', path:'test/', force:true)
+        }
+        dir('cl2-tenant-templates') {
+          sh '( git checkout master && git add -A && ( git diff-index --quiet HEAD || git commit -am \'New tenant templates\' ) )'
+          sshagent(credentials: ['local-ssh-user']) {
+            sh 'git push --set-upstream origin master'
+          }
+        }
       }
     }
 
     stage('Release tenant templates') {
       steps {
-        sh 'pwd'
+        sh 'ls'
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm web bundle exec rake templates:release'
         slackSend color: '#50c122', message: ":tada: SUCCESS: ${env.JOB_NAME} build #${env.BUILD_NUMBER} generated new tenant templates!\nMore info at ${env.BUILD_URL}"
       }
