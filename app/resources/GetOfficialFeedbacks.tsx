@@ -69,7 +69,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
 
               return officialFeedbacksForIdeaStream(ideaId, { queryParameters }).observable;
             })
-          )
+          );
         })
       ).subscribe((officialFeedbacksList) => {
         const selfLink = get(officialFeedbacksList, 'links.self');
