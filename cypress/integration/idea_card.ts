@@ -2,6 +2,9 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea card component', () => {
   it('increments and decrements the vote count accordingly when the up and downvote buttons are clicked', () => {
+    const projectTitle = randomString();
+    const projectDescriptionPreview = randomString();
+    const projectDescription = randomString();
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();
@@ -9,38 +12,37 @@ describe('Idea card component', () => {
     const ideaTitle = randomString();
     const ideaContent = randomString();
 
-    cy.getProjectBySlug('an-idea-bring-it-to-your-council').then((project) => {
+    cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
       const projectId = project.body.data.id;
 
       cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
       cy.apiSignup(firstName, lastName, email, password);
-      cy.login(email, password);
 
+      cy.login(email, password);
       cy.visit('/ideas');
+
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-upvote-button').as('upvoteBtn');
       cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle).closest('.e2e-idea-card').find('.e2e-ideacard-downvote-button').as('downvoteBtn');
 
-      // initial upvote value
+      // initial upvote & downvote values
       cy.get('@upvoteBtn').contains('1');
-
-      // initial downvote
       cy.get('@downvoteBtn').contains('0');
 
-      // click upvote
-      cy.get('@upvoteBtn').click().wait(500).contains('2');
+      // add upvote
+      cy.get('@upvoteBtn').click().wait(1000).contains('2');
 
-      // click upvote
-      cy.get('@upvoteBtn').click().wait(500).contains('1');
+      // remove upvote
+      cy.get('@upvoteBtn').click().wait(1000).contains('1');
 
-      // click downvote
-      cy.get('@downvoteBtn').click().wait(500).contains('1');
+      // add downvote
+      cy.get('@downvoteBtn').click().wait(1000).contains('1');
 
-      // click downvote
-      cy.get('@downvoteBtn').click().wait(500).contains('0');
+      // remove downvote
+      cy.get('@downvoteBtn').click().wait(1000).contains('0');
 
-      // click downvote, then upvote
-      cy.get('@downvoteBtn').click().wait(500);
-      cy.get('@upvoteBtn').click().wait(500);
+      // add downvote, then upvote
+      cy.get('@downvoteBtn').click().wait(1000);
+      cy.get('@upvoteBtn').click().wait(1000);
       cy.get('@downvoteBtn').contains('0');
       cy.get('@upvoteBtn').contains('2');
     });
