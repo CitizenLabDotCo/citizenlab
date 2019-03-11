@@ -38,6 +38,8 @@ pipeline {
         withAWS(credentials: 'aws') {
           s3Download(file:'.', bucket:'cl2-tenant-templates', path:'test/', force:true)
         }
+        sh 'pwd'
+        sh 'ls'
         sh 'git --git-dir .git --work-tree . status'
         sh '( git checkout master && git add -A && ( git diff-index --quiet HEAD || git commit -am \'New tenant templates\' ) )'
         sshagent(credentials: ['local-ssh-user']) {
