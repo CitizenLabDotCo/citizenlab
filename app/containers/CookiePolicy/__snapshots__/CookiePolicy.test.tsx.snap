@@ -17,7 +17,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
     />
   </HelmetWrapper>
   <CookiePolicy__PageContent>
-    <CookiePolicy__SContentContainer>
+    <CookiePolicy__StyledContentContainer>
       <Component
         name="pages/cookie-policy/content"
       >
@@ -185,11 +185,11 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
           </QuillEditedContent>
         </CookiePolicy__PageDescription>
       </Component>
-    </CookiePolicy__SContentContainer>
+    </CookiePolicy__StyledContentContainer>
   </CookiePolicy__PageContent>
   <CookiePolicy__PagesNavWrapper>
     <CookiePolicy__PagesNav>
-      <CookiePolicy__SContentContainer>
+      <CookiePolicy__StyledContentContainer>
         <CookiePolicy__StyledLink
           key="information"
           to="/pages/information"
@@ -226,10 +226,10 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
             name="chevron-right"
           />
         </CookiePolicy__StyledLink>
-      </CookiePolicy__SContentContainer>
+      </CookiePolicy__StyledContentContainer>
     </CookiePolicy__PagesNav>
   </CookiePolicy__PagesNavWrapper>
-  <WrappedFooter
+  <Footer
     showCityLogoSection={false}
   />
 </CookiePolicy__Container>
@@ -238,7 +238,7 @@ exports[`<CookiePolicy /> renders correctly 1`] = `
 exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
 .c0 {
   color: #147985;
-  font-weight: 300;
+  font-weight: inherit;
   -webkit-text-decoration: underline;
   text-decoration: underline;
   margin: 0;

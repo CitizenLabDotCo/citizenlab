@@ -139,7 +139,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
       return (
         <>
           <ProjectNavbar projectSlug={projectSlug} phaseId={phaseId} />
-          <Container className={projectType}>
+          <Container className={`${projectType} e2e-project-header-content`}>
             <HeaderImage src={projectHeaderImageLarge} />
             <HeaderOverlay />
             <HeaderContent className={projectType}>

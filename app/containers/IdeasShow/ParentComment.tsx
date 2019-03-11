@@ -5,9 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ChildComment from './ChildComment';
-import Author from 'components/Author';
 import ChildCommentForm from './ChildCommentForm';
-import CommentsMoreActions from './CommentsMoreActions';
 import CommentBody from './CommentBody';
 import clHistory from 'utils/cl-router/history';
 import Icon from 'components/UI/Icon';
@@ -15,6 +13,7 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // services
 import { updateComment } from 'services/comments';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -23,35 +22,26 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
-import { colors, media } from 'utils/styleUtils';
+import { OfficialHeader, Header, OfficialStyledAuthor, StyledAuthor, Extra, Badge, StyledMoreActionsMenu, TranslateButton } from './CommentsStyles';
 
 const DeletedIcon = styled(Icon)`
   height: 1em;
   margin-right: 1rem;
   width: 1em;
-`;
-
-const StyledMoreActionsMenu = styled(CommentsMoreActions)`
-  position: absolute;
-  top: 10px;
-  right: 20px;
-
-  ${media.smallerThanMinTablet`
-    top: 4px;
-    right: 10px;
-  `}
 `;
 
 const Container = styled.div`
@@ -87,21 +77,6 @@ const CommentContainerInner = styled.div`
   }
 `;
 
-const StyledAuthor = styled(Author)`
-  margin-bottom: 20px;
-`;
-
-export const TranslateButton = styled.button`
-  padding: 0;
-  color: ${colors.clBlue};
-  text-decoration: underline;
-  margin-top: 10px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const ChildCommentsContainer = styled.div``;
 
 interface InputProps {
@@ -134,7 +109,7 @@ interface ITracks {
   clickGoBackToOriginalCommentButton: () => void;
 }
 
-class ParentComment extends React.PureComponent<Props & ITracks, State> {
+class ParentComment extends React.PureComponent<Props & ITracks & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -228,14 +203,54 @@ class ParentComment extends React.PureComponent<Props & ITracks, State> {
               <CommentContainerInner className={`${commentDeleted && 'deleted'}`}>
                 {comment.attributes.publication_status === 'published' &&
                   <>
-                    <StyledMoreActionsMenu comment={comment} onCommentEdit={this.onCommentEdit} projectId={projectId} />
-                    <StyledAuthor
-                      authorId={authorId}
-                      notALink={authorId ? false : true}
-                      createdAt={createdAt}
-                      size="40px"
-                      message={messages.parentCommentAuthor}
-                    />
+                    <GetUser id={authorId}>
+                      {author => {
+                        const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+                        if (authorCanModerate) {
+                          return (
+                            <OfficialHeader>
+                              <OfficialStyledAuthor
+                                authorId={authorId}
+                                notALink={authorId ? false : true}
+                                createdAt={createdAt}
+                                size="40px"
+                                projectId={projectId}
+                                showModeration
+                              />
+                              <Extra>
+                                <Badge>
+                                  <FormattedMessage {...messages.official} />
+                                </Badge>
+                                <StyledMoreActionsMenu
+                                  ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                                  comment={comment}
+                                  onCommentEdit={this.onCommentEdit}
+                                  projectId={projectId}
+                                />
+                              </Extra>
+                            </OfficialHeader>
+                          );
+                        } else {
+                          return (
+                            <Header>
+                              <StyledAuthor
+                                authorId={authorId}
+                                notALink={authorId ? false : true}
+                                createdAt={createdAt}
+                                size="40px"
+                                projectId={projectId}
+                              />
+                              <StyledMoreActionsMenu
+                                ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+                                comment={comment}
+                                onCommentEdit={this.onCommentEdit}
+                                projectId={projectId}
+                              />
+                            </Header>
+                          );
+                        }
+                      }}
+                    </GetUser>
                     <CommentBody
                       commentBody={comment.attributes.body_multiloc}
                       editionMode={this.state.editionMode}
@@ -293,7 +308,7 @@ const ParentCommentWithTracks = injectTracks<Props>({
   clickReply: tracks.clickReply,
   clickTranslateCommentButton: tracks.clickTranslateCommentButton,
   clickGoBackToOriginalCommentButton: tracks.clickGoBackToOriginalCommentButton
-})(ParentComment);
+})(injectIntl<Props>(ParentComment));
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,

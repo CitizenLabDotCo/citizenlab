@@ -30,7 +30,7 @@ const Container = styled(Link)`
   transition: all 120ms ease-out;
 
   &:hover {
-    border-color: #666;
+    border-color: #999;
   }
 
   &:not(.last) {

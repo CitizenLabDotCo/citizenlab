@@ -270,7 +270,7 @@ class SignedInHeader extends PureComponent<Props, State> {
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
       return (
-        <Header className={className} id="hook-header">
+        <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
           <HeaderImageContainer>
             <HeaderImageContainerInner>
               {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />}
@@ -288,7 +288,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCompleteProfile>
+            <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
               <Left>
                 <Icons>
                   <NoAvatarUserIcon name="noAvatar" />
@@ -306,12 +306,14 @@ class SignedInHeader extends PureComponent<Props, State> {
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
                   textColor="#fff"
+                  className="e2e-singed-in-header-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
                   linkTo="/profile/edit"
                   bgColor="#fff"
                   textColor={theme.colorMain}
+                  className="e2e-singed-in-header-accept-btn"
                 />
               </Right>
             </HeaderContentCompleteProfile>
@@ -327,7 +329,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentCustomCta>
+            <HeaderContentCustomCta id="e2e-singed-in-header-custom-cta">
               <Left>
                 <Text>
                   <T as="p" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
@@ -362,7 +364,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             enter={true}
             exit={true}
           >
-            <HeaderContentDefault>
+            <HeaderContentDefault id="e2e-singed-in-header-default-cta">
               {defaultMessage && !isEmpty(defaultMessage)
                 ? <T as="p" value={defaultMessage} supportHtml />
                 : <FormattedMessage {...messages.defaultSignedInMessage} tagName="p" values={{ firstName: authUser.attributes.first_name }}/>

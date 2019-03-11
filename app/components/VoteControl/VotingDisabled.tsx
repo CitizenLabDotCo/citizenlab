@@ -53,7 +53,7 @@ class VotingDisabled extends React.PureComponent<Props, State> {
       return messages.votingDisabledPossibleLater;
     } else if (disabled_reason === 'voting_limited_max_reached') {
       return messages.votingDisabledMaxReached;
-    } else if (disabled_reason === 'not_in_active_context') {
+    } else if (disabled_reason === 'idea_not_in_current_phase') {
       return messages.votingDisabledNotInActiveContext;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;

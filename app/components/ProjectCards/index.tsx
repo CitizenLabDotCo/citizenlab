@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty } from 'lodash-es';
+import { size, isEqual, isEmpty, isString } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'react-router';
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { stringify } from 'qs';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectCard from 'components/ProjectCard';
@@ -195,10 +199,10 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  margin-top: 20px;
 
   ${media.biggerThanMinTablet`
     justify-content: space-between;
-    margin-top: 40px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -249,15 +253,17 @@ interface Props extends InputProps, DataProps {
 
 interface State {
   cardSizes: ('small' | 'medium' | 'large')[];
+  areas: string[];
 }
 
-class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
+class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   emptyArray: string[] = [];
 
   constructor(props) {
     super(props);
     this.state = {
-      cardSizes: []
+      cardSizes: [],
+      areas: []
     };
   }
 
@@ -265,8 +271,29 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.calculateProjectCardsLayout();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.calculateProjectCardsLayout();
+
+    const areas = this.getAreasFromQueryParams();
+
+    if (!isEqual(this.state.areas, areas)) {
+      this.setState({ areas });
+    }
+
+    if (!isEqual(prevState.areas, this.state.areas)) {
+      this.props.projects.onChangeAreas(this.state.areas);
+    }
+  }
+
+  getAreasFromQueryParams = () => {
+    let areas: string[] = [];
+    const { query } = this.props.location;
+
+    if (query.areas && !isEmpty(query.areas)) {
+      areas = (isString(query.areas) ? [query.areas] : query.areas);
+    }
+
+    return areas;
   }
 
   calculateProjectCardsLayout = () => {
@@ -340,8 +367,13 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleAreasOnChange = (areas: string[]) => {
-    trackEventByName(tracks.clickOnProjectsAreaFilter);
-    this.props.projects.onChangeAreas(areas);
+    if (!isEqual(this.state.areas, areas)) {
+      trackEventByName(tracks.clickOnProjectsAreaFilter);
+      const { pathname } = removeLocale(this.props.location.pathname);
+      const query = { ...this.props.location.query, areas };
+      const search = `?${stringify(query, { indices: false, encode: false })}`;
+      clHistory.replace({ pathname, search });
+    }
   }
 
   render() {
@@ -431,6 +463,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
           )}
 
           <Footer>
+            {/* nice visual hack, please don't remove*/}
             {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
 
             {!querying && hasProjects && hasMore &&
@@ -445,9 +478,10 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
                 iconPos="left"
                 textColor={theme.colorText}
                 textHoverColor={darken(0.1, theme.colorText)}
-                bgColor={rgba(theme.colorMain, 0.08)}
-                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
+                className="e2e-project-cards-show-more-button"
               />
             }
 
@@ -461,7 +495,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(ProjectCards));
+const ProjectCardsWithHOCs = withTheme<Props, State>(injectIntl<Props>(withRouter(ProjectCards)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,

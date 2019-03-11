@@ -173,14 +173,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.author',
     defaultMessage: '{authorNameComponent}',
   },
-  parentCommentAuthor: {
-    id: 'app.containers.IdeasShow.parentCommentAuthor',
-    defaultMessage: '{authorNameComponent} said',
-  },
-  childCommentAuthor: {
-    id: 'app.containers.IdeasShow.childCommentAuthor',
-    defaultMessage: '{authorNameComponent} replied',
-  },
   shareCTA: {
     id: 'app.containers.IdeasShow.shareCTA',
     defaultMessage: 'Share this idea',
@@ -270,6 +262,10 @@ export default defineMessages({
     id: 'app.components.IdeasShow.commentingDisabledInContext',
     defaultMessage: 'Commenting on ideas in \'{projectName}\' is currently disabled.',
   },
+  commentingDisabledIdeaNotInCurrentPhase: {
+    id: 'app.components.IdeasShow.commentingDisabledIdeaNotInCurrentPhase',
+    defaultMessage: 'Commenting on this idea is impossible since it\'s no longer or not yet in consideration.',
+  },
   commentingNotPermitted: {
     id: 'app.components.IdeasShow.commentingNotPermitted',
     defaultMessage: 'Unfortunately, you don\'t have the rights to comment on this idea.',
@@ -326,8 +322,16 @@ export default defineMessages({
     id: 'app.components.IdeasShow.similarIdeas',
     defaultMessage: 'Similar ideas',
   },
+  official: {
+    id: 'app.components.IdeasShow.official',
+    defaultMessage: 'Official',
+  },
   reportAsSpamModalTitle: {
     id: 'app.containers.IdeasShow.reportAsSpamModalTitle',
     defaultMessage: 'Why do you want to report this as spam?',
+  },
+  showMoreActions: {
+    id: 'app.containers.IdeasShow.showMoreActions',
+    defaultMessage: 'Show more actions',
   },
 });

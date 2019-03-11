@@ -13,6 +13,14 @@ import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 // resources
 import GetProject from 'resources/GetProject';
 
+// style
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+const StyledContentContainer = styled(ContentContainer)`
+  background: ${colors.background};
+`;
+
 interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
@@ -25,9 +33,9 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
           <Header projectSlug={props.params.slug} />
           <ProjectModeratorIndicator projectId={project.id} />
           <ProjectArchivedIndicator projectId={project.id} />
-          <ContentContainer>
+          <StyledContentContainer>
             <ProjectInfo projectId={project.id} />
-          </ContentContainer>
+          </StyledContentContainer>
           <EventsPreview projectId={project.id} />
         </>
       );
