@@ -143,6 +143,13 @@ const config = {
 
 if (isDev) {
   config.plugins.push(new webpack.ProgressPlugin());
+} else {
+  config.plugins.push(new SentryWebpackPlugin({
+    include: path.resolve(process.cwd(), 'app'),
+    ignoreFile: '.gitignore',
+    ignore: ['node_modules', 'internals', 'docs', 'cypress', '.circleci'],
+    configFile: 'sentry.properties'
+  }));
 }
 
 module.exports = config;

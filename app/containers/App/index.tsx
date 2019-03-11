@@ -13,6 +13,7 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
+import * as Sentry from '@sentry/browser';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -143,6 +144,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           if (isNilOrError(authUser)) {
             signOut();
           } else {
+            Sentry.configureScope((scope) => {
+              scope.setUser({
+                id: authUser.data.id,
+              });
+            });
             trackIdentification(authUser);
           }
         })),
@@ -201,20 +207,27 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+                <ErrorBoundary>
+                  <FullscreenModal
+                    opened={modalOpened}
+                    close={this.closeModal}
+                    url={modalUrl}
+                    headerChild={fullscreenModalHeaderChild}
+                  >
+                    {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
+                  </FullscreenModal>
+                </ErrorBoundary>
 
-                <FullscreenModal
-                  opened={modalOpened}
-                  close={this.closeModal}
-                  url={modalUrl}
-                  headerChild={fullscreenModalHeaderChild}
-                >
-                  {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-                </FullscreenModal>
+                <ErrorBoundary>
+                  <div id="modal-portal" />
+                </ErrorBoundary>
 
-                <div id="modal-portal" />
-
-                <Navbar />
-                <ConsentManager />
+                <ErrorBoundary>
+                  <Navbar />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <ConsentManager />
+                </ErrorBoundary>
 
                 <InnerContainer role="main" className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                   <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
