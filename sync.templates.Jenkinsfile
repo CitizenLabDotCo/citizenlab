@@ -35,6 +35,9 @@ pipeline {
         git branch: 'master',
             credentialsId: 'local-ssh-user',
             url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
+        git branch: 'master',
+            credentialsId: 'local-ssh-user',
+            url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
       }
     }
 
