@@ -59,7 +59,7 @@ pipeline {
 
     stage('Release tenant templates') {
       steps {
-        git branch: 'master',
+        git branch: 'CL2-3137-syncing-templates',
             credentialsId: 'local-ssh-user',
             url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
         sh 'pwd'
