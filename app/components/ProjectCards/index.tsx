@@ -215,7 +215,9 @@ const Footer = styled.div`
 const ShowMoreButton = styled(Button)``;
 
 const HiddenSendFeedback = styled(SendFeedback)`
+  opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 
   ${media.smallerThanMinTablet`
     display: none;
