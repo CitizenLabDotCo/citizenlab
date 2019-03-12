@@ -1,5 +1,14 @@
 pipeline {
   agent any
+
+  /* 
+    After https://reinout.vanrees.org/weblog/2017/10/03/docker-compose-in-jenkins.html.
+    This solves the network (postgres and redis) not found issues during build stage.
+  */
+  environment {
+    COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
+  }
+  
   stages {
     stage('Build') {
       steps {
