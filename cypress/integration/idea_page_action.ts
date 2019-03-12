@@ -23,6 +23,7 @@ describe('Project ideas page', () => {
         cy.login(email, password);
         cy.visit('/ideas/controversial-idea');
         cy.acceptCookies();
+        cy.get('#e2e-idea-show');
       });
       describe('Feedback', () => {
         it('saves a new feedback and deletes it', () => {
@@ -52,7 +53,7 @@ describe('Project ideas page', () => {
           const commentBody = `test${salt}`;
           commentThread.get('#e2e-reply').type(commentBody).should('have.value', commentBody);
           commentThread.get('.e2e-send-reply').first().click();
-          cy.wait(100);
+          cy.wait(200);
           const getMyComment = () => commentThread.get('.e2e-child-comment').last();
           getMyComment().contains(commentBody);
           getMyComment().find('.e2e-more-actions').click();
