@@ -232,7 +232,7 @@ const ContentHeaderLeft = styled.div`
   min-height: ${ContentHeaderHeight}px;
   flex-grow: 0;
   flex-shrink: 1;
-  flex-basis: 120px;
+  flex-basis: 140px;
   margin-right: 15px;
 `;
 
@@ -253,6 +253,7 @@ const TimeRemaining = styled.div`
 
 const ProgressBar = styled.div`
   width: 100%;
+  max-width: 130px;
   height: 5px;
   border-radius: 5px;
   background: #d6dade;
@@ -539,7 +540,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             </ContentHeaderLeft>
           }
 
-          {ctaMessage !== null &&
+          {ctaMessage !== null && !isFinished && !isArchived &&
             <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
               <ProjectLabel onClick={this.handleCTAOnClick(project.id)} className="e2e-project-card-cta">
                 {ctaMessage}

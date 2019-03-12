@@ -132,7 +132,7 @@ const ShortFeedbackInner: any = styled.div`
   display: flex;
   align-items: center;
   padding: 12px 25px;
-  background: ${({ theme }) => rgba(theme.colorText, 0.05)};
+  background: ${({ theme }) => rgba(theme.colorText, 0.08)};
 
   ${media.smallerThanMinTablet`
     width: 100%;

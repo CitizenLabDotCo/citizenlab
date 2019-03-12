@@ -199,7 +199,7 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 
   ${media.biggerThanMinTablet`
     justify-content: space-between;

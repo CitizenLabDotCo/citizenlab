@@ -26,7 +26,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
-  padding-bottom: 70px;
+  padding-bottom: 100px;
   background: ${colors.background};
 `;
 

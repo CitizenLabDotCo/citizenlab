@@ -72,7 +72,7 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 95px;
-  margin-bottom: 90px;
+  margin-bottom: 100px;
 
   ${media.smallerThanMaxTablet`
     margin-top: 0px;
