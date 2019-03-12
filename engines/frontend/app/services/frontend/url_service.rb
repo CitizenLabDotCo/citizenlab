@@ -9,6 +9,9 @@ module Frontend
       if model_instance.kind_of? Project
         subroute = 'projects'
         slug = model_instance.slug
+      if model_instance.kind_of? Phase
+        subroute = 'projects'
+        slug = model_instance.project.slug
       elsif model_instance.kind_of? Idea
         subroute = 'ideas'
         slug = model_instance.slug
