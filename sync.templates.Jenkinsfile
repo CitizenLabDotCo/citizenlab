@@ -51,7 +51,6 @@ pipeline {
     stage('Release tenant templates') {
       steps {
         git branch: 'master',
-            credentialsId: 'docker-hub-credentials',
             url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
         sh 'pwd'
         sh 'ls'
