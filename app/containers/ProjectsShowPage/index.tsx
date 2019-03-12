@@ -96,7 +96,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
     return (
       <>
         <Meta projectSlug={slug} />
-        <Container className={`${lastUrlSegment === 'events' ? 'greyBackground' : ''}`}>
+        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
