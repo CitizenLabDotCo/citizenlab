@@ -42,7 +42,7 @@ pipeline {
     stage('Push tenant templates to backup repository') {
       steps {
         git branch: 'master',
-            credentialsId: 'local-ssh-user',
+            credentialsId: '44938d3e-c5d2-4824-820c-7ef2d1d4d572',
             url: 'git@github.com:CitizenLabDotCo/cl2-tenant-templates.git'
         withAWS(credentials: 'aws') {
           s3Download(file:'prrt/', bucket:'cl2-tenant-templates', path:'test/', force:true)
