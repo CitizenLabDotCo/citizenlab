@@ -12,7 +12,6 @@ import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
-import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import ContentContainer from 'components/ContentContainer';
 
@@ -44,6 +43,10 @@ const StyledTimeline = styled(Timeline)`
   ${media.smallerThanMaxTablet`
     margin-bottom: 40px;
   `}
+`;
+
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  padding-bottom: 30px;
 `;
 
 const SecondRow = styled.div`
@@ -123,8 +126,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
           <Header projectSlug={slug} phaseId={selectedPhaseId} />
           <FirstRow>
             <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
-            <ProjectModeratorIndicator projectId={project.id} />
-            <ProjectArchivedIndicator projectId={project.id} />
+            <StyledProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
               <StyledPhaseAbout phaseId={selectedPhaseId} />
               {isPBPhase &&
