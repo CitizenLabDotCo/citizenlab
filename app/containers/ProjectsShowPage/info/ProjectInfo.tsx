@@ -124,7 +124,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
               <T value={project.attributes.description_multiloc} supportHtml={true}/>
             </QuillEditedContent>
           </ProjectDescription>
-          {!isNilOrError(projectFiles) &&
+          {!isNilOrError(projectFiles) && projectFiles && projectFiles.length > 0 &&
             <FileAttachments files={projectFiles} />
           }
         </Left>
