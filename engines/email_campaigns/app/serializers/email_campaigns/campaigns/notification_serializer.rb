@@ -25,6 +25,22 @@ module EmailCampaigns
       end
     end
 
+    class CustomPhaseSerializer < ActiveModel::Serializer
+      attributes :id, :title_multiloc, :description_multiloc, :url, :start_at, :end_at
+
+      def start_at
+        object.start_at.iso8601
+      end
+
+      def end_at
+        object.start_at.iso8601
+      end
+
+      def url
+        Frontend::UrlService.new.model_to_url object
+      end
+    end
+
     class CustomOfficialFeedbackSerializer < ActiveModel::Serializer
       attributes :id, :body_multiloc, :author_multiloc, :url, :created_at
 

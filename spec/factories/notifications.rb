@@ -89,6 +89,12 @@ FactoryBot.define do
     project
   end
 
+  factory :project_phase_started, parent: :notification, class: 'Notifications::ProjectPhaseStarted' do
+    initiating_user
+    project
+    phase
+  end
+
   factory :status_change_of_your_idea, parent: :notification, class: 'Notifications::StatusChangeOfYourIdea' do
     idea
     idea_status
