@@ -60,7 +60,7 @@ pipeline {
     stage('Release tenant templates') {
       steps {
         git branch: 'master',
-            credentialsId: '44938d3e-c5d2-4824-820c-7ef2d1d4d572',
+            credentialsId: 'local-ssh-user',
             url: 'git@github.com:CitizenLabDotCo/cl2-back.git'
         sh 'pwd'
         sh 'ls'
