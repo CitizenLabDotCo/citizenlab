@@ -9,7 +9,6 @@ import Header from '../Header';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import PBExpenses from '../pb/PBExpenses';
 
@@ -23,6 +22,10 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  padding-top: 30px;
+`;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
@@ -69,8 +72,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         return (
           <>
             <Header projectSlug={params.slug} />
-            <ProjectModeratorIndicator projectId={project.id} />
-            <ProjectArchivedIndicator projectId={project.id} />
+            <StyledProjectArchivedIndicator projectId={project.id} />
             <StyledContentContainer>
               {isPBProject &&
                 <StyledPBExpenses
