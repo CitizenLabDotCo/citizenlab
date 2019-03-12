@@ -91,7 +91,7 @@ const LogoLink = styled(Link)`
 
 const Logo = styled.img`
   max-width: 100%;
-  max-height: 46px;
+  max-height: 44px;
   margin: 0;
   padding: 0px;
   cursor: pointer;
