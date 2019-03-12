@@ -15,7 +15,7 @@ import styled from 'styled-components';
 
 const SurveyContainer = styled.div`
   padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
 `;
 
 export default withRouter((props: WithRouterProps) => (
