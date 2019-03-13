@@ -1,7 +1,7 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
-type LoadableFullscreenModalInputProps = {
+type InputProps = {
   modalOpened: boolean;
   close: () => void;
   modalUrl: string | null;
@@ -17,7 +17,7 @@ const LoadableFullscreenModal = Loadable.Map({
     IdeasShow: () => import('containers/IdeasShow'),
     VoteControl: () => import('components/VoteControl'),
   },
-  render(loaded, props: LoadableFullscreenModalInputProps) {
+  render(loaded, props: InputProps) {
     const FullscreenModal = loaded.FullscreenModal.default;
     const IdeasShow = loaded.IdeasShow.default;
     const VoteControl = loaded.VoteControl.default;
