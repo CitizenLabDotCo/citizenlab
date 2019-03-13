@@ -23,7 +23,6 @@ import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
@@ -70,6 +69,7 @@ type Props = {
   isDragging: boolean;
   connectDragSource: any;
   activeFilterMenu: string;
+  openIdea: (ideaId: string) => void;
 };
 
 type State = {};
@@ -112,12 +112,8 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
   handleClickTitle = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    const { idea } = this.props;
-    eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
-      type: 'idea',
-      id: idea.id,
-      url: `/ideas/${idea.attributes.slug}`
-    });
+    const { idea, openIdea } = this.props;
+    openIdea(idea.id);
   }
 
   render() {
