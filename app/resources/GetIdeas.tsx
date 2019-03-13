@@ -15,6 +15,7 @@ export interface InputProps {
   pageNumber?: number;
   pageSize: number;
   projectId?: string;
+  projectIds?: string[];
   phaseId?: string;
   authorId?: string;
   sort: Sort;
@@ -31,6 +32,7 @@ interface IQueryParameters {
   'page[number]': number;
   'page[size]': number;
   project: string | undefined;
+  projects: string[] | undefined;
   phase: string | undefined;
   author: string | undefined;
   sort: Sort;
@@ -58,6 +60,7 @@ export type GetIdeasChildProps = State & {
   onLoadMore: () => void;
   onChangePage: (pageNumber: number) => void;
   onChangeProject: (projectId: string) => void;
+  onChangeProjects: (projectIds: string[]) => void;
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangeSorting: (sort: string) => void;
@@ -94,6 +97,7 @@ export default class GetIdeas extends React.Component<Props, State> {
         'page[size]': props.pageSize,
         sort: props.sort,
         project: undefined,
+        projects: undefined,
         phase: undefined,
         author: undefined,
         search: undefined,
@@ -242,6 +246,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize,
       project: props.projectId,
+      projects: props.projectIds,
       phase: props.phaseId,
       author: props.authorId,
       sort: props.sort,
@@ -301,6 +306,14 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleProjectsOnChange = (projects: string[]) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      projects,
+      'page[number]': 1
+    });
+  }
+
   handleTopicsOnChange = (topics: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
@@ -340,6 +353,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onLoadMore: this.loadMore,
       onChangePage: this.handleChangePage,
       onChangeProject: this.handleProjectOnChange,
+      onChangeProjects: this.handleProjectsOnChange,
       onChangePhase: this.handlePhaseOnChange,
       onChangeSearchTerm: this.handleSearchOnChange,
       onChangeSorting: this.handleSortOnChange,
