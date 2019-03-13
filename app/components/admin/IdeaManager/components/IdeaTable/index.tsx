@@ -9,6 +9,7 @@ import Row from './Row';
 import Pagination from 'components/admin/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
+import SideModal from 'components/UI/SideModal';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -40,9 +41,21 @@ interface Props {
   activeFilterMenu: string | null;
 }
 
-interface State {}
+type State = {
+  ideaModal: string | null;
+};
 
 export default class IdeaTable extends React.Component<Props, State> {
+  constructor (props) {
+    super(props);
+    this.state = {
+      ideaModal: null
+    };
+  }
+
+  onClickIdeaTitle = (ideaId: string) => this.setState({ ideaModal: ideaId });
+
+  onCloseModal = () => this.setState({ ideaModal: null });
 
   handleSortClick = (newSortAttribute: SortAttribute) => () => {
     const { ideaSortAttribute: oldSortAttribute, ideaSortDirection: oldSortDirection, onChangeIdeaSort } = this.props;
@@ -101,8 +114,10 @@ export default class IdeaTable extends React.Component<Props, State> {
 
   render() {
     const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
+    const { ideaModal } = this.state;
 
-    return(
+    return (
+      <>
       <Table sortable size="small">
         <Table.Header>
           <Table.Row>
@@ -172,6 +187,7 @@ export default class IdeaTable extends React.Component<Props, State> {
               selected={selectedIdeas[idea.id]}
               selectedIdeas={selectedIdeas}
               activeFilterMenu={activeFilterMenu}
+              openIdea={this.onClickIdeaTitle}
             />
           )}
         </Table.Body>
@@ -187,6 +203,13 @@ export default class IdeaTable extends React.Component<Props, State> {
           </Table.Row>
         </Table.Footer>
       </Table>
+      <SideModal
+        opened={!!ideaModal}
+        close={this.onCloseModal}
+      >
+      "chachacha"
+      </SideModal>
+      </>
     );
   }
 }
