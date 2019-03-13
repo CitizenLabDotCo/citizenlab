@@ -27,7 +27,7 @@ import eventEmitter from 'utils/eventEmitter';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // i18n
-import { FormattedDate, InjectedIntlProps } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
@@ -137,7 +137,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
           </Table.Cell>
           <Table.Cell>{attrs.author_name}</Table.Cell>
           <Table.Cell>
-            <FormattedDate value={attrs.published_at} />
+            <FormattedRelative value={attrs.published_at} />
           </Table.Cell>
           <Table.Cell singleLine>
             <Icon name="thumbs up" />
