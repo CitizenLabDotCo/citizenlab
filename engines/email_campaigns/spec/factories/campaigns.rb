@@ -101,6 +101,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :project_phase_upcoming_campaign, class: EmailCampaigns::Campaigns::ProjectPhaseUpcoming do
+    enabled { true }
+  end
+
   factory :status_change_of_commented_idea_campaign, class: EmailCampaigns::Campaigns::StatusChangeOfCommentedIdea do
     enabled { true }
   end
