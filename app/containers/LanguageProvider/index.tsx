@@ -24,8 +24,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      messages: {
-      }
+      messages: {}
     };
   }
 
@@ -54,7 +53,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
   }
 
   importLocale = (locale: Locale) => {
-    import(`i18n-test/${locale}`).then(translationMessages => {
+    import(`i18n/${locale}`).then(translationMessages => {
       this.setState(prevState => ({
         messages: {
           ...prevState.messages,
@@ -67,7 +66,7 @@ class LanguageProvider extends React.PureComponent<Props, State> {
   importTenantLocales = (tenantLocales: Locale[]) => {
     for (const locale of tenantLocales) {
       if (!this.state.messages[locale]) {
-        import(`i18n-test/${locale}`).then(translationMessages => {
+        import(`i18n/${locale}`).then(translationMessages => {
           this.setState(prevState => ({
             messages: {
               ...prevState.messages,
