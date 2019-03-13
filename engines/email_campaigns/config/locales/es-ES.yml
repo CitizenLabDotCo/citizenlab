@@ -14,6 +14,7 @@ es:
       "mention_in_official_feedback": When someone mentions me in official feedback
       "project_moderation_rights_received": When I'm given project moderation rights
       "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": When the status of my idea changes
       "welcome": When I register on the platform
       "password_reset": When I request a password reset for my account
@@ -45,6 +46,7 @@ es:
       "mention_in_official_feedback": When someone mentions me in official feedback
       "project_moderation_rights_received": When a user is given project moderation rights
       "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": When the status of my idea changes
       "welcome": When a user registers on the platform
       "password_reset": When a user requests a password reset

@@ -28,6 +28,7 @@ resource "Campaign consents" do
         create(:official_feedback_on_voted_idea),
         create(:official_feedback_on_your_idea),
         create(:project_phase_started),
+        create(:project_phase_upcoming),
         create(:status_change_of_your_idea_campaign),
         create(:user_digest_campaign)
       ]

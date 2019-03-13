@@ -1,5 +1,5 @@
 module Notifications
-  class ProjectPhaseStarted < Notification
+  class ProjectPhaseUpcoming < Notification
     
     belongs_to :phase
     belongs_to :project, optional: true
@@ -7,8 +7,8 @@ module Notifications
     validates :phase_id, presence: true
 
 
-    ACTIVITY_TRIGGERS = {'Phase' => {'started' => true}}
-    EVENT_NAME = 'Project phase started'
+    ACTIVITY_TRIGGERS = {'Phase' => {'upcoming' => true}}
+    EVENT_NAME = 'Project phase upcoming'
     
 
     def self.make_notifications_on activity
@@ -18,7 +18,7 @@ module Notifications
       project_id = phase&.project_id
 
       if project_id
-        user_scope = User.where.not(id: User.admin.or(User.project_moderator(project_id)).ids)
+        user_scope = User.admin.or(User.project_moderator(project_id))
         ProjectPolicy::InverseScope.new(phase.project, user_scope).resolve.map do |recipient|
           self.create!(
              recipient_id: recipient.id,

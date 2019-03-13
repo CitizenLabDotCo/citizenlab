@@ -27,6 +27,7 @@ module EmailCampaigns
       Campaigns::PasswordReset,
       Campaigns::ProjectModerationRightsReceived,
       Campaigns::ProjectPhaseStarted,
+      Campaigns::ProjectPhaseUpcoming,
       Campaigns::StatusChangeOfCommentedIdea,
       Campaigns::StatusChangeOfVotedIdea,
       Campaigns::StatusChangeOfYourIdea,

@@ -90,7 +90,11 @@ FactoryBot.define do
   end
 
   factory :project_phase_started, parent: :notification, class: 'Notifications::ProjectPhaseStarted' do
-    initiating_user
+    project
+    phase
+  end
+
+  factory :project_phase_upcoming, parent: :notification, class: 'Notifications::ProjectPhaseUpcoming' do
     project
     phase
   end
