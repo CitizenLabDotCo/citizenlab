@@ -216,6 +216,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  onCardHover = (event: FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    eventEmitter.emit(namespace, 'cardHover', null);
+  }
+
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
@@ -283,7 +288,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
       `;
 
       return (
-        <IdeaContainer onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
+        <IdeaContainer onMouseOver={this.onCardHover} onClick={this.onCardClick} to={`/ideas/${idea.attributes.slug}`} className={className}>
             {ideaImageUrl &&
               <IdeaImageContainer>
                 <T value={idea.attributes.title_multiloc}>
