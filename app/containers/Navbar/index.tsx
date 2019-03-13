@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import Loadable from 'react-loadable';
 import { trackEventByName } from 'utils/analytics';
 
 // components
@@ -13,6 +12,7 @@ import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
+import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 
 // analytics
 import tracks from './tracks';
@@ -333,6 +333,22 @@ const SignUpLink = NavigationItem.extend`
   `}
 `;
 
+const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
+padding-left: 36px;
+
+&.notLoggedIn {
+  padding-left: 20px;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 10px;
+  `}
+}
+
+${media.smallerThanMinTablet`
+  padding-left: 15px;
+`}
+`;
+
 interface InputProps {}
 
 interface DataProps {
@@ -347,31 +363,6 @@ interface Props extends InputProps, DataProps {}
 interface State {
   projectsDropdownOpened: boolean;
 }
-
-const LoadableLanguageSelector = Loadable({
-  loading: () => null,
-  loader: () => import('./components/LanguageSelector'),
-  render(loaded, props) {
-    const LanguageSelector = loaded.default;
-    const StyledLanguageSelector = styled(LanguageSelector)`
-      padding-left: 36px;
-
-      &.notLoggedIn {
-        padding-left: 20px;
-
-        ${media.smallerThanMinTablet`
-          padding-left: 10px;
-        `}
-      }
-
-      ${media.smallerThanMinTablet`
-        padding-left: 15px;
-      `}
-    `;
-
-    return <StyledLanguageSelector {...props} />;
-  }
-});
 
 class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
   constructor(props) {
@@ -537,7 +528,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
             {tenantLocales.length > 1 && locale &&
               <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
-                <LoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+                <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>
