@@ -22,5 +22,15 @@ module Frontend
       self.style ||= {}
     end
 
+    module ClassMethods
+      def available_style_attributes
+        STYLE_JSON_SCHEMA['properties'].map do |prop, descriptor|
+          {
+            name: prop,
+            description: descriptor["description"]
+          }
+        end
+      end
+    end
   end
 end

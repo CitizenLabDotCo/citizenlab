@@ -30,7 +30,8 @@ module AdminApi
     end
 
     def update
-      updated_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
+      @tenant.settings.deep_merge(tenant_params[:settings].to_h)
+      @tenant.style.deep_merge(tenant_params[:style].to_h)
       SideFxTenantService.new.before_update(@tenant, nil)
       if @tenant.update(tenant_params)
         SideFxTenantService.new.after_update(@tenant, nil)
@@ -42,6 +43,10 @@ module AdminApi
 
     def settings_schema
       render json: Tenant::SETTINGS_JSON_SCHEMA
+    end
+
+    def style_schema
+      render json: Frontend::TenantStyle::STYLE_JSON_SCHEMA
     end
 
     def templates
@@ -75,7 +80,12 @@ module AdminApi
       # schema validation, however, should be covering all settings that are not
       # allowed
       all_settings = params.require(:tenant).fetch(:settings, nil).try(:permit!)
-      params.require(:tenant).permit(:name, :host, :logo, :header_bg).merge(:settings => all_settings)
+      all_style = params.require(:tenant).fetch(:style, nil).try(:permit!)
+      params
+        .require(:tenant)
+        .permit(:name, :host, :logo, :header_bg)
+        .merge(:settings => all_settings)
+        .merge(:style => all_style)
     end
 
   end
