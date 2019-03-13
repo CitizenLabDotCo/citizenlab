@@ -1,6 +1,7 @@
 require_dependency "tenant_schema/extended_schema"
 
 class Tenant < ApplicationRecord
+  include Frontend::TenantStyle
 
   mount_base64_uploader :logo, LogoUploader
   mount_base64_uploader :header_bg, HeaderBgUploader

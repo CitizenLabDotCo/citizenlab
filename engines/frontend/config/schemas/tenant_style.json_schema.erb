@@ -1,0 +1,41 @@
+{
+  "description": "Schema for validating the visual style configuration for a tenant",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "navbarBackgroundColor": {
+      "description": "The background color of a normal navigation item",
+      "$ref": "#/definitions/color"
+    },
+    "navbarActiveItemBackgroundColor": {
+      "description": "The background color of a navigation item that is currently active (being visited)",
+      "$ref": "#/definitions/color"
+    },
+    "navbarTextColor": {
+      "description": "The color of the text used for all text in the navbar",
+      "$ref": "#/definitions/color"
+    },
+    "navbarHighlightedItemBackgroundColor": {
+      "description": "The background color of a navigation item in the navbar that needs to attract extra attention",
+      "$ref": "#/definitions/color"
+    },
+    "navbarBorderColor": {
+      "description": "The color of the bottom border of the navbar",
+      "$ref": "#/definitions/color"
+    },
+    "navbarFont": {
+      "description": "The font used in the navbar",
+      "$ref": "#/definitions/font"
+    }
+  },
+  "dependencies": {},
+  "definitions": {
+    "color": {
+      "type": "string",
+      "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "font": {
+      "type": "string"
+    }
+  }
+}
