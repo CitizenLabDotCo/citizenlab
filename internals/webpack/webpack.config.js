@@ -5,7 +5,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
+// const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
@@ -139,7 +139,7 @@ const config = {
       include: ["main", "vendors"]
     }),
 
-    new ResourceHintsWebpackPlugin(),
+    // new ResourceHintsWebpackPlugin(),
 
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
