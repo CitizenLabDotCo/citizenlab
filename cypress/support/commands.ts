@@ -176,7 +176,13 @@ export function apiRemoveComment(commentId: string) {
   });
 }
 
-export function apiCreateProject(type: 'timeline' | 'continuous', title: string, descriptionPreview: string, description: string) {
+export function apiCreateProject(
+  type: 'timeline' | 'continuous',
+  title: string,
+  descriptionPreview: string,
+  description: string,
+  publicationStatus: 'draft' | 'published' | 'archived' = 'published'
+) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -190,6 +196,7 @@ export function apiCreateProject(type: 'timeline' | 'continuous', title: string,
       body: {
         project: {
           process_type: type,
+          publication_status: publicationStatus,
           title_multiloc: {
             'en-GB': title,
             'nl-BE': title
