@@ -100,7 +100,7 @@ const ModalContainer: any = styled(clickOutside)`
 
     ${media.smallerThanMinTablet`
       width: 85vw;
-      max-height: 85vh;
+      max-height: 80vh;
     `}
   `}
 `;
@@ -125,8 +125,6 @@ const Overlay = styled(FocusTrap)`
 
   ${media.smallerThanMaxTablet`
     padding: 0;
-    /* height: calc(100vh - ${props => props.theme.mobileMenuHeight}px); */
-    /* bottom: auto; */
   `}
 
   &.modal-enter {
@@ -180,7 +178,7 @@ const HeaderTitle = styled.h1`
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
+    font-size: ${fontSizes.large}px;
     margin-right: 35px;
   `}
 `;
