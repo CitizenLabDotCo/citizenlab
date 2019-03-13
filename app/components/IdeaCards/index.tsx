@@ -361,6 +361,7 @@ class IdeaCards extends PureComponent<Props, State> {
 
           <RightFilterArea>
             <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
+              {showProjectSelector && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectSort onChange={this.handleSortOnChange} />
               {showProjectSelector && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />
