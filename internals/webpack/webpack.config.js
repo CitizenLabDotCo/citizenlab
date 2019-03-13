@@ -145,7 +145,7 @@ const config = {
 
 if (isDev) {
   config.plugins.push(new webpack.ProgressPlugin());
-} else {
+} else if (isProd) {
   config.plugins.push(new SentryCliPlugin({
     include: path.resolve(process.cwd(), 'app'),
     ignoreFile: '.gitignore',
