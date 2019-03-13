@@ -9,6 +9,8 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
+import SelectProjects from './SelectProjects';
+
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
@@ -270,6 +272,7 @@ interface InputProps extends GetIdeasInputProps  {
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
   className?: string;
+  showProjectSelector?: boolean;
 }
 
 interface DataProps {
@@ -307,6 +310,10 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(search);
   }
 
+  handleProjectsOnChange = (projects: string[]) => {
+    this.props.ideas.onChangeProjects(projects);
+  }
+
   handleSortOnChange = (sort: string) => {
     this.props.ideas.onChangeSorting(sort);
   }
@@ -329,7 +336,8 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextType,
       ideas,
       className,
-      theme
+      theme,
+      showProjectSelector
     } = this.props;
     const {
       queryParameters,
@@ -354,6 +362,7 @@ class IdeaCards extends PureComponent<Props, State> {
           <RightFilterArea>
             <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
               <SelectSort onChange={this.handleSortOnChange} />
+              {showProjectSelector && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />
             </DropdownFilters>
 
