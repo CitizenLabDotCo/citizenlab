@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.areas',
     defaultMessage: 'Areas',
   },
+  projectFilterTitle: {
+    id: 'app.containers.IdeaCards.projectFilterTitle',
+    defaultMessage: 'Projects',
+  },
   topicsTitle: {
     id: 'app.containers.IdeaCards.topicsTitle',
     defaultMessage: 'Topics',
