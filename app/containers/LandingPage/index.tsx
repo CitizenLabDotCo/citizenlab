@@ -244,7 +244,7 @@ class LandingPage extends PureComponent<Props, State> {
                     fontWeight="500"
                     padding="13px 22px"
                     bgColor="#fff"
-                    textColor={theme.colorMain}
+                    textColor={theme.colorText}
                     linkTo="/sign-up"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}
