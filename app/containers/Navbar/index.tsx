@@ -44,7 +44,7 @@ import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: ${(props) => props.theme.menuHeight}px;
+  height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,8 +52,8 @@ const Container = styled.div`
   padding-right: 20px;
   position: fixed;
   top: 0;
-  background: #fff;
-  border-bottom: solid 1px #eaeaea;
+  background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
+  border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 999;
   -webkit-transform: translateZ(0);
@@ -78,7 +78,7 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  height: ${(props) => props.theme.menuHeight}px;
+  height: ${({ theme }) => theme.menuHeight}px;
 `;
 
 const LogoLink = styled(Link)`
@@ -109,7 +109,7 @@ const NavigationItems = styled.div`
 `;
 
 const NavigationItem = styled(Link)`
-  color: ${(props: any) => props.theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 500;
@@ -118,7 +118,6 @@ const NavigationItem = styled(Link)`
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
-  outline: none;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
   height: 100%;
@@ -126,15 +125,15 @@ const NavigationItem = styled(Link)`
 
   &:focus,
   &:hover {
-    color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
+    color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
   }
 
   &.active {
-    border-top-color: ${(props) => props.theme.colorMain};
-    border-bottom-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
+    border-bottom-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
 
-    &:after {
+    &:before {
       content: "";
       display: block;
       position: absolute;
@@ -142,8 +141,9 @@ const NavigationItem = styled(Link)`
       left: 0;
       height: 100%;
       width: 100%;
-      z-index: 2;
-      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      z-index: -1;
+      background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+      /* background-color: rgba(0, 0, 0, 0.3); */
       pointer-events: none;
     }
   }
@@ -152,9 +152,9 @@ const NavigationItem = styled(Link)`
 const NavigationItemText = styled.span`
   white-space: nowrap;
 
-  &:not(.sign-up-span) {
-    background-color: #fff;
-  }
+  /* &:not(.sign-up-span) {
+    background-color: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
+  } */
 
   &:hover {
     text-decoration: underline;
@@ -168,8 +168,8 @@ const NavigationDropdown = styled.div`
 `;
 
 const NavigationDropdownItem = styled.button`
-  color: ${(props: any) => props.theme.colorText};
-  fill: ${(props: any) => props.theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
@@ -179,7 +179,6 @@ const NavigationDropdownItem = styled.button`
   margin: 0;
   padding: 0 30px;
   transition: all 100ms ease;
-  outline: none;
   cursor: pointer;
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
@@ -187,12 +186,12 @@ const NavigationDropdownItem = styled.button`
 
   &:hover,
   &:focus {
-    color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
+    color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
   }
 
   &.active {
-    border-top-color: ${(props) => props.theme.colorMain};
+    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
 
     &:after {
       content: "";
@@ -202,8 +201,8 @@ const NavigationDropdownItem = styled.button`
       left: 0;
       height: 100%;
       width: 100%;
-      z-index: 2;
-      background-color: ${(props) => rgba(props.theme.colorMain, 0.05)};
+      z-index: -1;
+      background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
   }
@@ -254,7 +253,7 @@ const ProjectsListFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${(props) => props.theme.colorMain};
+  background: ${({ theme }) => theme.colorMain};
   border-radius: 3px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -263,7 +262,7 @@ const ProjectsListFooter = styled(Link)`
   &:hover,
   &:focus {
     color: #fff;
-    background: ${(props) => darken(0.15, props.theme.colorMain)};
+    background: ${({ theme }) => darken(0.15, theme.colorMain)};
     text-decoration: none;
   }
 `;
@@ -271,7 +270,7 @@ const ProjectsListFooter = styled(Link)`
 const Right = styled.div`
   display: flex;
   align-items: center;
-  height: ${(props) => props.theme.menuHeight}px;
+  height: ${({ theme }) => theme.menuHeight}px;
 `;
 
 const RightItem: any = styled.div`
@@ -294,7 +293,7 @@ const RightItem: any = styled.div`
 const LogInLink = NavigationItem.extend`
   &:focus,
   &:hover {
-    border-top-color: ${({ theme }) => rgba(theme.colorSecondary, .3)};
+    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
   }
 
   ${media.smallerThanMinTablet`
@@ -304,13 +303,13 @@ const LogInLink = NavigationItem.extend`
 
 const SignUpLink = NavigationItem.extend`
   color: #fff;
-  background-color: ${(props) => props.theme.colorSecondary};
+  background-color: ${({ theme }) => theme.colorSecondary};
   border: none;
 
   &:focus,
   &:hover {
     color: #fff;
-    background-color: ${(props) => darken(0.12, props.theme.colorSecondary)};
+    background-color: ${({ theme }) => darken(0.12, theme.colorSecondary)};
   }
 
   ${media.smallerThanMinTablet`
@@ -376,6 +375,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     trackEventByName(tracks.clickSignUpLink.name);
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const {
       projects,
@@ -420,6 +423,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   <NavigationDropdownItem
                     className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
                     aria-haspopup="true"
+                    onMouseDown={this.removeFocus}
                     onClick={this.toggleProjectsDropdown}
                   >
                     <NavigationItemText>

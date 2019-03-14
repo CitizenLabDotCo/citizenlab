@@ -5,13 +5,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -78,8 +76,8 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${(props) => props.theme.colorMain};
-  opacity: ${(props) => props.theme.headerOverlayOpacity};
+  background: ${({ theme }) => theme.landingHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.landingHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -154,14 +152,6 @@ const SignUpButton = styled(Button)`
   `}
 `;
 
-const StyledIdeaButton = styled(IdeaButton)`
-  display: none;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
-`;
-
 export interface InputProps {
   className?: string;
 }
@@ -169,7 +159,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -187,7 +176,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, className } = this.props;
+    const { locale, tenant, className } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -221,18 +210,14 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
               <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
-              {authUser ? (
-                <StyledIdeaButton style="primary-inverse" />
-              ) : (
-                <SignUpButton
-                  style="primary-inverse"
-                  fontWeight="500"
-                  padding="13px 22px"
-                  onClick={this.goToSignUpPage}
-                  text={<FormattedMessage {...messages.createAccount} />}
-                  className="e2e-signed-out-header-cta-button"
-                />
-              )}
+              <SignUpButton
+                style="primary-inverse"
+                fontWeight="500"
+                padding="13px 22px"
+                onClick={this.goToSignUpPage}
+                text={<FormattedMessage {...messages.createAccount} />}
+                className="e2e-signed-out-header-cta-button"
+              />
             </HeaderContent>
           </Header>
         </Container>
@@ -245,8 +230,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
-  authUser: <GetAuthUser />
+  tenant: <GetTenant />
 });
 
 export default (inputProps: InputProps) => (
