@@ -8,7 +8,7 @@ pipeline {
   environment {
     COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
   }
-  
+
   stages {
     stage('Build') {
       steps {
@@ -170,8 +170,8 @@ pipeline {
 
   post {
     always {
-      junit 'spec/reports/**/*.xml'
       sh 'docker-compose down --volumes'
+      junit 'spec/reports/**/*.xml'
       cleanWs()
     }
     failure {

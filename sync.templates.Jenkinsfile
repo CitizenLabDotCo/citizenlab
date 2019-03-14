@@ -47,8 +47,8 @@ pipeline {
 
   post {
     always {
-      junit 'spec/reports/**/*.xml'
       sh 'docker-compose down --volumes'
+      junit 'spec/reports/**/*.xml'
       cleanWs()
     }
     failure {
