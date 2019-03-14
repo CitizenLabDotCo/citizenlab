@@ -188,6 +188,7 @@
   "app.components.QuillEditor.videoPrompt": "Geef de video in:",
   "app.components.QuillEditor.visitPrompt": "Bezoek de link:",
   "app.components.SearchInput.searchPlaceholder": "Zoeken",
+  "app.components.SideModal.closeButtonAria": "",
   "app.components.UI.Select.noResults": "Geen opties beschikbaar",
   "app.components.Upload.dropYourImageHere": "Plaats je afbeelding hier",
   "app.components.Upload.dropYourImagesHere": "Plaats je afbeeldingen hier",
