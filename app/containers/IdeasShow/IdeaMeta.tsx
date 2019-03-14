@@ -1,18 +1,23 @@
 // libraries
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
 import Helmet from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // utils
@@ -20,52 +25,48 @@ import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/imageTools';
 
-// Typings
-import { Multiloc } from 'typings';
-import { IIdeaImage } from 'services/ideaImages';
-
 interface InputProps {
   ideaId: string;
-  titleMultiloc: Multiloc;
-  bodyMultiloc: Multiloc;
-  ideaAuthorName: string | null;
-  ideaImages: IIdeaImage | null;
-  publishedAt: string;
-  projectTitle: Multiloc | null;
-  projectSlug: string | null;
 }
 
 interface DataProps {
+  idea: GetIdeaChildProps;
+  project: GetProjectChildProps;
+  author: GetUserChildProps;
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
+  ideaImages: GetIdeaImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
+const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
+  idea,
   locale,
   tenant,
   authUser,
-  titleMultiloc,
-  bodyMultiloc,
   ideaImages,
-  ideaAuthorName,
-  publishedAt,
-  projectTitle,
-  projectSlug,
-  intl,
+  author,
+  project,
+  localize,
+  intl: { formatMessage }
 }) => {
-  if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-    const { formatMessage } = intl;
-    const tenantLocales = tenant.attributes.settings.core.locales;
-    const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
-    const ideaDescription = stripHtml(getLocalized(bodyMultiloc, locale, tenantLocales), 250);
-    const ideaImage = ideaImages && ideaImages.data ? ideaImages.data.attributes.versions.fb : null;
-    const ideaUrl = window.location.href;
-    const project = getLocalized(projectTitle, locale, tenantLocales, 20);
+  if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(idea)) {
+    const { title_multiloc, body_multiloc } = idea.attributes;
 
-    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: getLocalized(titleMultiloc, locale, tenantLocales, 50) });
+    const tenantLocales = tenant.attributes.settings.core.locales;
+    const localizedTitle = localize(title_multiloc, 50);
+    const ideaTitle = formatMessage(messages.metaTitle, { ideaTitle: localizedTitle });
+    const ideaDescription = stripHtml(localize(body_multiloc), 250);
+    const ideaImage = !isNilOrError(ideaImages) && ideaImages.length > 0 ? ideaImages[0].attributes.versions.fb : null;
+    const ideaUrl = window.location.href;
+    const projectTitle = !isNilOrError(project) && localize(project.attributes.title_multiloc, 20);
+    const projectSlug = !isNilOrError(project) && project.attributes.slug;
+
+    const ideaOgTitle = formatMessage(messages.metaOgTitle, { ideaTitle: localizedTitle });
+
+    const ideaAuthorName = !isNilOrError(author) ? `${author.attributes.first_name} ${author.attributes.last_name}` : 'anonymous';
 
     const articleJson = {
       '@type': 'Article',
@@ -76,7 +77,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         '@type': 'WebPage',
         '@id': ideaUrl
       },
-      datePublished: publishedAt,
+      datePublished: idea.attributes.published_at,
     };
 
     const json = {
@@ -104,7 +105,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
         position: 2,
         item: {
           '@id': `${tenant.attributes.host}/projects/${projectSlug}`,
-          name: project,
+          name: projectTitle,
         }
       },
       {
@@ -160,12 +161,16 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({
 };
 
 const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
+  author: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id', null)}>{render}</GetUser>,
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
 });
 
-const IdeaMetaWithHoc = injectIntl<Props>(IdeaMeta);
+const IdeaMetaWithHoc = injectIntl<Props>(injectLocalize<Props & InjectedIntlProps>(IdeaMeta));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
