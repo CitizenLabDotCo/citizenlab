@@ -188,6 +188,7 @@
   "app.components.QuillEditor.videoPrompt": "Indtast video:",
   "app.components.QuillEditor.visitPrompt": "Besøg link:",
   "app.components.SearchInput.searchPlaceholder": "Søg",
+  "app.components.SideModal.closeButtonAria": "",
   "app.components.UI.Select.noResults": "Ingen tilgængelige valgmuligheder",
   "app.components.Upload.dropYourImageHere": "Træk dit billede hertil",
   "app.components.Upload.dropYourImagesHere": "Træk dine billeder hertil",

@@ -188,6 +188,7 @@
   "app.components.QuillEditor.videoPrompt": "",
   "app.components.QuillEditor.visitPrompt": "",
   "app.components.SearchInput.searchPlaceholder": "",
+  "app.components.SideModal.closeButtonAria": "",
   "app.components.UI.Select.noResults": "",
   "app.components.Upload.dropYourImageHere": "",
   "app.components.Upload.dropYourImagesHere": "",
