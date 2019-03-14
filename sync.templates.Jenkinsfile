@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  triggers {
+    cron('0 0 * * *')
+  }
+
   /* 
     After https://reinout.vanrees.org/weblog/2017/10/03/docker-compose-in-jenkins.html.
     This solves the network (postgres and redis) not found issues during build stage.
