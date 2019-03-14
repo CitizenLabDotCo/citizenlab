@@ -1,10 +1,13 @@
-import { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
-import { IPermissionData, phasePermissions } from 'services/participationContextPermissions';
+import React from 'react';
+import { isString } from 'lodash-es';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
+import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
+import { IPermissionData, phasePermissions } from 'services/participationContextPermissions';
 
 interface InputProps {
-  phaseId: string;
+  phaseId?: string | null;
 }
 
 type children = (renderProps: GetPhasePermissionsChildProps) => JSX.Element | null;
@@ -19,7 +22,8 @@ interface State {
 
 export type GetPhasePermissionsChildProps = IPermissionData[] | undefined | null | Error;
 
-export default class GetPhasePermissions extends PureComponent<Props, State> {
+export default class GetPhasePermissions extends React.Component<Props, State> {
+  private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -31,9 +35,24 @@ export default class GetPhasePermissions extends PureComponent<Props, State> {
 
   componentDidMount() {
     const { phaseId } = this.props;
+
+    this.inputProps$ = new BehaviorSubject({ phaseId });
+
     this.subscriptions = [
-      phasePermissions(phaseId).observable.subscribe(permissions => this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions }))
+      this.inputProps$.pipe(
+        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+        filter(({ phaseId }: { phaseId: string }) => isString(phaseId)),
+        switchMap(({ phaseId }) => phasePermissions(phaseId).observable)
+      )
+      .subscribe((permissions) => {
+        this.setState({ permissions: !isNilOrError(permissions) ? permissions.data : permissions });
+      })
     ];
+  }
+
+  componentDidUpdate() {
+    const { phaseId } = this.props;
+    this.inputProps$.next({ phaseId });
   }
 
   componentWillUnmount() {

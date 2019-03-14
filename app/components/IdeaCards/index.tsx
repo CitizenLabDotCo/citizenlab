@@ -149,14 +149,14 @@ const ViewButton = styled.div`
   justify-content: center;
   cursor: pointer;
   background: transparent;
-  border: solid 1px ${(props) => props.theme.colorMain};
+  border: solid 1px ${({ theme }) => theme.colorText};
 
   &:not(.active):hover {
-    background: #f0f0f0;
+    background: ${({ theme }) => rgba(theme.colorText, 0.08)};
   }
 
   &.active {
-    background: ${(props) => props.theme.colorMain};
+    background: ${({ theme }) => theme.colorText};
 
     > span {
       color: #fff;
@@ -164,14 +164,14 @@ const ViewButton = styled.div`
   }
 
   > span {
-    color: ${(props) => props.theme.colorText};
+    color: ${({ theme }) => theme.colorText};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: normal;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 11px;
-    padding-bottom: 11px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 
     ${media.smallerThanMinTablet`
       padding-top: 9px;
@@ -248,19 +248,16 @@ const EmptyMessageLine = styled.div`
   text-align: center;
 `;
 
-const ShowMoreButtonWrapper = styled.div`
+const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    margin-top: 40px;
-  `}
+  margin-top: 30px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
     align-items: stretch;
-    margin-top: 20px;
+    margin-top: 0px;
   `}
 `;
 
@@ -413,7 +410,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showCardView && !querying && hasMore &&
-          <ShowMoreButtonWrapper>
+          <Footer>
             <ShowMoreButton
               onClick={this.loadMore}
               size="1"
@@ -425,11 +422,11 @@ class IdeaCards extends PureComponent<Props, State> {
               iconPos="left"
               textColor={theme.colorText}
               textHoverColor={darken(0.1, theme.colorText)}
-              bgColor={rgba(theme.colorMain, 0.08)}
-              bgHoverColor={rgba(theme.colorMain, 0.12)}
+              bgColor={rgba(theme.colorText, 0.08)}
+              bgHoverColor={rgba(theme.colorText, 0.12)}
               fontWeight="500"
             />
-          </ShowMoreButtonWrapper>
+          </Footer>
         }
 
         {showMapView && hasIdeas &&

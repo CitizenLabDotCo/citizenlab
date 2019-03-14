@@ -9,7 +9,6 @@ import Header from '../Header';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
-import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 import PBExpenses from '../pb/PBExpenses';
 
@@ -22,15 +21,16 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  padding-bottom: 10px;
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  padding-top: 30px;
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 100px;
+  background: ${colors.background};
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
@@ -60,7 +60,7 @@ interface State {}
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
 
   render () {
-    const { project, params, className } = this.props;
+    const { project, params } = this.props;
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'continuous') {
@@ -70,10 +70,9 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         const isPBProject = (project.attributes.participation_method === 'budgeting');
 
         return (
-          <Container className={`${className} e2e-project-ideas-page`}>
+          <>
             <Header projectSlug={params.slug} />
-            <ProjectModeratorIndicator projectId={project.id} />
-            <ProjectArchivedIndicator projectId={project.id} />
+            <StyledProjectArchivedIndicator projectId={project.id} />
             <StyledContentContainer>
               {isPBProject &&
                 <StyledPBExpenses
@@ -97,7 +96,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               />
             </StyledContentContainer>
             <EventsPreview projectId={project.id} />
-          </Container>
+          </>
         );
       }
     }

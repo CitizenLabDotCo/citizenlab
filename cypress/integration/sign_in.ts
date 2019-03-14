@@ -1,3 +1,5 @@
+import { randomString, randomEmail } from '../support/commands';
+
 describe('Sign in page', () => {
   beforeEach(() => {
     cy.visit('/sign-in');
@@ -46,15 +48,21 @@ describe('Sign in page', () => {
     const email = 'admin@citizenlab.co';
     const password = 'testtest';
 
-    cy.login(email, password);
+    cy.visit('/sign-in');
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-submit-signin').click();
     cy.location('pathname').should('eq', '/en-GB/');
   });
 
   it('shows an error when trying to log in with invalid credentials', () => {
-    const email = `${Math.random().toString(36).substr(2, 5)}@citizenlab.co`;
-    const password = Math.random().toString(36).substr(2, 5);
+    const email = randomEmail();
+    const password = randomString();
 
-    cy.login(email, password);
+    cy.visit('/sign-in');
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-submit-signin').click();
     cy.get('.e2e-error-message').should('contain', 'This combination of e-mail and password is not correct');
   });
 });

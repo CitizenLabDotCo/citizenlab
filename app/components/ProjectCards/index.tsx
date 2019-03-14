@@ -199,10 +199,10 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
+  margin-top: 30px;
 
   ${media.biggerThanMinTablet`
     justify-content: space-between;
-    margin-top: 40px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -215,7 +215,9 @@ const Footer = styled.div`
 const ShowMoreButton = styled(Button)``;
 
 const HiddenSendFeedback = styled(SendFeedback)`
+  opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -463,6 +465,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
           )}
 
           <Footer>
+            {/* nice visual hack, please don't remove*/}
             {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
 
             {!querying && hasProjects && hasMore &&
@@ -477,9 +480,10 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 iconPos="left"
                 textColor={theme.colorText}
                 textHoverColor={darken(0.1, theme.colorText)}
-                bgColor={rgba(theme.colorMain, 0.08)}
-                bgHoverColor={rgba(theme.colorMain, 0.12)}
+                bgColor={rgba(theme.colorText, 0.08)}
+                bgHoverColor={rgba(theme.colorText, 0.12)}
                 fontWeight="500"
+                className="e2e-project-cards-show-more-button"
               />
             }
 

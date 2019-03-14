@@ -88,4 +88,20 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userPostedComment',
     defaultMessage: '{commentAuthorFirstName} commented on {idea}',
   },
+  officialFeedbackOnYourIdea: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnYourIdea',
+    defaultMessage: '{officialName} gave an official update on {idea}',
+  },
+  officialFeedbackOnVotedIdea: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnVotedIdea',
+    defaultMessage: '{officialName} gave an official update on an idea you voted for',
+  },
+  officialFeedbackOnCommentedIdea: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentedIdea',
+    defaultMessage: '{officialName} gave an official update on an idea you commented on',
+  },
+  mentionInOfficialFeedback: {
+    id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
+    defaultMessage: '{officialName} mentioned you in an official update',
+  },
 });

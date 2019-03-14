@@ -34,7 +34,7 @@ const Container: any = styled.div`
     }
 
     &::placeholder {
-      color: #aaa;
+      color: ${colors.clIconSecondary} !important;
       opacity: 1;
     }
 

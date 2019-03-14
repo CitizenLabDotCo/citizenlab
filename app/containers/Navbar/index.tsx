@@ -53,8 +53,8 @@ const Container = styled.div`
   position: fixed;
   top: 0;
   background: #fff;
-  /* box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06); */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: solid 1px #eaeaea;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
   z-index: 999;
   -webkit-transform: translateZ(0);
 
@@ -67,7 +67,7 @@ const Container = styled.div`
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
-    padding-right: 15px;
+    padding-right: 10px;
   `}
 
   @media print {
@@ -78,11 +78,11 @@ const Container = styled.div`
 const Left = styled.div`
   display: flex;
   align-items: center;
-  flex-grow: 1;
   height: ${(props) => props.theme.menuHeight}px;
 `;
 
-const LogoLink = styled(Link) `
+const LogoLink = styled(Link)`
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -90,22 +90,11 @@ const LogoLink = styled(Link) `
 `;
 
 const Logo = styled.img`
-  max-height: 42px;
+  max-width: 100%;
+  max-height: 44px;
   margin: 0;
   padding: 0px;
   cursor: pointer;
-
-  ${media.smallerThanMinTablet`
-    max-width: 180px;
-  `}
-
-  ${media.phone`
-    max-width: 140px;
-  `}
-
-  ${media.largePhone`
-    max-width: 120px;
-  `}
 `;
 
 const NavigationItems = styled.div`
@@ -122,7 +111,7 @@ const NavigationItems = styled.div`
 const NavigationItem = styled(Link)`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 500;
   padding: 0 30px;
   display: flex;
@@ -138,7 +127,7 @@ const NavigationItem = styled(Link)`
   &:focus,
   &:hover {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
   }
 
   &.active {
@@ -199,7 +188,7 @@ const NavigationDropdownItem = styled.button`
   &:hover,
   &:focus {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
   }
 
   &.active {

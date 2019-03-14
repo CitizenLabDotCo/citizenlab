@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ResourceHintsWebpackPlugin = require('resource-hints-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const SentryCliPlugin = require('@sentry/webpack-plugin');
 const argv = require('yargs').argv;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -115,7 +116,7 @@ const config = {
       silent: !!argv.json, // silent when trying to profile the chunks sizes
     }),
 
-    new CleanWebpackPlugin(['build']),
+    new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
       template: 'app/index.html',
@@ -149,6 +150,14 @@ const config = {
 
 if (isDev) {
   config.plugins.push(new webpack.ProgressPlugin());
+} else {
+  config.plugins.push(new SentryCliPlugin({
+    include: path.resolve(process.cwd(), 'app'),
+    ignoreFile: '.gitignore',
+    ignore: ['node_modules', 'internals', 'docs', 'cypress', '.circleci'],
+    release: process.env.CIRCLE_BUILD_NUM,
+    ext: ['js', 'ts', 'map', 'bundle', 'jsbundle']
+  }));
 }
 
 module.exports = config;
