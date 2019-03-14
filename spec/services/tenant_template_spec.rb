@@ -56,7 +56,7 @@ describe TenantTemplateService do
           }
          })
         Apartment::Tenant.switch("#{name}_localhost") do
-          service.resolve_and_apply_template template
+          service.resolve_and_apply_template template, external_subfolder: 'test'
         end
       end
     end
@@ -68,7 +68,7 @@ describe TenantTemplateService do
 
   describe "resolve_and_apply_template", slow_test: true do
     
-    TenantTemplateService.new.available_templates(external_subfolder: 'test')[:internal].map do |template|
+    TenantTemplateService.new.available_templates[:internal].map do |template|
       it "Successfully applies '#{template}' template" do 
         name = template.split('_').join('')
         Tenant.create!({
