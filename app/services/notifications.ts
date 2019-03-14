@@ -547,6 +547,58 @@ export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotific
   };
 }
 
+export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'project_phase_started';
+    read_at: string | null;
+    created_at: string;
+    phase_title_multiloc: Multiloc;
+    phase_start_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+  relationships: {
+    phase: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
+export interface IProjectPhaseUpcomingNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'project_phase_upcoming';
+    read_at: string | null;
+    created_at: string;
+    phase_title_multiloc: Multiloc;
+    phase_start_at: string;
+    project_slug: string;
+    project_title_multiloc: Multiloc;
+  };
+  relationships: {
+    phase: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
@@ -563,7 +615,9 @@ export type TNotificationData =
   IOfficialFeedbackOnYourIdeaNotificationData |
   IOfficialFeedbackOnVotedIdeaNotificationData |
   IOfficialFeedbackOnCommentedIdeaNotificationData |
-  IMentionInOfficialFeedbackNotificationData;
+  IMentionInOfficialFeedbackNotificationData |
+  IProjectPhaseStartedNotificationData |
+  IProjectPhaseUpcomingNotificationData;
 
 export interface INotificationLinks {
   self: string;
