@@ -22,9 +22,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div`
-  margin-bottom: 30px;
-`;
+const Container = styled.div``;
 
 interface InputProps {
   projectId: string | null;
@@ -93,7 +91,7 @@ class Survey extends PureComponent<Props, State> {
       const message = disabledReason ? this.disabledMessage[disabledReason] : messages.surveyDisabledNotPossible;
 
       return (
-        <Container className={className}>
+        <Container className={`warning ${className}`}>
           <Warning icon="lock">
             <FormattedMessage {...message} />
           </Warning>

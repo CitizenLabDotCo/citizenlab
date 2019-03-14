@@ -9,8 +9,12 @@ import StatusChangeOfYourIdeaNotification from '../StatusChangeOfYourIdeaNotific
 import CommentDeletedByAdminNotification from '../CommentDeletedByAdminNotification';
 import ProjectModerationRightsReceivedNotification from '../ProjectModerationRightsReceivedNotification';
 import AdminRightsReceivedNotification from '../AdminRightsReceivedNotification';
-import NewIdeaForAdmin from '../NewIdeaForAdmin';
-import NewCommentForAdmin from '../NewCommentForAdmin';
+import NewIdeaForAdminNotification from '../NewIdeaForAdminNotification';
+import NewCommentForAdminNotification from '../NewCommentForAdminNotification';
+import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIdeaNotification';
+import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
+import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
+import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
 
 import {
   TNotificationData,
@@ -24,8 +28,12 @@ import {
   ICommentDeletedByAdminNotificationData,
   IProjectModerationRightsReceivedNotificationData,
   IAdminRightsReceivedNotificationData,
-  IIdeaForAdminData,
-  ICommentForAdminData
+  IIdeaForAdminNotificationData,
+  ICommentForAdminNotificationData,
+  IOfficialFeedbackOnYourIdeaNotificationData,
+  IOfficialFeedbackOnVotedIdeaNotificationData,
+  IOfficialFeedbackOnCommentedIdeaNotificationData,
+  IMentionInOfficialFeedbackNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -63,9 +71,17 @@ export default class Notification extends PureComponent<Props> {
       case 'admin_rights_received':
         return <AdminRightsReceivedNotification notification={notification as IAdminRightsReceivedNotificationData} />;
       case 'new_idea_for_admin':
-        return <NewIdeaForAdmin notification={notification as IIdeaForAdminData} />;
+        return <NewIdeaForAdminNotification notification={notification as IIdeaForAdminNotificationData} />;
       case 'new_comment_for_admin':
-        return <NewCommentForAdmin notification={notification as ICommentForAdminData} />;
+        return <NewCommentForAdminNotification notification={notification as ICommentForAdminNotificationData} />;
+      case 'official_feedback_on_your_idea':
+        return <OfficialFeedbackOnYourIdeaNotification notification={notification as IOfficialFeedbackOnYourIdeaNotificationData} />;
+      case 'official_feedback_on_voted_idea':
+        return <OfficialFeedbackOnVotedIdeaNotification notification={notification as IOfficialFeedbackOnVotedIdeaNotificationData} />;
+      case 'official_feedback_on_commented_idea':
+        return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
+      case 'mention_in_official_feedback':
+        return <MentionInOfficialFeedbackNotification notification={notification as IMentionInOfficialFeedbackNotificationData} />;
       default: return null;
     }
   }

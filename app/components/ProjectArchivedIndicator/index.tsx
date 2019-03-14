@@ -15,17 +15,8 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 10px;
-    margin-bottom: 10px;
-  `}
-`;
+const StyledContentContainer = styled(ContentContainer)``;
 
 interface InputProps {
   projectId: string;

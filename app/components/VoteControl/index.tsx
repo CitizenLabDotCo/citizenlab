@@ -516,7 +516,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           active={myVoteMode === 'down'}
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
-          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'}`}
+          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
           size={size}
           enabled={downvotingEnabled}
         >

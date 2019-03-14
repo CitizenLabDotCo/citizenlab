@@ -63,7 +63,7 @@ const FooterBanner: any = styled.div`
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 70px;
 
   p {
     color: #fff;
@@ -131,7 +131,7 @@ const Section = styled.div`
 
 const ProjectSection = Section.extend`
   padding-top: 65px;
-  padding-bottom: 90px;
+  padding-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     padding-top: 40px;
@@ -209,7 +209,7 @@ class LandingPage extends PureComponent<Props, State> {
 
             <Content>
               <ProjectsStyledContentContainer maxWidth={1150}>
-                <ProjectSection>
+                <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <ProjectCards
                       pageSize={6}

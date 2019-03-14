@@ -7,7 +7,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
-import ProjectModeratorIndicator from 'components/ProjectModeratorIndicator';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
 
 // i18n
@@ -24,6 +23,10 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
+
+const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
+  padding-top: 30px;
+`;
 
 const EventsContainer = styled(ContentContainer)`
   padding-top: 50px;
@@ -92,8 +95,7 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
 
             {!isNilOrError(project) &&
               <>
-                <ProjectModeratorIndicator projectId={project.id} />
-                <ProjectArchivedIndicator projectId={project.id} />
+                <StyledProjectArchivedIndicator projectId={project.id} />
               </>
             }
 

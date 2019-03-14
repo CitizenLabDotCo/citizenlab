@@ -49,6 +49,11 @@ const NavigationIconWrapper = styled.div`
   width: 24px;
   align-items: center;
   justify-content: center;
+
+  ${media.smallPhone`
+    height: 20px;
+    width: 20px;
+  `}
 `;
 
 const NavigationLabel = styled.div`
@@ -57,6 +62,10 @@ const NavigationLabel = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 6px;
+
+  ${media.smallPhone`
+    font-size: ${fontSizes.base - 1}px;
+  `}
 `;
 
 const NavigationItem = styled(Link)`
