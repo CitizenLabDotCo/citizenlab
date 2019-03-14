@@ -1094,6 +1094,8 @@
   "app.containers.NotificationMenu.officialFeedbackOnVotedIdea": "{officialName} gav feedback på en ide du stemte på",
   "app.containers.NotificationMenu.officialFeedbackOnYourIdea": "{officialName} gav feedback på din ide",
   "app.containers.NotificationMenu.projectModerationRightsReceived": "Du er nu moderator på {projectLink}",
+  "app.containers.NotificationMenu.projectPhaseStarted": "",
+  "app.containers.NotificationMenu.projectPhaseUpcoming": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "'{ideaTitle}' har skiftet status til {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} accepterede din invitation",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommenterede på din idé",

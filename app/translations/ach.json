@@ -1094,6 +1094,8 @@
   "app.containers.NotificationMenu.officialFeedbackOnVotedIdea": "",
   "app.containers.NotificationMenu.officialFeedbackOnYourIdea": "",
   "app.containers.NotificationMenu.projectModerationRightsReceived": "",
+  "app.containers.NotificationMenu.projectPhaseStarted": "",
+  "app.containers.NotificationMenu.projectPhaseUpcoming": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "",
