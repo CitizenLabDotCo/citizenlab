@@ -86,8 +86,8 @@ const HeaderImage = styled.img`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${(props) => props.theme.colorMain};
-  opacity: 0.9;
+  background: ${({ theme }) => theme.landingHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.landingHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -192,8 +192,6 @@ const Icons = styled.div`
 
 const NoAvatarUserIcon: any = styled(Icon)`
   fill: #fff;
-  background: ${props => props.theme.colorMain};
-  border-radius: 50%;
   width: 50px;
   height: 50px;
 `;
@@ -269,6 +267,8 @@ class SignedInHeader extends PureComponent<Props, State> {
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
+      console.log(this.props.theme);
+
       return (
         <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
           <HeaderImageContainer>
@@ -312,7 +312,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.completeProfile} />}
                   linkTo="/profile/edit"
                   bgColor="#fff"
-                  textColor={theme.colorMain}
+                  textColor={theme.colorText}
                   className="e2e-singed-in-header-accept-btn"
                 />
               </Right>
@@ -348,7 +348,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   bgColor="#fff"
-                  textColor={theme.colorMain}
+                  textColor={theme.colorText}
                 />
               </Right>
             </HeaderContentCustomCta>

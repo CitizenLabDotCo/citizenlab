@@ -306,7 +306,7 @@ class Streams {
             data = (isFunction(current) ? current(data) : current);
 
             if (isObject(data) && !isEmpty(data)) {
-              const innerData = data.data;
+              const innerData = data['data'];
 
               if (isArray(innerData)) {
                 this.streams[streamId].type = 'arrayOfObjects';
@@ -317,7 +317,7 @@ class Streams {
                   this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
                 });
               } else if (isObject(innerData) && has(innerData, 'id')) {
-                const dataId = innerData.id;
+                const dataId = innerData['id'];
                 this.streams[streamId].type = 'singleObject';
                 dataIds[dataId] = true;
                 if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData }); }
@@ -325,7 +325,7 @@ class Streams {
               }
 
               if (has(data, 'included')) {
-                data.included.filter(item => item.id).forEach((item) => {
+                data['included'].filter(item => item.id).forEach((item) => {
                   this.resourcesByDataId[item.id] = this.deepFreeze({ data: item });
                 });
 
