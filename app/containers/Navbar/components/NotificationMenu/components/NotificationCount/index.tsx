@@ -20,7 +20,7 @@ const Container = styled.button`
   align-items: center;
   cursor: pointer;
   display: flex;
-  fill: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  fill: ${({ theme }) => theme.navbarTextColor || colors.label};
   justify-content: center;
   padding: 0;
   position: relative;
