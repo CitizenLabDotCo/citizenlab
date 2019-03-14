@@ -27,7 +27,8 @@ resource "Ideas" do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
-    parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
+    parameter :publication_status, "Filter by publication status; returns all publlished ideas by default", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
 
     example_request "List all published ideas (default behaviour)" do
       expect(status).to eq(200)
@@ -126,6 +127,14 @@ resource "Ideas" do
       expect(json_response[:data].map{|d| d[:id]}).to match_array [i2.id, i3.id]
     end
 
+    example "List all ideas in published projects" do
+      idea = create(:idea, project: create(:project, publication_status: 'archived'))
+      do_request(project_publication_status: 'published')
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 5
+      expect(json_response[:data].map{|d| d[:id]}).not_to include(idea.id)
+    end
+
     example "List all ideas for an idea status" do
       status = create(:idea_status)
       i = create(:idea, idea_status: status)
@@ -145,6 +154,7 @@ resource "Ideas" do
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
     end
+
 
     example "Search for ideas" do
       u = create(:user)
@@ -178,6 +188,7 @@ resource "Ideas" do
       expect(json_response[:data].size).to eq 6
       expect(json_response[:data][0][:id]).to eq i1.id
     end
+
 
     example "List all ideas includes the user_vote", document: false do
       vote = create(:vote, user: @user)
