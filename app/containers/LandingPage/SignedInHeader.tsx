@@ -267,8 +267,6 @@ class SignedInHeader extends PureComponent<Props, State> {
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
       const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
-      console.log(this.props.theme);
-
       return (
         <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
           <HeaderImageContainer>
@@ -312,7 +310,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<FormattedMessage {...messages.completeProfile} />}
                   linkTo="/profile/edit"
                   bgColor="#fff"
-                  textColor={theme.colorText}
+                  textColor={theme.colorMain}
                   className="e2e-singed-in-header-accept-btn"
                 />
               </Right>
@@ -348,7 +346,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
                   bgColor="#fff"
-                  textColor={theme.colorText}
+                  textColor={theme.colorMain}
                 />
               </Right>
             </HeaderContentCustomCta>
