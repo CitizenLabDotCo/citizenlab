@@ -25,6 +25,7 @@ import { SortDirection } from 'utils/paginationUtils';
 // i18n
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import IdeaPreview from '../IdeaPreview';
 
 interface Props {
   ideaSortAttribute?: SortAttribute;
@@ -207,7 +208,7 @@ export default class IdeaTable extends React.Component<Props, State> {
         opened={!!ideaModal}
         close={this.onCloseModal}
       >
-      "chachacha"
+        <IdeaPreview ideaId={ideaModal} />
       </SideModal>
       </>
     );

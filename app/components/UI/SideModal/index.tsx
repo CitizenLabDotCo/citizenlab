@@ -26,7 +26,7 @@ const timeout = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalContainer: any = styled(clickOutside)`
-  width: 65%;
+  width: 920px;
   height: 100%;
   background: white;
   display: flex;
@@ -61,7 +61,7 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 0;
-      width: 10%;
+      width: 150px;
     }
 
     &.modal-enter-active {
@@ -70,7 +70,7 @@ const Overlay = styled(FocusTrap)`
 
       ${ModalContainer} {
         opacity: 1;
-        width: 65%;
+        width: 920px;
         transition: opacity ${timeout}ms ${easing},
                     width ${timeout}ms ${easing};
       }
@@ -82,7 +82,7 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 1;
-      width: 65%;
+      width: 920px;
     }
 
     &.modal-exit-active {
@@ -91,7 +91,7 @@ const Overlay = styled(FocusTrap)`
 
       ${ModalContainer} {
         opacity: 0;
-        width: 10%;
+        width: 150px;
         transition: opacity ${timeout}ms ${easing},
                     width ${timeout}ms ${easing};
       }
