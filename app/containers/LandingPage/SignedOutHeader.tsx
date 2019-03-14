@@ -21,7 +21,7 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -143,10 +143,6 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 const SignUpButton = styled(Button)`
   margin-top: 38px;
 
-  .Button.button.primary-inverse {
-    color: ${(props: any) => props.theme.colorText};
-  }
-
   ${media.smallerThanMinTablet`
     margin-top: 30px;
   `}
@@ -161,7 +157,9 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {}
 
@@ -176,7 +174,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, className } = this.props;
+    const { locale, tenant, className, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -211,9 +209,10 @@ class SignedOutHeader extends PureComponent<Props, State> {
               <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
               <SignUpButton
-                style="primary-inverse"
                 fontWeight="500"
                 padding="13px 22px"
+                bgColor="#fff"
+                textColor={theme.colorMain}
                 onClick={this.goToSignUpPage}
                 text={<FormattedMessage {...messages.createAccount} />}
                 className="e2e-signed-out-header-cta-button"
@@ -233,8 +232,10 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />
 });
 
+const SignedOutHeaderWithHoC = withTheme<Props, State>(SignedOutHeader);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedOutHeader {...inputProps} {...dataProps} />}
+    {dataProps => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

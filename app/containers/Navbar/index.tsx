@@ -303,13 +303,13 @@ const LogInLink = NavigationItem.extend`
 
 const SignUpLink = NavigationItem.extend`
   color: #fff;
-  background-color: ${({ theme }) => theme.colorSecondary};
+  background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
   border: none;
 
   &:focus,
   &:hover {
     color: #fff;
-    background-color: ${({ theme }) => darken(0.12, theme.colorSecondary)};
+    background-color: ${({ theme }) => darken(0.12, theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary)};
   }
 
   ${media.smallerThanMinTablet`
