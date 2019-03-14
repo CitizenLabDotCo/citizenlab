@@ -5,7 +5,7 @@ class TenantTemplateService
     template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
       File.basename(file, ".yml")
     end
-    template_names[:external] = available_external_templates external_subfolder: external_subfolder
+    template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
     template_names
   end
 
@@ -155,7 +155,7 @@ class TenantTemplateService
   
   def resolve_template template_name, external_subfolder: 'release'
     if template_name.kind_of? String
-      throw "Unknown template '#{template_name}'" unless available_templates.values.flatten.uniq.include? template_name
+      throw "Unknown template '#{template_name}'" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
       internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
       if File.exists? internal_path
         open(internal_path).read
