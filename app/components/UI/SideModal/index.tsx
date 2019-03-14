@@ -22,7 +22,7 @@ import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { hideVisually } from 'polished';
 
-const timeout = 400;
+const timeout = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalContainer: any = styled(clickOutside)`
@@ -61,7 +61,7 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 0;
-      transform: translateY(-40px);
+      width: 10%;
     }
 
     &.modal-enter-active {
@@ -70,9 +70,30 @@ const Overlay = styled(FocusTrap)`
 
       ${ModalContainer} {
         opacity: 1;
-        transform: translateY(0px);
+        width: 65%;
         transition: opacity ${timeout}ms ${easing},
-                    transform ${timeout}ms ${easing};
+                    width ${timeout}ms ${easing};
+      }
+    }
+  }
+
+  &.modal-exit {
+    opacity: 1;
+
+    ${ModalContainer} {
+      opacity: 1;
+      width: 65%;
+    }
+
+    &.modal-exit-active {
+      opacity: 0;
+      transition: opacity ${timeout}ms ${easing};
+
+      ${ModalContainer} {
+        opacity: 0;
+        width: 10%;
+        transition: opacity ${timeout}ms ${easing},
+                    width ${timeout}ms ${easing};
       }
     }
   }
@@ -230,7 +251,6 @@ export default class SideModal extends React.PureComponent<Props, State> {
         timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
-        exit={false}
       >
         <Overlay
           id="e2e-modal-container"
