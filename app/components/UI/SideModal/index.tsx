@@ -248,7 +248,7 @@ export default class SideModal extends React.PureComponent<Props, State> {
               innerRef={this.setCloseButtonRef}
             >
               <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
+                <FormattedMessage {...messages.closeButtonAria} />
               </HiddenSpan>
               <CloseIcon name="close3" />
             </CloseButton >
