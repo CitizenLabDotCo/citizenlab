@@ -12,7 +12,7 @@ namespace :templates do
   task :import, [:host,:file] => [:environment] do |t, args|
     host = args[:host]
     Apartment::Tenant.switch(host.gsub('.', '_')) do
-      TenantTemplateService.new.resolve_and_apply_template args[:file], is_path=true
+      TenantTemplateService.new.resolve_and_apply_template YAML.load(open(args[:file]).read)
     end
   end
 
@@ -27,18 +27,18 @@ namespace :templates do
       template_name = "#{host.split('.').first}_template.yml"
       file_path = "config/tenant_templates/generated/#{template_name}"
       File.open(file_path, 'w') { |f| f.write template }
-      s3.bucket('cl2-tenant-templates').object("test/#{template_name}").upload_file(file_path)
+      s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
     end
   end
 
   task :release, [] => [:environment] do |t, args|
     s3 = Aws::S3::Resource.new
-    bucket = s3.bucket('cl2-tenant-templates')
+    bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
     bucket.objects(prefix: 'test').each do |template|
       template_name = "#{template.key}"
       template_name.slice! 'test/'
       if template_name.present?
-        template.copy_to(bucket: 'cl2-tenant-templates', key: "release/#{template_name}")
+        template.copy_to(bucket: ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'), key: "release/#{template_name}")
       end
     end
   end

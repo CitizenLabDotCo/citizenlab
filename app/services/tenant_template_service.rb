@@ -1,15 +1,16 @@
 class TenantTemplateService
 
-
-  def available_templates
-    Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
+  def available_templates external_subfolder: 'release'
+    template_names = {}
+    template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
       File.basename(file, ".yml")
     end
+    template_names[:external] = available_external_templates external_subfolder: external_subfolder
+    template_names
   end
 
-
-  def resolve_and_apply_template template_name, is_path=false
-    apply_template resolve_template(template_name, is_path)
+  def resolve_and_apply_template template_name, external_subfolder: 'release'
+    apply_template resolve_template(template_name, external_subfolder: external_subfolder)
   end
 
   def apply_template template
@@ -142,13 +143,28 @@ class TenantTemplateService
 
 
   private
+
+  def available_external_templates external_subfolder: 'release'
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
+    bucket.objects(prefix: external_subfolder).map(&:key).map do |template_name|
+      template_name.slice! "#{external_subfolder}/"
+      template_name.chomp '.yml'
+    end
+  end
   
-  def resolve_template template_name, is_path=false
-    if is_path
-      open(template_name).read
-    elsif template_name.kind_of? String
-      throw "Unknown template '#{template_name}'" unless available_templates.include? template_name
-      open(Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")).read
+  def resolve_template template_name, external_subfolder: 'release'
+    if template_name.kind_of? String
+      throw "Unknown template '#{template_name}'" unless available_templates.values.flatten.uniq.include? template_name
+      internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
+      if File.exists? internal_path
+        open(internal_path).read
+      else
+        s3 = Aws::S3::Resource.new
+        bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
+        object = bucket.object("#{external_subfolder}/#{template_name}.yml")
+        object.get.body.read
+      end
     elsif template_name.kind_of? Hash
       template_name.to_yaml
     elsif template_name.nil?
