@@ -166,11 +166,19 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
     @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
+
+    if params[:project_publication_status].present?
+      @ideas = @ideas
+        .where("projects.publication_status = ?", params[:project_publication_status])
+        .references(:projects)
+    end
+
     if params[:publication_status].present?
       @ideas = @ideas.where(publication_status: params[:publication_status])
     else
       @ideas = @ideas.where(publication_status: 'published')
     end
+  
     if (params[:filter_trending] == 'true') && !params[:search].present?
       @ideas = trending_idea_service.filter_trending @ideas
     end
