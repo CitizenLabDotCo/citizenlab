@@ -16,7 +16,8 @@ namespace :templates do
     end
   end
 
-  task :generate, [] => [:environment] do |t, args|
+  task :generate, [:external] => [:environment] do |t, args|
+    external = args[:external] || false
     template_hosts = Tenant.pluck(:host).select do |host| 
       host.ends_with? ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost') # '.template.citizenlab.co'
     end
@@ -27,7 +28,9 @@ namespace :templates do
       template_name = "#{host.split('.').first}_template.yml"
       file_path = "config/tenant_templates/generated/#{template_name}"
       File.open(file_path, 'w') { |f| f.write template }
-      s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
+      if external
+        s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
+      end
     end
   end
 
