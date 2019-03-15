@@ -101,9 +101,9 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${fontSizes.xxxl + 1}px;
+  font-size: ${({ theme }) => theme.landingHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
   line-height: normal;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.landingHeaderTitleFontWeight || 600};
   text-align: center;
   margin: 0;
   padding: 0;

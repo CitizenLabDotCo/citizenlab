@@ -41,10 +41,10 @@ const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
-  background: ${colors.clRed};
+  background: ${({ theme }) => theme.invertedNavbarColors && theme.navbarTextColor ? theme.colorText : colors.clRed};
   padding: 2px;
   border-radius: 5px;
-  border: solid 1px #fff;
+  border: solid 1px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
   position: absolute;
   top: -8px;
   left: 15px;
