@@ -1321,6 +1321,8 @@
   "app.containers.UsersShowPage.loadingUser": "Chargement...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Chargement des idées de l'utilisateur...",
   "app.containers.UsersShowPage.memberSince": "Membre depuis le {date}",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "Idées",
   "app.containers.admin.ideas.all.headerSubtitle": "Obtenez un aperçu complet de toutes les idées contenues dans tous les projets. Ajoutez des thèmes, modifiez leur statut en les faisant glisser vers la colonne de gauche ou modifiez les (ajoutez des images, corrigez les fautes de frappe). Si vous souhaitez utiliser une autre liste des statuts ou des sujets, envoyez nous votre liste par email à support@citizenlab.co.",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Qui peut consulter ce projet ?",
