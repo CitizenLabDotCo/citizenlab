@@ -1321,6 +1321,8 @@
   "app.containers.UsersShowPage.loadingUser": "Wird geladen...",
   "app.containers.UsersShowPage.loadingUserIdeas": "{orgName, select, München {Mängelmeldungen und Anliegen des Benutzers werden geladen...} other {Benutzerideen werden geladen...}}",
   "app.containers.UsersShowPage.memberSince": "Mitglied seit {date}",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "{orgName, select, München {Meldungen} other {Ideen}}",
   "app.containers.admin.ideas.all.headerSubtitle": "Add topics to ideas, update their status or change the project in which they are shown. Contact us if you want to use custom topics or statuses.",
   "app.containers.admin.project.permissions.permissionTypeLabel": "{orgName, select, München {Wer kann dieses Projekt oder diesen Bezirk anschauen?} other {Wer kann dieses Projekt anschauen?}}",

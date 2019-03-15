@@ -1321,6 +1321,8 @@
   "app.containers.UsersShowPage.loadingUser": "Cargando...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Cargando las ideas del usuario...",
   "app.containers.UsersShowPage.memberSince": "Miembro desde {date}",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Agrega temas a las ideas, actualiza su estado o cambia el proyecto en el que se muestran. Contáctanos si desea usar temas o estatus personalizados.",
   "app.containers.admin.project.permissions.permissionTypeLabel": "¿Quién puede ver este proyecto?",

@@ -1321,6 +1321,8 @@
   "app.containers.UsersShowPage.loadingUser": "Bezig met laden...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Laden van ideeën van gebruiker...",
   "app.containers.UsersShowPage.memberSince": "Lid sinds {date}",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "Ideeën",
   "app.containers.admin.ideas.all.headerSubtitle": "Voeg thema's toe aan ideeën, pas hun status aan of wijzig het project waarin ze zichtbaar zijn. Contacteer ons als je eigen thema's of statussen wil gebruiken.",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Wie kan dit project zien?",
