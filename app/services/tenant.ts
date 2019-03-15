@@ -96,9 +96,10 @@ interface ITenantStyle {
   navbarTextColor?: string;
   navbarHighlightedItemBackgroundColor?: string;
   navbarBorderColor?: string;
-  navbarFont?: string;
   landingHeaderOverlayColor?: string;
   landingHeaderOverlayOpacity?: number;
+  customFontName?: string;
+  customFontAdobeId?: string;
 }
 
 export interface ITenantData {

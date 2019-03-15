@@ -169,7 +169,6 @@ export default injectGlobal`
   }
 
   h3 {
-    // Font weight of 700 is too much for h3's in the Larsse It font
     font-weight: 600;
   }
 
