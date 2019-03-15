@@ -131,7 +131,7 @@ const Section = styled.div`
 
 const ProjectSection = Section.extend`
   padding-top: 65px;
-  padding-bottom: 90px;
+  padding-bottom: 100px;
 
   ${media.smallerThanMinTablet`
     padding-top: 40px;

@@ -41,13 +41,26 @@ describe('Project ideas page', () => {
       const ideaContent = randomString();
 
       cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+
       cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+
+      // sort by newest first
       cy.get('#e2e-ideas-sort-filter ').click();
       cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-new').click();
-      cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().contains(ideaTitle);
+      cy.wait(1000);
+
+      // find first idea card
+      cy.get('#e2e-ideas-list');
+      cy.get('.e2e-idea-card').first().contains(ideaTitle);
+
+      // sort by oldest first
       cy.get('#e2e-ideas-sort-filter ').click();
       cy.get('.e2e-filter-selector-dropdown-list').find('.e2e-projects-filter-old').click();
-      cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().contains('Very Old Idea');
+      cy.wait(1000);
+
+      // find first idea card
+      cy.get('#e2e-ideas-list');
+      cy.get('.e2e-idea-card').first().contains('Very Old Idea');
     });
   });
 
