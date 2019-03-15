@@ -13,16 +13,16 @@ interface Props {
   ideaId: string;
   ideaBody: string;
   locale: Locale;
-  translateFromOriginalButtonClicked?: boolean;
+  translateButtonClicked: boolean;
   onTranslationLoaded: () => void;
 }
 
 const IdeaBody = (props: Props) => {
-  const { ideaId, ideaBody, locale, translateFromOriginalButtonClicked, onTranslationLoaded } = props;
+  const { ideaId, ideaBody, locale, translateButtonClicked, onTranslationLoaded } = props;
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
         <QuillEditedContent>
-          {translateFromOriginalButtonClicked ?
+          {translateButtonClicked ?
             <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
               {translation => {
                 if (!isNilOrError(translation)) {

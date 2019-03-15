@@ -86,14 +86,14 @@ interface InputProps {
   ideaTitle: string;
   projectId: string;
   locale: Locale;
-  translateFromOriginalButtonClicked?: boolean;
+  translateButtonClicked?: boolean;
   onTranslationLoaded: () => void;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const IdeaHeader = (props: Props) => {
-  const { ideaId, ideaTitle, project, locale, translateFromOriginalButtonClicked, onTranslationLoaded } = props;
+  const { ideaId, ideaTitle, project, locale, translateButtonClicked, onTranslationLoaded } = props;
   return (
     <HeaderWrapper>
       {!isNilOrError(project) &&
@@ -111,7 +111,7 @@ const IdeaHeader = (props: Props) => {
       }
 
       <Header>
-        {translateFromOriginalButtonClicked ?
+        {translateButtonClicked ?
           <GetMachineTranslation attributeName="title_multiloc" localeTo={locale} ideaId={ideaId}>
             {translation => {
               if (!isNilOrError(translation)) {

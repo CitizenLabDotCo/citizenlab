@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -34,7 +34,6 @@ import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 
@@ -70,7 +69,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
+import TranslateButton from './TranslateButton';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -290,7 +290,7 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const TranslateButton = styled(Button)`
+const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 30px;
 `;
 
@@ -469,7 +469,7 @@ type State = {
   showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
-  translateFromOriginalButtonClicked: boolean;
+  translateButtonClicked: boolean;
   titleTranslationLoading: boolean;
   bodyTranslationLoading: boolean;
 };
@@ -491,7 +491,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
-      translateFromOriginalButtonClicked: false,
+      translateButtonClicked: false,
       titleTranslationLoading: false,
       bodyTranslationLoading: false
     };
@@ -639,44 +639,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     };
   }
 
-// ---------------Machine Translations---------------
-  renderTranslateButton = () => {
-    const { locale, idea } = this.props;
-    const { translateFromOriginalButtonClicked, titleTranslationLoading, bodyTranslationLoading } = this.state;
-
-    const showTranslateButton = !isNilOrError(idea) && !isNilOrError(locale) && !idea.attributes.title_multiloc[locale];
-    const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
-
-    if (showTranslateButton) {
-      if (!translateFromOriginalButtonClicked) {
-        return (
-          <TranslateButton
-            style="secondary-outlined"
-            onClick={this.translateIdea}
-            processing={translationsLoading}
-            spinnerColor={colors.label}
-            borderColor={lighten(.4, colors.label)}
-          >
-            <FormattedMessage {...messages.translateIdea} />
-          </TranslateButton>
-        );
-      } else {
-        return (
-          <TranslateButton
-            style="secondary-outlined"
-            onClick={this.backToOriginalContent}
-            processing={translationsLoading}
-            spinnerColor={colors.label}
-            borderColor={lighten(.4, colors.label)}
-          >
-            <FormattedMessage {...messages.backToOriginalContent} />
-          </TranslateButton>
-        );
-      }
-    }
-    return null;
-  }
-
   translateIdea = () => {
     const { clickTranslateIdeaButton } = this.props;
 
@@ -684,7 +646,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     clickTranslateIdeaButton();
 
     this.setState({
-      translateFromOriginalButtonClicked: true,
+      translateButtonClicked: true,
     });
   }
 
@@ -695,7 +657,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     clickGoBackToOriginalIdeaCopyButton();
 
     this.setState({
-      translateFromOriginalButtonClicked: false,
+      translateButtonClicked: false,
     });
   }
 
@@ -722,7 +684,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       loaded,
       showMap,
       ideaIdForSocialSharing,
-      translateFromOriginalButtonClicked,
+      translateButtonClicked,
+      titleTranslationLoading,
+      bodyTranslationLoading
     } = this.state;
     let content: JSX.Element | null = null;
 
@@ -761,8 +725,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
         showVoteControl
       } = this.getActionsInfos();
 
-      const translateButton = this.renderTranslateButton();
-
       content = (
         <>
           <IdeaMeta
@@ -774,7 +736,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               ideaTitle={ideaTitle}
               projectId={projectId}
               locale={locale}
-              translateFromOriginalButtonClicked={translateFromOriginalButtonClicked}
+              translateButtonClicked={translateButtonClicked}
               onTranslationLoaded={this.onTitleTranslationLoaded}
             />
 
@@ -807,13 +769,21 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 />
 
                 <FeatureFlag name="machine_translations">
-                  {translateButton}
+                  <StyledTranslateButton
+                    idea={idea}
+                    locale={locale}
+                    translateButtonClicked={translateButtonClicked}
+                    translationsLoading={titleTranslationLoading || bodyTranslationLoading}
+                    translateIdea={this.translateIdea}
+                    backToOriginalContent={this.backToOriginalContent}
+                  />
                 </FeatureFlag>
 
                 <IdeaBody
                   ideaId={ideaId}
                   locale={locale}
                   ideaBody={ideaBody}
+                  translateButtonClicked={translateButtonClicked}
                   onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
