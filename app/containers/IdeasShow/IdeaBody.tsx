@@ -1,0 +1,44 @@
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
+import linkifyHtml from 'linkifyjs/html';
+
+import GetMachineTranslation from 'resources/GetMachineTranslation';
+
+import { Locale } from 'typings';
+
+import Fragment from 'components/Fragment';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
+
+interface Props {
+  ideaId: string;
+  ideaBody: string;
+  locale: Locale;
+  translateFromOriginalButtonClicked?: boolean;
+  onTranslationLoaded: () => void;
+}
+
+const IdeaBody = (props: Props) => {
+  const { ideaId, ideaBody, locale, translateFromOriginalButtonClicked, onTranslationLoaded } = props;
+  return (
+    <Fragment name={`ideas/${ideaId}/body`}>
+        <QuillEditedContent>
+          {translateFromOriginalButtonClicked ?
+            <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
+              {translation => {
+                if (!isNilOrError(translation)) {
+                  onTranslationLoaded();
+                  return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
+                }
+
+                return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+              }}
+            </GetMachineTranslation>
+            :
+            <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+          }
+        </QuillEditedContent>
+    </Fragment>
+  );
+};
+
+export default IdeaBody;
