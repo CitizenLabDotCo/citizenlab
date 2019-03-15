@@ -398,7 +398,9 @@ class IdeaCards extends PureComponent<Props, State> {
               </EmptyMessageLine>
             </EmptyMessage>
             <IdeaButton
-              projectId={queryParameters.project}
+              // If we have the project filter option, we cannot show an idea button that links to a particular project
+              // Hence the projectId will be undefined and we link to the project selection page before showing the idea
+              projectId={!showProjectSelector ? (queryParameters.projects && queryParameters.projects[0]) : undefined}
               phaseId={queryParameters.phase}
             />
           </EmptyContainer>
