@@ -4,6 +4,13 @@
 
 ### Fixed
 
+- Notifications layout on IE11
+- Errors due to loading the page during a deployment
+
+## 2019-03-11
+
+### Fixed
+
 - Similar ideas is now fast enough to enable in production
 - NLP insights will no longer keep on loading when creating a new clusgtering graph
 - The comment count on project cards now correctly updates on deleted comments
