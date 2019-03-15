@@ -535,9 +535,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
   // more actions
 
   componentDidUpdate() {
+    const { idea, ideaImages, project } = this.props;
+    if (!this.state.opened && idea !== undefined) this.setState({ opened: true });
     if (!this.state.loaded
-      && this.props.idea !== null
-      && this.props.ideaImages !== null) {
+      && idea !== undefined
+      && ideaImages !== undefined
+      && project !== undefined
+      ) {
       this.setState({ loaded: true });
     }
   }
@@ -984,13 +988,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       );
     }
 
+    console.log(opened, loaded);
+
     return (
       <>
         <CSSTransition
           classNames="loading"
           in={(opened && !loaded)}
           timeout={loadingTimeout}
-          mountOnEnter={false}
+          mountOnEnter={true}
           unmountOnExit={true}
           exit={false}
         >
