@@ -550,7 +550,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'center',
         inline: 'nearest'
       });
     }
