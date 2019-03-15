@@ -695,7 +695,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = get(idea, 'relationships.status.data.id', null);
+      const statusId = get(idea, 'relationships.idea_status.data.id', null);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
