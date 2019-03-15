@@ -125,7 +125,7 @@ jobs:
           no_output_timeout: '30m'
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
-          command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
+          command: aws s3 sync build/ s3://cl2-front-translations/ --acl public-read
 
   deploy_production:
     docker:
