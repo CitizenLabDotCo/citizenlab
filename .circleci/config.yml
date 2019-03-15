@@ -125,7 +125,7 @@ jobs:
           no_output_timeout: '30m'
       - deploy :
           name: Deploy translatable version to i18n.stg.citizenlab.co
-          command: aws s3 sync build/ s3://cl2-front-translations/ --acl public-read
+          command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
 
   deploy_production:
     docker:
@@ -151,7 +151,7 @@ jobs:
           command: rm bluid/*.map
       - deploy :
           name: Deploy production version to benelux cluster
-          command: aws s3 sync build/ s3://cl2-front-production-benelux/ --delete --acl public-read
+          command: aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read
       - deploy:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
