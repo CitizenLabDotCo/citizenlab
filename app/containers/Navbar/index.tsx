@@ -183,7 +183,6 @@ const NavigationDropdownItem = styled.button`
   border-top: 6px solid transparent;
   border-bottom: 6px solid transparent;
 
-
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
