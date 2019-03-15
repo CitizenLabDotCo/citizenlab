@@ -90,6 +90,7 @@ interface TenantMapSettings extends TenantFeature {
 }
 
 interface ITenantStyle {
+  invertedNavbarColors: boolean;
   navbarBackgroundColor?: string;
   navbarActiveItemBackgroundColor?: string;
   navbarActiveItemBorderColor?: string;
@@ -98,6 +99,8 @@ interface ITenantStyle {
   navbarBorderColor?: string;
   landingHeaderOverlayColor?: string;
   landingHeaderOverlayOpacity?: number;
+  landingHeaderTitleFontSize?: number;
+  landingHeaderTitleFontWeight?: number;
   customFontName?: string;
   customFontAdobeId?: string;
 }
