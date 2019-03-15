@@ -20,7 +20,7 @@ class OmniauthCallbackController < ApplicationController
         @user.update(sso_service.profile_to_user_attrs(auth))
       end
       set_auth_cookie(provider: provider)
-      redirect_to(add_uri_params(FrontendService.new.signin_success_url(locale: @user.locale), omniauth_params))
+      redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
     else
       @user = User.new(sso_service.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
@@ -29,11 +29,11 @@ class OmniauthCallbackController < ApplicationController
         @user.save!
         SideFxUserService.new.after_create(@user, nil)
         set_auth_cookie(provider: provider)
-        redirect_to(add_uri_params(FrontendService.new.signup_success_url(locale: @user.locale), omniauth_params))
+        redirect_to(add_uri_params(Frontend::UrlService.new.signup_success_url(locale: @user.locale), omniauth_params))
 
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
-        redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
+        redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
       end
     end
 
@@ -41,7 +41,7 @@ class OmniauthCallbackController < ApplicationController
 
   def failure
     omniauth_params = request.env['omniauth.params']
-    redirect_to(add_uri_params(FrontendService.new.signin_failure_url, omniauth_params))
+    redirect_to(add_uri_params(Frontend::UrlService.new.signin_failure_url, omniauth_params))
   end
 
   def logout
@@ -54,7 +54,7 @@ class OmniauthCallbackController < ApplicationController
 
     redirect_to url
   rescue ActiveRecord::RecordNotFound => e
-    redirect_to FrontendService.new.home_url
+    redirect_to Frontend::UrlService.new.home_url
   end
 
 

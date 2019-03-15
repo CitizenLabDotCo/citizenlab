@@ -44,10 +44,10 @@ describe ParticipantsService do
     end
 
     it "returns participants of a given project at any time" do
-      project = create(:project)
+      project = create(:continuous_budgeting_project)
       other_project = create(:project)
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
+      participants = create_list(:user, 5)
+      pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
       
       idea = nil
@@ -63,6 +63,7 @@ describe ParticipantsService do
         create(:vote, votable: idea, mode: 'up', user: pp3)
         create(:comment, idea: idea, author: pp2)
         create(:comment, idea: other_idea, author: others.last)
+        create(:basket, ideas: [idea], participation_context: project, user: pp5)
       end
       create(:comment, idea: idea, author: pp4)
 
