@@ -91,7 +91,7 @@ const LogoLink = styled(Link)`
 
 const Logo = styled.img`
   max-width: 100%;
-  max-height: 46px;
+  max-height: 44px;
   margin: 0;
   padding: 0px;
   cursor: pointer;
@@ -127,7 +127,7 @@ const NavigationItem = styled(Link)`
   &:focus,
   &:hover {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
   }
 
   &.active {
@@ -188,7 +188,7 @@ const NavigationDropdownItem = styled.button`
   &:hover,
   &:focus {
     color: ${(props: any) => props.theme.colorText};
-    border-top-color: ${(props) => rgba(props.theme.colorMain, .3)};
+    border-top-color: ${(props) => rgba(props.theme.colorMain, 0.3)};
   }
 
   &.active {

@@ -199,7 +199,7 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 30px;
 
   ${media.biggerThanMinTablet`
     justify-content: space-between;
@@ -215,7 +215,9 @@ const Footer = styled.div`
 const ShowMoreButton = styled(Button)``;
 
 const HiddenSendFeedback = styled(SendFeedback)`
+  opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 
   ${media.smallerThanMinTablet`
     display: none;
