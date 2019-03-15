@@ -148,7 +148,7 @@ jobs:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_PRODUCTION npm run build
           no_output_timeout: '30m'
       - run:
-          command: rm bluid/*.map
+          command: rm build/*.map
       - deploy :
           name: Deploy production version to benelux cluster
           command: aws s3 sync build/ s3://cl2-front-production-benelux/ --acl public-read
