@@ -218,6 +218,8 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
+    # No custom fields are required anymore because 
+    # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
         'resource_type'        => c.resource_type,
@@ -225,7 +227,6 @@ class TenantTemplateService
         'input_type'           => c.input_type,
         'title_multiloc'       => c.title_multiloc,
         'description_multiloc' => c.description_multiloc,
-        'required'             => c.required,
         'ordering'             => c.ordering,
         'created_at'           => c.created_at.to_s,
         'updated_at'           => c.updated_at.to_s,
