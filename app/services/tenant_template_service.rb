@@ -142,6 +142,15 @@ class TenantTemplateService
     template.to_yaml
   end
 
+  def required_locales template_name, external_subfolder: 'release'
+    template = YAML.load resolve_template template_name, external_subfolder: external_subfolder
+    locales = Set.new
+    template['models']['user']&.each do |attributes|
+      locales.add attributes['locale']
+    end
+    locales.to_a
+  end
+
 
   private
 

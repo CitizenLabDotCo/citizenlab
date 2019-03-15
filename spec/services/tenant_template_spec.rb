@@ -18,6 +18,8 @@ describe TenantTemplateService do
     
     TenantTemplateService.new.available_templates(external_subfolder: 'test')[:external].map do |template|
       it "Successfully applies '#{template}' template" do 
+        locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
+        locales = ['en'] if locales.blank?
         name = template.split('_').join('')
         Tenant.create!({
           name: name,
@@ -28,9 +30,9 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: CL2_SUPPORTED_LOCALES,
+              locales: locales,
               organization_type: 'medium_city',
-              organization_name: CL2_SUPPORTED_LOCALES.map { |locale|
+              organization_name: locales.map { |locale|
                 [locale,Faker::Address.city]
               }.to_h,
               timezone: "Europe/Brussels",
@@ -71,6 +73,8 @@ describe TenantTemplateService do
     TenantTemplateService.new.available_templates[:internal].map do |template|
       it "Successfully applies '#{template}' template" do 
         name = template.split('_').join('')
+        locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
+        locales = ['en'] if locales.blank?
         Tenant.create!({
           name: name,
           host: "#{name}.localhost",
@@ -80,9 +84,9 @@ describe TenantTemplateService do
             core: {
               allowed: true,
               enabled: true,
-              locales: CL2_SUPPORTED_LOCALES,
+              locales: locales,
               organization_type: 'medium_city',
-              organization_name: CL2_SUPPORTED_LOCALES.map { |locale|
+              organization_name: locales.map { |locale|
                 [locale,Faker::Address.city]
               }.to_h,
               timezone: "Europe/Brussels",
