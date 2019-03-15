@@ -52,7 +52,7 @@ class CommentPolicy < ApplicationPolicy
 
   def check_commenting_allowed comment, user
     pcs = ParticipationContextService.new
-    !pcs.commenting_disabled_reason comment.idea, user
+    !pcs.commenting_disabled_reason_for_idea comment.idea, user
   end
 
 end

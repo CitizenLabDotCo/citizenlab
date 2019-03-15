@@ -29,7 +29,7 @@ models:
   topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
-  - &topic_waste  
+  - &topic_waste
     title_multiloc: topics.waste
     description_multiloc: topics.waste_description
   - title_multiloc: topics.mobility
@@ -199,13 +199,13 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     registration_completed_at: '2018-03-28 13:34:57'
     password: testtest
-    remote_avatar_url: 
+    remote_avatar_url:
     roles:
     - type: admin
     created_at: '2018-03-28 13:34:57'
@@ -218,12 +218,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password: testtest
-    remote_avatar_url: 
+    remote_avatar_url:
     roles:
     -
       type: project_moderator
@@ -238,12 +238,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password: testtest
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
@@ -251,16 +251,16 @@ models:
     id: 026527c6-13ad-4eb0-be52-fd83ff1cec28
     email: phoebe_rolfson@homenick.io
     first_name: Charles
-    last_name: 
+    last_name:
     cl1_migrated: true
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password: testtest
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
@@ -272,12 +272,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password: testtest
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:57'
     updated_at: '2018-03-28 13:34:57'
@@ -288,12 +288,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$wSfT0drbbyCYYclUriA76u33HHMunpjkPoOh.dQWhJiJxx60ih/2e"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:58'
     updated_at: '2018-03-28 13:34:58'
@@ -304,12 +304,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$I1S3K3nNuHuq8WzPCPyf..Xs0N6e8DLJh2QxIV5Ek.jwVvOtvup4K"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:58'
     updated_at: '2018-03-28 13:34:58'
@@ -320,12 +320,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$CRh2rjLDeraWqqbUvFYg7.jKGhoe.CNBHQpPy2SfZhOKKGIQupx8e"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles:
     - type: admin
     created_at: '2018-03-28 13:34:58'
@@ -337,12 +337,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$sZwQpPuMiJkkOOoc5ZvDxe48tpnA7EWNmoS7QvoMctD/uZROYrnz."
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:58'
     updated_at: '2018-03-28 13:34:58'
@@ -353,12 +353,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$L4ekuM6mZl7qa4MLRQRHFetMnMMr7JACfWdDzZ2Moj..IZZI.PqDa"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:59'
     updated_at: '2018-03-28 13:34:59'
@@ -369,28 +369,28 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$cKr5m15WIbhsR1QJmdWZ8OUCQQ/oz1WDOzrh0TsOf/QnW2.4xFkxG"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:59'
     updated_at: '2018-03-28 13:34:59'
   - &86
     email: toy.lubowitz@murrayritchie.name
     first_name: Robyn
-    last_name: 
+    last_name:
     cl1_migrated: true
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$W3AKY8LVvXlNrbf28tRLYul25b2oIcU/XBOCOSpgFzup3dgbTTjuS"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:34:59'
     updated_at: '2018-03-28 13:34:59'
@@ -401,12 +401,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$NFU2JwunuN3vzp8AOGy76.XhbGVg3FgMLGoriCE4/NBnDdu13FRjC"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:00'
     updated_at: '2018-03-28 13:35:00'
@@ -417,12 +417,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$u9mkhE/suGQlXcVb6bgf6.f5S/i39hycOOcLkd4qqRrIBbcRMkOLO"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:00'
     updated_at: '2018-03-28 13:35:00'
@@ -433,12 +433,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$.X258VC6KFXWZ1doF2rIy.2yjOvDYTC1EcW7KCeqjcqUWp8iFg/Fq"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles:
     - type: admin
     created_at: '2018-03-28 13:35:00'
@@ -450,12 +450,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$zFqLIiT/RRVC.wSQZ065xeTsxPlHxJ2HBYVWxpH2GikSkiUFv7QhC"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:00'
     updated_at: '2018-03-28 13:35:00'
@@ -466,12 +466,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$uR48yypIVWE6np2hRN4kceeFZeJc8hBOCB8534mK/oKU61fB1pVP."
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:01'
     updated_at: '2018-03-28 13:35:01'
@@ -482,12 +482,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$L91ykn5UGZeZ59j57Ai.gOoLC/wQ3suSQ.Q6c9k.hIErR2TvY8s4a"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:01'
     updated_at: '2018-03-28 13:35:01'
@@ -498,12 +498,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$VTHFZHun6iy9HXhGPR/xyuz/DWyDeS4QkXrmArhmsKTLvMCNVgzjK"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:01'
     updated_at: '2018-03-28 13:35:01'
@@ -514,12 +514,12 @@ models:
     cl1_migrated: false
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$T9gaXQEjp3wctbZrWlr/U.VezpM31prSfL3P6Nk/Vx0oOmJLY4l7."
-    remote_avatar_url: 
+    remote_avatar_url:
     roles:
     - type: admin
     created_at: '2018-03-28 13:35:02'
@@ -527,16 +527,16 @@ models:
   - &67
     email: celestino@crist.org
     first_name: Adrian
-    last_name: 
+    last_name:
     cl1_migrated: true
     locale: en-GB
     bio_multiloc: {}
-    gender: 
-    birthyear: 
-    domicile: 
-    education: 
+    gender:
+    birthyear:
+    domicile:
+    education:
     password_digest: "$2a$10$xfxVN6QSwzMGy9/RsmYSs./iOUfz8tTZFiQEH5a/WsVxjgC4c9vCa"
-    remote_avatar_url: 
+    remote_avatar_url:
     roles: []
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
@@ -550,14 +550,14 @@ models:
         for young and old.</p>"
       nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
         plek van maken, voor jong en oud.</p>"
-    remote_header_bg_url: 
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
     description_preview_multiloc:
       en-GB: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
     presentation_mode: card
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
@@ -595,7 +595,7 @@ models:
     presentation_mode: map
     participation_method: ideation
     process_type: continuous
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
@@ -619,7 +619,7 @@ models:
     presentation_mode: map
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
@@ -643,7 +643,7 @@ models:
     presentation_mode: card
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -667,7 +667,7 @@ models:
     presentation_mode: map
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: archived
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
@@ -700,7 +700,7 @@ models:
     presentation_mode: card
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:58:17'
     updated_at: '2018-03-28 13:58:17'
@@ -744,7 +744,7 @@ models:
     presentation_mode: card
     participation_method: ideation
     process_type: timeline
-    internal_role: 
+    internal_role:
     publication_status: published
     created_at: '2018-03-28 13:57:56'
     updated_at: '2018-03-28 13:57:56'
@@ -753,7 +753,26 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
+  project_file:
+  - project_ref: *project1
+    remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
+    ordering:
+    created_at: 2019-01-14 13:46:54 UTC
+    updated_at: 2019-01-14 13:46:54 UTC
+    name: 20190110_rueil_intermediaire.pdf
   idea:
+  - &controversial_idea
+    title_multiloc:
+      en-GB: Controversial Idea
+    body_multiloc:
+      en-GB: "With a lot of comments"
+    publication_status: published
+    project_ref: *76
+    author_ref: *mortal1
+    location_description: 8185 Austen Green
+    published_at: '2018-03-03 00:00:00'
+    created_at: '2018-02-22 00:00:00'
+    updated_at: '2018-03-28 13:35:10'
   - &206
     title_multiloc:
       nl-BE: Iure sit eos placeat labore amet.
@@ -805,7 +824,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *77
-    location_description: 
+    location_description:
     published_at: '2017-11-24 00:00:00'
     created_at: '2017-06-09 00:00:00'
     updated_at: '2018-03-28 13:35:09'
@@ -840,7 +859,7 @@ models:
     publication_status: published
     project_ref: *85
     author_ref: *86
-    location_description: 
+    location_description:
     published_at: '2017-12-07 00:00:00'
     created_at: '2017-09-13 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -857,7 +876,7 @@ models:
     publication_status: published
     project_ref: *90
     author_ref: *67
-    location_description: 
+    location_description:
     published_at: '2018-02-19 00:00:00'
     created_at: '2017-09-29 00:00:00'
     updated_at: '2018-03-28 13:35:11'
@@ -945,7 +964,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *110
-    location_description: 
+    location_description:
     published_at: '2017-06-29 00:00:00'
     created_at: '2017-04-04 00:00:00'
     updated_at: '2018-03-28 13:35:13'
@@ -1047,7 +1066,7 @@ models:
     publication_status: published
     project_ref: *85
     author_ref: *128
-    location_description: 
+    location_description:
     published_at: '2018-03-16 00:00:00'
     created_at: '2017-12-03 00:00:00'
     updated_at: '2018-03-28 13:35:16'
@@ -1064,7 +1083,7 @@ models:
     publication_status: published
     project_ref: *project1
     author_ref: *mortal2
-    location_description: 
+    location_description:
     published_at: '2018-02-18 00:00:00'
     created_at: '2017-10-27 00:00:00'
     updated_at: '2018-03-28 13:35:17'
@@ -1083,7 +1102,7 @@ models:
     publication_status: published
     project_ref: *71
     author_ref: *139
-    location_description: 
+    location_description:
     published_at: '2018-02-15 00:00:00'
     created_at: '2017-12-05 00:00:00'
     updated_at: '2018-03-28 14:04:38'
@@ -1102,7 +1121,7 @@ models:
     publication_status: published
     project_ref: *90
     author_ref: *143
-    location_description: 
+    location_description:
     published_at: '2018-02-13 00:00:00'
     created_at: '2018-01-07 00:00:00'
     updated_at: '2018-03-28 13:35:18'
@@ -1120,7 +1139,7 @@ models:
     publication_status: published
     project_ref: *71
     author_ref: *admin
-    location_description: 
+    location_description:
     published_at: '2018-03-11 00:00:00'
     created_at: '2018-02-20 00:00:00'
     updated_at: '2018-03-28 14:04:06'
@@ -1174,7 +1193,7 @@ models:
     publication_status: published
     project_ref: *66
     author_ref: *98
-    location_description: 
+    location_description:
     published_at: '2018-02-20 00:00:00'
     created_at: '2017-12-09 00:00:00'
     updated_at: '2018-03-28 13:35:19'
@@ -1209,7 +1228,7 @@ models:
     publication_status: published
     project_ref: *66
     author_ref: *163
-    location_description: 
+    location_description:
     published_at: '2017-09-15 00:00:00'
     created_at: '2017-05-02 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -1226,7 +1245,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *admin
-    location_description: 
+    location_description:
     published_at: '2018-03-24 00:00:00'
     created_at: '2017-10-21 00:00:00'
     updated_at: '2018-03-28 13:35:20'
@@ -1238,7 +1257,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *mortal1
-    location_description: 
+    location_description:
     published_at: '1990-08-01 00:00:00'
     created_at: '1990-05-15 00:00:00'
     updated_at: '1990-03-28 13:35:21'
@@ -1250,7 +1269,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *mortal1
-    location_description: 
+    location_description:
     published_at_timediff: 0
     created_at_timediff: 0
     updated_at_timediff: 0
@@ -1262,7 +1281,7 @@ models:
     publication_status: published
     project_ref: *76
     author_ref: *mortal1
-    location_description: 
+    location_description:
     published_at: '2017-09-01 00:00:00'
     created_at: '2017-10-15 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -1281,7 +1300,7 @@ models:
     publication_status: published
     project_ref: *85
     author_ref: *mortal1
-    location_description: 
+    location_description:
     published_at: '2017-08-01 00:00:00'
     created_at: '2017-05-15 00:00:00'
     updated_at: '2018-03-28 13:35:21'
@@ -1386,7 +1405,7 @@ models:
     publication_status: published
     project_ref: *85
     author_ref: *98
-    location_description: 
+    location_description:
     published_at: '2018-02-28 00:00:00'
     created_at: '2017-12-28 00:00:00'
     updated_at: '2018-03-28 13:35:24'
@@ -1402,11 +1421,31 @@ models:
     publication_status: published
     project_ref: *121
     author_ref: *194
-    location_description: 
+    location_description:
     published_at: '2018-03-20 00:00:00'
     created_at: '2018-02-04 00:00:00'
     updated_at: '2018-03-28 13:35:24'
   comment:
+  - &bicycle_comment
+    body_multiloc:
+      en-GB: "Great idea, we stand behind you! I'll come riding a bicycle"
+    author_ref: *86
+    idea_ref: *controversial_idea
+    created_at: '2019-01-12 00:00:00'
+    updated_at: '2019-03-28 13:35:10'
+  - body_multiloc:
+      en-GB: "I've never seen you riding a bicycle.."
+    author_ref: *mortal1
+    idea_ref: *controversial_idea
+    created_at: '2019-01-13 00:00:00'
+    updated_at: '2019-03-28 14:35:10'
+    parent_ref: *bicycle_comment
+  - body_multiloc:
+      en-GB: "No no no no no"
+    author_ref: *86
+    idea_ref: *controversial_idea
+    created_at: '2019-01-14 00:00:00'
+    updated_at: '2019-03-28 15:35:10'
   - body_multiloc:
       en-GB: "<p>Consequatur eligendi sint. Necessitatibus ut consequuntur dicta nemo
         at sint. Fugiat dolor maiores eum sit fuga qui iste.</p><p>Suscipit et pariatur
@@ -1487,7 +1526,7 @@ models:
     idea_ref: *209
     created_at: '2018-03-28 13:41:59'
     updated_at: '2018-03-28 13:41:59'
-    parent_ref: 
+    parent_ref:
   - &218
     body_multiloc:
       en-GB: "<p>Est cum ea voluptas dolorem velit repellat. Perspiciatis rerum voluptates
@@ -3532,6 +3571,12 @@ models:
   project_image:
   - project_ref: *76
     remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/223fe293-3230-4376-b910-9cb4d0639020/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
+  - project_ref: *project1
+    remote_image_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/aa8f8879-7191-4e8f-ab16-4eee0c039133/project_image/image/fcdf170e-3926-4621-9352-7e5ca1aba97c/Rugby_town_centre-2ay0y80_yza0pu.jpg
   votes:
   - mode: down
     user_ref: *admin
@@ -6251,6 +6296,9 @@ models:
     created_at: '2018-03-26 00:00:00'
     updated_at: '2018-03-28 13:35:24'
     votable_ref: *209
+  idea_image:
+  - remote_image_url: http://test.hanvecforum.fr/wp-content/uploads/2015/11/covoiturage2.jpg
+    idea_ref: *controversial_idea
   phase:
   - title_multiloc:
       en-GB: Quidem corrupti et ab ducimus ratione saepe illo doloribus.
@@ -6873,7 +6921,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
+    voting_limited_max:
   - title_multiloc:
       nl-BE: Input via enquête
     description_multiloc:
@@ -6885,11 +6933,11 @@ models:
     participation_method: information
     created_at: '2018-03-28 13:57:59'
     updated_at: '2018-03-28 13:57:59'
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
   - title_multiloc:
       nl-BE: 'Fase 2: Uitwerking RUP: ''gesloten'', informatieve fase '
     description_multiloc:
@@ -6924,11 +6972,11 @@ models:
     participation_method: information
     created_at: '2018-03-28 13:57:59'
     updated_at: '2018-03-28 13:57:59'
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
   - title_multiloc:
       nl-BE: 'Fase 3: tweede participatie: openbaar onderzoek '
     description_multiloc:
@@ -6955,7 +7003,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
+    voting_limited_max:
   - title_multiloc:
       nl-BE: 'Eerste verwerking en categorisering '
     description_multiloc:
@@ -6973,11 +7021,11 @@ models:
     participation_method: information
     created_at: '2018-03-28 13:58:21'
     updated_at: '2018-03-28 13:58:21'
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
   - title_multiloc:
       nl-BE: 'Interne bevraging bij gemeentepersoneel '
     description_multiloc:
@@ -7019,7 +7067,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
+    voting_limited_max:
   - title_multiloc:
       nl-BE: Vul deze enquête in
     description_multiloc:
@@ -7037,11 +7085,11 @@ models:
     participation_method: survey
     created_at: '2018-03-28 13:58:21'
     updated_at: '2018-03-28 13:58:21'
-    posting_enabled: 
-    commenting_enabled: 
-    voting_enabled: 
-    voting_method: 
-    voting_limited_max: 
+    posting_enabled:
+    commenting_enabled:
+    voting_enabled:
+    voting_method:
+    voting_limited_max:
     survey_embed_url: https://citizenlabco.typeform.com/to/qRBP2v
     survey_service: typeform
   - title_multiloc:
@@ -7064,7 +7112,7 @@ models:
     commenting_enabled: true
     voting_enabled: true
     voting_method: unlimited
-    voting_limited_max: 
+    voting_limited_max:
   event:
   - project_ref: *76
     title_multiloc: events.council_meeting_title
@@ -7304,4 +7352,3 @@ models:
     - title_multiloc:
         en-GB: Carrotgem
         nl-BE: Wortelgem
-      

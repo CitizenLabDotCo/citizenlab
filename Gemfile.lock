@@ -46,6 +46,14 @@ PATH
       rails (~> 5.2.1)
 
 PATH
+  remote: engines/frontend
+  specs:
+    frontend (0.1.0)
+      apartment (~> 2.2.0)
+      apartment-sidekiq
+      rails (~> 5.2.1)
+
+PATH
   remote: engines/machine_translations
   specs:
     machine_translations (0.1.0)
@@ -571,6 +579,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fog-aws
+  frontend!
   groupdate
   ice_cube!
   kaminari (~> 1.1.1)
@@ -619,4 +628,4 @@ DEPENDENCIES
   webmock (~> 3.4)
 
 BUNDLED WITH
-   1.17.1
+   1.17.2

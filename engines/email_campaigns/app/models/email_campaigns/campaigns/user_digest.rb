@@ -76,7 +76,7 @@ module EmailCampaigns
         downvotes_count: idea.downvotes_count,
         comments_count: idea.comments_count,
         published_at: idea.published_at&.iso8601,
-        url: FrontendService.new.model_to_url(idea, locale: recipient.locale),
+        url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale),
         idea_images: idea.idea_images.map{ |image|
           {
             ordering: image.ordering,
@@ -106,7 +106,7 @@ module EmailCampaigns
     def discover_projects_payload project, recipient
       {
         title_multiloc: project.title_multiloc,
-        url: FrontendService.new.model_to_url(project, locale: recipient.locale),
+        url: Frontend::UrlService.new.model_to_url(project, locale: recipient.locale),
         created_at: project.created_at.iso8601
       }
     end

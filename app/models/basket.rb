@@ -9,6 +9,7 @@ class Basket < ApplicationRecord
   validate :in_budgeting_participation_context
   validate :submitted_and_exceeds_limit
 
+  scope :submitted, -> { where.not(submitted_at: nil) }
 
   def total_budget
   	self.ideas.pluck(:budget).compact.inject(0){|sum,x| sum + x }
