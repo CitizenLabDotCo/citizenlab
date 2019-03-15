@@ -147,11 +147,8 @@ if (isDev) {
   config.plugins.push(new webpack.ProgressPlugin());
 } else if (isProd) {
   config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'app'),
-    ignoreFile: '.gitignore',
-    ignore: ['node_modules', 'internals', 'docs', 'cypress', '.circleci'],
+    include: path.resolve(process.cwd(), 'build'),
     release: process.env.CIRCLE_BUILD_NUM,
-    ext: ['map', 'js', 'ts', 'tsx']
   }));
 }
 
