@@ -63,40 +63,41 @@ class TenantTemplateService
     @template = {'models' => {}}
 
     Apartment::Tenant.switch(tenant.schema_name) do
-      @template['models']['area']                = yml_areas
-      @template['models']['custom_field']        = yml_custom_fields
-      @template['models']['custom_field_option'] = yml_custom_field_options
-      @template['models']['topic']               = yml_topics
-      @template['models']['project']             = yml_projects
-      @template['models']['project_file']        = yml_project_files
-      @template['models']['project_image']       = yml_project_images
-      @template['models']['projects_topic']      = yml_projects_topics
-      @template['models']['phase']               = yml_phases
-      @template['models']['phase_file']          = yml_phase_files
-      @template['models']['areas_project']       = yml_areas_projects
-      @template['models']['user']                = yml_users
-      @template['models']['basket']              = yml_baskets
-      @template['models']['event']               = yml_events
-      @template['models']['event_file']          = yml_event_files
-      @template['models']['group']               = yml_groups
-      @template['models']['groups_project']      = yml_groups_projects
-      @template['models']['permission']          = yml_permissions
-      @template['models']['groups_permission']   = yml_groups_permissions 
-      @template['models']['membership']          = yml_memberships
-      @template['models']['page']                = yml_pages
-      @template['models']['page_link']           = yml_page_links
-      @template['models']['page_file']           = yml_page_files
-      @template['models']['idea_status']         = yml_idea_statuses
-      @template['models']['idea']                = yml_ideas
-      @template['models']['areas_idea']          = yml_areas_ideas
-      @template['models']['baskets_idea']        = yml_baskets_ideas
-      @template['models']['idea_file']           = yml_idea_files
-      @template['models']['idea_image']          = yml_idea_images
-      @template['models']['ideas_phase']         = yml_ideas_phases
-      @template['models']['ideas_topic']         = yml_ideas_topics
-      @template['models']['official_feedback']   = yml_official_feedback
-      @template['models']['comment']             = yml_comments
-      @template['models']['vote']                = yml_votes
+      @template['models']['area']                      = yml_areas
+      @template['models']['custom_field']              = yml_custom_fields
+      @template['models']['custom_field_option']       = yml_custom_field_options
+      @template['models']['topic']                     = yml_topics
+      @template['models']['project']                   = yml_projects
+      @template['models']['project_file']              = yml_project_files
+      @template['models']['project_image']             = yml_project_images
+      @template['models']['projects_topic']            = yml_projects_topics
+      @template['models']['phase']                     = yml_phases
+      @template['models']['phase_file']                = yml_phase_files
+      @template['models']['areas_project']             = yml_areas_projects
+      @template['models']['user']                      = yml_users
+      @template['models']['email_campaigns/campaigns'] = yml_campaigns
+      @template['models']['basket']                    = yml_baskets
+      @template['models']['event']                     = yml_events
+      @template['models']['event_file']                = yml_event_files
+      @template['models']['group']                     = yml_groups
+      @template['models']['groups_project']            = yml_groups_projects
+      @template['models']['permission']                = yml_permissions
+      @template['models']['groups_permission']         = yml_groups_permissions 
+      @template['models']['membership']                = yml_memberships
+      @template['models']['page']                      = yml_pages
+      @template['models']['page_link']                 = yml_page_links
+      @template['models']['page_file']                 = yml_page_files
+      @template['models']['idea_status']               = yml_idea_statuses
+      @template['models']['idea']                      = yml_ideas
+      @template['models']['areas_idea']                = yml_areas_ideas
+      @template['models']['baskets_idea']              = yml_baskets_ideas
+      @template['models']['idea_file']                 = yml_idea_files
+      @template['models']['idea_image']                = yml_idea_images
+      @template['models']['ideas_phase']               = yml_ideas_phases
+      @template['models']['ideas_topic']               = yml_ideas_topics
+      @template['models']['official_feedback']         = yml_official_feedback
+      @template['models']['comment']                   = yml_comments
+      @template['models']['vote']                      = yml_votes
     end
     @template.to_yaml
   end
@@ -406,6 +407,21 @@ class TenantTemplateService
       end
       store_ref yml_user, u.id, :user
       yml_user
+    end
+  end
+
+  def yml_campaigns
+    EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
+      {
+        'type'             => c.type,
+        'author_ref'       => lookup_ref(c.author_id, :user),
+        'enabled'          => c.enabled,
+        'sender'           => c.sender,
+        'subject_multiloc' => c.subject_multiloc,
+        'body_multiloc'    => c.body_multiloc,
+        'created_at'       => c.created_at.to_s,
+        'updated_at'       => c.updated_at.to_s,
+      }
     end
   end
 
