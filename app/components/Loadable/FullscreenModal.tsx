@@ -23,7 +23,7 @@ const LoadableFullscreenModal = Loadable.Map({
     const VoteControl = loaded.VoteControl.default;
     const { modalOpened, close, modalUrl, modalId, modalType, unauthenticatedVoteClick } = props;
 
-    const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
+    const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
       <VoteControl
         ideaId={modalId}
         unauthenticatedVoteClick={unauthenticatedVoteClick}
