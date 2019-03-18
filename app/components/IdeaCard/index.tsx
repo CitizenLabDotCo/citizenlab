@@ -220,6 +220,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  onCardHover = (event: FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    eventEmitter.emit(namespace, 'cardHover', null);
+  }
+
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
@@ -288,6 +293,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <IdeaContainer
+          onMouseOver={this.onCardHover}
           onClick={this.onCardClick}
           to={`/ideas/${idea.attributes.slug}`}
           className={`${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}

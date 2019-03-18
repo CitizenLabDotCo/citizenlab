@@ -31,9 +31,7 @@ import { trackPage, trackIdentification } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import IdeasShow from 'containers/IdeasShow';
-import VoteControl from 'components/VoteControl';
+import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -180,6 +178,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
+      eventEmitter.observeEvent('cardHover').subscribe(() => {
+        this.preloadIdeaModal();
+      }),
+
       eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
@@ -190,6 +192,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  preloadIdeaModal = () => {
+    LoadableFullscreenModal.preload();
   }
 
   openModal = (type: string, id: string | null, url: string | null) => {
@@ -210,13 +216,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
-    const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
-      <VoteControl
-        ideaId={modalId}
-        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-        size="1"
-      />
-    ) : undefined);
+    // const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
+    //   <VoteControl
+    //     ideaId={modalId}
+    //     unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+    //     size="1"
+    //   />
+    // ) : undefined);
 
     return (
       <>
@@ -225,15 +231,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+
                 <ErrorBoundary>
-                  <FullscreenModal
-                    opened={modalOpened}
+                  <LoadableFullscreenModal
+                    modalOpened={modalOpened}
                     close={this.closeModal}
-                    url={modalUrl}
-                    headerChild={fullscreenModalHeaderChild}
-                  >
-                    {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-                  </FullscreenModal>
+                    modalUrl={modalUrl}
+                    modalId={modalId}
+                    modalType={modalType}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  />
                 </ErrorBoundary>
 
                 <ErrorBoundary>
