@@ -6,7 +6,7 @@ import { IGeotaggedIdeaData, ideasMarkersStream } from 'services/ideas';
 
 interface InputProps {
   phaseId?: string;
-  projectId?: string;
+  projectIds?: string[];
 }
 
 type children = (renderProps: GetIdeaMarkersChildProps) => JSX.Element | null;
@@ -33,17 +33,17 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId, phaseId } = this.props;
+    const { projectIds, phaseId } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ projectId, phaseId });
+    this.inputProps$ = new BehaviorSubject({ projectIds, phaseId });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ projectId, phaseId }) => {
+        switchMap(({ projectIds, phaseId }) => {
           return ideasMarkersStream({
             queryParameters: {
-              project: projectId,
+              projects: projectIds,
               phase: phaseId
             }
           }).observable;
@@ -57,8 +57,8 @@ export default class GetIdeaMarkers extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { projectId, phaseId } = this.props;
-    this.inputProps$.next({ projectId, phaseId });
+    const { projectIds, phaseId } = this.props;
+    this.inputProps$.next({ projectIds, phaseId });
   }
 
   componentWillUnmount() {
