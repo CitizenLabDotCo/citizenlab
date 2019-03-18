@@ -15,9 +15,6 @@ import { init, Integrations } from '@sentry/browser';
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
 
-// Import i18n messages
-import { translationMessages } from './i18n';
-
 // Import root routes
 import createRoutes from './routes';
 
@@ -44,14 +41,16 @@ const rootRoute = {
   childRoutes: createRoutes(),
 };
 
-const Root = () => (
-  <LanguageProvider messages={translationMessages}>
-    <Router
-      history={browserHistory}
-      routes={rootRoute}
-      render={applyRouterMiddleware(useScroll())}
-    />
-  </LanguageProvider>
-);
+const Root = () => {
+  return (
+    <LanguageProvider>
+      <Router
+        history={browserHistory}
+        routes={rootRoute}
+        render={applyRouterMiddleware(useScroll())}
+      />
+    </LanguageProvider>
+  );
+};
 
 render(<Root />, document.getElementById('app'));

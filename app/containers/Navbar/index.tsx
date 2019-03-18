@@ -7,12 +7,12 @@ import { trackEventByName } from 'utils/analytics';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
-import LanguageSelector from './components/LanguageSelector';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
 import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
+import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 
 // analytics
 import tracks from './tracks';
@@ -322,20 +322,20 @@ const SignUpLink = NavigationItem.extend`
   `}
 `;
 
-const StyledLanguageSelector = styled(LanguageSelector)`
-  padding-left: 36px;
+const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
+padding-left: 36px;
 
-  &.notLoggedIn {
-    padding-left: 20px;
-
-    ${media.smallerThanMinTablet`
-      padding-left: 10px;
-    `}
-  }
+&.notLoggedIn {
+  padding-left: 20px;
 
   ${media.smallerThanMinTablet`
-    padding-left: 15px;
+    padding-left: 10px;
   `}
+}
+
+${media.smallerThanMinTablet`
+  padding-left: 15px;
+`}
 `;
 
 interface InputProps {}
@@ -374,6 +374,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
   trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
+  }
+
+  preloadLanguageSelector = () => {
+    LoadableLanguageSelector.preload();
   }
 
   render() {
@@ -512,8 +516,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             }
 
             {tenantLocales.length > 1 && locale &&
-              <RightItem className="noLeftMargin">
-                <StyledLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+              <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
+                <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
               </RightItem>
             }
           </Right>

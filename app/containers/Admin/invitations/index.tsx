@@ -116,7 +116,7 @@ const SInvitesTable = styled(InvitesTable)`
   margin-bottom: 80px;
 `;
 
-interface InputProps { }
+export interface InputProps { }
 
 interface DataProps {
   projects: GetProjectsChildProps;
