@@ -12,6 +12,7 @@ class User < ApplicationRecord
     :using => { :tsearch => {:prefix => true} }
 
   has_many :ideas, foreign_key: :author_id, dependent: :nullify
+  has_many :assigned_ideas, class_name: 'Idea', foreign_key: :assignee_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
