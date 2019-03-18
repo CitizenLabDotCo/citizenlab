@@ -13,8 +13,7 @@ class TenantTemplateService
     apply_template resolve_template(template_name, external_subfolder: external_subfolder)
   end
 
-  def apply_template template_
-    template = YAML.load template_
+  def apply_template template
     start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
@@ -99,11 +98,10 @@ class TenantTemplateService
       @template['models']['comment']                   = yml_comments
       @template['models']['vote']                      = yml_votes
     end
-    @template.to_yaml
+    @template
   end
 
-  def template_locales template_
-    template = YAML.load template_
+  def template_locales template
     locales = Set.new
     template['models'].each do |_, instances|
       instances.each do |attributes|
@@ -122,8 +120,7 @@ class TenantTemplateService
     locales.to_a
   end
 
-  def change_locales template_, locale_from, locale_to
-    template = YAML.load template_
+  def change_locales template, locale_from, locale_to
     template['models'].each do |_, instances|
       instances.each do |attributes|
         attributes.each do |field_name, multiloc|
@@ -140,11 +137,11 @@ class TenantTemplateService
     template['models']['user']&.each do |attributes|
       attributes['locale'] = locale_to
     end
-    template.to_yaml
+    template
   end
 
   def required_locales template_name, external_subfolder: 'release'
-    template = YAML.load resolve_template template_name, external_subfolder: external_subfolder
+    template = resolve_template template_name, external_subfolder: external_subfolder
     locales = Set.new
     template['models']['user']&.each do |attributes|
       locales.add attributes['locale']
@@ -152,10 +149,9 @@ class TenantTemplateService
     locales.to_a
   end
 
-  def translate_and_fix_locales template_
-    template = YAML.load template_
+  def translate_and_fix_locales template
     locales_to = Tenant.current.settings.dig('core', 'locales')
-    return template.to_yaml if Set.new(template_locales(template.to_yaml)).subset? Set.new(locales_to)
+    return template if Set.new(template_locales(template)).subset? Set.new(locales_to)
     locales_from = required_locales template
     # Change unsupported user locales to first target tenant locale.
     if !Set.new(locales_from).subset? Set.new(locales_to)
@@ -195,7 +191,7 @@ class TenantTemplateService
         end
       end
     end
-    template.to_yaml
+    template
   end
 
 
@@ -215,17 +211,17 @@ class TenantTemplateService
       throw "Unknown template" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
       internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
       if File.exists? internal_path
-        open(internal_path).read
+        YAML.load open(internal_path).read
       else
         s3 = Aws::S3::Resource.new
         bucket = s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates'))
         object = bucket.object("#{external_subfolder}/#{template_name}.yml")
-        object.get.body.read
+        YAML.load object.get.body.read
       end
     elsif template_name.kind_of? Hash
-      template_name.to_yaml
+      template_name
     elsif template_name.nil?
-      open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
+      YAML.load open(Rails.root.join('config', 'tenant_templates', "base.yml")).read
     else
       throw "Could not resolve template"
     end
