@@ -13,6 +13,14 @@ class SideFxIdeaService
     end
   end
 
+  def before_update idea, user
+    if idea.project_id_changed?
+      unless ProjectPolicy.new(idea.assignee, idea.project).moderate?
+        idea.assignee = nil
+      end
+    end
+  end
+
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
       add_autovote idea
@@ -38,6 +46,9 @@ class SideFxIdeaService
     end
   end
 
+  def before_destroy idea, user
+
+  end
 
   def after_destroy frozen_idea, user
     serialized_idea = clean_time_attributes(frozen_idea.attributes)
