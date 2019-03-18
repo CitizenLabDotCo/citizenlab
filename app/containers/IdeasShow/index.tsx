@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
@@ -439,11 +439,6 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-interface ITracks {
-  clickTranslateIdeaButton: () => void;
-  clickGoBackToOriginalIdeaCopyButton: () => void;
-}
-
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
@@ -474,7 +469,7 @@ type State = {
   bodyTranslationLoading: boolean;
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -644,10 +639,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
   }
 
   translateIdea = () => {
-    const { clickTranslateIdeaButton } = this.props;
-
     // tracking
-    clickTranslateIdeaButton();
+    trackEvent(tracks.clickTranslateIdeaButton);
 
     this.setState({
       translateButtonClicked: true,
@@ -655,10 +648,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
   }
 
   backToOriginalContent = () => {
-    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
-
     // tracking
-    clickGoBackToOriginalIdeaCopyButton();
+    trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
 
     this.setState({
       translateButtonClicked: false,
@@ -1036,7 +1027,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
   }
 }
 
-const IdeasShowWithHOCs = injectLocalize(injectTracks<Props>(tracks)(injectIntl(IdeasShow)));
+const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
