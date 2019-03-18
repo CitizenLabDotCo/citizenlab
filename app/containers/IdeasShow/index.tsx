@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
+import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
 
 // router
@@ -14,7 +14,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import Comments from './CommentsContainer';
+import Comments from './Comments';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -24,7 +24,6 @@ import Modal from 'components/UI/Modal';
 import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
-import ParentCommentForm from './ParentCommentForm';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
@@ -34,7 +33,6 @@ import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
-import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
 
@@ -70,7 +68,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken, lighten } from 'polished';
+import { darken } from 'polished';
+import TranslateButton from './TranslateButton';
 
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
@@ -290,22 +289,12 @@ const AddressWrapper = styled.div`
   z-index: 1000;
 `;
 
-const TranslateButton = styled(Button)`
+const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 30px;
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-bottom: 112px;
-`;
-
-const CommentsTitle = styled.h2`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 38px;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-  margin-bottom: 20px;
 `;
 
 const SeparatorRow = styled.div`
@@ -439,11 +428,6 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-interface ITracks {
-  clickTranslateIdeaButton: () => void;
-  clickGoBackToOriginalIdeaCopyButton: () => void;
-}
-
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
@@ -469,12 +453,12 @@ type State = {
   showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
-  translateFromOriginalButtonClicked: boolean;
+  translateButtonClicked: boolean;
   titleTranslationLoading: boolean;
   bodyTranslationLoading: boolean;
 };
 
-export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks & InjectedLocalized, State> {
+export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
   ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -491,7 +475,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
-      translateFromOriginalButtonClicked: false,
+      translateButtonClicked: false,
       titleTranslationLoading: false,
       bodyTranslationLoading: false
     };
@@ -502,6 +486,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
   }
 
   componentDidMount() {
+    this.setOpened();
+    this.setLoaded();
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
     const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
@@ -532,12 +518,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       })
     ];
   }
-  // more actions
 
   componentDidUpdate() {
+    this.setOpened();
+    this.setLoaded();
+  }
+
+  setOpened() {
+    const { idea } = this.props;
+    if (!this.state.opened && idea !== undefined) this.setState({ opened: true });
+  }
+  setLoaded() {
+    const { idea, ideaImages, project } = this.props;
     if (!this.state.loaded
-      && this.props.idea !== null
-      && this.props.ideaImages !== null) {
+      && idea !== undefined
+      && ideaImages !== undefined
+      && project !== undefined
+      ) {
       this.setState({ loaded: true });
     }
   }
@@ -550,7 +547,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     if (element) {
       element.scrollIntoView({
         behavior: 'smooth',
-        block: 'start',
+        block: 'center',
         inline: 'nearest'
       });
     }
@@ -639,63 +636,21 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     };
   }
 
-// ---------------Machine Translations---------------
-  renderTranslateButton = () => {
-    const { locale, idea } = this.props;
-    const { translateFromOriginalButtonClicked, titleTranslationLoading, bodyTranslationLoading } = this.state;
-
-    const showTranslateButton = !isNilOrError(idea) && !isNilOrError(locale) && !idea.attributes.title_multiloc[locale];
-    const translationsLoading = titleTranslationLoading || bodyTranslationLoading;
-
-    if (showTranslateButton) {
-      if (!translateFromOriginalButtonClicked) {
-        return (
-          <TranslateButton
-            style="secondary-outlined"
-            onClick={this.translateIdea}
-            processing={translationsLoading}
-            spinnerColor={colors.label}
-            borderColor={lighten(.4, colors.label)}
-          >
-            <FormattedMessage {...messages.translateIdea} />
-          </TranslateButton>
-        );
-      } else {
-        return (
-          <TranslateButton
-            style="secondary-outlined"
-            onClick={this.backToOriginalContent}
-            processing={translationsLoading}
-            spinnerColor={colors.label}
-            borderColor={lighten(.4, colors.label)}
-          >
-            <FormattedMessage {...messages.backToOriginalContent} />
-          </TranslateButton>
-        );
-      }
-    }
-    return null;
-  }
-
   translateIdea = () => {
-    const { clickTranslateIdeaButton } = this.props;
-
     // tracking
-    clickTranslateIdeaButton();
+    trackEvent(tracks.clickTranslateIdeaButton);
 
     this.setState({
-      translateFromOriginalButtonClicked: true,
+      translateButtonClicked: true,
     });
   }
 
   backToOriginalContent = () => {
-    const { clickGoBackToOriginalIdeaCopyButton } = this.props;
-
     // tracking
-    clickGoBackToOriginalIdeaCopyButton();
+    trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
 
     this.setState({
-      translateFromOriginalButtonClicked: false,
+      translateButtonClicked: false,
     });
   }
 
@@ -722,16 +677,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       loaded,
       showMap,
       ideaIdForSocialSharing,
-      translateFromOriginalButtonClicked,
+      translateButtonClicked,
+      titleTranslationLoading,
+      bodyTranslationLoading
     } = this.state;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale)) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       const authorId = get(idea, 'relationships.author.data.id', null);
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = get(idea, 'relationships.status.data.id', null);
+      const statusId = get(idea, 'relationships.idea_status.data.id', null);
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
@@ -761,8 +718,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
         showVoteControl
       } = this.getActionsInfos();
 
-      const translateButton = this.renderTranslateButton();
-
       content = (
         <>
           <IdeaMeta
@@ -774,7 +729,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
               ideaTitle={ideaTitle}
               projectId={projectId}
               locale={locale}
-              translateFromOriginalButtonClicked={translateFromOriginalButtonClicked}
+              translateButtonClicked={translateButtonClicked}
               onTranslationLoaded={this.onTitleTranslationLoaded}
             />
 
@@ -807,13 +762,21 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                 />
 
                 <FeatureFlag name="machine_translations">
-                  {translateButton}
+                  <StyledTranslateButton
+                    idea={idea}
+                    locale={locale}
+                    translateButtonClicked={translateButtonClicked}
+                    translationsLoading={titleTranslationLoading || bodyTranslationLoading}
+                    translateIdea={this.translateIdea}
+                    backToOriginalContent={this.backToOriginalContent}
+                  />
                 </FeatureFlag>
 
                 <IdeaBody
                   ideaId={ideaId}
                   locale={locale}
                   ideaBody={ideaBody}
+                  translateButtonClicked={translateButtonClicked}
                   onTranslationLoaded={this.onTitleTranslationLoaded}
                 />
 
@@ -867,29 +830,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
                   ideaId={ideaId}
                 />
 
-                {!isNilOrError(ideaComments) && ideaComments.length > 0 ?
-                  <CommentsTitle>
-                    <FormattedMessage {...messages.commentsTitle} />
-                  </CommentsTitle>
-                  :
-                  <HasPermission item={!isNilOrError(project) ? project : null} action="moderate">
-                    <HasPermission.No>
-                      <CommentsTitle>
-                        <FormattedMessage {...messages.commentsTitle} />
-                      </CommentsTitle>
-                    </HasPermission.No>
-                  </HasPermission>
-                }
+                <Comments ideaId={ideaId} />
 
-                {!isNilOrError(project) &&
-                  <HasPermission item={project} action="moderate">
-                    <HasPermission.No>
-                      <ParentCommentForm ideaId={ideaId} />
-                    </HasPermission.No>
-                  </HasPermission>
-                }
-
-                {ideaComments && <Comments ideaId={ideaId} />}
               </LeftColumn>
 
               <RightColumnDesktop>
@@ -964,20 +906,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
 
                     {!isNilOrError(authUser) &&
                       <MoreActionsMenuWrapper>
-                        <MoreActionsMenu
-                          actions={[
-                            {
-                              label: <FormattedMessage {...messages.reportAsSpam} />,
-                              handler: this.openSpamModal,
-                            },
-                            {
-                              label: <FormattedMessage {...messages.editIdea} />,
-                              handler: this.editIdea,
-                            }
-                          ]}
-                          label={<FormattedMessage {...messages.moreOptions} />}
-                        />
                         <HasPermission item={idea} action="edit" context={idea}>
+                          <MoreActionsMenu
+                            actions={[
+                              {
+                                label: <FormattedMessage {...messages.reportAsSpam} />,
+                                handler: this.openSpamModal,
+                              },
+                              {
+                                label: <FormattedMessage {...messages.editIdea} />,
+                                handler: this.editIdea,
+                              }
+                            ]}
+                            label={<FormattedMessage {...messages.moreOptions} />}
+                          />
                           <HasPermission.No>
                             <MoreActionsMenu
                               actions={[{
@@ -1057,12 +999,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
             }
           </Modal>
         </FeatureFlag>
-      </ >
+      </>
     );
   }
 }
 
-const IdeasShowWithHOCs = injectLocalize(injectTracks<Props>(tracks)(injectIntl(IdeasShow)));
+const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
