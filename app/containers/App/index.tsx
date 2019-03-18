@@ -216,14 +216,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
-    // const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
-    //   <VoteControl
-    //     ideaId={modalId}
-    //     unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-    //     size="1"
-    //   />
-    // ) : undefined);
-
     return (
       <>
         {tenant && visible && (
