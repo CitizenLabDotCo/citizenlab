@@ -24,7 +24,7 @@ const StyledContentContainer = styled(ContentContainer)`
   background: ${colors.background};
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
   <GetProject slug={props.params.slug}>

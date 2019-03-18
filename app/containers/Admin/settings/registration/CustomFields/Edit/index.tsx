@@ -15,7 +15,7 @@ const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   customField: GetCustomFieldChildProps;
