@@ -497,6 +497,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   componentDidMount() {
+    this.setOpened();
+    this.setLoaded();
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
     const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
@@ -527,11 +529,18 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       })
     ];
   }
-  // more actions
 
   componentDidUpdate() {
-    const { idea, ideaImages, project } = this.props;
+    this.setOpened();
+    this.setLoaded();
+  }
+
+  setOpened() {
+    const { idea } = this.props;
     if (!this.state.opened && idea !== undefined) this.setState({ opened: true });
+  }
+  setLoaded() {
+    const { idea, ideaImages, project } = this.props;
     if (!this.state.loaded
       && idea !== undefined
       && ideaImages !== undefined
