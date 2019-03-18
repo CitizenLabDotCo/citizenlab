@@ -152,6 +152,46 @@ class TenantTemplateService
     locales.to_a
   end
 
+  def translate_and_fix_locales template
+    template = YAML.load template
+    locales_to = Set.new Tenant.current.settings.dig('core', 'locales')
+    return template.to_yaml if Set.new(template_locales(template)).subset? locales_to
+    locales_from = Set.new required_locales(template)
+    # Change unsupported user locales to first target tenant locale.
+    if !locales_from.subset? locales_to
+      template['models']['user']&.each do |attributes|
+        if !locales_to.include? attributes['locale']
+          attributes['locale'] = locale_to.first
+        end
+      end
+    end
+    # Determine if translation needs to happen.
+    translate_from = locales_from.first
+    translate_to = if locales_to.include? translate_from
+      nil
+    else
+      locales_to.first
+    end
+    # Change multiloc fields, applying translation and removing
+    # unsupported locales.
+    template['models'].each do |model_name, fields|
+      fields.each do |attributes|
+        attributes.each do |field_name, field_value|
+          if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
+            field_value.keys.each do |locale|
+              if locale == translate_from && translate_to
+                field_value[locale] = MachineTranslations::MachineTranslationService.translate field_value[locale], locale, translate_to
+              elsif !locales_to.include? locale
+                field_value.delete locale
+              end
+            end
+          end
+        end
+      end
+    end
+    template.to_yaml
+  end
+
 
   private
 
