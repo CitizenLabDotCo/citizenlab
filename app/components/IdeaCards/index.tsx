@@ -272,7 +272,7 @@ interface InputProps extends GetIdeasInputProps  {
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
   className?: string;
-  showProjectSelector?: boolean;
+  allowProjectsFilter?: boolean;
 }
 
 interface DataProps {
@@ -337,7 +337,7 @@ class IdeaCards extends PureComponent<Props, State> {
       ideas,
       className,
       theme,
-      showProjectSelector
+      allowProjectsFilter
     } = this.props;
     const {
       queryParameters,
@@ -362,7 +362,7 @@ class IdeaCards extends PureComponent<Props, State> {
           <RightFilterArea>
             <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
               <SelectSort onChange={this.handleSortOnChange} />
-              {showProjectSelector && <SelectProjects onChange={this.handleProjectsOnChange} />}
+              {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />
             </DropdownFilters>
 
@@ -400,7 +400,7 @@ class IdeaCards extends PureComponent<Props, State> {
             <IdeaButton
               // If we have the project filter option, we cannot show an idea button that links to a particular project
               // Hence the projectId will be undefined and we link to the project selection page before showing the idea
-              projectId={!showProjectSelector ? (queryParameters.projects && queryParameters.projects[0]) : undefined}
+              projectId={!allowProjectsFilter ? (queryParameters.projects && queryParameters.projects[0]) : undefined}
               phaseId={queryParameters.phase}
             />
           </EmptyContainer>
@@ -441,7 +441,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showMapView && hasIdeas &&
-          <IdeasMap projectId={queryParameters.project} phaseId={queryParameters.phase} />
+          <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
     );
