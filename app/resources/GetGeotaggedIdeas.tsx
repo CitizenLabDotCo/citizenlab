@@ -6,7 +6,7 @@ import { IGeotaggedIdeaData, geotaggedIdeasStream } from 'services/ideas';
 
 interface InputProps {
   phaseId?: string;
-  projectId?: string;
+  projectIds?: string[];
   pageNumber?: number;
   pageSize?: number;
 }
@@ -35,17 +35,17 @@ export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { projectId, phaseId, pageNumber, pageSize } = this.props;
+    const { projectIds, phaseId, pageNumber, pageSize } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ projectId, phaseId, pageNumber, pageSize });
+    this.inputProps$ = new BehaviorSubject({ projectIds, phaseId, pageNumber, pageSize });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ projectId, phaseId }) => {
+        switchMap(({ projectIds, phaseId }) => {
           return geotaggedIdeasStream({
             queryParameters: {
-              project: projectId,
+              projects: projectIds,
               phase: phaseId,
               'page[number]': pageNumber,
               'page[size]': pageSize,
@@ -61,8 +61,8 @@ export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { projectId, phaseId, pageNumber, pageSize } = this.props;
-    this.inputProps$.next({ projectId, phaseId, pageNumber, pageSize });
+    const { projectIds, phaseId, pageNumber, pageSize } = this.props;
+    this.inputProps$.next({ projectIds, phaseId, pageNumber, pageSize });
   }
 
   componentWillUnmount() {
