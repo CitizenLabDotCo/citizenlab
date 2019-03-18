@@ -3,9 +3,9 @@ module AdminApi
 
     def import template
       service = TenantTemplateService.new
-      same_template = service.translate_and_fix_locales template.to_yaml
+      same_template = service.translate_and_fix_locales template
       ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template YAML.load(same_template)
+        service.resolve_and_apply_template same_template
       end
     end
 
