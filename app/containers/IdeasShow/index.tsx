@@ -14,8 +14,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import Comments from './Comments/CommentsContainer';
-import ParentCommentForm from './Comments/ParentCommentForm';
+import Comments from './Comments';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -296,16 +295,6 @@ const StyledTranslateButton = styled(TranslateButton)`
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
   margin-bottom: 112px;
-`;
-
-const CommentsTitle = styled.h2`
-  color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
-  line-height: 38px;
-  font-weight: 500;
-  margin: 0;
-  padding: 0;
-  margin-bottom: 20px;
 `;
 
 const SeparatorRow = styled.div`
@@ -841,29 +830,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
-                {!isNilOrError(ideaComments) && ideaComments.filter(comment => comment.attributes.publication_status !== 'deleted').length > 0 ?
-                  <CommentsTitle>
-                    <FormattedMessage {...messages.commentsTitle} />
-                  </CommentsTitle>
-                  :
-                  <HasPermission item={!isNilOrError(project) ? project : null} action="moderate">
-                    <HasPermission.No>
-                      <CommentsTitle>
-                        <FormattedMessage {...messages.commentsTitle} />
-                      </CommentsTitle>
-                    </HasPermission.No>
-                  </HasPermission>
-                }
+                <Comments ideaId={ideaId} />
 
-                {!isNilOrError(project) &&
-                  <HasPermission item={project} action="moderate">
-                    <HasPermission.No>
-                      <ParentCommentForm ideaId={ideaId} />
-                    </HasPermission.No>
-                  </HasPermission>
-                }
-
-                {ideaComments && <Comments ideaId={ideaId} />}
               </LeftColumn>
 
               <RightColumnDesktop>
