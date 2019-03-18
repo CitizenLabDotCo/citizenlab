@@ -33,7 +33,6 @@ const ModalContainer: any = styled(clickOutside)`
   flex-direction: column;
   outline: none;
   overflow: hidden;
-  padding: 20px;
   position: absolute;
   right: 0;
 `;
@@ -51,7 +50,6 @@ const Overlay = styled(FocusTrap)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 30px;
   overflow: hidden;
   z-index: 1000000;
   will-change: opacity, transform;
@@ -101,6 +99,7 @@ const Overlay = styled(FocusTrap)`
 
 const ModalContent = styled.div`
   width: 100%;
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -111,18 +110,13 @@ const CloseIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.mediumGrey};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-  `}
+  z-index: 1;
 `;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   height: 30px;
   width: 30px;
   display: flex;

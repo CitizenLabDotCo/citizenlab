@@ -3,62 +3,42 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
-import Icon from 'components/UI/Icon';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import Modal from 'components/UI/Modal';
-import UserName from 'components/UI/UserName';
-import FileAttachments from 'components/UI/FileAttachments';
-import Button from 'components/UI/Button';
-import Fragment from 'components/Fragment';
-import FeatureFlag from 'components/FeatureFlag';
-import HasPermission from 'components/HasPermission';
-import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
-import Avatar from 'components/Avatar';
-import StatusBadge from 'components/StatusBadge';
-import Sharing from 'components/Sharing';
-import VoteControl from 'components/VoteControl';
-import SpamReportForm from 'containers/SpamReport';
-import Comments from 'containers/IdeasShow/CommentsContainer';
-import IdeaMap from 'containers/IdeasShow/IdeaMap';
-import Activities from 'containers/IdeasShow/Activities';
-import VoteWrapper from 'containers/IdeasShow/VoteWrapper';
-import AssignBudgetWrapper from 'containers/IdeasShow/AssignBudgetWrapper';
-import ParentCommentForm from 'containers/IdeasShow/ParentCommentForm';
-import IdeaSharingModalContent from 'containers/IdeasShow/IdeaSharingModalContent';
-import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
 
 // resources
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetMachineTranslation from 'resources/GetMachineTranslation';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
-import T from 'components/T';
-import { FormattedRelative, InjectedIntlProps } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
-import messages from './messages';
-import { getLocalized } from 'utils/i18n';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
+import styled from 'styled-components';
+import T from 'components/T';
+import { colors } from 'utils/styleUtils';
 
 // style
-import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { darken, lighten } from 'polished';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 const Container = styled.div`
-  display: flex;
   height: 100%;
   width: 100%;
   position: relative;
+`;
+
+const Top = styled.div`
+  display: flex;
+  height: 50px;
+  width: 100%;
+  background-color: ${colors.adminBackground};
+`;
+
+const Row = styled.div`
+  display: flex;
+  width: 100%;
+  overflow-y: auto;
 `;
 
 const Left = styled.div`
@@ -83,18 +63,25 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class IdeaPreview extends PureComponent<Props & InjectedIntlProps, State> {
+class IdeaPreview extends PureComponent<Props, State> {
   render() {
-    const { title_multiloc, body_multiloc } = this.props.idea.attributes;
+    const { idea } = this.props;
     if (!isNilOrError(idea)) {
       return (
         <Container>
-          <Left>
-            <T value={title_multiloc} />
-          </Left>
-          <Right>
-            "Hahahaahaaaaa"
-          </Right>
+          <Top>
+            <button>edit</button>
+            <button>mark as spam</button>
+            <button>delete</button>
+          </Top>
+          <Row>
+            <Left>
+              <T value={idea.attributes.title_multiloc} />
+            </Left>
+            <Right>
+              "Hahahaahaaaaa"
+            </Right>
+          </Row>
         </Container>
       );
     }
@@ -102,7 +89,7 @@ class IdeaPreview extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const IdeaPreviewWithHOCs = injectIntl(IdeaPreview);
+// const IdeaPreviewWithHOCs = injectIntl(IdeaPreview);
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
@@ -113,6 +100,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaPreviewWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <IdeaPreview {...inputProps} {...dataProps} />}
   </Data>
 );
