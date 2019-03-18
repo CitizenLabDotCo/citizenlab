@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
-import Activities from './Activities';
+import Activities from './Activities/Activities';
 
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
