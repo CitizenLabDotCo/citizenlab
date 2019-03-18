@@ -5,43 +5,43 @@
   "properties": {
     "invertedNavbarColors": {
       "description": "true if the navbar has light text on a dark background, otherwise false",
-      "type": "boolean"
+      "$ref": "#/definitions/color"
     },
     "navbarBackgroundColor": {
       "description": "The background color of a normal navigation item",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "navbarActiveItemBackgroundColor": {
       "description": "The background color of a navigation item that is currently active (being visited)",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "navbarActiveItemBorderColor": {
       "description": "The border color of a navigation item that is currently active (being visited)",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "navbarTextColor": {
       "description": "The color of the text used for all text in the navbar",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "navbarHighlightedItemBackgroundColor": {
       "description": "The background color of a navigation item in the navbar that needs to attract extra attention",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "navbarBorderColor": {
       "description": "The color of the bottom border of the navbar",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "landingHeaderOverlayColor": {
       "description": "The overlay color of the landing page signed-out and signed-in header",
-      "type": "string"
+      "$ref": "#/definitions/color"
     },
     "landingHeaderTitleFontSize": {
-      "description": "The font size of the landing page signed-out header title",
+      "description": "The font size of the landing page signed-out header title in pixels",
       "type": "integer"
     },
     "landingHeaderTitleFontWeight": {
       "description": "The font weight of the landing page signed-out header title",
-      "type": "integer"
+      "$ref": "#/definitions/weight"
     },
     "landingHeaderOverlayOpacity": {
       "description": "How opaque should the header overlay color be? From 0 (no color) to 100 (full color)",
@@ -61,6 +61,21 @@
       "type": "integer",
       "minimum": 0,
       "maximum": 100
+    },
+    "color": {
+      "anyOf": [
+        {"title": "hex", "type": "string", "pattern": "^#[0-9a-f]{3}([0-9a-f]{3})?$"},
+        {"title": "rgb", "type": "string", "pattern": "^rgb\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*\)$"},
+        {"title": "rgba", "type": "string", "pattern": "^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*((0.[1-9])|[01])\s*\)$"},
+        {"title": "hsl", "type": "string", "pattern": "^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)$"},
+        {"title": "other", "type": "string", "enum": ["none", "transparent", "inherit"]}
+      ]
+    },
+    "weight": {
+      "anyOf": [
+        {"title": "number", "type": "number", "minimum": 1, "maximum": 1000},
+        {"title": "keyword", "enum": ["normal","bold","lighter","bolder","inherit","initial","unset"]}
+      ]
     }
   }
 }
