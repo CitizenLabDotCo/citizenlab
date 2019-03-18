@@ -168,7 +168,7 @@ class Idea < ApplicationRecord
 
   def assignee_can_moderate_project
     if self.assignee && self.project &&
-      !ProjectPolicy::Scope.new(self.assignee, Project).moderatable.find_by(id: self.project_id)
+      !ProjectPolicy.new(self.assignee, self.project).moderate?
       self.errors.add(
         :assignee_id,
         :assignee_can_not_moderate_project,

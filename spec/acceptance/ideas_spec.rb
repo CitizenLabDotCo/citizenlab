@@ -341,6 +341,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Set automatically if not provided. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins", extra: "Defaults to status with code 'proposed'"
       parameter :publication_status, "Password", required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(",")}"
       parameter :title_multiloc, "Multi-locale field with the idea title", required: true, extra: "Maximum 100 characters"
@@ -499,6 +500,7 @@ resource "Ideas" do
       parameter :project_id, "The idea of the project that hosts the idea", extra: ""
       parameter :phase_ids, "The phases the idea is part of, defaults to the current only, only allowed by admins"
       parameter :author_id, "The user id of the user owning the idea", extra: "Required if not draft"
+      parameter :assignee_id, "The user id of the admin/moderator that takes ownership. Only allowed for admins/moderators."
       parameter :idea_status_id, "The status of the idea, only allowed for admins"
       parameter :publication_status, "Either #{Idea::PUBLICATION_STATUSES.join(', ')}"
       parameter :title_multiloc, "Multi-locale field with the idea title", extra: "Maximum 100 characters"
@@ -571,6 +573,17 @@ resource "Ideas" do
     end
 
     describe do
+      let(:assignee_id) { create(:admin).id }
+
+      example "Changing the assignee as a non-admin does not work", document: false do
+        do_request
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:assignee)).to be_nil
+      end
+    end
+
+    describe do
       let(:budget) { 1800 }
 
       example "Change the participatory budget as a non-admin does not work", document: false do
@@ -596,6 +609,16 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        end
+      end
+
+      describe do
+        let(:assignee_id) { create(:admin).id }
+
+        example_request "Change the assignee (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
         end
       end
 
@@ -640,6 +663,16 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:idea_status,:data,:id)).to eq idea_status_id
+        end
+      end
+
+      describe do
+        let(:assignee_id) { create(:admin).id }
+
+        example_request "Change the assignee (as a moderator)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:assignee,:data,:id)).to eq assignee_id
         end
       end
     end
