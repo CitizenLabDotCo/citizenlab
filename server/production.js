@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request');
+const path = require('path');
 const compression = require('compression');
 const { API_HOST, API_PORT } = require('./getApiData');
 
@@ -18,6 +19,15 @@ app.use('/auth', (req, res) => {
 
 // Serve static files
 app.use(express.static('build'));
+
+app.use('/fragments/*', function(req, res) {
+  res.send(404);
+});
+
+app.use('*', function(req, res) {
+  res.sendFile(path.resolve('build/index.html'));
+});
+
 
 app.listen(3000, () => {
   console.log('Serving production build on port 3000');

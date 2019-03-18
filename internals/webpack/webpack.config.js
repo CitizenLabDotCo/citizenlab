@@ -23,6 +23,12 @@ const config = {
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+
   mode: isDev ? 'development' : 'production',
 
   devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
