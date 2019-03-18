@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { isFunction, isBoolean, isString } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
@@ -97,11 +97,12 @@ const ModalContainer: any = styled(clickOutside)`
     &.fixedHeight {
       height: 80vh;
     }
+  `}
 
-    ${media.smallerThanMinTablet`
-      width: 85vw;
-      max-height: 80vh;
-    `}
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
   `}
 `;
 
@@ -123,8 +124,11 @@ const Overlay = styled(FocusTrap)`
   z-index: 1000000;
   will-change: opacity, transform;
 
-  ${media.smallerThanMaxTablet`
-    padding: 0;
+  ${media.smallerThanMinTablet`
+    padding-top: 50px;
+    padding-bottom: 60px;
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 
   &.modal-enter {
@@ -219,12 +223,6 @@ export const Spacer = styled.div`
   flex: 1;
 `;
 
-interface ITracks {
-  clickCloseButton: () => void;
-  clickOutsideModal: () => void;
-  clickBack: () => void;
-}
-
 type Props = {
   opened: boolean;
   fixedHeight?: boolean | undefined;
@@ -237,11 +235,12 @@ type Props = {
   skipText?: JSX.Element;
   label?: string;
   children?: any;
+  closeOnClickOutside?: boolean;
 };
 
 type State = {};
 
-class Modal extends React.PureComponent<Props & ITracks, State> {
+export default class Modal extends PureComponent<Props, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
   private el: HTMLDivElement;
@@ -249,7 +248,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   private ModalContentElement: HTMLDivElement | null;
   private ModalCloseButton: HTMLButtonElement | null;
 
-  constructor(props: Props & ITracks) {
+  constructor(props: Props) {
     super(props);
     this.unlisten = null;
     this.goBackUrl = null;
@@ -308,7 +307,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.goBackUrl) {
-      this.props.clickBack();
+      trackEventByName(tracks.clickBack);
     }
 
     this.props.close();
@@ -325,14 +324,16 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal();
-    this.manuallyCloseModal();
+    if (this.props.closeOnClickOutside !== false) {
+      trackEventByName(tracks.clickOutsideModal);
+      this.manuallyCloseModal();
+    }
   }
 
   clickCloseButton = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.clickCloseButton();
+    trackEventByName(tracks.clickCloseButton);
     this.manuallyCloseModal();
   }
 
@@ -425,8 +426,3 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     );
   }
 }
-
-const WrappedModal = injectTracks<Props>(tracks)(Modal);
-WrappedModal.displayName = 'ModalWithTracks';
-
-export default WrappedModal;

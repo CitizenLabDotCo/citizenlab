@@ -14,9 +14,11 @@ const Container = styled.div`
   background-color: ${transparentize(.95, colors.adminTextColor)};;
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
+
   &:last-child {
     margin: 0;
   }
+
   ${media.smallerThanMaxTablet`
     flex-wrap: wrap;
   `}
@@ -24,9 +26,17 @@ const Container = styled.div`
 
 const TextContainer = styled.div`
   padding: 0 20px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
   p {
-    color: ${colors.label}
+    color: ${colors.label};
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
   }
+
   ${media.smallerThanMaxTablet`
     padding: 0;
   `}
@@ -41,6 +51,7 @@ const InputContainer = styled.div`
 const HiddenLabel = styled.label`
   ${hideVisually()}
 `;
+
 const StyledInput = styled.input`
   ${hideVisually()}
 `;

@@ -24,11 +24,6 @@ import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
 
 if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
-  // configureScope((scope) => {
-  //   scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
-  //   scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
-  // });
-
   init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV,
