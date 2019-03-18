@@ -171,18 +171,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             },
             fontactive: (familyName, _fvd) => {
               injectGlobal`
-                html,
-                body,
-                h1,
-                h2,
-                h3,
-                h4,
-                h5,
-                button,
-                input,
-                optgroup,
-                select,
-                textarea {
+                html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
                   font-family: ${familyName}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
                 }
               `;
@@ -221,7 +210,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
-    const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
+    const fullscreenModalHeaderChild = ((modalOpened && modalType === 'idea' && modalId) ? (
       <VoteControl
         ideaId={modalId}
         unauthenticatedVoteClick={this.unauthenticatedVoteClick}

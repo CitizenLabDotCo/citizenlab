@@ -103,6 +103,10 @@ interface ITenantStyle {
   landingHeaderTitleFontWeight?: number;
   customFontName?: string;
   customFontAdobeId?: string;
+  projectNavbarBackgroundColor?: string;
+  projectNavbarTextColor?: string;
+  projectNavbarIdeaButtonBackgroundColor?: string;
+  projectNavbarIdeaButtonTextColor?: string;
 }
 
 export interface ITenantData {
