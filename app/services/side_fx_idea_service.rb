@@ -25,6 +25,10 @@ class SideFxIdeaService
       LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i, payload: {change: idea.idea_status_id_previous_change})
     end
 
+    if idea.assignee_id_previously_changed?
+      LogActivityJob.perform_later(idea, 'changed_assignee', user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
+    end
+
     if idea.title_multiloc_previously_changed?
       LogActivityJob.perform_later(idea, 'changed_title', user, idea.updated_at.to_i, payload: {change: idea.title_multiloc_previous_change})
     end

@@ -69,7 +69,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.admin? || user&.project_moderator?(record.id) || (
+    moderate? || (
       %w(published archived).include?(record.publication_status) && (
         record.visible_to == 'public' || (
           user &&
@@ -85,7 +85,7 @@ class ProjectPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.active? && (user.admin? || user.project_moderator?(record.id))
+    moderate?
   end
 
   def reorder?
@@ -95,6 +95,7 @@ class ProjectPolicy < ApplicationPolicy
   def destroy?
     user&.active? && user.admin?
   end
+
 
   def shared_permitted_attributes
     [
@@ -133,5 +134,11 @@ class ProjectPolicy < ApplicationPolicy
 
   def permitted_attributes_for_reorder
     [:ordering]
+  end
+
+  # Helper method that is not part of the pundit conventions but is used
+  # publicly
+  def moderate?
+    user&.active? && (user.admin? || user.project_moderator?(record.id))
   end
 end
