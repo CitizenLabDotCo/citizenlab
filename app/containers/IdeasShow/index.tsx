@@ -14,7 +14,8 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import Comments from './CommentsContainer';
+import Comments from './Comments/CommentsContainer';
+import ParentCommentForm from './Comments/ParentCommentForm';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -24,7 +25,6 @@ import Modal from 'components/UI/Modal';
 import VoteControl from 'components/VoteControl';
 import VoteWrapper from './VoteWrapper';
 import AssignBudgetWrapper from './AssignBudgetWrapper';
-import ParentCommentForm from './ParentCommentForm';
 import FileAttachments from 'components/UI/FileAttachments';
 import IdeaSharingModalContent from './IdeaSharingModalContent';
 import FeatureFlag from 'components/FeatureFlag';
