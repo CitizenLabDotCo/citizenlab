@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_20_152327) do
+ActiveRecord::Schema.define(version: 2019_03_18_145229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
     t.integer "budget"
     t.integer "baskets_count", default: 0, null: false
     t.integer "official_feedbacks_count", default: 0, null: false
+    t.uuid "assignee_id"
     t.index ["author_id"], name: "index_ideas_on_author_id"
     t.index ["idea_status_id"], name: "index_ideas_on_idea_status_id"
     t.index ["location_point"], name: "index_ideas_on_location_point", using: :gist
@@ -586,6 +587,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
     t.string "logo"
     t.string "header_bg"
     t.string "favicon"
+    t.jsonb "style", default: {}
     t.index ["host"], name: "index_tenants_on_host"
   end
 
@@ -665,6 +667,7 @@ ActiveRecord::Schema.define(version: 2019_02_20_152327) do
   add_foreign_key "idea_images", "ideas"
   add_foreign_key "ideas", "idea_statuses"
   add_foreign_key "ideas", "projects"
+  add_foreign_key "ideas", "users", column: "assignee_id"
   add_foreign_key "ideas", "users", column: "author_id"
   add_foreign_key "ideas_phases", "ideas"
   add_foreign_key "ideas_phases", "phases"

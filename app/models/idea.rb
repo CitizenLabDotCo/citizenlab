@@ -16,6 +16,7 @@ class Idea < ApplicationRecord
     touch: true
 
   belongs_to :author, class_name: 'User', optional: true
+  belongs_to :assignee, class_name: 'User', optional: true
 
   has_many :ideas_topics, dependent: :destroy
   has_many :topics, through: :ideas_topics
@@ -50,6 +51,7 @@ class Idea < ApplicationRecord
   validates :author_name, presence: true, unless: :draft?, on: :create
   validates :idea_status, presence: true, unless: :draft?
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validate :assignee_can_moderate_project, unless: :draft?
 
   before_validation :generate_slug, on: :create
   before_validation :set_author_name
@@ -161,6 +163,17 @@ class Idea < ApplicationRecord
   def strip_title
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
+    end
+  end
+
+  def assignee_can_moderate_project
+    if self.assignee && self.project &&
+      !ProjectPolicy::Scope.new(self.assignee, Project).moderatable.find_by(id: self.project_id)
+      self.errors.add(
+        :assignee_id,
+        :assignee_can_not_moderate_project,
+        message: 'The assignee can not moderate the project of this idea'
+      )
     end
   end
 
