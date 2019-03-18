@@ -13,8 +13,8 @@ class TenantTemplateService
     apply_template resolve_template(template_name, external_subfolder: external_subfolder)
   end
 
-  def apply_template template
-    template = YAML.load template
+  def apply_template template_
+    template = YAML.load template_
     start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
@@ -102,8 +102,8 @@ class TenantTemplateService
     @template.to_yaml
   end
 
-  def template_locales template
-    template = YAML.load template
+  def template_locales template_
+    template = YAML.load template_
     locales = Set.new
     template['models'].each do |_, instances|
       instances.each do |attributes|
@@ -122,8 +122,8 @@ class TenantTemplateService
     locales.to_a
   end
 
-  def change_locales template, locale_from, locale_to
-    template = YAML.load template
+  def change_locales template_, locale_from, locale_to
+    template = YAML.load template_
     template['models'].each do |_, instances|
       instances.each do |attributes|
         attributes.each do |field_name, multiloc|
@@ -152,16 +152,16 @@ class TenantTemplateService
     locales.to_a
   end
 
-  def translate_and_fix_locales template
-    template = YAML.load template
-    locales_to = Set.new Tenant.current.settings.dig('core', 'locales')
-    return template.to_yaml if Set.new(template_locales(template)).subset? locales_to
-    locales_from = Set.new required_locales(template)
+  def translate_and_fix_locales template_
+    template = YAML.load template_
+    locales_to = Tenant.current.settings.dig('core', 'locales')
+    return template.to_yaml if Set.new(template_locales(template.to_yaml)).subset? Set.new(locales_to)
+    locales_from = required_locales template
     # Change unsupported user locales to first target tenant locale.
-    if !locales_from.subset? locales_to
+    if !Set.new(locales_from).subset? Set.new(locales_to)
       template['models']['user']&.each do |attributes|
         if !locales_to.include? attributes['locale']
-          attributes['locale'] = locale_to.first
+          attributes['locale'] = locales_to.first
         end
       end
     end
@@ -178,11 +178,17 @@ class TenantTemplateService
       fields.each do |attributes|
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
-            field_value.keys.each do |locale|
-              if locale == translate_from && translate_to
-                field_value[locale] = MachineTranslations::MachineTranslationService.translate field_value[locale], locale, translate_to
-              elsif !locales_to.include? locale
-                field_value.delete locale
+            if (field_value.keys & locales_to).blank? && !field_value.keys.include?(translate_from) && field_value.present?
+              other_translate_from = field_value.keys.first
+              translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, translate_to
+              attributes[field_name] = {translate_to => translation}
+            else
+              field_value.keys.each do |locale|
+                if locale == translate_from && translate_to
+                  field_value[locale] = MachineTranslations::MachineTranslationService.new.translate field_value[locale], locale, translate_to
+                elsif !locales_to.include? locale
+                  field_value.delete locale
+                end
               end
             end
           end
@@ -206,7 +212,7 @@ class TenantTemplateService
   
   def resolve_template template_name, external_subfolder: 'release'
     if template_name.kind_of? String
-      throw "Unknown template '#{template_name}'" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
+      throw "Unknown template" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
       internal_path = Rails.root.join('config', 'tenant_templates', "#{template_name}.yml")
       if File.exists? internal_path
         open(internal_path).read

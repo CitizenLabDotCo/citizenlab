@@ -3,9 +3,9 @@ module AdminApi
 
     def import template
       service = TenantTemplateService.new
-      template = service.translate_and_fix_locales template
+      same_template = service.translate_and_fix_locales template.to_yaml
       ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template template
+        service.resolve_and_apply_template YAML.load(same_template)
       end
     end
 
@@ -361,7 +361,7 @@ module AdminApi
     def yml_votes
       idea_ids = @project.ideas.published.ids
       comment_ids = Comment.where(idea_id: idea_ids)
-      Vote.where(votable_id: idea_ids + comment_ids).map do |v|
+      Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {
           'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
           'user_ref'    => lookup_ref(v.user_id, :user),
