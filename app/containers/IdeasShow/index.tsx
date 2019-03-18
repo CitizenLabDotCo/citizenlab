@@ -841,7 +841,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
-                {!isNilOrError(ideaComments) && ideaComments.length > 0 ?
+                {!isNilOrError(ideaComments) && ideaComments.filter(comment => comment.attributes.publication_status !== 'deleted').length > 0 ?
                   <CommentsTitle>
                     <FormattedMessage {...messages.commentsTitle} />
                   </CommentsTitle>
