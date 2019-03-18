@@ -34,14 +34,10 @@ module AdminApi
         new_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
         @tenant.assign_attributes(settings: new_settings)
       end
-      if tenant_params[:style]
-        new_style = @tenant.style.deep_merge(tenant_params[:style].to_h) if tenant_params[:style]
-        @tenant.assign_attributes(style: new_style)
-      end
 
       SideFxTenantService.new.before_update(@tenant, nil)
 
-      if @tenant.update(tenant_params.except(:settings, :style))
+      if @tenant.update(tenant_params.except(:settings))
         SideFxTenantService.new.after_update(@tenant, nil)
         render json: @tenant, status: :ok
       else
