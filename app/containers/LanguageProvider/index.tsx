@@ -29,18 +29,14 @@ class LanguageProvider extends React.PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    const { locale, tenantLocales } = this.props;
-
-    if (!isNilOrError(locale) && !this.state.messages[locale]) {
-      this.importLocale(locale);
-    }
-
-    if (!isNilOrError(tenantLocales)) {
-      this.importTenantLocales(tenantLocales);
-    }
+    this.loadLocales();
   }
 
   componentDidUpdate() {
+    this.loadLocales();
+  }
+
+  loadLocales = () => {
     const { locale, tenantLocales } = this.props;
 
     if (!isNilOrError(locale) && !this.state.messages[locale]) {
