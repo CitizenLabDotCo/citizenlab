@@ -125,8 +125,13 @@ class WebApi::V1::IdeasController < ApplicationController
     params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
+
+    @idea.assign_attributes(permitted_attributes(@idea))
+    authorize @idea
+
+    SideFxIdeaService.new.before_update(@idea, current_user)
     ActiveRecord::Base.transaction do
-      if @idea.update(permitted_attributes(@idea))
+      if @idea.save
         authorize @idea
         SideFxIdeaService.new.after_update(@idea, current_user)
         render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
@@ -138,6 +143,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
+    SideFxIdeaService.new.before_destroy(@idea, current_user)
     idea = @idea.destroy
     if idea.destroyed?
       SideFxIdeaService.new.after_destroy(idea, current_user)
