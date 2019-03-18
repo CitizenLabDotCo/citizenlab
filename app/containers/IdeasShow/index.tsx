@@ -694,7 +694,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
     } = this.state;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale)) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       const authorId = get(idea, 'relationships.author.data.id', null);
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
@@ -988,15 +988,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
       );
     }
 
-    console.log(opened, loaded);
-
     return (
       <>
         <CSSTransition
           classNames="loading"
           in={(opened && !loaded)}
           timeout={loadingTimeout}
-          mountOnEnter={true}
+          mountOnEnter={false}
           unmountOnExit={true}
           exit={false}
         >
@@ -1033,7 +1031,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
             }
           </Modal>
         </FeatureFlag>
-      </ >
+      </>
     );
   }
 }
