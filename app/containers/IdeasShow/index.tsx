@@ -906,20 +906,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
                     {!isNilOrError(authUser) &&
                       <MoreActionsMenuWrapper>
-                        <MoreActionsMenu
-                          actions={[
-                            {
-                              label: <FormattedMessage {...messages.reportAsSpam} />,
-                              handler: this.openSpamModal,
-                            },
-                            {
-                              label: <FormattedMessage {...messages.editIdea} />,
-                              handler: this.editIdea,
-                            }
-                          ]}
-                          label={<FormattedMessage {...messages.moreOptions} />}
-                        />
                         <HasPermission item={idea} action="edit" context={idea}>
+                          <MoreActionsMenu
+                            actions={[
+                              {
+                                label: <FormattedMessage {...messages.reportAsSpam} />,
+                                handler: this.openSpamModal,
+                              },
+                              {
+                                label: <FormattedMessage {...messages.editIdea} />,
+                                handler: this.editIdea,
+                              }
+                            ]}
+                            label={<FormattedMessage {...messages.moreOptions} />}
+                          />
                           <HasPermission.No>
                             <MoreActionsMenu
                               actions={[{
