@@ -13,10 +13,6 @@ import clickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// Translation
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -24,7 +20,6 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { hideVisually } from 'polished';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -37,29 +32,21 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   fill: ${colors.mediumGrey};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-  `}
 `;
 
 const CloseButton = styled.button`
+  width: 20px;
+  height: 20px;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  height: 30px;
-  width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 25px;
+  right: 25px;
   cursor: pointer;
   outline: none;
+  margin: 0;
+  padding: 0;
 
   &:hover,
   &:focus,
@@ -70,12 +57,11 @@ const CloseButton = styled.button`
   }
 
   ${media.smallerThanMinTablet`
-    height: 18px;
     width: 18px;
+    height: 18px;
+    top: 18px;
   `}
 `;
-
-const HiddenSpan = styled.span`${hideVisually()}`;
 
 const ModalContainer: any = styled(clickOutside)`
   width: 100%;
@@ -125,8 +111,8 @@ const Overlay = styled(FocusTrap)`
   will-change: opacity, transform;
 
   ${media.smallerThanMinTablet`
-    padding-top: 50px;
-    padding-bottom: 60px;
+    padding-top: 40px;
+    padding-bottom: 70px;
     padding-left: 15px;
     padding-right: 15px;
   `}
@@ -167,6 +153,8 @@ const HeaderContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 15px;
+    padding-bottom: 15px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -201,6 +189,8 @@ const FooterContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -386,9 +376,6 @@ export default class Modal extends PureComponent<Props, State> {
               onClick={this.clickCloseButton}
               innerRef={this.setCloseButtonRef}
             >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
-              </HiddenSpan>
               <CloseIcon name="close3" />
             </CloseButton >
 
