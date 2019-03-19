@@ -26,7 +26,7 @@ const ButtonWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   pages: GetPagesChildProps;
@@ -103,7 +103,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
 
 const PagesWithInjectedIntl = injectIntl<Props>(Pages);
 
-export default (inputProps: Props) => (
+export default (inputProps: InputProps) => (
   <GetPages>
     {pages => <PagesWithInjectedIntl {...inputProps} pages={pages} />}
   </GetPages>

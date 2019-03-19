@@ -37,7 +37,7 @@ interface State {
   isProcessing: boolean;
 }
 
-interface InputProps { }
+export interface InputProps {}
 
 interface DataProps {
   customFields: GetCustomFieldsChildProps;

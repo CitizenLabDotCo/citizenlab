@@ -10,13 +10,10 @@ import 'assets/css/reset.min.css';
 import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init } from '@sentry/browser';
+import { init, Integrations } from '@sentry/browser';
 
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
-
-// Import i18n messages
-import { translationMessages } from './i18n';
 
 // Import root routes
 import createRoutes from './routes';
@@ -32,7 +29,8 @@ if (process && process.env && process.env.NODE_ENV === 'production' && process.e
   init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV,
-    release: process.env.CIRCLE_BUILD_NUM
+    release: process.env.CIRCLE_BUILD_NUM,
+    integrations: [new Integrations.RewriteFrames()]
   });
 }
 
@@ -43,14 +41,16 @@ const rootRoute = {
   childRoutes: createRoutes(),
 };
 
-const Root = () => (
-  <LanguageProvider messages={translationMessages}>
-    <Router
-      history={browserHistory}
-      routes={rootRoute}
-      render={applyRouterMiddleware(useScroll())}
-    />
-  </LanguageProvider>
-);
+const Root = () => {
+  return (
+    <LanguageProvider>
+      <Router
+        history={browserHistory}
+        routes={rootRoute}
+        render={applyRouterMiddleware(useScroll())}
+      />
+    </LanguageProvider>
+  );
+};
 
 render(<Root />, document.getElementById('app'));
