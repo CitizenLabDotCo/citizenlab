@@ -31,6 +31,13 @@ describe TimelineService do
     end
   end
 
+  describe "current_and_future_phases" do
+    it "returns an array of current and future phases" do
+      project = create(:project_with_current_phase)
+      expect(service.current_and_future_phases(project)).to match_array project.phases.drop(2)
+    end
+  end
+
   describe "is_in_active_phase?" do
     it "returns truthy when the given idea is in the active phase" do
       project = create(:project_with_current_phase)
