@@ -34,7 +34,7 @@ import { colors } from 'utils/styleUtils';
   justify-content: center;
   border-radius: 50%;
   transition: all 100ms ease-out;
-  background: #fff;
+  background: transparent;
   position: relative;
 
   &.hasHoverEffect {
