@@ -496,7 +496,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Modal
               width="500px"
-              fixedHeight={false}
               opened={feedbackModalOpen}
               close={this.closeFeedbackModalCancel}
               className="e2e-feedback-modal"

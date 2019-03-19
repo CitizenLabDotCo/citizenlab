@@ -82,6 +82,7 @@ class IdeaActivities extends PureComponent<Props, State> {
             opened={this.state.modalOpen}
             close={this.closeModal}
             header={<FormattedMessage {...messages.lastChangesTitle} />}
+            fixedHeight={true}
           >
             <Activities>
               {ideaActivities.map((activity) => (
