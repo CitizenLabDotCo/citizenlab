@@ -32,7 +32,7 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container: any = styled.div`
@@ -154,7 +154,9 @@ interface DataProps {
   homepageInfoPage: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {}
 
@@ -190,7 +192,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -208,7 +210,7 @@ class LandingPage extends PureComponent<Props, State> {
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
             <Content>
-              <ProjectsStyledContentContainer maxWidth={1150}>
+              <ProjectsStyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <ProjectCards
@@ -239,11 +241,11 @@ class LandingPage extends PureComponent<Props, State> {
                   <p>{subtitle}</p>
                   <StyledAvatarBubbles />
                   <Button
-                    style="primary-inverse"
-                    padding="10px 30px"
-                    size="1"
-                    linkTo="/sign-up"
                     fontWeight="500"
+                    padding="13px 22px"
+                    bgColor="#fff"
+                    textColor={theme.colorText}
+                    linkTo="/sign-up"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}
                   />
@@ -267,8 +269,10 @@ const Data = adopt<DataProps, InputProps>({
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
+const LandingPageWithHoC = withTheme<Props, State>(LandingPage);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <LandingPage {...inputProps} {...dataProps} />}
+    {dataProps => <LandingPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -4,6 +4,7 @@ import { isNumber } from 'lodash-es';
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -11,7 +12,7 @@ import Icon from 'components/UI/Icon';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import messages from '../../messages';
+import { darken } from 'polished';
 
 const Container = styled.button`
   width: 24px;
@@ -19,32 +20,31 @@ const Container = styled.button`
   align-items: center;
   cursor: pointer;
   display: flex;
-  fill: ${colors.label};
+  fill: ${({ theme }) => theme.navbarTextColor || colors.label};
   justify-content: center;
   padding: 0;
   position: relative;
-  outline: none;
 
   &:hover,
   &:focus {
-    fill: ${colors.text};
+    fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
   }
 `;
 
 const NotificationIcon = styled(Icon)`
   height: 24px;
   fill: inherit;
-  transition: all 150ms ease;`
-;
+  transition: all 100ms ease-out;
+`;
 
 const NewNotificationsIndicator = styled.div`
   color: #fff;
   font-size: ${fontSizes.xs}px;
   line-height: ${fontSizes.xs}px;
-  background: ${colors.clRed};
-  padding: 2px;
+  background: ${({ theme }) => theme.invertedNavbarColors && theme.navbarTextColor ? theme.colorText : colors.clRed};
+  padding: 4px;
   border-radius: 5px;
-  border: solid 1px #fff;
+  border: solid 1px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
   position: absolute;
   top: -8px;
   left: 15px;
@@ -63,11 +63,19 @@ type Props = {
 type State = {};
 
 class NotificationCount extends PureComponent<Props & InjectedIntlProps, State> {
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const { count } = this.props;
 
     return (
-      <Container aria-label={this.props.intl.formatMessage(messages.notificationsLabel)} onClick={this.props.onClick}>
+      <Container
+        aria-label={this.props.intl.formatMessage(messages.notificationsLabel)}
+        onMouseDown={this.removeFocus}
+        onClick={this.props.onClick}
+      >
         <NotificationIcon name="notification" />
         {(isNumber(count) && count > 0) ?
           <NewNotificationsIndicator>
