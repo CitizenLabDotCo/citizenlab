@@ -4,11 +4,11 @@
   "additionalProperties": false,
   "properties": {
     "invertedNavbarColors": {
-      "description": "true if the navbar has light text on a dark background, otherwise false",
-      "$ref": "#/definitions/color"
+      "description": "Does the navbar have inverted colors (light text on a dark background)?",
+      "type": "boolean"
     },
     "navbarBackgroundColor": {
-      "description": "The background color of a normal navigation item",
+      "description": "The background color of a navigation item that's not active (not being visited)",
       "$ref": "#/definitions/color"
     },
     "navbarActiveItemBackgroundColor": {
@@ -24,15 +24,15 @@
       "$ref": "#/definitions/color"
     },
     "navbarHighlightedItemBackgroundColor": {
-      "description": "The background color of a navigation item in the navbar that needs to attract extra attention",
+      "description": "The background color of a navigation item in the navbar that needs to attract extra attention (e.g. the sign-up button)",
       "$ref": "#/definitions/color"
     },
     "navbarBorderColor": {
-      "description": "The color of the bottom border of the navbar",
+      "description": "The color of the full-width bottom border of the navbar",
       "$ref": "#/definitions/color"
     },
     "landingHeaderOverlayColor": {
-      "description": "The overlay color of the landing page signed-out and signed-in header",
+      "description": "The overlay color of the landing page signed-out and signed-in headers",
       "$ref": "#/definitions/color"
     },
     "landingHeaderTitleFontSize": {
@@ -54,6 +54,22 @@
     "customFontAdobeId": {
       "description": "The Adobe Fonts ID of the configured custom font",
       "type": "string"
+    },
+    "projectNavbarBackgroundColor": {
+      "description": "The background color of the project page navbar (shown underneath the main navbar)",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarTextColor": {
+      "description": "The text color, icon color and bottom border of the project page navbar items (shown underneath the main navbar)",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarIdeaButtonBackgroundColor": {
+      "description": "The background color of the project navbar 'Post an idea' button",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarIdeaButtonTextColor": {
+      "description": "The text color of the project navbar 'Post an idea' button",
+      "$ref": "#/definitions/color"
     }
   },
   "definitions": {
