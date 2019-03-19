@@ -8,7 +8,7 @@ class Vote < ApplicationRecord
       ["votes.mode = ?", 'up']   => 'upvotes_count',
       ["votes.mode = ?", 'down'] => 'downvotes_count'
     }
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :votable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
