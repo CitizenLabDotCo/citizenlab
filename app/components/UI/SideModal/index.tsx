@@ -110,7 +110,7 @@ const CloseIcon = styled(Icon)`
   width: 20px;
   height: 20px;
   fill: ${colors.mediumGrey};
-  z-index: 1;
+  z-index: 2;
 `;
 
 const CloseButton = styled.button`

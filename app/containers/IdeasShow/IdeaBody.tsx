@@ -12,9 +12,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 interface Props {
   ideaId: string;
   ideaBody: string;
-  locale: Locale;
-  translateButtonClicked: boolean;
-  onTranslationLoaded: () => void;
+  locale?: Locale;
+  translateButtonClicked?: boolean;
+  onTranslationLoaded?: () => void;
 }
 
 const IdeaBody = (props: Props) => {
@@ -22,7 +22,7 @@ const IdeaBody = (props: Props) => {
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
         <QuillEditedContent>
-          {translateButtonClicked ?
+          {locale && onTranslationLoaded && translateButtonClicked ?
             <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
               {translation => {
                 if (!isNilOrError(translation)) {
