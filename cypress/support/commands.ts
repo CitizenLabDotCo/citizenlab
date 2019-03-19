@@ -86,11 +86,13 @@ export function signup(firstName: string, lastName: string, email: string, passw
 }
 
 export function acceptCookies() {
-  cy.get('body').then(($body) => {
-    if ($body.find('.e2e-accept-cookies-btn').length) {
-      cy.get('.e2e-accept-cookies-btn').click();
-    }
-  });
+  // cy.get('body').then(($body) => {
+  //   if ($body.find('.e2e-accept-cookies-btn').length) {
+  //     cy.get('.e2e-accept-cookies-btn').click();
+  //   }
+  // });
+
+  cy.get('.e2e-accept-cookies-btn').click();
 }
 
 export function getProjectBySlug(projectSlug: string) {
