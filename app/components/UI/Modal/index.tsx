@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { isFunction, isBoolean, isString } from 'lodash-es';
+import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
@@ -215,8 +215,8 @@ export const Spacer = styled.div`
 
 type Props = {
   opened: boolean;
-  fixedHeight?: boolean | undefined;
-  width?: string | undefined;
+  fixedHeight?: boolean;
+  width?: string;
   close: () => void;
   className?: string;
   header?: JSX.Element;
@@ -237,6 +237,11 @@ export default class Modal extends PureComponent<Props, State> {
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
   private ModalCloseButton: HTMLButtonElement | null;
+
+  static defaultProps = {
+    fixedHeight: true,
+    width: '650px'
+  };
 
   constructor(props: Props) {
     super(props);
@@ -343,11 +348,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    let { fixedHeight, width } = this.props;
-    const { children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
-
-    fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
-    width = (isString(width) ? width : '650px');
+    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
     const element = (opened ? (
       <CSSTransition
@@ -366,7 +367,7 @@ export default class Modal extends PureComponent<Props, State> {
           aria-label={label}
         >
           <ModalContainer
-            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+            className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
             hasHeaderOrFooter={header !== undefined || footer !== undefined}
