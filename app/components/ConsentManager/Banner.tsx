@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
-
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-
+import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
-const Root = styled.div`
+const Container = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
@@ -20,8 +19,8 @@ const Root = styled.div`
   z-index: 10;
   width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 20px 30px;
 
   ${media.smallerThanMaxTablet`
@@ -29,18 +28,16 @@ const Root = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding: 15px 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
   `}
 `;
 
-const StyledContentContainer = styled.div`
+const ContentContainerInner = styled.div`
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
-  width: 100%;
-  padding-right: 35px;
-  padding-left: 35px;
-  max-width: ${(props) => props.theme.maxPageWidth}px;
 
   p:first-child {
     font-weight: 500;
@@ -59,21 +56,34 @@ const StyledContentContainer = styled.div`
       display: none;
     }
   `}
+
+  ${media.smallerThanMinTablet`
+    max-width: auto;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+  `}
 `;
 
 const Left = styled.div`
   flex: 1;
   margin-right: 40px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 
   ${media.smallerThanMinTablet`
-    margin-right: 20px;
+    margin-right: 0px;
+    margin-bottom: 20px;
   `}
 `;
 
 const StyledLink = styled(Link)`
   color: white;
   text-decoration: underline;
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     color: white;
     text-decoration: underline;
   }
@@ -81,6 +91,22 @@ const StyledLink = styled(Link)`
 
 const ButtonContainer = styled.div`
   display: flex;
+`;
+
+const PreferencesButton = styled(Button)`
+  margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 0px;
+    order: 2;
+  `}
+`;
+
+const AcceptButton = styled(Button)`
+  ${media.smallerThanMinTablet`
+    margin-right: 10px;
+    order: 1;
+  `}
 `;
 
 const CloseButton = styled.button`
@@ -109,8 +135,6 @@ interface Props {
 }
 
 class Banner extends PureComponent<Props & InjectedIntlProps> {
-  static displayName = 'Banner';
-
   render() {
     const {
       onAccept,
@@ -119,8 +143,9 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
     } = this.props;
 
     return (
-      <Root role="banner">
-        <StyledContentContainer>
+      <Container role="banner">
+        <ContentContainer mode="page">
+        <ContentContainerInner>
           <Left>
             <FormattedMessage
               tagName="p"
@@ -136,25 +161,29 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
             <FormattedMessage {...messages.subText} tagName="p" />
           </Left>
           <ButtonContainer>
-            <Button
-              style="primary-outlined"
+            <PreferencesButton
               borderColor="transparent"
               textColor="#fff"
+              bgColor={colors.adminTextColor}
+              bgHoverColor={rgba(255, 255, 255, 0.15)}
+              padding="8px 12px"
               onClick={onChangePreferences}
               className="integration-open-modal"
             >
               <FormattedMessage {...messages.manage} />
-            </Button>
-            <Button
+            </PreferencesButton>
+            <AcceptButton
               className="e2e-accept-cookies-btn"
               style="primary-inverse"
               textColor={colors.adminTextColor}
+              padding="8px 12px"
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
-            </Button>
+            </AcceptButton>
           </ButtonContainer>
-        </StyledContentContainer>
+        </ContentContainerInner>
+        </ContentContainer>
 
         <CloseButton
           type="button"
@@ -165,7 +194,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
         >
           <Icon name="close4" />
         </CloseButton>
-      </Root>
+      </Container>
     );
   }
 }
