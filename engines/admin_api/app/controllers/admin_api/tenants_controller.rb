@@ -30,14 +30,15 @@ module AdminApi
     end
 
     def update
-      new_settings = if tenant_params[:settings]
+      if tenant_params[:settings]
         new_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
         @tenant.assign_attributes(settings: new_settings)
       end
+      @tenant.assign_attributes(tenant_params.except(:settings))
 
       SideFxTenantService.new.before_update(@tenant, nil)
 
-      if @tenant.update(tenant_params.except(:settings))
+      if @tenant.save
         SideFxTenantService.new.after_update(@tenant, nil)
         render json: @tenant, status: :ok
       else
