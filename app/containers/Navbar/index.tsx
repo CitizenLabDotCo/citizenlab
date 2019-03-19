@@ -143,7 +143,6 @@ const NavigationItem = styled(Link)`
       width: 100%;
       z-index: -1;
       background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
-      /* background-color: rgba(0, 0, 0, 0.3); */
       pointer-events: none;
     }
   }
@@ -151,10 +150,6 @@ const NavigationItem = styled(Link)`
 
 const NavigationItemText = styled.span`
   white-space: nowrap;
-
-  /* &:not(.sign-up-span) {
-    background-color: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
-  } */
 
   &:hover {
     text-decoration: underline;
