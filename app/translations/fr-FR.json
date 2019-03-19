@@ -1180,7 +1180,7 @@
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotActivePhase": "Vous pourrez participer à cette enquête lorsque cette phase du processus sera active.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de participer à cette enquête.",
   "app.containers.ProjectsShowPage.process.survey.surveyDisabledNotPossible": "Il est actuellement impossible de participer à cette enquête.",
-  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L’enquête n’est plus disponible, puisque ce projet n’est plus active.",
+  "app.containers.ProjectsShowPage.process.survey.surveyDisabledProjectInactive": "L’enquête n’est pas disponible étant donné ce projet n'est pas actif.",
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "J’ai déjà accepté les {tacLink}",
   "app.containers.SignIn.createAnAccount": "Créez un compte",
   "app.containers.SignIn.emailLabel": "Adresse e-mail",

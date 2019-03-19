@@ -1,8 +1,6 @@
 import adminRoutes from 'containers/Admin/routes';
-import loadAndRender from 'utils/loadAndRender';
-import LandingPage from 'containers/LandingPage';
-import IdeasShowPage from 'containers/IdeasShowPage';
-import ProjectShowPage from 'containers/ProjectsShowPage';
+import Loadable from 'react-loadable';
+import { LoadableLoadingCitizen } from 'components/UI/LoadableLoading';
 
 export default function createRoutes() {
   return [
@@ -11,140 +9,249 @@ export default function createRoutes() {
       name: 'LocaleWrapper',
       indexRoute: {
         name: 'home',
-        component: LandingPage,
+        component: Loadable({
+          loader: () => import('containers/LandingPage'),
+          loading: LoadableLoadingCitizen,
+          delay: 500
+        })
       },
       childRoutes: [
         {
           path: 'sign-in',
           name: 'signInPage',
-          getComponent: loadAndRender(import('containers/SignInPage')),
+          component: Loadable({
+            loader: () => import('containers/SignInPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'sign-up',
           name: 'signUpPage',
-          getComponent: loadAndRender(import('containers/SignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/SignUpPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'invite',
           name: 'signUpPage',
-          getComponent: loadAndRender(import('containers/SignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/SignUpPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'complete-signup',
           name: 'completeSignUpPage',
-          getComponent: loadAndRender(import('containers/CompleteSignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/CompleteSignUpPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'authentication-error',
           name: 'completeSignUpPage',
-          getComponent: loadAndRender(import('containers/CompleteSignUpPage')),
+          component: Loadable({
+            loader: () => import('containers/CompleteSignUpPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'profile/edit',
           name: 'usersEditPage',
-          getComponent: loadAndRender(import('containers/UsersEditPage')),
+          component: Loadable({
+            loader: () => import('containers/UsersEditPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'profile/:slug',
           name: 'usersShowPage',
-          getComponent: loadAndRender(import('containers/UsersShowPage')),
+          component: Loadable({
+            loader: () => import('containers/UsersShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'ideas/new',
           name: 'IdeasProjectSelectPage',
-          getComponent: loadAndRender(import('containers/IdeasProjectSelectPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasProjectSelectPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'ideas/edit/:ideaId',
           name: 'IdeasEditPage',
-          getComponent: loadAndRender(import('containers/IdeasEditPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasEditPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'ideas',
           name: 'ideasPage',
-          getComponent: loadAndRender(import('containers/IdeasIndexPage')),
+          component: Loadable({
+            loader: () => import('containers/IdeasIndexPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
         {
           path: 'ideas/:slug',
           name: 'ideasShow',
-          component: IdeasShowPage,
+          component: Loadable({
+            loader: () => import('containers/IdeasShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'projects/:slug/ideas/new',
           name: 'IdeasNewPage2',
-          getComponent: loadAndRender(import('containers/IdeasNewPage2')),
+          component: Loadable({
+            loader: () => import('containers/IdeasNewPage2'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         adminRoutes(),
         {
           path: 'projects',
           name: 'Project page',
-          getComponent: loadAndRender(import('containers/ProjectsIndexPage')),
+          component: Loadable({
+            loader: () => import('containers/ProjectsIndexPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'projects/:slug',
           name: 'Project page',
-          component: ProjectShowPage,
+          component: Loadable({
+            loader: () => import('containers/ProjectsShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
           indexRoute: {
             name: 'Project page',
-            getComponent: loadAndRender(import('containers/ProjectsShowPage/main')),
+            component: Loadable({
+              loader: () => import('containers/ProjectsShowPage/main'),
+              loading: LoadableLoadingCitizen,
+              delay: 500
+            })
           },
           childRoutes: [
             {
               path: 'process',
               name: 'Project\'s process page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/process')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/process'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
             },
             {
               path: 'timeline',
               name: 'Project\'s process page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/process')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/process'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
             },
             {
               path: 'info',
               name: 'Project\'s info page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/info')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/info'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              }),
             },
             {
               path: 'events',
               name: 'Project\'s events page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/events')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/events'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
             },
             {
               path: 'ideas',
               name: 'Project\'s ideas page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/ideas')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/ideas'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
             },
             {
               path: 'survey',
               name: 'Project\'s survey page',
-              getComponent: loadAndRender(import('containers/ProjectsShowPage/survey')),
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/survey'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
             },
           ],
         },
         {
           path: 'pages/cookie-policy',
           name: 'cookiePolicy',
-          getComponent: loadAndRender(import('containers/CookiePolicy')),
+          component: Loadable({
+            loader: () => import('containers/CookiePolicy'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
         },
         {
           path: 'pages/:slug',
           name: 'pagesShowPage',
-          getComponent: loadAndRender(import('containers/PagesShowPage')),
+          component: Loadable({
+            loader: () => import('containers/PagesShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
         {
           path: 'password-recovery',
           name: 'passwordRecovery',
-          getComponent: loadAndRender(import('containers/PasswordRecovery')),
+          component: Loadable({
+            loader: () => import('containers/PasswordRecovery'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
         {
+          // Used as link in email received for password recovery
           path: 'reset-password',
           name: 'passwordReset',
-          getComponent: loadAndRender(import('containers/PasswordReset')),
+          component: Loadable({
+            loader: () => import('containers/PasswordReset'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
         {
           path: '*',
           name: 'notfound',
-          getComponent: loadAndRender(import('containers/PagesShowPage')),
+          component: Loadable({
+            loader: () => import('containers/PagesShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
       ],
     }
