@@ -1253,7 +1253,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           <Modal
             opened={this.state.spamModalVisible}
             close={this.closeSpamModal}
-            fixedHeight={false}
             label={formatMessage(messages.spanModalLabelIdea)}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
@@ -1299,7 +1298,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           <Modal
             opened={!!ideaIdForSocialSharing}
             close={this.closeIdeaSocialSharingModal}
-            fixedHeight={false}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
             label={formatMessage(messages.modalShareLabel)}

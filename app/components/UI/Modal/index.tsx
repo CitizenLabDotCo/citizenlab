@@ -79,16 +79,15 @@ const ModalContainer: any = styled(clickOutside)`
     height: 600px;
   }
 
-  ${media.smallerThanMaxTablet`
-    &.fixedHeight {
-      height: 80vh;
-    }
-  `}
-
   ${media.smallerThanMinTablet`
     width: 100%;
+    height: auto;
     max-width: 100vw;
     max-height: 100vh;
+
+    &.fixedHeight {
+      height: auto;
+    }
   `}
 `;
 
@@ -104,17 +103,19 @@ const Overlay = styled(FocusTrap)`
   background: rgba(0, 0, 0, 0.75);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 30px;
   overflow: hidden;
   z-index: 1000000;
   will-change: opacity, transform;
 
+  ${media.biggerThanMinTablet`
+    justify-content: center;
+  `}
+
   ${media.smallerThanMinTablet`
-    padding-top: 40px;
-    padding-bottom: 70px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 80px;
   `}
 
   &.modal-enter {
@@ -239,7 +240,7 @@ export default class Modal extends PureComponent<Props, State> {
   private ModalCloseButton: HTMLButtonElement | null;
 
   static defaultProps = {
-    fixedHeight: true,
+    fixedHeight: false,
     width: '650px'
   };
 

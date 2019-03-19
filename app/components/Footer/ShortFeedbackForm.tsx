@@ -36,6 +36,10 @@ const Form = styled.form`
   align-items: stretch;
   padding: 30px;
   padding-bottom: 15px;
+
+  ${media.smallerThanMinTablet`
+    padding: 15px;
+  `}
 `;
 
 const Submitted = styled.span`
