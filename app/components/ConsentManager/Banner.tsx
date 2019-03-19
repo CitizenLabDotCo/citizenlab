@@ -55,14 +55,14 @@ const Left = styled.div`
 
 const Line = styled.div`
   font-size: ${fontSizes.base}px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
 
   &.first {
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
   ${media.phone`
