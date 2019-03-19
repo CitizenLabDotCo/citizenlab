@@ -15,12 +15,17 @@ module AdminApi
     end
 
     def create
+      template = params[:template] || 'base'
+      required_locales = TenantTemplateService.new.required_locales(template, external_subfolder: 'test')
+      if !Set.new(required_locales).subset?(Set.new(tenant_params.dig(:settings, 'core', 'locales')))
+        raise ClErrors::TransactionError.new(error_key: :missing_locales)
+      end
       @tenant = Tenant.new tenant_params
       SideFxTenantService.new.before_create @tenant, nil
       if @tenant.save
         SideFxTenantService.new.after_create @tenant, nil
         Apartment::Tenant.switch(@tenant.schema_name) do
-          TenantTemplateService.new.resolve_and_apply_template(params[:template] || 'base')
+          TenantTemplateService.new.resolve_and_apply_template template, external_subfolder: 'release'
         end
         SideFxTenantService.new.after_apply_template @tenant, nil
         render json: @tenant, status: :created
@@ -45,7 +50,7 @@ module AdminApi
     end
 
     def templates
-      render json: TenantTemplateService.new.available_templates
+      render json: TenantTemplateService.new.available_templates.values.flatten.uniq
     end
 
     def destroy
