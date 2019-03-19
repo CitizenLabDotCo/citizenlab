@@ -13,6 +13,7 @@ import SendFeedback from 'components/SendFeedback';
 import Modal from 'components/UI/Modal';
 import ShortFeedbackForm from './ShortFeedbackForm';
 import { postProductFeedback } from 'services/productFeedback';
+import Button from 'components/UI/Button';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -313,6 +314,11 @@ const StyledSendFeedback = styled(SendFeedback)`
   `}
 `;
 
+const ShortFeedbackFormModalFooter = styled.div`
+  width: 100%;
+  display: flex;
+`;
+
 const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
 interface Props {
@@ -325,6 +331,8 @@ interface State {
   showCityLogoSection: boolean;
   shortFeedbackButtonClicked: boolean;
   feedbackModalOpen: boolean;
+  feedbackSubmitting: boolean;
+  feedbackSubmitted: boolean;
 }
 
 class Footer extends PureComponent<Props & InjectedIntlProps, State> {
@@ -342,7 +350,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       currentTenant: null,
       showCityLogoSection: false,
       shortFeedbackButtonClicked: false,
-      feedbackModalOpen: false
+      feedbackModalOpen: false,
+      feedbackSubmitting: false,
+      feedbackSubmitted: false
     };
     this.subscriptions = [];
   }
@@ -391,8 +401,20 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ feedbackModalOpen: true });
   }
 
+  closeFeedbackModal = () => {
+    this.setState({ feedbackModalOpen: false });
+  }
+
   closeFeedbackModalSuccess = () => {
     this.setState({ feedbackModalOpen: false });
+  }
+
+  handleFeedbackOnSubmit = (submitting: boolean) => {
+    this.setState({ feedbackSubmitting: submitting });
+  }
+
+  handleFeedbackSubmitted = () => {
+    this.setState({ feedbackSubmitted: true });
   }
 
   closeFeedbackModalCancel = () => {
@@ -406,8 +428,12 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     }).catch(err => Sentry.captureException(err));
   }
 
+  shortFeedbackFormOnSubmit = () => {
+    eventEmitter.emit('Footer', 'ShortFeedbackFormSubmitEvent', null);
+  }
+
   render() {
-    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked, feedbackModalOpen } = this.state;
+    const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
@@ -469,13 +495,31 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             </ShortFeedback>
 
             <Modal
+              width="500px"
               fixedHeight={false}
               opened={feedbackModalOpen}
               close={this.closeFeedbackModalCancel}
               className="e2e-feedback-modal"
+              closeOnClickOutside={false}
+              header={<FormattedMessage {...messages.feedbackModalTitle} />}
+              footer={
+                <ShortFeedbackFormModalFooter>
+                  {!feedbackSubmitted ? (
+                    <Button onClick={this.shortFeedbackFormOnSubmit} processing={feedbackSubmitting}>
+                      <FormattedMessage {...messages.submit} />
+                    </Button>
+                  ) : (
+                    <Button style="secondary" onClick={this.closeFeedbackModal}>
+                      <FormattedMessage {...messages.close} />
+                    </Button>
+                  )}
+                </ShortFeedbackFormModalFooter>
+              }
             >
               <ShortFeedbackForm
                 closeModal={this.closeFeedbackModalSuccess}
+                submitting={this.handleFeedbackOnSubmit}
+                successfullySubmitted={this.handleFeedbackSubmitted}
               />
             </Modal>
 

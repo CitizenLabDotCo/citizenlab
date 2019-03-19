@@ -25,7 +25,6 @@ export interface ITenantSettings {
     meta_description?: Multiloc | null;
     signup_helper_text?: Multiloc | null;
     color_main: string | null;
-    header_overlay_opacity: number | null;
     color_secondary: string | null;
     color_text: string | null;
     color_menu_bg?: string | null;
@@ -80,6 +79,7 @@ export interface ITenantSettings {
   maps?: TenantMapSettings;
   participatory_budgeting: TenantFeature;
 }
+
 interface TenantMapSettings extends TenantFeature {
   map_center: {
     lat: string;
@@ -87,6 +87,26 @@ interface TenantMapSettings extends TenantFeature {
   };
   tile_provider: string;
   zoom_level: number;
+}
+
+interface ITenantStyle {
+  invertedNavbarColors: boolean;
+  navbarBackgroundColor?: string;
+  navbarActiveItemBackgroundColor?: string;
+  navbarActiveItemBorderColor?: string;
+  navbarTextColor?: string;
+  navbarHighlightedItemBackgroundColor?: string;
+  navbarBorderColor?: string;
+  landingHeaderOverlayColor?: string;
+  landingHeaderOverlayOpacity?: number;
+  landingHeaderTitleFontSize?: number;
+  landingHeaderTitleFontWeight?: number;
+  customFontName?: string;
+  customFontAdobeId?: string;
+  projectNavbarBackgroundColor?: string;
+  projectNavbarTextColor?: string;
+  projectNavbarIdeaButtonBackgroundColor?: string;
+  projectNavbarIdeaButtonTextColor?: string;
 }
 
 export interface ITenantData {
@@ -99,6 +119,7 @@ export interface ITenantData {
     logo: ImageSizes;
     header_bg: ImageSizes;
     favicon?: ImageSizes;
+    style?: ITenantStyle;
   };
 }
 
