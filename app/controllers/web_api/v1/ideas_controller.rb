@@ -170,6 +170,7 @@ class WebApi::V1::IdeasController < ApplicationController
     @ideas = @ideas.in_phase(params[:phase]) if params[:phase].present?
     @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
     @ideas = @ideas.where(author_id: params[:author]) if params[:author].present?
+    @ideas = @ideas.where(assignee_id: params[:assignee]) if params[:assignee].present?
     @ideas = @ideas.where(idea_status_id: params[:idea_status]) if params[:idea_status].present?
     @ideas = @ideas.search_by_all(params[:search]) if params[:search].present?
     @ideas = @ideas.with_project_publication_status(params[:project_publication_status]) if params[:project_publication_status].present?

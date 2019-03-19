@@ -13,6 +13,7 @@ FactoryBot.define do
     budget { 750 }
     association :project, factory: :continuous_project
     author
+    association :assignee, factory: :admin
     idea_status
     factory :idea_with_topics do
       transient do
