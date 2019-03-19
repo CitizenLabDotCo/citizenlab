@@ -21,41 +21,17 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 20px;
-    padding-bottom: 20px;
   `}
 `;
 
 const ContentContainerInner = styled.div`
   display: flex;
   align-items: center;
-
-  p:first-child {
-    font-weight: 500;
-    margin-bottom: 5px;
-  }
-
-  ${media.smallerThanMaxTablet`
-    padding: 0px;
-
-    p:first-child {
-      font-weight: 300;
-      margin: 0;
-    }
-
-    p:last-child {
-      display: none;
-    }
-  `}
 
   ${media.smallerThanMinTablet`
     max-width: auto;
@@ -67,14 +43,32 @@ const ContentContainerInner = styled.div`
 
 const Left = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   margin-right: 40px;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
 
   ${media.smallerThanMinTablet`
     margin-right: 0px;
     margin-bottom: 20px;
+  `}
+`;
+
+const Line = styled.div`
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  &.first {
+    margin-bottom: 5px;
+  }
+
+  ${media.phone`
+    &.second {
+      display: none;
+    }
   `}
 `;
 
@@ -109,6 +103,12 @@ const AcceptButton = styled(Button)`
   `}
 `;
 
+const CloseIcon = styled(Icon)`
+  width: 15px;
+  height: 15px;
+  fill: rgba(255, 255, 255, 0.7);
+`;
+
 const CloseButton = styled.button`
   position: absolute;
   right: 15px;
@@ -116,15 +116,15 @@ const CloseButton = styled.button`
   transform: translateY(-50%);
   border: none;
   background: none;
-  fill: white;
   cursor: pointer;
 
-  svg {
-    width: 15px;
-    height: 15px;
+  &:hover {
+    ${CloseIcon} {
+      fill: #fff;
+    }
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1280px`
     display: none;
   `}
 `;
@@ -142,23 +142,19 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
       intl: { formatMessage }
     } = this.props;
 
+    const policyLink = (
+      <StyledLink to="/pages/cookie-policy">
+        <FormattedMessage {...messages.policyLink} />
+      </StyledLink>
+    );
+
     return (
-      <Container role="banner">
+      <Container role="banner" id="e2e-cookie-banner">
         <ContentContainer mode="page">
         <ContentContainerInner>
           <Left>
-            <FormattedMessage
-              tagName="p"
-              {...messages.mainText}
-              values={{
-                // tslint:disable-next-line
-                policyLink: (
-                  <StyledLink to="/pages/cookie-policy" target="_blank">
-                    <FormattedMessage {...messages.policyLink} />
-                  </StyledLink>)
-              }}
-            />
-            <FormattedMessage {...messages.subText} tagName="p" />
+            <Line className="first"><FormattedMessage {...messages.mainText} values={{ policyLink }} /></Line>
+            <Line className="second"><FormattedMessage {...messages.subText} /></Line>
           </Left>
           <ButtonContainer>
             <PreferencesButton
@@ -166,7 +162,6 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
               textColor="#fff"
               bgColor={colors.adminTextColor}
               bgHoverColor={rgba(255, 255, 255, 0.15)}
-              padding="8px 12px"
               onClick={onChangePreferences}
               className="integration-open-modal"
             >
@@ -176,7 +171,6 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
               className="e2e-accept-cookies-btn"
               style="primary-inverse"
               textColor={colors.adminTextColor}
-              padding="8px 12px"
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
@@ -192,7 +186,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
         >
-          <Icon name="close4" />
+          <CloseIcon name="close4" />
         </CloseButton>
       </Container>
     );
