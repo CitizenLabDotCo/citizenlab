@@ -587,7 +587,6 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
     t.string "logo"
     t.string "header_bg"
     t.string "favicon"
-    t.jsonb "style", default: {}
     t.index ["host"], name: "index_tenants_on_host"
   end
 
