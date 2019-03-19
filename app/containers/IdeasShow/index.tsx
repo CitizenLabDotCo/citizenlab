@@ -1253,6 +1253,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & ITracks
           <Modal
             opened={this.state.spamModalVisible}
             close={this.closeSpamModal}
+            fixedHeight={false}
             label={formatMessage(messages.spanModalLabelIdea)}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
