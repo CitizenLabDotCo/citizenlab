@@ -1,5 +1,5 @@
 class WebApi::V1::TenantSerializer < ActiveModel::Serializer
-  attributes :id, :name, :host, :settings, :logo, :header_bg, :favicon
+  attributes :id, :name, :host, :settings, :style, :logo, :header_bg, :favicon
 
   def logo
     object.logo && object.logo.versions.map{|k, v| [k.to_s, v.url]}.to_h

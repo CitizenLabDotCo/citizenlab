@@ -14,10 +14,25 @@ resource "Tenants" do
   end
 
   get "web_api/v1/tenants/current" do
+    with_options scope: :style do
+      Tenant.available_style_attributes.each do |attr|
+        response_field attr[:name], attr[:description]
+      end
+    end
+    Tenant::SETTINGS_JSON_SCHEMA["properties"].each do |feature, feature_descriptor|
+      parameter :allowed, "Does the commercial plan allow #{feature}", scope: [:tenant, :settings, feature]
+      parameter :enabled, "Is #{feature} enabled", scope: ['settings', feature]
+      feature_descriptor["properties"].each do |setting, setting_descriptor|
+        unless ["enabled", "allowed"].include?(setting)
+          response_field setting, "#{setting_descriptor["description"]}. Type: #{setting_descriptor["type"]}", scope: [:settings, feature]
+        end
+      end
+    end
     example_request "Get the current tenant" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.with_indifferent_access.dig(:data, :attributes, :host)).to eq 'example.org'
+      expect(json_response.with_indifferent_access.dig(:data, :attributes, :style)).to eq({})
     end
   end
 
