@@ -47,7 +47,7 @@ namespace :templates do
   end
 
   task :change_locale, [:template_name,:locale_from,:locale_to] => [:environment] do |t, args|
-    template = open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
+    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
     service = TenantTemplateService.new
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]
