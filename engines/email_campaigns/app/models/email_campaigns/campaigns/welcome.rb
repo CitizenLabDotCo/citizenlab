@@ -2,6 +2,7 @@ module EmailCampaigns
   class Campaigns::Welcome < Campaign
     include ActivityTriggerable
     include RecipientConfigurable
+    include Disableable
 
     recipient_filter :filter_recipient
 
