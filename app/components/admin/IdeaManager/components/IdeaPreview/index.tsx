@@ -14,11 +14,12 @@ import linkifyHtml from 'linkifyjs/html';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps, FormattedNumber } from 'react-intl';
 import messages from './messages';
 
 // animations
@@ -35,6 +36,7 @@ import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
 import Comments from 'containers/IdeasShow/Comments';
 import VotePreview from './VotePreview';
 import FileAttachments from 'components/UI/FileAttachments';
+import InfoTooltip from 'components/admin/InfoTooltip';
 
 const Container = styled.div`
   height: 100%;
@@ -133,6 +135,33 @@ const Right = styled.div`
   position: sticky;
   top: 80px;
   align-self: flex-start;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.base}px;
+  line-height: 19px;
+`;
+
+const BudgetBox = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  height: 95px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  position: relative;
+  border-radius: 5px;
+  background: ${colors.background};
+  border: solid 1px ${colors.adminTextColor};
+  font-size: ${fontSizes.large}px;
+  font-weight: 500;
+`;
+
+const Picks = styled.div`
+  margin-top: 7px;
+  display: flex;
+  font-size: ${fontSizes.base}px;
+  align-items: center;
 `;
 
 const LocationIconWrapper = styled.div`
@@ -149,32 +178,25 @@ const LocationIconWrapper = styled.div`
 
 const LocationIcon = styled(Icon)`
   width: 18px;
-  fill: ${colors.label};
+  fill: ${colors.adminTextColor};
 `;
 
-const LocationButton = styled.div`
+const LocationButton = styled.button`
   display: flex;
   align-items: center;
-  cursor: pointer;
   margin-bottom: 30px;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
   margin-top: 20px;
   margin-right: 6px;
-  max-width: 200px;
-  font-size: ${fontSizes.base}px;
-  line-height: 19px;
   text-align: left;
   font-weight: 400;
   transition: all 100ms ease-out;
   white-space: nowrap;
 
   &:hover {
-    color: ${darken(0.2, colors.label)};
+    color: ${darken(0.2, colors.adminTextColor)};
 
     ${LocationIcon} {
-      fill: ${darken(0.2, colors.label)};
+      fill: ${darken(0.2, colors.adminTextColor)};
     }
   }
 `;
@@ -191,6 +213,7 @@ interface DataProps {
   idea: GetIdeaChildProps;
   ideaImages: GetIdeaImagesChildProps;
   ideaFiles: GetResourceFilesChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -221,7 +244,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized & InjectedIntl
   }
 
   render() {
-    const { idea, localize, ideaImages, ideaFiles, intl: { formatMessage } } = this.props;
+    const { idea, localize, ideaImages, ideaFiles, tenant, intl: { formatMessage } } = this.props;
     const { showMap } = this.state;
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -293,6 +316,26 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized & InjectedIntl
               </Left>
               <Right>
                 <VotePreview ideaId={idea.id}/>
+
+                {idea.attributes.budget && !isNilOrError(tenant) &&
+                  <>
+                    <BudgetBox>
+                      <FormattedNumber
+                        value={idea.attributes.budget}
+                        style="currency"
+                        currency={tenant.attributes.settings.core.currency}
+                        minimumFractionDigits={0}
+                        maximumFractionDigits={0}
+                      />
+                      <Picks>
+                        <FormattedMessage {...messages.picks} values={{ picksNumber: idea.attributes.baskets_count }} />
+                        &nbsp;
+                        <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
+                      </Picks>
+                    </BudgetBox>
+                  </>
+                }
+
                 {ideaLocation &&
                   <LocationButton onClick={this.handleMapToggle}>
                     <LocationIconWrapper>
@@ -318,6 +361,7 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
+  tenant: <GetTenant />
 });
 
 const IdeaPreviewWithHOCs = injectIntl(injectLocalize(IdeaPreview));

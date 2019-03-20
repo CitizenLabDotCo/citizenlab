@@ -23,7 +23,7 @@ const VoteIconContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${colors.adminTextColor};
   background: #fff;
   transition: all 100ms ease-out;
   will-change: transform;
@@ -33,14 +33,14 @@ const VoteIconContainer: any = styled.div`
 
 const VoteIcon: any = styled(Icon)`
   height: 19px;
-  fill: ${colors.label};
+  fill: ${colors.adminTextColor};
   transition: all 100ms ease-out;
   height: 20px;
   width: 23px;
 `;
 
 const VoteCount = styled.div`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   margin-left: 5px;
