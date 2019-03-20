@@ -17,10 +17,10 @@ describe('Ideas overview page', () => {
         cy.visit('/ideas');
 
         cy.get('#e2e-project-filter-selector').click();
-        // select project
+        // select project in project filter list
         cy.get('.e2e-filter-list-item').contains(projectTitle).click();
-        // contains only ideas from this project, including a specific check to make sure it's not just the number of ideas that's right
-        cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle);
+        // check that the filter only shows idea from our project and check if its title matches
+        cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
       });
     });
 
@@ -50,6 +50,9 @@ describe('Ideas overview page', () => {
         cy.get('.e2e-filter-list-item').contains(projectTitle1).click();
         cy.get('.e2e-filter-list-item').contains(projectTitle2).click();
         cy.wait(1000);
+        // check that the filter only shows the two ideas from our projects
+        cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 2);
+        // check titles of our ideas are the two ideas that are being displayed
         cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle1);
         cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle2);
       });
