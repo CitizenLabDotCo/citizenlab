@@ -1323,7 +1323,7 @@
   "app.containers.UsersShowPage.loadingUser": "Loading...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Loading user ideas...",
   "app.containers.UsersShowPage.memberSince": "Member since {date}",
-  "app.containers.UsersShowPage.metaDescription": "This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.",
+  "app.containers.UsersShowPage.metaDescription": "This is the profile page of {firstName} {lastName} on the online participation platform of {orgName}. Here you can find an overview of the ideas this user.",
   "app.containers.UsersShowPage.metaTitle": "Profile page of {firstName} {lastName} | CitizenLab",
   "app.containers.admin.ideas.all.header": "Ideas",
   "app.containers.admin.ideas.all.headerSubtitle": "Add topics to ideas, update their status or change the project in which they are shown. Contact us if you want to use custom topics or statuses.",
