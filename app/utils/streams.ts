@@ -6,7 +6,7 @@ import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
-import { captureException } from '@sentry/browser';
+import { reportError } from 'utils/loggingUtils';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -264,18 +264,15 @@ class Streams {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
                   this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
+                  reject(response);
                 } else {
                   this.streams[streamId].observer.next(null);
                 }
-
-                reject(response);
               }
             }
           });
         }).catch((error) => {
-          if (error && process.env.NODE_ENV !== 'development') {
-            captureException(error);
-          }
+          reportError(error);
 
           return error;
         });
