@@ -49,7 +49,7 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   surveys_enabled: boolean | null;

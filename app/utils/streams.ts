@@ -6,7 +6,7 @@ import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
-import { captureException } from '@sentry/browser';
+import { reportError } from 'utils/loggingUtils';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<{}>;
@@ -264,18 +264,15 @@ class Streams {
                   const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
                   this.streams[streamId].observer.next(response);
                   this.deleteStream(streamId, apiEndpoint);
+                  reject(response);
                 } else {
                   this.streams[streamId].observer.next(null);
                 }
-
-                reject(response);
               }
             }
           });
         }).catch((error) => {
-          if (error && process.env.NODE_ENV !== 'development') {
-            captureException(error);
-          }
+          reportError(error);
 
           return error;
         });
@@ -306,7 +303,7 @@ class Streams {
             data = (isFunction(current) ? current(data) : current);
 
             if (isObject(data) && !isEmpty(data)) {
-              const innerData = data.data;
+              const innerData = data['data'];
 
               if (isArray(innerData)) {
                 this.streams[streamId].type = 'arrayOfObjects';
@@ -317,7 +314,7 @@ class Streams {
                   this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
                 });
               } else if (isObject(innerData) && has(innerData, 'id')) {
-                const dataId = innerData.id;
+                const dataId = innerData['id'];
                 this.streams[streamId].type = 'singleObject';
                 dataIds[dataId] = true;
                 if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData }); }
@@ -325,7 +322,7 @@ class Streams {
               }
 
               if (has(data, 'included')) {
-                data.included.filter(item => item.id).forEach((item) => {
+                data['included'].filter(item => item.id).forEach((item) => {
                   this.resourcesByDataId[item.id] = this.deepFreeze({ data: item });
                 });
 

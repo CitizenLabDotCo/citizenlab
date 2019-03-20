@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Omit } from 'typings';
 
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 
 import styled from 'styled-components';

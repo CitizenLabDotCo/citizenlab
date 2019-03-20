@@ -1,32 +1,56 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'settings',
   name: 'admin settings',
-  getComponent: loadAndRender(import('containers/Admin/settings')),
+  component: Loadable({
+    loader: () => import('containers/Admin/settings'),
+    loading: LoadableLoadingAdmin,
+    delay: 500
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/settings/general')),
+    component: Loadable({
+      loader: () => import('containers/Admin/settings/general'),
+      loading: LoadableLoadingAdmin,
+      delay: 500
+    }),
   },
   childRoutes: [
     {
       path: 'general',
-      getComponent: loadAndRender(import('containers/Admin/settings/general')),
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/general'),
+        loading: () => null
+      }),
     },
     {
       path: 'customize',
-      getComponent: loadAndRender(import('containers/Admin/settings/customize')),
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/customize'),
+        loading: () => null
+      }),
     },
     {
       path: 'pages',
-      getComponent: loadAndRender(import('containers/Admin/settings/pages')),
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/pages'),
+        loading: () => null
+      }),
     },
     {
       path: 'registration',
-      getComponent: loadAndRender(import('containers/Admin/settings/registration')),
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/registration'),
+        loading: () => null
+      }),
     },
     {
       path: 'widgets',
-      getComponent: loadAndRender(import('containers/Admin/settings/widgets')),
+      component: Loadable({
+        loader: () => import('containers/Admin/settings/widgets'),
+        loading: () => null
+      }),
     },
   ],
 });

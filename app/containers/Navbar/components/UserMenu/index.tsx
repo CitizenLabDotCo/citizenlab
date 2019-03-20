@@ -13,8 +13,9 @@ import { authUserStream, signOut } from 'services/auth';
 import { IUser } from 'services/users';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,23 +32,21 @@ const Container = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  color: ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   margin-right: 3px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   transition: all 100ms ease-out;
 
-  &:hover {
-    color: ${({ theme }) => theme.colorText};
-  }
-
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
-const OpenDropdownButton = styled.button`
+const StyledAvatar = styled(Avatar)``;
+
+const DropdownButton = styled.button`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,12 +57,14 @@ const OpenDropdownButton = styled.button`
   &:hover,
   &:focus {
     ${StyledUserName} {
-      color: #000;
+      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
     }
-  }
 
-  &:focus {
-    outline: none;
+    ${StyledAvatar} {
+      .avatarIcon {
+        fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+      }
+    }
   }
 `;
 
@@ -79,14 +80,16 @@ const DropdownListItem = styled(Button)`
   }
 `;
 
-type Props = {};
+type Props = {
+  theme: any;
+};
 
 type State = {
   authUser: IUser | null;
   opened: boolean;
 };
 
-export default class UserMenu extends PureComponent<Props, State> {
+class UserMenu extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -123,7 +126,12 @@ export default class UserMenu extends PureComponent<Props, State> {
     signOut();
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
+    const { theme } = this.props;
     const { authUser, opened } = this.state;
     const userId = (authUser ? authUser.data.id : null);
     const userSlug = (authUser ? authUser.data.attributes.slug : null);
@@ -131,18 +139,21 @@ export default class UserMenu extends PureComponent<Props, State> {
     if (authUser && userId) {
       return (
         <Container id="e2e-user-menu-container">
-          <OpenDropdownButton onClick={this.toggleDropdown}>
+          <DropdownButton
+            onMouseDown={this.removeFocus}
+            onClick={this.toggleDropdown}
+          >
             <StyledUserName
               user={authUser.data}
               hideLastName={true}
             />
-            <Avatar
+            <StyledAvatar
               userId={userId}
               size="30px"
-              hasHoverEffect={true}
-              fillColor={colors.label}
+              hasHoverEffect={false}
+              fillColor={theme.navbarTextColor || colors.label}
             />
-          </OpenDropdownButton>
+          </DropdownButton>
 
           <Dropdown
             id="e2e-user-menu-dropdown"
@@ -239,3 +250,5 @@ export default class UserMenu extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default withTheme<Props, State>(UserMenu);

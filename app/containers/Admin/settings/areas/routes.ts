@@ -1,23 +1,35 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
 
 export default () => ({
   path: 'settings/areas',
   name: 'admin settings areas',
-  getComponent: loadAndRender(import('../')),
+  component: Loadable({
+    loader: () => import('../'),
+    loading: () => null
+  }),
   indexRoute: {
     name: 'admin setting areas index',
-    getComponent: loadAndRender(import('./all')),
+    component: Loadable({
+      loader: () => import('./all'),
+      loading: () => null
+    }),
   },
   childRoutes: [
     {
       path: 'new',
       name: 'admin setting areas new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: () => null
+      }),
     },
     {
       path: ':areaId',
       name: 'admin setting area edit',
-      getComponent: loadAndRender(import('./Edit')),
+      component: Loadable({
+        loader: () => import('./Edit'),
+        loading: () => null
+      }),
     },
   ],
 });

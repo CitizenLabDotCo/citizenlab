@@ -1,3 +1,6 @@
+// note that in devmode, errors caught by error boundary will be sent twice to sentry, this won't happen in production
+// https://github.com/facebook/react/issues/10474
+
 import React, { Component } from 'react';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import * as Sentry from '@sentry/browser';
@@ -7,6 +10,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { InjectedIntlProps } from 'react-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { reportError } from 'utils/loggingUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -45,11 +49,12 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
 
     // Report to Sentry
     Sentry.withScope(scope => {
-    Object.keys(errorInfo).forEach(key => {
-      scope.setExtra(key, errorInfo[key]);
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+        scope.setExtra('from', 'ErrorBoundary');
+      });
+      reportError(error);
     });
-    Sentry.captureException(error);
-  });
   }
 
   openDialog = () => {
