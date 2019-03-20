@@ -13,16 +13,15 @@ describe('Ideas overview page', () => {
       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription).then((project) => {
         const projectId = project.body.data.id;
         cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+
+        cy.visit('/ideas');
+
+        cy.get('#e2e-project-filter-selector').click();
+        // select project
+        cy.get('.e2e-filter-selector-dropdown-list').contains(projectTitle).click();
+        // contains only ideas from this project, including a specific check to make sure it's not just the number of ideas that's right
+        cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle);
       });
-
-      cy.visit('/ideas');
-
-      cy.wait(5000);
-      cy.get('#e2e-project-filter-selector').click();
-      // select project
-      cy.get('.e2e-filter-selector-dropdown-list').contains(projectTitle).click();
-      // contains only ideas from this project, including a specific check to make sure it's not just the number of ideas that's right
-      cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle);
     });
 
     it('filters correctly on 2 projects', () => {
