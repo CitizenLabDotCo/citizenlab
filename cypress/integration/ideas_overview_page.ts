@@ -49,7 +49,7 @@ describe('Ideas overview page', () => {
         cy.get('#e2e-project-filter-selector').click();
         cy.get('.e2e-filter-list-item').contains(projectTitle1).click();
         cy.get('.e2e-filter-list-item').contains(projectTitle2).click();
-        cy.get('#e2e-project-filter-selector').click();
+        cy.wait(1000);
         cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle1);
         cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle2);
       });
