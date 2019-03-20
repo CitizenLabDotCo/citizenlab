@@ -8,6 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // components
 import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
+import { FormattedDate } from 'react-intl';
 
 type Props = {
   notification: IProjectPhaseUpcomingNotificationData;
@@ -35,7 +36,7 @@ export default class ProjectPhaseUpcomingNotification extends React.PureComponen
           {...messages.projectPhaseUpcoming}
           values={{
             projectTitle: <T value={notification.attributes.project_title_multiloc} />,
-            phaseStartAt: notification.attributes.phase_start_at
+            phaseStartAt: <FormattedDate value={notification.attributes.phase_start_at} />
           }}
         />
       </NotificationWrapper>
