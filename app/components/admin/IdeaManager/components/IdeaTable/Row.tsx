@@ -3,7 +3,6 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, keys, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
-import { IModalInfo } from 'containers/App';
 import { DragSource } from 'react-dnd';
 
 // services

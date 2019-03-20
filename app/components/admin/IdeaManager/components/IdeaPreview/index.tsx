@@ -225,11 +225,14 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized & InjectedIntl
     const { showMap } = this.state;
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
+
       const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
+
       let ideaBody = localize(idea.attributes.body_multiloc);
       ideaBody = trimEnd(ideaBody, '<p><br></p>');
       ideaBody = trimEnd(ideaBody, '<p></p>');
       ideaBody = linkifyHtml(ideaBody);
+
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
 
