@@ -1096,6 +1096,8 @@
   "app.containers.NotificationMenu.officialFeedbackOnVotedIdea": "{officialName} a fait un retour sur une idée pour laquelle vous avez voté",
   "app.containers.NotificationMenu.officialFeedbackOnYourIdea": "{officialName} a fait un retour sur votre idée",
   "app.containers.NotificationMenu.projectModerationRightsReceived": "Vous êtes maintenant un modérateur de {projectLink}",
+  "app.containers.NotificationMenu.projectPhaseStarted": "",
+  "app.containers.NotificationMenu.projectPhaseUpcoming": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "Le statut de l'idée '{ideaTitle}' est passé à {status}",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} a accepté votre invitation",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} a commenté sur votre idée",
