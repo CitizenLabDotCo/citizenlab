@@ -18,7 +18,7 @@ describe('Ideas overview page', () => {
 
         cy.get('#e2e-project-filter-selector').click();
         // select project
-        cy.get('.e2e-filter-selector-dropdown-list').contains(projectTitle).click();
+        cy.get('.e2e-filter-list-item').contains(projectTitle).click();
         // contains only ideas from this project, including a specific check to make sure it's not just the number of ideas that's right
         cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle);
       });
@@ -35,30 +35,24 @@ describe('Ideas overview page', () => {
       const ideaTitle2 = randomString();
       const ideaContent1 = randomString();
       const ideaContent2 = randomString();
+      let projectId1: string;
+      let projectId2: string;
 
-      // create first project with one idea
-      cy.apiCreateProject('continuous', projectTitle1, projectDescriptionPreview1, projectDescription1).then((project) => {
-        const projectId = project.body.data.id;
-        cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1);
+      cy.apiCreateProject('continuous', projectTitle1, projectDescriptionPreview1, projectDescription1).then((project1) => {
+        projectId1 = project1.body.data.id;
+        return cy.apiCreateProject('continuous', projectTitle2, projectDescriptionPreview2, projectDescription2);
+      }).then((project2) => {
+        projectId2 = project2.body.data.id;
+        cy.apiCreateIdea(projectId1, ideaTitle1, ideaContent1);
+        cy.apiCreateIdea(projectId2, ideaTitle2, ideaContent2);
+        cy.visit('/ideas');
+        cy.get('#e2e-project-filter-selector').click();
+        cy.get('.e2e-filter-list-item').contains(projectTitle1).click();
+        cy.get('.e2e-filter-list-item').contains(projectTitle2).click();
+        cy.get('#e2e-project-filter-selector').click();
+        cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle1);
+        cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle2);
       });
-
-      // create second project with one idea
-      cy.apiCreateProject('continuous', projectTitle2, projectDescriptionPreview2, projectDescription2).then((project) => {
-        const projectId = project.body.data.id;
-        cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
-      });
-
-      cy.visit('/ideas');
-
-      cy.wait(5000);
-
-      cy.get('#e2e-project-filter-selector').click();
-      cy.get('.e2e-filter-selector-dropdown-list').contains(projectTitle1).click();
-      cy.get('#e2e-project-filter-selector').click();
-      cy.get('.e2e-filter-selector-dropdown-list').contains(projectTitle2).click();
-
-      cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle1);
-      cy.get('#e2e-ideas-container').find('.e2e-idea-card').contains(ideaTitle2);
     });
   });
 });
