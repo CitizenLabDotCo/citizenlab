@@ -989,7 +989,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           <Modal
             opened={!!ideaIdForSocialSharing}
             close={this.closeIdeaSocialSharingModal}
-            fixedHeight={false}
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
             label={formatMessage(messages.modalShareLabel)}

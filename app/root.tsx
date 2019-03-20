@@ -10,13 +10,10 @@ import 'assets/css/reset.min.css';
 import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init } from '@sentry/browser';
+import { init, Integrations } from '@sentry/browser';
 
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
-
-// Import i18n messages
-import { translationMessages } from './i18n';
 
 // Import root routes
 import createRoutes from './routes';
@@ -24,15 +21,11 @@ import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
 
 if (process && process.env && process.env.NODE_ENV === 'production' && process.env.SENTRY_DSN) {
-  // configureScope((scope) => {
-  //   scope.setTag('git_commit', process.env.CIRCLE_SHA1 as string);
-  //   scope.setTag('branch', process.env.CIRCLE_BRANCH as string);
-  // });
-
   init({
     dsn: process.env.SENTRY_DSN,
     environment: process.env.NODE_ENV,
-    release: process.env.CIRCLE_BUILD_NUM
+    release: process.env.CIRCLE_BUILD_NUM,
+    integrations: [new Integrations.RewriteFrames()]
   });
 }
 
@@ -43,14 +36,16 @@ const rootRoute = {
   childRoutes: createRoutes(),
 };
 
-const Root = () => (
-  <LanguageProvider messages={translationMessages}>
-    <Router
-      history={browserHistory}
-      routes={rootRoute}
-      render={applyRouterMiddleware(useScroll())}
-    />
-  </LanguageProvider>
-);
+const Root = () => {
+  return (
+    <LanguageProvider>
+      <Router
+        history={browserHistory}
+        routes={rootRoute}
+        render={applyRouterMiddleware(useScroll())}
+      />
+    </LanguageProvider>
+  );
+};
 
 render(<Root />, document.getElementById('app'));

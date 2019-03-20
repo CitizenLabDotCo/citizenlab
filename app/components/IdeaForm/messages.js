@@ -5,9 +5,17 @@ export default defineMessages({
     id: 'app.components.IdeaForm.titleEmptyError',
     defaultMessage: 'Please provide a title',
   },
+  titleLengthError: {
+    id: 'app.components.IdeaForm.titleLengthError',
+    defaultMessage: 'The idea title must be at least 10 characters long',
+  },
   descriptionEmptyError: {
     id: 'app.components.IdeaForm.descriptionEmptyError',
     defaultMessage: 'Please provide a description',
+  },
+  descriptionLengthError: {
+    id: 'app.components.IdeaForm.descriptionLengthError',
+    defaultMessage: 'The idea description must be at least 30 characters long',
   },
   titleLabel: {
     id: 'app.components.IdeaForm.titleLabel',

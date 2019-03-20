@@ -17,6 +17,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';
@@ -24,27 +25,29 @@ import { shortenedAppLocalePairs } from 'containers/App/constants';
 // typings
 import { Locale } from 'typings';
 
-const DropdownItemIcon = styled(Icon)`
-  width: 11px;
-  height: 6px;
-  fill: ${colors.label};
-  margin-top: 1px;
-  margin-left: 4px;
-  transition: all 80ms ease-out;
-`;
-
-const OpenMenuButton = styled.button`
-  color: ${(props: any) => props.theme.colorText};
-  border-radius: 5px;
+const DropdownButtonText = styled.div`
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   line-height: ${fontSizes.base}px;
+  transition: all 100ms ease-out;
+`;
+
+const DropdownButtonIcon = styled(Icon)`
+  width: 11px;
+  height: 6px;
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  margin-top: 1px;
+  margin-left: 4px;
+  transition: all 100ms ease-out;
+`;
+
+const DropdownButton = styled.button`
   cursor: pointer;
   margin: 0;
   padding: 0;
   display: flex;
   align-items: center;
-  outline: none;
 `;
 
 const Container = styled.div`
@@ -54,18 +57,14 @@ const Container = styled.div`
   position: relative;
   cursor: pointer;
 
-  * {
-    user-select: none;
-  }
-
   &:hover,
   &:focus {
-    ${OpenMenuButton} {
-      color: #000;
+    ${DropdownButtonText} {
+      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+    }
 
-      ${DropdownItemIcon} {
-        fill: #000;
-      }
+    ${DropdownButtonIcon} {
+      fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
     }
   }
 `;
@@ -90,10 +89,11 @@ const ListItem = styled.button`
   border-radius: 5px;
   outline: none;
   cursor: pointer;
-  transition: all 80ms ease-out;
+
   &.last {
     margin-bottom: 0px;
   }
+
   &:hover,
   &:focus,
   &.active {
@@ -128,6 +128,10 @@ class LanguageSelector extends PureComponent<Props, State> {
     };
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   toggleDropdown = (event: React.FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
@@ -135,7 +139,6 @@ class LanguageSelector extends PureComponent<Props, State> {
 
   handleLanguageSelect = (selectedLocale: Locale) => () => {
     updateLocale(selectedLocale);
-
     this.setState({ dropdownOpened: false });
   }
 
@@ -148,11 +151,11 @@ class LanguageSelector extends PureComponent<Props, State> {
       const currentlySelectedLocale = locale;
 
       return (
-        <Container className={className} onClick={this.toggleDropdown}>
-          <OpenMenuButton className="e2e-langage-dropdown-toggle">
-            {currentlySelectedLocale.substr(0, 2).toUpperCase()}
-            <DropdownItemIcon name="dropdown" />
-          </OpenMenuButton>
+        <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
+          <DropdownButton className="e2e-langage-dropdown-toggle">
+            <DropdownButtonText>{currentlySelectedLocale.substr(0, 2).toUpperCase()}</DropdownButtonText>
+            <DropdownButtonIcon name="dropdown" />
+          </DropdownButton>
 
           <Dropdown
             width="180px"

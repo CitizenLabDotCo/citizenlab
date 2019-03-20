@@ -1,23 +1,44 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'pages',
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: LoadableLoadingAdmin,
+    delay: 500
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./All')),
+    component: Loadable({
+      loader: () => import('./All'),
+      loading: LoadableLoadingAdmin,
+      delay: 500
+    }),
   },
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
     },
     {
       path: ':pageId/editor/:locale',
-      getComponent: loadAndRender(import('./BodyEditor')),
+      component: Loadable({
+        loader: () => import('./BodyEditor'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
     },
     {
       path: ':pageId',
-      getComponent: loadAndRender(import('./Edit')),
+      component: Loadable({
+        loader: () => import('./Edit'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
     },
   ],
 });
