@@ -46,7 +46,7 @@ interface InputProps { }
 
 interface DataProps extends GetCampaignsChildProps {}
 
-interface Props extends InputProps, DataProps { }
+export interface Props extends InputProps, DataProps { }
 
 interface State { }
 

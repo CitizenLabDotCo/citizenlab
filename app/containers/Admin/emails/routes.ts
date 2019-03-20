@@ -1,31 +1,55 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'emails',
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: LoadableLoadingAdmin,
+    delay: 500
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./custom/All')),
+    component: Loadable({
+      loader: () => import('./custom/All'),
+      loading: LoadableLoadingAdmin,
+      delay: 500
+    }),
   },
   childRoutes: [
     {
       path: 'custom',
-      getComponent: loadAndRender(import('./custom/All')),
+      component: Loadable({
+        loader: () => import('./custom/All'),
+        loading: () => null
+      }),
     },
     {
       path: 'custom/new',
-      getComponent: loadAndRender(import('./custom/New')),
+      component: Loadable({
+        loader: () => import('./custom/New'),
+        loading: () => null
+      }),
     },
     {
       path: 'custom/:campaignId/edit',
-      getComponent: loadAndRender(import('./custom/Edit')),
+      component: Loadable({
+        loader: () => import('./custom/Edit'),
+        loading: () => null
+      }),
     },
     {
       path: 'custom/:campaignId',
-      getComponent: loadAndRender(import('./custom/Show')),
+      component: Loadable({
+        loader: () => import('./custom/Show'),
+        loading: () => null
+      }),
     },
     {
       path: 'automated',
-      getComponent: loadAndRender(import('./automated')),
+      component: Loadable({
+        loader: () => import('./automated'),
+        loading: () => null
+      }),
     },
   ],
 });

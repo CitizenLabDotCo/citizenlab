@@ -84,5 +84,13 @@ export default defineMessages({
   moreInfo: {
     id: 'app.containers.footer.moreInfo',
     defaultMessage: '... let us know more'
+  },
+  feedbackSuccessfullySubmitted: {
+    id: 'app.containers.footer.feedbackSuccessfullySubmitted',
+    defaultMessage: 'Your feedback was successfully submitted.'
+  },
+  close: {
+    id: 'app.containers.footer.close',
+    defaultMessage: 'Close'
   }
 });
