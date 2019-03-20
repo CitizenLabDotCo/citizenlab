@@ -13,6 +13,8 @@ da:
       "mention_in_comment": Når nogen nævner mig i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
       "project_moderation_rights_received": Når jeg får moderationsrettigheder for projekter
+      "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": Når status på min idé bliver ændret
       "welcome": Når jeg registrerer mig på platformen
       "password_reset": Når jeg beder om nulstilling af adgangskoden til min konto
@@ -43,6 +45,8 @@ da:
       "mention_in_comment": Når en bruger nævnes i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
       "project_moderation_rights_received": Når en bruger får moderationsrettigheder for projekter
+      "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": Når status på min idé bliver ændret
       "welcome": Når en bruger registrerer sig på platformen
       "password_reset": Når en bruger anmoder om nulstilling af adgangskode

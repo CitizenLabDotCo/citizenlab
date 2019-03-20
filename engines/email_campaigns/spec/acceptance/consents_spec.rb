@@ -17,8 +17,10 @@ resource "Campaign consents" do
 
     before do
       @campaigns = [
+        create(:comment_deleted_by_admin_campaign),
         create(:comment_on_your_comment_campaign),
         create(:comment_on_your_idea_campaign),
+        create(:idea_published_campaign),
         create(:mention_in_comment_campaign),
         create(:mention_in_official_feedback_campaign),
         create(:manual_campaign),
@@ -27,6 +29,8 @@ resource "Campaign consents" do
         create(:official_feedback_on_commented_idea),
         create(:official_feedback_on_voted_idea),
         create(:official_feedback_on_your_idea),
+        create(:project_phase_started),
+        create(:project_phase_upcoming),
         create(:status_change_of_your_idea_campaign),
         create(:user_digest_campaign)
       ]
