@@ -1,5 +1,32 @@
 # Changelog
 
+## 2019-03-20
+
+### Fixed
+- Fixed mobile layout issues with cookie policy, idea image and idea title for small screens (IPhone 5S)
+- Posting an idea in a timeline that hasn't started yet (as an admin) now puts the idea in the first phase
+- Notifications menu renders properly in IE11
+- The CTA on project cards is no longer shown for archived and finished projects
+- Invited users that sign up with another authentication provider now automatically redeem their invitation
+- When the tenant only has one locale, no language switcher is shown in the official feedback form
+
+### Added
+- Capabilities have been added to apply custom styling to the platform header
+  - Styling can be changed through a new style tab in admin HQ
+  - It's also possible to configure a different platform-wide font
+  - Styling changes should only be done by a designer or front-end developer, as there are a lot of things that could go wrong
+- The initial loading speed of the platform has increased noticably due to no longer loading things that are not immediately needed right away.
+- Tenant templates are now automatically updated from the `.template` platforms every night
+- The project copy tool in admin HQ now supports time shifting and automatically tries to solve language conflicts in the data
+
+### Changed
+- Archived ieas are no longer displayed on the general ideas page
+- The time remaining on project cards is no longer shown on 2 lines if there's enough space
+- New platforms will show the 'manual project sorting' toggle by default
+- Some changes were made to modals throughout to make them more consistent and responsiveness
+- New ideas now have a minimal character limit of 10 for the title and 30 for the body
+- User pages have a more elaborate meta title and description for SEO purposes
+
 ## 2019-03-11
 
 ### Fixed
