@@ -104,4 +104,12 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',
     defaultMessage: '{officialName} mentioned you in an official update',
   },
+  projectPhaseStarted: {
+    id: 'app.containers.NotificationMenu.projectPhaseStarted',
+    defaultMessage: '{projectTitle} entered a new phase',
+  },
+  projectPhaseUpcoming: {
+    id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
+    defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
+  },
 });
