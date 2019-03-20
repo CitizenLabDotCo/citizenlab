@@ -1323,6 +1323,8 @@
   "app.containers.UsersShowPage.loadingUser": "",
   "app.containers.UsersShowPage.loadingUserIdeas": "",
   "app.containers.UsersShowPage.memberSince": "",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "",
   "app.containers.admin.ideas.all.headerSubtitle": "",
   "app.containers.admin.project.permissions.permissionTypeLabel": "",

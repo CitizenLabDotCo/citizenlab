@@ -10,6 +10,7 @@ import ContentContainer from 'components/ContentContainer';
 import Avatar from 'components/Avatar';
 import Footer from 'components/Footer';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import UsersShowPageMeta from './UsersShowPageMeta';
 
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -117,38 +118,41 @@ class UsersShowPage extends PureComponent<Props, State> {
       const memberSince = moment(user.attributes.created_at).format('LL');
 
       return (
-        <Container id="e2e-usersshowpage" className={this.props['className']}>
-          <StyledContentContainer>
-            <UserAvatar>
-              <Avatar userId={user.id} size="180px" />
-            </UserAvatar>
+        <>
+          <UsersShowPageMeta user={user} />
+          <Container id="e2e-usersshowpage" className={this.props['className']}>
+            <StyledContentContainer>
+              <UserAvatar>
+                <Avatar userId={user.id} size="180px" />
+              </UserAvatar>
 
-            <UserInfo>
-              <FullName id="e2e-usersshowpage-fullname">{user.attributes.first_name} {user.attributes.last_name}</FullName>
-              <JoinedAt>
-                <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
-              </JoinedAt>
-              {!isEmpty(user.attributes.bio_multiloc) &&
-                <Bio>
-                  <QuillEditedContent>
-                    {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
-                  </QuillEditedContent>
-                </Bio>
-              }
-            </UserInfo>
+              <UserInfo>
+                <FullName id="e2e-usersshowpage-fullname">{user.attributes.first_name} {user.attributes.last_name}</FullName>
+                <JoinedAt>
+                  <FormattedMessage {...messages.memberSince} values={{ date: memberSince }} />
+                </JoinedAt>
+                {!isEmpty(user.attributes.bio_multiloc) &&
+                  <Bio>
+                    <QuillEditedContent>
+                      {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
+                    </QuillEditedContent>
+                  </Bio>
+                }
+              </UserInfo>
 
-            <UserIdeas>
-              <IdeaCards
-                type="load-more"
-                sort="trending"
-                pageSize={12}
-                authorId={user.id}
-              />
-            </UserIdeas>
-          </StyledContentContainer>
+              <UserIdeas>
+                <IdeaCards
+                  type="load-more"
+                  sort="trending"
+                  pageSize={12}
+                  authorId={user.id}
+                />
+              </UserIdeas>
+            </StyledContentContainer>
 
-          <Footer showCityLogoSection={false} />
-        </Container>
+            <Footer showCityLogoSection={false} />
+          </Container>
+        </>
       );
     }
 
