@@ -18,6 +18,7 @@
 - The initial loading speed of the platform has increased noticably due to no longer loading things that are not immediately needed right away.
 - Tenant templates are now automatically updated from the `.template` platforms every night
 - The project copy tool in admin HQ now supports time shifting and automatically tries to solve language conflicts in the data
+- New notifications and emails for upcoming (1 week before) and starting phases
 
 ### Changed
 - Archived ieas are no longer displayed on the general ideas page
