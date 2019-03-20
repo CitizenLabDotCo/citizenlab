@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.closeMap',
     defaultMessage: 'Close Map',
   },
+  picks: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.picks',
+    defaultMessage: 'Picks: {picksNumber}',
+  },
+  basketsCountTooltip: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.basketsCountTooltip',
+    defaultMessage: 'The number of users that added this idea to their participatory budget',
+  },
 });
