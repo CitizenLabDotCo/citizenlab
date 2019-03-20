@@ -100,5 +100,21 @@ RSpec.describe Notification, type: :model do
       notifications = Notifications::ProjectModerationRightsReceived.make_notifications_on activity
       expect(notifications).to be_present
     end
+
+    it "makes project_phase_started notifications on phase started" do
+      phase = create(:phase)
+      project = phase.project
+      project.visible_to = 'groups'
+      project.groups << create(:smart_group)
+      moderator = create(:moderator, project: project)
+      other_moderator = create(:moderator, email: 'koen@test.com') # member
+      admin = create(:admin)
+      user = create(:user, email: 'sebi@test.com') # member
+      other_user = create(:user, email: 'koen@citizenlab.co') # not member
+      activity = create(:activity, item: phase, action: 'started')
+
+      notifications = Notifications::ProjectPhaseStarted.make_notifications_on activity
+      expect(notifications.map(&:recipient_id)).to match_array [other_moderator.id, user.id]
+    end
   end
 end
