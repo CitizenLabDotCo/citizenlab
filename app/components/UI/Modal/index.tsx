@@ -38,11 +38,11 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.button`
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   position: absolute;
-  top: 25px;
-  right: 25px;
+  top: 27px;
+  right: 35px;
   cursor: pointer;
   outline: none;
   margin: 0;
@@ -57,9 +57,10 @@ const CloseButton = styled.button`
   }
 
   ${media.smallerThanMinTablet`
-    width: 18px;
-    height: 18px;
-    top: 18px;
+    width: 14px;
+    height: 14px;
+    top: 19px;
+    right: 24px;
   `}
 `;
 
@@ -104,6 +105,8 @@ const Overlay = styled(FocusTrap)`
   flex-direction: column;
   align-items: center;
   padding: 30px;
+  padding-top: 50px;
+  padding-bottom: 60px;
   overflow: hidden;
   z-index: 1000000;
   will-change: opacity, transform;
