@@ -1,6 +1,8 @@
 require 'rails_helper'
+require Rails.root.join "engines/frontend/spec/models/tenant_style_spec.rb"
 
 RSpec.describe Tenant, type: :model do
+  it_behaves_like "TenantStyle"
 
   describe "Default factory" do
     it "is valid" do
@@ -50,6 +52,14 @@ RSpec.describe Tenant, type: :model do
         "enabled" => true
       }
       expect{ t.valid? }.to change{ t.errors[:settings] }
+    end
+  end
+
+  describe "The settings JSON schema" do
+    it "is a valid JSON schema" do
+      metaschema = JSON::Validator.validator_for_name("draft4").metaschema
+      schema = Tenant::SETTINGS_JSON_SCHEMA
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
   end
 
