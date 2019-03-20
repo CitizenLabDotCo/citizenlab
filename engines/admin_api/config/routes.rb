@@ -1,6 +1,7 @@
 AdminApi::Engine.routes.draw do
   resources :tenants do
     get :settings_schema, on: :collection
+    get :style_schema, on: :collection
     get :templates, on: :collection
   end
 

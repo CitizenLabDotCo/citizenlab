@@ -87,6 +87,11 @@ class Idea < ApplicationRecord
       .where(ideas_phases: {phase_id: phase_id})
   end)
 
+  scope :with_project_publication_status, (Proc.new do |publication_status|
+    joins(:project)
+      .where(projects: {publication_status: publication_status})
+  end)
+
   scope :with_bounding_box, (Proc.new do |coordinates|
     x1,y1,x2,y2 = eval(coordinates)
     where("ST_Intersects(ST_MakeEnvelope(?, ?, ?, ?), location_point)", x1, y1, x2, y2)
