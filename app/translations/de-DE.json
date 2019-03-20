@@ -1096,6 +1096,8 @@
   "app.containers.NotificationMenu.officialFeedbackOnVotedIdea": "{officialName} hat Feedback bezüglich einer Idee abgegeben, für die Sie gestimmt haben",
   "app.containers.NotificationMenu.officialFeedbackOnYourIdea": "{officialName} hat Feedback bezüglich Ihrer Idee abgegeben",
   "app.containers.NotificationMenu.projectModerationRightsReceived": "Sie sind jetzt ein Moderator von {projectLink}",
+  "app.containers.NotificationMenu.projectPhaseStarted": "",
+  "app.containers.NotificationMenu.projectPhaseUpcoming": "",
   "app.containers.NotificationMenu.statusChangedOfYourIdea": "Der Status von '{ideaTitle}' wurde auf {status} geändert",
   "app.containers.NotificationMenu.userAcceptedYourInvitation": "{name} akzeptierte Ihre Einladung",
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{orgName, select, München {{name} kommentierte Ihre Mängelmeldung}} other {{name} kommentierte Ihre Idee}}",
