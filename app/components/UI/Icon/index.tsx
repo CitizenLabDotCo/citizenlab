@@ -276,14 +276,6 @@ const icons = {
     </svg>
   ),
   info: (className, title) => (
-    // <svg className={className} height="100%" viewBox="2 2 20 20">
-    //   {injectTitle(title)}
-    //   <path fill="none" d="M0 0h24v24H0V0z" />
-    //   <path d="M11 11h2v6h-2z" />
-    //   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
-    //   <path d="M11 7h2v2h-2z" />
-    // </svg>
-
     <svg  className={className} height="100%" viewBox="2 125.305 595.279 595.28">
       {injectTitle(title)}
       <path fill="none" d="M-57.528 65.777h714.336v714.336H-57.528V65.777z"/>
