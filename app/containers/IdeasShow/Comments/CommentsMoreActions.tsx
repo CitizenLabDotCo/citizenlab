@@ -155,7 +155,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
         />
 
         <Modal
-          fixedHeight={false}
           opened={this.state.modalVisible_delete}
           close={this.closeDeleteModal}
           className="e2e-comment-deletion-modal"
@@ -190,7 +189,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
         </Modal>
 
         <Modal
-          fixedHeight={false}
           opened={this.state.modalVisible_spam}
           close={this.closeSpamModal}
           label={this.props.intl.formatMessage(messages.spanModalLabelComment)}

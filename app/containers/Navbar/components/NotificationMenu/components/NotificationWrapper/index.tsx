@@ -17,6 +17,7 @@ const Container = styled.button`
   border-radius: 5px;
   text-align: left;
   outline: none;
+  width: 100%;
 
   &:hover,
   &:focus {

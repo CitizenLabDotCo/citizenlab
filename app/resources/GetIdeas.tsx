@@ -3,6 +3,7 @@ import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean, omit, cloneD
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
+import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
 
@@ -23,6 +24,7 @@ export interface InputProps {
   areas?: string[];
   ideaStatusId?: string;
   publicationStatus?: PublicationStatus;
+  projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
   cache?: boolean;
 }
@@ -39,6 +41,7 @@ interface IQueryParameters {
   areas: string[] | undefined;
   idea_status: string | undefined;
   publication_status: PublicationStatus | undefined;
+  project_publication_status: ProjectPublicationStatus | undefined;
   bounding_box: number[] | undefined;
 }
 
@@ -65,6 +68,7 @@ export type GetIdeasChildProps = State & {
   onChangeAreas: (areas: string[]) => void;
   onChangeIdeaStatus: (ideaStatus: string) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
+  onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
 };
 
 interface State {
@@ -101,6 +105,7 @@ export default class GetIdeas extends React.Component<Props, State> {
         areas: undefined,
         idea_status: undefined,
         publication_status: undefined,
+        project_publication_status: undefined,
         bounding_box: undefined
       },
       searchValue: undefined,
@@ -250,6 +255,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       areas: props.areas,
       idea_status: props.ideaStatusId,
       publication_status: props.publicationStatus,
+      project_publication_status: props.projectPublicationStatus,
       bounding_box: props.boundingBox
     };
 
@@ -333,6 +339,14 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleProjectPublicationStatusOnChange = (projectPublicationStatus: ProjectPublicationStatus) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      project_publication_status: projectPublicationStatus,
+      'page[number]': 1,
+    });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -346,7 +360,8 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeTopics: this.handleTopicsOnChange,
       onChangeAreas: this.handleAreasOnchange,
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
-      onChangePublicationStatus: this.handlePublicationStatusOnChange
+      onChangePublicationStatus: this.handlePublicationStatusOnChange,
+      onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
     });
   }
 }

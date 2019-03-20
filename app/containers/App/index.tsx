@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, first } from 'rxjs/operators';
 import { isString, isObject } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
 import * as Sentry from '@sentry/browser';
+import WebFont from 'webfontloader';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -30,9 +31,7 @@ import { trackPage, trackIdentification } from 'utils/analytics';
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
-import FullscreenModal from 'components/UI/FullscreenModal';
-import IdeasShow from 'containers/IdeasShow';
-import VoteControl from 'components/VoteControl';
+import LoadableFullscreenModal from 'components/Loadable/FullscreenModal';
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -47,7 +46,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import eventEmitter from 'utils/eventEmitter';
 
 // style
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
@@ -162,6 +161,27 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.setState({ tenant, authUser });
       }),
 
+      tenant$.pipe(first()).subscribe((tenant) => {
+        if (tenant.data.attributes.style && tenant.data.attributes.style.customFontAdobeId) {
+          WebFont.load({
+            typekit: {
+              id: tenant.data.attributes.style.customFontAdobeId
+            },
+            fontactive: (familyName, _fvd) => {
+              injectGlobal`
+                html, body, h1, h2, h3, h4, h5, button, input, optgroup, select, textarea {
+                  font-family: ${familyName}, 'larsseit', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+                }
+              `;
+            },
+          });
+        }
+      }),
+
+      eventEmitter.observeEvent('cardHover').subscribe(() => {
+        this.preloadIdeaModal();
+      }),
+
       eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
@@ -172,6 +192,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  preloadIdeaModal = () => {
+    LoadableFullscreenModal.preload();
   }
 
   openModal = (type: string, id: string | null, url: string | null) => {
@@ -192,14 +216,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
 
-    const fullscreenModalHeaderChild: JSX.Element | undefined = ((modalOpened && modalType === 'idea' && modalId) ? (
-      <VoteControl
-        ideaId={modalId}
-        unauthenticatedVoteClick={this.unauthenticatedVoteClick}
-        size="1"
-      />
-    ) : undefined);
-
     return (
       <>
         {tenant && visible && (
@@ -207,15 +223,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+
                 <ErrorBoundary>
-                  <FullscreenModal
-                    opened={modalOpened}
+                  <LoadableFullscreenModal
+                    modalOpened={modalOpened}
                     close={this.closeModal}
-                    url={modalUrl}
-                    headerChild={fullscreenModalHeaderChild}
-                  >
-                    {modalId && <IdeasShow ideaId={modalId} inModal={true} />}
-                  </FullscreenModal>
+                    modalUrl={modalUrl}
+                    modalId={modalId}
+                    modalType={modalType}
+                    unauthenticatedVoteClick={this.unauthenticatedVoteClick}
+                  />
                 </ErrorBoundary>
 
                 <ErrorBoundary>

@@ -1,11 +1,20 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'ideas',
   name: 'admin Ideas',
-  getComponent: loadAndRender(import('containers/Admin/ideas')),
+  component: Loadable({
+    loader: () => import('containers/Admin/ideas'),
+    loading: LoadableLoadingAdmin,
+    delay: 500
+  }),
   indexRoute: {
     name: 'admin ideas index',
-    getComponent: loadAndRender(import('containers/Admin/ideas/all')),
+    component: Loadable({
+      loader: () => import('containers/Admin/ideas/all'),
+      loading: LoadableLoadingAdmin,
+      delay: 500
+    }),
   },
 });
