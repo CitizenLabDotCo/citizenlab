@@ -12,7 +12,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
 import { fontSizes, media } from 'utils/styleUtils';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -25,14 +25,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const ProjectNavbarWrapper = styled.nav`
-  background: #002332;
-  color: #fff;
+  width: 100%;
+  color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   font-size: ${fontSizes.base}px;
   position: fixed; /* IE11 fallback */
   position: sticky;
-  top: ${(props) => props.theme.menuHeight}px;
+  top: ${({ theme }) => theme.menuHeight}px;
   z-index: 10;
-  width: 100%;
+  background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#002332'};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMinTablet`
@@ -68,18 +68,9 @@ const ProjectNavbarIcon = styled(Icon)`
   width: 18px;
   height: 18px;
   flex: 0 0 18px;
-  fill: #fff;
+  fill: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   margin-right: 9px;
   transition: fill 100ms ease-out;
-
-  /*
-  &.idea {
-    width: 20px;
-    height: 20px;
-    flex: 0 0 20px;
-    margin-top: -2px;
-  }
-  */
 `;
 
 const InfoIcon = ProjectNavbarIcon.extend`
@@ -90,7 +81,7 @@ const ProjectNavbarLink = styled(Link)`
   height: 100%;
   display: flex;
   align-items: center;
-  color: #fff;
+  color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   opacity: 0.6;
   margin-right: 60px;
   border-top: solid 3px transparent;
@@ -99,12 +90,12 @@ const ProjectNavbarLink = styled(Link)`
   &.active,
   &:focus,
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
     opacity: 1;
   }
 
   &.active {
-    border-bottom: 3px solid rgba(255, 255, 255, 1);
+    border-bottom: 3px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   }
 
   &:first-of-type {
@@ -176,7 +167,9 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {
   dropdownOpened: boolean;
@@ -206,7 +199,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
   }
 
   render() {
-    const { project, events, phase } = this.props;
+    const { project, events, phase, theme } = this.props;
 
     if (!isNilOrError(project)) {
       const projectSlug = project.attributes.slug;
@@ -255,7 +248,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   activeClassName="active"
                   className="e2e-project-info-link"
                 >
-                  <InfoIcon name="info2" />
+                  <InfoIcon name="info" />
                   <FormattedMessage {...messages.navInformation} />
                 </ProjectNavbarLink>
 
@@ -310,7 +303,9 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 {projectType === 'continuous' && projectMethod === 'ideation' &&
                   <StyledIdeaButton
                     projectId={project.id}
-                    fullHeight
+                    fullHeight={true}
+                    bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
+                    textColor={theme.projectNavbarIdeaButtonTextColor}
                   />
                 }
               </ProjectNavbarItems>
@@ -330,8 +325,10 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
+const ProjectNavbarWithHoC = withTheme<Props, State>(ProjectNavbar);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectNavbar {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectNavbarWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

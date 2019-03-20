@@ -46,11 +46,12 @@ describe('Idea form page', () => {
 
   it('creates an idea when submitting the form with a title and description, and redirects to the sign-in form', () => {
     const ideaTtle = randomString();
-    const ideaDescription = randomString();
+    const ideaDescription = randomString(40);
 
     cy.get('#title').type(ideaTtle);
     cy.get('.ql-editor').type(ideaDescription);
     cy.get('.e2e-submit-idea-form').click();
+    cy.wait(1000);
     cy.get('.e2e-lazy-idea-flow-sign-in-form');
     cy.request({
       method: 'GET',

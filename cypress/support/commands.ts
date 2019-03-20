@@ -19,8 +19,18 @@ declare global {
   }
 }
 
-export function randomString() {
-  return Math.random().toString(36).substring(2, 12).toLowerCase();
+export function randomString(length: number = 15) {
+  // return Math.random().toString(36).substring(2, 12).toLowerCase();
+
+  let text = '';
+  const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+
+  // tslint:disable-next-line
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return text;
 }
 
 export function randomEmail() {
@@ -86,11 +96,8 @@ export function signup(firstName: string, lastName: string, email: string, passw
 }
 
 export function acceptCookies() {
-  cy.get('body').then(($body) => {
-    if ($body.find('.e2e-accept-cookies-btn').length) {
-      cy.get('.e2e-accept-cookies-btn').click();
-    }
-  });
+  cy.get('#e2e-cookie-banner').as('cookieBanner');
+  cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
 }
 
 export function getProjectBySlug(projectSlug: string) {

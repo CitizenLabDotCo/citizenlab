@@ -48,7 +48,6 @@ describe('Sign in page', () => {
     const email = 'admin@citizenlab.co';
     const password = 'testtest';
 
-    cy.visit('/sign-in');
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();
@@ -59,7 +58,6 @@ describe('Sign in page', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.visit('/sign-in');
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();

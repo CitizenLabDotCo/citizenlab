@@ -12,8 +12,13 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
-const Container = styled.div``;
+const Container = styled.div`
+  ${media.smallerThanMinTablet`
+    padding-bottom: 30px;
+  `}
+`;
 
 interface InputProps {
   ideaId: string;

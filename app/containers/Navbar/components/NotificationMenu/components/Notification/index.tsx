@@ -15,6 +15,8 @@ import OfficialFeedbackOnYourIdeaNotification from '../OfficialFeedbackOnYourIde
 import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
 import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
+import ProjectPhaseStartedNotification from '../ProjectPhaseStartedNotification';
+import ProjectPhaseUpcomingNotification from '../ProjectPhaseUpcomingNotification';
 
 import {
   TNotificationData,
@@ -33,7 +35,9 @@ import {
   IOfficialFeedbackOnYourIdeaNotificationData,
   IOfficialFeedbackOnVotedIdeaNotificationData,
   IOfficialFeedbackOnCommentedIdeaNotificationData,
-  IMentionInOfficialFeedbackNotificationData
+  IMentionInOfficialFeedbackNotificationData,
+  IProjectPhaseStartedNotificationData,
+  IProjectPhaseUpcomingNotificationData
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -82,6 +86,10 @@ export default class Notification extends PureComponent<Props> {
         return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
       case 'mention_in_official_feedback':
         return <MentionInOfficialFeedbackNotification notification={notification as IMentionInOfficialFeedbackNotificationData} />;
+      case 'project_phase_started':
+        return <ProjectPhaseStartedNotification notification={notification as IProjectPhaseStartedNotificationData} />;
+      case 'project_phase_upcoming':
+        return <ProjectPhaseUpcomingNotification notification={notification as IProjectPhaseUpcomingNotificationData} />;
       default: return null;
     }
   }
