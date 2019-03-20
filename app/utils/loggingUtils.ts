@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/browser';
+import { isEmpty } from 'lodash-es';
 
 function isErrorOrErrorEvent(wat: any) {
   return Object.prototype.toString.call(wat) === '[object Error]' || Object.prototype.toString.call(wat) === '[object ErrorEvent]';
@@ -13,7 +14,7 @@ function isString(wat: any) {
 }
 
 export function reportError(error: any) {
-  if (error === {} || error === null || error === []) {
+  if (isEmpty(error)) {
     Sentry.captureMessage('An empty error has been thrown');
   } else if (isErrorOrErrorEvent(error)) {
     Sentry.captureException(error);
