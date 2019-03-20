@@ -7,7 +7,6 @@ import Icon from 'components/UI/Icon';
 
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
 
 const Container: any = styled.div`
   display: flex;
