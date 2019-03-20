@@ -616,7 +616,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       } else if (!isNilOrError(pbPhase)) {
         participationContextId = pbPhase.id;
       }
-      const budgetingDescriptor = get(idea, 'data.relationships.action_descriptor.data.budgeting', null);
+      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
+
+      /// TODO
+      console.log(participationContextType,
+              participationContextId,
+              budgetingDescriptor,
+              showBudgetControl,
+              showVoteControl);
 
       return {
         participationContextType,
