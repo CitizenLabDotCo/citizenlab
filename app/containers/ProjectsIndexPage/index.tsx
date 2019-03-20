@@ -53,7 +53,7 @@ export default () => (
   <>
     <ProjectsIndexMeta />
     <Container>
-      <StyledContentContainer maxWidth={1150}>
+      <StyledContentContainer mode="page">
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>

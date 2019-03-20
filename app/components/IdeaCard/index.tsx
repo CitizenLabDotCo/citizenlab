@@ -99,6 +99,9 @@ const IdeaTitle: any = styled.h3`
   line-height: 26px;
   max-height: 78px;
   margin-bottom: 13px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Footer = styled.div`
@@ -220,6 +223,11 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  onCardHover = (event: FormEvent<MouseEvent>) => {
+    event.preventDefault();
+    eventEmitter.emit(namespace, 'cardHover', null);
+  }
+
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
     const { ideaAuthor } = this.props;
 
@@ -288,6 +296,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <IdeaContainer
+          onMouseOver={this.onCardHover}
           onClick={this.onCardClick}
           to={`/ideas/${idea.attributes.slug}`}
           className={`${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}

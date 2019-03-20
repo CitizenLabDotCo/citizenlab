@@ -1,15 +1,25 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'insights',
-  getComponent: loadAndRender(import('./')),
+  component: Loadable({
+    loader: () => import('./'),
+    loading: LoadableLoadingAdmin
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('./All')),
+    component: Loadable({
+      loader: () => import('./All'),
+      loading: LoadableLoadingAdmin
+    }),
   },
   childRoutes: [
     {
       path: 'new',
-      getComponent: loadAndRender(import('./New')),
+      component: Loadable({
+        loader: () => import('./New'),
+        loading: LoadableLoadingAdmin
+      }),
     },
   ],
 });

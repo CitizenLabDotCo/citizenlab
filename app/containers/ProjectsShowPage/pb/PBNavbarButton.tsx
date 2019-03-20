@@ -23,7 +23,7 @@ const Container = styled.div`
 const ManageBudgetButton = styled.button`
   height: 100%;
   display: flex;
-  color: #fff;
+  color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   opacity: 0.6;
   align-items: center;
   white-space: nowrap;
@@ -32,7 +32,7 @@ const ManageBudgetButton = styled.button`
 
   &:focus,
   &:hover {
-    color: #fff;
+    color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
     opacity: 1;
   }
 `;
