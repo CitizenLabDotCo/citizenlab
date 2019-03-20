@@ -248,7 +248,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   activeClassName="active"
                   className="e2e-project-info-link"
                 >
-                  <InfoIcon name="info2" />
+                  <InfoIcon name="info" />
                   <FormattedMessage {...messages.navInformation} />
                 </ProjectNavbarLink>
 
