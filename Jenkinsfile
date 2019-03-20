@@ -1,5 +1,14 @@
 pipeline {
   agent any
+
+  /* 
+    After https://reinout.vanrees.org/weblog/2017/10/03/docker-compose-in-jenkins.html.
+    This solves the network (postgres and redis) not found issues during build stage.
+  */
+  environment {
+    COMPOSE_PROJECT_NAME = "${env.JOB_NAME}-${env.BUILD_ID}"
+  }
+
   stages {
     stage('Build') {
       steps {
@@ -84,7 +93,7 @@ pipeline {
       }
     }
 
-    stage('Test slow tests (tenant templates)') {
+    stage('Test slow tests') {
       when { branch 'master' }
       steps {
         sh 'docker-compose run --user "$(id -u):$(id -g)" --rm -e SPEC_OPTS="-t slow_test" web bundle exec rake spec'
@@ -161,8 +170,8 @@ pipeline {
 
   post {
     always {
-      junit 'spec/reports/**/*.xml'
       sh 'docker-compose down --volumes'
+      junit 'spec/reports/**/*.xml'
       cleanWs()
     }
     failure {

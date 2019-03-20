@@ -1,0 +1,97 @@
+{
+  "description": "Schema for validating the visual style configuration for a tenant",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "invertedNavbarColors": {
+      "description": "Does the navbar have inverted colors (light text on a dark background)?",
+      "type": "boolean"
+    },
+    "navbarBackgroundColor": {
+      "description": "The background color of a navigation item that's not active (not being visited)",
+      "$ref": "#/definitions/color"
+    },
+    "navbarActiveItemBackgroundColor": {
+      "description": "The background color of a navigation item that is currently active (being visited)",
+      "$ref": "#/definitions/color"
+    },
+    "navbarActiveItemBorderColor": {
+      "description": "The border color of a navigation item that is currently active (being visited)",
+      "$ref": "#/definitions/color"
+    },
+    "navbarTextColor": {
+      "description": "The color of the text used for all text in the navbar",
+      "$ref": "#/definitions/color"
+    },
+    "navbarHighlightedItemBackgroundColor": {
+      "description": "The background color of a navigation item in the navbar that needs to attract extra attention (e.g. the sign-up button)",
+      "$ref": "#/definitions/color"
+    },
+    "navbarBorderColor": {
+      "description": "The color of the full-width bottom border of the navbar",
+      "$ref": "#/definitions/color"
+    },
+    "landingHeaderOverlayColor": {
+      "description": "The overlay color of the landing page signed-out and signed-in headers",
+      "$ref": "#/definitions/color"
+    },
+    "landingHeaderTitleFontSize": {
+      "description": "The font size of the landing page signed-out header title in pixels",
+      "type": "integer"
+    },
+    "landingHeaderTitleFontWeight": {
+      "description": "The font weight of the landing page signed-out header title",
+      "$ref": "#/definitions/weight"
+    },
+    "landingHeaderOverlayOpacity": {
+      "description": "How opaque should the header overlay color be? From 0 (no color) to 100 (full color)",
+      "$ref": "#/definitions/opacity"
+    },
+    "customFontName": {
+      "description": "The name of the configured custom font for the platform",
+      "type": "string"
+    },
+    "customFontAdobeId": {
+      "description": "The Adobe Fonts ID of the configured custom font",
+      "type": "string"
+    },
+    "projectNavbarBackgroundColor": {
+      "description": "The background color of the project page navbar (shown underneath the main navbar)",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarTextColor": {
+      "description": "The text color, icon color and bottom border of the project page navbar items (shown underneath the main navbar)",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarIdeaButtonBackgroundColor": {
+      "description": "The background color of the project navbar 'Post an idea' button",
+      "$ref": "#/definitions/color"
+    },
+    "projectNavbarIdeaButtonTextColor": {
+      "description": "The text color of the project navbar 'Post an idea' button",
+      "$ref": "#/definitions/color"
+    }
+  },
+  "definitions": {
+    "opacity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "color": {
+      "anyOf": [
+        {"title": "hex", "type": "string", "pattern": "^#[0-9a-f]{3}([0-9a-f]{3})?$"},
+        {"title": "rgb", "type": "string", "pattern": "^rgb\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*\)$"},
+        {"title": "rgba", "type": "string", "pattern": "^rgba\(\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*(0|[1-9]\d?|1\d\d?|2[0-4]\d|25[0-5])%?\s*,\s*((0.[1-9])|[01])\s*\)$"},
+        {"title": "hsl", "type": "string", "pattern": "^hsl\(\s*(0|[1-9]\d?|[12]\d\d|3[0-5]\d)\s*,\s*((0|[1-9]\d?|100)%)\s*,\s*((0|[1-9]\d?|100)%)\s*\)$"},
+        {"title": "other", "type": "string", "enum": ["none", "transparent", "inherit"]}
+      ]
+    },
+    "weight": {
+      "anyOf": [
+        {"title": "number", "type": "number", "minimum": 1, "maximum": 1000},
+        {"title": "keyword", "enum": ["normal","bold","lighter","bolder","inherit","initial","unset"]}
+      ]
+    }
+  }
+}
