@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Helmet from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import Spinner from 'components/UI/Spinner';
 import Icon from 'components/UI/Icon';
 import Footer from 'components/Footer';
 import Fragment from 'components/Fragment';
@@ -43,18 +42,6 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
-  `}
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -162,82 +149,78 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
     const { formatMessage } = this.props.intl;
     const { locale, tenantLocales, page, pageFiles, pageLinks } = this.props;
 
-      if (isNilOrError(locale) || isNilOrError(tenantLocales) || page === undefined) {
-        return (
-          <Loading>
-            <Spinner />
-          </Loading>
-        );
-      } else {
-        let seoTitle = formatMessage(messages.notFoundTitle);
-        let seoDescription = formatMessage(messages.notFoundDescription);
-        let blockIndexing = true;
-        let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
-        let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
-        let pageSlug = '';
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && page !== undefined) {
+      let seoTitle = formatMessage(messages.notFoundTitle);
+      let seoDescription = formatMessage(messages.notFoundDescription);
+      let blockIndexing = true;
+      let pageTitle = <FormattedMessage {...messages.notFoundTitle} />;
+      let pageDescription = <FormattedMessage {...messages.notFoundDescription} />;
+      let pageSlug = '';
 
-        if (!isNilOrError(page)) {
-          seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
-          seoDescription = '';
-          blockIndexing = false;
-          pageSlug = page.attributes.slug;
-          pageTitle = <T value={page.attributes.title_multiloc} />;
-          pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
-        }
-
-        return (
-          <Container className={`e2e-page-${pageSlug}`}>
-            <Helmet>
-              <title>{seoTitle}</title>
-              <meta name="description" content={seoDescription} />
-              {blockIndexing && <meta name="robots" content="noindex" />}
-            </Helmet>
-
-            <PageContent>
-              <StyledContentContainer>
-                <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
-                  <PageTitle>
-                    {pageTitle}
-                  </PageTitle>
-                  <PageDescription>
-                    <QuillEditedContent>
-                      {pageDescription}
-                    </QuillEditedContent>
-                  </PageDescription>
-                </Fragment>
-              </StyledContentContainer>
-              <AttachmentsContainer>
-                {pageFiles && !isNilOrError(pageFiles) &&
-                  <FileAttachments files={pageFiles} />
-                }
-              </AttachmentsContainer>
-            </PageContent>
-
-            {!isNilOrError(pageLinks) &&
-              <PagesNavWrapper>
-                <PagesNav>
-                  <StyledContentContainer>
-                    {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
-                      <StyledLink
-                        className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
-                        to={`/pages/${pageLink.attributes.linked_page_slug}`}
-                        key={pageLink.id}
-                      >
-                        <T value={pageLink.attributes.linked_page_title_multiloc} />
-                        <LinkIcon name="chevron-right" />
-                      </StyledLink>
-                    ))}
-                  </StyledContentContainer>
-                </PagesNav>
-              </PagesNavWrapper>
-            }
-
-            <Footer showCityLogoSection={false} />
-          </Container>
-        );
+      if (!isNilOrError(page)) {
+        seoTitle = getLocalized(page.attributes.title_multiloc, locale, tenantLocales);
+        seoDescription = '';
+        blockIndexing = false;
+        pageSlug = page.attributes.slug;
+        pageTitle = <T value={page.attributes.title_multiloc} />;
+        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
       }
+
+      return (
+        <Container className={`e2e-page-${pageSlug}`}>
+          <Helmet>
+            <title>{seoTitle}</title>
+            <meta name="description" content={seoDescription} />
+            {blockIndexing && <meta name="robots" content="noindex" />}
+          </Helmet>
+
+          <PageContent>
+            <StyledContentContainer>
+              <Fragment name={!isNilOrError(page) ? `pages/${page && page.id}/content` : ''}>
+                <PageTitle>
+                  {pageTitle}
+                </PageTitle>
+                <PageDescription>
+                  <QuillEditedContent>
+                    {pageDescription}
+                  </QuillEditedContent>
+                </PageDescription>
+              </Fragment>
+            </StyledContentContainer>
+            <AttachmentsContainer>
+              {pageFiles && !isNilOrError(pageFiles) &&
+                <FileAttachments files={pageFiles} />
+              }
+            </AttachmentsContainer>
+          </PageContent>
+
+          {!isNilOrError(pageLinks) &&
+            <PagesNavWrapper>
+              <PagesNav>
+                <StyledContentContainer>
+                  {pageLinks.filter(pageLink => !isNilOrError(pageLink)).map((pageLink: PageLink) => (
+                    <StyledLink
+                      className={`e2e-page-link-to-${pageLink.attributes.linked_page_slug}`}
+                      to={`/pages/${pageLink.attributes.linked_page_slug}`}
+                      key={pageLink.id}
+                    >
+                      <T value={pageLink.attributes.linked_page_title_multiloc} />
+                      <LinkIcon name="chevron-right" />
+                    </StyledLink>
+                  ))}
+                </StyledContentContainer>
+              </PagesNav>
+            </PagesNavWrapper>
+          }
+
+          <Footer showCityLogoSection={false} />
+        </Container>
+      );
     }
+
+    return null;
   }
+}
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
