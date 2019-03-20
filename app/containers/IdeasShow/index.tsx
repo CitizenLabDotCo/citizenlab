@@ -210,6 +210,9 @@ const IdeaTitle = styled.h1`
   font-size: ${fontSizes.xxxxl}px;
   font-weight: 500;
   line-height: 38px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin: 0;
   padding: 0;
 
