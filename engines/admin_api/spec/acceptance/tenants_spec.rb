@@ -11,6 +11,24 @@ resource "Tenants" do
     header 'Authorization', ENV.fetch("ADMIN_API_TOKEN")
   end
 
+  get "admin_api/tenants" do
+    let(:tenant) { create(:tenant) }
+    let(:tenant_id) { tenant.id }
+
+    example_request "List all tenants" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "admin_api/tenants/:tenant_id" do
+    let(:tenant) { create(:tenant) }
+    let(:tenant_id) { tenant.id }
+
+    example_request "Get a tenant by ID" do
+      expect(status).to eq 200
+    end
+  end
+
   patch "admin_api/tenants/:tenant_id" do
     with_options scope: :tenant do
       parameter :name, "The name of the tenant"
@@ -18,6 +36,7 @@ resource "Tenants" do
       parameter :logo, "The logo image of the tenant"
       parameter :header_bg, "The header background image of the tenant"
       parameter :settings, "The tenant settings"
+      parameter :style, "The tenant style definitions"
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
@@ -53,6 +72,18 @@ resource "Tenants" do
     example_request "Deleting a tenant", document: false do
       expect(status).to eq 200
       expect{tenant.reload}.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  get "admin_api/tenants/settings_schema" do
+    example_request "Get the json schema for settings" do
+      expect(status).to eq 200
+    end
+  end
+
+  get "admin_api/tenants/style_schema" do
+    example_request "Get the json schema for style" do
+      expect(status).to eq 200
     end
   end
 
