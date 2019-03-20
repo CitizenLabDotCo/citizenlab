@@ -1323,6 +1323,8 @@
   "app.containers.UsersShowPage.loadingUser": "Laster inn...",
   "app.containers.UsersShowPage.loadingUserIdeas": "Laster inn brukeridéer...",
   "app.containers.UsersShowPage.memberSince": "Medlem siden {date}",
+  "app.containers.UsersShowPage.metaDescription": "",
+  "app.containers.UsersShowPage.metaTitle": "",
   "app.containers.admin.ideas.all.header": "Idéer",
   "app.containers.admin.ideas.all.headerSubtitle": "Add topics to ideas, update their status or change the project in which they are shown. Contact us if you want to use custom topics or statuses.",
   "app.containers.admin.project.permissions.permissionTypeLabel": "Hvem kan se dette prosjektet?",
