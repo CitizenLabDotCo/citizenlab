@@ -618,13 +618,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       }
       const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
 
-      /// TODO
-      console.log(participationContextType,
-              participationContextId,
-              budgetingDescriptor,
-              showBudgetControl,
-              showVoteControl);
-
       return {
         participationContextType,
         participationContextId,
