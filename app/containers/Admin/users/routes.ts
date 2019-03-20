@@ -1,16 +1,27 @@
-import loadAndRender from 'utils/loadAndRender';
+import Loadable from 'react-loadable';
+import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
   path: 'users',
   name: 'admin users',
-  getComponent: loadAndRender(import('containers/Admin/users')),
+  component: Loadable({
+    loader: () => import('containers/Admin/users'),
+    loading: LoadableLoadingAdmin,
+    delay: 500
+  }),
   indexRoute: {
-    getComponent: loadAndRender(import('containers/Admin/users/AllUsers')),
+    component: Loadable({
+      loader: () => import('containers/Admin/users/AllUsers'),
+      loading: () => null
+    }),
   },
   childRoutes: [
     {
       path: '/:locale/admin/users/:groupId',
-      getComponent: loadAndRender(import('containers/Admin/users/UsersGroup')),
+      component: Loadable({
+        loader: () => import('containers/Admin/users/UsersGroup'),
+        loading: () => null
+      }),
     },
   ],
 });

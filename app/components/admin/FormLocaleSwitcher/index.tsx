@@ -68,7 +68,7 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   render() {
     const { tenantLocales, onLocaleChange, selectedLocale } = this.props;
 
-    if (!isNilOrError(tenantLocales)) {
+    if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
       return (
         <Container>
           {tenantLocales.map(locale => (

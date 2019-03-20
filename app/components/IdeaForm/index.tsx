@@ -288,11 +288,34 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.descriptionElement = element;
   }
 
+  validateTitle = (title: string | null) => {
+    if (!title) {
+      return <FormattedMessage {...messages.titleEmptyError} />;
+    }
+
+    if (title && title.length < 10) {
+      return <FormattedMessage {...messages.titleLengthError} />;
+    }
+
+    return null;
+  }
+
+  validateDescription = (description: string | null) => {
+    if (!description) {
+      return <FormattedMessage {...messages.descriptionEmptyError} />;
+    }
+
+    if (description && description.length < 30) {
+      return <FormattedMessage {...messages.descriptionLengthError} />;
+    }
+
+    return null;
+  }
+
   validate = (title: string | null, description: string | null, budget: number | null) => {
     const { pbContext } = this.state;
-    const titleError = (!title ? <FormattedMessage {...messages.titleEmptyError} /> : null);
-    const hasDescriptionError = (!description || description === '');
-    const descriptionError = (hasDescriptionError ? this.props.intl.formatMessage(messages.descriptionEmptyError) : null);
+    const titleError = this.validateTitle(title);
+    const descriptionError = this.validateDescription(description);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 

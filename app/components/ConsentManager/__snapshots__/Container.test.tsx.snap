@@ -2,7 +2,7 @@
 
 exports[`<ConsentManager /> renders correctly when no cookie is set (destinations = newDestinations) 1`] = `
 <Fragment>
-  <ModalWithTracks
+  <Modal
     close={[Function]}
     fixedHeight={false}
     footer={
@@ -23,6 +23,7 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={null}
@@ -68,7 +69,7 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
       functional={null}
       onChange={[Function]}
     />
-  </ModalWithTracks>
+  </Modal>
   <Banner
     onAccept={[Function]}
     onChangePreferences={[Function]}
@@ -78,7 +79,7 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
 
 exports[`<ConsentManager /> renders correctly when there is no new destination 1`] = `
 <Fragment>
-  <ModalWithTracks
+  <Modal
     close={[Function]}
     fixedHeight={false}
     footer={
@@ -99,6 +100,7 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={true}
@@ -144,13 +146,13 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
       functional={false}
       onChange={[Function]}
     />
-  </ModalWithTracks>
+  </Modal>
 </Fragment>
 `;
 
 exports[`<ConsentManager /> renders correctly when there is no tracking destination 1`] = `
 <Fragment>
-  <ModalWithTracks
+  <Modal
     close={[Function]}
     fixedHeight={false}
     footer={
@@ -171,6 +173,7 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={null}
@@ -185,6 +188,6 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
       functional={null}
       onChange={[Function]}
     />
-  </ModalWithTracks>
+  </Modal>
 </Fragment>
 `;

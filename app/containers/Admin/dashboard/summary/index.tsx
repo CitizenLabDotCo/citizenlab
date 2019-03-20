@@ -43,7 +43,7 @@ import {
 
 export type IResource = 'ideas' | 'comments' | 'votes';
 
-interface InputProps {
+export interface InputProps {
   onlyModerator?: boolean;
 }
 

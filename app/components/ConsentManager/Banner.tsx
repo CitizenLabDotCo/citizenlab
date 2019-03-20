@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
-
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-
+import ContentContainer from 'components/ContentContainer';
 import Link from 'utils/cl-router/Link';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
-
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
-const Root = styled.div`
+const Container = styled.div`
   position: fixed;
   bottom: 0;
   color: white;
@@ -20,60 +19,65 @@ const Root = styled.div`
   z-index: 10;
   width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  padding: 20px 30px;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
     bottom: ${(props) => props.theme.mobileMenuHeight}px;
   `}
-
-  ${media.smallerThanMinTablet`
-    padding: 15px 15px;
-  `}
 `;
 
-const StyledContentContainer = styled.div`
+const ContentContainerInner = styled.div`
   display: flex;
-  flex-wrap: nowrap;
   align-items: center;
-  width: 100%;
-  padding-right: 35px;
-  padding-left: 35px;
-  max-width: ${(props) => props.theme.maxPageWidth}px;
 
-  p:first-child {
-    font-weight: 500;
-    margin-bottom: 5px;
-  }
-
-  ${media.smallerThanMaxTablet`
-    padding: 0px;
-
-    p:first-child {
-      font-weight: 300;
-      margin: 0;
-    }
-
-    p:last-child {
-      display: none;
-    }
+  ${media.smallerThanMinTablet`
+    max-width: auto;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
   `}
 `;
 
 const Left = styled.div`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   margin-right: 40px;
 
   ${media.smallerThanMinTablet`
-    margin-right: 20px;
+    margin-right: 0px;
+    margin-bottom: 20px;
+  `}
+`;
+
+const Line = styled.div`
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  &.first {
+    margin-bottom: 4px;
+  }
+
+  ${media.phone`
+    &.second {
+      display: none;
+    }
   `}
 `;
 
 const StyledLink = styled(Link)`
   color: white;
   text-decoration: underline;
-  &:hover, &:focus {
+
+  &:hover,
+  &:focus {
     color: white;
     text-decoration: underline;
   }
@@ -83,6 +87,28 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
+const PreferencesButton = styled(Button)`
+  margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    margin-right: 0px;
+    order: 2;
+  `}
+`;
+
+const AcceptButton = styled(Button)`
+  ${media.smallerThanMinTablet`
+    margin-right: 10px;
+    order: 1;
+  `}
+`;
+
+const CloseIcon = styled(Icon)`
+  width: 15px;
+  height: 15px;
+  fill: rgba(255, 255, 255, 0.7);
+`;
+
 const CloseButton = styled.button`
   position: absolute;
   right: 15px;
@@ -90,15 +116,15 @@ const CloseButton = styled.button`
   transform: translateY(-50%);
   border: none;
   background: none;
-  fill: white;
   cursor: pointer;
 
-  svg {
-    width: 15px;
-    height: 15px;
+  &:hover {
+    ${CloseIcon} {
+      fill: #fff;
+    }
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThan1280px`
     display: none;
   `}
 `;
@@ -109,8 +135,6 @@ interface Props {
 }
 
 class Banner extends PureComponent<Props & InjectedIntlProps> {
-  static displayName = 'Banner';
-
   render() {
     const {
       onAccept,
@@ -118,43 +142,42 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
       intl: { formatMessage }
     } = this.props;
 
+    const policyLink = (
+      <StyledLink to="/pages/cookie-policy">
+        <FormattedMessage {...messages.policyLink} />
+      </StyledLink>
+    );
+
     return (
-      <Root role="banner">
-        <StyledContentContainer>
+      <Container role="banner" id="e2e-cookie-banner">
+        <ContentContainer mode="page">
+        <ContentContainerInner>
           <Left>
-            <FormattedMessage
-              tagName="p"
-              {...messages.mainText}
-              values={{
-                // tslint:disable-next-line
-                policyLink: (
-                  <StyledLink to="/pages/cookie-policy" target="_blank">
-                    <FormattedMessage {...messages.policyLink} />
-                  </StyledLink>)
-              }}
-            />
-            <FormattedMessage {...messages.subText} tagName="p" />
+            <Line className="first"><FormattedMessage {...messages.mainText} values={{ policyLink }} /></Line>
+            <Line className="second"><FormattedMessage {...messages.subText} /></Line>
           </Left>
           <ButtonContainer>
-            <Button
-              style="primary-outlined"
+            <PreferencesButton
               borderColor="transparent"
               textColor="#fff"
+              bgColor={colors.adminTextColor}
+              bgHoverColor={rgba(255, 255, 255, 0.15)}
               onClick={onChangePreferences}
               className="integration-open-modal"
             >
               <FormattedMessage {...messages.manage} />
-            </Button>
-            <Button
+            </PreferencesButton>
+            <AcceptButton
               className="e2e-accept-cookies-btn"
               style="primary-inverse"
               textColor={colors.adminTextColor}
               onClick={onAccept}
             >
               <FormattedMessage {...messages.accept} />
-            </Button>
+            </AcceptButton>
           </ButtonContainer>
-        </StyledContentContainer>
+        </ContentContainerInner>
+        </ContentContainer>
 
         <CloseButton
           type="button"
@@ -163,9 +186,9 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
           aria-label={formatMessage(messages.ariaButtonClose)}
           onClick={onAccept}
         >
-          <Icon name="close4" />
+          <CloseIcon name="close4" />
         </CloseButton>
-      </Root>
+      </Container>
     );
   }
 }
