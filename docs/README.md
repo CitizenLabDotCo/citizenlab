@@ -3,11 +3,13 @@
 ## 2019-03-20
 
 ### Fixed
-- Fixed mobile layout issues with cooku policy, idea image and idea title for small screens (IPhone 5S)
+- Fixed mobile layout issues with cookie policy, idea image and idea title for small screens (IPhone 5S)
 - Posting an idea in a timeline that hasn't started yet (as an admin) now puts the idea in the first phase
 - Notifications menu renders properly in IE11
 - The CTA on project cards is no longer shown for archived and finished projects
 - Invited users that sign up with another authentication provider now automatically redeem their invitation
+- The form for official feedback doesn't show the lagage picker when the platform supports only one locale anymore.
+
 ### Added
 - Capabilities have been added to apply custom styling to the platform header
   - Styling can be changed through a new style tab in admin HQ
