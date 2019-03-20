@@ -43,12 +43,6 @@ module EmailCampaigns
         }
       }]
     end
-
-
-    protected
-
-    def set_enabled
-      self.enabled = false if self.enabled.nil?
-    end
+    
   end
 end

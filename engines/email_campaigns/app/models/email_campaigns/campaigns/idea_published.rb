@@ -3,6 +3,7 @@ module EmailCampaigns
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
+    include Disableable
 
     recipient_filter :filter_recipient
 
