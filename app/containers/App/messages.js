@@ -23,6 +23,6 @@ export default defineMessages({
   },
   currentUserLoadingError: {
     id: 'app.containers.App.currentUserLoadingError',
-    defaultMessage: 'Oops, something went terrybly wrong. kill the developer!',
+    defaultMessage: 'Oops, something went terribly wrong!',
   },
 });
