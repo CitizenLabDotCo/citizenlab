@@ -1,11 +1,14 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
+import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIdeaVotesCount';
+
+import Icon from 'components/UI/Icon';
+
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
-import Icon from 'components/UI/Icon';
-import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIdeaVotesCount';
+
 const Container: any = styled.div`
   display: flex;
   align-items: center;
@@ -16,7 +19,6 @@ const Container: any = styled.div`
 `;
 
 const VoteIconContainer: any = styled.div`
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,7 +31,7 @@ const VoteIconContainer: any = styled.div`
   height: 55px;
 `;
 
-const VoteIcon: any = styled(Icon) `
+const VoteIcon: any = styled(Icon)`
   height: 19px;
   fill: ${colors.label};
   transition: all 100ms ease-out;

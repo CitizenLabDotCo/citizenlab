@@ -35,8 +35,6 @@ export default class GetIdeaVotesCount extends React.Component<Props, State> {
   componentDidMount() {
     this.subscriptions = [
       votesStream(this.props.ideaId).observable.subscribe((ideaVotes) => {
-        console.log(ideaVotes);
-        console.log(this.props.ideaId);
         this.setState({
           ideaVotesCount: (ideaVotes ? {
             up: ideaVotes.data.filter(vote => vote.attributes.mode === 'up').length,
