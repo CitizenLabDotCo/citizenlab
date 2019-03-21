@@ -1,5 +1,5 @@
 module EmailCampaigns
-  class Campaigns::NewCommentForAdmin < Campaigns::NotificationCampaign
+  class Campaigns::ProjectPhaseUpcoming < Campaigns::NotificationCampaign
     include Consentable
     include ActivityTriggerable
     include RecipientConfigurable
@@ -8,7 +8,7 @@ module EmailCampaigns
     recipient_filter :filter_notification_recipient
 
     def activity_triggers
-      {'Notifications::NewCommentForAdmin' => {'created' => true}}
+      {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
     end
 
 

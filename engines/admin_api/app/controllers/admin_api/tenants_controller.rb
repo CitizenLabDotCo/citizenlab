@@ -39,7 +39,12 @@ module AdminApi
         new_settings = @tenant.settings.deep_merge(tenant_params[:settings].to_h)
         @tenant.assign_attributes(settings: new_settings)
       end
-      @tenant.assign_attributes(tenant_params.except(:settings))
+
+      if tenant_params[:style]
+        @tenant.assign_attributes(style: tenant_params[:style])
+      end
+
+      @tenant.assign_attributes(tenant_params.except(:settings, :style))
 
       SideFxTenantService.new.before_update(@tenant, nil)
 

@@ -3,41 +3,37 @@ module AdminApi
 
     def import template
       service = TenantTemplateService.new
-      template = template.to_yaml
-      tenant_locales = Tenant.current.settings.dig('core', 'locales')
-      (service.template_locales(template) - tenant_locales).each do |locale_from|
-        template = service.change_locales template, locale_from, tenant_locales.first
-      end
+      same_template = service.translate_and_fix_locales template
       ActiveRecord::Base.transaction do
-        service.resolve_and_apply_template YAML.load(template)
+        service.resolve_and_apply_template same_template
       end
     end
 
-    def export project, include_ideas: false, anonymize_users: true, translate_content: false, shift_timestamps: 0, new_slug: nil
+    def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil
       @project = project
       init_refs
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
-      @template['models']['project']             = yml_projects new_slug
-      @template['models']['project_file']        = yml_project_files
-      @template['models']['project_image']       = yml_project_images
-      @template['models']['phase']               = yml_phases
-      @template['models']['phase_file']          = yml_phase_files
-      @template['models']['event']               = yml_events
-      @template['models']['event_file']          = yml_event_files
-      @template['models']['permission']          = yml_permissions
+      @template['models']['project']             = yml_projects new_slug, shift_timestamps: shift_timestamps
+      @template['models']['project_file']        = yml_project_files shift_timestamps: shift_timestamps
+      @template['models']['project_image']       = yml_project_images shift_timestamps: shift_timestamps
+      @template['models']['phase']               = yml_phases shift_timestamps: shift_timestamps
+      @template['models']['phase_file']          = yml_phase_files shift_timestamps: shift_timestamps
+      @template['models']['event']               = yml_events shift_timestamps: shift_timestamps
+      @template['models']['event_file']          = yml_event_files shift_timestamps: shift_timestamps
+      @template['models']['permission']          = yml_permissions shift_timestamps: shift_timestamps
       if include_ideas
-        @template['models']['user']              = yml_users anonymize_users
-        @template['models']['basket']            = yml_baskets
-        @template['models']['idea']              = yml_ideas
-        @template['models']['baskets_idea']      = yml_baskets_ideas
-        @template['models']['idea_file']         = yml_idea_files
-        @template['models']['idea_image']        = yml_idea_images
-        @template['models']['ideas_phase']       = yml_ideas_phases
-        @template['models']['comment']           = yml_comments
-        @template['models']['official_feedback'] = yml_official_feedback
-        @template['models']['vote']              = yml_votes
+        @template['models']['user']              = yml_users anonymize_users, shift_timestamps: shift_timestamps
+        @template['models']['basket']            = yml_baskets shift_timestamps: shift_timestamps
+        @template['models']['idea']              = yml_ideas shift_timestamps: shift_timestamps
+        @template['models']['baskets_idea']      = yml_baskets_ideas shift_timestamps: shift_timestamps
+        @template['models']['idea_file']         = yml_idea_files shift_timestamps: shift_timestamps
+        @template['models']['idea_image']        = yml_idea_images shift_timestamps: shift_timestamps
+        @template['models']['ideas_phase']       = yml_ideas_phases shift_timestamps: shift_timestamps
+        @template['models']['comment']           = yml_comments shift_timestamps: shift_timestamps
+        @template['models']['official_feedback'] = yml_official_feedback shift_timestamps: shift_timestamps
+        @template['models']['vote']              = yml_votes shift_timestamps: shift_timestamps
       end
       @template
     end
@@ -64,13 +60,13 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
-    def yml_projects new_slug
-      yml_project = yml_participation_context @project
+    def yml_projects new_slug, shift_timestamps: 0
+      yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => @project.title_multiloc,
         'description_multiloc'         => @project.description_multiloc,
-        'created_at'                   => @project.created_at.to_s,
-        'updated_at'                   => @project.updated_at.to_s,
+        'created_at'                   => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
+        'updated_at'                   => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
         'remote_header_bg_url'         => @project.header_bg_url,
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
@@ -83,62 +79,62 @@ module AdminApi
       [yml_project]
     end
 
-    def yml_project_files
+    def yml_project_files shift_timestamps: 0
       @project.project_files.map do |p|
         {
           'project_ref'     => lookup_ref(p.project_id, :project),
           'remote_file_url' => p.file_url,
           'ordering'        => p.ordering,
-          'created_at'      => p.created_at.to_s,
-          'updated_at'      => p.updated_at.to_s,
+          'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
           'name'            => p.name
         }
       end
     end
 
-    def yml_project_images
+    def yml_project_images shift_timestamps: 0
       @project.project_images.map do |p|
         {
           'project_ref'      => lookup_ref(p.project_id, :project),
           'remote_image_url' => p.image_url,
           'ordering'         => p.ordering,
-          'created_at'       => p.created_at.to_s,
-          'updated_at'       => p.updated_at.to_s
+          'created_at'       => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
+          'updated_at'       => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
       end
     end
 
-    def yml_phases
+    def yml_phases shift_timestamps: 0
       @project.phases.map do |p|
-        yml_phase = yml_participation_context p
+        yml_phase = yml_participation_context p, shift_timestamps: shift_timestamps
         yml_phase.merge!({
           'project_ref'          => lookup_ref(p.project_id, :project),
           'title_multiloc'       => p.title_multiloc,
           'description_multiloc' => p.description_multiloc,
-          'start_at'             => p.start_at.to_s,
-          'end_at'               => p.end_at.to_s,
-          'created_at'           => p.created_at.to_s,
-          'updated_at'           => p.updated_at.to_s
+          'start_at'             => shift_timestamp(p.start_at, shift_timestamps)&.iso8601,
+          'end_at'               => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
+          'created_at'           => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         })
         store_ref yml_phase, p.id, :phase
         yml_phase
       end
     end
 
-    def yml_phase_files
+    def yml_phase_files shift_timestamps: 0
       @project.phases.flat_map(&:phase_files).map do |p|
         {
           'phase_ref'       => lookup_ref(p.phase_id, :phase),
           'remote_file_url' => p.file_url,
           'ordering'        => p.ordering,
-          'created_at'      => p.created_at.to_s,
-          'updated_at'      => p.updated_at.to_s,
+          'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
           'name'            => p.name
         }
       end
     end
 
-    def yml_participation_context pc
+    def yml_participation_context pc, shift_timestamps: 0
       yml_pc = {
         'presentation_mode'            => pc.presentation_mode,
         'participation_method'         => pc.participation_method,
@@ -158,7 +154,7 @@ module AdminApi
       yml_pc
     end
 
-    def yml_users anonymize_users
+    def yml_users anonymize_users, shift_timestamps: 0
       service = AnonymizeUserService.new
       user_ids = []
       idea_ids = @project.ideas.ids
@@ -180,8 +176,8 @@ module AdminApi
            yml_user = { 
             'email'                     => u.email, 
             'password_digest'           => u.password_digest,
-            'created_at'                => u.created_at.to_s,
-            'updated_at'                => u.updated_at.to_s,
+            'created_at'                => shift_timestamp(u.created_at, shift_timestamps)&.iso8601,
+            'updated_at'                => shift_timestamp(u.updated_at, shift_timestamps)&.iso8601,
             'remote_avatar_url'         => u.avatar_url,
             'first_name'                => u.first_name,
             'last_name'                 => u.last_name,
@@ -189,7 +185,7 @@ module AdminApi
             'bio_multiloc'              => u.bio_multiloc,
             'cl1_migrated'              => u.cl1_migrated,
             'custom_field_values'       => u.custom_field_values.delete_if{|k,v| v.nil?},
-            'registration_completed_at' => u.registration_completed_at.to_s
+            'registration_completed_at' => shift_timestamp(u.registration_completed_at, shift_timestamps)&.iso8601
           }
           if !yml_user['password_digest']
             yml_user['password'] = SecureRandom.urlsafe_base64 32
@@ -201,77 +197,77 @@ module AdminApi
       end
     end
 
-    def yml_baskets
+    def yml_baskets shift_timestamps: 0
       participation_context_ids = [@project.id] + @project.phases.ids
       Basket.where(participation_context_id: participation_context_ids).map do |b|
         yml_basket = {
-          'submitted_at'              => b.submitted_at.to_s,
+          'submitted_at'              => shift_timestamp(b.submitted_at, shift_timestamps)&.iso8601,
           'user_ref'                  => lookup_ref(b.user_id, :user),
           'participation_context_ref' => lookup_ref(b.participation_context_id, [:project, :phase]),
-          'created_at'                => b.created_at.to_s,
-          'updated_at'                => b.updated_at.to_s,
+          'created_at'                => shift_timestamp(b.created_at, shift_timestamps)&.iso8601,
+          'updated_at'                => shift_timestamp(b.updated_at, shift_timestamps)&.iso8601
         }
         store_ref yml_basket, b.id, :basket
         yml_basket
       end
     end
 
-    def yml_events
+    def yml_events shift_timestamps: 0
       @project.events.map do |e|
         yml_event = {
           'project_ref'          => lookup_ref(e.project_id, :project),
           'title_multiloc'       => e.title_multiloc,
           'description_multiloc' => e.description_multiloc,
           'location_multiloc'    => e.location_multiloc,
-          'start_at'             => e.start_at.to_s,
-          'end_at'               => e.end_at.to_s,
-          'created_at'           => e.created_at.to_s,
-          'updated_at'           => e.updated_at.to_s
+          'start_at'             => shift_timestamp(e.start_at, shift_timestamps)&.iso8601,
+          'end_at'               => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
+          'created_at'           => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601
         }
         store_ref yml_event, e.id, :event
         yml_event
       end
     end
 
-    def yml_event_files
+    def yml_event_files shift_timestamps: 0
       @project.events.flat_map(&:event_files).map do |e|
         {
           'event_ref'       => lookup_ref(e.event_id, :event),
           'remote_file_url' => e.file_url,
           'ordering'        => e.ordering,
-          'created_at'      => e.created_at.to_s,
-          'updated_at'      => e.updated_at.to_s,
+          'created_at'      => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601,
           'name'            => e.name
         }
       end
     end
 
-    def yml_permissions
+    def yml_permissions shift_timestamps: 0
       permittable_ids = [@project.id] + @project.phases.ids
       Permission.where(permittable_id: permittable_ids).map do |p|
         yml_permission = {
           'action'          => p.action,
           'permitted_by'    => p.permitted_by,
           'permittable_ref' => lookup_ref(p.permittable_id, [:project, :phase]),
-          'created_at'      => p.created_at.to_s,
-          'updated_at'      => p.updated_at.to_s
+          'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
         store_ref yml_permission, p.id, :permission
         yml_permission
       end
     end
 
-    def yml_ideas
+    def yml_ideas shift_timestamps: 0
       @project.ideas.published.map do |i|
         yml_idea = {
           'title_multiloc'         => i.title_multiloc,
           'body_multiloc'          => i.body_multiloc,
           'publication_status'     => i.publication_status,
-          'published_at'           => i.published_at.to_s,
+          'published_at'           => shift_timestamp(i.published_at, shift_timestamps)&.iso8601,
           'project_ref'            => lookup_ref(i.project_id, :project),
           'author_ref'             => lookup_ref(i.author_id, :user),
-          'created_at'             => i.created_at.to_s,
-          'updated_at'             => i.updated_at.to_s,
+          'created_at'             => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
+          'updated_at'             => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
           'location_point_geojson' => i.location_point_geojson,
           'location_description'   => i.location_description,
           'budget'                 => i.budget
@@ -281,7 +277,7 @@ module AdminApi
       end
     end
 
-    def yml_baskets_ideas
+    def yml_baskets_ideas shift_timestamps: 0
       BasketsIdea.where(idea_id: @project.ideas.published.ids).map do |b|
         if lookup_ref(b.idea_id, :idea)
           {
@@ -292,52 +288,52 @@ module AdminApi
       end
     end
 
-    def yml_idea_files
+    def yml_idea_files shift_timestamps: 0
       IdeaFile.where(idea_id: @project.ideas.published.ids).map do |i|
         {
           'idea_ref'        => lookup_ref(i.idea_id, :idea),
           'remote_file_url' => i.file_url,
           'ordering'        => i.ordering,
-          'created_at'      => i.created_at.to_s,
-          'updated_at'      => i.updated_at.to_s,
+          'created_at'      => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
           'name'            => i.name
         }
       end
     end
         
-    def yml_idea_images
+    def yml_idea_images shift_timestamps: 0
       IdeaImage.where(idea_id: @project.ideas.published.ids).map do |i|
         {
           'idea_ref'         => lookup_ref(i.idea_id, :idea),
           'remote_image_url' => i.image_url,
           'ordering'         => i.ordering,
-          'created_at'       => i.created_at.to_s,
-          'updated_at'       => i.updated_at.to_s
+          'created_at'       => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
+          'updated_at'       => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601
         }
       end
     end
 
-    def yml_ideas_phases
+    def yml_ideas_phases shift_timestamps: 0
       IdeasPhase.where(idea_id: @project.ideas.published.ids).map do |i|
         {
           'idea_ref'   => lookup_ref(i.idea_id, :idea),
           'phase_ref'  => lookup_ref(i.phase_id, :phase),
-          'created_at' => i.created_at.to_s,
-          'updated_at' => i.updated_at.to_s
+          'created_at' => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
+          'updated_at' => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601
         }
       end
     end
 
-    def yml_comments
+    def yml_comments shift_timestamps: 0
       (Comment.where('parent_id IS NULL').where(idea_id: @project.ideas.published.ids)+Comment.where('parent_id IS NOT NULL').where(idea_id: @project.ideas.published.ids)).map do |c|
         yml_comment = {
           'author_ref'         => lookup_ref(c.author_id, :user),
           'idea_ref'           => lookup_ref(c.idea_id, :idea),
           'body_multiloc'      => c.body_multiloc,
-          'created_at'         => c.created_at.to_s,
-          'updated_at'         => c.updated_at.to_s,
+          'created_at'         => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'         => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
           'publication_status' => c.publication_status,
-          'body_updated_at'    => c.body_updated_at.to_s,
+          'body_updated_at'    => shift_timestamp(c.body_updated_at, shift_timestamps)&.iso8601
         }
         yml_comment['parent_ref'] = lookup_ref(c.parent_id, :comment) if c.parent_id
         store_ref yml_comment, c.id, :comment
@@ -345,37 +341,39 @@ module AdminApi
       end
     end
 
-    def yml_official_feedback
+    def yml_official_feedback shift_timestamps: 0
       OfficialFeedback.where(idea_id: @project.ideas.published.ids).map do |o|
         yml_official_feedback = {
           'idea_ref'           => lookup_ref(o.idea_id, :idea),
           'user_ref'           => lookup_ref(o.user_id, :user),
           'body_multiloc'      => o.body_multiloc,
           'author_multiloc'    => o.author_multiloc,
-          'created_at'         => o.created_at.to_s,
-          'updated_at'         => o.updated_at.to_s,
-          'publication_status' => o.publication_status,
-          'body_updated_at'    => o.body_updated_at.to_s,
+          'created_at'         => shift_timestamp(o.created_at, shift_timestamps)&.iso8601,
+          'updated_at'         => shift_timestamp(o.updated_at, shift_timestamps)&.iso8601
         }
         store_ref yml_official_feedback, o.id, :official_feedback
         yml_official_feedback
       end
     end
 
-    def yml_votes
+    def yml_votes shift_timestamps: 0
       idea_ids = @project.ideas.published.ids
       comment_ids = Comment.where(idea_id: idea_ids)
-      Vote.where(votable_id: idea_ids + comment_ids).map do |v|
+      Vote.where('user_id IS NOT NULL').where(votable_id: idea_ids + comment_ids).map do |v|
         yml_vote = {
           'votable_ref' => lookup_ref(v.votable_id, [:idea, :comment]),
           'user_ref'    => lookup_ref(v.user_id, :user),
           'mode'        => v.mode,
-          'created_at'  => v.created_at.to_s,
-          'updated_at'  => v.updated_at.to_s
+          'created_at'  => shift_timestamp(v.created_at, shift_timestamps)&.iso8601,
+          'updated_at'  => shift_timestamp(v.updated_at, shift_timestamps)&.iso8601
         }
         store_ref yml_vote, v.id, :vote
         yml_vote
       end
+    end
+
+    def shift_timestamp value, shift_timestamps
+      value && (value + shift_timestamps.days)
     end
 
   end
