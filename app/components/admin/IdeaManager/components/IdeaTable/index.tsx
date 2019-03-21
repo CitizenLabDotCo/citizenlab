@@ -132,7 +132,7 @@ export default class IdeaTable extends React.Component<Props, State> {
                   direction={ideaSortAttribute === 'author_name' ? ideaSortDirection : null}
                   onToggle={this.handleSortClick('author_name')}
                 >
-                  <FormattedMessage {...messages.author} />
+                  <FormattedMessage {...messages.assignee} />
                 </SortableTableHeader>
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>

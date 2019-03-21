@@ -31,6 +31,7 @@ import messages from '../../messages';
 
 // style
 import styled from 'styled-components';
+import AssigneeSelect from './AssigneeSelect';
 
 const StyledRow = styled.tr`
   height: 5.5rem;
@@ -115,6 +116,11 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
     openIdea(idea.id);
   }
 
+  nothingHappens = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
   render() {
     const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
@@ -130,7 +136,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
-          <Table.Cell>{attrs.author_name}</Table.Cell>
+          <Table.Cell onClick={this.nothingHappens} singleLine><AssigneeSelect ideaId={idea.id}/></Table.Cell>
           <Table.Cell>
             <FormattedRelative value={attrs.published_at} />
           </Table.Cell>
