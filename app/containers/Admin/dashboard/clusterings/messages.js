@@ -196,4 +196,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.clusterViewer._blank',
     defaultMessage: 'Unknown',
   },
+  votes: {
+    id: 'app.containers.AdminPage.clusterViewer.votes',
+    defaultMessage: 'Votes',
+  },
+  details: {
+    id: 'app.containers.AdminPage.clusterViewer.details',
+    defaultMessage: 'Details',
+  },
 });
