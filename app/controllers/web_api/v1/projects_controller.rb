@@ -17,7 +17,11 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects = @projects.where(publication_status: 'published')
     end
 
-    @projects = @projects.with_all_areas(params[:areas]) if params[:areas].present?
+    if params[:areas].present?
+      @projects = @projects
+        .where(id: @projects.with_some_areas(params[:areas]).ids)
+        .or(@projects.where(id: @projects.without_areas.ids))
+    end
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
     @projects = ProjectSortingService.new.sort(@projects)

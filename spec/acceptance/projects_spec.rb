@@ -16,7 +16,7 @@ resource "Projects" do
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
 
-      @projects = ['published','published','draft','published','archived','published','archived']
+      @projects = ['published','published','draft','published','archived','archived','published']
         .map { |ps|  create(:project, publication_status: ps)}
     end
 
@@ -53,14 +53,19 @@ resource "Projects" do
 
       example "List all projects with an area" do
         a1 = create(:area)
+        a2 = create(:area)
 
         p1 = @projects.first
         p1.areas << a1
         p1.save
 
+        p2 = @projects.last
+        p2.areas << a2
+        p2.save
+
         do_request areas: [a1.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].size).to eq 3
         expect(json_response[:data][0][:id]).to eq p1.id
       end
 
@@ -74,7 +79,7 @@ resource "Projects" do
 
         do_request areas: [a1.id, a2.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].size).to eq 4
         expect(json_response[:data][0][:id]).to eq p1.id
       end
 
