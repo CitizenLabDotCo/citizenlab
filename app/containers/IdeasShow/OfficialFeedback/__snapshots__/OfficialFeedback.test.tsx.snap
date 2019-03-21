@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
-<Fragment>
+<div>
   <OfficialFeedback__StyledOfficialFeedbackNew
     ideaId="ideaId"
   />
@@ -9,14 +9,14 @@ exports[`<OfficialFeedback /> renders correctly for admin 1`] = `
     editingAllowed={true}
     ideaId="ideaId"
   />
-</Fragment>
+</div>
 `;
 
 exports[`<OfficialFeedback /> renders correctly for non-admin 1`] = `
-<Fragment>
+<div>
   <WrappedOfficialFeedback
     editingAllowed={false}
     ideaId="ideaId"
   />
-</Fragment>
+</div>
 `;
