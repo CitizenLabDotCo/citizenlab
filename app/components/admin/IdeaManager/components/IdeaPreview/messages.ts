@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.imageAltText',
     defaultMessage: 'Image for idea {ideaTitle}',
   },
+  ideaStatus: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.ideaStatus',
+    defaultMessage: 'Idea status',
+  },
+  assignee: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.assignee',
+    defaultMessage: 'Assignee',
+  },
   openMap: {
     id: 'app.components.admin.IdeaManager.IdeaPreview.openMap',
     defaultMessage: 'Open Map',

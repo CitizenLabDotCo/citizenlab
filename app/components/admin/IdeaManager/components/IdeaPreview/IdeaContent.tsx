@@ -40,6 +40,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import Button from 'components/UI/Button';
 import { Top, Content, Container } from '.';
+import IdeaSettings from './IdeaSettings';
 
 const Row = styled.div`
   display: flex;
@@ -342,6 +343,8 @@ class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntl
                     </BudgetBox>
                   </>
                 }
+
+                <IdeaSettings ideaId={idea.id}/>
 
                 {ideaLocation &&
                   <LocationButton onClick={this.handleMapToggle}>
