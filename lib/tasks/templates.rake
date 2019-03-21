@@ -6,7 +6,7 @@ namespace :templates do
 
   task :export, [:host,:file] => [:environment] do |t, args|
     template = TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: args[:host]))
-    File.open(args[:file], 'w') { |f| f.write template }
+    File.open(args[:file], 'w') { |f| f.write template.to_yaml }
   end
 
   task :import, [:host,:file] => [:environment] do |t, args|
@@ -27,7 +27,7 @@ namespace :templates do
       template = TenantTemplateService.new.tenant_to_template(Tenant.find_by(host: host))
       template_name = "#{host.split('.').first}_template.yml"
       file_path = "config/tenant_templates/generated/#{template_name}"
-      File.open(file_path, 'w') { |f| f.write template }
+      File.open(file_path, 'w') { |f| f.write template.to_yaml }
       if external
         s3.bucket(ENV.fetch('TEMPLATE_BUCKET', 'cl2-tenant-templates')).object("test/#{template_name}").upload_file(file_path)
       end
@@ -47,11 +47,11 @@ namespace :templates do
   end
 
   task :change_locale, [:template_name,:locale_from,:locale_to] => [:environment] do |t, args|
-    template = open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
+    template = YAML.load open(Rails.root.join('config', 'tenant_templates', "#{args[:template_name]}.yml")).read
     service = TenantTemplateService.new
 
     template = service.change_locales template, args[:locale_from], args[:locale_to]
-    File.open("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", 'w') { |f| f.write template }
+    File.open("config/tenant_templates/#{args[:locale_to]}_#{args[:template_name]}.yml", 'w') { |f| f.write template.to_yaml }
   end
 
 end
