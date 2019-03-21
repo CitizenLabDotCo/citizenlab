@@ -15,6 +15,7 @@ class Page < ApplicationRecord
 
   before_validation :generate_slug, on: :create
   before_validation :set_publication_status, on: :create
+  before_validation :sanitize_body_multiloc
   before_validation :strip_title
 
   scope :published, -> {where publication_status: 'published'}
@@ -32,6 +33,13 @@ class Page < ApplicationRecord
 
   def set_publication_status
     self.publication_status ||= 'published'
+  end
+
+  def sanitize_body_multiloc
+    self.body_multiloc = SanitizationService.new.sanitize_multiloc(
+      self.body_multiloc,
+      %i{title alignment list decoration link image video}
+    )
   end
 
   def strip_title
