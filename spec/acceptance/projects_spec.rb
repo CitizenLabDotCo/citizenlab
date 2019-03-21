@@ -57,30 +57,39 @@ resource "Projects" do
 
         p1 = @projects.first
         p1.areas << a1
-        p1.save
+        p1.save!
 
         p2 = @projects.last
         p2.areas << a2
-        p2.save
+        p2.save!
 
         do_request areas: [a1.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data][0][:id]).to eq p1.id
+        expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, @projects[1].id, @projects[3].id]
       end
 
       example "List all projects with all given areas", document: false do
         a1 = create(:area)
         a2 = create(:area)
+        a3 = create(:area)
 
         p1 = @projects.first
         p1.areas = [a1, a2]
-        p1.save
+        p1.save!
+
+        p2 = @projects[1]
+        p2.areas = [a2, a3]
+        p2.save!
+
+        p3 = @projects[3]
+        p3.areas = [a3]
+        p3.save!
 
         do_request areas: [a1.id, a2.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
-        expect(json_response[:data][0][:id]).to eq p1.id
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, p2.id, @projects.last.id]
       end
 
       example "List all projects with a topic" do
@@ -88,7 +97,7 @@ resource "Projects" do
 
         p1 = @projects.first
         p1.topics << t1
-        p1.save
+        p1.save!
 
         do_request topics: [t1.id]
         json_response = json_parse(response_body)
@@ -102,7 +111,7 @@ resource "Projects" do
 
         p1 = @projects.first
         p1.topics = [t1, t2]
-        p1.save
+        p1.save!
 
         do_request topics: [t1.id, t2.id]
         json_response = json_parse(response_body)
