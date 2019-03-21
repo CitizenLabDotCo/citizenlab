@@ -18,9 +18,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
 
     if params[:areas].present?
-      @projects = @projects
-        .where(id: @projects.with_some_areas(params[:areas]).ids)
-        .or(@projects.where(id: @projects.without_areas.left_outer_joins(:areas_projects).ids))
+      @projects = @projects.with_some_areas(params[:areas])
+        .or(@projects.without_areas.left_outer_joins(:areas_projects))
     end
     @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
 
