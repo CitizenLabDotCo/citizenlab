@@ -16,6 +16,7 @@ import { IOption } from 'typings';
 
 import styled from 'styled-components';
 import Label from 'components/UI/Label';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -26,6 +27,7 @@ const Container = styled.div``;
 interface DataProps {
   statuses: GetIdeaStatusesChildProps;
   idea: GetIdeaChildProps;
+  prospectAssignees: GetUsersChildProps;
 }
 
 interface InputProps {
@@ -43,6 +45,7 @@ interface State {
   statusOptions: IOption[];
   assigneeOptions: IOption[];
   ideaStatusOption: IColoredOption | null;
+  ideaAssigneeOption: string | null;
 }
 
 class IdeaSettings extends PureComponent<Props, State> {
@@ -51,18 +54,28 @@ class IdeaSettings extends PureComponent<Props, State> {
     this.state = {
       statusOptions: [],
       assigneeOptions: [],
-      ideaStatusOption: null
+      ideaStatusOption: null,
+      ideaAssigneeOption: null
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { statuses, localize, idea } = nextProps;
+    const { statuses, localize, idea, prospectAssignees } = nextProps;
     const nextState = prevState;
+
     if (statuses !== prevState.statuses) {
       if (isNilOrError(statuses)) {
         nextState.statusOptions = [];
       } else {
         nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
+      }
+    }
+
+    if (prospectAssignees !== prevState.prospectAssignees) {
+      if (isNilOrError(prospectAssignees.usersList)) {
+        nextState.assigneeOptions = [];
+      } else {
+        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.first_name}` }));
       }
     }
 
@@ -79,6 +92,14 @@ class IdeaSettings extends PureComponent<Props, State> {
       }
     }
 
+    if (idea !== prevState.idea) {
+      if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
+        nextState.ideaAssigneeOption = null;
+      } else {
+        nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
+      }
+    }
+
     return nextState;
   }
 
@@ -88,13 +109,15 @@ class IdeaSettings extends PureComponent<Props, State> {
     });
   }
 
-  onAssigneeChange = () => {
-
+  onAssigneeChange = (assigneeOption: IOption | null) => {
+    updateIdea(this.props.ideaId, {
+      assignee_id: assigneeOption ? assigneeOption.value : null
+    });
   }
 
   render() {
     const { idea, className } = this.props;
-    const { statusOptions, assigneeOptions, ideaStatusOption } = this.state;
+    const { statusOptions, assigneeOptions, ideaStatusOption, ideaAssigneeOption } = this.state;
 
     if (!isNilOrError(idea)) {
       return (
@@ -114,6 +137,7 @@ class IdeaSettings extends PureComponent<Props, State> {
             inputId="idea-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
+            value={ideaAssigneeOption}
           />
         </Container>
       );
@@ -125,6 +149,7 @@ class IdeaSettings extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   statuses: <GetIdeaStatuses/>,
+  prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null
 });
 
 const IdeaSettingsWithHOCs = injectLocalize(IdeaSettings);

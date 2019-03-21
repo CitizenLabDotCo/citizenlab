@@ -38,6 +38,9 @@ export interface IIdeaData {
     author: {
       data: IRelationship | null;
     };
+    assignee: {
+      data: IRelationship | null;
+    };
     phases: {
       data: IRelationship[];
     }
@@ -125,6 +128,7 @@ export interface IdeaActivity {
 export interface IIdeaAdd {
   author_id: string | null;
   project_id: string | null;
+  assignee_id?: string | null;
   idea_status_id?: string | null;
   publication_status: IdeaPublicationStatus;
   title_multiloc: Multiloc;
