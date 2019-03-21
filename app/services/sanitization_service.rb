@@ -7,7 +7,7 @@ class SanitizationService
       attributes: %w(),
     },
     title: {
-      tags: %w(h1 h2),
+      tags: %w(h2 h3),
       attributes: %w(),
     },
     alignment: {
