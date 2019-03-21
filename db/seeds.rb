@@ -388,7 +388,8 @@ if Apartment::Tenant.current == 'localhost'
         visible_to: %w(admins groups public public public)[rand(5)],
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
-        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
       })
 
       if project.continuous?
