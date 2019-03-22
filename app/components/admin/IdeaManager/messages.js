@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.header',
     defaultMessage: 'Ideas',
   },
+  anyAssignment: {
+    id: 'app.components.admin.IdeaManager.anyAssignment',
+    defaultMessage: 'All ideas',
+  },
+  assignedToMe: {
+    id: 'app.components.admin.IdeaManager.assignedToMe',
+    defaultMessage: 'Assigned to me',
+  },
   delete: {
     id: 'app.components.admin.IdeaManager.delete',
     defaultMessage: 'Delete',
@@ -28,6 +36,10 @@ export default defineMessages({
   edit: {
     id: 'app.components.admin.IdeaManager.edit',
     defaultMessage: 'Edit',
+  },
+  assignedTo: {
+    id: 'app.components.admin.IdeaManager.assignedTo',
+    defaultMessage: 'Assigned to {assigneeName}',
   },
   title: {
     id: 'app.components.admin.IdeaManager.title',
