@@ -51,6 +51,11 @@ export default class IdeaPreview extends React.Component<Props, State> {
     };
   }
 
+  onCloseModal = () => {
+    this.onSwitchIdeaMode('view')();
+    this.props.closeSideModal();
+  }
+
   onSwitchIdeaMode = (mode: 'view' | 'edit') => () => this.setState({ mode });
 
   render() {
@@ -60,12 +65,12 @@ export default class IdeaPreview extends React.Component<Props, State> {
     return (
       <SideModal
         opened={!!ideaId}
-        close={this.props.closeSideModal}
+        close={this.onCloseModal}
       >
         {mode === 'view' &&
           <IdeaContent
             ideaId={ideaId}
-            closeSideModal={this.props.closeSideModal}
+            closeSideModal={this.onCloseModal}
             handleClickEdit={this.onSwitchIdeaMode('edit')}
           />
         }
