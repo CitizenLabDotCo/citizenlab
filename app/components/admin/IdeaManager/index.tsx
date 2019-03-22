@@ -34,12 +34,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import AssigneeFilter from './components/IdeaTable/AssigneeFilter';
 
-const Row = styled.div`
-  display: flex;
+const StyledDiv = styled.div`
   margin-bottom: 30px;
-  justify-content: space-between;
-  align-items: flex-start;
-  width: 100%;
 `;
 
 const ThreeColumns = styled.div`
@@ -246,30 +242,31 @@ class IdeaManager extends React.PureComponent<Props, State> {
     }
     return (
       <div ref={this.handleContextRef}>
+        {project !== undefined &&
+          <StyledDiv>
+            <SectionTitle>
+              <FormattedMessage {...messages.titleIdeas} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleIdeas} />
+            </SectionSubtitle>
+          </StyledDiv>
+        }
         <ThreeColumns>
-          {project !== undefined &&
-            <MiddleColumn>
-              <SectionTitle>
-                <FormattedMessage {...messages.titleIdeas} />
-              </SectionTitle>
-              <SectionSubtitle>
-                <FormattedMessage {...messages.subtitleIdeas} />
-              </SectionSubtitle>
-            </MiddleColumn>
-          }
-          {project === undefined &&
-            <LeftColumn>
-              <AssigneeFilter
-                assignee={assignee}
-                handleAssigneeFilterChange={this.handleAssigneeFilterChange}
-              />
-            </LeftColumn>
-          }
-          <ExportButtons
-            exportType={exportType}
-            exportQueryParameter={exportQueryParameter}
-            className={project === undefined ? 'all' : 'project'}
-          />
+          <LeftColumn>
+            <AssigneeFilter
+              assignee={assignee}
+              handleAssigneeFilterChange={this.handleAssigneeFilterChange}
+            />
+          </LeftColumn>
+          <MiddleColumn />
+          <RightColumn>
+            <ExportButtons
+              exportType={exportType}
+              exportQueryParameter={exportQueryParameter}
+              className={project === undefined ? 'all' : 'project'}
+            />
+          </RightColumn>
         </ThreeColumns>
         <ThreeColumns>
           <MiddleColumn>

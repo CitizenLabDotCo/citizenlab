@@ -14,28 +14,13 @@ import ExportIdeasButton from './ExportIdeasButton';
 import ExportCommentsButton from './ExportCommentsButton';
 
 const Container = styled.div`
-  &.project {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    margin-left: 70px;
-    padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
 
-    & > *:not(:last-child) {
-      margin-bottom: 15px;
-    }
-  }
-
-  &.all {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
-
-    & > *:not(:last-child) {
-      margin-right: 15px;
-    }
+  & > *:not(:last-child) {
+    margin-right: 15px;
   }
 `;
 

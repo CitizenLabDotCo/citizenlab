@@ -50,10 +50,10 @@ class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
         nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({
           value: assignee.id,
           text: assignee.id === authUser.id
-          ? formatMessage(messages.assignedToMe)
-          : formatMessage(messages.assignedTo, {
-            assigneeName:  `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
-          })
+            ? formatMessage(messages.assignedToMe)
+            : formatMessage(messages.assignedTo, {
+                assigneeName:  `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
+              })
         }));
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
       }
