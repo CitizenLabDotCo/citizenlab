@@ -6,6 +6,7 @@ class ActivitiesService
 
     create_phase_started_activities now, last_time 
     create_phase_upcoming_activities now, last_time
+    create_invite_not_accepted_since_3_days_activities now, last_time
   end
 
 
@@ -24,6 +25,13 @@ class ActivitiesService
       Phase.where(start_at: now.to_date + 1.week).each do |phase|
         LogActivityJob.perform_later(phase, 'upcoming', nil, now.to_i)
       end
+    end
+  end
+
+  def create_invite_not_accepted_since_3_days_activities now, last_time
+    Invite.where('accepted_at IS NULL')
+      .where(created_at: (last_time - 3.days)..(now - 3.days)).each do |invite|
+      LogActivityJob.perform_later(invite, 'not_accepted_since_3_days', nil, now.to_i)
     end
   end
 
