@@ -95,7 +95,7 @@ export const colors = {
   /**
   * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
   */
-  clGreyOnGreyBackground: '#737373',
+  clGreyOnGreyBackground: '#707070',
   /**
   * background color of dropdown items (e.g. in the navbar)
   */
