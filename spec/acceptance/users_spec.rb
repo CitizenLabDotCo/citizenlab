@@ -53,6 +53,7 @@ resource "Users" do
         parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
         parameter :group, "Filter by group_id", required: false
         parameter :can_moderate_project, "Filter by users (and admins) who can moderate the project (by id)", required: false
+        parameter :can_moderate, "Filter out admins and moderators", required: false
 
         example_request "List all users" do
           expect(status).to eq 200
@@ -125,6 +126,18 @@ resource "Users" do
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
           expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,@user.id]
+        end
+
+        example "List all users who can moderate" do
+          p = create(:project)
+          a = create(:admin)
+          m1 = create(:moderator, project: p)
+          m2 = create(:moderator)
+          u = create(:user)
+
+          do_request(can_moderate: true)
+          json_response = json_parse(response_body)
+          expect(json_response[:data].map{|u| u[:id]}).to match_array [a.id,m1.id,m2.id,@user.id]
         end
       end
 
