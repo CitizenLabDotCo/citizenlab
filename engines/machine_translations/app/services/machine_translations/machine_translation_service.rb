@@ -35,7 +35,7 @@ module MachineTranslations
       if from == to
         text_or_html
       else
-        EasyTranslate.translate(text_or_html, :from => locale_from[0...2], :to => locale_to[0...2])
+        EasyTranslate.translate(text_or_html, :from => from, :to => to)
       end
     end
   end

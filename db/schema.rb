@@ -383,11 +383,13 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
     t.string "other_reason"
     t.uuid "idea_status_id"
     t.uuid "official_feedback_id"
+    t.uuid "phase_id"
     t.index ["created_at"], name: "index_notifications_on_created_at"
     t.index ["idea_status_id"], name: "index_notifications_on_idea_status_id"
     t.index ["initiating_user_id"], name: "index_notifications_on_initiating_user_id"
     t.index ["invite_id"], name: "index_notifications_on_invite_id"
     t.index ["official_feedback_id"], name: "index_notifications_on_official_feedback_id"
+    t.index ["phase_id"], name: "index_notifications_on_phase_id"
     t.index ["recipient_id", "read_at"], name: "index_notifications_on_recipient_id_and_read_at"
     t.index ["recipient_id"], name: "index_notifications_on_recipient_id"
     t.index ["spam_report_id"], name: "index_notifications_on_spam_report_id"
@@ -587,6 +589,7 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
     t.string "logo"
     t.string "header_bg"
     t.string "favicon"
+    t.jsonb "style", default: {}
     t.index ["host"], name: "index_tenants_on_host"
   end
 
@@ -682,6 +685,7 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
   add_foreign_key "notifications", "ideas"
   add_foreign_key "notifications", "invites"
   add_foreign_key "notifications", "official_feedbacks"
+  add_foreign_key "notifications", "phases"
   add_foreign_key "notifications", "projects"
   add_foreign_key "notifications", "spam_reports"
   add_foreign_key "notifications", "users", column: "initiating_user_id"

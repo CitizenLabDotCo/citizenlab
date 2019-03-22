@@ -61,8 +61,10 @@ class SideFxIdeaService
 
   def set_phase idea
     if idea.project&.timeline? && idea.phases.empty?
-      current_phase = TimelineService.new.current_phase(idea.project)
-      idea.phases = [current_phase] if current_phase&.can_contain_ideas?
+      phase = TimelineService.new.current_and_future_phases(idea.project).find do |phase|
+        phase&.can_contain_ideas?
+      end
+      idea.phases = [phase] if phase
     end
   end
 

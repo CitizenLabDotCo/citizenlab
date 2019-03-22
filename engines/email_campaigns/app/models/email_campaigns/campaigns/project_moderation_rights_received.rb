@@ -2,6 +2,7 @@ module EmailCampaigns
   class Campaigns::ProjectModerationRightsReceived < Campaigns::NotificationCampaign
     include ActivityTriggerable
     include RecipientConfigurable
+    include Disableable
 
     recipient_filter :filter_notification_recipient
 
