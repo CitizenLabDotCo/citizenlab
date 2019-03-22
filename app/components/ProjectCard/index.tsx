@@ -579,7 +579,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             {size === 'large' && contentHeader}
 
             <ContentBody className={size}>
-              <ProjectTitle id="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
+              <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -587,7 +587,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                      <ProjectDescription id="e2e-project-card-project-description-preview">
+                      <ProjectDescription className="e2e-project-card-project-description-preview">
                         {description}
                       </ProjectDescription>
                     );
