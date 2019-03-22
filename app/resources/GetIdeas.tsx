@@ -27,6 +27,7 @@ export interface InputProps {
   projectPublicationStatus?: ProjectPublicationStatus;
   boundingBox?: number[];
   cache?: boolean;
+  assignee?: string;
 }
 
 interface IQueryParameters {
@@ -43,6 +44,7 @@ interface IQueryParameters {
   publication_status: PublicationStatus | undefined;
   project_publication_status: ProjectPublicationStatus | undefined;
   bounding_box: number[] | undefined;
+  assignee: string | undefined;
 }
 
 interface IAccumulator {
@@ -69,6 +71,7 @@ export type GetIdeasChildProps = State & {
   onChangeIdeaStatus: (ideaStatus: string) => void;
   onChangePublicationStatus: (publicationStatus: PublicationStatus) => void;
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
+  onChangeAssignee: (assignee: string | undefined) => void;
 };
 
 interface State {
@@ -106,7 +109,8 @@ export default class GetIdeas extends React.Component<Props, State> {
         idea_status: undefined,
         publication_status: undefined,
         project_publication_status: undefined,
-        bounding_box: undefined
+        bounding_box: undefined,
+        assignee: undefined
       },
       searchValue: undefined,
       ideasList: undefined,
@@ -256,7 +260,8 @@ export default class GetIdeas extends React.Component<Props, State> {
       idea_status: props.ideaStatusId,
       publication_status: props.publicationStatus,
       project_publication_status: props.projectPublicationStatus,
-      bounding_box: props.boundingBox
+      bounding_box: props.boundingBox,
+      assignee: props.assignee
     };
 
     return {
@@ -347,6 +352,14 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleAssigneeOnChange = (assignee: string | undefined) => {
+    this.queryParameters$.next({
+      ...this.state.queryParameters,
+      assignee,
+      'page[number]': 1,
+    });
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -362,6 +375,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
       onChangePublicationStatus: this.handlePublicationStatusOnChange,
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
+      onChangeAssignee: this.handleAssigneeOnChange,
     });
   }
 }
