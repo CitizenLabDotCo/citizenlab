@@ -59,7 +59,7 @@ const Overlay = styled(FocusTrap)`
 
     ${ModalContainer} {
       opacity: 0;
-      width: 150px;
+      width: 0px;
     }
 
     &.modal-enter-active {

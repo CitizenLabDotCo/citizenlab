@@ -49,14 +49,14 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
       if (isNilOrError(prospectAssignees.usersList)) {
         nextState.assigneeOptions = [];
       } else {
-        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, text: `${assignee.attributes.first_name} ${assignee.attributes.first_name}` }));
-        nextState.assigneeOptions.push({ value: null, text: formatMessage(messages.noOne) });
+        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, text: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
+        nextState.assigneeOptions.push({ value: 'unassigned', text: formatMessage(messages.noOne) });
       }
     }
 
     if (idea !== prevState.idea) {
       if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
-        nextState.ideaAssigneeOption = undefined;
+        nextState.ideaAssigneeOption = 'unassigned';
       } else {
         nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
       }
@@ -82,6 +82,7 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
           options={assigneeOptions}
           onChange={this.onAssigneeChange}
           value={ideaAssigneeOption}
+          className="fluid"
         />
       );
     }
