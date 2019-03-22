@@ -66,9 +66,9 @@ const AuthorNameLink: any = styled(Link)`
   }
 
   &.canModerate {
-    color: ${colors.clRed};
+    color: ${colors.clRedError};
     &:hover {
-      color: ${darken(0.15, colors.clRed)};
+      color: ${darken(0.15, colors.clRedError)};
     }
   }
 `;
