@@ -13,6 +13,8 @@ de:
       "mention_in_comment": Wenn mich jemand in einem Kommentar erwähnt
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
       "project_moderation_rights_received": Wenn ich die Rechte zur Projektmoderation erhalte
+      "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
       "welcome": Wenn ich mich auf der Plattform registriere
       "password_reset": Wenn ich das Zurücksetzen des Passworts für mein Konto beantrage
@@ -43,6 +45,8 @@ de:
       "mention_in_comment": Wenn ein Benutzer in einem Kommentar erwähnt wird
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
       "project_moderation_rights_received": Wenn ein Benutzer die Rechte zur Projektmoderation erhält
+      "project_phase_started": When a project enters a new phase
+      "project_phase_upcoming": When a project will enter a new phase one week from now (for administrators and moderators)
       "status_change_of_your_idea": Wenn sich der Status meiner Idee ändert
       "welcome": Wenn sich ein Benutzer auf der Plattform registriert
       "password_reset": Wenn ein Benutzer das Zurücksetzen des Passworts anfordert

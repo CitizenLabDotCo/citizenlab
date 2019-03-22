@@ -16,12 +16,31 @@ class OmniauthCallbackController < ApplicationController
 
     if @user
       @identity.update(user: @user) unless @identity.user
-      if sso_service.update_on_sign_in?(provider)
-        @user.update(sso_service.profile_to_user_attrs(auth))
+
+      if @user.invite_pending?
+        @invite = @user.invitee_invite
+        failure if !@invite || @invite.accepted_at
+        @user.assign_attributes(sso_service.profile_to_user_attrs(auth).merge(invite_status: 'accepted'))
+        ActiveRecord::Base.transaction do
+          SideFxInviteService.new.before_accept @invite
+          @user.save!
+          @invite.save!
+          SideFxInviteService.new.after_accept @invite
+        rescue ActiveRecord::RecordInvalid => e
+          Rails.logger.info "Social signup failed: #{e.message}"
+          failure
+        end
+
+      else # !@user.invite_pending?
+        if sso_service.update_on_sign_in?(provider)
+          @user.update(sso_service.profile_to_user_attrs(auth))
+        end
       end
+
       set_auth_cookie(provider: provider)
       redirect_to(add_uri_params(Frontend::UrlService.new.signin_success_url(locale: @user.locale), omniauth_params))
-    else
+
+    else # New user
       @user = User.new(sso_service.profile_to_user_attrs(auth))
       SideFxUserService.new.before_create(@user, nil)
       @user.identities << @identity
