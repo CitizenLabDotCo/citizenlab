@@ -8,7 +8,7 @@ import { updateIdea } from 'services/ideas';
 
 import Select from 'components/UI/Select';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize from 'utils/localize';
 import messages from './messages';
 
@@ -60,7 +60,7 @@ class IdeaSettings extends PureComponent<Props, State> {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { statuses, localize, idea, prospectAssignees } = nextProps;
+    const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = nextProps;
     const nextState = prevState;
 
     if (statuses !== prevState.statuses) {
@@ -75,7 +75,8 @@ class IdeaSettings extends PureComponent<Props, State> {
       if (isNilOrError(prospectAssignees.usersList)) {
         nextState.assigneeOptions = [];
       } else {
-        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.first_name}` }));
+        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
+        nextState.assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
       }
     }
 
@@ -94,7 +95,7 @@ class IdeaSettings extends PureComponent<Props, State> {
 
     if (idea !== prevState.idea) {
       if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
-        nextState.ideaAssigneeOption = null;
+        nextState.ideaAssigneeOption = 'unassigned';
       } else {
         nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
       }
@@ -137,6 +138,7 @@ class IdeaSettings extends PureComponent<Props, State> {
             inputId="idea-preview-select-assignee"
             options={assigneeOptions}
             onChange={this.onAssigneeChange}
+            clearable={false}
             value={ideaAssigneeOption}
           />
         </Container>
@@ -152,7 +154,7 @@ const Data = adopt<DataProps, InputProps>({
   prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null
 });
 
-const IdeaSettingsWithHOCs = injectLocalize(IdeaSettings);
+const IdeaSettingsWithHOCs = injectIntl(injectLocalize(IdeaSettings));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

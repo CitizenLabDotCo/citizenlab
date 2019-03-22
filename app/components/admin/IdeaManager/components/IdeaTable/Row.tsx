@@ -54,6 +54,9 @@ const TitleLink = styled.a`
   text-overflow: ellipsis;
   cursor: pointer;
   color: black;
+  &:hover, &:focus {
+    text-decoration: underline;
+  }
 `;
 
 type Props = {

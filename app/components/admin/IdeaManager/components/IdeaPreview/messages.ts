@@ -41,9 +41,13 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.basketsCountTooltip',
     defaultMessage: 'The number of users that added this idea to their participatory budget',
   },
-  back: {
-    id: 'app.components.admin.IdeaManager.IdeaPreview.back',
-    defaultMessage: 'Back',
+  cancelEdit: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.cancelEdit',
+    defaultMessage: 'Cancel edit',
+  },
+  noOne: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.noOne',
+    defaultMessage: 'Unassigned',
   },
   formTitle: {
     id: 'app.components.admin.IdeaManager.IdeaPreview.formTitle',

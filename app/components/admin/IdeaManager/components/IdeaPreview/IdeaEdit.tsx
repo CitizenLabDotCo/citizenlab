@@ -274,7 +274,7 @@ class IdeaEdit extends PureComponent<Props, State> {
               textColor={colors.adminTextColor}
               onClick={goBack}
             >
-              <FormattedMessage {...messages.back}/>
+              <FormattedMessage {...messages.cancelEdit}/>
             </Button>
           </Top>
 

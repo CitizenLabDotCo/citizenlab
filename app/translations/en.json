@@ -218,7 +218,7 @@
   "app.components.admin.FormikSubmitWrapper.messageError": "There was an error during saving",
   "app.components.admin.FormikSubmitWrapper.messageSuccess": "Saved successfully",
   "app.components.admin.IdeaManager.IdeaPreview.assignee": "Assignee",
-  "app.components.admin.IdeaManager.IdeaPreview.back": "Back",
+  "app.components.admin.IdeaManager.IdeaPreview.cancelEdit": "Cancel editing",
   "app.components.admin.IdeaManager.IdeaPreview.basketsCountTooltip": "The number of users that added this idea to their participatory budget",
   "app.components.admin.IdeaManager.IdeaPreview.closeMap": "Close Map",
   "app.components.admin.IdeaManager.IdeaPreview.delete": "Delete",
