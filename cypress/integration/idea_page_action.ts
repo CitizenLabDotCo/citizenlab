@@ -9,7 +9,7 @@ const lastName = randomString();
 const peasantEmail = randomEmail();
 const peasantPassword = randomString();
 
-describe('Project ideas page', () => {
+describe('Idea show page actions', () => {
 
   describe('Votes & Comments Actions', () => {
     describe('unauthorized', () => {
