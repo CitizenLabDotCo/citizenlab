@@ -2,9 +2,6 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
-// services
-import { IProject } from 'services/projects';
-
 // components
 import OfficialFeedbackNew from './Form/OfficialFeedbackNew';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
@@ -14,6 +11,7 @@ import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission'
 
 // styling
 import styled from 'styled-components';
+import { GetProjectChildProps } from 'resources/GetProject';
 
 const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
   margin-bottom: 70px;
@@ -21,7 +19,7 @@ const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
 
 interface InputProps {
   ideaId: string;
-  project: IProject | null;
+  project: GetProjectChildProps;
 }
 
 interface DataProps {
@@ -59,7 +57,7 @@ export class OfficialFeedback extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project.data} action="moderate" >{render}</GetPermission> : null,
+  permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
 });
 
 export default (inputProps: InputProps) => (
