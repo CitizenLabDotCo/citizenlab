@@ -1,5 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,6 +11,7 @@ import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // Resources
 import { GetModeratorsChildProps } from 'resources/GetModerators';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -51,10 +53,16 @@ const AddGroupButton = styled(Button)`
   margin-left: 30px;
 `;
 
-interface Props {
+interface InputProps {
   projectId: string;
   moderators: GetModeratorsChildProps;
 }
+
+interface DataProps {
+  users: GetUsersChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selection: IOption[];
@@ -142,6 +150,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selection } = this.state;
+    const { users } = this.props;
     const { formatMessage } = this.props.intl;
 
     return (
@@ -151,7 +160,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             name="search-user"
             isMulti={true}
             cacheOptions={false}
-            defaultOptions={false}
+            defaultOptions={true}
             loadOptions={this.loadOptions}
             isLoading={this.state.loading}
             isDisabled={this.state.processing}
@@ -177,4 +186,14 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(MembersAdd);
+const Data = adopt<DataProps, InputProps>({
+  users: <GetUsers />,
+});
+
+const MembersAddWithHOCs = injectIntl<Props>(MembersAdd);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataprops => <MembersAddWithHOCs {...inputProps} {...dataprops} />}
+  </Data>
+);
