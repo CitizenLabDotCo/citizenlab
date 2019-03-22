@@ -17,7 +17,7 @@ resource "Mentions" do
     parameter :mention, "The (partial) search string for the mention (without the @)", required: true
     parameter :idea_id, "An idea that is used as a context to return related users first", required: false
 
-    let(:users) { create_list(:user, 10) }
+    let(:users) { [create(:user, first_name: 'Flupke')] + create_list(:user, 9, last_name: 'Smith') }
     let(:mention) { users.first.first_name[0..3] }
 
     example_request "Find user by (partial) mention" do
