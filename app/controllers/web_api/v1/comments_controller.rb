@@ -3,20 +3,47 @@ class WebApi::V1::CommentsController < ApplicationController
   before_action :set_comment, only: [:show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
+  FULLY_EXPAND_THRESHOLD = 5
+  ALWAYS_EXPAND = 2
+
   def index
-    @comments = policy_scope(Comment)
-      .where(idea_id: params[:idea_id])
-      .includes(:author)
+
+    root_comments = policy_scope(Comment)
+      .where(idea: params[:idea_id])
+      .where(parent: nil)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
       .order(:lft)
 
+    fully_expanded_root_comments = Comment.where(id: root_comments)
+      .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
+
+    partially_expanded_root_comments = Comment.where(id: root_comments)
+      .where("children_count > ?", FULLY_EXPAND_THRESHOLD)
+
+    partially_expanded_child_comments = Comment
+      .where(parent_id: partially_expanded_root_comments)
+      .joins(:parent)
+      .where("comments.lft >= parents_comments.rgt - ?", ALWAYS_EXPAND * 2)
+
+    @comments = Comment
+      .where(id: root_comments)
+      .or(Comment.where(parent: fully_expanded_root_comments))
+      .or(Comment.where(id: partially_expanded_child_comments))
+      .order(:lft)
+      .includes(:author)
+
+    root_comments_count = policy_scope(Comment)
+      .where(idea: params[:idea_id])
+      .where(parent: nil)
+      .count
+
     if current_user
       votes = Vote.where(user: current_user, votable: @comments.all)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id
+      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id, meta: { total: root_comments_count }
     else
-      render json: @comments, include: ['author']
+      render json: @comments, include: ['author'], meta: { total: root_comments_count }
     end
   end
 
