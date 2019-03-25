@@ -1,5 +1,5 @@
 class WebApi::V1::CommentSerializer < ActiveModel::Serializer
-  attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :publication_status, :created_at, :updated_at, :is_admin_comment
+  attributes :id, :body_multiloc, :upvotes_count, :downvotes_count, :publication_status, :children_count, :depth, :created_at, :updated_at, :is_admin_comment
 
   belongs_to :idea
   belongs_to :author
