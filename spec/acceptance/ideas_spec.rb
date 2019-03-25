@@ -30,6 +30,7 @@ resource "Ideas" do
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
     parameter :publication_status, "Filter by publication status; returns all publlished ideas by default", required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :feedback_needed, "Filter out ideas that need feedback", required: false
 
     example_request "List all published ideas (default behaviour)" do
       expect(status).to eq(200)
@@ -161,6 +162,16 @@ resource "Ideas" do
       i = create(:idea, assignee: a)
 
       do_request assignee: a.id
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all ideas that need feedback" do
+      TenantTemplateService.new.resolve_and_apply_template('base')
+      i = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+
+      do_request feedback_needed: true
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
