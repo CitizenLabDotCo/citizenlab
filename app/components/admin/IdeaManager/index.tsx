@@ -38,6 +38,9 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const StyledDiv = styled.div`
   margin-bottom: 30px;
 `;
+const Row = styled.div`
+  display: flex;
+`;
 
 const ThreeColumns = styled.div`
   display: flex;
@@ -262,19 +265,20 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </StyledDiv>
         }
 
+        <Row>
+          <AssigneeFilter
+            assignee={assignee}
+            handleAssigneeFilterChange={this.handleAssigneeFilterChange}
+          />
+          <FeedbackToggle
+            value={feedbackNeededFilterActive}
+            onChange={this.handleToggleFeedbackNeededFilter}
+          />
+        </Row>
+
         <ThreeColumns>
-          <LeftColumn>
-            <AssigneeFilter
-              assignee={assignee}
-              handleAssigneeFilterChange={this.handleAssigneeFilterChange}
-            />
-          </LeftColumn>
-          <MiddleColumn>
-            <FeedbackToggle
-              value={feedbackNeededFilterActive}
-              onChange={this.handleToggleFeedbackNeededFilter}
-            />
-          </MiddleColumn>
+          <LeftColumn/>
+          <MiddleColumn/>
           <RightColumn>
             <ExportButtons
               exportType={exportType}
