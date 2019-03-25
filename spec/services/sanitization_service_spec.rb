@@ -139,4 +139,24 @@ describe SanitizationService do
     end
   end
 
+  describe "linkify" do
+    it "transforms a plan-text link to an anchor" do
+      html = "<p>https://www.google.com</p>"
+      output = service.linkify(html)
+      expect(output).to eq '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
+    end
+
+    it "doesn't transforms an existing anchor" do
+      html = '<p><a href="https://www.google.com" target="_blank">https://www.google.com</a></p>'
+      output = service.linkify(html)
+      expect(output).to eq html
+    end
+
+    it "transforms an email to a mailto: anchor" do
+      html = "<p>hello@citizenlab.co</p>"
+      output = service.linkify(html)
+      expect(output).to eq '<p><a href="mailto:hello@citizenlab.co" target="_blank">hello@citizenlab.co</a></p>'
+    end
+  end
+
 end

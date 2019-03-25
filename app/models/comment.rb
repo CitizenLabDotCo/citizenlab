@@ -60,5 +60,7 @@ class Comment < ApplicationRecord
       %i{mention}
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+
   end
 end
