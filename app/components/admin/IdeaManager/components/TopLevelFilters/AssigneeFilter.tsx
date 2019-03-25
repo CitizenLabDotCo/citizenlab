@@ -76,7 +76,6 @@ class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
         options={assigneeOptions}
         onChange={this.onAssigneeChange}
         value={assignee}
-        className="fluid"
       />
     );
   }
