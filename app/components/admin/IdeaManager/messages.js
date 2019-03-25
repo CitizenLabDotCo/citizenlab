@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.header',
     defaultMessage: 'Ideas',
   },
+  anyFeedbackStatus: {
+    id: 'app.components.admin.IdeaManager.anyFeedbackStatus',
+    defaultMessage: 'All ideas',
+  },
+  needFeedback: {
+    id: 'app.components.admin.IdeaManager.needFeedback',
+    defaultMessage: 'Need Feedback',
+  },
   anyAssignment: {
     id: 'app.components.admin.IdeaManager.anyAssignment',
     defaultMessage: 'All ideas',
