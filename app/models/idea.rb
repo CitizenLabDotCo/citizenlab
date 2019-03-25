@@ -110,6 +110,11 @@ class Idea < ApplicationRecord
 
   scope :published, -> {where publication_status: 'published'}
 
+  scope :feedback_needed, -> {
+    joins(:idea_status).where(idea_statuses: {code: 'proposed'})
+      .where('ideas.id NOT IN (SELECT DISTINCT(idea_id) FROM official_feedbacks)')
+  }
+
 
   def location_point_geojson
     RGeo::GeoJSON.encode(location_point) if location_point.present?

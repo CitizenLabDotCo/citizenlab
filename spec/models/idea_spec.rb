@@ -25,6 +25,18 @@ RSpec.describe Idea, type: :model do
 
   end
 
+  context "feedback_needed" do 
+    it "should select ideas with no official feedback or no idea status change" do
+      TenantTemplateService.new.resolve_and_apply_template('base')
+      i1 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      create(:official_feedback, idea: i1)
+      i2 = create(:idea, idea_status: IdeaStatus.find_by(code: 'accepted'))
+      i3 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+
+      expect(Idea.feedback_needed.ids).to match_array [i3.id]
+    end
+  end
+
   context "published at" do
     it "gets set immediately when creating a published idea" do
       t = Time.now
