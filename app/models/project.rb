@@ -117,17 +117,21 @@ class Project < ApplicationRecord
   end
 
   def sanitize_description_multiloc
-    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
+    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
   end
 
   def sanitize_description_preview_multiloc
-    self.description_preview_multiloc = SanitizationService.new.sanitize_multiloc(
+    service = SanitizationService.new
+    self.description_preview_multiloc = service.sanitize_multiloc(
       self.description_preview_multiloc,
       %i{decoration link}
     )
+    self.description_preview_multiloc = service.remove_empty_paragraphs_multiloc(self.description_preview_multiloc)
   end
 
   def set_visible_to

@@ -56,4 +56,26 @@ class SanitizationService
     end
   end
 
+  def remove_empty_paragraphs_multiloc multiloc
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = remove_empty_paragraphs(text)
+    end
+  end
+
+  def remove_empty_paragraphs html
+    doc = Nokogiri::HTML.fragment(html)
+    if doc.errors.any?
+      html
+    else
+      while (last_p = doc.css('p:last-child')).any?
+        if last_p.children.empty? || last_p.children.map(&:name).uniq == ['br']
+          last_p.remove
+        else
+          break
+        end
+      end
+      doc.to_s
+    end
+  end
+
 end
