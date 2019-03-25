@@ -9,12 +9,12 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // services
 import { addCommentToComment } from 'services/comments';
