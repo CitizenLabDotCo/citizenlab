@@ -12,6 +12,7 @@ class SideFxModeratorService
 
   def after_destroy moderator, project, current_user
     remove_idea_assignments(moderator, project)
+    remove_project_assignments(moderator, project)
     LogActivityJob.perform_later(
       moderator, 'project_moderation_rights_removed', 
       current_user, Time.now.to_i
@@ -26,4 +27,9 @@ class SideFxModeratorService
       .update_all(assignee_id: nil, updated_at: DateTime.now)
   end
 
+  def remove_project_assignments moderator, project
+    if project.default_assignee == moderator
+      project.update(default_assignee: nil)
+    end
+  end
 end
