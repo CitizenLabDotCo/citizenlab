@@ -201,7 +201,7 @@
   "app.components.Upload.remaining": "remaining",
   "app.components.UserName.deletedUser": "deleted user",
   "app.components.UserSearch.addModerators": "Add",
-  "app.components.UserSearch.searchUsers": "Search users",
+  "app.components.UserSearch.searchUsers": "Type to search users...",
   "app.components.VoteControl.budgetingDisabled": "Assigning a budget to this idea is no longer possible.",
   "app.components.VoteControl.budgetingDisabledFutureEnabled": "Assigning a budget to this idea is not yet possible. It will be enabled starting from {enabledFromDate}.",
   "app.components.VoteControl.budgetingDisabledNotPermitted": "Unfortunately, you don't have the rights to assign a budget for this idea",
