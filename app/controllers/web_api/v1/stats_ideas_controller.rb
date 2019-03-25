@@ -6,11 +6,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   ]
 
   def ideas_count
-    count = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
-      .count
+
+    ideas = apply_project_filter(ideas)
+    ideas = apply_group_filter(ideas)
+    ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
       
-    render json: { count: count }
+    render json: { count: ideas.count }
   end
 
   def ideas_by_topic
@@ -18,6 +22,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     ideas = apply_project_filter(ideas)
     ideas = apply_group_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
 
     serie = ideas
       .where(published_at: @start_at..@end_at)
@@ -35,6 +40,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
     ideas = apply_topic_filter(ideas)
     ideas = apply_group_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
 
     serie = ideas
       .where(published_at: @start_at..@end_at)
@@ -52,6 +58,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = apply_project_filter(ideas)
     ideas = apply_group_filter(ideas)
     ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
 
     serie = ideas
       .where(published_at: @start_at..@end_at)
@@ -69,6 +76,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = apply_project_filter(ideas)
     ideas = apply_group_filter(ideas)
     ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
 
     serie = @@stats_service.group_by_time(
       ideas,
@@ -86,6 +94,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = apply_project_filter(ideas)
     ideas = apply_group_filter(ideas)
     ideas = apply_topic_filter(ideas)
+    ideas = apply_feedback_needed_filter(ideas)
 
     serie = @@stats_service.group_by_time_cumulative(
       ideas,
@@ -120,6 +129,14 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def apply_project_filter ideas
     if params[:project]
       ideas.where(project_id: params[:project])
+    else
+      ideas
+    end
+  end
+
+  def apply_feedback_needed_filter ideas
+    if params[:feedback_needed].present?
+      ideas.feedback_needed
     else
       ideas
     end
