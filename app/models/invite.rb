@@ -38,6 +38,7 @@ class Invite < ApplicationRecord
       %i{decoration link}
     )
     self.invite_text = service.remove_empty_paragraphs(self.invite_text)
+    self.invite_text = service.linkify(self.invite_text)
   end
 
 end

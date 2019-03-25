@@ -78,4 +78,14 @@ class SanitizationService
     end
   end
 
+  def linkify_multiloc multiloc
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = linkify(text)
+    end
+  end
+
+  def linkify html
+    Rinku.auto_link(html, :all, 'target="_blank"')
+  end
+
 end

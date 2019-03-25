@@ -19,7 +19,8 @@ class Area < ApplicationRecord
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
-    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
+    self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
   end
 
   def strip_title
