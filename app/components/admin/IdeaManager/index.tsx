@@ -32,7 +32,8 @@ import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import AssigneeFilter from './components/IdeaTable/AssigneeFilter';
+import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -110,6 +111,7 @@ interface State {
   visibleFilterMenus: string[];
   contextRef: any;
   assignee: string;
+  feedbackNeededFilterActive: boolean;
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -122,7 +124,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
       visibleFilterMenus: [],
       activeFilterMenu: null,
       contextRef: null,
-      assignee: !isNilOrError(props.authUser) ? props.authUser.id : ''
+      assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
+      feedbackNeededFilterActive: false
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -215,6 +218,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ assignee });
   }
 
+  handleToggleFeedbackNeededFilter = () => {
+    const { feedbackNeededFilterActive } = this.state;
+    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive);
+    this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
+  }
+
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
@@ -223,7 +232,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const selectedPhase = ideas.queryParameters.phase;
     const selectedProject = ideas.queryParameters.project;
     const selectedIdeaStatus = ideas.queryParameters.idea_status;
-    const { selectedIdeas, activeFilterMenu, visibleFilterMenus, assignee } = this.state;
+    const { selectedIdeas, activeFilterMenu, visibleFilterMenus, assignee, feedbackNeededFilterActive } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
     const showInfoSidebar = this.isAnyIdeaSelected();
     const multipleIdeasSelected = this.areMultipleIdeasSelected();
@@ -252,6 +261,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             </SectionSubtitle>
           </StyledDiv>
         }
+
         <ThreeColumns>
           <LeftColumn>
             <AssigneeFilter
@@ -259,7 +269,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
               handleAssigneeFilterChange={this.handleAssigneeFilterChange}
             />
           </LeftColumn>
-          <MiddleColumn />
+          <MiddleColumn>
+            <FeedbackToggle
+              value={feedbackNeededFilterActive}
+              onChange={this.handleToggleFeedbackNeededFilter}
+            />
+          </MiddleColumn>
           <RightColumn>
             <ExportButtons
               exportType={exportType}
@@ -268,6 +283,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             />
           </RightColumn>
         </ThreeColumns>
+
         <ThreeColumns>
           <MiddleColumn>
             <ActionBar
