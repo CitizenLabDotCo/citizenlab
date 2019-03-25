@@ -647,6 +647,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Opslaan",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Opgeslagen!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Je gegevens zijn opgeslagen!",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Status van dit project",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Maak je project aan en personaliseer het. Je kan je project op elk moment aanpassen.",
   "app.containers.AdminPage.ProjectEdit.survey": "Enquête",
