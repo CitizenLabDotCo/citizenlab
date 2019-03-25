@@ -647,6 +647,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Guardar",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "¡guardado!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "¡Su formulario ha sido guardado!",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Estado de publicación",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Configurar y personalizar tu proyecto. Se pueden cambiar en cualquier momento.",
   "app.containers.AdminPage.ProjectEdit.survey": "Encuesta",

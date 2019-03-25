@@ -647,6 +647,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Gem",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Gemt!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Din formular er blevet gemt!",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Publiceringsstatus",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Set up and personalise your project. Can be changed at anytime.",
   "app.containers.AdminPage.ProjectEdit.survey": "Spørgeundersøgelse",
