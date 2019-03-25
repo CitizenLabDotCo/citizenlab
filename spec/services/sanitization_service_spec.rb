@@ -15,8 +15,8 @@ describe SanitizationService do
 
     it "allows titles to pass through when title feature is enabled" do
       input = <<~HTML
-        <h1>title</h1>
-        <h2>subtitle</h2>
+        <h2>title</h2>
+        <h3>subtitle</h3>
       HTML
       features = [:title]
       expect(service.sanitize(input, features)).to eq input
@@ -87,6 +87,56 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+  end
+
+  describe "remove_empty_paragraphs" do
+    it "doesn't modify invalid html" do
+      input = "<p Not</p>really <h1>valid</div>"
+      output = service.remove_empty_paragraphs(input)
+      expect(output).to eq input
+    end
+
+    it "deletes empty <p/> tag at the end" do
+      html = "<h1>Nice</h1><p></p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq "<h1>Nice</h1>"
+    end
+
+    it "deletes <p/> tag that only contain line breaks at the end" do
+      html = "<h1>Nice</h1><p><br></p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq "<h1>Nice</h1>"
+    end
+
+    it "deletes empty <p/> tags at the end" do
+      html = "<h1>Nice</h1><p></p><p></p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq "<h1>Nice</h1>"
+    end
+
+    it "deletes empty <p/> tags that only contain line breaks at the end" do
+      html = "<h1>Nice</h1><p><br></p><p></p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq "<h1>Nice</h1>"
+    end
+
+    it "doesn't delete empty <p/> tags in between" do
+      html = "<p>Great</p><p></p><p>Really</p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq html
+    end
+
+    it "doesn't delete empty <p/> tags at the start" do
+      html = "<p></p><h1>Nice</h1>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq html
+    end
+
+    it "doesn't delete non-empty <p/> tags at the end" do
+      html = "<h1>Nice</h1><p>Well<br>done</p>"
+      output = service.remove_empty_paragraphs(html)
+      expect(output).to eq html
+    end
   end
 
 end

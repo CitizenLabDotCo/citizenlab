@@ -14,10 +14,12 @@ class Area < ApplicationRecord
   private
 
   def sanitize_description_multiloc
-    self.description_multiloc = SanitizationService.new.sanitize_multiloc(
+    service = SanitizationService.new
+    self.description_multiloc = service.sanitize_multiloc(
       self.description_multiloc,
       %i{title alignment list decoration link image video}
     )
+    self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
   end
 
   def strip_title
