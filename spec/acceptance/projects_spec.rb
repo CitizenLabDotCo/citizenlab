@@ -194,6 +194,7 @@ resource "Projects" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -206,6 +207,7 @@ resource "Projects" do
         let(:area_ids) { create_list(:area, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'draft' }
+        let(:default_assignee_id) { create(:admin).id }
 
         example_request "Create a timeline project" do
           expect(response_status).to eq 201
@@ -217,6 +219,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
           expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
+          expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
         end
       end
 
@@ -305,6 +308,7 @@ resource "Projects" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
+        parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -318,6 +322,7 @@ resource "Projects" do
       let(:visible_to) { 'groups' }
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
+      let(:default_assignee_id) { create(:admin).id }
 
       example_request "Update a project" do
         json_response = json_parse(response_body)
@@ -329,12 +334,20 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
+        expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
       end
 
       example "Clear all areas", document: false do
         do_request(project: {area_ids: []})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:areas,:data).size).to eq 0
+      end
+
+      example "Set default assignee to unassigned", document: false do
+        @project.update!(default_assignee: create(:admin))
+        do_request(project: {default_assignee_id: nil})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to be_nil
       end
 
       describe do

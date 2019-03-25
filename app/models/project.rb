@@ -22,6 +22,7 @@ class Project < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
+  belongs_to :default_assignee, class_name: 'User', optional: true
 
   has_one :project_sort_score
 

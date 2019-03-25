@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_18_145229) do
+ActiveRecord::Schema.define(version: 2019_03_25_142711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -530,6 +530,7 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
     t.integer "ordering"
     t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
+    t.uuid "default_assignee_id"
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
@@ -700,6 +701,7 @@ ActiveRecord::Schema.define(version: 2019_03_18_145229) do
   add_foreign_key "phases", "projects"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
+  add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"

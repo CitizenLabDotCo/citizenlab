@@ -113,6 +113,7 @@ class ProjectPolicy < ApplicationPolicy
       :max_budget,
       :presentation_mode,
       :publication_status,
+      :default_assignee_id,
       title_multiloc: CL2_SUPPORTED_LOCALES, 
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
