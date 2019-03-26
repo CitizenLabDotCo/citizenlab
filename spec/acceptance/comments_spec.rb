@@ -15,54 +15,83 @@ resource "Comments" do
   get "web_api/v1/ideas/:idea_id/comments" do
     with_options scope: :page do
       parameter :number, "Page number"
-      parameter :size, "Number of top-level comments per page. The response will include some child comments too, so expect to receive more"
+      parameter :size, "Number of top-level comments per page. The response will include 2 to 5 child comments per top-level comment, so expect to receive more"
     end
-    parameter :parent, "Only list the child comments of the given comment id. When specified, the pagination behaves normally"
+    parameter :sort, "Either new, -new, upvotes_count or -upvotes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically."
 
-    before do
-      @c1 = create(:comment, idea: @idea)
-      @c2 = create(:comment, idea: @idea)
-      @c1sub1 = create(:comment, parent: @c2, idea: @idea)
-      @c1sub2 = create(:comment, parent: @c2, idea: @idea)
-      @c1sub3 = create(:comment, parent: @c2, idea: @idea)
-      @c1sub4 = create(:comment, parent: @c2, idea: @idea)
-      @c1sub5 = create(:comment, parent: @c2, idea: @idea)
-      @c3 = create(:comment, idea: @idea)
-      @c3sub1 = create(:comment, parent: @c3, idea: @idea)
-      @c3sub2 = create(:comment, parent: @c3, idea: @idea)
-      @c3sub3 = create(:comment, parent: @c3, idea: @idea)
-      @c3sub4 = create(:comment, parent: @c3, idea: @idea)
-      @c3sub5 = create(:comment, parent: @c3, idea: @idea)
-      @c3sub6 = create(:comment, parent: @c3, idea: @idea)
-      @c4 = create(:comment, idea: @idea)
-      @c4sub1 = create(:comment, parent: @c4, idea: @idea)
+    describe do
+      before do
+        @c1 = create(:comment, idea: @idea)
+        @c2 = create(:comment, idea: @idea)
+        @c1sub1 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub2 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub3 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub4 = create(:comment, parent: @c2, idea: @idea)
+        @c1sub5 = create(:comment, parent: @c2, idea: @idea)
+        @c3 = create(:comment, idea: @idea)
+        @c3sub1 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub2 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub3 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub4 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub5 = create(:comment, parent: @c3, idea: @idea)
+        @c3sub6 = create(:comment, parent: @c3, idea: @idea)
+        @c4 = create(:comment, idea: @idea)
+        @c4sub1 = create(:comment, parent: @c4, idea: @idea)
+      end
+
+      let(:idea_id) { @idea.id }
+      let(:size) { 3 }
+
+      example_request "List the top-level comments of an idea" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 10
+        expect(json_response[:data].map{|d| d[:id]}).to eq([
+          @c1,
+          @c2,
+          @c1sub1,
+          @c1sub2,
+          @c1sub3,
+          @c1sub4,
+          @c1sub5,
+          @c3,
+          @c3sub5,
+          @c3sub6,
+        ].map(&:id))
+        expect(json_response[:meta][:total]).to eq 4
+      end
     end
 
-    let(:idea_id) { @idea.id }
-    let(:size) { 3 }
+    describe do
+      let(:idea_id) { @idea.id }
+      let(:sort) { "-upvotes_count" }
 
-    example_request "List the top-level comments of an idea" do
-      expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 10
-      expect(json_response[:data].map{|d| d[:id]}).to eq([
-        @c1,
-        @c2,
-        @c1sub1,
-        @c1sub2,
-        @c1sub3,
-        @c1sub4,
-        @c1sub5,
-        @c3,
-        @c3sub5,
-        @c3sub6,
-      ].map(&:id))
-      expect(json_response[:meta][:total]).to eq 4
+      before do
+        @c1, @c2, @c3 = create_list(:comment, 3, idea: @idea)
+        create_list(:vote, 2, votable: @c3)
+        create_list(:vote, 3, votable: @c2)
+        @c3sub1, @c3sub2 = create_list(:comment, 2, parent: @c3, idea: @idea)
+        create(:vote, votable: @c3sub2)
+      end
+
+      example_request "List the top-level comments of an idea sorted by descending upvotes_count" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map{|d| d[:id]}).to eq([
+          @c2, 
+          @c3, 
+          @c3sub1,
+          @c3sub2, 
+          @c1
+        ].map(&:id))
+      end
     end
 
   end
 
   get "web_api/v1/comments/:comment_id/children" do
+    explanation "Children are always returned chronologically"
     with_options scope: :page do
       parameter :number, "Page number"
       parameter :size, "Number of comments per page"
