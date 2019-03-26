@@ -53,6 +53,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :invite_reminder_campaign, class: EmailCampaigns::Campaigns::InviteReminder do
+    enabled { true }
+  end
+
   factory :mention_in_comment_campaign, class: EmailCampaigns::Campaigns::MentionInComment do
     enabled { true }
   end
