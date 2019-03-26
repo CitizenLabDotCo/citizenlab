@@ -223,7 +223,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   handleToggleFeedbackNeededFilter = () => {
     const { feedbackNeededFilterActive } = this.state;
-    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive);
+    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive ? true : undefined);
     this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
   }
 
