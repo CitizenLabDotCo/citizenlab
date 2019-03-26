@@ -667,7 +667,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       idea,
       localize,
       ideaImages,
-      ideaComments,
       authUser,
       project,
       intl: { formatMessage }
