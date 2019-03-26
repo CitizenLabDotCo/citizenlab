@@ -4,7 +4,7 @@ class WebApi::V1::CommentsController < ApplicationController
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   FULLY_EXPAND_THRESHOLD = 5
-  ALWAYS_EXPAND = 2
+  MINIMAL_SUBCOMMENTS = 2
 
   def index
 
@@ -13,7 +13,22 @@ class WebApi::V1::CommentsController < ApplicationController
       .where(parent: nil)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-      .order(:lft)
+      .includes(:author)
+
+    root_comments = case params[:sort]
+      when "new"
+        root_comments.order(lft: :desc)
+      when "-new"
+        root_comments.order(lft: :asc)
+      when "upvotes_count"
+        root_comments.order(upvotes_count: :asc, lft: :asc)
+      when "-upvotes_count"
+        root_comments.order(upvotes_count: :desc, lft: :asc)
+      when nil
+        root_comments.order(lft: :asc)
+      else
+        raise "Unsupported sort method"
+      end
 
     fully_expanded_root_comments = Comment.where(id: root_comments)
       .where("children_count <= ?", FULLY_EXPAND_THRESHOLD)
@@ -24,26 +39,30 @@ class WebApi::V1::CommentsController < ApplicationController
     partially_expanded_child_comments = Comment
       .where(parent_id: partially_expanded_root_comments)
       .joins(:parent)
-      .where("comments.lft >= parents_comments.rgt - ?", ALWAYS_EXPAND * 2)
+      .where("comments.lft >= parents_comments.rgt - ?", MINIMAL_SUBCOMMENTS * 2)
 
-    @comments = Comment
-      .where(id: root_comments)
-      .or(Comment.where(parent: fully_expanded_root_comments))
+    child_comments = Comment
+      .where(parent: fully_expanded_root_comments)
       .or(Comment.where(id: partially_expanded_child_comments))
       .order(:lft)
       .includes(:author)
 
-    root_comments_count = policy_scope(Comment)
+    # We're doing this merge in ruby, since the combination of a self-join
+    # with different sorting criteria per depth became tremendously complex in
+    # one SQL query
+    @comments = merge_comments(root_comments.to_a, child_comments.to_a)
+
+    total_root_comments_count = policy_scope(Comment)
       .where(idea: params[:idea_id])
       .where(parent: nil)
       .count
 
     if current_user
-      votes = Vote.where(user: current_user, votable: @comments.all)
+      votes = Vote.where(user: current_user, votable: @comments)
       votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
-      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id, meta: { total: root_comments_count }
+      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id, meta: { total: total_root_comments_count }
     else
-      render json: @comments, include: ['author'], meta: { total: root_comments_count }
+      render json: @comments, include: ['author'], meta: { total: total_root_comments_count }
     end
   end
 
@@ -154,6 +173,15 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def secure_controller?
     false
+  end
+
+  # Merge both arrays in such a way that the order of both is preserved, but
+  # the children are directly following their parent
+  def merge_comments root_comments, child_comments
+    children_by_parent = child_comments.group_by(&:parent_id)
+    root_comments.flat_map do |root_comment|
+      [root_comment, *children_by_parent[root_comment.id]]
+    end
   end
 
 end
