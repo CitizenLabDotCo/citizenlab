@@ -50,9 +50,13 @@ class SideFxUserService
       when 'project_moderator'
         SideFxModeratorService.new.after_destroy(user, Project.find(role["project_id"]), current_user)
       when 'admin'
+        moderatable_projects = ProjectPolicy::Scope.new(user, Project).moderatable
         user.assigned_ideas
-          .where.not(project: ProjectPolicy::Scope.new(user, Project).moderatable)
+          .where.not(project: moderatable_projects)
           .update_all(assignee_id: nil, updated_at: DateTime.now)
+        user.default_assigned_projects
+          .where.not(id: moderatable_projects)
+          .update_all(default_assignee_id: nil, updated_at: DateTime.now)
       end
     end
   end
