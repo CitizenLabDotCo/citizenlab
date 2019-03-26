@@ -9,6 +9,7 @@ de:
       "comment_marked_as_spam": Wenn ein Kommentar als Spam markiert ist
       "idea_marked_as_spam": Wenn eine Idee als Spam markiert ist
       "invite_received": Wenn mich jemand auf die Plattform einlädt
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Wenn jemand meine Einladung annimmt
       "mention_in_comment": Wenn mich jemand in einem Kommentar erwähnt
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
@@ -41,6 +42,7 @@ de:
       "comment_marked_as_spam": Wenn ein Benutzer einen Kommentar als Spam markiert (für Administratoren und Moderatoren)
       "idea_marked_as_spam": Wenn ein Benutzer eine Idee als Spam markiert (für Administratoren und Moderatoren)
       "invite_received": Wenn ein Benutzer auf die Plattform eingeladen wird
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Wenn ein Benutzer meine Einladung annimmt
       "mention_in_comment": Wenn ein Benutzer in einem Kommentar erwähnt wird
       "mention_in_official_feedback": Wenn mich jemand im offiziellen Feedback erwähnt
