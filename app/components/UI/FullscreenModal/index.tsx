@@ -203,6 +203,7 @@ const CloseButton = styled.div`
   right: 33px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.4, colors.label)};
+  background: #fff;
   z-index: 10002;
   transition: border-color 100ms ease-out;
 

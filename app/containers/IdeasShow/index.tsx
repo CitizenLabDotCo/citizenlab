@@ -139,9 +139,7 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 60px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-bottom: 40px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -164,7 +162,7 @@ const LeftColumn = styled.div`
   flex-basis: 0;
   margin: 0;
   padding: 0;
-  padding-right: 55px;
+  padding-right: 60px;
   min-width: 0;
 
   ${media.smallerThanMaxTablet`
@@ -634,6 +632,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 // ---------------describes idea to determine what to show---------------
   getActionsInfos = () => {
     const { project, phases, idea } = this.props;
+
     if (!isNilOrError(idea) && !isNilOrError(project)) {
       const pbProject = project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null;
       const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
@@ -880,9 +879,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   project={project}
                   ideaId={ideaId}
                 />
-
-                {/* <Comments ideaId={ideaId} /> */}
-
               </LeftColumn>
 
               <RightColumnDesktop>
@@ -1073,14 +1069,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 const IdeasShowWithHOCs = injectLocalize<Props>(injectIntl<Props & InjectedLocalized>(IdeasShow));
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   locale: <GetLocale />,
-  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
-  phases: ({ idea, render }) => !isNilOrError(idea) ? <GetPhases projectId={idea.relationships.project.data.id}>{render}</GetPhases> : null,
+  authUser: <GetAuthUser/>,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  authUser: <GetAuthUser/>,
-  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>
+  ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
+  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
+  phases: ({ idea, render }) => !isNilOrError(idea) ? <GetPhases projectId={idea.relationships.project.data.id}>{render}</GetPhases> : null
 });
 
 export default (inputProps: InputProps) => (

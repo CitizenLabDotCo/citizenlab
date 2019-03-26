@@ -21,8 +21,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // Styling
 import styled from 'styled-components';
-import { transparentize } from 'polished';
-import { colors } from 'utils/styleUtils';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
@@ -30,16 +28,6 @@ import { IUpdatedComment } from 'services/comments';
 
 const CommentWrapper = styled.div`
   white-space: pre-line;
-
-  .mention {
-    background: ${transparentize(0.91, colors.clBlueDark)};
-    padding-left: 4px;
-    padding-right: 4px;
-
-    &:hover {
-      background: ${transparentize(0.8, colors.clBlueDark)};
-    }
-  }
 `;
 
 const StyledForm: any = styled(Form)`
