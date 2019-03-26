@@ -10,14 +10,14 @@ resource "Comments" do
     header "Content-Type", "application/json"
     @project = create(:continuous_project, with_permissions: true)
     @idea = create(:idea, project: @project)
-    # @comments = ['published','deleted'].map{|ps| create(:comment, idea: @idea, publication_status: ps)}
   end
 
   get "web_api/v1/ideas/:idea_id/comments" do
     with_options scope: :page do
       parameter :number, "Page number"
-      parameter :size, "Number of top-level comments per page"
+      parameter :size, "Number of top-level comments per page. The response will include some child comments too, so expect to receive more"
     end
+    parameter :parent, "Only list the child comments of the given comment id. When specified, the pagination behaves normally"
 
     before do
       @c1 = create(:comment, idea: @idea)
@@ -41,7 +41,7 @@ resource "Comments" do
     let(:idea_id) { @idea.id }
     let(:size) { 3 }
 
-    example_request "List first page of top-level comments of an idea" do
+    example_request "List the top-level comments of an idea" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 10
@@ -60,6 +60,40 @@ resource "Comments" do
       expect(json_response[:meta][:total]).to eq 4
     end
 
+  end
+
+  get "web_api/v1/comments/:comment_id/children" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of comments per page"
+    end
+
+    before do
+      @c = create(:comment, idea: @idea)
+      @csub1 = create(:comment, parent: @c, idea: @idea)
+      @csub2 = create(:comment, parent: @c, idea: @idea)
+      @csub3 = create(:comment, parent: @c, idea: @idea)
+      @csub4 = create(:comment, parent: @c, idea: @idea)
+      @csub5 = create(:comment, parent: @c, idea: @idea)
+      @csub6 = create(:comment, parent: @c, idea: @idea)
+      @c2 = create(:comment, idea: @idea)
+    end
+
+    let(:comment_id) { @c.id }
+
+    example_request "List the direct child comments of a comment" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data].map{|d| d[:id]}).to eq([
+        @csub1,
+        @csub2,
+        @csub3,
+        @csub4,
+        @csub5,
+        @csub6,
+      ].map(&:id))
+    end
   end
 
   get "web_api/v1/comments/as_xlsx" do

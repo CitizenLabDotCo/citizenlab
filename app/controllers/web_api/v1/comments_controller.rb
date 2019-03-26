@@ -1,6 +1,6 @@
 class WebApi::V1::CommentsController < ApplicationController
 
-  before_action :set_comment, only: [:show, :update, :mark_as_deleted, :destroy]
+  before_action :set_comment, only: [:children, :show, :update, :mark_as_deleted, :destroy]
   skip_after_action :verify_authorized, only: [:index_xlsx]
 
   FULLY_EXPAND_THRESHOLD = 5
@@ -56,6 +56,22 @@ class WebApi::V1::CommentsController < ApplicationController
       @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
       xlsx = XlsxService.new.generate_comments_xlsx @comments
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
+    end
+  end
+
+  def children
+    @comments = policy_scope(Comment)
+      .where(parent: params[:id])
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+      .order(:lft)
+
+    if current_user
+      votes = Vote.where(user: current_user, votable: @comments.all)
+      votes_by_comment_id = votes.map{|vote| [vote.votable_id, vote]}.to_h
+      render json: @comments, include: ['author', 'user_vote'], vbci: votes_by_comment_id
+    else
+      render json: @comments, include: ['author']
     end
   end
 

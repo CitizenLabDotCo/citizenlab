@@ -22,6 +22,10 @@ class CommentPolicy < ApplicationPolicy
     user&.active_admin_or_moderator?(record.project.id)
   end
 
+  def children?
+    show?
+  end
+
   def show?
     IdeaPolicy.new(user, record.idea).show?
   end
