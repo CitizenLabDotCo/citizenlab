@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // import Select from 'components/UI/Select';
-import { Select } from 'semantic-ui-react';
+import { Dropdown } from 'semantic-ui-react';
 
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
@@ -71,18 +71,20 @@ class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
     const { assigneeOptions } = this.state;
 
     return (
-      <Select
+      <Dropdown
         id="idea-select-assignee-filter"
         options={assigneeOptions}
         onChange={this.onAssigneeChange}
         value={assignee}
+        search
+        selection
       />
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: <GetUsers canModerate pageSize={50} />,
+  prospectAssignees: <GetUsers canModerate pageSize={250} />,
   authUser: <GetAuthUser />
 });
 
