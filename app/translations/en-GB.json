@@ -253,6 +253,7 @@
   "app.components.admin.IdeaManager.exportIdeasProjects": "",
   "app.components.admin.IdeaManager.exportSelectedComments": "",
   "app.components.admin.IdeaManager.exportSelectedIdeas": "",
+  "app.components.admin.IdeaManager.exports": "",
   "app.components.admin.IdeaManager.header": "",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "",
