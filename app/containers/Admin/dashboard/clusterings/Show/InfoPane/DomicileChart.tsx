@@ -8,6 +8,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import localize, { InjectedLocalized } from 'utils/localize';
 import styled, { withTheme } from 'styled-components';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
 interface InputProps {
   ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
@@ -27,12 +32,12 @@ interface State {
 
 const Container = styled.div``;
 
-class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
+class DomicileChart extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
 
   subscription: Subscription;
 
   constructor(props: Props & InjectedLocalized) {
-    super(props);
+    super(props as any);
     this.state = {
       series: [],
     };
@@ -70,7 +75,7 @@ class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
       });
 
       const blankRecord = {
-        label: '_blank',
+        label: this.props.intl.formatMessage(messages['_blank']),
       };
       series.forEach((serie, serieIndex) => {
         blankRecord[`up ${serieIndex + 1}`] = serie.series.up['_blank'] || 0;
@@ -131,7 +136,7 @@ class DomicileChart extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-const DomicileChartWithHOCs = withTheme<Props, State>(localize(DomicileChart));
+const DomicileChartWithHOCs = withTheme<Props, State>(localize(injectIntl(DomicileChart)));
 
 export default (inputProps: InputProps) => (
   <GetAreas>
