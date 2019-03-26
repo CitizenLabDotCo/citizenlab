@@ -162,7 +162,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
         return false;
       }).map(comment => comment.id));
 
-      // hide parent comments that are deleted with no children
+      // hide parent comments that are deleted when they have no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
         return null;
       }
@@ -171,7 +171,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className="e2e-comment-thread">
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             {comment.attributes.publication_status === 'published' &&
-              <Comment commentId={comment.id} />
+              <Comment commentId={comment.id} isChildComment={false} />
             }
 
             {commentDeleted &&
@@ -185,7 +185,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
           {(childCommentIds && childCommentIds.length > 0) &&
             <ChildCommentsContainer>
               {childCommentIds.map((childCommentId) => {
-                return <Comment key={childCommentId} commentId={childCommentId} />;
+                return <Comment key={childCommentId} commentId={childCommentId} isChildComment={true} />;
               })}
             </ChildCommentsContainer>
           }

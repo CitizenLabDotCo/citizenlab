@@ -1,7 +1,7 @@
 import { isNil, get } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
-import { darken } from 'polished';
+import { transparentize, darken } from 'polished';
 
 // Media
 export const viewportWidths = {
@@ -312,6 +312,16 @@ export function quillEditedContent(
 
     strong {
       font-weight: 600;
+    }
+
+    .mention {
+      background: ${transparentize(0.91, colors.clBlueDark)};
+      padding-left: 4px;
+      padding-right: 4px;
+
+      &:hover {
+        background: ${transparentize(0.8, colors.clBlueDark)};
+      }
     }
 
     .ql-align-right {

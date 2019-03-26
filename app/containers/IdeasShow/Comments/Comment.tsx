@@ -31,10 +31,20 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px red;
+
+  &.childComment {
+    padding-left: 0px;
+  }
 `;
 
 interface InputProps {
   commentId: string;
+  isChildComment: boolean;
   className?: string;
 }
 
@@ -98,7 +108,7 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, idea, className } = this.props;
+    const { comment, idea, isChildComment, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
@@ -107,7 +117,7 @@ class Comment extends PureComponent<Props, State> {
 
       if (comment.attributes.publication_status === 'published') {
         return (
-          <Container className={`${className} e2e-comment`}>
+          <Container className={`${className} ${isChildComment ? 'childComment' : 'parentComment'} e2e-comment`}>
             <CommentHeader
               commentId={commentId}
             />

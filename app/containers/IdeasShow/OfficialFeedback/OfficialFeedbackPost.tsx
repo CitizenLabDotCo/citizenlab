@@ -11,10 +11,10 @@ import { Locale, Multiloc } from 'typings';
 import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
-import { transparentize, darken } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -32,7 +32,7 @@ import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenan
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: 5px;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   padding: 17px 34px 27px 34px;
@@ -40,39 +40,8 @@ const Container = styled.div`
 `;
 
 const PostContainer = styled(Container)`
+  white-space: pre-line;
   background-color: rgba(236, 90, 36, 0.06);
-
-  a {
-    color: ${colors.clBlueDark};
-
-    &.mention {
-      background: ${transparentize(0.94, colors.clBlueDark)};
-      padding-left: 4px;
-      padding-right: 4px;
-
-      &:hover {
-        background: ${transparentize(0.8, colors.clBlueDark)};
-      }
-    }
-
-    &:not(.mention){
-      text-decoration: underline;
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      word-break: break-all;
-      word-break: break-word;
-      hyphens: auto;
-
-      &:hover {
-        text-decoration: underline;
-        color: ${darken(0.15, colors.clBlueDark)};
-      }
-    }
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-    }
-  }
 `;
 
 const EditFormContainer = styled(Container)`
@@ -80,9 +49,7 @@ const EditFormContainer = styled(Container)`
 `;
 
 const Body = styled.div`
-  line-height: 23px;
-  margin-bottom: 16px;
-  white-space: pre-line;
+  margin-bottom: 20px;
 `;
 
 const Footer = styled.div`
@@ -186,13 +153,22 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     }
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+      const formattedDate = (
+        <FormattedDate
+          value={created_at}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      );
+
       return (
         <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
           {editingAllowed &&
             <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
 
-          <>
+          <QuillEditedContent>
             <Body>
               <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
             </Body>
@@ -200,18 +176,20 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
               <Author>
                 <T value={author_multiloc} />
               </Author>
-              <DatePosted><FormattedDate value={created_at} /></DatePosted>
+              <DatePosted>
+                {formattedDate}
+              </DatePosted>
               {updated_at && updated_at !== created_at && (
                 <DateEdited>
                   <FormattedMessage
                     {...messages.lastEdition}
-                    values={{ date: <FormattedDate value={updated_at} /> }}
+                    values={{ date: formattedDate }}
                   />
                 </DateEdited>
               )
             }
             </Footer>
-          </>
+          </QuillEditedContent>
         </PostContainer>
       );
     }
@@ -220,11 +198,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 }
 
-const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
-
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />
 });
 
-export default (inputProps: InputProps) => <Data>{dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}</Data>;
+const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}
+  </Data>
+);
