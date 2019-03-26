@@ -9,6 +9,7 @@ nl-BE:
       "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
       "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
       "invite_received": Iemand mij uitnodigt op het platform
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Iemand aanvaardt mijn uitnodiging
       "mention_in_comment": Iemand vernoemt me in een reactie
       "mention_in_official_feedback": Iemand vernoemt me in een officiële update
@@ -41,6 +42,7 @@ nl-BE:
       "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)
       "idea_marked_as_spam": Wanneer een gebruiker een idee aanduidt als spam (voor beheerders en moderatoren)
       "invite_received": Wanneer een gebruiker uitgenodigd wordt op het platform
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Wanneer een gebruiker mijn uitnodiging aanvaardt
       "mention_in_comment": Wanneer een gebruiker vernoemd wordt in een reactie
       "mention_in_official_feedback": Iemand vernoemt me in een officiële update
