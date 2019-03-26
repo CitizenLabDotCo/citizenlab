@@ -77,10 +77,12 @@ resource "Users" do
         end
 
         example "List all users sorted by last_name" do
+          duplicate_last_names = User.all.pluck(:last_name).group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
+          User.where(last_name: duplicate_last_names).each(&:destroy!)
+
           do_request sort: 'last_name'
           json_response = json_parse(response_body)
 
-          expect(json_response[:data].size).to eq 6
           correctly_sorted = User.all.sort_by{|u| u.last_name}
           expect(json_response[:data].map{|u| u[:id]}).to eq correctly_sorted.map(&:id)
         end
