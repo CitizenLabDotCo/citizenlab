@@ -5,7 +5,9 @@ class TenantTemplateService
     template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
       File.basename(file, ".yml")
     end
-    template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    if external_subfolder
+      template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    end
     template_names
   end
 
