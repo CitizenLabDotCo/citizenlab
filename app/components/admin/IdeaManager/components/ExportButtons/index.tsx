@@ -15,17 +15,17 @@ import ExportCommentsButton from './ExportCommentsButton';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
 
   & > *:not(:last-child) {
-    margin-right: 15px;
+    margin-bottom: 20px;
   }
 `;
 
 interface Props {
-  exportType: string;
+  exportType: 'selected_ideas' | 'project' | 'all';
   exportQueryParameter: 'all' | string | string[];
   className?: string;
 }
