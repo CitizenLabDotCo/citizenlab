@@ -1,11 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
-
-// services
-import { ICommentData } from 'services/comments';
 
 // resources
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
@@ -22,6 +19,7 @@ const Container = styled.div`
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -30,33 +28,23 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  newCommentId: string | null;
-}
+interface State {}
 
-class CommentsContainer extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      newCommentId: null
-    };
-  }
-
-  sortCommentsByDateAscending = (commentA: ICommentData, commentB: ICommentData) => {
-    return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
-  }
-
+class Comments extends PureComponent<Props, State> {
   render() {
-    const className = `${this.props['className']} e2e-comments`;
-    const { ideaId, comments } = this.props;
+    const { ideaId, comments, className } = this.props;
 
     if (!isNilOrError(comments) && comments.length > 0) {
-      const parentComments = comments.filter(comment => comment.relationships.parent.data === null);
+      const parentComments = comments.filter((comment) => {
+        return comment.relationships.parent.data === null;
+      }).sort((commentA, commentB) => {
+        return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
+      });
 
       if (parentComments && parentComments.length > 0) {
         return (
           <Container className={`e2e-comments-container ${className}`}>
-            {parentComments.sort(this.sortCommentsByDateAscending).map((parentComment, index) => (
+            {parentComments.map((parentComment, index) => (
               <ParentComment
                 key={parentComment.id}
                 last={index === parentComments.length - 1}
@@ -75,6 +63,6 @@ class CommentsContainer extends React.PureComponent<Props, State> {
 
 export default (inputProps: InputProps) => (
   <GetComments ideaId={inputProps.ideaId}>
-    {comments => <CommentsContainer {...inputProps} comments={comments} />}
+    {comments => <Comments {...inputProps} comments={comments} />}
   </GetComments>
 );

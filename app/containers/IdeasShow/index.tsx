@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
-import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Subscription, combineLatest, of } from 'rxjs';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
@@ -428,6 +428,59 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
+const FooterContainer = styled.div`
+  width: 100%;
+  margin-top: 60px;
+`;
+
+const FooterHeader = styled.div``;
+
+const FooterHeaderInner = styled.div`
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const FooterHeaderTab = styled.div`
+  color: ${(props) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  display: block;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  padding: 18px 22px;
+  border: solid 1px #e2e2e2;
+  border-bottom: none;
+  background: #fff;
+`;
+
+const CommentsIcon = styled(Icon)`
+  height: 20px;
+  fill: ${(props) => props.theme.colorSecondary};
+  margin-right: 8px;
+`;
+
+const FooterContent = styled.div`
+  width: 100%;
+  background: ${colors.background};
+  border-top: solid 1px #e2e2e2;
+`;
+
+const FooterContentInner = styled.div`
+  width: 100%;
+  max-width: 820px;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 50px;
+  padding-bottom: 60px;
+`;
+
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
@@ -460,7 +513,6 @@ type State = {
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
-  ideaId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
 
   static defaultProps = {
@@ -481,7 +533,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     };
     this.initialState = initialState;
     this.state = initialState;
-    this.ideaId$ = new BehaviorSubject(null);
     this.subscriptions = [];
   }
 
@@ -616,6 +667,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       } else if (!isNilOrError(pbPhase)) {
         participationContextId = pbPhase.id;
       }
+
       const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
 
       return {
@@ -667,7 +719,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       idea,
       localize,
       ideaImages,
-      ideaComments,
       authUser,
       project,
       intl: { formatMessage }
@@ -830,7 +881,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   ideaId={ideaId}
                 />
 
-                <Comments ideaId={ideaId} />
+                {/* <Comments ideaId={ideaId} /> */}
 
               </LeftColumn>
 
@@ -940,6 +991,22 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               </RightColumnDesktop>
             </Content>
           </IdeaContainer>
+
+          <FooterContainer>
+            <FooterHeader>
+              <FooterHeaderInner>
+                <FooterHeaderTab>
+                  <CommentsIcon name="comments" />
+                  Comments (999)
+                </FooterHeaderTab>
+              </FooterHeaderInner>
+            </FooterHeader>
+            <FooterContent>
+              <FooterContentInner>
+                <Comments ideaId={ideaId} />
+              </FooterContentInner>
+            </FooterContent>
+          </FooterContainer>
 
           <Modal
             opened={this.state.spamModalVisible}

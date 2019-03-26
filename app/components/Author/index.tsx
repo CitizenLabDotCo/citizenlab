@@ -1,7 +1,6 @@
-import React from 'react';
-import { isString } from 'lodash-es';
-import { Subscription, BehaviorSubject, of } from 'rxjs';
-import { distinctUntilChanged, switchMap } from 'rxjs/operators';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import Link from 'utils/cl-router/Link';
@@ -12,8 +11,10 @@ import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 
 // services
-import { userByIdStream, IUser } from 'services/users';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+
+// resources
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
@@ -24,6 +25,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
+// typings
 import { Message } from 'typings';
 
 const Container = styled.div`
@@ -42,9 +44,11 @@ const AuthorContainer: any = styled.div`
   padding: 0;
 `;
 
-const AuthorMeta = styled.div`
-  margin-left: 7px;
+const StyledAvatar = styled(Avatar)`
+  margin-right: 7px;
 `;
+
+const AuthorMeta = styled.div``;
 
 const AuthorNameContainer = styled.div`
   color: ${colors.text};
@@ -81,92 +85,65 @@ const TimeAgo = styled.div`
   line-height: 17px;
 `;
 
-interface InputProps {
+export interface InputProps {
   authorId: string | null;
   createdAt?: string | undefined;
   size: string;
   notALink?: boolean;
   message?: Message;
   projectId?: string;
+  showAvatar?: boolean;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
+  className?: string;
 }
 
-interface DataProps {}
+interface DataProps {
+  author: GetUserChildProps;
+}
 
 interface Props extends InputProps, DataProps {}
 
-type State = {
-  author: IUser | null;
-};
+interface State {}
 
-class Author extends React.PureComponent<Props, State> {
-  authorId$: BehaviorSubject<string | null>;
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      author: null
-    };
-    this.authorId$ = new BehaviorSubject(null);
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const { authorId } = this.props;
-
-    this.authorId$.next(authorId);
-
-    this.subscriptions = [
-      this.authorId$.pipe(
-        distinctUntilChanged(),
-        switchMap((authorId) => isString(authorId) ? userByIdStream(authorId).observable : of(null))
-      ).subscribe((author) => {
-        this.setState({ author });
-      })
-    ];
-  }
-
-  componentDidUpdate() {
-    this.authorId$.next(this.props.authorId);
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+class Author extends PureComponent<Props, State> {
+  static defaultProps = {
+    showAvatar: true
+  };
 
   goToUserProfile = () => {
-    const { author } = this.state;
+    const { author } = this.props;
 
-    if (author) {
-      clHistory.push(`/profile/${author.data.attributes.slug}`);
+    if (!isNilOrError(author)) {
+      clHistory.push(`/profile/${author.attributes.slug}`);
     }
   }
 
   render() {
-    const className = this.props['className'];
-    const { authorId, createdAt, size, notALink, message, projectId, showModeration } = this.props;
-    const { author } = this.state;
-
-    const authorCanModerate = author && showModeration && canModerate(projectId, author);
-
+    const { authorId, createdAt, size, notALink, message, projectId, showAvatar, showModeration, className, author } = this.props;
+    const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
     const authorNameComponent = notALink ? (
-      <UserName user={(author ? author.data : null)} />
+      <UserName user={!isNilOrError(author) ? author : null} />
     ) : (
-      <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} className={authorCanModerate ? 'canModerate' : ''}>
-        <UserName user={(author ? author.data : null)} />
+      <AuthorNameLink
+        className={authorCanModerate ? 'canModerate' : ''}
+        to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}
+      >
+        <UserName user={!isNilOrError(author) ? author : null} />
       </AuthorNameLink>
     );
 
     return (
       <Container className={className}>
         <AuthorContainer authorCanModerate={authorCanModerate}>
-          <Avatar
-            userId={authorId}
-            size={size}
-            onClick={notALink ? undefined : this.goToUserProfile}
-            moderator={authorCanModerate}
-          />
+          {showAvatar &&
+            <StyledAvatar
+              userId={authorId}
+              size={size}
+              onClick={notALink ? undefined : this.goToUserProfile}
+              moderator={authorCanModerate}
+            />
+          }
+
           <AuthorMeta>
             <AuthorNameContainer>
               {message ? (
@@ -188,4 +165,12 @@ class Author extends React.PureComponent<Props, State> {
   }
 }
 
-export default Author;
+const Data = adopt<DataProps, InputProps>({
+  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Author {...inputProps} {...dataProps} />}
+  </Data>
+);

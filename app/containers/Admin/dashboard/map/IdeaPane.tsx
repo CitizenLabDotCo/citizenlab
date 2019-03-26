@@ -93,6 +93,7 @@ class IdeaPane extends PureComponent<Props, State> {
     const slug = !isNilOrError(this.props.idea) && this.props.idea.attributes.slug;
     trackEventByName(tracks.clickIdeaOnMap.name, { extra: { slug } });
   }
+
   render() {
     const { idea, className, onClose } = this.props;
 
