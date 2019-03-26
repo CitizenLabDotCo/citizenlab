@@ -18,6 +18,7 @@ interface State {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
