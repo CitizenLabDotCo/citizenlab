@@ -253,6 +253,7 @@
   "app.components.admin.IdeaManager.exportIdeasProjects": "Export ideas for this project (.xslx)",
   "app.components.admin.IdeaManager.exportSelectedComments": "Export comments for selected ideas (.xslx)",
   "app.components.admin.IdeaManager.exportSelectedIdeas": "Export selected ideas (.xslx)",
+  "app.components.admin.IdeaManager.exports": "Exports",
   "app.components.admin.IdeaManager.header": "Ideas",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Moving '{ideaTitle}' away from its current project will lose the information about its assigned phases. Do you want to proceed?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Drag and drop the ideas on an item above to assign them all at once.",

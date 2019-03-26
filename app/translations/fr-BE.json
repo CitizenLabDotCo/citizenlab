@@ -253,6 +253,7 @@
   "app.components.admin.IdeaManager.exportIdeasProjects": "Exporter toutes les idées pour ce projet (. xslx)",
   "app.components.admin.IdeaManager.exportSelectedComments": "Exporter tous les commentaires pour les idées sélectionnées (.xslx)",
   "app.components.admin.IdeaManager.exportSelectedIdeas": "Exporter les idées sélectionnées (.xslx)",
+  "app.components.admin.IdeaManager.exports": "",
   "app.components.admin.IdeaManager.header": "Idées",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": "Déplacer l'idée \" {ideaTitle} \" hors du projet actuel lui fera perdre les informations liées au étapes du projet. Voulez-vous la déplacer ? ",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Glissez les idées sur un éléments pour les assignez toutes en une fois.",
