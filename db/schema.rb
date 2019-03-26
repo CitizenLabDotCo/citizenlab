@@ -93,7 +93,6 @@ ActiveRecord::Schema.define(version: 2019_03_25_155516) do
     t.integer "downvotes_count", default: 0, null: false
     t.string "publication_status", default: "published", null: false
     t.datetime "body_updated_at"
-    t.integer "depth", default: 0, null: false
     t.integer "children_count", default: 0, null: false
     t.index ["author_id"], name: "index_comments_on_author_id"
     t.index ["idea_id"], name: "index_comments_on_idea_id"
