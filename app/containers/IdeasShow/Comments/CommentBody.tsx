@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent, FormEvent } from 'react';
 import linkifyHtml from 'linkifyjs/html';
 import { Form, Formik, FormikActions } from 'formik';
 import { adopt } from 'react-adopt';
@@ -29,6 +29,9 @@ import { Multiloc, Locale } from 'typings';
 import { IUpdatedComment } from 'services/comments';
 
 const CommentWrapper = styled.div`
+  white-space: pre-line;
+  border: solid 1px red;
+
   .mention {
     background: ${transparentize(0.91, colors.clBlueDark)};
     padding-left: 4px;
@@ -56,10 +59,10 @@ const ButtonsWrapper = styled.div`
 
 interface InputProps {
   commentBody: Multiloc;
-  editionMode: boolean;
+  editing: boolean;
   last?: boolean;
-  onCommentSave: {(values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>): void};
-  onCancelEdition: {(): void};
+  onCommentSave: (values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>) => void;
+  onCancelEditing: () => void;
   translateButtonClicked: boolean;
   commentId: string;
 }
@@ -73,19 +76,27 @@ interface Props extends InputProps, DataProps {}
 
 export interface State {}
 
-class CommentBody extends React.PureComponent<Props, State> {
+class CommentBody extends PureComponent<Props, State> {
   getCommentText = (locale: Locale, tenantLocales: Locale[]) => {
     const commentText = getLocalized(this.props.commentBody, locale, tenantLocales);
-    const processedCommentText = linkifyHtml(commentText.replace(
+
+    return linkifyHtml(commentText.replace(
       /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
       '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
     ));
-    return processedCommentText;
   }
 
-  onSaveComment = (values, formikActions) => {
-    if (this.props.locale) {
-      return this.props.onCommentSave({ body_multiloc: { [this.props.locale]: values.body } }, formikActions);
+  onCommentSave = async (values, formikActions: FormikActions<IUpdatedComment>) => {
+    const { locale } = this.props;
+
+    if (locale) {
+      const updatedComment: IUpdatedComment = {
+        body_multiloc: {
+          [locale]: values.body
+        }
+      };
+
+      return this.props.onCommentSave(updatedComment, formikActions);
     }
   }
 
@@ -97,49 +108,48 @@ class CommentBody extends React.PureComponent<Props, State> {
     setFieldTouched(name, true);
   }
 
-  cancelEdition = (event) => {
+  cancelEditing = (event: FormEvent<any>) => {
     event.preventDefault();
-    this.props.onCancelEdition();
+    this.props.onCancelEditing();
   }
 
   render() {
     const {
-      editionMode,
+      editing,
       commentBody,
       locale,
       tenantLocales,
-      last,
       translateButtonClicked,
       commentId
     } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !editionMode) {
-      return (
-        <CommentWrapper className={`e2e-comment-body ${last ? 'last' : ''}`}>
-          <QuillEditedContent fontWeight={300}>
-            {translateButtonClicked ?
-              <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
-                {translation => {
-                  if (!isNilOrError(translation)) {
-                    return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
-                  }
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+      if (!editing) {
+        return (
+          <CommentWrapper className="e2e-comment-body">
+            <QuillEditedContent fontWeight={300}>
+              {translateButtonClicked ?
+                <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
+                  {translation => {
+                    if (!isNilOrError(translation)) {
+                      return <div dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
+                    }
 
-                  return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
-                }}
-              </GetMachineTranslation>
-              :
-              <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
-            }
-          </QuillEditedContent>
-        </CommentWrapper>
-      );
-    }
+                    return <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />;
+                  }}
+                </GetMachineTranslation>
+                :
+                <div dangerouslySetInnerHTML={{ __html: this.getCommentText(locale, tenantLocales) }} />
+              }
+            </QuillEditedContent>
+          </CommentWrapper>
+        );
+      }
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && editionMode) {
       return (
         <Formik
           initialValues={{ body: getLocalized(commentBody, locale, tenantLocales) }}
-          onSubmit={this.onSaveComment}
+          onSubmit={this.onCommentSave}
         >
           {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
             <StyledForm onSubmit={handleSubmit}>
@@ -152,9 +162,19 @@ class CommentBody extends React.PureComponent<Props, State> {
                 padding="1rem"
               />
               <ButtonsWrapper>
-                {errors && errors.body_multiloc && errors.body_multiloc[locale] && <Error apiErrors={errors.body_multiloc[locale]} />}
-                <Button onClick={this.cancelEdition} icon="close2" style="text" circularCorners={false}  />
-                <Button icon="send" style="primary" circularCorners={false} processing={isSubmitting} />
+                {errors && errors.body_multiloc && errors.body_multiloc[locale] &&
+                  <Error apiErrors={errors.body_multiloc[locale]} />
+                }
+                <Button
+                  onClick={this.cancelEditing}
+                  icon="close2"
+                  style="text"
+                />
+                <Button
+                  icon="send"
+                  style="primary"
+                  processing={isSubmitting}
+                />
               </ButtonsWrapper>
             </StyledForm>
           )}
@@ -171,4 +191,8 @@ const Data = adopt<DataProps, {}>({
   tenantLocales: <GetTenantLocales />
 });
 
-export default (inputProps: InputProps) => <Data>{dataProps => <CommentBody {...inputProps} {...dataProps} />}</Data>;
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <CommentBody {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -56,24 +56,26 @@ interface State {
 }
 
 export default class ActivityChangeLog extends PureComponent<Props, State> {
-  subs: Subscription[] = [];
+  subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
-
     this.state = {
       user: null,
     };
+    this.subscriptions = [];
   }
 
   componentDidMount() {
-    this.subs.push(userByIdStream(this.props.activity.relationships.user.data.id).observable.subscribe((response) => {
-      this.setState({ user: response });
-    }));
+    this.subscriptions = [
+      userByIdStream(this.props.activity.relationships.user.data.id).observable.subscribe((response) => {
+        this.setState({ user: response });
+      })
+    ];
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {

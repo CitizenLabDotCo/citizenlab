@@ -17,7 +17,7 @@ import HasPermission from 'components/HasPermission';
 
 // components
 import ParentCommentForm from './ParentCommentForm';
-import Comments from './CommentsContainer';
+import Comments from './Comments';
 
 // styling
 import styled from 'styled-components';
