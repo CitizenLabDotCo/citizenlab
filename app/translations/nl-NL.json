@@ -253,6 +253,7 @@
   "app.components.admin.IdeaManager.exportIdeasProjects": "Alle ideeën van dit project exporteren (.xslx)",
   "app.components.admin.IdeaManager.exportSelectedComments": "Alle reacties van de geselecteerde ideeën exporteren (.xslx)",
   "app.components.admin.IdeaManager.exportSelectedIdeas": "Alle geselecteerde ideeën exporteren (.xslx)",
+  "app.components.admin.IdeaManager.exports": "",
   "app.components.admin.IdeaManager.header": "Ideeën",
   "app.components.admin.IdeaManager.losePhaseInfoConfirmation": " Door '{ideaTitle}' te verplaatsen, verliest het de informatie die specifiek gelinkt was aan de tijdslijn uit het vorige project. Wilt u doorgaan?",
   "app.components.admin.IdeaManager.multiDragAndDropHelp": "Versleep de ideeën naar een bovenstaand item om ze gezamenlijk toe te wijzen. ",
