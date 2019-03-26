@@ -30,7 +30,6 @@ import { IUpdatedComment } from 'services/comments';
 
 const CommentWrapper = styled.div`
   white-space: pre-line;
-  border: solid 1px red;
 
   .mention {
     background: ${transparentize(0.91, colors.clBlueDark)};
@@ -167,7 +166,7 @@ class CommentBody extends PureComponent<Props, State> {
                 }
                 <Button
                   onClick={this.cancelEditing}
-                  icon="close2"
+                  icon="close4"
                   style="text"
                 />
                 <Button

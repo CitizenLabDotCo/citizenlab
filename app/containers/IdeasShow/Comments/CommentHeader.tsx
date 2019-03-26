@@ -28,7 +28,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: solid 1px red;
 `;
 
 const Left = styled.div`
