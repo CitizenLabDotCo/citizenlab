@@ -8,12 +8,8 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_count
     ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
       .where(published_at: @start_at..@end_at)
+    ideas = IdeasFilteringService.new.apply_common_index_filters ideas, params
 
-    ideas = apply_project_filter(ideas)
-    ideas = apply_group_filter(ideas)
-    ideas = apply_topic_filter(ideas)
-    ideas = apply_feedback_needed_filter(ideas)
-      
     render json: { count: ideas.count }
   end
 
