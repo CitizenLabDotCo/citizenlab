@@ -62,8 +62,6 @@ const MiddleColumn = styled.div`
 const RightColumn = styled.div`
   width: 260px;
   display: flex;
-  justify-content: flex-end;
-  justify-self: flex-end;
   ${media.smallerThan1280px`
     display: none;
   `}
@@ -89,6 +87,10 @@ const RightColumn = styled.div`
       opacity: 0;
     }
   }
+`;
+
+const StyledInput = styled(Input)`
+  width: 100%;
 `;
 
 interface InputProps {
@@ -296,7 +298,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             />
           </MiddleColumn>
           <RightColumn>
-            <Input icon="search" onChange={this.handleSearchChange} />
+            <StyledInput icon="search" onChange={this.handleSearchChange}/>
           </RightColumn>
         </ThreeColumns>
         <ThreeColumns>
