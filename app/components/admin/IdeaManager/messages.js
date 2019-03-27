@@ -161,4 +161,8 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.noOne',
     defaultMessage: 'Unassigned',
   },
+  exports: {
+    id: 'app.components.admin.IdeaManager.exports',
+    defaultMessage: 'Exports',
+  }
 });

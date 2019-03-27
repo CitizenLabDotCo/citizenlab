@@ -24,8 +24,8 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
+import ExportMenu from './components/ExportMenu';
 import { Input, Sticky, Message } from 'semantic-ui-react';
-import ExportButtons from './components/ExportButtons';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
@@ -38,8 +38,14 @@ import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 const StyledDiv = styled.div`
   margin-bottom: 30px;
 `;
-const Row = styled.div`
+
+const StyledExportMenu = styled(ExportMenu)`
+  margin-left: auto;
+`;
+
+const TopActionBar = styled.div`
   display: flex;
+  margin-bottom: 20px;
 `;
 
 const ThreeColumns = styled.div`
@@ -267,7 +273,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
           </StyledDiv>
         }
 
-        <Row>
+        <TopActionBar>
           <AssigneeFilter
             assignee={assignee}
             handleAssigneeFilterChange={this.handleAssigneeFilterChange}
@@ -276,19 +282,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
             value={feedbackNeededFilterActive}
             onChange={this.handleToggleFeedbackNeededFilter}
           />
-        </Row>
-
-        <ThreeColumns>
-          <LeftColumn/>
-          <MiddleColumn/>
-          <RightColumn>
-            <ExportButtons
-              exportType={exportType}
-              exportQueryParameter={exportQueryParameter}
-              className={project === undefined ? 'all' : 'project'}
-            />
-          </RightColumn>
-        </ThreeColumns>
+          <StyledExportMenu
+            exportType={exportType}
+            exportQueryParameter={exportQueryParameter}
+          />
+        </TopActionBar>
 
         <ThreeColumns>
           <MiddleColumn>

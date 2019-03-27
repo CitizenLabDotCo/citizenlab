@@ -149,4 +149,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText',
     defaultMessage: 'here',
   },
+  ideaAssignmentSectionTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
+    defaultMessage: 'Who is the main responsible for this project?',
+  },
+  ideaAssignmentTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip',
+    defaultMessage: 'Every new idea within this project will be assigned to this person by default. The main responsible will get notified when a new idea gets added. Idea assignment can be easily changed in the {linkToIdeasOverview}.',
+  },
+  ideasOverview: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideasOverview',
+    defaultMessage: 'Ideas overview',
+  },
 });
