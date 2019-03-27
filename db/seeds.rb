@@ -278,7 +278,7 @@ admin_koen = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.resolve_and_apply_template 'base'
+  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
   User.create! admin_koen
 end
@@ -324,7 +324,7 @@ if Apartment::Tenant.current == 'localhost'
     admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
-  TenantTemplateService.new.resolve_and_apply_template 'base'
+  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
   User.create! admin_koen
 
@@ -388,7 +388,8 @@ if Apartment::Tenant.current == 'localhost'
         visible_to: %w(admins groups public public public)[rand(5)],
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
-        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
       })
 
       if project.continuous?

@@ -135,5 +135,5 @@ end
 
 1. Add a factory to `./engines/email_campaigns/spec/factories/campaigns.rb`.
 
-2. Add a factory instance to `@campaigns` in `./engines/email_campaigns/spec/acceptance/consents_spec.rb`.
+2. Add a factory instance to `@campaigns` in `./engines/email_campaigns/spec/acceptance/consents_spec.rb`, if the campaign is consentable.
 
