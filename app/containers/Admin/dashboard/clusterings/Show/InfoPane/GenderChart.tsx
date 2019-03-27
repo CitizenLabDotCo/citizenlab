@@ -5,6 +5,11 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContaine
 import { votesByGenderStream, IVotesByGender } from 'services/stats';
 import styled, { withTheme } from 'styled-components';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
 type Props = {
   ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
@@ -17,11 +22,11 @@ type State = {
 
 const Container = styled.div``;
 
-class GenderChart extends PureComponent<Props, State> {
+class GenderChart extends PureComponent<Props & InjectedIntlProps, State> {
   subscription: Subscription;
 
   constructor(props: Props) {
-    super(props);
+    super(props as any);
     this.state = {
       series: [],
     };
@@ -45,7 +50,7 @@ class GenderChart extends PureComponent<Props, State> {
     return ['male', 'female', 'unspecified', '_blank'].map((gender) => {
       const record = {
         gender,
-        label: gender,
+        label: this.props.intl.formatMessage(messages[gender]),
       };
       series.forEach((serie, index) => {
         record[`up ${index + 1}`] = serie.series.up[gender] || 0;
@@ -104,4 +109,4 @@ class GenderChart extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme(GenderChart);
+export default withTheme(injectIntl(GenderChart));

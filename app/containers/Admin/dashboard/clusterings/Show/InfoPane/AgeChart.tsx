@@ -6,6 +6,11 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContaine
 import { votesByBirthyearStream, IVotesByBirthyear } from 'services/stats';
 import styled, { withTheme } from 'styled-components';
 
+// i18n
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from '../../messages';
+
 type Props = {
   ideaIdsComparisons: string[][];
   normalization: 'absolute' | 'relative';
@@ -18,12 +23,12 @@ type State = {
 
 const Container = styled.div``;
 
-class AgeChart extends PureComponent<Props, State> {
+class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
 
   subscription: Subscription;
 
   constructor(props: Props) {
-    super(props);
+    super(props as any);
     this.state = {
       series: [],
     };
@@ -68,7 +73,7 @@ class AgeChart extends PureComponent<Props, State> {
     });
 
     const blankRecord = {
-      label: '_blank'
+       label: this.props.intl.formatMessage(messages['_blank'])
     };
     each(series, (serie, serieIndex) => {
       ['up', 'down', 'total'].forEach((mode) => {
@@ -126,4 +131,4 @@ class AgeChart extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme(AgeChart);
+export default withTheme(injectIntl(AgeChart));

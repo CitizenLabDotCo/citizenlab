@@ -23,6 +23,7 @@ interface DataProps {
 interface InputProps {
   assignee: string;
   handleAssigneeFilterChange: (value: string) => void;
+  projectId: string | undefined;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -84,7 +85,9 @@ class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  prospectAssignees: <GetUsers canModerate pageSize={250} />,
+  prospectAssignees: ({ projectId, render }) => projectId
+    ? <GetUsers canModerateProject={projectId} pageSize={250}>{render}</GetUsers>
+    : <GetUsers canModerate pageSize={250}>{render}</GetUsers>,
   authUser: <GetAuthUser />
 });
 

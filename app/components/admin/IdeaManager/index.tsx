@@ -34,6 +34,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import GetIdeasCount from 'resources/GetIdeasCount';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -66,10 +67,8 @@ const MiddleColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-  width: 260px;
+  max-width: 260px;
   display: flex;
-  justify-content: flex-end;
-  justify-self: flex-end;
   ${media.smallerThan1280px`
     display: none;
   `}
@@ -95,6 +94,10 @@ const RightColumn = styled.div`
       opacity: 0;
     }
   }
+`;
+
+const StyledInput = styled(Input)`
+  width: 100%;
 `;
 
 interface InputProps {
@@ -229,7 +232,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   handleToggleFeedbackNeededFilter = () => {
     const { feedbackNeededFilterActive } = this.state;
-    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive);
+    this.props.ideas.onChangeFeedbackFilter(!feedbackNeededFilterActive ? true : undefined);
     this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
   }
 
@@ -273,13 +276,19 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
         <TopActionBar>
           <AssigneeFilter
+            projectId={!isNilOrError(project) ? project.id : undefined}
             assignee={assignee}
             handleAssigneeFilterChange={this.handleAssigneeFilterChange}
           />
-          <FeedbackToggle
-            value={feedbackNeededFilterActive}
-            onChange={this.handleToggleFeedbackNeededFilter}
-          />
+          <GetIdeasCount feedbackNeeded={true} assignee={assignee === 'all' ? undefined : assignee}>
+            {ideasCount => (
+              <FeedbackToggle
+                value={feedbackNeededFilterActive}
+                onChange={this.handleToggleFeedbackNeededFilter}
+                feedbackNeededCount={isNilOrError(ideasCount.count) ? undefined : ideasCount.count}
+              />
+            )}
+          </GetIdeasCount>
           <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
@@ -294,7 +303,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             />
           </MiddleColumn>
           <RightColumn>
-            <Input icon="search" onChange={this.handleSearchChange} />
+            <StyledInput icon="search" onChange={this.handleSearchChange}/>
           </RightColumn>
         </ThreeColumns>
         <ThreeColumns>
@@ -372,6 +381,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses />,
   authUser: <GetAuthUser />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
+  ideasCount:  <GetIdeasCount feedbackNeeded={true} />
 });
 
 const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);
