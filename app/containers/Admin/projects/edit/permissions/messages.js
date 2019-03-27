@@ -161,4 +161,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideasOverview',
     defaultMessage: 'Ideas overview',
   },
+  unassigned: {
+    id: 'app.containers.AdminPage.ProjectEdit.unassigned',
+    defaultMessage: 'Unassigned',
+  },
 });
