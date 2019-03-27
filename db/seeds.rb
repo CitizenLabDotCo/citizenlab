@@ -278,7 +278,7 @@ admin_koen = {
 }
 
 if Apartment::Tenant.current == 'empty_localhost'
-  TenantTemplateService.new.resolve_and_apply_template 'base'
+  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
   User.create! admin_koen
 end
@@ -324,7 +324,7 @@ if Apartment::Tenant.current == 'localhost'
     admin_koen[:custom_field_values] = ((rand(2) == 0) ? {} : {custom_field.key => CustomFieldOption.where(custom_field_id: custom_field.id).all.shuffle.first.key})
   end
 
-  TenantTemplateService.new.resolve_and_apply_template 'base'
+  TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
   User.create! admin_koen
 
