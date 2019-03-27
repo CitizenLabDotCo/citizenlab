@@ -5,6 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 // import FeatureFlag from 'components/FeatureFlag';
+import CommentVote from './CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // resources
@@ -13,8 +14,8 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -48,11 +49,21 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
 `;
 
 const Left = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const Separator = styled.div`
+  margin-left: 12px;
+  margin-right: 12px;
+`;
+
+const ReplyButton = styled.div`
+  color: ${colors.label};
 `;
 
 const Right = styled.div`
@@ -91,18 +102,20 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     const { translateButtonClicked } = this.state;
 
     if (translateButtonClicked) {
-      trackEvent(tracks.clickGoBackToOriginalCommentButton);
+      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
     } else {
-      trackEvent(tracks.clickTranslateCommentButton);
+      trackEventByName(tracks.clickTranslateCommentButton);
     }
 
-    this.setState(prevState => ({
-      translateButtonClicked: !prevState.translateButtonClicked,
-    }));
+    this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
   }
 
   onCommentEdit = () => {
     this.props.onEditing();
+  }
+
+  onUpvote = () => {
+
   }
 
   render() {
@@ -132,7 +145,13 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           {/* </FeatureFlag> */}
 
           <Footer>
-            <Left />
+            <Left>
+              <CommentVote commentId={comment.id} />
+              <Separator>•</Separator>
+              <ReplyButton>
+                <FormattedMessage {...messages.commentReplyButton} />
+              </ReplyButton>
+            </Left>
             <Right>
               <CommentsMoreActions
                 ariaLabel={intl.formatMessage(messages.showMoreActions)}
