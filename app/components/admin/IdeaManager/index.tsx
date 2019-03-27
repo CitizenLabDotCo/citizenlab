@@ -276,6 +276,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
         <TopActionBar>
           <AssigneeFilter
+            projectId={!isNilOrError(project) ? project.id : undefined}
             assignee={assignee}
             handleAssigneeFilterChange={this.handleAssigneeFilterChange}
           />
