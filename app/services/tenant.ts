@@ -97,10 +97,12 @@ interface ITenantStyle {
   navbarTextColor?: string;
   navbarHighlightedItemBackgroundColor?: string;
   navbarBorderColor?: string;
-  landingHeaderOverlayColor?: string;
-  landingHeaderOverlayOpacity?: number;
-  landingHeaderTitleFontSize?: number;
-  landingHeaderTitleFontWeight?: number;
+  signedOutHeaderOverlayColor?: string;
+  signedOutHeaderTitleFontSize?: number;
+  signedOutHeaderTitleFontWeight?: number;
+  signedOutHeaderOverlayOpacity?: number;
+  signedInHeaderOverlayColor?: string;
+  signedInHeaderOverlayOpacity?: number;
   customFontName?: string;
   customFontAdobeId?: string;
   projectNavbarBackgroundColor?: string;

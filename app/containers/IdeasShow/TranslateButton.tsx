@@ -18,12 +18,22 @@ interface Props {
   translationsLoading: boolean;
   translateIdea: () => void;
   backToOriginalContent: () => void;
+  className?: string;
 }
 
 const TranslateButton = (props: Props) => {
-  const { locale, idea, translateButtonClicked, translationsLoading, translateIdea, backToOriginalContent } = props;
+  const {
+    locale,
+    idea,
+    translateButtonClicked,
+    translationsLoading,
+    translateIdea,
+    backToOriginalContent,
+    className
+   } = props;
 
-  const showTranslateButton = !isNilOrError(idea) && !isNilOrError(locale) && !idea.attributes.title_multiloc[locale];
+  const showTranslateButton = !isNilOrError(idea) && !isNilOrError(locale)
+    && !idea.attributes.title_multiloc[locale];
 
   if (showTranslateButton) {
     if (!translateButtonClicked) {
@@ -34,6 +44,7 @@ const TranslateButton = (props: Props) => {
           processing={translationsLoading}
           spinnerColor={colors.label}
           borderColor={lighten(.4, colors.label)}
+          className={className}
         >
           <FormattedMessage {...messages.translateIdea} />
         </Button>
@@ -46,6 +57,7 @@ const TranslateButton = (props: Props) => {
           processing={translationsLoading}
           spinnerColor={colors.label}
           borderColor={lighten(.4, colors.label)}
+          className={className}
         >
           <FormattedMessage {...messages.backToOriginalContent} />
         </Button>
