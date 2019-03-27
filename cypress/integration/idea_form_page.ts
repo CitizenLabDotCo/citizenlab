@@ -46,7 +46,7 @@ describe('Idea form page', () => {
 
   it('creates an idea when submitting the form with a title and description, and redirects to the sign-in form', () => {
     const ideaTtle = randomString();
-    const ideaDescription = randomString();
+    const ideaDescription = randomString(40);
 
     cy.get('#title').type(ideaTtle);
     cy.get('.ql-editor').type(ideaDescription);

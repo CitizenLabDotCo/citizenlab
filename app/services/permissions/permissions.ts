@@ -3,14 +3,14 @@ import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
 import { map } from 'rxjs/operators';
 
-type TPermissionItem = IResourceData | IRouteItem | TResourceType;
+export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
 
 interface IResourceData {
   type: string;
   [key: string]: any;
 }
 
-interface IRouteItem {
+export interface IRouteItem {
   type: 'route';
   path: string;
 }
@@ -69,8 +69,6 @@ const hasPermission = ({ item, action, context }: { item: TPermissionItem | null
 };
 
 export {
-  TPermissionItem,
-  IRouteItem,
   definePermissionRule,
   hasPermission,
 };
