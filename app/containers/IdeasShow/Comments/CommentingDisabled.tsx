@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,8 +32,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class CommentingDisabled extends React.PureComponent<Props> {
-
+class CommentingDisabled extends PureComponent<Props> {
     calculateMessageDescriptor = () => {
       const { isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
 

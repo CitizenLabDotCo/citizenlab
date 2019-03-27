@@ -10,8 +10,8 @@ import Author from 'components/Author';
 import CommentingDisabled from './CommentingDisabled';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -76,18 +76,13 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface Tracks {
-  focusEditor: Function;
-  clickCommentPublish: Function;
-}
-
 interface State {
   inputValue: string;
   processing: boolean;
   errorMessage: string | null;
 }
 
-class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
+class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -105,7 +100,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
   }
 
   handleEditorOnFocus = () => {
-    this.props.focusEditor({
+    trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         ideaId: this.props.ideaId
       }
@@ -125,7 +120,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
     });
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
-      this.props.clickCommentPublish({
+      trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
           ideaId,
           content: inputValue
@@ -208,10 +203,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
   }
 }
 
-const ParentCommentFormWithHoCs = injectTracks<Props>({
-  focusEditor: tracks.focusNewCommentTextbox,
-  clickCommentPublish: tracks.clickCommentPublish,
-})(injectIntl<Props>(ParentCommentForm));
+const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

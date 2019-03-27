@@ -19,8 +19,8 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -67,7 +67,6 @@ const ChildCommentsContainer = styled.div`
 interface InputProps {
   ideaId: string;
   commentId: string;
-  last: boolean;
 }
 
 interface DataProps {
@@ -98,7 +97,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   toggleForm = () => {
-    trackEvent(tracks.clickReply);
+    trackEventByName(tracks.clickReply);
     this.setState({ showForm: true });
   }
 
@@ -137,9 +136,9 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
     const { translateButtonClicked } = this.state;
 
     if (translateButtonClicked) {
-      trackEvent(tracks.clickGoBackToOriginalCommentButton);
+      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
     } else {
-      trackEvent(tracks.clickTranslateCommentButton);
+      trackEventByName(tracks.clickTranslateCommentButton);
     }
 
     this.setState(prevState => ({
@@ -161,6 +160,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
         if (comment.relationships.parent.data.id === commentId) return true;
         return false;
       }).map(comment => comment.id));
+      const hasChildComments = (childCommentIds && childCommentIds.length > 0);
 
       // hide parent comments that are deleted when they have no children
       if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
@@ -171,7 +171,11 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className="e2e-comment-thread">
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             {comment.attributes.publication_status === 'published' &&
-              <Comment commentId={comment.id} isChildComment={false} />
+              <Comment
+                commentId={comment.id}
+                type="parent"
+                hasChildComments={hasChildComments}
+              />
             }
 
             {commentDeleted &&
@@ -184,8 +188,13 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
 
           {(childCommentIds && childCommentIds.length > 0) &&
             <ChildCommentsContainer>
-              {childCommentIds.map((childCommentId) => {
-                return <Comment key={childCommentId} commentId={childCommentId} isChildComment={true} />;
+              {childCommentIds.map((childCommentId, index) => {
+                return <Comment
+                  key={childCommentId}
+                  commentId={childCommentId}
+                  type="child"
+                  last={index === childCommentIds.length - 1}
+                />;
               })}
             </ChildCommentsContainer>
           }

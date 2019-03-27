@@ -43,41 +43,39 @@ interface DataProps {
   ideaComments: GetCommentsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const CommentsSection: React.SFC<Props> = ({
+const CommentsSection = React.memo<Props>(({
   ideaId,
   ideaComments,
-  project,
-}) => {
-    return (
-      <>
-      {!isNilOrError(ideaComments) && ideaComments.filter(comment => comment.attributes.publication_status !== 'deleted').length > 0 ?
-        <CommentsTitle>
-          <FormattedMessage {...messages.commentsTitle} />
-        </CommentsTitle>
-        :
-        <HasPermission item={!isNilOrError(project) ? project : null} action="moderate">
-          <HasPermission.No>
-            <CommentsTitle>
-              <FormattedMessage {...messages.commentsTitle} />
-            </CommentsTitle>
-          </HasPermission.No>
-        </HasPermission>
-      }
+  project
+}) => (
+  <>
+    {!isNilOrError(ideaComments) && ideaComments.filter(comment => comment.attributes.publication_status !== 'deleted').length > 0 ?
+      <CommentsTitle>
+        <FormattedMessage {...messages.commentsTitle} />
+      </CommentsTitle>
+      :
+      <HasPermission item={!isNilOrError(project) ? project : null} action="moderate">
+        <HasPermission.No>
+          <CommentsTitle>
+            <FormattedMessage {...messages.commentsTitle} />
+          </CommentsTitle>
+        </HasPermission.No>
+      </HasPermission>
+    }
 
-      {!isNilOrError(project) &&
-        <HasPermission item={project} action="moderate">
-          <HasPermission.No>
-            <ParentCommentForm ideaId={ideaId} />
-          </HasPermission.No>
-        </HasPermission>
-      }
+    {!isNilOrError(project) &&
+      <HasPermission item={project} action="moderate">
+        <HasPermission.No>
+          <ParentCommentForm ideaId={ideaId} />
+        </HasPermission.No>
+      </HasPermission>
+    }
 
-      {ideaComments && <Comments ideaId={ideaId} />}
-      </>
-    );
-};
+    {ideaComments && <Comments ideaId={ideaId} />}
+  </>
+));
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
