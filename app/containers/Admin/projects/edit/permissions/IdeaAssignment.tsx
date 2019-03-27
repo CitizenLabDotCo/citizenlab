@@ -1,5 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
+import { isString, get } from 'lodash-es';
 
 // typings
 import { IOption } from 'typings';
@@ -9,6 +10,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// services
+import { updateProject } from 'services/projects';
 
 // components
 import Select from 'components/UI/Select';
@@ -23,6 +28,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  project: GetProjectChildProps;
   moderators: GetModeratorsChildProps;
 }
 
@@ -43,25 +49,44 @@ class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
       });
     }
 
-    return [{ value: null, label: this.props.intl.formatMessage(messages.unassigned) }, ...moderatorOptions];
+    return [{ value: 'unassigned', label: this.props.intl.formatMessage(messages.unassigned) }, ...moderatorOptions];
+  }
+
+  onAssigneeChange = (assigneeOption: IOption) => {
+    const { projectId } = this.props;
+    // convert 'unassigned' to null for the back-end update
+    const defaultAssigneeId = assigneeOption.value !== 'unassigned' ? assigneeOption.value : null;
+
+    updateProject(projectId, {
+      default_assignee_id: defaultAssigneeId
+    });
+
   }
 
   render() {
-    // We want a list that contains the default option, null -- unassigned + a list of moderators.
-    // We can update the assignee with a project update
-    // After this update, we want to show who's been assigned by looking up the user through the user id and show it through the value prop
-    //
-    return (
-      <Select
-        options={this.getOptions()}
-        value={}
-        onChange={}
-      />
-    );
+    const { project } = this.props;
+
+    if (!isNilOrError(project)) {
+      const defaultAssigneeId = get(project, 'relationships.default_assignee.data.id');
+      // If defaultAssigneeValue is not a string, it's null, so we convert it to a string (see this.getoptions)
+      const defaultAssigneeValue = isString(defaultAssigneeId) ? defaultAssigneeId : 'unassigned';
+
+      return (
+        <Select
+          options={this.getOptions()}
+          value={defaultAssigneeValue}
+          onChange={this.onAssigneeChange}
+          clearable={false}
+        />
+      );
+    }
+
+    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
+  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
   moderators: ({ projectId, render }) => <GetModerators projectId={projectId}>{render}</GetModerators>,
 });
 
