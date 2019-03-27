@@ -66,7 +66,7 @@ const MiddleColumn = styled.div`
 `;
 
 const RightColumn = styled.div`
-  width: 260px;
+  max-width: 260px;
   display: flex;
   ${media.smallerThan1280px`
     display: none;
