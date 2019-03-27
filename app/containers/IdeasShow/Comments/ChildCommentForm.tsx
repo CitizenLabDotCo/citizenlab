@@ -8,8 +8,8 @@ import Icon from 'components/UI/Icon';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -92,11 +92,6 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface Tracks {
-  focusEditor: Function;
-  clickCommentPublish: Function;
-}
-
 interface State {
   inputValue: string;
   focussed: boolean;
@@ -105,7 +100,7 @@ interface State {
   canSubmit: boolean;
 }
 
-class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
+class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -126,11 +121,11 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 
   handleTextareaOnFocus = () => {
-    this.props.focusEditor({
+    trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
         ideaId: this.props.ideaId,
         parentId: this.props.parentId
-      },
+      }
     });
 
     this.setState({ focussed: true });
@@ -151,12 +146,12 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
       this.setState({ canSubmit: false });
 
       if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
-        this.props.clickCommentPublish({
+        trackEventByName(tracks.clickChildCommentPublish, {
           extra: {
             ideaId,
             parentId,
             content: inputValue,
-          },
+          }
         });
 
         try {
@@ -230,10 +225,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 }
 
-const ChildCommentFormWithHoCs = injectTracks<Props>({
-  focusEditor: tracks.focusNewCommentTextbox,
-  clickCommentPublish: tracks.clickCommentPublish,
-})(injectIntl<Props>(ChildCommentForm));
+const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, capitalize, isNumber, round } from 'lodash-es';
+import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
@@ -499,7 +499,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
-      const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
+      const timeRemaining = (endAt ? moment.duration(moment(endAt).diff(moment())).humanize() : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 

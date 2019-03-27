@@ -318,6 +318,9 @@ export function quillEditedContent(
       background: ${transparentize(0.91, colors.clBlueDark)};
       padding-left: 4px;
       padding-right: 4px;
+      padding-top: 2px;
+      padding-bottom: 2px;
+      transition: background 100ms ease;
 
       &:hover {
         background: ${transparentize(0.8, colors.clBlueDark)};

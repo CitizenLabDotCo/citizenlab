@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 // Services
 import { DeleteReasonCode } from 'services/comments';
@@ -65,19 +65,14 @@ const DeleteReason = styled.div`
   }
 `;
 
-// Typings
 export interface Props {
-  onDeleteComment: { (values): void };
-  onCloseDeleteModal: { (): void };
+  onDeleteComment: (values) => void;
+  onCloseDeleteModal: () => void;
 }
-export interface State { }
 
-class CommentsAdminDeletionForm extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export interface State {}
 
+class CommentsAdminDeletionForm extends PureComponent<Props, State> {
   validateForm = (values) => {
     const errors: { reason_code?: any, other_reason?: any } = {};
 

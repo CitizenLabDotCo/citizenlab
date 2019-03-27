@@ -97,7 +97,7 @@ class CommentHeader extends PureComponent<Props, State> {
             <Author
               authorId={authorId}
               notALink={authorId ? false : true}
-              size="40px"
+              size="34px"
               projectId={projectId}
               showModeration={authorCanModerate}
             />

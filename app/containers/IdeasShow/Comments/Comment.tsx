@@ -17,8 +17,8 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // analytics
-import { trackEvent } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
@@ -31,20 +31,32 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: solid 1px red;
+  border-bottom: solid 1px #ebebeb;
+  border-color: red;
 
-  &.childComment {
-    padding-left: 0px;
+  &.parent {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  &.child {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-right: 50px;
+  }
+
+  &.hideBottomBorder {
+    border-bottom: none;
   }
 `;
 
 interface InputProps {
   commentId: string;
-  isChildComment: boolean;
+  type: 'parent' | 'child';
+  hasChildComments?: boolean;
+  last?: boolean;
   className?: string;
 }
 
@@ -62,6 +74,11 @@ interface State {
 }
 
 class Comment extends PureComponent<Props, State> {
+  static defaultProps = {
+    hasChildComment: false,
+    last: false
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -99,25 +116,26 @@ class Comment extends PureComponent<Props, State> {
 
     // tracking
     if (translateButtonClicked) {
-      trackEvent(tracks.clickGoBackToOriginalCommentButton);
+      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
     } else {
-      trackEvent(tracks.clickTranslateCommentButton);
+      trackEventByName(tracks.clickTranslateCommentButton);
     }
 
     this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
   }
 
   render() {
-    const { comment, idea, isChildComment, className } = this.props;
+    const { comment, idea, type, hasChildComments, last, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const commentId = comment.id;
       const ideaId = idea.id;
+      const hideBottomBorder = ((type === 'parent' && !hasChildComments) || (type === 'child' && last));
 
       if (comment.attributes.publication_status === 'published') {
         return (
-          <Container className={`${className} ${isChildComment ? 'childComment' : 'parentComment'} e2e-comment`}>
+          <Container className={`${className} ${type} ${hideBottomBorder ? 'hideBottomBorder' : ''} e2e-comment`}>
             <CommentHeader
               commentId={commentId}
             />

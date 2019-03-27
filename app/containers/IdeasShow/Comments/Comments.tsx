@@ -44,10 +44,9 @@ class Comments extends PureComponent<Props, State> {
       if (parentComments && parentComments.length > 0) {
         return (
           <Container className={`e2e-comments-container ${className}`}>
-            {parentComments.map((parentComment, index) => (
+            {parentComments.map((parentComment, _index) => (
               <ParentComment
                 key={parentComment.id}
-                last={index === parentComments.length - 1}
                 ideaId={ideaId}
                 commentId={parentComment.id}
               />
