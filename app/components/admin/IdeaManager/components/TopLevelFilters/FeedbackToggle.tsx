@@ -97,7 +97,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.needFeedback} />
-          {feedbackNeededCount && <CountBadge count={feedbackNeededCount}/>}
+          {!!feedbackNeededCount && <CountBadge count={feedbackNeededCount}/>}
         </StyledLabel>
       </Container>
     );
