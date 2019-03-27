@@ -17,6 +17,8 @@ import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
 import InfoTooltip from 'components/admin/InfoTooltip';
+import IdeaAssignment from './IdeaAssignment';
+import Link from 'utils/cl-router/Link';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
@@ -44,6 +46,12 @@ const StyledRadio = styled(Radio)`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 22px;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
@@ -182,7 +190,9 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
     const { formatMessage } = this.props.intl;
     const { project, unsavedVisibleTo, loading, saving, status } = this.state;
 
-    if (!loading && unsavedVisibleTo) {
+    if (!loading && unsavedVisibleTo && project) {
+      const projectId = project.data.id;
+
       return (
         <>
           <StyledSection>
@@ -193,6 +203,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               <FormattedMessage {...messages.subtitlePermissions} />
             </SectionSubtitle>
           </StyledSection>
+
           <StyledSection>
             <SectionField>
               <SubSectionTitle>
@@ -228,8 +239,8 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               </RadioButtonsWrapper>
             </SectionField>
 
-            {unsavedVisibleTo === 'groups' && project &&
-              <ProjectGroupsList projectId={project.data.id} onAddButtonClicked={this.handleGroupsAdded} />
+            {unsavedVisibleTo === 'groups' &&
+              <ProjectGroupsList projectId={projectId} onAddButtonClicked={this.handleGroupsAdded} />
             }
 
             {unsavedVisibleTo !== 'groups' &&
@@ -247,17 +258,31 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             }
           </StyledSection>
 
-          <FeatureFlag name="granular_permissions">
-            {project && <Granular project={project.data} />}
-          </FeatureFlag>
+          <StyledSection>
+            <GetModerators projectId={projectId}>
+              {moderators => <Moderators moderators={moderators} projectId={projectId} />}
+            </GetModerators>
+          </StyledSection>
 
-          <Section>
-            {project &&
-              <GetModerators projectId={project.data.id}>
-                {moderators => <Moderators moderators={moderators} projectId={project.data.id} />}
-              </GetModerators>
-            }
-          </Section>
+          <StyledSection>
+            <SubSectionTitle>
+              <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
+              <InfoTooltip
+                {...messages.ideaAssignmentTooltip}
+                values={{
+                  linkToIdeasOverview: (
+                    <StyledLink to={`/admin/projects/${projectId}/ideas`}>
+                      <FormattedMessage {...messages.ideasOverview} />
+                    </StyledLink>)
+                }}
+              />
+            </SubSectionTitle>
+            <IdeaAssignment />
+          </StyledSection>
+
+          <FeatureFlag name="granular_permissions">
+            <Granular project={project.data} />
+          </FeatureFlag>
         </>
       );
     }
