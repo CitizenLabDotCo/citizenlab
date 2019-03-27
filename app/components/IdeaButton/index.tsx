@@ -30,9 +30,6 @@ const Container = styled.div`
   &.bannerStyle {
     height: 100%;
 
-    & * {
-      height: 100%;
-    }
   }
 `;
 
@@ -43,13 +40,13 @@ const StyledIcon = styled(Icon)`
 `;
 
 const TooltipWrapper = styled.div`
-  padding: 15px;
+  display: flex;
+  align-items: center;
   min-width: 300px;
   color: ${colors.popoverDarkFg};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
-  display: flex;
-  align-items: center;
+  padding: 15px;
 `;
 
 interface DataProps {

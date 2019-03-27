@@ -86,8 +86,8 @@ const HeaderImage = styled.img`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) => theme.landingHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.landingHeaderOverlayOpacity};
+  background: ${({ theme }) => theme.signedInHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;

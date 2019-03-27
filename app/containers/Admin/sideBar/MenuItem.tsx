@@ -1,14 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { NavItem } from '.';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import Icon from 'components/UI/Icon';
+import CountBadge from 'components/UI/CountBadge';
+import HasPermission from 'components/HasPermission';
 
 const Text = styled.div`
+  position: relative;
   flex: 1;
   color: ${colors.adminLightText};
   font-size: ${fontSizes.base}px;
@@ -78,21 +80,20 @@ const IconWrapper = styled.div`
 
 type Props = {
   route: NavItem;
-  pathname: string;
 };
 
-class MenuItem extends Component<Props & InjectedIntlProps> {
-
-  render() {
-    const { route, pathname, intl: { formatMessage } } = this.props;
-    return (
+export default ({ route }: Props) => {
+  const pathname = location.pathname;
+  return (
+    <HasPermission action="access" item={{ type: 'route', path: route.link }}>
       <MenuItemLink activeClassName="active" className={`${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
         <IconWrapper><Icon name={route.iconName} /></IconWrapper>
-        <Text>{formatMessage({ ...messages[route.message] })}</Text>
+        <Text>
+          <FormattedMessage {...messages[route.message]} />
+          {!!route.count && <CountBadge count={route.count} />}
+        </Text>
         {route.isActive(pathname) && <Icon name="arrowLeft" />}
       </MenuItemLink>
-    );
-  }
-}
-
-export default injectIntl(MenuItem);
+    </HasPermission>
+  );
+};

@@ -336,7 +336,8 @@ export function quillEditedContent(
 // Main theme passed through any styled component
 export function getTheme(tenant: ITenant | null) {
   const core = tenant && tenant.data.attributes.settings.core;
-  const landingHeaderOverlayOpacity = get(tenant, 'data.attributes.style.landingHeaderOverlayOpacity');
+  const signedOutHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity');
+  const signedInHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedInHeaderOverlayOpacity');
 
   return ({
     colors,
@@ -345,7 +346,8 @@ export function getTheme(tenant: ITenant | null) {
     colorSecondary: (core ? core.color_secondary : '#000000'),
     colorText: (core ? core.color_text : '#000000'),
     ...get(tenant, 'data.attributes.style'),
-    landingHeaderOverlayOpacity: (!isNil(landingHeaderOverlayOpacity) ? landingHeaderOverlayOpacity / 100.0 : 0.9),
+    signedOutHeaderOverlayOpacity: (!isNil(signedOutHeaderOverlayOpacity) ? signedOutHeaderOverlayOpacity / 100.0 : 0.9),
+    signedInHeaderOverlayOpacity: (!isNil(signedInHeaderOverlayOpacity) ? signedInHeaderOverlayOpacity / 100.0 : 0.9),
     ...stylingConsts
   });
 }
