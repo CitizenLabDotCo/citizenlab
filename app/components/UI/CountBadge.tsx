@@ -24,8 +24,14 @@ interface Props {
   bgColor?: string;
 }
 
-export default (props: Props) => (
-  <Container bgColor={props.bgColor}>
-    {props.count}
-  </Container>
-);
+export default (props: Props) => {
+  if (props.count > 0) {
+    return (
+      <Container bgColor={props.bgColor}>
+        {props.count}
+      </Container>
+    );
+  } else {
+     return null;
+  }
+};

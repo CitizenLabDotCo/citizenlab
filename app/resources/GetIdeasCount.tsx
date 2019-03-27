@@ -1,8 +1,8 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
+import { isString, isEmpty, omitBy, isNil, isEqual } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
-import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
-import { ideasNeedingFeedbackCount } from 'services/stats';
+import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } from 'rxjs/operators';
+import { ideasCount } from 'services/stats';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
 
@@ -35,13 +35,13 @@ interface IQueryParameters {
   feedback_needed: boolean | undefined;
 }
 
-type children = (renderProps: GetIdeasNeedingFeedbackCountChildProps) => JSX.Element | null;
+type children = (renderProps: GetIdeasCountChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
-  children?: (obj: GetIdeasNeedingFeedbackCountChildProps) => JSX.Element | null;
+  children?: (obj: GetIdeasCountChildProps) => JSX.Element | null;
 }
 
-export type GetIdeasNeedingFeedbackCountChildProps = State & {
+export type GetIdeasCountChildProps = State & {
   onChangeProject: (projectId: string) => void;
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
@@ -60,7 +60,7 @@ interface State {
   querying: boolean;
 }
 
-export default class GetIdeasNeedingFeedbackCount extends React.Component<Props, State> {
+export default class GetIdeasCount extends React.Component<Props, State> {
   queryParameters$: BehaviorSubject<IQueryParameters>;
   search$: Subject<string | undefined>;
   subscriptions: Subscription[];
@@ -125,17 +125,17 @@ export default class GetIdeasNeedingFeedbackCount extends React.Component<Props,
     this.subscriptions = [
       queryParametersOutput$.pipe(
         switchMap((queryParameters) => {
-          return ideasNeedingFeedbackCount({
+          return ideasCount({
             queryParameters,
           }).observable.pipe(
-            map(ideasNeedingFeedbackCount => ({ queryParameters, ideasNeedingFeedbackCount }))
+            map(ideasCount => ({ queryParameters, ideasCount }))
           );
         })
       )
-      .subscribe(({ ideasNeedingFeedbackCount, queryParameters }) => {
+      .subscribe(({ ideasCount, queryParameters }) => {
         this.setState({
           queryParameters,
-          count: ideasNeedingFeedbackCount.count,
+          count: ideasCount.count,
           querying: false
         });
       })
@@ -229,6 +229,7 @@ export default class GetIdeasNeedingFeedbackCount extends React.Component<Props,
       assignee,
     });
   }
+
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean | undefined) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,

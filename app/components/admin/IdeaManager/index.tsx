@@ -34,6 +34,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
 import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
+import GetIdeasCount from 'resources/GetIdeasCount';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -278,10 +279,15 @@ class IdeaManager extends React.PureComponent<Props, State> {
             assignee={assignee}
             handleAssigneeFilterChange={this.handleAssigneeFilterChange}
           />
-          <FeedbackToggle
-            value={feedbackNeededFilterActive}
-            onChange={this.handleToggleFeedbackNeededFilter}
-          />
+          <GetIdeasCount feedbackNeeded={true} assignee={assignee === 'all' ? undefined : assignee}>
+            {ideasCount => (
+              <FeedbackToggle
+                value={feedbackNeededFilterActive}
+                onChange={this.handleToggleFeedbackNeededFilter}
+                feedbackNeededCount={isNilOrError(ideasCount.count) ? undefined : ideasCount.count}
+              />
+            )}
+          </GetIdeasCount>
           <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
@@ -374,6 +380,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaStatuses: <GetIdeaStatuses />,
   authUser: <GetAuthUser />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
+  ideasCount:  <GetIdeasCount feedbackNeeded={true} />
 });
 
 const IdeaManagerWithDragDropContext = DragDropContext(HTML5Backend)(IdeaManager);

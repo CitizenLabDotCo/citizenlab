@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
+import CountBadge from 'components/UI/CountBadge';
 
 const size = 21;
 const padding = 4;
@@ -72,6 +73,7 @@ const StyledLabel = styled.label`
 export type Props = {
   value: boolean;
   onChange: (event: React.FormEvent<any>) => void;
+  feedbackNeededCount: number | undefined;
 };
 
 type State = {};
@@ -82,7 +84,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value } = this.props;
+    const { value, feedbackNeededCount } = this.props;
 
     return (
       <Container className="feedback_needed_filter_toggle">
@@ -95,6 +97,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.needFeedback} />
+          {feedbackNeededCount && <CountBadge count={feedbackNeededCount}/>}
         </StyledLabel>
       </Container>
     );

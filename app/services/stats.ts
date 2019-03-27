@@ -41,7 +41,7 @@ export interface IIdeasByProject {
   };
 }
 
-export interface IIdeasNeedingFeedbackCount {
+export interface IIdeasCount {
   count: number;
 }
 
@@ -61,8 +61,8 @@ export function ideasByProjectStream(streamParams: IStreamParams | null = null) 
   return streams.get<IIdeasByProject>({ apiEndpoint: `${apiEndpoint}/ideas_by_project`, ...streamParams });
 }
 
-export function ideasNeedingFeedbackCount(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasNeedingFeedbackCount>({ apiEndpoint: `${apiEndpoint}/ideas_count?feedback_needed=true`, ...streamParams });
+export function ideasCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasCount>({ apiEndpoint: `${apiEndpoint}/ideas_count`, ...streamParams });
 }
 
 // Users

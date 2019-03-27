@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -8,7 +7,6 @@ import { getUrlLocale } from 'services/locale';
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
-import { hasPermission } from 'services/permissions';
 import MenuItem from './MenuItem';
 
 // i18n
@@ -22,10 +20,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 import { adopt } from 'react-adopt';
-import GetIdeasNeedingFeedbackCount, { GetIdeasNeedingFeedbackCountChildProps } from 'resources/GetIdeasNeedingFeedbackCount';
+import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -100,7 +97,7 @@ const GetStartedLink = styled.a`
 interface InputProps {}
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  ideasNeedingFeedbackCount: GetIdeasNeedingFeedbackCountChildProps;
+  ideasCount: GetIdeasCountChildProps;
 }
 interface Props extends InputProps, DataProps {}
 
@@ -124,9 +121,6 @@ type Tracks = {
 };
 
 class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps & Tracks, State> {
-  routes: NavItem[];
-  subscriptions: Subscription[];
-
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
@@ -191,12 +185,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { ideasNeedingFeedbackCount } = nextProps;
-    if (!isNilOrError(ideasNeedingFeedbackCount.count) && ideasNeedingFeedbackCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
+    const { ideasCount } = nextProps;
+    if (!isNilOrError(ideasCount.count) && ideasCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
       const ideasIndex = navItems.findIndex(item => item.id === 'ideas');
-      nextNavItems[ideasIndex].count = ideasNeedingFeedbackCount.count;
+      nextNavItems[ideasIndex].count = ideasCount.count;
       return({ navItems: nextNavItems });
     }
     return prevState;
@@ -204,7 +198,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { pathname } = this.props.location;
     const { navItems } = this.state;
 
     if (!(navItems && navItems.length > 1)) {
@@ -254,7 +247,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  ideasNeedingFeedbackCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasNeedingFeedbackCount assignee={authUser.id}>{render}</GetIdeasNeedingFeedbackCount> : null,
+  ideasCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasCount feedbackNeeded={true} assignee={authUser.id}>{render}</GetIdeasCount> : null,
 });
 
 const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
