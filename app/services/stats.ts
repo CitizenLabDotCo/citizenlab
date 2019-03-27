@@ -41,6 +41,10 @@ export interface IIdeasByProject {
   };
 }
 
+export interface IIdeasNeedingFeedbackCount {
+  count: number;
+}
+
 export function ideasByTimeStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByTime>({ apiEndpoint: `${apiEndpoint}/ideas_by_time`, ...streamParams });
 }
@@ -55,6 +59,10 @@ export function ideasByTopicStream(streamParams: IStreamParams | null = null) {
 
 export function ideasByProjectStream(streamParams: IStreamParams | null = null) {
   return streams.get<IIdeasByProject>({ apiEndpoint: `${apiEndpoint}/ideas_by_project`, ...streamParams });
+}
+
+export function ideasNeedingFeedbackCount(streamParams: IStreamParams | null = null) {
+  return streams.get<IIdeasNeedingFeedbackCount>({ apiEndpoint: `${apiEndpoint}/ideas_count?feedback_needed=true`, ...streamParams });
 }
 
 // Users
