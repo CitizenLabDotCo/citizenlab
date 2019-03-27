@@ -63,8 +63,12 @@ describe TenantTemplateService do
       end
     end
 
-    it "raises an error if the requested template was not found" do
-      expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist')}.to raise_error
+    it "raises an error if the requested template was not found"  do
+      expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist', external_subfolder: false)}.to raise_error
+    end
+
+    it "raises an error if the requested template was not found", template_test: true  do
+      expect{service.resolve_and_apply_template('a_tenant_template_name_that_doesnt_exist', external_subfolder: 'test')}.to raise_error
     end
   end
 

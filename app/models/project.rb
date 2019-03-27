@@ -67,6 +67,15 @@ class Project < ApplicationRecord
     where(id: subquery)
   end)
 
+  scope :with_some_areas, (Proc.new do |area_ids|
+    left_outer_joins(:areas_projects)
+      .where(areas_projects: {area_id: area_ids})
+  end)
+
+  scope :without_areas, -> {
+    where('projects.id NOT IN (SELECT DISTINCT(project_id) FROM areas_projects)')
+  }
+
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
     subquery = Project.unscoped.all
