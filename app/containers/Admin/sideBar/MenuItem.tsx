@@ -90,7 +90,7 @@ export default ({ route }: Props) => {
         <IconWrapper><Icon name={route.iconName} /></IconWrapper>
         <Text>
           <FormattedMessage {...messages[route.message]} />
-          {route.count && <CountBadge count={route.count} />}
+          {!!route.count && <CountBadge count={route.count} />}
         </Text>
         {route.isActive(pathname) && <Icon name="arrowLeft" />}
       </MenuItemLink>

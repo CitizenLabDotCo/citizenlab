@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
@@ -24,14 +24,15 @@ interface Props {
   bgColor?: string;
 }
 
-export default (props: Props) => {
-  if (props.count > 0) {
+export default memo<Props>(props => {
+  const { count, bgColor } = props;
+  if (count > 0) {
     return (
-      <Container bgColor={props.bgColor}>
-        {props.count}
+      <Container bgColor={bgColor}>
+        {count}
       </Container>
     );
   } else {
      return null;
   }
-};
+});
