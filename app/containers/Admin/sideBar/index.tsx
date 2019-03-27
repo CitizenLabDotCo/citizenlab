@@ -21,6 +21,11 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import { adopt } from 'react-adopt';
+import GetIdeasNeedingFeedbackCount, { GetIdeasNeedingFeedbackCountChildProps } from 'resources/GetIdeasNeedingFeedbackCount';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import { isNilOrError } from 'utils/helperUtils';
+import { get } from 'lodash-es';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -92,11 +97,16 @@ const GetStartedLink = styled.a`
   }
 `;
 
-type Props = {};
+interface InputProps {}
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+  ideasNeedingFeedbackCount: GetIdeasNeedingFeedbackCountChildProps;
+}
+interface Props extends InputProps, DataProps {}
 
-type State = {
+interface State {
   navItems: NavItem[];
-};
+}
 
 // message: keyof typeof messages
 export type NavItem = {
@@ -106,6 +116,7 @@ export type NavItem = {
   message: string,
   featureName?: string,
   isActive: (pathname: string) => boolean,
+  count?: number
 };
 
 type Tracks = {
@@ -119,9 +130,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
-      navItems: [],
-    };
-    this.routes = [
+      navItems: [
       {
         id: 'guide',
         link: '/admin',
@@ -178,27 +187,19 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         message: 'settings',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
       },
-    ];
-    this.subscriptions = [];
+    ]};
   }
 
-  componentDidMount() {
-    this.subscriptions = [
-      combineLatest(
-        this.routes.map((route) => hasPermission({
-          item: { type: 'route', path: route.link },
-          action: 'access'
-        }))
-      ).subscribe((permissions) => {
-        this.setState({
-          navItems: this.routes.filter((_, index) => permissions[index])
-        });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { ideasNeedingFeedbackCount } = nextProps;
+    if (!isNilOrError(ideasNeedingFeedbackCount.count) && ideasNeedingFeedbackCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
+      const { navItems } = prevState;
+      const nextNavItems = navItems;
+      const ideasIndex = navItems.findIndex(item => item.id === 'ideas');
+      nextNavItems[ideasIndex].count = ideasNeedingFeedbackCount.count;
+      return({ navItems: nextNavItems });
+    }
+    return prevState;
   }
 
   render() {
@@ -220,7 +221,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                   {(manualEmailing) => (
                     <GetFeatureFlag name="automated_emailing_control">
                       {(automatedEmailing) => manualEmailing || automatedEmailing ?
-                        <MenuItem route={route} pathname={pathname} key={route.id} />
+                        <MenuItem route={route} key={route.id} />
                       :
                         null
                       }
@@ -231,12 +232,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             } else if (route.featureName) {
               return (
                 <FeatureFlag name={route.featureName}>
-                  <MenuItem route={route} key={route.id} pathname={pathname} />
+                <MenuItem route={route} key={route.id} />
                 </FeatureFlag>
               );
             } else {
               return (
-                <MenuItem route={route} key={route.id} pathname={pathname} />
+                <MenuItem route={route} key={route.id} />
               );
             }
           })}
@@ -250,4 +251,16 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     );
   }
 }
-export default withRouter<Props>(injectIntl(Sidebar));
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  ideasNeedingFeedbackCount: ({ authUser, render }) => !isNilOrError(authUser) ? <GetIdeasNeedingFeedbackCount assignee={authUser.id}>{render}</GetIdeasNeedingFeedbackCount> : null,
+});
+
+const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SideBarWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);
