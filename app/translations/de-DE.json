@@ -1046,6 +1046,7 @@
   "app.containers.IdeasShow.commentEditorLabel": "{orgName, select, München {Kommentieren Sie die Mängelmeldung!} other {Kommentieren Sie die Idee!}}",
   "app.containers.IdeasShow.commentReplyButton": "Antworten",
   "app.containers.IdeasShow.commentSuccess": "Vielen Dank für Ihren Beitrag!",
+  "app.containers.IdeasShow.commentUpvote": "",
   "app.containers.IdeasShow.commentsTitle": "Äußern Sie Ihre Meinung",
   "app.containers.IdeasShow.commentsWithCount": "Kommentare ({count})",
   "app.containers.IdeasShow.confirmCommentDeletion": "Sind Sie sicher, dass Sie diesen Kommentar löschen möchten? Es gibt keinen Weg, um dies rückgängig zu machen!",

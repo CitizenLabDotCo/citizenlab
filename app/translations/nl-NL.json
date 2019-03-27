@@ -1046,6 +1046,7 @@
   "app.containers.IdeasShow.commentEditorLabel": "Reageer op het idee!",
   "app.containers.IdeasShow.commentReplyButton": "Reageer",
   "app.containers.IdeasShow.commentSuccess": "Bedankt voor uw bijdrage!",
+  "app.containers.IdeasShow.commentUpvote": "",
   "app.containers.IdeasShow.commentsTitle": "Geef je mening",
   "app.containers.IdeasShow.commentsWithCount": "Reacties ({count})",
   "app.containers.IdeasShow.confirmCommentDeletion": "Ben je zeker dat je deze reactie wil verwijderen? Er is geen weg terug!",
