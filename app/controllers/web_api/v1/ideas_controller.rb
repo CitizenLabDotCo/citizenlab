@@ -71,7 +71,7 @@ class WebApi::V1::IdeasController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    add_common_index_filters params
+    @ideas = IdeasFilteringService.new.apply_common_index_filters @ideas, params
     @ideas = @ideas.with_bounding_box(params[:bounding_box]) if params[:bounding_box].present?
 
     render json: @ideas, each_serializer: WebApi::V1::IdeaMarkerSerializer
