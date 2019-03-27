@@ -10,6 +10,7 @@ import CountBadge from 'components/UI/CountBadge';
 import HasPermission from 'components/HasPermission';
 
 const Text = styled.div`
+  position: relative;
   flex: 1;
   color: ${colors.adminLightText};
   font-size: ${fontSizes.base}px;
