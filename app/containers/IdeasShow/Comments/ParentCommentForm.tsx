@@ -188,7 +188,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   className="e2e-submit-comment"
                   processing={processing}
                   icon="send"
-                  circularCorners={false}
                   onClick={this.handleSubmit}
                   disabled={commentButtonDisabled}
                 >

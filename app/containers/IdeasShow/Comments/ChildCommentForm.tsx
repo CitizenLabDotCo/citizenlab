@@ -1,10 +1,11 @@
 // libraries
-import React from 'react';
-import { trim, isString } from 'lodash-es';
+import React, { PureComponent, FormEvent } from 'react';
+import { trim } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
@@ -25,10 +26,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
 import styled from 'styled-components';
-import { darken, hideVisually } from 'polished';
+import { hideVisually } from 'polished';
 import { fontSizes } from 'utils/styleUtils';
 
-const CommentContainer = styled.form`
+const Container = styled.form`
   padding-left: 0px;
   padding-right: 0px;
   padding-top: 0px;
@@ -53,36 +54,16 @@ const StyledTextArea = styled(MentionsTextArea)`
   }
 `;
 
-const SendIcon = styled(Icon)`
-  height: 21px;
-  transition: all 100ms ease-out;
-`;
-
-const SendIconWrapper: any = styled.button`
-  width: 30px;
-  height: 30px;
+const SubmitButton = styled(Button)`
   position: absolute;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 12px;
-  right: 15px;
-  cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
-
-  ${SendIcon} {
-    fill: ${(props: any) => props.disabled ? '#ccc' : props.theme.colorMain };
-  }
-
-  &:hover ${SendIcon} {
-    fill: ${(props: any) => props.disabled ? '#ccc' : darken(0.15, props.theme.colorMain) };
-  }
+  top: 5px;
+  right: 18px;
 `;
 
 interface InputProps {
   ideaId: string;
   parentId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -100,9 +81,9 @@ interface State {
   canSubmit: boolean;
 }
 
-class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       inputValue: '',
       focussed: false,
@@ -112,7 +93,7 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps, St
     };
   }
 
-  handleTextareaOnChange = (inputValue) => {
+  handleTextareaOnChange = (inputValue: string) => {
     this.setState((state) => ({
       inputValue,
       errorMessage: null,
@@ -135,66 +116,54 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps, St
     this.setState({ focussed: false });
   }
 
-  handleSubmit = async (event) => {
+  handleSubmit = async (event: FormEvent<any>) => {
+    event.preventDefault();
+
     const { locale, authUser, ideaId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
-    event.preventDefault();
+    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+      this.setState({
+        processing: true,
+        canSubmit: false
+      });
 
-    if (canSubmit) {
-      this.setState({ canSubmit: false });
-
-      if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
-        trackEventByName(tracks.clickChildCommentPublish, {
-          extra: {
-            ideaId,
-            parentId,
-            content: inputValue,
-          }
-        });
-
-        try {
-          this.setState({ processing: true });
-
-          await addCommentToComment(ideaId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
-
-          this.setState({
-            inputValue: '',
-            processing: false
-          });
-        } catch (error) {
-          this.setState({
-            errorMessage: formatMessage(messages.addCommentError),
-            processing: false
-          });
-
-          throw error;
+      trackEventByName(tracks.clickChildCommentPublish, {
+        extra: {
+          ideaId,
+          parentId,
+          content: inputValue,
         }
-      } else if (locale && authUser && (!inputValue || inputValue === '')) {
+      });
+
+      try {
+        await addCommentToComment(ideaId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+
         this.setState({
-          errorMessage: formatMessage(messages.emptyCommentError),
+          inputValue: '',
           processing: false
         });
-      } else {
+      } catch (error) {
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
-          processing: false
+          processing: false,
+          canSubmit: true
         });
       }
     }
   }
 
   render() {
-    const { ideaId, authUser } = this.props;
+    const { ideaId, authUser, className } = this.props;
 
-    if (authUser) {
+    if (!isNilOrError(authUser)) {
       const { formatMessage } = this.props.intl;
-      const { inputValue, canSubmit, errorMessage } = this.state;
+      const { inputValue, canSubmit, processing, errorMessage } = this.state;
       const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
 
       return (
-        <CommentContainer>
+        <Container className={className}>
           <label>
             <HiddenLabel>
               <FormattedMessage {...messages.replyToComment} />
@@ -212,12 +181,18 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps, St
               onFocus={this.handleTextareaOnFocus}
               onBlur={this.handleTextareaOnBlur}
             >
-              <SendIconWrapper className="e2e-send-reply" aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
-                <SendIcon name="send" />
-              </SendIconWrapper>
+              <SubmitButton
+                className="e2e-submit-comment"
+                processing={processing}
+                icon="send"
+                onClick={this.handleSubmit}
+                disabled={!canSubmit}
+              >
+                <FormattedMessage {...messages.publishComment} />
+              </SubmitButton>
             </StyledTextArea>
           </label>
-        </CommentContainer>
+        </Container>
       );
     }
 

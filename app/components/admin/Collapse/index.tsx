@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-
 import Label from 'components/UI/Label';
 import Icon from 'components/UI/Icon';
-
 import { colors } from 'utils/styleUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 

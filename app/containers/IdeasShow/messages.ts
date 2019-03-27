@@ -45,6 +45,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorLabel',
     defaultMessage: 'Comment the idea!',
   },
+  commentUpvote: {
+    id: 'app.containers.IdeasShow.commentUpvote',
+    defaultMessage: 'Upvote',
+  },
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
     defaultMessage: 'Reply',
