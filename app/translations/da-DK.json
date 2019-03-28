@@ -1046,6 +1046,7 @@
   "app.containers.IdeasShow.commentEditorLabel": "Kommenter ideen!",
   "app.containers.IdeasShow.commentReplyButton": "Svar",
   "app.containers.IdeasShow.commentSuccess": "Tak for dit bidrag!",
+  "app.containers.IdeasShow.commentUpvote": "",
   "app.containers.IdeasShow.commentsTitle": "Giv os din kommentar",
   "app.containers.IdeasShow.commentsWithCount": "Kommentarer ({count})",
   "app.containers.IdeasShow.confirmCommentDeletion": "Er du sikker på at du vil slette denne kommentar? Der er ingen vej tilbage!",

@@ -1046,6 +1046,7 @@
   "app.containers.IdeasShow.commentEditorLabel": "",
   "app.containers.IdeasShow.commentReplyButton": "",
   "app.containers.IdeasShow.commentSuccess": "",
+  "app.containers.IdeasShow.commentUpvote": "",
   "app.containers.IdeasShow.commentsTitle": "",
   "app.containers.IdeasShow.commentsWithCount": "",
   "app.containers.IdeasShow.confirmCommentDeletion": "",
