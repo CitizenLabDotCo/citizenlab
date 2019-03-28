@@ -193,6 +193,21 @@ class TenantTemplateService
         end
       end
     end
+    # Cut off translations that are too long.
+    {
+      'project' => {'description_preview_multiloc' => 280}
+    }.each do |model, restrictions|
+      template['models'][model].each do |attributes|
+        restrictions.each do |field_name, max_len|
+          multiloc = attributes[field_name]
+          multiloc.each do |locale, value|
+            if value.size > max_len
+              multiloc[locale] = value[0...max_len]
+            end
+          end
+        end
+      end
+    end
     template
   end
 
