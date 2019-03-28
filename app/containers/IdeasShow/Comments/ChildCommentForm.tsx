@@ -29,36 +29,43 @@ import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled.form`
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
-`;
+const Container = styled.form``;
 
 const HiddenLabel = styled.span`
   ${hideVisually() as any}
 `;
 
+const FormInner = styled.div`
+  display: flex;
+  align-items: stretch;
+  padding: 30px 50px;
+  border: solid 1px red;
+`;
+
+const Left = styled.div`
+  flex: 1;
+  border: solid 1px red;
+`;
+
+const Right = styled.div`
+  border: solid 1px red;
+`;
+
 const StyledTextArea = styled(MentionsTextArea)`
+  border: solid 1px red;
+
   .textareaWrapper__highlighter,
   textarea {
     font-size: ${fontSizes.base}px !important;
-    line-height: 25px !important;
+    line-height: normal !important;
     font-weight: 300 !important;
-    padding: 12px 20px !important;
-    padding-right: 60px !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
+    border-radius: none !important;
+    border: none !important;
     background: #fff !important;
   }
 `;
 
-const SubmitButton = styled(Button)`
-  position: absolute;
-  top: 5px;
-  right: 18px;
-`;
+const SubmitButton = styled(Button)``;
 
 interface InputProps {
   ideaId: string;
@@ -168,29 +175,34 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
             <HiddenLabel>
               <FormattedMessage {...messages.replyToComment} />
             </HiddenLabel>
-            <StyledTextArea
-              name="comment"
-              id="e2e-reply"
-              placeholder={placeholder}
-              rows={1}
-              padding="12px 30px"
-              value={inputValue}
-              error={errorMessage}
-              ideaId={ideaId}
-              onChange={this.handleTextareaOnChange}
-              onFocus={this.handleTextareaOnFocus}
-              onBlur={this.handleTextareaOnBlur}
-            >
-              <SubmitButton
-                className="e2e-submit-comment"
-                processing={processing}
-                icon="send"
-                onClick={this.handleSubmit}
-                disabled={!canSubmit}
-              >
-                <FormattedMessage {...messages.publishComment} />
-              </SubmitButton>
-            </StyledTextArea>
+            <FormInner>
+              <Left>
+                <StyledTextArea
+                  name="comment"
+                  id="e2e-reply"
+                  placeholder={placeholder}
+                  rows={1}
+                  padding="10px 0px"
+                  value={inputValue}
+                  error={errorMessage}
+                  ideaId={ideaId}
+                  onChange={this.handleTextareaOnChange}
+                  onFocus={this.handleTextareaOnFocus}
+                  onBlur={this.handleTextareaOnBlur}
+                />
+              </Left>
+              <Right>
+                <SubmitButton
+                  className="e2e-submit-comment"
+                  processing={processing}
+                  icon="send"
+                  onClick={this.handleSubmit}
+                  disabled={!canSubmit}
+                >
+                  <FormattedMessage {...messages.publishComment} />
+                </SubmitButton>
+              </Right>
+            </FormInner>
           </label>
         </Container>
       );

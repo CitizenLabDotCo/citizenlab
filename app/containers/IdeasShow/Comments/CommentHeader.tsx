@@ -41,6 +41,10 @@ const Right = styled.div`
   align-items: center;
 `;
 
+const StyledAuthor = styled(Author)`
+  margin-left: -4px;
+`;
+
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-weight: 300;
@@ -95,7 +99,7 @@ class CommentHeader extends PureComponent<Props, State> {
       return (
         <Container>
           <Left>
-            <Author
+            <StyledAuthor
               authorId={authorId}
               notALink={authorId ? false : true}
               size="34px"

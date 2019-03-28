@@ -31,19 +31,16 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 25px;
+  padding-bottom: 25px;
   border-bottom: solid 1px #ebebeb;
-  border-color: red;
 
   &.parent {
     padding-left: 50px;
     padding-right: 50px;
-    padding-top: 20px;
-    padding-bottom: 20px;
   }
 
   &.child {
-    padding-top: 20px;
-    padding-bottom: 20px;
     margin-right: 50px;
   }
 

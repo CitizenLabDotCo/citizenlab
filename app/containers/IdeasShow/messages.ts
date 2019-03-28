@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentUpvote',
     defaultMessage: 'Upvote',
   },
+  commentCancelUpvote: {
+    id: 'app.containers.IdeasShow.commentCancelUpvote',
+    defaultMessage: 'Cancel',
+  },
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
     defaultMessage: 'Reply',
