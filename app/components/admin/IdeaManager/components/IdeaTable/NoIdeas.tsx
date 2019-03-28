@@ -11,13 +11,17 @@ const NoIdeasPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.base}px;
   font-weight: bold;
   line-height: 25px;
-  padding-top: 80px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 100%;
+
+  border: 1px solid ${colors.separation};
   svg {
     margin-bottom: 20px;
-    height: 70px;
+    height: 50px;
     fill: ${colors.clIconAccent}
   }
 `;
@@ -25,7 +29,7 @@ const NoIdeasPage = styled.div`
 const SFormattedMessage = styled.div`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
 
   button {
     color: ${colors.adminSecondaryTextColor};
