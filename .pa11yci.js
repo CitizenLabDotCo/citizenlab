@@ -5,8 +5,6 @@ function generateUrls(host) {
   return [
     {
       url: `${host}/en-GB/`,
-      // Allow for signed-out header title and subtitle to be on 'unrecognizable'/transparent background
-      threshold: 2
     }, {
       url: `${host}/en-GB/ideas`,
       ignore: [
