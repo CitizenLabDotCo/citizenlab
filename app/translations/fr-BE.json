@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Ecrire une réponse...",
   "app.containers.IdeasShow.closeMap": "Fermer la carte",
   "app.containers.IdeasShow.commentBodyPlaceholder": "Que pensez-vous de cette idée ?",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "Supprimer",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "Ce commentaire a été supprimé",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Garder ce commentaire",

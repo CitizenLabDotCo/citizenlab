@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "",
   "app.containers.IdeasShow.closeMap": "",
   "app.containers.IdeasShow.commentBodyPlaceholder": "",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "",
   "app.containers.IdeasShow.commentDeletionCancelButton": "",
