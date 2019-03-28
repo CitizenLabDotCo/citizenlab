@@ -1046,6 +1046,7 @@
   "app.containers.IdeasShow.commentEditorLabel": "Comenta esta idea!",
   "app.containers.IdeasShow.commentReplyButton": "Respuesta",
   "app.containers.IdeasShow.commentSuccess": "¡Gracias por hacerte parte!",
+  "app.containers.IdeasShow.commentUpvote": "",
   "app.containers.IdeasShow.commentsTitle": "Danos tu opinión",
   "app.containers.IdeasShow.commentsWithCount": "Comentarios ({count})",
   "app.containers.IdeasShow.confirmCommentDeletion": "¿Está seguro que desea eliminar este comentario? ¡No hay marcha atrás!",
