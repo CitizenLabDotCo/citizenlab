@@ -3,14 +3,11 @@ class SideFxIdeaService
   include SideFxHelper
 
   def before_create idea, user
-    set_phase(idea)
+    before_publish idea, user if idea.published?
   end
 
   def after_create idea, user
-    if idea.published?
-      add_autovote idea
-      log_activity_jobs_after_published idea, user
-    end
+    after_publish idea, user if idea.published?
   end
 
   def before_update idea, user
@@ -19,12 +16,15 @@ class SideFxIdeaService
         idea.assignee = nil
       end
     end
+
+    if idea.publication_status_change == ['draft', 'published']
+      before_publish idea, user
+    end
   end
 
   def after_update idea, user
     if idea.publication_status_previous_change == ['draft','published']
-      add_autovote idea
-      log_activity_jobs_after_published idea, user
+      after_publish idea, user
     elsif idea.published?
       LogActivityJob.perform_later(idea, 'changed', user, idea.updated_at.to_i)
     end
@@ -58,6 +58,15 @@ class SideFxIdeaService
 
 
   private
+
+  def before_publish idea, user
+    set_phase(idea)
+  end
+
+  def after_publish idea, user
+    add_autovote idea
+    log_activity_jobs_after_published idea, user
+  end
 
   def set_phase idea
     if idea.project&.timeline? && idea.phases.empty?
