@@ -68,6 +68,7 @@ export default class IdeasIndex extends React.PureComponent<Props, State> {
             sort="trending"
             pageSize={12}
             allowProjectsFilter={true}
+            projectPublicationStatus="published"
           />
         </StyledContentContainer>
         <Footer />

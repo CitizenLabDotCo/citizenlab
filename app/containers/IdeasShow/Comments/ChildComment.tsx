@@ -21,7 +21,7 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // style
 import styled from 'styled-components';
@@ -29,7 +29,7 @@ import { CLErrorsJSON } from 'typings';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
 import { InjectedIntlProps } from 'react-intl';
 

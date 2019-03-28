@@ -99,6 +99,9 @@ const IdeaTitle: any = styled.h3`
   line-height: 26px;
   max-height: 78px;
   margin-bottom: 13px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const Footer = styled.div`

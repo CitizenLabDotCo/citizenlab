@@ -159,6 +159,7 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
         <Modal
           opened={codeModalOpened}
           close={this.handleCloseCodeModal}
+          fixedHeight={true}
         >
           <WidgetCode
             path={`/ideas?${this.generateWidgetParams()}`}

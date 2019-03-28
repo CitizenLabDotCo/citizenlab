@@ -7,7 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
-import messages from './messages';
+import messages from '../messages';
 
 const StyledLink = styled(Link) `
   color: #1391A1;

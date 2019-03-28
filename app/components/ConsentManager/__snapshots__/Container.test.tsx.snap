@@ -23,6 +23,7 @@ exports[`<ConsentManager /> renders correctly when no cookie is set (destination
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={null}
@@ -99,6 +100,7 @@ exports[`<ConsentManager /> renders correctly when there is no new destination 1
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={true}
@@ -171,6 +173,7 @@ exports[`<ConsentManager /> renders correctly when there is no tracking destinat
     }
     label="Your cookie preferences"
     opened={false}
+    width="650px"
   >
     <PreferencesDialog
       advertising={null}
