@@ -25,6 +25,7 @@ import { SortDirection } from 'utils/paginationUtils';
 import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import IdeaPreview from '../IdeaPreview';
+import NoIdeas from './NoIdeas';
 
 interface Props {
   ideaSortAttribute?: SortAttribute;
@@ -39,6 +40,7 @@ interface Props {
   ideaLastPageNumber?: number;
   onIdeaChangePage?: (number: number) => void;
   activeFilterMenu: string | null;
+  handleSeeAllIdeas: () => void;
 }
 
 type State = {
@@ -113,7 +115,7 @@ export default class IdeaTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses } = this.props;
+    const { ideaSortAttribute, ideaSortDirection, ideas, selectedIdeas, phases, activeFilterMenu, statuses, handleSeeAllIdeas } = this.props;
     const { ideaModal } = this.state;
 
     return (
@@ -198,6 +200,9 @@ export default class IdeaTable extends React.Component<Props, State> {
             </Table.Row>
           </Table.Footer>
         </Table>
+        {!ideas || ideas.length === 0 &&
+          <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
+        }
 
         <IdeaPreview
           ideaId={ideaModal}
