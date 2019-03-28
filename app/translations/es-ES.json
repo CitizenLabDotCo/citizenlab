@@ -689,6 +689,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabel": "Título (requerido)",
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Elige un titulo que sea breve, atractivo y claro. Va ser mostrado en la vista desplegable del proyecto y en la tarjeta de proyecto en la página de inicio.",
   "app.containers.AdminPage.ProjectEdit.typeform": "Tipo de letra",
+  "app.containers.AdminPage.ProjectEdit.unassigned": "",
   "app.containers.AdminPage.ProjectEdit.unlimited": "Ilimitado",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Vista del proyecto",
   "app.containers.AdminPage.ProjectEdit.votingEnabled": "Votación",
