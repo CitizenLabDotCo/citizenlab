@@ -164,5 +164,17 @@ export default defineMessages({
   exports: {
     id: 'app.components.admin.IdeaManager.exports',
     defaultMessage: 'Exports',
+  },
+  noIdeasHere: {
+    id: 'app.components.admin.IdeaManager.noIdeasHere',
+    defaultMessage: 'No ideas match the current filters.',
+  },
+  resetFilters: {
+    id: 'app.components.admin.IdeaManager.resetFilters',
+    defaultMessage: 'Reset the filters to see {allIdeasLink}',
+  },
+  allTheIdeas: {
+    id: 'app.components.admin.IdeaManager.allTheIdeas',
+    defaultMessage: 'all the ideas',
   }
 });

@@ -236,6 +236,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.setState({ feedbackNeededFilterActive: !feedbackNeededFilterActive });
   }
 
+  handleSeeAllIdeas = () => {
+    this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
+    this.props.ideas.onResetAllParams();
+  }
+
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
@@ -347,6 +352,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               ideaCurrentPageNumber={ideas.currentPage}
               ideaLastPageNumber={ideas.lastPage}
               onIdeaChangePage={ideas.onChangePage}
+              handleSeeAllIdeas={this.handleSeeAllIdeas}
             />
           </MiddleColumn>
           <CSSTransition

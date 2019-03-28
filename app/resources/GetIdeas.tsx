@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, isString, isEmpty, omitBy, isNil, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
+import { get, isString, isEmpty, isEqual, isBoolean, omit, cloneDeep } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, mergeScan, switchMap } from 'rxjs/operators';
 import { ideasStream, IIdeaData, IdeaPublicationStatus } from 'services/ideas';
@@ -75,6 +75,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean | undefined) => void;
+  onResetAllParams: (keepProject?: boolean) => void;
 };
 
 interface State {
@@ -251,7 +252,7 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   getQueryParameters = (state: State, props: Props) => {
-    const InputPropsQueryParameters: IQueryParameters = {
+    const inputPropsQueryParameters: IQueryParameters = {
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize,
       project: props.projectId,
@@ -271,7 +272,7 @@ export default class GetIdeas extends React.Component<Props, State> {
 
     return {
       ...state.queryParameters,
-      ...omitBy(InputPropsQueryParameters, isNil)
+      ...inputPropsQueryParameters
     };
   }
 
@@ -372,6 +373,27 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
+  handleResetAllParams = (keepProject?: boolean) => {
+    this.queryParameters$.next({
+      'page[number]': 1,
+      'page[size]': this.props.pageSize,
+      project: keepProject ? this.state.queryParameters.project : undefined,
+      phase: undefined,
+      author: undefined,
+      sort: this.props.sort,
+      search: undefined,
+      topics: undefined,
+      areas: undefined,
+      idea_status: undefined,
+      publication_status: undefined,
+      project_publication_status: undefined,
+      bounding_box: undefined,
+      assignee: undefined,
+      feedback_needed: undefined
+    });
+    this.search$.next('');
+  }
+
   render() {
     const { children } = this.props;
     return (children as children)({
@@ -389,6 +411,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
+      onResetAllParams: this.handleResetAllParams,
     });
   }
 }
