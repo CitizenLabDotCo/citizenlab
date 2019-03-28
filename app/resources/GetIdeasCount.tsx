@@ -5,6 +5,7 @@ import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } fr
 import { ideasCount } from 'services/stats';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface InputProps {
   projectId?: string;
@@ -56,7 +57,7 @@ export type GetIdeasCountChildProps = State & {
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  count: number | undefined | null;
+  count: number | undefined | null | Error;
   querying: boolean;
 }
 
@@ -135,7 +136,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       .subscribe(({ ideasCount, queryParameters }) => {
         this.setState({
           queryParameters,
-          count: ideasCount.count,
+          count: isNilOrError(ideasCount) ? ideasCount : ideasCount.count,
           querying: false
         });
       })

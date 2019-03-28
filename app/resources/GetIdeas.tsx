@@ -80,7 +80,7 @@ export type GetIdeasChildProps = State & {
 interface State {
   queryParameters: IQueryParameters;
   searchValue: string | undefined;
-  ideasList: IIdeaData[] | undefined| null;
+  ideasList: IIdeaData[] | undefined | null;
   hasMore: boolean;
   querying: boolean;
   loadingMore: boolean;

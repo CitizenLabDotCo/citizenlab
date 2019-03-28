@@ -1,6 +1,19 @@
 import { BehaviorSubject } from 'rxjs';
-import { IUsersByRegistrationField, IUsersByTime } from 'services/stats';
+import { IUsersByRegistrationField, IUsersByTime, IIdeasCount } from 'services/stats';
 import { IStreamParams } from 'utils/streams';
+
+let mockIdeasCount: IIdeasCount | null = null;
+
+export const __setMockIdeasCount = (ideasCount: IIdeasCount) => {
+  mockIdeasCount = ideasCount;
+};
+
+export const ideasCount = jest.fn((_ideasCount) => {
+  const observable = new BehaviorSubject(mockIdeasCount);
+  return {
+    observable
+  };
+});
 
 // usersByRegFieldStream
 let mockUsersByRegFieldsVariable: IUsersByRegistrationField | null = null;
