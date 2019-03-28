@@ -1,13 +1,13 @@
 import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
+import { get, cloneDeep, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
 
 // services
-import { addCommentVote } from 'services/commentVotes';
+import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -22,9 +22,7 @@ import messages from '../messages';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
-  border: solid 1px red;
-`;
+const Container = styled.div``;
 
 const UpvoteIconWrapper = styled.div`
   width: 28px;
@@ -41,9 +39,14 @@ const UpvoteIconWrapper = styled.div`
   }
 `;
 
+const UpvoteCount = styled.div`
+  color: ${colors.label};
+  margin-left: 4px;
+`;
+
 const UpvoteIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   fill: ${colors.label};
 
   &.voted {
@@ -53,7 +56,7 @@ const UpvoteIcon = styled(Icon)`
 
 const UpvoteLabel = styled.div`
   color: ${colors.label};
-  margin-left: 8px;
+  margin-left: 10px;
 `;
 
 const UpvoteButton = styled.div`
@@ -62,13 +65,18 @@ const UpvoteButton = styled.div`
   cursor: pointer;
 
   &:hover {
-    ${UpvoteIcon} {
-      fill: #000;
+    ${UpvoteLabel} {
+      text-decoration: underline;
     }
 
-    ${UpvoteLabel} {
-      color: #000;
-      text-decoration: underline;
+    &:not(.voted) {
+      ${UpvoteIcon} {
+        fill: #000;
+      }
+
+      ${UpvoteLabel} {
+        color: #000;
+      }
     }
   }
 `;
@@ -88,53 +96,91 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   voted: boolean;
+  upvoteCount: number;
 }
 
 class CommentVote extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      voted: false
+      voted: false,
+      upvoteCount: 0
     };
   }
 
-  onUpvote = async (event: MouseEvent) => {
+  componentDidMount() {
+    const { comment, commentVote } = this.props;
+
+    this.setState({
+      voted: !isNilOrError(commentVote),
+      upvoteCount: !isNilOrError(comment) ? comment.attributes.upvotes_count : 0
+    });
+  }
+
+  componentDidUpdate(prevProps: Props, _prevState: State) {
+    const prevUpvoteCount = get(prevProps.comment, 'attributes.upvotes_count');
+    const upvoteCount = get(this.props.comment, 'attributes.upvotes_count');
+
+    if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
+      this.setState({ upvoteCount });
+    }
+
+    if (this.state.voted === false && isNilOrError(prevProps.commentVote) && !isNilOrError(this.props.commentVote)) {
+      this.setState({ voted: true });
+    }
+
+    if (this.state.voted === true && !isNilOrError(prevProps.commentVote) && isNilOrError(this.props.commentVote)) {
+      this.setState({ voted: false });
+    }
+  }
+
+  onVote = async (event: MouseEvent) => {
     event.preventDefault();
 
-    const { commentId, authUser } = this.props;
+    const oldVotedValue = cloneDeep(this.state.voted);
+    const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
+    const { commentId, authUser, comment, commentVote } = this.props;
 
     if (!isNilOrError(authUser)) {
-      try {
-        await addCommentVote(commentId, {
-          user_id: authUser.id,
-          mode: 'up'
-        });
-        console.log('voted');
-      } catch (error) {
-        console.log(error);
-        // empty
+      if (!oldVotedValue) {
+        try {
+          this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
+          await addCommentVote(commentId, {
+            user_id: authUser.id,
+            mode: 'up'
+          });
+        } catch (error) {
+          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
+        }
+      }
+
+      if (oldVotedValue && !isNilOrError(comment) && !isNilOrError(commentVote)) {
+        try {
+          this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
+          await deleteCommentVote(comment.id, commentVote.id);
+        } catch (error) {
+          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
+        }
       }
     }
   }
 
   render() {
-    const { className, comment, commentVote } = this.props;
-    const { voted } = this.state;
-
-    console.log('comment:');
-    console.log(comment);
-    console.log('commentVote:');
-    console.log(commentVote);
+    const { className, comment } = this.props;
+    const { voted, upvoteCount } = this.state;
 
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteButton onClick={this.onUpvote}>
+          <UpvoteButton onClick={this.onVote} className={voted ? 'voted' : ''}>
             <UpvoteIconWrapper className={voted ? 'voted' : ''}>
               <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
             </UpvoteIconWrapper>
+            {upvoteCount > 0 &&
+              <UpvoteCount>{upvoteCount}</UpvoteCount>
+            }
             <UpvoteLabel>
-              <FormattedMessage {...messages.commentUpvote} />
+              {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
             </UpvoteLabel>
           </UpvoteButton>
         </Container>

@@ -46,12 +46,18 @@ export function commentVotesStream(commentId: string, streamParams: IStreamParam
 
 export async function addCommentVote(commentId: string, object: INewCommentVote) {
   const response = await streams.add<ICommentVote>(`${API_PATH}/comments/${commentId}/votes`, { vote: object });
-  console.log(response);
   const voteId = response.data.id;
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/votes/${voteId}`] });
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/comments/${commentId}`,
+      `${API_PATH}/votes/${voteId}`
+    ]
+  });
   return response;
 }
 
-export function deleteCommentVote(voteId: string) {
-  return streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
+export async function deleteCommentVote(commentId: string, voteId: string) {
+  const response =  await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${commentId}`] });
+  return response;
 }
