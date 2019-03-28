@@ -47,7 +47,6 @@ class SideFxIdeaService
   end
 
   def before_destroy idea, user
-
   end
 
   def after_destroy frozen_idea, user
@@ -61,6 +60,7 @@ class SideFxIdeaService
 
   def before_publish idea, user
     set_phase(idea)
+    set_assignee(idea)
   end
 
   def after_publish idea, user
@@ -74,6 +74,12 @@ class SideFxIdeaService
         phase&.can_contain_ideas?
       end
       idea.phases = [phase] if phase
+    end
+  end
+
+  def set_assignee idea
+    if idea.project&.default_assignee && !idea.assignee
+      idea.assignee = idea.project.default_assignee
     end
   end
 
