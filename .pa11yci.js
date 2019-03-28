@@ -5,9 +5,6 @@ function generateUrls(host) {
   return [
     {
       url: `${host}/en-GB/`,
-      ignore: [
-        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
-      ],
       // Allow for signed-out header title and subtitle to be on 'unrecognizable'/transparent background
       threshold: 2
     }, {
@@ -24,9 +21,6 @@ function generateUrls(host) {
       threshold: 2
     }, {
       url: `${host}/en-GB/projects/rup-inspraak-vanaf-startnota-tot-openbaar-onderzoek/info`,
-      ignore: [
-        'WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2'
-      ],
       // Allow Twitter share button with a too low contrast ratio
       threshold: 1
     }, {
