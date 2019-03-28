@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString, isEmpty, omitBy, isNil, isEqual } from 'lodash-es';
+import { isString, isEmpty, isEqual } from 'lodash-es';
 import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
 import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } from 'rxjs/operators';
 import { ideasCount } from 'services/stats';
@@ -158,7 +158,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
   }
 
   getQueryParameters = (state: State, props: Props) => {
-    const InputPropsQueryParameters: IQueryParameters = {
+    const inputPropsQueryParameters: IQueryParameters = {
       project: props.projectId,
       phase: props.phaseId,
       author: props.authorId,
@@ -174,7 +174,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
 
     return {
       ...state.queryParameters,
-      ...omitBy(InputPropsQueryParameters, isNil)
+      ...inputPropsQueryParameters
     };
   }
 

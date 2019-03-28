@@ -4,6 +4,8 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import CountBadge from 'components/UI/CountBadge';
+import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
+import { isNilOrError } from 'utils/helperUtils';
 
 const size = 21;
 const padding = 4;
@@ -70,15 +72,21 @@ const StyledLabel = styled.label`
   cursor: pointer;
 `;
 
-export type Props = {
+interface InputProps {
   value: boolean;
   onChange: (event: React.FormEvent<any>) => void;
-  feedbackNeededCount: number | undefined;
-};
+  assignee: string;
+}
+
+interface DataProps {
+  feedbackNeededCount: GetIdeasCountChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 type State = {};
 
-export default class Toggle extends React.PureComponent<Props, State> {
+class FeedbackToggle extends React.PureComponent<Props, State> {
   handleOnClick = (event) => {
     this.props.onChange(event);
   }
@@ -97,9 +105,15 @@ export default class Toggle extends React.PureComponent<Props, State> {
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.needFeedback} />
-          {!!feedbackNeededCount && <CountBadge count={feedbackNeededCount}/>}
+          {!isNilOrError(feedbackNeededCount.count) && <CountBadge count={feedbackNeededCount.count}/>}
         </StyledLabel>
       </Container>
     );
   }
 }
+
+export default (inputProps: InputProps) => (
+  <GetIdeasCount feedbackNeeded={true} assignee={inputProps.assignee === 'all' ? undefined : inputProps.assignee}>
+    {ideasCount => <FeedbackToggle {...inputProps} feedbackNeededCount={ideasCount} />}
+  </GetIdeasCount>
+);
