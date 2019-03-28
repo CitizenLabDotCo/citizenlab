@@ -13,7 +13,7 @@ import Avatar from 'components/Avatar';
 // i18n
 import { FormattedTime, FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';

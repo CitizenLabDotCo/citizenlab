@@ -21,7 +21,6 @@ export const makeTenant = (attributes = {}) : ITenant => ({
           organization_site: 'https://www.wonder.ville',
           lifecycle_stage: 'active',
           color_main: '#225522',
-          header_overlay_opacity: 20,
           color_secondary: '#551122',
           color_text: '#222222',
           currency: 'EUR',

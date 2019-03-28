@@ -153,10 +153,10 @@ class Author extends React.PureComponent<Props, State> {
     const authorNameComponent = notALink ? (
       <UserName user={(author ? author.data : null)} />
     ) : (
-        <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} className={authorCanModerate ? 'canModerate' : ''}>
-          <UserName user={(author ? author.data : null)} />
-        </AuthorNameLink>
-      );
+      <AuthorNameLink to={author ? `/profile/${author.data.attributes.slug}` : ''} className={authorCanModerate ? 'canModerate' : ''}>
+        <UserName user={(author ? author.data : null)} />
+      </AuthorNameLink>
+    );
 
     return (
       <Container className={className}>

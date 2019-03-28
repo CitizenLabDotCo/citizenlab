@@ -18,6 +18,7 @@ interface State {
 const Container = styled.div`
   display: flex;
   align-items: center;
+  height: 100%;
 `;
 
 export default class Tooltip extends PureComponent<Props, State> {
@@ -47,6 +48,14 @@ export default class Tooltip extends PureComponent<Props, State> {
       this.setState({ opened: !this.state.opened });
     }
 
+    handleOnFocus = () => {
+      this.setState({ opened: true });
+    }
+
+    handleOnBlur = () => {
+      this.setState({ opened: false });
+    }
+
     render() {
       const { opened } = this.state;
       const { enabled, children, content, className } = this.props;
@@ -63,6 +72,8 @@ export default class Tooltip extends PureComponent<Props, State> {
       return (
         <Container
           className={className}
+          onFocus={this.handleOnFocus}
+          onBlur={this.handleOnBlur}
           onMouseEnter={this.handleOnMouseEnter}
           onMouseLeave={this.handleOnMouseLeave}
           onClick={this.handleOnClick}

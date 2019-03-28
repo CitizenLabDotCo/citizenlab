@@ -134,7 +134,6 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
         <Modal
           header={ModalHeader}
-          fixedHeight={false}
           opened={groupCreationModal !== false}
           close={this.closeGroupCreationModal}
         >
