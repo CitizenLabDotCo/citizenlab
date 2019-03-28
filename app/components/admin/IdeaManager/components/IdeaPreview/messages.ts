@@ -17,6 +17,18 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.IdeaPreview.imageAltText',
     defaultMessage: 'Image for idea {ideaTitle}',
   },
+  upvoteCount: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.upvoteCount',
+    defaultMessage: 'Upvote count: {count}',
+  },
+  downvoteCount: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.downvoteCount',
+    defaultMessage: 'Downvote count: {count}',
+  },
+  voteCounts: {
+    id: 'app.components.admin.IdeaManager.IdeaPreview.voteCounts',
+    defaultMessage: 'Vote counts:',
+  },
   ideaStatus: {
     id: 'app.components.admin.IdeaManager.IdeaPreview.ideaStatus',
     defaultMessage: 'Idea status',

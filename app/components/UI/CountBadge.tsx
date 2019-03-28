@@ -13,7 +13,7 @@ const Container: any = styled.span`
   line-height: 17px;
   text-align: center;
   border-radius: 3px;
-  margin-left: 7px;
+  margin-left: 6px;
 
   color: #FFFFFF;
   background: ${(props: any) => props.bgColor ? props.bgColor : colors.clRed};
