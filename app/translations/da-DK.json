@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Skriv et svar...",
   "app.containers.IdeasShow.closeMap": "Luk kort",
   "app.containers.IdeasShow.commentBodyPlaceholder": "Hvad synes du om denne idé?",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "Slet",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "Din kommentar er blevet slettet.",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Holde min kommentar",

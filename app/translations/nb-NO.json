@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Skriv et svar...",
   "app.containers.IdeasShow.closeMap": "Lukk kart",
   "app.containers.IdeasShow.commentBodyPlaceholder": "Hva mener du om denne idéen?",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "Slett",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "Denne kommentaren er slettet",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Behold kommentaren min",
