@@ -180,4 +180,28 @@ export default defineMessages({
     id: 'app.containers.Admin.clusterViewer.ctrlLegend',
     defaultMessage: 'Compare nodes',
   },
+  male: {
+    id: 'app.containers.AdminPage.clusterViewer.male',
+    defaultMessage: 'Male',
+  },
+  female: {
+    id: 'app.containers.AdminPage.clusterViewer.female',
+    defaultMessage: 'Female',
+  },
+  unspecified: {
+    id: 'app.containers.AdminPage.clusterViewer.unspecified',
+    defaultMessage: 'Unspecified',
+  },
+  _blank: {
+    id: 'app.containers.AdminPage.clusterViewer._blank',
+    defaultMessage: 'Unknown',
+  },
+  votes: {
+    id: 'app.containers.AdminPage.clusterViewer.votes',
+    defaultMessage: 'Votes',
+  },
+  details: {
+    id: 'app.containers.AdminPage.clusterViewer.details',
+    defaultMessage: 'Details',
+  },
 });

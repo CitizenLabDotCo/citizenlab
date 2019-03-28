@@ -5,7 +5,7 @@ import { map, first } from 'rxjs/operators';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
@@ -155,7 +155,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
         />
 
         <Modal
-          fixedHeight={false}
           opened={this.state.modalVisible_delete}
           close={this.closeDeleteModal}
           className="e2e-comment-deletion-modal"
@@ -190,7 +189,6 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
         </Modal>
 
         <Modal
-          fixedHeight={false}
           opened={this.state.modalVisible_spam}
           close={this.closeSpamModal}
           label={this.props.intl.formatMessage(messages.spanModalLabelComment)}

@@ -86,8 +86,8 @@ const HeaderImage = styled.img`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${(props) => props.theme.colorMain};
-  opacity: 0.9;
+  background: ${({ theme }) => theme.signedInHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -192,8 +192,6 @@ const Icons = styled.div`
 
 const NoAvatarUserIcon: any = styled(Icon)`
   fill: #fff;
-  background: ${props => props.theme.colorMain};
-  border-radius: 50%;
   width: 50px;
   height: 50px;
 `;

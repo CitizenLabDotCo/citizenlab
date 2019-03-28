@@ -17,18 +17,10 @@ import messages from './messages';
 
 // Style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba, darken } from 'polished';
 
-const StyledContentContainer = styled(ContentContainer)`
-  margin-top: 20px;
-  margin-bottom: 20px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 10px;
-    margin-bottom: 10px;
-  `}
-`;
+const StyledContentContainer = styled(ContentContainer)``;
 
 const Container = styled.div`
   display: flex;
@@ -71,6 +63,7 @@ const Text = styled.div`
 
 interface InputProps {
   projectId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -83,11 +76,11 @@ interface State {}
 
 class ProjectModeratorIndicator extends PureComponent<Props, State> {
   render() {
-    const { authUser, projectId } = this.props;
+    const { authUser, projectId, className } = this.props;
 
     if (authUser && projectId && isProjectModerator({ data: authUser }, projectId)) {
       return (
-        <StyledContentContainer className={this.props['className']}>
+        <StyledContentContainer className={className}>
           <Container>
             <StyledIcon name="shield" />
             <Text>
@@ -102,8 +95,8 @@ class ProjectModeratorIndicator extends PureComponent<Props, State> {
   }
 }
 
-export default ({ projectId }: InputProps) => (
+export default (inputProps: InputProps) => (
   <GetAuthUser>
-    {authUser => <ProjectModeratorIndicator authUser={authUser} projectId={projectId} />}
+    {authUser => <ProjectModeratorIndicator {...inputProps} authUser={authUser} />}
   </GetAuthUser>
 );

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { isFunction, isBoolean, isString } from 'lodash-es';
+import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
@@ -13,18 +13,13 @@ import clickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// Translation
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { hideVisually } from 'polished';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -37,29 +32,21 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   fill: ${colors.mediumGrey};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-  `}
 `;
 
 const CloseButton = styled.button`
+  width: 18px;
+  height: 18px;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  height: 30px;
-  width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 27px;
+  right: 35px;
   cursor: pointer;
   outline: none;
+  margin: 0;
+  padding: 0;
 
   &:hover,
   &:focus,
@@ -70,12 +57,12 @@ const CloseButton = styled.button`
   }
 
   ${media.smallerThanMinTablet`
-    height: 18px;
-    width: 18px;
+    width: 14px;
+    height: 14px;
+    top: 19px;
+    right: 24px;
   `}
 `;
-
-const HiddenSpan = styled.span`${hideVisually()}`;
 
 const ModalContainer: any = styled(clickOutside)`
   width: 100%;
@@ -93,15 +80,15 @@ const ModalContainer: any = styled(clickOutside)`
     height: 600px;
   }
 
-  ${media.smallerThanMaxTablet`
-    &.fixedHeight {
-      height: 80vh;
-    }
+  ${media.smallerThanMinTablet`
+    width: 100%;
+    height: auto;
+    max-width: 100vw;
+    max-height: 100vh;
 
-    ${media.smallerThanMinTablet`
-      width: 85vw;
-      max-height: 85vh;
-    `}
+    &.fixedHeight {
+      height: auto;
+    }
   `}
 `;
 
@@ -117,16 +104,21 @@ const Overlay = styled(FocusTrap)`
   background: rgba(0, 0, 0, 0.75);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 30px;
+  padding-top: 50px;
+  padding-bottom: 60px;
   overflow: hidden;
   z-index: 1000000;
   will-change: opacity, transform;
 
-  ${media.smallerThanMaxTablet`
-    padding: 0;
-    /* height: calc(100vh - ${props => props.theme.mobileMenuHeight}px); */
-    /* bottom: auto; */
+  ${media.biggerThanMinTablet`
+    justify-content: center;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 80px;
   `}
 
   &.modal-enter {
@@ -165,6 +157,8 @@ const HeaderContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 15px;
+    padding-bottom: 15px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -180,7 +174,7 @@ const HeaderTitle = styled.h1`
   padding: 0;
 
   ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.xl}px;
+    font-size: ${fontSizes.large}px;
     margin-right: 35px;
   `}
 `;
@@ -199,6 +193,8 @@ const FooterContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -221,16 +217,10 @@ export const Spacer = styled.div`
   flex: 1;
 `;
 
-interface ITracks {
-  clickCloseButton: () => void;
-  clickOutsideModal: () => void;
-  clickBack: () => void;
-}
-
 type Props = {
   opened: boolean;
-  fixedHeight?: boolean | undefined;
-  width?: string | undefined;
+  fixedHeight?: boolean;
+  width?: string;
   close: () => void;
   className?: string;
   header?: JSX.Element;
@@ -239,11 +229,12 @@ type Props = {
   skipText?: JSX.Element;
   label?: string;
   children?: any;
+  closeOnClickOutside?: boolean;
 };
 
 type State = {};
 
-class Modal extends React.PureComponent<Props & ITracks, State> {
+export default class Modal extends PureComponent<Props, State> {
   private unlisten: Function | null;
   private goBackUrl: string | null;
   private el: HTMLDivElement;
@@ -251,7 +242,12 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   private ModalContentElement: HTMLDivElement | null;
   private ModalCloseButton: HTMLButtonElement | null;
 
-  constructor(props: Props & ITracks) {
+  static defaultProps = {
+    fixedHeight: false,
+    width: '650px'
+  };
+
+  constructor(props: Props) {
     super(props);
     this.unlisten = null;
     this.goBackUrl = null;
@@ -310,7 +306,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
 
   handlePopstateEvent = () => {
     if (location.href === this.goBackUrl) {
-      this.props.clickBack();
+      trackEventByName(tracks.clickBack);
     }
 
     this.props.close();
@@ -327,14 +323,16 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal();
-    this.manuallyCloseModal();
+    if (this.props.closeOnClickOutside !== false) {
+      trackEventByName(tracks.clickOutsideModal);
+      this.manuallyCloseModal();
+    }
   }
 
   clickCloseButton = (event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.clickCloseButton();
+    trackEventByName(tracks.clickCloseButton);
     this.manuallyCloseModal();
   }
 
@@ -354,11 +352,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
   }
 
   render() {
-    let { fixedHeight, width } = this.props;
-    const { children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
-
-    fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
-    width = (isString(width) ? width : '650px');
+    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
     const element = (opened ? (
       <CSSTransition
@@ -377,7 +371,7 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
           aria-label={label}
         >
           <ModalContainer
-            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+            className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
             hasHeaderOrFooter={header !== undefined || footer !== undefined}
@@ -387,9 +381,6 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
               onClick={this.clickCloseButton}
               innerRef={this.setCloseButtonRef}
             >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
-              </HiddenSpan>
               <CloseIcon name="close3" />
             </CloseButton >
 
@@ -427,8 +418,3 @@ class Modal extends React.PureComponent<Props & ITracks, State> {
     );
   }
 }
-
-const WrappedModal = injectTracks<Props>(tracks)(Modal);
-WrappedModal.displayName = 'ModalWithTracks';
-
-export default WrappedModal;

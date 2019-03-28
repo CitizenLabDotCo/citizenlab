@@ -5,13 +5,11 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
-import IdeaButton from 'components/IdeaButton';
 import AvatarBubbles from 'components/AvatarBubbles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -23,7 +21,7 @@ import messages from './messages';
 import { getLocalized } from 'utils/i18n';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -78,8 +76,8 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${(props) => props.theme.colorMain};
-  opacity: ${(props) => props.theme.headerOverlayOpacity};
+  background: ${({ theme }) => theme.signedOutHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -103,9 +101,9 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${fontSizes.xxxl + 1}px;
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
   line-height: normal;
-  font-weight: 600;
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   text-align: center;
   margin: 0;
   padding: 0;
@@ -145,20 +143,8 @@ const StyledAvatarBubbles = styled(AvatarBubbles)`
 const SignUpButton = styled(Button)`
   margin-top: 38px;
 
-  .Button.button.primary-inverse {
-    color: ${(props: any) => props.theme.colorText};
-  }
-
   ${media.smallerThanMinTablet`
     margin-top: 30px;
-  `}
-`;
-
-const StyledIdeaButton = styled(IdeaButton)`
-  display: none;
-
-  ${media.smallerThanMinTablet`
-    display: block;
   `}
 `;
 
@@ -169,10 +155,11 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps {
+  theme: any;
+}
 
 interface State {}
 
@@ -187,7 +174,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, className } = this.props;
+    const { locale, tenant, className, theme } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -221,18 +208,15 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
               <StyledAvatarBubbles onClick={this.handleAvatarBubblesOnClick} />
 
-              {authUser ? (
-                <StyledIdeaButton style="primary-inverse" />
-              ) : (
-                <SignUpButton
-                  style="primary-inverse"
-                  fontWeight="500"
-                  padding="13px 22px"
-                  onClick={this.goToSignUpPage}
-                  text={<FormattedMessage {...messages.createAccount} />}
-                  className="e2e-signed-out-header-cta-button"
-                />
-              )}
+              <SignUpButton
+                fontWeight="500"
+                padding="13px 22px"
+                bgColor="#fff"
+                textColor={theme.colorMain}
+                onClick={this.goToSignUpPage}
+                text={<FormattedMessage {...messages.createAccount} />}
+                className="e2e-signed-out-header-cta-button"
+              />
             </HeaderContent>
           </Header>
         </Container>
@@ -245,12 +229,13 @@ class SignedOutHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
-  authUser: <GetAuthUser />
+  tenant: <GetTenant />
 });
+
+const SignedOutHeaderWithHoC = withTheme<Props, State>(SignedOutHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedOutHeader {...inputProps} {...dataProps} />}
+    {dataProps => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

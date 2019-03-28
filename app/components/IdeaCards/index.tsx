@@ -252,7 +252,7 @@ const Footer = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 30px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;

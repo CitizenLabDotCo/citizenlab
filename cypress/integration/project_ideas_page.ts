@@ -41,6 +41,7 @@ describe('Project ideas page', () => {
       const ideaContent = randomString();
 
       cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+
       cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
 
       // sort by newest first

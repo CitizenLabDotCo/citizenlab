@@ -20,7 +20,7 @@ import messages from './messages';
 // Typing
 import { CLErrorsJSON } from 'typings';
 
-interface InputProps { }
+export interface InputProps { }
 
 interface DataProps {
   project: IProjectData;

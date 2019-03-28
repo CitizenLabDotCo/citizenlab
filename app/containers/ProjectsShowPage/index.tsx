@@ -31,8 +31,11 @@ const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
-  background: ${colors.background};
   background: #fff;
+
+  &.greyBackground {
+    background: ${colors.background};
+  }
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -40,7 +43,6 @@ const Container = styled.div`
 `;
 
 const Loading = styled.div`
-  /* height: 100%; */
   flex: 1 0 auto;
   display: flex;
   align-items: center;
@@ -48,7 +50,6 @@ const Loading = styled.div`
 `;
 
 const Content = styled.div`
-  /* height: 100%; */
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
@@ -89,11 +90,13 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
     const { slug } = this.props.params;
     const projectNotFound = isError(project);
     const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project) || isUndefined(phases) || isUndefined(events));
+    const currentPath = location.pathname;
+    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
 
     return (
       <>
         <Meta projectSlug={slug} />
-        <Container>
+        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>

@@ -1,5 +1,6 @@
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
+const isProd = process.env.NODE_ENV === 'production';
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -22,9 +23,15 @@ const config = {
     chunkFilename: isDev ? '[name].chunk.js' : '[name].[hash].chunk.js',
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : false,
+  devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -144,13 +151,10 @@ const config = {
 
 if (isDev) {
   config.plugins.push(new webpack.ProgressPlugin());
-} else {
+} else if (isProd) {
   config.plugins.push(new SentryCliPlugin({
-    include: path.resolve(process.cwd(), 'app'),
-    ignoreFile: '.gitignore',
-    ignore: ['node_modules', 'internals', 'docs', 'cypress', '.circleci'],
+    include: path.resolve(process.cwd(), 'build'),
     release: process.env.CIRCLE_BUILD_NUM,
-    ext: ['js', 'ts', 'map', 'bundle', 'jsbundle']
   }));
 }
 

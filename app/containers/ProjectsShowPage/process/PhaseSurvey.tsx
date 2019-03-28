@@ -8,6 +8,13 @@ import Survey from './survey';
 // resources
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
+// styling
+import styled from 'styled-components';
+
+const Container = styled.div`
+  padding-bottom: 100px;
+`;
+
 interface InputProps {
   projectId: string;
   phaseId: string | null;
@@ -33,13 +40,15 @@ class PhaseSurvey extends PureComponent<Props, State> {
       phase.attributes.survey_service
     ) {
       return (
-        <Survey
-          className={className}
-          projectId={projectId}
-          phaseId={phase.id}
-          surveyEmbedUrl={phase.attributes.survey_embed_url}
-          surveyService={phase.attributes.survey_service}
-        />
+        <Container>
+          <Survey
+            className={className}
+            projectId={projectId}
+            phaseId={phase.id}
+            surveyEmbedUrl={phase.attributes.survey_embed_url}
+            surveyService={phase.attributes.survey_service}
+          />
+        </Container>
       );
     }
 

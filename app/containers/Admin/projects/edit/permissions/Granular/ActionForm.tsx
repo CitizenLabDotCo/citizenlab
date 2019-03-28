@@ -78,6 +78,7 @@ class ActionForm extends PureComponent<Props> {
             value={groupIds || []}
             options={groupsOptions}
             onChange={this.handleGroupIdsUpdate}
+            placeholder={<FormattedMessage {...messages.selectGroups} />}
           />
         }
       </form>
