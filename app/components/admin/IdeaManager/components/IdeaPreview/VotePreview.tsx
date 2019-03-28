@@ -6,53 +6,46 @@ import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIde
 import Icon from 'components/UI/Icon';
 
 import styled from 'styled-components';
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container: any = styled.div`
-  display: flex;
-  align-items: center;
+const VoteIcon: any = styled(Icon)`
+  height: 18px;
+  width: 20px;
+  fill: ${colors.clRed};
+  position: absolute;
+  top: 2px;
+`;
 
-  * {
-    user-select: none;
+const UpvoteIcon = styled(VoteIcon)`
+  fill: ${colors.clGreen};
+  position: absolute;
+  top: -1px;
+`;
+
+const IconContainer = styled.div`
+  position: relative;
+  width: 20px;
+  margin-right: 5px;
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-right: 30px;
+  & > div {
+    display: flex;
   }
 `;
 
-const VoteIconContainer: any = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: solid 1px ${colors.adminTextColor};
-  background: #fff;
-  transition: all 100ms ease-out;
-  will-change: transform;
-  width: 55px;
-  height: 55px;
+const Votes = styled.div`
+  font-size: ${fontSizes.large};
+  font-weight: 600;
+  color: ${colors.clRed};
 `;
-
-const VoteIcon: any = styled(Icon)`
-  height: 19px;
-  fill: ${colors.adminTextColor};
-  transition: all 100ms ease-out;
-  height: 20px;
-  width: 23px;
-`;
-
-const VoteCount = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  margin-left: 5px;
-  transition: all 100ms ease-out;
-`;
-
-const Vote: any = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const Upvote = Vote.extend`
-  margin-right: 12px;
+const UpVotes = styled(Votes)`
+  color: ${colors.clGreen};
 `;
 
 interface DataProps {
@@ -70,19 +63,26 @@ const VotePreview = (props: Props) => {
   const { votesCount, className } = props;
   if (!isNilOrError(votesCount)) {
     return (
-      <Container className={`${className} e2e-vote-preview`}>
-        <Upvote>
-          <VoteIconContainer>
-            <VoteIcon name="upvote-2"/>
-          </VoteIconContainer>
-          <VoteCount>{votesCount.up}</VoteCount>
-        </Upvote>
-        <Vote>
-          <VoteIconContainer>
+      <Container className={className}>
+        <div>
+          <FormattedMessage {...messages.voteCounts} />
+        </div>
+        <div>
+          <IconContainer>
+            <UpvoteIcon name="upvote-2"/>
+          </IconContainer>
+          <UpVotes>
+            {votesCount.up}
+          </UpVotes>
+        </div>
+        <div>
+          <IconContainer>
             <VoteIcon name="downvote-2"/>
-          </VoteIconContainer>
-          <VoteCount>{votesCount.down}</VoteCount>
-        </Vote>
+          </IconContainer>
+          <Votes>
+            {votesCount.down}
+          </Votes>
+        </div>
       </Container>
     );
   }
