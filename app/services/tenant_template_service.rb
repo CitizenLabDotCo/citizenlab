@@ -198,7 +198,7 @@ class TenantTemplateService
       'project' => {'description_preview_multiloc' => 280},
       'idea' => {'title_multiloc' => 80}
     }.each do |model, restrictions|
-      template['models'][model].each do |attributes|
+      template['models'][model]&.each do |attributes|
         restrictions.each do |field_name, max_len|
           multiloc = attributes[field_name]
           multiloc.each do |locale, value|
