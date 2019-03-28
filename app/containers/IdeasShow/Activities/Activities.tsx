@@ -11,7 +11,7 @@ import Modal from 'components/UI/Modal';
 // i18n
 import { FormattedRelative } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -82,6 +82,7 @@ class IdeaActivities extends PureComponent<Props, State> {
             opened={this.state.modalOpen}
             close={this.closeModal}
             header={<FormattedMessage {...messages.lastChangesTitle} />}
+            fixedHeight={true}
           >
             <Activities>
               {ideaActivities.map((activity) => (

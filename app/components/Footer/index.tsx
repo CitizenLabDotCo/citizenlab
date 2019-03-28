@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import MediaQuery from 'react-responsive';
-import * as Sentry from '@sentry/browser';
+import { reportError } from 'utils/loggingUtils';
 
 // utils
 import Link from 'utils/cl-router/Link';
@@ -390,7 +390,9 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
         page: removeUrlLocale(location.pathname),
         locale: this.state.locale || undefined,
         answer: 'yes'
-      }).catch(err => Sentry.captureException(err));
+      }).catch(err => {
+        reportError(err);
+      });
     } else if (answer === 'no') {
       trackEventByName(tracks.clickShortFeedbackNo);
       this.openFeedbackModal();
@@ -425,7 +427,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
       page: removeUrlLocale(location.pathname),
       locale: this.state.locale || undefined,
       answer: 'no'
-    }).catch(err => Sentry.captureException(err));
+    }).catch(err => reportError(err));
   }
 
   shortFeedbackFormOnSubmit = () => {
@@ -496,7 +498,6 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Modal
               width="500px"
-              fixedHeight={false}
               opened={feedbackModalOpen}
               close={this.closeFeedbackModalCancel}
               className="e2e-feedback-modal"

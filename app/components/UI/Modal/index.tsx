@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { isFunction, isBoolean, isString } from 'lodash-es';
+import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
@@ -13,10 +13,6 @@ import clickOutside from 'utils/containers/clickOutside';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// Translation
-import messages from './messages';
-import { FormattedMessage } from 'utils/cl-intl';
-
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
@@ -24,7 +20,6 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { hideVisually } from 'polished';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -37,29 +32,21 @@ const ModalContent = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  width: 100%;
+  height: 100%;
   fill: ${colors.mediumGrey};
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 18px;
-    width: 18px;
-    height: 18px;
-  `}
 `;
 
 const CloseButton = styled.button`
+  width: 18px;
+  height: 18px;
   position: absolute;
-  top: 20px;
-  right: 20px;
-  height: 30px;
-  width: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  top: 27px;
+  right: 35px;
   cursor: pointer;
   outline: none;
+  margin: 0;
+  padding: 0;
 
   &:hover,
   &:focus,
@@ -70,12 +57,12 @@ const CloseButton = styled.button`
   }
 
   ${media.smallerThanMinTablet`
-    height: 18px;
-    width: 18px;
+    width: 14px;
+    height: 14px;
+    top: 19px;
+    right: 24px;
   `}
 `;
-
-const HiddenSpan = styled.span`${hideVisually()}`;
 
 const ModalContainer: any = styled(clickOutside)`
   width: 100%;
@@ -93,16 +80,15 @@ const ModalContainer: any = styled(clickOutside)`
     height: 600px;
   }
 
-  ${media.smallerThanMaxTablet`
-    &.fixedHeight {
-      height: 80vh;
-    }
-  `}
-
   ${media.smallerThanMinTablet`
     width: 100%;
+    height: auto;
     max-width: 100vw;
     max-height: 100vh;
+
+    &.fixedHeight {
+      height: auto;
+    }
   `}
 `;
 
@@ -118,17 +104,21 @@ const Overlay = styled(FocusTrap)`
   background: rgba(0, 0, 0, 0.75);
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   padding: 30px;
+  padding-top: 50px;
+  padding-bottom: 60px;
   overflow: hidden;
   z-index: 1000000;
   will-change: opacity, transform;
 
+  ${media.biggerThanMinTablet`
+    justify-content: center;
+  `}
+
   ${media.smallerThanMinTablet`
-    padding-top: 50px;
-    padding-bottom: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 80px;
   `}
 
   &.modal-enter {
@@ -167,6 +157,8 @@ const HeaderContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 15px;
+    padding-bottom: 15px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -201,6 +193,8 @@ const FooterContainer = styled.div`
   background: #fff;
 
   ${media.smallerThanMinTablet`
+    padding-top: 10px;
+    padding-bottom: 10px;
     padding-left: 20px;
     padding-right: 20px;
   `}
@@ -225,8 +219,8 @@ export const Spacer = styled.div`
 
 type Props = {
   opened: boolean;
-  fixedHeight?: boolean | undefined;
-  width?: string | undefined;
+  fixedHeight?: boolean;
+  width?: string;
   close: () => void;
   className?: string;
   header?: JSX.Element;
@@ -247,6 +241,11 @@ export default class Modal extends PureComponent<Props, State> {
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
   private ModalCloseButton: HTMLButtonElement | null;
+
+  static defaultProps = {
+    fixedHeight: false,
+    width: '650px'
+  };
 
   constructor(props: Props) {
     super(props);
@@ -353,11 +352,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    let { fixedHeight, width } = this.props;
-    const { children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
-
-    fixedHeight = (isBoolean(fixedHeight) ? fixedHeight : true);
-    width = (isString(width) ? width : '650px');
+    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText, label } = this.props;
 
     const element = (opened ? (
       <CSSTransition
@@ -376,7 +371,7 @@ export default class Modal extends PureComponent<Props, State> {
           aria-label={label}
         >
           <ModalContainer
-            className={`modalcontent ${fixedHeight && 'fixedHeight'}`}
+            className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             width={width}
             onClickOutside={this.clickOutsideModal}
             hasHeaderOrFooter={header !== undefined || footer !== undefined}
@@ -386,9 +381,6 @@ export default class Modal extends PureComponent<Props, State> {
               onClick={this.clickCloseButton}
               innerRef={this.setCloseButtonRef}
             >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonLabel} />
-              </HiddenSpan>
               <CloseIcon name="close3" />
             </CloseButton >
 

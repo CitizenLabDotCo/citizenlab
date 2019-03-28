@@ -26,4 +26,12 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.memberSince',
     defaultMessage: 'Member since {date}',
   },
+  metaTitle: {
+    id: 'app.containers.UsersShowPage.metaTitle',
+    defaultMessage: 'Profile page of {firstName} {lastName} | CitizenLab',
+  },
+  metaDescription: {
+    id: 'app.containers.UsersShowPage.metaDescription',
+    defaultMessage: 'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
+  },
 });

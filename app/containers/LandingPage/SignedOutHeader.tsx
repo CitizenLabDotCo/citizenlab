@@ -76,8 +76,8 @@ const HeaderImageBackground: any = styled.div`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) => theme.landingHeaderOverlayColor || theme.colorMain};
-  opacity: ${({ theme }) => theme.landingHeaderOverlayOpacity};
+  background: ${({ theme }) => theme.signedOutHeaderOverlayColor || theme.colorMain};
+  opacity: ${({ theme }) => theme.signedOutHeaderOverlayOpacity};
   position: absolute;
   top: 0;
   bottom: 0;
@@ -101,9 +101,9 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${(props: any) => props.hasHeader ? '#fff' : props.theme.colorMain};
-  font-size: ${({ theme }) => theme.landingHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
   line-height: normal;
-  font-weight: ${({ theme }) => theme.landingHeaderTitleFontWeight || 600};
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   text-align: center;
   margin: 0;
   padding: 0;

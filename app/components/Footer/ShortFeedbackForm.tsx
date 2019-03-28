@@ -26,7 +26,7 @@ import { CLError } from 'typings';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -36,15 +36,25 @@ const Form = styled.form`
   align-items: stretch;
   padding: 30px;
   padding-bottom: 15px;
+
+  ${media.smallerThanMinTablet`
+    padding: 15px;
+  `}
 `;
 
 const Submitted = styled.span`
   height: 370px;
   font-size: ${fontSizes.large}px;
   text-align: center;
+  padding-left: 25px;
+  padding-right: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${media.smallerThanMinTablet`
+    height: 300px;
+  `}
 `;
 
 interface DataProps {
