@@ -26,6 +26,13 @@ import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import IdeaPreview from '../IdeaPreview';
 import NoIdeas from './NoIdeas';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  .ui.table {
+    margin-bottom: 0;
+  }
+`;
 
 interface Props {
   ideaSortAttribute?: SortAttribute;
@@ -119,7 +126,7 @@ export default class IdeaTable extends React.Component<Props, State> {
     const { ideaModal } = this.state;
 
     return (
-      <>
+      <Container>
         <Table sortable size="small">
           <Table.Header>
             <Table.Row>
@@ -188,17 +195,19 @@ export default class IdeaTable extends React.Component<Props, State> {
               />
             )}
           </Table.Body>
-          <Table.Footer fullWidth={true}>
-            <Table.Row>
-              <Table.HeaderCell colSpan="7">
-                <Pagination
-                  currentPage={this.props.ideaCurrentPageNumber || 1}
-                  totalPages={this.props.ideaLastPageNumber || 1}
-                  loadPage={this.handlePaginationClick}
-                />
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
+          {!!ideas && ideas.length > 0 &&
+            <Table.Footer fullWidth={true}>
+              <Table.Row>
+                <Table.HeaderCell colSpan="7">
+                  <Pagination
+                    currentPage={this.props.ideaCurrentPageNumber || 1}
+                    totalPages={this.props.ideaLastPageNumber || 1}
+                    loadPage={this.handlePaginationClick}
+                  />
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Footer>
+          }
         </Table>
         {!ideas || ideas.length === 0 &&
           <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
@@ -208,7 +217,7 @@ export default class IdeaTable extends React.Component<Props, State> {
           ideaId={ideaModal}
           closeSideModal={this.onCloseModal}
         />
-      </>
+      </Container>
     );
   }
 }
