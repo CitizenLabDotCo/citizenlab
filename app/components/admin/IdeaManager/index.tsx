@@ -280,15 +280,11 @@ class IdeaManager extends React.PureComponent<Props, State> {
             assignee={assignee}
             handleAssigneeFilterChange={this.handleAssigneeFilterChange}
           />
-          <GetIdeasCount feedbackNeeded={true} assignee={assignee === 'all' ? undefined : assignee}>
-            {ideasCount => (
-              <FeedbackToggle
-                value={feedbackNeededFilterActive}
-                onChange={this.handleToggleFeedbackNeededFilter}
-                feedbackNeededCount={isNilOrError(ideasCount.count) ? undefined : ideasCount.count}
-              />
-            )}
-          </GetIdeasCount>
+          <FeedbackToggle
+            value={feedbackNeededFilterActive}
+            onChange={this.handleToggleFeedbackNeededFilter}
+            assignee={assignee}
+          />
           <StyledExportMenu
             exportType={exportType}
             exportQueryParameter={exportQueryParameter}
