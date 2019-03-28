@@ -30,7 +30,6 @@ type Props = InputProps & DataProps;
 
 type State = {
   selectedValues: string[];
-  titleKey: number;
 };
 
 class SelectProjects extends PureComponent<Props, State> {
@@ -38,7 +37,6 @@ class SelectProjects extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       selectedValues: [],
-      titleKey: Math.floor(Math.random() * 10000000)
     };
   }
 
@@ -48,7 +46,7 @@ class SelectProjects extends PureComponent<Props, State> {
   }
 
   render() {
-    const { selectedValues, titleKey } = this.state;
+    const { selectedValues } = this.state;
     const { tenant, locale, projects } = this.props;
     const projectsList = projects.projectsList;
     let options: any = [];
@@ -67,7 +65,7 @@ class SelectProjects extends PureComponent<Props, State> {
         return (
           <FilterSelector
             id="e2e-project-filter-selector"
-            title={<FormattedMessage {...messages.projectFilterTitle} key={titleKey} />}
+            title={<FormattedMessage {...messages.projectFilterTitle} />}
             name="projects"
             selected={selectedValues}
             values={options}
