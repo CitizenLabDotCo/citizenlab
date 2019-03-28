@@ -40,11 +40,17 @@ class WebApi::V1::ClusteringsController < ApplicationController
     @ideas = @ideas.where('downvotes_count >= ?', pa[:minimal_downvotes]) if pa[:minimal_downvotes].present?
     @ideas = @ideas.where('(upvotes_count + downvotes_count) >= ?', pa[:minimal_total_votes]) if pa[:minimal_total_votes].present?
 
-    @clustering.structure = NLP::ClusteringService.new.build_structure(
-      pa[:levels],
-      @ideas,
-      options
-    )
+    begin
+      @clustering.structure = NLP::ClusteringService.new.build_structure(
+        pa[:levels],
+        @ideas,
+        options
+      )
+    rescue ClErrors::TransactionError => e
+      render json: { errors: { base: [{ error: e.error_key }] } }, status: :unprocessable_entity
+      skip_authorization
+      return
+    end
 
     authorize @clustering
 
