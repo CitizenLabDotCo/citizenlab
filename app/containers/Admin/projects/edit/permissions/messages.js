@@ -149,4 +149,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText',
     defaultMessage: 'here',
   },
+  selectGroups: {
+    id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
+    defaultMessage: 'Select group(s)',
+  },
 });
