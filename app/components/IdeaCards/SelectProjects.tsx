@@ -1,23 +1,18 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import localize, { InjectedLocalized } from 'utils/localize';
 
 type DataProps = {
-  tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
   projects: GetProjectsChildProps;
 };
 
@@ -32,7 +27,7 @@ type State = {
   selectedValues: string[];
 };
 
-class SelectProjects extends PureComponent<Props, State> {
+class SelectProjects extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props: Props) {
     super(props as any);
     this.state = {
@@ -47,16 +42,14 @@ class SelectProjects extends PureComponent<Props, State> {
 
   render() {
     const { selectedValues } = this.state;
-    const { tenant, locale, projects } = this.props;
+    const { projects, localize } = this.props;
     const projectsList = projects.projectsList;
     let options: any = [];
 
-    if (!isNilOrError(tenant) && locale && projectsList && projectsList.length > 0) {
-      const tenantLocales = tenant.attributes.settings.core.locales;
-
+    if (projectsList && projectsList.length > 0) {
       options = projectsList.map(project => {
         return {
-          text: getLocalized(project.attributes.title_multiloc, locale, tenantLocales),
+          text:  localize(project.attributes.title_multiloc),
           value: project.id
         };
       });
@@ -83,13 +76,13 @@ class SelectProjects extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
-  locale: <GetLocale />,
   projects: <GetProjects publicationStatuses={['published']} sort="new" />
 });
 
+const SelectProjectsWithLocalize = localize(SelectProjects);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SelectProjects {...dataProps} {...inputProps} />}
+    {dataProps => <SelectProjectsWithLocalize {...dataProps} {...inputProps} />}
   </Data>
 );
