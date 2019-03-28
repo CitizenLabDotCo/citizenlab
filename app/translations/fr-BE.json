@@ -647,6 +647,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Enregistrer",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Enregistré !",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Votre projet a été enregistré !",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Statut de publication",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Personnalisez votre projet. Vous pouvez changer tout à tout moment.",
   "app.containers.AdminPage.ProjectEdit.survey": "Enquête",

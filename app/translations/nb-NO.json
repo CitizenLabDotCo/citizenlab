@@ -647,6 +647,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Lagre",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Lagret!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Skjemaet ditt har blitt lagret!",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Publiseringsstatus",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Set up and personalise your project. Can be changed at anytime.",
   "app.containers.AdminPage.ProjectEdit.survey": "Undersøkelse",
