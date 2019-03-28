@@ -14,13 +14,15 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { imageSizes } from 'utils/imageTools';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+
 
 interface InputProps {
   projectSlug: string;
@@ -50,6 +52,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
           {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
             ${metaTitle}`}
         </title>
+        {getCanonicalLink(tenantLocales)}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={description} />

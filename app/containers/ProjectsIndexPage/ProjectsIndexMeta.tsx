@@ -7,7 +7,10 @@ import { adopt } from 'react-adopt';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+
+// utils
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -38,6 +41,7 @@ const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, te
           ${projectsIndexTitle}`
         }
       </title>
+      {getCanonicalLink(tenantLocales)}
       {getAlternateLinks(tenantLocales)}
       <meta name="title" content={projectsIndexTitle} />
       <meta name="description" content={projectsIndexDescription} />
