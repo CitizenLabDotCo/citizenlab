@@ -689,6 +689,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabel": "",
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "",
   "app.containers.AdminPage.ProjectEdit.typeform": "",
+  "app.containers.AdminPage.ProjectEdit.unassigned": "",
   "app.containers.AdminPage.ProjectEdit.unlimited": "",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "",
   "app.containers.AdminPage.ProjectEdit.votingEnabled": "",

@@ -277,7 +277,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                 }}
               />
             </SubSectionTitle>
-            <IdeaAssignment />
+            <IdeaAssignment projectId={projectId} />
           </StyledSection>
 
           <FeatureFlag name="granular_permissions">

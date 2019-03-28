@@ -689,6 +689,7 @@
   "app.containers.AdminPage.ProjectEdit.titleLabel": "Titel (verplicht)",
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Kies een korte, heldere en krachtige titel. Het wordt getoond op de projectkaarten op de homepagina en in de dropdown in de navbar.",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
+  "app.containers.AdminPage.ProjectEdit.unassigned": "",
   "app.containers.AdminPage.ProjectEdit.unlimited": "Onbeperkt",
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "Bekijk project",
   "app.containers.AdminPage.ProjectEdit.votingEnabled": "Stemmen",
