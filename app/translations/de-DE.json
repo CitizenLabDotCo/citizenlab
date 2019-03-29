@@ -680,6 +680,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "Speichern",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "Gespeichert!",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "Ihre Eingaben wurden gespeichert!",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "Veröffentlichungsstatus",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Set up and personalise your project. Can be changed at anytime.",
   "app.containers.AdminPage.ProjectEdit.survey": "Umfrage",
