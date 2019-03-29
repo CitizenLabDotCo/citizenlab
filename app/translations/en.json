@@ -236,7 +236,6 @@
   "app.components.admin.IdeaManager.IdeaPreview.upvoteCount": "Upvote count: {count}",
   "app.components.admin.IdeaManager.IdeaPreview.voteCounts": "Vote counts:",
   "app.components.admin.IdeaManager.allIdeas": "All ideas",
-  "app.components.admin.IdeaManager.allTheIdeas": "all the ideas",
   "app.components.admin.IdeaManager.anyAssignment": "All ideas",
   "app.components.admin.IdeaManager.anyFeedbackStatus": "All ideas",
   "app.components.admin.IdeaManager.assignedTo": "Assigned to {assigneeName}",

@@ -236,7 +236,6 @@
   "app.components.admin.IdeaManager.IdeaPreview.upvoteCount": "",
   "app.components.admin.IdeaManager.IdeaPreview.voteCounts": "",
   "app.components.admin.IdeaManager.allIdeas": "{orgName, select, München {Alle Meldungen} other {Alle Ideen}}",
-  "app.components.admin.IdeaManager.allTheIdeas": "",
   "app.components.admin.IdeaManager.anyAssignment": "",
   "app.components.admin.IdeaManager.anyFeedbackStatus": "",
   "app.components.admin.IdeaManager.assignedTo": "",
