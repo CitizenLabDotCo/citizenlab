@@ -135,8 +135,8 @@ const GoBackIcon = styled(Icon)`
 `;
 
 const GoBackButton = styled.div`
-  height: 43px;
-  width: 43px;
+  width: 45px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -28,12 +28,22 @@ import { FormikActions } from 'formik';
 import { CLErrorsJSON } from 'typings';
 
 const Container = styled.div`
+  &.child {
+    background: #fbfbfb;
+  }
+
+  &.hideBottomBorder {
+    border-bottom: none;
+  }
+`;
+
+const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding-top: 25px;
   padding-bottom: 25px;
-  border-bottom: solid 1px #ebebeb;
+  border-bottom: solid 1px #e8e8e8;
 
   &.parent {
     padding-left: 50px;
@@ -41,11 +51,8 @@ const Container = styled.div`
   }
 
   &.child {
+    margin-left: 100px;
     margin-right: 50px;
-  }
-
-  &.hideBottomBorder {
-    border-bottom: none;
   }
 `;
 
@@ -133,22 +140,24 @@ class Comment extends PureComponent<Props, State> {
       if (comment.attributes.publication_status === 'published') {
         return (
           <Container className={`${className} ${type} ${hideBottomBorder ? 'hideBottomBorder' : ''} e2e-comment`}>
-            <CommentHeader
-              commentId={commentId}
-            />
-            <CommentBody
-              commentBody={comment.attributes.body_multiloc}
-              editing={editing}
-              onCommentSave={this.onCommentSave}
-              onCancelEditing={this.onCancelEditing}
-              translateButtonClicked={translateButtonClicked}
-              commentId={commentId}
-            />
-            <CommentFooter
-              ideaId={ideaId}
-              commentId={commentId}
-              onEditing={this.onEditing}
-            />
+            <ContainerInner className={type}>
+              <CommentHeader
+                commentId={commentId}
+              />
+              <CommentBody
+                commentBody={comment.attributes.body_multiloc}
+                editing={editing}
+                onCommentSave={this.onCommentSave}
+                onCancelEditing={this.onCancelEditing}
+                translateButtonClicked={translateButtonClicked}
+                commentId={commentId}
+              />
+              <CommentFooter
+                ideaId={ideaId}
+                commentId={commentId}
+                onEditing={this.onEditing}
+              />
+            </ContainerInner>
           </Container>
         );
       }

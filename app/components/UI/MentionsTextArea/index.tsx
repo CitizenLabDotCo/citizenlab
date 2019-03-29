@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isString, isEmpty } from 'lodash-es';
 import { first } from 'rxjs/operators';
 
@@ -31,7 +31,7 @@ const Container: any = styled.div`
     &::placeholder {
       color: ${colors.clIconSecondary} !important;
       opacity: 1;
-      font-weight: ${(props: any) => props.placeholderFontWeight ? props.placeholderFontWeight : '300'} !important;
+      font-weight: ${(props: any) => props.placeholderFontWeight} !important;
     }
   }
 
@@ -44,17 +44,23 @@ const Container: any = styled.div`
 type Props = {
   id?: string;
   name: string;
-  value: string | null | undefined;
-  placeholder?: string | undefined;
+  value?: string | null;
+  placeholder?: string;
   rows: number;
-  ideaId?: string | undefined
-  padding?: string | undefined;
-  error?: string | null | undefined;
-  onChange?: (arg: string) => void | undefined;
-  onFocus?: () => void | undefined;
-  onBlur?: () => void | undefined;
-  fontSize?: number;
-  backgroundColor?: string;
+  ideaId?: string
+  error?: string | null;
+  onChange?: (arg: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+  color?: string;
+  fontSize?: string;
+  fontWeight?: string;
+  lineHeight?: string;
+  padding?: string;
+  border?: string;
+  borderRadius?: string;
+  boxShadow?: string;
+  background?: string;
   placeholderFontWeight?: string;
   ariaLabel?: string;
 };
@@ -64,8 +70,21 @@ type State = {
   mentionStyle: object | null;
 };
 
-export default class MentionsTextArea extends React.PureComponent<Props, State> {
+export default class MentionsTextArea extends PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
+
+  static defaultProps = {
+    color: colors.text,
+    fontSize: `${fontSizes.base}px`,
+    fontWeight: '400',
+    lineHeight: '24px',
+    padding: '24px',
+    border: 'solid 1px #ccc',
+    borderRadius: '5px',
+    boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
+    background: 'transparent',
+    placeholderFontWeight: '300'
+  };
 
   constructor(props: Props) {
     super(props as any);
@@ -78,10 +97,6 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
 
   componentDidMount() {
     const { rows } = this.props;
-    const lineHeight = 24;
-    const padding = (this.props.padding || '25px');
-    const fontSize = (this.props.fontSize || fontSizes.base);
-    const backgroundColor = (this.props.backgroundColor || 'transparent');
 
     const style = {
       '&multiLine': {
@@ -93,17 +108,18 @@ export default class MentionsTextArea extends React.PureComponent<Props, State> 
           WebkitAppearance: 'none'
         },
         input: {
-          padding,
           margin: 0,
-          color: colors.text,
-          fontSize: `${fontSize}px`,
-          lineHeight: `${lineHeight}px`,
-          minHeight: `${rows * lineHeight}px`,
+          padding: this.props.padding,
+          color: this.props.color,
+          fontSize: this.props.fontSize,
+          fontWeight: this.props.fontWeight,
+          lineHeight: this.props.lineHeight,
+          minHeight: `${rows * parseInt(this.props.lineHeight as string, 10)}px`,
           outline: 'none',
-          border: '1px solid #ccc',
-          borderRadius: '5px',
-          boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-          background: `${backgroundColor}`,
+          border: this.props.border,
+          borderRadius: this.props.borderRadius,
+          boxShadow: this.props.boxShadow,
+          background: this.props.background,
           appearance: 'none',
           WebkitAppearance: 'none'
         },

@@ -36,11 +36,12 @@ import { FormikActions } from 'formik';
 
 const Container = styled.div`
   margin-top: 38px;
-  border-radius: 5px;
   position: relative;
+  border-radius: 3px;
+  border: 1px solid #ebebeb;
+  box-sizing: border-box;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   background: #fff;
-  /* box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05); */
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const ParentCommentContainer = styled.div`
@@ -58,10 +59,6 @@ const DeletedIcon = styled(Icon)`
   height: 1em;
   margin-right: 1rem;
   width: 1em;
-`;
-
-const ChildCommentsContainer = styled.div`
-  margin-left: 100px;
 `;
 
 interface InputProps {
@@ -186,18 +183,14 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
             }
           </ParentCommentContainer>
 
-          {(childCommentIds && childCommentIds.length > 0) &&
-            <ChildCommentsContainer>
-              {childCommentIds.map((childCommentId, index) => {
-                return <Comment
-                  key={childCommentId}
-                  commentId={childCommentId}
-                  type="child"
-                  last={index === childCommentIds.length - 1}
-                />;
-              })}
-            </ChildCommentsContainer>
-          }
+          {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
+            <Comment
+              key={childCommentId}
+              commentId={childCommentId}
+              type="child"
+              last={index === childCommentIds.length - 1}
+            />
+          ))}
 
           {showCommentForm &&
             <ChildCommentForm ideaId={ideaId} parentId={commentId} />

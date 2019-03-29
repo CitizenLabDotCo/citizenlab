@@ -21,10 +21,25 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
-const Container = styled.div``;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-const UpvoteIconWrapper = styled.div`
+const UpvoteIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  fill: ${colors.label};
+
+  &.voted {
+    fill: #fff;
+  }
+`;
+
+const UpvoteIconWrapper = styled.button`
   width: 28px;
   height: 28px;
   display: flex;
@@ -33,51 +48,44 @@ const UpvoteIconWrapper = styled.div`
   border-radius: 50%;
   background: transparent;
   margin-top: -4px;
+  cursor: pointer;
+  transition: all 100ms ease;
 
   &.voted {
     background: ${colors.clGreen};
+
+    &:hover {
+      background: ${darken(0.1, colors.clGreen)};
+    }
+  }
+
+  &:not(.voted) {
+    &:hover {
+      ${UpvoteIcon} {
+        fill: #000;
+      }
+    }
   }
 `;
 
 const UpvoteCount = styled.div`
+  min-width: 12px;
   color: ${colors.label};
   margin-left: 4px;
-`;
 
-const UpvoteIcon = styled(Icon)`
-  width: 16px;
-  height: 16px;
-  fill: ${colors.label};
-
-  &.voted {
-    fill: #fff;
+  &.hide {
+    opacity: 0;
   }
 `;
 
-const UpvoteLabel = styled.div`
+const UpvoteLabel = styled.button`
   color: ${colors.label};
   margin-left: 10px;
-`;
-
-const UpvoteButton = styled.div`
-  display: flex;
-  align-items: center;
   cursor: pointer;
 
   &:hover {
-    ${UpvoteLabel} {
-      text-decoration: underline;
-    }
-
-    &:not(.voted) {
-      ${UpvoteIcon} {
-        fill: #000;
-      }
-
-      ${UpvoteLabel} {
-        color: #000;
-      }
-    }
+    color: #000;
+    text-decoration: underline;
   }
 `;
 
@@ -121,6 +129,9 @@ class CommentVote extends PureComponent<Props, State> {
     const prevUpvoteCount = get(prevProps.comment, 'attributes.upvotes_count');
     const upvoteCount = get(this.props.comment, 'attributes.upvotes_count');
 
+    // whener the upvote count number returned by the GetComment resource component has changed
+    // we update the value kept in the state to make sure we always use the 'correct' upvote count
+    // whenever it's being returned from the back-end
     if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
       this.setState({ upvoteCount });
     }
@@ -132,6 +143,10 @@ class CommentVote extends PureComponent<Props, State> {
     if (this.state.voted === true && !isNilOrError(prevProps.commentVote) && isNilOrError(this.props.commentVote)) {
       this.setState({ voted: false });
     }
+  }
+
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   onVote = async (event: MouseEvent) => {
@@ -172,17 +187,15 @@ class CommentVote extends PureComponent<Props, State> {
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteButton onClick={this.onVote} className={voted ? 'voted' : ''}>
-            <UpvoteIconWrapper className={voted ? 'voted' : ''}>
-              <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
-            </UpvoteIconWrapper>
-            {upvoteCount > 0 &&
-              <UpvoteCount>{upvoteCount}</UpvoteCount>
-            }
-            <UpvoteLabel>
-              {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
-            </UpvoteLabel>
-          </UpvoteButton>
+          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={voted ? 'voted' : ''}>
+            <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
+          </UpvoteIconWrapper>
+
+          <UpvoteCount className={upvoteCount === 0 ? 'hide' : ''}>{upvoteCount}</UpvoteCount>
+
+          <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
+            {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
+          </UpvoteLabel>
         </Container>
       );
     }

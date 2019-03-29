@@ -315,14 +315,17 @@ export function quillEditedContent(
     }
 
     .mention {
-      background: ${transparentize(0.91, colors.clBlueDark)};
+      text-decoration: none;
       padding-left: 4px;
       padding-right: 4px;
       padding-top: 2px;
       padding-bottom: 2px;
+      border-radius: 3px;
+      background: ${transparentize(0.91, colors.clBlueDark)};
       transition: background 100ms ease;
 
       &:hover {
+        text-decoration: none;
         background: ${transparentize(0.8, colors.clBlueDark)};
       }
     }
