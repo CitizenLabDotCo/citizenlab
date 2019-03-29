@@ -7,6 +7,7 @@ de:
       "admin_rights_received": Wenn mir Administratorrechte erteilt werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Kommentar als Spam markiert ist
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Wenn eine Idee als Spam markiert ist
       "invite_received": Wenn mich jemand auf die Plattform einlädt
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -40,6 +41,7 @@ de:
       "admin_rights_received": Wenn einem Benutzer Administratorrechte zugewiesen werden
       "comment_deleted_by_admin": Wenn ein Administrator meinen Kommentar löscht
       "comment_marked_as_spam": Wenn ein Benutzer einen Kommentar als Spam markiert (für Administratoren und Moderatoren)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Wenn ein Benutzer eine Idee als Spam markiert (für Administratoren und Moderatoren)
       "invite_received": Wenn ein Benutzer auf die Plattform eingeladen wird
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)

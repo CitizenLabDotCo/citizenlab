@@ -7,6 +7,7 @@ fr:
       "admin_rights_received": Je recois les droits d'administrateurs
       "comment_deleted_by_admin": Un admin supprime mon commentaire
       "comment_marked_as_spam": Un commentaire est marqué comme spam (pour les administrateurs et modérateurs)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Une idée est marquée comme spam (pour les administrateurs et modérateurs)
       "invite_received": Quelqu'un m’invite à la plate-forme
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -40,6 +41,7 @@ fr:
       "admin_rights_received": Je recois les droits d'administrateurs
       "comment_deleted_by_admin": Lorsqu'un admin supprime mon commentaire
       "comment_marked_as_spam": Lorsqu'un utilisateur marque un commentaire comme spam (pour administrateurs et modérateurs)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Lorsqu'un utilisateur marque un idée comme spam (pour administrateurs et modérateurs)
       "invite_received": Lorsqu’un utilisateur est invité sur la plate-forme
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
