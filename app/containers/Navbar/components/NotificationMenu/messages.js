@@ -112,4 +112,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
     defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
   },
+  ideaAssignedToYou: {
+    id: 'app.containers.NotificationMenu.ideaAssignedToYou',
+    defaultMessage: '{ideaTitle} was assigned to you',
+  },
 });
