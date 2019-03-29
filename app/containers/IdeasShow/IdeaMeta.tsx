@@ -127,7 +127,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
             ${ideaTitle}`
           }
         </title>
-        {getCanonicalLink(tenantLocales)}
+        {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />

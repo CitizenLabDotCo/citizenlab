@@ -41,7 +41,7 @@ const ProjectsMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, te
           ${projectsIndexTitle}`
         }
       </title>
-      {getCanonicalLink(tenantLocales)}
+      {getCanonicalLink()}
       {getAlternateLinks(tenantLocales)}
       <meta name="title" content={projectsIndexTitle} />
       <meta name="description" content={projectsIndexDescription} />
