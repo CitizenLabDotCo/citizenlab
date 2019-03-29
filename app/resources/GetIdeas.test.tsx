@@ -13,6 +13,7 @@ const ideasStream = ideasServices.ideasStream as jest.Mock;
 const __setMockIdeas = ideasServices.__setMockIdeas;
 
 jest.mock('services/ideas');
+jest.mock('services/projects');
 
 describe('<GetIdeas sort="new" />', () => {
 
