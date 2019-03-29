@@ -24,28 +24,3 @@ Array [
   },
 ]
 `;
-
-exports[`<RegistrationFieldsToGraphs /> processes options correctly 1`] = `
-Array [
-  Object {
-    "text": "All ideas",
-    "value": "all",
-  },
-  Object {
-    "text": "Assigned to admin1 Citizenlab",
-    "value": "admin1",
-  },
-  Object {
-    "text": "Assigned to admin2 Citizenlab",
-    "value": "admin2",
-  },
-  Object {
-    "text": "Assigned to admin3 Citizenlab",
-    "value": "admin3",
-  },
-  Object {
-    "text": "Assigned to me",
-    "value": "me",
-  },
-]
-`;

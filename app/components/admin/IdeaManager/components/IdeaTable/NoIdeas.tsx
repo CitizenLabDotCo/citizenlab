@@ -26,20 +26,16 @@ const NoIdeasPage = styled.div`
   }
 `;
 
-const SFormattedMessage = styled.div`
+const SimpleButton = styled.button`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
   font-size: ${fontSizes.small}px;
+  font-weight: bold;
+  text-decoration: underline;
+  outline: none;
 
-  button {
-    color: ${colors.adminSecondaryTextColor};
-    font-weight: bold;
-    text-decoration: underline;
-    outline: none;
-
-    &:hover {
-      color: ${darken(0.2, colors.adminSecondaryTextColor)};
-    }
+  &:hover {
+    color: ${darken(0.2, colors.adminSecondaryTextColor)};
   }
 `;
 
@@ -51,16 +47,8 @@ export default (props: Props) => (
   <NoIdeasPage>
     <Icon name="blankPage" />
     <FormattedMessage {...messages.noIdeasHere} />
-      <SFormattedMessage>
-        <FormattedMessage
-          {...messages.resetFilters}
-          values={{
-            allIdeasLink: (
-              <button onClick={props.handleSeeAllIdeas}>
-                <FormattedMessage {...messages.allTheIdeas} />
-              </button>),
-          }}
-        />
-      </SFormattedMessage>
+      <SimpleButton onClick={props.handleSeeAllIdeas}>
+        <FormattedMessage {...messages.resetFilters} />
+      </SimpleButton>
   </NoIdeasPage>
 );
