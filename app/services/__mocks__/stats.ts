@@ -15,6 +15,10 @@ export const ideasCount = jest.fn((_ideasCount) => {
   };
 });
 
+export function makeIdeasCount(count: number) {
+  return { count };
+}
+
 // usersByRegFieldStream
 let mockUsersByRegFieldsVariable: IUsersByRegistrationField | null = null;
 
