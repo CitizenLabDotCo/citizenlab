@@ -62,8 +62,14 @@ const Separator = styled.div`
   margin-right: 12px;
 `;
 
-const ReplyButton = styled.div`
+const ReplyButton = styled.button`
   color: ${colors.label};
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
 `;
 
 const Right = styled.div`
@@ -114,8 +120,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onEditing();
   }
 
-  onUpvote = () => {
-
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
   }
 
   render() {
@@ -148,7 +154,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             <Left>
               <CommentVote commentId={comment.id} />
               <Separator>•</Separator>
-              <ReplyButton>
+              <ReplyButton onMouseDown={this.removeFocus}>
                 <FormattedMessage {...messages.commentReplyButton} />
               </ReplyButton>
             </Left>

@@ -62,33 +62,35 @@ const VoteIconContainer: any = styled.div`
   ` : css``}
 
   ${(props: any) => props.size === '2' ? css`
-    width: 51px;
-    height: 51px;
+    width: 48px;
+    height: 48px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
-    width: 55px;
-    height: 55px;
+    width: 52px;
+    height: 52px;
   ` : css``}
 `;
 
-const VoteIcon: any = styled(Icon) `
+const VoteIcon: any = styled(Icon)`
+  width: 19px;
   height: 19px;
   fill: ${colors.label};
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === '1' ? css`
-    height: 16px;
+    width: 17px;
+    height: 17px;
   ` : css``}
 
   ${(props: any) => props.size === '2' ? css`
-    height: 18px;
-    width: 20px;
+    width: 19px;
+    height: 19px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
-    height: 20px;
-    width: 23px;
+    width: 21px;
+    height: 21px;
   ` : css``}
 `;
 
@@ -127,7 +129,7 @@ const Vote: any = styled.div`
 `;
 
 const Upvote = Vote.extend`
-  margin-right: 12px;
+  margin-right: 7px;
 
   &:not(.enabled) {
     ${VoteCount} {

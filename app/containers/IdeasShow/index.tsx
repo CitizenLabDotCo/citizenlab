@@ -71,6 +71,8 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
+const maxPageWidth = '800px';
+
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
 const loadingDelay = 100;
@@ -131,7 +133,7 @@ const Container = styled.div`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: ${maxPageWidth};
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -318,9 +320,11 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
+  /*
   position: sticky;
   top: 95px;
   align-self: flex-start;
+  */
 
   ${media.smallerThanMaxTablet`
     display: none;
@@ -435,7 +439,7 @@ const FooterHeader = styled.div``;
 
 const FooterHeaderInner = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: ${maxPageWidth};
   display: flex;
   margin-left: auto;
   margin-right: auto;
@@ -450,7 +454,7 @@ const FooterHeaderTab = styled.div`
   justify-content: center;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  padding: 18px 22px;
+  padding: 16px 22px;
   border: solid 1px #e2e2e2;
   border-bottom: none;
   background: #fff;
@@ -464,13 +468,13 @@ const CommentsIcon = styled(Icon)`
 
 const FooterContent = styled.div`
   width: 100%;
-  background: ${colors.background};
+  background: #f8f8f9;
   border-top: solid 1px #e2e2e2;
 `;
 
 const FooterContentInner = styled.div`
   width: 100%;
-  max-width: 820px;
+  max-width: ${maxPageWidth};
   display: flex;
   flex-direction: column;
   margin-left: auto;
@@ -629,7 +633,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-// ---------------describes idea to determine what to show---------------
+  // describes idea to determine what to show
   getActionsInfos = () => {
     const { project, phases, idea } = this.props;
 
@@ -705,10 +709,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     });
   }
 
-  onTitleTranslationLoaded = () => this.setState({ titleTranslationLoading: false });
-  onBodyTranslationLoaded = () => this.setState({ bodyTranslationLoading: false });
+  onTitleTranslationLoaded = () => {
+    this.setState({ titleTranslationLoading: false });
+  }
 
-// ---------------Render---------------
+  onBodyTranslationLoaded = () => {
+    this.setState({ bodyTranslationLoading: false });
+  }
+
   render() {
     const {
       inModal,
@@ -767,6 +775,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         showBudgetControl,
         showVoteControl
       } = this.getActionsInfos();
+
+      console.log(idea);
 
       content = (
         <>
@@ -993,7 +1003,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
               <FooterHeaderInner>
                 <FooterHeaderTab>
                   <CommentsIcon name="comments" />
-                  Comments (999)
+                  <FormattedMessage {...messages.commentsWithCount} values={{ count: idea.attributes.comments_count }} />
                 </FooterHeaderTab>
               </FooterHeaderInner>
             </FooterHeader>

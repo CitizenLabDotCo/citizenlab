@@ -120,11 +120,11 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
+  width: 30px;
+  height: 19px;
   fill: ${colors.label};
-  height: 21px;
   margin-right: 5px;
   margin-top: 2px;
-  width: 30px;
 `;
 
 const CommentCount = styled.div`
