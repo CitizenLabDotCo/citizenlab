@@ -28,7 +28,7 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
       <NotificationWrapper
         linkTo={`/ideas/${notification.attributes.idea_slug}`}
         timing={notification.attributes.created_at}
-        icon="admin"
+        icon="idea2"
         isRead={!!notification.attributes.read_at}
       >
         <FormattedMessage
