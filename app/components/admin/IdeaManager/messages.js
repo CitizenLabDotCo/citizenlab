@@ -171,10 +171,6 @@ export default defineMessages({
   },
   resetFilters: {
     id: 'app.components.admin.IdeaManager.resetFilters',
-    defaultMessage: 'Reset the filters to see {allIdeasLink}',
+    defaultMessage: 'Reset the filters to see all the ideas',
   },
-  allTheIdeas: {
-    id: 'app.components.admin.IdeaManager.allTheIdeas',
-    defaultMessage: 'all the ideas',
-  }
 });

@@ -308,8 +308,10 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 }
 
-export default ((props: InputProps) => (
+const WrappedIdeaEdit = ((props: InputProps) => (
   <GetResourceFileObjects resourceId={props.ideaId} resourceType="idea">
     {remoteIdeaFiles => <IdeaEdit {...props} remoteIdeaFiles={remoteIdeaFiles} />}
   </GetResourceFileObjects>
 ));
+
+export default WrappedIdeaEdit;

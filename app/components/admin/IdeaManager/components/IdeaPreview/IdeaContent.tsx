@@ -5,12 +5,23 @@ import { adopt } from 'react-adopt';
 // components
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import IdeaHeader from 'containers/IdeasShow/IdeaHeader';
+import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
+import Comments from 'containers/IdeasShow/Comments';
+import FileAttachments from 'components/UI/FileAttachments';
+import Icon from 'components/UI/Icon';
+import IdeaSettings from './IdeaSettings';
+import VotePreview from './VotePreview';
+import InfoTooltip from 'components/admin/InfoTooltip';
+import Button from 'components/UI/Button';
+import { Top, Content, Container } from '.';
 
 // utils
 import { get, trimEnd } from 'lodash-es';
 import linkifyHtml from 'linkifyjs/html';
 
 // resources
+import IdeaBody from 'containers/IdeasShow/IdeaBody';
+import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
@@ -29,18 +40,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import IdeaBody from 'containers/IdeasShow/IdeaBody';
-import IdeaMap from 'containers/IdeasShow/IdeaMap';
 import { darken } from 'polished';
-import Icon from 'components/UI/Icon';
-import OfficialFeedback from 'containers/IdeasShow/OfficialFeedback';
-import Comments from 'containers/IdeasShow/Comments';
-import VotePreview from './VotePreview';
-import FileAttachments from 'components/UI/FileAttachments';
-import InfoTooltip from 'components/admin/InfoTooltip';
-import Button from 'components/UI/Button';
-import { Top, Content, Container } from '.';
-import IdeaSettings from './IdeaSettings';
 
 const Row = styled.div`
   display: flex;
@@ -376,8 +376,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));
 
-export default (inputProps: InputProps) => (
+const WrappedIdeaContent = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaContentWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default WrappedIdeaContent;
