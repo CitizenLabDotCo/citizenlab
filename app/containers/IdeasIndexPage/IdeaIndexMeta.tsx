@@ -41,7 +41,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenant
         }
       </title>
       {getAlternateLinks(tenantLocales)}
-      {getCanonicalLink(tenantLocales)}
+      {getCanonicalLink()}
       <meta name="title" content={ideasIndexTitle} />
       <meta name="description" content={ideasIndexDescription} />
       <meta property="og:title" content={ideasIndexTitle} />

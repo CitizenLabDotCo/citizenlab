@@ -23,7 +23,6 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-
 interface InputProps {
   projectSlug: string;
 }
@@ -52,7 +51,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
           {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
             ${metaTitle}`}
         </title>
-        {getCanonicalLink(tenantLocales)}
+        {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={description} />

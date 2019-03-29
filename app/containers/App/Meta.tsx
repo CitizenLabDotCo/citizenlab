@@ -61,7 +61,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
             ${metaTitle}`}
         </title>
         {/* https://github.com/nfl/react-helmet/issues/279 href comes first! */}
-        {getCanonicalLink(tenantLocales)}
+        {getCanonicalLink()}
         {tenantLocales.map(loc => <link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />

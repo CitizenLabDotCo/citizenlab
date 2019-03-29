@@ -63,7 +63,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUse
             ${usersShowPageIndexTitle}`
           }
         </title>
-        {getCanonicalLink(tenantLocales)}
+        {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={usersShowPageIndexTitle} />
         <meta name="description" content={usersShowPageDescription} />
