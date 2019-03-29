@@ -599,6 +599,24 @@ export interface IProjectPhaseUpcomingNotificationData extends IBaseNotification
   };
 }
 
+export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationData {
+  attributes: {
+    type: 'idea_assigned_to_you';
+    read_at: string | null;
+    created_at: string;
+    idea_title_multiloc: Multiloc;
+    idea_slug: string;
+  };
+  relationships: {
+    project: {
+      data?: {
+        id: string;
+        type: string;
+      }
+    }
+  };
+}
+
 export type TNotificationData =
   ICommentOnYourCommentNotificationData |
   ICommentOnYourIdeaNotificationData |
@@ -617,7 +635,8 @@ export type TNotificationData =
   IOfficialFeedbackOnCommentedIdeaNotificationData |
   IMentionInOfficialFeedbackNotificationData |
   IProjectPhaseStartedNotificationData |
-  IProjectPhaseUpcomingNotificationData;
+  IProjectPhaseUpcomingNotificationData |
+  IIdeaAssignedToYouNotificationData;
 
 export interface INotificationLinks {
   self: string;
