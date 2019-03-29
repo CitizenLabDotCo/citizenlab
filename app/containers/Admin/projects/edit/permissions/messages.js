@@ -165,4 +165,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.unassigned',
     defaultMessage: 'Unassigned',
   },
+  selectGroups: {
+    id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
+    defaultMessage: 'Select group(s)',
+  }
 });

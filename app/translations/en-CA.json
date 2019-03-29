@@ -680,6 +680,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "",
   "app.containers.AdminPage.ProjectEdit.survey": "",
