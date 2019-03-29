@@ -142,7 +142,7 @@ class User < ApplicationRecord
   end
 
   def display_name
-    [first_name, last_name].join(" ")
+    [first_name, last_name].compact.join(" ")
   end
 
   def admin?
