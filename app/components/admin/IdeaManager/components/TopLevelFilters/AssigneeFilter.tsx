@@ -32,7 +32,7 @@ interface State {
   assigneeOptions: IOption[];
 }
 
-class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
+export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,7 +59,6 @@ class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
       }
     }
-
     return nextState;
   }
 
