@@ -14,7 +14,9 @@ module Notifications
       initiator = idea.author
       
       if initiator && !(initiator&.admin? || initiator.project_moderator?(idea.project_id))
-        User.admin.or(User.project_moderator(idea.project_id)).map do |recipient|
+        User.admin.or(User.project_moderator(idea.project_id)).select do |recipient|
+          recipient&.id != idea&.assignee_id
+        end.map do |recipient|
           self.create(
            recipient_id: recipient.id,
            initiating_user: initiator,
