@@ -86,7 +86,7 @@ interface Props extends InputProps, DataProps {}
 
 type State = {};
 
-class FeedbackToggle extends React.PureComponent<Props, State> {
+export class FeedbackToggle extends React.PureComponent<Props, State> {
   handleOnClick = (event) => {
     this.props.onChange(event);
   }
@@ -100,7 +100,7 @@ class FeedbackToggle extends React.PureComponent<Props, State> {
           <FormattedMessage {...messages.anyFeedbackStatus} />
         </StyledLabel>
         <ToggleContainer onClick={this.handleOnClick} checked={value}>
-          <input type="checkbox" role="checkbox" aria-checked={value} />
+          <input type="checkbox" role="checkbox" aria-checked={value}/>
           <i />
         </ToggleContainer>
         <StyledLabel onClick={this.handleOnClick}>
