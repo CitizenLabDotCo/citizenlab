@@ -60,7 +60,6 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
           {`${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
             ${metaTitle}`}
         </title>
-        {/* https://github.com/nfl/react-helmet/issues/279 href comes first! */}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
