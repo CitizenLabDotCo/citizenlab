@@ -1120,6 +1120,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Kommentaren din på '{ideaTitle} har blitt slettet av en admin fordi {reasonCode, select, irrelevant {it is irrelevant} inappropriate {its content is inappropriate} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Slettet bruker",
   "app.containers.NotificationMenu.error": "Kunne ikke laste inn varsler",
+  "app.containers.NotificationMenu.ideaAssignedToYou": "",
   "app.containers.NotificationMenu.loadMore": "Last inn mer...",
   "app.containers.NotificationMenu.loading": "Laster inn varsler...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nevnte deg i en kommentar",
