@@ -10,7 +10,7 @@ jest.mock('services/users');
 jest.mock('services/auth');
 import { intl } from 'utils/cl-intl';
 
-describe('<RegistrationFieldsToGraphs />', () => {
+describe('<AssigneeFilter />', () => {
   let handleAssigneeFilterChange: jest.Mock;
   beforeEach(() => {
     handleAssigneeFilterChange = jest.fn();
