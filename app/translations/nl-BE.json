@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reageer ...",
   "app.containers.IdeasShow.closeMap": "Sluit kaart",
   "app.containers.IdeasShow.commentBodyPlaceholder": "Wat vind jij van dit idee?",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "Verwijder",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "Deze reactie werd verwijderd.",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Behoud mijn reactie",

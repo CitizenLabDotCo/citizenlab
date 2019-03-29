@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Write a reply...",
   "app.containers.IdeasShow.closeMap": "Close Map",
   "app.containers.IdeasShow.commentBodyPlaceholder": "What do you think about this idea?",
+  "app.containers.IdeasShow.commentCancelUpvote": "Cancel",
   "app.containers.IdeasShow.commentDeleteButton": "Delete",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "This comment has been deleted.",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Keep my comment",
