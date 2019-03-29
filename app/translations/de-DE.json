@@ -1038,6 +1038,7 @@
   "app.containers.IdeasShow.childCommentBodyPlaceholder": "Reagieren...",
   "app.containers.IdeasShow.closeMap": "Karte schließen",
   "app.containers.IdeasShow.commentBodyPlaceholder": "{orgName, select, München {Was halten Sie von dieser Mängelmeldung oder diesem Anliegen?} other {Was halten Sie von dieser Idee?}}",
+  "app.containers.IdeasShow.commentCancelUpvote": "",
   "app.containers.IdeasShow.commentDeleteButton": "Löschen",
   "app.containers.IdeasShow.commentDeletedPlaceholder": "Dieser Kommentar wurde gelöscht.",
   "app.containers.IdeasShow.commentDeletionCancelButton": "Meinen Kommentar beibehalten",
