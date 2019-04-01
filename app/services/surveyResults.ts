@@ -1,5 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import { requestBlob } from 'utils/request';
+import { saveAs } from 'file-saver';
 
 export const exportSurveyResults = async (
   queryParameter: { type: 'projects' | 'phases', id: string },

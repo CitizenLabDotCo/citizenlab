@@ -34,6 +34,7 @@ export default class ExportSurveyButton extends React.PureComponent<Props, State
   setExporting = () => {
     this.setState({ exporting: true });
   }
+
   removeExporting = () => {
     this.setState({ exporting: false });
   }
