@@ -3,6 +3,7 @@ import { indexOf, isString, forEach, findIndex } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import moment from 'moment';
+import bowser from 'bowser';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -49,10 +50,6 @@ const ContainerInner = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 5px;
-
-  * {
-    user-select: none;
-  }
 `;
 
 const Header = styled.div`
@@ -130,6 +127,10 @@ const PhaseNumberWrapper = styled.div`
   &.present {
     background: ${greenOpaque};
   }
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const PhaseNumber = styled.div`
@@ -140,13 +141,18 @@ const PhaseNumber = styled.div`
 `;
 
 const HeaderTitleWrapper = styled.div`
-  height: 55px;
+  min-height: 55px;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
   display: flex;
   align-items: center;
   flex-direction: row;
+
+  &.ie {
+    height: 55px;
+    min-height: auto;
+  }
 
   ${media.smallerThanMinTablet`
     min-height: 80px;
@@ -261,7 +267,7 @@ const Phases = styled.div`
 
 const phaseBarHeight = '25px';
 
-const PhaseBar: any = styled.div`
+const PhaseBar: any = styled.button`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
   color: #fff;
@@ -273,7 +279,10 @@ const PhaseBar: any = styled.div`
   background: ${greyTransparent};
   transition: background 60ms ease-out;
   position: relative;
-  user-select: none;
+  cursor: pointer;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 `;
 
 const PhaseArrow = styled(Icon)`
@@ -284,6 +293,10 @@ const PhaseArrow = styled(Icon)`
   top: 0px;
   right: -9px;
   z-index: 2;
+
+  ${media.smallerThanMaxTablet`
+    fill: ${colors.background};
+  `}
 `;
 
 const PhaseText: any = styled.div`
@@ -301,7 +314,6 @@ const PhaseText: any = styled.div`
   margin-top: 12px;
   padding-left: 6px;
   padding-right: 6px;
-  user-select: none;
   transition: color 60ms ease-out;
 `;
 
@@ -339,6 +351,7 @@ const PhaseContainer: any = styled.div`
     border-radius: 0px 5px 5px 0px;
   }
 
+  &:focus,
   &:hover {
     ${selectedPhaseBar}
   }
@@ -495,6 +508,10 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
     this.setSelectedPhase(prevPhase);
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const { className } = this.props;
     const { locale, currentTenant, phases, currentPhaseId, selectedPhaseId } = this.state;
@@ -528,7 +545,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                       </PhaseNumberWrapper>
                     }
 
-                    <HeaderTitleWrapper>
+                    <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
                       <HeaderTitle className={`${isSelected && 'selected'} ${phaseStatus}`}>
                         {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
                       </HeaderTitle>
@@ -623,6 +640,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps, State> {
                     className={`${isFirst && 'first'} ${isLast && 'last'} ${isCurrentPhase && 'currentPhase'} ${isSelectedPhase && 'selectedPhase'}`}
                     key={index}
                     numberOfDays={numberOfDays}
+                    onMouseDown={this.removeFocus}
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>

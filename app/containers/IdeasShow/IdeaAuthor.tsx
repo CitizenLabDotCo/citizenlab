@@ -17,18 +17,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedRelative } from 'react-intl';
 import messages from './messages';
 
-const AuthorContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const AuthorAndAdressWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
   margin-bottom: 25px;
 `;
 
@@ -51,12 +42,12 @@ const AuthorNameWrapper = styled.div`
 `;
 
 const AuthorName = styled(Link)`
-  color: ${colors.clBlueDark};
+  color: ${({ theme }) => theme.colorText};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${({ theme }) => darken(0.15, theme.colorText)};
     text-decoration: underline;
   }
 `;
@@ -85,7 +76,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = (props: Props) => {
+const IdeaAuthor = React.memo<Props>((props: Props) => {
 
   const goToUserProfile = () => {
     const { author } = props;
@@ -94,39 +85,41 @@ const IdeaAuthor = (props: Props) => {
       clHistory.push(`/profile/${author.attributes.slug}`);
     }
   };
+
+  const noop = () => {};
+
   const { ideaId, ideaCreatedAt, authorId, author } = props;
+
   return (
-    <AuthorAndAdressWrapper>
-      <AuthorContainer>
-        <Avatar
-          userId={authorId}
-          size="40px"
-          onClick={authorId ? goToUserProfile : () => { }}
-        />
-        <AuthorMeta>
-          <AuthorNameWrapper>
-            <FormattedMessage
-              {...messages.byAuthorName}
-              values={{
-                authorName: (
-                  <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-                    <UserName user={!isNilOrError(author) ? author : null} />
-                  </AuthorName>
-                )
-              }}
-            />
-          </AuthorNameWrapper>
-          {ideaCreatedAt &&
-            <TimeAgo>
-              <FormattedRelative value={ideaCreatedAt} />
-              <Activities ideaId={ideaId} />
-            </TimeAgo>
-          }
-        </AuthorMeta>
-      </AuthorContainer>
-    </AuthorAndAdressWrapper>
+    <Container>
+      <Avatar
+        userId={authorId}
+        size="40px"
+        onClick={authorId ? goToUserProfile : noop}
+      />
+      <AuthorMeta>
+        <AuthorNameWrapper>
+          <FormattedMessage
+            {...messages.byAuthorName}
+            values={{
+              authorName: (
+                <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
+                  <UserName user={!isNilOrError(author) ? author : null} />
+                </AuthorName>
+              )
+            }}
+          />
+        </AuthorNameWrapper>
+        {ideaCreatedAt &&
+          <TimeAgo>
+            <FormattedRelative value={ideaCreatedAt} />
+            <Activities ideaId={ideaId} />
+          </TimeAgo>
+        }
+      </AuthorMeta>
+    </Container>
   );
-};
+});
 
 export default (inputProps: InputProps) => (
   <GetUser id={inputProps.authorId}>

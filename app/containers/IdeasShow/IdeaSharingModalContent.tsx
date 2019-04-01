@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -125,7 +125,7 @@ interface Tracks {
   sharingModalOpened: Function;
 }
 
-class IdeaSharingModalContent extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+class IdeaSharingModalContent extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
   componentDidMount() {
     this.props.sharingModalOpened();
   }

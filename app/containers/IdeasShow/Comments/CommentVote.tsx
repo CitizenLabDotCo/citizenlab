@@ -33,6 +33,7 @@ const UpvoteIcon = styled(Icon)`
   height: 18px;
   flex: 0 0 18px;
   fill: ${colors.label};
+  margin-top: -1px;
 
   &.voted {
     fill: #fff;
@@ -40,8 +41,8 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const UpvoteIconWrapper = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 29px;
+  height: 29px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,13 +70,8 @@ const UpvoteIconWrapper = styled.button`
 `;
 
 const UpvoteCount = styled.div`
-  min-width: 12px;
   color: ${colors.label};
   margin-left: 4px;
-
-  &.hide {
-    opacity: 0;
-  }
 `;
 
 const UpvoteLabel = styled.button`
@@ -191,7 +187,9 @@ class CommentVote extends PureComponent<Props, State> {
             <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
           </UpvoteIconWrapper>
 
-          <UpvoteCount className={upvoteCount === 0 ? 'hide' : ''}>{upvoteCount}</UpvoteCount>
+          {upvoteCount > 0 &&
+            <UpvoteCount>{upvoteCount}</UpvoteCount>
+          }
 
           <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
             {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}

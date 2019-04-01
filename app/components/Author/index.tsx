@@ -45,32 +45,33 @@ const AuthorContainer: any = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: 7px;
+  margin-right: 6px;
 `;
 
 const AuthorMeta = styled.div``;
 
 const AuthorNameContainer = styled.div`
-  color: ${colors.text};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
-  line-height: 23px;
+  line-height: 16px;
   font-weight: 400;
   text-decoration: none;
   hyphens: manual;
 `;
 
 const AuthorNameLink: any = styled(Link)`
-  color: ${colors.clBlueDark};
+  color: ${({ theme }) => theme.colorText};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${({ theme }) => darken(0.15, theme.colorText)};
     text-decoration: underline;
   }
 
   &.canModerate {
     color: ${colors.clRed};
+
     &:hover {
       color: ${darken(0.15, colors.clRed)};
     }
@@ -80,9 +81,9 @@ const AuthorNameLink: any = styled(Link)`
 const TimeAgo = styled.div`
   color: ${colors.label};
   font-weight: 300;
-  margin-top: 1px;
   font-size: ${fontSizes.small}px;
   line-height: 17px;
+  margin-top: 2px;
 `;
 
 export interface InputProps {
@@ -153,6 +154,7 @@ class Author extends PureComponent<Props, State> {
                 />
               ) : authorNameComponent}
             </AuthorNameContainer>
+
             {createdAt &&
               <TimeAgo>
                 <FormattedRelative value={createdAt} />

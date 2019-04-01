@@ -11,14 +11,8 @@ const Container = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  outline: none;
   display: flex;
   align-items: center;
-
-  * {
-    outline: none;
-    user-select: none;
-  }
 `;
 
 const Content: any = styled(clickOutside)`
@@ -86,7 +80,7 @@ export interface Props {
   backgroundColor: string;
   borderColor?: string;
   textColor?: string;
-  onClickOutside: (Event) => void;
+  onClickOutside: (event) => void;
   dropdownOpened: boolean;
   className?: string;
 }

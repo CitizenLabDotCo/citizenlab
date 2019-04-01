@@ -10,7 +10,7 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-import HasPermission from 'components/HasPermission';
+// import HasPermission from 'components/HasPermission';
 
 // components
 import ParentCommentForm from './ParentCommentForm';

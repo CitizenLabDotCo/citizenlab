@@ -123,6 +123,11 @@ const ShortFeedback: any = styled.div`
     top: -42px;
     left: 0px;
   `}
+
+  ${media.smallerThanMinTablet`
+    border-top: 1px solid ${({ theme }) => rgba(theme.colorText, 0.2)};
+    border-bottom: 1px solid ${({ theme }) => rgba(theme.colorText, 0.2)};
+  `}
 `;
 
 const ShortFeedbackInner: any = styled.div`

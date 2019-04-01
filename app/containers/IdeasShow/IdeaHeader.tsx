@@ -95,8 +95,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaHeader = (props: Props) => {
+const IdeaHeader = React.memo<Props>((props: Props) => {
   const { ideaId, ideaTitle, project, locale, translateButtonClicked, onTranslationLoaded } = props;
+
   return (
     <HeaderWrapper>
       {!isNilOrError(project) &&
@@ -131,7 +132,7 @@ const IdeaHeader = (props: Props) => {
       </Header>
     </HeaderWrapper>
   );
-};
+});
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>

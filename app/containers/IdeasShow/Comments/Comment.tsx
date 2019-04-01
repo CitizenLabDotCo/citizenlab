@@ -41,7 +41,7 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding-top: 25px;
+  padding-top: 28px;
   padding-bottom: 25px;
   border-bottom: solid 1px #e8e8e8;
 

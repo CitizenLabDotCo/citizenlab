@@ -28,7 +28,7 @@ const vote = keyframes`
   }
 
   50% {
-    transform: scale3d(1.2, 1.2, 1.2);
+    transform: scale3d(1.25, 1.25, 1.25);
   }
 
   to {
@@ -53,7 +53,7 @@ const VoteIconContainer: any = styled.div`
   border-radius: 50%;
   border: solid 1px ${lighten(0.4, colors.label)};
   background: #fff;
-  transition: all 100ms ease-out;
+  transition: all 60ms ease-out;
   will-change: transform;
 
   ${(props: any) => props.size === '1' ? css`
@@ -79,13 +79,13 @@ const VoteIcon: any = styled(Icon)`
   transition: all 100ms ease-out;
 
   ${(props: any) => props.size === '1' ? css`
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
   ` : css``}
 
   ${(props: any) => props.size === '2' ? css`
-    width: 19px;
-    height: 19px;
+    width: 20px;
+    height: 20px;
   ` : css``}
 
   ${(props: any) => props.size === '3' ? css`
@@ -98,13 +98,25 @@ const VoteCount = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  margin-left: 5px;
-  transition: all 100ms ease-out;
-`;
-
-const Vote: any = styled.div`
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+  margin-left: 5px;
+  transition: all 100ms ease-out;
+
+  &:not(.enabled) {
+    margin-left: 3px;
+  }
+`;
+
+const Vote: any = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 
   &.voteClick ${VoteIconContainer} {
     animation: ${vote} 350ms;
@@ -129,7 +141,7 @@ const Vote: any = styled.div`
 `;
 
 const Upvote = Vote.extend`
-  margin-right: 7px;
+  margin-right: 8px;
 
   &:not(.enabled) {
     ${VoteCount} {
@@ -147,7 +159,7 @@ const Upvote = Vote.extend`
   }
 
   ${VoteCount} {
-    min-width: 15px;
+    min-width: 20px;
     margin-right: 5px;
     ${props => props.active && `color: ${colors.clGreen};`}
   }
@@ -482,6 +494,10 @@ export default class VoteControl extends PureComponent<Props, State> {
     return (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const className = this.props['className'];
     const { size } = this.props;
@@ -503,6 +519,7 @@ export default class VoteControl extends PureComponent<Props, State> {
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
         <Upvote
           active={myVoteMode === 'up'}
+          onMouseDown={this.removeFocus}
           onClick={this.onClickUpvote}
           innerRef={this.setUpvoteRef}
           className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
@@ -512,10 +529,11 @@ export default class VoteControl extends PureComponent<Props, State> {
           <VoteIconContainer size={size}>
             <VoteIcon name="upvote-2" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
-          <VoteCount>{upvotesCount}</VoteCount>
+          <VoteCount className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
         </Upvote>
         <Downvote
           active={myVoteMode === 'down'}
+          onMouseDown={this.removeFocus}
           onClick={this.onClickDownvote}
           innerRef={this.setDownvoteRef}
           className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
@@ -525,7 +543,7 @@ export default class VoteControl extends PureComponent<Props, State> {
           <VoteIconContainer size={size}>
             <VoteIcon name="downvote-2" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
-          <VoteCount>{downvotesCount}</VoteCount>
+          <VoteCount className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
         </Downvote>
       </Container>
     );
