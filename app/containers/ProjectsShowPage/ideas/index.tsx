@@ -25,6 +25,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
+  background: ${colors.background};
 `;
 
 const StyledContentContainer = styled(ContentContainer)`

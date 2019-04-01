@@ -39,6 +39,11 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    background: ${colors.background};
+  `}
+
+  ${media.biggerThanMinTablet`
+    min-height: 1000px;
   `}
 `;
 

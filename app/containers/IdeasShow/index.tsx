@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, trimEnd } from 'lodash-es';
+import { has, isString, sortBy, last, get, isEmpty, isUndefined, trimEnd } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
@@ -539,8 +539,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   componentDidMount() {
-    this.setOpened();
-    this.setLoaded();
     const authUser$ = authUserStream().observable;
     const query = clHistory.getCurrentLocation().query;
     const urlHasNewIdeaQueryParam = has(query, 'new_idea_id');
@@ -548,6 +546,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       id: get(query, 'new_idea_id'),
       publish: get(query, 'publish')
     }) : of(null);
+
+    this.setOpened();
+    this.setLoaded();
 
     this.subscriptions = [
       combineLatest(
@@ -577,23 +578,26 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setLoaded();
   }
 
-  setOpened() {
-    const { idea } = this.props;
-    if (!this.state.opened && idea !== undefined) this.setState({ opened: true });
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
-  setLoaded() {
-    const { idea, ideaImages, project } = this.props;
-    if (!this.state.loaded
-      && idea !== undefined
-      && ideaImages !== undefined
-      && project !== undefined
-      ) {
-      this.setState({ loaded: true });
+
+  setOpened() {
+    const { opened } = this.state;
+    const { idea } = this.props;
+
+    if (!opened && !isUndefined(idea)) {
+      this.setState({ opened: true });
     }
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  setLoaded() {
+    const { loaded } = this.state;
+    const { idea, ideaImages, project } = this.props;
+
+    if (!loaded && !isUndefined(idea) && !isUndefined(ideaImages) && !isUndefined(project)) {
+      this.setState({ loaded: true });
+    }
   }
 
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
@@ -607,10 +611,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   handleMapToggle = () => {
-    this.setState((state) => {
-      const showMap = !state.showMap;
-      return { showMap };
-    });
+    this.setState(({ showMap }) => ({ showMap: !showMap }));
   }
 
   openSpamModal = () => {
@@ -775,8 +776,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         showBudgetControl,
         showVoteControl
       } = this.getActionsInfos();
-
-      console.log(idea);
 
       content = (
         <>

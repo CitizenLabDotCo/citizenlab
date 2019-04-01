@@ -28,7 +28,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 `;
 
 const Left = styled.div`
@@ -47,12 +47,10 @@ const StyledAuthor = styled(Author)`
 
 const TimeAgo = styled.div`
   color: ${colors.label};
-  font-weight: 300;
-  margin-top: 1px;
-  margin-left: 12px;
   font-size: ${fontSizes.small}px;
+  line-height: 14px;
   font-weight: 400;
-  line-height: normal;
+  margin-left: 16px;
 `;
 
 const AdminBadge = styled.span`
@@ -67,7 +65,6 @@ const AdminBadge = styled.span`
   border: none;
   padding: 4px 8px;
   height: 24px;
-  margin-right: 5px;
   display: flex;
   align-items: center;
 `;

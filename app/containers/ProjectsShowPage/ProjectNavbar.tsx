@@ -71,6 +71,10 @@ const ProjectNavbarIcon = styled(Icon)`
   fill: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   margin-right: 9px;
   transition: fill 100ms ease-out;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const InfoIcon = ProjectNavbarIcon.extend`
@@ -111,6 +115,10 @@ const ProjectNavbarLink = styled(Link)`
       margin-right: 20px;
     `};
   }
+
+  ${media.smallerThanMinTablet`
+    margin-right: 35px;
+  `}
 `;
 
 const Spacer = styled.div`
@@ -208,6 +216,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
       if (project) {
         const projectType = project.attributes.process_type;
         const projectMethod = project.attributes.participation_method;
+        const projectPublicationStatus = project.attributes.publication_status;
         const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
         let participationContextType: 'Project' | 'Phase' | null = null;
@@ -300,7 +309,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 }
 
                 {/* Continuous Ideation Idea Button desktop */}
-                {projectType === 'continuous' && projectMethod === 'ideation' &&
+                {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                   <StyledIdeaButton
                     projectId={project.id}
                     fullHeight={true}

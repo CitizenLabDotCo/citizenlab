@@ -38,7 +38,6 @@ const Container: any = styled.div`
   .textareaWrapper__suggestions__list li:last-child {
     border: none !important;
   }
-
 `;
 
 type Props = {
@@ -184,7 +183,7 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     }
   }
 
-  getUsers = async (query, callback) => {
+  getUsers = async (query: string, callback) => {
     let users: any[] = [];
 
     if (isString(query) && !isEmpty(query)) {
@@ -195,9 +194,7 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
         queryParameters['idea_id'] = this.props.ideaId;
       }
 
-      const response = await mentionsStream({ queryParameters }).observable.pipe(
-        first()
-      ).toPromise();
+      const response = await mentionsStream({ queryParameters }).observable.pipe(first()).toPromise();
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({

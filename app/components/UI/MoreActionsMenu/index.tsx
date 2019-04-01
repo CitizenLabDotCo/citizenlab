@@ -13,16 +13,13 @@ import { lighten } from 'polished';
 const Container = styled.div`
   position: relative;
   display: inline-block;
-
-  * {
-    user-select: none;
-  }
 `;
 
 const MoreOptionsIcon = styled(Icon)`
   width: 20px;
   height: 6px;
   fill: ${colors.label};
+  fill: red;
   transition: all 100ms ease-out;
 `;
 
@@ -42,11 +39,8 @@ const MoreOptions = styled.button`
   align-items: center;
   cursor: pointer;
 
-  * {
-    user-select: none;
-  }
-
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     ${MoreOptionsIcon} {
       fill: #000;
     }
@@ -86,7 +80,6 @@ const ListItem = styled.button`
 
   &:hover,
   &:focus {
-    outline: none;
     color: white;
     background: ${lighten(.1, colors.adminMenuBackground)};
   }

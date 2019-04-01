@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import { adopt } from 'react-adopt';
 
 // components
 import IdeasShow from 'containers/IdeasShow';
@@ -12,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import GetIdea from 'resources/GetIdea';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
@@ -30,34 +31,52 @@ const IdeaNotFoundWrapper = styled.div`
   color: ${colors.label};
 `;
 
-export interface InputProps {}
+interface InputProps {}
 
-export default withRouter<InputProps>((props: InputProps & WithRouterProps) => (
-  <GetIdea slug={props.params.slug}>
-    {(idea) => {
-      if (isError(idea)) {
-        return (
-          <IdeaNotFoundWrapper>
-            <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
-            <Button
-              linkTo="/ideas"
-              text={<FormattedMessage {...messages.goBackToList} />}
-              icon="arrow-back"
-              circularCorners={false}
-            />
-          </IdeaNotFoundWrapper>
-        );
-      }
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-      if (!isNilOrError(idea)) {
-        return (
-          <Container>
-            <IdeasShow ideaId={idea.id} />
-          </Container>
-        );
-      }
+interface Props extends InputProps, DataProps {}
 
-      return null;
-    }}
-  </GetIdea>
+interface State {}
+
+class IdeasShowPage extends PureComponent<Props & WithRouterProps, State> {
+  render() {
+    const { idea } = this.props;
+
+    if (isError(idea)) {
+      return (
+        <IdeaNotFoundWrapper>
+          <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
+          <Button
+            linkTo="/ideas"
+            text={<FormattedMessage {...messages.goBackToList} />}
+            icon="arrow-back"
+            circularCorners={false}
+          />
+        </IdeaNotFoundWrapper>
+      );
+    }
+
+    if (!isNilOrError(idea)) {
+      return (
+        <Container>
+          <IdeasShow ideaId={idea.id} />
+        </Container>
+      );
+    }
+
+    return null;
+  }
+}
+
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  idea: ({ params, render }) => <GetIdea slug={params.slug}>{render}</GetIdea>
+});
+
+export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeasShowPage {...inputProps} {...dataProps} />}
+  </Data>
 ));

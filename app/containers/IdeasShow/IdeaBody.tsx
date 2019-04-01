@@ -17,8 +17,9 @@ interface Props {
   onTranslationLoaded: () => void;
 }
 
-const IdeaBody = (props: Props) => {
+const IdeaBody = React.memo<Props>((props: Props) => {
   const { ideaId, ideaBody, locale, translateButtonClicked, onTranslationLoaded } = props;
+
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
         <QuillEditedContent>
@@ -39,6 +40,6 @@ const IdeaBody = (props: Props) => {
         </QuillEditedContent>
     </Fragment>
   );
-};
+});
 
 export default IdeaBody;
