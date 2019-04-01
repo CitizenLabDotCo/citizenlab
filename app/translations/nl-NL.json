@@ -1482,5 +1482,7 @@
   "containers.Admin.onboarding.setupArticle3Title": "Voeg een widget toe aan je website",
   "containers.Admin.onboarding.setupSectionLink": "http://support.citizenlab.co/nl-jouw-citizenlab-platform-stap-voor-stap",
   "containers.Admin.onboarding.setupSectionTitle": "configuratie",
-  "containers.Admin.onboarding.title": "Gids"
+  "containers.Admin.onboarding.title": "Gids",
+  "containers.SubscriptionEndedPage.accessDenied": "",
+  "containers.SubscriptionEndedPage.subscriptionEnded": ""
 }
