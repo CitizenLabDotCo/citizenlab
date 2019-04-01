@@ -7,5 +7,7 @@ import { removeUrlLocale } from 'services/locale';
 // <link rel="canonical" href="https://youth4climate.be/"/>
 // this lets Google know it should show 'https://youth4climate.be/' in the search results, not the version with locale
 export default function getCanonicalLink() {
-  return <link rel="canonical" href={`${location.origin}${removeUrlLocale(location.pathname)}`} />;
+  const isAdminPage = location.pathname.includes('admin');
+
+  return !isAdminPage ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(location.pathname)}`} /> : null;
 }
