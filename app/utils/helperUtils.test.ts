@@ -55,23 +55,18 @@ describe('isAdminPage', () => {
   // testURL = "https://demo.stg.citizenlab.co", see config
   // pushState adds a pathname to this URL
   it('returns true for admin URLs', () => {
-    window.history.pushState({}, '', '/en/admin');
-    expect(isAdminPage()).toBe(true);
+    expect(isAdminPage('/en/admin')).toBe(true);
 
-    window.history.pushState({}, '', '/en/admin/dashboard');
-    expect(isAdminPage()).toBe(true);
+    expect(isAdminPage('/en/admin/dashboard')).toBe(true);
   });
 
   it('returns false for an non-admin URLs', () => {
-    window.history.pushState({}, '', '/en');
-    expect(isAdminPage()).toBe(false);
+    expect(isAdminPage('/en').toBe(false);
 
-    window.history.pushState({}, '', '/en/projects/choose-where-to-plant-the-tree/info');
-    expect(isAdminPage()).toBe(false);
+    expect(isAdminPage('/en/projects/choose-where-to-plant-the-tree/info').toBe(false);
   });
 
   it('returns false for an non-admin URL with the word "admin" in it', () => {
-    window.history.pushState({}, '', 'en/ideas/admin');
-    expect(isAdminPage()).toBe(false);
+    expect(isAdminPage('en/ideas/admin').toBe(false);
   });
 });
