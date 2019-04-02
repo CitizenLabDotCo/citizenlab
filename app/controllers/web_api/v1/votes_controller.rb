@@ -1,5 +1,4 @@
 class WebApi::V1::VotesController < ApplicationController
-  before_action :set_policy_class
   before_action :set_vote, only: [:show, :destroy]
   before_action :set_votable_type_and_id, only: [:index, :create, :up, :down]
 
@@ -93,21 +92,30 @@ class WebApi::V1::VotesController < ApplicationController
 
   end
 
-  def set_policy_class
-    @policy_class = case params[:votable]
-      when 'Idea' then IdeaVotePolicy
-      when 'Comment' then CommentVotePolicy
-    end
-  end
-
   def set_votable_type_and_id
     @votable_type = params[:votable]
     @votable_id = params[:"#{@votable_type.underscore}_id"]
+    @policy_class = case @votable_type
+      when 'Idea' then IdeaVotePolicy
+      when 'Comment' then CommentVotePolicy
+      else raise "#{@votable_type} has no voting policy defined"
+    end
     raise RuntimeError, "must not be blank" if @votable_type.blank? or @votable_id.blank?
+  end
+
+  def derive_policy_class votable
+    if votable.kind_of? Idea
+      IdeaVotePolicy
+    elsif votable.kind_of? Comment
+      CommentVotePolicy
+    else
+      raise "Votable #{votable.class} has no voting policy defined"
+    end
   end
 
   def set_vote
     @vote = Vote.find(params[:id])
+    @policy_class = derive_policy_class(@vote.votable)
     authorize @vote, policy_class: @policy_class
   end
 

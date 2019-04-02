@@ -29,7 +29,7 @@ resource "Idea Votes" do
   get "web_api/v1/votes/:id" do
     let(:id) { @votes.first.id }
 
-    example_request "Get one vote on a comment by id" do
+    example_request "Get one vote on an idea by id" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @votes.first.id
