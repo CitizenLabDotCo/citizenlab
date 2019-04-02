@@ -10,5 +10,6 @@ import { isAdminPage } from 'utils/helperUtils';
  * This lets Google know it should show 'https://youth4climate.be/' in the search results, not the version with locale
  */
 export default function getCanonicalLink() {
-  return !isAdminPage() ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(location.pathname)}`} /> : null;
+  const pathName = location.pathname;
+  return !isAdminPage(pathName) ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(pathName)}`} /> : null;
 }

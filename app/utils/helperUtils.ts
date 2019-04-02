@@ -61,8 +61,8 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-export function isAdminPage() {
-  const pathnameWithoutLocale = removeUrlLocale(location.pathname);
+export function isAdminPage(pathName: string) {
+  const pathnameWithoutLocale = removeUrlLocale(pathName);
 
   return pathnameWithoutLocale.startsWith('/admin');
 }
