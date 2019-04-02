@@ -26,11 +26,11 @@ import GetUser from 'resources/GetUser';
 
 // analytics
 import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from '../tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { InjectedIntlProps } from 'react-intl';
 
 // style

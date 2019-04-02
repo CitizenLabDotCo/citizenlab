@@ -186,10 +186,10 @@ class InfoPane extends PureComponent<Props & TrackProps, State> {
       <Container className={this.props['className']}>
         <TabbedNav>
           <Tab onClick={this.handleTabOnClick} data-tab="votes" className={`${selectedTab === 'votes' && 'active'}`}>
-            Votes
+            <FormattedMessage {...messages.votes} />
           </Tab>
           <Tab onClick={this.handleTabOnClick} data-tab="details" className={`${selectedTab === 'details' && 'active'}`}>
-            Details
+            <FormattedMessage {...messages.details} />
           </Tab>
         </TabbedNav>
         <Content>

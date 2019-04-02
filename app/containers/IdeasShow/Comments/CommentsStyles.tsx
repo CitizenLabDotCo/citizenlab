@@ -53,14 +53,14 @@ export const Extra = styled.div`
 `;
 
 export const Badge = styled.span`
-  color: ${colors.clRed};
+  color: ${colors.clRedError};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;
   border-radius: 5px;
   text-transform: uppercase;
   text-align: center;
   font-weight: 600;
-  background-color: ${lighten(.45, colors.clRed)};
+  background-color: ${lighten(.46, colors.clRed)};
   border: none;
   padding: 4px 8px;
   height: 24px;

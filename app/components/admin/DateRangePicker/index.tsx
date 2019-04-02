@@ -5,8 +5,14 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 
+// styles
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// i18n
+import messages from './messages';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface Props extends Omit<DateRangePickerShape, 'focusedInput' | 'onFocusChange'> {
   className?: string;
@@ -35,7 +41,7 @@ const StylingWrapper = styled.div`
 `;
 
 /** Light wrapper around react-dates DateRangePicker that autonomously deals with focusing and styling */
-class OurDateRangePicker extends PureComponent<Props, State> {
+class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State> {
 
   constructor(props) {
     super(props);
@@ -56,6 +62,7 @@ class OurDateRangePicker extends PureComponent<Props, State> {
           endDateId="endAt"
           focusedInput={this.state.focusedInput}
           onFocusChange={this.handleFocusChange}
+          startDatePlaceholderText={this.props.intl.formatMessage(messages.startDatePlaceholder)}
           {...this.props}
         />
       </StylingWrapper>
@@ -63,4 +70,4 @@ class OurDateRangePicker extends PureComponent<Props, State> {
   }
 }
 
-export default OurDateRangePicker;
+export default injectIntl(OurDateRangePicker);

@@ -88,7 +88,7 @@ const Container = styled(Link)`
     }
 
     ${media.smallerThanMinTablet`
-      min-height: auto;
+      min-height: 400px;
     `}
   }
 
@@ -320,7 +320,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${({ theme }) => darken(0.05, theme.colors.secondaryText)};
+  color: ${darken(0.11, colors.secondaryText)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -341,6 +341,23 @@ const ContentFooter = styled.div`
   padding-top: 16px;
   margin-top: 30px;
   border-top: solid 1px #e8e8e8;
+
+  &.hidden {
+    border: none;
+
+    &.large {
+      margin-top: 0px;
+    }
+
+    &:not(.large) {
+      ${media.smallerThanMinTablet`
+        height: 20px;
+        flex-basis: 20px;
+        margin: 0px;
+        padding: 0px;
+      `}
+    }
+  }
 `;
 
 const ContentFooterSection = styled.div`
@@ -478,6 +495,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const hasAvatars = (project.relationships.avatars && project.relationships.avatars.data && project.relationships.avatars.data.length > 0);
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
+      const showFooter = (hasAvatars || showIdeasCount || showCommentsCount);
       const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
@@ -580,7 +598,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             {size === 'large' && contentHeader}
 
             <ContentBody className={size}>
-              <ProjectTitle id="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
+              <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -588,7 +606,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                      <ProjectDescription id="e2e-project-card-project-description-preview">
+                      <ProjectDescription className="e2e-project-card-project-description-preview">
                         {description}
                       </ProjectDescription>
                     );
@@ -599,7 +617,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               </T>
             </ContentBody>
 
-            <ContentFooter>
+            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
               <ContentFooterLeft>
                 {hasAvatars &&
                   <AvatarBubbles
