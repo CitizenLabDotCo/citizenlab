@@ -73,7 +73,7 @@ const StyledMap = styled(Map)`
 `;
 
 interface InputProps {
-  projectId?: string;
+  projectIds?: string[];
   phaseId?: string;
 }
 
@@ -130,7 +130,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
-    if (this.props.projectId) {
+    if (this.props.projectIds) {
       Leaflet
         .popup()
         .setLatLng(position)
@@ -158,7 +158,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
   }
 
   render() {
-    const { phaseId, projectId, ideaMarkers } = this.props;
+    const { phaseId, projectIds, ideaMarkers } = this.props;
     const { selectedIdeaId } = this.state;
     const points = this.getPoints(ideaMarkers);
 
@@ -181,10 +181,10 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
             onMarkerClick={this.toggleIdea}
             onMapClick={this.onMapClick}
           />
-          {projectId &&
+          {projectIds && projectIds.length === 1 &&
             <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
               <IdeaButton
-                projectId={projectId}
+                projectId={projectIds[0]}
                 phaseId={phaseId}
                 onClick={this.redirectToIdeaCreation}
               />
@@ -199,7 +199,7 @@ export class IdeasMap extends React.PureComponent<Props & WithRouterProps, State
 const IdeasMapWithRouter = withRouter(IdeasMap);
 
 export default (inputProps: InputProps) => (
-  <GetIdeaMarkers projectId={inputProps.projectId} phaseId={inputProps.phaseId}>
+  <GetIdeaMarkers projectIds={inputProps.projectIds} phaseId={inputProps.phaseId}>
     {ideaMarkers => <IdeasMapWithRouter {...inputProps} ideaMarkers={ideaMarkers} />}
   </GetIdeaMarkers>
 );

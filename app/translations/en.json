@@ -995,6 +995,7 @@
   "app.containers.IdeaCards.newest": "Newest",
   "app.containers.IdeaCards.oldest": "Oldest",
   "app.containers.IdeaCards.popular": "Most voted",
+  "app.containers.IdeaCards.projectFilterTitle": "Projects",
   "app.containers.IdeaCards.sortTitle": "Sorting",
   "app.containers.IdeaCards.topics": "Topics",
   "app.containers.IdeaCards.topicsTitle": "Topics",
