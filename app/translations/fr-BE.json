@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "Malheureusement, vous n’avez pas le droit de vote sur cette idée",
   "app.components.VoteControl.votingDisabledPossibleLater": "Le vote sur les idées de '{projectName}' sera possible à partir du '{enabledFromDate}'",
   "app.components.VoteControl.votingDisabledProjectInactive": "Vous ne pouvez plus voter sur les idées de '{projectName}'",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Erreur",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Enregistrer",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Enregistré !",
