@@ -343,6 +343,8 @@ class IdeaCards extends PureComponent<Props, State> {
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
+    const projectId = queryParameters.project;
+    const phaseId = queryParameters.phase;
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -388,10 +390,12 @@ class IdeaCards extends PureComponent<Props, State> {
                 <FormattedMessage {...messages.noIdea} />
               </EmptyMessageLine>
             </EmptyMessage>
-            <IdeaButton
-              projectId={queryParameters.project}
-              phaseId={queryParameters.phase}
-            />
+            {projectId &&
+              <IdeaButton
+                projectId={projectId}
+                phaseId={phaseId}
+              />
+            }
           </EmptyContainer>
         }
 
