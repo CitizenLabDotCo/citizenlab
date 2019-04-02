@@ -35,4 +35,5 @@ module.exports = {
   moduleNameMapper: {
     "\\.(css|svg)$": "identity-obj-proxy"
   },
+  testURL: "https://demo.stg.citizenlab.co/en/"
 };
