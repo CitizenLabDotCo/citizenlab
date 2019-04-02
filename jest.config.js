@@ -34,5 +34,6 @@ module.exports = {
   coverageReporters: ["json", "lcov", "text-summary", "clover"],
   moduleNameMapper: {
     "\\.(css|svg)$": "identity-obj-proxy"
-  }
+  },
+  testUrl: "https://demo.stg.citizenlab.co"
 };

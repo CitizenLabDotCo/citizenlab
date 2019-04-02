@@ -1,6 +1,7 @@
 import { Locale, Multiloc } from 'typings';
 import { isString } from 'util';
 import { trim } from 'lodash-es';
+import { removeUrlLocale } from 'services/locale';
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
@@ -58,4 +59,10 @@ export function getFormattedBudget(locale: Locale, budget: number, currency: str
 
 export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
+}
+
+export function isAdminPage() {
+  const pathnameWithoutLocale = removeUrlLocale(location.pathname);
+
+  return pathnameWithoutLocale.startsWith('/admin');
 }
