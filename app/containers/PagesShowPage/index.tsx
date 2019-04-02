@@ -33,6 +33,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
+import ResolveTextVariables from 'components/ResolveTextVariables';
 
 const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -163,7 +164,11 @@ class PagesShowPage extends React.PureComponent<Props & WithRouterProps & Inject
         blockIndexing = false;
         pageSlug = page.attributes.slug;
         pageTitle = <T value={page.attributes.title_multiloc} />;
-        pageDescription = <T value={page.attributes.body_multiloc} supportHtml={true} />;
+        pageDescription = (
+          <ResolveTextVariables value={page.attributes.body_multiloc}>
+            {(multiloc) => <T value={multiloc} supportHtml={true} />}
+          </ResolveTextVariables>
+        );
       }
 
       return (
