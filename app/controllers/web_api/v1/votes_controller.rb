@@ -1,11 +1,12 @@
 class WebApi::V1::VotesController < ApplicationController
+  before_action :set_policy_class
   before_action :set_vote, only: [:show, :destroy]
   before_action :set_votable_type_and_id, only: [:index, :create, :up, :down]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
-    @votes = policy_scope(Vote)
+    @votes = policy_scope(Vote, policy_scope_class: @policy_class::Scope)
       .where(votable_type: @votable_type, votable_id: @votable_id)
       .includes(:user)
     render json: @votes, include: ['user']
@@ -20,7 +21,7 @@ class WebApi::V1::VotesController < ApplicationController
     @vote.votable_type = @votable_type
     @vote.votable_id = @votable_id
     @vote.user ||= current_user
-    authorize @vote
+    authorize @vote, policy_class: @policy_class
 
     SideFxVoteService.new.before_create(@vote, current_user)
 
@@ -62,7 +63,7 @@ class WebApi::V1::VotesController < ApplicationController
     )
 
     if @old_vote && @old_vote.mode == mode
-      authorize @old_vote
+      authorize @old_vote, policy_class: @policy_class
       @old_vote.errors.add(:base, "already_#{mode}voted")
       render json: {errors: @old_vote.errors.details}, status: :unprocessable_entity
     else
@@ -77,7 +78,7 @@ class WebApi::V1::VotesController < ApplicationController
           votable_id: @votable_id,
           mode: mode
         )
-        authorize @new_vote
+        authorize @new_vote, policy_class: @policy_class
 
         SideFxVoteService.new.before_create(@new_vote, current_user)
 
@@ -92,6 +93,13 @@ class WebApi::V1::VotesController < ApplicationController
 
   end
 
+  def set_policy_class
+    @policy_class = case params[:votable]
+      when 'Idea' then IdeaVotePolicy
+      when 'Comment' then CommentVotePolicy
+    end
+  end
+
   def set_votable_type_and_id
     @votable_type = params[:votable]
     @votable_id = params[:"#{@votable_type.underscore}_id"]
@@ -100,7 +108,7 @@ class WebApi::V1::VotesController < ApplicationController
 
   def set_vote
     @vote = Vote.find(params[:id])
-    authorize @vote
+    authorize @vote, policy_class: @policy_class
   end
 
   def vote_params
