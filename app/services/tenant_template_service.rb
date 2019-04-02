@@ -5,7 +5,9 @@ class TenantTemplateService
     template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
       File.basename(file, ".yml")
     end
-    template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    if external_subfolder
+      template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    end
     template_names
   end
 
@@ -186,6 +188,22 @@ class TenantTemplateService
                   field_value.delete locale
                 end
               end
+            end
+          end
+        end
+      end
+    end
+    # Cut off translations that are too long.
+    {
+      'project' => {'description_preview_multiloc' => 280},
+      'idea' => {'title_multiloc' => 80}
+    }.each do |model, restrictions|
+      template['models'][model]&.each do |attributes|
+        restrictions.each do |field_name, max_len|
+          multiloc = attributes[field_name]
+          multiloc.each do |locale, value|
+            if value.size > max_len
+              multiloc[locale] = value[0...max_len]
             end
           end
         end

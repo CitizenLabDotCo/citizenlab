@@ -9,6 +9,7 @@ da:
       "comment_marked_as_spam": Når en kommentar bliver markeret som spam
       "idea_marked_as_spam": Når en idé bliver markeret som spam
       "invite_received": Når nogen inviterer til mig platformen
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Når nogen accepterer min invitation
       "mention_in_comment": Når nogen nævner mig i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
@@ -41,6 +42,7 @@ da:
       "comment_marked_as_spam": Når en bruger markerer en kommentar som spam (for administratorer og moderatorer)
       "idea_marked_as_spam": Når en bruger markerer en idé som spam (for administratorer og moderatorer)
       "invite_received": Når en bruger bliver inviteret til platformen
+      "invite_reminder": When someone invited me to the platform (reminder after 3 days)
       "invite_accepted": Når en bruger accepterer min invitation
       "mention_in_comment": Når en bruger nævnes i en kommentar
       "mention_in_official_feedback": Når nogen nævner mig i officiel feedback
