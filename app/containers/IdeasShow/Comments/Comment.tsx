@@ -58,7 +58,7 @@ const ContainerInner = styled.div`
 
 interface InputProps {
   commentId: string;
-  type: 'parent' | 'child';
+  commentType: 'parent' | 'child';
   hasChildComments?: boolean;
   last?: boolean;
   className?: string;
@@ -129,28 +129,31 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, idea, type, hasChildComments, last, className } = this.props;
+    const { comment, idea, commentType, hasChildComments, last, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const commentId = comment.id;
       const ideaId = idea.id;
-      const hideBottomBorder = ((type === 'parent' && !hasChildComments) || (type === 'child' && last));
+      const hideBottomBorder = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last));
 
       if (comment.attributes.publication_status === 'published') {
         return (
-          <Container className={`${className} ${type} ${hideBottomBorder ? 'hideBottomBorder' : ''} e2e-comment`}>
-            <ContainerInner className={type}>
-              <CommentHeader
-                commentId={commentId}
-              />
+          <Container className={`${className} ${commentType} ${hideBottomBorder ? 'hideBottomBorder' : ''} e2e-comment`}>
+            <ContainerInner className={commentType}>
+              {commentType === 'parent' &&
+                <CommentHeader
+                  commentId={commentId}
+                />
+              }
               <CommentBody
+                commentId={commentId}
+                commentType={commentType}
                 commentBody={comment.attributes.body_multiloc}
                 editing={editing}
                 onCommentSave={this.onCommentSave}
                 onCancelEditing={this.onCancelEditing}
                 translateButtonClicked={translateButtonClicked}
-                commentId={commentId}
               />
               <CommentFooter
                 ideaId={ideaId}

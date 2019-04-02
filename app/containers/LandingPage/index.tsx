@@ -62,8 +62,8 @@ const FooterBanner: any = styled.div`
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;
-  padding-top: 60px;
-  padding-bottom: 70px;
+  padding-top: 50px;
+  padding-bottom: 60px;
 
   p {
     color: #fff;
@@ -73,10 +73,10 @@ const FooterBanner: any = styled.div`
     margin-bottom: 30px;
     max-width: 500px;
     text-align: center;
-  }
 
-  .Button.button.primary-inverse {
-    color: ${({ theme }) => theme.colorText};
+    ${media.smallerThanMaxTablet`
+      font-size: ${fontSizes.xxxl}px;
+    `}
   }
 `;
 

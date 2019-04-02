@@ -170,7 +170,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
             {comment.attributes.publication_status === 'published' &&
               <Comment
                 commentId={comment.id}
-                type="parent"
+                commentType="parent"
                 hasChildComments={hasChildComments}
               />
             }
@@ -187,7 +187,7 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
             <Comment
               key={childCommentId}
               commentId={childCommentId}
-              type="child"
+              commentType="child"
               last={index === childCommentIds.length - 1}
             />
           ))}

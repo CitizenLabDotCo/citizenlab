@@ -19,7 +19,6 @@ const MoreOptionsIcon = styled(Icon)`
   width: 20px;
   height: 6px;
   fill: ${colors.label};
-  fill: red;
   transition: all 100ms ease-out;
 `;
 
@@ -121,7 +120,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState({ visible: false });
   }
 
-  toggleMenu = (event) => {
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
+  toggleMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setState(({ visible }) => ({ visible: !visible }));
   }
@@ -162,7 +165,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
         >
-          <MoreOptions aria-label={ariaLabel} onClick={this.toggleMenu}>
+          <MoreOptions
+            aria-label={ariaLabel}
+            onMouseDown={this.removeFocus}
+            onClick={this.toggleMenu}
+          >
             <MoreOptionsIcon name="more-options" />
             {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>

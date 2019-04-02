@@ -62,6 +62,10 @@ const ProjectNavbarItems = styled.ul`
   margin: 0;
   padding: 0;
   height: 58px;
+
+  ${media.smallerThanMinTablet`
+    height: 52px;
+  `}
 `;
 
 const ProjectNavbarIcon = styled(Icon)`
@@ -104,7 +108,7 @@ const ProjectNavbarLink = styled(Link)`
 
   &:first-of-type {
     ${media.smallerThanMinTablet`
-      margin-left: 20px;
+      margin-left: 15px;
     `};
   }
 
@@ -112,7 +116,7 @@ const ProjectNavbarLink = styled(Link)`
     margin-right: 0px;
 
     ${media.smallerThanMinTablet`
-      margin-right: 20px;
+      margin-right: 15px;
     `};
   }
 

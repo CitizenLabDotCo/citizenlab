@@ -42,15 +42,15 @@ const Header = styled.div`
   justify-content: center;
 
   ${media.desktop`
-    min-height: 500px;
+    min-height: 450px;
   `}
 
   ${media.smallerThanMaxTablet`
-    min-height: 400px;
+    min-height: 350px;
   `}
 
   ${media.smallerThanMinTablet`
-    min-height: 350px;
+    min-height: 300px;
   `}
 `;
 
@@ -109,8 +109,7 @@ const HeaderTitle: any = styled.h1`
   padding: 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxxl}px;
-    line-height: 40px;
+    font-size: ${fontSizes.xxxl}px;
   `}
 `;
 

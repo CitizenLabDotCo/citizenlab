@@ -75,7 +75,7 @@ const IdeaImage: any = styled(LazyImage)`
 const IdeaContent = styled.div`
   flex-grow: 1;
   padding: 20px;
-  padding-top: 15px;
+  padding-top: 18px;
 
   &.extraTopPadding {
     padding-top: 75px;
@@ -104,10 +104,14 @@ const IdeaTitle: any = styled.h3`
   word-break: break-word;
 `;
 
+const StyledAuthor = styled(Author)`
+  margin-left: -4px;
+`;
+
 const Footer = styled.div`
   min-height: 50px;
   position: absolute;
-  bottom: 18px;
+  bottom: 20px;
   left: 20px;
   right: 20px;
   display: flex;
@@ -325,7 +329,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
-              <Author
+              <StyledAuthor
                 authorId={ideaAuthorId}
                 message={messages.byAuthorName}
                 createdAt={idea.attributes.published_at}
