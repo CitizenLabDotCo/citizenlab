@@ -1484,5 +1484,7 @@
   "containers.Admin.onboarding.setupArticle3Title": "Ajouter un widget à votre site internet",
   "containers.Admin.onboarding.setupSectionLink": "http://support.citizenlab.co/fr-votre-plateforme-citizenlab-etape-par-etape",
   "containers.Admin.onboarding.setupSectionTitle": "Configuration",
-  "containers.Admin.onboarding.title": "Guide"
+  "containers.Admin.onboarding.title": "Guide",
+  "containers.SubscriptionEndedPage.accessDenied": "",
+  "containers.SubscriptionEndedPage.subscriptionEnded": ""
 }

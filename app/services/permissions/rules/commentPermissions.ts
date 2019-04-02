@@ -15,14 +15,14 @@ definePermissionRule('comments', 'edit', (comment: ICommentData, user: IUser) =>
   return !!(isAuthor(comment, user));
 });
 
-definePermissionRule('comments', 'delete', (comment: ICommentData, user: IUser, { projectId }) => {
+definePermissionRule('comments', 'delete', (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
   return !!(isAuthor(comment, user) || isAdmin(user) || isProjectModerator(user, projectId));
 });
 
-definePermissionRule('comments', 'justifyDeletion', (comment: ICommentData, user: IUser, { projectId }) => {
+definePermissionRule('comments', 'justifyDeletion', (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
   return !isAuthor(comment, user) && (isAdmin(user) || isProjectModerator(user, projectId));
 });
 
-definePermissionRule('comments', 'markAsSpam', (comment: ICommentData, user: IUser, { projectId }) => {
+definePermissionRule('comments', 'markAsSpam', (comment: ICommentData, user: IUser, _tenant, { projectId }) => {
   return (user && !(isAuthor(comment, user) || isAdmin(user) || isProjectModerator(user, projectId)));
 });
