@@ -13,6 +13,7 @@ module EmailCampaigns
       Campaigns::IdeaPublished,
       Campaigns::InviteAccepted,
       Campaigns::InviteReceived,
+      Campaigns::InviteReminder,
       Campaigns::Manual,      
       Campaigns::MentionInComment,
       Campaigns::MentionInOfficialFeedback,

@@ -6,7 +6,7 @@ describe ImportIdeasService do
   let(:project_without_phases) { create(:project) }
 
   before do
-    TenantTemplateService.new.resolve_and_apply_template 'base'
+    TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
     create_list(:user, 5)
   end
 
