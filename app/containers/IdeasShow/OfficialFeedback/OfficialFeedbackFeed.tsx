@@ -19,7 +19,7 @@ import { InjectedIntlProps, FormattedDate } from 'react-intl';
 import { adopt } from 'react-adopt';
 
 const FeedbackHeader = styled.div`
-  color: ${colors.clRed};
+  color: ${colors.clRedError};
   margin-top: 50px;
   margin-bottom: 25px;
   display: flex;
@@ -99,7 +99,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 height="50px"
                 icon="showMore"
                 iconPos="left"
-                textColor={colors.clRed}
+                textColor={colors.clRedError}
                 fontWeight="500"
                 borderColor="#ccc"
               />

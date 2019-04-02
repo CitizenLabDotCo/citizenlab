@@ -9,6 +9,7 @@ import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
+  height: 100%;
   position: relative;
   outline: none;
   display: flex;

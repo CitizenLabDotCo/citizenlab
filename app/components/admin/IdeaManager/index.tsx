@@ -1,5 +1,5 @@
 import React from 'react';
-import { keys, isEmpty, size, get, isFunction } from 'lodash-es';
+import { keys, isEmpty, size, get, isFunction, isArray } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -24,7 +24,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
-import { Input, Sticky, Message } from 'semantic-ui-react';
+import { Input, Message } from 'semantic-ui-react';
 import ExportButtons from './components/ExportButtons';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
@@ -50,6 +50,12 @@ const ThreeColumns = styled.div`
 
 const LeftColumn = styled.div`
   width: 260px;
+`;
+
+const Sticky = styled.div`
+  position: -webkit-sticky;
+  position: sticky;
+  top: ${props => props.theme.menuHeight + 20}px;
 `;
 
 const MiddleColumn = styled.div`
@@ -126,8 +132,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
   componentDidMount() {
     this.globalState.set({ enabled: true });
 
-    if (this.props.project && isFunction(this.props.ideas.onChangeProject)) {
-      this.props.ideas.onChangeProject(this.props.project.id);
+    if (this.props.project && isFunction(this.props.ideas.onChangeProjects)) {
+      this.props.ideas.onChangeProjects([this.props.project.id]);
     }
 
     this.setVisibleFilterMenus(this.props.project);
@@ -142,8 +148,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const newProjectId = get(this.props.project, 'id', null);
 
     if (this.props.project && newProjectId !== oldProjectId) {
-      if (isFunction(this.props.ideas.onChangeProject)) {
-        this.props.ideas.onChangeProject(this.props.project.id);
+      if (isFunction(this.props.ideas.onChangeProjects)) {
+        this.props.ideas.onChangeProjects([this.props.project.id]);
       }
 
       this.setVisibleFilterMenus(this.props.project);
@@ -202,10 +208,10 @@ class IdeaManager extends React.PureComponent<Props, State> {
   render() {
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
-    const { ideasList, onChangePhase, onChangeTopics, onChangeProject, onChangeIdeaStatus } = ideas;
+    const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
     const selectedTopics = ideas.queryParameters.topics;
     const selectedPhase = ideas.queryParameters.phase;
-    const selectedProject = ideas.queryParameters.project;
+    const selectedProject = isArray(ideas.queryParameters.projects) ? ideas.queryParameters.projects[0] : undefined;
     const selectedIdeaStatus = ideas.queryParameters.idea_status;
     const { selectedIdeas, activeFilterMenu, visibleFilterMenus } = this.state;
     const selectedIdeaIds = keys(this.state.selectedIdeas);
@@ -224,6 +230,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       exportQueryParameter = 'all';
       exportType = 'all';
     }
+
     return (
       <div ref={this.handleContextRef}>
         <Row>
@@ -259,7 +266,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
-            <Sticky context={this.state.contextRef} offset={100}>
+            <Sticky>
               <FilterSidebar
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
@@ -275,7 +282,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
                 selectedStatus={selectedIdeaStatus}
                 onChangePhaseFilter={onChangePhase}
                 onChangeTopicsFilter={onChangeTopics}
-                onChangeProjectFilter={onChangeProject}
+                onChangeProjectFilter={onChangeProjects}
                 onChangeStatusFilter={onChangeIdeaStatus}
               />
               {multipleIdeasSelected &&
@@ -312,7 +319,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             classNames="slide"
           >
             <RightColumn>
-              <Sticky context={this.state.contextRef} offset={100}>
+              <Sticky>
                 <InfoSidebar
                   ideaIds={selectedIdeaIds}
                 />
