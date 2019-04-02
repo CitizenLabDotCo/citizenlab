@@ -85,8 +85,8 @@ const ModeratorIconContainer: any = styled.div`
 `;
 
 const ModeratorIcon: any = styled(Icon)`
-  color: ${colors.clRed};
-  fill: ${colors.clRed};
+  color: ${colors.clRedError};
+  fill: ${colors.clRedError};
   height: ${(props: any) => (props.size / 2) - 5}px;
 `;
 
