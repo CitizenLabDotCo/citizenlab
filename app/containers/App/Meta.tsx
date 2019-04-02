@@ -20,6 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/imageTools';
 import { API_PATH } from 'containers/App/constants';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 interface InputProps { }
 
@@ -62,7 +63,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
         </title>
         {/* https://github.com/nfl/react-helmet/issues/279 href comes first! */}
         {getCanonicalLink()}
-        {tenantLocales.map(loc => <link href={`${url}/${loc}`} rel="alternate" hrefLang={loc} key={loc} />)}
+        {getAlternateLinks(tenantLocales)}
         <meta name="title" content={metaTitle} />
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={metaTitle} />
