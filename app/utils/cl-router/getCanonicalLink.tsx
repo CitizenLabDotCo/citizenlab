@@ -1,5 +1,6 @@
 import React from 'react';
 import { removeUrlLocale } from 'services/locale';
+import { isAdminPage } from 'utils/helperUtils';
 
 /**
  * Make url without locale the canonical of a certain page.
@@ -9,7 +10,6 @@ import { removeUrlLocale } from 'services/locale';
  * This lets Google know it should show 'https://youth4climate.be/' in the search results, not the version with locale
  */
 export default function getCanonicalLink() {
-  const isAdminPage = location.pathname.includes('/admin/');
 
-  return !isAdminPage ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(location.pathname)}`} /> : null;
+  return !isAdminPage() ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(location.pathname)}`} /> : null;
 }
