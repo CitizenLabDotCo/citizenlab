@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "Dessverre har du ikke rettighetene til å stemme på denne ideen",
   "app.components.VoteControl.votingDisabledPossibleLater": "Det vil være mulig å stemme på idéer i {projectName} fra {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "Du kan ikke lenger stemme på idéer i {projectName}",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Feil",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Lagre",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Suksess",

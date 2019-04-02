@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "Leider haben Sie keine Rechte um über diese Idee abzustimmen",
   "app.components.VoteControl.votingDisabledPossibleLater": "{orgName, select, München {Bewertungen von Mängelmeldungen in {projectName} werden ab dem {enabledFromDate} möglich sein} other {Abstimmungen zu Ideen für {projectName} werden ab dem {enabledFromDate} möglich sein}}",
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Sie können nicht mehr Mängelmeldungen in {projectName} bewerten} other {Sie können nicht mehr zu Ideen für {projectName} abstimmen}}",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fehler",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Speichern",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Gespeichert!",

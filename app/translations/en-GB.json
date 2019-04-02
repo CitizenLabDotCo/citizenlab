@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "",
   "app.components.VoteControl.votingDisabledProjectInactive": "",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "",
