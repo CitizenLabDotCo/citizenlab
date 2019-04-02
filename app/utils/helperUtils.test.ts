@@ -1,4 +1,4 @@
-import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString } from './helperUtils';
+import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString, isAdminPage } from './helperUtils';
 
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
@@ -48,5 +48,30 @@ describe('isNonEmptyString', () => {
 
   it('returns false for a string containing only a whitespace', () => {
     expect(isNonEmptyString(' ')).toBe(false);
+  });
+});
+
+describe('isAdminPage', () => {
+  // testURL = "https://demo.stg.citizenlab.co", see config
+  // pushState adds a pathname to this URL
+  it('returns true for admin URLs', () => {
+    window.history.pushState({}, '', '/en/admin');
+    expect(isAdminPage()).toBe(true);
+
+    window.history.pushState({}, '', '/en/admin/dashboard');
+    expect(isAdminPage()).toBe(true);
+  });
+
+  it('returns false for an non-admin URLs', () => {
+    window.history.pushState({}, '', '/en');
+    expect(isAdminPage()).toBe(false);
+
+    window.history.pushState({}, '', '/en/projects/choose-where-to-plant-the-tree/info');
+    expect(isAdminPage()).toBe(false);
+  });
+
+  it('returns false for an non-admin URL with the word "admin" in it', () => {
+    window.history.pushState({}, '', 'en/ideas/admin');
+    expect(isAdminPage()).toBe(false);
   });
 });
