@@ -1482,5 +1482,7 @@
   "containers.Admin.onboarding.setupArticle3Title": "",
   "containers.Admin.onboarding.setupSectionLink": "",
   "containers.Admin.onboarding.setupSectionTitle": "",
-  "containers.Admin.onboarding.title": ""
+  "containers.Admin.onboarding.title": "",
+  "containers.SubscriptionEndedPage.accessDenied": "",
+  "containers.SubscriptionEndedPage.subscriptionEnded": ""
 }
