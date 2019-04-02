@@ -27,12 +27,10 @@ const Title = styled.h1`
   font-weight: 500;
   text-align: left;
   margin: 0;
-  padding: 0;
-  padding-top: 0px;
-  padding-bottom: 40px;
+  padding: 0 0 40px 0;
 
   ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.xxxl};
+    font-size: ${fontSizes.xxxl}px;
     line-height: 34px;
   `}
 `;
