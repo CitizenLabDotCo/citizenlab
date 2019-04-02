@@ -1025,7 +1025,7 @@
   "app.containers.IdeasProjectSelect.loadMore": "crwdns18386:0crwdne18386:0",
   "app.containers.IdeasProjectSelect.noProjects": "crwdns18387:0crwdne18387:0",
   "app.containers.IdeasProjectSelect.openProject": "crwdns18388:0crwdne18388:0",
-  "app.containers.IdeasProjectSelect.openProjectExplanation": "crwdns18389:0orgType={orgType}crwdnd18389:0orgName={orgName}crwdne18389:0",
+  "app.containers.IdeasProjectSelect.openProjectExplanation": "crwdns18389:0crwdne18389:0",
   "app.containers.IdeasProjectSelect.pageTitle": "crwdns18390:0crwdne18390:0",
   "app.containers.IdeasProjectSelect.postingDisabledMaybeNoPermissions": "crwdns19592:0crwdne19592:0",
   "app.containers.IdeasProjectSelect.postingDisabledNoPermissions": "crwdns19594:0crwdne19594:0",
