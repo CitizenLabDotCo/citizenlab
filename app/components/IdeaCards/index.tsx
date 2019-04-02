@@ -9,6 +9,8 @@ import Icon from 'components/UI/Icon';
 import Spinner from 'components/UI/Spinner';
 import SelectTopics from './SelectTopics';
 import SelectSort from './SelectSort';
+import SelectProjects from './SelectProjects';
+
 import SearchInput from 'components/UI/SearchInput';
 import Button from 'components/UI/Button';
 import IdeaButton from 'components/IdeaButton';
@@ -270,6 +272,7 @@ interface InputProps extends GetIdeasInputProps  {
   participationContextId?: string | null;
   participationContextType?: 'Phase' | 'Project' | null;
   className?: string;
+  allowProjectsFilter?: boolean;
 }
 
 interface DataProps {
@@ -307,6 +310,10 @@ class IdeaCards extends PureComponent<Props, State> {
     this.props.ideas.onChangeSearchTerm(search);
   }
 
+  handleProjectsOnChange = (projects: string[]) => {
+    this.props.ideas.onChangeProjects(projects);
+  }
+
   handleSortOnChange = (sort: string) => {
     this.props.ideas.onChangeSorting(sort);
   }
@@ -329,7 +336,8 @@ class IdeaCards extends PureComponent<Props, State> {
       participationContextType,
       ideas,
       className,
-      theme
+      theme,
+      allowProjectsFilter
     } = this.props;
     const {
       queryParameters,
@@ -343,8 +351,6 @@ class IdeaCards extends PureComponent<Props, State> {
     const showViewToggle = (this.props.showViewToggle || false);
     const showCardView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
-    const projectId = queryParameters.project;
-    const phaseId = queryParameters.phase;
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -356,6 +362,7 @@ class IdeaCards extends PureComponent<Props, State> {
           <RightFilterArea>
             <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
               <SelectSort onChange={this.handleSortOnChange} />
+              {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />
             </DropdownFilters>
 
@@ -390,10 +397,16 @@ class IdeaCards extends PureComponent<Props, State> {
                 <FormattedMessage {...messages.noIdea} />
               </EmptyMessageLine>
             </EmptyMessage>
-            {projectId &&
+            {/* If there's at least 1 project, we can potentially show this button */}
+            {queryParameters.projects && queryParameters.projects.length > 0 &&
               <IdeaButton
-                projectId={projectId}
-                phaseId={phaseId}
+                // -If we DON'T have the project filter option, we're not on the ideas index page (only place with projects filter)
+                // Other places that use this component always only have a project tied to them
+                // We can grab its id by getting the first element of the projects parameter.
+                // -If we DO have the project filter, we cannot show an idea button that links to a particular project
+                // Hence the projectId will be undefined and we link to the project selection page before showing the idea
+                projectId={!allowProjectsFilter ? (queryParameters.projects && queryParameters.projects[0]) : undefined}
+                phaseId={queryParameters.phase}
               />
             }
           </EmptyContainer>
@@ -434,7 +447,7 @@ class IdeaCards extends PureComponent<Props, State> {
         }
 
         {showMapView && hasIdeas &&
-          <IdeasMap projectId={queryParameters.project} phaseId={queryParameters.phase} />
+          <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
         }
       </Container>
     );

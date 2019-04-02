@@ -995,6 +995,7 @@
   "app.containers.IdeaCards.newest": "Nyeste",
   "app.containers.IdeaCards.oldest": "Eldste",
   "app.containers.IdeaCards.popular": "Populært",
+  "app.containers.IdeaCards.projectFilterTitle": "",
   "app.containers.IdeaCards.sortTitle": "Sorterer",
   "app.containers.IdeaCards.topics": "Emner",
   "app.containers.IdeaCards.topicsTitle": "Emner",
