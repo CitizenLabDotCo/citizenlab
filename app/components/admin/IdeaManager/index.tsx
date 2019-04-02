@@ -24,7 +24,7 @@ import ActionBar from './components/ActionBar';
 import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
-import { Input, Sticky, Message } from 'semantic-ui-react';
+import { Input, Message } from 'semantic-ui-react';
 import ExportButtons from './components/ExportButtons';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
@@ -50,6 +50,12 @@ const ThreeColumns = styled.div`
 
 const LeftColumn = styled.div`
   width: 260px;
+`;
+
+const Sticky = styled.div`
+  position: -webkit-sticky;
+  position: sticky;
+  top: ${props => props.theme.menuHeight + 20}px;
 `;
 
 const MiddleColumn = styled.div`
@@ -224,6 +230,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
       exportQueryParameter = 'all';
       exportType = 'all';
     }
+
     return (
       <div ref={this.handleContextRef}>
         <Row>
@@ -259,7 +266,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
-            <Sticky context={this.state.contextRef} offset={100}>
+            <Sticky>
               <FilterSidebar
                 activeFilterMenu={activeFilterMenu}
                 visibleFilterMenus={visibleFilterMenus}
@@ -312,7 +319,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
             classNames="slide"
           >
             <RightColumn>
-              <Sticky context={this.state.contextRef} offset={100}>
+              <Sticky>
                 <InfoSidebar
                   ideaIds={selectedIdeaIds}
                 />
