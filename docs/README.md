@@ -1,5 +1,36 @@
 # Changelog 
 
+## 2019-04-02
+
+### Fixed
+
+- The new idea button now shows the tooltip on focus
+- The gender graph in clustering is now translated
+- Tooltips on the right of the screen no longer fall off
+- Text in tooltips no longer overflows the tooltip borders
+- When there are no ideas, the 'post an idea' button is no longer shown on a user profile or the ideas overview page
+- The project card no longer displays a line on the bottom when there is no meta information available
+- Downloading the survey results now consistently triggers a browser download
+- The bottom of the left sidebar of the idea manager can now be reached when there are a lot of projects
+- The time control in the admin dashboard is now translated
+- Various fixes to improve resilience of project copy tool
+
+### Added
+
+- The ideas overview page now has a project filter
+- The various pages now support the `$|orgName|` variable, which is replaced by the organization name of the tenant
+- Non-CitizenLab admins can no longer access the admin when the lifecycle stage is set to churned
+- A new style variable controls the header opacity when signed in
+- New email as a reminder to an invitee after 3 days
+- New email when a project phase will start in a week
+- New email when a new project phase has started
+- The ideas link in the navbar is now feature flagged as `ideas_overview`
+
+### Changed
+
+- When filtering projects by multiple areas, all projects that have one of the areas or no area are now shown
+- The user search box for adding a moderator now shows a better placeholder text, explaining the goal
+
 ## 2019-03-20
 
 ### Fixed
