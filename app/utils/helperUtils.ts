@@ -59,3 +59,7 @@ export function getFormattedBudget(locale: Locale, budget: number, currency: str
 export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
+
+export function isAdminPage() {
+  return location.pathname.includes('/admin/');
+}
