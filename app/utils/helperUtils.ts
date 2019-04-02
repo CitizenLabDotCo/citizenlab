@@ -1,6 +1,7 @@
 import { Locale, Multiloc } from 'typings';
 import { isString } from 'util';
 import { trim } from 'lodash-es';
+import { removeUrlLocale } from 'services/locale';
 
 export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
@@ -61,5 +62,7 @@ export function getDisplayName(Component) {
 }
 
 export function isAdminPage() {
-  return location.pathname.includes('/admin/');
+  const pathnameWithoutLocale = removeUrlLocale(location.pathname);
+
+  return pathnameWithoutLocale.startsWith('/admin');
 }
