@@ -280,7 +280,7 @@ const RightItem: any = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    margin-left: 25px;
+    margin-left: 30px;
   `}
 `;
 
@@ -316,19 +316,19 @@ const SignUpLink = NavigationItem.extend`
 `;
 
 const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
-padding-left: 36px;
+  padding-left: 32px;
 
-&.notLoggedIn {
-  padding-left: 20px;
+  &.notLoggedIn {
+    padding-left: 20px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 10px;
+    `}
+  }
 
   ${media.smallerThanMinTablet`
-    padding-left: 10px;
+    padding-left: 20px;
   `}
-}
-
-${media.smallerThanMinTablet`
-  padding-left: 15px;
-`}
 `;
 
 interface InputProps {}

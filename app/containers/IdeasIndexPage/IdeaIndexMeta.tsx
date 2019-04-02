@@ -22,10 +22,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenantLocales }) => {
+const IdeaMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser, tenantLocales }) => {
   const { formatMessage } = intl;
   const { location } = window;
-
   const ideasIndexTitle = formatMessage(messages.metaTitle);
   const ideasIndexDescription = formatMessage(messages.metaDescription);
 
@@ -45,7 +44,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenant
       <meta property="og:url" content={location.href} />
     </Helmet>
   );
-};
+});
 
 const IdeaMetaWithHoc = injectIntl<Props>(IdeaMeta);
 

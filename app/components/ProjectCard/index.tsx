@@ -624,6 +624,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                     onClick={this.handleAvatarBubblesOnClick(project.id)}
                     size={30}
                     limit={3}
+                    // userCountBgColor={colors.clIconSecondary}
                     userCountBgColor={this.props.theme.colorMain}
                     avatarIds={avatarIds}
                     userCount={project.attributes.avatars_count}

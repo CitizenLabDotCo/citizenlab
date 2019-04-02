@@ -45,7 +45,7 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMinTablet`
-    height: 340px;
+    height: 320px;
   `}
 `;
 
