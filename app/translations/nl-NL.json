@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "Helaas, je hebt geen rechten om te stemmen op dit idee",
   "app.components.VoteControl.votingDisabledPossibleLater": "Stemmen op ideeën in {projectName} wordt mogelijk vanaf {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "U kunt niet meer stemmen op ideeën in {projectName}",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "Fout",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Opslaan",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Opgeslagen!",
