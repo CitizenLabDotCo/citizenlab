@@ -13,6 +13,7 @@ import Icon from 'components/UI/Icon';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
+import FeatureFlag from 'components/FeatureFlag';
 
 // analytics
 import tracks from './tracks';
@@ -460,11 +461,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </NavigationDropdown>
               }
 
-              <NavigationItem to="/ideas" activeClassName="active">
-                <NavigationItemText>
-                  <FormattedMessage {...messages.pageIdeas} />
-                </NavigationItemText>
-              </NavigationItem>
+              <FeatureFlag name="ideas_overview">
+                <NavigationItem to="/ideas" activeClassName="active">
+                  <NavigationItemText>
+                    <FormattedMessage {...messages.pageIdeas} />
+                  </NavigationItemText>
+                </NavigationItem>
+              </FeatureFlag>
 
               <NavigationItem to="/pages/information" activeClassName="active">
                 <NavigationItemText>

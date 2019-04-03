@@ -1,4 +1,4 @@
-import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString } from './helperUtils';
+import { sum, isNilOrError, isEmptyMultiloc, isNonEmptyString, isAdminPage } from './helperUtils';
 
 test('adds 1 + 2 to equal 3', () => {
   expect(sum(1, 2)).toBe(3);
@@ -48,5 +48,21 @@ describe('isNonEmptyString', () => {
 
   it('returns false for a string containing only a whitespace', () => {
     expect(isNonEmptyString(' ')).toBe(false);
+  });
+});
+
+describe('isAdminPage', () => {
+  it('returns true for admin URLs', () => {
+    expect(isAdminPage('/en/admin')).toBe(true);
+    expect(isAdminPage('/en/admin/dashboard')).toBe(true);
+  });
+
+  it('returns false for an non-admin URLs', () => {
+    expect(isAdminPage('/en')).toBe(false);
+    expect(isAdminPage('/en/projects/choose-where-to-plant-the-tree/info')).toBe(false);
+  });
+
+  it('returns false for an non-admin URL with the word "admin" in it', () => {
+    expect(isAdminPage('en/ideas/admin')).toBe(false);
   });
 });

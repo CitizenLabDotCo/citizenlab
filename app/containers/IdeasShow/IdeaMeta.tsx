@@ -18,12 +18,13 @@ import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // utils
 import { stripHtml } from 'utils/textUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { imageSizes } from 'utils/imageTools';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface InputProps {
   ideaId: string;
@@ -126,6 +127,7 @@ const IdeaMeta: React.SFC<Props & InjectedIntlProps & InjectedLocalized> = ({
             ${ideaTitle}`
           }
         </title>
+        {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={ideaTitle} />
         <meta name="description" content={ideaDescription} />

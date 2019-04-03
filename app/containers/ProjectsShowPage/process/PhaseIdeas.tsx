@@ -41,6 +41,7 @@ interface State {}
 class PhaseIdeas extends PureComponent<Props, State> {
   render() {
     const { projectId, phaseId, phase, className } = this.props;
+    const projectIds = [projectId];
 
     if (!isNilOrError(phase)) {
       const participationMethod = phase.attributes.participation_method;
@@ -53,7 +54,7 @@ class PhaseIdeas extends PureComponent<Props, State> {
               type="load-more"
               sort={'trending'}
               pageSize={12}
-              projectId={projectId}
+              projectIds={projectIds}
               phaseId={phaseId}
               showViewToggle={true}
               defaultView={phase.attributes.presentation_mode}
