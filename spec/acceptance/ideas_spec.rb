@@ -21,7 +21,7 @@ resource "Ideas" do
     end
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
-    parameter :project, 'Filter by project', required: false
+    parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :assignee, 'Filter by assignee (user id)', required: false
@@ -109,10 +109,22 @@ resource "Ideas" do
       l = create(:project, with_permissions: true)
       i = create(:idea, project: l)
 
-      do_request project: l.id
+      do_request projects: [l.id]
+
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 1
       expect(json_response[:data][0][:id]).to eq i.id
+    end
+
+    example "List all ideas in any of the given projects", document: false do
+      i1 = create(:idea)
+      i2 = create(:idea)
+
+      do_request projects: [i1.project.id, i2.project.id]
+
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data].map{|d| d[:id]}).to match_array [i1.id, i2.id]
     end
 
     example "List all ideas in a phase of a project" do
@@ -251,7 +263,7 @@ resource "Ideas" do
     end
     parameter :topics, 'Filter by topics (OR)', required: false
     parameter :areas, 'Filter by areas (OR)', required: false
-    parameter :project, 'Filter by project', required: false
+    parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :author, 'Filter by author (user id)', required: false
@@ -259,6 +271,7 @@ resource "Ideas" do
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
     parameter :bounding_box, "Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
 
     example "List all idea markers within a bounding box" do
       do_request(bounding_box: "[51.208758,3.224363,50.000667,5.715281]") # Bruges-Bastogne
