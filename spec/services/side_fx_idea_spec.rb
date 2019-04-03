@@ -177,7 +177,7 @@ describe SideFxIdeaService do
     end
   end
 
-  describe "'changed_assignee'" do
+  describe "'assigned'" do
     it "is logged on manual assignment" do 
       user = create(:admin)
       assignee = create(:admin)
@@ -188,7 +188,7 @@ describe SideFxIdeaService do
       service.before_update(idea, user)
       idea.save!
       expect {service.after_update(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', user, idea.updated_at.to_i, payload: {change: [nil, assignee.id]})
+        to have_enqueued_job(LogActivityJob).with(idea, 'assigned', user, idea.updated_at.to_i)
     end
 
     it "is logged on automatic assignment" do 
@@ -200,7 +200,7 @@ describe SideFxIdeaService do
       service.before_update(idea, user)
       idea.save!
       expect {service.after_update(idea, user)}.
-        to have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', nil, idea.updated_at.to_i, payload: {change: [nil, assignee.id]})
+        to have_enqueued_job(LogActivityJob).with(idea, 'assigned', nil, idea.updated_at.to_i)
     end
 
     it "is not logged when no assignment took place" do 
@@ -212,7 +212,7 @@ describe SideFxIdeaService do
       service.before_update(idea, user)
       idea.save!
       expect {service.after_update(idea, user)}.
-        to_not have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', user, idea.updated_at.to_i, payload: {change: [assignee.id, nil]})
+        to_not have_enqueued_job(LogActivityJob).with(idea, 'assigned', user, idea.updated_at.to_i)
     end
   end
 
