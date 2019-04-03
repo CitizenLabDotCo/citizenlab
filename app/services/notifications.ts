@@ -604,6 +604,9 @@ export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationDat
     type: 'idea_assigned_to_you';
     read_at: string | null;
     created_at: string;
+    initiating_user_first_name: string | null;
+    initiating_user_last_name: string | null;
+    initiating_user_slug: string | null;
     idea_title_multiloc: Multiloc;
     idea_slug: string;
   };
