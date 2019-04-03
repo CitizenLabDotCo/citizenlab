@@ -7,6 +7,7 @@ nl:
       "admin_rights_received": Beheerdersrechten ontvangen
       "comment_deleted_by_admin": Een beheerder verwijdert mijn reactie
       "comment_marked_as_spam": Een reactie is aangeduid als spam (voor beheerders en moderatoren)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Een idee is aangeduid als spam (voor beheerders en moderatoren)
       "invite_received": Iemand mij uitnodigt op het platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
@@ -40,6 +41,7 @@ nl:
       "admin_rights_received": Wanneer een gebruiker beheerdersrechten ontvangt
       "comment_deleted_by_admin": Wanneer een beheerder mijn reactie verwijdert
       "comment_marked_as_spam": Wanneer een gebruiker een reactie aanduidt als spam (voor beheerders en moderatoren)
+      "idea_assigned_to_you": When an idea has been assigned to me
       "idea_marked_as_spam": Wanneer een gebruiker een idee aanduidt als spam (voor beheerders en moderatoren)
       "invite_received": Wanneer een gebruiker uitgenodigd wordt op het platform
       "invite_reminder": When someone invited me to the platform (reminder after 3 days)
