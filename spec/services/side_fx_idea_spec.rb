@@ -203,12 +203,24 @@ describe SideFxIdeaService do
         to have_enqueued_job(LogActivityJob).with(idea, 'assigned', nil, idea.updated_at.to_i)
     end
 
-    it "is not logged when no assignment took place" do 
+    it "is logged when an assigned idea gets published" do 
       user = create(:admin)
       assignee = create(:admin)
       project = create(:project, default_assignee: nil)
       idea = create(:idea, project: project, assignee: assignee, publication_status: 'draft')
       idea.publication_status = 'published'
+      service.before_update(idea, user)
+      idea.save!
+      expect {service.after_update(idea, user)}.
+        to have_enqueued_job(LogActivityJob).with(idea, 'assigned', user, idea.updated_at.to_i)
+    end
+
+    it "is not logged when no assignment took place" do 
+      user = create(:admin)
+      assignee = create(:admin)
+      project = create(:project, default_assignee: nil)
+      idea = create(:idea, project: project, assignee: assignee, publication_status: 'published')
+      idea.location_description = 'In the coolest town ever'
       service.before_update(idea, user)
       idea.save!
       expect {service.after_update(idea, user)}.
