@@ -5,5 +5,6 @@ export default {
   clickExportComments: {
     name: 'Comment export button clicked',
   },
-  assigneeFilterUsed: 'Idea assignment filtered was used in idea manager'
+  assigneeFilterUsed: 'Idea assignment filter was used in idea manager',
+  ideaReviewAssignment: 'An idea was assigned for review'
 };
