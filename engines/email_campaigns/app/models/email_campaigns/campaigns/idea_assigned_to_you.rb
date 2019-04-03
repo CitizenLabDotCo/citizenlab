@@ -2,7 +2,6 @@ module EmailCampaigns
   class Campaigns::IdeaAssignedToYou < Campaigns::NotificationCampaign
     include Consentable
     include ActivityTriggerable
-    include RecipientConfigurable
     include Disableable
 
     recipient_filter :filter_notification_recipient
