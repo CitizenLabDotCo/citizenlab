@@ -122,8 +122,18 @@ class IdeaSettings extends PureComponent<Props, State> {
   }
 
   onStatusChange = (statusOption: IOption) => {
+    const { tenant, ideaId, authUser }  = this.props;
+    const adminAtWorkId = authUser ? authUser.id : null;
+
     updateIdea(this.props.ideaId, {
       idea_status_id: statusOption.value
+    });
+
+    trackEventByName(tracks.ideaStatusChange, {
+      tenant,
+      location: 'Idea preview/popup',
+      idea: ideaId,
+      adminAtWork: adminAtWorkId
     });
   }
 
