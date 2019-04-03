@@ -101,15 +101,17 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # insert
   def create
+    service = SideFxIdeaService.new
+
     @idea = Idea.new(permitted_attributes(Idea))
     @idea.author ||= current_user
 
-    SideFxIdeaService.new.before_create(@idea, current_user)
+    service.before_create(@idea, current_user)
 
     authorize @idea
     ActiveRecord::Base.transaction do
       if @idea.save
-        SideFxIdeaService.new.after_create(@idea, current_user)
+        service.after_create(@idea, current_user)
         render json: @idea.reload, status: :created, include: ['author','topics','areas','phases','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -120,6 +122,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # patch
   def update
+    service = SideFxIdeaService.new
+
     params[:idea][:area_ids] ||= [] if params[:idea].has_key?(:area_ids)
     params[:idea][:topic_ids] ||= [] if params[:idea].has_key?(:topic_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].has_key?(:phase_ids)
@@ -127,11 +131,11 @@ class WebApi::V1::IdeasController < ApplicationController
     @idea.assign_attributes(permitted_attributes(@idea))
     authorize @idea
 
-    SideFxIdeaService.new.before_update(@idea, current_user)
+    service.before_update(@idea, current_user)
     ActiveRecord::Base.transaction do
       if @idea.save
         authorize @idea
-        SideFxIdeaService.new.after_update(@idea, current_user)
+        service.after_update(@idea, current_user)
         render json: @idea.reload, status: :ok, include: ['author','topics','areas','user_vote','idea_images']
       else
         render json: { errors: @idea.errors.details }, status: :unprocessable_entity
@@ -141,10 +145,12 @@ class WebApi::V1::IdeasController < ApplicationController
 
   # delete
   def destroy
-    SideFxIdeaService.new.before_destroy(@idea, current_user)
+    service = SideFxIdeaService.new
+    
+    service.before_destroy(@idea, current_user)
     idea = @idea.destroy
     if idea.destroyed?
-      SideFxIdeaService.new.after_destroy(idea, current_user)
+      service.after_destroy(idea, current_user)
       head :ok
     else
       head 500
