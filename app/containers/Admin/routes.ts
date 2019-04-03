@@ -18,16 +18,25 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
+import { currentTenantStream } from 'services/tenant';
+import { combineLatest } from 'rxjs';
 
 const isUserAuthorized = (nextState, replace) => {
   const pathNameWithLocale = nextState.location.pathname;
   const { pathname, urlLocale } = removeLocale(pathNameWithLocale);
-  hasPermission({
-    item: { type: 'route', path: pathname },
-    action: 'access'
-  }).subscribe(accessAthorized => {
+  combineLatest(
+    hasPermission({
+      item: { type: 'route', path: pathname },
+      action: 'access'
+    }),
+    currentTenantStream().observable
+  ).subscribe(([accessAthorized, tenant]) => {
     if (!accessAthorized) {
-      replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
+      if (tenant.data.attributes.settings.core.lifecycle_stage === 'churned') {
+        replace(`${urlLocale && `/${urlLocale}`}/subscription-ended`);
+      } else {
+        replace(`${urlLocale && `/${urlLocale}`}/sign-in/`);
+      }
     }
   });
 };

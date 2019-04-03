@@ -1,6 +1,8 @@
 import { authUserStream } from 'services/auth';
 import { IUser } from 'services/users';
 import { isObject } from 'lodash-es';
+import { combineLatest } from 'rxjs';
+import { currentTenantStream, ITenantData } from 'services/tenant';
 import { map } from 'rxjs/operators';
 
 export type TPermissionItem = IResourceData | IRouteItem | TResourceType;
@@ -16,7 +18,7 @@ export interface IRouteItem {
 }
 
 interface IPermissionRule {
-  (resource: TPermissionItem | null, user: IUser | null, context?: any): boolean;
+  (resource: TPermissionItem | null, user: IUser | null, tenant: ITenantData, context?: any): boolean;
 }
 
 interface IPermissionRules {
@@ -52,7 +54,10 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => {
  * @param param0.context Optional context argument that can be used to pass in aditional context to make the permissions decision
  */
 const hasPermission = ({ item, action, context }: { item: TPermissionItem | null, action: string, context?: any }) => {
-  return authUserStream().observable.pipe(map((user) => {
+  return combineLatest(
+    authUserStream().observable,
+    currentTenantStream().observable
+  ).pipe(map(([user, tenant]) => {
     if (!item) {
       return false;
     }
@@ -61,7 +66,7 @@ const hasPermission = ({ item, action, context }: { item: TPermissionItem | null
     const rule = getPermissionRule(resourceType, action);
 
     if (rule) {
-      return rule(item, user, context);
+      return rule(item, user, tenant.data, context);
     } else {
       throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
     }
