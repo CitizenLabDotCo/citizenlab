@@ -7,5 +7,5 @@ export default {
   },
   assigneeFilterUsed: 'Idea assignment filter was used in idea manager',
   ideaReviewAssignment: 'An idea was assigned for review',
-  ideaStatusChange: 'An idea\'s status was changed'
+  ideaStatusChange: 'An idea\'s status was changed',
 };
