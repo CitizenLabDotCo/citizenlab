@@ -1,22 +1,37 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 
+// utils
 import { isNilOrError } from 'utils/helperUtils';
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import { updateIdea } from 'services/ideas';
 
-import Select from 'components/UI/Select';
-
+// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import injectLocalize from 'utils/localize';
 import messages from './messages';
 
+// typings
 import { IOption } from 'typings';
 
+// styles
 import styled from 'styled-components';
+
+// components
 import Label from 'components/UI/Label';
+import Select from 'components/UI/Select';
+
+// services
+import { updateIdea } from 'services/ideas';
+
+// resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -25,6 +40,8 @@ const StyledLabel = styled(Label)`
 const Container = styled.div``;
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
   statuses: GetIdeaStatusesChildProps;
   idea: GetIdeaChildProps;
   prospectAssignees: GetUsersChildProps;
@@ -111,8 +128,20 @@ class IdeaSettings extends PureComponent<Props, State> {
   }
 
   onAssigneeChange = (assigneeOption: IOption | null) => {
-    updateIdea(this.props.ideaId, {
-      assignee_id: assigneeOption ? assigneeOption.value : null
+    const { tenant, ideaId, authUser }  = this.props;
+    const assigneeId = assigneeOption ? assigneeOption.value : null;
+    const adminAtWorkId = authUser ? authUser.id : null;
+
+    updateIdea(ideaId, {
+      assignee_id: assigneeId
+    });
+
+    trackEventByName(tracks.ideaReviewAssignment, {
+      tenant,
+      location: 'Idea preview/popup',
+      idea: ideaId,
+      assignee: assigneeId,
+      adminAtWork: adminAtWorkId
     });
   }
 
@@ -149,6 +178,8 @@ class IdeaSettings extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  tenant: <GetTenant />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   statuses: <GetIdeaStatuses/>,
   prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null

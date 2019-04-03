@@ -1,22 +1,32 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-
-import { isNilOrError } from 'utils/helperUtils';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import { updateIdea } from 'services/ideas';
-
-// import Select from 'components/UI/Select';
 import { Select } from 'semantic-ui-react';
-
-import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-
 import { IOption } from 'typings';
 
+// services
+import { updateIdea } from 'services/ideas';
+
+// resources
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
+
 interface DataProps {
+  authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
   idea: GetIdeaChildProps;
   prospectAssignees: GetUsersChildProps;
 }
@@ -66,8 +76,20 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onAssigneeChange = (_event, assigneeOption) => {
-    updateIdea(this.props.ideaId, {
-      assignee_id: assigneeOption ? assigneeOption.value : null
+    const { tenant, ideaId, authUser }  = this.props;
+    const assigneeId = assigneeOption ? assigneeOption.value : null;
+    const adminAtWorkId = authUser ? authUser.id : null;
+
+    updateIdea(ideaId, {
+      assignee_id: assigneeId
+    });
+
+    trackEventByName(tracks.ideaReviewAssignment, {
+      tenant,
+      location: 'Idea overview',
+      idea: ideaId,
+      assignee: assigneeId,
+      adminAtWork: adminAtWorkId
     });
   }
 
@@ -91,6 +113,8 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   prospectAssignees: ({ idea, render }) => !isNilOrError(idea) ? <GetUsers canModerateProject={idea.relationships.project.data.id}>{render}</GetUsers> : null
 });
