@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 import { IIdeaAssignedToYouNotificationData } from 'services/notifications';
 
 // i18n
@@ -7,6 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';
+import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
 type Props = {
@@ -21,6 +23,42 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
     event.stopPropagation();
   }
 
+  getNotificationMessage = () : JSX.Element => {
+    const { notification } = this.props;
+    const sharedValues = {
+      ideaTitle: <T value={notification.attributes.idea_title_multiloc} />
+    };
+
+    switch (isNilOrError(notification.attributes.initiating_user_slug)) {
+      case false:
+        return(
+          <FormattedMessage
+            {...messages.xAssignedIdeaToYou}
+            values={{
+              ...sharedValues,
+              name: (
+                <Link
+                  to={`/profile/${notification.attributes.initiating_user_slug}`}
+                  onClick={this.onClickUserName}
+                >
+                  {notification.attributes.initiating_user_first_name}
+                </Link>
+                ),
+            }}
+          />
+        );
+      case true:
+        return(
+          <FormattedMessage
+            {...messages.ideaAssignedToYou}
+            values={{
+              ...sharedValues
+            }}
+          />
+        );
+    }
+  }
+
   render() {
     const { notification } = this.props;
 
@@ -31,12 +69,7 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
         icon="idea2"
         isRead={!!notification.attributes.read_at}
       >
-        <FormattedMessage
-          {...messages.ideaAssignedToYou}
-          values={{
-            ideaTitle: <T value={notification.attributes.idea_title_multiloc} />
-          }}
-        />
+        {this.getNotificationMessage()}
       </NotificationWrapper>
     );
   }
