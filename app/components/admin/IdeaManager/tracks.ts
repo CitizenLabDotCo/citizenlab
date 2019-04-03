@@ -5,4 +5,5 @@ export default {
   clickExportComments: {
     name: 'Comment export button clicked',
   },
+  assigneeFilterUsed: 'Idea assignment filtered was used in idea manager'
 };

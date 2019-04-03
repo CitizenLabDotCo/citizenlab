@@ -18,6 +18,8 @@ import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
+import GetIdeasCount from 'resources/GetIdeasCount';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -27,14 +29,16 @@ import InfoSidebar from './components/InfoSidebar';
 import ExportMenu from './components/ExportMenu';
 import { Input, Message } from 'semantic-ui-react';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
+import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
-import FeedbackToggle from './components/TopLevelFilters/FeedbackToggle';
-import GetIdeasCount from 'resources/GetIdeasCount';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -234,6 +238,9 @@ class IdeaManager extends React.PureComponent<Props, State> {
   handleAssigneeFilterChange = (assignee: string) => {
     this.props.ideas.onChangeAssignee(assignee === 'all' ? undefined : assignee);
     this.setState({ assignee });
+
+    // analytics
+    trackEventByName(tracks.assigneeFilterUsed);
   }
 
   handleToggleFeedbackNeededFilter = () => {
