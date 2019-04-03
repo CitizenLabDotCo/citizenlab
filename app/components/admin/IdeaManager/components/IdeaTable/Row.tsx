@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { uniq, keys, isEmpty, get } from 'lodash-es';
@@ -21,6 +22,10 @@ import StatusSelector from './StatusSelector';
 import Checkbox from 'components/UI/Checkbox';
 import FeatureFlag from 'components/FeatureFlag';
 
+// resources
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
 
@@ -32,6 +37,10 @@ import messages from '../../messages';
 // style
 import styled from 'styled-components';
 import AssigneeSelect from './AssigneeSelect';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
 
 const StyledRow = styled.tr`
   height: 5.5rem;
@@ -59,7 +68,7 @@ const TitleLink = styled.a`
   }
 `;
 
-type Props = {
+type InputProps = {
   idea: IIdeaData,
   phases: IPhaseData[],
   statuses: IIdeaStatusData[],
@@ -74,6 +83,13 @@ type Props = {
   activeFilterMenu: string;
   openIdea: (ideaId: string) => void;
 };
+
+type DataProps = {
+  tenant: GetTenantChildProps,
+  authUser: GetAuthUserChildProps
+};
+
+type Props = InputProps & DataProps;
 
 type State = {};
 
@@ -107,8 +123,20 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
   }
 
   onUpdateIdeaStatus = (statusId) => {
+    const { tenant, idea, authUser }  = this.props;
+    const ideaId = idea.id;
+    const adminAtWorkId = authUser ? authUser.id : null;
+
     updateIdea(this.props.idea.id, {
       idea_status_id: statusId,
+    });
+
+    trackEventByName(tracks.ideaStatusChange, {
+      tenant,
+      location: 'Idea overview',
+      method: 'Clicked on the squares representing the statuses',
+      idea: ideaId,
+      adminAtWork: adminAtWorkId
     });
   }
 
@@ -300,4 +328,15 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl(localize(DragSource('IDEA', ideaSource, collect)(Row)));
+const RowWithHOCs = injectIntl(localize(DragSource('IDEA', ideaSource, collect)(Row)));
+
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  tenant: <GetTenant />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <RowWithHOCs {...dataProps} {...inputProps} />}
+  </Data>
+);
