@@ -106,7 +106,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.resourceOptions = [
       { value: 'ideas', label: formatMessage(messages.ideas) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'votes', label: formatMessage(messages.votes) }
+      { value: 'votes', label: formatMessage(messages.ideaVotes) }
     ];
   }
 
