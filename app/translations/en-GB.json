@@ -1128,6 +1128,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdmin": "",
   "app.containers.NotificationMenu.deletedUser": "",
   "app.containers.NotificationMenu.error": "",
+  "app.containers.NotificationMenu.ideaAssignedToYou": "",
   "app.containers.NotificationMenu.loadMore": "",
   "app.containers.NotificationMenu.loading": "",
   "app.containers.NotificationMenu.mentionInComment": "",

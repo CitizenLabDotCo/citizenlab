@@ -1128,6 +1128,7 @@
   "app.containers.NotificationMenu.commentDeletedByAdmin": "Din kommentar på '{ideaTitle}' er blevet slettet af en administrator fordi {reasonCode, select, irrelevant {det er irrelevant} inappropriate {dens indhold er upassende} other {{otherReason}}}",
   "app.containers.NotificationMenu.deletedUser": "Deleted user",
   "app.containers.NotificationMenu.error": "Kunne ikke indlæse notifikationer",
+  "app.containers.NotificationMenu.ideaAssignedToYou": "",
   "app.containers.NotificationMenu.loadMore": "Indlæs flere...",
   "app.containers.NotificationMenu.loading": "Indlæser notifikationer...",
   "app.containers.NotificationMenu.mentionInComment": "{name} nævnte dig i en kommentar",
