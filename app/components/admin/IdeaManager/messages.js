@@ -167,10 +167,14 @@ export default defineMessages({
   },
   noIdeasHere: {
     id: 'app.components.admin.IdeaManager.noIdeasHere',
-    defaultMessage: 'No ideas match the current filters.',
+    defaultMessage: 'No ideas match the current filters',
   },
-  resetFilters: {
-    id: 'app.components.admin.IdeaManager.resetFilters',
-    defaultMessage: 'Reset the filters to see all the ideas',
+  resetFiltersDescription: {
+    id: 'app.components.admin.IdeaManager.resetFiltersDescription',
+    defaultMessage: 'Reset the filters to see all ideas.',
+  },
+  resetFiltersButton: {
+    id: 'app.components.admin.IdeaManager.resetFiltersButton',
+    defaultMessage: 'Reset filters',
   },
 });
