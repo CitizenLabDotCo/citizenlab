@@ -31,24 +31,16 @@ export default class ExportSurveyButton extends React.PureComponent<Props, State
     };
   }
 
-  setExporting = () => {
-    this.setState({ exporting: true });
-  }
-  removeExporting = () => {
-    this.setState({ exporting: false });
-  }
-
   trackExportSurvey = () => {
     trackEventByName(tracks.clickExportSurvey.name, { extra: { ...this.props } });
   }
 
   handleExportSurveyResults = () => {
-    exportSurveyResults(
-      this.props,
-      this.trackExportSurvey,
-      this.setExporting,
-      this.removeExporting
-    );
+    this.trackExportSurvey();
+
+    this.setState({ exporting: true });
+    exportSurveyResults(this.props);
+    this.setState({ exporting: false });
   }
 
   render() {

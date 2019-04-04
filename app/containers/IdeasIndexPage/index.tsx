@@ -69,6 +69,7 @@ export default React.memo(() => (
           type="load-more"
           sort="trending"
           pageSize={12}
+          allowProjectsFilter={true}
           projectPublicationStatus="published"
         />
       </StyledContentContainer>

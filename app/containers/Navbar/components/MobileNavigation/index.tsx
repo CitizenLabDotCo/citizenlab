@@ -7,6 +7,7 @@ import Icon from 'components/UI/Icon';
 import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.div`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -127,14 +128,16 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
           </NavigationLabel>
         </NavigationItem>
 
-        <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
-          <NavigationIconWrapper>
-            <NavigationIcon name="ideas" />
-          </NavigationIconWrapper>
-          <NavigationLabel>
-            <FormattedMessage {...messages.mobilePageIdeas} />
-          </NavigationLabel>
-        </NavigationItem>
+        <FeatureFlag name="ideas_overview">
+          <NavigationItem to="/ideas" className={secondUrlSegment === 'ideas' ? 'active' : ''}>
+            <NavigationIconWrapper>
+              <NavigationIcon name="ideas" />
+            </NavigationIconWrapper>
+            <NavigationLabel>
+              <FormattedMessage {...messages.mobilePageIdeas} />
+            </NavigationLabel>
+          </NavigationItem>
+        </FeatureFlag>
 
       </Container>
     );

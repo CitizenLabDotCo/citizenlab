@@ -7,7 +7,6 @@ import { adopt } from 'react-adopt';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -21,6 +20,8 @@ import { IUserData } from 'services/users';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface InputProps {
   user: IUserData;
@@ -62,6 +63,7 @@ const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUse
             ${usersShowPageIndexTitle}`
           }
         </title>
+        {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
         <meta name="title" content={usersShowPageIndexTitle} />
         <meta name="description" content={usersShowPageDescription} />

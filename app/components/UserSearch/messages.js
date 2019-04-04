@@ -7,6 +7,6 @@ export default defineMessages({
   },
   searchUsers: {
     id: 'app.components.UserSearch.searchUsers',
-    defaultMessage: 'Search users',
+    defaultMessage: 'Type to search users...',
   },
 });

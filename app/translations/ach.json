@@ -211,6 +211,7 @@
   "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "",
   "app.components.VoteControl.votingDisabledProjectInactive": "",
+  "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonError": "",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "",
@@ -648,6 +649,7 @@
   "app.containers.AdminPage.ProjectEdit.saveProject": "",
   "app.containers.AdminPage.ProjectEdit.saveSuccess": "",
   "app.containers.AdminPage.ProjectEdit.saveSuccessMessage": "",
+  "app.containers.AdminPage.ProjectEdit.selectGroups": "",
   "app.containers.AdminPage.ProjectEdit.statusLabel": "",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "",
   "app.containers.AdminPage.ProjectEdit.survey": "",
@@ -994,6 +996,7 @@
   "app.containers.IdeaCards.newest": "",
   "app.containers.IdeaCards.oldest": "",
   "app.containers.IdeaCards.popular": "",
+  "app.containers.IdeaCards.projectFilterTitle": "",
   "app.containers.IdeaCards.sortTitle": "",
   "app.containers.IdeaCards.topics": "",
   "app.containers.IdeaCards.topicsTitle": "",
@@ -1484,5 +1487,7 @@
   "containers.Admin.onboarding.setupArticle3Title": "",
   "containers.Admin.onboarding.setupSectionLink": "",
   "containers.Admin.onboarding.setupSectionTitle": "",
-  "containers.Admin.onboarding.title": ""
+  "containers.Admin.onboarding.title": "",
+  "containers.SubscriptionEndedPage.accessDenied": "",
+  "containers.SubscriptionEndedPage.subscriptionEnded": ""
 }
