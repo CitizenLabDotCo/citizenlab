@@ -229,10 +229,10 @@ const ideaSource = {
   endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
-    const { tenant, idea, authUser }  = this.props;
+    const { tenant, idea, authUser }  = props;
     const ideaId = idea.id;
     const adminAtWorkId: string | null = authUser ? authUser.id : null;
-    const tenantId: string | null = tenant && tenant.id;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
 
     if (dropResult && dropResult.type === 'topic') {
       let ids = keys(props.selectedIdeas);
