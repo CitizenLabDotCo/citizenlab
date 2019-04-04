@@ -7,11 +7,14 @@ import { adopt } from 'react-adopt';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+
+// utils
+import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
+import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 interface InputProps { }
 
@@ -37,6 +40,7 @@ const IdeaMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser, tenant
         }
       </title>
       {getAlternateLinks(tenantLocales)}
+      {getCanonicalLink()}
       <meta name="title" content={ideasIndexTitle} />
       <meta name="description" content={ideasIndexDescription} />
       <meta property="og:title" content={ideasIndexTitle} />

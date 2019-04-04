@@ -245,6 +245,15 @@ export default function createRoutes() {
           }),
         },
         {
+          path: 'subscription-ended',
+          name: 'subscriptionEnded',
+          component: Loadable({
+            loader: () => import('containers/SubscriptionEndedPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
+        },
+        {
           path: '*',
           name: 'notfound',
           component: Loadable({

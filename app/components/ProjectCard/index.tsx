@@ -320,7 +320,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${({ theme }) => darken(0.05, theme.colors.secondaryText)};
+  color: ${darken(0.11, colors.secondaryText)};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
@@ -598,7 +598,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             {size === 'large' && contentHeader}
 
             <ContentBody className={size}>
-              <ProjectTitle id="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
+              <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
                 <T value={project.attributes.title_multiloc} />
               </ProjectTitle>
 
@@ -606,7 +606,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                      <ProjectDescription id="e2e-project-card-project-description-preview">
+                      <ProjectDescription className="e2e-project-card-project-description-preview">
                         {description}
                       </ProjectDescription>
                     );

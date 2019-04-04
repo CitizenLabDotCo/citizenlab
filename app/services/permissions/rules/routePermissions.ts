@@ -1,10 +1,15 @@
 import { definePermissionRule, IRouteItem } from 'services/permissions/permissions';
-import { isAdmin, isModerator, isProjectModerator } from '../roles';
+import { isAdmin, isModerator, isProjectModerator, isSuperAdmin } from '../roles';
 import { IUser } from 'services/users';
+import { ITenantData } from 'services/tenant';
 
-definePermissionRule('route', 'access', (item: IRouteItem, user: IUser | null) => {
+definePermissionRule('route', 'access', (item: IRouteItem, user: IUser | null, tenant: ITenantData) => {
   if (/^\/admin/.test(item.path)) {
+    if (isSuperAdmin(user)) return true;
+    if (tenant.attributes.settings.core.lifecycle_stage === 'churned') return false;
+
     if (isAdmin(user)) return true;
+
     if (isModerator(user) && (
       item.path === '/admin/projects' ||
       item.path === '/admin/dashboard' ||

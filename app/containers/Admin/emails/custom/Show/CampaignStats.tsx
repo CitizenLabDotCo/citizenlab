@@ -95,7 +95,7 @@ class CampaignStats extends React.Component<Props, State> {
             </GraphCardCount>
             <GraphCardTitle>
               <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-              {status === 'clicked' && <InfoTooltip {...messages.deliveryStatus_clickedTooltip} />}
+              {status === 'clicked' && <InfoTooltip position="top-left" {...messages.deliveryStatus_clickedTooltip} />}
             </GraphCardTitle>
           </GraphCard>
         ))}

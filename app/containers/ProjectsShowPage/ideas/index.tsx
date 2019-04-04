@@ -69,15 +69,17 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         clHistory.push(`/projects/${params.slug}`);
       } else {
         const isPBProject = (project.attributes.participation_method === 'budgeting');
+        const projectId = project.id;
+        const projectIds = [projectId];
 
         return (
           <>
             <Header projectSlug={params.slug} />
-            <StyledProjectArchivedIndicator projectId={project.id} />
+            <StyledProjectArchivedIndicator projectId={projectId} />
             <StyledContentContainer>
               {isPBProject &&
                 <StyledPBExpenses
-                  participationContextId={project.id}
+                  participationContextId={projectId}
                   participationContextType="Project"
                 />
               }
@@ -88,15 +90,15 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 type="load-more"
                 sort="trending"
                 pageSize={12}
-                projectId={project.id}
+                projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}
-                participationContextId={project.id}
+                participationContextId={projectId}
                 participationContextType="Project"
                 showViewToggle={true}
                 defaultView={(project.attributes.presentation_mode || null)}
               />
             </StyledContentContainer>
-            <EventsPreview projectId={project.id} />
+            <EventsPreview projectId={projectId} />
           </>
         );
       }
