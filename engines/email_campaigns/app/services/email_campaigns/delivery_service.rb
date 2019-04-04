@@ -4,6 +4,7 @@ module EmailCampaigns
     CAMPAIGN_CLASSES = [   
       Campaigns::AdminDigest,
       Campaigns::AdminRightsReceived,
+      Campaigns::AssigneeDigest,
       Campaigns::CommentDeletedByAdmin,   
       Campaigns::CommentMarkedAsSpam,
       Campaigns::CommentOnYourComment,
