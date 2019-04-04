@@ -124,13 +124,14 @@ class IdeaSettings extends PureComponent<Props, State> {
   onStatusChange = (statusOption: IOption) => {
     const { tenant, ideaId, authUser }  = this.props;
     const adminAtWorkId = authUser ? authUser.id : null;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(this.props.ideaId, {
       idea_status_id: statusOption.value
     });
 
     trackEventByName(tracks.ideaStatusChange, {
-      tenant,
+      tenant: tenantId,
       location: 'Idea preview/popup',
       idea: ideaId,
       adminAtWork: adminAtWorkId
@@ -141,13 +142,14 @@ class IdeaSettings extends PureComponent<Props, State> {
     const { tenant, ideaId, authUser }  = this.props;
     const assigneeId = assigneeOption ? assigneeOption.value : null;
     const adminAtWorkId = authUser ? authUser.id : null;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(ideaId, {
       assignee_id: assigneeId
     });
 
     trackEventByName(tracks.ideaReviewAssignment, {
-      tenant,
+      tenant: tenantId,
       location: 'Idea preview/popup',
       idea: ideaId,
       assignee: assigneeId,

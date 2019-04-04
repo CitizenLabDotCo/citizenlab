@@ -28,6 +28,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import localize, { InjectedLocalized } from 'utils/localize';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedRelative, InjectedIntlProps } from 'react-intl';
@@ -126,13 +127,14 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
     const { tenant, idea, authUser }  = this.props;
     const ideaId = idea.id;
     const adminAtWorkId = authUser ? authUser.id : null;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(this.props.idea.id, {
       idea_status_id: statusId,
     });
 
     trackEventByName(tracks.ideaStatusChange, {
-      tenant,
+      tenant: tenantId,
       location: 'Idea overview',
       method: 'Clicked on the squares representing the statuses',
       idea: ideaId,
@@ -231,7 +233,8 @@ const ideaSource = {
     const dropResult = monitor.getDropResult();
     const { tenant, idea, authUser }  = this.props;
     const ideaId = idea.id;
-    const adminAtWorkId = authUser ? authUser.id : null;
+    const adminAtWorkId: string | null = authUser ? authUser.id : null;
+    const tenantId: string | null = tenant && tenant.id;
 
     if (dropResult && dropResult.type === 'topic') {
       let ids = keys(props.selectedIdeas);
@@ -321,7 +324,7 @@ const ideaSource = {
       });
 
       trackEventByName(tracks.ideaStatusChange, {
-        tenant,
+        tenant: tenantId,
         location: 'Idea overview',
         method: 'Dragged and dropped idea in idea manager',
         idea: ideaId,
