@@ -229,6 +229,9 @@ const ideaSource = {
   endDrag(props: Props & InjectedIntlProps & InjectedLocalized, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
+    const { tenant, idea, authUser }  = this.props;
+    const ideaId = idea.id;
+    const adminAtWorkId = authUser ? authUser.id : null;
 
     if (dropResult && dropResult.type === 'topic') {
       let ids = keys(props.selectedIdeas);
@@ -315,6 +318,14 @@ const ideaSource = {
         updateIdea(ideaId, {
           idea_status_id: dropResult.id,
         });
+      });
+
+      trackEventByName(tracks.ideaStatusChange, {
+        tenant,
+        location: 'Idea overview',
+        method: 'Dragged and dropped idea in idea manager',
+        idea: ideaId,
+        adminAtWork: adminAtWorkId
       });
     }
 
