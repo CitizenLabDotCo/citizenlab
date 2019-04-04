@@ -40,7 +40,7 @@ class SideFxIdeaService
     if idea.assignee_id_previously_changed?
       initiating_user = @manual_assignment ? nil : user
       LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
-      if !idea.publication_status_previous_change == ['draft','published']
+      if idea.publication_status_previous_change != ['draft','published']
         LogActivityJob.perform_later(idea, 'assigned', initiating_user, idea.updated_at.to_i)
       end
     end
