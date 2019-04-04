@@ -29,33 +29,32 @@ export default class IdeaAssignedToYouNotification extends React.PureComponent<P
       ideaTitle: <T value={notification.attributes.idea_title_multiloc} />
     };
 
-    switch (isNilOrError(notification.attributes.initiating_user_slug)) {
-      case false:
-        return(
-          <FormattedMessage
-            {...messages.xAssignedIdeaToYou}
-            values={{
-              ...sharedValues,
-              name: (
-                <Link
-                  to={`/profile/${notification.attributes.initiating_user_slug}`}
-                  onClick={this.onClickUserName}
-                >
-                  {notification.attributes.initiating_user_first_name}
-                </Link>
-                ),
-            }}
-          />
-        );
-      case true:
-        return(
-          <FormattedMessage
-            {...messages.ideaAssignedToYou}
-            values={{
-              ...sharedValues
-            }}
-          />
-        );
+    if (isNilOrError(notification.attributes.initiating_user_slug)) {
+      return(
+        <FormattedMessage
+          {...messages.ideaAssignedToYou}
+          values={{
+            ...sharedValues
+          }}
+        />
+      );
+    } else {
+      return(
+        <FormattedMessage
+          {...messages.xAssignedIdeaToYou}
+          values={{
+            ...sharedValues,
+            name: (
+              <Link
+                to={`/profile/${notification.attributes.initiating_user_slug}`}
+                onClick={this.onClickUserName}
+              >
+                {notification.attributes.initiating_user_first_name}
+              </Link>
+              ),
+          }}
+        />
+      );
     }
   }
 
