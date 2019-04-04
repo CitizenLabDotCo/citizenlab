@@ -1,5 +1,6 @@
 import React from 'react';
 import { clone, omit, every, fromPairs, isEmpty, isFunction } from 'lodash-es';
+import styled from 'styled-components';
 
 // components
 import { Table } from 'semantic-ui-react';
@@ -26,12 +27,15 @@ import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import IdeaPreview from '../IdeaPreview';
 import NoIdeas from './NoIdeas';
-import styled from 'styled-components';
 
 const Container = styled.div`
   .ui.table {
     margin-bottom: 0;
   }
+`;
+
+const TableHeaderCellText = styled.span`
+  font-weight: 600;
 `;
 
 interface Props {
@@ -134,17 +138,23 @@ export default class IdeaTable extends React.Component<Props, State> {
                 <Checkbox value={this.allSelected()} onChange={this.toggleSelectAll} size="17px"/>
               </Table.HeaderCell>
               <Table.HeaderCell width={4}>
-                <FormattedMessage {...messages.title} />
+                <TableHeaderCellText>
+                  <FormattedMessage {...messages.title} />
+                </TableHeaderCellText>
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>
-                <FormattedMessage {...messages.assignee} />
+                <TableHeaderCellText>
+                  <FormattedMessage {...messages.assignee} />
+                </TableHeaderCellText>
               </Table.HeaderCell>
               <Table.HeaderCell width={2}>
                 <SortableTableHeader
                   direction={ideaSortAttribute === 'new' ? ideaSortDirection : null}
                   onToggle={this.handleSortClick('new')}
                 >
-                  <FormattedMessage {...messages.publication_date} />
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.publication_date} />
+                  </TableHeaderCellText>
                 </SortableTableHeader>
               </Table.HeaderCell>
               <Table.HeaderCell width={1}>
@@ -152,7 +162,9 @@ export default class IdeaTable extends React.Component<Props, State> {
                   direction={ideaSortAttribute === 'upvotes_count' ? ideaSortDirection : null}
                   onToggle={this.handleSortClick('upvotes_count')}
                 >
-                  <FormattedMessage {...messages.up} />
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.up} />
+                  </TableHeaderCellText>
                 </SortableTableHeader>
               </Table.HeaderCell >
               <Table.HeaderCell width={1}>
@@ -160,7 +172,9 @@ export default class IdeaTable extends React.Component<Props, State> {
                   direction={ideaSortAttribute === 'downvotes_count' ? ideaSortDirection : null}
                   onToggle={this.handleSortClick('downvotes_count')}
                 >
-                  <FormattedMessage {...messages.down} />
+                  <TableHeaderCellText>
+                    <FormattedMessage {...messages.down} />
+                  </TableHeaderCellText>
                 </SortableTableHeader>
               </Table.HeaderCell>
               <FeatureFlag name="participatory_budgeting">
@@ -169,7 +183,9 @@ export default class IdeaTable extends React.Component<Props, State> {
                     direction={ideaSortAttribute === 'baskets_count' ? ideaSortDirection : null}
                     onToggle={this.handleSortClick('baskets_count')}
                   >
-                    <FormattedMessage {...messages.participatoryBudgettingPicks} />
+                    <TableHeaderCellText>
+                      <FormattedMessage {...messages.participatoryBudgettingPicks} />
+                    </TableHeaderCellText>
                     &nbsp;
                     <InfoTooltip {...messages.basketsCountTooltip} size="small" position="top-left" />
                   </SortableTableHeader>
