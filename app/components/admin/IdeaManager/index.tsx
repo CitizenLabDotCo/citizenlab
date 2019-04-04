@@ -20,6 +20,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetIdeasCount from 'resources/GetIdeasCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -121,6 +122,7 @@ interface DataProps {
   ideaStatuses: GetIdeaStatusesChildProps;
   phases: GetPhasesChildProps;
   authUser: GetAuthUserChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -236,11 +238,18 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   handleAssigneeFilterChange = (assignee: string) => {
+    const { authUser, tenant } = this.props;
+    const adminAtWorkId = authUser && authUser.id;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
     this.props.ideas.onChangeAssignee(assignee === 'all' ? undefined : assignee);
     this.setState({ assignee });
 
     // analytics
-    trackEventByName(tracks.assigneeFilterUsed);
+    trackEventByName(tracks.assigneeFilterUsed, {
+      assignee,
+      tenant: tenantId,
+      adminAtWork: adminAtWorkId
+    });
   }
 
   handleToggleFeedbackNeededFilter = () => {
@@ -394,6 +403,7 @@ const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
   ideas: <GetIdeas type="paginated" pageSize={10} sort="new" />,
   topics: <GetTopics />,
+  tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
   authUser: <GetAuthUser />,
   phases: ({ project, render }) => <GetPhases projectId={get(project, 'id')}>{render}</GetPhases>,
