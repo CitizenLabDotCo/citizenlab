@@ -1157,6 +1157,7 @@
   "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} commented on {idea}",
   "app.containers.NotificationMenu.userPostedIdea": "{ideaAuthorFirstName} posted {idea}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reacted to your comment",
+  "app.containers.NotificationMenu.xAssignedIdeaToYou": "{name} assigned {ideaTitle} to you",
   "app.containers.PasswordRecovery.emailError": "Please enter a valid email address",
   "app.containers.PasswordRecovery.emailPlaceholder": "My email address",
   "app.containers.PasswordRecovery.helmetDescription": "Reset your password page",
