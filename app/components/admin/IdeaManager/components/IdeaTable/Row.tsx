@@ -78,7 +78,6 @@ type InputProps = {
   onUnselectIdea: () => void,
   onToggleSelectIdea: () => void,
   onSingleSelectIdea: () => void;
-  connectDragSource: any;
   activeFilterMenu: string | null;
   openIdea: (ideaId: string) => void;
 };
@@ -88,7 +87,9 @@ type DataProps = {
   authUser: GetAuthUserChildProps
 };
 
-type Props = InputProps & DataProps;
+type Props = InputProps & DataProps & {
+  connectDragSource: any;
+};
 
 type State = {};
 
