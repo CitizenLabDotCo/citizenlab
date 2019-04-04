@@ -28,35 +28,36 @@ module EmailCampaigns
         .where('published_at > ?', (time - 1.week))
         .order(created_at: :desc)
         .take(N_TOP_IDEAS)
-      end
-      [{
-        event_payload: {
-          assigned_ideas: @assigned_ideas.map{ |idea|
-            {
-              id: idea.id,
-              title_multiloc: idea.title_multiloc,
-              url: Frontend::UrlService.new.model_to_url(idea),
-              published_at: idea.published_at.iso8601,
-              author_name: idea.author_name,
-              upvotes_count: idea.upvotes_count,
-              upvotes_increment: activity_counts.dig(idea.id, :upvotes),
-              downvotes_count: idea.downvotes_count,
-              downvotes_increment: activity_counts.dig(idea.id, :downvotes),
-              comments_count: idea.comments_count,
-              comments_increment: activity_counts.dig(idea.id, :comments)
+      if @assigned_ideas.present?
+        [{
+          event_payload: {
+            assigned_ideas: @assigned_ideas.map{ |idea|
+              {
+                id: idea.id,
+                title_multiloc: idea.title_multiloc,
+                url: Frontend::UrlService.new.model_to_url(idea),
+                published_at: idea.published_at.iso8601,
+                author_name: idea.author_name,
+                upvotes_count: idea.upvotes_count,
+                downvotes_count: idea.downvotes_count,
+                comments_count: idea.comments_count,
+              }
             }
-        },
-        tracked_content: {
-          idea_ids: @assigned_ideas.ids
-        }
-      }]
+          },
+          tracked_content: {
+            idea_ids: @assigned_ideas.map{|i| i.id}
+          }
+        }]
+      else 
+        []
+      end
     end
 
 
     private
 
     def user_filter_admins_moderators_only users_scope, options={}
-      users_scope.admin.or(user_scope.project_moderator)
+      users_scope.admin.or(users_scope.project_moderator)
     end
 
   end
