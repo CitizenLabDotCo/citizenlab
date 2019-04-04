@@ -80,7 +80,7 @@ resource "Users" do
 
         example "List all users sorted by last_name" do
           duplicate_last_names = User.all.pluck(:last_name).group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
-          User.where(last_name: duplicate_last_names).each(&:destroy!)
+          User.where(last_name: duplicate_last_names).where.not(id: @user.id).each(&:destroy!)
 
           do_request sort: 'last_name'
           json_response = json_parse(response_body)
