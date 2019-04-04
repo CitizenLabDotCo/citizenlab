@@ -79,13 +79,14 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
     const { tenant, ideaId, authUser }  = this.props;
     const assigneeId = assigneeOption ? assigneeOption.value : null;
     const adminAtWorkId = authUser ? authUser.id : null;
+    const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(ideaId, {
       assignee_id: assigneeId
     });
 
     trackEventByName(tracks.ideaReviewAssignment, {
-      tenant,
+      tenant: tenantId,
       location: 'Idea overview',
       idea: ideaId,
       assignee: assigneeId,
