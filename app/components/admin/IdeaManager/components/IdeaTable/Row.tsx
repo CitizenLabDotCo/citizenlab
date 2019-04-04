@@ -71,17 +71,15 @@ const TitleLink = styled.a`
 
 type InputProps = {
   idea: IIdeaData,
-  phases: IPhaseData[],
-  statuses: IIdeaStatusData[],
-  onDeleteIdea: () => void,
+  phases?: IPhaseData[],
+  statuses?: IIdeaStatusData[],
   selected?: boolean,
   selectedIdeas: { [key: string]: boolean },
   onUnselectIdea: () => void,
   onToggleSelectIdea: () => void,
   onSingleSelectIdea: () => void;
-  isDragging: boolean;
   connectDragSource: any;
-  activeFilterMenu: string;
+  activeFilterMenu: string | null;
   openIdea: (ideaId: string) => void;
 };
 
@@ -190,7 +188,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
         <Table.Row active={selected} onClick={this.onClickRow}>
           <Table.Cell as={FilterCell} collapsing={true} />
           <Table.Cell colSpan={6} as={FilterCell}>
-            {activeFilterMenu === 'phases' &&
+            {activeFilterMenu === 'phases' && phases &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
                 phases={phases}
@@ -206,7 +204,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             {activeFilterMenu === 'projects' &&
               <ProjectSelector projectId={idea.relationships.project.data && idea.relationships.project.data.id} />
             }
-            {activeFilterMenu === 'statuses' &&
+            {activeFilterMenu === 'statuses' && statuses &&
               <StatusSelector
                 statuses={statuses}
                 selectedStatus={selectedStatus}

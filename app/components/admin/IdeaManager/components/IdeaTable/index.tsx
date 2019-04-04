@@ -184,7 +184,6 @@ export default class IdeaTable extends React.Component<Props, State> {
                 idea={idea}
                 phases={phases}
                 statuses={statuses}
-                onSelectIdea={this.selectIdea(idea)}
                 onUnselectIdea={this.unselectIdea(idea)}
                 onToggleSelectIdea={this.toggleSelectIdea(idea)}
                 onSingleSelectIdea={this.singleSelectIdea(idea)}
