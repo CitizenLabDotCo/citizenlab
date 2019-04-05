@@ -8,13 +8,16 @@ import { get } from 'lodash-es';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
+import Avatar from 'components/Avatar';
 
 // services
 import { updateComment, IUpdatedComment } from 'services/comments';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -56,6 +59,18 @@ const ContainerInner = styled.div`
   }
 `;
 
+const Content = styled.div`
+  display: flex;
+`;
+
+const AvatarWrapper = styled.div`
+  margin-right: 15px;
+`;
+
+const BodyAndFooter = styled.div`
+  flex: 1;
+`;
+
 interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
@@ -67,6 +82,7 @@ interface InputProps {
 interface DataProps {
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -129,13 +145,15 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, idea, commentType, hasChildComments, last, className } = this.props;
+    const { comment, idea, author, commentType, hasChildComments, last, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const commentId = comment.id;
       const ideaId = idea.id;
       const hideBottomBorder = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last));
+      const projectId = idea.relationships.project.data.id;
+      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       if (comment.attributes.publication_status === 'published') {
         return (
@@ -146,20 +164,37 @@ class Comment extends PureComponent<Props, State> {
                   commentId={commentId}
                 />
               }
-              <CommentBody
-                commentId={commentId}
-                commentType={commentType}
-                commentBody={comment.attributes.body_multiloc}
-                editing={editing}
-                onCommentSave={this.onCommentSave}
-                onCancelEditing={this.onCancelEditing}
-                translateButtonClicked={translateButtonClicked}
-              />
-              <CommentFooter
-                ideaId={ideaId}
-                commentId={commentId}
-                onEditing={this.onEditing}
-              />
+
+              <Content>
+                {commentType === 'child' &&
+                  <AvatarWrapper>
+                    <Avatar
+                      userId={!isNilOrError(author) ? author.id : null}
+                      size="34px"
+                      moderator={authorCanModerate}
+                    />
+                  </AvatarWrapper>
+                }
+
+                <BodyAndFooter>
+                  <CommentBody
+                    commentId={commentId}
+                    commentType={commentType}
+                    commentBody={comment.attributes.body_multiloc}
+                    editing={editing}
+                    onCommentSave={this.onCommentSave}
+                    onCancelEditing={this.onCancelEditing}
+                    translateButtonClicked={translateButtonClicked}
+                  />
+                  <CommentFooter
+                    className={commentType}
+                    ideaId={ideaId}
+                    commentId={commentId}
+                    onEditing={this.onEditing}
+                  />
+                </BodyAndFooter>
+              </Content>
+
             </ContainerInner>
           </Container>
         );
@@ -172,7 +207,8 @@ class Comment extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
 export default (inputProps: InputProps) => (

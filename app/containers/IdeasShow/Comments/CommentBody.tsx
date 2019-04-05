@@ -24,7 +24,6 @@ import GetMachineTranslation from 'resources/GetMachineTranslation';
 import { getLocalized } from 'utils/i18n';
 
 // Components
-import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Button from 'components/UI/Button';
@@ -40,20 +39,14 @@ import { colors } from 'utils/styleUtils';
 import { Multiloc, Locale } from 'typings';
 import { IUpdatedComment } from 'services/comments';
 
-const Container = styled.div`
-  display: flex;
-`;
-
-const Left = styled.div`
-  margin-right: 15px;
-`;
-
-const Right = styled.div`
-  flex: 1;
-`;
+const Container = styled.div``;
 
 const CommentWrapper = styled.div`
   white-space: pre-line;
+
+  &.child {
+    margin-top: 8px;
+  }
 `;
 
 const AuthorNameLink = styled(Link)`
@@ -109,6 +102,7 @@ interface InputProps {
   onCommentSave: (values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>) => void;
   onCancelEditing: () => void;
   translateButtonClicked: boolean;
+  className?: string;
 }
 
 interface DataProps {
@@ -124,14 +118,14 @@ interface Props extends InputProps, DataProps {}
 export interface State {}
 
 class CommentBody extends PureComponent<Props, State> {
-  getCommentText = (locale: Locale, tenantLocales: Locale[]) => {
-    const commentText = getLocalized(this.props.commentBody, locale, tenantLocales);
-    const linkifiedCommentText: string = linkifyHtml(commentText.replace(
+  getCommentContent = (locale: Locale, tenantLocales: Locale[]) => {
+    const commentContent = getLocalized(this.props.commentBody, locale, tenantLocales);
+    const linkifiedCommentContent: string = linkifyHtml(commentContent.replace(
       /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
       '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
     ));
 
-    return linkifiedCommentText;
+    return linkifiedCommentContent;
   }
 
   onCommentSave = async (values, formikActions: FormikActions<IUpdatedComment>) => {
@@ -171,7 +165,8 @@ class CommentBody extends PureComponent<Props, State> {
       idea,
       author,
       translateButtonClicked,
-      commentId
+      commentId,
+      className
     } = this.props;
     let content: JSX.Element | null = null;
 
@@ -180,7 +175,7 @@ class CommentBody extends PureComponent<Props, State> {
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       if (!editing) {
-        const TextWithUsername = ({ text }) => (
+        const CommentBodyContent = ({ text }) => (
           <>
             {commentType === 'child' &&
               <AuthorNameLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
@@ -195,71 +190,61 @@ class CommentBody extends PureComponent<Props, State> {
         );
 
         content = (
-          <CommentWrapper className="e2e-comment-body">
+          <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={300}>
               {translateButtonClicked ? (
                 <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
                   {translation => {
-                    const text = !isNilOrError(translation) ? translation.attributes.translation : this.getCommentText(locale, tenantLocales);
-                    return <TextWithUsername text={text} />;
+                    const text = !isNilOrError(translation) ? translation.attributes.translation : this.getCommentContent(locale, tenantLocales);
+                    return <CommentBodyContent text={text} />;
                   }}
                 </GetMachineTranslation>
               ) : (
-                <TextWithUsername text={this.getCommentText(locale, tenantLocales)} />
+                <CommentBodyContent text={this.getCommentContent(locale, tenantLocales)} />
               )}
             </QuillEditedContent>
           </CommentWrapper>
         );
+      } else {
+        content = (
+          <Formik
+            initialValues={{ body: getLocalized(commentBody, locale, tenantLocales) }}
+            onSubmit={this.onCommentSave}
+          >
+            {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
+              <StyledForm onSubmit={handleSubmit}>
+                <MentionsTextArea
+                  name="body"
+                  value={values.body}
+                  rows={1}
+                  onBlur={this.createFieldTouched('body', setFieldTouched)}
+                  onChange={this.createFieldChange('body', setFieldValue)}
+                  padding="1rem"
+                />
+                <ButtonsWrapper>
+                  {errors && errors.body_multiloc && errors.body_multiloc[locale] &&
+                    <Error apiErrors={errors.body_multiloc[locale]} />
+                  }
+                  <Button
+                    onClick={this.cancelEditing}
+                    icon="close4"
+                    style="text"
+                  />
+                  <Button
+                    icon="send"
+                    style="primary"
+                    processing={isSubmitting}
+                  />
+                </ButtonsWrapper>
+              </StyledForm>
+            )}
+          </Formik>
+        );
       }
 
-      content = (
-        <Formik
-          initialValues={{ body: getLocalized(commentBody, locale, tenantLocales) }}
-          onSubmit={this.onCommentSave}
-        >
-          {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
-            <StyledForm onSubmit={handleSubmit}>
-              <MentionsTextArea
-                name="body"
-                value={values.body}
-                rows={1}
-                onBlur={this.createFieldTouched('body', setFieldTouched)}
-                onChange={this.createFieldChange('body', setFieldValue)}
-                padding="1rem"
-              />
-              <ButtonsWrapper>
-                {errors && errors.body_multiloc && errors.body_multiloc[locale] &&
-                  <Error apiErrors={errors.body_multiloc[locale]} />
-                }
-                <Button
-                  onClick={this.cancelEditing}
-                  icon="close4"
-                  style="text"
-                />
-                <Button
-                  icon="send"
-                  style="primary"
-                  processing={isSubmitting}
-                />
-              </ButtonsWrapper>
-            </StyledForm>
-          )}
-        </Formik>
-      );
-
       return (
-        <Container>
-          <Left>
-            <Avatar
-              userId={!isNilOrError(author) ? author.id : null}
-              size="34px"
-              moderator={authorCanModerate}
-            />
-          </Left>
-
-          <Right>
-            {content}
-          </Right>
+        <Container className={className}>
+          {content}
         </Container>
       );
     }

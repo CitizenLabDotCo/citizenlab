@@ -3,7 +3,7 @@
 
 import React, { Component } from 'react';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import * as Sentry from '@sentry/browser';
+import { withScope, showReportDialog } from '@sentry/browser';
 import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -48,7 +48,7 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
     this.setState({ hasError: true });
 
     // Report to Sentry
-    Sentry.withScope(scope => {
+    withScope(scope => {
       Object.keys(errorInfo).forEach(key => {
         scope.setExtra(key, errorInfo[key]);
         scope.setExtra('from', 'ErrorBoundary');
@@ -90,7 +90,8 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
         name: `${first_name} ${last_name}`
       }});
     }
-    Sentry.showReportDialog(reportDialogProperties);
+
+    showReportDialog(reportDialogProperties);
   }
 
   render() {

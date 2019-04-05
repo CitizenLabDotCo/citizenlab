@@ -11,7 +11,8 @@ import 'assets/css/reset.min.css';
 import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init, Integrations } from '@sentry/browser';
+import { init } from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
