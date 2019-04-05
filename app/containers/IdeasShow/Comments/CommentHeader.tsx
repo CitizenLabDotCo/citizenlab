@@ -15,20 +15,18 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedRelative } from 'react-intl';
-import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
+import AdminBadge from './AdminBadge';
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
 `;
 
 const Left = styled.div`
@@ -51,22 +49,6 @@ const TimeAgo = styled.div`
   line-height: 14px;
   font-weight: 400;
   margin-left: 16px;
-`;
-
-const AdminBadge = styled.span`
-  color: ${colors.clRed};
-  font-size: ${fontSizes.xs}px;
-  line-height: 16px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  text-align: center;
-  font-weight: 600;
-  background-color: ${lighten(.45, colors.clRed)};
-  border: none;
-  padding: 4px 8px;
-  height: 24px;
-  display: flex;
-  align-items: center;
 `;
 
 interface InputProps {
@@ -99,7 +81,7 @@ class CommentHeader extends PureComponent<Props, State> {
             <StyledAuthor
               authorId={authorId}
               notALink={authorId ? false : true}
-              size="34px"
+              size="32px"
               projectId={projectId}
               showModeration={authorCanModerate}
             />
@@ -110,9 +92,7 @@ class CommentHeader extends PureComponent<Props, State> {
 
           <Right>
             {authorCanModerate &&
-              <AdminBadge>
-                <FormattedMessage {...messages.official} />
-              </AdminBadge>
+              <AdminBadge />
             }
           </Right>
         </Container>

@@ -9,6 +9,7 @@ import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
 import Avatar from 'components/Avatar';
+import Icon from 'components/UI/Icon';
 
 // services
 import { updateComment, IUpdatedComment } from 'services/comments';
@@ -23,8 +24,13 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { FormikActions } from 'formik';
@@ -33,10 +39,6 @@ import { CLErrorsJSON } from 'typings';
 const Container = styled.div`
   &.child {
     background: #fbfbfb;
-  }
-
-  &.hideBottomBorder {
-    border-bottom: none;
   }
 `;
 
@@ -47,6 +49,10 @@ const ContainerInner = styled.div`
   padding-top: 28px;
   padding-bottom: 25px;
   border-bottom: solid 1px #e8e8e8;
+
+  &.hideBottomBorder {
+    border-bottom: none;
+  }
 
   &.parent {
     padding-left: 50px;
@@ -69,6 +75,22 @@ const AvatarWrapper = styled.div`
 
 const BodyAndFooter = styled.div`
   flex: 1;
+`;
+
+const DeletedComment = styled.div`
+  color: ${colors.label};
+  display: flex;
+  align-items: center;
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  font-style: italic;
+`;
+
+const DeletedIcon = styled(Icon)`
+  width: 18px;
+  height: 18px;
+  margin-right: 12px;
+  fill: ${colors.label};
 `;
 
 interface InputProps {
@@ -151,54 +173,63 @@ class Comment extends PureComponent<Props, State> {
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const commentId = comment.id;
       const ideaId = idea.id;
-      const hideBottomBorder = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last));
+      const hideBottomBorder = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last === true));
       const projectId = idea.relationships.project.data.id;
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
-      if (comment.attributes.publication_status === 'published') {
-        return (
-          <Container className={`${className} ${commentType} ${hideBottomBorder ? 'hideBottomBorder' : ''} e2e-comment`}>
-            <ContainerInner className={commentType}>
-              {commentType === 'parent' &&
-                <CommentHeader
-                  commentId={commentId}
-                />
-              }
-
-              <Content>
-                {commentType === 'child' &&
-                  <AvatarWrapper>
-                    <Avatar
-                      userId={!isNilOrError(author) ? author.id : null}
-                      size="34px"
-                      moderator={authorCanModerate}
-                    />
-                  </AvatarWrapper>
+      return (
+        <Container className={`${className} ${commentType} e2e-comment`}>
+          <ContainerInner className={`${commentType} ${hideBottomBorder ? 'hideBottomBorder' : ''}`}>
+            {comment.attributes.publication_status === 'published' &&
+              <>
+                {commentType === 'parent' &&
+                  <CommentHeader
+                    commentId={commentId}
+                  />
                 }
 
-                <BodyAndFooter>
-                  <CommentBody
-                    commentId={commentId}
-                    commentType={commentType}
-                    commentBody={comment.attributes.body_multiloc}
-                    editing={editing}
-                    onCommentSave={this.onCommentSave}
-                    onCancelEditing={this.onCancelEditing}
-                    translateButtonClicked={translateButtonClicked}
-                  />
-                  <CommentFooter
-                    className={commentType}
-                    ideaId={ideaId}
-                    commentId={commentId}
-                    onEditing={this.onEditing}
-                  />
-                </BodyAndFooter>
-              </Content>
+                <Content>
+                  {commentType === 'child' &&
+                    <AvatarWrapper>
+                      <Avatar
+                        userId={!isNilOrError(author) ? author.id : null}
+                        size="32px"
+                        moderator={authorCanModerate}
+                      />
+                    </AvatarWrapper>
+                  }
 
-            </ContainerInner>
-          </Container>
-        );
-      }
+                  <BodyAndFooter>
+                    <CommentBody
+                      commentId={commentId}
+                      commentType={commentType}
+                      commentBody={comment.attributes.body_multiloc}
+                      editing={editing}
+                      onCommentSave={this.onCommentSave}
+                      onCancelEditing={this.onCancelEditing}
+                      translateButtonClicked={translateButtonClicked}
+                    />
+                    <CommentFooter
+                      className={commentType}
+                      ideaId={ideaId}
+                      commentId={commentId}
+                      commentType={commentType}
+                      onEditing={this.onEditing}
+                    />
+                  </BodyAndFooter>
+                </Content>
+              </>
+            }
+
+            {comment.attributes.publication_status === 'deleted' &&
+              <DeletedComment>
+                <DeletedIcon name="delete" />
+                <FormattedMessage {...messages.commentDeletedPlaceholder} />
+              </DeletedComment>
+            }
+          </ContainerInner>
+        </Container>
+      );
     }
 
     return null;
