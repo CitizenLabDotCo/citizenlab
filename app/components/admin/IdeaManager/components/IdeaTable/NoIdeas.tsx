@@ -19,8 +19,7 @@ const NoIdeasPage = styled.div`
   font-size: ${fontSizes.base}px;
   font-weight: bold;
   line-height: 25px;
-  padding-top: 80px;
-  padding-bottom: 100px;
+  padding: 100px 0;
   width: 100%;
 
   border: 1px solid ${colors.separation};
@@ -32,16 +31,16 @@ const NoIdeasPage = styled.div`
 `;
 
 const NoIdeasHeader = styled.h2`
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.medium}px;
   font-weight: 600;
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const NoIdeasDescription = styled.p`
   color: ${colors.adminSecondaryTextColor};
   font-weight: 400;
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   margin-bottom: 30px;
   max-width: 450px;
 `;
