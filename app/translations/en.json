@@ -268,6 +268,7 @@
   "app.components.admin.IdeaManager.projectsTab": "Projects",
   "app.components.admin.IdeaManager.projectsTabTooltip": "Filter ideas by project by clicking on the respective project. Multiple projects can be selected simultaneously.",
   "app.components.admin.IdeaManager.publication_date": "Published on",
+  "app.components.admin.IdeaManager.resetFiltersButton": "Reset filters",
   "app.components.admin.IdeaManager.resetFiltersDescription": "Reset the filters to see all ideas.",
   "app.components.admin.IdeaManager.statusesTab": "Status",
   "app.components.admin.IdeaManager.statusesTabTooltip": "Drag and drop selected ideas to the idea status you want to give them. By doing so, these ideas will no longer have their current status.",
