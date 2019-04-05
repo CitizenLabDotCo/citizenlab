@@ -152,10 +152,13 @@ class Idea < ApplicationRecord
   end
 
   def sanitize_body_multiloc
-    self.body_multiloc = SanitizationService.new.sanitize_multiloc(
+    service = SanitizationService.new
+    self.body_multiloc = service.sanitize_multiloc(
       self.body_multiloc,
       %i{title alignment list decoration link}
     )
+    self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
+    self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
   end
 
   def strip_title
