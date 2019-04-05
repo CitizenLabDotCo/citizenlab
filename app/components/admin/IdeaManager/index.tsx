@@ -260,7 +260,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   handleSeeAllIdeas = () => {
     this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
-    this.props.ideas.onResetAllParams(!isNilOrError(this.props.project) ? this.props.project.id : undefined);
+    this.props.ideas.onResetAllParams(!isNilOrError(this.props.project) ? [this.props.project.id] : undefined);
   }
 
   render() {
