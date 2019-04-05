@@ -35,6 +35,7 @@ interface State {
 }
 class WidgetCode extends PureComponent<Props & DataProps, State> {
   snippetRef = createRef<HTMLTextAreaElement>();
+
   constructor(props: Props & DataProps) {
     super(props);
     this.state = {

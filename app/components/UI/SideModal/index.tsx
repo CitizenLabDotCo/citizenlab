@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 // import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
+import eventEmitter from 'utils/eventEmitter';
+import { Subscription } from 'rxjs';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -25,7 +27,7 @@ import { hideVisually } from 'polished';
 const timeout = 300;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContainer: any = styled(clickOutside)`
+const ModalContainer = styled(clickOutside)`
   width: 920px;
   height: 100%;
   background: white;
@@ -149,18 +151,25 @@ type Props = {
   children?: any;
 };
 
-type State = {};
+type State = {
+  innerModalOpened: boolean
+};
 
 export default class SideModal extends React.PureComponent<Props, State> {
   private el: HTMLDivElement;
   private ModalPortal = document.getElementById('modal-portal');
   private ModalContentElement: HTMLDivElement | null;
   private ModalCloseButton: HTMLButtonElement | null;
+  subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      innerModalOpened: false
+    };
     this.el = document.createElement('div');
     this.ModalContentElement = null;
+    this.subscriptions = [];
   }
 
   componentDidMount() {
@@ -173,6 +182,15 @@ export default class SideModal extends React.PureComponent<Props, State> {
     if (this.props.opened) {
       this.openModal();
     }
+
+    this.subscriptions = [
+      eventEmitter.observeEvent('modalOpened').subscribe(() => {
+        this.setState({ innerModalOpened: true });
+      }),
+      eventEmitter.observeEvent('modalClosed').subscribe(() => {
+        this.setState({ innerModalOpened: false });
+      })
+    ];
   }
 
   componentWillUnmount() {
@@ -185,6 +203,8 @@ export default class SideModal extends React.PureComponent<Props, State> {
     } else {
       this.ModalPortal.removeChild(this.el);
     }
+
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -197,23 +217,10 @@ export default class SideModal extends React.PureComponent<Props, State> {
 
   openModal = () => {
     disableBodyScroll(this.ModalContentElement);
-    window.addEventListener('keydown', this.onEscKeyPressed, true);
 
     if (this.ModalCloseButton) {
       this.ModalCloseButton.focus();
     }
-  }
-
-  onEscKeyPressed = (event) => {
-    if (event.defaultPrevented) {
-      return;
-    }
-
-    if (event.key === 'Escape') {
-      this.manuallyCloseModal();
-    }
-
-    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
@@ -222,11 +229,10 @@ export default class SideModal extends React.PureComponent<Props, State> {
 
   cleanup = () => {
     enableBodyScroll(this.ModalContentElement);
-    window.removeEventListener('keydown', this.onEscKeyPressed, true);
   }
 
   clickOutsideModal = () => {
-    // this.props.close();
+    this.props.close();
   }
 
   clickCloseButton = (event) => {
@@ -268,7 +274,8 @@ export default class SideModal extends React.PureComponent<Props, State> {
           aria-label={label}
         >
           <ModalContainer
-            onClickOutside={this.clickOutsideModal}
+            onClickOutside={this.manuallyCloseModal}
+            closeOnClickOutsideEnabled={!this.state.innerModalOpened}
           >
             <CloseButton
               className="e2e-modal-close-button"
