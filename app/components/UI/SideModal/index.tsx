@@ -197,10 +197,23 @@ export default class SideModal extends React.PureComponent<Props, State> {
 
   openModal = () => {
     disableBodyScroll(this.ModalContentElement);
+    window.addEventListener('keydown', this.onEscKeyPressed, true);
 
     if (this.ModalCloseButton) {
       this.ModalCloseButton.focus();
     }
+  }
+
+  onEscKeyPressed = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      this.manuallyCloseModal();
+    }
+
+    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
@@ -209,10 +222,11 @@ export default class SideModal extends React.PureComponent<Props, State> {
 
   cleanup = () => {
     enableBodyScroll(this.ModalContentElement);
+    window.removeEventListener('keydown', this.onEscKeyPressed, true);
   }
 
   clickOutsideModal = () => {
-    this.props.close();
+    // this.props.close();
   }
 
   clickCloseButton = (event) => {
