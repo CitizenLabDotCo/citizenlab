@@ -76,7 +76,7 @@ const UpvoteCount = styled.div`
 
 const UpvoteLabel = styled.button`
   color: ${colors.label};
-  margin-left: 10px;
+  margin-left: 4px;
   cursor: pointer;
 
   &:hover {

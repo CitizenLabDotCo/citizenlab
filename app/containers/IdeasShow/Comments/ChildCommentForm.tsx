@@ -38,18 +38,20 @@ const HiddenLabel = styled.span`
 
 const FormInner = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: stretch;
   padding: 30px 50px;
 `;
 
-const Left = styled.div`
-  flex: 1;
-  margin-right: 25px;
-`;
+const TextareaWrapper = styled.div``;
 
-const Right = styled.div`
-  display: flex;
-  /* align-items: flex-end; */
+const ButtonWrapper = styled.div`
+  display: none;
+  justify-content: flex-end;
+
+  &.visible {
+    display: flex;
+  }
 `;
 
 interface InputProps {
@@ -151,8 +153,9 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(authUser)) {
       const { formatMessage } = this.props.intl;
-      const { inputValue, canSubmit, processing, errorMessage } = this.state;
+      const { inputValue, canSubmit, processing, errorMessage, focussed } = this.state;
       const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
+      const isButtonVisible = (inputValue && inputValue.length > 0 || focussed);
 
       return (
         <Container className={className} onSubmit={this.handleSubmit}>
@@ -161,7 +164,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.replyToComment} />
             </HiddenLabel>
             <FormInner>
-              <Left>
+              <TextareaWrapper>
                 <MentionsTextArea
                   name="comment"
                   id="e2e-reply"
@@ -179,8 +182,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                   border="none"
                   boxShadow="none"
                 />
-              </Left>
-              <Right>
+              </TextareaWrapper>
+              <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
                 <Button
                   className="e2e-submit-comment"
                   processing={processing}
@@ -190,7 +193,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                 >
                   <FormattedMessage {...messages.publishComment} />
                 </Button>
-              </Right>
+              </ButtonWrapper>
             </FormInner>
           </label>
         </Container>

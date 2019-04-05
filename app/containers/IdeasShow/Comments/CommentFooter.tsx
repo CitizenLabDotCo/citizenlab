@@ -8,10 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import CommentVote from './CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
+// services
+import { canModerate } from 'services/permissions/rules/projectPermissions';
+
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -19,12 +23,13 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedRelative, InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import AdminBadge from './AdminBadge';
 
 const Container = styled.div`
   display: flex;
@@ -49,8 +54,8 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 23px;
-  margin-left: -2px;
+  margin-top: 20px;
+  margin-left: -3px;
 `;
 
 const Left = styled.div`
@@ -59,8 +64,9 @@ const Left = styled.div`
 `;
 
 const Separator = styled.div`
-  margin-left: 12px;
-  margin-right: 12px;
+  font-size: ${fontSizes.small}px;
+  margin-left: 5px;
+  margin-right: 5px;
 `;
 
 const ReplyButton = styled.button`
@@ -78,9 +84,25 @@ const Right = styled.div`
   align-items: center;
 `;
 
+const StyledAdminBadge = styled(AdminBadge)``;
+
+const StyledCommentsMoreActions = styled(CommentsMoreActions)`
+  margin-left: 14px;
+  margin-right: -6px;
+`;
+
+const TimeAgo = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  line-height: normal;
+  font-weight: 400;
+  margin-left: 22px;
+`;
+
 interface InputProps {
   ideaId: string;
   commentId: string;
+  commentType: 'parent' | 'child';
   onEditing: () => void;
   className?: string;
 }
@@ -89,6 +111,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -126,13 +149,15 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { className, comment, idea, locale, intl } = this.props;
+    const { commentType, className, comment, idea, author, locale, intl } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
       const projectId = idea.relationships.project.data.id;
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
+      const createdAt = comment.attributes.created_at;
+      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
         <Container className={className}>
@@ -160,12 +185,22 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               </ReplyButton>
             </Left>
             <Right>
-              <CommentsMoreActions
+              {commentType === 'child' && authorCanModerate &&
+                <StyledAdminBadge />
+              }
+
+              <StyledCommentsMoreActions
                 ariaLabel={intl.formatMessage(messages.showMoreActions)}
                 comment={comment}
                 onCommentEdit={this.onCommentEdit}
                 projectId={projectId}
               />
+
+              {commentType === 'child' &&
+                <TimeAgo>
+                  <FormattedRelative value={createdAt} />
+                </TimeAgo>
+              }
             </Right>
           </Footer>
         </Container>
@@ -179,7 +214,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
+  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
+  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
 const CommentFooterWithHoCs = injectIntl<Props>(CommentFooter);

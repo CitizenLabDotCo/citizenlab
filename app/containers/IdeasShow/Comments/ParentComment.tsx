@@ -7,7 +7,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
 import clHistory from 'utils/cl-router/history';
-import Icon from 'components/UI/Icon';
 
 // services
 import { updateComment, IUpdatedComment } from 'services/comments';
@@ -23,9 +22,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from '../messages';
 
 // style
 import styled from 'styled-components';
@@ -46,19 +44,6 @@ const Container = styled.div`
 
 const ParentCommentContainer = styled.div`
   position: relative;
-
-  &.deleted {
-    align-items: center;
-    display: flex;
-    font-style: italic;
-    font-weight: 500;
-  }
-`;
-
-const DeletedIcon = styled(Icon)`
-  height: 1em;
-  margin-right: 1rem;
-  width: 1em;
 `;
 
 interface InputProps {
@@ -160,27 +145,18 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
       const hasChildComments = (childCommentIds && childCommentIds.length > 0);
 
       // hide parent comments that are deleted when they have no children
-      if (comment.attributes.publication_status === 'deleted' && (!childCommentIds || childCommentIds.length === 0)) {
+      if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
         return null;
       }
 
       return (
         <Container className="e2e-comment-thread">
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
-            {comment.attributes.publication_status === 'published' &&
-              <Comment
-                commentId={comment.id}
-                commentType="parent"
-                hasChildComments={hasChildComments}
-              />
-            }
-
-            {commentDeleted &&
-              <>
-                <DeletedIcon name="delete" />
-                <FormattedMessage {...messages.commentDeletedPlaceholder} />
-              </>
-            }
+            <Comment
+              commentId={comment.id}
+              commentType="parent"
+              hasChildComments={hasChildComments}
+            />
           </ParentCommentContainer>
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
