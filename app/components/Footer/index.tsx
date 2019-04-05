@@ -33,7 +33,6 @@ import { LEGAL_PAGES } from 'services/pages';
 // style
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import Polymorph from 'components/Polymorph';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 // typings
@@ -106,10 +105,7 @@ const SecondLineInner = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 15px;
   `}
 `;
 
@@ -185,62 +181,58 @@ const FeedbackButton = styled.button`
   }
 `;
 
-const PagesNav = styled.nav`
-  color: ${colors.label};
-  font-weight: 300;
-  text-align: left;
-
-  ul {
-    display: inline-block;
-    padding: 0px;
-    text-align: center;
-  }
-
-  li {
-    display: inline;
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-
-    &:not(:first-child):before {
-      content: '•';
-      margin-left: 10px;
-      margin-right: 10px;
-    }
-  }
-
-  ${media.smallerThanMaxTablet`
-    order: 2;
-    text-align: center;
-    justify-content: center;
-    margin-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
-`;
-
-const StyledThing = styled(Polymorph)`
+const StyledButton = styled.button`
   color: ${colors.label};
   font-weight: 300;
   font-size: ${fontSizes.small}px;
+  line-height: 21px;
   text-decoration: none;
   padding: 0;
+  border: none;
   cursor: pointer;
 
   &:hover {
     color: #000;
     text-decoration: underline;
   }
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.small}px;
-    line-height: 16px;
-  `}
 `;
 
-const StyledButton = StyledThing.withComponent('button');
-const StyledLink = StyledThing.withComponent(Link);
+const StyledLink = styled(Link)`
+  color: ${colors.label};
+  font-weight: 300;
+  font-size: ${fontSizes.small}px;
+  line-height: 21px;
+  text-decoration: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+`;
+
+const Bullet = styled.span`
+  color: ${colors.label};
+  font-weight: 300;
+  font-size: ${fontSizes.small}px;
+  line-height: 21px;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const PagesNav = styled.nav`
+  color: ${colors.label};
+  font-weight: 300;
+  text-align: center;
+
+  ${media.smallerThanMaxTablet`
+    order: 2;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  `}
+`;
 
 const Right = styled.div`
   display: flex;
@@ -323,8 +315,6 @@ const ShortFeedbackFormModalFooter = styled.div`
   width: 100%;
   display: flex;
 `;
-
-const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
 
 interface Props {
   showCityLogoSection?: boolean | undefined;
@@ -439,6 +429,10 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
     eventEmitter.emit('Footer', 'ShortFeedbackFormSubmitEvent', null);
   }
 
+  openConsentManager = () => {
+    eventEmitter.emit('footer', 'openConsentManager', null);
+  }
+
   render() {
     const { locale, currentTenant, showCityLogoSection, shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
     const { formatMessage } = this.props.intl;
@@ -531,20 +525,17 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
             <SecondLineInner>
               <PagesNav>
-                <ul>
-                  {LEGAL_PAGES.map((slug) => (
-                    <li key={slug}>
-                      <StyledLink to={`/pages/${slug}`}>
-                        <FormattedMessage {...messages[slug]} />
-                      </StyledLink>
-                    </li>
-                  ))}
-                  <li>
-                    <StyledButton onClick={openConsentManager}>
-                      <FormattedMessage {...messages.cookieSettings} />
-                    </StyledButton>
-                  </li>
-                </ul>
+                {LEGAL_PAGES.map((slug, index) => (
+                  <>
+                    <StyledLink key={slug} to={`/pages/${slug}`} className={index === 0 ? 'first' : ''}>
+                      <FormattedMessage {...messages[slug]} />
+                    </StyledLink>
+                    <Bullet>•</Bullet>
+                  </>
+                ))}
+                <StyledButton onClick={this.openConsentManager}>
+                  <FormattedMessage {...messages.cookieSettings} />
+                </StyledButton>
               </PagesNav>
 
               <Right>

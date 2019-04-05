@@ -44,12 +44,12 @@ const FormInner = styled.div`
 
 const Left = styled.div`
   flex: 1;
-  margin-right: 10px;
+  margin-right: 25px;
 `;
 
 const Right = styled.div`
   display: flex;
-  align-items: flex-end;
+  /* align-items: flex-end; */
 `;
 
 interface InputProps {

@@ -13,7 +13,7 @@ import 'moment/locale/fr';
 import 'moment/locale/de';
 import 'moment/locale/da';
 import 'moment/locale/nb';
-import * as Sentry from '@sentry/browser';
+import { configureScope } from '@sentry/browser';
 import WebFont from 'webfontloader';
 
 // context
@@ -143,7 +143,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           if (isNilOrError(authUser)) {
             signOut();
           } else {
-            Sentry.configureScope((scope) => {
+            configureScope((scope) => {
               scope.setUser({
                 id: authUser.data.id,
               });

@@ -33,6 +33,11 @@ const Container = styled(clickOutside)`
   }
 `;
 
+export interface IFilterSelectorValue {
+  text: string | JSX.Element;
+  value: any;
+}
+
 interface DefaultProps {
   width?: string;
   mobileWidth?: string;
@@ -49,10 +54,7 @@ interface Props extends DefaultProps {
   id?: string | undefined;
   title: string | JSX.Element;
   name: string;
-  values: {
-    text: string | JSX.Element,
-    value: any
-  }[];
+  values: IFilterSelectorValue[];
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];
@@ -140,6 +142,10 @@ export default class FilterSelector extends PureComponent<Props, State> {
     this.closeExpanded();
   }
 
+  // removeFocus = (event: React.MouseEvent) => {
+  //   event.preventDefault();
+  // }
+
   render() {
     const className = this.props['className'];
     const { opened } = this.state;
@@ -149,6 +155,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
     return (
       <Container
         id={id}
+        // onMouseDown={this.removeFocus}
         onClickOutside={this.handleClickOutside}
         className={`e2e-filter-selector-${this.props.name} ${className}`}
       >

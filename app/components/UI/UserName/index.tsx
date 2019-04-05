@@ -19,7 +19,7 @@ interface Props {
   className?: string;
 }
 
-export default React.memo((props: Props) => {
+export default React.memo<Props>((props: Props) => {
   const { user, className, hideLastName } = props;
   const firstName = get(user, 'attributes.first_name', '');
   const lastName = get(user, 'attributes.last_name', '');

@@ -152,8 +152,8 @@ const HeaderContent = styled.div`
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 

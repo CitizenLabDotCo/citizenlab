@@ -97,9 +97,9 @@ export default class Dropdown extends PureComponent<Props, State> {
 
   static defaultProps = {
     width: '260px',
-    mobileWidth: '190px',
+    mobileWidth: '200px',
     maxHeight: '320px',
-    mobileMaxHeight: '320px',
+    mobileMaxHeight: '280px',
     top: 'auto',
     left: 'auto',
     mobileLeft: 'auto',

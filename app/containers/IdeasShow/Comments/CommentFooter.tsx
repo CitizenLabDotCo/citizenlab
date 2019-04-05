@@ -49,7 +49,8 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: 23px;
+  margin-left: -2px;
 `;
 
 const Left = styled.div`
