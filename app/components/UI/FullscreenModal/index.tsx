@@ -288,19 +288,10 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
   }
 
   onEscKeyPressed = (event) => {
-    if (event.defaultPrevented) {
-      return;
+    if (!event.defaultPrevented && event.key === 'Escape') {
+      this.manuallyCloseModal();
+      event.preventDefault();
     }
-
-    switch (event.key) {
-      case 'Escape':
-        this.manuallyCloseModal();
-        break;
-      default:
-        return;
-    }
-
-    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
