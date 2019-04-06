@@ -37,6 +37,8 @@ class ParticipantsService
     {item_type: 'Idea', action: 'published', score: 5},
     {item_type: 'Vote', action: 'idea_upvoted', score: 1},
     {item_type: 'Vote', action: 'idea_downvoted', score: 1},
+    {item_type: 'Vote', action: 'comment_upvoted', score: 1},
+    {item_type: 'Vote', action: 'comment_downvoted', score: 1},
     {item_type: 'Basket', action: 'created', score: 3},
   ]
 

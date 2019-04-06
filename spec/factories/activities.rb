@@ -53,6 +53,11 @@ FactoryBot.define do
       association :item, factory: :downvote
       action { "idea_downvoted" }
     end
+
+    factory :comment_upvoted_activity do
+      association :item, factory: :comment_vote
+      action { "comment_upvoted" }
+    end
   end
 
 
