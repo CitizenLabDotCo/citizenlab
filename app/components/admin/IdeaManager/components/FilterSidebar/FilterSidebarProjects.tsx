@@ -30,7 +30,7 @@ class FilterSidebarProjects extends React.PureComponent<Props> {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject || this.props.selectedProject.length === 0}>
-          <FormattedMessage {...messages.allIdeas} />
+          <FormattedMessage {...messages.allProjects} />
         </Menu.Item>
         <Divider />
         {this.props.projects && this.props.projects.map((project) => (
