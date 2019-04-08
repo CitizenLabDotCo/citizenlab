@@ -1,5 +1,8 @@
 class ParticipantsService
 
+  PARTICIPANT_ACTIVITY_TYPES = %w(Idea Comment Vote Basket)
+
+
   def participants options={}
     project = options[:project]
     since = options[:since]
@@ -22,6 +25,7 @@ class ParticipantsService
     else
       users = User
         .joins(:activities)
+        .where('activities.item_type = ?', PARTICIPANT_ACTIVITY_TYPES)
         .group('users.id')
       if since
         users.where("activities.acted_at::date >= ?", since)
