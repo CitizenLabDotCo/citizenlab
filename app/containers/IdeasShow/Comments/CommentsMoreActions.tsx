@@ -25,6 +25,9 @@ import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 // Styling
 import styled from 'styled-components';
 
+// Utils
+import eventEmitter from 'utils/eventEmitter';
+
 const ButtonsWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -88,6 +91,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
+    eventEmitter.emit('modal', 'modalClosed', null);
   }
 
   deleteComment = (reason: DeleteReason | FormEvent<HTMLButtonElement>) => {
@@ -104,6 +108,8 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     } else {
       markForDeletion(this.props.comment.id, reason);
     }
+
+    eventEmitter.emit('modal', 'modalClosed', null);
   }
 
   openSpamModal = () => {
