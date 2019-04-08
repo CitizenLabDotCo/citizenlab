@@ -394,12 +394,12 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
             <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
               <select className="ql-header" defaultValue={''}>
                 <option
-                  value="1"
+                  value="2"
                   aria-selected={false}
                 >{formatMessage(messages.title)}
                 </option>
                 <option
-                  value="2"
+                  value="3"
                   aria-selected={false}
                 >{formatMessage(messages.subtitle)}
                 </option>
