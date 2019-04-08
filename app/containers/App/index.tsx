@@ -182,7 +182,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.preloadIdeaModal();
       }),
 
-      eventEmitter.observeEvent<IModalInfo>('cardClick').subscribe(({ eventValue }) => {
+      eventEmitter.observeEvent<IModalInfo>('ideaCardClick').subscribe(({ eventValue }) => {
         const { type, id, url } = eventValue;
         this.openModal(type, id, url);
       }),

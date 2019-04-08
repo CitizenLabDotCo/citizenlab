@@ -10,6 +10,7 @@ import CommentsMoreActions from './CommentsMoreActions';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
@@ -99,6 +100,14 @@ const TimeAgo = styled.div`
   margin-left: 22px;
 `;
 
+export interface ICommentReplyClicked {
+  commentId: string;
+  parentCommentId: string;
+  authorFirstName: string;
+  authorLastName: string;
+  authorSlug: string;
+}
+
 interface InputProps {
   ideaId: string;
   commentId: string;
@@ -148,6 +157,25 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
   }
 
+  onReply = () => {
+    const { author, comment } = this.props;
+    const commentId = get(comment, 'id', null);
+    const parentCommentId = get(comment, 'relationships.parent.data.id', null);
+    const authorFirstName = get(author, 'attributes.first_name', null);
+    const authorLastName = get(author, 'attributes.last_name', null);
+    const authorSlug = get(author, 'attributes.slug', null);
+
+    const eventValue: ICommentReplyClicked = {
+      commentId,
+      parentCommentId,
+      authorFirstName,
+      authorLastName,
+      authorSlug
+    };
+
+    eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
+  }
+
   render() {
     const { commentType, className, comment, idea, author, locale, intl } = this.props;
     const { translateButtonClicked } = this.state;
@@ -180,7 +208,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             <Left>
               <CommentVote commentId={comment.id} />
               <Separator>•</Separator>
-              <ReplyButton onMouseDown={this.removeFocus}>
+              <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
                 <FormattedMessage {...messages.commentReplyButton} />
               </ReplyButton>
             </Left>

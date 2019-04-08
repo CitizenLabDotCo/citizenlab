@@ -1,12 +1,16 @@
 // libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
 import { trim } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
+import Observer from '@researchgate/react-intersection-observer';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -19,6 +23,7 @@ import messages from '../messages';
 
 // services
 import { addCommentToComment } from 'services/comments';
+import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -27,6 +32,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+
+// typings
+import { ICommentReplyClicked } from './CommentFooter';
 
 const Container = styled.form`
   border-top: solid 1px #ebebeb;
@@ -76,6 +84,9 @@ interface State {
 }
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+  textareaElement: HTMLTextAreaElement;
+  subscriptions: Subscription[] = [];
+
   constructor(props) {
     super(props);
     this.state = {
@@ -85,6 +96,39 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       errorMessage: null,
       canSubmit: false
     };
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
+        tap(() => {
+          this.setState({ inputValue: '', focussed: false });
+        }),
+        filter(({ eventValue }) => {
+          const { commentId, parentCommentId } = eventValue;
+          return (commentId === this.props.parentId || parentCommentId === this.props.parentId);
+        })
+      ).subscribe(({ eventValue }) => {
+        const { authorFirstName, authorLastName, authorSlug } = eventValue;
+        const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+        this.setState({ inputValue, focussed: true });
+
+        if (this.textareaElement) {
+          // this.textareaElement.scrollIntoView();
+          this.textareaElement.focus();
+
+          // scrollToComponent(this.textareaElement, { align: 'top', offset: -400, duration: 400 });
+
+          // setTimeout(() => {
+          //   this.textareaElement.focus();
+          // }, 400);
+        }
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleTextareaOnChange = (inputValue: string) => {
@@ -148,6 +192,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  setRef = (element: HTMLTextAreaElement) => {
+    this.textareaElement = element;
+  }
+
   render() {
     const { ideaId, authUser, className } = this.props;
 
@@ -159,43 +207,46 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={className} onSubmit={this.handleSubmit}>
-          <label>
-            <HiddenLabel>
-              <FormattedMessage {...messages.replyToComment} />
-            </HiddenLabel>
-            <FormInner>
-              <TextareaWrapper>
-                <MentionsTextArea
-                  name="comment"
-                  id="e2e-reply"
-                  placeholder={placeholder}
-                  rows={1}
-                  value={inputValue}
-                  error={errorMessage}
-                  ideaId={ideaId}
-                  onChange={this.handleTextareaOnChange}
-                  onFocus={this.handleTextareaOnFocus}
-                  onBlur={this.handleTextareaOnBlur}
-                  fontWeight="300"
-                  padding="10px 0px"
-                  borderRadius="none"
-                  border="none"
-                  boxShadow="none"
-                />
-              </TextareaWrapper>
-              <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
-                <Button
-                  className="e2e-submit-comment"
-                  processing={processing}
-                  icon="send"
-                  onClick={this.handleSubmit}
-                  disabled={!canSubmit}
-                >
-                  <FormattedMessage {...messages.publishComment} />
-                </Button>
-              </ButtonWrapper>
-            </FormInner>
-          </label>
+          <Observer onChange={this.handleIntersection}>
+            <label>
+              <HiddenLabel>
+                <FormattedMessage {...messages.replyToComment} />
+              </HiddenLabel>
+              <FormInner>
+                <TextareaWrapper>
+                  <MentionsTextArea
+                    name="comment"
+                    className={`e2e-reply childcommentform-${this.props.parentId}`}
+                    placeholder={placeholder}
+                    rows={1}
+                    value={inputValue}
+                    error={errorMessage}
+                    ideaId={ideaId}
+                    onChange={this.handleTextareaOnChange}
+                    onFocus={this.handleTextareaOnFocus}
+                    onBlur={this.handleTextareaOnBlur}
+                    getTextareaRef={this.setRef}
+                    fontWeight="300"
+                    padding="10px 0px"
+                    borderRadius="none"
+                    border="none"
+                    boxShadow="none"
+                  />
+                </TextareaWrapper>
+                <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
+                  <Button
+                    className="e2e-submit-comment"
+                    processing={processing}
+                    icon="send"
+                    onClick={this.handleSubmit}
+                    disabled={!canSubmit}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
+              </FormInner>
+            </label>
+          </Observer>
         </Container>
       );
     }
