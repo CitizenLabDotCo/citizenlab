@@ -42,7 +42,8 @@ module EmailCampaigns
                 downvotes_count: idea.downvotes_count,
                 comments_count: idea.comments_count,
               }
-            }
+            },
+            total_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee_id: recipient.id).count
           },
           tracked_content: {
             idea_ids: @assigned_ideas.map{|i| i.id}
