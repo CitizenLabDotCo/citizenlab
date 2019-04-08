@@ -1,11 +1,20 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import CountBadge from 'components/UI/CountBadge';
+
+// styles
+import styled, { css } from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+
+// resources
 import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
-import { isNilOrError } from 'utils/helperUtils';
+
+// components
+import CountBadge from 'components/UI/CountBadge';
 
 const size = 21;
 const padding = 4;
@@ -112,8 +121,16 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
   }
 }
 
+const Data = adopt({
+  ideasCount: ({ assignee, render }) => (
+    <GetIdeasCount feedbackNeeded={true} assignee={assignee === 'all' ? undefined : assignee}>
+      {render}
+    </GetIdeasCount>
+  )
+});
+
 export default (inputProps: InputProps) => (
-  <GetIdeasCount feedbackNeeded={true} assignee={inputProps.assignee === 'all' ? undefined : inputProps.assignee}>
-    {ideasCount => <FeedbackToggle {...inputProps} feedbackNeededCount={ideasCount} />}
-  </GetIdeasCount>
+  <Data {...inputProps}>
+    {dataProps => <FeedbackToggle {...inputProps} feedbackNeededCount={dataProps.ideasCount}/>}
+  </Data>
 );
