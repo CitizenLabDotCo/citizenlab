@@ -367,11 +367,25 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean | undefined) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      feedback_needed: feedbackNeeded,
-      'page[number]': 1,
-    });
+    if (feedbackNeeded === true) {
+      // if we turn the 'Need feedback' toggle on,
+      // we want the projects/topics/statuses/phases filters to reset
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: feedbackNeeded,
+        projects: undefined,
+        phase: undefined,
+        topics: undefined,
+        idea_status: undefined,
+        'page[number]': 1,
+      });
+    } else {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: feedbackNeeded,
+        'page[number]': 1,
+      });
+    }
   }
 
   handleResetAllParams = () => {
