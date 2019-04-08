@@ -283,6 +283,7 @@
   "app.components.admin.IdeaManager.titleIdeas": "Ideen verwalten",
   "app.components.admin.IdeaManager.topicsTab": "Themen",
   "app.components.admin.IdeaManager.topicsTabTooltip": "Drag and drop selected ideas to the topic you want to assign them to. An idea can have any number of topics.",
+  "app.components.admin.IdeaManager.unassignedIdeas": "",
   "app.components.admin.IdeaManager.up": "Dafür",
   "app.components.admin.UserFilterConditions.addCondition": "Bedingung hinzufügen",
   "app.components.admin.UserFilterConditions.field_email": "E-Mail-Adresse",
