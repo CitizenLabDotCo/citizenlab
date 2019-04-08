@@ -69,7 +69,7 @@ COPY engines ./engines
 # cache all of our gems so that if we make an application code
 # change, it won't re-run bundle install unless a gem changed.
 
-RUN bundle install --binstubs
+RUN bundle install
 # We want binstubs to be available so we can directly call sidekiq and
 # potentially other binaries as command overrides without depending on
 # bundle exec.
