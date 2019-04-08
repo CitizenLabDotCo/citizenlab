@@ -75,7 +75,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean | undefined) => void;
-  onResetAllParams: (projectId: string[] | undefined) => void;
+  onResetAllParams: () => void;
 };
 
 interface State {
@@ -374,9 +374,9 @@ export default class GetIdeas extends React.Component<Props, State> {
     });
   }
 
-  handleResetAllParams = (projectIds?: string[]) => {
+  handleResetAllParams = () => {
     this.queryParameters$.next({
-      projects: projectId ? projectId : undefined,
+      projects: undefined,
       'page[number]': 1,
       'page[size]': this.props.pageSize,
       phase: undefined,
