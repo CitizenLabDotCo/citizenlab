@@ -283,6 +283,7 @@
   "app.components.admin.IdeaManager.titleIdeas": "",
   "app.components.admin.IdeaManager.topicsTab": "",
   "app.components.admin.IdeaManager.topicsTabTooltip": "",
+  "app.components.admin.IdeaManager.unassignedIdeas": "",
   "app.components.admin.IdeaManager.up": "",
   "app.components.admin.UserFilterConditions.addCondition": "",
   "app.components.admin.UserFilterConditions.field_email": "",

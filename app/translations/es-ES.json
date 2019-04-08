@@ -283,6 +283,7 @@
   "app.components.admin.IdeaManager.titleIdeas": "Gestionar ideas",
   "app.components.admin.IdeaManager.topicsTab": "Temas",
   "app.components.admin.IdeaManager.topicsTabTooltip": "Arrastra y suelta las ideas en el tema el cual les quiere asignar. Una misma idea puede pertenecer a varios temas.",
+  "app.components.admin.IdeaManager.unassignedIdeas": "",
   "app.components.admin.IdeaManager.up": "Arriba",
   "app.components.admin.UserFilterConditions.addCondition": "Añadir condición",
   "app.components.admin.UserFilterConditions.field_email": "Correo electrónico",
