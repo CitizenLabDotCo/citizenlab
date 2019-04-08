@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.anyAssignment',
     defaultMessage: 'All ideas',
   },
+  unassignedIdeas: {
+    id: 'app.components.admin.IdeaManager.unassignedIdeas',
+    defaultMessage: 'Unassigned',
+  },
   assignedToMe: {
     id: 'app.components.admin.IdeaManager.assignedToMe',
     defaultMessage: 'Assigned to me',

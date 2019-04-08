@@ -56,6 +56,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
                 assigneeName:  `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
               })
         }));
+        nextState.assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas) });
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
       }
     }
