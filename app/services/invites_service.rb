@@ -165,7 +165,10 @@ class InvitesService
       add_error(:no_invites_specified)
       fail_now
     else
-      invites = hash_array.map do |invite_params|
+      existing_user_emails = User.where(email: hash_array.map{|h| h['email']}.compact).pluck(:email)
+      invites = hash_array.select do |invite_params|
+        !existing_user_emails.include? invite_params['email']
+      end.map do |invite_params|
         invite = build_invite(invite_params, default_params, inviter)
       end
       invitees = invites.map(&:invitee)

@@ -197,6 +197,16 @@ describe InvitesService do
       end
     end
 
+    context "with existing users" do
+      let!(:existing_user) { create(:user, email: 'john@john.son') }
+      let(:hash_array) {[
+        {email: 'john@john.son'},
+        {email: 'someuser@somedomain.com'}
+      ]}
+      it "doesn't send out invitations to the existing users" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
+      end
+    end
 
   end
 
