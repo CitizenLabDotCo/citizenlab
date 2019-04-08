@@ -42,6 +42,7 @@ const Container: any = styled.div`
 
 type Props = {
   id?: string;
+  className?: string;
   name: string;
   value?: string | null;
   placeholder?: string;
@@ -51,6 +52,7 @@ type Props = {
   onChange?: (arg: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  getTextareaRef?: (element: HTMLTextAreaElement) => void;
   color?: string;
   fontSize?: string;
   fontWeight?: string;
@@ -70,7 +72,7 @@ type State = {
 };
 
 export default class MentionsTextArea extends PureComponent<Props, State> {
-  textareaElement: HTMLTextAreaElement | null = null;
+  textareaElement = React.createRef();
 
   static defaultProps = {
     color: colors.text,
@@ -91,7 +93,6 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
       style: null,
       mentionStyle: null
     };
-    this.textareaElement = null;
   }
 
   componentDidMount() {
@@ -151,16 +152,6 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     this.setState({ style, mentionStyle });
   }
 
-  componentDidUpdate(prevProps: Props) {
-    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
-      setTimeout(() => (this.textareaElement as HTMLElement).focus(), 50);
-    }
-  }
-
-  setRef = (element) => {
-    this.textareaElement = element;
-  }
-
   mentionDisplayTransform = (_id, display) => {
     return `@${display}`;
   }
@@ -180,6 +171,12 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
   handleOnBlur = () => {
     if (this.props.onBlur) {
       this.props.onBlur();
+    }
+  }
+
+  setRef = () => {
+    if (this.textareaElement && this.textareaElement.current && this.props.getTextareaRef) {
+      this.props.getTextareaRef(this.textareaElement.current as HTMLTextAreaElement);
     }
   }
 
@@ -209,12 +206,14 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id, placeholderFontWeight, ariaLabel } = this.props;
-    const className = this.props['className'];
+    const { name, placeholder, value, error, children, rows, id, className, placeholderFontWeight, ariaLabel } = this.props;
 
     if (style) {
       return (
-        <Container className={className} placeholderFontWeight={placeholderFontWeight}>
+        <Container
+          className={className}
+          placeholderFontWeight={placeholderFontWeight}
+        >
           <MentionsInput
             id={id}
             style={style}
@@ -228,8 +227,9 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
-            ref={this.setRef}
             aria-label={ariaLabel}
+            ref={this.setRef}
+            inputRef={this.textareaElement}
           >
             <Mention
               trigger="@"

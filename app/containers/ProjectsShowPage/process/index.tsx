@@ -29,10 +29,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-
-  /* ${media.biggerThanMinTablet`
-    min-height: 880px;
-  `} */
 `;
 
 const FirstRow = styled.div`

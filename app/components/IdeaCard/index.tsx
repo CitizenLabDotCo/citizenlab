@@ -15,7 +15,7 @@ import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
-import LazyImage from 'components/LazyImage';
+import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -68,7 +68,7 @@ const IdeaImageContainer: any = styled.div`
   border-top-right-radius: 5px;
 `;
 
-const IdeaImage: any = styled(LazyImage)`
+const IdeaImage = styled<LazyImageProps>(LazyImage)`
   width: 100%;
 `;
 
@@ -202,7 +202,7 @@ interface State {
   showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-export const namespace = 'components/IdeaCard/index';
+export const componentName = 'components/IdeaCard/index';
 
 class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
@@ -219,7 +219,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
+      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
         type: 'idea',
         id: idea.id,
         url: `/ideas/${idea.attributes.slug}`
@@ -229,7 +229,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   onCardHover = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    eventEmitter.emit(namespace, 'cardHover', null);
+    eventEmitter.emit(componentName, 'cardHover', null);
   }
 
   onAuthorClick = (event: FormEvent<MouseEvent>) => {

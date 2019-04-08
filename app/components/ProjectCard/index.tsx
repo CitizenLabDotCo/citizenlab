@@ -453,7 +453,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  handleIntersectionObserverOnChange = (event, unobserve) => {
+  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
     if (event.isIntersecting) {
       this.setState({ visible: true });
       unobserve();
@@ -525,7 +525,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <TimeRemaining className={size}>
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
-            <Observer onChange={this.handleIntersectionObserverOnChange}>
+            <Observer onChange={this.handleIntersection}>
               <ProgressBar>
                 <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
               </ProgressBar>
