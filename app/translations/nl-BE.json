@@ -283,6 +283,7 @@
   "app.components.admin.IdeaManager.titleIdeas": "Beheer idee",
   "app.components.admin.IdeaManager.topicsTab": "Thema's",
   "app.components.admin.IdeaManager.topicsTabTooltip": "Sleep geselecteerde ideeën naar het gewenste thema. Een idee kan aan verschillende thema's worden toegevoegd.",
+  "app.components.admin.IdeaManager.unassignedIdeas": "",
   "app.components.admin.IdeaManager.up": "Voor",
   "app.components.admin.UserFilterConditions.addCondition": "Voeg een voorwaarde toe",
   "app.components.admin.UserFilterConditions.field_email": "E-mail",
