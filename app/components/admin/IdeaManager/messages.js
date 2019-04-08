@@ -177,4 +177,20 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.resetFiltersButton',
     defaultMessage: 'Reset filters',
   },
+  allProjects: {
+    id: 'app.components.admin.IdeaManager.allProjects',
+    defaultMessage: 'All projects',
+  },
+  allTopics: {
+    id: 'app.components.admin.IdeaManager.allTopics',
+    defaultMessage: 'All topics',
+  },
+  allStatuses: {
+    id: 'app.components.admin.IdeaManager.allStatuses',
+    defaultMessage: 'All statuses',
+  },
+  allPhases: {
+    id: 'app.components.admin.IdeaManager.allPhases',
+    defaultMessage: 'All phases',
+  },
 });
