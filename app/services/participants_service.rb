@@ -25,7 +25,7 @@ class ParticipantsService
     else
       users = User
         .joins(:activities)
-        .where('activities.item_type = ?', PARTICIPANT_ACTIVITY_TYPES)
+        .where('activities.item_type IN (?)', PARTICIPANT_ACTIVITY_TYPES)
         .group('users.id')
       if since
         users.where("activities.acted_at::date >= ?", since)
