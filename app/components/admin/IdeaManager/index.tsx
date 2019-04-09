@@ -112,6 +112,10 @@ const StyledInput = styled(Input)`
 `;
 
 interface InputProps {
+  // When the IdeaManager is used in admin/projects,
+  // the project is loaded through the router inside the parent component (Admin/projects/edit/index.tsx)
+  // In this parent component, project gets loaded and passed to all childRoutes (child components), including admin/projects/edit/ideas
+  // Search this parent component for 'React.cloneElement' to see how this project prop is passed.
   project?: IProjectData | null;
 }
 
