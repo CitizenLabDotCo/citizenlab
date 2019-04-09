@@ -79,6 +79,8 @@ const StyledLabel = styled.label`
   padding-left: 10px;
   padding-right: 10px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 interface InputProps {
