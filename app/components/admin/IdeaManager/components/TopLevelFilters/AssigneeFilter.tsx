@@ -42,21 +42,25 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { prospectAssignees, authUser, intl: { formatMessage } } = nextProps;
-    const nextState = prevState;
+    const nextState = { ...prevState };
 
     if (prospectAssignees !== prevState.prospectAssignees || authUser !== prevState.authUser) {
       if (isNilOrError(prospectAssignees.usersList) || isNilOrError(authUser)) {
         nextState.assigneeOptions = [];
       } else {
-        nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({
-          value: assignee.id,
-          text: assignee.id === authUser.id
-            ? formatMessage(messages.assignedToMe)
-            : formatMessage(messages.assignedTo, {
-                assigneeName:  `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
-              })
-        }));
+        const assigneeOptionsWithoutCurrentUser = prospectAssignees.usersList.filter(assignee => assignee.id !== authUser.id)
+          .map(assignee => ({
+            value: assignee.id,
+            text: formatMessage(messages.assignedTo, {
+              assigneeName:  `${assignee.attributes.first_name} ${assignee.attributes.last_name}`
+            })
+          }));
+
+        // Order of assignee filter options:
+        // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
+        nextState.assigneeOptions = assigneeOptionsWithoutCurrentUser;
         nextState.assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas) });
+        nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe) });
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
       }
     }
