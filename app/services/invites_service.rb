@@ -169,8 +169,9 @@ class InvitesService
       invites = hash_array.select do |invite_params|
         !existing_user_emails.include? invite_params['email']
       end.map do |invite_params|
-        invite = build_invite(invite_params, default_params, inviter)
+        build_invite(invite_params, default_params, inviter)
       end
+      return [] if invites.blank?
       invitees = invites.map(&:invitee)
       # Since invites will later be created in a single transaction, the
       # normal mechanism for generating slugs could result in non-unique
