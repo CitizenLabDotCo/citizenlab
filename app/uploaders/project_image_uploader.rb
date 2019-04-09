@@ -41,7 +41,7 @@ class ProjectImageUploader < CarrierWave::Uploader::Base
   end
 
   version :medium do
-    process resize_to_fill: [425,425]
+    process resize_to_fill: [575,575]
     # process optimize: [{ quality: 90, quiet: true }]
   end
 
