@@ -3,17 +3,17 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container: any = styled.span`
-  position: absolute;
-  padding-left: 3px;
-  padding-right: 3px;
-  min-width: 17px;
-  height: 17px;
-  font-size: ${fontSizes.small}px;
-  font-weight: 600;
+  padding: 0 3px;
+  min-width: 16px;
+  height: 16px;
+  font-size: ${fontSizes.xs}px;
+  font-weight: 500;
   line-height: 17px;
-  text-align: center;
   border-radius: 3px;
   margin-left: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   color: #FFFFFF;
   background: ${(props: any) => props.bgColor ? props.bgColor : colors.clRed};

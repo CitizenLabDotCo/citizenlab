@@ -10,13 +10,14 @@ import CountBadge from 'components/UI/CountBadge';
 import HasPermission from 'components/HasPermission';
 
 const Text = styled.div`
-  position: relative;
   flex: 1;
   color: ${colors.adminLightText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 19px;
   margin-left: 10px;
+  display: flex;
+  align-items: center;
 
   ${media.smallerThanMinTablet`
     display: none;
