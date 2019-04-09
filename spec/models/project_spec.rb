@@ -45,6 +45,7 @@ RSpec.describe Project, type: :model do
       i.update! project: p2
       expect(p1.reload.comments_count).to eq 0
       expect(p2.reload.comments_count).to eq 1
+      expect(p2.reload.comments_count).to eq 1
     end
   end
 
