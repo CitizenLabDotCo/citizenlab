@@ -158,7 +158,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
     this.globalState.set({ enabled: true });
 
     if (this.props.project && isFunction(this.props.ideas.onChangeProjects)) {
-      this.props.ideas.onChangeProjects([this.props.project.id]);
+      const projectIds = [this.props.project.id];
+      this.props.ideas.onChangeProjects(projectIds);
     }
 
     this.setVisibleFilterMenus(this.props.project);
@@ -174,7 +175,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     if (this.props.project && newProjectId !== oldProjectId) {
       if (isFunction(this.props.ideas.onChangeProjects)) {
-        this.props.ideas.onChangeProjects([this.props.project.id]);
+        const projectIds = [this.props.project.id];
+        this.props.ideas.onChangeProjects(projectIds);
       }
 
       this.setVisibleFilterMenus(this.props.project);
