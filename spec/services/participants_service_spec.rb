@@ -17,9 +17,10 @@ describe ParticipantsService do
         create(:activity, item: create(:comment), action: 'created', user: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'changed', user: pp3)
+        create(:activity, item: create(:comment), action: 'created', user: pp3)
+        create(:activity, item: create(:idea), action: 'created', user: others.first)
       end
-      create(:activity, item: create(:comment), action: 'created', user: pp4)
+      create(:activity, item: create(:idea), action: 'published', user: pp4)
 
       expect(service.participants().map(&:id)).to match_array participants.map(&:id)
     end
@@ -36,7 +37,7 @@ describe ParticipantsService do
         create(:activity, item: create(:comment), action: 'created', user: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'changed', user: pp3)
+        create(:activity, item: create(:comment), action: 'created', user: pp3)
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
