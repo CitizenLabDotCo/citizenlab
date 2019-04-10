@@ -47,7 +47,7 @@ module SmartGroupRules
 
     def filter users_scope
       participants_service = ParticipantsService.new
-      participants = participants_service.project_participants(Project.find(value))
+      participants = participants_service.projects_participants(Project.find(value))
 
       case predicate
       when 'is'

@@ -67,7 +67,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.project_participants(project).map(&:id)).to match_array participants.map(&:id)
+      expect(service.projects_participants(project).map(&:id)).to match_array participants.map(&:id)
     end
 
     it "returns participants of a given project since a given date" do
@@ -92,7 +92,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.project_participants(project, since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.projects_participants(project, since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
 
   end
