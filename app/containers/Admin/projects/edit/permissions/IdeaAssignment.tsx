@@ -9,8 +9,8 @@ import { IOption } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 
 // services
 import { updateProject } from 'services/projects';
@@ -29,7 +29,7 @@ interface InputProps {
 
 interface DataProps {
   project: GetProjectChildProps;
-  moderators: GetModeratorsChildProps;
+  adminsAndMods: GetUsersChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -37,19 +37,20 @@ interface Props extends InputProps, DataProps {}
 class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
 
   getOptions = () => {
-    const { moderators } = this.props;
-    let moderatorOptions: IOption[] = [];
+    const { adminsAndMods } = this.props;
+    const prospectAssignees = adminsAndMods.usersList;
+    let projectAssigneeOptions: IOption[] = [];
 
-    if (!isNilOrError(moderators)) {
-      moderatorOptions = moderators.map(moderator => {
+    if (!isNilOrError(prospectAssignees)) {
+      projectAssigneeOptions = prospectAssignees.map(prospectAssignee => {
         return ({
-          value: moderator.id,
-          label: `${moderator.attributes.first_name} ${moderator.attributes.last_name}`,
+          value: prospectAssignee.id,
+          label: `${prospectAssignee.attributes.first_name} ${prospectAssignee.attributes.last_name}`,
         });
       });
     }
 
-    return [{ value: 'unassigned', label: this.props.intl.formatMessage(messages.unassigned) }, ...moderatorOptions];
+    return [{ value: 'unassigned', label: this.props.intl.formatMessage(messages.unassigned) }, ...projectAssigneeOptions];
   }
 
   onAssigneeChange = (assigneeOption: IOption) => {
@@ -87,7 +88,7 @@ class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
-  moderators: ({ projectId, render }) => <GetModerators projectId={projectId}>{render}</GetModerators>,
+  adminsAndMods: ({ projectId, render }) => <GetUsers canModerateProject={projectId}>{render}</GetUsers>
 });
 
 const IdeaAssignmentWithInjectIntl = injectIntl(IdeaAssignment);
