@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { isFunction, isBoolean, isString } from 'lodash-es';
-// import clHistory from 'utils/cl-router/history';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import FocusTrap from 'focus-trap-react';
 import eventEmitter from 'utils/eventEmitter';
@@ -36,6 +34,7 @@ const ModalContainer = styled(clickOutside)`
   outline: none;
   overflow: hidden;
   position: absolute;
+  top: 0;
   right: 0;
 `;
 
