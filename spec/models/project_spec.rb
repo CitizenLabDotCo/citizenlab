@@ -34,6 +34,21 @@ RSpec.describe Project, type: :model do
     end
   end
 
+  describe "comments_count" do
+    it "remains up to date when an idea changes project" do
+      p1 = create(:project)
+      p2 = create(:project)
+      i = create(:idea, project: p1)
+      c = create(:comment, idea: i)
+
+      expect(p1.reload.comments_count).to eq 1
+      i.update! project: p2
+      expect(p1.reload.comments_count).to eq 0
+      expect(p2.reload.comments_count).to eq 1
+      expect(p2.reload.comments_count).to eq 1
+    end
+  end
+
   describe "description sanitizer" do
     it "sanitizes script tags in the description" do
       project = create(:project, description_multiloc: {
