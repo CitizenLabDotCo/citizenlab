@@ -85,7 +85,7 @@ const StyledLabel = styled.label`
 
 interface InputProps {
   value: boolean;
-  onChange: (event: React.FormEvent<any>) => void;
+  onChange: () => void;
   assignee: string;
 }
 
@@ -98,8 +98,8 @@ interface Props extends InputProps, DataProps {}
 type State = {};
 
 export class FeedbackToggle extends React.PureComponent<Props, State> {
-  handleOnClick = (event) => {
-    this.props.onChange(event);
+  handleOnClick = () => {
+    this.props.onChange();
   }
 
   render() {
