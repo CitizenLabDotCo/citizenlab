@@ -8,17 +8,18 @@ class ParticipantsService
     {item_type: 'Basket', action: 'created', score: 3},
   ]
 
-  PARTICIPANT_ACTIVITY_TYPES = ENGAGING_ACTIVITIES.map do |activity_h|
-    activity_h[:item_type]
-  end.compact.map(&:constantize)
-
 
   def participants options={}
     since = options[:since]
+    # After https://stackoverflow.com/a/25356375
+    multiwhere = '(activities.item_type, activities.action) IN ('
+    multiwhere << (['(?, ?)'] * ENGAGING_ACTIVITIES.size).join(', ') << ')'
     users = User
       .joins(:activities)
-      .where('activities.item_type IN (?)', PARTICIPANT_ACTIVITY_TYPES)
-      .group('users.id')
+      .where(
+        multiwhere, 
+        *ENGAGING_ACTIVITIES.map{ |h| [h[:item_type], h[:action]] }.flatten
+      ).group('users.id')
     if since
       users.where("activities.acted_at::date >= ?", since)
     else
