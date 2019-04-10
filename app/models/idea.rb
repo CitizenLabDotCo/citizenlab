@@ -14,6 +14,9 @@ class Idea < ApplicationRecord
       ["ideas.publication_status = ?", 'published'] => 'ideas_count'
     },
     touch: true
+  counter_culture :project, 
+    column_name: 'comments_count', 
+    delta_magnitude: proc { |idea| idea.comments_count }
 
   belongs_to :author, class_name: 'User', optional: true
   belongs_to :assignee, class_name: 'User', optional: true
@@ -59,6 +62,7 @@ class Idea < ApplicationRecord
   before_validation :sanitize_body_multiloc, if: :body_multiloc
   before_validation :strip_title
   after_validation :set_published_at, if: ->(idea){ idea.published? && idea.publication_status_changed? }
+  after_update :fix_comments_count_on_projects
 
   scope :with_all_topics, (Proc.new do |topic_ids|
     uniq_topic_ids = topic_ids.uniq
@@ -182,6 +186,12 @@ class Idea < ApplicationRecord
         :assignee_can_not_moderate_project,
         message: 'The assignee can not moderate the project of this idea'
       )
+    end
+  end
+
+  def fix_comments_count_on_projects
+    if project_id_previously_changed?
+      Comment.counter_culture_fix_counts only: [[:idea, :project]]
     end
   end
 
