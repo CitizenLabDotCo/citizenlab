@@ -20,28 +20,29 @@ class ParticipantsService
     since = options[:since]
     comments = Comment.where(idea_id: ideas)
     votes = Vote.where(votable_id: ideas).or(Vote.where(votable_id: comments))
-    baskets = Basket.submitted.where(participation_context_id: [project.id, *project.phases.ids])
     if since
       ideas = ideas.where('created_at::date >= (?)::date', since)
       comments = comments.where('created_at::date >= (?)::date', since)
       votes = votes.where('created_at::date >= (?)::date', since)
-      baskets = baskets.where('created_at::date >= (?)::date', since)
     end
     User
       .where(id: ideas.select(:author_id))
       .or(User.where(id: comments.select(:author_id)))
       .or(User.where(id: votes.select(:user_id)))
+  end
+
+  def projects_participants projects, options={}
+    since = options[:since]
+    ideas = Idea.where(project: projects)
+    if since
+      baskets = baskets.where('created_at::date >= (?)::date', since)
+    end
+    baskets = Basket.submitted.where(participation_context_id: [project.id, *project.phases.ids])
+    ideas_participants(ideas, options)
       .or(User.where(id: baskets.select(:user_id)))
   end
 
-  def project_participants project, options={}
-    since = options[:since]
-    ideas = Idea.where(project: project)
-    ideas_participants ideas, options
-  end
-
   def topics_participants topics, options={}
-    since = options[:since]
     ideas = Idea.with_some_topics(topics.map(&:id))
     ideas_participants ideas, options
   end
