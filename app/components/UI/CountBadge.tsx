@@ -8,7 +8,6 @@ const Container: any = styled.span`
   height: 16px;
   font-size: ${fontSizes.xs}px;
   font-weight: 500;
-  line-height: 17px;
   border-radius: 3px;
   margin-left: 6px;
   display: flex;
