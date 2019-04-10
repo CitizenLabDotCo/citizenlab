@@ -80,7 +80,7 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     if params[:project]
       ps = ParticipantsService.new
       project = Project.find(params[:project])
-      participants = ps.projects_participants(project)
+      participants = ps.projects_participants([project])
       activities_scope = activities_scope.where(user_id: participants)
     end
 

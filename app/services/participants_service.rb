@@ -37,13 +37,18 @@ class ParticipantsService
     if since
       baskets = baskets.where('created_at::date >= (?)::date', since)
     end
-    baskets = Basket.submitted.where(participation_context_id: [project.id, *project.phases.ids])
+    baskets = Basket.submitted.where(participation_context_id: (projects.map(&:id)+Phase.where(project: projects).ids))
     ideas_participants(ideas, options)
       .or(User.where(id: baskets.select(:user_id)))
   end
 
   def topics_participants topics, options={}
     ideas = Idea.with_some_topics(topics.map(&:id))
+    ideas_participants ideas, options
+  end
+
+  def idea_statuses_participants idea_statuses, options={}
+    ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options
   end
 
