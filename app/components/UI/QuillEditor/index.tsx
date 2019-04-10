@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isFunction } from 'lodash-es';
 
 // Quill editor & modules
@@ -255,7 +255,7 @@ function handlerRemoveTab() {
   return true;
 }
 
-class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, State> {
+class QuillEditor extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = { editorHtml: '' };

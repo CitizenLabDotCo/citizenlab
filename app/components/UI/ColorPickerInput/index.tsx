@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -63,9 +63,9 @@ interface State {
   opened: boolean;
 }
 
-class ColorPickerInput extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ColorPickerInput extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       opened: false,
     };

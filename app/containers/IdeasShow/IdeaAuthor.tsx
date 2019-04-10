@@ -26,7 +26,7 @@ const Container = styled.div`
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 8px;
+  margin-left: 7px;
 `;
 
 const AuthorNameWrapper = styled.div`
@@ -94,7 +94,7 @@ const IdeaAuthor = React.memo<Props>((props: Props) => {
     <Container>
       <Avatar
         userId={authorId}
-        size="40px"
+        size="39px"
         onClick={authorId ? goToUserProfile : noop}
       />
       <AuthorMeta>

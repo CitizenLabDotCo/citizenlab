@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { merge, cloneDeep, forOwn, get, set, size, has, trim, isEmpty, omitBy } from 'lodash-es';
+import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
 import Label from 'components/UI/Label';
@@ -40,8 +40,7 @@ import { updatePage } from 'services/pages';
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
 import InfoTooltip from 'components/admin/InfoTooltip';
 
-const ColorPickerSectionField = styled(SectionField)`
-`;
+const ColorPickerSectionField = styled(SectionField)``;
 
 const ContrastWarning = styled(Warning)`
   margin-top: 10px;
@@ -66,14 +65,7 @@ interface IAttributesDiff {
   header_bg?: UploadFile;
 }
 
-interface IAttributesDiff {
-  settings?: Partial<ITenantSettings>;
-  homepage_info?: Multiloc;
-  logo?: UploadFile;
-  header_bg?: UploadFile;
-}
-
-type State = {
+interface State {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
   currentTenant: ITenant | null;
@@ -92,7 +84,7 @@ type State = {
     color_secondary: boolean;
     color_text: boolean;
   };
-};
+}
 
 type TenantColors = 'color_main' | 'color_secondary' | 'color_text';
 
@@ -138,8 +130,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         currentTenant$
       ).pipe(
         switchMap(([locale, currentTenant]) => {
-          const logoUrl = currentTenant.data.attributes.logo.large;
-          const headerUrl = currentTenant.data.attributes.header_bg.large;
+          const logoUrl = currentTenant.data.attributes.logo ? currentTenant.data.attributes.logo.large : null;
+          const headerUrl = currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null;
           const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
           const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
@@ -184,10 +176,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile) => {
     this.setState((state) => ({
       ...state,
+      logoError: (name === 'logo' ? null : state.logoError),
+      headerError: (name === 'header_bg' ? null : state.headerError),
       [name]: [newImage],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: (newImage.base64 as string)
+        [name]: newImage.base64
       }
     }));
   }
@@ -195,6 +189,8 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
       ...state,
+      logoError: (name === 'logo' ? null : state.logoError),
+      headerError: (name === 'header_bg' ? null : state.headerError),
       [name]: null,
       attributesDiff: {
         ...(state.attributesDiff || {}),
@@ -202,6 +198,14 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       }
     }));
   }
+
+  handleLogoOnAdd = this.handleUploadOnAdd('logo');
+
+  handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
+
+  handleLogoOnRemove = this.handleUploadOnRemove('logo');
+
+  handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
 
   handleTitleOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => {
@@ -216,7 +220,16 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         titleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_title', titleMultiloc),
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              header_title: titleMultiloc
+            }
+          }
+        }
       };
     });
   }
@@ -234,31 +247,47 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
       return {
         subtitleError,
-        attributesDiff: set(cloneDeep(state.attributesDiff), 'settings.core.header_slogan', subtitleMultiloc),
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              header_slogan: subtitleMultiloc
+            }
+          }
+        }
       };
     });
   }
 
   handleColorPickerOnChange = (colorName: TenantColors) => (hexColor: string) => {
-    const rgbColor = hexToRgb(hexColor);
+    this.setState((state) => {
+      let contrastRatio: number | null = null;
+      const rgbColor = hexToRgb(hexColor);
 
-    if (rgbColor) {
-      this.setState(({ contrastRatioWarning }) => {
+      if (rgbColor) {
         const { r, g, b } = rgbColor;
-        const contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+        contrastRatio = calculateContrastRatio([255, 255, 255], [r, g, b]);
+      }
 
-        return {
-          contrastRatioWarning: {
-            ...contrastRatioWarning,
-            [colorName]: (contrastRatio < 4.50 ? true : false)
+      return {
+        contrastRatioWarning: {
+          ...state.contrastRatioWarning,
+          [colorName]: (contrastRatio && contrastRatio < 4.50 ? true : false)
+        },
+        attributesDiff: {
+          ...state.attributesDiff,
+          settings: {
+            ...get(state.attributesDiff, 'settings', {}),
+            core: {
+              ...get(state.attributesDiff, 'settings.core', {}),
+              [colorName]: hexColor
+            }
           }
-        };
-      });
-    }
-
-    let newDiff = cloneDeep(this.state.attributesDiff);
-    newDiff = set(newDiff, `settings.core.${colorName}`, hexColor);
-    this.setState({ attributesDiff: newDiff });
+        }
+      };
+    });
   }
 
   validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
@@ -315,12 +344,27 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   handleCustomSectionMultilocOnChange = (homepageInfoPageMultiloc: Multiloc) => {
-    this.setState((state) => {
-      return {
-        attributesDiff: set(cloneDeep(state.attributesDiff), 'homepage_info', homepageInfoPageMultiloc),
-      };
-    });
+    this.setState((state) => ({
+      attributesDiff: {
+        ...(state.attributesDiff || {}),
+        homepage_info: homepageInfoPageMultiloc
+      }
+    }));
   }
+
+  uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
+
+  headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
+
+  headerTitleTooltip = <InfoTooltip {...messages.headerTitleTooltip} />;
+
+  headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
+
+  headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
+
+  customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
+
+  customSectionTooltip = <InfoTooltip {...messages.customSectionTooltip} />;
 
   render() {
     const {
@@ -333,13 +377,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       saved
     } = this.state;
 
-    const { homepageInfoPage } = this.props;
-
     if (locale && currentTenant) {
-      const { formatMessage } = this.props.intl;
+      const { homepageInfoPage } = this.props;
       const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
-      const tenantAttrs = merge(cloneDeep(currentTenant.data.attributes), attributesDiff);
-      const homepageInfoPageBodyMultiloc = !isNilOrError(homepageInfoPage) ? { ...homepageInfoPage.attributes.body_multiloc, ...attributesDiff.homepage_info } : { ...attributesDiff.homepage_info };
 
       return (
         <form onSubmit={this.save}>
@@ -363,7 +403,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 </Label>
                 <ColorPickerInput
                   type="text"
-                  value={get(tenantAttrs, `settings.core.${colorName}`)}
+                  value={get(attributesDiff, `settings.core.${colorName}`) || get(currentTenant, `data.attributes.settings.core.${colorName}`)}
                   onChange={this.handleColorPickerOnChange(colorName)}
                 />
                 {contrastRatioWarning[colorName] &&
@@ -388,9 +428,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 imagePreviewRatio={1}
                 maxImagePreviewWidth="150px"
                 objectFit="contain"
-                onAdd={this.handleUploadOnAdd('logo')}
-                onRemove={this.handleUploadOnRemove('logo')}
-                placeholder={formatMessage(messages.uploadPlaceholder)}
+                onAdd={this.handleLogoOnAdd}
+                onRemove={this.handleLogoOnRemove}
+                placeholder={this.uploadPlaceholder}
                 errorMessage={logoError}
               />
             </SectionField>
@@ -413,9 +453,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 images={header_bg}
                 imagePreviewRatio={480 / 1440}
                 maxImagePreviewWidth="500px"
-                onAdd={this.handleUploadOnAdd('header_bg')}
-                onRemove={this.handleUploadOnRemove('header_bg')}
-                placeholder={formatMessage(messages.uploadPlaceholder)}
+                onAdd={this.handleHeaderBgOnAdd}
+                onRemove={this.handleHeaderBgOnRemove}
+                placeholder={this.uploadPlaceholder}
                 errorMessage={headerError}
               />
             </SectionField>
@@ -423,9 +463,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, 'settings.core.header_title')}
-                label={<FormattedMessage {...messages.headerTitleLabel} />}
-                labelTooltip={<InfoTooltip {...messages.headerTitleTooltip} />}
+                valueMultiloc={get(attributesDiff, 'settings.core.header_title') || get(currentTenant, 'data.attributes.settings.core.header_title')}
+                label={this.headerTitleLabel}
+                labelTooltip={this.headerTitleTooltip}
                 maxCharCount={this.titleMaxCharCount}
                 onChange={this.handleTitleOnChange}
                 errorMultiloc={titleError}
@@ -435,9 +475,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(tenantAttrs, 'settings.core.header_slogan')}
-                label={<FormattedMessage {...messages.headerSubtitleLabel} />}
-                labelTooltip={<InfoTooltip {...messages.headerSubtitleTooltip} />}
+                valueMultiloc={get(attributesDiff, 'settings.core.header_slogan') || get(currentTenant, 'data.attributes.settings.core.header_slogan')}
+                label={this.headerSubtitleLabel}
+                labelTooltip={this.headerSubtitleTooltip}
                 maxCharCount={this.subtitleMaxCharCount}
                 onChange={this.handleSubtitleOnChange}
                 errorMultiloc={subtitleError}
@@ -453,10 +493,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <WideSectionField>
               <QuillMultiloc
                 id="custom-section"
-                inAdmin
-                label={<FormattedMessage {...messages.customSectionLabel} />}
-                labelTooltip={<InfoTooltip {...messages.customSectionInfo} />}
-                valueMultiloc={homepageInfoPageBodyMultiloc}
+                inAdmin={true}
+                label={this.customSectionLabel}
+                labelTooltip={this.customSectionTooltip}
+                valueMultiloc={attributesDiff.homepage_info || get(homepageInfoPage, 'attributes.body_multiloc')}
                 onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />

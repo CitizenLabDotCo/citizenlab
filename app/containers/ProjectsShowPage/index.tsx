@@ -43,7 +43,9 @@ const Container = styled.div`
   `}
 
   ${media.biggerThanMinTablet`
-    min-height: 1000px;
+    &.loaded {
+      min-height: 900px;
+    }
   `}
 `;
 
@@ -101,7 +103,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
     return (
       <>
         <Meta projectSlug={slug} />
-        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''}`}>
+        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''} ${!loading ? 'loaded' : 'loading'}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>

@@ -85,6 +85,7 @@ interface State {
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   textareaElement: HTMLTextAreaElement;
+  isInViewport: boolean;
   subscriptions: Subscription[] = [];
 
   constructor(props) {
@@ -94,7 +95,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       focussed: false,
       processing: false,
       errorMessage: null,
-      canSubmit: false
+      canSubmit: false,
     };
   }
 
@@ -115,13 +116,16 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
         if (this.textareaElement) {
           // this.textareaElement.scrollIntoView();
-          this.textareaElement.focus();
+          if (this.isInViewport) {
+            this.textareaElement.focus();
+          } else {
+            // this.textareaElement.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'center'});
+            scrollToComponent(this.textareaElement, { align: 'top', offset: -400, duration: 400 });
 
-          // scrollToComponent(this.textareaElement, { align: 'top', offset: -400, duration: 400 });
-
-          // setTimeout(() => {
-          //   this.textareaElement.focus();
-          // }, 400);
+            setTimeout(() => {
+              this.textareaElement.focus();
+            }, 400);
+          }
         }
       })
     ];
@@ -194,6 +198,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   setRef = (element: HTMLTextAreaElement) => {
     this.textareaElement = element;
+  }
+
+  handleIntersection = (event: IntersectionObserverEntry) => {
+    this.isInViewport = event.isIntersecting;
   }
 
   render() {
