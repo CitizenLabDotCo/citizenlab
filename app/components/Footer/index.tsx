@@ -439,7 +439,7 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (locale && currentTenant) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentTenantLogo = currentTenant.data.attributes.logo.medium;
+      const currentTenantLogo = currentTenant.data.attributes.logo ? currentTenant.data.attributes.logo.medium : false;
       const tenantSite = currentTenant.data.attributes.settings.core.organization_site;
       const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
       const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);

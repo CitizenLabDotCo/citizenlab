@@ -35,6 +35,9 @@ import { getLocalized } from 'utils/i18n';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
+// typings
+import { PublicationStatus } from 'resources/GetProjects';
+
 const Container: any = styled.div`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -191,6 +194,8 @@ class LandingPage extends PureComponent<Props, State> {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
 
+  projectsPublicationStatuses: PublicationStatus[]  = ['published', 'archived'];
+
   render() {
     const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
 
@@ -216,7 +221,7 @@ class LandingPage extends PureComponent<Props, State> {
                     <ProjectCards
                       pageSize={6}
                       sort="new"
-                      publicationStatuses={['published', 'archived']}
+                      publicationStatuses={this.projectsPublicationStatuses}
                       showTitle={true}
                       showPublicationStatusFilter={false}
                       showSendFeedback={true}

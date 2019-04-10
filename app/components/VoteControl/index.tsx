@@ -51,7 +51,7 @@ const VoteIconContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${lighten(0.35, colors.label)};
   background: #fff;
   transition: all 60ms ease-out;
   will-change: transform;
@@ -185,7 +185,7 @@ const Downvote = Vote.extend`
   }
 
   ${VoteIcon} {
-    margin-top: 5px;
+    margin-top: 4px;
     ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
   }
 

@@ -58,6 +58,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const timeout = 350;
 
@@ -315,9 +316,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       ).subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
         if (!this.state.processingDelete) {
           this.setState({
-            projectFiles,
-            projectImages,
-            projectHeaderImage: (projectHeaderImage ? [projectHeaderImage] : null)
+            projectFiles: projectFiles ? projectFiles.filter((file) => !isNilOrError(file)) as UploadFile[] : [],
+            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image))  as UploadFile[] : [],
+            projectHeaderImage: projectHeaderImage ? [projectHeaderImage] : null
           });
         }
       }),

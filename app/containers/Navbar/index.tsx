@@ -22,7 +22,7 @@ import tracks from './tracks';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -528,11 +528,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
   }
 }
 
+const projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
+
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
+  projects: <GetProjects pageSize={250} publicationStatuses={projectsPublicationStatuses} sort="new" />
 });
 
 const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
