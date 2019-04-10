@@ -178,7 +178,8 @@ class TenantTemplateService
           if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
             if (field_value.keys & locales_to).blank? && !field_value.keys.include?(translate_from) && field_value.present?
               other_translate_from = field_value.keys.first
-              translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, translate_to
+              other_translate_to = translate_to || locales_to.first
+              translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, other_translate_to
               attributes[field_name] = {translate_to => translation}
             else
               field_value.keys.each do |locale|
