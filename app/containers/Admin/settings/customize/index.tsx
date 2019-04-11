@@ -68,7 +68,7 @@ interface IAttributesDiff {
 interface State {
   locale: Locale | null;
   attributesDiff: IAttributesDiff;
-  currentTenant: ITenant | null;
+  tenant: ITenant | null;
   logo: UploadFile[] | null;
   header_bg: UploadFile[] | null;
   colorPickerOpened: boolean;
@@ -98,7 +98,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     this.state = {
       locale: null,
       attributesDiff: {},
-      currentTenant: null,
+      tenant: null,
       logo: null,
       header_bg: null,
       colorPickerOpened: false,
@@ -122,16 +122,16 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
 
   componentDidMount() {
     const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+    const tenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
       combineLatest(
         locale$,
-        currentTenant$
+        tenant$
       ).pipe(
-        switchMap(([locale, currentTenant]) => {
-          const logoUrl = currentTenant.data.attributes.logo ? currentTenant.data.attributes.logo.large : null;
-          const headerUrl = currentTenant.data.attributes.header_bg ? currentTenant.data.attributes.header_bg.large : null;
+        switchMap(([locale, tenant]) => {
+          const logoUrl = tenant.data.attributes.logo ? tenant.data.attributes.logo.large : null;
+          const headerUrl = tenant.data.attributes.header_bg ? tenant.data.attributes.header_bg.large : null;
           const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
           const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
 
@@ -139,32 +139,18 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             logo$,
             headerBg$,
           ).pipe(
-            map(([currentTenantLogo, currentTenantHeaderBg]) => ({
+            map(([tenantLogo, tenantHeaderBg]) => ({
               locale,
-              currentTenant,
-              currentTenantLogo,
-              currentTenantHeaderBg,
+              tenant,
+              tenantLogo,
+              tenantHeaderBg
             }))
           );
         })
-      ).subscribe(({ locale, currentTenant, currentTenantLogo, currentTenantHeaderBg }) => {
-        const { attributesDiff } = this.state;
-        let logo: UploadFile[] | null = null;
-        let header_bg: UploadFile[] | null = null;
-
-        if (currentTenantLogo !== null && !has(attributesDiff, 'logo')) {
-          logo = [currentTenantLogo];
-        } else if (has(attributesDiff, 'logo')) {
-          logo = (attributesDiff.logo && attributesDiff.logo !== null ? [attributesDiff.logo] : null);
-        }
-
-        if (currentTenantHeaderBg !== null && !has(attributesDiff, 'header_bg')) {
-          header_bg = [currentTenantHeaderBg];
-        } else if (has(attributesDiff, 'header_bg')) {
-          header_bg = (attributesDiff.header_bg && attributesDiff.header_bg !== null ? [attributesDiff.header_bg] : null);
-        }
-
-        this.setState({ locale, currentTenant, logo, header_bg });
+      ).subscribe(({ locale, tenant, tenantLogo, tenantHeaderBg }) => {
+        const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+        const header_bg = !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : [];
+        this.setState({ locale, tenant, logo, header_bg });
       })
     ];
   }
@@ -198,14 +184,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       }
     }));
   }
-
-  handleLogoOnAdd = this.handleUploadOnAdd('logo');
-
-  handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
-
-  handleLogoOnRemove = this.handleUploadOnRemove('logo');
-
-  handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
 
   handleTitleOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => {
@@ -290,19 +268,16 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     });
   }
 
-  validate = (currentTenant: ITenant, attributesDiff: IAttributesDiff) => {
+  validate = (tenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
-
-    const hasRemoteLogo = has(currentTenant, 'data.attributes.logo.large');
+    const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
     const logoError = (!localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet) ? null : formatMessage(messages.noLogo));
-
-    const hasRemoteHeader = has(currentTenant, 'data.attributes.header_bg.large');
+    const hasRemoteHeader = has(tenant, 'data.attributes.header_bg.large');
     const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
     const localHeaderIsNull = !localHeaderIsNotSet && attributesDiff.header_bg === null;
     const headerError = (!localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet) ? null : formatMessage(messages.noHeader));
-
     const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
     const hasSubtitleError = !isEmpty(omitBy(this.state.subtitleError, isEmpty));
 
@@ -311,19 +286,22 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     return (!logoError && !headerError && !hasTitleError && !hasSubtitleError);
   }
 
-  save = async (event) => {
+  save = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const { currentTenant, attributesDiff } = this.state;
+    const { tenant, attributesDiff } = this.state;
     const { homepageInfoPage } = this.props;
-    if (currentTenant && this.validate(currentTenant, attributesDiff)) {
+
+    if (tenant && this.validate(tenant, attributesDiff)) {
       this.setState({ loading: true, saved: false });
       const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
-        await updateTenant(currentTenant.data.id, attributesDiff as IUpdatedTenantProperties);
+        await updateTenant(tenant.data.id, attributesDiff as IUpdatedTenantProperties);
+
         if (!isNilOrError(homepageInfoPage)) {
           const homepageInfoPageId = homepageInfoPage.id;
+
           if (attributesDiff.homepage_info) {
             await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
           }
@@ -352,38 +330,32 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     }));
   }
 
+  /*
+  Below values are intentionally defined outside of render() for better performance
+  because references stay the same this way, e.g. onClick={this.handleLogoOnAdd} vs onClick={this.handleUploadOnAdd('logo')},
+  and therefore do not trigger unneeded rerenders which would otherwise noticably slow down text input in the form
+  */
+  handleLogoOnAdd = this.handleUploadOnAdd('logo');
+  handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
+  handleLogoOnRemove = this.handleUploadOnRemove('logo');
+  handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
   uploadPlaceholder = this.props.intl.formatMessage(messages.uploadPlaceholder);
-
   headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
-
   headerTitleTooltip = <InfoTooltip {...messages.headerTitleTooltip} />;
-
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
-
   headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
-
   customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
-
   customSectionTooltip = <InfoTooltip {...messages.customSectionTooltip} />;
 
   render() {
-    const {
-      locale,
-      currentTenant,
-      titleError,
-      subtitleError,
-      errors,
-      contrastRatioWarning,
-      saved
-    } = this.state;
+    const { locale, tenant } = this.state;
 
-    if (locale && currentTenant) {
+    if (!isNilOrError(locale) && !isNilOrError(tenant)) {
       const { homepageInfoPage } = this.props;
-      const { logo, header_bg, attributesDiff, logoError, headerError } = this.state;
+      const { logo, header_bg, attributesDiff, logoError, headerError, titleError, subtitleError, errors, contrastRatioWarning, saved } = this.state;
 
       return (
         <form onSubmit={this.save}>
-
           <Section key={'branding'}>
             <SectionTitle>
               <FormattedMessage {...messages.titleCustomize} />
@@ -403,7 +375,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 </Label>
                 <ColorPickerInput
                   type="text"
-                  value={get(attributesDiff, `settings.core.${colorName}`) || get(currentTenant, `data.attributes.settings.core.${colorName}`)}
+                  value={get(attributesDiff, `settings.core.${colorName}`) || get(tenant, `data.attributes.settings.core.${colorName}`)}
                   onChange={this.handleColorPickerOnChange(colorName)}
                 />
                 {contrastRatioWarning[colorName] &&
@@ -463,7 +435,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(attributesDiff, 'settings.core.header_title') || get(currentTenant, 'data.attributes.settings.core.header_title')}
+                valueMultiloc={get(attributesDiff, 'settings.core.header_title') || get(tenant, 'data.attributes.settings.core.header_title')}
                 label={this.headerTitleLabel}
                 labelTooltip={this.headerTitleTooltip}
                 maxCharCount={this.titleMaxCharCount}
@@ -475,7 +447,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(attributesDiff, 'settings.core.header_slogan') || get(currentTenant, 'data.attributes.settings.core.header_slogan')}
+                valueMultiloc={get(attributesDiff, 'settings.core.header_slogan') || get(tenant, 'data.attributes.settings.core.header_slogan')}
                 label={this.headerSubtitleLabel}
                 labelTooltip={this.headerSubtitleTooltip}
                 maxCharCount={this.subtitleMaxCharCount}
@@ -513,7 +485,6 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               messageSuccess: messages.saveSuccessMessage,
             }}
           />
-
         </form>
       );
     }
