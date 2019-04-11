@@ -200,5 +200,13 @@ export default defineMessages({
   defaultSignUpHelper: {
     id: 'app.containers.SignUp.defaultSignUpHelper',
     defaultMessage: 'Tell us who you are and we’ll tell you how you can participate.',
-  }
+  },
+  emailInvitationTokenInvalid: {
+    id: 'app.containers.SignUp.emailInvitationTokenInvalid',
+    defaultMessage: 'Your invitation has expired. You can still create an account on the {signUpPageLink}. ',
+  },
+  signUpPage: {
+    id: 'app.containers.SignUp.signUpPage',
+    defaultMessage: 'Sign up page',
+  },
 });
