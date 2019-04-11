@@ -432,7 +432,7 @@ const MoreActionsMenuWrapper = styled.div`
 
 const FooterContainer = styled.div`
   width: 100%;
-  margin-top: 60px;
+  margin-top: 40px;
 `;
 
 const FooterHeader = styled.div``;
@@ -479,7 +479,7 @@ const FooterContentInner = styled.div`
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 50px;
+  padding-top: 30px;
   padding-bottom: 60px;
 `;
 

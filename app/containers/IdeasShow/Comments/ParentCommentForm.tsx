@@ -36,11 +36,16 @@ const Container = styled.div``;
 const CommentContainer = styled.div`
   display: flex;
   padding: 20px;
+  padding-left: 46px;
+  padding-right: 46px;
   border-radius: 5px;
-  border: solid 1px #e3e3e3;
-  background: #fff;
+  border: solid 1px #dfdfdf;
+  background: #eff0f2;
+  transition: background 100ms ease;
+  /* background: #fff; */
 
   &.focussed {
+    background: #fff;
     border-color: #000;
   }
 `;

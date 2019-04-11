@@ -37,8 +37,6 @@ const StyledSpan = styled.span`
   font-weight: 500;
 `;
 
-
-
 const LoadMoreButton = styled(Button)``;
 
 interface InputProps {

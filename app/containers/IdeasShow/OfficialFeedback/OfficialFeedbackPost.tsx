@@ -15,6 +15,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
 import { colors, fontSizes } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -41,11 +42,11 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background-color: rgba(236, 90, 36, 0.06);
+  background: ${lighten(0.545, colors.clRedError)};
 `;
 
 const EditFormContainer = styled(Container)`
-  background-color: ${colors.adminBackground};
+  background: ${colors.adminBackground};
 `;
 
 const Body = styled.div`

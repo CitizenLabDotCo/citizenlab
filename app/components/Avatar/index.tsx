@@ -70,18 +70,21 @@ const AvatarIcon: any = styled(Icon)`
 `;
 
 const ModeratorIconContainer: any = styled.div`
-  position: absolute;
-  right: -${(props: any) => props.size / 20}px;
-  bottom: -${(props: any) => props.size / 20}px;
-  background: white;
-  border-radius: 50%;
-  flex: 0 0 ${(props: any) => props.size / 2}px;
-  width: ${(props: any) => props.size / 2}px;
-  height: ${(props: any) => props.size / 2}px;
+  flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
+  width: ${(props: any) => props.size / 2 + 5}px;
+  height: ${(props: any) => props.size / 2 + 5}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 2px;
+  position: absolute;
+  right: -${(props: any) => props.size / 19}px;
+  bottom: -${(props: any) => props.size / 19}px;
+  border-radius: 50%;
+  padding-top: 1px;
+  padding-left: 1px;
+  background: ${lighten(0.53, colors.clRedError)};
+  /* border: solid 1px #ccc; */
+  /* background: #fff; */
 `;
 
 const ModeratorIcon: any = styled(Icon)`
@@ -151,7 +154,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           padding={padding}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.clRed : borderHoverColor}
+          borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
         >
           {avatarSrc ? (
             <AvatarImage

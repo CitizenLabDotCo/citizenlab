@@ -1,30 +1,28 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isFunction } from 'lodash-es';
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
-
-// libraries
 import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
-
-// animations
 import CSSTransition from 'react-transition-group/CSSTransition';
+
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// analytics
-import { injectTracks, trackPage } from 'utils/analytics';
+// tracking
+import { trackEventByName, trackPage } from 'utils/analytics';
 import tracks from './tracks';
 
-// style
+// styling
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import { getUrlLocale } from 'services/locale';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 const timeout = 300;
 const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -183,6 +181,7 @@ const HeaderChildWrapper = styled.div`
 `;
 
 const CloseIcon = styled(Icon)`
+  width: 13px;
   height: 13px;
   fill: ${colors.label};
   display: flex;
@@ -202,7 +201,7 @@ const CloseButton = styled.div`
   top: 20px;
   right: 33px;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${lighten(0.35, colors.label)};
   background: #fff;
   z-index: 10002;
   transition: border-color 100ms ease-out;
@@ -220,27 +219,27 @@ const CloseButton = styled.div`
   `}
 `;
 
-interface ITracks {
-  clickCloseButton: (arg: any) => void;
-  clickOutsideModal: (arg: any) => void;
-  clickBack: (arg: any) => void;
-}
-
-type Props = {
+interface InputProps {
   opened: boolean;
   close: () => void;
   url: string | null;
   headerChild?: JSX.Element | undefined;
-};
+}
 
-type State = {};
+interface DataProps {
+  locale: GetLocaleChildProps;
+}
 
-class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLocaleChildProps}, State> {
+interface Props extends InputProps, DataProps {}
+
+interface State {}
+
+class Modal extends PureComponent<Props, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
   ModalContentInnerElement: HTMLDivElement | null;
 
-  constructor(props: Props & ITracks & {currentLocale: GetLocaleChildProps}) {
+  constructor(props) {
     super(props);
     this.state = {
       scrolled: false
@@ -277,7 +276,7 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
     let localizedUrl = url;
     const urlLocale = url && getUrlLocale(url);
     if (!urlLocale) {
-      localizedUrl = `/${this.props.currentLocale}${url}`;
+      localizedUrl = `/${this.props.locale}${url}`;
     }
 
     if (localizedUrl) {
@@ -314,7 +313,7 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
 
   handlePopstateEvent = () => {
     if (location.href === this.goBackUrl) {
-      this.props.clickBack({ extra: { url: this.props.url } });
+      trackEventByName(tracks.clickBack, { extra: { url: this.props.url } });
     }
 
     this.props.close();
@@ -341,13 +340,13 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
   }
 
   clickOutsideModal = () => {
-    this.props.clickOutsideModal({ extra: { url: this.props.url } });
+    trackEventByName(tracks.clickOutsideModal, { extra: { url: this.props.url } });
     this.manuallyCloseModal();
   }
 
   clickCloseButton = (event) => {
     event.preventDefault();
-    this.props.clickCloseButton({ extra: { url: this.props.url } });
+    trackEventByName(tracks.clickCloseButton, { extra: { url: this.props.url } });
     this.manuallyCloseModal();
   }
 
@@ -397,12 +396,8 @@ class Modal extends React.PureComponent<Props & ITracks & {currentLocale: GetLoc
   }
 }
 
-const WithHoC = injectTracks<Props>(tracks)(Modal);
-
-export default (props) => (
+export default (inputProps: InputProps) => (
   <GetLocale>
-    {(locale) => (
-      <WithHoC {...props} currentLocale={locale} />
-    )}
+    {locale => <Modal {...inputProps} locale={locale} />}
   </GetLocale>
 );

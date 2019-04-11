@@ -12,8 +12,10 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
+  padding-bottom: 38px;
+
   ${media.smallerThanMinTablet`
-    padding-bottom: 30px;
+    padding-bottom: 38px;
   `}
 `;
 
