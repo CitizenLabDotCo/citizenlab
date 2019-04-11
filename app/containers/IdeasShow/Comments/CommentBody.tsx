@@ -45,7 +45,7 @@ const CommentWrapper = styled.div`
   white-space: pre-line;
 
   &.child {
-    margin-top: 8px;
+    margin-top: 7px;
   }
 `;
 

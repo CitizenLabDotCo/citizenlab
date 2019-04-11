@@ -178,7 +178,7 @@ const Container: any = styled.div`
       top: -3px;
     }
 
-    ${quillEditedContent()}
+    ${({ theme }) => quillEditedContent(theme.colorText)}
   }
 `;
 

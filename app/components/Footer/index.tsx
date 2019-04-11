@@ -456,9 +456,13 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
                 {currentTenantLogo && tenantSite &&
                   <LogoLink href={tenantSite} target="_blank">
                     <TenantLogo src={currentTenantLogo} alt="Organization logo" />
-                  </LogoLink>}
+                  </LogoLink>
+                }
+
                 {currentTenantLogo && !tenantSite &&
-                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />}
+                  <TenantLogo src={currentTenantLogo} alt="Organization logo" />
+                }
+
                 <TenantSlogan>{slogan}</TenantSlogan>
               </FirstLine>
             </Fragment>
@@ -526,12 +530,12 @@ class Footer extends PureComponent<Props & InjectedIntlProps, State> {
             <SecondLineInner>
               <PagesNav>
                 {LEGAL_PAGES.map((slug, index) => (
-                  <>
-                    <StyledLink key={slug} to={`/pages/${slug}`} className={index === 0 ? 'first' : ''}>
+                  <React.Fragment key={slug}>
+                    <StyledLink to={`/pages/${slug}`} className={index === 0 ? 'first' : ''}>
                       <FormattedMessage {...messages[slug]} />
                     </StyledLink>
                     <Bullet>•</Bullet>
-                  </>
+                  </React.Fragment>
                 ))}
                 <StyledButton onClick={this.openConsentManager}>
                   <FormattedMessage {...messages.cookieSettings} />

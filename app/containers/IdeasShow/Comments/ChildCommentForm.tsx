@@ -37,7 +37,17 @@ import { hideVisually } from 'polished';
 import { ICommentReplyClicked } from './CommentFooter';
 
 const Container = styled.form`
-  border-top: solid 1px #ebebeb;
+  background: #fff;
+  border: solid 1px #fff;
+  border-top-color: #ebebeb;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  transition: all 100ms ease;
+
+  &.focussed {
+    background: #fff;
+    border-color: #999;
+  }
 `;
 
 const HiddenLabel = styled.span`
@@ -214,7 +224,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       const isButtonVisible = (inputValue && inputValue.length > 0 || focussed);
 
       return (
-        <Container className={className} onSubmit={this.handleSubmit}>
+        <Container className={`${className} ${focussed ? 'focussed' : ''}`} onSubmit={this.handleSubmit}>
           <Observer onChange={this.handleIntersection}>
             <label>
               <HiddenLabel>

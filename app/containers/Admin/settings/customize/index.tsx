@@ -345,7 +345,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
   headerSubtitleTooltip = <InfoTooltip {...messages.headerSubtitleTooltip} />;
   customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
-  customSectionTooltip = <InfoTooltip {...messages.customSectionTooltip} />;
+  customSectionTooltip = <InfoTooltip {...messages.customSectionInfo} />;
 
   render() {
     const { locale, tenant } = this.state;

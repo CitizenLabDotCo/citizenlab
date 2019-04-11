@@ -191,8 +191,9 @@ export const stylingConsts = {
 
 // Reusable text styling
 export function quillEditedContent(
+  linkColor: string = colors.text,
+  textColor: string = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
-  color: string = colors.text,
   fontWeight: 300 | 400 = 400
 ) {
   let lineHeight = 27;
@@ -207,7 +208,7 @@ export function quillEditedContent(
   }
 
   const defaultFontStyle = `
-    color: ${color};
+    color: ${textColor};
     font-size: ${fontSizes[fontSize]}px;
     font-weight: ${fontWeight};
     line-height: ${lineHeight}px;
@@ -275,7 +276,7 @@ export function quillEditedContent(
     }
 
     a {
-      color: ${colors.clBlueDark};
+      color: ${linkColor};
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -284,7 +285,7 @@ export function quillEditedContent(
       hyphens: auto;
 
       &:hover {
-        color: ${darken(0.15, colors.clBlueDark)};
+        color: ${darken(0.15, linkColor)};
         text-decoration: underline;
       }
     }
@@ -315,7 +316,7 @@ export function quillEditedContent(
     }
 
     .mention {
-      color: ${colors.clBlueDark};
+      color: ${linkColor};
       overflow-wrap: normal;
       word-wrap: normal;
       word-break: normal;
@@ -326,12 +327,12 @@ export function quillEditedContent(
       padding-top: 2px;
       padding-bottom: 2px;
       border-radius: 3px;
-      background: ${transparentize(0.9, colors.clBlueDark)};
+      background: ${transparentize(0.5, colors.placeholderBg)};
       transition: background 100ms ease;
 
       &:hover {
         text-decoration: none;
-        background: ${transparentize(0.8, colors.clBlueDark)};
+        background: ${transparentize(0.3, colors.placeholderBg)};
       }
     }
 

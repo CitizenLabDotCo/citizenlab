@@ -1,34 +1,39 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { quillEditedContent } from 'utils/styleUtils';
 
-const Styles: any = styled.div`
-  ${(props: any) => quillEditedContent(props.fontSize, props.color, props.fontWeight)}
+const Container: any = styled.div`
+  ${(props: any) => quillEditedContent(props.linkColor, props.textColor, props.fontSize, props.fontWeight )}
 `;
 
 interface Props {
+  linkColor?: string;
+  textColor?: string;
   fontSize?: 'base' | 'large';
-  color?: string;
   fontWeight?: 300 | 400;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;
+  theme: any;
 }
 
 interface State {}
 
-export default class QuillEditedContent extends PureComponent<Props, State> {
+class QuillEditedContent extends PureComponent<Props, State> {
   render() {
-    const { fontSize, color, fontWeight, children, className } = this.props;
+    const { linkColor, textColor, fontSize, fontWeight, children, className, theme } = this.props;
 
     return (
-      <Styles
-        className={className}
+      <Container
+        linkColor={linkColor || theme.colorText}
+        textColor={textColor}
         fontSize={fontSize}
-        color={color}
         fontWeight={fontWeight}
+        className={className}
       >
         {children}
-      </Styles>
+      </Container>
     );
   }
 }
+
+export default withTheme<Props, State>(QuillEditedContent);

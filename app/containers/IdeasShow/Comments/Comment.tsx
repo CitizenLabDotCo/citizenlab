@@ -70,7 +70,7 @@ const Content = styled.div`
 `;
 
 const AvatarWrapper = styled.div`
-  margin-right: 15px;
+  margin-right: 7px;
 `;
 
 const BodyAndFooter = styled.div`

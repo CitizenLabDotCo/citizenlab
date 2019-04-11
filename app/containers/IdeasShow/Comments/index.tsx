@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
@@ -28,12 +28,16 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const CommentsSection = React.memo<Props>(({
+const CommentsSection = memo<Props>(({
   ideaId,
   ideaComments,
   project
 }) => (
   <>
+    {!isNilOrError(ideaComments) &&
+      <Comments ideaId={ideaId} />
+    }
+
     {/* {!isNilOrError(project) &&
       <HasPermission item={project} action="moderate">
         <HasPermission.No>
@@ -44,10 +48,6 @@ const CommentsSection = React.memo<Props>(({
 
     {!isNilOrError(project) &&
       <ParentCommentForm ideaId={ideaId} />
-    }
-
-    {!isNilOrError(ideaComments) &&
-      <Comments ideaId={ideaId} />
     }
   </>
 ));
