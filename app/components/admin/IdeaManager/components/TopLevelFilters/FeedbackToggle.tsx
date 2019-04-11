@@ -125,7 +125,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
 
 const Data = adopt({
   ideasCount: ({ assignee, render }) => (
-    <GetIdeasCount feedbackNeeded={true} assignee={assignee === 'all' ? undefined : assignee}>
+    <GetIdeasCount feedbackNeeded={true} assignee={assignee !== 'all' ? assignee : undefined}>
       {render}
     </GetIdeasCount>
   )
