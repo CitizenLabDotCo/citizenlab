@@ -183,6 +183,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         }));
 
         // if token comes from props, it's an email invitation (got it from the url)
+        // if the invitedUser doesn't exist, it means that the invitation was withdrawn
         if (token && isNilOrError(invitedUser)) {
           this.setState({ emailInvitationTokenInvalid: true });
         }
