@@ -366,6 +366,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       'page[number]': 1,
     });
   }
+
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
     if (feedbackNeeded === true) {
       // if we turn the 'Need feedback' toggle on,
