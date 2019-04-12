@@ -160,7 +160,9 @@ describe SideFxIdeaService do
       idea = create(:idea, assignee: create(:admin))
       old_assignee = idea.assignee
       new_assignee = create(:admin)
-      idea.update(assignee: new_assignee)
+      idea.assignee = new_assignee
+      service.before_update(idea, user)
+      idea.save!
       expect {service.after_update(idea, user)}.
         to have_enqueued_job(LogActivityJob).with(idea, 'changed_assignee', user, idea.updated_at.to_i, payload: {change: [old_assignee.id, new_assignee.id]}).exactly(1).times
     end
