@@ -1,16 +1,16 @@
 module SmartGroupRules
-  class ParticipatedInProject
+  class ParticipatedInIdeaStatus
     include ActiveModel::Validations
 
     PREDICATE_VALUES = %w(is not_is)
     VALUELESS_PREDICATES = []
-    RULE_TYPE = 'participated_in_project'
+    RULE_TYPE = 'participated_in_idea_status'
 
     attr_accessor :predicate, :value
 
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
-    validates :value, presence: true, inclusion: { in: -> (record) { Project.pluck(:id) } }
+    validates :value, presence: true, inclusion: { in: -> (record) { IdeaStatus.pluck(:id) } }
 
     def self.to_json_schema
       [   
@@ -28,7 +28,7 @@ module SmartGroupRules
               "enum": PREDICATE_VALUES - VALUELESS_PREDICATES,
             },
             "value" => {
-              "description" => "The id of a project",
+              "description" => "The id of an idea status",
               "type" => "string"
             }
           },
@@ -47,7 +47,7 @@ module SmartGroupRules
 
     def filter users_scope
       participants_service = ParticipantsService.new
-      participants = participants_service.projects_participants([Project.find(value)])
+      participants = participants_service.idea_statuses_participants([IdeaStatus.find(value)])
 
       case predicate
       when 'is'
