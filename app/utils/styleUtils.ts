@@ -320,7 +320,7 @@ export function quillEditedContent(
       overflow-wrap: normal;
       word-wrap: normal;
       word-break: normal;
-      hyphens: none;
+      hyphens: auto;
       text-decoration: none;
       padding-left: 4px;
       padding-right: 4px;

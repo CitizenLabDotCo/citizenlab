@@ -9,7 +9,6 @@ import CommentVote from './CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
 import eventEmitter from 'utils/eventEmitter';
 
 // resources
@@ -29,8 +28,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import AdminBadge from './AdminBadge';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -55,8 +53,7 @@ const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
-  margin-left: -3px;
+  margin-top: 25px;
 `;
 
 const Left = styled.div`
@@ -68,6 +65,11 @@ const Separator = styled.div`
   font-size: ${fontSizes.small}px;
   margin-left: 5px;
   margin-right: 5px;
+
+  ${media.phone`
+    margin-left: 10px;
+    margin-right: 10px;
+  `}
 `;
 
 const ReplyButton = styled.button`
@@ -78,14 +80,13 @@ const ReplyButton = styled.button`
     color: #000;
     text-decoration: underline;
   }
+  
 `;
 
 const Right = styled.div`
   display: flex;
   align-items: center;
 `;
-
-const StyledAdminBadge = styled(AdminBadge)``;
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
   margin-left: 14px;
@@ -98,6 +99,10 @@ const TimeAgo = styled.div`
   line-height: normal;
   font-weight: 400;
   margin-left: 22px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 export interface ICommentReplyClicked {
@@ -176,8 +181,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
   }
 
+  moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
+
   render() {
-    const { commentType, className, comment, idea, author, locale, intl } = this.props;
+    const { commentType, className, comment, idea, locale } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
@@ -185,16 +192,13 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
-      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
         <Container className={className}>
           {/* <FeatureFlag name="machine_translations"> */}
             {showTranslateButton &&
               <TranslateButtonWrapper>
-                <TranslateButton
-                  onClick={this.translateComment}
-                >
+                <TranslateButton onClick={this.translateComment}>
                   {!translateButtonClicked
                     ? <FormattedMessage {...messages.translateComment} />
                     : <FormattedMessage {...messages.showOriginalComment} />
@@ -213,12 +217,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               </ReplyButton>
             </Left>
             <Right>
-              {commentType === 'child' && authorCanModerate &&
-                <StyledAdminBadge />
-              }
-
               <StyledCommentsMoreActions
-                ariaLabel={intl.formatMessage(messages.showMoreActions)}
+                ariaLabel={this.moreActionsAriaLabel}
                 comment={comment}
                 onCommentEdit={this.onCommentEdit}
                 projectId={projectId}

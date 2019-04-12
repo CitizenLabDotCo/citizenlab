@@ -146,6 +146,13 @@ const IdeaContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-top: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 `;
 
@@ -433,6 +440,10 @@ const MoreActionsMenuWrapper = styled.div`
 const FooterContainer = styled.div`
   width: 100%;
   margin-top: 40px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 20px;
+  `}
 `;
 
 const FooterHeader = styled.div``;
@@ -443,6 +454,11 @@ const FooterHeaderInner = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: auto;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
+  `}
 `;
 
 const FooterHeaderTab = styled.div`
@@ -481,6 +497,17 @@ const FooterContentInner = styled.div`
   margin-right: auto;
   padding-top: 30px;
   padding-bottom: 60px;
+
+  ${media.smallerThanMaxTablet`
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 10px;
+  `}
 `;
 
 interface DataProps {

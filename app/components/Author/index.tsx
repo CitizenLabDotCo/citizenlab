@@ -46,6 +46,7 @@ const AuthorContainer: any = styled.div`
 
 const StyledAvatar = styled(Avatar)`
   margin-right: 6px;
+  margin-bottom: 1px;
 `;
 
 const AuthorMeta = styled.div``;

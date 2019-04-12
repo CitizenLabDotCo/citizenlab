@@ -20,7 +20,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 const Container = styled.div`
@@ -33,7 +33,11 @@ const UpvoteIcon = styled(Icon)`
   height: 18px;
   flex: 0 0 18px;
   fill: ${colors.label};
-  margin-top: -1px;
+  margin-top: 0px;
+
+  &:not(.voted) {
+    margin-left: -3px;
+  }
 
   &.voted {
     fill: #fff;
@@ -83,6 +87,10 @@ const UpvoteLabel = styled.button`
     color: #000;
     text-decoration: underline;
   }
+
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 interface InputProps {

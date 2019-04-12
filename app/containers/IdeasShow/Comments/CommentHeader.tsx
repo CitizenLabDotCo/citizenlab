@@ -5,11 +5,13 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Author from 'components/Author';
+import AdminBadge from './AdminBadge';
 
 // services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
@@ -19,8 +21,7 @@ import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import AdminBadge from './AdminBadge';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +38,10 @@ const Left = styled.div`
 const Right = styled.div`
   display: flex;
   align-items: center;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const StyledAuthor = styled(Author)`
@@ -49,6 +54,10 @@ const TimeAgo = styled.div`
   line-height: 14px;
   font-weight: 400;
   margin-left: 16px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 interface InputProps {
@@ -56,6 +65,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  windowSize: GetWindowSizeChildProps;
   comment: GetCommentChildProps;
   idea: GetIdeaChildProps;
   author: GetUserChildProps;
@@ -67,13 +77,14 @@ interface State {}
 
 class CommentHeader extends PureComponent<Props, State> {
   render() {
-    const { comment, idea, author } = this.props;
+    const { windowSize, comment, idea, author } = this.props;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
+    if (!isNilOrError(windowSize) && !isNilOrError(comment) && !isNilOrError(idea)) {
       const projectId = idea.relationships.project.data.id;
       const authorId = (!isNilOrError(author) ? author.id : null);
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
       const createdAt = comment.attributes.created_at;
+      const smallerThanSmallTablet = (windowSize <= viewportWidths.smallTablet);
 
       return (
         <Container>
@@ -84,6 +95,7 @@ class CommentHeader extends PureComponent<Props, State> {
               size="32px"
               projectId={projectId}
               showModeration={authorCanModerate}
+              createdAt={smallerThanSmallTablet ? createdAt : undefined}
             />
             <TimeAgo>
               <FormattedRelative value={createdAt} />
@@ -104,6 +116,7 @@ class CommentHeader extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize debounce={50} />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
