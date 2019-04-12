@@ -127,15 +127,12 @@ describe InvitesService do
     context "with an email that is already used by an active user" do
       before { create(:user, email: 'someuser@somedomain.com') }
       let(:hash_array) {[
+        {email: 'john@john.son'},
         {email: 'someuser@somedomain.com'}
       ]}
 
-      it "fails with email_already_active error" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:email_already_active]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq 'someuser@somedomain.com'
+      it "doesn't send out invitations to the existing users" do
+        expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(1)
       end
     end
 
@@ -160,12 +157,9 @@ describe InvitesService do
         {email: invite.invitee.email}
       ]}
 
-      it "fails with email_already_invited error" do
-        expect{ service.bulk_create_xlsx(xlsx, {}) }.to raise_error(InvitesService::InvitesFailedError)
-        expect(service.errors.size).to eq 1
-        expect(service.errors.first.error_key).to eq InvitesService::INVITE_ERRORS[:email_already_invited]
-        expect(service.errors.first.row).to eq 2
-        expect(service.errors.first.value).to eq invite.invitee.email
+      it "doesn't send out invitations to the invited users" do
+        service.bulk_create_xlsx(xlsx)
+        expect(Invite.count).to eq 1
       end
     end
 
@@ -196,7 +190,6 @@ describe InvitesService do
         expect{ service.bulk_create_xlsx(xlsx) }.to change{Invite.count}.from(0).to(2)
       end
     end
-
 
   end
 
