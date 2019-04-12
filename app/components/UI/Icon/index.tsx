@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { colors } from 'utils/styleUtils';
 
 function injectTitle(title) {
@@ -866,14 +866,14 @@ type ClIconNames = keyof typeof clIcons;
 
 export type IconNames = NormalIconNames | ClIconNames;
 
-const Icon: React.SFC<Props> = ({ name, className, title, colorTheme }) => {
+const Icon = memo<Props>(({ name, className, title, colorTheme }) => {
   if (icons[name] !== undefined) {
     return icons[name](className, title);
   } else {
     const theme = colorTheme ? colorTheme : colors;
     return clIcons[name](className, title, theme);
   }
-};
+});
 
 export type clColorTheme = {
   clIconPrimary: string;

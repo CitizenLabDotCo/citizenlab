@@ -83,8 +83,7 @@ const ModeratorIconContainer: any = styled.div`
   padding-top: 1px;
   padding-left: 1px;
   background: ${lighten(0.53, colors.clRedError)};
-  /* border: solid 1px #ccc; */
-  /* background: #fff; */
+  border: solid 1px #fff;
 `;
 
 const ModeratorIcon: any = styled(Icon)`
@@ -121,7 +120,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     hasHoverEffect: false,
     padding: '3px',
-    fillColor: lighten(0.1, colors.label),
+    fillColor: lighten(0.2, colors.label),
     fillHoverColor: darken(0.1, colors.label),
     borderThickness: '1px',
     borderColor: 'transparent',

@@ -28,18 +28,23 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { CLErrorsJSON } from 'typings';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { FormikActions } from 'formik';
 
 const Container = styled.div`
-  margin-top: 38px;
+  margin-top: 30px;
   position: relative;
-  border-radius: 3px;
+  background: #fff;
   border: 1px solid #ebebeb;
   box-sizing: border-box;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
-  background: #fff;
+  border-radius: 3px;
+
+  ${media.smallerThanMinTablet`
+    border-radius: 0px;
+  `}
 `;
 
 const ParentCommentContainer = styled.div`

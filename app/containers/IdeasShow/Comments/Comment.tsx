@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { get } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import CommentHeader from './CommentHeader';
@@ -30,7 +31,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { FormikActions } from 'formik';
@@ -50,8 +51,9 @@ const ContainerInner = styled.div`
   padding-bottom: 25px;
   border-bottom: solid 1px #e8e8e8;
 
-  &.hideBottomBorder {
+  &.lastComment {
     border-bottom: none;
+    padding-bottom: 40px;
   }
 
   &.parent {
@@ -63,6 +65,38 @@ const ContainerInner = styled.div`
     margin-left: 100px;
     margin-right: 50px;
   }
+
+  ${media.smallerThanMinTablet`
+    &.parent {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    &.child {
+      margin-left: 40px;
+      margin-right: 20px;
+    }
+  `}
+
+  ${media.phone`
+    &.parent {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    &.child {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+  `}
+`;
+
+const CommmentHeaderWrapper = styled.div`
+  ${media.biggerThanMinTablet`
+    &.child {
+      display: none;
+    }
+  `}
 `;
 
 const Content = styled.div`
@@ -71,6 +105,10 @@ const Content = styled.div`
 
 const AvatarWrapper = styled.div`
   margin-right: 7px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const BodyAndFooter = styled.div`
@@ -166,6 +204,14 @@ class Comment extends PureComponent<Props, State> {
     this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
   }
 
+  goToUserProfile = () => {
+    const { author } = this.props;
+
+    if (!isNilOrError(author)) {
+      clHistory.push(`/profile/${author.attributes.slug}`);
+    }
+  }
+
   render() {
     const { comment, idea, author, commentType, hasChildComments, last, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
@@ -173,20 +219,20 @@ class Comment extends PureComponent<Props, State> {
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const commentId = comment.id;
       const ideaId = idea.id;
-      const hideBottomBorder = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last === true));
+      const lastComment = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last === true));
       const projectId = idea.relationships.project.data.id;
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
         <Container className={`${className} ${commentType} e2e-comment`}>
-          <ContainerInner className={`${commentType} ${hideBottomBorder ? 'hideBottomBorder' : ''}`}>
+          <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
-                {commentType === 'parent' &&
-                  <CommentHeader
-                    commentId={commentId}
-                  />
-                }
+                {/* {commentType === 'parent' && */}
+                <CommmentHeaderWrapper className={commentType}>
+                  <CommentHeader commentId={commentId} />
+                </CommmentHeaderWrapper>
+                {/* } */}
 
                 <Content>
                   {commentType === 'child' &&
@@ -195,6 +241,7 @@ class Comment extends PureComponent<Props, State> {
                         userId={!isNilOrError(author) ? author.id : null}
                         size="32px"
                         moderator={authorCanModerate}
+                        onClick={this.goToUserProfile}
                       />
                     </AvatarWrapper>
                   }

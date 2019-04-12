@@ -2,15 +2,13 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { trim } from 'lodash-es';
+import { trim, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import scrollToComponent from 'react-scroll-to-component';
 
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Observer from '@researchgate/react-intersection-observer';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -32,21 +30,29 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { ICommentReplyClicked } from './CommentFooter';
 
-const Container = styled.form`
+const Container = styled.div``;
+
+const Form = styled.form`
   background: #fff;
-  border: solid 1px #fff;
   border-top-color: #ebebeb;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
+  border-bottom: solid 1px #fff;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 100ms ease;
+
+  &.hidden {
+    display: none;
+  }
 
   &.focussed {
     background: #fff;
-    border-color: #999;
+    border-bottom: solid 1px ${({ theme }) => theme.colorSecondary};
   }
 `;
 
@@ -58,18 +64,24 @@ const FormInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px 50px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
 `;
 
-const TextareaWrapper = styled.div``;
+const TextareaWrapper = styled.div`
+  margin-bottom: 10px;
+`;
 
 const ButtonWrapper = styled.div`
-  display: none;
+  display: flex;
   justify-content: flex-end;
-
-  &.visible {
-    display: flex;
-  }
 `;
 
 interface InputProps {
@@ -87,6 +99,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   inputValue: string;
+  visible: boolean;
   focussed: boolean;
   processing: boolean;
   errorMessage: string | null;
@@ -102,6 +115,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       inputValue: '',
+      visible: false,
       focussed: false,
       processing: false,
       errorMessage: null,
@@ -122,23 +136,26 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       ).subscribe(({ eventValue }) => {
         const { authorFirstName, authorLastName, authorSlug } = eventValue;
         const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
-        this.setState({ inputValue, focussed: true });
+
+        this.setState({ inputValue, visible: true, focussed: true });
 
         if (this.textareaElement) {
-          // this.textareaElement.scrollIntoView();
-          if (this.isInViewport) {
-            this.textareaElement.focus();
-          } else {
-            // this.textareaElement.scrollIntoView({behavior: 'smooth', block: 'end', inline: 'center'});
-            scrollToComponent(this.textareaElement, { align: 'top', offset: -400, duration: 400 });
+          setTimeout(() => {
+            this.textareaElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+          }, 100);
 
-            setTimeout(() => {
-              this.textareaElement.focus();
-            }, 400);
-          }
+          setTimeout(() => {
+            this.textareaElement.focus();
+          }, 300);
         }
       })
     ];
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.focussed && !this.state.focussed && isEmpty(this.state.inputValue)) {
+      this.setState({ visible: false });
+    }
   }
 
   componentWillUnmount() {
@@ -194,7 +211,9 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
         this.setState({
           inputValue: '',
-          processing: false
+          processing: false,
+          visible: false,
+          focussed: false
         });
       } catch (error) {
         this.setState({
@@ -210,22 +229,18 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.textareaElement = element;
   }
 
-  handleIntersection = (event: IntersectionObserverEntry) => {
-    this.isInViewport = event.isIntersecting;
-  }
+  placeholder = this.props.intl.formatMessage(messages.childCommentBodyPlaceholder);
 
   render() {
-    const { ideaId, authUser, className } = this.props;
+    const { ideaId, parentId, authUser, className } = this.props;
 
     if (!isNilOrError(authUser)) {
-      const { formatMessage } = this.props.intl;
-      const { inputValue, canSubmit, processing, errorMessage, focussed } = this.state;
-      const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
+      const { inputValue, canSubmit, processing, errorMessage, visible, focussed } = this.state;
       const isButtonVisible = (inputValue && inputValue.length > 0 || focussed);
 
       return (
-        <Container className={`${className} ${focussed ? 'focussed' : ''}`} onSubmit={this.handleSubmit}>
-          <Observer onChange={this.handleIntersection}>
+        <Container className={className}>
+          <Form className={`${visible ? 'visible' : 'hidden'} ${focussed ? 'focussed' : 'blurred'}`} onSubmit={this.handleSubmit}>
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />
@@ -234,8 +249,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                 <TextareaWrapper>
                   <MentionsTextArea
                     name="comment"
-                    className={`e2e-reply childcommentform-${this.props.parentId}`}
-                    placeholder={placeholder}
+                    className={`e2e-reply childcommentform-${parentId}`}
+                    placeholder={this.placeholder}
                     rows={1}
                     value={inputValue}
                     error={errorMessage}
@@ -264,7 +279,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                 </ButtonWrapper>
               </FormInner>
             </label>
-          </Observer>
+          </Form>
         </Container>
       );
     }

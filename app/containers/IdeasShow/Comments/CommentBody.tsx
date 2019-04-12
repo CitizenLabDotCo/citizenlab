@@ -33,7 +33,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 // Styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { colors } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
@@ -49,10 +49,14 @@ const CommentWrapper = styled.div`
   }
 `;
 
-const AuthorNameLink = styled(Link)`
+const StyledLink = styled(Link)`
   display: inline;
   margin-right: 10px;
   text-decoration: none !important;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const StyledUserName = styled(UserName)`
@@ -178,12 +182,12 @@ class CommentBody extends PureComponent<Props, State> {
         const CommentBodyContent = ({ text }) => (
           <>
             {commentType === 'child' &&
-              <AuthorNameLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
+              <StyledLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
                 <StyledUserName
                   className={authorCanModerate ? 'canModerate' : ''}
                   user={!isNilOrError(author) ? author : null}
                 />
-              </AuthorNameLink>
+              </StyledLink>
             }
             <CommentText dangerouslySetInnerHTML={{ __html: text }} />
           </>
