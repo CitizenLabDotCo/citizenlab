@@ -7,6 +7,14 @@ Array [
     "value": "all",
   },
   Object {
+    "text": "Assigned to me",
+    "value": "me",
+  },
+  Object {
+    "text": "Unassigned",
+    "value": "unassigned",
+  },
+  Object {
     "text": "Assigned to admin1 Citizenlab",
     "value": "admin1",
   },
@@ -17,10 +25,6 @@ Array [
   Object {
     "text": "Assigned to admin3 Citizenlab",
     "value": "admin3",
-  },
-  Object {
-    "text": "Assigned to me",
-    "value": "me",
   },
 ]
 `;
