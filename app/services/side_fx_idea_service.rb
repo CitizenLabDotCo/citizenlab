@@ -2,7 +2,7 @@ class SideFxIdeaService
 
   include SideFxHelper
 
-  @@manual_assignment = true
+  @@automatic_assignment = false
 
   def before_create idea, user
     before_publish idea, user if idea.published?
@@ -38,7 +38,7 @@ class SideFxIdeaService
     end
 
     if idea.assignee_id_previously_changed?
-      initiating_user = @manual_assignment ? user : nil
+      initiating_user = @automatic_assignment ? nil : user
       LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
       if idea.publication_status_previous_change != ['draft','published']
         LogActivityJob.perform_later(idea, 'assigned', initiating_user, idea.updated_at.to_i)
@@ -75,7 +75,7 @@ class SideFxIdeaService
     add_autovote idea
     log_activity_jobs_after_published idea, user
     if idea.assignee_id.present?
-      initiating_user = @manual_assignment ? user : nil
+      initiating_user = @automatic_assignment ? nil : user
       LogActivityJob.perform_later(idea, 'assigned', initiating_user, idea.updated_at.to_i)
     end
   end
@@ -92,7 +92,7 @@ class SideFxIdeaService
   def set_assignee idea
     if idea.project&.default_assignee && !idea.assignee
       idea.assignee = idea.project.default_assignee
-      @manual_assignment = false
+      @automatic_assignment = true
     end
   end
 
