@@ -42,7 +42,7 @@ export function login(email: string, password: string) {
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.get('#e2e-user-menu-container');
+  cy.get('#e2e-landing-page');
 }
 
 export function apiLogin(email: string, password: string) {
