@@ -47,7 +47,7 @@ describe SmartGroupRules::ParticipatedInTopic do
 
     it "correctly filters on 'not_is' predicate" do
       rule = SmartGroupRules::ParticipatedInTopic.new('not_is', @topic2.id)
-      expect(rule.filter(User)).to match_array [@user1, @user2]
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user4]
     end
 
   end
