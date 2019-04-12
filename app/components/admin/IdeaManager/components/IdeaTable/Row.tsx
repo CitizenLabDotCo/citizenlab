@@ -80,6 +80,7 @@ type InputProps = {
   onSingleSelectIdea: () => void;
   activeFilterMenu: string | null;
   openIdea: (ideaId: string) => void;
+  className?: string;
 };
 
 type DataProps = {
@@ -154,12 +155,12 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
   }
 
   render() {
-    const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses } = this.props;
+    const { idea, selected, connectDragSource, activeFilterMenu, phases, statuses, className } = this.props;
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
-      <React.Fragment>
-        <WrappedRow as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}>
+      <React.Fragment >
+        <WrappedRow className={className} as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}>
           <Table.Cell collapsing={true}>
             <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
           </Table.Cell>

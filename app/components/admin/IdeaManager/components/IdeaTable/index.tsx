@@ -196,6 +196,7 @@ export default class IdeaTable extends React.Component<Props, State> {
           <Table.Body>
             {(ideas || []).map((idea) =>
               <Row
+                className="e2e-idea-manager-idea-row"
                 key={idea.id}
                 idea={idea}
                 phases={phases}
