@@ -115,7 +115,22 @@ export function getProjectBySlug(projectSlug: string) {
   });
 }
 
-export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string) {
+export function getUserBySlug(userSlug: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: `web_api/v1/users/by_slug/${userSlug}`
+    });
+  });
+}
+
+export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string, assigneeId?: string) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -137,7 +152,8 @@ export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent:
           body_multiloc: {
             'en-GB': ideaContent,
             'nl-BE': ideaContent
-          }
+          },
+          assignee_id: assigneeId,
         }
       }
     });
