@@ -163,3 +163,14 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 12. If you added a gem to `blorgh.gemspec`, you'll also need to `require` it in `lib/blorgh.rb`.
 
 13. If some of your engine's models have relationships with models outside the engine, don't forget to add e.g. `has_many` dependencies in decorator files in you engine's `model` folder.
+
+
+## Adding smart group rules
+
+1. Create your smart group rule in `lib/smart_group_rules`.
+
+2. Add your new rule to `RULE_TYPE_TO_CLASS` in `app/services/smart_groups_service.rb`.
+
+3. Add a spec to `spec/lib/smart_group_rules/`.
+
+4. Add your rule to `spec/models/group_spec.rb`.

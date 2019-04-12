@@ -32,6 +32,7 @@ describe SmartGroupRules::ParticipatedInIdeaStatus do
       @user1 = create(:user)
       @user2 = create(:user)
       @user3 = create(:user)
+      @user4 = create(:user)
       @idea1 = create(:idea, idea_status: @idea_status1, author: @user1)
       @vote = create(:vote, votable: @idea1, user: @user2)
       @comment = create(:comment, idea: @idea1, author: @user3)
