@@ -143,7 +143,7 @@ resource "Invites" do
         example_request "[error] Bulk invite multiple users" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["emails_duplicate", "invalid_email", "email_already_invited", "email_already_active"]
+          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["emails_duplicate", "invalid_email"]
         end
       end
     end
@@ -211,7 +211,7 @@ resource "Invites" do
         example_request "[error] Bulk invite users with xlsx file" do
           expect(response_status).to eq 422
           json_response = json_parse(response_body)
-          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "email_already_invited", "email_already_active", "unknown_locale"]
+          expect(json_response[:errors].map{|e| e[:error]}.uniq).to match_array ["unknown_group", "malformed_groups_value", "malformed_admin_value", "emails_duplicate", "invalid_email", "unknown_locale"]
         end
       end
     end
