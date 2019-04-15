@@ -31,6 +31,7 @@ class User < ApplicationRecord
 
   validates :email, :first_name, :slug, :locale, presence: true, unless: :invite_pending?
 
+  validates :email, uniqueness: true, allow_nil: true
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }, unless: :invite_pending?
   validates :email, format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i }, allow_nil: true
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
@@ -55,8 +56,12 @@ class User < ApplicationRecord
     if record.email && User.find_by_cimail(record.email).present?
       duplicate_user = User.find_by_cimail(record.email)
       if duplicate_user.invite_pending?
+        ErrorsService.new.remove record.errors, :email, :taken, value: record.email
         record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
-      else
+      elsif duplicate_user.email != record.email
+        # We're only checking this case, as the other case is covered
+        # by the uniqueness constraint which can cleverly distinguish
+        # true duplicates from the record itself.
         record.errors.add(:email, :taken, value: record.email)
       end
     end
