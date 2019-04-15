@@ -24,7 +24,7 @@ describe('Assignee filter', () => {
       const projectDescription = randomString();
       const userId = user.body.data.id;
 
-      // create project assigned to signed-in admin/user
+      // create project with signed-in admin/user as default assignee
       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
         const projectId = project.body.data.id;
         const ideaTitle = randomString();
@@ -45,13 +45,29 @@ describe('Assignee filter', () => {
   });
 });
 
-describe('Need feedback toggle', () => {
+// describe('Need feedback toggle', () => {
+//   it('Filters on ideas that need feedback', () => {
+//     cy.getAuthUser().then((user) => {
+//       const projectTitle = randomString();
+//       const projectDescriptionPreview = randomString();
+//       const projectDescription = randomString();
+//       const userId = user.body.data.id;
 
-});
+//       // create project explicitely without default assignee
+//       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', 'unassigned').then((project) => {
+//         const projectId = project.body.data.id;
+//         const ideaTitle1 = randomString();
+//         const ideaTitle2 = randomString();
+//         const ideaContent1 = randomString();
+//         const ideaContent2 = randomString();
 
-describe('Idea preview ', () => {
-
-});
+//         // create idea explicitely with an assignee (logged-in user);
+//         cy.apiCreateIdea(projectId, ideaTitle1, ideaContent1, userId);
+//         cy.apiCreateIdea(projectId, ideaTitle2, ideaContent2);
+//       });
+//     });
+//   });
+// });
 
 describe('Idea preview ', () => {
 
