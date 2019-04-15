@@ -13,6 +13,7 @@ Array [
     "value": "me",
   },
   Object {
+    "id": "e2e-assignee-filter-unassigned",
     "text": "Unassigned",
     "value": "unassigned",
   },
