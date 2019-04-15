@@ -85,7 +85,7 @@ class SelectAreas extends PureComponent<Props, State> {
         value: area.id
       }));
 
-      if (options && options.length > 0) {
+      if (options && options.length > 1) {
         return (
           <FilterSelector
             title={<FormattedMessage {...messages.areasTitle} />}
