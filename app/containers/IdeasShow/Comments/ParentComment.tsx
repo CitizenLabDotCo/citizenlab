@@ -49,11 +49,11 @@ const Container = styled.div`
 `;
 
 const CommentsWithReplyBoxContainer = styled.div`
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const CommentsContainer = styled.div`
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
   border: solid 1px #d0d0d0;
   background: #fff;

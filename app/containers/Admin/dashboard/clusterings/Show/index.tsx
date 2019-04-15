@@ -48,7 +48,7 @@ const StyledCircles = styled(Circles)`
   align-items: center;
   background: #fff;
   border: solid 1px ${colors.separation};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 25px;
 `;
 

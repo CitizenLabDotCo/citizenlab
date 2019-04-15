@@ -187,6 +187,7 @@ export const stylingConsts = {
   bannerWidth: 1340,
   pageWidth: 1150,
   textWidth: 720,
+  borderRadius: '3px'
 };
 
 // Reusable text styling

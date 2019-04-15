@@ -36,7 +36,7 @@ const Container = styled.div`
 const TabbedNav = styled.nav`
   flex: 0 0 55px;
   background: #fcfcfc;
-  border-radius: 5px 5px 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 30px;
   display: flex;
   align-items: strech;
@@ -75,7 +75,7 @@ const Content = styled.div`
   flex-direction: column;
   background: #fff;
   border: solid 1px ${colors.adminBorder};
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
   padding-left: 10px;
   padding-right: 10px;
   padding-top: 30px;

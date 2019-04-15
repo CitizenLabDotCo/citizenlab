@@ -45,7 +45,7 @@ import { CLError, Locale, UploadFile, Multiloc } from 'typings';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
 
     svg {
       z-index: 3;

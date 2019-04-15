@@ -77,7 +77,7 @@ const DropdownListButton = styled.button`
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
 
@@ -118,7 +118,7 @@ const DropdownListLink = styled(Link)`
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
 

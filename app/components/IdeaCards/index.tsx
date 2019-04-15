@@ -43,7 +43,7 @@ const Loading = styled.div`
   width: 100%;
   height: 300px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -183,14 +183,14 @@ const ViewButton = styled.div`
 `;
 
 const CardsButton = ViewButton.extend`
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
+  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
   border-right: none;
 `;
 
 const MapButton = ViewButton.extend`
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+ border-top-right-radius: ${(props: any) => props.theme.borderRadius};
+  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeasList: any = styled.div`
@@ -226,7 +226,7 @@ const EmptyContainer = styled.div`
   padding-bottom: 100px;
   background: #fff;
   border: solid 1px ${colors.separation};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeaIcon = styled(Icon)`
