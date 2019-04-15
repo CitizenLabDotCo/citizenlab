@@ -147,7 +147,12 @@ export function getUserBySlug(userSlug: string) {
   });
 }
 
-export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string, assigneeId?: string) {
+export function apiCreateIdea(
+  projectId: string,
+  ideaTitle: string,
+  ideaContent: string,
+  assigneeId?: string
+) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -170,6 +175,7 @@ export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent:
             'en-GB': ideaContent,
             'nl-BE': ideaContent
           },
+          assignee_id: assigneeId
         }
       }
     });
