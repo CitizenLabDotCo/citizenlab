@@ -8,6 +8,8 @@ declare global {
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
       getProjectBySlug: typeof getProjectBySlug;
+      getUserBySlug: typeof getUserBySlug;
+      getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -115,7 +117,37 @@ export function getProjectBySlug(projectSlug: string) {
   });
 }
 
-export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string) {
+export function getAuthUser() {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: 'web_api/v1/users/me'
+    });
+  });
+}
+
+export function getUserBySlug(userSlug: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'GET',
+      url: `web_api/v1/users/by_slug/${userSlug}`
+    });
+  });
+}
+
+export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent: string, assigneeId?: string) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -137,7 +169,7 @@ export function apiCreateIdea(projectId: string, ideaTitle: string, ideaContent:
           body_multiloc: {
             'en-GB': ideaContent,
             'nl-BE': ideaContent
-          }
+          },
         }
       }
     });
@@ -188,7 +220,8 @@ export function apiCreateProject(
   title: string,
   descriptionPreview: string,
   description: string,
-  publicationStatus: 'draft' | 'published' | 'archived' = 'published'
+  publicationStatus: 'draft' | 'published' | 'archived' = 'published',
+  assigneeId?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -215,7 +248,8 @@ export function apiCreateProject(
           description_multiloc: {
             'en-GB': description,
             'nl-BE': description
-          }
+          },
+          default_assignee_id: assigneeId,
         }
       }
     });
@@ -308,6 +342,8 @@ Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
+Cypress.Commands.add('getUserBySlug', getUserBySlug);
+Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
