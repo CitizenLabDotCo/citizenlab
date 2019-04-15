@@ -19,12 +19,5 @@ module EmailCampaigns
         event_payload: serialize_campaign(activity.item)
       }]
     end
-
-
-    protected
-
-    def set_enabled
-      self.enabled = false if self.enabled.nil?
-    end
   end
 end

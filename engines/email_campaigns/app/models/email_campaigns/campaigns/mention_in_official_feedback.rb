@@ -10,5 +10,12 @@ module EmailCampaigns
     def activity_triggers
       {'Notifications::MentionInOfficialFeedback' => {'created' => true}}
     end
+
+
+    protected
+
+    def set_enabled
+      self.enabled = false if self.enabled.nil?
+    end
   end
 end
