@@ -60,7 +60,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
         // All ideas > Assigned to me > Unassigned > Assigned to X (other admins/mods)
         nextState.assigneeOptions = assigneeOptionsWithoutCurrentUser;
         nextState.assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas) });
-        nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe) });
+        nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' });
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
       }
     }
