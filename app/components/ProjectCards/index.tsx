@@ -45,7 +45,7 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +144,7 @@ const EmptyContainer = styled.div`
   text-align: center;
   margin: 0;
   margin-bottom: 43px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
   background: #fff;
   border: solid 1px ${colors.separation};
