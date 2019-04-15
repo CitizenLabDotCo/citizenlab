@@ -52,7 +52,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // services
-import { updateIdea } from 'services/ideas';
+import { updateIdea, deleteIdea } from 'services/ideas';
 import { authUserStream } from 'services/auth';
 
 // i18n
@@ -572,6 +572,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     clHistory.push(`/ideas/edit/${this.props.ideaId}`);
   }
 
+  deleteIdea = (ideaId) => () => {
+    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
+
+    if (window.confirm(message)) {
+      deleteIdea(ideaId);
+      clHistory.goBack();
+    }
+  }
+
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
@@ -915,6 +924,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                               {
                                 label: <FormattedMessage {...messages.editIdea} />,
                                 handler: this.editIdea,
+                              },
+                              {
+                                label: <FormattedMessage {...messages.deleteIdea} />,
+                                handler: this.deleteIdea(ideaId),
                               }
                             ]}
                             label={<FormattedMessage {...messages.moreOptions} />}
