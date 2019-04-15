@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Header from '../Header';
 import ContentContainer from 'components/ContentContainer';
 import ProjectInfo from './ProjectInfo';
 import EventsPreview from '../EventsPreview';
@@ -33,7 +32,6 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
 
       return (
         <>
-          <Header projectSlug={props.params.slug} />
           <StyledProjectArchivedIndicator projectId={project.id} />
           <StyledContentContainer>
             <ProjectInfo projectId={project.id} />
