@@ -3,6 +3,7 @@
 exports[`<AssigneeFilter /> processes options correctly 1`] = `
 Array [
   Object {
+    "id": "e2e-assignee-filter-all-ideas",
     "text": "All ideas",
     "value": "all",
   },
