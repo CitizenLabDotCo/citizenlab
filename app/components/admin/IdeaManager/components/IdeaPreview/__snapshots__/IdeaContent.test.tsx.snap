@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
+<Container>
+  <Top>
+    <WithTheme(Button)
+      icon="edit"
+      onClick={[MockFunction]}
+      style="text"
+      textColor="#044D6C"
+    >
+      <FormattedMessage
+        defaultMessage="Edit"
+        id="app.components.admin.IdeaManager.IdeaPreview.edit"
+      />
+    </WithTheme(Button)>
+    <WithTheme(Button)
+      icon="delete"
+      onClick={[Function]}
+      style="text"
+      textColor="#044D6C"
+    >
+      <FormattedMessage
+        defaultMessage="Delete"
+        id="app.components.admin.IdeaManager.IdeaPreview.delete"
+      />
+    </WithTheme(Button)>
+  </Top>
+  <Content>
+    <Component
+      ideaId="myIdeasiD"
+      ideaTitle="Doloribus quam molestiae ut."
+      projectId="d2adf974-8e9b-4a3c-8f0e-ff307d53821f"
+    />
+    <IdeaContent__Row>
+      <IdeaContent__Left>
+        <Component
+          authorId="8ea3a61c-e1bd-4756-a54d-c092553abccd"
+          ideaCreatedAt="2019-03-12T00: 00: 00.000Z"
+          ideaId="myIdeasiD"
+        />
+        <IdeaBody
+          ideaBody="<p>Ea ea aut. Quasi corrupti iste. Delectus eum voluptates.</p><p>Est harum voluptates. Et fugit enim. Suscipit inventore ullam.</p><p>Eos mollitia omnis. Laudantium porro perferendis. Minus in aut."
+          ideaId="myIdeasiD"
+        />
+        <CSSTransition
+          classNames="map"
+          exit={true}
+          in={false}
+          mountOnEnter={true}
+          timeout={300}
+          unmountOnExit={true}
+        >
+          <IdeaContent__MapWrapper
+            innerRef={[Function]}
+          >
+            <IdeaMap
+              id="myIdeasiD"
+              location={
+                Object {
+                  "coordinates": Array [
+                    4.418731568531502,
+                    50.86899604801978,
+                  ],
+                  "type": "Point",
+                }
+              }
+            />
+          </IdeaContent__MapWrapper>
+        </CSSTransition>
+        <IdeaContent__StyledOfficialFeedback
+          ideaId="myIdeasiD"
+        />
+        <Component
+          ideaId="myIdeasiD"
+        />
+      </IdeaContent__Left>
+      <IdeaContent__Right>
+        <Component
+          ideaId="myIdeasiD"
+        />
+        <Component
+          ideaId="myIdeasiD"
+        />
+        <IdeaContent__LocationButton
+          onClick={[Function]}
+        >
+          <IdeaContent__LocationIconWrapper>
+            <IdeaContent__LocationIcon
+              name="position"
+            />
+          </IdeaContent__LocationIconWrapper>
+          <FormattedMessage
+            defaultMessage="Open Map"
+            id="app.components.admin.IdeaManager.IdeaPreview.openMap"
+          />
+        </IdeaContent__LocationButton>
+      </IdeaContent__Right>
+    </IdeaContent__Row>
+  </Content>
+</Container>
+`;
+
+exports[`<IdeaContent /> renders correctly when ideaId is not defined 1`] = `""`;
