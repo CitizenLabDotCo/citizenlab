@@ -9,9 +9,9 @@ beforeEach(() => {
 describe('Assignee filter', () => {
   it('Filters on All ideas', () => {
     // grab and open assignee filter menu
-    cy.get('#idea-select-assignee-filter').click();
+    cy.get('#e2e-idea-select-assignee-filter').click();
     // click on All ideas filter
-    cy.get('.item').contains('All ideas').click();
+    cy.get('#e2e-assignee-filter-all-ideas').click();
     // check that number of ideas on first page is 10
     cy.get('.e2e-idea-manager-idea-row').should('have.length', 10);
   });
@@ -35,7 +35,7 @@ describe('Assignee filter', () => {
         // do a refresh for the new idea to appear
         cy.visit('/admin/ideas/');
         // grab and open assignee filter menu
-        cy.get('#idea-select-assignee-filter').click();
+        cy.get('#e2e-idea-select-assignee-filter').click();
         // click on Assigned to me filter
         cy.get('#e2e-assignee-filter-assigned-to-user').click();
         // Check whether the newly created idea is assigned to the user
@@ -70,5 +70,28 @@ describe('Assignee filter', () => {
 // });
 
 describe('Idea preview ', () => {
+  it('Opens when you click an idea title', () => {
+    // grab and open assignee filter menu
+    cy.get('#e2e-idea-select-assignee-filter').click();
+    // click on All ideas filter
+    cy.get('#e2e-assignee-filter-all-ideas').click();
+    // click on title of first idea
+    cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
+    // check if the modal popped out and has the idea in it
+    cy.get('#e2e-modal-container').find('.e2e-ideatitle').contains(ideaTitle.text());
+    });
+  });
 
+  it('Closes when you click the X (close button)', () => {
+    // grab and open assignee filter menu
+    cy.get('#e2e-idea-select-assignee-filter').click();
+    // click on All ideas filter
+    cy.get('#e2e-assignee-filter-all-ideas').click();
+    // click on title of first idea to open modal
+    cy.get('.e2e-idea-manager-idea-title').first().click();
+    // close modal
+    cy.get('.e2e-modal-close-button').click();
+    // check if the modal is no longer on the page
+    cy.get('#e2e-modal-container').should('have.length', 0);
+  });
 });

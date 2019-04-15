@@ -61,7 +61,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
         nextState.assigneeOptions = assigneeOptionsWithoutCurrentUser;
         nextState.assigneeOptions.unshift({ value: 'unassigned', text: formatMessage(messages.unassignedIdeas) });
         nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' });
-        nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment) });
+        nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-ideas' });
       }
     }
     return nextState;
@@ -77,7 +77,7 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
 
     return (
       <Dropdown
-        id="idea-select-assignee-filter"
+        id="e2e-idea-select-assignee-filter"
         options={assigneeOptions}
         onChange={this.onAssigneeChange}
         value={assignee}

@@ -165,7 +165,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
           </Table.Cell>
           <Table.Cell>
-            <TitleLink onClick={this.handleClickTitle}>
+            <TitleLink className="e2e-idea-manager-idea-title" onClick={this.handleClickTitle}>
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
