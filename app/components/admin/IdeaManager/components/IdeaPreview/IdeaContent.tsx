@@ -201,7 +201,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+export class IdeaContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
