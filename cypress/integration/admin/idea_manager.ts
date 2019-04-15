@@ -1,49 +1,49 @@
-import { isString, get } from 'lodash-es';
-import { randomString } from '../../support/commands';
+import { isString, get, first } from 'lodash-es';
+import { randomString, randomEmail } from '../../support/commands';
 
 beforeEach(() => {
   cy.login('admin@citizenlab.co', 'testtest');
   cy.visit('/admin/ideas/');
 });
 
-describe('Assignee filter', () => {
-  it('Filters on All ideas', () => {
-    // grab and open assignee filter menu
-    cy.get('#e2e-idea-select-assignee-filter').click();
-    // click on All ideas filter
-    cy.get('#e2e-assignee-filter-all-ideas').click();
-    // check that number of ideas on first page is 10
-    cy.get('.e2e-idea-manager-idea-row').should('have.length', 10);
-  });
+// describe('Assignee filter', () => {
+//   it('Filters on All ideas', () => {
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-idea-select-assignee-filter').click();
+//     // click on All ideas filter
+//     cy.get('#e2e-assignee-filter-all-ideas').click();
+//     // check that number of ideas on first page is 10
+//     cy.get('.e2e-idea-manager-idea-row').should('have.length', 10);
+//   });
 
-  it('Filters on Assigned to me', () => {
+//   it('Filters on Assigned to me', () => {
 
-    cy.getAuthUser().then((user) => {
-      const projectTitle = randomString();
-      const projectDescriptionPreview = randomString();
-      const projectDescription = randomString();
-      const userId = user.body.data.id;
+//     cy.getAuthUser().then((user) => {
+//       const projectTitle = randomString();
+//       const projectDescriptionPreview = randomString();
+//       const projectDescription = randomString();
+//       const userId = user.body.data.id;
 
-      // create project with signed-in admin/user as default assignee
-      cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
-        const projectId = project.body.data.id;
-        const ideaTitle = randomString();
-        const ideaContent = randomString();
+//       // create project with signed-in admin/user as default assignee
+//       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
+//         const projectId = project.body.data.id;
+//         const ideaTitle = randomString();
+//         const ideaContent = randomString();
 
-        cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+//         cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
 
-        // do a refresh for the new idea to appear
-        cy.visit('/admin/ideas/');
-        // grab and open assignee filter menu
-        cy.get('#e2e-idea-select-assignee-filter').click();
-        // click on Assigned to me filter
-        cy.get('#e2e-assignee-filter-assigned-to-user').click();
-        // Check whether the newly created idea is assigned to the user
-        cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
-      });
-    });
-  });
-});
+//         // do a refresh for the new idea to appear
+//         cy.visit('/admin/ideas/');
+//         // grab and open assignee filter menu
+//         cy.get('#e2e-idea-select-assignee-filter').click();
+//         // click on Assigned to me filter
+//         cy.get('#e2e-assignee-filter-assigned-to-user').click();
+//         // Check whether the newly created idea is assigned to the user
+//         cy.get('.e2e-idea-manager-idea-row').contains(ideaTitle);
+//       });
+//     });
+//   });
+// });
 
 // describe('Need feedback toggle', () => {
 //   it('Filters on ideas that need feedback', () => {
@@ -69,29 +69,50 @@ describe('Assignee filter', () => {
 //   });
 // });
 
-describe('Idea preview ', () => {
-  it('Opens when you click an idea title', () => {
-    // grab and open assignee filter menu
-    cy.get('#e2e-idea-select-assignee-filter').click();
-    // click on All ideas filter
-    cy.get('#e2e-assignee-filter-all-ideas').click();
-    // click on title of first idea
-    cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
-    // check if the modal popped out and has the idea in it
-    cy.get('#e2e-modal-container').find('.e2e-ideatitle').contains(ideaTitle.text());
-    });
+// describe('Idea preview ', () => {
+//   it('Opens when you click an idea title', () => {
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-idea-select-assignee-filter').click();
+//     // click on All ideas filter
+//     cy.get('#e2e-assignee-filter-all-ideas').click();
+//     // click on title of first idea
+//     cy.get('.e2e-idea-manager-idea-title').first().click().then(ideaTitle => {
+//     // check if the modal popped out and has the idea in it
+//     cy.get('#e2e-modal-container').find('.e2e-ideatitle').contains(ideaTitle.text());
+//     });
+//   });
+
+//   it('Closes when you click the X (close button)', () => {
+//     // grab and open assignee filter menu
+//     cy.get('#e2e-idea-select-assignee-filter').click();
+//     // click on All ideas filter
+//     cy.get('#e2e-assignee-filter-all-ideas').click();
+//     // click on title of first idea to open modal
+//     cy.get('.e2e-idea-manager-idea-title').first().click();
+//     // close modal
+//     cy.get('.e2e-modal-close-button').click();
+//     // check if the modal is no longer on the page
+//     cy.get('#e2e-modal-container').should('have.length', 0);
+//   });
+// });
+
+describe('Assignee select', () => {
+  const firstName = randomString();
+  const lastName = randomString();
+  const email = randomEmail();
+  const password = randomString();
+
+  before(() => {
+    cy.apiCreateUser(firstName, lastName, email, password);
   });
 
-  it('Closes when you click the X (close button)', () => {
-    // grab and open assignee filter menu
+  it('Assigns a user to an idea', () => {
+    // Select unassigned in assignee filter
     cy.get('#e2e-idea-select-assignee-filter').click();
-    // click on All ideas filter
-    cy.get('#e2e-assignee-filter-all-ideas').click();
-    // click on title of first idea to open modal
-    cy.get('.e2e-idea-manager-idea-title').first().click();
-    // close modal
-    cy.get('.e2e-modal-close-button').click();
-    // check if the modal is no longer on the page
-    cy.get('#e2e-modal-container').should('have.length', 0);
+    cy.get('#e2e-assignee-filter-unassigned').click();
+    // Pick first idea in idea table and assign it to our user
+    cy.get('.e2e-idea-manager-idea-row-assignee-select').first().click().contains(`${firstName} ${lastName}`).click();
+    // Select this user in the assignee filter
+    // Check if idea is there
   });
 });
