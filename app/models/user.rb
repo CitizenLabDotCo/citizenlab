@@ -72,6 +72,14 @@ class User < ApplicationRecord
     .reverse_order
   }
 
+  scope :superadmin, -> {
+    admin.where("email ILIKE '@citizenlab.co'")
+  }
+
+  scope :not_superadmin, -> {
+    where.not("email ILIKE '@citizenlab.co'").or(not_admin)
+  }
+
   scope :admin, -> { 
     where("roles @> '[{\"type\":\"admin\"}]'")
   }
