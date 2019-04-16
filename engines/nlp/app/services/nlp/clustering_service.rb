@@ -98,7 +98,7 @@ module NLP
         Tenant.current.settings.dig('core', 'locales').first[0...2], # TODO figure out a language
         idea_ids: idea_ids,
         max_depth: max_depth
-        ).parsed_response.dig('data')
+        )
       # create clustering clusterings and make recursive calls on leaves
       create_clustering_children_rec(raw_clustering) do |leaf_clustering, sub_idea_ids|
         leaf_clustering[:children] = create_children levels, (idea_ids & sub_idea_ids), levels_to_ids, options

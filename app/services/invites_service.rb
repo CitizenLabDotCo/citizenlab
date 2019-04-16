@@ -165,9 +165,13 @@ class InvitesService
       add_error(:no_invites_specified)
       fail_now
     else
-      invites = hash_array.map do |invite_params|
-        invite = build_invite(invite_params, default_params, inviter)
+      existing_user_emails = User.where('lower(email) IN (?)', hash_array.map{|h| h['email']&.downcase}.compact).pluck(:email)
+      invites = hash_array.select do |invite_params|
+        !existing_user_emails.include? invite_params['email']
+      end.map do |invite_params|
+        build_invite(invite_params, default_params, inviter)
       end
+      return [] if invites.blank?
       invitees = invites.map(&:invitee)
       # Since invites will later be created in a single transaction, the
       # normal mechanism for generating slugs could result in non-unique

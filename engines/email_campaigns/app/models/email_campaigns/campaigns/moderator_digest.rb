@@ -61,8 +61,8 @@ module EmailCampaigns
 
     def statistics project
       ps = ParticipantsService.new
-      participants_increase = ps.participants(project: project, since: (Time.now - days_ago)).size
-      participants_past_increase = ps.participants(project: project, since: (Time.now - (days_ago * 2))).size - participants_increase
+      participants_increase = ps.projects_participants([project], since: (Time.now - days_ago)).size
+      participants_past_increase = ps.projects_participants([project], since: (Time.now - (days_ago * 2))).size - participants_increase
       ideas = Idea.published.where project_id: project.id
       comments = Comment.where(idea_id: ideas.map(&:id))
       votes = Vote.where(votable_id: (ideas.map(&:id) + comments.map(&:id)))
@@ -87,7 +87,7 @@ module EmailCampaigns
             increase: participants_increase,
             past_increase: participants_past_increase
           },
-          total_participants: ps.participants(project: project).count
+          total_participants: ps.projects_participants([project]).count
         }
       }
     end
