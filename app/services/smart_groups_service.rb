@@ -11,6 +11,8 @@ class SmartGroupsService
     SmartGroupRules::LivesIn,
     SmartGroupRules::RegistrationCompletedAt,
     SmartGroupRules::ParticipatedInProject,
+    SmartGroupRules::ParticipatedInTopic,
+    SmartGroupRules::ParticipatedInIdeaStatus,
   ].map do |smart_group_class|
     [smart_group_class::RULE_TYPE, smart_group_class]
   end.to_h
