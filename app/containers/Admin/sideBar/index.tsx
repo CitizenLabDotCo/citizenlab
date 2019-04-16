@@ -22,6 +22,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import HasPermission from 'components/HasPermission';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -125,7 +126,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     this.routes = [
       {
         id: 'insights',
-        link: '/admin',
+        link: '/admin/dashboard',
         iconName: 'stats',
         message: 'dashboard',
         isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
@@ -235,10 +236,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             }
           })}
           <Spacer />
-          <GetStartedLink to="/admin/guide" >
-            <IconWrapper><Icon name="circleInfo" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
-          </GetStartedLink>
+          <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+            <GetStartedLink to="/admin/guide" >
+              <IconWrapper><Icon name="circleInfo" /></IconWrapper>
+              <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
+            </GetStartedLink>
+          </HasPermission>
         </MenuInner>
       </Menu>
     );
