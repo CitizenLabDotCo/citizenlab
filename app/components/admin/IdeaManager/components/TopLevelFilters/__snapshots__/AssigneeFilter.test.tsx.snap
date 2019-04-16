@@ -13,18 +13,22 @@ Array [
     "value": "me",
   },
   Object {
+    "id": "e2e-assignee-filter-unassigned",
     "text": "Unassigned",
     "value": "unassigned",
   },
   Object {
+    "className": "e2e-assignee-filter-other-user",
     "text": "Assigned to admin1 Citizenlab",
     "value": "admin1",
   },
   Object {
+    "className": "e2e-assignee-filter-other-user",
     "text": "Assigned to admin2 Citizenlab",
     "value": "admin2",
   },
   Object {
+    "className": "e2e-assignee-filter-other-user",
     "text": "Assigned to admin3 Citizenlab",
     "value": "admin3",
   },
