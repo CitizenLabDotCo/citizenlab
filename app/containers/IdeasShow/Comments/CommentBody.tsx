@@ -1,8 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import { get } from 'lodash-es';
+import { get, isNil } from 'lodash-es';
 import linkifyHtml from 'linkifyjs/html';
-import { Form, Formik, FormikActions } from 'formik';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -11,6 +10,7 @@ import Link from 'utils/cl-router/Link';
 
 // Services
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { updateComment, IUpdatedComment } from 'services/comments';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -22,6 +22,8 @@ import GetMachineTranslation from 'resources/GetMachineTranslation';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // Components
 import UserName from 'components/UI/UserName';
@@ -37,7 +39,7 @@ import { colors, media } from 'utils/styleUtils';
 
 // Typings
 import { Multiloc, Locale } from 'typings';
-import { IUpdatedComment } from 'services/comments';
+import { CLErrorsJSON, CLErrors } from 'typings';
 
 const Container = styled.div``;
 
@@ -83,7 +85,7 @@ const CommentText = styled.div`
   display: inline;
 `;
 
-const StyledForm: any = styled(Form)`
+const StyledForm = styled.form`
   position: relative;
 `;
 
@@ -100,10 +102,9 @@ const ButtonsWrapper = styled.div`
 interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
-  commentBody: Multiloc;
   editing: boolean;
   last?: boolean;
-  onCommentSave: (values: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>) => void;
+  onCommentSaved: () => void;
   onCancelEditing: () => void;
   translateButtonClicked: boolean;
   className?: string;
@@ -119,50 +120,106 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export interface State {}
+export interface State {
+  commentContent: string;
+  editableCommentContent: string;
+  processing: boolean;
+  apiErrors: CLErrors | null;
+}
 
 class CommentBody extends PureComponent<Props, State> {
-  getCommentContent = (locale: Locale, tenantLocales: Locale[]) => {
-    const commentContent = getLocalized(this.props.commentBody, locale, tenantLocales);
-    const linkifiedCommentContent: string = linkifyHtml(commentContent.replace(
-      /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-      '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-    ));
-
-    return linkifiedCommentContent;
+  constructor(props) {
+    super(props);
+    this.state = {
+      commentContent: '',
+      editableCommentContent: '',
+      processing: false,
+      apiErrors: null
+    };
   }
 
-  onCommentSave = async (values, formikActions: FormikActions<IUpdatedComment>) => {
-    const { locale } = this.props;
+  componentDidMount() {
+    this.setCommentContent();
+    this.setEditableCommentContent();
+  }
 
-    if (locale) {
-      const updatedComment: IUpdatedComment = {
-        body_multiloc: {
-          [locale]: values.body
-        }
-      };
-
-      return this.props.onCommentSave(updatedComment, formikActions);
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.comment !== this.props.comment) {
+      this.setCommentContent();
+      this.setEditableCommentContent();
     }
   }
 
-  createFieldChange = (name, setFieldValue) => (value) => {
-    setFieldValue(name, value);
+  setCommentContent = () => {
+    let commentContent = '';
+    const { comment, locale, tenantLocales } = this.props;
+
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
+      commentContent = linkifyHtml(getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+      )) as string;
+    }
+
+    this.setState({ commentContent });
   }
 
-  createFieldTouched = (name, setFieldTouched) => () => {
-    setFieldTouched(name, true);
+  setEditableCommentContent = () => {
+    let editableCommentContent = '';
+    const { comment, locale, tenantLocales } = this.props;
+
+    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
+      editableCommentContent = getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
+        '@[$3]($2)'
+      );
+    }
+
+    this.setState({ editableCommentContent });
+  }
+
+  onEditableCommentContentChange = (editableCommentContent: string) => {
+    this.setState({ editableCommentContent });
+  }
+
+  onSubmit = async (event: FormEvent<any>) => {
+    event.preventDefault();
+
+    const { locale, commentId } = this.props;
+    const { editableCommentContent } = this.state;
+
+    if (!isNilOrError(locale)) {
+      const updatedComment: IUpdatedComment = {
+        body_multiloc: {
+          [locale]: editableCommentContent.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+        }
+      };
+
+      this.setState({ processing: true, apiErrors: null });
+
+      try {
+        await updateComment(commentId, updatedComment);
+        this.props.onCommentSaved();
+      } catch (error) {
+        if (error && error.json) {
+          const apiErrors = (error as CLErrorsJSON).json.errors;
+          this.setState({ apiErrors });
+        }
+      }
+
+      this.setState({ processing: false });
+    }
   }
 
   cancelEditing = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    this.setEditableCommentContent();
     this.props.onCancelEditing();
   }
 
   render() {
     const {
       editing,
-      commentBody,
       commentType,
       locale,
       tenantLocales,
@@ -179,6 +236,8 @@ class CommentBody extends PureComponent<Props, State> {
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       if (!editing) {
+        const { commentContent } = this.state;
+
         const CommentBodyContent = ({ text }: { text: string }) => (
           <>
             {commentType === 'child' &&
@@ -198,51 +257,48 @@ class CommentBody extends PureComponent<Props, State> {
             <QuillEditedContent fontWeight={300}>
               {translateButtonClicked ? (
                 <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
-                  {translation => {
-                    const text = !isNilOrError(translation) ? translation.attributes.translation : this.getCommentContent(locale, tenantLocales);
-                    return <CommentBodyContent text={text} />;
-                  }}
+                  {translation => <CommentBodyContent text={!isNilOrError(translation) ? translation.attributes.translation : commentContent} />}
                 </GetMachineTranslation>
               ) : (
-                <CommentBodyContent text={this.getCommentContent(locale, tenantLocales)} />
+                <CommentBodyContent text={commentContent} />
               )}
             </QuillEditedContent>
           </CommentWrapper>
         );
       } else {
+        const { editableCommentContent, processing, apiErrors } = this.state;
+
         content = (
-          <Formik
-            initialValues={{ body: getLocalized(commentBody, locale, tenantLocales) }}
-            onSubmit={this.onCommentSave}
-          >
-            {({ values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldTouched }) => (
-              <StyledForm onSubmit={handleSubmit}>
-                <MentionsTextArea
-                  name="body"
-                  value={values.body}
-                  rows={1}
-                  onBlur={this.createFieldTouched('body', setFieldTouched)}
-                  onChange={this.createFieldChange('body', setFieldValue)}
-                  padding="1rem"
-                />
-                <ButtonsWrapper>
-                  {errors && errors.body_multiloc && errors.body_multiloc[locale] &&
-                    <Error apiErrors={errors.body_multiloc[locale]} />
-                  }
-                  <Button
-                    onClick={this.cancelEditing}
-                    icon="close4"
-                    style="text"
-                  />
-                  <Button
-                    icon="send"
-                    style="primary"
-                    processing={isSubmitting}
-                  />
-                </ButtonsWrapper>
-              </StyledForm>
-            )}
-          </Formik>
+          <StyledForm onSubmit={this.onSubmit}>
+            <QuillEditedContent fontWeight={300}>
+              <MentionsTextArea
+                name="body"
+                value={editableCommentContent}
+                rows={1}
+                onChange={this.onEditableCommentContentChange}
+                padding="15px"
+                fontWeight="300"
+              />
+            </QuillEditedContent>
+            <ButtonsWrapper>
+              {apiErrors && apiErrors.body_multiloc && apiErrors.body_multiloc[locale] &&
+                <Error apiErrors={apiErrors.body_multiloc[locale]} />
+              }
+              <Button
+                style="secondary"
+                onClick={this.cancelEditing}
+              >
+                <FormattedMessage {...messages.cancelCommentEdit} />
+              </Button>
+              <Button
+                style="primary"
+                processing={processing}
+                onClick={this.onSubmit}
+              >
+                <FormattedMessage {...messages.saveCommentEdit} />
+              </Button>
+            </ButtonsWrapper>
+          </StyledForm>
         );
       }
 
