@@ -42,7 +42,7 @@ const Form = styled.form`
   border-top-color: #ebebeb;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
-  border-bottom: solid 1px #fff;
+  border-bottom: solid 2px #fff;
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
   transition: all 100ms ease;
 
@@ -52,7 +52,8 @@ const Form = styled.form`
 
   &.focussed {
     background: #fff;
-    border-bottom: solid 1px ${({ theme }) => theme.colorSecondary};
+    border-radius: 0px;
+    border-bottom: solid 2px ${({ theme }) => theme.colorSecondary};
   }
 `;
 
@@ -108,7 +109,6 @@ interface State {
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   textareaElement: HTMLTextAreaElement;
-  isInViewport: boolean;
   subscriptions: Subscription[] = [];
 
   constructor(props) {

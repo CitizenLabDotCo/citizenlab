@@ -62,6 +62,7 @@ const TimeAgo = styled.div`
 
 interface InputProps {
   commentId: string;
+  commentType: 'parent' | 'child';
 }
 
 interface DataProps {
@@ -77,7 +78,7 @@ interface State {}
 
 class CommentHeader extends PureComponent<Props, State> {
   render() {
-    const { windowSize, comment, idea, author } = this.props;
+    const { commentType, windowSize, comment, idea, author } = this.props;
 
     if (!isNilOrError(windowSize) && !isNilOrError(comment) && !isNilOrError(idea)) {
       const projectId = idea.relationships.project.data.id;
@@ -96,6 +97,7 @@ class CommentHeader extends PureComponent<Props, State> {
               projectId={projectId}
               showModeration={authorCanModerate}
               createdAt={smallerThanSmallTablet ? createdAt : undefined}
+              avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
             />
             <TimeAgo>
               <FormattedRelative value={createdAt} />

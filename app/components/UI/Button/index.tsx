@@ -412,7 +412,16 @@ class Button extends PureComponent<Props, State> {
               </StyledLink>
             )
         ) : (
-            <StyledButton aria-label={ariaLabel} disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+            <StyledButton
+              aria-label={ariaLabel}
+              disabled={disabled}
+              innerRef={this.props.setSubmitButtonRef}
+              className={buttonClassnames}
+              form={form}
+              type={type ? type : 'submit'}
+            >
+              {childContent}
+            </StyledButton>
           )}
       </Container>
     );

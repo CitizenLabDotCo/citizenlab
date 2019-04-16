@@ -14,7 +14,7 @@ import Error from 'components/UI/Error';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { transparentize } from 'polished';
+import { lighten } from 'polished';
 
 const Container: any = styled.div`
   position: relative;
@@ -87,8 +87,8 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     placeholderFontWeight: '300'
   };
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       style: null,
       mentionStyle: null
@@ -127,7 +127,7 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
           list: {
             backgroundColor: 'white',
             border: '1px solid #ccc',
-            borderRadius: '5px',
+            borderRadius: '3px',
             overflow: 'hidden',
             boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)'
           },
@@ -146,7 +146,11 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     };
 
     const mentionStyle = {
-      backgroundColor: transparentize(0.9, colors.clBlueDark)
+      // color: this.props.color,
+      // fontWeight: 400,
+      backgroundColor: lighten(0.08, colors.placeholderBg),
+      // position: 'absolute',
+      // zIndex: 2
     };
 
     this.setState({ style, mentionStyle });

@@ -228,11 +228,12 @@ class Comment extends PureComponent<Props, State> {
           <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
-                {/* {commentType === 'parent' && */}
                 <CommmentHeaderWrapper className={commentType}>
-                  <CommentHeader commentId={commentId} />
+                  <CommentHeader
+                    commentId={commentId}
+                    commentType={commentType}
+                  />
                 </CommmentHeaderWrapper>
-                {/* } */}
 
                 <Content>
                   {commentType === 'child' &&
@@ -242,6 +243,7 @@ class Comment extends PureComponent<Props, State> {
                         size="32px"
                         moderator={authorCanModerate}
                         onClick={this.goToUserProfile}
+                        badgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
                       />
                     </AvatarWrapper>
                   }

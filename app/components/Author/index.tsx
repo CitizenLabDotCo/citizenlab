@@ -95,6 +95,7 @@ export interface InputProps {
   message?: Message | ReactIntl.FormattedMessage.MessageDescriptor;
   projectId?: string;
   showAvatar?: boolean;
+  avatarBadgeBgColor?: string;
   showModeration?: boolean; // will show red styling on admins and moderators of projectId
   className?: string;
 }
@@ -121,7 +122,7 @@ class Author extends PureComponent<Props, State> {
   }
 
   render() {
-    const { authorId, createdAt, size, notALink, message, projectId, showAvatar, showModeration, className, author } = this.props;
+    const { authorId, createdAt, size, notALink, message, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
     const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
     const authorNameComponent = notALink ? (
       <UserName user={!isNilOrError(author) ? author : null} />
@@ -143,6 +144,7 @@ class Author extends PureComponent<Props, State> {
               size={size}
               onClick={notALink ? undefined : this.goToUserProfile}
               moderator={authorCanModerate}
+              badgeBgColor={avatarBadgeBgColor}
             />
           }
 

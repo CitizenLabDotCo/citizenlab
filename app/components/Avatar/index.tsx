@@ -69,7 +69,7 @@ const AvatarIcon: any = styled(Icon)`
   }
 `;
 
-const ModeratorIconContainer: any = styled.div`
+const BadgeContainer: any = styled.div`
   flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
   width: ${(props: any) => props.size / 2 + 5}px;
   height: ${(props: any) => props.size / 2 + 5}px;
@@ -82,11 +82,10 @@ const ModeratorIconContainer: any = styled.div`
   border-radius: 50%;
   padding-top: 1px;
   padding-left: 1px;
-  background: ${lighten(0.53, colors.clRedError)};
-  border: solid 1px #fff;
+  background: ${(props: any) => props.badgeBgColor};
 `;
 
-const ModeratorIcon: any = styled(Icon)`
+const BadgeIcon: any = styled(Icon)`
   color: ${colors.clRedError};
   fill: ${colors.clRedError};
   height: ${(props: any) => (props.size / 2) - 5}px;
@@ -104,6 +103,7 @@ interface InputProps {
   borderThickness?: string;
   borderColor?: string;
   borderHoverColor?: string;
+  badgeBgColor?: string;
   className?: string;
   moderator?: boolean | null;
 }
@@ -124,7 +124,8 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     fillHoverColor: darken(0.1, colors.label),
     borderThickness: '1px',
     borderColor: 'transparent',
-    borderHoverColor: colors.label
+    borderHoverColor: colors.label,
+    badgeBgColor: '#fff'
   };
 
   handleOnClick = (event: FormEvent) => {
@@ -135,7 +136,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, moderator, className } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
@@ -173,9 +174,9 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
           {moderator && (
-            <ModeratorIconContainer size={numberSize}>
-              <ModeratorIcon name="clLogo" size={numberSize} />
-            </ModeratorIconContainer>
+            <BadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
+              <BadgeIcon name="clLogo" size={numberSize} />
+            </BadgeContainer>
           )}
         </AvatarContainer>
       );

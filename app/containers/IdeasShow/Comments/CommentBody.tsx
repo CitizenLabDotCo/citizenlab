@@ -154,7 +154,7 @@ class CommentBody extends PureComponent<Props, State> {
     setFieldTouched(name, true);
   }
 
-  cancelEditing = (event: FormEvent<any>) => {
+  cancelEditing = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.props.onCancelEditing();
   }
@@ -179,7 +179,7 @@ class CommentBody extends PureComponent<Props, State> {
       const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       if (!editing) {
-        const CommentBodyContent = ({ text }) => (
+        const CommentBodyContent = ({ text }: { text: string }) => (
           <>
             {commentType === 'child' &&
               <StyledLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>

@@ -224,6 +224,7 @@ interface InputProps {
   close: () => void;
   url: string | null;
   headerChild?: JSX.Element | undefined;
+  children: JSX.Element | null | undefined;
 }
 
 interface DataProps {
