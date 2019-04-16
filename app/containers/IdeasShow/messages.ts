@@ -89,6 +89,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.publishComment',
     defaultMessage: 'Post comment',
   },
+  saveCommentEdit: {
+    id: 'app.containers.IdeasShow.saveComment',
+    defaultMessage: 'Save',
+  },
+  cancelCommentEdit: {
+    id: 'app.containers.IdeasShow.cancelCommentEdit',
+    defaultMessage: 'Cancel',
+  },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
     defaultMessage: 'Load more comments...',

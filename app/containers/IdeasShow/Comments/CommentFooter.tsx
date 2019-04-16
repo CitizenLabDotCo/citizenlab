@@ -80,7 +80,6 @@ const ReplyButton = styled.button`
     color: #000;
     text-decoration: underline;
   }
-  
 `;
 
 const Right = styled.div`

@@ -13,7 +13,6 @@ import Avatar from 'components/Avatar';
 import Icon from 'components/UI/Icon';
 
 // services
-import { updateComment, IUpdatedComment } from 'services/comments';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
@@ -32,10 +31,6 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { FormikActions } from 'formik';
-import { CLErrorsJSON } from 'typings';
 
 const Container = styled.div`
   &.child {
@@ -176,19 +171,8 @@ class Comment extends PureComponent<Props, State> {
     this.setState({ editing: false });
   }
 
-  onCommentSave = async (comment: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>) => {
-    const { setSubmitting, setErrors } = formikActions;
-
-    try {
-      await updateComment(this.props.commentId, comment);
-      this.setState({ editing: false });
-    } catch (error) {
-      if (error && error.json) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }
-    }
+  onCommentSaved = () => {
+    this.setState({ editing: false });
   }
 
   translateComment = () => {
@@ -252,9 +236,8 @@ class Comment extends PureComponent<Props, State> {
                     <CommentBody
                       commentId={commentId}
                       commentType={commentType}
-                      commentBody={comment.attributes.body_multiloc}
                       editing={editing}
-                      onCommentSave={this.onCommentSave}
+                      onCommentSaved={this.onCommentSaved}
                       onCancelEditing={this.onCancelEditing}
                       translateButtonClicked={translateButtonClicked}
                     />
