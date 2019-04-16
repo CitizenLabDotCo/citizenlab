@@ -8,13 +8,9 @@ import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
 import clHistory from 'utils/cl-router/history';
 
-// services
-import { updateComment, IUpdatedComment } from 'services/comments';
-
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // analytics
@@ -27,11 +23,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { CLErrorsJSON } from 'typings';
 import { media } from 'utils/styleUtils';
-
-// typings
-import { FormikActions } from 'formik';
 
 const Container = styled.div`
   margin-top: 30px;
@@ -54,12 +46,12 @@ const ParentCommentContainer = styled.div`
 interface InputProps {
   ideaId: string;
   commentId: string;
+  childCommentIds: string[] | false;
 }
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   comment: GetCommentChildProps;
-  childComments: GetCommentsChildProps;
   idea: GetIdeaChildProps;
 }
 
@@ -104,21 +96,6 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ editionMode: false });
   }
 
-  onCommentSave = async (comment: IUpdatedComment, formikActions: FormikActions<IUpdatedComment>) => {
-    const { setSubmitting, setErrors } = formikActions;
-
-    try {
-      await updateComment(this.props.commentId, comment);
-      this.setState({ editionMode: false });
-    } catch (error) {
-      if (error && error.json) {
-        const apiErrors = (error as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-        setSubmitting(false);
-      }
-    }
-  }
-
   translateComment = () => {
     const { translateButtonClicked } = this.state;
 
@@ -134,19 +111,16 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { commentId, authUser, comment, childComments, idea } = this.props;
+    const { commentId, authUser, comment, childCommentIds, idea } = this.props;
+
+    console.log('comment');
+    console.log(comment);
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
-      const childCommentIds = (!isNilOrError(childComments) && childComments.filter((comment) => {
-        if (!comment.relationships.parent.data) return false;
-        if (comment.attributes.publication_status === 'deleted') return false;
-        if (comment.relationships.parent.data.id === commentId) return true;
-        return false;
-      }).map(comment => comment.id));
       const hasChildComments = (childCommentIds && childCommentIds.length > 0);
 
       // hide parent comments that are deleted when they have no children
@@ -187,7 +161,6 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  childComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
 });
 
