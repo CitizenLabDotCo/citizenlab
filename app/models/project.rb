@@ -89,6 +89,7 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
+
   def continuous?
     self.process_type == 'continuous'
   end

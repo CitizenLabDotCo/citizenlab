@@ -11,7 +11,11 @@ module NLP
           authorize idea, :show?
 
           service = NLP::SimilarityService.new
-          similarities = service.similarity Tenant.current.id, idea, min_score: SIMILARITY_TRESHOLD
+          similarities = service.similarity(
+            Tenant.current.id, idea, 
+            idea_ids: policy_scope(Idea).ids, 
+            min_score: SIMILARITY_TRESHOLD
+            )
           @ideas = policy_scope(Idea.where(id: similarities.map{|h| h[:idea_id]}))
             .page(params.dig(:page, :number))
             .per(params.dig(:page, :size))

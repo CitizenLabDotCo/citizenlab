@@ -138,4 +138,28 @@ RSpec.describe Group, type: :model do
       group.update_memberships_count!
     end
   end
+
+  describe "a smart group with many rules" do
+    let(:custom_field) { create(:custom_field_select) }
+    let(:options) { create_list(:custom_field_option, 3, custom_field: custom_field) }
+    let!(:group) { create(:smart_group, rules: [
+      {ruleType: 'custom_field_select', customFieldId: custom_field.id, predicate: 'has_value', value: options.first.id},
+      {ruleType: 'custom_field_text', customFieldId: create(:custom_field).id, predicate:'is', value: 'high'},
+      {ruleType: 'role', predicate: 'is_admin'},
+      {ruleType: 'email', predicate: 'ends_on', value: '@citizenlab.co'},
+      {ruleType: 'lives_in', predicate: 'has_value', value: create(:area).id},
+      {ruleType: 'custom_field_checkbox', customFieldId: create(:custom_field_checkbox).id, predicate: 'is_checked'},
+      {ruleType: 'custom_field_date', customFieldId: create(:custom_field_date).id, predicate: 'is_before', value: (Date.today - 1.day)},
+      {ruleType: 'registration_completed_at', predicate: 'is_before', value: (Date.today - 1.day)},
+      {ruleType: 'custom_field_number', customFieldId: create(:custom_field_number).id, predicate: 'is_smaller_than', value: 42},
+      {ruleType: 'participated_in_project', predicate: 'is', value: create(:project).id},
+      {ruleType: 'participated_in_topic', predicate: 'is', value: create(:topic).id},
+      {ruleType: 'participated_in_idea_status', predicate: 'is', value: create(:idea_status).id}
+    ])}
+    let!(:user) { create(:user) }
+
+    it "still works" do
+      expect{group.memberships_count}.not_to raise_error
+    end
+  end
 end
