@@ -1,4 +1,3 @@
-import { isString, get, first } from 'lodash-es';
 import { randomString, randomEmail } from '../../support/commands';
 
 beforeEach(() => {
@@ -85,7 +84,6 @@ describe('Idea preview ', () => {
   });
 
   it('Closes when you click the X (close button)', () => {
-    cy.visit('/admin/ideas/');
     // grab and open assignee filter menu
     cy.get('#e2e-idea-select-assignee-filter').click();
     // click on All ideas filter
@@ -106,9 +104,9 @@ describe('Assignee select', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.apiCreateAdmin(firstName, lastName, email, password).then(newUser => {
-      const newUserFirstName = newUser.body.data.attributes.first_name;
-      const newUserLastName = newUser.body.data.attributes.last_name;
+    cy.apiCreateAdmin(firstName, lastName, email, password).then(newAdmin => {
+      const newAdminFirstName = newAdmin.body.data.attributes.first_name;
+      const newAdminLastName = newAdmin.body.data.attributes.last_name;
 
       // Refresh page to make sure new admin is picked up
       cy.visit('/admin/ideas/');
@@ -117,13 +115,13 @@ describe('Assignee select', () => {
       cy.get('#e2e-assignee-filter-unassigned').click();
       // Pick first idea in idea table and assign it to our user
       cy.wait(500);
-      cy.get('.e2e-idea-manager-idea-row').first().then(ideaRow => {})
+      cy.get('.e2e-idea-manager-idea-row').first()
         .find('.e2e-idea-manager-idea-row-assignee-select').click()
-        .contains(`${newUserFirstName} ${newUserLastName}`).click();
+        .contains(`${newAdminFirstName} ${newAdminLastName}`).click();
       // Select this user in the assignee filter
       cy.get('#e2e-idea-select-assignee-filter').click()
         .find('.e2e-assignee-filter-other-user')
-        .contains(`Assigned to ${newUserFirstName} ${newUserLastName}`).click();
+        .contains(`Assigned to ${newAdminFirstName} ${newAdminLastName}`).click();
       // Check if idea is there
       cy.get('.e2e-idea-manager-idea-row').should('have.length', 1);
     });
