@@ -165,6 +165,7 @@ class ParticipationContextService
   end
 
   def taking_survey_disabled_reason_for_project project, user
+    context = get_participation_context project
     taking_survey_disabled_reason_for_context context, user
   end
 
