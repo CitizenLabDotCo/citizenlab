@@ -369,19 +369,11 @@ export default class GetIdeas extends React.Component<Props, State> {
 
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
     if (feedbackNeeded === true) {
-      // if we turn the 'Need feedback' toggle on,
-      // we want the projects/topics/statuses/phases filters to reset
       this.queryParameters$.next({
         ...this.state.queryParameters,
-        feedback_needed: feedbackNeeded,
-        projects: undefined,
-        phase: undefined,
-        topics: undefined,
-        idea_status: undefined,
+        feedback_needed: true,
         'page[number]': 1,
       });
-      // if we turn it off, we want to keep all filters
-      // but show all ideas that match the filters, not just those that need feedback
     } else if (feedbackNeeded === false) {
       this.queryParameters$.next({
         ...this.state.queryParameters,
