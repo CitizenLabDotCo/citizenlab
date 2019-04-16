@@ -63,7 +63,6 @@ export default () => (
           sort="new"
           showTitle={false}
           showPublicationStatusFilter={true}
-          showSendFeedback={false}
           layout="threecolumns"
         />
       </StyledContentContainer>
