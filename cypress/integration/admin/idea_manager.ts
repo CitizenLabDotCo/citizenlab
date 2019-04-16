@@ -84,6 +84,7 @@ describe('Idea preview ', () => {
   });
 
   it('Closes when you click the X (close button)', () => {
+    cy.visit('/admin/ideas/');
     // grab and open assignee filter menu
     cy.get('#e2e-idea-select-assignee-filter').click();
     // click on All ideas filter
