@@ -288,7 +288,7 @@ export type Props = {
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
-  type?: string;
+  type?: 'submit' | 'button' | 'reset';
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
