@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
@@ -69,7 +70,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled.a`
+const GetStartedLink = styled(Link)`
   flex: 0 0 auto;
   width: 230px;
   display: flex;
@@ -123,11 +124,11 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     };
     this.routes = [
       {
-        id: 'guide',
+        id: 'insights',
         link: '/admin',
-        iconName: 'play',
-        message: 'guide',
-        isActive: (pathName) => pathName === (`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+        iconName: 'stats',
+        message: 'dashboard',
+        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'projects',
@@ -142,13 +143,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         iconName: 'ideas',
         message: 'ideas',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
-      },
-      {
-        id: 'insights',
-        link: '/admin/dashboard',
-        iconName: 'stats',
-        message: 'dashboard',
-        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'users',
@@ -241,7 +235,7 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             }
           })}
           <Spacer />
-          <GetStartedLink href={formatMessage({ ...messages.gettingStartedLink })} target="blank">
+          <GetStartedLink to="/admin/guide" >
             <IconWrapper><Icon name="circleInfo" /></IconWrapper>
             <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
           </GetStartedLink>

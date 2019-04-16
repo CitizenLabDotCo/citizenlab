@@ -4,7 +4,6 @@ import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
 
 export default () => ({
-  name: 'Admin dashboard',
   path: 'dashboard',
   component: Loadable({
     loader: () => import('./'),
@@ -26,10 +25,6 @@ export default () => ({
       }),
     },
     clusteringsRoutes(),
-  /* TODO {
-      path: 'dashboard-acquisition',
-      getComponent: loadAndRender(import('./acquisition')),
-    },*/
     {
       path: 'map',
       component: Loadable({
