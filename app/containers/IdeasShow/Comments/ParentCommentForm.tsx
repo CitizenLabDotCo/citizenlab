@@ -206,6 +206,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                 notALink={authUser.id ? false : true}
                 size="32px"
                 showModeration={authorCanModerate}
+                avatarBadgeBgColor="#f1f2f4"
               />
             </AuthorWrapper>
 

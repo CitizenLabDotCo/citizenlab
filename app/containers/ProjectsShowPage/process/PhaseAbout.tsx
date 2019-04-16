@@ -66,7 +66,7 @@ class PhaseAbout extends PureComponent<Props, State> {
         return (
           <Container className={className}>
             <InformationBody>
-              <QuillEditedContent color="#5E6B75">
+              <QuillEditedContent textColor="#5E6B75">
                 <T value={phase.attributes.description_multiloc} supportHtml={true} linkify={true} />
               </QuillEditedContent>
             </InformationBody>

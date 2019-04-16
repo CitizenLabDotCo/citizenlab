@@ -327,11 +327,9 @@ const RightColumn = styled.div`
 `;
 
 const RightColumnDesktop = styled(RightColumn)`
-  /*
   position: sticky;
   top: 95px;
   align-self: flex-start;
-  */
 
   ${media.smallerThanMaxTablet`
     display: none;
