@@ -1,6 +1,6 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import { get, isNil } from 'lodash-es';
+import { get } from 'lodash-es';
 import linkifyHtml from 'linkifyjs/html';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -38,7 +38,6 @@ import { darken } from 'polished';
 import { colors, media } from 'utils/styleUtils';
 
 // Typings
-import { Multiloc, Locale } from 'typings';
 import { CLErrorsJSON, CLErrors } from 'typings';
 
 const Container = styled.div``;
@@ -229,6 +228,7 @@ class CommentBody extends PureComponent<Props, State> {
       commentId,
       className
     } = this.props;
+
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(idea)) {

@@ -41,13 +41,27 @@ class Comments extends PureComponent<Props, State> {
       if (parentComments && parentComments.length > 0) {
         return (
           <Container className={`e2e-comments-container ${className}`}>
-            {parentComments.map((parentComment, _index) => (
-              <ParentComment
-                key={parentComment.id}
-                ideaId={ideaId}
-                commentId={parentComment.id}
-              />
-            ))}
+            {parentComments.map((parentComment, _index) => {
+              const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
+                if (comment.relationships.parent.data &&
+                    comment.relationships.parent.data.id === parentComment.id &&
+                    comment.attributes.publication_status !== 'deleted'
+                ) {
+                  return true;
+                }
+
+                return false;
+              }).map(comment => comment.id));
+
+              return (
+                <ParentComment
+                  key={parentComment.id}
+                  ideaId={ideaId}
+                  commentId={parentComment.id}
+                  childCommentIds={childCommentIds}
+                />
+              );
+            })}
           </Container>
         );
       }

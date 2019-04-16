@@ -45,7 +45,6 @@ import { API_PATH } from 'containers/App/constants';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetIdeaImages, { GetIdeaImagesChildProps } from 'resources/GetIdeaImages';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
@@ -514,7 +513,6 @@ interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
   ideaImages: GetIdeaImagesChildProps;
-  ideaComments: GetCommentsChildProps;
   ideaFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -1107,7 +1105,6 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser/>,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  ideaComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
   phases: ({ idea, render }) => !isNilOrError(idea) ? <GetPhases projectId={idea.relationships.project.data.id}>{render}</GetPhases> : null

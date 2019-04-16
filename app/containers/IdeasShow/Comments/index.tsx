@@ -6,7 +6,6 @@ import { adopt } from 'react-adopt';
 // resources
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,20 +22,16 @@ interface InputProps {
 interface DataProps {
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
-  ideaComments: GetCommentsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
 const CommentsSection = memo<Props>(({
   ideaId,
-  ideaComments,
   project
 }) => (
   <>
-    {!isNilOrError(ideaComments) &&
-      <Comments ideaId={ideaId} />
-    }
+    <Comments ideaId={ideaId} />
 
     {/* {!isNilOrError(project) &&
       <HasPermission item={project} action="moderate">
@@ -55,7 +50,6 @@ const CommentsSection = memo<Props>(({
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  ideaComments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
 });
 
 export default (inputProps: InputProps) => (
