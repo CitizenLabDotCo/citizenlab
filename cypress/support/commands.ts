@@ -4,6 +4,7 @@ declare global {
       login: typeof login;
       apiLogin: typeof apiLogin;
       apiSignup: typeof apiSignup;
+      apiCreateAdmin: typeof apiCreateAdmin;
       logout: typeof logout;
       signup: typeof signup;
       acceptCookies: typeof acceptCookies;
@@ -76,9 +77,35 @@ export function apiSignup(firstName: string, lastName: string, email: string, pa
         password,
         locale: 'en-GB',
         first_name: firstName,
-        last_name: lastName
+        last_name: lastName,
       }
     }
+  });
+}
+
+export function apiCreateAdmin(firstName: string, lastName: string, email: string, password: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+
+      },
+      method: 'POST',
+      url: 'web_api/v1/users',
+      body: {
+        user: {
+          email,
+          password,
+          locale: 'en-GB',
+          first_name: firstName,
+          last_name: lastName,
+          roles: [{ type: 'admin' }],
+        }
+      }
+    });
   });
 }
 
@@ -344,6 +371,7 @@ export function apiRemoveCustomField(fieldId: string) {
 Cypress.Commands.add('login', login);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
+Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
 Cypress.Commands.add('logout', logout);
 Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
