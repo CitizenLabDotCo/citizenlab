@@ -105,7 +105,7 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
           options={assigneeOptions}
           onChange={this.onAssigneeChange}
           value={ideaAssigneeOption}
-          className="fluid"
+          className="fluid e2e-idea-manager-idea-row-assignee-select"
         />
       );
     }
