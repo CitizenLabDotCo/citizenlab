@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // resources
@@ -24,35 +24,33 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class ProjectModerationRightsReceivedNotification extends React.PureComponent<Props> {
-  render() {
-    const { notification, project } = this.props;
+const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
+  const { notification, project } = props;
 
-    if (isNilOrError(project)) return null;
+  if (isNilOrError(project)) return null;
 
-    return (
-      <NotificationWrapper
-        linkTo={`/admin/projects/${project.id}/edit`}
-        timing={notification.attributes.created_at}
-        icon="admin"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.projectModerationRightsReceived}
-          values={{
-            projectLink:
-              <Link
-                to={`/projects/${project.attributes.slug}`}
-                onClick={stopPropagation}
-              >
-                <T value={project.attributes.title_multiloc} />
-              </Link>,
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/admin/projects/${project.id}/edit`}
+      timing={notification.attributes.created_at}
+      icon="admin"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.projectModerationRightsReceived}
+        values={{
+          projectLink:
+            <Link
+              to={`/projects/${project.attributes.slug}`}
+              onClick={stopPropagation}
+            >
+              <T value={project.attributes.title_multiloc} />
+            </Link>,
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IProjectPhaseUpcomingNotificationData } from 'services/notifications';
 
 // i18n
@@ -14,25 +14,25 @@ interface Props {
   notification: IProjectPhaseUpcomingNotificationData;
 }
 
-export default class ProjectPhaseUpcomingNotification extends React.PureComponent<Props> {
-  render() {
-    const { notification } = this.props;
+const ProjectPhaseUpcomingNotification = memo<Props>(props => {
+  const { notification } = props;
 
-    return (
-      <NotificationWrapper
-        linkTo={`/projects/${notification.attributes.project_slug}`}
-        timing={notification.attributes.created_at}
-        icon="timeline"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.projectPhaseUpcoming}
-          values={{
-            projectTitle: <T value={notification.attributes.project_title_multiloc} />,
-            phaseStartAt: <FormattedDate value={notification.attributes.phase_start_at} />
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/projects/${notification.attributes.project_slug}`}
+      timing={notification.attributes.created_at}
+      icon="timeline"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.projectPhaseUpcoming}
+        values={{
+          projectTitle: <T value={notification.attributes.project_title_multiloc} />,
+          phaseStartAt: <FormattedDate value={notification.attributes.phase_start_at} />
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
+
+export default ProjectPhaseUpcomingNotification;
