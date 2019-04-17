@@ -13,7 +13,6 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
@@ -114,6 +113,7 @@ export interface ICommentReplyClicked {
 
 interface InputProps {
   ideaId: string;
+  projectId: string;
   commentId: string;
   commentType: 'parent' | 'child';
   onEditing: () => void;
@@ -123,7 +123,6 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
   author: GetUserChildProps;
 }
 
@@ -183,11 +182,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, className, comment, idea, locale } = this.props;
+    const { commentType, projectId, commentId, className, comment, locale } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea) && !isNilOrError(locale)) {
-      const projectId = idea.relationships.project.data.id;
+    if (!isNilOrError(comment) && !isNilOrError(locale)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
@@ -209,7 +207,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
           <Footer>
             <Left>
-              <CommentVote commentId={comment.id} />
+              <CommentVote commentId={commentId} />
               <Separator>•</Separator>
               <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
                 <FormattedMessage {...messages.commentReplyButton} />
@@ -241,7 +239,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
