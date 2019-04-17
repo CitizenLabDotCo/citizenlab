@@ -24,7 +24,7 @@ type State = {
 };
 
 export default class NewIdeaForAdminNotification extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
+  subscriptions = [] as Subscription[];
 
   constructor(props: Props) {
     super(props as any);
