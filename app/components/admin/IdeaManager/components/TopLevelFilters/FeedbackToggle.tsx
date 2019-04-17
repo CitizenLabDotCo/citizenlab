@@ -106,7 +106,7 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
     const { value, feedbackNeededCount } = this.props;
 
     return (
-      <Container className="feedback_needed_filter_toggle">
+      <Container id="e2e-feedback_needed_filter_toggle" className="feedback_needed_filter_toggle">
         <StyledLabel onClick={this.handleOnClick}>
           <FormattedMessage {...messages.anyFeedbackStatus} />
         </StyledLabel>
