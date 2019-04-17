@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // services
 import { IInviteAcceptedNotificationData } from 'services/notifications';
@@ -18,10 +18,6 @@ interface Props {
 }
 
 export default class InviteAcceptedNotification extends React.PureComponent<Props> {
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification } = this.props;
     const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
@@ -43,7 +39,7 @@ export default class InviteAcceptedNotification extends React.PureComponent<Prop
               :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
+                onClick={stopPropagation}
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>

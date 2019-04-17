@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import { IOfficialFeedbackOnYourIdeaNotificationData } from 'services/notifications';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -24,10 +24,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class OfficialFeedbackOnYourIdeaNotification extends React.PureComponent<Props> {
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification, idea } = this.props;
 
@@ -55,7 +51,7 @@ class OfficialFeedbackOnYourIdeaNotification extends React.PureComponent<Props> 
             :
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={this.onClickUserName}
+              onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />
             </Link>,

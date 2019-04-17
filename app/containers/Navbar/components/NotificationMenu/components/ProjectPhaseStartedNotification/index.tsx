@@ -14,10 +14,6 @@ type Props = {
 };
 
 export default class ProjectPhaseStartedNotification extends React.PureComponent<Props> {
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification } = this.props;
 
