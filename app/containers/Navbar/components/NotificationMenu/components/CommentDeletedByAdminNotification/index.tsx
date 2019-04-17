@@ -17,7 +17,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const CommentDeletedByAdminNotification = memo<Props>(props => {
+export const CommentDeletedByAdminNotification = memo<Props>(props => {
   const { notification, idea } = props;
 
   if (isNilOrError(idea)) return null;
