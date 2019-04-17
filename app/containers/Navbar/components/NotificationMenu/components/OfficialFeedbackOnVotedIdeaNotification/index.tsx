@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 import { IOfficialFeedbackOnVotedIdeaNotificationData } from 'services/notifications';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -10,8 +10,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // components
 import NotificationWrapper from '../NotificationWrapper';
-import Link from 'utils/cl-router/Link';
-import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
 interface InputProps {
@@ -30,7 +28,6 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
 
   const { slug } = idea.attributes;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
   const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
 
   return (
@@ -43,17 +40,7 @@ const OfficialFeedbackOnVotedIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.officialFeedbackOnVotedIdea}
         values={{
-          officialName: deletedUser ?
-          <DeletedUser>
-            <FormattedMessage {...messages.deletedUser} />
-          </DeletedUser>
-          :
-          <Link
-            to={`/profile/${notification.attributes.initiating_user_slug}`}
-            onClick={stopPropagation}
-          >
-            <T value={officialFeedbackAuthorMultiloc} />
-          </Link>
+          officialName: <T value={officialFeedbackAuthorMultiloc} />
         }}
       />
     </NotificationWrapper>
