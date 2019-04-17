@@ -55,7 +55,7 @@ describe('Need feedback toggle', () => {
       const projectDescription = randomString();
       const userId = user.body.data.id;
 
-      // create project explicitely without default assignee
+      // create project with signed-in admin/user as default assignee
       cy.apiCreateProject('continuous', projectTitle, projectDescriptionPreview, projectDescription, 'published', userId).then((project) => {
         const projectId = project.body.data.id;
         const ideaTitle1 = randomString();
