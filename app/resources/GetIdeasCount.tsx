@@ -51,7 +51,7 @@ export type GetIdeasCountChildProps = State & {
   onChangeIdeaStatus: (ideaStatus: string) => void;
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
-  onChangeFeedbackFilter: (feedbackNeeded: boolean | undefined) => void;
+  onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
 };
 
 interface State {
@@ -231,11 +231,18 @@ export default class GetIdeasCount extends React.Component<Props, State> {
     });
   }
 
-  handleFeedbackFilterOnChange = (feedbackNeeded: boolean | undefined) => {
-    this.queryParameters$.next({
-      ...this.state.queryParameters,
-      feedback_needed: feedbackNeeded,
-    });
+  handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
+    if (feedbackNeeded === true) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: true,
+      });
+    } else if (feedbackNeeded === false) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        feedback_needed: undefined,
+      });
+    }
   }
 
   render() {
