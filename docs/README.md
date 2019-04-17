@@ -18,6 +18,7 @@
 ### Changed
 
 - New configuration for which email campaigns are enabled by default
+- Changed project image medium size to 575x575
 
 ## 2019-04-02
 
