@@ -12,6 +12,7 @@ declare global {
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
       apiCreateIdea: typeof apiCreateIdea;
+      apiCreateOfficialFeedback: typeof apiCreateOfficialFeedback;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
@@ -178,7 +179,6 @@ export function apiCreateIdea(
   projectId: string,
   ideaTitle: string,
   ideaContent: string,
-  assigneeId?: string
 ) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -202,7 +202,37 @@ export function apiCreateIdea(
             'en-GB': ideaContent,
             'nl-BE': ideaContent
           },
-          assignee_id: assigneeId
+        }
+      }
+    });
+  });
+}
+
+export function apiCreateOfficialFeedback(
+  ideaId: string,
+  officialFeedbackContent: string,
+  officialFeedbackAuthor: string
+) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: `web_api/v1/ideas/${ideaId}/official_feedback`,
+      body: {
+        official_feedback: {
+          body_multiloc: {
+            'en-GB': officialFeedbackContent,
+            'nl-BE': officialFeedbackContent
+          },
+          author_multiloc: {
+            'en-GB': officialFeedbackAuthor,
+            'nl-BE': officialFeedbackAuthor
+          },
         }
       }
     });
@@ -379,6 +409,7 @@ Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
+Cypress.Commands.add('apiCreateOfficialFeedback', apiCreateOfficialFeedback);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
