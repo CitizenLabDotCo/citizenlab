@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // services
@@ -24,44 +24,42 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class MentionInCommentNotification extends PureComponent<Props> {
-  render() {
-    const { notification, idea } = this.props;
+const MentionInCommentNotification = memo<Props>(props => {
+  const { notification, idea } = props;
 
-    if (isNilOrError(idea)) return null;
+  if (isNilOrError(idea)) return null;
 
-    const { slug } = idea.attributes;
+  const { slug } = idea.attributes;
 
-    const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_slug);
+  const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_slug);
 
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${slug}`}
-        timing={notification.attributes.created_at}
-        icon="notification_mention"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.mentionInOfficialFeedback}
-          values={{
-            officialName: deletedUser ?
-              <DeletedUser>
-                <FormattedMessage {...messages.deletedUser} />
-              </DeletedUser>
-              :
-              <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={stopPropagation}
-              >
-                <T value={officialFeedbackAuthorMultiloc} />
-              </Link>,
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/ideas/${slug}`}
+      timing={notification.attributes.created_at}
+      icon="notification_mention"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.mentionInOfficialFeedback}
+        values={{
+          officialName: deletedUser ?
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+            :
+            <Link
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
+            >
+              <T value={officialFeedbackAuthorMultiloc} />
+            </Link>,
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { IStatusChangeOfYourIdeaNotificationData } from 'services/notifications';
 import { adopt } from 'react-adopt';
@@ -21,32 +21,28 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+const StatusChangeOfYourIdeaNotification = memo<Props>(props => {
+  const { notification, idea, ideaStatus } = props;
 
-class StatusChangeOfYourIdeaNotification extends React.PureComponent<Props, State> {
-  render() {
-    const { notification, idea, ideaStatus } = this.props;
+  if (isNilOrError(idea) || !ideaStatus) return null;
 
-    if (isNilOrError(idea) || !ideaStatus) return null;
-
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${idea.attributes.slug}`}
-        timing={notification.attributes.created_at}
-        icon="notification_status"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.statusChangedOfYourIdea}
-          values={{
-            status: <T value={ideaStatus.attributes.title_multiloc} />,
-            ideaTitle: <T value={idea.attributes.title_multiloc} />
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/ideas/${idea.attributes.slug}`}
+      timing={notification.attributes.created_at}
+      icon="notification_status"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.statusChangedOfYourIdea}
+        values={{
+          status: <T value={ideaStatus.attributes.title_multiloc} />,
+          ideaTitle: <T value={idea.attributes.title_multiloc} />
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 const Data = adopt<DataProps, { ideaId: string }>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,

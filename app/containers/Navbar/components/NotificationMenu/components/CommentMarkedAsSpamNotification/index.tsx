@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // data
@@ -24,44 +24,42 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class CommentMarkedAsSpamNotification extends React.PureComponent<Props> {
-  render() {
-    const { notification, idea } = this.props;
+const CommentMarkedAsSpamNotification = memo<Props>(props => {
+  const { notification, idea } =  props;
 
-    if (isNilOrError(idea)) return null;
+  if (isNilOrError(idea)) return null;
 
-    const { slug, title_multiloc } = idea.attributes;
+  const { slug, title_multiloc } = idea.attributes;
 
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${slug}`}
-        timing={notification.attributes.created_at}
-        icon="notification_comment"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.userMarkedCommentAsSpam}
-          values={{
-            name: deletedUser ?
-              <DeletedUser>
-                <FormattedMessage {...messages.deletedUser} />
-              </DeletedUser>
-              :
-              <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={stopPropagation}
-              >
-                {notification.attributes.initiating_user_first_name}
-              </Link>,
-            ideaTitle: <T value={title_multiloc} />
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/ideas/${slug}`}
+      timing={notification.attributes.created_at}
+      icon="notification_comment"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.userMarkedCommentAsSpam}
+        values={{
+          name: deletedUser ?
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+            :
+            <Link
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
+            >
+              {notification.attributes.initiating_user_first_name}
+            </Link>,
+          ideaTitle: <T value={title_multiloc} />
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;
