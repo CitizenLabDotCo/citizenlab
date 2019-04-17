@@ -1,21 +1,24 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
+
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { injectTracks } from 'utils/analytics';
+
+import { trackEventByName } from 'utils/analytics';
+import tracks from '../../tracks';
+
 import NotificationCount from './components/NotificationCount';
 import Dropdown from 'components/UI/Dropdown';
 import Notification from './components/Notification';
 import Spinner from 'components/UI/Spinner';
-import { FormattedMessage } from 'utils/cl-intl';
 import InfiniteScroll from 'react-infinite-scroller';
-import { authUserStream } from 'services/auth';
+
 import messages from './messages';
-import tracks from '../../tracks';
+import { FormattedMessage } from 'utils/cl-intl';
+
 import { markAllAsRead } from 'services/notifications';
-import { Subscription } from 'rxjs';
 import GetNotifications, { GetNotificationsChildProps } from 'resources/GetNotifications';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const EmptyStateImg = require('./assets/no_notification_image.svg');
@@ -58,16 +61,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface ITracks {
-  clickOpenNotifications: () => void;
-  clickCloseNotifications: () => void;
-}
-
 type State = {
   dropdownOpened: boolean,
 };
 
-class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
+class NotificationMenu extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -80,10 +78,10 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
 
     this.setState(({ dropdownOpened }) => {
       if (!dropdownOpened) {
-        this.props.clickOpenNotifications();
+        trackEventByName(tracks.clickOpenNotifications.name);
       } else {
         markAllAsRead();
-        this.props.clickCloseNotifications();
+        trackEventByName(tracks.clickCloseNotifications.name);
       }
 
       return { dropdownOpened: !dropdownOpened };
@@ -153,8 +151,6 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-const NotificationMenuWithHocs = injectTracks<Props>(tracks)(NotificationMenu);
-
 const Data = adopt<DataProps, InputProps>({
   notifications: <GetNotifications/>,
   authUser: <GetAuthUser/>
@@ -162,6 +158,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <NotificationMenuWithHocs {...inputProps} {...dataProps} />}
+    {dataProps => <NotificationMenu {...inputProps} {...dataProps} />}
   </Data>
 );
