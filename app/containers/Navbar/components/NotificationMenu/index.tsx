@@ -1,6 +1,4 @@
-
 import React from 'react';
-import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { injectTracks } from 'utils/analytics';
@@ -10,10 +8,14 @@ import Notification from './components/Notification';
 import Spinner from 'components/UI/Spinner';
 import { FormattedMessage } from 'utils/cl-intl';
 import InfiniteScroll from 'react-infinite-scroller';
-import { notificationsStream, TNotificationData, markAllAsRead } from 'services/notifications';
 import { authUserStream } from 'services/auth';
 import messages from './messages';
 import tracks from '../../tracks';
+import { markAllAsRead } from 'services/notifications';
+import { Subscription } from 'rxjs';
+import GetNotifications, { GetNotificationsChildProps } from 'resources/GetNotifications';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 const EmptyStateImg = require('./assets/no_notification_image.svg');
 
@@ -46,7 +48,13 @@ const EmptyStateText = styled.div`
   text-align: center;
 `;
 
-type Props = {};
+interface InputProps {}
+
+interface DataProps {
+  notifications: GetNotificationsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface ITracks {
   clickOpenNotifications: () => void;
@@ -56,8 +64,6 @@ interface ITracks {
 type State = {
   dropdownOpened: boolean,
   unreadCount?: number,
-  notifications: TNotificationData[] | null;
-  hasMore: boolean;
 };
 
 class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
@@ -68,8 +74,6 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
     this.state = {
       unreadCount: 0,
       dropdownOpened: false,
-      notifications: null,
-      hasMore: true,
     };
     this.subscriptions = [];
   }
@@ -82,27 +86,6 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
         this.setState({ unreadCount: response && response.data.attributes.unread_notifications || undefined });
       })
     ];
-  }
-
-  loadNextPage = (page = 1) => {
-    const notifications$ = notificationsStream({
-      queryParameters: {
-        'page[size]': 8,
-        'page[number]': page,
-      },
-    }).observable;
-
-    this.subscriptions.push(
-      notifications$.subscribe((response) => {
-        const notifications = this.state.notifications ? this.state.notifications.concat(response.data) : response.data;
-        const hasMore = !!response.links.next;
-        this.setState({ notifications, hasMore });
-      })
-    );
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   toggleDropdown = (event: React.FormEvent<any>) => {
@@ -120,8 +103,25 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
     });
   }
 
+  renderList = () => {
+    const { notifications: { list } } = this.props;
+    if (isNilOrError(list) || list.length === 0) return [];
+    return list.map((notification) => {
+      return (
+        <Notification
+          notification={notification}
+          key={notification.id}
+        />
+      );
+    });
+  }
+
   render() {
-    const { notifications, hasMore, dropdownOpened } = this.state;
+    const { dropdownOpened } = this.state;
+    const { notifications } = this.props;
+
+    const notificationsList = this.renderList();
+
     return (
       <Container>
         <NotificationCount
@@ -139,9 +139,9 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
           content={(
             <InfiniteScroll
               pageStart={0}
-              loadMore={this.loadNextPage}
+              loadMore={notifications.onLoadMore}
               useWindow={false}
-              hasMore={hasMore}
+              hasMore={notifications.hasMore}
               threshold={50}
               loader={
                 <LoadingContainer key="0">
@@ -149,15 +149,8 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
                 </LoadingContainer>
               }
             >
-              {notifications && notifications.length > 0 && notifications.map((notification) => {
-                return (
-                  <Notification
-                    notification={notification}
-                    key={notification.id}
-                  />
-                );
-              })}
-              {notifications && notifications.length === 0 &&
+              {notificationsList}
+              {notifications.list !== undefined && notificationsList && notificationsList.length === 0 &&
                 <EmptyStateContainer>
                   <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
                   <EmptyStateText><FormattedMessage {...messages.noNotifications} /></EmptyStateText>
@@ -171,4 +164,14 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(NotificationMenu);
+const NotificationMenuWithHocs = injectTracks<Props>(tracks)(NotificationMenu);
+
+const Data = adopt<DataProps, InputProps>({
+  notifications: <GetNotifications/>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data>
+    {dataProps => <NotificationMenuWithHocs {...inputProps} {...dataProps} />}
+  </Data>
+);
