@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import GetNotifications, { GetNotificationsChildProps } from 'resources/GetNotifications';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const EmptyStateImg = require('./assets/no_notification_image.svg');
 
@@ -52,6 +53,7 @@ interface InputProps {}
 
 interface DataProps {
   notifications: GetNotificationsChildProps;
+  authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -63,29 +65,14 @@ interface ITracks {
 
 type State = {
   dropdownOpened: boolean,
-  unreadCount?: number,
 };
 
 class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
-  subscriptions: Subscription[];
-
   constructor(props) {
     super(props);
     this.state = {
-      unreadCount: 0,
       dropdownOpened: false,
     };
-    this.subscriptions = [];
-  }
-
-  componentDidMount() {
-    const authUser$ = authUserStream().observable;
-
-    this.subscriptions = [
-      authUser$.subscribe((response) => {
-        this.setState({ unreadCount: response && response.data.attributes.unread_notifications || undefined });
-      })
-    ];
   }
 
   toggleDropdown = (event: React.FormEvent<any>) => {
@@ -118,14 +105,16 @@ class NotificationMenu extends React.PureComponent<Props & ITracks, State> {
 
   render() {
     const { dropdownOpened } = this.state;
-    const { notifications } = this.props;
+    const { notifications, authUser } = this.props;
 
     const notificationsList = this.renderList();
+
+    if (isNilOrError(authUser)) return null;
 
     return (
       <Container>
         <NotificationCount
-          count={this.state.unreadCount}
+          count={authUser.attributes.unread_notifications}
           onClick={this.toggleDropdown}
         />
         <Dropdown
@@ -168,6 +157,7 @@ const NotificationMenuWithHocs = injectTracks<Props>(tracks)(NotificationMenu);
 
 const Data = adopt<DataProps, InputProps>({
   notifications: <GetNotifications/>,
+  authUser: <GetAuthUser/>
 });
 
 export default (inputProps: InputProps) => (
