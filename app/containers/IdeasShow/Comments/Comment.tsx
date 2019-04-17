@@ -17,7 +17,6 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
@@ -127,6 +126,8 @@ const DeletedIcon = styled(Icon)`
 `;
 
 interface InputProps {
+  ideaId: string;
+  projectId: string;
   commentId: string;
   commentType: 'parent' | 'child';
   hasChildComments?: boolean;
@@ -136,7 +137,6 @@ interface InputProps {
 
 interface DataProps {
   comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
   author: GetUserChildProps;
 }
 
@@ -197,15 +197,14 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, idea, author, commentType, hasChildComments, last, className } = this.props;
+    const { comment, author, ideaId, projectId, commentType, hasChildComments, last, className } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(idea)) {
+    if (!isNilOrError(comment)) {
       const commentId = comment.id;
-      const ideaId = idea.id;
+      const authorId = (!isNilOrError(author) ? author.id : null);
       const lastComment = ((commentType === 'parent' && !hasChildComments) || (commentType === 'child' && last === true));
-      const projectId = idea.relationships.project.data.id;
-      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
+      const moderator = !isNilOrError(author) && canModerate(projectId, { data: author });
 
       return (
         <Container className={`${className} ${commentType} e2e-comment`}>
@@ -214,8 +213,12 @@ class Comment extends PureComponent<Props, State> {
               <>
                 <CommmentHeaderWrapper className={commentType}>
                   <CommentHeader
+                    projectId={projectId}
+                    authorId={authorId}
                     commentId={commentId}
                     commentType={commentType}
+                    commentCreatedAt={comment.attributes.created_at}
+                    moderator={moderator}
                   />
                 </CommmentHeaderWrapper>
 
@@ -223,9 +226,9 @@ class Comment extends PureComponent<Props, State> {
                   {commentType === 'child' &&
                     <AvatarWrapper>
                       <Avatar
-                        userId={!isNilOrError(author) ? author.id : null}
+                        userId={authorId}
                         size="32px"
-                        moderator={authorCanModerate}
+                        moderator={moderator}
                         onClick={this.goToUserProfile}
                         badgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
                       />
@@ -237,12 +240,14 @@ class Comment extends PureComponent<Props, State> {
                       commentId={commentId}
                       commentType={commentType}
                       editing={editing}
+                      moderator={moderator}
                       onCommentSaved={this.onCommentSaved}
                       onCancelEditing={this.onCancelEditing}
                       translateButtonClicked={translateButtonClicked}
                     />
                     <CommentFooter
                       className={commentType}
+                      projectId={projectId}
                       ideaId={ideaId}
                       commentId={commentId}
                       commentType={commentType}
@@ -270,7 +275,6 @@ class Comment extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 

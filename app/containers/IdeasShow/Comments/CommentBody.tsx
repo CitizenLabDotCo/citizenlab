@@ -9,14 +9,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // Services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
 import { updateComment, IUpdatedComment } from 'services/comments';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
@@ -101,6 +99,7 @@ const ButtonsWrapper = styled.div`
 interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
+  moderator: boolean;
   editing: boolean;
   last?: boolean;
   onCommentSaved: () => void;
@@ -113,7 +112,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
   comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
   author: GetUserChildProps;
 }
 
@@ -220,9 +218,8 @@ class CommentBody extends PureComponent<Props, State> {
     const {
       editing,
       commentType,
+      moderator: authorCanModerate,
       locale,
-      tenantLocales,
-      idea,
       author,
       translateButtonClicked,
       commentId,
@@ -231,10 +228,7 @@ class CommentBody extends PureComponent<Props, State> {
 
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(idea)) {
-      const projectId = idea.relationships.project.data.id;
-      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-
+    if (!isNilOrError(locale)) {
       if (!editing) {
         const { commentContent } = this.state;
 
@@ -317,7 +311,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 

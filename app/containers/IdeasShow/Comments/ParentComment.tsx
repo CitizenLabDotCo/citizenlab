@@ -113,9 +113,6 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { commentId, authUser, comment, childCommentIds, idea } = this.props;
 
-    console.log('comment');
-    console.log(comment);
-
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
@@ -132,6 +129,8 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className="e2e-comment-thread">
           <ParentCommentContainer className={`${commentDeleted && 'deleted'}`}>
             <Comment
+              ideaId={idea.id}
+              projectId={idea.relationships.project.data.id}
               commentId={comment.id}
               commentType="parent"
               hasChildComments={hasChildComments}
@@ -140,6 +139,8 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
+              ideaId={idea.id}
+              projectId={idea.relationships.project.data.id}
               key={childCommentId}
               commentId={childCommentId}
               commentType="child"

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense, lazy } from 'react';
 import { has, isString, sortBy, last, get, isEmpty, isUndefined, trimEnd } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import linkifyHtml from 'linkifyjs/html';
@@ -14,7 +14,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import Comments from './Comments';
+import LoadingComments from './Comments/LoadingComments';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -71,11 +71,9 @@ import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
 const maxPageWidth = '800px';
-
 const loadingTimeout = 400;
 const loadingEasing = 'ease-out';
 const loadingDelay = 100;
-
 const contentTimeout = 500;
 const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentDelay = 500;
@@ -492,7 +490,7 @@ const FooterContentInner = styled.div`
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 30px;
+  margin-top: 30px;
   padding-bottom: 60px;
 
   ${media.smallerThanMaxTablet`
@@ -525,16 +523,19 @@ interface InputProps {
 
 interface Props extends DataProps, InputProps { }
 
-type State = {
+interface State {
   opened: boolean;
   loaded: boolean;
+  showComments: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
   titleTranslationLoading: boolean;
   bodyTranslationLoading: boolean;
-};
+}
+
+const LazyComments = lazy(() => import('./Comments'));
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
@@ -549,6 +550,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const initialState = {
       opened: false,
       loaded: false,
+      showComments: false,
       showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
@@ -609,7 +611,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const { opened } = this.state;
     const { idea } = this.props;
 
-    if (!opened && !isUndefined(idea)) {
+    if (!opened && !isNilOrError(idea)) {
       this.setState({ opened: true });
     }
   }
@@ -618,8 +620,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const { loaded } = this.state;
     const { idea, ideaImages, project } = this.props;
 
-    if (!loaded && !isUndefined(idea) && !isUndefined(ideaImages) && !isUndefined(project)) {
+    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project)) {
       this.setState({ loaded: true });
+
+      setTimeout(() => {
+        this.setState({ showComments: true });
+      }, 300);
     }
   }
 
@@ -766,12 +772,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
-      const authorId = get(idea, 'relationships.author.data.id', null);
+      const authorId: string | null = get(idea, 'relationships.author.data.id', null);
       const createdAt = idea.attributes.created_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
-      const statusId = get(idea, 'relationships.idea_status.data.id', null);
-      const ideaImageLarge = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
+      const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
+      const ideaImageLarge: string | null = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
@@ -834,7 +840,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 }
 
                 {ideaImageLarge &&
-                  <IdeaImage src={ideaImageLarge} alt={formatMessage(messages.imageAltText, { ideaTitle })} className="e2e-ideaImage"/>
+                  <IdeaImage
+                    src={ideaImageLarge}
+                    alt={formatMessage(messages.imageAltText, { ideaTitle })}
+                    className="e2e-ideaImage"
+                  />
                 }
 
                 <IdeaAuthor
@@ -1029,9 +1039,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                 </FooterHeaderTab>
               </FooterHeaderInner>
             </FooterHeader>
+
             <FooterContent>
               <FooterContentInner>
-                <Comments ideaId={ideaId} />
+                <Suspense fallback={<LoadingComments />}>
+                  {this.state.showComments ? <LazyComments ideaId={ideaId} /> : <LoadingComments />}
+                </Suspense>
               </FooterContentInner>
             </FooterContent>
           </FooterContainer>
@@ -1106,8 +1119,8 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
-  phases: ({ idea, render }) => !isNilOrError(idea) ? <GetPhases projectId={idea.relationships.project.data.id}>{render}</GetPhases> : null
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>
 });
 
 export default (inputProps: InputProps) => (

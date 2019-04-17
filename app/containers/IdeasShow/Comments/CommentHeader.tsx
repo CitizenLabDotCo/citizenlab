@@ -1,20 +1,12 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Author from 'components/Author';
 import AdminBadge from './AdminBadge';
 
-// services
-import { canModerate } from 'services/permissions/rules/projectPermissions';
-
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetComment, { GetCommentChildProps } from 'resources/GetComment';
-import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
@@ -61,15 +53,16 @@ const TimeAgo = styled.div`
 `;
 
 interface InputProps {
+  projectId: string;
+  authorId: string | null;
   commentId: string;
   commentType: 'parent' | 'child';
+  commentCreatedAt: string;
+  moderator: boolean;
 }
 
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
-  comment: GetCommentChildProps;
-  idea: GetIdeaChildProps;
-  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -78,50 +71,39 @@ interface State {}
 
 class CommentHeader extends PureComponent<Props, State> {
   render() {
-    const { commentType, windowSize, comment, idea, author } = this.props;
+    const { windowSize, projectId, authorId, commentType, commentCreatedAt, moderator } = this.props;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
-    if (!isNilOrError(windowSize) && !isNilOrError(comment) && !isNilOrError(idea)) {
-      const projectId = idea.relationships.project.data.id;
-      const authorId = (!isNilOrError(author) ? author.id : null);
-      const authorCanModerate = !isNilOrError(author) && canModerate(projectId, { data: author });
-      const createdAt = comment.attributes.created_at;
-      const smallerThanSmallTablet = (windowSize <= viewportWidths.smallTablet);
+    return (
+      <Container>
+        <Left>
+          <StyledAuthor
+            authorId={authorId}
+            notALink={authorId ? false : true}
+            size="32px"
+            projectId={projectId}
+            showModeration={moderator}
+            createdAt={smallerThanSmallTablet ? commentCreatedAt : undefined}
+            avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
+          />
+          <TimeAgo>
+            <FormattedRelative value={commentCreatedAt} />
+          </TimeAgo>
+        </Left>
 
-      return (
-        <Container>
-          <Left>
-            <StyledAuthor
-              authorId={authorId}
-              notALink={authorId ? false : true}
-              size="32px"
-              projectId={projectId}
-              showModeration={authorCanModerate}
-              createdAt={smallerThanSmallTablet ? createdAt : undefined}
-              avatarBadgeBgColor={commentType === 'child' ? '#fbfbfb' : '#fff'}
-            />
-            <TimeAgo>
-              <FormattedRelative value={createdAt} />
-            </TimeAgo>
-          </Left>
+        <Right>
+          {moderator &&
+            <AdminBadge />
+          }
+        </Right>
+      </Container>
+    );
 
-          <Right>
-            {authorCanModerate &&
-              <AdminBadge />
-            }
-          </Right>
-        </Container>
-      );
-    }
-
-    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  windowSize: <GetWindowSize debounce={50} />,
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
+  windowSize: <GetWindowSize debounce={50} />
 });
 
 export default (inputProps: InputProps) => (

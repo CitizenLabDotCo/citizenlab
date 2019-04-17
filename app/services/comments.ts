@@ -11,6 +11,7 @@ interface CommentAttributes {
   created_at: string;
   updated_at: string;
 }
+
 interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
