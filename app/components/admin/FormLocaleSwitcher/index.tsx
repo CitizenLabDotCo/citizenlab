@@ -23,7 +23,7 @@ const StyledButton = styled.button`
   align-items: center;
   text-transform: uppercase;
   padding: 7px 9px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   svg {
     fill: ${colors.clRed};

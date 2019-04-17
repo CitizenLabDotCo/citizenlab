@@ -81,7 +81,7 @@ const GetStartedLink = styled.a`
   padding-top: 5px;
   margin-bottom: 25px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${lighten(.05, colors.adminMenuBackground)};
 
   &:hover {

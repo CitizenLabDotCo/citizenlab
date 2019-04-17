@@ -32,7 +32,7 @@ import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenan
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   padding: 17px 34px 27px 34px;

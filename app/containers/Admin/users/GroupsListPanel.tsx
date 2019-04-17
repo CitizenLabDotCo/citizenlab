@@ -51,7 +51,7 @@ const Separator = styled.hr`
 
 const MenuTitle = styled.div`
   align-items: center;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -99,7 +99,7 @@ const MenuLink = styled(Link)`
   padding: 12px;
   padding-right: 0px;
   margin-bottom: 6px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.highlight {
     animation-name: highlight;

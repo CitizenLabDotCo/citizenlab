@@ -32,7 +32,7 @@ const MenuItemLink: any = styled(Link) `
   padding-bottom: 1px;
   margin-bottom: 8px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:hover {
     ${Text} {

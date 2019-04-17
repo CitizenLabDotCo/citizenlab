@@ -49,7 +49,7 @@ const Container = styled(Link)`
   position: relative;
   cursor: pointer;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   &.large {
@@ -255,14 +255,14 @@ const ProgressBar = styled.div`
   width: 100%;
   max-width: 130px;
   height: 5px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #d6dade;
 `;
 
 const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fc3428;
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
@@ -282,7 +282,7 @@ const ProjectLabel = styled.div`
   padding-right: 16px;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
   transition: all 200ms ease;
   cursor: pointer;
