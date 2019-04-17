@@ -11,7 +11,6 @@ declare global {
       getProjectBySlug: typeof getProjectBySlug;
       getUserBySlug: typeof getUserBySlug;
       getAuthUser: typeof getAuthUser;
-      apiCreateUser: typeof apiCreateUser;
       apiCreateIdea: typeof apiCreateIdea;
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
@@ -171,35 +170,6 @@ export function getUserBySlug(userSlug: string) {
       },
       method: 'GET',
       url: `web_api/v1/users/by_slug/${userSlug}`
-    });
-  });
-}
-
-export function apiCreateUser(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-) {
-  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`
-      },
-      method: 'POST',
-      url: ' web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en-GB',
-          first_name: firstName,
-          last_name: lastName,
-        }
-      }
     });
   });
 }
@@ -408,7 +378,6 @@ Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);
 Cypress.Commands.add('getUserBySlug', getUserBySlug);
 Cypress.Commands.add('getAuthUser', getAuthUser);
-Cypress.Commands.add('apiCreateUser', apiCreateUser);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
