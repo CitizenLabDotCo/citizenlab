@@ -17,9 +17,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {};
-
-class CommentDeletedByAdminNotification extends React.PureComponent<Props, State> {
+class CommentDeletedByAdminNotification extends React.PureComponent<Props> {
   render() {
     const { notification, idea } = this.props;
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { IIdeaForAdminNotificationData } from 'services/notifications';
-import { ideaByIdStream } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import messages from '../../messages';
@@ -15,53 +14,32 @@ import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 import T from 'components/T';
 
-type Props = {
+interface InputProps {
   notification: IIdeaForAdminNotificationData;
-};
+}
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-type State = {
-  ideaSlug?: string,
-};
+interface Props extends InputProps, DataProps {}
 
-export default class NewIdeaForAdminNotification extends React.PureComponent<Props, State> {
-  subscriptions = [] as Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      ideaSlug: undefined,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.notification.relationships.idea.data) {
-      const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
-      this.subscriptions = [
-        idea$.subscribe((response) => {
-          this.setState({
-            ideaSlug: response.data.attributes.slug,
-          });
-        })
-      ];
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  onClickUserName = (event) => {
+class NewIdeaForAdminNotification extends React.PureComponent<Props> {
+  onClickIdeaTitle = (event) => {
     event.stopPropagation();
   }
 
   render() {
-    const { notification } = this.props;
-    const { ideaSlug } = this.state;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const { notification, idea } = this.props;
+
+    if (isNilOrError(idea)) return null;
+
+    const { slug } = idea.attributes;
+
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${ideaSlug}`}
+        linkTo={`/ideas/${slug}`}
         timing={notification.attributes.created_at}
         icon="notification_comment"
         isRead={!!notification.attributes.read_at}
@@ -76,13 +54,12 @@ export default class NewIdeaForAdminNotification extends React.PureComponent<Pro
             :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>,
             idea: <Link
-              to={`/ideas/${ideaSlug}`}
-              // onClick={this.onClickIdeaTitle}
+              to={`/ideas/${slug}`}
+              onClick={this.onClickIdeaTitle}
             >
               <T value={notification.attributes.idea_title} />
             </Link>
@@ -92,3 +69,15 @@ export default class NewIdeaForAdminNotification extends React.PureComponent<Pro
     );
   }
 }
+
+export default (inputProps: InputProps) => {
+  const { notification } = inputProps;
+
+  if (!notification.relationships.idea.data) return null;
+
+  return (
+    <GetIdea id={notification.relationships.idea.data.id}>
+      {idea => <NewIdeaForAdminNotification notification={notification} idea={idea} />}
+    </GetIdea>
+  );
+};

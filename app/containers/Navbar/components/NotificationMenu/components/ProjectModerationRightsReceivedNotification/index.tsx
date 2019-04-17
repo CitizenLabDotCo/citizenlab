@@ -1,11 +1,17 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+
+// resources
 import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import Link from 'utils/cl-router/Link';
 
 interface InputProps {
@@ -18,9 +24,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-type State = {};
-
-class ProjectModerationRightsReceivedNotification extends React.PureComponent<Props, State> {
+class ProjectModerationRightsReceivedNotification extends React.PureComponent<Props> {
 
   handleOnClickProject = (event) => {
     event.stopPropagation();

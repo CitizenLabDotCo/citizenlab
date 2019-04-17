@@ -1,9 +1,7 @@
 import React from 'react';
-import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
-import { Multiloc } from 'typings';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -15,60 +13,34 @@ import T from 'components/T';
 
 // services
 import { IIdeaMarkedAsSpamNotificationData } from 'services/notifications';
-import { ideaByIdStream } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-type Props = {
+interface InputProps {
   notification: IIdeaMarkedAsSpamNotificationData;
-};
+}
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-type State = {
-  ideaSlug?: string,
-  ideaTitle?: Multiloc,
-};
+interface Props extends InputProps, DataProps {}
 
-export default class IdeaMarkedAsSpamNotification extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      ideaSlug: undefined,
-      ideaTitle: undefined,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.notification.relationships.idea.data) {
-      const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
-      this.subscriptions = [
-        idea$.subscribe((response) => {
-          this.setState({
-            ideaSlug: response.data.attributes.slug,
-            ideaTitle: response.data.attributes.title_multiloc,
-          });
-        })
-      ];
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class IdeaMarkedAsSpamNotification extends React.PureComponent<Props> {
   onClickUserName = (event) => {
     event.stopPropagation();
   }
 
   render() {
-    const { notification } = this.props;
-    const { ideaSlug, ideaTitle } = this.state;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const { notification, idea } = this.props;
 
-    if (!ideaSlug || !ideaTitle) return null;
+    if (isNilOrError(idea)) return null;
+
+    const { slug, title_multiloc } = idea.attributes;
+
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${ideaSlug}`}
+        linkTo={`/ideas/${slug}`}
         timing={notification.attributes.created_at}
         icon="notification_comment"
         isRead={!!notification.attributes.read_at}
@@ -87,10 +59,22 @@ export default class IdeaMarkedAsSpamNotification extends React.PureComponent<Pr
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>,
-            ideaTitle: <T value={ideaTitle} />
+            ideaTitle: <T value={title_multiloc} />
           }}
         />
       </NotificationWrapper>
     );
   }
 }
+
+export default (inputProps: InputProps) => {
+  const { notification } = inputProps;
+
+  if (!notification.relationships.idea.data) return null;
+
+  return (
+    <GetIdea id={notification.relationships.idea.data.id}>
+      {idea => <IdeaMarkedAsSpamNotification notification={notification} idea={idea} />}
+    </GetIdea>
+  );
+};

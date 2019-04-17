@@ -13,22 +13,18 @@ import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
-type Props = {
+interface Props {
   notification: IInviteAcceptedNotificationData;
-};
+}
 
-type State = {
-};
-
-export default class InviteAcceptedNotification extends React.PureComponent<Props, State> {
-
+export default class InviteAcceptedNotification extends React.PureComponent<Props> {
   onClickUserName = (event) => {
     event.stopPropagation();
   }
 
   render() {
     const { notification } = this.props;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
     return (
       <NotificationWrapper

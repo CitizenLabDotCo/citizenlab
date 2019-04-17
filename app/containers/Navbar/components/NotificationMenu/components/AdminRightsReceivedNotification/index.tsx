@@ -8,9 +8,7 @@ interface Props {
   notification: IAdminRightsReceivedNotificationData;
 }
 
-type State = {};
-
-export default class AdminRightsReceivedNotification extends React.PureComponent<Props, State> {
+export default class AdminRightsReceivedNotification extends React.PureComponent<Props> {
 
   render() {
     const { notification } = this.props;
