@@ -13,10 +13,7 @@ type Props = {
   notification: IProjectPhaseStartedNotificationData;
 };
 
-type State = {};
-
-export default class ProjectPhaseStartedNotification extends React.PureComponent<Props, State> {
-
+export default class ProjectPhaseStartedNotification extends React.PureComponent<Props> {
   onClickUserName = (event) => {
     event.stopPropagation();
   }

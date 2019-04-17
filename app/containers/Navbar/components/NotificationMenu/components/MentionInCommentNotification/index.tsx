@@ -1,10 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Subscription } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { IMentionInCommentNotificationData } from 'services/notifications';
-import { ideaByIdStream } from 'services/ideas';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
 import messages from '../../messages';
@@ -15,53 +14,32 @@ import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
-type Props = {
+interface InputProps {
   notification: IMentionInCommentNotificationData;
-};
+}
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
 
-type State = {
-  ideaSlug?: string,
-};
+interface Props extends InputProps, DataProps {}
 
-export default class MentionInCommentNotification extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      ideaSlug: undefined,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.notification.relationships.idea.data) {
-      const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
-      this.subscriptions = [
-        idea$.subscribe((response) => {
-          this.setState({
-            ideaSlug: response.data.attributes.slug,
-          });
-        })
-      ];
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
+class MentionInCommentNotification extends PureComponent<Props> {
   onClickUserName = (event) => {
     event.stopPropagation();
   }
 
   render() {
-    const { notification } = this.props;
-    const { ideaSlug } = this.state;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
+    const { notification, idea } = this.props;
+
+    if (isNilOrError(idea)) return null;
+
+    const { slug } = idea.attributes;
+
+    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
 
     return (
       <NotificationWrapper
-        linkTo={`/ideas/${ideaSlug}`}
+        linkTo={`/ideas/${slug}`}
         timing={notification.attributes.created_at}
         icon="notification_mention"
         isRead={!!notification.attributes.read_at}
@@ -86,3 +64,15 @@ export default class MentionInCommentNotification extends PureComponent<Props, S
     );
   }
 }
+
+export default (inputProps: InputProps) => {
+  const { notification } = inputProps;
+
+  if (!notification.relationships.idea.data) return null;
+
+  return (
+    <GetIdea id={notification.relationships.idea.data.id}>
+      {idea => <MentionInCommentNotification notification={notification} idea={idea} />}
+    </GetIdea>
+  );
+};
