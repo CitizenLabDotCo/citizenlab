@@ -8,7 +8,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface InputProps {
-  projectId?: string;
+  projectIds?: string[];
   phaseId?: string;
   authorId?: string;
   search?: string;
@@ -23,7 +23,7 @@ export interface InputProps {
 }
 
 interface IQueryParameters {
-  project: string | undefined;
+  projects: string[] | undefined;
   phase: string | undefined;
   author: string | undefined;
   search: string | undefined;
@@ -43,7 +43,7 @@ interface Props extends InputProps {
 }
 
 export type GetIdeasCountChildProps = State & {
-  onChangeProject: (projectId: string) => void;
+  onChangeProject: (projectIds: string[]) => void;
   onChangePhase: (phaseId: string) => void;
   onChangeSearchTerm: (search: string) => void;
   onChangeTopics: (topics: string[]) => void;
@@ -71,7 +71,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
     this.state = {
       // defaults
       queryParameters: {
-        project: undefined,
+        projects: undefined,
         phase: undefined,
         author: undefined,
         search: undefined,
@@ -134,6 +134,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
         })
       )
       .subscribe(({ ideasCount, queryParameters }) => {
+        console.log(ideasCount, queryParameters);
         this.setState({
           queryParameters,
           count: isNilOrError(ideasCount) ? ideasCount : ideasCount.count,
@@ -159,7 +160,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
 
   getQueryParameters = (state: State, props: Props) => {
     const inputPropsQueryParameters: IQueryParameters = {
-      project: props.projectId,
+      projects: props.projectIds,
       phase: props.phaseId,
       author: props.authorId,
       search: props.search,
@@ -178,10 +179,10 @@ export default class GetIdeasCount extends React.Component<Props, State> {
     };
   }
 
-  handleProjectOnChange = (projectId: string) => {
+  handleProjectOnChange = (projectIds: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      project: projectId
+      projects: projectIds
     });
   }
 
