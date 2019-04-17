@@ -10,16 +10,11 @@ import NotificationWrapper from '../NotificationWrapper';
 import T from 'components/T';
 import { FormattedDate } from 'react-intl';
 
-type Props = {
+interface Props {
   notification: IProjectPhaseUpcomingNotificationData;
-};
+}
 
 export default class ProjectPhaseUpcomingNotification extends React.PureComponent<Props> {
-
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification } = this.props;
 

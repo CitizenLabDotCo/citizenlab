@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // i18n
 import messages from '../../messages';
@@ -25,10 +25,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class IdeaMarkedAsSpamNotification extends React.PureComponent<Props> {
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification, idea } = this.props;
 
@@ -55,7 +51,7 @@ class IdeaMarkedAsSpamNotification extends React.PureComponent<Props> {
               :
               <Link
                 to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
+                onClick={stopPropagation}
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 import { IIdeaForAdminNotificationData } from 'services/notifications';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
@@ -24,10 +24,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class NewIdeaForAdminNotification extends React.PureComponent<Props> {
-  onClickIdeaTitle = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification, idea } = this.props;
 
@@ -59,7 +55,7 @@ class NewIdeaForAdminNotification extends React.PureComponent<Props> {
               </Link>,
             idea: <Link
               to={`/ideas/${slug}`}
-              onClick={this.onClickIdeaTitle}
+              onClick={stopPropagation}
             >
               <T value={notification.attributes.idea_title} />
             </Link>

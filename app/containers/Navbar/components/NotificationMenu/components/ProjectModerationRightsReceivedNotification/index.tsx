@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // resources
 import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
@@ -25,11 +25,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 class ProjectModerationRightsReceivedNotification extends React.PureComponent<Props> {
-
-  handleOnClickProject = (event) => {
-    event.stopPropagation();
-  }
-
   render() {
     const { notification, project } = this.props;
 
@@ -48,7 +43,7 @@ class ProjectModerationRightsReceivedNotification extends React.PureComponent<Pr
             projectLink:
               <Link
                 to={`/projects/${project.attributes.slug}`}
-                onClick={this.handleOnClickProject}
+                onClick={stopPropagation}
               >
                 <T value={project.attributes.title_multiloc} />
               </Link>,
