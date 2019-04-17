@@ -31,7 +31,7 @@ const Container = styled.div`
   margin: 20px auto;
   display: flex;
   flex-direction: row;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px ${colors.separation};
 
@@ -58,7 +58,7 @@ const EventDates = styled.div`
   flex-direction: column;
   padding-top: 15px;
   padding-bottom: 15px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: #DF3300;
@@ -97,7 +97,7 @@ const EventYear = styled.div`
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   background: #373737;

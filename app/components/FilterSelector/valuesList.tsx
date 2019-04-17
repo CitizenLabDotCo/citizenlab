@@ -34,7 +34,7 @@ const ListItem = styled.button`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;

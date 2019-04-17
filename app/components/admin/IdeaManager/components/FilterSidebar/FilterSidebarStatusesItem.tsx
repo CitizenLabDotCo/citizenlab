@@ -15,7 +15,7 @@ const ColorIndicator = styled<any, 'div'>('div')`
   width: 1rem;
   height: 1rem;
   background-color: ${props => props.color};
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   margin-right: 0.5rem;
 `;
 
