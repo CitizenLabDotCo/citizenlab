@@ -6,6 +6,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  editProfile: {
+    id: 'app.containers.UsersShowPage.editProfile',
+    defaultMessage: 'Edit my profile',
+  },
+  ideasWithCount: {
+    id: 'app.containers.UsersShowPage.ideasWithCount',
+    defaultMessage: 'Ideas({count})',
+  },
+  commentsWithCount: {
+    id: 'app.containers.UsersShowPage.commentsWithCount',
+    defaultMessage: 'Comments({count})',
+  },
   loadingUser: {
     id: 'app.containers.UsersShowPage.loadingUser',
     defaultMessage: 'Loading...',
