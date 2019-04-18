@@ -3,6 +3,7 @@
 exports[`<FeedbackToggle /> renders correctly checked 1`] = `
 <FeedbackToggle__Container
   className="feedback_needed_filter_toggle"
+  id="e2e-feedback_needed_filter_toggle"
 >
   <FeedbackToggle__StyledLabel
     onClick={[Function]}
@@ -40,6 +41,7 @@ exports[`<FeedbackToggle /> renders correctly checked 1`] = `
 exports[`<FeedbackToggle /> renders correctly unchecked 1`] = `
 <FeedbackToggle__Container
   className="feedback_needed_filter_toggle"
+  id="e2e-feedback_needed_filter_toggle"
 >
   <FeedbackToggle__StyledLabel
     onClick={[Function]}
