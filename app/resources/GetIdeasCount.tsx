@@ -134,7 +134,6 @@ export default class GetIdeasCount extends React.Component<Props, State> {
         })
       )
       .subscribe(({ ideasCount, queryParameters }) => {
-        console.log(ideasCount, queryParameters);
         this.setState({
           queryParameters,
           count: isNilOrError(ideasCount) ? ideasCount : ideasCount.count,
