@@ -316,7 +316,7 @@ export function quillEditedContent(
     }
 
     .mention {
-      color: ${linkColor};
+      // color: #000;
       font-weight: 400;
       overflow-wrap: normal;
       word-wrap: normal;
@@ -325,15 +325,15 @@ export function quillEditedContent(
       text-decoration: none;
       padding-left: 4px;
       padding-right: 4px;
-      padding-top: 2px;
-      padding-bottom: 2px;
+      padding-top: 3px;
+      padding-bottom: 3px;
       border-radius: 3px;
-      background: ${lighten(0.08, colors.placeholderBg)};
+      background: ${lighten(0.1, colors.placeholderBg)};
       transition: background 100ms ease;
 
       &:hover {
         text-decoration: none;
-        background: ${colors.placeholderBg};
+        background: ${lighten(0.06, colors.placeholderBg)};
       }
     }
 

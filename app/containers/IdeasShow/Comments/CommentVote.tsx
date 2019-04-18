@@ -29,9 +29,9 @@ const Container = styled.div`
 `;
 
 const UpvoteIcon = styled(Icon)`
-  width: 18px;
-  height: 18px;
-  flex: 0 0 18px;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
   fill: ${colors.label};
   margin-top: 0px;
 

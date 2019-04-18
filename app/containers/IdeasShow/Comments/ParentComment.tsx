@@ -25,14 +25,14 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 
 const Container = styled.div`
   margin-top: 40px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  border: 1px solid #ebebeb;
+  border: 1px solid #e0e0e0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
 `;
@@ -44,22 +44,25 @@ const ParentCommentContainer = styled.div`
 const LoadMoreText = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+  font-weight: 400;
   line-height: normal;
   text-decoration: underline;
   border: none;
   padding: 0;
+  padding: 10px;
   margin: 0;
+  transition: all 150ms ease-out;
 `;
 
 const LoadMore = styled.button`
   width: 100%;
-  min-height: 46px;
-  padding: 10px;
+  min-height: 45px;
+  padding: 0;
   margin: 0;
   border: none;
-  border-top: solid 1px #ebebeb;
-  border-bottom: solid 1px #ebebeb;
-  background: #F6F5F8;
+  border-top: solid 1px #e8e8e8;
+  border-bottom: solid 1px #e8e8e8;
+  background: ${lighten(0.02, '#f0f0f1')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -69,8 +72,12 @@ const LoadMore = styled.button`
     cursor: pointer;
 
     &:hover {
-      border-color: ${darken(0.03, '#ebebeb')};
-      background: ${darken(0.03, '#F6F5F8')};
+      /* border-color: ${darken(0.1, '#e8e8e8')}; */
+      background: ${darken(0.01, '#f0f0f1')};
+
+      ${LoadMoreText} {
+        color: ${darken(0.25, colors.label)};
+      }
     }
   }
 `;
@@ -150,6 +157,10 @@ class ParentComment extends PureComponent<Props, State> {
     }
   }
 
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
   render() {
     const { commentId, authUser, comment, idea } = this.props;
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
@@ -175,18 +186,23 @@ class ParentComment extends PureComponent<Props, State> {
               projectId={idea.relationships.project.data.id}
               commentId={comment.id}
               commentType="parent"
+              hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
               hasChildComments={hasChildComments}
             />
           </ParentCommentContainer>
 
           {canLoadMore && !hasLoadedMore &&
-            <LoadMore onClick={this.loadMore} className={!isLoadingMore ? 'clickable' : ''}>
+            <LoadMore
+              onMouseDown={this.removeFocus}
+              onClick={this.loadMore}
+              className={!isLoadingMore ? 'clickable' : ''}
+            >
               {!isLoadingMore ? (
                 <LoadMoreText>
                   <FormattedMessage {...messages.loadMoreComments} />
                 </LoadMoreText>
               ) : (
-                <Spinner />
+                <Spinner size="25px" />
               )}
             </LoadMore>
           }
