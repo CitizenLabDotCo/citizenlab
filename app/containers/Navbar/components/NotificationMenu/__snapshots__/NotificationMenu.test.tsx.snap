@@ -47,12 +47,7 @@ exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
               },
               "id": "aminRights",
               "relationships": Object {
-                "comment": Object {
-                  "data": Object {
-                    "id": "13d121b7-ee79-4a17-ac3e-c4ee51beb980",
-                    "type": "comments",
-                  },
-                },
+                "comment": undefined,
                 "idea": undefined,
                 "idea_status": undefined,
                 "initiating_user": Object {
