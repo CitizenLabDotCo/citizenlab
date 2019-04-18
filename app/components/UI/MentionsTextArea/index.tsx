@@ -146,11 +146,10 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     };
 
     const mentionStyle = {
-      // color: this.props.color,
-      // fontWeight: 400,
-      backgroundColor: lighten(0.08, colors.placeholderBg),
-      // position: 'absolute',
-      // zIndex: 2
+      paddingTop: '3px',
+      paddingBottom: '3px',
+      borderRadius: '3px',
+      backgroundColor: lighten(0.08, colors.placeholderBg)
     };
 
     this.setState({ style, mentionStyle });
