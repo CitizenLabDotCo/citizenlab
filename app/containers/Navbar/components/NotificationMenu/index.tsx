@@ -61,11 +61,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {
-  dropdownOpened: boolean,
-};
+interface State {
+  dropdownOpened: boolean;
+}
 
-class NotificationMenu extends React.PureComponent<Props, State> {
+export class NotificationMenu extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
