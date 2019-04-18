@@ -144,9 +144,10 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId } = this.props;
+    const { locale, authUser, ideaId, idea } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
+    const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
 
     this.setState({
       focussed: false,
@@ -154,7 +155,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       errorMessage: null
     });
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
+    if (locale && authUser && projectId && isString(inputValue) && trim(inputValue) !== '') {
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
           ideaId,
@@ -164,7 +165,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
       try {
         this.setState({ processing: true });
-        await addCommentToIdea(ideaId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        await addCommentToIdea(ideaId, projectId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
