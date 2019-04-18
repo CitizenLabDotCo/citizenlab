@@ -87,6 +87,7 @@ const ButtonWrapper = styled.div`
 
 interface InputProps {
   ideaId: string;
+  projectId: string;
   parentId: string;
   className?: string;
 }
@@ -126,9 +127,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   componentDidMount() {
     this.subscriptions = [
       eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
-        tap(() => {
-          this.setState({ inputValue: '', focussed: false });
-        }),
+        tap(() => this.setState({ inputValue: '', focussed: false })),
         filter(({ eventValue }) => {
           const { commentId, parentCommentId } = eventValue;
           return (commentId === this.props.parentId || parentCommentId === this.props.parentId);
@@ -188,7 +187,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   handleSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId, parentId } = this.props;
+    const { locale, authUser, ideaId, projectId, parentId } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
@@ -207,7 +206,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       });
 
       try {
-        await addCommentToComment(ideaId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        await addCommentToComment(ideaId, projectId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
 
         this.setState({
           inputValue: '',

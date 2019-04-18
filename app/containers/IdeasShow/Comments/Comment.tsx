@@ -137,6 +137,7 @@ interface InputProps {
   commentType: 'parent' | 'child';
   hasBottomBorder?: boolean;
   hasChildComments?: boolean;
+  canReply?: boolean;
   last?: boolean;
   className?: string;
 }
@@ -157,6 +158,7 @@ class Comment extends PureComponent<Props, State> {
   static defaultProps = {
     hasBottomBorder: true,
     hasChildComment: false,
+    canReply: true,
     last: false
   };
 
@@ -202,7 +204,7 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className } = this.props;
+    const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment)) {
@@ -257,6 +259,7 @@ class Comment extends PureComponent<Props, State> {
                       commentId={commentId}
                       commentType={commentType}
                       onEditing={this.onEditing}
+                      canReply={canReply}
                     />
                   </BodyAndFooter>
                 </Content>

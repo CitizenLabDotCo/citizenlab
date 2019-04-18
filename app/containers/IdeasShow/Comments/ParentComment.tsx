@@ -172,6 +172,7 @@ class ParentComment extends PureComponent<Props, State> {
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
       const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
       const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
+      const canReply = (comment.attributes.publication_status !== 'deleted');
 
       // hide parent comments that are deleted when they have no children
       if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
@@ -188,6 +189,7 @@ class ParentComment extends PureComponent<Props, State> {
               commentType="parent"
               hasBottomBorder={!(canLoadMore && !hasLoadedMore)}
               hasChildComments={hasChildComments}
+              canReply={canReply}
             />
           </ParentCommentContainer>
 
@@ -215,11 +217,16 @@ class ParentComment extends PureComponent<Props, State> {
               commentId={childCommentId}
               commentType="child"
               last={index === childCommentIds.length - 1}
+              canReply={canReply}
             />
           ))}
 
           {showCommentForm &&
-            <ChildCommentForm ideaId={ideaId} parentId={commentId} />
+            <ChildCommentForm
+              ideaId={ideaId}
+              projectId={idea.relationships.project.data.id}
+              parentId={commentId}
+            />
           }
         </Container>
       );

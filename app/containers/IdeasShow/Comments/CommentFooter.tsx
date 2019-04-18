@@ -13,6 +13,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
@@ -117,11 +118,13 @@ interface InputProps {
   commentId: string;
   commentType: 'parent' | 'child';
   onEditing: () => void;
+  canReply?: boolean;
   className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  idea: GetIdeaChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
 }
@@ -133,6 +136,10 @@ interface State {
 }
 
 class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
+  static defaultProps = {
+    canReply: true
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -182,13 +189,14 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, projectId, commentId, className, comment, locale } = this.props;
+    const { commentType, projectId, commentId, className, comment, locale, idea, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(comment) && !isNilOrError(locale)) {
+    if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
+      const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
 
       return (
         <Container className={className}>
@@ -208,10 +216,14 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           <Footer>
             <Left>
               <CommentVote commentId={commentId} />
-              <Separator>•</Separator>
-              <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
-                <FormattedMessage {...messages.commentReplyButton} />
-              </ReplyButton>
+              {commentingEnabled && canReply &&
+                <>
+                  <Separator>•</Separator>
+                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                    <FormattedMessage {...messages.commentReplyButton} />
+                  </ReplyButton>
+                </>
+              }
             </Left>
             <Right>
               <StyledCommentsMoreActions
@@ -238,6 +250,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
