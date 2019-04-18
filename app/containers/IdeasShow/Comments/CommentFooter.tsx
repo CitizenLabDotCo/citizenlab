@@ -215,10 +215,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             </Left>
             <Right>
               <StyledCommentsMoreActions
-                ariaLabel={this.moreActionsAriaLabel}
+                projectId={projectId}
                 comment={comment}
                 onCommentEdit={this.onCommentEdit}
-                projectId={projectId}
+                ariaLabel={this.moreActionsAriaLabel}
               />
 
               {commentType === 'child' &&

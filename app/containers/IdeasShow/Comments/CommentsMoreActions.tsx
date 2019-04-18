@@ -12,7 +12,6 @@ import { InjectedIntlProps } from 'react-intl';
 // Services
 import { ICommentData, markForDeletion, DeleteReason } from 'services/comments';
 import { hasPermission } from 'services/permissions';
-import { IProjectData } from 'services/projects';
 
 // Components
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
@@ -48,24 +47,23 @@ const AcceptButton = styled(Button)`
 `;
 
 // Typing
-export type Props = {
-  comment: ICommentData,
-  projectId: IProjectData['id'];
-  className?: string,
-  onCommentEdit: {(): void};
+export interface Props {
+  projectId: string;
+  comment: ICommentData;
+  onCommentEdit: () => void;
+  className?: string;
   ariaLabel?: string;
-};
+}
 
-export type State = {
-  modalVisible_spam: boolean,
-  modalVisible_delete: boolean,
+export interface State {
+  modalVisible_spam: boolean;
+  modalVisible_delete: boolean;
   loading_deleteComment: boolean;
   actions: IAction[] | null;
-};
+}
 
 class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
-
-  constructor(props: Props & InjectedIntlProps) {
+  constructor(props) {
     super(props);
     this.state = {
       modalVisible_spam: false,
@@ -100,9 +98,9 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     });
 
     if (!isDeleteReason(reason)) {
-      markForDeletion(this.props.comment.id);
+      markForDeletion(this.props.projectId, this.props.comment.id);
     } else {
-      markForDeletion(this.props.comment.id, reason);
+      markForDeletion(this.props.projectId, this.props.comment.id, reason);
     }
   }
 
@@ -138,11 +136,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   render() {
     const { ariaLabel } = this.props;
 
-    if (!this.props.comment) {
-      return null;
-    }
-
-    if (!this.state.actions) {
+    if (!this.props.comment || !this.state.actions) {
       return null;
     }
 

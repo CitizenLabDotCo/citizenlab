@@ -2,20 +2,19 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { Subscription } from 'rxjs';
 
 // components
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
-import clHistory from 'utils/cl-router/history';
+
+// services
+import { childCommentsStream } from 'services/comments';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
-
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -23,20 +22,15 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
   margin-top: 30px;
   position: relative;
   background: #fff;
-  border: 1px solid #ebebeb;
   box-sizing: border-box;
+  border: 1px solid #ebebeb;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
-
-  ${media.smallerThanMinTablet`
-    border-radius: 0px;
-  `}
 `;
 
 const ParentCommentContainer = styled.div`
@@ -57,57 +51,22 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  showForm: boolean;
-  spamModalVisible: boolean;
-  editionMode: boolean;
-  translateButtonClicked: boolean;
-}
+interface State {}
 
 class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showForm: false,
-      spamModalVisible: false,
-      editionMode: false,
-      translateButtonClicked: false,
-    };
+  subscriptions: Subscription[];
+
+  componentDidMount() {
+    this.subscriptions = [
+      childCommentsStream(this.props.commentId).observable.subscribe((childComments) => {
+        console.log('childComments for ' + this.props.commentId);
+        console.log(childComments);
+      })
+    ];
   }
 
-  toggleForm = () => {
-    trackEventByName(tracks.clickReply);
-    this.setState({ showForm: true });
-  }
-
-  captureClick = (event) => {
-    if (event.target.classList.contains('mention')) {
-      event.preventDefault();
-      const link = event.target.getAttribute('data-link');
-      clHistory.push(link);
-    }
-  }
-
-  onCommentEdit = () => {
-    this.setState({ editionMode: true });
-  }
-
-  onCancelEdition = () => {
-    this.setState({ editionMode: false });
-  }
-
-  translateComment = () => {
-    const { translateButtonClicked } = this.state;
-
-    if (translateButtonClicked) {
-      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
-    } else {
-      trackEventByName(tracks.clickTranslateCommentButton);
-    }
-
-    this.setState(prevState => ({
-      translateButtonClicked: !prevState.translateButtonClicked,
-    }));
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   render() {
@@ -124,6 +83,8 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
       if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
         return null;
       }
+
+      console.log(comment);
 
       return (
         <Container className="e2e-comment-thread">

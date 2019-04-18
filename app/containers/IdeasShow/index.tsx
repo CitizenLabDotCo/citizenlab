@@ -70,17 +70,17 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-const maxPageWidth = '800px';
-const loadingTimeout = 400;
-const loadingEasing = 'ease-out';
-const loadingDelay = 100;
-const contentTimeout = 500;
-const contentEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
-const contentDelay = 500;
-const contentTranslateDistance = '25px';
+const maxPageWidth = '810px';
+const loadingSpinnerFadeInDuration = 300;
+const loadingSpinnerFadeInEasing = 'ease-out';
+const loadingSpinnerFadeInDelay = 100;
+const contentFadeInDuration = 400;
+const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
+const contentFadeInDelay = 350;
+const contentTranslateDistance = '23px';
 
 const StyledSpinner = styled<SpinnerProps>(Spinner)`
-  transition: all ${loadingTimeout}ms ${loadingEasing} ${loadingDelay}ms;
+  transition: all ${loadingSpinnerFadeInDuration}ms ${loadingSpinnerFadeInEasing} ${loadingSpinnerFadeInDelay}ms;
 `;
 
 const Loading = styled.div`
@@ -119,7 +119,7 @@ const Container = styled.div`
     &.content-enter-active {
       opacity: 1;
       transform: translateY(0);
-      transition: all ${contentTimeout}ms ${contentEasing} ${contentDelay}ms;
+      transition: all ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
     }
   }
 
@@ -168,7 +168,7 @@ const LeftColumn = styled.div`
   flex-basis: 0;
   margin: 0;
   padding: 0;
-  padding-right: 60px;
+  padding-right: 70px;
   min-width: 0;
 
   ${media.smallerThanMaxTablet`
@@ -434,7 +434,7 @@ const MoreActionsMenuWrapper = styled.div`
 
 const FooterContainer = styled.div`
   width: 100%;
-  margin-top: 40px;
+  margin-top: 30px;
 
   ${media.smallerThanMinTablet`
     margin-top: 20px;
@@ -777,7 +777,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
-      const ideaImageLarge: string | null = !isNilOrError(ideaImages) && ideaImages.length > 0 ? get(ideaImages[0], 'attributes.versions.large', null) : null;
+      const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
       const ideaLocation = (idea.attributes.location_point_geojson || null);
       const ideaAdress = (idea.attributes.location_description || null);
       const projectId = idea.relationships.project.data.id;
@@ -1069,7 +1069,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         <CSSTransition
           classNames="loading"
           in={(opened && !loaded)}
-          timeout={loadingTimeout}
+          timeout={loadingSpinnerFadeInDuration}
           mountOnEnter={false}
           unmountOnExit={true}
           exit={false}
@@ -1082,7 +1082,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         <CSSTransition
           classNames="content"
           in={(opened && loaded)}
-          timeout={contentTimeout + contentDelay}
+          timeout={contentFadeInDuration + contentFadeInDelay}
           mountOnEnter={false}
           unmountOnExit={false}
           enter={animatePageEnter}
