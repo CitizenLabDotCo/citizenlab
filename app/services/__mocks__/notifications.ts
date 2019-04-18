@@ -1,4 +1,29 @@
-import { TNotificationData } from 'services/notifications';
+import { INotifications, TNotificationData } from 'services/notifications';
+import { BehaviorSubject } from 'rxjs';
+
+let mockNotifications: INotifications[] | null = null;
+
+export const __setMockNotifications = (notifications: INotifications[]) => {
+  mockNotifications = notifications;
+};
+
+export const notificationsStream = jest.fn((_notification) => {
+  const observable = new BehaviorSubject(mockNotifications);
+  return {
+    observable
+  };
+});
+
+export const getMockNotifications = (notifs: TNotificationData[], isLast) => ({
+  data: notifs,
+  links: {
+    fist: 'first',
+    self: 'self',
+    prev: 'prev',
+    last: 'last',
+    next: isLast ? null : 'next'
+  }
+});
 
 export const getNotification = (
   id: string,
@@ -38,7 +63,7 @@ export const getNotification = (
         type: 'ideas'
       }
     } : undefined,
-    comment: ['comment_marked_as_spam', 'invite_accepted'].indexOf(type) === -1 ? {
+    comment: ['admin_rights_received', 'invite_accepted'].indexOf(type) === -1 ? {
       data: {
         id: '13d121b7-ee79-4a17-ac3e-c4ee51beb980',
         type: 'comments'
