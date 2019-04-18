@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { isFunction } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -87,6 +88,11 @@ interface InputProps {
   value: boolean;
   onChange: () => void;
   assignee: string;
+  project?: string;
+  phase?: string;
+  topics?: string[];
+  ideaStatus?: string;
+  searchTerm?: string;
 }
 
 interface DataProps {
@@ -98,6 +104,15 @@ interface Props extends InputProps, DataProps {}
 type State = {};
 
 export class FeedbackToggle extends React.PureComponent<Props, State> {
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.searchTerm !== this.props.searchTerm) {
+      if (isFunction(this.props.feedbackNeededCount.onChangeSearchTerm)) {
+        this.props.feedbackNeededCount.onChangeSearchTerm(this.props.searchTerm);
+      }
+    }
+  }
+
   handleOnClick = () => {
     this.props.onChange();
   }
@@ -124,11 +139,22 @@ export class FeedbackToggle extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt({
-  ideasCount: ({ assignee, render }) => (
-    <GetIdeasCount feedbackNeeded={true} assignee={assignee !== 'all' ? assignee : undefined}>
-      {render}
-    </GetIdeasCount>
-  )
+  ideasCount: ({ project, phase, topics, ideaStatus, assignee, render }) => {
+    const projectIds = [project];
+
+    return (
+      <GetIdeasCount
+        feedbackNeeded={true}
+        assignee={assignee !== 'all' ? assignee : undefined}
+        projectIds={projectIds}
+        phaseId={phase}
+        topics={topics}
+        ideaStatusId={ideaStatus}
+      >
+        {render}
+      </GetIdeasCount>
+    );
+  }
 });
 
 export default (inputProps: InputProps) => (

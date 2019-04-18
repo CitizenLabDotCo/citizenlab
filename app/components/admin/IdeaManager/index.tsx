@@ -140,6 +140,7 @@ interface State {
   contextRef: any;
   assignee: string;
   feedbackNeededFilterActive: boolean;
+  searchTerm: string | undefined;
 }
 
 class IdeaManager extends React.PureComponent<Props, State> {
@@ -153,7 +154,8 @@ class IdeaManager extends React.PureComponent<Props, State> {
       activeFilterMenu: null,
       contextRef: null,
       assignee: !isNilOrError(props.authUser) ? props.authUser.id : '',
-      feedbackNeededFilterActive: false
+      feedbackNeededFilterActive: false,
+      searchTerm: undefined
     };
     this.globalState = globalState.init('AdminFullWidth');
   }
@@ -212,11 +214,14 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   handleSearchChange = (event) => {
-    const term = event.target.value;
+    const searchTerm = event.target.value;
+
+    this.setState({ searchTerm });
 
     if (isFunction(this.props.ideas.onChangeSearchTerm)) {
-      this.props.ideas.onChangeSearchTerm(term);
+      this.props.ideas.onChangeSearchTerm(searchTerm);
     }
+
   }
 
   isAnyIdeaSelected = () => {
@@ -247,7 +252,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
     const { authUser, tenant } = this.props;
     const adminAtWorkId = authUser && authUser.id;
     const tenantId = !isNilOrError(tenant) && tenant.id;
-    this.props.ideas.onChangeAssignee(assignee === 'all' ? undefined : assignee);
+    this.props.ideas.onChangeAssignee(assignee !== 'all' ? assignee : undefined);
     this.setState({ assignee });
 
     // analytics
@@ -275,6 +280,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   render() {
+    const { searchTerm } = this.state;
     const { project, projects, ideas, phases, ideaStatuses, topics } = this.props;
     const { projectsList } = projects;
     const { ideasList, onChangePhase, onChangeTopics, onChangeProjects, onChangeIdeaStatus } = ideas;
@@ -322,7 +328,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
           <FeedbackToggle
             value={feedbackNeededFilterActive}
             onChange={this.handleToggleFeedbackNeededFilter}
+            project={selectedProject}
+            phase={selectedPhase}
+            topics={selectedTopics}
+            ideaStatus={selectedIdeaStatus}
             assignee={assignee}
+            searchTerm={searchTerm}
           />
           <StyledExportMenu
             exportType={exportType}
