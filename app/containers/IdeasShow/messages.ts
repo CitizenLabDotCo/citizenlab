@@ -99,7 +99,7 @@ export default defineMessages({
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
-    defaultMessage: 'Load more comments...',
+    defaultMessage: 'Load more comments',
   },
   loadingComments: {
     id: 'app.containers.IdeasShow.loadingComments',

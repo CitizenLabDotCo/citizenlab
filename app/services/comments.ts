@@ -1,6 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
 import { ideaByIdStream } from 'services/ideas';
 import { first } from 'rxjs/operators';
@@ -10,6 +10,7 @@ interface CommentAttributes {
   downvotes_count: number;
   created_at: string;
   updated_at: string;
+  children_count: number;
 }
 
 interface IPresentComment extends CommentAttributes {
@@ -71,12 +72,12 @@ export function commentStream(commentId: string) {
   return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}` });
 }
 
-export function childCommentsStream(commentId: string) {
-  return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}/children` });
+export function childCommentsStream(commentId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/comments/${commentId}/children`, ...streamParams });
 }
 
-export function commentsForIdeaStream(ideaId: string) {
-  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments` });
+export function commentsForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`, ...streamParams });
 }
 
 export async function addCommentToIdea(ideaId: string, authorId: string, body: { [key: string]: string }) {

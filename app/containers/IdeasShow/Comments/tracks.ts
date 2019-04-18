@@ -1,5 +1,4 @@
 export default {
-  loadingComments: 'Loading comments...',
   focusParentCommentEditor: 'Add a parent comment editor focused',
   clickParentCommentPublish: 'Clicked button to post a parent comment',
   focusChildCommentEditor: 'Add a child comment editor focused',

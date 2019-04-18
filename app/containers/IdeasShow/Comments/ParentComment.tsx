@@ -2,14 +2,16 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
 
 // components
 import Comment from './Comment';
 import ChildCommentForm from './ChildCommentForm';
+import Spinner from 'components/UI/Spinner';
 
 // services
-import { childCommentsStream } from 'services/comments';
+import { childCommentsStream, IComments } from 'services/comments';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -17,14 +19,16 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // style
 import styled from 'styled-components';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div`
-  margin-top: 30px;
+  margin-top: 40px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
@@ -35,6 +39,40 @@ const Container = styled.div`
 
 const ParentCommentContainer = styled.div`
   position: relative;
+`;
+
+const LoadMoreText = styled.span`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  text-decoration: underline;
+  border: none;
+  padding: 0;
+  margin: 0;
+`;
+
+const LoadMore = styled.button`
+  width: 100%;
+  min-height: 46px;
+  padding: 10px;
+  margin: 0;
+  border: none;
+  border-top: solid 1px #ebebeb;
+  border-bottom: solid 1px #ebebeb;
+  background: #F6F5F8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease-out;
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      border-color: ${darken(0.03, '#ebebeb')};
+      background: ${darken(0.03, '#F6F5F8')};
+    }
+  }
 `;
 
 interface InputProps {
@@ -51,40 +89,83 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  canLoadMore: boolean;
+  isLoadingMore: boolean;
+  hasLoadedMore: boolean;
+  childComments: IComments | null;
+}
 
-class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
+class ParentComment extends PureComponent<Props, State> {
+  private loadMore$: BehaviorSubject<boolean>;
+  private subscriptions: Subscription[];
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      canLoadMore: false,
+      isLoadingMore: false,
+      hasLoadedMore: false,
+      childComments: null
+    };
+  }
 
   componentDidMount() {
+    this.loadMore$ = new BehaviorSubject(false);
+
     this.subscriptions = [
-      childCommentsStream(this.props.commentId).observable.subscribe((childComments) => {
-        console.log('childComments for ' + this.props.commentId);
-        console.log(childComments);
+      this.loadMore$.pipe(
+        distinctUntilChanged(),
+        filter((loadMore) => loadMore),
+        tap(() => this.setState({ isLoadingMore: true })),
+        switchMap(() => {
+          return childCommentsStream(this.props.commentId, {
+            queryParameters: {
+              'page[number]': 1,
+              'page[size]': 500
+            }
+          }).observable;
+        })
+      )
+      .subscribe((childComments) => {
+        this.setState({ childComments, isLoadingMore: false, hasLoadedMore: true });
       })
     ];
+  }
+
+  componentDidUpdate(_prevProps: Props) {
+    if (!isNilOrError(this.props.comment) && this.props.comment.attributes.children_count > 5 && !this.state.canLoadMore) {
+      this.setState({ canLoadMore: true });
+    }
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  loadMore = (event: React.FormEvent<any>) => {
+    if (!this.state.isLoadingMore) {
+      event.preventDefault();
+      this.loadMore$.next(true);
+    }
+  }
+
   render() {
-    const { commentId, authUser, comment, childCommentIds, idea } = this.props;
+    const { commentId, authUser, comment, idea } = this.props;
+    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(idea)) {
       const ideaId = comment.relationships.idea.data.id;
       const commentDeleted = (comment.attributes.publication_status === 'deleted');
       const commentingEnabled = idea.relationships.action_descriptor.data.commenting.enabled;
       const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
-      const hasChildComments = (childCommentIds && childCommentIds.length > 0);
+      const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
+      const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
 
       // hide parent comments that are deleted when they have no children
       if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
         return null;
       }
-
-      console.log(comment);
 
       return (
         <Container className="e2e-comment-thread">
@@ -97,6 +178,18 @@ class ParentComment extends PureComponent<Props & InjectedIntlProps, State> {
               hasChildComments={hasChildComments}
             />
           </ParentCommentContainer>
+
+          {canLoadMore && !hasLoadedMore &&
+            <LoadMore onClick={this.loadMore} className={!isLoadingMore ? 'clickable' : ''}>
+              {!isLoadingMore ? (
+                <LoadMoreText>
+                  <FormattedMessage {...messages.loadMoreComments} />
+                </LoadMoreText>
+              ) : (
+                <Spinner />
+              )}
+            </LoadMore>
+          }
 
           {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
             <Comment
@@ -126,10 +219,8 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ comment, render }) => <GetIdea id={get(comment, 'relationships.idea.data.id')}>{render}</GetIdea>
 });
 
-const ParentCommentWithHoCs = injectIntl<Props>(ParentComment);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ParentCommentWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <ParentComment {...inputProps} {...dataProps} />}
   </Data>
 );
