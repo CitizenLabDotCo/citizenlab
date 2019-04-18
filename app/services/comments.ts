@@ -71,6 +71,10 @@ export function commentStream(commentId: string) {
   return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}` });
 }
 
+export function childCommentsStream(commentId: string) {
+  return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}/children` });
+}
+
 export function commentsForIdeaStream(ideaId: string) {
   return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments` });
 }
@@ -108,16 +112,9 @@ export function updateComment(commentId: string, object: IUpdatedComment) {
   return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
 }
 
-export async function markForDeletion(commentId: ICommentData['id'], reason?: DeleteReason) {
-  if (reason && reason.reason_code !== 'other') {
-    delete reason.other_reason;
-  }
-
-  const comment  = await commentStream(commentId).observable.pipe(first()).toPromise();
-  const [idea, response] = await Promise.all([
-    ideaByIdStream(comment.data.relationships.idea.data.id).observable.pipe(first()).toPromise(),
-    request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {})
-  ]);
-  streams.fetchAllWith({ dataId: [commentId, idea.data.relationships.project.data.id] });
+export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason) {
+  if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
+  const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+  streams.fetchAllWith({ dataId: [commentId, projectId] });
   return response;
 }

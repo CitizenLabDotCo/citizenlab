@@ -143,7 +143,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  spamModalVisible: boolean;
   editing: boolean;
   translateButtonClicked: boolean;
 }
@@ -157,7 +156,6 @@ class Comment extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      spamModalVisible: false,
       editing: false,
       translateButtonClicked: false,
     };

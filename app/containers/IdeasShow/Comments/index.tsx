@@ -42,13 +42,15 @@ const CommentsSection = memo<Props>(({ ideaId, idea, comments, project }) => {
         <Comments ideaId={ideaId} />
         <ParentCommentForm ideaId={ideaId} />
 
-        {/* {!isNilOrError(project) &&
+        {/*
+        {!isNilOrError(project) &&
           <HasPermission item={project} action="moderate">
             <HasPermission.No>
               <ParentCommentForm ideaId={ideaId} />
             </HasPermission.No>
           </HasPermission>
-        } */}
+        }
+        */}
       </>
     );
   }
@@ -59,7 +61,7 @@ const CommentsSection = memo<Props>(({ ideaId, idea, comments, project }) => {
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   comments: ({ ideaId, render }) => <GetComments ideaId={ideaId}>{render}</GetComments>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
 export default (inputProps: InputProps) => (
