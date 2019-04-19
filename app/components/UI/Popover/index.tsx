@@ -38,7 +38,7 @@ const ContentInner: any = styled.div`
   position: relative;
   left: -50%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: ${(props: any) => props.backgroundColor};
   color: ${(props: any) => props.textColor};
   fill: ${(props: any) => props.textColor};

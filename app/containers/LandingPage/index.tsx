@@ -224,7 +224,6 @@ class LandingPage extends PureComponent<Props, State> {
                       publicationStatuses={this.projectsPublicationStatuses}
                       showTitle={true}
                       showPublicationStatusFilter={false}
-                      showSendFeedback={true}
                       layout="dynamic"
                     />
                   </SectionContainer>

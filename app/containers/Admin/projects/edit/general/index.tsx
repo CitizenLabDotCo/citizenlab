@@ -89,7 +89,7 @@ const ParticipationContextWrapper = styled.div`
   padding-bottom: 15px;
   margin-top: 8px;
   display: inline-block;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
   transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, stylingConsts } from 'utils/styleUtils';
 import { shallow, mount } from 'enzyme';
 
 const theme = {
@@ -12,6 +12,7 @@ const theme = {
   mobileMenuHeight: 72,
   mobileTopBarHeight: 66,
   maxPageWidth: 952,
+  ...stylingConsts
 };
 /* TODO: type this right... https://github.com/styled-components/jest-styled-components/issues/217
 export function shallowWithTheme<C extends Component, P = C['props'], S = C['state']>(tree: ReactElement<P>, options?: ShallowRendererProps) {

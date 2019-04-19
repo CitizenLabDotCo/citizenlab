@@ -54,7 +54,7 @@ const StyledErrorMessageInner = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.clRedErrorBackground};
   background: ${(props: IStyledErrorMessageInner) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
 `;

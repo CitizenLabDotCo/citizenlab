@@ -48,7 +48,7 @@ const Options: any = styled.div`
 const CollapseContainer = styled.div`
   width: 497px;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
   z-index: 1;

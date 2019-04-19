@@ -145,7 +145,7 @@ const Container: any = styled.div`
   a {
     align-items: center;
     border: ${(props: any) => props.borderThickness || '1px'} solid transparent;
-    border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
+    border-radius: ${(props: any) => props.circularCorners ? '999em' : props.theme.borderRadius};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};

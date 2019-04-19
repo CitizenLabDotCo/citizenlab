@@ -43,8 +43,8 @@ const NewNotificationsIndicator = styled.div`
   line-height: ${fontSizes.xs}px;
   background: ${({ theme }) => theme.invertedNavbarColors && theme.navbarTextColor ? theme.colorText : colors.clRed};
   padding: 4px;
-  border-radius: 5px;
-  border: solid 2px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px ${({ theme }) => theme.invertedNavbarColors && theme.navbarBackgroundColor ? theme.navbarBackgroundColor : '#fff'};
   position: absolute;
   top: -9px;
   left: 15px;

@@ -27,7 +27,7 @@ const CheckboxContainer: any = styled.div`
   justify-content: center;
   cursor: pointer;
   border: solid 1px #aaa;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
   border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};

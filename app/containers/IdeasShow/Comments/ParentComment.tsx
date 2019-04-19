@@ -34,7 +34,7 @@ const Container = styled.div`
   box-sizing: border-box;
   border: 1px solid #e0e0e0;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const ParentCommentContainer = styled.div`
@@ -72,7 +72,6 @@ const LoadMore = styled.button`
     cursor: pointer;
 
     &:hover {
-      /* border-color: ${darken(0.1, '#e8e8e8')}; */
       background: ${darken(0.01, '#f0f0f1')};
 
       ${LoadMoreText} {

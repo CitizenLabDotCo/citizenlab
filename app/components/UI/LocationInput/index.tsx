@@ -13,7 +13,7 @@ const LocationInputWrapper = styled.div`
     line-height: 26px;
     font-weight: 400;
     padding: 12px;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px #ccc;
     background: #fff;
     outline: none;

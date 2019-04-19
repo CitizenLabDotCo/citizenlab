@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -75,7 +74,6 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
   <Data {...inputProps}>
     {dataProps => {
       const className = inputProps['className'];
-      const { slug } = inputProps.params;
       const { project, events } = dataProps;
 
       if (project !== null && events !== null) {
@@ -91,8 +89,6 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
 
         return (
           <>
-            <Header projectSlug={slug} />
-
             {!isNilOrError(project) &&
               <>
                 <StyledProjectArchivedIndicator projectId={project.id} />
