@@ -1,6 +1,6 @@
-import React, { PureComponent, memo } from 'react';
-import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+// import { adopt } from 'react-adopt';
+// import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 
@@ -61,19 +61,22 @@ const UserNavbarButton = styled.ul`
     border-top-color: ${({ theme }) => theme.colorMain};
     border-bottom-color: ${({ theme }) => rgba(theme.colorMain, 0.05)};
 
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-    background-color: ${({ theme }) => rgba(theme.colorMain, 0.05)};
-    pointer-events: none;
+    &:before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+      background-color: ${({ theme }) => rgba(theme.colorMain, 0.05)};
+      pointer-events: none;
+    }
   }
-}
+  ${media.smallerThanMinTablet`
+    flex: 1;
+  `}
 `;
 
 const TabIcon = styled(Icon)`

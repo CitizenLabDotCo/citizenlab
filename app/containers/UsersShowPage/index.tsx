@@ -11,14 +11,9 @@ import UsersShowPageMeta from './UsersShowPageMeta';
 // resources
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import messages from './messages';
-
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 

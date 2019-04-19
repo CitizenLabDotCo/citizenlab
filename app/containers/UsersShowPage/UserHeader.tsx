@@ -17,7 +17,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
@@ -29,6 +29,10 @@ const Container = styled.div`
   width: 100%;
   padding-top: 30px;
   padding-bottom: 70px;
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px 20px 35px;
+  `}
 `;
 
 const UserAvatar = styled.div`
