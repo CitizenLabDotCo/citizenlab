@@ -3,6 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
+import CommentSorting from './CommentSorting';
 
 // resources
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
@@ -11,7 +12,13 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  padding-bottom: 45px;
+  margin-top: 30px;
+`;
+
+const StyledCommentSorting = styled(CommentSorting)`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
 `;
 
 interface InputProps {
@@ -28,6 +35,11 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class Comments extends PureComponent<Props, State> {
+  handleSortOnChange = (sort: string) => {
+    console.log(sort);
+    // this.props.ideas.onChangeSorting(sort);
+  }
+
   render() {
     const { ideaId, comments, className } = this.props;
 
@@ -41,6 +53,8 @@ class Comments extends PureComponent<Props, State> {
       if (parentComments && parentComments.length > 0) {
         return (
           <Container className={`e2e-comments-container ${className}`}>
+            <StyledCommentSorting onChange={this.handleSortOnChange} />
+
             {parentComments.map((parentComment, _index) => {
               const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
                 if (comment.relationships.parent.data &&
