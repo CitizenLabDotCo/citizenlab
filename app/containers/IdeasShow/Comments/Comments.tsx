@@ -5,6 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import ParentComment from './ParentComment';
 import CommentSorting from './CommentSorting';
 
+// services
+import { ICommentData } from 'services/comments';
+
 // resources
 import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
@@ -32,53 +35,94 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  sortOrder: 'oldest_to_newest' | 'most_upvoted';
+  parentComments: ICommentData[];
+}
 
 class Comments extends PureComponent<Props, State> {
-  handleSortOnChange = (sort: string) => {
-    console.log(sort);
-    // this.props.ideas.onChangeSorting(sort);
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortOrder: 'oldest_to_newest',
+      parentComments: []
+    };
+  }
+
+  componentDidMount() {
+    this.setAndSortParentComments();
+  }
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevProps.comments !== this.props.comments || prevState.sortOrder !== this.state.sortOrder) {
+      this.setAndSortParentComments();
+    }
+  }
+
+  setAndSortParentComments = () => {
+    const { comments } = this.props;
+    const { sortOrder } = this.state;
+    let parentComments: ICommentData[] = [];
+
+    if (!isNilOrError(comments) && comments.length > 0) {
+      if (sortOrder === 'oldest_to_newest') {
+        parentComments = comments.filter((comment) => {
+          return comment.relationships.parent.data === null;
+        }).sort((commentA, commentB) => {
+          return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
+        });
+      } else {
+        parentComments = comments.filter((comment) => {
+          return comment.relationships.parent.data === null;
+        }).sort((commentA, commentB) => {
+          if (commentB.attributes.upvotes_count === commentA.attributes.upvotes_count) {
+            return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
+          }
+
+          return commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
+        });
+      }
+    }
+
+    this.setState({ parentComments });
+  }
+
+  handleSortOnChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+    this.setState({ sortOrder });
   }
 
   render() {
     const { ideaId, comments, className } = this.props;
+    const { parentComments } = this.state;
 
-    if (!isNilOrError(comments) && comments.length > 0) {
-      const parentComments = comments.filter((comment) => {
-        return comment.relationships.parent.data === null;
-      }).sort((commentA, commentB) => {
-        return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
-      });
+    if (parentComments && parentComments.length > 0) {
+      return (
+        <Container className={`e2e-comments-container ${className}`}>
+          <StyledCommentSorting onChange={this.handleSortOnChange} />
 
-      if (parentComments && parentComments.length > 0) {
-        return (
-          <Container className={`e2e-comments-container ${className}`}>
-            <StyledCommentSorting onChange={this.handleSortOnChange} />
+          {parentComments.map((parentComment, _index) => {
+            const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
+              if (comment.relationships.parent.data &&
+                  comment.relationships.parent.data.id === parentComment.id &&
+                  comment.attributes.publication_status !== 'deleted'
+              ) {
+                return true;
+              }
 
-            {parentComments.map((parentComment, _index) => {
-              const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-                if (comment.relationships.parent.data &&
-                    comment.relationships.parent.data.id === parentComment.id &&
-                    comment.attributes.publication_status !== 'deleted'
-                ) {
-                  return true;
-                }
+              return false;
+            }).map(comment => comment.id));
 
-                return false;
-              }).map(comment => comment.id));
-
-              return (
-                <ParentComment
-                  key={parentComment.id}
-                  ideaId={ideaId}
-                  commentId={parentComment.id}
-                  childCommentIds={childCommentIds}
-                />
-              );
-            })}
-          </Container>
-        );
-      }
+            return (
+              <ParentComment
+                key={parentComment.id}
+                ideaId={ideaId}
+                commentId={parentComment.id}
+                childCommentIds={childCommentIds}
+              />
+            );
+          })}
+        </Container>
+      );
     }
 
     return null;
