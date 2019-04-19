@@ -20,11 +20,11 @@ interface State {}
 
 class QuillEditedContent extends PureComponent<Props, State> {
   render() {
-    const { linkColor, textColor, fontSize, fontWeight, children, className, theme } = this.props;
+    const { linkColor, textColor, fontSize, fontWeight, children, className } = this.props;
 
     return (
       <Container
-        linkColor={linkColor || theme.colorText}
+        linkColor={linkColor}
         textColor={textColor}
         fontSize={fontSize}
         fontWeight={fontWeight}
