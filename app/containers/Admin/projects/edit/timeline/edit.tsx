@@ -46,7 +46,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
 
     svg {
       z-index: 3;

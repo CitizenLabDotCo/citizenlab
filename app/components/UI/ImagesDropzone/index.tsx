@@ -83,7 +83,7 @@ const DropzoneContent = styled.div`
 
 const StyledDropzone = styled(Dropzone)`
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
@@ -132,7 +132,7 @@ const Image: any = styled.div`
   background-image: url(${(props: any) => props.src});
   position: relative;
   box-sizing: border-box;
-  border-radius: ${(props: any) => props.imageRadius ? props.imageRadius : '5px'};
+  border-radius: ${(props: any) => props.imageRadius ? props.imageRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
 `;
 

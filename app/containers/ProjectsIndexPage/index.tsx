@@ -71,7 +71,6 @@ export default React.memo(() => (
           sort="new"
           showTitle={false}
           showPublicationStatusFilter={true}
-          showSendFeedback={false}
           layout="threecolumns"
         />
       </StyledContentContainer>

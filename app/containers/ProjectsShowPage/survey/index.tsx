@@ -3,7 +3,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Header from '../Header';
 import ContentContainer from 'components/ContentContainer';
 import Survey from '../process/survey';
 
@@ -29,7 +28,6 @@ export default withRouter((props: WithRouterProps) => (
       ) {
         return (
           <>
-            <Header projectSlug={props.params.slug} />
             <ContentContainer>
               <SurveyContainer>
                 <Survey

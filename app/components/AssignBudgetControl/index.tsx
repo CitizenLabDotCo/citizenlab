@@ -56,7 +56,7 @@ const BudgetBox = styled.div`
   justify-content: center;
   margin-bottom: 5px;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.background};
   border: solid 1px ${colors.separation};
 `;

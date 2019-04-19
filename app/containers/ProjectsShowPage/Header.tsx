@@ -51,7 +51,7 @@ const ArchivedLabel = styled.span`
   font-size: ${fontSizes.small}px;
   font-weight: 500;
   text-transform: uppercase;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 6px 12px;
   background: rgba(255, 255, 255, .45);
   margin-top: 15px;

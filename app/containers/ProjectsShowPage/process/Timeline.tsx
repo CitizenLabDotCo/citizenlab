@@ -49,7 +49,7 @@ const ContainerInner = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const Header = styled.div`
@@ -344,11 +344,11 @@ const PhaseContainer: any = styled.div`
   margin-right:  ${(props: any) => !props.last ? '1px' : '0px' };
 
   &.first ${PhaseBar} {
-    border-radius: 5px 0px 0px 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px ${(props: any) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px 5px 5px 0px;
+    border-radius: 0px ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0px;
   }
 
   &:focus,

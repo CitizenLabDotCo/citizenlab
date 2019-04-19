@@ -21,7 +21,7 @@ const Container = styled(Link)`
   margin-left: 13px;
   margin-right: 13px;
   background: white;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   padding: 15px;
   cursor: pointer;
@@ -62,7 +62,7 @@ const Date = styled.div`
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 5px 5px 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
   background: #DF3300;
 `;
 
@@ -74,7 +74,7 @@ const Year = styled.div`
   text-align: center;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 0 0 5px 5px;
+  border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
   background: #373737;
 `;
 

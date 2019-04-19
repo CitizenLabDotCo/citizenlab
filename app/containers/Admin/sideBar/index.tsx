@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
@@ -21,6 +22,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
+import HasPermission from 'components/HasPermission';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -69,7 +71,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled.a`
+const GetStartedLink = styled(Link)`
   flex: 0 0 auto;
   width: 230px;
   display: flex;
@@ -81,7 +83,7 @@ const GetStartedLink = styled.a`
   padding-top: 5px;
   margin-bottom: 25px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${lighten(.05, colors.adminMenuBackground)};
 
   &:hover {
@@ -123,11 +125,11 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     };
     this.routes = [
       {
-        id: 'guide',
-        link: '/admin',
-        iconName: 'play',
-        message: 'guide',
-        isActive: (pathName) => pathName === (`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+        id: 'insights',
+        link: '/admin/dashboard',
+        iconName: 'stats',
+        message: 'dashboard',
+        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'projects',
@@ -142,13 +144,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         iconName: 'ideas',
         message: 'ideas',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
-      },
-      {
-        id: 'insights',
-        link: '/admin/dashboard',
-        iconName: 'stats',
-        message: 'dashboard',
-        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'users',
@@ -241,10 +236,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             }
           })}
           <Spacer />
-          <GetStartedLink href={formatMessage({ ...messages.gettingStartedLink })} target="blank">
-            <IconWrapper><Icon name="circleInfo" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
-          </GetStartedLink>
+          <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+            <GetStartedLink to="/admin/guide" >
+              <IconWrapper><Icon name="circleInfo" /></IconWrapper>
+              <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
+            </GetStartedLink>
+          </HasPermission>
         </MenuInner>
       </Menu>
     );
