@@ -76,11 +76,11 @@ const UpvoteIconWrapper = styled.button`
 const UpvoteCount = styled.div`
   color: ${colors.label};
   margin-left: 4px;
+  margin-right: 6px;
 `;
 
 const UpvoteLabel = styled.button`
   color: ${colors.label};
-  margin-left: 4px;
   cursor: pointer;
 
   &:hover {
