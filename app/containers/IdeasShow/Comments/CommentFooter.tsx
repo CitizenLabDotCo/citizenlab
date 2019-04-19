@@ -16,6 +16,7 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -97,7 +98,10 @@ const TimeAgo = styled.div`
   font-size: ${fontSizes.small}px;
   line-height: normal;
   font-weight: 400;
-  margin-left: 22px;
+
+  &.hasLeftMargin {
+    margin-left: 22px;
+  }
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -124,6 +128,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
@@ -189,7 +194,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, projectId, commentId, className, comment, locale, idea, canReply } = this.props;
+    const { commentType, projectId, commentId, className, comment, locale, authUser, idea, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
@@ -214,17 +219,19 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           {/* </FeatureFlag> */}
 
           <Footer>
-            <Left>
-              <CommentVote commentId={commentId} />
-              {commentingEnabled && canReply &&
-                <>
-                  <Separator>•</Separator>
-                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
-                    <FormattedMessage {...messages.commentReplyButton} />
-                  </ReplyButton>
-                </>
-              }
-            </Left>
+            {authUser &&
+              <Left>
+                <CommentVote commentId={commentId} />
+                {commentingEnabled && canReply &&
+                  <>
+                    <Separator>•</Separator>
+                    <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                      <FormattedMessage {...messages.commentReplyButton} />
+                    </ReplyButton>
+                  </>
+                }
+              </Left>
+            }
             <Right>
               <StyledCommentsMoreActions
                 projectId={projectId}
@@ -234,7 +241,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               />
 
               {commentType === 'child' &&
-                <TimeAgo>
+                <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
                   <FormattedRelative value={createdAt} />
                 </TimeAgo>
               }
@@ -250,6 +257,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>

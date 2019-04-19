@@ -112,6 +112,22 @@ const Container = styled.div`
   transform: none;
   will-change: transform, opacity;
 
+  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
+  display: flex;
+  flex-direction: column;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+  `}
+
+  &.inModal {
+    min-height: 100vh;
+
+    ${media.smallerThanMaxTablet`
+      min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    `}
+  }
+
   &.content-enter {
     opacity: 0;
     transform: translateY(${contentTranslateDistance});
@@ -433,7 +449,11 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 const FooterContainer = styled.div`
+  flex: 1;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-top: 30px;
 
   ${media.smallerThanMinTablet`
@@ -449,6 +469,11 @@ const FooterHeaderInner = styled.div`
   display: flex;
   margin-left: auto;
   margin-right: auto;
+
+  ${media.smallerThanMaxTablet`
+    padding-left: 30px;
+    padding-right: 30px;
+  `}
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
@@ -478,7 +503,11 @@ const CommentsIcon = styled(Icon)`
 `;
 
 const FooterContent = styled.div`
+  flex: 1;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   background: #f8f8f9;
   border-top: solid 1px #e2e2e2;
 `;
@@ -519,6 +548,7 @@ interface InputProps {
   ideaId: string | null;
   inModal?: boolean | undefined;
   animatePageEnter?: boolean;
+  className?: string;
 }
 
 interface Props extends DataProps, InputProps { }
@@ -758,8 +788,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaImages,
       authUser,
       project,
-      intl: { formatMessage }
+      className
     } = this.props;
+    const { formatMessage } = this.props.intl;
     const {
       opened,
       loaded,
@@ -808,9 +839,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
       content = (
         <>
-          <IdeaMeta
-            ideaId={ideaId}
-          />
+          <IdeaMeta ideaId={ideaId} />
           <IdeaContainer id="e2e-idea-show">
             <IdeaHeader
               ideaId={ideaId}
@@ -1088,7 +1117,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           enter={animatePageEnter}
           exit={true}
         >
-          <Container>
+          <Container className={`${className} ${inModal ? 'inModal' : ''}`}>
             {content}
           </Container>
         </CSSTransition>
