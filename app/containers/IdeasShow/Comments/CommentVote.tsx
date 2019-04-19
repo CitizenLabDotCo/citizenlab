@@ -36,7 +36,7 @@ const UpvoteIcon = styled(Icon)`
   margin-top: 0px;
 
   &:not(.voted) {
-    margin-left: -3px;
+    margin-left: -5px;
   }
 
   &.voted {
