@@ -454,8 +454,8 @@ class Streams {
         const stream = this.streams[streamId];
         const streamHasDataId = has(stream, `dataIds.${dataId}`);
 
-        if (!stream.cacheStream) {
-          stream.fetch();
+        if (!stream || !stream.cacheStream) {
+          if (!!stream) stream.fetch();
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {

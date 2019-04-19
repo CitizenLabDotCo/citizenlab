@@ -14,6 +14,7 @@ import { IUser } from 'services/users';
 // Components
 import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
+import ProfileDeletion from './ProfileDeletion';
 
 // Styles
 import styled from 'styled-components';
@@ -92,6 +93,7 @@ export default class ProfileEditor extends PureComponent<Props, State> {
               areas={areas.data}
               tenant={currentTenant.data}
             />
+            <ProfileDeletion userId={authUser.data.id}/>
             <CampaignsConsentForm />
           </Wrapper>
         </Container>
