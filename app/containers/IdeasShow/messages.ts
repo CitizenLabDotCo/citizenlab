@@ -99,7 +99,7 @@ export default defineMessages({
   },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
-    defaultMessage: 'Load more comments...',
+    defaultMessage: 'Load more comments',
   },
   loadingComments: {
     id: 'app.containers.IdeasShow.loadingComments',
@@ -349,5 +349,17 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.containers.IdeasShow.showMoreActions',
     defaultMessage: 'Show more actions',
+  },
+  commentsSortTitle: {
+    id: 'app.containers.IdeaCards.commentsSortTitle',
+    defaultMessage: 'Sort comments by',
+  },
+  oldestToNewest: {
+    id: 'app.components.IdeasShow.oldestToNewest',
+    defaultMessage: 'Oldest to Newest',
+  },
+  mostUpvoted: {
+    id: 'app.components.IdeasShow.mostUpvoted',
+    defaultMessage: 'Most upvoted',
   },
 });

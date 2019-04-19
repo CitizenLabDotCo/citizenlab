@@ -224,7 +224,7 @@ const ProjectsListItem = styled(Link)`
   padding: 10px;
   margin-bottom: 4px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   text-decoration: none;
 
   &.last {
@@ -249,7 +249,7 @@ const ProjectsListFooter = styled(Link)`
   padding: 15px 15px;
   cursor: pointer;
   background: ${({ theme }) => theme.colorMain};
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;

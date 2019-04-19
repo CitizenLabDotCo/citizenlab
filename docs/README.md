@@ -1,5 +1,25 @@
 # Changelog 
 
+## 2019-04-16
+
+### Fixed
+
+- The comment count of a project remains correct when moving an idea to a different project
+- Fixed an issue when copying projects (through the admin HQ) to tenants with conflicting locales
+- Only count people who posted/voted/commented/... as participants (this is perceived as a fix in the dashboards)
+- Invites are still sent out when some emails correspond to existing users/invitees
+- Phase started/upcoming notifications are only sent out for published projects
+
+### Added
+
+- Posting text with a URL will turn the URL part into a link
+- Added smart group rules for topic and idea status participants
+
+### Changed
+
+- New configuration for which email campaigns are enabled by default
+- Changed project image medium size to 575x575
+
 ## 2019-04-02
 
 ### Fixed

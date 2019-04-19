@@ -57,7 +57,7 @@ const Container = styled.div`
     justify-content: center;
     margin-bottom: 10px;
     padding: 10px 12px;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
 

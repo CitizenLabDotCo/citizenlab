@@ -14,7 +14,7 @@ const Container = styled.button`
   flex-direction: row;
   cursor: pointer;
   color: ${colors.label};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   text-align: left;
   outline: none;
   width: 100%;

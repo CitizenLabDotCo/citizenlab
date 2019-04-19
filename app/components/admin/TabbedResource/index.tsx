@@ -37,7 +37,7 @@ const ResourceHeader = styled.div`
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
-  border-radius: 5px 5px 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
   border: 1px solid ${colors.separation};

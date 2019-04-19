@@ -34,7 +34,7 @@ const StyledSuccessMessageInner = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${(props: IStyledSuccessMessageInner) => (props.showBackground ? '#ecf7ef' : 'transparent')};
   padding: 10px 13px;
   margin-top: 5px;

@@ -166,10 +166,10 @@ class UserMenu extends PureComponent<Props, State> {
             onClickOutside={this.toggleDropdown}
             content={(
               <>
-                <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+                <HasPermission item={{ type: 'route', path: '/admin/dashboard' }} action="access">
                   <DropdownListItem
                     id="admin-link"
-                    linkTo={'/admin'}
+                    linkTo={'/admin/dashboard'}
                     onClick={this.closeDropdown}
                     style="text"
                     icon="admin"
@@ -180,24 +180,6 @@ class UserMenu extends PureComponent<Props, State> {
                   >
                     <FormattedMessage {...messages.admin} />
                   </DropdownListItem>
-
-                  <HasPermission.No>
-                    <HasPermission item={{ type: 'route', path: '/admin/projects' }} action="access">
-                      <DropdownListItem
-                        id="e2e-projects-admin-link"
-                        linkTo={'/admin/projects'}
-                        onClick={this.closeDropdown}
-                        style="text"
-                        icon="admin"
-                        iconPos="right"
-                        iconSize="20px"
-                        padding="11px 11px"
-                        justify="space-between"
-                      >
-                        <FormattedMessage {...messages.projectsModeration} />
-                      </DropdownListItem>
-                    </HasPermission>
-                  </HasPermission.No>
                 </HasPermission>
 
                 <DropdownListItem

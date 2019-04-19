@@ -13,7 +13,6 @@ import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
 import SelectPublicationStatus from './SelectPublicationStatus';
-import SendFeedback from 'components/SendFeedback';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus  } from 'resources/GetProjects';
@@ -45,7 +44,7 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +143,7 @@ const EmptyContainer = styled.div`
   text-align: center;
   margin: 0;
   margin-bottom: 43px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
   background: #fff;
   border: solid 1px ${colors.separation};
@@ -198,12 +197,10 @@ const EmptyMessageLine = styled.p`
 const Footer = styled.div`
   width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 30px;
 
-  ${media.biggerThanMinTablet`
-    justify-content: space-between;
-  `}
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -214,32 +211,9 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
-const HiddenSendFeedback = styled(SendFeedback)`
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const StyledSendFeedback = styled(SendFeedback)`
-  ${media.smallerThanMinTablet`
-    margin-top: 60px;
-    margin-left: auto;
-    margin-right: auto;
-  `}
-
-  ${media.largePhone`
-    margin-top: 40px;
-  `}
-`;
-
 interface InputProps extends GetProjectsInputProps {
   showTitle: boolean;
   showPublicationStatusFilter: boolean;
-  showSendFeedback: boolean;
   layout: 'dynamic' | 'threecolumns';
 }
 
@@ -380,7 +354,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
 
   render() {
     const { cardSizes } = this.state;
-    const { tenant, showTitle, showPublicationStatusFilter, showSendFeedback, layout, theme } = this.props;
+    const { tenant, showTitle, showPublicationStatusFilter, layout, theme } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -465,9 +439,6 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
           )}
 
           <Footer>
-            {/* nice visual hack, please don't remove*/}
-            {showSendFeedback && <HiddenSendFeedback showFeedbackText={true} />}
-
             {!querying && hasProjects && hasMore &&
               <ShowMoreButton
                 onClick={this.showMore}
@@ -486,8 +457,6 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                 className="e2e-project-cards-show-more-button"
               />
             }
-
-            {showSendFeedback && <StyledSendFeedback showFeedbackText={true} />}
           </Footer>
         </Container>
       );
