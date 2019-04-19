@@ -28,7 +28,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const Container = styled.div`
-  margin-top: 40px;
+  margin-bottom: 40px;
   position: relative;
   background: #fff;
   box-sizing: border-box;
