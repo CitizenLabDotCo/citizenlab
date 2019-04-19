@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { ICommentDeletedByAdminNotificationData } from 'services/notifications';
 import messages from '../../messages';
@@ -17,33 +17,29 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {};
+export const CommentDeletedByAdminNotification = memo<Props>(props => {
+  const { notification, idea } = props;
 
-class CommentDeletedByAdminNotification extends React.PureComponent<Props, State> {
-  render() {
-    const { notification, idea } = this.props;
+  if (isNilOrError(idea)) return null;
 
-    if (isNilOrError(idea)) return null;
-
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${idea.attributes.slug}`}
-        timing={notification.attributes.created_at}
-        icon="notification_comment"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.commentDeletedByAdmin}
-          values={{
-            ideaTitle: <T value={idea.attributes.title_multiloc} />,
-            reasonCode: notification.attributes.reason_code,
-            otherReason: notification.attributes.other_reason,
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/ideas/${idea.attributes.slug}`}
+      timing={notification.attributes.created_at}
+      icon="notification_comment"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.commentDeletedByAdmin}
+        values={{
+          ideaTitle: <T value={idea.attributes.title_multiloc} />,
+          reasonCode: notification.attributes.reason_code,
+          otherReason: notification.attributes.other_reason,
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;
