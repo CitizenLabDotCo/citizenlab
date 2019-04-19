@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IAdminRightsReceivedNotificationData } from 'services/notifications';
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,24 +8,21 @@ interface Props {
   notification: IAdminRightsReceivedNotificationData;
 }
 
-type State = {};
+const AdminRightsReceivedNotification = memo<Props>(props => {
+  const { notification } = props;
 
-export default class AdminRightsReceivedNotification extends React.PureComponent<Props, State> {
+  return (
+    <NotificationWrapper
+      linkTo={'/admin'}
+      timing={notification.attributes.created_at}
+      icon="admin"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.adminRightsReceived}
+      />
+    </NotificationWrapper>
+  );
+});
 
-  render() {
-    const { notification } = this.props;
-
-    return (
-      <NotificationWrapper
-        linkTo={'/admin'}
-        timing={notification.attributes.created_at}
-        icon="admin"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.adminRightsReceived}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+export default AdminRightsReceivedNotification;

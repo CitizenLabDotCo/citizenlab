@@ -3,7 +3,7 @@ import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../../tracks';
 import { darken } from 'polished';
 import clHistory from 'utils/cl-router/history';
@@ -72,10 +72,6 @@ const Timing = styled.span`
   font-size: ${fontSizes.small}px;
 `;
 
-interface ITracks {
-  clickNotification: (arg: any) => void;
-}
-
 type Props = {
   icon?: string,
   timing?: string,
@@ -84,31 +80,30 @@ type Props = {
   isRead: boolean,
 };
 
-class NotificationWrapper extends React.PureComponent<Props & ITracks> {
-
-    navigate = () => {
-      const { linkTo } = this.props;
-      if (linkTo) {
-        this.props.clickNotification({ extra: { linkTo } });
-        clHistory.push(linkTo);
-      }
+class NotificationWrapper extends React.PureComponent<Props> {
+  navigate = () => {
+    const { linkTo } = this.props;
+    if (linkTo) {
+      trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
+      clHistory.push(linkTo);
     }
+  }
 
-    render() {
-      const { icon, children, timing, isRead } = this.props;
+  render() {
+    const { icon, children, timing, isRead } = this.props;
 
-      return (
-        <Container role="link" onClick={this.navigate}>
-          <IconContainer>
-            {icon && <StyledIcon name={icon} isRead={isRead} />}
-          </IconContainer>
-          <Body>
-            <Message isRead={isRead}>{children}</Message>
-            {timing && <Timing><FormattedRelative value={timing} /></Timing>}
-          </Body>
-        </Container>
-      );
-    }
+    return (
+      <Container role="link" onClick={this.navigate}>
+        <IconContainer>
+          {icon && <StyledIcon name={icon} isRead={isRead} />}
+        </IconContainer>
+        <Body>
+          <Message isRead={isRead}>{children}</Message>
+          {timing && <Timing><FormattedRelative value={timing} /></Timing>}
+        </Body>
+      </Container>
+    );
+  }
 }
 
-export default injectTracks<Props>(tracks)(NotificationWrapper);
+export default NotificationWrapper;
