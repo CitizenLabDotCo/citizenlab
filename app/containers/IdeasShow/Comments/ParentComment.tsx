@@ -226,6 +226,7 @@ class ParentComment extends PureComponent<Props, State> {
               ideaId={ideaId}
               projectId={idea.relationships.project.data.id}
               parentId={commentId}
+              waitForChildCommentsRefetch={!isNilOrError(childComments)}
             />
           }
         </Container>

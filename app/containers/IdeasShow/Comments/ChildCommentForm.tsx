@@ -89,6 +89,7 @@ interface InputProps {
   ideaId: string;
   projectId: string;
   parentId: string;
+  waitForChildCommentsRefetch: boolean;
   className?: string;
 }
 
@@ -120,7 +121,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       focussed: false,
       processing: false,
       errorMessage: null,
-      canSubmit: false,
+      canSubmit: false
     };
   }
 
@@ -187,7 +188,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   handleSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
 
-    const { locale, authUser, ideaId, projectId, parentId } = this.props;
+    const { locale, authUser, ideaId, projectId, parentId, waitForChildCommentsRefetch } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
@@ -206,7 +207,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       });
 
       try {
-        await addCommentToComment(ideaId, projectId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        await addCommentToComment(ideaId, projectId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') }, waitForChildCommentsRefetch);
 
         this.setState({
           inputValue: '',
