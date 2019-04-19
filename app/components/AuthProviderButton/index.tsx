@@ -19,7 +19,7 @@ const AuthProviderButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
   user-select: none;
   cursor: pointer;

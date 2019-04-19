@@ -46,7 +46,7 @@ const Back = styled(Next) `
 
 const Item = styled.button`
   background: ${colors.adminBackground};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   height: 34px;
   width: 34px;
   margin-left: 5px;

@@ -51,7 +51,7 @@ const IdeaBudget = styled.div`
   position: absolute;
   top: 15px;
   left: 19px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.clRed2};
   background: rgba(255, 255, 255, 0.9);
 `;
@@ -64,8 +64,8 @@ const IdeaImageContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+ border-top-left-radius: ${(props: any) => props.theme.borderRadius};
+ border-top-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeaImage = styled<LazyImageProps>(LazyImage)`
@@ -154,7 +154,7 @@ const IdeaContainer = styled(Link)`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   position: relative;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);

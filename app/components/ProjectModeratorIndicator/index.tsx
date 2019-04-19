@@ -27,7 +27,7 @@ const Container = styled.div`
   align-items: center;
   background: ${rgba(colors.draftYellow, .12)};
   padding: 16px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const StyledIcon = styled(Icon)`

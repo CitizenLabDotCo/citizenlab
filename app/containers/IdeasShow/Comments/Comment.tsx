@@ -34,6 +34,8 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 const Container = styled.div`
   &.child {
     background: #fbfbfb;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
 `;
 
@@ -43,7 +45,10 @@ const ContainerInner = styled.div`
   align-items: stretch;
   padding-top: 28px;
   padding-bottom: 25px;
-  border-bottom: solid 1px #e8e8e8;
+
+  &.hasBottomBorder {
+    border-bottom: solid 1px #e8e8e8;
+  }
 
   &.lastComment {
     border-bottom: none;
@@ -56,7 +61,7 @@ const ContainerInner = styled.div`
   }
 
   &.child {
-    margin-left: 100px;
+    margin-left: 90px;
     margin-right: 50px;
   }
 
@@ -130,7 +135,9 @@ interface InputProps {
   projectId: string;
   commentId: string;
   commentType: 'parent' | 'child';
+  hasBottomBorder?: boolean;
   hasChildComments?: boolean;
+  canReply?: boolean;
   last?: boolean;
   className?: string;
 }
@@ -149,7 +156,9 @@ interface State {
 
 class Comment extends PureComponent<Props, State> {
   static defaultProps = {
+    hasBottomBorder: true,
     hasChildComment: false,
+    canReply: true,
     last: false
   };
 
@@ -195,7 +204,7 @@ class Comment extends PureComponent<Props, State> {
   }
 
   render() {
-    const { comment, author, ideaId, projectId, commentType, hasChildComments, last, className } = this.props;
+    const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { translateButtonClicked, editing } = this.state;
 
     if (!isNilOrError(comment)) {
@@ -206,7 +215,7 @@ class Comment extends PureComponent<Props, State> {
 
       return (
         <Container className={`${className} ${commentType} e2e-comment`}>
-          <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''}`}>
+          <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
                 <CommmentHeaderWrapper className={commentType}>
@@ -250,6 +259,7 @@ class Comment extends PureComponent<Props, State> {
                       commentId={commentId}
                       commentType={commentType}
                       onEditing={this.onEditing}
+                      canReply={canReply}
                     />
                   </BodyAndFooter>
                 </Content>

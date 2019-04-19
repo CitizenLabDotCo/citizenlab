@@ -57,7 +57,7 @@ const ButtonWrapper = styled.div`
 
 const TermsAndConditionsWrapper: any = styled.div`
   padding: 15px 30px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${darken(0.035, colors.background)};
   border: solid 1px transparent;
 

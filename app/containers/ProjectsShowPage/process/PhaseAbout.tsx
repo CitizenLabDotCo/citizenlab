@@ -19,7 +19,7 @@ import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 40px;
   background: ${colors.background};
 

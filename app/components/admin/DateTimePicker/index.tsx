@@ -14,7 +14,7 @@ import { fontSizes } from 'utils/styleUtils';
 const Wrapper = styled.div`
   display: inline-flex;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ccc;
 
   input {

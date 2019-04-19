@@ -47,7 +47,7 @@ const StyledTable: any = styled.table`
 
   tbody {
     tr {
-      border-radius: 5px;
+      border-radius: ${(props: any) => props.theme.borderRadius};
       padding-top: 50px;
       padding-bottom: 50px;
 
