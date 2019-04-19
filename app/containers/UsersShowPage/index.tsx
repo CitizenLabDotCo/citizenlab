@@ -19,7 +19,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import UserProfile from './UserProfile';
+import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 
 const Container = styled.div`
@@ -87,7 +87,7 @@ class UsersShowPage extends PureComponent<Props, State> {
         <>
           <UsersShowPageMeta user={user} />
           <Container id="e2e-usersshowpage" className={this.props['className']}>
-            <UserProfile userSlug={user.attributes.slug}/>
+            <UserHeader userSlug={user.attributes.slug}/>
 
             <UserNavbar
               currentTab={currentTab}
