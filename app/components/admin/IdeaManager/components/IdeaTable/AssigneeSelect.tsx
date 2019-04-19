@@ -39,7 +39,9 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   assigneeOptions: IOption[];
-  ideaAssigneeOption: string | undefined;
+  ideaAssigneeOption: string | null;
+  prevPropsProspectAssignees: GetUsersChildProps | null;
+  prevPropsIdea: GetIdeaChildProps;
 }
 
 class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
@@ -47,29 +49,36 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       assigneeOptions: [],
-      ideaAssigneeOption: undefined
+      ideaAssigneeOption: null,
+      prevPropsProspectAssignees: null,
+      prevPropsIdea: null
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { idea, prospectAssignees, intl: { formatMessage } } = nextProps;
-    const nextState = prevState;
+  static getDerivedStateFromProps(props, state) {
+    const { idea, prospectAssignees, intl: { formatMessage } } = props;
+    const { prevPropsProspectAssignees, prevPropsIdea } = state;
+    const nextState = { ...state };
 
-    if (prospectAssignees !== prevState.prospectAssignees) {
+    if (prospectAssignees !== prevPropsProspectAssignees) {
       if (isNilOrError(prospectAssignees.usersList)) {
         nextState.assigneeOptions = [];
       } else {
         nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, text: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
         nextState.assigneeOptions.push({ value: 'unassigned', text: formatMessage(messages.noOne) });
       }
+
+      nextState.prevPropsProspectAssignees = prospectAssignees;
     }
 
-    if (idea !== prevState.idea) {
+    if (idea !== prevPropsIdea) {
       if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
         nextState.ideaAssigneeOption = 'unassigned';
       } else {
         nextState.ideaAssigneeOption = idea.relationships.assignee.data.id;
       }
+
+      nextState.prevPropsIdea = idea;
     }
 
     return nextState;

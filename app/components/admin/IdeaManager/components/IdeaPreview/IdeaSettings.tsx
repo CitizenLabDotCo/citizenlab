@@ -32,6 +32,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
+import { GetIdeasChildProps } from 'resources/GetIdeas';
 
 const StyledLabel = styled(Label)`
   margin-top: 20px;
@@ -63,6 +64,9 @@ interface State {
   assigneeOptions: IOption[];
   ideaStatusOption: IColoredOption | null;
   ideaAssigneeOption: string | null;
+  prevPropsStatuses: GetIdeasChildProps | null;
+  prevPropsProspectAssignees: GetUsersChildProps | null;
+  prevPropsIdea: GetIdeaChildProps;
 }
 
 class IdeaSettings extends PureComponent<Props, State> {
@@ -72,32 +76,40 @@ class IdeaSettings extends PureComponent<Props, State> {
       statusOptions: [],
       assigneeOptions: [],
       ideaStatusOption: null,
-      ideaAssigneeOption: null
+      ideaAssigneeOption: null,
+      prevPropsStatuses: null,
+      prevPropsProspectAssignees: null,
+      prevPropsIdea: null
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = nextProps;
-    const nextState = prevState;
+  static getDerivedStateFromProps(props, state) {
+    const { statuses, localize, idea, prospectAssignees, intl: { formatMessage } } = props;
+    const { prevPropsStatuses, prevPropsProspectAssignees, prevPropsIdea } = state;
+    const nextState = { ...state };
 
-    if (statuses !== prevState.statuses) {
+    if (statuses !== prevPropsStatuses) {
       if (isNilOrError(statuses)) {
         nextState.statusOptions = [];
       } else {
         nextState.statusOptions = statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
       }
+
+      nextState.prevPropsStatuses = statuses;
     }
 
-    if (prospectAssignees !== prevState.prospectAssignees) {
+    if (prospectAssignees !== prevPropsProspectAssignees) {
       if (isNilOrError(prospectAssignees.usersList)) {
         nextState.assigneeOptions = [];
       } else {
         nextState.assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
         nextState.assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
       }
+
+      nextState.prevPropsProspectAssignees = prospectAssignees;
     }
 
-    if (idea !== prevState.idea && !isNilOrError(statuses)) {
+    if (idea !== prevPropsIdea && !isNilOrError(statuses)) {
       if (isNilOrError(idea) || !idea.relationships.idea_status || !idea.relationships.idea_status.data) {
         nextState.ideaStatusOption = null;
       } else {
@@ -108,9 +120,11 @@ class IdeaSettings extends PureComponent<Props, State> {
           color: ideaStatus.attributes.color
         };
       }
+
+      nextState.prevPropsIdea = idea;
     }
 
-    if (idea !== prevState.idea) {
+    if (idea !== prevPropsIdea) {
       if (isNilOrError(idea) || !idea.relationships.assignee || !idea.relationships.assignee.data) {
         nextState.ideaAssigneeOption = 'unassigned';
       } else {

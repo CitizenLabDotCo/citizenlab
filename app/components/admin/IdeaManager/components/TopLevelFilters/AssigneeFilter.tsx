@@ -30,6 +30,8 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   assigneeOptions: IOption[];
+  prevPropsProspectAssignees: GetUsersChildProps | null;
+  prevPropsAuthUser: GetAuthUserChildProps;
 }
 
 export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
@@ -37,14 +39,18 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
     super(props);
     this.state = {
       assigneeOptions: [],
+      prevPropsProspectAssignees: null,
+      prevPropsAuthUser: null
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { prospectAssignees, authUser, intl: { formatMessage } } = nextProps;
-    const nextState = { ...prevState };
+  static getDerivedStateFromProps(props, state) {
+    const { prospectAssignees, authUser, intl: { formatMessage } } = props;
+    const { prevPropsProspectAssignees, prevPropsAuthUser } = state;
+    const nextState = { ...state };
 
-    if (prospectAssignees !== prevState.prospectAssignees || authUser !== prevState.authUser) {
+    if (prospectAssignees !== prevPropsProspectAssignees || authUser !== prevPropsAuthUser) {
+
       if (isNilOrError(prospectAssignees.usersList) || isNilOrError(authUser)) {
         nextState.assigneeOptions = [];
       } else {
@@ -64,7 +70,11 @@ export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, Sta
         nextState.assigneeOptions.unshift({ value: authUser.id, text: formatMessage(messages.assignedToMe), id: 'e2e-assignee-filter-assigned-to-user' });
         nextState.assigneeOptions.unshift({ value: 'all', text: formatMessage(messages.anyAssignment), id: 'e2e-assignee-filter-all-ideas' });
       }
+
+      nextState.prevPropsProspectAssignees = prospectAssignees;
+      nextState.prevPropsAuthUser = authUser;
     }
+
     return nextState;
   }
 
