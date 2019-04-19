@@ -115,6 +115,8 @@
   "app.components.IdeasShow.commentingDisabledProjectInactive": "Det er ikke mulig å kommentere på denne idéen siden '{projectName}' ikke ennå eller ikke lenger er aktiv.",
   "app.components.IdeasShow.commentingMaybeNotPermitted": "Ikke alle brukere har tillatelse til å kommentere. Vennligst {signInLink} for å se om du har tillatelse.",
   "app.components.IdeasShow.commentingNotPermitted": "Dessverre har du ikke rettighetene til å kommentere denne ideen.",
+  "app.components.IdeasShow.deleteIdea": "",
+  "app.components.IdeasShow.deleteIdeaConfirmation": "",
   "app.components.IdeasShow.editIdea": "Rediger idé",
   "app.components.IdeasShow.goBack": "Gå tilbake",
   "app.components.IdeasShow.goBackToList": "Gå tilbake til listen",
