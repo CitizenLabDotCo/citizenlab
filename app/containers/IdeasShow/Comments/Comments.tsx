@@ -37,7 +37,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   sortOrder: 'oldest_to_newest' | 'most_upvoted';
-  parentComments: ICommentData[];
+  sortedParentComments: ICommentData[];
 }
 
 class Comments extends PureComponent<Props, State> {
@@ -45,7 +45,7 @@ class Comments extends PureComponent<Props, State> {
     super(props);
     this.state = {
       sortOrder: 'oldest_to_newest',
-      parentComments: []
+      sortedParentComments: []
     };
   }
 
@@ -62,29 +62,23 @@ class Comments extends PureComponent<Props, State> {
   setAndSortParentComments = () => {
     const { comments } = this.props;
     const { sortOrder } = this.state;
-    let parentComments: ICommentData[] = [];
+    const sortByDate = (commentA: ICommentData, commentB: ICommentData) => new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
+    const sortByUpvoteCount = (commentA: ICommentData, commentB: ICommentData) => commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
+    let sortedParentComments: ICommentData[] = [];
 
     if (!isNilOrError(comments) && comments.length > 0) {
-      if (sortOrder === 'oldest_to_newest') {
-        parentComments = comments.filter((comment) => {
-          return comment.relationships.parent.data === null;
-        }).sort((commentA, commentB) => {
-          return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
-        });
-      } else {
-        parentComments = comments.filter((comment) => {
-          return comment.relationships.parent.data === null;
-        }).sort((commentA, commentB) => {
-          if (commentB.attributes.upvotes_count === commentA.attributes.upvotes_count) {
-            return new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
-          }
+      const parentComments = comments.filter(comment => comment.relationships.parent.data === null);
 
-          return commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
-        });
-      }
+      sortedParentComments = parentComments.sort((commentA, commentB) => {
+        if (sortOrder === 'oldest_to_newest' || commentB.attributes.upvotes_count === commentA.attributes.upvotes_count) {
+          return sortByDate(commentA, commentB);
+        }
+
+        return sortByUpvoteCount(commentA, commentB);
+      });
     }
 
-    this.setState({ parentComments });
+    this.setState({ sortedParentComments });
   }
 
   handleSortOnChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
@@ -93,14 +87,14 @@ class Comments extends PureComponent<Props, State> {
 
   render() {
     const { ideaId, comments, className } = this.props;
-    const { parentComments } = this.state;
+    const { sortedParentComments } = this.state;
 
-    if (parentComments && parentComments.length > 0) {
+    if (sortedParentComments && sortedParentComments.length > 0) {
       return (
         <Container className={`e2e-comments-container ${className}`}>
           <StyledCommentSorting onChange={this.handleSortOnChange} />
 
-          {parentComments.map((parentComment, _index) => {
+          {sortedParentComments.map((parentComment, _index) => {
             const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
               if (comment.relationships.parent.data &&
                   comment.relationships.parent.data.id === parentComment.id &&
