@@ -84,21 +84,39 @@ export async function addCommentToIdea(ideaId: string,  projectId: string, autho
       author_id: authorId,
       body_multiloc: body
     }
-  });
+  }, true);
+
   streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
+
   return comment;
 }
 
-export async function addCommentToComment(ideaId: string, projectId: string, authorId: string, parentCommentId: string, body: { [key: string]: string }) {
+export async function addCommentToComment(
+  ideaId: string,
+  projectId: string,
+  authorId: string,
+  parentCommentId: string,
+  body: { [key: string]: string },
+  waitForChildCommentsRefetch = false
+) {
   const comment = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
     comment: {
       author_id: authorId,
       parent_id: parentCommentId,
       body_multiloc: body
     }
-  });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}`] });
-  streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
+  }, true);
+
+  if (waitForChildCommentsRefetch) {
+    await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
+    streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
+  } else {
+    streams.fetchAllWith({
+      dataId: [ideaId, projectId, parentCommentId, comment.data.id],
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`]
+    });
+  }
+
   return comment;
 }
 
