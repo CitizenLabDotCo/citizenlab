@@ -18,16 +18,16 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 import Icon from 'components/UI/Icon';
+import { darken } from 'polished';
 
 const Container = styled.div`
   background-color: white;
   width: 100%;
-  padding-top: 40px;
+  padding-top: 30px;
   padding-bottom: 70px;
 `;
 
@@ -58,7 +58,7 @@ const FullName = styled.div`
 
 const JoinedAt = styled.div`
   width: 100%;
-  margin-top: 15px;
+  margin-top: 10px;
   font-weight: 300;
   text-align: center;
   color: ${colors.clGreyOnGreyBackground};
@@ -69,11 +69,20 @@ const Bio = styled.div`
   max-width: 600px;
   text-align: center;
   font-weight: 400;
-  margin: 23px auto;
+  margin: 18px auto;
 `;
 
 const EditProfile = styled(Link)`
+  margin-top: 10px;
+  color: ${({ theme }) => theme.colorText};
 
+  &:hover, &:focus {
+    color: ${({ theme }) => darken(0.15, theme.colorText)};
+  }
+`;
+
+const EditIcon = styled(Icon)`
+  margin-right: 8px;
 `;
 
 interface InputProps {
@@ -87,7 +96,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const UsersProfile = memo<Props>(props => {
+const UserHeader = memo<Props>(props => {
     const { user, authUser } = props;
 
     if (!isNilOrError(user)) {
@@ -95,7 +104,7 @@ const UsersProfile = memo<Props>(props => {
       return (
         <Container>
           <UserAvatar>
-            <Avatar userId={user.id} size="100px" />
+            <Avatar userId={user.id} size="105px" />
           </UserAvatar>
 
           <UserInfo>
@@ -112,7 +121,7 @@ const UsersProfile = memo<Props>(props => {
             }
             {!isNilOrError(authUser) && authUser.id === user.id &&
               <EditProfile to="/profile/edit">
-                <Icon name="pen" />
+                <EditIcon name="pencil" />
                 <FormattedMessage {...messages.editProfile} />
               </EditProfile>
             }
@@ -132,6 +141,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UsersProfile {...inputProps} {...dataProps} />}
+    {dataProps => <UserHeader {...inputProps} {...dataProps} />}
   </Data>
 );
