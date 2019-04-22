@@ -1,6 +1,6 @@
 // libraries
-import React, { PureComponent } from 'react';
-import { get, isNil } from 'lodash-es';
+import React, { memo, useState, useCallback } from 'react';
+import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
 // resources
@@ -17,8 +17,17 @@ import LoadingComments from './LoadingComments';
 import ParentCommentForm from './ParentCommentForm';
 import Comments from './Comments';
 
+// style
+import styled from 'styled-components';
+
+// typings
+import { ICommentSortOptions } from './CommentSorting';
+
+const Container = styled.div``;
+
 export interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -29,41 +38,26 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-  sortOrder: 'oldest_to_newest' | 'most_upvoted';
-}
+const CommentsSection = memo<Props>(({ ideaId, idea, comments, project, className }) => {
+  const [sortOrder, setSortOrder] = useState<ICommentSortOptions>('oldest_to_newest');
 
-class CommentsSection extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sortOrder: 'oldest_to_newest'
-    };
-  }
+  const handleSortOrderChange = useCallback(
+    (sortOrder: ICommentSortOptions) => {
+      setSortOrder(sortOrder);
+    }, []
+  );
 
-  handleSortOrderChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
-    this.setState({ sortOrder });
-  }
-
-  render() {
-    const { ideaId, idea, comments, project } = this.props;
-    const { sortOrder } = this.state;
-
-    if (isNil(idea) || isNil(comments) || isNil(project)) {
-      return (
-        <LoadingComments />
-      );
-    }
-
-    if (!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) {
-      return (
+  return (
+    <Container className={className}>
+      {(!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) ? (
         <>
           <Comments
             ideaId={ideaId}
             comments={comments}
             sortOrder={sortOrder}
-            onSortOrderChange={this.handleSortOrderChange}
+            onSortOrderChange={handleSortOrderChange}
           />
+
           <ParentCommentForm ideaId={ideaId} />
 
           {/*
@@ -76,12 +70,12 @@ class CommentsSection extends PureComponent<Props, State> {
           }
           */}
         </>
-      );
-    }
-
-    return null;
-  }
-}
+      ) : (
+        <LoadingComments />
+      )}
+    </Container>
+  );
+});
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
@@ -89,8 +83,8 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
-export default (inputProps: InputProps) => (
+export default memo<InputProps>((inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <CommentsSection {...inputProps} {...dataProps} />}
   </Data>
-);
+));

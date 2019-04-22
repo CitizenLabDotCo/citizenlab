@@ -6,9 +6,11 @@ import styled from 'styled-components';
 
 const Container = styled.div``;
 
+export type ICommentSortOptions = 'oldest_to_newest' | 'most_upvoted';
+
 interface Props {
   id?: string | undefined;
-  onChange: (value: string) => void;
+  onChange: (value: ICommentSortOptions) => void;
   className?: string;
 }
 
@@ -24,7 +26,7 @@ export default class CommentSorting extends PureComponent<Props, State> {
     };
   }
 
-  handleOnChange = (selectedValue: string[]) => {
+  handleOnChange = (selectedValue: [ICommentSortOptions]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
   }

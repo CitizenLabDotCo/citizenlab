@@ -40,9 +40,6 @@ const Container = styled.div`
 `;
 
 const ContainerInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   padding-top: 28px;
   padding-bottom: 25px;
 
