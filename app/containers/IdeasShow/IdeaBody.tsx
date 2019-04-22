@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import linkifyHtml from 'linkifyjs/html';
 
@@ -17,27 +17,27 @@ interface Props {
   onTranslationLoaded: () => void;
 }
 
-const IdeaBody = React.memo<Props>((props: Props) => {
+const IdeaBody = memo<Props>((props: Props) => {
   const { ideaId, ideaBody, locale, translateButtonClicked, onTranslationLoaded } = props;
 
   return (
     <Fragment name={`ideas/${ideaId}/body`}>
-        <QuillEditedContent>
-          {translateButtonClicked ?
-            <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
-              {translation => {
-                if (!isNilOrError(translation)) {
-                  onTranslationLoaded();
-                  return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
-                }
+      <QuillEditedContent>
+        {translateButtonClicked ?
+          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} ideaId={ideaId}>
+            {translation => {
+              if (!isNilOrError(translation)) {
+                onTranslationLoaded();
+                return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(translation.attributes.translation) }} />;
+              }
 
-                return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
-              }}
-            </GetMachineTranslation>
-            :
-            <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
-          }
-        </QuillEditedContent>
+              return <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />;
+            }}
+          </GetMachineTranslation>
+          :
+          <span dangerouslySetInnerHTML={{ __html: linkifyHtml(ideaBody) }} />
+        }
+      </QuillEditedContent>
     </Fragment>
   );
 });

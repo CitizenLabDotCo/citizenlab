@@ -6,10 +6,10 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: solid 1px red;
 `;
 
 const LoadingMessage = styled.div`

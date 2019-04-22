@@ -1,5 +1,5 @@
 // libraries
-import React, { memo } from 'react';
+import React, { PureComponent } from 'react';
 import { get, isNil } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
@@ -29,34 +29,59 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const CommentsSection = memo<Props>(({ ideaId, idea, comments, project }) => {
-  if (isNil(idea) || isNil(comments) || isNil(project)) {
-    return (
-      <LoadingComments />
-    );
+interface State {
+  sortOrder: 'oldest_to_newest' | 'most_upvoted';
+}
+
+class CommentsSection extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sortOrder: 'oldest_to_newest'
+    };
   }
 
-  if (!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) {
-    return (
-      <>
-        <Comments ideaId={ideaId} />
-        <ParentCommentForm ideaId={ideaId} />
-
-        {/*
-        {!isNilOrError(project) &&
-          <HasPermission item={project} action="moderate">
-            <HasPermission.No>
-              <ParentCommentForm ideaId={ideaId} />
-            </HasPermission.No>
-          </HasPermission>
-        }
-        */}
-      </>
-    );
+  handleSortOrderChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+    this.setState({ sortOrder });
   }
 
-  return null;
-});
+  render() {
+    const { ideaId, idea, comments, project } = this.props;
+    const { sortOrder } = this.state;
+
+    if (isNil(idea) || isNil(comments) || isNil(project)) {
+      return (
+        <LoadingComments />
+      );
+    }
+
+    if (!isNilOrError(idea) && !isNilOrError(comments) && !isNilOrError(project)) {
+      return (
+        <>
+          <Comments
+            ideaId={ideaId}
+            comments={comments}
+            sortOrder={sortOrder}
+            onSortOrderChange={this.handleSortOrderChange}
+          />
+          <ParentCommentForm ideaId={ideaId} />
+
+          {/*
+          {!isNilOrError(project) &&
+            <HasPermission item={project} action="moderate">
+              <HasPermission.No>
+                <ParentCommentForm ideaId={ideaId} />
+              </HasPermission.No>
+            </HasPermission>
+          }
+          */}
+        </>
+      );
+    }
+
+    return null;
+  }
+}
 
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,

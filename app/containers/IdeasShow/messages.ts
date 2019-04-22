@@ -233,8 +233,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
   },
-  spanModalLabelIdea: {
-    id: 'app.components.IdeasShow.spanModalLabelIdea',
+  spamModalLabelIdea: {
+    id: 'app.components.IdeasShow.spamModalLabelIdea',
     defaultMessage: 'Report idea as spam : select reason',
   },
   spanModalLabelComment: {

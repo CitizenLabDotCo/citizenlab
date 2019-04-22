@@ -8,9 +8,6 @@ import CommentSorting from './CommentSorting';
 // services
 import { ICommentData } from 'services/comments';
 
-// resources
-import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
-
 // style
 import styled from 'styled-components';
 
@@ -24,19 +21,15 @@ const StyledCommentSorting = styled(CommentSorting)`
   margin-bottom: 15px;
 `;
 
-interface InputProps {
+interface Props {
   ideaId: string;
+  comments: ICommentData[];
+  sortOrder: 'oldest_to_newest' | 'most_upvoted';
+  onSortOrderChange: (sortOrder: 'oldest_to_newest' | 'most_upvoted') => void;
   className?: string;
 }
 
-interface DataProps {
-  comments: GetCommentsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
 interface State {
-  sortOrder: 'oldest_to_newest' | 'most_upvoted';
   sortedParentComments: ICommentData[];
 }
 
@@ -44,24 +37,12 @@ class Comments extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      sortOrder: 'oldest_to_newest',
       sortedParentComments: []
     };
   }
 
-  componentDidMount() {
-    this.setAndSortParentComments();
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevProps.comments !== this.props.comments || prevState.sortOrder !== this.state.sortOrder) {
-      this.setAndSortParentComments();
-    }
-  }
-
-  setAndSortParentComments = () => {
-    const { comments } = this.props;
-    const { sortOrder } = this.state;
+  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
+    const { comments, sortOrder } = nextProps;
     const sortByDate = (commentA: ICommentData, commentB: ICommentData) => new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
     const sortByUpvoteCount = (commentA: ICommentData, commentB: ICommentData) => commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
     let sortedParentComments: ICommentData[] = [];
@@ -78,11 +59,11 @@ class Comments extends PureComponent<Props, State> {
       });
     }
 
-    this.setState({ sortedParentComments });
+    return { sortedParentComments };
   }
 
-  handleSortOnChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
-    this.setState({ sortOrder });
+  handleSortOrderChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+    this.props.onSortOrderChange(sortOrder);
   }
 
   render() {
@@ -92,7 +73,7 @@ class Comments extends PureComponent<Props, State> {
     if (sortedParentComments && sortedParentComments.length > 0) {
       return (
         <Container className={`e2e-comments-container ${className}`}>
-          <StyledCommentSorting onChange={this.handleSortOnChange} />
+          <StyledCommentSorting onChange={this.handleSortOrderChange} />
 
           {sortedParentComments.map((parentComment, _index) => {
             const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
@@ -123,8 +104,4 @@ class Comments extends PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => (
-  <GetComments ideaId={inputProps.ideaId}>
-    {comments => <Comments {...inputProps} comments={comments} />}
-  </GetComments>
-);
+export default Comments;
