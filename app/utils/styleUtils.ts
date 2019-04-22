@@ -1,7 +1,7 @@
 import { isNil, get } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
-import { darken, lighten, transparentize } from 'polished';
+import { darken, lighten } from 'polished';
 
 // Media
 export const viewportWidths = {

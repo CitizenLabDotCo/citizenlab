@@ -1,7 +1,6 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
-import { has, isString, sortBy, last, get, isEmpty, isUndefined, trimEnd } from 'lodash-es';
+import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
-import linkifyHtml from 'linkifyjs/html';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -35,6 +34,7 @@ import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
+import Observer from '@researchgate/react-intersection-observer';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -77,7 +77,7 @@ const loadingSpinnerFadeInDelay = 100;
 const contentFadeInDuration = 400;
 const contentFadeInEasing = 'cubic-bezier(0.000, 0.700, 0.000, 1.000)';
 const contentFadeInDelay = 350;
-const contentTranslateDistance = '23px';
+const contentTranslateDistance = '25px';
 
 const StyledSpinner = styled<SpinnerProps>(Spinner)`
   transition: all ${loadingSpinnerFadeInDuration}ms ${loadingSpinnerFadeInEasing} ${loadingSpinnerFadeInDelay}ms;
@@ -551,18 +551,27 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
+
+interface IActionInfos {
+  participationContextType: 'Project' | 'Phase' | null;
+  participationContextId: string | null;
+  budgetingDescriptor: any | null;
+  showBudgetControl: boolean | null;
+  showVoteControl: boolean | null;
+}
 
 interface State {
   opened: boolean;
   loaded: boolean;
-  showComments: boolean;
+  intersected: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
   translateButtonClicked: boolean;
   titleTranslationLoading: boolean;
   bodyTranslationLoading: boolean;
+  actionInfos: IActionInfos | null;
 }
 
 const LazyComments = lazy(() => import('./Comments'));
@@ -580,13 +589,15 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const initialState = {
       opened: false,
       loaded: false,
-      showComments: false,
+      intersected: false,
       showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
       titleTranslationLoading: false,
-      bodyTranslationLoading: false
+      bodyTranslationLoading: false,
+      ideaBody: null,
+      actionInfos: null
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -601,9 +612,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       id: get(query, 'new_idea_id'),
       publish: get(query, 'publish')
     }) : of(null);
-
-    this.setOpened();
-    this.setLoaded();
 
     this.subscriptions = [
       combineLatest(
@@ -628,34 +636,78 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     ];
   }
 
-  componentDidUpdate() {
-    this.setOpened();
-    this.setLoaded();
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const { opened, loaded, actionInfos } = prevState;
+    const { idea, ideaImages, project, phases } = nextProps;
+    let stateToUpdate: Partial<State> = {};
+
+    if (!opened && !isNilOrError(idea)) {
+      stateToUpdate = {
+        ...stateToUpdate,
+        opened: true
+      };
+    }
+
+    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project)) {
+      stateToUpdate = {
+        ...stateToUpdate,
+        loaded: true
+      };
+    }
+
+    if (!actionInfos && !isNilOrError(idea) && !isNilOrError(project)) {
+      const pbProject = (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null);
+      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
+      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
+      const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
+      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
+      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
+      const upvotesCount = idea.attributes.upvotes_count;
+      const downvotesCount = idea.attributes.downvotes_count;
+      const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
+      const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
+      const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
+      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
+      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
+      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
+      let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextId: string | null = null;
+
+      if (pbProject) {
+        participationContextType = 'Project';
+      } else if (pbPhase) {
+        participationContextType = 'Phase';
+      }
+
+      if (!isNilOrError(pbProject)) {
+        participationContextId = pbProject.id;
+      } else if (!isNilOrError(pbPhase)) {
+        participationContextId = pbPhase.id;
+      }
+
+      stateToUpdate = {
+        ...stateToUpdate,
+        actionInfos: {
+          participationContextType,
+          participationContextId,
+          budgetingDescriptor,
+          showBudgetControl,
+          showVoteControl
+        }
+      };
+    }
+
+    return isEmpty(stateToUpdate) ? null : stateToUpdate;
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  setOpened() {
-    const { opened } = this.state;
-    const { idea } = this.props;
-
-    if (!opened && !isNilOrError(idea)) {
-      this.setState({ opened: true });
-    }
-  }
-
-  setLoaded() {
-    const { loaded } = this.state;
-    const { idea, ideaImages, project } = this.props;
-
-    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project)) {
-      this.setState({ loaded: true });
-
-      setTimeout(() => {
-        this.setState({ showComments: true });
-      }, 300);
+  handleFooterIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
+    if (event.isIntersecting) {
+      this.setState({ intersected: true });
+      unobserve();
     }
   }
 
@@ -693,80 +745,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.setState({ ideaIdForSocialSharing: null });
   }
 
-  // describes idea to determine what to show
-  getActionsInfos = () => {
-    const { project, phases, idea } = this.props;
-
-    if (!isNilOrError(idea) && !isNilOrError(project)) {
-      const pbProject = project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'budgeting' ? project : null;
-      const pbPhase = (!pbProject && !isNilOrError(phases) ? phases.find(phase => phase.attributes.participation_method === 'budgeting') : null);
-      const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.attributes.start_at, pbPhase.attributes.end_at]) === 'present');
-      const lastPhase = (phases ? last(sortBy(phases, [phase => phase.attributes.end_at])) : null);
-      const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.id === pbPhase.id);
-
-      const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || pbPhaseIsLast)));
-
-      const upvotesCount = idea.attributes.upvotes_count;
-      const downvotesCount = idea.attributes.downvotes_count;
-      const votingEnabled = idea.relationships.action_descriptor.data.voting.enabled;
-      const cancellingEnabled = idea.relationships.action_descriptor.data.voting.cancelling_enabled;
-      const votingFutureEnabled = idea.relationships.action_descriptor.data.voting.future_enabled;
-      const hideVote = !(votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount || downvotesCount);
-
-      const showVoteControl = (!hideVote && !!((!pbProject && !pbPhase) || (pbPhase && !pbPhaseIsActive && !pbPhaseIsLast)));
-
-      let participationContextType: 'Project' | 'Phase' | null = null;
-
-      if (pbProject) {
-        participationContextType = 'Project';
-      } else if (pbPhase) {
-        participationContextType = 'Phase';
-      }
-
-      let participationContextId: string | null = null;
-
-      if (!isNilOrError(pbProject)) {
-        participationContextId = pbProject.id;
-      } else if (!isNilOrError(pbPhase)) {
-        participationContextId = pbPhase.id;
-      }
-
-      const budgetingDescriptor = get(idea, 'relationships.action_descriptor.data.budgeting', null);
-
-      return {
-        participationContextType,
-        participationContextId,
-        budgetingDescriptor,
-        showBudgetControl,
-        showVoteControl
-      };
-    }
-
-    return {
-      participationContextType: null,
-      participationContextId: null,
-      budgetingDescriptor: null,
-      showBudgetControl: null,
-      showVoteControl: null
-    };
-  }
-
   translateIdea = () => {
-    // tracking
     trackEvent(tracks.clickTranslateIdeaButton);
-
-    this.setState({
-      translateButtonClicked: true,
-    });
+    this.setState({ translateButtonClicked: true });
   }
 
   backToOriginalContent = () => {
-    // tracking
     trackEvent(tracks.clickGoBackToOriginalIdeaCopyButton);
-
-    this.setState({
-      translateButtonClicked: false,
-    });
+    this.setState({ translateButtonClicked: false });
   }
 
   onTitleTranslationLoaded = () => {
@@ -790,7 +776,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       project,
       className
     } = this.props;
-    const { formatMessage } = this.props.intl;
     const {
       opened,
       loaded,
@@ -798,8 +783,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       ideaIdForSocialSharing,
       translateButtonClicked,
       titleTranslationLoading,
-      bodyTranslationLoading
+      bodyTranslationLoading,
+      intersected,
+      spamModalVisible,
+      actionInfos
     } = this.state;
+    const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
@@ -814,12 +803,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const projectId = idea.relationships.project.data.id;
       const ideaUrl = location.href;
       const ideaId = idea.id;
-
-      let ideaBody = localize(idea.attributes.body_multiloc);
-      ideaBody = trimEnd(ideaBody, '<p><br></p>');
-      ideaBody = trimEnd(ideaBody, '<p></p>');
-      ideaBody = linkifyHtml(ideaBody);
-
+      const ideaBody = localize(idea.attributes.body_multiloc);
+      const participationContextType = get(actionInfos, 'participationContextType', null);
+      const participationContextId = get(actionInfos, 'participationContextId', null);
+      const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
+      const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
+      const showVoteControl = get(actionInfos, 'showVoteControl', null);
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -828,14 +817,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
         source: 'share_idea',
         campaign: 'share_content'
       };
-
-      const {
-        participationContextType,
-        participationContextId,
-        budgetingDescriptor,
-        showBudgetControl,
-        showVoteControl
-      } = this.getActionsInfos();
 
       content = (
         <>
@@ -1072,16 +1053,23 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             <FooterContent>
               <FooterContentInner>
                 <Suspense fallback={<LoadingComments />}>
-                  {this.state.showComments ? <LazyComments ideaId={ideaId} /> : <LoadingComments />}
+                  {(loaded && intersected) ? (
+                    <LazyComments ideaId={ideaId} />
+                  ) : (
+                    <LoadingComments />
+                  )}
                 </Suspense>
               </FooterContentInner>
+              <Observer onChange={this.handleFooterIntersection}>
+                <div />
+              </Observer>
             </FooterContent>
           </FooterContainer>
 
           <Modal
-            opened={this.state.spamModalVisible}
+            opened={spamModalVisible}
             close={this.closeSpamModal}
-            label={formatMessage(messages.spanModalLabelIdea)}
+            label={formatMessage(messages.spamModalLabelIdea)}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
             <SpamReportForm
