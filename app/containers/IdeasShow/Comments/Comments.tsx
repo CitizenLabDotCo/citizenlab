@@ -1,9 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useMemo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ParentComment from './ParentComment';
-import CommentSorting from './CommentSorting';
+import CommentSorting, { ICommentSortOptions } from './CommentSorting';
 
 // services
 import { ICommentData } from 'services/comments';
@@ -24,25 +24,14 @@ const StyledCommentSorting = styled(CommentSorting)`
 interface Props {
   ideaId: string;
   comments: ICommentData[];
-  sortOrder: 'oldest_to_newest' | 'most_upvoted';
-  onSortOrderChange: (sortOrder: 'oldest_to_newest' | 'most_upvoted') => void;
+  sortOrder: ICommentSortOptions;
+  onSortOrderChange: (sortOrder: ICommentSortOptions) => void;
   className?: string;
 }
 
-interface State {
-  sortedParentComments: ICommentData[];
-}
+const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderChange, className }) => {
 
-class Comments extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sortedParentComments: []
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    const { comments, sortOrder } = nextProps;
+  const sortedParentComments = useMemo(() => {
     const sortByDate = (commentA: ICommentData, commentB: ICommentData) => new Date(commentA.attributes.created_at).getTime() - new Date(commentB.attributes.created_at).getTime();
     const sortByUpvoteCount = (commentA: ICommentData, commentB: ICommentData) => commentB.attributes.upvotes_count - commentA.attributes.upvotes_count;
     let sortedParentComments: ICommentData[] = [];
@@ -59,49 +48,46 @@ class Comments extends PureComponent<Props, State> {
       });
     }
 
-    return { sortedParentComments };
+    return sortedParentComments;
+  }, [sortOrder, comments]);
+
+  const handleSortOrderChange = useCallback(
+    (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+      onSortOrderChange(sortOrder);
+    }, []
+  );
+
+  if (sortedParentComments && sortedParentComments.length > 0) {
+    return (
+      <Container className={`e2e-comments-container ${className}`}>
+        <StyledCommentSorting onChange={handleSortOrderChange} />
+
+        {sortedParentComments.map((parentComment, _index) => {
+          const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
+            if (comment.relationships.parent.data &&
+                comment.relationships.parent.data.id === parentComment.id &&
+                comment.attributes.publication_status !== 'deleted'
+            ) {
+              return true;
+            }
+
+            return false;
+          }).map(comment => comment.id));
+
+          return (
+            <ParentComment
+              key={parentComment.id}
+              ideaId={ideaId}
+              commentId={parentComment.id}
+              childCommentIds={childCommentIds}
+            />
+          );
+        })}
+      </Container>
+    );
   }
 
-  handleSortOrderChange = (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
-    this.props.onSortOrderChange(sortOrder);
-  }
+  return null;
+});
 
-  render() {
-    const { ideaId, comments, className } = this.props;
-    const { sortedParentComments } = this.state;
-
-    if (sortedParentComments && sortedParentComments.length > 0) {
-      return (
-        <Container className={`e2e-comments-container ${className}`}>
-          <StyledCommentSorting onChange={this.handleSortOrderChange} />
-
-          {sortedParentComments.map((parentComment, _index) => {
-            const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-              if (comment.relationships.parent.data &&
-                  comment.relationships.parent.data.id === parentComment.id &&
-                  comment.attributes.publication_status !== 'deleted'
-              ) {
-                return true;
-              }
-
-              return false;
-            }).map(comment => comment.id));
-
-            return (
-              <ParentComment
-                key={parentComment.id}
-                ideaId={ideaId}
-                commentId={parentComment.id}
-                childCommentIds={childCommentIds}
-              />
-            );
-          })}
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-export default Comments;
+export default CommentsSection;

@@ -1,11 +1,8 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import linkifyHtml from 'linkifyjs/html';
-
 import GetMachineTranslation from 'resources/GetMachineTranslation';
-
 import { Locale } from 'typings';
-
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 

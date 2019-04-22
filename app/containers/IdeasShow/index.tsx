@@ -1,4 +1,4 @@
-import React, { PureComponent, Suspense, lazy } from 'react';
+import React, { PureComponent } from 'react';
 import { has, isString, sortBy, last, get, isEmpty, isUndefined } from 'lodash-es';
 import { Subscription, combineLatest, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
@@ -13,7 +13,6 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import StatusBadge from 'components/StatusBadge';
-import LoadingComments from './Comments/LoadingComments';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import IdeaMap from './IdeaMap';
@@ -30,11 +29,11 @@ import SimilarIdeas from './SimilarIdeas';
 import HasPermission from 'components/HasPermission';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
+import IdeaFooter from './IdeaFooter';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
 import IdeaBody from './IdeaBody';
-import Observer from '@researchgate/react-intersection-observer';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -70,7 +69,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-const maxPageWidth = '810px';
+export const maxPageWidth = '810px';
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
 const loadingSpinnerFadeInDelay = 100;
@@ -448,92 +447,6 @@ const MoreActionsMenuWrapper = styled.div`
   }
 `;
 
-const FooterContainer = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 30px;
-
-  ${media.smallerThanMinTablet`
-    margin-top: 20px;
-  `}
-`;
-
-const FooterHeader = styled.div``;
-
-const FooterHeaderInner = styled.div`
-  width: 100%;
-  max-width: ${maxPageWidth};
-  display: flex;
-  margin-left: auto;
-  margin-right: auto;
-
-  ${media.smallerThanMaxTablet`
-    padding-left: 30px;
-    padding-right: 30px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
-  `}
-`;
-
-const FooterHeaderTab = styled.div`
-  color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: block;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-  padding: 16px 22px;
-  border: solid 1px #e2e2e2;
-  border-bottom: none;
-  background: #fff;
-`;
-
-const CommentsIcon = styled(Icon)`
-  height: 20px;
-  fill: ${(props) => props.theme.colorSecondary};
-  margin-right: 8px;
-`;
-
-const FooterContent = styled.div`
-  flex: 1;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background: #f8f8f9;
-  border-top: solid 1px #e2e2e2;
-`;
-
-const FooterContentInner = styled.div`
-  width: 100%;
-  max-width: ${maxPageWidth};
-  display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
-  padding-bottom: 60px;
-
-  ${media.smallerThanMaxTablet`
-    padding-left: 30px;
-    padding-right: 30px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-top: 10px;
-  `}
-`;
-
 interface DataProps {
   idea: GetIdeaChildProps;
   locale: GetLocaleChildProps;
@@ -564,7 +477,6 @@ interface IActionInfos {
 interface State {
   opened: boolean;
   loaded: boolean;
-  intersected: boolean;
   showMap: boolean;
   spamModalVisible: boolean;
   ideaIdForSocialSharing: string | null;
@@ -573,8 +485,6 @@ interface State {
   bodyTranslationLoading: boolean;
   actionInfos: IActionInfos | null;
 }
-
-const LazyComments = lazy(() => import('./Comments'));
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized, State> {
   initialState: State;
@@ -589,7 +499,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const initialState = {
       opened: false,
       loaded: false,
-      intersected: false,
       showMap: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
@@ -704,13 +613,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleFooterIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
-    if (event.isIntersecting) {
-      this.setState({ intersected: true });
-      unobserve();
-    }
-  }
-
   handleMapWrapperSetRef = (element: HTMLDivElement) => {
     if (element) {
       element.scrollIntoView({
@@ -784,7 +686,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       translateButtonClicked,
       titleTranslationLoading,
       bodyTranslationLoading,
-      intersected,
       spamModalVisible,
       actionInfos
     } = this.state;
@@ -1040,31 +941,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          <FooterContainer>
-            <FooterHeader>
-              <FooterHeaderInner>
-                <FooterHeaderTab>
-                  <CommentsIcon name="comments" />
-                  <FormattedMessage {...messages.commentsWithCount} values={{ count: idea.attributes.comments_count }} />
-                </FooterHeaderTab>
-              </FooterHeaderInner>
-            </FooterHeader>
-
-            <FooterContent>
-              <FooterContentInner>
-                <Suspense fallback={<LoadingComments />}>
-                  {(loaded && intersected) ? (
-                    <LazyComments ideaId={ideaId} />
-                  ) : (
-                    <LoadingComments />
-                  )}
-                </Suspense>
-              </FooterContentInner>
-              <Observer onChange={this.handleFooterIntersection}>
-                <div />
-              </Observer>
-            </FooterContent>
-          </FooterContainer>
+          {loaded &&
+            <IdeaFooter
+              ideaId={ideaId}
+              commentsCount={idea.attributes.comments_count}
+            />
+          }
 
           <Modal
             opened={spamModalVisible}

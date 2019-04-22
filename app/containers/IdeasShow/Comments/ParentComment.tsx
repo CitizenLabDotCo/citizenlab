@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -149,14 +149,14 @@ class ParentComment extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  loadMore = (event: React.FormEvent<any>) => {
+  loadMore = (event: FormEvent<any>) => {
     if (!this.state.isLoadingMore) {
       event.preventDefault();
       this.loadMore$.next(true);
     }
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 

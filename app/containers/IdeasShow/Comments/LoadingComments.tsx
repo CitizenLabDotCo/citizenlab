@@ -9,7 +9,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px red;
 `;
 
 const LoadingMessage = styled.div`
