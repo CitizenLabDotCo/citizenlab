@@ -1,12 +1,13 @@
 import React from 'react';
 import { clone } from 'lodash-es';
 import styled from 'styled-components';
-
 import { TRule } from './rules';
+
+// components
+import Button from 'components/UI/Button';
 import Rule from './Rule';
 
-import Button from 'components/UI/Button';
-
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
