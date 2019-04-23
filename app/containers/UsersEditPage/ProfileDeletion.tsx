@@ -15,6 +15,8 @@ import { InjectedIntlProps } from 'react-intl';
 import { signOut } from 'services/auth';
 import messages from './messages';
 import styled from 'styled-components';
+import { withRouter, WithRouterProps } from 'react-router';
+
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -25,14 +27,20 @@ interface Props {
   userId: string;
 }
 
-interface State {}
+interface State {
+  processing: boolean;
+}
 
-class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
+class ProfileDeletion extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   deleteProfile = () => {
-    const { intl: { formatMessage } } = this.props;
+    const { intl: { formatMessage }, location } = this.props;
     if (window.confirm(formatMessage(messages.profileDeletionConfirmation))) {
+      this.setState({ processing: true });
       deleteUser(this.props.userId).then(() => signOut()).catch(err => console.log(err));
-      clHistory.push('/');
+      clHistory.push({
+        pathname: '/',
+        state: { ...location.state, userDeletionSuccess: true }
+      });
     }
   }
 
@@ -58,4 +66,4 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
 
 }
 
-export default injectIntl(ProfileDeletion);
+export default withRouter(injectIntl(ProfileDeletion));
