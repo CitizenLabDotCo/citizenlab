@@ -79,7 +79,7 @@ export default defineMessages({
   },
   deletionSubtitle: {
     id: 'app.containers.UsersEditPage.deletionSubtitle',
-    defaultMessage: 'Delete your profile',
+    defaultMessage: 'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
   },
   deleteProfile: {
     id: 'app.containers.UsersEditPage.deleteProfile',

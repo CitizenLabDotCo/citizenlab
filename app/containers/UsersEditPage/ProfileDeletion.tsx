@@ -14,6 +14,12 @@ import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import { signOut } from 'services/auth';
 import messages from './messages';
+import styled from 'styled-components';
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
 
 interface Props {
   userId: string;
@@ -31,20 +37,22 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-
     return (
-          <ProfileSection>
-            <SectionTitle><FormattedMessage {...messages.deletionSection} /></SectionTitle>
-            <SectionSubtitle><FormattedMessage {...messages.deletionSubtitle} /></SectionSubtitle>
-            <Button
-              style="delete"
-              id="deletion"
-              onClick={this.deleteProfile}
-              width="100%"
-            >
-              <FormattedMessage {...messages.deleteProfile} />
-            </Button>
-          </ProfileSection>
+      <ProfileSection>
+        <SectionTitle><FormattedMessage {...messages.deletionSection} /></SectionTitle>
+        <SectionSubtitle><FormattedMessage {...messages.deletionSubtitle} /></SectionSubtitle>
+        <Row>
+          <Button
+            style="delete"
+            id="deletion"
+            onClick={this.deleteProfile}
+            width="auto"
+            justifyWrapper="left"
+          >
+            <FormattedMessage {...messages.deleteProfile} />
+          </Button>
+        </Row>
+      </ProfileSection>
     );
   }
 
