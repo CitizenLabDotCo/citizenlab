@@ -34,12 +34,6 @@ const UpvoteIcon = styled(Icon)`
   height: 16px;
   flex: 0 0 16px;
   fill: ${colors.label};
-  margin-top: 0px;
-  margin-left: -2px;
-
-  &:not(.voted) {
-    margin-left: -6px;
-  }
 
   &.voted {
     fill: #fff;
@@ -47,18 +41,21 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const UpvoteIconWrapper = styled.button`
-  width: 29px;
+  width: 16px;
   height: 29px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   background: transparent;
-  margin-top: -4px;
+  margin-top: -3px;
   cursor: pointer;
-  transition: all 100ms ease;
+  border-radius: 50%;
+  transition: background 100ms ease;
 
   &.voted {
+    width: 29px;
+    margin-right: 3px;
+    border-radius: 50%;
     background: ${colors.clGreen};
 
     &:hover {
@@ -67,6 +64,14 @@ const UpvoteIconWrapper = styled.button`
   }
 
   &:not(.voted) {
+    &.hasVotes {
+      margin-right: 5px;
+    }
+
+    &:not(.hasVotes) {
+      margin-right: 10px;
+    }
+
     &:hover {
       ${UpvoteIcon} {
         fill: #000;
@@ -77,8 +82,7 @@ const UpvoteIconWrapper = styled.button`
 
 const UpvoteCount = styled.div`
   color: ${colors.label};
-  margin-left: 4px;
-  margin-right: 10px;
+  margin-right: 12px;
 `;
 
 const UpvoteLabel = styled.button`
@@ -199,12 +203,12 @@ class CommentVote extends PureComponent<Props, State> {
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={voted ? 'voted' : ''}>
+          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={`${voted ? 'voted' : ''} ${upvoteCount > 0 ? 'hasVotes' : ''}`}>
             <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
           </UpvoteIconWrapper>
 
           {upvoteCount > 0 &&
-            <UpvoteCount>{upvoteCount}</UpvoteCount>
+            <UpvoteCount className={upvoteCount > 0 ? 'visible' : 'hidden'}>{upvoteCount}</UpvoteCount>
           }
 
           <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
