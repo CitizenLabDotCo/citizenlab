@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'app.errors.email_taken',
     defaultMessage: 'This email is already taken. Please try another one.',
   },
+  email_taken_by_invite: {
+    id: 'app.errors.email_taken_by_invite',
+    defaultMessage: '{value} is already taken by a pending invite.',
+  },
   locale_blank: {
     id: 'app.errors.locale_blank',
     defaultMessage: 'Please choose a language',
