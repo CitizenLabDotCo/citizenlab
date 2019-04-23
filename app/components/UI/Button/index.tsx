@@ -131,7 +131,7 @@ const Container: any = styled.div`
   align-items: center;
   display: flex;
   font-weight: 400;
-  justify-content: center;
+  justify-content: ${(props: any) => props.justifyWrapper || 'center'};
   margin: 0;
   padding: 0;
   user-select: none;
@@ -268,6 +268,7 @@ export type Props = {
   iconTheme?: clColorTheme;
   id?: string;
   justify?: 'left' | 'center' | 'right' | 'space-between';
+  justifyWrapper?: 'left' | 'center' | 'right' | 'space-between';
   linkTo?: string;
   openInNewTab?: boolean;
   onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
@@ -337,7 +338,7 @@ class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight, ariaLabel } = this.props;
+    const { type, text, form, textColor, textHoverColor, bgColor, bgHoverColor, borderColor, borderHoverColor, borderThickness, minWidth, width, height, padding, justify, justifyWrapper, icon, iconSize, iconTitle, iconTheme, hiddenText, children, linkTo, openInNewTab, fontWeight, fullHeight, ariaLabel } = this.props;
     let { id, size, style, processing, disabled, fullWidth, circularCorners, iconPos, className } = this.props;
 
     id = (id || '');
@@ -376,6 +377,7 @@ class Button extends PureComponent<Props, State> {
         height={height}
         padding={padding}
         justify={justify}
+        justifyWrapper={justifyWrapper}
         iconSize={iconSize}
         processing={processing}
         onClick={this.handleOnClick}
