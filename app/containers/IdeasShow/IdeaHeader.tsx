@@ -77,7 +77,7 @@ const IdeaTitle = styled.h1`
 `;
 
 const StatusContainer = styled.div`
-  margin-top: 4px;
+  margin-top: 5px;
 
   ${media.biggerThanMaxTablet`
     display: none;
