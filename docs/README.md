@@ -1,11 +1,12 @@
 # Changelog
 
-## 2019-04-19
+## 2019-04-23
 
 ### Fixed
 
 - Closing the notification menu does not cause an error anymore
 - The unread notifications count is now displayed correctly on IE11
+- Clicking on an invite link will now show an immediate error if the invite is no longer valid
 
 ### Changed
 
