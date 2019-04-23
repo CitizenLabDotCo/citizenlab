@@ -34,10 +34,6 @@ import { getLocalized } from 'utils/i18n';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-import Modal from 'components/UI/Modal';
-import { Subscription } from 'rxjs';
-import eventEmitter from 'utils/eventEmitter';
-import UserDeletedSuccessModalContent from './UserDeletedSuccessModalContent';
 
 const Container: any = styled.div`
   height: 100%;
@@ -162,8 +158,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {
-}
+interface State {}
 
 class LandingPage extends PureComponent<Props, State> {
   componentDidMount() {

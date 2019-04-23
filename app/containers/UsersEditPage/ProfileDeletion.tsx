@@ -1,17 +1,24 @@
 // Libraries
 import React, { PureComponent } from 'react';
 
+// services
 import { deleteUser } from 'services/users';
 
 // Styles
+import styled from 'styled-components';
+
+// components
 import ProfileSection from './ProfileSection';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+
+// intl
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-import styled from 'styled-components';
+
+// utils
 import { reportError } from 'utils/loggingUtils';
 import eventEmitter from 'utils/eventEmitter';
 
