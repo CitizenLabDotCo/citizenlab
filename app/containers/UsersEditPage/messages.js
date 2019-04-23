@@ -89,6 +89,10 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.profileDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete your profile ?',
   },
+  deleteProfileError: {
+    id: 'app.containers.UsersEditPage.deleteProfileError',
+    defaultMessage: 'There was an issue deleting your profile, please try again later.',
+  },
   /*
    * Details
    */
