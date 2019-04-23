@@ -20,5 +20,6 @@ describe('Idea show page actions', () => {
     cy.get('.e2e-user-deleted-success-modal-content');
     cy.get('.e2e-modal-close-button').click();
     cy.get('.e2e-user-deleted-success-modal-content').should('not.exist');
+    cy.get('.e2e-user-menu-container').should('not.exist');
   });
 });
