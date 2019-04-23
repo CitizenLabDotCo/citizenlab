@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import CommentingDisabled from './CommentingDisabled';
 import Author from 'components/Author';
 
 // tracking
@@ -184,7 +183,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const { authUser, idea, ideaId, className } = this.props;
     const { inputValue, focussed, processing, errorMessage } = this.state;
     const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const canComment = (authUser && commentingEnabled);
@@ -192,13 +190,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <Container className={className}>
-        <CommentingDisabled
-          isLoggedIn={!!authUser}
-          commentingEnabled={commentingEnabled}
-          commentingDisabledReason={commentingDisabledReason}
-          projectId={projectId}
-        />
-
         {(authUser && canComment) &&
           <CommentContainer className={`e2e-comment-form ideaCommentForm ${focussed ? 'focussed' : ''}`}>
             <AuthorWrapper>

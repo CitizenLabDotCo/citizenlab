@@ -64,8 +64,8 @@ const Left = styled.div`
 
 const Separator = styled.div`
   font-size: ${fontSizes.small}px;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 11px;
+  margin-right: 11px;
 
   ${media.phone`
     margin-left: 10px;
@@ -76,6 +76,9 @@ const Separator = styled.div`
 const ReplyButton = styled.button`
   color: ${colors.label};
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
 
   &:hover {
     color: #000;
@@ -194,7 +197,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, projectId, commentId, className, comment, locale, authUser, idea, canReply } = this.props;
+    const { commentType, ideaId, projectId, commentId, className, comment, locale, authUser, idea, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
@@ -219,19 +222,22 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           {/* </FeatureFlag> */}
 
           <Footer>
-            {authUser &&
-              <Left>
-                <CommentVote commentId={commentId} />
-                {commentingEnabled && canReply &&
-                  <>
-                    <Separator>•</Separator>
-                    <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
-                      <FormattedMessage {...messages.commentReplyButton} />
-                    </ReplyButton>
-                  </>
-                }
-              </Left>
-            }
+            <Left>
+              <CommentVote
+                ideaId={ideaId}
+                commentId={commentId}
+              />
+
+              {authUser && commentingEnabled && canReply &&
+                <>
+                  <Separator>•</Separator>
+                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                    <FormattedMessage {...messages.commentReplyButton} />
+                  </ReplyButton>
+                </>
+              }
+            </Left>
+
             <Right>
               <StyledCommentsMoreActions
                 projectId={projectId}

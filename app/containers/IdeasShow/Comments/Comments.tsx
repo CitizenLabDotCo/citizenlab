@@ -11,14 +11,12 @@ import { ICommentData } from 'services/comments';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div`
-  margin-top: 30px;
-`;
+const Container = styled.div``;
 
 const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 `;
 
 interface Props {

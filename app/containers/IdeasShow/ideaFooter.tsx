@@ -1,18 +1,18 @@
-import React, { memo, Suspense, lazy /*, useState, useCallback */ } from 'react';
+import React, { memo, Suspense, lazy } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
 import LoadingComments from './Comments/LoadingComments';
-// import Observer from '@researchgate/react-intersection-observer';
 
 // styling
 import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
-// import { maxPageWidth } from './index';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+const maxPageWidth = '810px';
 
 const Container = styled.div`
   flex: 1;
@@ -31,7 +31,7 @@ const FooterHeader = styled.div``;
 
 const FooterHeaderInner = styled.div`
   width: 100%;
-  max-width: 810px;
+  max-width: ${maxPageWidth};
   display: flex;
   margin-left: auto;
   margin-right: auto;
@@ -51,7 +51,7 @@ const FooterHeaderTab = styled.div`
   color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  display: block;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-top-left-radius: 5px;
@@ -80,12 +80,12 @@ const FooterContent = styled.div`
 
 const FooterContentInner = styled.div`
   width: 100%;
-  max-width: 810px;
+  max-width: ${maxPageWidth};
   display: flex;
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 30px;
+  margin-top: 40px;
   padding-bottom: 60px;
 
   ${media.smallerThanMaxTablet`
@@ -109,18 +109,6 @@ interface Props {
 const LazyComments = lazy(() => import('./Comments'));
 
 const ideaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
-
-  // const [intersected, setIntersected] = useState<boolean>(true);
-
-  // const handleIntersection = useCallback(
-  //   (event: IntersectionObserverEntry, unobserve: () => void) => {
-  //     if (event.isIntersecting) {
-  //       setIntersected(true);
-  //       unobserve();
-  //     }
-  //   }, []
-  // );
-
   return (
     <Container className={className}>
       <FooterHeader>
@@ -133,19 +121,11 @@ const ideaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
       </FooterHeader>
 
       <FooterContent>
-        {/* <Observer onChange={handleIntersection}> */}
           <FooterContentInner>
             <Suspense fallback={<LoadingComments />}>
               <LazyComments ideaId={ideaId} />
-
-              {/* {intersected ? (
-                <LazyComments ideaId={ideaId} />
-              ) : (
-                <LoadingComments />
-              )} */}
             </Suspense>
           </FooterContentInner>
-        {/* </Observer> */}
       </FooterContent>
     </Container>
   );

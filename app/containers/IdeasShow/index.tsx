@@ -69,7 +69,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 import TranslateButton from './TranslateButton';
 
-export const maxPageWidth = '810px';
+const maxPageWidth = '810px';
 const loadingSpinnerFadeInDuration = 300;
 const loadingSpinnerFadeInEasing = 'ease-out';
 const loadingSpinnerFadeInDelay = 100;
