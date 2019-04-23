@@ -52,7 +52,7 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
 import Modal from 'components/UI/Modal';
-import UserDeletedSuccessModalContent from 'containers/LandingPage/UserDeletedSuccessModalContent';
+import UserDeletedSuccessModalContent from 'components/UserDeletedSuccessModalContent';
 
 const Container = styled.div`
   background: #fff;
