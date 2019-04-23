@@ -1252,7 +1252,7 @@
   "app.containers.SignUp.redeem": "Activar",
   "app.containers.SignUp.signUp": "Únete",
   "app.containers.SignUp.signUpButtonAltText": "Registrate con {loginMechanismName}",
-  "app.containers.SignUp.signUpPage": "Sign up page",
+  "app.containers.SignUp.signUpPage": "sign up page",
   "app.containers.SignUp.skip": "Omitir este paso",
   "app.containers.SignUp.step1Title": "Crear una cuenta",
   "app.containers.SignUp.step2Title": "Completa tu perfil",
