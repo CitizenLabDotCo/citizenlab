@@ -51,6 +51,8 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
+import Modal from 'components/UI/Modal';
+import UserDeletedSuccessModalContent from 'containers/LandingPage/UserDeletedSuccessModalContent';
 
 const Container = styled.div`
   background: #fff;
@@ -93,6 +95,7 @@ type State = {
   modalId: string | null;
   modalUrl: string | null;
   visible: boolean;
+  userDeletedModalOpened: boolean;
 };
 
 class App extends PureComponent<Props & WithRouterProps, State> {
@@ -109,7 +112,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       modalType: null,
       modalId: null,
       modalUrl: null,
-      visible: true
+      visible: true,
+      userDeletedModalOpened: false
     };
     this.subscriptions = [];
   }
@@ -187,6 +191,11 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openModal(type, id, url);
       }),
     ];
+    this.subscriptions.push(
+      eventEmitter.observeEvent('profileDeletedSuccessfuly').subscribe(() => {
+        this.setState({ userDeletedModalOpened: true });
+      })
+    );
   }
 
   componentWillUnmount() {
@@ -209,12 +218,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   unauthenticatedVoteClick = () => {
     clHistory.push('/sign-in');
   }
+    closeUserDeletedModal = () => {
+      this.setState({ userDeletedModalOpened: false });
+    }
 
   render() {
     const { location, children } = this.props;
     const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
+    const { userDeletedModalOpened } = this.state;
 
     return (
       <>
@@ -223,6 +236,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
             <ThemeProvider theme={theme}>
               <Container className={`${isAdminPage ? 'admin' : 'citizen'}`}>
                 <Meta />
+
+                <Modal
+                  opened={userDeletedModalOpened}
+                  close={this.closeUserDeletedModal}
+                >
+                  <UserDeletedSuccessModalContent />
+                </Modal>
 
                 <ErrorBoundary>
                   <LoadableFullscreenModal

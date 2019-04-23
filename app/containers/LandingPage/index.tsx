@@ -163,24 +163,10 @@ interface Props extends InputProps, DataProps {
 }
 
 interface State {
-  userDeletedModalOpened: boolean;
 }
 
 class LandingPage extends PureComponent<Props, State> {
-  subs: Subscription[] = [];
-
-  constructor(props) {
-    super(props);
-    this.state = { userDeletedModalOpened: false };
-  }
-
   componentDidMount() {
-    this.subs.push(
-      eventEmitter.observeEvent('profileDeletedSuccessfuly').subscribe(() => {
-        this.setState({ userDeletedModalOpened: true });
-      })
-    );
-
     const query = clHistory.getCurrentLocation().query;
     const newIdeaId = get(query, 'new_idea_id');
     const newIdeaSlug = get(query, 'new_idea_slug');
@@ -210,13 +196,8 @@ class LandingPage extends PureComponent<Props, State> {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
 
-  closeUserDeletedModal = () => {
-    this.setState({ userDeletedModalOpened: false });
-  }
-
   render() {
     const { locale, tenant, authUser, homepageInfoPage, theme } = this.props;
-    const { userDeletedModalOpened } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       const tenantLocales = tenant.attributes.settings.core.locales;
@@ -230,13 +211,6 @@ class LandingPage extends PureComponent<Props, State> {
 
       return (
         <>
-          <Modal
-            opened={userDeletedModalOpened}
-            close={this.closeUserDeletedModal}
-          >
-            <UserDeletedSuccessModalContent />
-          </Modal>
-
           <Container id="e2e-landing-page" hasHeader={hasHeaderImage}>
             {authUser ? <SignedInHeader /> : <SignedOutHeader />}
 
