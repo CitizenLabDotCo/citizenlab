@@ -179,14 +179,11 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           firstName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
           lastName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
           email: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
-          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale),
+          // if token comes from props like it does here, it's an email invitation (got it from the url)
+          // if the invitedUser doesn't exist, it means that the invitation was withdrawn
+          emailInvitationTokenInvalid: token && isNilOrError(invitedUser) ? true : false
         }));
-
-        // if token comes from props, it's an email invitation (got it from the url)
-        // if the invitedUser doesn't exist, it means that the invitation was withdrawn
-        if (token && isNilOrError(invitedUser)) {
-          this.setState({ emailInvitationTokenInvalid: true });
-        }
       })
     ];
   }
