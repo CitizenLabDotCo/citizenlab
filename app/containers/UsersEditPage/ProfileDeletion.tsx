@@ -48,7 +48,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
       this.setState({ processing: true, error: false });
       deleteUser(this.props.userId)
       .then(() => {
-        eventEmitter.emit('UserProfile', 'profileDeletedSuccessfuly', null);
+        setTimeout(() => eventEmitter.emit('UserProfile', 'profileDeletedSuccessfuly', null), 2000);
       }).catch(err => {
         reportError(err);
         this.setState({ error: true, processing: false });
