@@ -36,7 +36,8 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  padding: 17px 34px 27px 34px;
+  padding: 30px;
+  padding-top: 35px;
   margin-bottom: 10px;
 
   &.last {
@@ -47,6 +48,7 @@ const Container = styled.div`
 const PostContainer = styled(Container)`
   white-space: pre-line;
   background: ${lighten(0.545, colors.clRedError)};
+  position: relative;
 `;
 
 const EditFormContainer = styled(Container)`
@@ -78,8 +80,9 @@ const DateEdited = styled.span`
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
-  align-self: flex-end;
-  margin-bottom: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 interface DataProps {

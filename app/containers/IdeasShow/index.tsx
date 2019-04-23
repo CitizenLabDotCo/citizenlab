@@ -185,7 +185,6 @@ const LeftColumn = styled.div`
   padding: 0;
   padding-right: 70px;
   min-width: 0;
-  border: solid 1px red;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -194,9 +193,8 @@ const LeftColumn = styled.div`
 
 const IdeaImage = styled.img`
   width: 100%;
-  margin: 0 0 2rem;
-  padding: 0;
-  border-radius: 8px;
+  margin-bottom: 20px;
+  border-radius: 3px;
   border: 1px solid ${colors.separation};
 `;
 
@@ -359,17 +357,6 @@ const VoteLabel = styled.div`
 
 const StatusContainer = styled.div``;
 
-const StatusContainerMobile = styled(StatusContainer)`
-  margin-top: -20px;
-  margin-bottom: 35px;
-  transform-origin: top left;
-  transform: scale(0.9);
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
 const StatusTitle = styled.h4`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -384,7 +371,6 @@ const VoteControlMobile = styled.div`
   border-bottom: solid 1px ${colors.separation};
   padding-top: 15px;
   padding-bottom: 15px;
-  margin-top: -10px;
   margin-bottom: 30px;
 
   ${media.biggerThanMaxTablet`
@@ -393,8 +379,8 @@ const VoteControlMobile = styled.div`
 `;
 
 const AssignBudgetControlMobile = styled.div`
-  margin-top: 50px;
-  margin-bottom: 35px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -407,10 +393,9 @@ const SharingWrapper = styled.div`
 `;
 
 const SharingMobile = styled(Sharing)`
+  padding: 0;
   margin: 0;
   margin-top: 30px;
-  margin-bottom: 55px;
-  padding: 0;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -427,8 +412,7 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 100px;
-  border: solid 1px red;
+  margin-top: 90px;
 `;
 
 interface DataProps {
@@ -709,6 +693,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           <IdeaContainer id="e2e-idea-show">
             <IdeaHeader
               ideaId={ideaId}
+              statusId={statusId}
               ideaTitle={ideaTitle}
               projectId={projectId}
               locale={locale}
@@ -718,12 +703,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content>
               <LeftColumn>
-                {statusId &&
-                  <StatusContainerMobile>
-                    <StatusBadge statusId={statusId} />
-                  </StatusContainerMobile>
-                }
-
                 {!inModal && showVoteControl &&
                   <VoteControlMobile>
                     <VoteControl

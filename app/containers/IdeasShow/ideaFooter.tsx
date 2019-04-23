@@ -20,7 +20,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-top: 30px;
+  margin-top: 35px;
 
   ${media.smallerThanMinTablet`
     margin-top: 20px;
@@ -89,6 +89,7 @@ const FooterContentInner = styled.div`
   padding-bottom: 60px;
 
   ${media.smallerThanMaxTablet`
+    margin-top: 20px;
     padding-left: 30px;
     padding-right: 30px;
   `}

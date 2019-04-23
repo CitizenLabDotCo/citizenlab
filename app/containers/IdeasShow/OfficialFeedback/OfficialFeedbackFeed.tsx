@@ -18,11 +18,15 @@ import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps, FormattedDate } from 'react-intl';
 
-const Container = styled.div``;
+const Container = styled.div`
+  &.hasTopMargin {
+    margin-top: 60px;
+  }
+`;
 
 const FeedbackHeader = styled.div`
   color: ${colors.clRedError};
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
 `;
@@ -36,11 +40,15 @@ const StyledSpan = styled.span`
   font-weight: 500;
 `;
 
-const LoadMoreButton = styled(Button)``;
+const LoadMoreButton = styled(Button)`
+  margin-top: 10px;
+`;
 
 interface InputProps {
   ideaId: string;
+  permission: boolean | null;
   editingAllowed: boolean | null;
+  className?: string;
 }
 
 interface DataProps {
@@ -53,7 +61,7 @@ interface State {}
 
 class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { officialFeedbacks, editingAllowed } = this.props;
+    const { officialFeedbacks, editingAllowed, permission, className } = this.props;
 
     if (officialFeedbacks) {
       const { officialFeedbacksList, querying, hasMore, loadingMore, onLoadMore } = officialFeedbacks;
@@ -70,7 +78,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
         );
 
         return (
-          <Container>
+          <Container className={`${className} ${permission ? 'hasTopMargin' : ''}`}>
             <FeedbackHeader>
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
@@ -80,6 +88,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                   values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
                 />
             </FeedbackHeader>
+
             {officialFeedbacksList.data.map((officialFeedbackPost, index) => {
               return (
                 <OfficialFeedbackPost
