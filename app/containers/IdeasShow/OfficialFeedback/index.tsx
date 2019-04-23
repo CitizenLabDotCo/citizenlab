@@ -8,18 +8,17 @@ import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
 // resources
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
-
-// styling
-import styled from 'styled-components';
 import { GetProjectChildProps } from 'resources/GetProject';
 
-const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
-  margin-bottom: 70px;
-`;
+// style
+import styled from 'styled-components';
+
+const Container = styled.div``;
 
 interface InputProps {
   ideaId: string;
   project: GetProjectChildProps;
+  className?: string;
 }
 
 interface DataProps {
@@ -28,8 +27,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-}
+interface State {}
 
 export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -39,19 +37,19 @@ export class OfficialFeedback extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, permission } = this.props;
+    const { ideaId, permission, className } = this.props;
 
     return (
-      <>
+      <Container className={className}>
         {permission &&
-          <StyledOfficialFeedbackNew ideaId={ideaId} />
+          <OfficialFeedbackNew ideaId={ideaId} />
         }
 
         <OfficialFeedbackFeed
           ideaId={ideaId}
           editingAllowed={permission}
         />
-      </>
+      </Container>
     );
   }
 }

@@ -32,7 +32,7 @@ const Container = styled.div`
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e8e8e8;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;

@@ -38,6 +38,10 @@ const Container = styled.div`
   font-size: ${fontSizes.base}px;
   padding: 17px 34px 27px 34px;
   margin-bottom: 10px;
+
+  &.last {
+    margin-bottom: 0;
+  }
 `;
 
 const PostContainer = styled(Container)`
@@ -86,6 +90,7 @@ interface DataProps {
 interface InputProps {
   editingAllowed: boolean | null;
   officialFeedbackPost: IOfficialFeedbackData;
+  last: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,7 +143,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, last } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -164,7 +169,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
 
       return (
-        <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
+        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${last ? 'last' : ''}`}>
           {editingAllowed &&
             <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
