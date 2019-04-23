@@ -24,11 +24,11 @@ const ResolutionButton = styled.button`
   }
 
   &:first-child {
-    border-radius: 5px 0 0 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius} 0 0 ${(props: any) => props.theme.borderRadius};
   }
 
   &:last-child {
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0;
     margin-right: 0;
   }
 

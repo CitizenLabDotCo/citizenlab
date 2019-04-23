@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CommentDeletedByAdminNotification /> renders correctly with a non empty idea 1`] = `
+<NotificationWrapper
+  icon="notification_comment"
+  isRead={false}
+  linkTo="/ideas/doloribus-quam-molestiae-ut"
+  timing="2019-04-16T14:32:17.095Z"
+>
+  <FormattedMessage
+    defaultMessage="Your comment on '{ideaTitle}' has been deleted by an admin because
+      {reasonCode, select,
+        irrelevant {it is irrelevant}
+        inappropriate {its content is inappropriate}
+        other {{otherReason}}
+      }
+    "
+    id="app.containers.NotificationMenu.commentDeletedByAdmin"
+    values={
+      Object {
+        "ideaTitle": <T
+          value={
+            Object {
+              "en": "ideaTitle",
+              "nl-BE": "Doloribus quam molestiae ut.",
+            }
+          }
+        />,
+        "otherReason": undefined,
+        "reasonCode": "irrelevant",
+      }
+    }
+  />
+</NotificationWrapper>
+`;
+
+exports[`<CommentDeletedByAdminNotification /> renders correctly with an empty idea 1`] = `""`;

@@ -10,7 +10,7 @@ const StyledContentContainer = styled.div`
   padding: 40px;
   border: 1px solid #ddd;
   box-shadow: 0 0 1px #ddd;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   margin: 0 auto 30px;
 `;
 

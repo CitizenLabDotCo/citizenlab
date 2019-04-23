@@ -1,5 +1,5 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
 // services
 import { IInviteAcceptedNotificationData } from 'services/notifications';
@@ -13,47 +13,39 @@ import NotificationWrapper from '../NotificationWrapper';
 import Link from 'utils/cl-router/Link';
 import { DeletedUser } from '../Notification';
 
-type Props = {
+interface Props {
   notification: IInviteAcceptedNotificationData;
-};
-
-type State = {
-};
-
-export default class InviteAcceptedNotification extends React.PureComponent<Props, State> {
-
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
-  render() {
-    const { notification } = this.props;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
-
-    return (
-      <NotificationWrapper
-        linkTo={'/admin/users/invitations'}
-        timing={notification.attributes.created_at}
-        icon="notification_invitation_accepted"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.userAcceptedYourInvitation}
-          values={{
-            name: deletedUser ?
-              <DeletedUser>
-                <FormattedMessage {...messages.deletedUser} />
-              </DeletedUser>
-              :
-              <Link
-                to={`/profile/${notification.attributes.initiating_user_slug}`}
-                onClick={this.onClickUserName}
-              >
-                {notification.attributes.initiating_user_first_name}
-              </Link>
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
 }
+
+const InviteAcceptedNotification = memo<Props>(props => {
+  const { notification } = props;
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+
+  return (
+    <NotificationWrapper
+      linkTo={'/admin/users/invitations'}
+      timing={notification.attributes.created_at}
+      icon="notification_invitation_accepted"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.userAcceptedYourInvitation}
+        values={{
+          name: deletedUser ?
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+            :
+            <Link
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
+            >
+              {notification.attributes.initiating_user_first_name}
+            </Link>
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
+
+export default InviteAcceptedNotification;
