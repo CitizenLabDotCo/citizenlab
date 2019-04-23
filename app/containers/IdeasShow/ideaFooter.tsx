@@ -15,15 +15,11 @@ import messages from './messages';
 const maxPageWidth = '810px';
 
 const Container = styled.div`
-  flex: 1;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 35px;
+  margin-top: 70px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 20px;
+    margin-top: 40px;
   `}
 `;
 
@@ -48,32 +44,33 @@ const FooterHeaderInner = styled.div`
 `;
 
 const FooterHeaderTab = styled.div`
-  color: ${(props) => props.theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border-top-left-radius: ${(props: any) => props.theme.borderRadius};
   border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 16px 22px;
   border: solid 1px #e2e2e2;
   border-bottom: none;
   background: #fff;
 `;
 
+const FooterHeaderTabInner = styled.div`
+  color: ${(props) => props.theme.colorText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 22px;
+`;
+
 const CommentsIcon = styled(Icon)`
+  width: 25px;
   height: 20px;
   fill: ${(props) => props.theme.colorSecondary};
   margin-right: 8px;
 `;
 
 const FooterContent = styled.div`
-  flex: 1;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   background: #f8f8f9;
   border-top: solid 1px #e2e2e2;
 `;
@@ -81,8 +78,6 @@ const FooterContent = styled.div`
 const FooterContentInner = styled.div`
   width: 100%;
   max-width: ${maxPageWidth};
-  display: flex;
-  flex-direction: column;
   margin-left: auto;
   margin-right: auto;
   margin-top: 40px;
@@ -115,8 +110,10 @@ const ideaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
       <FooterHeader>
         <FooterHeaderInner>
           <FooterHeaderTab>
-            <CommentsIcon name="comments" />
-            <FormattedMessage {...messages.commentsWithCount} values={{ count: commentsCount }} />
+            <FooterHeaderTabInner>
+              <CommentsIcon name="comments" />
+              <FormattedMessage {...messages.commentsWithCount} values={{ count: commentsCount }} />
+            </FooterHeaderTabInner>
           </FooterHeaderTab>
         </FooterHeaderInner>
       </FooterHeader>

@@ -110,10 +110,7 @@ const Container = styled.div`
   background: #fff;
   transform: none;
   will-change: transform, opacity;
-
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
-  display: flex;
-  flex-direction: column;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -153,7 +150,6 @@ const IdeaContainer = styled.div`
   margin-right: auto;
   padding: 0;
   padding-top: 60px;
-  padding-bottom: 40px;
   position: relative;
 
   ${media.smallerThanMaxTablet`
@@ -184,7 +180,6 @@ const LeftColumn = styled.div`
   margin: 0;
   padding: 0;
   padding-right: 70px;
-  min-width: 0;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -193,6 +188,7 @@ const LeftColumn = styled.div`
 
 const IdeaImage = styled.img`
   width: 100%;
+  height: auto;
   margin-bottom: 20px;
   border-radius: 3px;
   border: 1px solid ${colors.separation};
@@ -405,11 +401,6 @@ const SharingMobile = styled(Sharing)`
 
 const MoreActionsMenuWrapper = styled.div`
   margin-top: 40px;
-  user-select: none;
-
-  * {
-    user-select: none;
-  }
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
