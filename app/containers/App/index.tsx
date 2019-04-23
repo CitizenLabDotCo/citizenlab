@@ -224,10 +224,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, children } = this.props;
-    const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible } = this.state;
+    const { previousPathname, tenant, modalOpened, modalType, modalId, modalUrl, visible , userDeletedModalOpened } = this.state;
     const isAdminPage = (location.pathname.startsWith('/admin'));
     const theme = getTheme(tenant);
-    const { userDeletedModalOpened } = this.state;
 
     return (
       <>
