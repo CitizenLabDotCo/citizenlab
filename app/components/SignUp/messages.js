@@ -207,6 +207,6 @@ export default defineMessages({
   },
   signUpPage: {
     id: 'app.containers.SignUp.signUpPage',
-    defaultMessage: 'Sign up page',
+    defaultMessage: 'sign up page',
   },
 });
