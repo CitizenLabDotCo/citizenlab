@@ -22,7 +22,6 @@ const Container = styled.div``;
 
 const FeedbackHeader = styled.div`
   color: ${colors.clRedError};
-  margin-top: 50px;
   margin-bottom: 25px;
   display: flex;
   justify-content: space-between;
@@ -81,12 +80,13 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                   values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
                 />
             </FeedbackHeader>
-            {officialFeedbacksList.data.map(officialFeedbackPost => {
+            {officialFeedbacksList.data.map((officialFeedbackPost, index) => {
               return (
                 <OfficialFeedbackPost
                   key={officialFeedbackPost.id}
                   editingAllowed={editingAllowed}
                   officialFeedbackPost={officialFeedbackPost}
+                  last={index === officialFeedbacksList.data.length - 1}
                 />
               );
             })}

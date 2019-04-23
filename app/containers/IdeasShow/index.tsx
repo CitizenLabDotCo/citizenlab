@@ -185,6 +185,7 @@ const LeftColumn = styled.div`
   padding: 0;
   padding-right: 70px;
   min-width: 0;
+  border: solid 1px red;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
@@ -312,23 +313,6 @@ const StyledTranslateButton = styled(TranslateButton)`
   margin-bottom: 30px;
 `;
 
-const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-bottom: 112px;
-`;
-
-const SeparatorRow = styled.div`
-  width: 100%;
-  height: 1px;
-  margin: 0;
-  margin-top: 45px;
-  margin-bottom: 25px;
-
-  ${media.smallerThanMaxTablet`
-    margin-top: 20px;
-    margin-bottom: 20px;
-  `}
-`;
-
 const RightColumn = styled.div`
   flex-grow: 0;
   flex-shrink: 0;
@@ -409,10 +393,8 @@ const VoteControlMobile = styled.div`
 `;
 
 const AssignBudgetControlMobile = styled.div`
-  margin-top: 15px;
-  margin-bottom: 25px;
-  padding-top: 25px;
-  border-top: solid 1px ${colors.separation};
+  margin-top: 50px;
+  margin-bottom: 35px;
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -426,12 +408,9 @@ const SharingWrapper = styled.div`
 
 const SharingMobile = styled(Sharing)`
   margin: 0;
-  margin-bottom: 25px;
+  margin-top: 30px;
+  margin-bottom: 55px;
   padding: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -445,6 +424,11 @@ const MoreActionsMenuWrapper = styled.div`
   * {
     user-select: none;
   }
+`;
+
+const StyledOfficialFeedback = styled(OfficialFeedback)`
+  margin-top: 100px;
+  border: solid 1px red;
 `;
 
 interface DataProps {
@@ -802,11 +786,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   </>
                 }
 
-                {ideaFiles && !isNilOrError(ideaFiles) &&
+                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
-
-                <SeparatorRow />
 
                 {showBudgetControl && participationContextId && participationContextType && budgetingDescriptor &&
                   <AssignBudgetControlMobile>

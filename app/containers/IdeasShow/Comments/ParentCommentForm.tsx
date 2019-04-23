@@ -46,7 +46,7 @@ const CommentContainer = styled.div`
   background: #F1F2F4;
   border: 1px solid #E3E3E3;
   box-sizing: border-box;
-  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   transition: all 100ms ease;
 
