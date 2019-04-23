@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from 'containers/LandingPage/messages';
+import messages from './messages';
 
 // style
 import styled from 'styled-components';
