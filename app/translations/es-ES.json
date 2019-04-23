@@ -615,7 +615,7 @@
   "app.containers.AdminPage.ProjectEdit.information": "Información",
   "app.containers.AdminPage.ProjectEdit.informationDescription": "Los usuarios sólo pueden leer la información que proporcionas, no participan activamente.",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
-  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "Manually sort projects",
+  "app.containers.AdminPage.ProjectEdit.manualSortingProjects": "Ordenar manualmente proyectos",
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "Vista del mapa",
   "app.containers.AdminPage.ProjectEdit.moderatorsRoleExplanation": "Permisos de moderación para alguien que no es un administrador le da permiso para modificar la configuración del proyecto y moderar las ideas y comentarios que pertenecen a ese proyecto. Los administradores tienen siempre permisos de moderación sobre todos los proyectos.",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "¿Quién puede moderar este proyecto?",
