@@ -165,9 +165,9 @@ class InvitesService
       add_error(:no_invites_specified)
       fail_now
     else
-      existing_user_emails = User.where('lower(email) IN (?)', hash_array.map{|h| h['email']&.downcase}.compact).pluck(:email)
+      existing_user_emails = User.where('lower(email) IN (?)', hash_array.map{|h| h['email']&.downcase}.compact).pluck(:email).map(&:downcase)
       invites = hash_array.select do |invite_params|
-        !existing_user_emails.include? invite_params['email']
+        !(invite_params['email'] && existing_user_emails.include?(invite_params['email'].downcase))
       end.map do |invite_params|
         build_invite(invite_params, default_params, inviter)
       end
