@@ -54,8 +54,8 @@ const FooterHeaderTab = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
+  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
   padding: 16px 22px;
   border: solid 1px #e2e2e2;
   border-bottom: none;
