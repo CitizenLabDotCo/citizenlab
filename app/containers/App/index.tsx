@@ -25,7 +25,7 @@ import clHistory from 'utils/cl-router/history';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
-import { trackPage, trackIdentification } from 'utils/analytics';
+import { trackPage } from 'utils/analytics';
 
 // components
 import Meta from './Meta';
@@ -148,7 +148,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                 id: authUser.data.id,
               });
             });
-            trackIdentification(authUser);
           }
         })),
         locale$.pipe(tap((locale) => {
