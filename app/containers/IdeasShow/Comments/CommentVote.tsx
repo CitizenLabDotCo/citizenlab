@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, cloneDeep, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -34,9 +35,10 @@ const UpvoteIcon = styled(Icon)`
   flex: 0 0 16px;
   fill: ${colors.label};
   margin-top: 0px;
+  margin-left: -2px;
 
   &:not(.voted) {
-    margin-left: -5px;
+    margin-left: -6px;
   }
 
   &.voted {
@@ -76,12 +78,15 @@ const UpvoteIconWrapper = styled.button`
 const UpvoteCount = styled.div`
   color: ${colors.label};
   margin-left: 4px;
-  margin-right: 6px;
+  margin-right: 10px;
 `;
 
 const UpvoteLabel = styled.button`
   color: ${colors.label};
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
 
   &:hover {
     color: #000;
@@ -94,6 +99,7 @@ const UpvoteLabel = styled.button`
 `;
 
 interface InputProps {
+  ideaId: string;
   commentId: string;
   className?: string;
 }
@@ -158,13 +164,13 @@ class CommentVote extends PureComponent<Props, State> {
 
     const oldVotedValue = cloneDeep(this.state.voted);
     const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const { commentId, authUser, comment, commentVote } = this.props;
+    const { ideaId, commentId, authUser, comment, commentVote } = this.props;
 
     if (!isNilOrError(authUser)) {
       if (!oldVotedValue) {
         try {
           this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
-          await addCommentVote(commentId, {
+          await addCommentVote(ideaId, commentId, {
             user_id: authUser.id,
             mode: 'up'
           });
@@ -181,6 +187,8 @@ class CommentVote extends PureComponent<Props, State> {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
       }
+    } else {
+      clHistory.push('/sign-in');
     }
   }
 

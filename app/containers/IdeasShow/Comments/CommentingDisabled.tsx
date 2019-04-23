@@ -9,6 +9,10 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 import messages from '../messages';
 
+const Container = styled.div`
+  margin-bottom: 40px;
+`;
+
 const StyledLink = styled(Link) `
   color: #1391A1;
   text-decoration: underline;
@@ -61,15 +65,17 @@ class CommentingDisabled extends PureComponent<Props> {
       if (!messageDescriptor) return null;
 
       return (
-        <Warning>
-          <FormattedMessage
-            {...messageDescriptor}
-            values={{
-              signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-              projectName: projectTitle && <T value={projectTitle} />
-            }}
-          />
-        </Warning>
+        <Container>
+          <Warning>
+            <FormattedMessage
+              {...messageDescriptor}
+              values={{
+                signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
+                projectName: projectTitle && <T value={projectTitle} />
+              }}
+            />
+          </Warning>
+        </Container>
       );
     }
 }
