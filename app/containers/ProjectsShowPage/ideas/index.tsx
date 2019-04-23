@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Header from '../Header';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
@@ -73,7 +72,6 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
         return (
           <>
-            <Header projectSlug={params.slug} />
             <StyledProjectArchivedIndicator projectId={projectId} />
             <StyledContentContainer>
               {isPBProject &&

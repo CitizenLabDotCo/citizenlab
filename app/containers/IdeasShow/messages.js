@@ -229,6 +229,14 @@ export default defineMessages({
     id: 'app.components.IdeasShow.editIdea',
     defaultMessage: 'Edit idea',
   },
+  deleteIdea: {
+    id: 'app.components.IdeasShow.deleteIdea',
+    defaultMessage: 'Delete idea',
+  },
+  deleteIdeaConfirmation: {
+    id: 'app.components.IdeasShow.deleteIdeaConfirmation',
+    defaultMessage: 'Are you sure you want to delete this idea?',
+  },
   lastUpdated: {
     id: 'app.components.IdeasShow.lastUpdated',
     defaultMessage: 'Last modified {modificationTime}',

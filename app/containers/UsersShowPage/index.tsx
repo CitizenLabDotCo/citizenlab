@@ -63,7 +63,7 @@ const UserInfo = styled.div`
   width: 100%;
   margin-top: 0px;
   padding-bottom: 40px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const FullName = styled.div`

@@ -117,7 +117,7 @@ const Container: any = styled.div`
   .ql-toolbar {
     background: white;
     box-shadow: inset 0 0 2px rgba(0,0,0,0.1);
-    border-radius: 5px 5px 0 0;
+    border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
     border-bottom: 0 !important;
     & *:focus {
       outline: none;
@@ -150,7 +150,7 @@ const Container: any = styled.div`
 
   .ql-container {
     font-family: 'larsseit','Helvetica Neue',Helvetica,Arial,sans-serifhtml, body;
-    border-radius: 0 0 5px 5px;
+    border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
     width: 100%;
     height: 100%;
     font-size: ${fontSizes.base}px;
@@ -394,12 +394,12 @@ class QuillEditor extends React.Component<Props & InjectedIntlProps & Tracks, St
             <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
               <select className="ql-header" defaultValue={''}>
                 <option
-                  value="1"
+                  value="2"
                   aria-selected={false}
                 >{formatMessage(messages.title)}
                 </option>
                 <option
-                  value="2"
+                  value="3"
                   aria-selected={false}
                 >{formatMessage(messages.subtitle)}
                 </option>
