@@ -257,12 +257,13 @@ const LocationButton = styled.div`
 `;
 
 const MapWrapper = styled.div`
-  border-radius: 8px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.separation};
   height: 265px;
   position: relative;
   overflow: hidden;
   z-index: 2;
+  margin-top: 20px;
 
   &.map-enter {
     height: 0;
@@ -412,7 +413,7 @@ const MoreActionsMenuWrapper = styled.div`
 `;
 
 const StyledOfficialFeedback = styled(OfficialFeedback)`
-  margin-top: 90px;
+  margin-top: 85px;
 `;
 
 interface DataProps {

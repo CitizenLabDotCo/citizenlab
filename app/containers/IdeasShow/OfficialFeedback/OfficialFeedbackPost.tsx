@@ -48,6 +48,7 @@ const Container = styled.div`
 const PostContainer = styled(Container)`
   white-space: pre-line;
   background: ${lighten(0.545, colors.clRedError)};
+  background: rgba(236, 90, 36, 0.06);
   position: relative;
 `;
 
@@ -56,7 +57,7 @@ const EditFormContainer = styled(Container)`
 `;
 
 const Body = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Footer = styled.div`
@@ -65,18 +66,22 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  font-weight: 600;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
 `;
 
 const DatePosted = styled.span`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 300;
 `;
 
 const DateEdited = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-weight: 300;
   font-style: italic;
-  margin-top: 10px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
@@ -185,9 +190,11 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
               <Author>
                 <T value={author_multiloc} />
               </Author>
+
               <DatePosted>
                 {formattedDate}
               </DatePosted>
+
               {updated_at && updated_at !== created_at && (
                 <DateEdited>
                   <FormattedMessage
