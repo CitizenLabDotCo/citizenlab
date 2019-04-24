@@ -266,7 +266,7 @@ class Modal extends PureComponent<Props, State> {
     this.goBackUrl = window.location.href;
 
     window.addEventListener('popstate', this.handlePopstateEvent);
-    window.addEventListener('keydown', this.onEscKeyPressed, true);
+    window.addEventListener('keydown', this.handleKeypress);
 
     // on route change
     this.unlisten = clHistory.listen(() => {
@@ -276,6 +276,7 @@ class Modal extends PureComponent<Props, State> {
     // Add locale to the URL if it's not present yet
     let localizedUrl = url;
     const urlLocale = url && getUrlLocale(url);
+
     if (!urlLocale) {
       localizedUrl = `/${this.props.locale}${url}`;
     }
@@ -288,20 +289,11 @@ class Modal extends PureComponent<Props, State> {
     disableBodyScroll(this.ModalContentInnerElement);
   }
 
-  onEscKeyPressed = (event) => {
-    if (event.defaultPrevented) {
-      return;
+  handleKeypress = (event) => {
+    if (!event.defaultPrevented && event.key === 'Escape') {
+      event.preventDefault();
+      this.manuallyCloseModal();
     }
-
-    switch (event.key) {
-      case 'Escape':
-        this.manuallyCloseModal();
-        break;
-      default:
-        return;
-    }
-
-    event.preventDefault();
   }
 
   manuallyCloseModal = () => {
@@ -324,7 +316,7 @@ class Modal extends PureComponent<Props, State> {
     this.goBackUrl = null;
 
     window.removeEventListener('popstate', this.handlePopstateEvent);
-    window.removeEventListener('keydown', this.onEscKeyPressed, true);
+    window.removeEventListener('keydown', this.handleKeypress);
 
     // reset state
     this.setState({ scrolled: false });

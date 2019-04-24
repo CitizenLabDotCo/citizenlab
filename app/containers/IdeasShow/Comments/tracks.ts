@@ -6,4 +6,6 @@ export default {
   clickReply: 'Comment reply clicked',
   clickTranslateCommentButton: 'Clicked button to translate comment',
   clickGoBackToOriginalCommentButton: 'Clicked button to go back to original, non-translated comment',
+  clickCommentsSortOrder: 'Clicked the comments sort order dropdown',
+  clickParentCommentLoadMoreButton: "Clicked the 'Load more' button of a parent coment to load more child comments",
 };

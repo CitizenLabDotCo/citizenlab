@@ -109,7 +109,7 @@ export default class Dropdown extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     if (this.dropdownElement) {
-      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
+      this.dropdownElement.removeEventListener('wheel', this.scrolling);
     }
   }
 
@@ -127,7 +127,7 @@ export default class Dropdown extends PureComponent<Props, State> {
       this.dropdownElement = element;
 
       if (this.dropdownElement) {
-        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+        this.dropdownElement.addEventListener('wheel', this.scrolling);
       }
     }
   }

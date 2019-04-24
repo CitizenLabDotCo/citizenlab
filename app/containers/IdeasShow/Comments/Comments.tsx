@@ -8,6 +8,10 @@ import CommentSorting, { ICommentSortOptions } from './CommentSorting';
 // services
 import { ICommentData } from 'services/comments';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
@@ -57,6 +61,7 @@ const CommentsSection = memo<Props>(({ ideaId, comments, sortOrder, onSortOrderC
 
   const handleSortOrderChange = useCallback(
     (sortOrder: 'oldest_to_newest' | 'most_upvoted') => {
+      trackEventByName(tracks.clickCommentsSortOrder);
       onSortOrderChange(sortOrder);
     }, []
   );
