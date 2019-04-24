@@ -252,7 +252,7 @@ const Phases = styled.div`
   padding-left: ${padding}px;
   padding-right: ${padding}px;
   padding-top: 60px;
-  padding-bottom: 50px;
+  padding-bottom: 60px;
   margin: 0;
   margin-left: auto;
   margin-right: auto;
