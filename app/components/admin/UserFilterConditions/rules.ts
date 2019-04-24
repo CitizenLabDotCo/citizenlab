@@ -13,6 +13,9 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 
   The JSON schema can be found in the groups API docs
   => Create a group with 'rules' membership_type
+
+  At the time of this commit, the url is:
+  http://developers.citizenlab.co/api-docs/frontweb_api/master/groups/create_a_group_with_%27rules%27_membership_type.html
  */
 
 /**
