@@ -39,7 +39,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   assigneeOptions: IOption[];
-  ideaAssigneeOption: string | null;
+  ideaAssigneeOption: string | undefined;
   prevPropsProspectAssignees: GetUsersChildProps | null;
   prevPropsIdea: GetIdeaChildProps;
 }
@@ -49,7 +49,7 @@ class AssigneeSelect extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       assigneeOptions: [],
-      ideaAssigneeOption: null,
+      ideaAssigneeOption: undefined,
       prevPropsProspectAssignees: null,
       prevPropsIdea: null
     };
