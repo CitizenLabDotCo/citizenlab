@@ -126,6 +126,9 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
+    window.addEventListener('click', this.handleKeypress, true);
+    window.addEventListener('keydown', this.handleKeypress, true);
+
     this.subscriptions = [
       eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
         tap(() => this.setState({ inputValue: '', focussed: false })),
@@ -159,7 +162,18 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('click', this.handleKeypress, true);
+    window.removeEventListener('keydown', this.handleKeypress, true);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  handleKeypress = (event) => {
+    // Escape key to close
+    if (this.state.visible && event.type === 'keydown' && (event as KeyboardEvent).keyCode === 27) {
+      event.preventDefault();
+      event.stopPropagation();
+      this.setState({ visible: false });
+    }
   }
 
   handleTextareaOnChange = (inputValue: string) => {

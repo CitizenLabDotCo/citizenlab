@@ -6,6 +6,7 @@ import { get } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
+// import CommentsMoreActions from './CommentsMoreActions';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
@@ -20,11 +21,12 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// import { trackEventByName } from 'utils/analytics';
+// import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 // style
@@ -42,6 +44,7 @@ const Container = styled.div`
 const ContainerInner = styled.div`
   padding-top: 28px;
   padding-bottom: 25px;
+  position: relative;
 
   &.hasBottomBorder {
     border-bottom: solid 1px #e8e8e8;
@@ -75,17 +78,25 @@ const ContainerInner = styled.div`
   `}
 
   ${media.phone`
-    &.parent {
-      padding-left: 15px;
-      padding-right: 15px;
-    }
-
     &.child {
-      margin-left: 15px;
-      margin-right: 15px;
+      margin-left: 20px;
     }
   `}
 `;
+
+// const StyledCommentsMoreActions = styled(CommentsMoreActions)`
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+
+//   &.child {
+//     right: -10px;
+//   }
+
+//   ${media.biggerThanMinTablet`
+//     display: none;
+//   `}
+// `;
 
 const CommmentHeaderWrapper = styled.div`
   ${media.biggerThanMinTablet`
@@ -150,7 +161,7 @@ interface State {
   editing: boolean;
 }
 
-class Comment extends PureComponent<Props, State> {
+class Comment extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
     hasBottomBorder: true,
     hasChildComment: false,
@@ -185,6 +196,8 @@ class Comment extends PureComponent<Props, State> {
     }
   }
 
+  // moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
+
   render() {
     const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { editing } = this.state;
@@ -200,6 +213,14 @@ class Comment extends PureComponent<Props, State> {
           <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
+                {/* <StyledCommentsMoreActions
+                  projectId={projectId}
+                  comment={comment}
+                  onCommentEdit={this.onEditing}
+                  ariaLabel={this.moreActionsAriaLabel}
+                  className={commentType}
+                /> */}
+
                 <CommmentHeaderWrapper className={commentType}>
                   <CommentHeader
                     projectId={projectId}
@@ -267,8 +288,10 @@ const Data = adopt<DataProps, InputProps>({
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
+const CommentWithHoCs = injectIntl<Props>(Comment);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Comment {...inputProps} {...dataProps} />}
+    {dataProps => <CommentWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

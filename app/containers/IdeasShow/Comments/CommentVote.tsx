@@ -99,7 +99,7 @@ const UpvoteLabel = styled.button`
     text-decoration: underline;
   }
 
-  ${media.phone`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;

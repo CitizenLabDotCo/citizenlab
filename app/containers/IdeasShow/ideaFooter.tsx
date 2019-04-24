@@ -19,7 +19,7 @@ const Container = styled.div`
   margin-top: 70px;
 
   ${media.smallerThanMinTablet`
-    margin-top: 40px;
+    margin-top: 60px;
   `}
 `;
 

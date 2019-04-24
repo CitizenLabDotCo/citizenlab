@@ -1,7 +1,7 @@
 import { isNil, get } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
-import { darken, lighten } from 'polished';
+import { darken, lighten, transparentize } from 'polished';
 
 // Media
 export const viewportWidths = {
@@ -194,6 +194,7 @@ export const stylingConsts = {
 export function quillEditedContent(
   linkColor: string = colors.clBlueDark,
   textColor: string = colors.text,
+  mentionColor: string = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400
 ) {
@@ -299,8 +300,8 @@ export function quillEditedContent(
     }
 
     .mention {
-      color: #000;
-      font-weight: 300;
+      color: ${mentionColor};
+      font-weight: 400;
       overflow-wrap: normal;
       word-wrap: normal;
       word-break: normal;
@@ -311,13 +312,13 @@ export function quillEditedContent(
       padding-top: 4px;
       padding-bottom: 4px;
       border-radius: 3px;
-      background: ${lighten(0.1, colors.placeholderBg)};
-      transition: background 100ms ease;
+      background: ${transparentize(0.9, mentionColor)};
+      transition: all 100ms ease;
 
       &:hover {
-        color: #000;
+        color: ${darken(0.15, mentionColor)};
         text-decoration: none;
-        background: ${lighten(0.05, colors.placeholderBg)};
+        background: ${transparentize(0.85, mentionColor)};
       }
     }
 
