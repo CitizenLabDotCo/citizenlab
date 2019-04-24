@@ -1,5 +1,11 @@
 # Changelog
 
+## 2019-04-24
+
+### Fixed
+
+- Project cards now show correct time remaining until midnight
+
 ## 2019-04-23
 
 ### Fixed
