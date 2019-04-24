@@ -311,7 +311,7 @@ export function quillEditedContent(
       padding-top: 4px;
       padding-bottom: 4px;
       border-radius: 3px;
-      background: ${lighten(0.09, colors.placeholderBg)};
+      background: ${lighten(0.1, colors.placeholderBg)};
       transition: background 100ms ease;
 
       &:hover {

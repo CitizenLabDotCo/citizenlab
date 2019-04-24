@@ -225,13 +225,12 @@ class CommentBody extends PureComponent<Props, State> {
       commentId,
       className
     } = this.props;
+    const { commentContent, editableCommentContent, processing, apiErrors } = this.state;
 
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(locale)) {
       if (!editing) {
-        const { commentContent } = this.state;
-
         const CommentBodyContent = ({ text }: { text: string }) => (
           <>
             {commentType === 'child' &&
@@ -260,8 +259,6 @@ class CommentBody extends PureComponent<Props, State> {
           </CommentWrapper>
         );
       } else {
-        const { editableCommentContent, processing, apiErrors } = this.state;
-
         content = (
           <StyledForm onSubmit={this.onSubmit}>
             <QuillEditedContent fontWeight={300}>

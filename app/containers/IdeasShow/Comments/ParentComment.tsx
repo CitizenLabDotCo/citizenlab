@@ -43,13 +43,13 @@ const ParentCommentContainer = styled.div`
 
 const LoadMoreText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
   text-decoration: underline;
   border: none;
   padding: 0;
-  padding: 10px;
+  padding: 12px;
   margin: 0;
   transition: all 150ms ease-out;
 `;

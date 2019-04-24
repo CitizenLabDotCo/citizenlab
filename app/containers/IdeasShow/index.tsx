@@ -189,7 +189,7 @@ const LeftColumn = styled.div`
 const IdeaImage = styled.img`
   width: 100%;
   height: auto;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   border-radius: 3px;
   border: 1px solid ${colors.separation};
 `;

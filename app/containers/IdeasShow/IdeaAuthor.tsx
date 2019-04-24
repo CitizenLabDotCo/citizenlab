@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -30,7 +30,7 @@ const AuthorMeta = styled.div`
 `;
 
 const AuthorNameWrapper = styled.div`
-  color: #333;
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
@@ -76,19 +76,15 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = React.memo<Props>((props: Props) => {
+const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author }) => {
 
   const goToUserProfile = () => {
-    const { author } = props;
-
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
     }
   };
 
   const noop = () => {};
-
-  const { ideaId, ideaCreatedAt, authorId, author } = props;
 
   return (
     <Container>
@@ -99,16 +95,9 @@ const IdeaAuthor = React.memo<Props>((props: Props) => {
       />
       <AuthorMeta>
         <AuthorNameWrapper>
-          <FormattedMessage
-            {...messages.byAuthorName}
-            values={{
-              authorName: (
-                <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-                  <UserName user={!isNilOrError(author) ? author : null} />
-                </AuthorName>
-              )
-            }}
-          />
+          <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
+            <UserName user={!isNilOrError(author) ? author : null} />
+          </AuthorName>
         </AuthorNameWrapper>
         {ideaCreatedAt &&
           <TimeAgo>

@@ -23,7 +23,23 @@ import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
- export const AvatarContainer: any = styled.div`
+export const AvatarImage: any = styled.img`
+  width: ${(props: any) => props.size};
+  height: ${(props: any) => props.size};
+  border-radius: 50%;
+  background: #fff;
+  transition: all 100ms ease-out;
+`;
+
+const AvatarIcon: any = styled(Icon)`
+  flex: 0 0 ${(props: any) => props.size};
+  width: ${(props: any) => props.size};
+  height: ${(props: any) => props.size};
+  fill: ${(props: any) => props.fillColor};
+  transition: all 100ms ease-out;
+`;
+
+ export const Container: any = styled.div`
   flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
@@ -43,28 +59,10 @@ import { colors } from 'utils/styleUtils';
 
     &:hover {
       border-color: ${(props: any) => props.borderHoverColor};
-    }
-  }
-`;
 
-export const AvatarImage: any = styled.img`
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
-  border-radius: 50%;
-  background: #fff;
-  transition: all 100ms ease-out;
-`;
-
-const AvatarIcon: any = styled(Icon)`
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
-  fill: ${(props: any) => props.fillColor};
-  transition: all 100ms ease-out;
-
-  &.hasHoverEffect {
-    &:hover {
-      fill: ${(props: any) => props.fillHoverColor}
+      ${AvatarIcon} {
+        fill: ${(props: any) => props.fillHoverColor};
+      }
     }
   }
 `;
@@ -121,7 +119,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     hasHoverEffect: false,
     padding: '3px',
     fillColor: lighten(0.2, colors.label),
-    fillHoverColor: darken(0.1, colors.label),
+    fillHoverColor: colors.label,
     borderThickness: '1px',
     borderColor: 'transparent',
     borderHoverColor: colors.label,
@@ -147,7 +145,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const numberSize = parseInt(size, 10);
 
       return (
-        <AvatarContainer
+        <Container
           className={`${className} ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           onClick={this.handleOnClick}
           size={outerSize}
@@ -155,6 +153,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
           borderThickness={borderThickness}
           borderColor={borderColor}
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
+          fillHoverColor={fillHoverColor}
         >
           {avatarSrc ? (
             <AvatarImage
@@ -178,7 +177,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
               <BadgeIcon name="clLogo" size={numberSize} />
             </BadgeContainer>
           )}
-        </AvatarContainer>
+        </Container>
       );
     }
 
