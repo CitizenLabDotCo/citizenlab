@@ -28,6 +28,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import ExportMenu from './components/ExportMenu';
+import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
@@ -105,13 +106,6 @@ const RightColumn = styled.div`
       opacity: 0;
     }
   }
-`;
-
-const VisibleIdeasCount = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
 `;
 
 const StyledInput = styled(Input)`
@@ -356,17 +350,15 @@ class IdeaManager extends React.PureComponent<Props, State> {
             />
           </LeftColumn>
           <MiddleColumn>
-            <VisibleIdeasCount>
-              {/*
-                If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
-                Hence we only show this count when there's at least 1 idea.
-              */}
-              {ideasList && ideasList.length > 0 && (ideasList.length === 1 ?
-                <FormattedMessage {...messages.oneIdea} />
-                :
-                <FormattedMessage {...messages.multipleIdeas} values={{ ideaCount: ideasList.length }} />
-              )}
-            </VisibleIdeasCount>
+            <IdeasCount
+              feedbackNeeded={feedbackNeededFilterActive}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              ideaStatus={selectedIdeaStatus}
+              searchTerm={searchTerm}
+              assignee={assignee}
+            />
           </MiddleColumn>
           <RightColumn>
             <StyledInput icon="search" onChange={this.handleSearchChange}/>
