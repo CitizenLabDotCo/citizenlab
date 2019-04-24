@@ -107,6 +107,13 @@ const RightColumn = styled.div`
   }
 `;
 
+const VisibleIdeasCount = styled.div`
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+`;
+
 const StyledInput = styled(Input)`
   width: 100%;
 `;
@@ -342,11 +349,24 @@ class IdeaManager extends React.PureComponent<Props, State> {
         </TopActionBar>
 
         <ThreeColumns>
-          <MiddleColumn>
+          <LeftColumn>
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
             />
+          </LeftColumn>
+          <MiddleColumn>
+            <VisibleIdeasCount>
+              {/*
+                If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
+                Hence we only show this count when there's at least 1 idea.
+              */}
+              {ideasList && ideasList.length > 0 && (ideasList.length === 1 ?
+                <FormattedMessage {...messages.oneIdea} />
+                :
+                <FormattedMessage {...messages.multipleIdeas} values={{ ideaCount: ideasList.length }} />
+              )}
+            </VisibleIdeasCount>
           </MiddleColumn>
           <RightColumn>
             <StyledInput icon="search" onChange={this.handleSearchChange}/>
