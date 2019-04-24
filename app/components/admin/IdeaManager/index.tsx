@@ -28,6 +28,7 @@ import FilterSidebar from './components/FilterSidebar';
 import IdeaTable from './components/IdeaTable';
 import InfoSidebar from './components/InfoSidebar';
 import ExportMenu from './components/ExportMenu';
+import IdeasCount from './components/IdeasCount';
 import { Input, Message } from 'semantic-ui-react';
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import AssigneeFilter from './components/TopLevelFilters/AssigneeFilter';
@@ -342,10 +343,21 @@ class IdeaManager extends React.PureComponent<Props, State> {
         </TopActionBar>
 
         <ThreeColumns>
-          <MiddleColumn>
+          <LeftColumn>
             <ActionBar
               ideaIds={selectedIdeaIds}
               resetSelectedIdeas={this.resetSelectedIdeas}
+            />
+          </LeftColumn>
+          <MiddleColumn>
+            <IdeasCount
+              feedbackNeeded={feedbackNeededFilterActive}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              ideaStatus={selectedIdeaStatus}
+              searchTerm={searchTerm}
+              assignee={assignee}
             />
           </MiddleColumn>
           <RightColumn>
