@@ -9,6 +9,7 @@ import styled from 'styled-components';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import { colors, fontSizes } from 'utils/styleUtils';
+import Label from 'components/UI/Label';
 
 const VoteIcon: any = styled(Icon)`
   height: 18px;
@@ -64,9 +65,7 @@ const VotePreview = (props: Props) => {
   if (!isNilOrError(votesCount)) {
     return (
       <Container className={className}>
-        <div>
-          <FormattedMessage {...messages.voteCounts} />
-        </div>
+        <Label value={<FormattedMessage {...messages.voteCounts} />}/>
         <div>
           <IconContainer>
             <UpvoteIcon name="upvote-2"/>
