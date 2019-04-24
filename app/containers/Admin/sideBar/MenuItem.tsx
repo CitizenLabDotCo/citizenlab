@@ -19,7 +19,7 @@ const Text = styled.div`
   display: flex;
   align-items: center;
 
-  ${media.smallerThanMinTablet`
+  ${media.smallerThan1200px`
     display: none;
   `}
 `;
@@ -68,6 +68,9 @@ const MenuItemLink: any = styled(Link) `
       }
     };
   }
+  ${media.smallerThan1200px`
+    width: 70px;
+  `}
 `;
 
 const IconWrapper = styled.div`

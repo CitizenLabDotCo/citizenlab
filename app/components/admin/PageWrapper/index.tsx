@@ -3,6 +3,7 @@ import React from 'react';
 
 // Style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
   background: #fff;
@@ -11,6 +12,10 @@ const Wrapper = styled.div`
   box-sizing: border-box;
   padding: 3.5rem 4rem;
   margin-bottom: 60px;
+
+  ${media.smallerThan1280px`
+    padding: 2rem 2rem;
+  `}
 `;
 
 export default class PageWrapper extends React.PureComponent<{className?: string}>{
