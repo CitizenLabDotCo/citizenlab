@@ -22,6 +22,10 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -152,6 +156,7 @@ class ParentComment extends PureComponent<Props, State> {
   loadMore = (event: FormEvent<any>) => {
     if (!this.state.isLoadingMore) {
       event.preventDefault();
+      trackEventByName(tracks.clickParentCommentLoadMoreButton);
       this.loadMore$.next(true);
     }
   }

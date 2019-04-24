@@ -15,14 +15,14 @@ export default class ClickOutside extends PureComponent<Props, State> {
   container: HTMLDivElement | null = null;
 
   componentDidMount() {
-    document.addEventListener('click', this.handle, true);
-    document.addEventListener('keydown', this.handle, true);
+    document.addEventListener('click', this.handle);
+    document.addEventListener('keydown', this.handle);
   }
 
   componentWillUnmount() {
     this.container = null;
-    document.removeEventListener('click', this.handle, true);
-    document.removeEventListener('keydown', this.handle, true);
+    document.removeEventListener('click', this.handle);
+    document.removeEventListener('keydown', this.handle);
   }
 
   handle = (event) => {
