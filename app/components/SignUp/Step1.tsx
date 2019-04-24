@@ -123,6 +123,7 @@ type State = {
   localeError: string | null;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null;
+  emailInvitationTokenInvalid: boolean;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -150,7 +151,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       tacError: null,
       localeError: null,
       unknownError: null,
-      apiErrors: null
+      apiErrors: null,
+      emailInvitationTokenInvalid: false
     };
     this.subscriptions = [];
     this.firstNameInputElement = null;
@@ -177,7 +179,10 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
           firstName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
           lastName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
           email: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
-          hasCustomFields: hasCustomFields(customFieldsSchema, locale)
+          hasCustomFields: hasCustomFields(customFieldsSchema, locale),
+          // if token comes from props like it does here, it's an email invitation (got it from the url)
+          // if the invitedUser doesn't exist, it means that the invitation was withdrawn
+          emailInvitationTokenInvalid: token && isNilOrError(invitedUser) ? true : false
         }));
       })
     ];
@@ -308,7 +313,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       lastNameError,
       emailError,
       passwordError,
-      apiErrors
+      apiErrors,
+      emailInvitationTokenInvalid
     } = this.state;
     const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
 
@@ -323,120 +329,138 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return (
-      <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
-        {isInvitation && !this.props.token &&
+    <>
+      {!emailInvitationTokenInvalid ?
+        <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
+          {isInvitation && !this.props.token &&
+            <FormElement>
+              <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
+              <Input
+                id="token"
+                type="text"
+                value={token}
+                placeholder={formatMessage(messages.tokenPlaceholder)}
+                error={tokenError}
+                onChange={this.handleTokenOnChange}
+              />
+            </FormElement>
+          }
+
           <FormElement>
-            <Label value={formatMessage(messages.tokenLabel)} htmlFor="token" />
+            <Label value={formatMessage(messages.firstNamesLabel)} htmlFor="firstName" />
             <Input
-              id="token"
+              id="firstName"
               type="text"
-              value={token}
-              placeholder={formatMessage(messages.tokenPlaceholder)}
-              error={tokenError}
-              onChange={this.handleTokenOnChange}
+              value={firstName}
+              placeholder={formatMessage(messages.firstNamesPlaceholder)}
+              error={firstNameError}
+              onChange={this.handleFirstNameOnChange}
+              setRef={this.handleFirstNameInputSetRef}
             />
+
+            <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
           </FormElement>
-        }
 
-        <FormElement>
-          <Label value={formatMessage(messages.firstNamesLabel)} htmlFor="firstName" />
-          <Input
-            id="firstName"
-            type="text"
-            value={firstName}
-            placeholder={formatMessage(messages.firstNamesPlaceholder)}
-            error={firstNameError}
-            onChange={this.handleFirstNameOnChange}
-            setRef={this.handleFirstNameInputSetRef}
-          />
+          <FormElement>
+            <Label value={formatMessage(messages.lastNameLabel)} htmlFor="lastName" />
+            <Input
+              id="lastName"
+              type="text"
+              value={lastName}
+              placeholder={formatMessage(messages.lastNamePlaceholder)}
+              error={lastNameError}
+              onChange={this.handleLastNameOnChange}
+            />
 
-          <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
-        </FormElement>
+            <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
+          </FormElement>
 
-        <FormElement>
-          <Label value={formatMessage(messages.lastNameLabel)} htmlFor="lastName" />
-          <Input
-            id="lastName"
-            type="text"
-            value={lastName}
-            placeholder={formatMessage(messages.lastNamePlaceholder)}
-            error={lastNameError}
-            onChange={this.handleLastNameOnChange}
-          />
+          <FormElement>
+            <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
+            <Input
+              type="email"
+              id="email"
+              value={email}
+              placeholder={formatMessage(messages.emailPlaceholder)}
+              error={emailError}
+              onChange={this.handleEmailOnChange}
+            />
 
-          <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
-        </FormElement>
+            <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
+          </FormElement>
 
-        <FormElement>
-          <Label value={formatMessage(messages.emailLabel)} htmlFor="email" />
-          <Input
-            type="email"
-            id="email"
-            value={email}
-            placeholder={formatMessage(messages.emailPlaceholder)}
-            error={emailError}
-            onChange={this.handleEmailOnChange}
-          />
+          <FormElement>
+            <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
+            <Input
+              type="password"
+              id="password"
+              value={password}
+              placeholder={formatMessage(messages.passwordPlaceholder)}
+              error={passwordError}
+              onChange={this.handlePasswordOnChange}
+            />
 
-          <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
-        </FormElement>
+            <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
+          </FormElement>
 
-        <FormElement>
-          <Label value={formatMessage(messages.passwordLabel)} htmlFor="password" />
-          <Input
-            type="password"
-            id="password"
-            value={password}
-            placeholder={formatMessage(messages.passwordPlaceholder)}
-            error={passwordError}
-            onChange={this.handlePasswordOnChange}
-          />
+          <FormElement>
+            <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
+              <Checkbox
+                className="e2e-terms-and-conditions"
+                value={this.state.tacAccepted}
+                onChange={this.handleTaCAcceptedOnChange}
+                disableLabelClick={true}
+                label={
+                  <FormattedMessage
+                    {...messages.gdprApproval}
+                    values={{
+                      tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                      ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
+                    }}
+                  />
+                }
+              />
+            </TermsAndConditionsWrapper>
+            <Error text={this.state.tacError} />
+          </FormElement>
 
-          <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
-        </FormElement>
-
-        <FormElement>
-          <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-            <Checkbox
-              className="e2e-terms-and-conditions"
-              value={this.state.tacAccepted}
-              onChange={this.handleTaCAcceptedOnChange}
-              disableLabelClick={true}
-              label={
-                <FormattedMessage
-                  {...messages.gdprApproval}
-                  values={{
-                    tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                    ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
-                  }}
-                />
+          <FormElement>
+            <ButtonWrapper>
+              <Button
+                id="e2e-signup-step1-button"
+                size="1"
+                processing={processing}
+                text={buttonText}
+                onClick={this.handleOnSubmit}
+                circularCorners={false}
+              />
+              {!isInvitation &&
+                <AlreadyHaveAnAccount to="/sign-in">
+                  <FormattedMessage {...messages.alreadyHaveAnAccount} />
+                </AlreadyHaveAnAccount>
               }
-            />
-          </TermsAndConditionsWrapper>
-          <Error text={this.state.tacError} />
-        </FormElement>
+            </ButtonWrapper>
+          </FormElement>
 
-        <FormElement>
-          <ButtonWrapper>
-            <Button
-              id="e2e-signup-step1-button"
-              size="1"
-              processing={processing}
-              text={buttonText}
-              onClick={this.handleOnSubmit}
-              circularCorners={false}
-            />
-            {!isInvitation &&
-              <AlreadyHaveAnAccount to="/sign-in">
-                <FormattedMessage {...messages.alreadyHaveAnAccount} />
-              </AlreadyHaveAnAccount>
-            }
-          </ButtonWrapper>
-        </FormElement>
-
-        <Error text={unknownApiError} />
-        <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
-      </Form>
+          <Error text={unknownApiError} />
+          <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
+        </Form>
+        :
+        <Error
+          text={<FormattedMessage
+            {...messages.emailInvitationTokenInvalid}
+            values={{
+              signUpPageLink: (
+                <Link
+                  to={'/sign-up'}
+                >
+                  {formatMessage(messages.signUpPage)}
+                </Link>)
+            }}
+          />}
+        />
+      }
+    </>
     );
   }
 }
