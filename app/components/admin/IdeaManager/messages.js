@@ -197,4 +197,12 @@ export default defineMessages({
     id: 'app.components.admin.IdeaManager.allPhases',
     defaultMessage: 'All phases',
   },
+  oneIdea: {
+    id: 'app.components.admin.IdeaManager.oneIdea',
+    defaultMessage: '1 idea',
+  },
+  multipleIdeas: {
+    id: 'app.components.admin.IdeaManager.multipleIdeas',
+    defaultMessage: '{ideaCount} ideas',
+  },
 });
