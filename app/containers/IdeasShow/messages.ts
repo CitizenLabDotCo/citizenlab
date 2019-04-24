@@ -326,13 +326,13 @@ export default defineMessages({
     id: 'app.components.IdeasShow.backToOriginalContent',
     defaultMessage: 'See original content again',
   },
-  translateComment: {
-    id: 'app.components.IdeasShow.translateComment',
-    defaultMessage: 'Translate this comment',
+  seeTranslation: {
+    id: 'app.components.IdeasShow.seeTranslation',
+    defaultMessage: 'See translation',
   },
-  showOriginalComment: {
-    id: 'app.components.IdeasShow.showOriginalComment',
-    defaultMessage: 'Show original comment',
+  seeOriginal: {
+    id: 'app.components.IdeasShow.seeOriginal',
+    defaultMessage: 'See original',
   },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',

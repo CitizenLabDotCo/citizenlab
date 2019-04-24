@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -33,28 +33,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
-
-const TranslateButtonWrapper = styled.div``;
-
-const TranslateButton = styled.button`
-  padding: 0;
-  color: ${colors.clBlue};
-  text-decoration: underline;
-  margin-top: 10px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Footer = styled.div`
-  display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 25px;
+  margin-top: 22px;
 `;
 
 const Left = styled.div`
@@ -63,17 +44,25 @@ const Left = styled.div`
 `;
 
 const Separator = styled.div`
-  font-size: ${fontSizes.small}px;
-  margin-left: 11px;
-  margin-right: 11px;
-
-  ${media.phone`
-    margin-left: 10px;
-    margin-right: 10px;
-  `}
+  font-size: ${fontSizes.xs}px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 const ReplyButton = styled.button`
+  color: ${colors.label};
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+`;
+
+const TranslateButton = styled.button`
   color: ${colors.label};
   cursor: pointer;
   padding: 0;
@@ -171,7 +160,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onEditing();
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 
@@ -182,7 +171,6 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
     const authorFirstName = get(author, 'attributes.first_name', null);
     const authorLastName = get(author, 'attributes.last_name', null);
     const authorSlug = get(author, 'attributes.slug', null);
-
     const eventValue: ICommentReplyClicked = {
       commentId,
       parentCommentId,
@@ -208,51 +196,49 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={className}>
-          {/* <FeatureFlag name="machine_translations"> */}
-            {showTranslateButton &&
-              <TranslateButtonWrapper>
-                <TranslateButton onClick={this.translateComment}>
-                  {!translateButtonClicked
-                    ? <FormattedMessage {...messages.translateComment} />
-                    : <FormattedMessage {...messages.showOriginalComment} />
+          <Left>
+            <CommentVote
+              ideaId={ideaId}
+              commentId={commentId}
+            />
+
+            {authUser && commentingEnabled && canReply &&
+              <>
+                <Separator>•</Separator>
+                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                  <FormattedMessage {...messages.commentReplyButton} />
+                </ReplyButton>
+                {/* <FeatureFlag name="machine_translations"> */}
+                  {showTranslateButton &&
+                    <>
+                      <Separator>•</Separator>
+                      <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                        {!translateButtonClicked
+                          ? <FormattedMessage {...messages.seeTranslation} />
+                          : <FormattedMessage {...messages.seeOriginal} />
+                        }
+                      </TranslateButton>
+                    </>
                   }
-                </TranslateButton>
-              </TranslateButtonWrapper>
+                {/* </FeatureFlag> */}
+              </>
             }
-          {/* </FeatureFlag> */}
+          </Left>
 
-          <Footer>
-            <Left>
-              <CommentVote
-                ideaId={ideaId}
-                commentId={commentId}
-              />
+          <Right>
+            <StyledCommentsMoreActions
+              projectId={projectId}
+              comment={comment}
+              onCommentEdit={this.onCommentEdit}
+              ariaLabel={this.moreActionsAriaLabel}
+            />
 
-              {authUser && commentingEnabled && canReply &&
-                <>
-                  <Separator>•</Separator>
-                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
-                    <FormattedMessage {...messages.commentReplyButton} />
-                  </ReplyButton>
-                </>
-              }
-            </Left>
-
-            <Right>
-              <StyledCommentsMoreActions
-                projectId={projectId}
-                comment={comment}
-                onCommentEdit={this.onCommentEdit}
-                ariaLabel={this.moreActionsAriaLabel}
-              />
-
-              {commentType === 'child' &&
-                <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
-                  <FormattedRelative value={createdAt} />
-                </TimeAgo>
-              }
-            </Right>
-          </Footer>
+            {commentType === 'child' &&
+              <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
+                <FormattedRelative value={createdAt} />
+              </TimeAgo>
+            }
+          </Right>
         </Container>
       );
     }

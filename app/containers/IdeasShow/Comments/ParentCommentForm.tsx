@@ -36,9 +36,6 @@ const Container = styled.div`
 `;
 
 const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 50px;
@@ -60,6 +57,7 @@ const CommentContainer = styled.div`
 `;
 
 const AuthorWrapper = styled.div`
+  width: 100%;
   margin-bottom: 6px;
 `;
 
@@ -68,17 +66,11 @@ const StyledAuthor = styled(Author)`
 `;
 
 const Form = styled.form`
-  flex: 1;
+  width: 100%;
 `;
 
 const HiddenLabel = styled.span`
   ${hideVisually()}
-`;
-
-const FormInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 `;
 
 const ButtonWrapper = styled.div`
@@ -208,36 +200,34 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   <FormattedMessage {...messages.yourComment} />
                 </HiddenLabel>
 
-                <FormInner>
-                  <MentionsTextArea
-                    id="submit-comment"
-                    name="comment"
-                    placeholder={this.placeholder}
-                    rows={5}
-                    ideaId={ideaId}
-                    value={inputValue}
-                    error={errorMessage}
-                    onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                    fontWeight="300"
-                    padding="10px 0px"
-                    borderRadius="none"
-                    border="none"
-                    boxShadow="none"
-                  />
-                  <ButtonWrapper>
-                    <Button
-                      className="e2e-submit-comment"
-                      processing={processing}
-                      icon="send"
-                      onClick={this.onSubmit}
-                      disabled={commentButtonDisabled}
-                    >
-                      <FormattedMessage {...messages.publishComment} />
-                    </Button>
-                  </ButtonWrapper>
-                </FormInner>
+                <MentionsTextArea
+                  id="submit-comment"
+                  name="comment"
+                  placeholder={this.placeholder}
+                  rows={5}
+                  ideaId={ideaId}
+                  value={inputValue}
+                  error={errorMessage}
+                  onChange={this.onChange}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                  fontWeight="300"
+                  padding="10px 0px"
+                  borderRadius="none"
+                  border="none"
+                  boxShadow="none"
+                />
+                <ButtonWrapper>
+                  <Button
+                    className="e2e-submit-comment"
+                    processing={processing}
+                    icon="send"
+                    onClick={this.onSubmit}
+                    disabled={commentButtonDisabled}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
               </label>
             </Form>
           </CommentContainer>

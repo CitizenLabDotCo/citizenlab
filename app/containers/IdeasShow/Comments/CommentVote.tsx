@@ -41,34 +41,25 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const UpvoteIconWrapper = styled.button`
-  width: 16px;
-  height: 29px;
+  width: 18px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: transparent;
+  margin: 0;
+  padding: 0;
   margin-top: -3px;
   cursor: pointer;
-  border-radius: 50%;
   transition: background 100ms ease;
+  border: none;
 
-  &.voted {
-    width: 29px;
-    margin-right: 3px;
-    border-radius: 50%;
-    background: ${colors.clGreen};
-
-    &:hover {
-      background: ${darken(0.1, colors.clGreen)};
-    }
-  }
-
-  &:not(.voted) {
+  &.notVoted {
     &.hasVotes {
       margin-right: 5px;
     }
 
-    &:not(.hasVotes) {
+    &.hasNoVotes {
       margin-right: 10px;
     }
 
@@ -76,6 +67,17 @@ const UpvoteIconWrapper = styled.button`
       ${UpvoteIcon} {
         fill: #000;
       }
+    }
+  }
+
+  &.voted {
+    width: 28px;
+    margin-right: 3px;
+    border-radius: 50%;
+    background: ${colors.clGreen};
+
+    &:hover {
+      background: ${darken(0.1, colors.clGreen)};
     }
   }
 `;
@@ -203,7 +205,7 @@ class CommentVote extends PureComponent<Props, State> {
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={`${voted ? 'voted' : ''} ${upvoteCount > 0 ? 'hasVotes' : ''}`}>
+          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'}`}>
             <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
           </UpvoteIconWrapper>
 
