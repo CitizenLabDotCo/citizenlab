@@ -98,25 +98,27 @@ export default class GetIdeas extends React.Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    const queryDefaults = {
+      'page[number]': 1,
+      'page[size]': props.pageSize,
+      sort: props.sort,
+      projects: undefined,
+      phase: undefined,
+      author: undefined,
+      search: undefined,
+      topics: undefined,
+      areas: undefined,
+      idea_status: undefined,
+      publication_status: undefined,
+      project_publication_status: undefined,
+      bounding_box: undefined,
+      assignee: undefined,
+      feedback_needed: undefined
+    };
+    const queryParameters = this.getQueryParameters(queryDefaults, props);
     this.state = {
       // defaults
-      queryParameters: {
-        'page[number]': 1,
-        'page[size]': props.pageSize,
-        sort: props.sort,
-        projects: undefined,
-        phase: undefined,
-        author: undefined,
-        search: undefined,
-        topics: undefined,
-        areas: undefined,
-        idea_status: undefined,
-        publication_status: undefined,
-        project_publication_status: undefined,
-        bounding_box: undefined,
-        assignee: undefined,
-        feedback_needed: undefined
-      },
+      queryParameters,
       searchValue: undefined,
       ideasList: undefined,
       hasMore: false,
@@ -127,14 +129,13 @@ export default class GetIdeas extends React.Component<Props, State> {
       currentPage: 1,
       lastPage: 1
     };
-    const queryParameters = this.getQueryParameters(this.state, props);
     this.queryParameters$ = new BehaviorSubject(queryParameters);
     this.search$ = new Subject();
     this.subscriptions = [];
   }
 
   componentDidMount() {
-    const queryParameters = this.getQueryParameters(this.state, this.props);
+    const queryParameters = this.getQueryParameters(this.state.queryParameters, this.props);
     const startAccumulatorValue: IAccumulator = { queryParameters, ideas: null, hasMore: false };
     const queryParametersInput$ = this.queryParameters$.pipe(
       distinctUntilChanged((x, y) => shallowCompare(x, y)),
@@ -242,7 +243,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     const { children: nextChildren, ...nextPropsWithoutChildren } = this.props;
 
     if (!isEqual(prevPropsWithoutChildren, nextPropsWithoutChildren)) {
-      const queryParameters = this.getQueryParameters(this.state, this.props);
+      const queryParameters = this.getQueryParameters(this.state.queryParameters, this.props);
       this.queryParameters$.next(queryParameters);
     }
   }
@@ -251,7 +252,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  getQueryParameters = (state: State, props: Props) => {
+  getQueryParameters = (queryParameters: IQueryParameters, props: Props) => {
     const inputPropsQueryParameters: IQueryParameters = {
       'page[number]': props.pageNumber as number,
       'page[size]': props.pageSize,
@@ -271,7 +272,7 @@ export default class GetIdeas extends React.Component<Props, State> {
     };
 
     return {
-      ...state.queryParameters,
+      ...queryParameters,
       ...inputPropsQueryParameters
     };
   }
@@ -312,6 +313,8 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleProjectsOnChange = (projects: string[]) => {
+    console.log('hi', projects);
+    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       projects,
@@ -360,6 +363,8 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleAssigneeOnChange = (assignee: string | undefined) => {
+    console.log('hi', assignee);
+    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       assignee,

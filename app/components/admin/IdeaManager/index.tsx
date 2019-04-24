@@ -177,6 +177,13 @@ class IdeaManager extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
+    const { authUser } = this.props;
+    const prevAuthUser = prevProps.authUser;
+    if (isNilOrError(prevAuthUser) && !isNilOrError(authUser) && !this.state.assignee) {
+      this.props.ideas.onChangeAssignee(authUser.id);
+      this.setState({ assignee: authUser.id });
+    }
+
     const oldProjectId = get(prevProps.project, 'id', null);
     const newProjectId = get(this.props.project, 'id', null);
 
@@ -187,13 +194,6 @@ class IdeaManager extends React.PureComponent<Props, State> {
       }
 
       this.setVisibleFilterMenus(this.props.project);
-    }
-
-    const { authUser } = this.props;
-    const prevAuthUser = prevProps.authUser;
-    if (isNilOrError(prevAuthUser) && !isNilOrError(authUser) && !this.state.assignee) {
-      this.props.ideas.onChangeAssignee(authUser.id);
-      this.setState({ assignee: authUser.id });
     }
   }
 
@@ -435,7 +435,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
-  ideas: <GetIdeas type="paginated" pageSize={10} sort="new" />,
+  ideas: ({ project, render }) => project && project.id ? <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={[project.id]}>{render}</GetIdeas> : <GetIdeas type="paginated" pageSize={10} sort="new">{render}</GetIdeas>,
   topics: <GetTopics />,
   tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
