@@ -499,7 +499,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
-      const timeRemaining = (endAt ? moment.duration(moment(endAt).diff(moment())).humanize() : null);
+      const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 

@@ -43,14 +43,35 @@ const Left = styled.div`
   align-items: center;
 `;
 
+const LeftActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 5px;
+  `}
+`;
+
 const Separator = styled.div`
   font-size: ${fontSizes.xs}px;
+  line-height: 24px;
   margin-left: 10px;
   margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 8px;
+    margin-right: 8px;
+
+    &.first {
+      display: none;
+    }
+  `}
 `;
 
 const ReplyButton = styled.button`
   color: ${colors.label};
+  white-space: nowrap;
   cursor: pointer;
   padding: 0;
   margin: 0;
@@ -64,6 +85,7 @@ const ReplyButton = styled.button`
 
 const TranslateButton = styled.button`
   color: ${colors.label};
+  white-space: nowrap;
   cursor: pointer;
   padding: 0;
   margin: 0;
@@ -78,10 +100,10 @@ const TranslateButton = styled.button`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 10px;
 `;
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
-  margin-left: 14px;
   margin-right: -6px;
 `;
 
@@ -208,8 +230,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             />
 
             {authUser && commentingEnabled && canReply &&
-              <>
-                <Separator>•</Separator>
+              <LeftActions>
+                <Separator className="first">•</Separator>
                 <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
@@ -226,7 +248,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                     </>
                   }
                 {/* </FeatureFlag> */}
-              </>
+              </LeftActions>
             }
           </Left>
 

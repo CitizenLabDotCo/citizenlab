@@ -12,9 +12,9 @@ import { mentionsStream } from 'services/mentions';
 import Error from 'components/UI/Error';
 
 // style
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { lighten } from 'polished';
+import { transparentize } from 'polished';
 
 const Container: any = styled.div`
   position: relative;
@@ -64,6 +64,7 @@ type Props = {
   background?: string;
   placeholderFontWeight?: string;
   ariaLabel?: string;
+  theme: any;
 };
 
 type State = {
@@ -71,7 +72,7 @@ type State = {
   mentionStyle: object | null;
 };
 
-export default class MentionsTextArea extends PureComponent<Props, State> {
+class MentionsTextArea extends PureComponent<Props, State> {
   textareaElement = React.createRef();
 
   static defaultProps = {
@@ -149,7 +150,7 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
       paddingTop: '3px',
       paddingBottom: '3px',
       borderRadius: '3px',
-      backgroundColor: lighten(0.08, colors.placeholderBg)
+      backgroundColor: transparentize(0.9, this.props.theme.colorText)
     };
 
     this.setState({ style, mentionStyle });
@@ -250,3 +251,5 @@ export default class MentionsTextArea extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default withTheme(MentionsTextArea);

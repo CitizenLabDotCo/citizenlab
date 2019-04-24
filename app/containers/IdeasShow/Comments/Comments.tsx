@@ -10,6 +10,7 @@ import { ICommentData } from 'services/comments';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -17,6 +18,11 @@ const StyledCommentSorting = styled(CommentSorting)`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
+
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+    margin-bottom: 15px;
+  `}
 `;
 
 interface Props {
