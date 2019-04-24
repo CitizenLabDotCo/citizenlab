@@ -27,7 +27,7 @@ export default defineMessages({
   },
   email_taken_by_invite: {
     id: 'app.errors.email_taken_by_invite',
-    defaultMessage: '{value} is already taken by a pending invite.',
+    defaultMessage: 'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
   },
   locale_blank: {
     id: 'app.errors.locale_blank',
