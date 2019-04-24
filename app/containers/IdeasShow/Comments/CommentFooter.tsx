@@ -101,11 +101,11 @@ const TimeAgo = styled.div`
 `;
 
 export interface ICommentReplyClicked {
-  commentId: string;
-  parentCommentId: string;
-  authorFirstName: string;
-  authorLastName: string;
-  authorSlug: string;
+  commentId: string | null;
+  parentCommentId: string | null;
+  authorFirstName: string | null;
+  authorLastName: string | null;
+  authorSlug: string | null;
 }
 
 interface InputProps {
@@ -145,15 +145,20 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   translateComment = () => {
+    const { comment } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (translateButtonClicked) {
-      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
-    } else {
-      trackEventByName(tracks.clickTranslateCommentButton);
-    }
+    if (!isNilOrError(comment)) {
+      if (translateButtonClicked) {
+        trackEventByName(tracks.clickGoBackToOriginalCommentButton);
+      } else {
+        trackEventByName(tracks.clickTranslateCommentButton);
+      }
 
-    this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+      this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+
+      eventEmitter.emit<string>('CommentFooter', 'commentTranslateButtonClicked', comment.id);
+    }
   }
 
   onCommentEdit = () => {
@@ -166,11 +171,11 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
   onReply = () => {
     const { author, comment } = this.props;
-    const commentId = get(comment, 'id', null);
-    const parentCommentId = get(comment, 'relationships.parent.data.id', null);
-    const authorFirstName = get(author, 'attributes.first_name', null);
-    const authorLastName = get(author, 'attributes.last_name', null);
-    const authorSlug = get(author, 'attributes.slug', null);
+    const commentId: string | null = get(comment, 'id', null);
+    const parentCommentId: string | null = get(comment, 'relationships.parent.data.id', null);
+    const authorFirstName: string | null = get(author, 'attributes.first_name', null);
+    const authorLastName: string | null = get(author, 'attributes.last_name', null);
+    const authorSlug: string | null = get(author, 'attributes.slug', null);
     const eventValue: ICommentReplyClicked = {
       commentId,
       parentCommentId,

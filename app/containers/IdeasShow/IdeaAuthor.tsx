@@ -1,21 +1,15 @@
 import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-
 import Link from 'utils/cl-router/Link';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import Activities from './Activities/Activities';
-
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
 import styled from 'styled-components';
 import { fontSizes, media, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedRelative } from 'react-intl';
-import messages from './messages';
 
 const Container = styled.div`
   display: flex;

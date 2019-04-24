@@ -19,7 +19,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styles
-import { darken, lighten } from 'polished';
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 

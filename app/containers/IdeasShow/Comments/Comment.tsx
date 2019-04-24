@@ -148,7 +148,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   editing: boolean;
-  translateButtonClicked: boolean;
 }
 
 class Comment extends PureComponent<Props, State> {
@@ -162,8 +161,7 @@ class Comment extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      editing: false,
-      translateButtonClicked: false,
+      editing: false
     };
   }
 
@@ -179,19 +177,6 @@ class Comment extends PureComponent<Props, State> {
     this.setState({ editing: false });
   }
 
-  translateComment = () => {
-    const { translateButtonClicked } = this.state;
-
-    // tracking
-    if (translateButtonClicked) {
-      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
-    } else {
-      trackEventByName(tracks.clickTranslateCommentButton);
-    }
-
-    this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
-  }
-
   goToUserProfile = () => {
     const { author } = this.props;
 
@@ -202,7 +187,7 @@ class Comment extends PureComponent<Props, State> {
 
   render() {
     const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
-    const { translateButtonClicked, editing } = this.state;
+    const { editing } = this.state;
 
     if (!isNilOrError(comment)) {
       const commentId = comment.id;
@@ -247,7 +232,6 @@ class Comment extends PureComponent<Props, State> {
                       moderator={moderator}
                       onCommentSaved={this.onCommentSaved}
                       onCancelEditing={this.onCancelEditing}
-                      translateButtonClicked={translateButtonClicked}
                     />
                     <CommentFooter
                       className={commentType}
