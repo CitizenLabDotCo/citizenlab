@@ -1413,6 +1413,7 @@
   "app.errors.email_already_invited": "An die E-Mail-Adresse {value} in der Zeile {row} wurde bereits eine Einladung versandt.",
   "app.errors.email_blank": "Bitte geben Sie Ihre E-Mail-Adresse ein",
   "app.errors.email_taken": "Diese E-Mail-Adresse wird bereits verwendet. Bitte versuchen Sie es mit einer anderen.",
+  "app.errors.email_taken_by_invite": "",
   "app.errors.emails_duplicate": "Eine oder mehrere doppelte Einträge wurden für die E-Mail-Adresse {value} wurden in folgende/r Zeile/n gefunden: {rows}",
   "app.errors.file_extension_whitelist_error": "Das Format der Datei, die Sie versucht haben hochzuladen, wird nicht unterstützt.",
   "app.errors.first_name_blank": "Bitte geben Sie Ihren Vornamen ein",
