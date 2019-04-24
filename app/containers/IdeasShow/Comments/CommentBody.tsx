@@ -1,5 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { get } from 'lodash-es';
 import linkifyHtml from 'linkifyjs/html';
 import { adopt } from 'react-adopt';
@@ -10,6 +12,7 @@ import Link from 'utils/cl-router/Link';
 
 // Services
 import { updateComment, IUpdatedComment } from 'services/comments';
+import eventEmitter from 'utils/eventEmitter';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -104,7 +107,6 @@ interface InputProps {
   last?: boolean;
   onCommentSaved: () => void;
   onCancelEditing: () => void;
-  translateButtonClicked: boolean;
   className?: string;
 }
 
@@ -120,16 +122,20 @@ interface Props extends InputProps, DataProps {}
 export interface State {
   commentContent: string;
   editableCommentContent: string;
+  translateButtonClicked: boolean;
   processing: boolean;
   apiErrors: CLErrors | null;
 }
 
 class CommentBody extends PureComponent<Props, State> {
+  subscriptions: Subscription[] = [];
+
   constructor(props) {
     super(props);
     this.state = {
       commentContent: '',
       editableCommentContent: '',
+      translateButtonClicked: false,
       processing: false,
       apiErrors: null
     };
@@ -138,6 +144,14 @@ class CommentBody extends PureComponent<Props, State> {
   componentDidMount() {
     this.setCommentContent();
     this.setEditableCommentContent();
+
+    this.subscriptions = [
+      eventEmitter.observeEvent<string>('commentTranslateButtonClicked').pipe(
+        filter(({ eventValue: commentId }) => commentId === this.props.commentId)
+      ).subscribe(() => {
+        this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+      })
+    ];
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -145,6 +159,10 @@ class CommentBody extends PureComponent<Props, State> {
       this.setCommentContent();
       this.setEditableCommentContent();
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   setCommentContent = () => {
@@ -218,14 +236,20 @@ class CommentBody extends PureComponent<Props, State> {
     const {
       editing,
       commentType,
-      moderator: authorCanModerate,
+      moderator,
       locale,
       author,
-      translateButtonClicked,
       commentId,
       className
     } = this.props;
-    const { commentContent, editableCommentContent, processing, apiErrors } = this.state;
+
+    const {
+      commentContent,
+      editableCommentContent,
+      translateButtonClicked,
+      processing,
+      apiErrors
+    } = this.state;
 
     let content: JSX.Element | null = null;
 
@@ -236,7 +260,7 @@ class CommentBody extends PureComponent<Props, State> {
             {commentType === 'child' &&
               <StyledLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
                 <StyledUserName
-                  className={authorCanModerate ? 'canModerate' : ''}
+                  className={moderator ? 'canModerate' : ''}
                   user={!isNilOrError(author) ? author : null}
                 />
               </StyledLink>
