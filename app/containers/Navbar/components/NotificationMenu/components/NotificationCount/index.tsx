@@ -48,9 +48,6 @@ const NewNotificationsIndicator = styled.div`
   position: absolute;
   top: -9px;
   left: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   min-width: 18px;
   min-height: 18px;
 `;
