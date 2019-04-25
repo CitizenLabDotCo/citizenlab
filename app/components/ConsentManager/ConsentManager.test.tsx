@@ -3,9 +3,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // component to test
-import ConsentManager, { handleMapCustomPreferences, CustomPreferences, IDestination } from './';
+import { ConsentManager, mapCustomPreferences, CustomPreferences, IDestination } from './';
 
 jest.mock('utils/cl-intl');
+jest.mock('services/tenant');
+jest.mock('services/auth');
 
 describe('<ConsentManager />', () => {
   beforeEach(() => {
@@ -13,7 +15,7 @@ describe('<ConsentManager />', () => {
   });
 
   it('renders correctly', () => {
-    const wrapper = shallow(<ConsentManager />);
+    const wrapper = shallow(<ConsentManager authUser={null} />);
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -53,7 +55,7 @@ describe('<ConsentManager />', () => {
       analytics: true,
       functional: true
     } as CustomPreferences;
-    expect(handleMapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
+    expect(mapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
   });
   it('maps destinations to preferences when there are no destinations', () => {
     const destinations = [] as IDestination[];
@@ -62,7 +64,7 @@ describe('<ConsentManager />', () => {
       analytics: true,
       functional: true
     } as CustomPreferences;
-    expect(handleMapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
+    expect(mapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
   });
   it('destinations defaults to true when nothing is selected', () => {
     const destinations = [
@@ -100,7 +102,7 @@ describe('<ConsentManager />', () => {
       analytics: null,
       functional: null
     } as CustomPreferences;
-    expect(handleMapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
+    expect(mapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
   });
   it('destinations default to true only when nothing is selected', () => {
     const destinations = [
@@ -138,6 +140,6 @@ describe('<ConsentManager />', () => {
       analytics: null,
       functional: null
     } as CustomPreferences;
-    expect(handleMapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
+    expect(mapCustomPreferences({ destinations, preferences })).toMatchSnapshot();
   });
 });
