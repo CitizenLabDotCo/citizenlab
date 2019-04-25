@@ -213,7 +213,7 @@ RSpec.describe User, type: :model do
 
   describe "demographic fields", slow_test: true do
     before do
-      TenantTemplateService.new.resolve_and_apply_template 'base'
+      TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
     end
 
     it "(gender) is valid when male, female or unspecified" do
@@ -420,6 +420,7 @@ RSpec.describe User, type: :model do
         build_stubbed(:admin, email: 'Fritz+Wurst@Citizenlab.de'),
         build_stubbed(:admin, email: 'breek.nou.mijn.klomp@citizenlab.NL'),
         build_stubbed(:admin, email: 'bigger@citizenlab.us'),
+        build_stubbed(:admin, email: 'magdalena@citizenlab.cl'),
         build_stubbed(:admin, email: 'hello+admin@CITIZENLAB.UK'),
       ]
 

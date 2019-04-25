@@ -5,7 +5,9 @@ class TenantTemplateService
     template_names[:internal] = Dir[Rails.root.join('config', 'tenant_templates', '*.yml')].map do |file|
       File.basename(file, ".yml")
     end
-    template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    if external_subfolder
+      template_names[:external] = available_external_templates(external_subfolder: external_subfolder).select(&:present?)
+    end
     template_names
   end
 
@@ -176,7 +178,8 @@ class TenantTemplateService
           if (field_name =~ /_multiloc$/) && field_value.is_a?(Hash)
             if (field_value.keys & locales_to).blank? && !field_value.keys.include?(translate_from) && field_value.present?
               other_translate_from = field_value.keys.first
-              translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, translate_to
+              other_translate_to = translate_to || locales_to.first
+              translation = MachineTranslations::MachineTranslationService.new.translate field_value[other_translate_from], other_translate_from, other_translate_to
               attributes[field_name] = {translate_to => translation}
             else
               field_value.keys.each do |locale|
@@ -186,6 +189,22 @@ class TenantTemplateService
                   field_value.delete locale
                 end
               end
+            end
+          end
+        end
+      end
+    end
+    # Cut off translations that are too long.
+    {
+      'project' => {'description_preview_multiloc' => 280},
+      'idea' => {'title_multiloc' => 80}
+    }.each do |model, restrictions|
+      template['models'][model]&.each do |attributes|
+        restrictions.each do |field_name, max_len|
+          multiloc = attributes[field_name]
+          multiloc.each do |locale, value|
+            if value.size > max_len
+              multiloc[locale] = value[0...max_len]
             end
           end
         end

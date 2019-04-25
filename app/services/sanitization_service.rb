@@ -7,7 +7,7 @@ class SanitizationService
       attributes: %w(),
     },
     title: {
-      tags: %w(h1 h2),
+      tags: %w(h2 h3),
       attributes: %w(),
     },
     alignment: {
@@ -54,6 +54,38 @@ class SanitizationService
     multiloc.each_with_object({}) do |(locale, text), output|
       output[locale] = sanitize(text, features)
     end
+  end
+
+  def remove_empty_paragraphs_multiloc multiloc
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = remove_empty_paragraphs(text)
+    end
+  end
+
+  def remove_empty_paragraphs html
+    doc = Nokogiri::HTML.fragment(html)
+    if doc.errors.any?
+      html
+    else
+      while (last_p = doc.css('p:last-child')).any?
+        if last_p.children.empty? || last_p.children.map(&:name).uniq == ['br']
+          last_p.remove
+        else
+          break
+        end
+      end
+      doc.to_s
+    end
+  end
+
+  def linkify_multiloc multiloc
+    multiloc.each_with_object({}) do |(locale, text), output|
+      output[locale] = linkify(text) if text
+    end
+  end
+
+  def linkify html
+    Rinku.auto_link(html, :all, 'target="_blank"')
   end
 
 end

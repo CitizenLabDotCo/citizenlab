@@ -18,13 +18,14 @@ class SlugService
   # transaction, where the normal one by one slug generation would fail.
   # The given block must extract the string to base the slug on from one record
   def generate_slugs unpersisted_records, &block
+    return [] if unpersisted_records.blank?
     # Calculate slugs for every record individually
     slugs = unpersisted_records.map do |record|
       slugify(block.call(record)) 
     end
 
     # Find the all the persisted duplicates
-    claz = unpersisted_records&.first.class
+    claz = unpersisted_records.first.class
     db_occurences = claz
       .where('slug SIMILAR TO ?', "(#{slugs.join('|')})%")
       .pluck(:slug)
