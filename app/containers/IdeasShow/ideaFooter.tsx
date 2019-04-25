@@ -104,7 +104,7 @@ interface Props {
 
 const LazyComments = lazy(() => import('./Comments'));
 
-const ideaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
+const IdeaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
   return (
     <Container className={className}>
       <FooterHeader>
@@ -129,4 +129,4 @@ const ideaFooter = memo<Props>(({ ideaId, commentsCount, className }) => {
   );
 });
 
-export default ideaFooter;
+export default IdeaFooter;
