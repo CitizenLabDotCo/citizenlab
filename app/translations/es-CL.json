@@ -1415,6 +1415,7 @@
   "app.errors.email_already_invited": "El correo electrónico {value} en fila {row} ya fue invitado",
   "app.errors.email_blank": "Por favor, ingresa tu dirección de correo",
   "app.errors.email_taken": "Este email ya está ocupado. Por favor, pruebe otro.",
+  "app.errors.email_taken_by_invite": "",
   "app.errors.emails_duplicate": "Uno o más valores duplicados para la dirección de correo electrónico {value} fueron encontrados en las siguientes filas: {rows}",
   "app.errors.file_extension_whitelist_error": "No se admite el formato del archivo que has intentado subir.",
   "app.errors.first_name_blank": "Por favor ingresa tu nombre",
