@@ -15,32 +15,37 @@ export default class ClickOutside extends PureComponent<Props, State> {
   container: HTMLDivElement | null = null;
 
   componentDidMount() {
-    document.addEventListener('click', this.handle);
-    document.addEventListener('keydown', this.handle);
+    document.addEventListener('click', this.handle, true);
+    document.addEventListener('keydown', this.handle, true);
   }
 
   componentWillUnmount() {
     this.container = null;
-    document.removeEventListener('click', this.handle);
-    document.removeEventListener('keydown', this.handle);
+    document.removeEventListener('click', this.handle, true);
+    document.removeEventListener('keydown', this.handle, true);
   }
 
   handle = (event) => {
-    const { onClickOutside } = this.props;
+    console.log(1);
 
-    // Escape key to close
-    if (event.type === 'keydown' && (event as KeyboardEvent).keyCode === 27) {
-      onClickOutside(event);
-    }
+    // if (!event.defaultPrevented) {
+      console.log(2);
 
-    // Click outside to close
-    if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
-      setTimeout(() => {
-        if (this.container) {
-          onClickOutside(event);
-        }
-      }, 10);
-    }
+      event.preventDefault();
+
+      if (event.type === 'keydown' && event.key === 'Escape') {
+        this.props.onClickOutside(event);
+      }
+
+      // Click outside to close
+      if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
+        setTimeout(() => {
+          if (this.container) {
+            this.props.onClickOutside(event);
+          }
+        }, 10);
+      }
+    // }
   }
 
   handleRef = (element: HTMLDivElement) => {

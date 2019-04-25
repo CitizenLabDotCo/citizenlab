@@ -40,6 +40,9 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --spec 'cypress/integration/*.ts'"
   },
+  "majestic": {
+    "jestScriptPath": "node_modules/jest/bin/jest.js"
+  },
   "dependencies": {
     "@babel/polyfill": "7.4.3",
     "@babel/runtime": "7.4.3",
@@ -214,5 +217,8 @@
     "webpack-dev-middleware": "3.6.2",
     "webpack-dev-server": "3.3.1",
     "yargs": "13.2.2"
+  },
+  "resolutions": {
+    "react-test-renderer": "16.8.6"
   }
 }
