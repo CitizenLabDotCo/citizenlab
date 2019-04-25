@@ -25,8 +25,9 @@ module EmailCampaigns
 
     def generate_commands recipient:, time: nil
       @assigned_ideas = recipient.assigned_ideas
+        .feedback_needed
         .where('published_at > ?', (time - 1.week))
-        .order(created_at: :desc)
+        .order(published_at: :desc)
         .take(N_TOP_IDEAS)
       if @assigned_ideas.present?
         [{
@@ -43,7 +44,7 @@ module EmailCampaigns
                 comments_count: idea.comments_count,
               }
             },
-            total_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee_id: recipient.id).count
+            need_feedback_assigned_ideas_count: StatIdeaPolicy::Scope.new(recipient, Idea.published).resolve.where(assignee: recipient).feedback_needed.count
           },
           tracked_content: {
             idea_ids: @assigned_ideas.map{|i| i.id}
