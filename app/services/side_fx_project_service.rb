@@ -53,15 +53,7 @@ class SideFxProjectService
   end
 
   def set_default_assignee project
-    if project.default_assignee.blank?
-      candidate = User.project_moderator(project_id=project.id)
-        .not_superadmin.active.order(:registration_completed_at).first
-      if candidate.blank?
-        candidate = User.admin
-          .not_superadmin.active.order(:registration_completed_at).first 
-      end
-      project.default_assignee = candidate if candidate.present?
-    end
+    project.default_assignee ||= User.admin.reject(&:super_admin?).first
   end
 
 end
