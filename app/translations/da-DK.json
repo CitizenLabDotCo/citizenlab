@@ -1157,6 +1157,7 @@
   "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} kommenterede på {idea}",
   "app.containers.NotificationMenu.userPostedIdea": "{ideaAuthorFirstName} opslog {idea}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reagerede på din kommentar",
+  "app.containers.NotificationMenu.xAssignedIdeaToYou": "",
   "app.containers.PasswordRecovery.emailError": "Indtast venligst en gyldig e-mailadresse",
   "app.containers.PasswordRecovery.emailPlaceholder": "Min e-mailadresse",
   "app.containers.PasswordRecovery.helmetDescription": "Side for nulstilling af adgangskode",

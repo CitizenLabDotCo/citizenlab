@@ -1157,6 +1157,7 @@
   "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} reageerde op {idea}",
   "app.containers.NotificationMenu.userPostedIdea": "{ideaAuthorFirstName} plaatste {idea}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} heeft gereageerd op je reactie",
+  "app.containers.NotificationMenu.xAssignedIdeaToYou": "",
   "app.containers.PasswordRecovery.emailError": "Gelieve een geldig e-mailadres in te vullen",
   "app.containers.PasswordRecovery.emailPlaceholder": "Mijn e-mailadres",
   "app.containers.PasswordRecovery.helmetDescription": "Je wachtwoord wijzigen",
