@@ -313,8 +313,6 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleProjectsOnChange = (projects: string[]) => {
-    console.log('hi', projects);
-    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       projects,
@@ -363,8 +361,6 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleAssigneeOnChange = (assignee: string | undefined) => {
-    console.log('hi', assignee);
-    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       assignee,
