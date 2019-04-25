@@ -75,7 +75,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onResetAllParams: () => void;
+  onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
 interface State {
@@ -313,8 +313,6 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleProjectsOnChange = (projects: string[]) => {
-    console.log('hi', projects);
-    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       projects,
@@ -363,8 +361,6 @@ export default class GetIdeas extends React.Component<Props, State> {
   }
 
   handleAssigneeOnChange = (assignee: string | undefined) => {
-    console.log('hi', assignee);
-    console.log(this.state.queryParameters);
     this.queryParameters$.next({
       ...this.state.queryParameters,
       assignee,
@@ -388,8 +384,8 @@ export default class GetIdeas extends React.Component<Props, State> {
     }
   }
 
-  handleResetAllParams = () => {
-    this.queryParameters$.next({
+  handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+    const defaultResetQueryParameters = {
       projects: undefined,
       'page[number]': 1,
       'page[size]': this.props.pageSize,
@@ -405,7 +401,17 @@ export default class GetIdeas extends React.Component<Props, State> {
       bounding_box: undefined,
       assignee: undefined,
       feedback_needed: undefined
-    });
+    };
+
+    if (paramsToOmit && paramsToOmit.length > 0) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        ...omit(defaultResetQueryParameters, paramsToOmit)
+      });
+    } else {
+      this.queryParameters$.next(defaultResetQueryParameters);
+    }
+
     this.search$.next('');
   }
 
@@ -426,7 +432,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
-      onResetAllParams: this.handleResetAllParams,
+      onResetParams: this.handleResetParams,
     });
   }
 }

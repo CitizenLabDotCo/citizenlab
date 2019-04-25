@@ -6,7 +6,7 @@ import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage } from 'utils/helperUtils';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -277,7 +277,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   handleSeeAllIdeas = () => {
     this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
-    this.props.ideas.onResetAllParams();
+    // If we're in admin/projects, we don't want to reset the project
+    if (isAdminPage(location.pathname), 'projects') {
+      this.props.ideas.onResetParams(['projects']);
+    } else {
+      this.props.ideas.onResetParams();
+    }
   }
 
   render() {
@@ -435,7 +440,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   projects: <GetProjects pageSize={250} sort="new" publicationStatuses={['draft', 'published', 'archived']} />,
-  ideas: ({ project, render }) => project && project.id ? <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={[project.id]}>{render}</GetIdeas> : <GetIdeas type="paginated" pageSize={10} sort="new">{render}</GetIdeas>,
+  ideas: ({ project, render }) => <GetIdeas type="paginated" pageSize={10} sort="new" projectIds={project ? [project.id] : undefined}>{render}</GetIdeas>,
   topics: <GetTopics />,
   tenant: <GetTenant />,
   ideaStatuses: <GetIdeaStatuses />,
