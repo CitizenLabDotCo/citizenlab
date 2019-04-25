@@ -15,6 +15,10 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, { GetCommentVoteChildProps } from 'resources/GetCommentVote';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -107,6 +111,7 @@ const UpvoteLabel = styled.button`
 interface InputProps {
   ideaId: string;
   commentId: string;
+  commentType: 'parent' | 'child';
   className?: string;
 }
 
@@ -170,7 +175,7 @@ class CommentVote extends PureComponent<Props, State> {
 
     const oldVotedValue = cloneDeep(this.state.voted);
     const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const { ideaId, commentId, authUser, comment, commentVote } = this.props;
+    const { ideaId, commentId, commentType, authUser, comment, commentVote } = this.props;
 
     if (!isNilOrError(authUser)) {
       if (!oldVotedValue) {
@@ -180,6 +185,12 @@ class CommentVote extends PureComponent<Props, State> {
             user_id: authUser.id,
             mode: 'up'
           });
+
+          if (commentType === 'parent') {
+            trackEventByName(tracks.clickParentCommentUpvoteButton);
+          } else if (commentType === 'child') {
+            trackEventByName(tracks.clickChildCommentUpvoteButton);
+          }
         } catch (error) {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
@@ -189,6 +200,12 @@ class CommentVote extends PureComponent<Props, State> {
         try {
           this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
           await deleteCommentVote(comment.id, commentVote.id);
+
+          if (commentType === 'parent') {
+            trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+          } else if (commentType === 'child') {
+            trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+          }
         } catch (error) {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
