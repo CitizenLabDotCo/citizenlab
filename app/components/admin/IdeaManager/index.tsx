@@ -182,7 +182,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
     if (this.props.project && newProjectId !== oldProjectId) {
       if (isFunction(this.props.ideas.onChangeProjects)) {
-        const projectIds = [this.props.project.id];
+        const projectIds = [newProjectId];
         this.props.ideas.onChangeProjects(projectIds);
       }
 
