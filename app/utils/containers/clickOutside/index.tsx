@@ -26,26 +26,20 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   handle = (event) => {
-    console.log(1);
-
-    // if (!event.defaultPrevented) {
-      console.log(2);
-
+    // Press esc to close
+    if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
+      this.props.onClickOutside(event);
+    }
 
-      if (event.type === 'keydown' && event.key === 'Escape') {
-        this.props.onClickOutside(event);
-      }
-
-      // Click outside to close
-      if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
-        setTimeout(() => {
-          if (this.container) {
-            this.props.onClickOutside(event);
-          }
-        }, 10);
-      }
-    // }
+    // Click outside to close
+    if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
+      setTimeout(() => {
+        if (this.container) {
+          this.props.onClickOutside(event);
+        }
+      }, 10);
+    }
   }
 
   handleRef = (element: HTMLDivElement) => {
