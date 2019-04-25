@@ -44,7 +44,6 @@ class PhasesSelector extends React.PureComponent<Props> {
                 onClick={this.handlePhaseClick(phase)}
                 circular
                 basic
-                singleLine
               >
                 {index + 1}
               </Label>
