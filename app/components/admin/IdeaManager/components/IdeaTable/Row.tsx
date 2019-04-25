@@ -77,14 +77,11 @@ const StyledRow = styled.tr`
   }
 `;
 
-const FilterCell = styled.td`
-  border-top: none !important;
-`;
-
 const TitleLink = styled.a`
   display: block;
   display: -webkit-box;
   margin: 0 auto;
+  margin-bottom: 12px;
   font-size: $font-size;
   line-height: $line-height;
   -webkit-line-clamp: 2;
@@ -188,7 +185,6 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
-      <React.Fragment >
         <WrappedRow className={className} as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}>
           <Table.Cell collapsing={true}>
             <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
@@ -197,28 +193,6 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             <TitleLink className="e2e-idea-manager-idea-title" onClick={this.handleClickTitle}>
               <T value={attrs.title_multiloc} />
             </TitleLink>
-          </Table.Cell>
-          <Table.Cell onClick={this.nothingHappens} singleLine><AssigneeSelect ideaId={idea.id}/></Table.Cell>
-          <Table.Cell>
-            <FormattedRelative value={attrs.published_at} />
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs up" />
-            {attrs.upvotes_count}
-          </Table.Cell>
-          <Table.Cell singleLine>
-            <Icon name="thumbs down" />
-            {attrs.downvotes_count}
-          </Table.Cell>
-          <FeatureFlag name="participatory_budgeting">
-            <Table.Cell singleLine>
-              {attrs.baskets_count}
-            </Table.Cell>
-          </FeatureFlag>
-        </WrappedRow>
-        <Table.Row active={selected} className={className} onClick={this.onClickRow}>
-          <Table.Cell as={FilterCell} collapsing={true} />
-          <Table.Cell colSpan={6} as={FilterCell}>
             {activeFilterMenu === 'phases' && phases &&
               <PhasesSelector
                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
@@ -243,8 +217,24 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
               />
             }
           </Table.Cell>
-        </Table.Row>
-      </React.Fragment>
+          <Table.Cell onClick={this.nothingHappens} singleLine><AssigneeSelect ideaId={idea.id}/></Table.Cell>
+          <Table.Cell>
+            <FormattedRelative value={attrs.published_at} />
+          </Table.Cell>
+          <Table.Cell singleLine>
+            <Icon name="thumbs up" />
+            {attrs.upvotes_count}
+          </Table.Cell>
+          <Table.Cell singleLine>
+            <Icon name="thumbs down" />
+            {attrs.downvotes_count}
+          </Table.Cell>
+          <FeatureFlag name="participatory_budgeting">
+            <Table.Cell singleLine>
+              {attrs.baskets_count}
+            </Table.Cell>
+          </FeatureFlag>
+        </WrappedRow>
     );
   }
 }
