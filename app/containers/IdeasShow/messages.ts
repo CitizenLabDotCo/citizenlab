@@ -119,35 +119,35 @@ export default defineMessages({
   },
   confirmCommentDeletion: {
     id: 'app.containers.IdeasShow.confirmCommentDeletion',
-    defaultMessage: `Are you sure you want to delete this comment? There's no turning back!`,
+    defaultMessage: "Are you sure you want to delete this comment? There's no turning back!",
   },
   commentDeletionCancelButton: {
     id: 'app.containers.IdeasShow.commentDeletionCancelButton',
-    defaultMessage: `Keep my comment`,
+    defaultMessage: 'Keep my comment',
   },
   adminCommentDeletionCancelButton: {
     id: 'app.containers.IdeasShow.adminCommentDeletionCancelButton',
-    defaultMessage: `Leave the comment`,
+    defaultMessage: 'Leave the comment',
   },
   commentDeletionConfirmButton: {
     id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
-    defaultMessage: `Delete my comment`,
+    defaultMessage: 'Delete my comment',
   },
   deleteReason_inappropriate: {
     id: 'app.containers.IdeasShow.deleteReason_inappropriate',
-    defaultMessage: `Inappropriate comment`,
+    defaultMessage: 'Inappropriate comment',
   },
   deleteReason_irrelevant: {
     id: 'app.containers.IdeasShow.deleteReason_irrelevant',
-    defaultMessage: `Irrelevant comment`,
+    defaultMessage: 'Irrelevant comment',
   },
   deleteReason_other: {
     id: 'app.containers.IdeasShow.deleteReason_other',
-    defaultMessage: `Other reason (please specify)`,
+    defaultMessage: 'Other reason (please specify)',
   },
   adminCommentDeletionConfirmButton: {
     id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
-    defaultMessage: `Delete this comment`,
+    defaultMessage: 'Delete this comment',
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
@@ -312,7 +312,7 @@ export default defineMessages({
   },
   skipSharing: {
     id: 'app.components.IdeasShow.skipSharing',
-    defaultMessage: `Skip it, I'll do it later`,
+    defaultMessage: "Skip it, I'll do it later",
   },
   modalShareLabel: {
     id: 'app.components.IdeasShow.modalShareLabel',
