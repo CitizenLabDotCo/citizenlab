@@ -58,19 +58,20 @@ const TimeAgo = styled.div`
   `}
 `;
 
-interface DataProps {
-  author: GetUserChildProps;
-}
-
 interface InputProps {
   authorId: string | null;
   ideaCreatedAt: string;
   ideaId: string;
+  className?: string;
+}
+
+interface DataProps {
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author }) => {
+const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
 
   const goToUserProfile = () => {
     if (!isNilOrError(author)) {
@@ -81,7 +82,7 @@ const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author }) => 
   const noop = () => {};
 
   return (
-    <Container>
+    <Container className={className}>
       <Avatar
         userId={authorId}
         size="39px"
