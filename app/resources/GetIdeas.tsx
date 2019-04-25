@@ -75,7 +75,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onResetParams: (paramsToOmit?: string[]) => void;
+  onResetParams: (paramsToOmit?: (keyof IQueryParameters)[]) => void;
 };
 
 interface State {
