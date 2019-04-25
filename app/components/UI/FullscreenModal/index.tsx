@@ -235,6 +235,8 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
+const useCapture = false;
+
 class Modal extends PureComponent<Props, State> {
   unlisten: Function | null;
   goBackUrl: string | null;
@@ -265,8 +267,8 @@ class Modal extends PureComponent<Props, State> {
   openModal = (url: string | null) => {
     this.goBackUrl = window.location.href;
 
-    window.addEventListener('popstate', this.handlePopstateEvent);
-    window.addEventListener('keydown', this.handleKeypress);
+    window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
+    window.addEventListener('keydown', this.handleKeypress, useCapture);
 
     // on route change
     this.unlisten = clHistory.listen(() => {
@@ -290,7 +292,7 @@ class Modal extends PureComponent<Props, State> {
   }
 
   handleKeypress = (event) => {
-    if (!event.defaultPrevented && event.key === 'Escape') {
+    if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.manuallyCloseModal();
     }
@@ -315,8 +317,8 @@ class Modal extends PureComponent<Props, State> {
   cleanup = () => {
     this.goBackUrl = null;
 
-    window.removeEventListener('popstate', this.handlePopstateEvent);
-    window.removeEventListener('keydown', this.handleKeypress);
+    window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+    window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
     // reset state
     this.setState({ scrolled: false });

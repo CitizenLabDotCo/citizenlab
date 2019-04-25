@@ -111,6 +111,8 @@ interface State {
   canSubmit: boolean;
 }
 
+const useCapture = true;
+
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   textareaElement: HTMLTextAreaElement;
   subscriptions: Subscription[] = [];
@@ -128,7 +130,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeypress, true);
+    window.addEventListener('keydown', this.handleKeypress, useCapture);
 
     this.subscriptions = [
       eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
@@ -163,13 +165,15 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeypress, true);
+    window.removeEventListener('keydown', this.handleKeypress, useCapture);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleKeypress = (event) => {
-    if (this.state.visible && !event.defaultPrevented && event.key === 'Escape') {
+    if (this.state.visible && event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
       this.setState({ visible: false });
     }
   }
