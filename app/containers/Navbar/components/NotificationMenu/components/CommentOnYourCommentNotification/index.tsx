@@ -1,9 +1,9 @@
-import React from 'react';
-import { Subscription } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
 
+// data
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { ICommentOnYourCommentNotificationData } from 'services/notifications';
-import { ideaByIdStream } from 'services/ideas';
 
 // i18n
 import messages from '../../messages';
@@ -14,74 +14,59 @@ import NotificationWrapper from '../NotificationWrapper';
 import { DeletedUser } from '../Notification';
 import Link from 'utils/cl-router/Link';
 
-type Props = {
+interface InputProps {
   notification: ICommentOnYourCommentNotificationData;
-};
-
-type State = {
-  ideaSlug?: string,
-};
-
-export default class CommentOnYourCommentNotification extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      ideaSlug: undefined,
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.notification.relationships.idea.data) {
-      const idea$ = ideaByIdStream(this.props.notification.relationships.idea.data.id).observable;
-      this.subscriptions = [
-        idea$.subscribe((response) => {
-          this.setState({
-            ideaSlug: response.data.attributes.slug,
-          });
-        })
-      ];
-    }
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
-  render() {
-    const { notification } = this.props;
-    const { ideaSlug } = this.state;
-    const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name);
-
-    return (
-      <NotificationWrapper
-        linkTo={`/ideas/${ideaSlug}`}
-        timing={notification.attributes.created_at}
-        icon="notification_comment"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.userReactedToYourComment}
-          values={{
-            name: deletedUser ?
-            <DeletedUser>
-              <FormattedMessage {...messages.deletedUser} />
-            </DeletedUser>
-            :
-            <Link
-              to={`/profile/${notification.attributes.initiating_user_slug}`}
-              onClick={this.onClickUserName}
-            >
-              {notification.attributes.initiating_user_first_name}
-            </Link>,
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
 }
+interface DataProps {
+  idea: GetIdeaChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const CommentOnYourCommentNotification = memo<Props>(props => {
+  const { notification, idea } = props;
+
+  if (isNilOrError(idea)) return null;
+
+  const { slug } = idea.attributes;
+
+  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+
+  return (
+    <NotificationWrapper
+      linkTo={`/ideas/${slug}`}
+      timing={notification.attributes.created_at}
+      icon="notification_comment"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.userReactedToYourComment}
+        values={{
+          name: deletedUser ?
+          <DeletedUser>
+            <FormattedMessage {...messages.deletedUser} />
+          </DeletedUser>
+          :
+          <Link
+            to={`/profile/${notification.attributes.initiating_user_slug}`}
+            onClick={stopPropagation}
+          >
+            {notification.attributes.initiating_user_first_name}
+          </Link>,
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
+
+export default (inputProps: InputProps) => {
+  const { notification } = inputProps;
+
+  if (!notification.relationships.idea.data) return null;
+
+  return (
+    <GetIdea id={notification.relationships.idea.data.id}>
+      {idea => <CommentOnYourCommentNotification notification={notification} idea={idea} />}
+    </GetIdea>
+  );
+};

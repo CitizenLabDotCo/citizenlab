@@ -1,5 +1,7 @@
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
+import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { get } from 'lodash-es';
 import linkifyHtml from 'linkifyjs/html';
 import { adopt } from 'react-adopt';
@@ -10,6 +12,7 @@ import Link from 'utils/cl-router/Link';
 
 // Services
 import { updateComment, IUpdatedComment } from 'services/comments';
+import eventEmitter from 'utils/eventEmitter';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -104,7 +107,6 @@ interface InputProps {
   last?: boolean;
   onCommentSaved: () => void;
   onCancelEditing: () => void;
-  translateButtonClicked: boolean;
   className?: string;
 }
 
@@ -120,16 +122,20 @@ interface Props extends InputProps, DataProps {}
 export interface State {
   commentContent: string;
   editableCommentContent: string;
+  translateButtonClicked: boolean;
   processing: boolean;
   apiErrors: CLErrors | null;
 }
 
 class CommentBody extends PureComponent<Props, State> {
+  subscriptions: Subscription[] = [];
+
   constructor(props) {
     super(props);
     this.state = {
       commentContent: '',
       editableCommentContent: '',
+      translateButtonClicked: false,
       processing: false,
       apiErrors: null
     };
@@ -138,6 +144,14 @@ class CommentBody extends PureComponent<Props, State> {
   componentDidMount() {
     this.setCommentContent();
     this.setEditableCommentContent();
+
+    this.subscriptions = [
+      eventEmitter.observeEvent<string>('commentTranslateButtonClicked').pipe(
+        filter(({ eventValue: commentId }) => commentId === this.props.commentId)
+      ).subscribe(() => {
+        this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+      })
+    ];
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -145,6 +159,10 @@ class CommentBody extends PureComponent<Props, State> {
       this.setCommentContent();
       this.setEditableCommentContent();
     }
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   setCommentContent = () => {
@@ -218,26 +236,31 @@ class CommentBody extends PureComponent<Props, State> {
     const {
       editing,
       commentType,
-      moderator: authorCanModerate,
+      moderator,
       locale,
       author,
-      translateButtonClicked,
       commentId,
       className
     } = this.props;
+
+    const {
+      commentContent,
+      editableCommentContent,
+      translateButtonClicked,
+      processing,
+      apiErrors
+    } = this.state;
 
     let content: JSX.Element | null = null;
 
     if (!isNilOrError(locale)) {
       if (!editing) {
-        const { commentContent } = this.state;
-
         const CommentBodyContent = ({ text }: { text: string }) => (
           <>
             {commentType === 'child' &&
               <StyledLink to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
                 <StyledUserName
-                  className={authorCanModerate ? 'canModerate' : ''}
+                  className={moderator ? 'canModerate' : ''}
                   user={!isNilOrError(author) ? author : null}
                 />
               </StyledLink>
@@ -251,7 +274,18 @@ class CommentBody extends PureComponent<Props, State> {
             <QuillEditedContent fontWeight={300}>
               {translateButtonClicked ? (
                 <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} commentId={commentId}>
-                  {translation => <CommentBodyContent text={!isNilOrError(translation) ? translation.attributes.translation : commentContent} />}
+                  {translation => {
+                    let text: string = commentContent;
+
+                    if (!isNilOrError(translation)) {
+                      text = translation.attributes.translation.replace(
+                        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+                        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+                      );
+                    }
+
+                    return <CommentBodyContent text={text} />;
+                  }}
                 </GetMachineTranslation>
               ) : (
                 <CommentBodyContent text={commentContent} />
@@ -260,8 +294,6 @@ class CommentBody extends PureComponent<Props, State> {
           </CommentWrapper>
         );
       } else {
-        const { editableCommentContent, processing, apiErrors } = this.state;
-
         content = (
           <StyledForm onSubmit={this.onSubmit}>
             <QuillEditedContent fontWeight={300}>

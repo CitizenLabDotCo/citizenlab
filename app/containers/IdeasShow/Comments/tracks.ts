@@ -6,4 +6,12 @@ export default {
   clickReply: 'Comment reply clicked',
   clickTranslateCommentButton: 'Clicked button to translate comment',
   clickGoBackToOriginalCommentButton: 'Clicked button to go back to original, non-translated comment',
+  clickCommentsSortOrder: 'Clicked the comments sort order dropdown',
+  clickParentCommentLoadMoreButton: "Clicked the 'Load more' button of a parent comment to load more child comments",
+  clickParentCommentReplyButton: 'Clicked on the reply button of a parent comment',
+  clickChildCommentReplyButton: 'Clicked on the reply button of a child comment',
+  clickParentCommentUpvoteButton: 'Clicked on the upvote button of a parent comment',
+  clickParentCommentCancelUpvoteButton: 'Clicked on the cancel upvote button of a parent comment',
+  clickChildCommentUpvoteButton: 'Clicked on the upvote button of a parent comment',
+  clickChildCommentCancelUpvoteButton: 'Clicked on the cancel upvote button of a parent comment',
 };

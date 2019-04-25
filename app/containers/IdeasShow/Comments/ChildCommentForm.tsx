@@ -26,11 +26,12 @@ import eventEmitter from 'utils/eventEmitter';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
-import { media } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { ICommentReplyClicked } from './CommentFooter';
@@ -96,6 +97,7 @@ interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -108,6 +110,8 @@ interface State {
   errorMessage: string | null;
   canSubmit: boolean;
 }
+
+const useCapture = true;
 
 class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   textareaElement: HTMLTextAreaElement;
@@ -126,6 +130,8 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
+    window.addEventListener('keydown', this.handleKeypress, useCapture);
+
     this.subscriptions = [
       eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
         tap(() => this.setState({ inputValue: '', focussed: false })),
@@ -159,7 +165,17 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeypress, useCapture);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  handleKeypress = (event) => {
+    if (this.state.visible && event.type === 'keydown' && event.key === 'Escape') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      this.setState({ visible: false });
+    }
   }
 
   handleTextareaOnChange = (inputValue: string) => {
@@ -232,11 +248,12 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   placeholder = this.props.intl.formatMessage(messages.childCommentBodyPlaceholder);
 
   render() {
-    const { ideaId, parentId, authUser, className } = this.props;
+    const { ideaId, parentId, authUser, windowSize, className } = this.props;
 
     if (!isNilOrError(authUser)) {
       const { inputValue, canSubmit, processing, errorMessage, visible, focussed } = this.state;
       const isButtonVisible = (inputValue && inputValue.length > 0 || focussed);
+      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
         <Container className={className}>
@@ -251,7 +268,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
                     name="comment"
                     className={`e2e-reply childcommentform-${parentId}`}
                     placeholder={this.placeholder}
-                    rows={1}
+                    rows={smallerThanSmallTablet ? 2 : 1}
                     value={inputValue}
                     error={errorMessage}
                     ideaId={ideaId}
@@ -292,7 +309,8 @@ const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  windowSize: <GetWindowSize debounce={50} />
 });
 
 export default (inputProps: InputProps) => (

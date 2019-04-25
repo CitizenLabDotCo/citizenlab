@@ -1,21 +1,15 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-
 import Link from 'utils/cl-router/Link';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import Activities from './Activities/Activities';
-
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
 import styled from 'styled-components';
 import { fontSizes, media, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedRelative } from 'react-intl';
-import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -30,7 +24,7 @@ const AuthorMeta = styled.div`
 `;
 
 const AuthorNameWrapper = styled.div`
-  color: #333;
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
@@ -64,23 +58,22 @@ const TimeAgo = styled.div`
   `}
 `;
 
-interface DataProps {
-  author: GetUserChildProps;
-}
-
 interface InputProps {
   authorId: string | null;
   ideaCreatedAt: string;
   ideaId: string;
+  className?: string;
+}
+
+interface DataProps {
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = React.memo<Props>((props: Props) => {
+const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
 
   const goToUserProfile = () => {
-    const { author } = props;
-
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
     }
@@ -88,10 +81,8 @@ const IdeaAuthor = React.memo<Props>((props: Props) => {
 
   const noop = () => {};
 
-  const { ideaId, ideaCreatedAt, authorId, author } = props;
-
   return (
-    <Container>
+    <Container className={className}>
       <Avatar
         userId={authorId}
         size="39px"
@@ -99,16 +90,9 @@ const IdeaAuthor = React.memo<Props>((props: Props) => {
       />
       <AuthorMeta>
         <AuthorNameWrapper>
-          <FormattedMessage
-            {...messages.byAuthorName}
-            values={{
-              authorName: (
-                <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-                  <UserName user={!isNilOrError(author) ? author : null} />
-                </AuthorName>
-              )
-            }}
-          />
+          <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
+            <UserName user={!isNilOrError(author) ? author : null} />
+          </AuthorName>
         </AuthorNameWrapper>
         {ideaCreatedAt &&
           <TimeAgo>

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -16,6 +16,7 @@ import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -32,28 +33,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
-
-const TranslateButtonWrapper = styled.div``;
-
-const TranslateButton = styled.button`
-  padding: 0;
-  color: ${colors.clBlue};
-  text-decoration: underline;
-  margin-top: 10px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const Footer = styled.div`
-  display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 25px;
+  margin-top: 22px;
 `;
 
 const Left = styled.div`
@@ -61,20 +43,53 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const Separator = styled.div`
-  font-size: ${fontSizes.small}px;
-  margin-left: 5px;
-  margin-right: 5px;
+const LeftActions = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
 
-  ${media.phone`
-    margin-left: 10px;
-    margin-right: 10px;
+  ${media.smallerThanMinTablet`
+    margin-left: 5px;
+  `}
+`;
+
+const Separator = styled.div`
+  font-size: ${fontSizes.xs}px;
+  line-height: 24px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  ${media.smallerThanMinTablet`
+    margin-left: 8px;
+    margin-right: 8px;
+
+    &.first {
+      display: none;
+    }
   `}
 `;
 
 const ReplyButton = styled.button`
   color: ${colors.label};
+  white-space: nowrap;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
+`;
+
+const TranslateButton = styled.button`
+  color: ${colors.label};
+  white-space: nowrap;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
 
   &:hover {
     color: #000;
@@ -85,10 +100,10 @@ const ReplyButton = styled.button`
 const Right = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 10px;
 `;
 
 const StyledCommentsMoreActions = styled(CommentsMoreActions)`
-  margin-left: 14px;
   margin-right: -6px;
 `;
 
@@ -97,7 +112,10 @@ const TimeAgo = styled.div`
   font-size: ${fontSizes.small}px;
   line-height: normal;
   font-weight: 400;
-  margin-left: 22px;
+
+  &.hasLeftMargin {
+    margin-left: 22px;
+  }
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -105,11 +123,11 @@ const TimeAgo = styled.div`
 `;
 
 export interface ICommentReplyClicked {
-  commentId: string;
-  parentCommentId: string;
-  authorFirstName: string;
-  authorLastName: string;
-  authorSlug: string;
+  commentId: string | null;
+  parentCommentId: string | null;
+  authorFirstName: string | null;
+  authorLastName: string | null;
+  authorSlug: string | null;
 }
 
 interface InputProps {
@@ -124,6 +142,7 @@ interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   comment: GetCommentChildProps;
   author: GetUserChildProps;
@@ -148,33 +167,37 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   translateComment = () => {
+    const { comment } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (translateButtonClicked) {
-      trackEventByName(tracks.clickGoBackToOriginalCommentButton);
-    } else {
-      trackEventByName(tracks.clickTranslateCommentButton);
-    }
+    if (!isNilOrError(comment)) {
+      if (translateButtonClicked) {
+        trackEventByName(tracks.clickGoBackToOriginalCommentButton);
+      } else {
+        trackEventByName(tracks.clickTranslateCommentButton);
+      }
 
-    this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+      this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+
+      eventEmitter.emit<string>('CommentFooter', 'commentTranslateButtonClicked', comment.id);
+    }
   }
 
   onCommentEdit = () => {
     this.props.onEditing();
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 
   onReply = () => {
-    const { author, comment } = this.props;
-    const commentId = get(comment, 'id', null);
-    const parentCommentId = get(comment, 'relationships.parent.data.id', null);
-    const authorFirstName = get(author, 'attributes.first_name', null);
-    const authorLastName = get(author, 'attributes.last_name', null);
-    const authorSlug = get(author, 'attributes.slug', null);
-
+    const { author, comment, commentType } = this.props;
+    const commentId: string | null = get(comment, 'id', null);
+    const parentCommentId: string | null = get(comment, 'relationships.parent.data.id', null);
+    const authorFirstName: string | null = get(author, 'attributes.first_name', null);
+    const authorLastName: string | null = get(author, 'attributes.last_name', null);
+    const authorSlug: string | null = get(author, 'attributes.slug', null);
     const eventValue: ICommentReplyClicked = {
       commentId,
       parentCommentId,
@@ -183,13 +206,19 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       authorSlug
     };
 
+    if (commentType === 'child') {
+      trackEventByName(tracks.clickChildCommentReplyButton);
+    } else if (commentType === 'parent') {
+      trackEventByName(tracks.clickParentCommentReplyButton);
+    }
+
     eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
   }
 
   moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
 
   render() {
-    const { commentType, projectId, commentId, className, comment, locale, idea, canReply } = this.props;
+    const { commentType, ideaId, projectId, commentId, className, comment, locale, authUser, idea, canReply } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(idea) && !isNilOrError(comment) && !isNilOrError(locale)) {
@@ -200,46 +229,50 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={className}>
-          {/* <FeatureFlag name="machine_translations"> */}
-            {showTranslateButton &&
-              <TranslateButtonWrapper>
-                <TranslateButton onClick={this.translateComment}>
-                  {!translateButtonClicked
-                    ? <FormattedMessage {...messages.translateComment} />
-                    : <FormattedMessage {...messages.showOriginalComment} />
+          <Left>
+            <CommentVote
+              ideaId={ideaId}
+              commentId={commentId}
+              commentType={commentType}
+            />
+
+            {authUser && commentingEnabled && canReply &&
+              <LeftActions>
+                <Separator className="first">•</Separator>
+                <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
+                  <FormattedMessage {...messages.commentReplyButton} />
+                </ReplyButton>
+                {/* <FeatureFlag name="machine_translations"> */}
+                  {showTranslateButton &&
+                    <>
+                      <Separator>•</Separator>
+                      <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                        {!translateButtonClicked
+                          ? <FormattedMessage {...messages.seeTranslation} />
+                          : <FormattedMessage {...messages.seeOriginal} />
+                        }
+                      </TranslateButton>
+                    </>
                   }
-                </TranslateButton>
-              </TranslateButtonWrapper>
+                {/* </FeatureFlag> */}
+              </LeftActions>
             }
-          {/* </FeatureFlag> */}
+          </Left>
 
-          <Footer>
-            <Left>
-              <CommentVote commentId={commentId} />
-              {commentingEnabled && canReply &&
-                <>
-                  <Separator>•</Separator>
-                  <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
-                    <FormattedMessage {...messages.commentReplyButton} />
-                  </ReplyButton>
-                </>
-              }
-            </Left>
-            <Right>
-              <StyledCommentsMoreActions
-                projectId={projectId}
-                comment={comment}
-                onCommentEdit={this.onCommentEdit}
-                ariaLabel={this.moreActionsAriaLabel}
-              />
+          <Right>
+            <StyledCommentsMoreActions
+              projectId={projectId}
+              comment={comment}
+              onCommentEdit={this.onCommentEdit}
+              ariaLabel={this.moreActionsAriaLabel}
+            />
 
-              {commentType === 'child' &&
-                <TimeAgo>
-                  <FormattedRelative value={createdAt} />
-                </TimeAgo>
-              }
-            </Right>
-          </Footer>
+            {commentType === 'child' &&
+              <TimeAgo className={authUser ? 'hasLeftMargin' : ''}>
+                <FormattedRelative value={createdAt} />
+              </TimeAgo>
+            }
+          </Right>
         </Container>
       );
     }
@@ -250,6 +283,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
   author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>

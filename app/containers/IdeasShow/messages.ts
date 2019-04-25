@@ -233,8 +233,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
   },
-  spanModalLabelIdea: {
-    id: 'app.components.IdeasShow.spanModalLabelIdea',
+  spamModalLabelIdea: {
+    id: 'app.components.IdeasShow.spamModalLabelIdea',
     defaultMessage: 'Report idea as spam : select reason',
   },
   spanModalLabelComment: {
@@ -244,6 +244,14 @@ export default defineMessages({
   editIdea: {
     id: 'app.components.IdeasShow.editIdea',
     defaultMessage: 'Edit idea',
+  },
+  deleteIdea: {
+    id: 'app.components.IdeasShow.deleteIdea',
+    defaultMessage: 'Delete idea',
+  },
+  deleteIdeaConfirmation: {
+    id: 'app.components.IdeasShow.deleteIdeaConfirmation',
+    defaultMessage: 'Are you sure you want to delete this idea?',
   },
   lastUpdated: {
     id: 'app.components.IdeasShow.lastUpdated',
@@ -326,13 +334,13 @@ export default defineMessages({
     id: 'app.components.IdeasShow.backToOriginalContent',
     defaultMessage: 'See original content again',
   },
-  translateComment: {
-    id: 'app.components.IdeasShow.translateComment',
-    defaultMessage: 'Translate this comment',
+  seeTranslation: {
+    id: 'app.components.IdeasShow.seeTranslation',
+    defaultMessage: 'See translation',
   },
-  showOriginalComment: {
-    id: 'app.components.IdeasShow.showOriginalComment',
-    defaultMessage: 'Show original comment',
+  seeOriginal: {
+    id: 'app.components.IdeasShow.seeOriginal',
+    defaultMessage: 'See original',
   },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',

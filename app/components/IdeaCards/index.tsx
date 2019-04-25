@@ -116,12 +116,6 @@ const DropdownFilters = styled.div`
   &.hidden {
     display: none;
   }
-
-  &.hasViewToggle {
-    ${media.smallerThanMinTablet`
-      margin-top: 20px;
-    `}
-  }
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -365,7 +359,7 @@ class IdeaCards extends PureComponent<Props, State> {
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
+            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
               <SelectSort onChange={this.handleSortOnChange} />
               {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />

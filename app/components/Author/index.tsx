@@ -18,7 +18,6 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 
 // i18n
 import { FormattedRelative } from 'react-intl';
-import { FormattedMessage } from 'utils/cl-intl';
 
 // style
 import styled from 'styled-components';
@@ -52,7 +51,7 @@ const StyledAvatar = styled(Avatar)`
 const AuthorMeta = styled.div``;
 
 const AuthorNameContainer = styled.div`
-  color: ${({ theme }) => theme.colorText};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 16px;
   font-weight: 400;
@@ -60,7 +59,7 @@ const AuthorNameContainer = styled.div`
   hyphens: manual;
 `;
 
-const AuthorNameLink: any = styled(Link)`
+const AuthorNameLink = styled(Link)`
   color: ${({ theme }) => theme.colorText};
   text-decoration: none;
   cursor: pointer;
@@ -122,7 +121,7 @@ class Author extends PureComponent<Props, State> {
   }
 
   render() {
-    const { authorId, createdAt, size, notALink, message, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
+    const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor } = this.props;
     const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
     const authorNameComponent = notALink ? (
       <UserName user={!isNilOrError(author) ? author : null} />
@@ -150,12 +149,7 @@ class Author extends PureComponent<Props, State> {
 
           <AuthorMeta>
             <AuthorNameContainer>
-              {message ? (
-                <FormattedMessage
-                  {...message}
-                  values={{ authorNameComponent }}
-                />
-              ) : authorNameComponent}
+              {authorNameComponent}
             </AuthorNameContainer>
 
             {createdAt &&

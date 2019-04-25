@@ -20,7 +20,7 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
@@ -31,6 +31,10 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 100px;
   background: ${colors.background};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
@@ -38,11 +42,15 @@ const StyledPBExpenses = styled(PBExpenses)`
 `;
 
 const IdeasTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxl}px;
-  line-height: 35px;
+  line-height: normal;
   font-weight: 600;
   margin-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
+  `}
 `;
 
 interface InputProps {
