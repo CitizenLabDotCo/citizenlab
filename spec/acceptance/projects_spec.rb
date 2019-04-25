@@ -295,16 +295,6 @@ resource "Projects" do
           end
         end
 
-        describe do
-          let!(:admin) { create(:admin, registration_completed_at: (Time.now - 1.day)) }
-
-          example "Auto-assigns to first admin (when there's no moderator)", document: false do
-            do_request
-            expect(response_status).to eq 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq admin.id
-          end
-        end
       end
     end
 
