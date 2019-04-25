@@ -36,13 +36,20 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
-  padding: 17px 34px 27px 34px;
+  padding: 30px;
+  padding-top: 35px;
   margin-bottom: 10px;
+
+  &.last {
+    margin-bottom: 0;
+  }
 `;
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
   background: ${lighten(0.545, colors.clRedError)};
+  background: rgba(236, 90, 36, 0.06);
+  position: relative;
 `;
 
 const EditFormContainer = styled(Container)`
@@ -50,7 +57,7 @@ const EditFormContainer = styled(Container)`
 `;
 
 const Body = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 `;
 
 const Footer = styled.div`
@@ -59,23 +66,28 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  font-weight: 600;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
 `;
 
 const DatePosted = styled.span`
   color: ${colors.label};
+  font-size: ${fontSizes.small}px;
+  font-weight: 300;
 `;
 
 const DateEdited = styled.span`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  font-weight: 300;
   font-style: italic;
-  margin-top: 10px;
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
-  align-self: flex-end;
-  margin-bottom: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 interface DataProps {
@@ -86,6 +98,7 @@ interface DataProps {
 interface InputProps {
   editingAllowed: boolean | null;
   officialFeedbackPost: IOfficialFeedbackData;
+  last: boolean;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -138,7 +151,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
   }
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales } = this.props;
+    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, last } = this.props;
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
@@ -164,7 +177,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
 
       return (
-        <PostContainer key={officialFeedbackPost.id} className="e2e-official-feedback-post">
+        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${last ? 'last' : ''}`}>
           {editingAllowed &&
             <StyledMoreActionsMenu ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)} actions={this.getActions(officialFeedbackPost.id)} />
           }
@@ -177,9 +190,11 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
               <Author>
                 <T value={author_multiloc} />
               </Author>
+
               <DatePosted>
                 {formattedDate}
               </DatePosted>
+
               {updated_at && updated_at !== created_at && (
                 <DateEdited>
                   <FormattedMessage

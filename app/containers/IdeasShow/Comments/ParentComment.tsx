@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, FormEvent, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,6 +22,10 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -32,7 +36,7 @@ const Container = styled.div`
   position: relative;
   background: #fff;
   box-sizing: border-box;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e8e8e8;
   box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
@@ -43,13 +47,13 @@ const ParentCommentContainer = styled.div`
 
 const LoadMoreText = styled.span`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
   text-decoration: underline;
   border: none;
   padding: 0;
-  padding: 10px;
+  padding: 12px;
   margin: 0;
   transition: all 150ms ease-out;
 `;
@@ -149,14 +153,15 @@ class ParentComment extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  loadMore = (event: React.FormEvent<any>) => {
+  loadMore = (event: FormEvent<any>) => {
     if (!this.state.isLoadingMore) {
       event.preventDefault();
+      trackEventByName(tracks.clickParentCommentLoadMoreButton);
       this.loadMore$.next(true);
     }
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 

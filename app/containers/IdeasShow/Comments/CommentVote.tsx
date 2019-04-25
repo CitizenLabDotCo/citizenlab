@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, cloneDeep, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -13,6 +14,10 @@ import { addCommentVote, deleteCommentVote } from 'services/commentVotes';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetCommentVote, { GetCommentVoteChildProps } from 'resources/GetCommentVote';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,11 +38,6 @@ const UpvoteIcon = styled(Icon)`
   height: 16px;
   flex: 0 0 16px;
   fill: ${colors.label};
-  margin-top: 0px;
-
-  &:not(.voted) {
-    margin-left: -3px;
-  }
 
   &.voted {
     fill: #fff;
@@ -45,56 +45,73 @@ const UpvoteIcon = styled(Icon)`
 `;
 
 const UpvoteIconWrapper = styled.button`
-  width: 29px;
-  height: 29px;
+  width: 18px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
   background: transparent;
-  margin-top: -4px;
+  margin: 0;
+  padding: 0;
+  margin-top: -3px;
   cursor: pointer;
-  transition: all 100ms ease;
+  transition: background 100ms ease;
+  border: none;
 
-  &.voted {
-    background: ${colors.clGreen};
-
-    &:hover {
-      background: ${darken(0.1, colors.clGreen)};
+  &.notVoted {
+    &.hasVotes {
+      margin-right: 5px;
     }
-  }
 
-  &:not(.voted) {
+    &.hasNoVotes {
+      margin-right: 10px;
+    }
+
     &:hover {
       ${UpvoteIcon} {
         fill: #000;
       }
     }
   }
+
+  &.voted {
+    width: 28px;
+    margin-right: 3px;
+    border-radius: 50%;
+    background: ${colors.clGreen};
+
+    &:hover {
+      background: ${darken(0.1, colors.clGreen)};
+    }
+  }
 `;
 
 const UpvoteCount = styled.div`
   color: ${colors.label};
-  margin-left: 4px;
+  margin-right: 12px;
 `;
 
 const UpvoteLabel = styled.button`
   color: ${colors.label};
-  margin-left: 4px;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
+  border: none;
 
   &:hover {
     color: #000;
     text-decoration: underline;
   }
 
-  ${media.phone`
+  ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
 interface InputProps {
+  ideaId: string;
   commentId: string;
+  commentType: 'parent' | 'child';
   className?: string;
 }
 
@@ -158,16 +175,22 @@ class CommentVote extends PureComponent<Props, State> {
 
     const oldVotedValue = cloneDeep(this.state.voted);
     const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const { commentId, authUser, comment, commentVote } = this.props;
+    const { ideaId, commentId, commentType, authUser, comment, commentVote } = this.props;
 
     if (!isNilOrError(authUser)) {
       if (!oldVotedValue) {
         try {
           this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
-          await addCommentVote(commentId, {
+          await addCommentVote(ideaId, commentId, {
             user_id: authUser.id,
             mode: 'up'
           });
+
+          if (commentType === 'parent') {
+            trackEventByName(tracks.clickParentCommentUpvoteButton);
+          } else if (commentType === 'child') {
+            trackEventByName(tracks.clickChildCommentUpvoteButton);
+          }
         } catch (error) {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
@@ -177,10 +200,18 @@ class CommentVote extends PureComponent<Props, State> {
         try {
           this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
           await deleteCommentVote(comment.id, commentVote.id);
+
+          if (commentType === 'parent') {
+            trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+          } else if (commentType === 'child') {
+            trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+          }
         } catch (error) {
           this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
       }
+    } else {
+      clHistory.push('/sign-in');
     }
   }
 
@@ -191,12 +222,12 @@ class CommentVote extends PureComponent<Props, State> {
     if (!isNilOrError(comment)) {
       return (
         <Container className={className}>
-          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={voted ? 'voted' : ''}>
+          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'}`}>
             <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
           </UpvoteIconWrapper>
 
           {upvoteCount > 0 &&
-            <UpvoteCount>{upvoteCount}</UpvoteCount>
+            <UpvoteCount className={upvoteCount > 0 ? 'visible' : 'hidden'}>{upvoteCount}</UpvoteCount>
           }
 
           <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>

@@ -29,7 +29,7 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -379,15 +379,12 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   }
 }
 
+const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+
 const Data = adopt<DataProps, InputProps>({
-  projects: (
-    <GetProjects
-      publicationStatuses={['draft', 'published', 'archived']}
-      filterCanModerate={true}
-    />
-  ),
   groups: <GetGroups />,
   topics: <GetTopics />,
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
 const DashboardPageSummaryWithHOCs = injectTracks<Props>({

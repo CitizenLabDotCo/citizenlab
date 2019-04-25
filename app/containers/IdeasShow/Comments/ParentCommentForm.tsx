@@ -6,7 +6,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import CommentingDisabled from './CommentingDisabled';
 import Author from 'components/Author';
 
 // tracking
@@ -37,9 +36,6 @@ const Container = styled.div`
 `;
 
 const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   padding-top: 20px;
   padding-bottom: 20px;
   padding-left: 50px;
@@ -47,7 +43,7 @@ const CommentContainer = styled.div`
   background: #F1F2F4;
   border: 1px solid #E3E3E3;
   box-sizing: border-box;
-  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   transition: all 100ms ease;
 
@@ -61,6 +57,7 @@ const CommentContainer = styled.div`
 `;
 
 const AuthorWrapper = styled.div`
+  width: 100%;
   margin-bottom: 6px;
 `;
 
@@ -69,17 +66,11 @@ const StyledAuthor = styled(Author)`
 `;
 
 const Form = styled.form`
-  flex: 1;
+  width: 100%;
 `;
 
 const HiddenLabel = styled.span`
   ${hideVisually()}
-`;
-
-const FormInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
 `;
 
 const ButtonWrapper = styled.div`
@@ -184,7 +175,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const { authUser, idea, ideaId, className } = this.props;
     const { inputValue, focussed, processing, errorMessage } = this.state;
     const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const canComment = (authUser && commentingEnabled);
@@ -192,13 +182,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <Container className={className}>
-        <CommentingDisabled
-          isLoggedIn={!!authUser}
-          commentingEnabled={commentingEnabled}
-          commentingDisabledReason={commentingDisabledReason}
-          projectId={projectId}
-        />
-
         {(authUser && canComment) &&
           <CommentContainer className={`e2e-comment-form ideaCommentForm ${focussed ? 'focussed' : ''}`}>
             <AuthorWrapper>
@@ -217,36 +200,34 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                   <FormattedMessage {...messages.yourComment} />
                 </HiddenLabel>
 
-                <FormInner>
-                  <MentionsTextArea
-                    id="submit-comment"
-                    name="comment"
-                    placeholder={this.placeholder}
-                    rows={5}
-                    ideaId={ideaId}
-                    value={inputValue}
-                    error={errorMessage}
-                    onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                    fontWeight="300"
-                    padding="10px 0px"
-                    borderRadius="none"
-                    border="none"
-                    boxShadow="none"
-                  />
-                  <ButtonWrapper>
-                    <Button
-                      className="e2e-submit-comment"
-                      processing={processing}
-                      icon="send"
-                      onClick={this.onSubmit}
-                      disabled={commentButtonDisabled}
-                    >
-                      <FormattedMessage {...messages.publishComment} />
-                    </Button>
-                  </ButtonWrapper>
-                </FormInner>
+                <MentionsTextArea
+                  id="submit-comment"
+                  name="comment"
+                  placeholder={this.placeholder}
+                  rows={5}
+                  ideaId={ideaId}
+                  value={inputValue}
+                  error={errorMessage}
+                  onChange={this.onChange}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                  fontWeight="300"
+                  padding="10px 0px"
+                  borderRadius="none"
+                  border="none"
+                  boxShadow="none"
+                />
+                <ButtonWrapper>
+                  <Button
+                    className="e2e-submit-comment"
+                    processing={processing}
+                    icon="send"
+                    onClick={this.onSubmit}
+                    disabled={commentButtonDisabled}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
               </label>
             </Form>
           </CommentContainer>

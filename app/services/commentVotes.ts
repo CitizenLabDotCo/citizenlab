@@ -44,11 +44,12 @@ export function commentVotesStream(commentId: string, streamParams: IStreamParam
   return streams.get<ICommentVote>({ apiEndpoint: `${API_PATH}/comments/${commentId}/votes`, ...streamParams });
 }
 
-export async function addCommentVote(commentId: string, object: INewCommentVote) {
+export async function addCommentVote(ideaId: string, commentId: string, object: INewCommentVote) {
   const response = await streams.add<ICommentVote>(`${API_PATH}/comments/${commentId}/votes`, { vote: object });
   const voteId = response.data.id;
   await streams.fetchAllWith({
     apiEndpoint: [
+      `${API_PATH}/ideas/${ideaId}/comments`,
       `${API_PATH}/comments/${commentId}`,
       `${API_PATH}/votes/${voteId}`
     ]

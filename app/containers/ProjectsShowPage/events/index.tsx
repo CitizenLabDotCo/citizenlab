@@ -42,9 +42,9 @@ const Events = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxl}px;
-  line-height: 35px;
+  line-height: normal;
   font-weight: 600;
   margin-bottom: 25px;
 `;
