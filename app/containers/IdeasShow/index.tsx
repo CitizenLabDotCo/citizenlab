@@ -194,6 +194,11 @@ const IdeaImage = styled.img`
   border: 1px solid ${colors.separation};
 `;
 
+const StyledIdeaAuthor = styled(IdeaAuthor)`
+  margin-top: -4px;
+  margin-left: -4px;
+`;
+
 const MetaButtons = styled.div`
   display: flex;
   flex-direction: column;
@@ -722,7 +727,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                <IdeaAuthor
+                <StyledIdeaAuthor
                   ideaId={ideaId}
                   authorId={authorId}
                   ideaCreatedAt={createdAt}
