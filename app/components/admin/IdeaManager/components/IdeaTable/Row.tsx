@@ -46,22 +46,34 @@ import tracks from '../../tracks';
 const StyledRow = styled.tr`
   height: 5.5rem;
   cursor: move;
-  .fade-enter > * {
-    opacity: 0.01;
+  transition: all 500ms ease;
+  overflow: hidden;
+
+  &.fade-enter {
+    opacity: 0;
+    height: 0;
+
+    &.fade-enter-active {
+      opacity: 1;
+      height: auto;
+    }
   }
 
-  .fade-enter.fade-enter-active > * {
+  &.fade-enter-done {
     opacity: 1;
-    transition: opacity 500ms ease-in;
   }
 
-  .fade-leave > * {
+  &.fade-exit {
     opacity: 1;
+
+    &.fade-exit-active {
+      opacity: 0;
+      height: 0;
+    }
   }
 
-  .fade-leave.fade-leave-active > *  {
-    opacity: 0.01;
-    transition: opacity 300ms ease-in;
+  &.fade-exit-done {
+    display: none;
   }
 `;
 
