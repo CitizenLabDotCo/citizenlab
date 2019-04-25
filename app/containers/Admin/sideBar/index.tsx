@@ -30,6 +30,9 @@ const Menu = styled.div`
   @media print {
     display: none;
   }
+  ${media.smallerThan1200px`
+    width: 80px;
+  `}
 `;
 
 const MenuInner = styled.nav`
@@ -43,6 +46,10 @@ const MenuInner = styled.nav`
   bottom: 0;
   padding-top: 119px;
   background: ${colors.adminMenuBackground};
+
+  ${media.smallerThan1200px`
+    width: 80px;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -92,6 +99,12 @@ const GetStartedLink = styled.a`
       color: #fff;
     };
   }
+  ${media.smallerThan1200px`
+    width: 70px;
+    ${Text} {
+      display: none;
+    };
+  `}
 `;
 
 interface InputProps {}
