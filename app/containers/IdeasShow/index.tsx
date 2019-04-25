@@ -29,7 +29,7 @@ import SimilarIdeas from './SimilarIdeas';
 import HasPermission from 'components/HasPermission';
 import IdeaHeader from './IdeaHeader';
 import IdeaAuthor from './IdeaAuthor';
-import IdeaFooter from './IdeaFooter2';
+import IdeaFooter from './IdeaFooter';
 import Spinner, { ExtraProps as SpinnerProps } from 'components/UI/Spinner';
 import OfficialFeedback from './OfficialFeedback';
 import Icon from 'components/UI/Icon';
