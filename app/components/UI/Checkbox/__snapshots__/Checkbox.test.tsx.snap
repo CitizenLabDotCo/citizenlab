@@ -53,12 +53,6 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
   border-color: #04884C;
 }
 
-.c1:focus {
-  outline-style: solid;
-  outline-width: 3px;
-  outline-color: #aaa;
-}
-
 .c2 {
   fill: #fff;
   height: 55%;
@@ -66,9 +60,9 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
 
 .c3 {
   color: #596B7A;
+  font-size: 16px;
   padding: 5px 0 5px 10px;
   cursor: pointer;
-  font-size: 16px;
 }
 
 <Checkbox
@@ -91,6 +85,7 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
+        onMouseDown={[Function]}
         size="22px"
         tabIndex={0}
       >
@@ -99,13 +94,14 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
           className="e2e-checkbox checked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseDown={[Function]}
           size="22px"
           tabIndex={0}
         >
-          <Checkbox__CheckmarkIcon
+          <Component
             name="checkmark"
           >
-            <Icon
+            <Component
               className="c2"
               name="checkmark"
             >
@@ -119,8 +115,8 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                   fillRule="evenodd"
                 />
               </svg>
-            </Icon>
-          </Checkbox__CheckmarkIcon>
+            </Component>
+          </Component>
         </div>
       </Checkbox__CheckboxContainer>
       <Checkbox__Label
@@ -191,17 +187,11 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
   border-color: #333;
 }
 
-.c1:focus {
-  outline-style: solid;
-  outline-width: 3px;
-  outline-color: #aaa;
-}
-
 .c2 {
   color: #596B7A;
+  font-size: 16px;
   padding: 5px 0 5px 10px;
   cursor: pointer;
-  font-size: 16px;
 }
 
 <Checkbox
@@ -224,6 +214,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
         innerRef={[Function]}
         onClick={[Function]}
         onKeyPress={[Function]}
+        onMouseDown={[Function]}
         size="22px"
         tabIndex={0}
       >
@@ -232,6 +223,7 @@ exports[`Checkbox UI component renders correctly when unchecked 1`] = `
           className="e2e-checkbox unchecked c1"
           onClick={[Function]}
           onKeyPress={[Function]}
+          onMouseDown={[Function]}
           size="22px"
           tabIndex={0}
         />

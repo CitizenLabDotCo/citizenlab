@@ -1,8 +1,7 @@
 import React from 'react';
-
 import { shallow, mount } from 'enzyme';
-
 import { mockOfficialFeedback } from 'services/officialFeedback';
+import { shallowWithTheme, mountWithTheme } from 'utils/testUtils/withTheme';
 
 jest.mock('services/officialFeedback');
 jest.mock('./Form/OfficialFeedbackEdit');
@@ -16,10 +15,11 @@ import { OfficialFeedbackPost } from './OfficialFeedbackPost';
 
 describe('<OfficialFeedbackPost />', () => {
   it('renders correctly for non-admin', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithTheme(
       <OfficialFeedbackPost
         editingAllowed={false}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
@@ -27,10 +27,11 @@ describe('<OfficialFeedbackPost />', () => {
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly for admin', () => {
-    const wrapper = shallow(
+    const wrapper = shallowWithTheme(
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
@@ -38,10 +39,11 @@ describe('<OfficialFeedbackPost />', () => {
     expect(wrapper).toMatchSnapshot();
   });
   it('when admin clicks edit it reacts in an adequate manner', () => {
-    const wrapper = mount(
+    const wrapper = mountWithTheme(
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
+        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
