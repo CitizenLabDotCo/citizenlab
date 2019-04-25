@@ -1157,6 +1157,7 @@
   "app.containers.NotificationMenu.userPostedComment": "",
   "app.containers.NotificationMenu.userPostedIdea": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "",
+  "app.containers.NotificationMenu.xAssignedIdeaToYou": "",
   "app.containers.PasswordRecovery.emailError": "",
   "app.containers.PasswordRecovery.emailPlaceholder": "",
   "app.containers.PasswordRecovery.helmetDescription": "",
