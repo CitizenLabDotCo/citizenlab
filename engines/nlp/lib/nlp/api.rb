@@ -33,11 +33,15 @@ module NLP
       body[:n_clusters] = options[:n_clusters] if options[:n_clusters]
       body[:max_depth]  = options[:max_depth]  if options[:max_depth]
 
-      self.class.post(
+      resp = self.class.post(
         "/v1/tenants/#{tenant_id}/ideas/clustering",
         body: body.to_json,
         headers: {'Content-Type' => 'application/json'} 
       )
+      if !resp.success?
+        raise ClErrors::TransactionError.new(error_key: resp['code'])
+      end
+      resp.parsed_response.dig('data')
     end
 
     def ideas_classification tenant_id, locale

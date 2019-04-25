@@ -14,7 +14,11 @@ class ActivitiesService
 
   def create_phase_started_activities now, last_time
     if now.to_date != last_time.to_date
-      Phase.where(start_at: now.to_date).each do |phase|
+      Phase.where(start_at: now.to_date)
+        .includes(:project).where(projects: {publication_status: 'published'}).each do |phase|
+        if phase.end_at.iso8601 < (now+1.day).to_date.iso8601
+          raise "Invalid phase started event would have been generated for phase #{phase.id} with now=#{now} and last_time=#{last_time}"
+        end
         LogActivityJob.perform_later(phase, 'started', nil, phase.start_at.to_time.to_i)
       end
     end
@@ -22,7 +26,11 @@ class ActivitiesService
 
   def create_phase_upcoming_activities now, last_time
     if now.to_date != last_time.to_date
-      Phase.where(start_at: now.to_date + 1.week).each do |phase|
+      Phase.where(start_at: now.to_date + 1.week)
+        .includes(:project).where(projects: {publication_status: 'published'}).each do |phase|
+        if phase.end_at.iso8601 < (now+1.day).to_date.iso8601
+          raise "Invalid phase upcoming event would have been generated for phase #{phase.id} with now=#{now} and last_time=#{last_time}"
+        end
         LogActivityJob.perform_later(phase, 'upcoming', nil, now.to_i)
       end
     end

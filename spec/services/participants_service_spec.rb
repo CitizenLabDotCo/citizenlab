@@ -17,9 +17,10 @@ describe ParticipantsService do
         create(:activity, item: create(:comment), action: 'created', user: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'changed', user: pp3)
+        create(:activity, item: create(:comment), action: 'created', user: pp3)
+        create(:activity, item: create(:idea), action: 'created', user: others.first)
       end
-      create(:activity, item: create(:comment), action: 'created', user: pp4)
+      create(:activity, item: create(:idea), action: 'published', user: pp4)
 
       expect(service.participants().map(&:id)).to match_array participants.map(&:id)
     end
@@ -36,12 +37,15 @@ describe ParticipantsService do
         create(:activity, item: create(:comment), action: 'created', user: pp2)
       end
       travel_to Time.now - 2.days do
-        create(:activity, item: create(:comment), action: 'changed', user: pp3)
+        create(:activity, item: create(:comment), action: 'created', user: pp3)
       end
       create(:activity, item: create(:comment), action: 'created', user: pp4)
 
       expect(service.participants(since: (Time.now-6.days)).map(&:id)).to match_array [pp2.id,pp3.id,pp4.id]
     end
+  end
+
+  describe "projects_participants" do
 
     it "returns participants of a given project at any time" do
       project = create(:continuous_budgeting_project)
@@ -67,7 +71,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(project: project).map(&:id)).to match_array participants.map(&:id)
+      expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it "returns participants of a given project since a given date" do
@@ -92,9 +96,41 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(project: project, since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.projects_participants([project], since: (Time.now-5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
     end
+  end
 
+  describe "topics_participants" do
+
+    it "returns participants of given topics" do
+      t1, t2, t3 = create_list(:topic, 3)
+      participants = create_list(:user, 3)
+      pp1, pp2, pp3 = participants
+      others = create_list(:user, 3)
+      i1 = create(:idea, topics: [t1], author: pp1)
+      i2 = create(:idea, topics: [t2,t3], author: pp2)
+      i3 = create(:idea, topics: [t3], author: pp1)
+      i4 = create(:idea, topics: [], author: others.first)
+      create(:comment, idea: i1, author: pp3)
+
+      expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
+    end
+  end
+
+  describe "idea_statuses_participants" do
+
+    it "returns participants of given idea statuses" do
+      s1, s2, s3 = create_list(:idea_status, 3)
+      participants = create_list(:user, 3)
+      pp1, pp2, pp3 = participants
+      others = create_list(:user, 3)
+      i1 = create(:idea, idea_status: s1, author: pp1)
+      i2 = create(:idea, idea_status: s2, author: pp2)
+      i3 = create(:idea, idea_status: s3, author: others.first)
+      create(:comment, idea: i1, author: pp3)
+
+      expect(service.idea_statuses_participants([s1,s2]).map(&:id)).to match_array participants.map(&:id)
+    end
   end
 
   describe "filter_engaging_activities" do
@@ -145,7 +181,6 @@ describe ParticipantsService do
       expect(scope.first.user_id).to eq activity.user_id
       expect(scope.first.score).to be_present
     end
-
   end
 
 end
