@@ -75,7 +75,7 @@ export type GetIdeasChildProps = State & {
   onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
-  onResetAllParams: () => void;
+  onResetParams: (paramsToOmit?: string[]) => void;
 };
 
 interface State {
@@ -384,8 +384,8 @@ export default class GetIdeas extends React.Component<Props, State> {
     }
   }
 
-  handleResetAllParams = () => {
-    this.queryParameters$.next({
+  handleResetParams = (paramsToOmit?: (keyof IQueryParameters)[]) => {
+    const defaultResetQueryParameters = {
       projects: undefined,
       'page[number]': 1,
       'page[size]': this.props.pageSize,
@@ -401,7 +401,17 @@ export default class GetIdeas extends React.Component<Props, State> {
       bounding_box: undefined,
       assignee: undefined,
       feedback_needed: undefined
-    });
+    };
+
+    if (paramsToOmit && paramsToOmit.length > 0) {
+      this.queryParameters$.next({
+        ...this.state.queryParameters,
+        ...omit(defaultResetQueryParameters, paramsToOmit)
+      });
+    } else {
+      this.queryParameters$.next(defaultResetQueryParameters);
+    }
+
     this.search$.next('');
   }
 
@@ -422,7 +432,7 @@ export default class GetIdeas extends React.Component<Props, State> {
       onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
-      onResetAllParams: this.handleResetAllParams,
+      onResetParams: this.handleResetParams,
     });
   }
 }
