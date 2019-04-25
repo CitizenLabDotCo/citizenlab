@@ -6,7 +6,7 @@ import { media } from 'utils/styleUtils';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isAdminPage } from 'utils/helperUtils';
 
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
@@ -277,7 +277,12 @@ class IdeaManager extends React.PureComponent<Props, State> {
 
   handleSeeAllIdeas = () => {
     this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
-    this.props.ideas.onResetAllParams();
+    // If we're in admin/projects, we don't want to reset the project
+    if (isAdminPage(location.pathname), 'projects') {
+      this.props.ideas.onResetParams(['projects']);
+    } else {
+      this.props.ideas.onResetParams();
+    }
   }
 
   render() {
