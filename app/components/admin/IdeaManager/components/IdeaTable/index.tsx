@@ -27,6 +27,7 @@ import messages from '../../messages';
 import InfoTooltip from 'components/admin/InfoTooltip';
 import IdeaPreview from '../IdeaPreview';
 import NoIdeas from './NoIdeas';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 const Container = styled.div`
   .ui.table {
@@ -194,22 +195,26 @@ export default class IdeaTable extends React.Component<Props, State> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
+          <TransitionGroup component={null}>
             {(ideas || []).map((idea) =>
-              <Row
-                className="e2e-idea-manager-idea-row"
-                key={idea.id}
-                idea={idea}
-                phases={phases}
-                statuses={statuses}
-                onUnselectIdea={this.unselectIdea(idea)}
-                onToggleSelectIdea={this.toggleSelectIdea(idea)}
-                onSingleSelectIdea={this.singleSelectIdea(idea)}
-                selected={selectedIdeas[idea.id]}
-                selectedIdeas={selectedIdeas}
-                activeFilterMenu={activeFilterMenu}
-                openIdea={this.onClickIdeaTitle}
-              />
+              <CSSTransition classNames="fade" timeout={500} key={idea.id}>
+                <Row
+                  className="e2e-idea-manager-idea-row"
+                  key={idea.id}
+                  idea={idea}
+                  phases={phases}
+                  statuses={statuses}
+                  onUnselectIdea={this.unselectIdea(idea)}
+                  onToggleSelectIdea={this.toggleSelectIdea(idea)}
+                  onSingleSelectIdea={this.singleSelectIdea(idea)}
+                  selected={selectedIdeas[idea.id]}
+                  selectedIdeas={selectedIdeas}
+                  activeFilterMenu={activeFilterMenu}
+                  openIdea={this.onClickIdeaTitle}
+                />
+              </CSSTransition>
             )}
+            </TransitionGroup>
           </Table.Body>
           {!!ideas && ideas.length > 0 &&
             <Table.Footer fullWidth={true}>
