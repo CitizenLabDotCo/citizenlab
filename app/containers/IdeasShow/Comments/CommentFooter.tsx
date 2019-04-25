@@ -192,7 +192,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onReply = () => {
-    const { author, comment } = this.props;
+    const { author, comment, commentType } = this.props;
     const commentId: string | null = get(comment, 'id', null);
     const parentCommentId: string | null = get(comment, 'relationships.parent.data.id', null);
     const authorFirstName: string | null = get(author, 'attributes.first_name', null);
@@ -205,6 +205,12 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       authorLastName,
       authorSlug
     };
+
+    if (commentType === 'child') {
+      trackEventByName(tracks.clickChildCommentReplyButton);
+    } else if (commentType === 'parent') {
+      trackEventByName(tracks.clickParentCommentReplyButton);
+    }
 
     eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
   }
@@ -227,6 +233,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
             <CommentVote
               ideaId={ideaId}
               commentId={commentId}
+              commentType={commentType}
             />
 
             {authUser && commentingEnabled && canReply &&
