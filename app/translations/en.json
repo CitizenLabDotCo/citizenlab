@@ -125,7 +125,7 @@
   "app.components.IdeasShow.login": "Login",
   "app.components.IdeasShow.modalShareLabel": "Your idea was posted, share it now to reach more votes!",
   "app.components.IdeasShow.moreOptions": "More options",
-  "app.components.IdeasShow.mostUpvoted": "Most upvoted",
+  "app.components.IdeasShow.mostUpvoted": "Most voted",
   "app.components.IdeasShow.noIdeaFoundHere": "No idea was found here.",
   "app.components.IdeasShow.official": "Official",
   "app.components.IdeasShow.oldestToNewest": "Oldest to Newest",

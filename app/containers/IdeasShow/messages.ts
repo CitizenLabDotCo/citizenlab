@@ -368,6 +368,6 @@ export default defineMessages({
   },
   mostUpvoted: {
     id: 'app.components.IdeasShow.mostUpvoted',
-    defaultMessage: 'Most upvoted',
+    defaultMessage: 'Most voted',
   },
 });
