@@ -278,7 +278,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
   handleSeeAllIdeas = () => {
     this.setState({ feedbackNeededFilterActive: false, assignee: 'all' });
     // If we're in admin/projects, we don't want to reset the project
-    if (isAdminPage(location.pathname), 'projects') {
+    if (isAdminPage(location.pathname, 'projects')) {
       this.props.ideas.onResetParams(['projects']);
     } else {
       this.props.ideas.onResetParams();
