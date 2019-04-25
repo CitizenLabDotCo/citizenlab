@@ -109,6 +109,8 @@ const RightColumn = styled.div`
 `;
 
 const StyledInput = styled(Input)`
+  max-width: 260px;
+  display: flex;
   width: 100%;
 `;
 
@@ -365,9 +367,7 @@ class IdeaManager extends React.PureComponent<Props, State> {
               assignee={assignee}
             />
           </MiddleColumn>
-          <RightColumn>
-            <StyledInput icon="search" onChange={this.handleSearchChange}/>
-          </RightColumn>
+          <StyledInput icon="search" onChange={this.handleSearchChange}/>
         </ThreeColumns>
         <ThreeColumns>
           <LeftColumn>
