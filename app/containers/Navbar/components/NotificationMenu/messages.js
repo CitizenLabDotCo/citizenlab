@@ -116,4 +116,8 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.ideaAssignedToYou',
     defaultMessage: '{ideaTitle} was assigned to you',
   },
+  xAssignedIdeaToYou: {
+    id: 'app.containers.NotificationMenu.xAssignedIdeaToYou',
+    defaultMessage: '{name} assigned {ideaTitle} to you',
+  },
 });
