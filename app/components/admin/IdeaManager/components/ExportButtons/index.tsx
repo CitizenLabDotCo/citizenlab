@@ -6,7 +6,7 @@ import { requestBlob } from 'utils/request';
 import { saveAs } from 'file-saver';
 
 // analytics
-import { injectTracks } from 'utils/analytics';
+import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 // components
@@ -30,19 +30,14 @@ interface Props {
   className?: string;
 }
 
-interface ITracks {
-  clickExportIdeas: () => void;
-  clickExportComments: () => void;
-}
-
 interface State {
   exportingIdeas: boolean;
   exportingComments: boolean;
 }
 
-class ExportButtons extends React.PureComponent<Props & ITracks, State> {
+class ExportButtons extends React.PureComponent<Props, State> {
 
-  constructor(props: Props & ITracks) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       exportingIdeas: false,
@@ -51,7 +46,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
   }
 
   handleExportIdeas = async () => {
-    const { exportQueryParameter: queryParameter, clickExportIdeas } = this.props;
+    const { exportQueryParameter: queryParameter } = this.props;
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -70,11 +65,11 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     }
 
     // track this click for user analytics
-    clickExportIdeas();
+    trackEventByName(tracks.clickExportIdeas.name);
   }
 
   handleExportComments = async () => {
-    const { exportQueryParameter: queryParameter, clickExportComments } = this.props;
+    const { exportQueryParameter: queryParameter } = this.props;
 
     const queryParametersObject = {};
     if (isString(queryParameter) && queryParameter !== 'all') {
@@ -93,7 +88,7 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
     }
 
     // track this click for user analytics
-    clickExportComments();
+    trackEventByName(tracks.clickExportComments.name);
   }
 
   render() {
@@ -116,4 +111,4 @@ class ExportButtons extends React.PureComponent<Props & ITracks, State> {
   }
 }
 
-export default injectTracks<Props>(tracks)(ExportButtons);
+export default ExportButtons;
