@@ -8,13 +8,22 @@ const LabelText = styled.span`
   font-weight: 600;
 `;
 
+const StyledLabel = styled(Label)`
+  white-space: nowrap;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
+`;
+
 export default (props: { projectId: string }) => (
   <GetProject id={props.projectId}>
     {(project) => {
       if (!project || project instanceof Error) return null;
 
       return (
-        <Label
+        <StyledLabel
           key={project.id}
           color="teal"
           basic={true}
@@ -22,7 +31,7 @@ export default (props: { projectId: string }) => (
           <LabelText>
             <T value={project.attributes.title_multiloc} />
           </LabelText>
-        </Label>
+        </StyledLabel>
       );
     }}
   </GetProject>

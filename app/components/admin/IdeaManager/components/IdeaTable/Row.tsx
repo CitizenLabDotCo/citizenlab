@@ -44,7 +44,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from '../../tracks';
 
 const StyledRow = styled.tr`
-  height: 5.5rem;
+  height: 5.7rem !important;
   cursor: move;
   transition: all 500ms ease;
   overflow: hidden;
@@ -81,10 +81,12 @@ const TitleLink = styled.a`
   display: block;
   display: -webkit-box;
   margin: 0 auto;
-  margin-bottom: 12px;
+  &:not(:last-child) {
+    margin-bottom: 7px;
+  }
   font-size: $font-size;
   line-height: $line-height;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;

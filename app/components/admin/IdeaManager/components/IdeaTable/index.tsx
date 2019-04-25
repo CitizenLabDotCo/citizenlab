@@ -196,7 +196,7 @@ export default class IdeaTable extends React.Component<Props, State> {
           </Table.Header>
           <Table.Body>
             <TransitionGroup component={null}>
-              {(ideas || []).map((idea) =>
+              {!!ideas && ideas.length > 0 ? ideas.map((idea) =>
                 <CSSTransition classNames="fade" timeout={500} key={idea.id}>
                   <Row
                     className="e2e-idea-manager-idea-row"
@@ -212,8 +212,9 @@ export default class IdeaTable extends React.Component<Props, State> {
                     activeFilterMenu={activeFilterMenu}
                     openIdea={this.onClickIdeaTitle}
                   />
-                </CSSTransition>
-              )}
+                </CSSTransition>)
+                : null
+              }
             </TransitionGroup>
           </Table.Body>
           {!!ideas && ideas.length > 0 &&
