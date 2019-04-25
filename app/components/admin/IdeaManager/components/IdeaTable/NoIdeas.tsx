@@ -28,6 +28,33 @@ const NoIdeasPage = styled.div`
     height: 50px;
     fill: ${colors.clIconAccent}
   }
+
+  transition: all 200ms ease;
+  overflow: hidden;
+
+  &.fade-enter {
+    opacity: 0;
+
+    &.fade-enter-active {
+      opacity: 1;
+    }
+  }
+
+  &.fade-enter-done {
+    opacity: 1;
+  }
+
+  &.fade-exit {
+    opacity: 1;
+
+    &.fade-exit-active {
+      opacity: 0;
+    }
+  }
+
+  &.fade-exit-done {
+    display: none;
+  }
 `;
 
 const NoIdeasHeader = styled.h2`

@@ -195,25 +195,25 @@ export default class IdeaTable extends React.Component<Props, State> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-          <TransitionGroup component={null}>
-            {(ideas || []).map((idea) =>
-              <CSSTransition classNames="fade" timeout={500} key={idea.id}>
-                <Row
-                  className="e2e-idea-manager-idea-row"
-                  key={idea.id}
-                  idea={idea}
-                  phases={phases}
-                  statuses={statuses}
-                  onUnselectIdea={this.unselectIdea(idea)}
-                  onToggleSelectIdea={this.toggleSelectIdea(idea)}
-                  onSingleSelectIdea={this.singleSelectIdea(idea)}
-                  selected={selectedIdeas[idea.id]}
-                  selectedIdeas={selectedIdeas}
-                  activeFilterMenu={activeFilterMenu}
-                  openIdea={this.onClickIdeaTitle}
-                />
-              </CSSTransition>
-            )}
+            <TransitionGroup component={null}>
+              {(ideas || []).map((idea) =>
+                <CSSTransition classNames="fade" timeout={500} key={idea.id}>
+                  <Row
+                    className="e2e-idea-manager-idea-row"
+                    key={idea.id}
+                    idea={idea}
+                    phases={phases}
+                    statuses={statuses}
+                    onUnselectIdea={this.unselectIdea(idea)}
+                    onToggleSelectIdea={this.toggleSelectIdea(idea)}
+                    onSingleSelectIdea={this.singleSelectIdea(idea)}
+                    selected={selectedIdeas[idea.id]}
+                    selectedIdeas={selectedIdeas}
+                    activeFilterMenu={activeFilterMenu}
+                    openIdea={this.onClickIdeaTitle}
+                  />
+                </CSSTransition>
+              )}
             </TransitionGroup>
           </Table.Body>
           {!!ideas && ideas.length > 0 &&
@@ -230,9 +230,13 @@ export default class IdeaTable extends React.Component<Props, State> {
             </Table.Footer>
           }
         </Table>
-        {!ideas || ideas.length === 0 &&
-          <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
-        }
+        <TransitionGroup component={null}>
+          {!ideas || ideas.length === 0 &&
+            <CSSTransition classNames="fade" timeout={500}>
+              <NoIdeas handleSeeAllIdeas={handleSeeAllIdeas} />
+            </CSSTransition>
+          }
+        </TransitionGroup>
 
         <IdeaPreview
           ideaId={ideaModal}
