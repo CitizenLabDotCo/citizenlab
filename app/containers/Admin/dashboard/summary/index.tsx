@@ -384,7 +384,8 @@ const Data = adopt<DataProps, InputProps>({
     <GetProjects
       publicationStatuses={['draft', 'published', 'archived']}
       filterCanModerate={true}
-    />),
+    />
+  ),
   groups: <GetGroups />,
   topics: <GetTopics />,
 });

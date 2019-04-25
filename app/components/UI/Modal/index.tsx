@@ -407,13 +407,14 @@ export default class Modal extends PureComponent<Props, State> {
       </CSSTransition>
     ) : undefined);
 
-    return ReactDOM.createPortal(
+    return ReactDOM.createPortal((
       <TransitionGroup
         tabIndex="-1"
         component="aside"
       >
         {element}
-      </TransitionGroup>,
+      </TransitionGroup>
+    ),
       document.body
     );
   }
