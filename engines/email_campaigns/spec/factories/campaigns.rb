@@ -140,6 +140,11 @@ FactoryBot.define do
     schedule { weekly_schedule }
   end
 
+  factory :assignee_digest_campaign, class: EmailCampaigns::Campaigns::AssigneeDigest do
+    enabled { true }
+    schedule { weekly_schedule }
+  end
+
   factory :user_digest_campaign, class: EmailCampaigns::Campaigns::UserDigest do
     enabled { true }
     schedule { weekly_schedule }

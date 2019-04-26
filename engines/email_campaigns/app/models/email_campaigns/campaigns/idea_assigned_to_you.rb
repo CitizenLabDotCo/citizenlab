@@ -9,12 +9,5 @@ module EmailCampaigns
     def activity_triggers
       {'Notifications::IdeaAssignedToYou' => {'created' => true}}
     end
-
-
-    protected
-
-    def set_enabled
-      self.enabled = false if self.enabled.nil?
-    end
   end
 end
