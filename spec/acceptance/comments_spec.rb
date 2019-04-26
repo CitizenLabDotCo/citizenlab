@@ -133,12 +133,12 @@ resource "Comments" do
 
     describe do
       before do
-        i1 = create(:idea, published_at: Time.now - 1.day)
-        i2 = create(:idea, published_at: Time.now)
+        @i1 = create(:idea, published_at: Time.now - 1.day)
+        @i2 = create(:idea, published_at: Time.now)
         @user = create(:user)
-        @c1 = create(:comment, idea: i1, author: @user, created_at: Time.now - 1.hour)
-        @c2 = create(:comment, idea: i2, author: @user)
-        @c3 = create(:comment, idea: i1, author: @user, created_at: Time.now)
+        @c1 = create(:comment, idea: @i1, author: @user, created_at: Time.now - 1.hour)
+        @c2 = create(:comment, idea: @i2, author: @user)
+        @c3 = create(:comment, idea: @i1, author: @user, created_at: Time.now)
         @c4 = create(:comment)
       end
 
@@ -149,6 +149,7 @@ resource "Comments" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to eq [@c2.id, @c3.id, @c1.id]
+        expect(json_response[:included].map{|d| d.dig(:attributes, :slug)}).to match_array [@i1.slug, @i2.slug]
       end
     end
   end
