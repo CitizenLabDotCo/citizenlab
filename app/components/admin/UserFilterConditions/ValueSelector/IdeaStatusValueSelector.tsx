@@ -1,5 +1,4 @@
 import React from 'react';
-import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
 import Select from 'components/UI/Select';
@@ -7,11 +6,9 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
 
 type Props = {
-  rule: TRule;
   value: string;
   onChange: (string) => void;
   ideaStatuses: GetIdeaStatusesChildProps;
-  tFunc: any;
 };
 
 type State = {};

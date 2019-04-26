@@ -1,5 +1,4 @@
 import React from 'react';
-import { TRule } from '../rules';
 import { IOption } from 'typings';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import Select from 'components/UI/Select';
@@ -8,11 +7,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
 type Props = {
-  rule: TRule;
   value: string;
   onChange: (string) => void;
   topics: GetTopicsChildProps;
-  tFunc: any;
 };
 
 type State = {};
