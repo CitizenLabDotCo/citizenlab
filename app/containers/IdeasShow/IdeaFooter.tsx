@@ -15,6 +15,9 @@ import messages from './messages';
 const maxPageWidth = '810px';
 
 const Container = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   margin-top: 70px;
 
@@ -70,6 +73,7 @@ const CommentsIcon = styled(Icon)`
 `;
 
 const FooterContent = styled.div`
+  flex: 1;
   width: 100%;
   background: #f8f8f9;
   border-top: solid 1px #e2e2e2;

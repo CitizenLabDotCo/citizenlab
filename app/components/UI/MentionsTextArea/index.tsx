@@ -149,6 +149,8 @@ class MentionsTextArea extends PureComponent<Props, State> {
     const mentionStyle = {
       paddingTop: '3px',
       paddingBottom: '3px',
+      paddingLeft: '0px',
+      paddingRight: '1px',
       borderRadius: '3px',
       backgroundColor: transparentize(0.9, this.props.theme.colorText)
     };

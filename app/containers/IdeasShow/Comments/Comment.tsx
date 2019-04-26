@@ -6,7 +6,6 @@ import { get } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
-// import CommentsMoreActions from './CommentsMoreActions';
 import CommentHeader from './CommentHeader';
 import CommentBody from './CommentBody';
 import CommentFooter from './CommentFooter';
@@ -19,10 +18,6 @@ import { canModerate } from 'services/permissions/rules/projectPermissions';
 // resources
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
-// analytics
-// import { trackEventByName } from 'utils/analytics';
-// import tracks from './tracks';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -83,20 +78,6 @@ const ContainerInner = styled.div`
     }
   `}
 `;
-
-// const StyledCommentsMoreActions = styled(CommentsMoreActions)`
-//   position: absolute;
-//   top: 10px;
-//   right: 10px;
-
-//   &.child {
-//     right: -10px;
-//   }
-
-//   ${media.biggerThanMinTablet`
-//     display: none;
-//   `}
-// `;
 
 const CommmentHeaderWrapper = styled.div`
   ${media.biggerThanMinTablet`
@@ -196,8 +177,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  // moreActionsAriaLabel = this.props.intl.formatMessage(messages.showMoreActions);
-
   render() {
     const { comment, author, ideaId, projectId, commentType, hasBottomBorder, hasChildComments, last, className, canReply } = this.props;
     const { editing } = this.state;
@@ -213,14 +192,6 @@ class Comment extends PureComponent<Props & InjectedIntlProps, State> {
           <ContainerInner className={`${commentType} ${lastComment ? 'lastComment' : ''} ${hasBottomBorder ? 'hasBottomBorder' : ''}`}>
             {comment.attributes.publication_status === 'published' &&
               <>
-                {/* <StyledCommentsMoreActions
-                  projectId={projectId}
-                  comment={comment}
-                  onCommentEdit={this.onEditing}
-                  ariaLabel={this.moreActionsAriaLabel}
-                  className={commentType}
-                /> */}
-
                 <CommmentHeaderWrapper className={commentType}>
                   <CommentHeader
                     projectId={projectId}

@@ -141,15 +141,14 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar[imageSize];
       const userName = getUserName(user);
-      const outerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
+      const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
       const numberSize = parseInt(size, 10);
 
       return (
         <Container
           className={`${className} ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           onClick={this.handleOnClick}
-          size={outerSize}
-          padding={padding}
+          size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
           borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
