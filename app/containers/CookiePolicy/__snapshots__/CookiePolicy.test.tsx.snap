@@ -1,264 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<CookiePolicy /> renders correctly 1`] = `
-<CookiePolicy__Container
-  className="e2e-page-cookie-policy"
->
-  <HelmetWrapper
-    defer={true}
-    encodeSpecialCharacters={true}
-  >
-    <title>
-      Cookie Policy
-    </title>
-    <meta
-      content="A detailed explanation of how we use cookies on this platform"
-      name="description"
-    />
-  </HelmetWrapper>
-  <CookiePolicy__PageContent>
-    <CookiePolicy__StyledContentContainer>
-      <Component
-        name="pages/cookie-policy/content"
-      >
-        <CookiePolicy__PageTitle>
-          <FormattedMessage
-            defaultMessage="Cookie Policy"
-            id="app.containers.CookiePolicy.cookiePolicyTitle"
-          />
-        </CookiePolicy__PageTitle>
-        <CookiePolicy__PageDescription>
-          <QuillEditedContent>
-            <FormattedMessage
-              defaultMessage="As most websites, we use cookies to optimise the experience you and other visitors have on this platform. Because we want to be fully transparent on the why & how of this cookie use, you’ll find all details below, in as clearly written wording as possible. Cookies used on our platform are never used to identify and track specific users, they don’t \\"know who you are\\". Important to stress though, is that they do track technical data, such as a browser info, approximate location and an IP address. Although they are not used in such a way, in combination with other data sources, this could lead to an identification."
-              id="app.containers.CookiePolicy.intro"
-              tagName="p"
-            />
-            <FormattedMessage
-              className="cookiePreferencesMessage"
-              defaultMessage="At any time, you can change your preferences {changePreferencesButton}."
-              id="app.containers.CookiePolicy.changePreferences"
-              tagName="p"
-              values={
-                Object {
-                  "changePreferencesButton": <CookiePolicy__StyledButton
-                    onClick={[Function]}
-                  >
-                    <FormattedMessage
-                      defaultMessage="here"
-                      id="app.containers.CookiePolicy.changePreferencesButtonText"
-                    />
-                  </CookiePolicy__StyledButton>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="Who are we?"
-              id="app.containers.CookiePolicy.whoAreWeTitle"
-              tagName="h2"
-            />
-            <FormattedMessage
-              defaultMessage="We are {citizenLabLink}, a privately owned Belgian company. As software provider, we offer a digital participation platform to (local) governments and organisations. An example of such a platform is the one you’re currently on."
-              id="app.containers.CookiePolicy.whoAreWeContent"
-              tagName="p"
-              values={
-                Object {
-                  "citizenLabLink": <a
-                    href="https://www.citizenlab.co"
-                    target="_blank"
-                  >
-                    CitizenLab
-                  </a>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="What are cookies?"
-              id="app.containers.CookiePolicy.whatAreCookiesTitle"
-              tagName="h2"
-            />
-            <FormattedMessage
-              defaultMessage="Cookies are little text files which are stored on the browser or on the hard drive of your computer or mobile device when you visit a webpage or application. Cookies remember your actions and preferences. Logged in last time? A cookie will make sure you’re automatically logged in the next time you visit us. Visited the platform two weeks ago? A cookie will prove helpful to highlight what has been added to the platform in the last two weeks. More info on cookies in general, can be found in {wikipediaCookieLink}."
-              id="app.containers.CookiePolicy.whatAreCookiesContent"
-              tagName="p"
-              values={
-                Object {
-                  "wikipediaCookieLink": <a
-                    href="https://en.wikipedia.org/wiki/HTTP_cookie"
-                    target="_blank"
-                  >
-                    this wikepedia artice
-                  </a>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="What cookies do we use?"
-              id="app.containers.CookiePolicy.whatCookiesTitle"
-              tagName="h2"
-            />
-            <FormattedMessage
-              defaultMessage="Several third party tools are used on each of our participation platforms. These tools in turn use cookies to be able to function."
-              id="app.containers.CookiePolicy.whatCookiesContent"
-              tagName="p"
-            />
-            <FormattedMessage
-              defaultMessage="Analytics"
-              id="app.containers.CookiePolicy.analyticsTitle"
-              tagName="h3"
-            />
-            <FormattedMessage
-              defaultMessage="We only use mass analytics. Meaning that no individual data are used, and that you’re browsing our platform anonymously. These aggregated data, or mass analytics, show us which pages are the most and least popular and see how visitors move around the platform. This is necessary information for continuous improvement of the user experience. {analyticsLink} is our primary tool for analytics."
-              id="app.containers.CookiePolicy.analyticsContent"
-              tagName="p"
-              values={
-                Object {
-                  "analyticsLink": <a
-                    href="https://en.wikipedia.org/wiki/Google_Analytics"
-                    target="_blank"
-                  >
-                    Google Analytics
-                  </a>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="Advertising"
-              id="app.containers.CookiePolicy.advertisingTitle"
-              tagName="h3"
-            />
-            <FormattedMessage
-              defaultMessage="As CitizenLab, we don’t use advertising tools on the participation platforms, but some (local) governments and organisations do. {advertisingLink} is the most used tool for this. This allows them to learn what type of users took certain actions, and to build Facebook advertising campaigns based on that knowledge."
-              id="app.containers.CookiePolicy.advertisingContent"
-              tagName="p"
-              values={
-                Object {
-                  "advertisingLink": <a
-                    href="https://www.facebook.com/business/help/742478679120153?helpref=faq_content"
-                    target="_blank"
-                  >
-                    Facebook Pixel
-                  </a>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="Functional"
-              id="app.containers.CookiePolicy.functionalTitle"
-              tagName="h3"
-            />
-            <FormattedMessage
-              defaultMessage="The main functional tool we use in this regard is {functionalLink}. This tool allows us to talk to you in a direct manner when visiting the platform. This way, we could show you around, ask for feedback on the platform… The cookie allows us to continue this conversation when you come back. Off course, still without knowing who you are. When logged in, we use them to be able to send you in-app and email notifications on certain events relevant to you. These notification settings can be changed at any time on your user profile page."
-              id="app.containers.CookiePolicy.functionalContent"
-              tagName="p"
-              values={
-                Object {
-                  "functionalLink": <a
-                    href="https://www.intercom.com/"
-                    target="_blank"
-                  >
-                    Intercom
-                  </a>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="You can find a full, up-to date list of 3rd parties and manage your preferences {cookiesListButton}."
-              id="app.containers.CookiePolicy.cookiesList"
-              tagName="p"
-              values={
-                Object {
-                  "cookiesListButton": <CookiePolicy__StyledButton
-                    className="cookieList"
-                    onClick={[Function]}
-                  >
-                    here
-                  </CookiePolicy__StyledButton>,
-                }
-              }
-            />
-            <FormattedMessage
-              defaultMessage="Further questions or remarks? You'll find us here: support@citizenlab.co."
-              id="app.containers.CookiePolicy.contactInfo"
-              tagName="p"
-            />
-          </QuillEditedContent>
-        </CookiePolicy__PageDescription>
-      </Component>
-    </CookiePolicy__StyledContentContainer>
-  </CookiePolicy__PageContent>
-  <CookiePolicy__PagesNavWrapper>
-    <CookiePolicy__PagesNav>
-      <CookiePolicy__StyledContentContainer>
-        <CookiePolicy__StyledLink
-          key="information"
-          to="/pages/information"
-        >
-          <FormattedMessage
-            defaultMessage="Information Page"
-            id="app.containers.CookiePolicy.informationPageName"
-          />
-          <CookiePolicy__LinkIcon
-            name="chevron-right"
-          />
-        </CookiePolicy__StyledLink>
-        <CookiePolicy__StyledLink
-          key="terms-and-conditions"
-          to="/pages/terms-and-conditions"
-        >
-          <FormattedMessage
-            defaultMessage="Terms & conditions"
-            id="app.containers.CookiePolicy.terms-and-conditionsPageName"
-          />
-          <CookiePolicy__LinkIcon
-            name="chevron-right"
-          />
-        </CookiePolicy__StyledLink>
-        <CookiePolicy__StyledLink
-          key="privacy-policy"
-          to="/pages/privacy-policy"
-        >
-          <FormattedMessage
-            defaultMessage="Privacy Policy"
-            id="app.containers.CookiePolicy.privacy-policyPageName"
-          />
-          <CookiePolicy__LinkIcon
-            name="chevron-right"
-          />
-        </CookiePolicy__StyledLink>
-      </CookiePolicy__StyledContentContainer>
-    </CookiePolicy__PagesNav>
-  </CookiePolicy__PagesNavWrapper>
-  <Footer
-    showCityLogoSection={false}
-  />
-</CookiePolicy__Container>
-`;
-
-exports[`<CookiePolicy /> renders correctly openConsentManager button 1`] = `
-.c0 {
-  color: #147985;
-  font-weight: inherit;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-}
-
-.c0:hover {
-  color: #0a3d43;
-  -webkit-text-decoration: underline;
-  text-decoration: underline;
-}
-
-<button
-  className="c0"
-  onClick={[Function]}
->
-  <FormattedMessage
-    defaultMessage="here"
-    id="app.containers.CookiePolicy.changePreferencesButtonText"
-  />
-</button>
+<Component
+  intl={
+    Object {
+      "defaultFormats": Object {},
+      "defaultLocale": "en",
+      "formatDate": [Function],
+      "formatHTMLMessage": [Function],
+      "formatMessage": [Function],
+      "formatNumber": [Function],
+      "formatPlural": [Function],
+      "formatRelative": [Function],
+      "formatTime": [Function],
+      "formats": Object {},
+      "formatters": Object {
+        "getDateTimeFormat": [Function],
+        "getMessageFormat": [Function],
+        "getNumberFormat": [Function],
+        "getPluralFormat": [Function],
+        "getRelativeFormat": [Function],
+      },
+      "locale": "en",
+      "messages": Object {},
+      "now": [Function],
+      "onError": [Function],
+      "textComponent": "span",
+      "timeZone": null,
+    }
+  }
+/>
 `;
