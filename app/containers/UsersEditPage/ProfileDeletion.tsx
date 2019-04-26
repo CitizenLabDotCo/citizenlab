@@ -77,6 +77,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
             width="auto"
             justifyWrapper="left"
             processing={processing}
+
             className="e2e-delete-profile"
           >
             <FormattedMessage {...messages.deleteProfile} />
