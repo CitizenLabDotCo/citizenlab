@@ -20,7 +20,7 @@ class SelectSort extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selectedValue: ['trending']
+      selectedValue: ['random']
     };
   }
 
@@ -32,6 +32,7 @@ class SelectSort extends PureComponent<Props, State> {
   render() {
     const { selectedValue } = this.state;
     const options = [
+      { text: <FormattedMessage {...messages.random} />, value: 'random' },
       { text: <FormattedMessage {...messages.trending} />, value: 'trending' },
       { text: <FormattedMessage {...messages.popular} />, value: 'popular' },
       { text: <FormattedMessage {...messages.newest} />, value: 'new' },
