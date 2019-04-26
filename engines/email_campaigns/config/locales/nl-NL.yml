@@ -33,6 +33,7 @@ nl:
       "status_change_of_voted_idea": De status van een idee waarop ik heb gestemd, verandert
       "admin_digest": Een weekoverzicht (voor beheerders)
       "moderator_digest": Een weekoverzicht (voor moderatoren)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": Een weekoverzicht (voor burgers)
     admin_campaign_type_description:
       "manual": Directe berichten verzonden door beheerders of moderatoren
@@ -67,4 +68,5 @@ nl:
       "status_change_of_voted_idea": Wanneer de status van een idee waarop de gebruiker heeft gestemd, verandert
       "admin_digest": Een weekoverzicht (voor beheerders)
       "moderator_digest": Een weekoverzicht (voor moderatoren)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": Een weekoverzicht (voor burgers)

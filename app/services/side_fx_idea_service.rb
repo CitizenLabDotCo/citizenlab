@@ -2,12 +2,18 @@ class SideFxIdeaService
 
   include SideFxHelper
 
+  def initialize
+    @automatic_assignment = false
+  end
+
   def before_create idea, user
     before_publish idea, user if idea.published?
   end
 
   def after_create idea, user
-    after_publish idea, user if idea.published?
+    if idea.published?
+      after_publish idea, user
+    end
   end
 
   def before_update idea, user
@@ -34,7 +40,8 @@ class SideFxIdeaService
     end
 
     if idea.assignee_id_previously_changed?
-      LogActivityJob.perform_later(idea, 'changed_assignee', user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
+      initiating_user = @automatic_assignment ? nil : user
+      LogActivityJob.perform_later(idea, 'changed_assignee', initiating_user, idea.updated_at.to_i, payload: {change: idea.assignee_id_previous_change})
     end
 
     if idea.title_multiloc_previously_changed?
@@ -80,6 +87,7 @@ class SideFxIdeaService
   def set_assignee idea
     if idea.project&.default_assignee && !idea.assignee
       idea.assignee = idea.project.default_assignee
+      @automatic_assignment = true
     end
   end
 

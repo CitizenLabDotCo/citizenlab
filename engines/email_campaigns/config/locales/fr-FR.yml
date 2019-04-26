@@ -33,6 +33,7 @@ fr:
       "status_change_of_voted_idea": Lorsque le status d'une idée que j'ai voté a changé
       "admin_digest": Un aperçu hebdomadaire (pour les administrateurs)
       "moderator_digest": Un aperçu hebdomadaire (pour les modérateurs)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": Un aperçu hebdomadaire (pour les citoyens)
     admin_campaign_type_description:
       "manual": Messages directs envoyés par les administrateurs ou les modérateurs
@@ -67,4 +68,5 @@ fr:
       "status_change_of_voted_idea": Lorsque le status d'une idée que l'utilisateur a voté a été changé
       "admin_digest": Un aperçu hebdomadaire de l’activité sur la plate-forme (uniquement pour les administrateurs)
       "moderator_digest": Un aperçu hebdomadaire de l’activité sur la plate-forme (uniquement pour les modérateurs)
+      "assignee_digest": A weekly overview of new ideas assigned to me (only for admins and moderators)
       "user_digest": Un aperçu hebdomadaire de l’activité sur la plateforme (des citoyens)

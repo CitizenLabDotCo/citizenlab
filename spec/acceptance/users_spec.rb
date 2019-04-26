@@ -33,8 +33,8 @@ resource "Users" do
 
   context "when authenticated" do
     before do
-      @user = create(:user)
-      @users = create_list(:user, 5)
+      @user = create(:user, last_name: 'Hoorens')
+      @users = ["Bednar", "Cole", "Hagenes", "MacGyver", "Oberbrunner"].map{|l| create(:user, last_name: l)}
       token = Knock::AuthToken.new(payload: { sub: @user.id }).token
       header 'Authorization', "Bearer #{token}"
     end
@@ -79,9 +79,6 @@ resource "Users" do
         end
 
         example "List all users sorted by last_name" do
-          duplicate_last_names = User.all.pluck(:last_name).group_by{ |e| e }.select { |k, v| v.size > 1 }.map(&:first)
-          User.where(last_name: duplicate_last_names).each(&:destroy!)
-
           do_request sort: 'last_name'
           json_response = json_parse(response_body)
 

@@ -484,6 +484,11 @@ if Apartment::Tenant.current == 'localhost'
         moderator.add_role 'project_moderator', project_id: project.id
         moderator.save!
        end
+
+      if rand(5) == 0 
+        project.default_assignee = User.admin.or(User.project_moderator(project.id)).shuffle.first
+        project.save!
+      end
     end
 
 
