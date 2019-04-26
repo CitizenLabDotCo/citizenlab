@@ -110,6 +110,11 @@ class Idea < ApplicationRecord
     .order("idea_statuses.ordering #{direction}")
   }
 
+  scope :order_random, -> {
+    modulus = RandomOrderingService.new.modulus_of_the_day
+    order("(extract(epoch from ideas.created_at) * 100)::bigint % #{modulus}")
+  }
+
   scope :published, -> {where publication_status: 'published'}
 
 

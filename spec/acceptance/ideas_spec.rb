@@ -26,7 +26,7 @@ resource "Ideas" do
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
-    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count'", required: false
+    parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
     parameter :publication_status, "Filter by publication status; returns all publlished ideas by default", required: false
     parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
 
@@ -199,6 +199,15 @@ resource "Ideas" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 6
       expect(json_response[:data][0][:id]).to eq i1.id
+    end
+
+    example "List all ideas by random ordering", document: false do
+      u = create(:user)
+      i1 = create(:idea)
+
+      do_request sort: "random"
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
     end
 
 
