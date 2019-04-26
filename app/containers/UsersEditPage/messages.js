@@ -73,6 +73,9 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.language',
     defaultMessage: 'Language',
   },
+  /*
+   * Deletion
+   */
   deletionSection: {
     id: 'app.containers.UsersEditPage.deletionSection',
     defaultMessage: 'Delete your profile',

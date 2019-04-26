@@ -52,7 +52,7 @@ import { media, getTheme } from 'utils/styleUtils';
 // typings
 import ErrorBoundary from 'components/ErrorBoundary';
 import Modal from 'components/UI/Modal';
-import UserDeletedSuccessModalContent from 'components/UserDeletedSuccessModalContent';
+import UserDeletedModalContent from 'components/UserDeletedModalContent';
 
 const Container = styled.div`
   background: #fff;
@@ -240,7 +240,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   opened={userDeletedModalOpened}
                   close={this.closeUserDeletedModal}
                 >
-                  <UserDeletedSuccessModalContent />
+                  <UserDeletedModalContent />
                 </Modal>
 
                 <ErrorBoundary>

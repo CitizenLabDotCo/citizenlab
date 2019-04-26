@@ -67,10 +67,10 @@ interface Props extends InputProps, DataProps {}
 export default memo((_props: Props) => (
   <Container>
     <Title className="e2e-user-deleted-success-modal-content">
-      <FormattedMessage {...messages.userDeletedSuccessfullyTitle} />
+      <FormattedMessage {...messages.userDeletedTitle} />
     </Title>
     <Subtitle>
-      <FormattedMessage {...messages.userDeletedSuccessfullySubtitle} />
+      <FormattedMessage {...messages.userDeletedSubtitle} />
     </Subtitle>
   </Container>
 ));
