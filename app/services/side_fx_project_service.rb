@@ -9,7 +9,7 @@ class SideFxProjectService
   def before_create project, user
     project.description_multiloc = TextImageService.new.swap_data_images(project, :description_multiloc)
     @sfx_pc.before_create project, user if project.is_participation_context?
-    set_default_assignee project
+    set_default_assignee project, user
   end
 
   def after_create project, user
@@ -52,8 +52,12 @@ class SideFxProjectService
     end
   end
 
-  def set_default_assignee project
-    project.default_assignee ||= User.admin.reject(&:super_admin?).first
+  def set_default_assignee project, current_user
+    project.default_assignee ||= if current_user&.super_admin?
+      User.admin.order(:created_at).reject(&:super_admin?).first
+    else
+      current_user
+    end
   end
 
 end
