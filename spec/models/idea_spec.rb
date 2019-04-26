@@ -32,6 +32,7 @@ RSpec.describe Idea, type: :model do
       create(:official_feedback, idea: i1)
       i2 = create(:idea, idea_status: IdeaStatus.find_by(code: 'accepted'))
       i3 = create(:idea, idea_status: IdeaStatus.find_by(code: 'proposed'))
+      i4 = create(:idea, idea_status: IdeaStatus.find_by(code: 'viewed'))
 
       expect(Idea.feedback_needed.ids).to match_array [i3.id]
     end
