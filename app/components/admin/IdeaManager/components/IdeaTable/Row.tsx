@@ -46,35 +46,10 @@ import tracks from '../../tracks';
 const StyledRow = styled.tr`
   height: 5.7rem !important;
   cursor: move;
-  transition: all 500ms ease;
-  overflow: hidden;
+`;
 
-  &.fade-enter {
-    opacity: 0;
-    height: 0;
-
-    &.fade-enter-active {
-      opacity: 1;
-      height: auto;
-    }
-  }
-
-  &.fade-enter-done {
-    opacity: 1;
-  }
-
-  &.fade-exit {
-    opacity: 1;
-
-    &.fade-exit-active {
-      opacity: 0;
-      height: 0;
-    }
-  }
-
-  &.fade-exit-done {
-    display: none;
-  }
+const FilterCell = styled.td`
+  border-top: none !important;
 `;
 
 const TitleLink = styled.a`
@@ -187,6 +162,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const attrs = idea.attributes;
     return (
+      <>
         <WrappedRow className={className} as={StyledRow} active={selected} onClick={this.onClickRow} ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}>
           <Table.Cell collapsing={true}>
             <Checkbox value={!!selected} onChange={this.onClickCheckbox} size="17px"/>
@@ -195,29 +171,6 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             <TitleLink className="e2e-idea-manager-idea-title" onClick={this.handleClickTitle}>
               <T value={attrs.title_multiloc} />
             </TitleLink>
-            {activeFilterMenu === 'phases' && phases &&
-              <PhasesSelector
-                selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
-                phases={phases}
-                onUpdateIdeaPhases={this.onUpdateIdeaPhases}
-              />
-            }
-            {activeFilterMenu === 'topics' &&
-              <TopicsSelector
-                selectedTopics={idea.relationships.topics.data.map((p) => p.id)}
-                onUpdateIdeaTopics={this.onUpdateIdeaTopics}
-              />
-            }
-            {activeFilterMenu === 'projects' &&
-              <ProjectSelector projectId={idea.relationships.project.data && idea.relationships.project.data.id} />
-            }
-            {activeFilterMenu === 'statuses' && statuses &&
-              <StatusSelector
-                statuses={statuses}
-                selectedStatus={selectedStatus}
-                onUpdateIdeaStatus={this.onUpdateIdeaStatus}
-              />
-            }
           </Table.Cell>
           <Table.Cell onClick={this.nothingHappens} singleLine><AssigneeSelect ideaId={idea.id}/></Table.Cell>
           <Table.Cell>
@@ -237,6 +190,35 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
             </Table.Cell>
           </FeatureFlag>
         </WrappedRow>
+        <Table.Row active={selected} onClick={this.onClickRow} className={className}>
+           <Table.Cell as={FilterCell} collapsing={true} />
+           <Table.Cell colSpan={6} as={FilterCell}>
+             {activeFilterMenu === 'phases' && phases &&
+               <PhasesSelector
+                 selectedPhases={idea.relationships.phases.data.map((p) => p.id)}
+                 phases={phases}
+                 onUpdateIdeaPhases={this.onUpdateIdeaPhases}
+               />
+             }
+             {activeFilterMenu === 'topics' &&
+               <TopicsSelector
+                 selectedTopics={idea.relationships.topics.data.map((p) => p.id)}
+                 onUpdateIdeaTopics={this.onUpdateIdeaTopics}
+               />
+             }
+             {activeFilterMenu === 'projects' &&
+               <ProjectSelector projectId={idea.relationships.project.data && idea.relationships.project.data.id} />
+             }
+             {activeFilterMenu === 'statuses' && statuses &&
+               <StatusSelector
+                 statuses={statuses}
+                 selectedStatus={selectedStatus}
+                 onUpdateIdeaStatus={this.onUpdateIdeaStatus}
+               />
+             }
+           </Table.Cell>
+         </Table.Row>
+      </>
     );
   }
 }

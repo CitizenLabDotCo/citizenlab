@@ -33,6 +33,38 @@ const Container = styled.div`
   .ui.table {
     margin-bottom: 0;
   }
+
+  tr {
+    overflow: hidden;
+
+    transition: all 500ms ease;
+    &.fade-enter, &.fade-enter + tr {
+      opacity: 0;
+      height: 0;
+
+      &.fade-enter-active, &.fade-enter-active + tr {
+        opacity: 1;
+        height: auto;
+      }
+    }
+
+    &.fade-enter-done, &.fade-enter-done + tr {
+      opacity: 1;
+    }
+
+    &.fade-exit, &.fade-exit + tr {
+      opacity: 1;
+
+      &.fade-exit-active, &.fade-exit-active + tr {
+        opacity: 0;
+        height: 0;
+      }
+    }
+
+    &.fade-exit-done, &.fade-exit-done + tr {
+      display: none;
+    }
+  }
 `;
 
 const TableHeaderCellText = styled.span`
