@@ -175,7 +175,7 @@ class PageEditor extends PureComponent<Props, State>{
       // remotePageFiles = last saved state of files (remote)
 
       filesToAdd = localPageFiles.filter((localPageFile) => {
-        return !remotePageFiles.some(remotePageFile => remotePageFile.filename === localPageFile.filename);
+        return !remotePageFiles.some(remotePageFile => remotePageFile ? remotePageFile.filename === localPageFile.filename : true);
       });
     }
 
@@ -200,7 +200,7 @@ class PageEditor extends PureComponent<Props, State>{
       // remotePageFiles = last saved state of files (remote)
 
       filesToRemove = remotePageFiles.filter((remotePageFile) => {
-        return !localPageFiles.some(localPageFile => localPageFile.filename === remotePageFile.filename);
+        return !localPageFiles.some(localPageFile => remotePageFile ? localPageFile.filename === remotePageFile.filename : true);
       });
     }
 

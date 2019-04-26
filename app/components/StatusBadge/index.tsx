@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 
 // services
@@ -28,17 +28,18 @@ const Container = styled.div`
 
 type Props = {
   statusId: string;
+  className?: string;
 };
 
 type State = {
   ideaStatus: IIdeaStatus | null;
 };
 
-export default class StatusBadge extends React.PureComponent<Props, State> {
+export default class StatusBadge extends PureComponent<Props, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       ideaStatus: null
     };
@@ -60,9 +61,9 @@ export default class StatusBadge extends React.PureComponent<Props, State> {
 
   render() {
     const { ideaStatus } = this.state;
+    const { className } = this.props;
 
     if (ideaStatus !== null) {
-      const className = this.props['className'];
       const color = (ideaStatus ? ideaStatus.data.attributes.color : '#bbb');
 
       return (

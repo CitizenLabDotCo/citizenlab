@@ -77,7 +77,7 @@ export interface ITenantSettings {
   excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
-  participatory_budgeting: TenantFeature;
+  participatory_budgeting?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
@@ -111,18 +111,21 @@ interface ITenantStyle {
   projectNavbarIdeaButtonTextColor?: string;
 }
 
+export interface ITenantAttributes {
+  name: string;
+  host: string;
+  settings: ITenantSettings;
+  logo: ImageSizes | null;
+  header_bg: ImageSizes | null;
+  favicon?: ImageSizes | null;
+  style?: ITenantStyle;
+  homepage_info?: Multiloc;
+}
+
 export interface ITenantData {
   id: string;
   type: string;
-  attributes: {
-    name: string;
-    host: string;
-    settings: ITenantSettings;
-    logo: ImageSizes;
-    header_bg: ImageSizes;
-    favicon?: ImageSizes;
-    style?: ITenantStyle;
-  };
+  attributes: ITenantAttributes;
 }
 
 export interface ITenant {

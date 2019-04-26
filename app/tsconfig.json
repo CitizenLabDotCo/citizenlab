@@ -17,6 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
+    // "incremental": true,
     "plugins": [{
       "name": "typescript-styled-plugin"
     }]

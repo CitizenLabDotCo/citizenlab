@@ -29,8 +29,8 @@ import { darken } from 'polished';
 import { isNilOrError } from 'utils/helperUtils';
 
 const StyledIcon = styled(Icon)`
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   fill: #fff;
   margin-right: 12px;
 `;
@@ -38,7 +38,7 @@ const StyledIcon = styled(Icon)`
 const Text = styled.div`
   max-width: 200px;
   font-size: ${fontSizes.base}px;
-  line-height: 19px;
+  line-height: normal;
   text-align: left;
   font-weight: 400;
   transition: all 100ms ease-out;
@@ -55,11 +55,15 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 6px 0;
-    padding: 12px 12px;
+    margin-bottom: 10px;
+    padding: 10px 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
     transition: all 100ms ease-out;
+
+    &.last {
+      margin-bottom: 0px;
+    }
 
     &.twitter {
       background: ${colors.twitter};
@@ -235,7 +239,7 @@ class Sharing extends React.PureComponent<Props & ITracks & InjectedIntlProps> {
 
       const email = ((emailSubject && emailBody) ? (
         <a
-          className="sharingButton email"
+          className="sharingButton last email"
           href={`mailto:?subject=${emailSubject}&body=${emailBody}`}
           onClick={trackEmailShare}
         >

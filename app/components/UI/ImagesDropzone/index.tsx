@@ -300,7 +300,11 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
-          images[i].base64 = await getBase64FromFile(images[i]);
+          try {
+            images[i].base64 = await getBase64FromFile(images[i]);
+          } catch (error) {
+            console.log(error);
+          }
         }
 
         if (!images[i].url) {

@@ -1,17 +1,13 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
-
 import { FormattedMessage } from 'utils/cl-intl';
+import StatusBadge from 'components/StatusBadge';
 import T from 'components/T';
 import messages from './messages';
-
 import { Locale } from 'typings';
-
 import Link from 'utils/cl-router/Link';
-
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
@@ -32,8 +28,8 @@ const BelongsToProject = styled.p`
   color: ${colors.label};
   font-weight: 300;
   font-size: ${fontSizes.base}px;
-  line-height: 21px;
-  margin-bottom: 15px;
+  line-height: normal;
+  margin-bottom: 10px;
 `;
 
 const ProjectLink = styled(Link)`
@@ -57,7 +53,7 @@ const Header = styled.div`
   flex-direction: column;
 
   ${media.smallerThanMaxTablet`
-    margin-bottom: 30px;
+    margin-bottom: 25px;
   `}
 `;
 
@@ -80,12 +76,21 @@ const IdeaTitle = styled.h1`
   `}
 `;
 
+const StatusContainer = styled.div`
+  margin-top: 5px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
 interface DataProps {
   project: GetProjectChildProps;
 }
 
 interface InputProps {
   ideaId: string;
+  statusId: string | null;
   ideaTitle: string;
   projectId: string;
   locale: Locale;
@@ -95,8 +100,9 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaHeader = (props: Props) => {
-  const { ideaId, ideaTitle, project, locale, translateButtonClicked, onTranslationLoaded } = props;
+const IdeaHeader = React.memo<Props>((props: Props) => {
+  const { ideaId, statusId, ideaTitle, project, locale, translateButtonClicked, onTranslationLoaded } = props;
+
   return (
     <HeaderWrapper>
       {!isNilOrError(project) &&
@@ -128,10 +134,16 @@ const IdeaHeader = (props: Props) => {
           :
           <IdeaTitle className="e2e-ideatitle">{ideaTitle}</IdeaTitle>
         }
+
+        {statusId &&
+          <StatusContainer>
+            <StatusBadge statusId={statusId} />
+          </StatusContainer>
+        }
       </Header>
     </HeaderWrapper>
   );
-};
+});
 
 export default (inputProps: InputProps) => (
   <GetProject id={inputProps.projectId}>
