@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.trending',
     defaultMessage: 'Trending',
   },
+  random: {
+    id: 'app.containers.IdeaCards.random',
+    defaultMessage: 'Random',
+  },
   popular: {
     id: 'app.containers.IdeaCards.popular',
     defaultMessage: 'Popular',

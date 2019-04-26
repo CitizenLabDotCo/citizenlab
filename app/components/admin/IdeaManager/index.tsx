@@ -50,6 +50,7 @@ const ThreeColumns = styled.div`
 
 const LeftColumn = styled.div`
   width: 260px;
+  min-width: 260px;
 `;
 
 const Sticky = styled.div`
@@ -59,12 +60,10 @@ const Sticky = styled.div`
 `;
 
 const MiddleColumn = styled.div`
-  flex: 1;
   transition: 200ms;
 `;
 
 const RightColumn = styled.div`
-  width: 260px;
   ${media.smallerThan1280px`
     display: none;
   `}
