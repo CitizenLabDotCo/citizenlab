@@ -20,7 +20,6 @@ import messages from '../messages';
 // services
 import { addCommentToIdea } from 'services/comments';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
-import { isAdmin } from 'services/permissions/roles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -48,7 +47,7 @@ const CommentContainer = styled.div`
   border-radius: 3px;
   transition: all 100ms ease;
 
-  &.focussed {
+  &.focused {
     border-color: ${darken(0.2, '#E3E3E3')};
   }
 
@@ -95,7 +94,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   inputValue: string;
-  focussed: boolean;
+  focused: boolean;
   processing: boolean;
   errorMessage: string | null;
 }
@@ -105,7 +104,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     super(props);
     this.state = {
       inputValue: '',
-      focussed: false,
+      focused: false,
       processing: false,
       errorMessage: null
     };
@@ -114,7 +113,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
   onChange = (inputValue: string) => {
     this.setState({
       inputValue,
-      focussed: true,
+      focused: true,
       errorMessage: null
     });
   }
@@ -126,11 +125,11 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       }
     });
 
-    this.setState({ focussed: true });
+    this.setState({ focused: true });
   }
 
   onBlur = () => {
-    this.setState({ focussed: false });
+    this.setState({ focused: false });
   }
 
   onSubmit = async (event: MouseEvent<any>) => {
@@ -142,7 +141,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
 
     this.setState({
-      focussed: false,
+      focused: false,
       processing: false,
       errorMessage: null
     });
@@ -174,7 +173,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const { authUser, idea, ideaId, className } = this.props;
-    const { inputValue, focussed, processing, errorMessage } = this.state;
+    const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
@@ -184,7 +183,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     return (
       <Container className={className}>
         {(authUser && canComment) &&
-          <CommentContainer className={`e2e-comment-form ideaCommentForm ${focussed ? 'focussed' : ''}`}>
+          <CommentContainer className={`e2e-comment-form ideaCommentForm ${focused ? 'focused' : ''}`}>
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
