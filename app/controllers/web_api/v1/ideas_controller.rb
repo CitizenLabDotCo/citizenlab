@@ -49,6 +49,8 @@ class WebApi::V1::IdeasController < ApplicationController
           @ideas.order(baskets_count: :asc)
         when "-baskets_count"
           @ideas.order(baskets_count: :desc)
+        when "random"
+          @ideas.order_random
         when nil
           @ideas
         else
