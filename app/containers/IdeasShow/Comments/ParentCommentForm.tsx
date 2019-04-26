@@ -20,6 +20,7 @@ import messages from '../messages';
 // services
 import { addCommentToIdea } from 'services/comments';
 import { canModerate } from 'services/permissions/rules/projectPermissions';
+import { isAdmin } from 'services/permissions/roles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -177,8 +178,8 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
-    const canComment = (authUser && commentingEnabled);
-    const authorCanModerate = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+    const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+    const canComment = (authUser && commentingEnabled && !isModerator);
 
     return (
       <Container className={className}>
@@ -189,7 +190,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
                 authorId={authUser.id}
                 notALink={authUser.id ? false : true}
                 size="32px"
-                showModeration={authorCanModerate}
+                showModeration={isModerator}
                 avatarBadgeBgColor="#f1f2f4"
               />
             </AuthorWrapper>
