@@ -449,7 +449,7 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} sort="random">{render}</GetIdeas>
 });
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);
