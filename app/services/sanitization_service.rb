@@ -80,7 +80,7 @@ class SanitizationService
 
   def linkify_multiloc multiloc
     multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = linkify(text)
+      output[locale] = linkify(text) if text
     end
   end
 

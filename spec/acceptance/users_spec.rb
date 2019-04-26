@@ -338,6 +338,8 @@ resource "Users" do
         
         example_request "[error] Registering an invited user" do
           expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
         end
       end
 
