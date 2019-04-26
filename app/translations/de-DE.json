@@ -998,6 +998,7 @@
   "app.containers.IdeaCards.oldest": "Älteste",
   "app.containers.IdeaCards.popular": "{orgName, select, München {Meiste Bewertungen} other {Meiste Stimmen}}",
   "app.containers.IdeaCards.projectFilterTitle": "Projects",
+  "app.containers.IdeaCards.random": "",
   "app.containers.IdeaCards.sortTitle": "Sortieren",
   "app.containers.IdeaCards.topics": "Themen",
   "app.containers.IdeaCards.topicsTitle": "Themen",
