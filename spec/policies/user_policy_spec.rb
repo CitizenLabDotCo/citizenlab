@@ -29,7 +29,7 @@ describe UserPolicy do
       it { should     permit(:show)    }
       it { should     permit(:create)  }
       it { should     permit(:update)  }
-      it { should_not permit(:destroy) }
+      it { should     permit(:destroy) }
       it { should_not permit(:index) }
 
       it "should index the user through the scope" do
@@ -64,7 +64,7 @@ describe UserPolicy do
       it { should     permit(:show)    }
       it { should     permit(:create)  }
       it { should     permit(:update)  }
-      it { should_not permit(:destroy) }
+      it { should     permit(:destroy) }
       it { should     permit(:index) }
 
       it "should index the user through the scope" do
@@ -89,7 +89,7 @@ describe UserPolicy do
     end
   end
 
-  context "for an aadmin" do
+  context "for an admin" do
     let(:current_user) { create(:admin) }
 
     context "on theirself" do
