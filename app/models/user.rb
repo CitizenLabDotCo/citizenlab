@@ -55,8 +55,17 @@ class User < ApplicationRecord
   validate do |record|
     record.errors.add(:last_name, :blank) unless (record.last_name.present? or record.cl1_migrated or record.invite_pending?)
     record.errors.add(:password, :blank) unless (record.password_digest.present? or record.identities.any? or record.invite_pending?)
-    if (record.email && User.where('lower(email) = lower(?)', record.email).pluck(:email).select{|email| email != record.email}.present?)
-      record.errors.add(:email, :taken, value: record.email)
+    if record.email && User.find_by_cimail(record.email).present?
+      duplicate_user = User.find_by_cimail(record.email)
+      if duplicate_user.invite_pending? && duplicate_user.id != id
+        ErrorsService.new.remove record.errors, :email, :taken, value: record.email
+        record.errors.add(:email, :taken_by_invite, value: record.email, inviter_email: duplicate_user.invitee_invite&.inviter&.email)
+      elsif duplicate_user.email != record.email
+        # We're only checking this case, as the other case is covered
+        # by the uniqueness constraint which can "cleverly" distinguish
+        # true duplicates from the record itself.
+        record.errors.add(:email, :taken, value: record.email)
+      end
     end
   end
 
@@ -150,7 +159,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us)$/i)
+    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl)$/i)
   end
 
   def project_moderator? project_id=nil
