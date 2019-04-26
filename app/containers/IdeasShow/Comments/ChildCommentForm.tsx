@@ -51,7 +51,7 @@ const Form = styled.form`
     display: none;
   }
 
-  &.focussed {
+  &.focused {
     background: #fff;
     border-radius: 0px;
     border-bottom: solid 2px ${({ theme }) => theme.colorSecondary};
@@ -105,7 +105,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   inputValue: string;
   visible: boolean;
-  focussed: boolean;
+  focused: boolean;
   processing: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
@@ -122,7 +122,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       inputValue: '',
       visible: false,
-      focussed: false,
+      focused: false,
       processing: false,
       errorMessage: null,
       canSubmit: false
@@ -134,7 +134,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
     this.subscriptions = [
       eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
-        tap(() => this.setState({ inputValue: '', focussed: false })),
+        tap(() => this.setState({ inputValue: '', focused: false })),
         filter(({ eventValue }) => {
           const { commentId, parentCommentId } = eventValue;
           return (commentId === this.props.parentId || parentCommentId === this.props.parentId);
@@ -143,7 +143,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
         const { authorFirstName, authorLastName, authorSlug } = eventValue;
         const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
 
-        this.setState({ inputValue, visible: true, focussed: true });
+        this.setState({ inputValue, visible: true, focused: true });
 
         if (this.textareaElement) {
           setTimeout(() => {
@@ -167,7 +167,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.focussed && !this.state.focussed && isEmpty(this.state.inputValue)) {
+    if (prevState.focused && !this.state.focused && isEmpty(this.state.inputValue)) {
       this.setState({ visible: false });
     }
   }
@@ -193,10 +193,10 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleTextareaOnChange = (inputValue: string) => {
-    this.setState(({ focussed }) => ({
+    this.setState(({ focused }) => ({
       inputValue,
       errorMessage: null,
-      canSubmit: !!(focussed && trim(inputValue) !== '')
+      canSubmit: !!(focused && trim(inputValue) !== '')
     }));
   }
 
@@ -208,11 +208,11 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       }
     });
 
-    this.setState({ focussed: true });
+    this.setState({ focused: true });
   }
 
   handleTextareaOnBlur = () => {
-    this.setState({ focussed: false });
+    this.setState({ focused: false });
   }
 
   handleSubmit = async (event: FormEvent<any>) => {
@@ -243,7 +243,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           inputValue: '',
           processing: false,
           visible: false,
-          focussed: false
+          focused: false
         });
       } catch (error) {
         this.setState({
@@ -265,13 +265,13 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     const { ideaId, parentId, authUser, windowSize, className } = this.props;
 
     if (!isNilOrError(authUser)) {
-      const { inputValue, canSubmit, processing, errorMessage, visible, focussed } = this.state;
-      const isButtonVisible = (inputValue && inputValue.length > 0 || focussed);
+      const { inputValue, canSubmit, processing, errorMessage, visible, focused } = this.state;
+      const isButtonVisible = (inputValue && inputValue.length > 0 || focused);
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
         <Container className={className}>
-          <Form className={`${visible ? 'visible' : 'hidden'} ${focussed ? 'focussed' : 'blurred'}`} onSubmit={this.handleSubmit}>
+          <Form className={`${visible ? 'visible' : 'hidden'} ${focused ? 'focused' : 'blurred'}`} onSubmit={this.handleSubmit}>
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />
