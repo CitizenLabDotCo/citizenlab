@@ -147,12 +147,20 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
 
         if (this.textareaElement) {
           setTimeout(() => {
-            this.textareaElement.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            this.textareaElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'center'
+            });
           }, 100);
 
           setTimeout(() => {
             this.textareaElement.focus();
           }, 300);
+
+          setTimeout(() => {
+            this.setCaretAtEnd(this.textareaElement);
+          }, 350);
         }
       })
     ];
@@ -167,6 +175,12 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeypress, useCapture);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  setCaretAtEnd(element: HTMLTextAreaElement) {
+    if (element.setSelectionRange && element.textContent) {
+      element.setSelectionRange(element.textContent.length, element.textContent.length);
+    }
   }
 
   handleKeypress = (event) => {

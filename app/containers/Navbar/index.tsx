@@ -1,9 +1,8 @@
 // libraries
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent, FormEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import { trackEventByName } from 'utils/analytics';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -16,6 +15,7 @@ import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 
 // analytics
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // resources
@@ -297,6 +297,7 @@ const LogInLink = NavigationItem.extend`
 `;
 
 const SignUpLink = NavigationItem.extend`
+  height: calc(100% + 1px);
   color: #fff;
   background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
   border: none;
@@ -361,7 +362,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     }
   }
 
-  toggleProjectsDropdown = (event: React.FormEvent<any>) => {
+  toggleProjectsDropdown = (event: FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
@@ -370,7 +371,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     trackEventByName(tracks.clickSignUpLink.name);
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 

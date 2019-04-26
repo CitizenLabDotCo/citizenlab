@@ -181,13 +181,28 @@ const FeedbackButton = styled.button`
   }
 `;
 
+const PagesNav = styled.nav`
+  color: ${colors.label};
+  font-weight: 300;
+  text-align: center;
+  overflow: hidden;
+
+  ${media.smallerThanMaxTablet`
+    order: 2;
+    margin-top: 30px;
+    margin-bottom: 15px;
+  `}
+`;
+
 const StyledButton = styled.button`
   color: ${colors.label};
   font-weight: 300;
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   text-decoration: none;
+  hyphens: auto;
   padding: 0;
+  margin: 0;
   border: none;
   cursor: pointer;
 
@@ -203,7 +218,9 @@ const StyledLink = styled(Link)`
   font-size: ${fontSizes.small}px;
   line-height: 21px;
   text-decoration: none;
+  hyphens: auto;
   padding: 0;
+  margin: 0;
   border: none;
   cursor: pointer;
 
@@ -220,18 +237,6 @@ const Bullet = styled.span`
   line-height: 21px;
   margin-left: 10px;
   margin-right: 10px;
-`;
-
-const PagesNav = styled.nav`
-  color: ${colors.label};
-  font-weight: 300;
-  text-align: center;
-
-  ${media.smallerThanMaxTablet`
-    order: 2;
-    margin-top: 30px;
-    margin-bottom: 15px;
-  `}
 `;
 
 const Right = styled.div`
