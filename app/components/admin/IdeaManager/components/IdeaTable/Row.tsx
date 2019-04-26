@@ -113,7 +113,7 @@ class Row extends React.PureComponent<Props & InjectedIntlProps & InjectedLocali
     event.preventDefault();
     event.stopPropagation();
     const { idea } = this.props;
-    eventEmitter.emit<IModalInfo>('adminIdeas', 'cardClick', {
+    eventEmitter.emit<IModalInfo>('adminIdeas', 'ideaCardClick', {
       type: 'idea',
       id: idea.id,
       url: `/ideas/${idea.attributes.slug}`

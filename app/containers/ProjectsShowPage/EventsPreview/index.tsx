@@ -53,11 +53,16 @@ const AllEvents = styled(Link)`
   font-weight: 400;
   text-decoration: underline;
   margin-left: 20px;
+  margin-bottom: 4px;
 
   &:hover {
     color: ${({ theme }) => darken(0.2, theme.colorText)};
     text-decoration: underline;
   }
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Events = styled.div`

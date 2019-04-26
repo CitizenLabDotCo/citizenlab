@@ -8,28 +8,30 @@ import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
 // resources
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
-// styling
+// style
 import styled from 'styled-components';
+
+// typings
 import { GetProjectChildProps } from 'resources/GetProject';
 
-const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
-  margin-bottom: 70px;
-`;
+const Container = styled.div``;
 
 interface InputProps {
   ideaId: string;
   project: GetProjectChildProps;
+  className?: string;
 }
 
 interface DataProps {
   permission: GetPermissionChildProps;
+  officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface State {
-}
+interface State {}
 
 export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -39,25 +41,31 @@ export class OfficialFeedback extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, permission } = this.props;
+    const { ideaId, permission, officialFeedbacks, className } = this.props;
 
-    return (
-      <>
-        {permission &&
-          <StyledOfficialFeedbackNew ideaId={ideaId} />
-        }
+    if (permission || (!isNilOrError(officialFeedbacks) && !isNilOrError(officialFeedbacks.officialFeedbacksList) && officialFeedbacks.officialFeedbacksList.data.length > 0)) {
+      return (
+        <Container className={className}>
+          {permission &&
+            <OfficialFeedbackNew ideaId={ideaId} />
+          }
 
-        <OfficialFeedbackFeed
-          ideaId={ideaId}
-          editingAllowed={permission}
-        />
-      </>
-    );
+          <OfficialFeedbackFeed
+            ideaId={ideaId}
+            permission={permission}
+            editingAllowed={permission}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
   permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (

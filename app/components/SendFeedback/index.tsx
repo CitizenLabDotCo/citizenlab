@@ -17,7 +17,6 @@ const SendFeedbackText = styled.span`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 100ms ease-out;
-  margin-left: 8px;
 
   &:not(.show) {
     display: none;
@@ -29,16 +28,17 @@ const SendFeedbackIcon = styled(Icon)`
   width: 22px;
   height: 22px;
   transition: all 100ms ease-out;
+  margin-right: 8px;
+
+  ${media.phone`
+    display: none;
+  `}
 `;
 
 const Container = styled.a`
   display: flex;
   align-items: center;
   cursor: pointer;
-
-  ${media.largePhone`
-    margin-right: 0;
-  `}
 
   &:hover {
     ${SendFeedbackText} {
@@ -51,16 +51,12 @@ const Container = styled.a`
   }
 `;
 
-interface InputProps {
+interface Props {
   showFeedbackText: boolean;
   className?: string;
 }
 
-interface DataProps {}
-
-interface Props extends InputProps, DataProps {}
-
-const SendFeedbackComponent = (props: Props & InjectedIntlProps) => {
+const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProps) => {
   const { showFeedbackText, className, intl: { formatMessage } } = props;
 
   return (
@@ -72,6 +68,6 @@ const SendFeedbackComponent = (props: Props & InjectedIntlProps) => {
       </SendFeedbackText>
     </Container>
   );
-};
+});
 
  export default injectIntl(SendFeedbackComponent);

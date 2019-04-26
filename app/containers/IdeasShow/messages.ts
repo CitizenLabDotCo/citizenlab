@@ -45,6 +45,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentEditorLabel',
     defaultMessage: 'Comment the idea!',
   },
+  commentUpvote: {
+    id: 'app.containers.IdeasShow.commentUpvote',
+    defaultMessage: 'Upvote',
+  },
+  commentCancelUpvote: {
+    id: 'app.containers.IdeasShow.commentCancelUpvote',
+    defaultMessage: 'Cancel',
+  },
   commentReplyButton: {
     id: 'app.containers.IdeasShow.commentReplyButton',
     defaultMessage: 'Reply',
@@ -81,9 +89,17 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.publishComment',
     defaultMessage: 'Post comment',
   },
+  saveCommentEdit: {
+    id: 'app.containers.IdeasShow.saveComment',
+    defaultMessage: 'Save',
+  },
+  cancelCommentEdit: {
+    id: 'app.containers.IdeasShow.cancelCommentEdit',
+    defaultMessage: 'Cancel',
+  },
   loadMoreComments: {
     id: 'app.containers.IdeasShow.loadMoreComments',
-    defaultMessage: 'Load more comments...',
+    defaultMessage: 'Load more comments',
   },
   loadingComments: {
     id: 'app.containers.IdeasShow.loadingComments',
@@ -103,35 +119,35 @@ export default defineMessages({
   },
   confirmCommentDeletion: {
     id: 'app.containers.IdeasShow.confirmCommentDeletion',
-    defaultMessage: `Are you sure you want to delete this comment? There's no turning back!`,
+    defaultMessage: "Are you sure you want to delete this comment? There's no turning back!",
   },
   commentDeletionCancelButton: {
     id: 'app.containers.IdeasShow.commentDeletionCancelButton',
-    defaultMessage: `Keep my comment`,
+    defaultMessage: 'Keep my comment',
   },
   adminCommentDeletionCancelButton: {
     id: 'app.containers.IdeasShow.adminCommentDeletionCancelButton',
-    defaultMessage: `Leave the comment`,
+    defaultMessage: 'Leave the comment',
   },
   commentDeletionConfirmButton: {
     id: 'app.containers.IdeasShow.commentDeletionConfirmButton',
-    defaultMessage: `Delete my comment`,
+    defaultMessage: 'Delete my comment',
   },
   deleteReason_inappropriate: {
     id: 'app.containers.IdeasShow.deleteReason_inappropriate',
-    defaultMessage: `Inappropriate comment`,
+    defaultMessage: 'Inappropriate comment',
   },
   deleteReason_irrelevant: {
     id: 'app.containers.IdeasShow.deleteReason_irrelevant',
-    defaultMessage: `Irrelevant comment`,
+    defaultMessage: 'Irrelevant comment',
   },
   deleteReason_other: {
     id: 'app.containers.IdeasShow.deleteReason_other',
-    defaultMessage: `Other reason (please specify)`,
+    defaultMessage: 'Other reason (please specify)',
   },
   adminCommentDeletionConfirmButton: {
     id: 'app.containers.IdeasShow.adminCommentDeletionConfirmButton',
-    defaultMessage: `Delete this comment`,
+    defaultMessage: 'Delete this comment',
   },
   metaTitle: {
     id: 'app.containers.IdeasShow.metaTitle',
@@ -217,8 +233,8 @@ export default defineMessages({
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
   },
-  spanModalLabelIdea: {
-    id: 'app.components.IdeasShow.spanModalLabelIdea',
+  spamModalLabelIdea: {
+    id: 'app.components.IdeasShow.spamModalLabelIdea',
     defaultMessage: 'Report idea as spam : select reason',
   },
   spanModalLabelComment: {
@@ -304,7 +320,7 @@ export default defineMessages({
   },
   skipSharing: {
     id: 'app.components.IdeasShow.skipSharing',
-    defaultMessage: `Skip it, I'll do it later`,
+    defaultMessage: "Skip it, I'll do it later",
   },
   modalShareLabel: {
     id: 'app.components.IdeasShow.modalShareLabel',
@@ -318,13 +334,13 @@ export default defineMessages({
     id: 'app.components.IdeasShow.backToOriginalContent',
     defaultMessage: 'See original content again',
   },
-  translateComment: {
-    id: 'app.components.IdeasShow.translateComment',
-    defaultMessage: 'Translate this comment',
+  seeTranslation: {
+    id: 'app.components.IdeasShow.seeTranslation',
+    defaultMessage: 'See translation',
   },
-  showOriginalComment: {
-    id: 'app.components.IdeasShow.showOriginalComment',
-    defaultMessage: 'Show original comment',
+  seeOriginal: {
+    id: 'app.components.IdeasShow.seeOriginal',
+    defaultMessage: 'See original',
   },
   similarIdeas: {
     id: 'app.components.IdeasShow.similarIdeas',
@@ -341,5 +357,17 @@ export default defineMessages({
   showMoreActions: {
     id: 'app.containers.IdeasShow.showMoreActions',
     defaultMessage: 'Show more actions',
+  },
+  commentsSortTitle: {
+    id: 'app.containers.IdeaCards.commentsSortTitle',
+    defaultMessage: 'Sort comments by',
+  },
+  oldestToNewest: {
+    id: 'app.components.IdeasShow.oldestToNewest',
+    defaultMessage: 'Oldest to Newest',
+  },
+  mostUpvoted: {
+    id: 'app.components.IdeasShow.mostUpvoted',
+    defaultMessage: 'Most voted',
   },
 });

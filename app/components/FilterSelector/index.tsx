@@ -33,6 +33,11 @@ const Container = styled(clickOutside)`
   }
 `;
 
+export interface IFilterSelectorValue {
+  text: string | JSX.Element;
+  value: any;
+}
+
 interface DefaultProps {
   width?: string;
   mobileWidth?: string;
@@ -49,10 +54,7 @@ interface Props extends DefaultProps {
   id?: string | undefined;
   title: string | JSX.Element;
   name: string;
-  values: {
-    text: string | JSX.Element,
-    value: any
-  }[];
+  values: IFilterSelectorValue[];
   onChange?: (value: any) => void;
   multiple: boolean;
   selected: string[];

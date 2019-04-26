@@ -167,7 +167,7 @@ class IdeaBox extends React.PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
 
-    eventEmitter.emit<IModalInfo>('projectIdeasMap', 'cardClick', {
+    eventEmitter.emit<IModalInfo>('projectIdeasMap', 'ideaCardClick', {
       type: 'idea',
       id: idea.id,
       url: `/ideas/${idea.attributes.slug}`

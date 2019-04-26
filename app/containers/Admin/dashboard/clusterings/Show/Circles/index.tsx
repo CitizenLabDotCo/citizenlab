@@ -81,7 +81,7 @@ class Circles extends PureComponent<Props, State> {
     window.addEventListener('resize', this.calculateNodePositions);
     window.addEventListener('keydown', this.handleOnKeyDown);
     window.addEventListener('keyup', this.handleOnKeyUp);
-    window.addEventListener('contextmenu', this.handleContextMenu, false);
+    window.addEventListener('contextmenu', this.handleContextMenu);
     this.calculateNodePositions();
   }
 

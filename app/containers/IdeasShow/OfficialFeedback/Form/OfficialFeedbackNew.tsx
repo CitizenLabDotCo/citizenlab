@@ -7,7 +7,6 @@ import { CLErrorsJSON } from 'typings';
 interface Props {
   ideaId: string;
   className?: string;
-  // newCommentPosted: () => void;
 }
 
 interface State {}

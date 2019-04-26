@@ -288,7 +288,7 @@ export type Props = {
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
-  type?: string;
+  type?: 'submit' | 'button' | 'reset';
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
@@ -412,7 +412,16 @@ class Button extends PureComponent<Props, State> {
               </StyledLink>
             )
         ) : (
-            <StyledButton aria-label={ariaLabel} disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+            <StyledButton
+              aria-label={ariaLabel}
+              disabled={disabled}
+              innerRef={this.props.setSubmitButtonRef}
+              className={buttonClassnames}
+              form={form}
+              type={type ? type : 'submit'}
+            >
+              {childContent}
+            </StyledButton>
           )}
       </Container>
     );

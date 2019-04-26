@@ -158,6 +158,8 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     }));
   }
 
+  handleOrganizatioNameOnChange = this.handleCoreMultilocSettingOnChange('organization_name');
+
   render() {
     const { tenant } = this.state;
 
@@ -195,7 +197,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
                 id="organization_name"
                 label={<FormattedMessage {...messages.organizationName} values={{ type: organizationType }} />}
                 valueMultiloc={organizationNameMultiloc}
-                onChange={this.handleCoreMultilocSettingOnChange('organization_name')}
+                onChange={this.handleOrganizatioNameOnChange}
               />
             </SectionField>
 
