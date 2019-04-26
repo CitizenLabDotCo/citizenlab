@@ -11,7 +11,6 @@ import GetComments, { GetCommentsChildProps } from 'resources/GetComments';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-// import HasPermission from 'components/HasPermission';
 
 // components
 import LoadingComments from './LoadingComments';
@@ -72,16 +71,6 @@ const CommentsSection = memo<Props>(({ ideaId, authUser, idea, comments, project
           />
 
           <ParentCommentForm ideaId={ideaId} />
-
-          {/*
-          {!isNilOrError(project) &&
-            <HasPermission item={project} action="moderate">
-              <HasPermission.No>
-                <ParentCommentForm ideaId={ideaId} />
-              </HasPermission.No>
-            </HasPermission>
-          }
-          */}
         </>
       ) : (
         <LoadingComments />

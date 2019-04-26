@@ -199,17 +199,6 @@ class ProjectNavbar extends PureComponent<Props, State> {
     this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
   }
 
-  setRef = (ref: HTMLDivElement) => {
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-
-    if (ref && lastUrlSegment === 'events') {
-      setTimeout(() => {
-        ref.scrollLeft += 200;
-      }, 10);
-    }
-  }
-
   render() {
     const { project, events, phase, theme } = this.props;
 
@@ -239,7 +228,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
         }
 
         return (
-          <ProjectNavbarWrapper innerRef={this.setRef}>
+          <ProjectNavbarWrapper>
             <StyledContentContainer>
               <ProjectNavbarItems>
 

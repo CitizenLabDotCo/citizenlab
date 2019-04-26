@@ -26,7 +26,7 @@ import messages from '../messages';
 // style
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
-import { darken } from 'polished';
+import { darken, lighten } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -39,8 +39,21 @@ const UpvoteIcon = styled(Icon)`
   flex: 0 0 16px;
   fill: ${colors.label};
 
-  &.voted {
+  &.disabled {
+    fill: ${lighten(0.25, colors.label)};
+  }
+
+  &.enabled.voted {
     fill: #fff;
+  }
+`;
+
+const UpvoteCount = styled.div`
+  color: ${colors.label};
+  margin-right: 12px;
+
+  &.disabled {
+    color: ${lighten(0.25, colors.label)};
   }
 `;
 
@@ -58,6 +71,10 @@ const UpvoteIconWrapper = styled.button`
   transition: background 100ms ease;
   border: none;
 
+  &.disabled {
+    cursor: auto;
+  }
+
   &.notVoted {
     &.hasVotes {
       margin-right: 5px;
@@ -67,7 +84,7 @@ const UpvoteIconWrapper = styled.button`
       margin-right: 10px;
     }
 
-    &:hover {
+    &.enabled:hover {
       ${UpvoteIcon} {
         fill: #000;
       }
@@ -75,20 +92,18 @@ const UpvoteIconWrapper = styled.button`
   }
 
   &.voted {
-    width: 28px;
     margin-right: 3px;
-    border-radius: 50%;
-    background: ${colors.clGreen};
 
-    &:hover {
-      background: ${darken(0.1, colors.clGreen)};
+    &.enabled {
+      width: 28px;
+      border-radius: 50%;
+      background: ${colors.clGreen};
+
+      &:hover {
+        background: ${darken(0.1, colors.clGreen)};
+      }
     }
   }
-`;
-
-const UpvoteCount = styled.div`
-  color: ${colors.label};
-  margin-right: 12px;
 `;
 
 const UpvoteLabel = styled.button`
@@ -112,6 +127,7 @@ interface InputProps {
   ideaId: string;
   commentId: string;
   commentType: 'parent' | 'child';
+  votingEnabled: boolean;
   className?: string;
 }
 
@@ -150,7 +166,7 @@ class CommentVote extends PureComponent<Props, State> {
     const prevUpvoteCount = get(prevProps.comment, 'attributes.upvotes_count');
     const upvoteCount = get(this.props.comment, 'attributes.upvotes_count');
 
-    // whener the upvote count number returned by the GetComment resource component has changed
+    // Whenever the upvote count number returned by the GetComment resource component has changed
     // we update the value kept in the state to make sure we always use the 'correct' upvote count
     // whenever it's being returned from the back-end
     if (upvoteCount !== prevUpvoteCount && isNumber(upvoteCount)) {
@@ -173,66 +189,74 @@ class CommentVote extends PureComponent<Props, State> {
   onVote = async (event: MouseEvent) => {
     event.preventDefault();
 
-    const oldVotedValue = cloneDeep(this.state.voted);
-    const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
-    const { ideaId, commentId, commentType, authUser, comment, commentVote } = this.props;
+    if (this.props.votingEnabled) {
+      const oldVotedValue = cloneDeep(this.state.voted);
+      const oldUpvoteCount = cloneDeep(this.state.upvoteCount);
+      const { ideaId, commentId, commentType, authUser, comment, commentVote } = this.props;
 
-    if (!isNilOrError(authUser)) {
-      if (!oldVotedValue) {
-        try {
-          this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
-          await addCommentVote(ideaId, commentId, {
-            user_id: authUser.id,
-            mode: 'up'
-          });
+      if (!isNilOrError(authUser)) {
+        if (!oldVotedValue) {
+          try {
+            this.setState(state => ({ voted: true, upvoteCount: state.upvoteCount + 1 }));
+            await addCommentVote(ideaId, commentId, {
+              user_id: authUser.id,
+              mode: 'up'
+            });
 
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentUpvoteButton);
+            if (commentType === 'parent') {
+              trackEventByName(tracks.clickParentCommentUpvoteButton);
+            } else if (commentType === 'child') {
+              trackEventByName(tracks.clickChildCommentUpvoteButton);
+            }
+          } catch (error) {
+            this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
           }
-        } catch (error) {
-          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
-      }
 
-      if (oldVotedValue && !isNilOrError(comment) && !isNilOrError(commentVote)) {
-        try {
-          this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
-          await deleteCommentVote(comment.id, commentVote.id);
+        if (oldVotedValue && !isNilOrError(comment) && !isNilOrError(commentVote)) {
+          try {
+            this.setState(state => ({ voted: false, upvoteCount: state.upvoteCount - 1 }));
+            await deleteCommentVote(comment.id, commentVote.id);
 
-          if (commentType === 'parent') {
-            trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
-          } else if (commentType === 'child') {
-            trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+            if (commentType === 'parent') {
+              trackEventByName(tracks.clickParentCommentCancelUpvoteButton);
+            } else if (commentType === 'child') {
+              trackEventByName(tracks.clickChildCommentCancelUpvoteButton);
+            }
+          } catch (error) {
+            this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
           }
-        } catch (error) {
-          this.setState({ voted: oldVotedValue, upvoteCount: oldUpvoteCount });
         }
+      } else {
+        clHistory.push('/sign-in');
       }
-    } else {
-      clHistory.push('/sign-in');
     }
   }
 
   render() {
-    const { className, comment } = this.props;
+    const { votingEnabled, className, comment } = this.props;
     const { voted, upvoteCount } = this.state;
 
-    if (!isNilOrError(comment)) {
+    if (!isNilOrError(comment) && (votingEnabled || (!votingEnabled && upvoteCount > 0))) {
       return (
         <Container className={className}>
-          <UpvoteIconWrapper onMouseDown={this.removeFocus} onClick={this.onVote} className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'}`}>
-            <UpvoteIcon name="upvote-2" className={voted ? 'voted' : ''} />
+          <UpvoteIconWrapper
+            onMouseDown={this.removeFocus}
+            onClick={this.onVote}
+            className={`${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+          >
+            <UpvoteIcon name="upvote-2" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
           </UpvoteIconWrapper>
 
           {upvoteCount > 0 &&
-            <UpvoteCount className={upvoteCount > 0 ? 'visible' : 'hidden'}>{upvoteCount}</UpvoteCount>
+            <UpvoteCount className={`${upvoteCount > 0 ? 'visible' : 'hidden'} ${votingEnabled ? 'enabled' : 'disabled'}`}>{upvoteCount}</UpvoteCount>
           }
 
-          <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
-            {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
-          </UpvoteLabel>
+          {votingEnabled &&
+            <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote}>
+              {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
+            </UpvoteLabel>
+          }
         </Container>
       );
     }

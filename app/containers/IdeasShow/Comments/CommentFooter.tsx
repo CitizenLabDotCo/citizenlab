@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-// import FeatureFlag from 'components/FeatureFlag';
+import FeatureFlag from 'components/FeatureFlag';
 import CommentVote from './CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
@@ -226,6 +226,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
       const showTranslateButton = commentBodyMultiloc && !commentBodyMultiloc[locale];
       const createdAt = comment.attributes.created_at;
       const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
+      const votingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.voting, 'enabled', false) : false);
 
       return (
         <Container className={className}>
@@ -234,6 +235,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
               ideaId={ideaId}
               commentId={commentId}
               commentType={commentType}
+              votingEnabled={votingEnabled}
             />
 
             {authUser && commentingEnabled && canReply &&
@@ -242,7 +244,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                 <ReplyButton onMouseDown={this.removeFocus} onClick={this.onReply}>
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
-                {/* <FeatureFlag name="machine_translations"> */}
+                <FeatureFlag name="machine_translations">
                   {showTranslateButton &&
                     <>
                       <Separator>•</Separator>
@@ -254,7 +256,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                       </TranslateButton>
                     </>
                   }
-                {/* </FeatureFlag> */}
+                </FeatureFlag>
               </LeftActions>
             }
           </Left>
