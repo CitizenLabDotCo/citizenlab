@@ -1,15 +1,18 @@
 // libraries
-import React from 'react';
-import { trim, isString } from 'lodash-es';
+import React, { PureComponent, FormEvent } from 'react';
+import { Subscription } from 'rxjs';
+import { filter, tap } from 'rxjs/operators';
+import { trim, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,211 +21,297 @@ import messages from '../messages';
 
 // services
 import { addCommentToComment } from 'services/comments';
+import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // style
 import styled from 'styled-components';
-import { darken, hideVisually } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import { hideVisually } from 'polished';
+import { media, viewportWidths } from 'utils/styleUtils';
 
-const CommentContainer = styled.form`
-  padding-left: 0px;
-  padding-right: 0px;
-  padding-top: 0px;
-  padding-bottom: 0px;
+// typings
+import { ICommentReplyClicked } from './CommentFooter';
+
+const Container = styled.div``;
+
+const Form = styled.form`
+  background: #fff;
+  border-top-color: #ebebeb;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom: solid 2px #fff;
+  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 100ms ease;
+
+  &.hidden {
+    display: none;
+  }
+
+  &.focused {
+    background: #fff;
+    border-radius: 0px;
+    border-bottom: solid 2px ${({ theme }) => theme.colorSecondary};
+  }
 `;
 
 const HiddenLabel = styled.span`
-  ${hideVisually() as any}
+  ${hideVisually()}
 `;
 
-const StyledTextArea = styled(MentionsTextArea)`
-  .textareaWrapper__highlighter,
-  textarea {
-    font-size: ${fontSizes.base}px !important;
-    line-height: 25px !important;
-    font-weight: 300 !important;
-    padding: 12px 20px !important;
-    padding-right: 60px !important;
-    border-top-left-radius: 0px !important;
-    border-top-right-radius: 0px !important;
-    background: #fff !important;
-  }
-`;
-
-const SendIcon = styled(Icon)`
-  height: 21px;
-  transition: all 100ms ease-out;
-`;
-
-const SendIconWrapper: any = styled.button`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  margin: 0;
-  padding: 0;
+const FormInner = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  bottom: 12px;
-  right: 15px;
-  cursor: ${(props: any) => props.disabled ? 'auto' : 'pointer'};
+  flex-direction: column;
+  align-items: stretch;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-left: 50px;
+  padding-right: 50px;
 
-  ${SendIcon} {
-    fill: ${(props: any) => props.disabled ? '#ccc' : props.theme.colorMain };
-  }
+  ${media.smallerThanMinTablet`
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
+`;
 
-  &:hover ${SendIcon} {
-    fill: ${(props: any) => props.disabled ? '#ccc' : darken(0.15, props.theme.colorMain) };
-  }
+const TextareaWrapper = styled.div`
+  margin-bottom: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 
 interface InputProps {
   ideaId: string;
+  projectId: string;
   parentId: string;
+  waitForChildCommentsRefetch: boolean;
+  className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-interface Tracks {
-  focusEditor: Function;
-  clickCommentPublish: Function;
-}
-
 interface State {
   inputValue: string;
-  focussed: boolean;
+  visible: boolean;
+  focused: boolean;
   processing: boolean;
   errorMessage: string | null;
   canSubmit: boolean;
 }
 
-class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  constructor(props: Props) {
-    super(props as any);
+const useCapture = true;
+
+class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+  textareaElement: HTMLTextAreaElement;
+  subscriptions: Subscription[] = [];
+
+  constructor(props) {
+    super(props);
     this.state = {
       inputValue: '',
-      focussed: false,
+      visible: false,
+      focused: false,
       processing: false,
       errorMessage: null,
       canSubmit: false
     };
   }
 
-  handleTextareaOnChange = (inputValue) => {
-    this.setState((state) => ({
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeypress, useCapture);
+
+    this.subscriptions = [
+      eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
+        tap(() => this.setState({ inputValue: '', focused: false })),
+        filter(({ eventValue }) => {
+          const { commentId, parentCommentId } = eventValue;
+          return (commentId === this.props.parentId || parentCommentId === this.props.parentId);
+        })
+      ).subscribe(({ eventValue }) => {
+        const { authorFirstName, authorLastName, authorSlug } = eventValue;
+        const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+
+        this.setState({ inputValue, visible: true, focused: true });
+
+        if (this.textareaElement) {
+          setTimeout(() => {
+            this.textareaElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'center'
+            });
+          }, 100);
+
+          setTimeout(() => {
+            this.textareaElement.focus();
+          }, 300);
+
+          setTimeout(() => {
+            this.setCaretAtEnd(this.textareaElement);
+          }, 350);
+        }
+      })
+    ];
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.focused && !this.state.focused && isEmpty(this.state.inputValue)) {
+      this.setState({ visible: false });
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeypress, useCapture);
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  setCaretAtEnd(element: HTMLTextAreaElement) {
+    if (element.setSelectionRange && element.textContent) {
+      element.setSelectionRange(element.textContent.length, element.textContent.length);
+    }
+  }
+
+  handleKeypress = (event) => {
+    if (this.state.visible && event.type === 'keydown' && event.key === 'Escape') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      event.stopPropagation();
+      this.setState({ visible: false });
+    }
+  }
+
+  handleTextareaOnChange = (inputValue: string) => {
+    this.setState(({ focused }) => ({
       inputValue,
       errorMessage: null,
-      canSubmit: (state.focussed && trim(inputValue) !== '' ? true : false)
+      canSubmit: !!(focused && trim(inputValue) !== '')
     }));
   }
 
   handleTextareaOnFocus = () => {
-    this.props.focusEditor({
+    trackEventByName(tracks.focusChildCommentEditor, {
       extra: {
         ideaId: this.props.ideaId,
         parentId: this.props.parentId
-      },
+      }
     });
 
-    this.setState({ focussed: true });
+    this.setState({ focused: true });
   }
 
   handleTextareaOnBlur = () => {
-    this.setState({ focussed: false });
+    this.setState({ focused: false });
   }
 
-  handleSubmit = async (event) => {
-    const { locale, authUser, ideaId, parentId } = this.props;
+  handleSubmit = async (event: FormEvent<any>) => {
+    event.preventDefault();
+
+    const { locale, authUser, ideaId, projectId, parentId, waitForChildCommentsRefetch } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
-    event.preventDefault();
+    if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
+      this.setState({
+        processing: true,
+        canSubmit: false
+      });
 
-    if (canSubmit) {
-      this.setState({ canSubmit: false });
-
-      if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
-        this.props.clickCommentPublish({
-          extra: {
-            ideaId,
-            parentId,
-            content: inputValue,
-          },
-        });
-
-        try {
-          this.setState({ processing: true });
-
-          await addCommentToComment(ideaId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
-
-          this.setState({
-            inputValue: '',
-            processing: false
-          });
-        } catch (error) {
-          this.setState({
-            errorMessage: formatMessage(messages.addCommentError),
-            processing: false
-          });
-
-          throw error;
+      trackEventByName(tracks.clickChildCommentPublish, {
+        extra: {
+          ideaId,
+          parentId,
+          content: inputValue,
         }
-      } else if (locale && authUser && (!inputValue || inputValue === '')) {
+      });
+
+      try {
+        await addCommentToComment(ideaId, projectId, authUser.id, parentId, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') }, waitForChildCommentsRefetch);
+
         this.setState({
-          errorMessage: formatMessage(messages.emptyCommentError),
-          processing: false
+          inputValue: '',
+          processing: false,
+          visible: false,
+          focused: false
         });
-      } else {
+      } catch (error) {
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
-          processing: false
+          processing: false,
+          canSubmit: true
         });
       }
     }
   }
 
-  render() {
-    const { ideaId, authUser } = this.props;
+  setRef = (element: HTMLTextAreaElement) => {
+    this.textareaElement = element;
+  }
 
-    if (authUser) {
-      const { formatMessage } = this.props.intl;
-      const { inputValue, canSubmit, errorMessage } = this.state;
-      const placeholder = formatMessage(messages.childCommentBodyPlaceholder);
+  placeholder = this.props.intl.formatMessage(messages.childCommentBodyPlaceholder);
+
+  render() {
+    const { ideaId, parentId, authUser, windowSize, className } = this.props;
+
+    if (!isNilOrError(authUser)) {
+      const { inputValue, canSubmit, processing, errorMessage, visible, focused } = this.state;
+      const isButtonVisible = (inputValue && inputValue.length > 0 || focused);
+      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
-        <CommentContainer>
-          <label>
-            <HiddenLabel>
-              <FormattedMessage {...messages.replyToComment} />
-            </HiddenLabel>
-            <StyledTextArea
-              name="comment"
-              id="e2e-reply"
-              placeholder={placeholder}
-              rows={1}
-              padding="12px 30px"
-              value={inputValue}
-              error={errorMessage}
-              ideaId={ideaId}
-              onChange={this.handleTextareaOnChange}
-              onFocus={this.handleTextareaOnFocus}
-              onBlur={this.handleTextareaOnBlur}
-            >
-              <SendIconWrapper className="e2e-send-reply" aria-label={this.props.intl.formatMessage(messages.send)} onClick={this.handleSubmit} disabled={!canSubmit}>
-                <SendIcon name="send" />
-              </SendIconWrapper>
-            </StyledTextArea>
-          </label>
-        </CommentContainer>
+        <Container className={className}>
+          <Form className={`${visible ? 'visible' : 'hidden'} ${focused ? 'focused' : 'blurred'}`} onSubmit={this.handleSubmit}>
+            <label>
+              <HiddenLabel>
+                <FormattedMessage {...messages.replyToComment} />
+              </HiddenLabel>
+              <FormInner>
+                <TextareaWrapper>
+                  <MentionsTextArea
+                    name="comment"
+                    className={`e2e-reply childcommentform-${parentId}`}
+                    placeholder={this.placeholder}
+                    rows={smallerThanSmallTablet ? 2 : 1}
+                    value={inputValue}
+                    error={errorMessage}
+                    ideaId={ideaId}
+                    onChange={this.handleTextareaOnChange}
+                    onFocus={this.handleTextareaOnFocus}
+                    onBlur={this.handleTextareaOnBlur}
+                    getTextareaRef={this.setRef}
+                    fontWeight="300"
+                    padding="10px 0px"
+                    borderRadius="none"
+                    border="none"
+                    boxShadow="none"
+                  />
+                </TextareaWrapper>
+                <ButtonWrapper className={isButtonVisible ? 'visible' : ''}>
+                  <Button
+                    className="e2e-submit-comment"
+                    processing={processing}
+                    icon="send"
+                    onClick={this.handleSubmit}
+                    disabled={!canSubmit}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
+              </FormInner>
+            </label>
+          </Form>
+        </Container>
       );
     }
 
@@ -230,14 +319,12 @@ class ChildCommentForm extends React.PureComponent<Props & InjectedIntlProps & T
   }
 }
 
-const ChildCommentFormWithHoCs = injectTracks<Props>({
-  focusEditor: tracks.focusNewCommentTextbox,
-  clickCommentPublish: tracks.clickCommentPublish,
-})(injectIntl<Props>(ChildCommentForm));
+const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
+  windowSize: <GetWindowSize debounce={50} />
 });
 
 export default (inputProps: InputProps) => (

@@ -21,7 +21,7 @@ const Container: any = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${(props: Props) => rgba(colors[props.color], .15)};
   padding-left: 10px;
   padding-right: 10px;

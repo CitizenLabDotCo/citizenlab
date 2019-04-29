@@ -1,4 +1,46 @@
-# Changelog 
+# Changelog
+
+## 2019-04-24
+
+### Fixed
+
+- Project cards now show correct time remaining until midnight
+
+## 2019-04-23
+
+### Fixed
+
+- Closing the notification menu does not cause an error anymore
+- The unread notifications count is now displayed correctly on IE11
+- Clicking on an invite link will now show an immediate error if the invite is no longer valid
+
+### Changed
+
+- The admin guide is now under the Get Started link and the dashboards is the admin index
+- The project cards give feedback CTA was removed
+- An idea can now be deleted on the idea page
+- The default border radius throughout the platform now is 3px instead of 5px
+- The areas filter on the project cards is only shown when there is more than one area
+
+## 2019-04-16
+
+### Fixed
+
+- The comment count of a project remains correct when moving an idea to a different project
+- Fixed an issue when copying projects (through the admin HQ) to tenants with conflicting locales
+- Only count people who posted/voted/commented/... as participants (this is perceived as a fix in the dashboards)
+- Invites are still sent out when some emails correspond to existing users/invitees
+- Phase started/upcoming notifications are only sent out for published projects
+
+### Added
+
+- Posting text with a URL will turn the URL part into a link
+- Added smart group rules for topic and idea status participants
+
+### Changed
+
+- New configuration for which email campaigns are enabled by default
+- Changed project image medium size to 575x575
 
 ## 2019-04-02
 
@@ -544,7 +586,7 @@
 ## 2018-08-03
 
 ### Fixed
-- The landingpage header layout is no longer broken on mobile devices 
+- The landingpage header layout is no longer broken on mobile devices
 - Yet another bug related to the landingpage not correctly redirecting the user to the correct locale
 - The Page not found page was not found when a page was not found
 
@@ -846,7 +888,7 @@
   - Fixed the dropdown items not always being clickable
 - Navigation bar
   - Fixed avatar and options menu not showing on mobile devices
-  
+
 ### Added
 - Responsive admin sidebar
 - Top navigation menu stays in place when scrolling in admin section on mobile devices
@@ -900,7 +942,7 @@
 - Navigation bar
   - Removed 'ideas' menu item
   - Converted 'projects' menu item into dropdown
-  - Changed style of the 'Start an idea' button 
+  - Changed style of the 'Start an idea' button
 - Landing page
   - Header style changes (larger image dimensions, text centered)
   - Removed 'Projects' title on top of project cards
@@ -1034,9 +1076,9 @@
 - Backend events are logged to segment
 
 ### Changed
-- Improved the styling of the filters 
+- Improved the styling of the filters
 - Project description in the admin has its own tab
-- Restored the landing page header with an image and configurable text 
+- Restored the landing page header with an image and configurable text
 - Improved responsiveness for idea show page
 - Maximum allowed password length has increased to 72 characters
 - Newest projects are list first

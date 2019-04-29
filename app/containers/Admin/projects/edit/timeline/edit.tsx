@@ -42,10 +42,11 @@ import { fontSizes } from 'utils/styleUtils';
 
 // Typings
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const PhaseForm = styled.form`
   .DateRangePickerInput {
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
 
     svg {
       z-index: 3;
@@ -162,7 +163,9 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
           ) : of([]));
         })
       ).subscribe((phaseFiles) => {
-        this.setState({ phaseFiles });
+        this.setState({
+          phaseFiles: phaseFiles.filter(file => !isNilOrError(file)) as UploadFile[]
+        });
       })
     ];
   }
@@ -328,6 +331,8 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
     }
   }
 
+  quillMultilocLabel = <FormattedMessage {...messages.descriptionLabel} />;
+
   render() {
     const { loaded } = this.state;
 
@@ -390,8 +395,8 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps, 
               <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
-                  inAdmin
-                  label={<FormattedMessage {...messages.descriptionLabel} />}
+                  inAdmin={true}
+                  label={this.quillMultilocLabel}
                   valueMultiloc={phaseAttrs.description_multiloc}
                   onChangeMultiloc={this.handleEditorOnChange}
                 />

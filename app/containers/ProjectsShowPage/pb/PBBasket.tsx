@@ -75,7 +75,7 @@ const DropdownListItem = styled.div`
   margin: 0px;
   margin-bottom: 25px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   outline: none;
 
   &.last {

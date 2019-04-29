@@ -41,7 +41,7 @@ const InnerContainer = styled.div`
   flex-direction: column;
   align-items: strech;
   padding: 30px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px ${colors.separation};
 
@@ -116,7 +116,7 @@ const BudgetAmount = styled.span`
 const ProgressBar = styled.div`
   width: 100%;
   height: 30px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
   background: repeating-linear-gradient(-45deg, #eff1f2, #eff1f2 10px, #e6e9ec 10px, #e6e9ec 20px);
@@ -131,7 +131,7 @@ const ProgressBarOverlay: any = styled.div`
   width: ${(props: any) => props.progress}%;
   height: 100%;
   background: ${colors.adminTextColor};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;

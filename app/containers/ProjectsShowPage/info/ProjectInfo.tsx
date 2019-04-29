@@ -36,7 +36,7 @@ const Container = styled.div`
   ${media.smallerThanMinTablet`
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 80px;
   `}
 `;
@@ -74,7 +74,7 @@ const ProjectImages = styled.div`
 
   img {
     margin: 5px;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px ${colors.separation};
 
     &:first-child {

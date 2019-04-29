@@ -1,20 +1,22 @@
-// Libraries
 import React, { PureComponent, FormEvent } from 'react';
-import styled, { css } from 'styled-components';
+import { omit } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // styles
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import styled, { css } from 'styled-components';
 
-// Components
+// components
 import { FormattedMessage } from 'utils/cl-intl';
 import Button, { ButtonStyles, Props as OriginalButtonProps } from 'components/UI/Button';
+
+// typings
 import { Omit } from 'typings';
-import { omit } from 'lodash-es';
 
 const Wrapper: any = styled.div`
   display: flex;
   align-items: center;
+
   ${(props: any) => props.fullWidth ? css`
     width: 100%;
     flex: 1;
@@ -22,7 +24,10 @@ const Wrapper: any = styled.div`
 `;
 
 const Message = styled.p`
-  margin-left: 2rem;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 20px;
 
   &.error {
     color: ${colors.clRedError};
@@ -57,7 +62,6 @@ const Message = styled.p`
   }
 `;
 
-// Typing
 interface Props extends Omit<OriginalButtonProps, 'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'> {
   status: 'disabled' | 'enabled' | 'error' | 'success';
   loading: boolean;
@@ -99,6 +103,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
     if (this.props.status === 'error') {
       this.removeFocus(this.submitButton);
     }
+
     const buttonProps = omit(this.props, ['className', 'style', 'processing', 'disabled', 'onClick', 'setSubmitButtonRef', 'messages']);
     const { loading, status, onClick, messages, animate } = this.props;
 
@@ -113,9 +118,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
           setSubmitButtonRef={this.setSubmitButtonRef}
           {...buttonProps}
         >
-          {(status === 'enabled' ||
-            status === 'disabled' ||
-            status === 'error') &&
+          {(status === 'enabled' || status === 'disabled' || status === 'error') &&
             <FormattedMessage {...messages.buttonSave} />
           }
           {status === 'success' &&

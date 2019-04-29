@@ -51,18 +51,17 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   handle = (event) => {
-    const { onClickOutside } = this.props;
-
-    // Escape key to close
-    if (event.type === 'keydown' && (event as KeyboardEvent).keyCode === 27) {
-      onClickOutside(event);
+    // Press esc to close
+    if (event.type === 'keydown' && event.key === 'Escape') {
+      event.preventDefault();
+      this.props.onClickOutside(event);
     }
 
     // Click outside to close
     if (event.type === 'click' && this.container && !this.container.contains(event.target)) {
       setTimeout(() => {
         if (this.container) {
-          onClickOutside(event);
+          this.props.onClickOutside(event);
         }
       }, 10);
     }

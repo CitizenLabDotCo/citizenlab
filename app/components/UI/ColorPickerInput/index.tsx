@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 
 // components
@@ -22,7 +22,7 @@ const InputWrapper = styled.div`
 const Color: any = styled.div`
   width: 50px;
   height: 50px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   background: ${(props: any) => props.color };
@@ -63,9 +63,9 @@ interface State {
   opened: boolean;
 }
 
-class ColorPickerInput extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ColorPickerInput extends PureComponent<Props, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       opened: false,
     };

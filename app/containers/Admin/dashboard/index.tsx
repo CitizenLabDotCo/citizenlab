@@ -78,7 +78,7 @@ export const GraphCardInner = styled.div`
   padding-right: 20px;
   padding-bottom: 35px;
   border: solid 1px ${colors.adminBorder};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.adminContentBackground};
   p {
     font-size: ${fontSizes.base}px;
@@ -227,7 +227,6 @@ export class DashboardsPage extends React.PureComponent<Props & InjectedIntlProp
   private tabs = [
     { label: this.props.intl.formatMessage(messages.tabSummary), url: '/admin/dashboard' },
     { label: this.props.intl.formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
-    //  { label: formatMessage(messages.tabAcquisition), url: '/admin/dashboard/aquisiton' } TODO
   ];
   private resource = {
     title: this.props.intl.formatMessage(messages.titleDashboard),

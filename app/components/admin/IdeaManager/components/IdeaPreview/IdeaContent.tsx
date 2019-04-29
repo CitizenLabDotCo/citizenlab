@@ -236,7 +236,15 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
   }
 
   render() {
-    const { idea, localize, ideaImages, ideaFiles, tenant, handleClickEdit, intl: { formatMessage } } = this.props;
+    const {
+      idea,
+      localize,
+      ideaImages,
+      ideaFiles,
+      tenant,
+      handleClickEdit,
+      intl: { formatMessage }
+    } = this.props;
     const { showMap } = this.state;
     if (!isNilOrError(idea)) {
       const ideaTitle = localize(idea.attributes.title_multiloc);
@@ -363,7 +371,7 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
 });
 
 const IdeaContentWithHOCs = injectIntl(injectLocalize(IdeaContent));

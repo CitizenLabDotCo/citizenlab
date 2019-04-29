@@ -15,7 +15,7 @@ import VoteControl from 'components/VoteControl';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
 import Author from 'components/Author';
-import LazyImage from 'components/LazyImage';
+import LazyImage, { Props as LazyImageProps } from 'components/LazyImage';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -51,7 +51,7 @@ const IdeaBudget = styled.div`
   position: absolute;
   top: 15px;
   left: 19px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.clRed2};
   background: rgba(255, 255, 255, 0.9);
 `;
@@ -64,18 +64,18 @@ const IdeaImageContainer: any = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+ border-top-left-radius: ${(props: any) => props.theme.borderRadius};
+ border-top-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const IdeaImage: any = styled(LazyImage)`
+const IdeaImage = styled<LazyImageProps>(LazyImage)`
   width: 100%;
 `;
 
 const IdeaContent = styled.div`
   flex-grow: 1;
   padding: 20px;
-  padding-top: 15px;
+  padding-top: 18px;
 
   &.extraTopPadding {
     padding-top: 75px;
@@ -104,10 +104,14 @@ const IdeaTitle: any = styled.h3`
   word-break: break-word;
 `;
 
+const StyledAuthor = styled(Author)`
+  margin-left: -4px;
+`;
+
 const Footer = styled.div`
   min-height: 50px;
   position: absolute;
-  bottom: 18px;
+  bottom: 20px;
   left: 20px;
   right: 20px;
   display: flex;
@@ -120,11 +124,11 @@ const Spacer = styled.div`
 `;
 
 const CommentIcon = styled(Icon)`
+  width: 26px;
+  height: 20px;
   fill: ${colors.label};
-  height: 21px;
-  margin-right: 5px;
+  margin-right: 6px;
   margin-top: 2px;
-  width: 30px;
 `;
 
 const CommentCount = styled.div`
@@ -150,7 +154,7 @@ const IdeaContainer = styled(Link)`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   position: relative;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
@@ -198,7 +202,7 @@ interface State {
   showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-export const namespace = 'components/IdeaCard/index';
+export const componentName = 'components/IdeaCard/index';
 
 class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
@@ -215,7 +219,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IModalInfo>(namespace, 'cardClick', {
+      eventEmitter.emit<IModalInfo>(componentName, 'ideaCardClick', {
         type: 'idea',
         id: idea.id,
         url: `/ideas/${idea.attributes.slug}`
@@ -225,7 +229,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   onCardHover = (event: FormEvent<MouseEvent>) => {
     event.preventDefault();
-    eventEmitter.emit(namespace, 'cardHover', null);
+    eventEmitter.emit(componentName, 'cardHover', null);
   }
 
   onAuthorClick = (event: FormEvent<MouseEvent>) => {
@@ -325,7 +329,7 @@ class IdeaCard extends PureComponent<Props & InjectedIntlProps, State> {
               <IdeaTitle>
                 <T value={idea.attributes.title_multiloc} />
               </IdeaTitle>
-              <Author
+              <StyledAuthor
                 authorId={ideaAuthorId}
                 message={messages.byAuthorName}
                 createdAt={idea.attributes.published_at}

@@ -58,6 +58,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.votes',
     defaultMessage: 'Votes',
   },
+  ideaVotes: {
+    id: 'app.containers.AdminPage.DashboardPage.ideaVotes',
+    defaultMessage: 'Votes on ideas',
+  },
   comments: {
     id: 'app.containers.AdminPage.DashboardPage.comments',
     defaultMessage: 'Comments',
@@ -153,9 +157,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.DashboardPage.commentsByTimeTitle',
     defaultMessage: 'Comments',
   },
-  votesByTimeTitle: {
-    id: 'app.containers.AdminPage.DashboardPage.votesByTimeTitle',
-    defaultMessage: 'Votes',
+  ideaVotesByTimeTitle: {
+    id: 'app.containers.AdminPage.DashboardPage.ideaVotesByTimeTitle',
+    defaultMessage: 'Votes on ideas',
   },
   numberOfVotesUp: {
     id: 'app.containers.AdminPage.DashboardPage.numberOfVotesUp',

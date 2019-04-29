@@ -26,7 +26,7 @@ const Container = styled.div`
   overflow: hidden;
   padding: 15px;
   padding-top: 30px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px solid ${colors.adminBorder};
   position: relative;
   display: flex;
@@ -93,6 +93,7 @@ class IdeaPane extends PureComponent<Props, State> {
     const slug = !isNilOrError(this.props.idea) && this.props.idea.attributes.slug;
     trackEventByName(tracks.clickIdeaOnMap.name, { extra: { slug } });
   }
+
   render() {
     const { idea, className, onClose } = this.props;
 

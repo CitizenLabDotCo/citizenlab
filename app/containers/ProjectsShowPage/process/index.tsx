@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Header from '../Header';
 import Timeline from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
@@ -47,6 +46,10 @@ const StyledTimeline = styled(Timeline)`
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-bottom: 30px;
+
+  ${media.tablet`
+    margin-top: -30px;
+  `}
 `;
 
 const SecondRow = styled.div`
@@ -123,7 +126,6 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
       return (
         <Container className={`${className} e2e-project-process-page`}>
-          <Header projectSlug={slug} phaseId={selectedPhaseId} />
           <FirstRow>
             <StyledTimeline projectId={project.id} onPhaseSelected={this.handleOnPhaseSelected} />
             <StyledProjectArchivedIndicator projectId={project.id} />
