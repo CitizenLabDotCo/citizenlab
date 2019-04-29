@@ -2,6 +2,7 @@ class WebApi::V1::UserCommentsController < ApplicationController
 
   def index
     @comments = policy_scope(Comment)
+      .published
       .where(author_id: params[:user_id])
 
     @ideas = policy_scope(Idea)
