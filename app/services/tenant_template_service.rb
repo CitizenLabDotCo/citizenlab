@@ -374,7 +374,6 @@ class TenantTemplateService
         'publication_status'           => p.publication_status,
         'ordering'                     => p.ordering
       })
-      yml_project['default_assignee_ref'] = lookup_ref(p.default_assignee_id, :user) if p.default_assignee_id
       store_ref yml_project, p.id, :project
       yml_project
     end
@@ -664,7 +663,6 @@ class TenantTemplateService
         'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
         'budget'                 => i.budget
       }
-      yml_idea['assignee_ref'] = lookup_ref(i.assignee_id, :user) if i.assignee_id
       store_ref yml_idea, i.id, :idea
       yml_idea
     end
