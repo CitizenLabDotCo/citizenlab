@@ -12,6 +12,6 @@ export default {
   clickChildCommentReplyButton: 'Clicked on the reply button of a child comment',
   clickParentCommentUpvoteButton: 'Clicked on the upvote button of a parent comment',
   clickParentCommentCancelUpvoteButton: 'Clicked on the cancel upvote button of a parent comment',
-  clickChildCommentUpvoteButton: 'Clicked on the upvote button of a parent comment',
-  clickChildCommentCancelUpvoteButton: 'Clicked on the cancel upvote button of a parent comment',
+  clickChildCommentUpvoteButton: 'Clicked on the upvote button of a child comment',
+  clickChildCommentCancelUpvoteButton: 'Clicked on the cancel upvote button of a child comment',
 };
