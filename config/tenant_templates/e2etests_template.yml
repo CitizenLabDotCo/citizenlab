@@ -1,31 +1,42 @@
 ---
 models:
   idea_status:
-  - title_multiloc: statuses.proposed
-    ordering: 100
-    code: proposed
-    color: "#687782"
-    description_multiloc: statuses.proposed_description
-  - title_multiloc: statuses.under_consideration
-    ordering: 200
-    code: under_consideration
-    color: "#0080A5"
-    description_multiloc: statuses.under_consideration_description
-  - title_multiloc: statuses.accepted
-    ordering: 300
-    code: accepted
-    color: "#04884C"
-    description_multiloc: statuses.accepted_description
-  - title_multiloc: statuses.rejected
-    ordering: 400
-    code: rejected
-    color: "#E52516"
-    description_multiloc: statuses.rejected_description
-  - title_multiloc: statuses.implemented
-    ordering: 500
-    code: implemented
-    color: "#04884C"
-    description_multiloc: statuses.implemented_description
+    - 
+      title_multiloc: statuses.proposed
+      ordering: 100
+      code: proposed
+      color: '#687782'
+      description_multiloc: statuses.proposed_description
+    - 
+      title_multiloc: statuses.viewed
+      ordering: 150
+      code: viewed
+      color: '#01A1B1'
+      description_multiloc: statuses.viewed_description
+    - 
+      title_multiloc: statuses.under_consideration
+      ordering: 200
+      code: under_consideration
+      color: '#0080A5'
+      description_multiloc: statuses.under_consideration_description
+    - 
+      title_multiloc: statuses.accepted
+      ordering: 300
+      code: accepted
+      color: '#04884C'
+      description_multiloc: statuses.accepted_description
+    - 
+      title_multiloc: statuses.rejected
+      ordering: 400
+      code: rejected
+      color: '#E52516'
+      description_multiloc: statuses.rejected_description
+    -
+      title_multiloc: statuses.implemented
+      ordering: 500
+      code: implemented
+      color: '#04884C'
+      description_multiloc: statuses.implemented_description
   topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description

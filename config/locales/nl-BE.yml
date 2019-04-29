@@ -2,6 +2,8 @@ nl-BE:
   statuses:
     proposed: voorgesteld
     proposed_description: Dit idee is voorgesteld
+    viewed: viewed
+    viewed_description: This idea has been seen by someone from the city
     under_consideration: in overweging
     under_consideration_description: Dit idee is in overweging genomen
     accepted: aangenomen
