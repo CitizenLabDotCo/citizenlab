@@ -1,12 +1,12 @@
 import React from 'react';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaStatusData, ideaStatusStream } from 'services/ideaStatuses';
 import { isString } from 'lodash-es';
 
 interface InputProps {
-  id: string;
+  id: string | null;
 }
 
 type children = (renderProps: GetIdeaStatusChildProps) => JSX.Element | null;
@@ -41,8 +41,14 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         filter(({ id }) => isString(id)),
-        switchMap(({ id }) => ideaStatusStream(id).observable)
-      ).subscribe((ideaStatus) => this.setState({ ideaStatus: ideaStatus.data }))
+        switchMap(({ id }: { id: string}) => {
+          if (isString(id)) {
+            return ideaStatusStream(id).observable;
+          }
+
+          return of(null);
+        })
+      ).subscribe((ideaStatus) => this.setState({ ideaStatus: ideaStatus ? ideaStatus.data : null }))
     ];
   }
 
