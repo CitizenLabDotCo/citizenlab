@@ -31,7 +31,7 @@ Rails.application.routes.draw do
         resources :comments, shallow: true, 
           concerns: [:votable, :spam_reportable], 
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-
+          get :children, on: :member
           post :mark_as_deleted, on: :member
         end
         resources :official_feedback, shallow: true
