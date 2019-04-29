@@ -90,7 +90,7 @@ interface DataProps {
 
 interface InputProps {
   ideaId: string;
-  statusId: string | null;
+  statusId?: string | null;
   ideaTitle: string;
   projectId: string;
   locale?: Locale;
