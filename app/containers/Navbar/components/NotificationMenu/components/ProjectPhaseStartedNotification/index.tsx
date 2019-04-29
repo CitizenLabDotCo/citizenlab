@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { IProjectPhaseStartedNotificationData } from 'services/notifications';
 
 // i18n
@@ -13,31 +13,24 @@ type Props = {
   notification: IProjectPhaseStartedNotificationData;
 };
 
-type State = {};
+const ProjectPhaseStartedNotification = memo<Props>(props => {
+  const { notification } = props;
 
-export default class ProjectPhaseStartedNotification extends React.PureComponent<Props, State> {
+  return (
+    <NotificationWrapper
+      linkTo={`/projects/${notification.attributes.project_slug}`}
+      timing={notification.attributes.phase_start_at}
+      icon="timeline"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.projectPhaseStarted}
+        values={{
+          projectTitle: <T value={notification.attributes.project_title_multiloc} />
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
-  onClickUserName = (event) => {
-    event.stopPropagation();
-  }
-
-  render() {
-    const { notification } = this.props;
-
-    return (
-      <NotificationWrapper
-        linkTo={`/projects/${notification.attributes.project_slug}`}
-        timing={notification.attributes.phase_start_at}
-        icon="timeline"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.projectPhaseStarted}
-          values={{
-            projectTitle: <T value={notification.attributes.project_title_multiloc} />
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+export default ProjectPhaseStartedNotification;

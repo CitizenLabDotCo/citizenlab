@@ -15,6 +15,7 @@ import styled from 'styled-components';
 
 // typings
 import { Locale, Multiloc } from 'typings';
+import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -141,8 +142,8 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
               onChange={this.handleOnChange(shownLocale)}
               onBlur={onBlur}
               onFocus={onFocus}
-              fontSize={fontSize}
-              backgroundColor={backgroundColor}
+              fontSize={`${fontSize || fontSizes.base}px`}
+              background={backgroundColor}
               placeholderFontWeight={placeholderFontWeight}
               ariaLabel={ariaLabel}
             />

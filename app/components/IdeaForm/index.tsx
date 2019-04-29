@@ -246,11 +246,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   handleDescriptionOnChange = async (description: string) => {
     const isDescriptionEmpty = (!description || description === '');
+
     this.setState(({ descriptionError }) => ({
       description,
       descriptionError: (isDescriptionEmpty ? descriptionError : null)
-    })
-    );
+    }));
   }
 
   handleTopicsOnChange = (selectedTopics: IOption[]) => {

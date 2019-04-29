@@ -27,7 +27,7 @@ const CheckboxContainer: any = styled.div`
   justify-content: center;
   cursor: pointer;
   border: solid 1px #aaa;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   background: ${(props: any) => props.checked ? colors.clGreen : '#fff'};
   border-color: ${(props: any) => props.checked ? colors.clGreen : '#aaa'};
@@ -35,12 +35,6 @@ const CheckboxContainer: any = styled.div`
 
   &:hover {
     border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
-  }
-
-  &:focus {
-    outline-style: solid;
-    outline-width: 3px;
-    outline-color: #aaa;
   }
 `;
 
@@ -51,9 +45,9 @@ const CheckmarkIcon = styled(Icon)`
 
 const Label = styled.label`
   color: ${colors.label};
+  font-size: ${fontSizes.base}px;
   padding: 5px 0 5px 10px;
   cursor: pointer;
-  font-size: ${fontSizes.base}px;
 `;
 
 interface DefaultProps {
@@ -78,23 +72,17 @@ export default class Checkbox extends PureComponent<Props, State> {
   };
 
   toggleCheckbox = (event: FormEvent | KeyboardEvent) => {
-    if (event.type === 'click') {
-      this.removeFocusCheckboxFocus();
-    }
-
     event.preventDefault();
     event.stopPropagation();
     this.props.onChange(event);
   }
 
-  setCheckboxContainerRef = (el) => {
-    this.checkboxContainer = el;
+  setRef = (element: HTMLDivElement) => {
+    this.checkboxContainer = element;
   }
 
-  removeFocusCheckboxFocus = () => {
-    if (this.checkboxContainer) {
-      this.checkboxContainer.blur();
-    }
+  removeFocus = (event: MouseEvent) => {
+    event.preventDefault();
   }
 
   handleLabelOnClick = (event: FormEvent) => {
@@ -117,10 +105,11 @@ export default class Checkbox extends PureComponent<Props, State> {
       <Container className={`${className} ${label && 'hasLabel'}`} size={size}>
         <CheckboxContainer
           className={`e2e-checkbox ${value ? 'checked' : 'unchecked'}`}
-          innerRef={this.setCheckboxContainerRef}
+          innerRef={this.setRef}
           tabIndex={0}
           checked={value}
           size={size}
+          onMouseDown={this.removeFocus}
           onClick={this.toggleCheckbox}
           onKeyPress={this.handleKeyPress}
         >

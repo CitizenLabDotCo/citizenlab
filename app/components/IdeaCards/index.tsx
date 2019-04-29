@@ -43,7 +43,7 @@ const Loading = styled.div`
   width: 100%;
   height: 300px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,12 +112,6 @@ const DropdownFilters = styled.div`
   &.hidden {
     display: none;
   }
-
-  &.hasViewToggle {
-    ${media.smallerThanMinTablet`
-      margin-top: 20px;
-    `}
-  }
 `;
 
 const StyledSearchInput = styled(SearchInput)`
@@ -141,6 +135,7 @@ const ViewButtons = styled.div`
 
     ${media.smallerThanMinTablet`
       margin-left: 0px;
+      margin-bottom: 15px;
     `}
   }
 `;
@@ -183,14 +178,14 @@ const ViewButton = styled.div`
 `;
 
 const CardsButton = ViewButton.extend`
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
+  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
   border-right: none;
 `;
 
 const MapButton = ViewButton.extend`
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+ border-top-right-radius: ${(props: any) => props.theme.borderRadius};
+  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeasList: any = styled.div`
@@ -226,7 +221,7 @@ const EmptyContainer = styled.div`
   padding-bottom: 100px;
   background: #fff;
   border: solid 1px ${colors.separation};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const IdeaIcon = styled(Icon)`
@@ -360,7 +355,7 @@ class IdeaCards extends PureComponent<Props, State> {
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters className={`${showMapView && 'hidden'} ${showViewToggle && 'hasViewToggle'}`}>
+            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'}`}>
               <SelectSort onChange={this.handleSortOnChange} />
               {allowProjectsFilter && <SelectProjects onChange={this.handleProjectsOnChange} />}
               <SelectTopics onChange={this.handleTopicsOnChange} />
@@ -455,7 +450,7 @@ class IdeaCards extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps}>{render}</GetIdeas>
+  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} sort="random">{render}</GetIdeas>
 });
 
 const IdeaCardsWithHoCs = withTheme<Props, State>(IdeaCards);

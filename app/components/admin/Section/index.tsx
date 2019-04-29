@@ -69,7 +69,7 @@ export const SectionField = styled.div`
     width: 100%;
     -webkit-appearance: none;
     background: #fff;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     font-size: ${fontSizes.base}px;

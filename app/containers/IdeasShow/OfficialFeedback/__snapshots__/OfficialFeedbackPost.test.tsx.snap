@@ -1,116 +1,115 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
-<OfficialFeedbackPost__PostContainer
-  className="e2e-official-feedback-post"
-  key="feedbackId1"
->
-  <OfficialFeedbackPost__StyledMoreActionsMenu
-    actions={
-      Array [
-        Object {
-          "handler": [Function],
-          "label": <FormattedMessage
-            defaultMessage="Edit"
-            id="app.components.IdeasShow.OfficialFeedback.editOfficialFeedbackPost"
-          />,
-          "name": "edit",
-        },
-        Object {
-          "handler": [Function],
-          "label": <FormattedMessage
-            defaultMessage="Delete"
-            id="app.components.IdeasShow.OfficialFeedback.deleteOfficialFeedbackPost"
-          />,
-          "name": "delete",
-        },
-      ]
+<OfficialFeedbackPost
+  editingAllowed={true}
+  intl={
+    Object {
+      "defaultFormats": Object {},
+      "defaultLocale": "en",
+      "formatDate": [Function],
+      "formatHTMLMessage": [Function],
+      "formatMessage": [Function],
+      "formatNumber": [Function],
+      "formatPlural": [Function],
+      "formatRelative": [Function],
+      "formatTime": [Function],
+      "formats": Object {},
+      "formatters": Object {
+        "getDateTimeFormat": [Function],
+        "getMessageFormat": [Function],
+        "getNumberFormat": [Function],
+        "getPluralFormat": [Function],
+        "getRelativeFormat": [Function],
+      },
+      "locale": "en",
+      "messages": Object {},
+      "now": [Function],
+      "onError": [Function],
+      "textComponent": "span",
+      "timeZone": null,
     }
-    ariaLabel="Show more actions"
-  />
-  <OfficialFeedbackPost__Body>
-    <div
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
-        }
-      }
-    />
-  </OfficialFeedbackPost__Body>
-  <OfficialFeedbackPost__Footer>
-    <OfficialFeedbackPost__Author>
-      <T
-        value={
-          Object {
-            "en": "Testing Official Department",
-          }
-        }
-      />
-    </OfficialFeedbackPost__Author>
-    <OfficialFeedbackPost__DatePosted>
-      <FormattedDate
-        value="2012-01-01T04:06:07.000Z"
-      />
-    </OfficialFeedbackPost__DatePosted>
-    <OfficialFeedbackPost__DateEdited>
-      <FormattedMessage
-        defaultMessage="Last edited on {date}"
-        id="app.components.IdeasShow.OfficialFeedback.lastEdition"
-        values={
-          Object {
-            "date": <FormattedDate
-              value="2011-01-01T04:26:07.000Z"
-            />,
-          }
-        }
-      />
-    </OfficialFeedbackPost__DateEdited>
-  </OfficialFeedbackPost__Footer>
-</OfficialFeedbackPost__PostContainer>
+  }
+  last={false}
+  locale="en"
+  officialFeedbackPost={
+    Object {
+      "attributes": Object {
+        "author_multiloc": Object {
+          "en": "Testing Official Department",
+        },
+        "body_multiloc": Object {
+          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+        },
+        "created_at": "2012-01-01T04:06:07.000Z",
+        "updated_at": "2011-01-01T04:26:07.000Z",
+      },
+      "id": "feedbackId1",
+      "type": "official_feedbacks",
+    }
+  }
+  tenantLocales={
+    Array [
+      "en",
+      "nl-BE",
+    ]
+  }
+/>
 `;
 
 exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
-<OfficialFeedbackPost__PostContainer
-  className="e2e-official-feedback-post"
-  key="feedbackId1"
->
-  <OfficialFeedbackPost__Body>
-    <div
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "Update: Do Not Keep Calm, please panic now. End of transmission.",
-        }
-      }
-    />
-  </OfficialFeedbackPost__Body>
-  <OfficialFeedbackPost__Footer>
-    <OfficialFeedbackPost__Author>
-      <T
-        value={
-          Object {
-            "en": "Testing Official Department",
-          }
-        }
-      />
-    </OfficialFeedbackPost__Author>
-    <OfficialFeedbackPost__DatePosted>
-      <FormattedDate
-        value="2012-01-01T04:06:07.000Z"
-      />
-    </OfficialFeedbackPost__DatePosted>
-    <OfficialFeedbackPost__DateEdited>
-      <FormattedMessage
-        defaultMessage="Last edited on {date}"
-        id="app.components.IdeasShow.OfficialFeedback.lastEdition"
-        values={
-          Object {
-            "date": <FormattedDate
-              value="2011-01-01T04:26:07.000Z"
-            />,
-          }
-        }
-      />
-    </OfficialFeedbackPost__DateEdited>
-  </OfficialFeedbackPost__Footer>
-</OfficialFeedbackPost__PostContainer>
+<OfficialFeedbackPost
+  editingAllowed={false}
+  intl={
+    Object {
+      "defaultFormats": Object {},
+      "defaultLocale": "en",
+      "formatDate": [Function],
+      "formatHTMLMessage": [Function],
+      "formatMessage": [Function],
+      "formatNumber": [Function],
+      "formatPlural": [Function],
+      "formatRelative": [Function],
+      "formatTime": [Function],
+      "formats": Object {},
+      "formatters": Object {
+        "getDateTimeFormat": [Function],
+        "getMessageFormat": [Function],
+        "getNumberFormat": [Function],
+        "getPluralFormat": [Function],
+        "getRelativeFormat": [Function],
+      },
+      "locale": "en",
+      "messages": Object {},
+      "now": [Function],
+      "onError": [Function],
+      "textComponent": "span",
+      "timeZone": null,
+    }
+  }
+  last={false}
+  locale="en"
+  officialFeedbackPost={
+    Object {
+      "attributes": Object {
+        "author_multiloc": Object {
+          "en": "Testing Official Department",
+        },
+        "body_multiloc": Object {
+          "en": "Update: Do Not Keep Calm, please panic now. End of transmission.",
+        },
+        "created_at": "2012-01-01T04:06:07.000Z",
+        "updated_at": "2011-01-01T04:26:07.000Z",
+      },
+      "id": "feedbackId1",
+      "type": "official_feedbacks",
+    }
+  }
+  tenantLocales={
+    Array [
+      "en",
+      "nl-BE",
+    ]
+  }
+/>
 `;

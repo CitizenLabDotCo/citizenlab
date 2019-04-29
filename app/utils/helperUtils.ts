@@ -69,3 +69,7 @@ export function isAdminPage(pathName: string, specificAdminPage?: string) {
   }
   return pathnameWithoutLocale.startsWith('/admin');
 }
+
+export function stopPropagation(event) {
+  event.stopPropagation();
+}

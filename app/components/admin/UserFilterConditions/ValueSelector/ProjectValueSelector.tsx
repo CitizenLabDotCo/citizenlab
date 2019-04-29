@@ -51,10 +51,10 @@ class ProjectValueSelector extends React.PureComponent<Props & InjectedLocalized
   }
 }
 
-const AreaValueSelectorWithHOC = localize(ProjectValueSelector);
+const ProjectValueSelectorWithHOC = localize(ProjectValueSelector);
 
 export default (inputProps) => (
   <GetProjects publicationStatuses={['draft', 'published', 'archived']}>
-    {(projects) => <AreaValueSelectorWithHOC {...inputProps} projects={projects} />}
+    {(projects) => <ProjectValueSelectorWithHOC {...inputProps} projects={projects} />}
   </GetProjects>
 );

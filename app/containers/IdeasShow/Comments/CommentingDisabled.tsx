@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
@@ -8,6 +8,10 @@ import T from 'components/T';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 import messages from '../messages';
+
+const Container = styled.div`
+  margin-bottom: 40px;
+`;
 
 const StyledLink = styled(Link) `
   color: #1391A1;
@@ -32,8 +36,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class CommentingDisabled extends React.PureComponent<Props> {
-
+class CommentingDisabled extends PureComponent<Props> {
     calculateMessageDescriptor = () => {
       const { isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
 
@@ -62,15 +65,17 @@ class CommentingDisabled extends React.PureComponent<Props> {
       if (!messageDescriptor) return null;
 
       return (
-        <Warning>
-          <FormattedMessage
-            {...messageDescriptor}
-            values={{
-              signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
-              projectName: projectTitle && <T value={projectTitle} />
-            }}
-          />
-        </Warning>
+        <Container>
+          <Warning>
+            <FormattedMessage
+              {...messageDescriptor}
+              values={{
+                signInLink: <StyledLink to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></StyledLink>,
+                projectName: projectTitle && <T value={projectTitle} />
+              }}
+            />
+          </Warning>
+        </Container>
       );
     }
 }

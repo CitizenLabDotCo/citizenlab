@@ -30,7 +30,7 @@ const Container = styled.div`
   justify-content: space-between;
   padding: 10px;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px ${colors.separation};
   transition: transform 250ms ease-out;
@@ -72,7 +72,7 @@ const ImageWrapper = styled.div`
   img {
     width: 100%;
     height: 100%;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     object-fit: cover;
   }
 
@@ -84,7 +84,7 @@ const ImageWrapper = styled.div`
 const ProjectImagePlaceholder = styled.div`
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;

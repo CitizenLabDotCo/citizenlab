@@ -8,7 +8,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   padding: 16px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.clBlueDarkBg};
 `;
 

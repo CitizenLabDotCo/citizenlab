@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, capitalize, isNumber, round } from 'lodash-es';
+import { isEmpty, get, isNumber, round } from 'lodash-es';
 import moment from 'moment';
 import Observer from '@researchgate/react-intersection-observer';
 import bowser from 'bowser';
@@ -49,7 +49,7 @@ const Container = styled(Link)`
   position: relative;
   cursor: pointer;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   &.large {
@@ -255,14 +255,14 @@ const ProgressBar = styled.div`
   width: 100%;
   max-width: 130px;
   height: 5px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #d6dade;
 `;
 
 const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fc3428;
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
@@ -282,7 +282,7 @@ const ProjectLabel = styled.div`
   padding-right: 16px;
   padding-top: 10px;
   padding-bottom: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
   transition: all 200ms ease;
   cursor: pointer;
@@ -453,7 +453,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
-  handleIntersectionObserverOnChange = (event, unobserve) => {
+  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
     if (event.isIntersecting) {
       this.setState({ visible: true });
       unobserve();
@@ -499,7 +499,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
-      const timeRemaining = (endAt ? capitalize(moment.duration(moment(endAt).diff(moment())).humanize()) : null);
+      const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
       let countdown: JSX.Element | null = null;
       let ctaMessage: JSX.Element | null = null;
 
@@ -525,7 +525,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
             <TimeRemaining className={size}>
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
-            <Observer onChange={this.handleIntersectionObserverOnChange}>
+            <Observer onChange={this.handleIntersection}>
               <ProgressBar>
                 <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
               </ProgressBar>

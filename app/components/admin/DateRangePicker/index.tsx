@@ -24,7 +24,7 @@ interface State {
 
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
 
     svg {
       z-index: 3;

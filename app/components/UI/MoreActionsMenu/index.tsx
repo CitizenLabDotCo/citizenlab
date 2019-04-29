@@ -13,10 +13,6 @@ import { lighten } from 'polished';
 const Container = styled.div`
   position: relative;
   display: inline-block;
-
-  * {
-    user-select: none;
-  }
 `;
 
 const MoreOptionsIcon = styled(Icon)`
@@ -42,11 +38,8 @@ const MoreOptions = styled.button`
   align-items: center;
   cursor: pointer;
 
-  * {
-    user-select: none;
-  }
-
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     ${MoreOptionsIcon} {
       fill: #000;
     }
@@ -76,7 +69,7 @@ const ListItem = styled.button`
   font-weight: 400;
   white-space: nowrap;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
 
@@ -86,7 +79,6 @@ const ListItem = styled.button`
 
   &:hover,
   &:focus {
-    outline: none;
     color: white;
     background: ${lighten(.1, colors.adminMenuBackground)};
   }
@@ -128,7 +120,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
     this.setState({ visible: false });
   }
 
-  toggleMenu = (event) => {
+  removeFocus = (event: React.MouseEvent) => {
+    event.preventDefault();
+  }
+
+  toggleMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setState(({ visible }) => ({ visible: !visible }));
   }
@@ -169,7 +165,11 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
           onClickOutside={this.hideMenu}
           dropdownOpened={visible}
         >
-          <MoreOptions aria-label={ariaLabel} onClick={this.toggleMenu}>
+          <MoreOptions
+            aria-label={ariaLabel}
+            onMouseDown={this.removeFocus}
+            onClick={this.toggleMenu}
+          >
             <MoreOptionsIcon name="more-options" />
             {this.props.label && <MoreOptionsLabel>{this.props.label}</MoreOptionsLabel>}
           </MoreOptions>

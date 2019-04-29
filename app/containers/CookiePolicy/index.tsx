@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import Helmet from 'react-helmet';
 
 // i18n
@@ -114,7 +114,7 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
   transition: all 200ms ease;
@@ -122,8 +122,6 @@ const StyledLink = styled(Link)`
   &:hover {
     color: #000;
     text-decoration: underline;
-    /* box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12); */
-    /* transform: translate(0px, -2px); */
   }
 `;
 
@@ -132,10 +130,12 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-const openConsentManager = () => eventEmitter.emit('footer', 'openConsentManager', null);
-
-export const CookiePolicy = (props: InjectedIntlProps) => {
+const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
+
+  const openConsentManager = () => {
+    eventEmitter.emit('footer', 'openConsentManager', null);
+  };
 
   return (
     <Container className="e2e-page-cookie-policy">
@@ -145,7 +145,7 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
       </Helmet>
 
       <PageContent>
-        <StyledContentContainer>
+        <StyledContentContainer className="bleh">
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>
               <FormattedMessage {...messages.cookiePolicyTitle} />
@@ -156,10 +156,9 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
                 <FormattedMessage
                   tagName="p"
                   {...messages.changePreferences}
-                  className="cookiePreferencesMessage"
                   values={{
                     changePreferencesButton: (
-                      <StyledButton onClick={openConsentManager}>
+                      <StyledButton onClick={openConsentManager} className="changePreferencesButton">
                         <FormattedMessage {...messages.changePreferencesButtonText} />
                       </StyledButton>
                     )
@@ -261,6 +260,6 @@ export const CookiePolicy = (props: InjectedIntlProps) => {
       <Footer showCityLogoSection={false} />
     </Container>
   );
-};
+});
 
 export default injectIntl(CookiePolicy);

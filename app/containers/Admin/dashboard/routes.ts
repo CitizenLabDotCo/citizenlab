@@ -26,10 +26,6 @@ export default () => ({
       }),
     },
     clusteringsRoutes(),
-  /* TODO {
-      path: 'dashboard-acquisition',
-      getComponent: loadAndRender(import('./acquisition')),
-    },*/
     {
       path: 'map',
       component: Loadable({

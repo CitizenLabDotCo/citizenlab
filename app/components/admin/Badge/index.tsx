@@ -5,7 +5,7 @@ export default styled.div`
   color: ${(props: any) => props.color || colors.mediumGrey};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 6px 10px;
   display: inline-block;
   text-transform: uppercase;

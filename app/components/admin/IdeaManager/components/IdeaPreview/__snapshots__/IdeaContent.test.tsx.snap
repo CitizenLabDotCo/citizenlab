@@ -86,7 +86,7 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
           onClick={[Function]}
         >
           <IdeaContent__LocationIconWrapper>
-            <IdeaContent__LocationIcon
+            <Component
               name="position"
             />
           </IdeaContent__LocationIconWrapper>

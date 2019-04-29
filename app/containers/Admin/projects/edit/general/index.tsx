@@ -58,6 +58,7 @@ import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const timeout = 350;
 
@@ -88,7 +89,7 @@ const ParticipationContextWrapper = styled.div`
   padding-bottom: 15px;
   margin-top: 8px;
   display: inline-block;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
   transition: opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -315,9 +316,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       ).subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
         if (!this.state.processingDelete) {
           this.setState({
-            projectFiles,
-            projectImages,
-            projectHeaderImage: (projectHeaderImage ? [projectHeaderImage] : null)
+            projectFiles: projectFiles ? projectFiles.filter((file) => !isNilOrError(file)) as UploadFile[] : [],
+            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image))  as UploadFile[] : [],
+            projectHeaderImage: projectHeaderImage ? [projectHeaderImage] : null
           });
         }
       }),

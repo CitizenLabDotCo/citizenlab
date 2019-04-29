@@ -1,16 +1,17 @@
-import '@babel/polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import { render } from 'react-dom';
 // tslint:disable-next-line:no-vanilla-routing
 import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
 import { useScroll } from 'react-router-scroll';
-import 'utils/lazyImagesObserver';
 // Import CSS reset and Global Styles
 import 'assets/css/reset.min.css';
 import './global-styles';
 import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
-import { init, Integrations } from '@sentry/browser';
+import { init } from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 // Load the .htaccess file
 import 'file-loader?name=[name].[ext]!./.htaccess';
