@@ -7,6 +7,12 @@ models:
       color: '#687782'
       description_multiloc: statuses.proposed_description
     - 
+      title_multiloc: statuses.viewed
+      ordering: 150
+      code: viewed
+      color: '#01A1B1'
+      description_multiloc: statuses.viewed_description
+    - 
       title_multiloc: statuses.under_consideration
       ordering: 200
       code: under_consideration
