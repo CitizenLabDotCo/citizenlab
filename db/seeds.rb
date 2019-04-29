@@ -45,7 +45,7 @@ def create_comment_tree(idea, parent, depth=0)
         "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
         "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
       },
-      author: User.offset(rand(User.count)).first,
+      author: User.normal_user.offset(rand(User.normal_user.count)).first,
       idea: idea,
       parent: parent,
       created_at: Faker::Date.between((parent ? parent.created_at : idea.published_at), Time.now)
