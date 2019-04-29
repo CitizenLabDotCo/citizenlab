@@ -156,21 +156,15 @@ export class Container extends PureComponent<Props & InjectedIntlProps, State> {
     // Only show the cancel confirmation if there's unconsented destinations...
     // or if the user made a choice
     if (newDestinations.length > 0 && !isEmpty) {
-      this.setState({
-        isCancelling: true
-      });
+      this.setState({ isCancelling: true });
     } else {
-      this.setState({
-        isDialogOpen: false
-      });
+      this.setState({ isDialogOpen: false });
       resetPreferences();
     }
   }
 
   handleCancelBack = () => {
-    this.setState({
-      isCancelling: false
-    });
+    this.setState({ isCancelling: false });
   }
 
   handleCancelConfirm = () => {

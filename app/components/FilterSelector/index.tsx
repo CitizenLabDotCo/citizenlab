@@ -142,10 +142,6 @@ export default class FilterSelector extends PureComponent<Props, State> {
     this.closeExpanded();
   }
 
-  // removeFocus = (event: React.MouseEvent) => {
-  //   event.preventDefault();
-  // }
-
   render() {
     const className = this.props['className'];
     const { opened } = this.state;
@@ -155,7 +151,6 @@ export default class FilterSelector extends PureComponent<Props, State> {
     return (
       <Container
         id={id}
-        // onMouseDown={this.removeFocus}
         onClickOutside={this.handleClickOutside}
         className={`e2e-filter-selector-${this.props.name} ${className}`}
       >

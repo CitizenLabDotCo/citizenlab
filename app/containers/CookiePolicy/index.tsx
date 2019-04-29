@@ -1,5 +1,5 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import Helmet from 'react-helmet';
 
 // i18n
@@ -130,7 +130,7 @@ const LinkIcon = styled(Icon)`
   height: 1em;
 `;
 
-const CookiePolicy = React.memo((props: InjectedIntlProps) => {
+const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const openConsentManager = () => {
@@ -145,7 +145,7 @@ const CookiePolicy = React.memo((props: InjectedIntlProps) => {
       </Helmet>
 
       <PageContent>
-        <StyledContentContainer>
+        <StyledContentContainer className="bleh">
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>
               <FormattedMessage {...messages.cookiePolicyTitle} />
@@ -156,10 +156,9 @@ const CookiePolicy = React.memo((props: InjectedIntlProps) => {
                 <FormattedMessage
                   tagName="p"
                   {...messages.changePreferences}
-                  className="cookiePreferencesMessage"
                   values={{
                     changePreferencesButton: (
-                      <StyledButton onClick={openConsentManager}>
+                      <StyledButton onClick={openConsentManager} className="changePreferencesButton">
                         <FormattedMessage {...messages.changePreferencesButtonText} />
                       </StyledButton>
                     )
