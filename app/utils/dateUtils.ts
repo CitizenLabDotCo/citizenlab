@@ -28,6 +28,6 @@ export function pastPresentOrFuture(input: string | [string, string]) {
   }
 }
 
-export function getIsoDate(date:string) {
+export function getIsoDate(date: string) {
   return moment(date).format('YYYY-MM-DD');
 }

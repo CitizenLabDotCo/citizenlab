@@ -1,13 +1,17 @@
 import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
+import Link from 'utils/cl-router/Link';
 import { getUrlLocale } from 'services/locale';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
 import FeatureFlag from 'components/FeatureFlag';
 import MenuItem from './MenuItem';
+import HasPermission from 'components/HasPermission';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -18,11 +22,11 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
-import { adopt } from 'react-adopt';
 import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Menu = styled.div`
   flex: 0 0 auto;
@@ -78,7 +82,7 @@ const Spacer = styled.div`
   flex-grow: 1;
 `;
 
-const GetStartedLink = styled.a`
+const GetStartedLink = styled(Link)`
   flex: 0 0 auto;
   width: 230px;
   display: flex;
@@ -90,7 +94,7 @@ const GetStartedLink = styled.a`
   padding-top: 5px;
   margin-bottom: 25px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${lighten(.05, colors.adminMenuBackground)};
 
   &:hover {
@@ -118,7 +122,6 @@ interface State {
   navItems: NavItem[];
 }
 
-// message: keyof typeof messages
 export type NavItem = {
   id: string,
   link: string,
@@ -139,11 +142,11 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
     this.state = {
       navItems: [
       {
-        id: 'guide',
-        link: '/admin',
-        iconName: 'play',
-        message: 'guide',
-        isActive: (pathName) => pathName === (`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin`),
+        id: 'insights',
+        link: '/admin/dashboard',
+        iconName: 'stats',
+        message: 'dashboard',
+        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'projects',
@@ -158,13 +161,6 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         iconName: 'ideas',
         message: 'ideas',
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
-      },
-      {
-        id: 'insights',
-        link: '/admin/dashboard',
-        iconName: 'stats',
-        message: 'dashboard',
-        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
       },
       {
         id: 'users',
@@ -248,10 +244,12 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
             }
           })}
           <Spacer />
-          <GetStartedLink href={formatMessage({ ...messages.gettingStartedLink })} target="blank">
-            <IconWrapper><Icon name="circleInfo" /></IconWrapper>
-            <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
-          </GetStartedLink>
+          <HasPermission item={{ type: 'route', path: '/admin' }} action="access">
+            <GetStartedLink to="/admin/guide" >
+              <IconWrapper><Icon name="circleInfo" /></IconWrapper>
+              <Text>{formatMessage({ ...messages.gettingStarted })}</Text>
+            </GetStartedLink>
+          </HasPermission>
         </MenuInner>
       </Menu>
     );

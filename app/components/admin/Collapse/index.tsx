@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-
 import Label from 'components/UI/Label';
 import Icon from 'components/UI/Icon';
-
 import { colors } from 'utils/styleUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -50,7 +48,7 @@ const Options: any = styled.div`
 const CollapseContainer = styled.div`
   width: 497px;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
   background: #fff;
   z-index: 1;

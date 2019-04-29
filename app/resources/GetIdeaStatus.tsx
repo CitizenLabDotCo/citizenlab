@@ -16,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaStatus: IIdeaStatusData | undefined| null;
+  ideaStatus: IIdeaStatusData | undefined | null;
 }
 
-export type GetIdeaStatusChildProps = IIdeaStatusData | undefined| null;
+export type GetIdeaStatusChildProps = IIdeaStatusData | undefined | null;
 
 export default class GetIdeaStatus extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -7,11 +7,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Author from 'components/Author';
-import CommentingDisabled from './CommentingDisabled';
 
 // tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from '../tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -20,6 +19,7 @@ import messages from '../messages';
 
 // services
 import { addCommentToIdea } from 'services/comments';
+import { canModerate } from 'services/permissions/rules/projectPermissions';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -28,44 +28,60 @@ import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 // style
 import styled from 'styled-components';
-import { hideVisually } from 'polished';
-import { fontSizes } from 'utils/styleUtils';
+import { hideVisually, darken } from 'polished';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
-  padding: 0;
-  margin: 0;
+  margin-bottom: 20px;
 `;
 
-const CommentContainer = styled.div``;
+const CommentContainer = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+  background: #F1F2F4;
+  border: 1px solid #E3E3E3;
+  box-sizing: border-box;
+  box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  transition: all 100ms ease;
 
-const HiddenLabel = styled.span`
-  ${hideVisually() as any}
-`;
-
-const StyledTextArea = styled(MentionsTextArea)`
-  .textareaWrapper__highlighter,
-  textarea {
-    font-size: ${fontSizes.base}px !important;
-    line-height: 25px !important;
-    font-weight: 300 !important;
-    padding-right: 20px !important;
-    padding-left: 20px !important;
-    background: #fff !important;
+  &.focused {
+    border-color: ${darken(0.2, '#E3E3E3')};
   }
+
+  ${media.smallerThanMinTablet`
+    padding: 15px;
+  `}
+`;
+
+const AuthorWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 6px;
 `;
 
 const StyledAuthor = styled(Author)`
-  margin-bottom: 13px;
+  margin-left: -4px;
 `;
 
-const SubmitButton = styled(Button)`
-  position: absolute;
-  bottom: 18px;
-  right: 18px;
+const Form = styled.form`
+  width: 100%;
+`;
+
+const HiddenLabel = styled.span`
+  ${hideVisually()}
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
 `;
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -76,56 +92,62 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface Tracks {
-  focusEditor: Function;
-  clickCommentPublish: Function;
-}
-
 interface State {
   inputValue: string;
+  focused: boolean;
   processing: boolean;
   errorMessage: string | null;
 }
 
-class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
-  constructor(props: Props) {
-    super(props as any);
+class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
+    super(props);
     this.state = {
       inputValue: '',
+      focused: false,
       processing: false,
       errorMessage: null
     };
   }
 
-  handleTextareaOnChange = (inputValue) => {
+  onChange = (inputValue: string) => {
     this.setState({
       inputValue,
+      focused: true,
       errorMessage: null
     });
   }
 
-  handleEditorOnFocus = () => {
-    this.props.focusEditor({
+  onFocus = () => {
+    trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         ideaId: this.props.ideaId
       }
     });
+
+    this.setState({ focused: true });
   }
 
-  handleSubmit = async (event) => {
-    const { locale, authUser, ideaId } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { inputValue } = this.state;
+  onBlur = () => {
+    this.setState({ focused: false });
+  }
 
+  onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
 
+    const { locale, authUser, ideaId, idea } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { inputValue } = this.state;
+    const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
+
     this.setState({
-      errorMessage: null,
-      processing: false
+      focused: false,
+      processing: false,
+      errorMessage: null
     });
 
-    if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
-      this.props.clickCommentPublish({
+    if (locale && authUser && projectId && isString(inputValue) && trim(inputValue) !== '') {
+      trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
           ideaId,
           content: inputValue
@@ -134,7 +156,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
 
       try {
         this.setState({ processing: true });
-        await addCommentToIdea(ideaId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
+        await addCommentToIdea(ideaId, projectId, authUser.id, { [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2') });
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
@@ -147,60 +169,67 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
     }
   }
 
+  placeholder = this.props.intl.formatMessage(messages.commentBodyPlaceholder);
+
   render() {
-    const { authUser, idea, ideaId } = this.props;
-    const { formatMessage } = this.props.intl;
-    const { inputValue, processing, errorMessage } = this.state;
+    const { authUser, idea, ideaId, className } = this.props;
+    const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'enabled', false) : false);
-    const commentingDisabledReason = (!isNilOrError(idea) ? get(idea.relationships.action_descriptor.data.commenting, 'disabled_reason', null) : null);
     const projectId = (!isNilOrError(idea) ? get(idea.relationships.project.data, 'id', null) : null);
-    const placeholder = formatMessage(messages.commentBodyPlaceholder);
     const commentButtonDisabled = (!inputValue || inputValue === '');
-    const canComment = (authUser && commentingEnabled);
+    const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+    const canComment = (authUser && commentingEnabled && !isModerator);
 
     return (
-      <Container>
-        <CommentingDisabled
-          isLoggedIn={!!authUser}
-          commentingEnabled={commentingEnabled}
-          commentingDisabledReason={commentingDisabledReason}
-          projectId={projectId}
-        />
+      <Container className={className}>
         {(authUser && canComment) &&
-          <CommentContainer className="e2e-comment-form ideaCommentForm">
-            <StyledAuthor
-              authorId={authUser.id}
-              message={messages.author}
-              size="40px"
-            />
+          <CommentContainer className={`e2e-comment-form ideaCommentForm ${focused ? 'focused' : ''}`}>
+            <AuthorWrapper>
+              <StyledAuthor
+                authorId={authUser.id}
+                notALink={authUser.id ? false : true}
+                size="32px"
+                showModeration={isModerator}
+                avatarBadgeBgColor="#f1f2f4"
+              />
+            </AuthorWrapper>
 
-            <label htmlFor="submit-comment">
-              <HiddenLabel>
-                <FormattedMessage {...messages.yourComment} />
-              </HiddenLabel>
-              <StyledTextArea
-                id="submit-comment"
-                name="comment"
-                placeholder={placeholder}
-                rows={8}
-                ideaId={ideaId}
-                padding="20px 20px 80px 20px"
-                value={inputValue}
-                error={errorMessage}
-                onChange={this.handleTextareaOnChange}
-              >
-                <SubmitButton
-                  className="e2e-submit-comment"
-                  processing={processing}
-                  icon="send"
-                  circularCorners={false}
-                  onClick={this.handleSubmit}
-                  disabled={commentButtonDisabled}
-                >
-                  <FormattedMessage {...messages.publishComment} />
-                </SubmitButton>
-              </StyledTextArea>
-            </label>
+            <Form onSubmit={this.onSubmit}>
+              <label htmlFor="submit-comment">
+                <HiddenLabel>
+                  <FormattedMessage {...messages.yourComment} />
+                </HiddenLabel>
+
+                <MentionsTextArea
+                  id="submit-comment"
+                  name="comment"
+                  placeholder={this.placeholder}
+                  rows={5}
+                  ideaId={ideaId}
+                  value={inputValue}
+                  error={errorMessage}
+                  onChange={this.onChange}
+                  onFocus={this.onFocus}
+                  onBlur={this.onBlur}
+                  fontWeight="300"
+                  padding="10px 0px"
+                  borderRadius="none"
+                  border="none"
+                  boxShadow="none"
+                />
+                <ButtonWrapper>
+                  <Button
+                    className="e2e-submit-comment"
+                    processing={processing}
+                    icon="send"
+                    onClick={this.onSubmit}
+                    disabled={commentButtonDisabled}
+                  >
+                    <FormattedMessage {...messages.publishComment} />
+                  </Button>
+                </ButtonWrapper>
+              </label>
+            </Form>
           </CommentContainer>
         }
       </Container>
@@ -208,16 +237,13 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps & Tracks
   }
 }
 
-const ParentCommentFormWithHoCs = injectTracks<Props>({
-  focusEditor: tracks.focusNewCommentTextbox,
-  clickCommentPublish: tracks.clickCommentPublish,
-})(injectIntl<Props>(ParentCommentForm));
-
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
 });
+
+const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

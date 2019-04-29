@@ -1,45 +1,30 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-
 import Link from 'utils/cl-router/Link';
 import Avatar from 'components/Avatar';
 import UserName from 'components/UI/UserName';
 import Activities from './Activities/Activities';
-
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
-
 import styled from 'styled-components';
 import { fontSizes, media, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-import { FormattedMessage } from 'utils/cl-intl';
 import { FormattedRelative } from 'react-intl';
-import messages from './messages';
 
-const AuthorContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const AuthorAndAdressWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: space-between;
   margin-bottom: 25px;
 `;
 
 const AuthorMeta = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 8px;
+  margin-left: 7px;
 `;
 
 const AuthorNameWrapper = styled.div`
-  color: #333;
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
@@ -51,12 +36,12 @@ const AuthorNameWrapper = styled.div`
 `;
 
 const AuthorName = styled(Link)`
-  color: ${colors.clBlueDark};
+  color: ${({ theme }) => theme.colorText};
   text-decoration: none;
   cursor: pointer;
 
   &:hover {
-    color: ${darken(0.15, colors.clBlueDark)};
+    color: ${({ theme }) => darken(0.15, theme.colorText)};
     text-decoration: underline;
   }
 `;
@@ -73,60 +58,52 @@ const TimeAgo = styled.div`
   `}
 `;
 
-interface DataProps {
-  author: GetUserChildProps;
-}
-
 interface InputProps {
   authorId: string | null;
   ideaCreatedAt: string;
   ideaId: string;
+  className?: string;
+}
+
+interface DataProps {
+  author: GetUserChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaAuthor = (props: Props) => {
+const IdeaAuthor = memo<Props>(({ ideaId, ideaCreatedAt, authorId, author, className }) => {
 
   const goToUserProfile = () => {
-    const { author } = props;
-
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
     }
   };
-  const { ideaId, ideaCreatedAt, authorId, author } = props;
+
+  const noop = () => {};
+
   return (
-    <AuthorAndAdressWrapper>
-      <AuthorContainer>
-        <Avatar
-          userId={authorId}
-          size="40px"
-          onClick={authorId ? goToUserProfile : () => { }}
-        />
-        <AuthorMeta>
-          <AuthorNameWrapper>
-            <FormattedMessage
-              {...messages.byAuthorName}
-              values={{
-                authorName: (
-                  <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
-                    <UserName user={!isNilOrError(author) ? author : null} />
-                  </AuthorName>
-                )
-              }}
-            />
-          </AuthorNameWrapper>
-          {ideaCreatedAt &&
-            <TimeAgo>
-              <FormattedRelative value={ideaCreatedAt} />
-              <Activities ideaId={ideaId} />
-            </TimeAgo>
-          }
-        </AuthorMeta>
-      </AuthorContainer>
-    </AuthorAndAdressWrapper>
+    <Container className={className}>
+      <Avatar
+        userId={authorId}
+        size="39px"
+        onClick={authorId ? goToUserProfile : noop}
+      />
+      <AuthorMeta>
+        <AuthorNameWrapper>
+          <AuthorName className="e2e-author-link" to={!isNilOrError(author) ? `/profile/${author.attributes.slug}` : ''}>
+            <UserName user={!isNilOrError(author) ? author : null} />
+          </AuthorName>
+        </AuthorNameWrapper>
+        {ideaCreatedAt &&
+          <TimeAgo>
+            <FormattedRelative value={ideaCreatedAt} />
+            <Activities ideaId={ideaId} />
+          </TimeAgo>
+        }
+      </AuthorMeta>
+    </Container>
   );
-};
+});
 
 export default (inputProps: InputProps) => (
   <GetUser id={inputProps.authorId}>

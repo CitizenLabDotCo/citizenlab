@@ -20,7 +20,7 @@ const GraphCard = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 1px ${colors.adminBorder};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.adminContentBackground};
   margin: 5px;
   justify-content: space-around;

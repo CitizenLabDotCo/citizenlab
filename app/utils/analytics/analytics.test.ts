@@ -1,5 +1,6 @@
 import { makeUser } from 'services/__mocks__/users';
-import { trackIdentification, IEvent, trackEvent, trackPage } from '.';
+import { __setMockAuthUser, authUserObservable } from 'services/__mocks__/auth';
+import { IEvent, trackEvent, trackPage } from '.';
 
 jest.mock('services/tenant');
 jest.mock('services/auth');
@@ -28,56 +29,55 @@ describe('trackIdentification', () => {
   it('calls analytics.identify with the correct parameters', () => {
     const user = makeUser();
 
-    trackIdentification(user);
-
-    expect(identifyMock).toBeCalledWith(
-      user.data.id,
-      {
-        avatar: null,
-        birthday: undefined,
-        createdAt: '2018-11-26T15:41:19.782Z',
-        email: 'test@citizenlab.co',
-        firstName: 'Test',
-        gender: undefined,
-        lastName: 'Citizenlab',
-        locale: 'en',
-        isSuperAdmin: false,
-        isAdmin: false,
-        isProjectModerator: false,
-        highestRole: 'user',
-        tenantHost: 'wonderville.com',
-        tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
-        tenantLifecycleStage: 'active',
-        tenantName: 'wonderville',
-        tenantOrganizationType: 'medium_city',
-      },
-      {
-        integrations: {
-          All: true,
-          Intercom: false,
+    authUserObservable.toPromise().then(() => {
+      expect(identifyMock).toBeCalledWith(
+        user.data.id,
+        {
+          avatar: null,
+          birthday: undefined,
+          createdAt: '2018-11-26T15:41:19.782Z',
+          email: 'test@citizenlab.co',
+          firstName: 'Test',
+          gender: undefined,
+          lastName: 'Citizenlab',
+          locale: 'en',
+          isSuperAdmin: false,
+          isAdmin: false,
+          isProjectModerator: false,
+          highestRole: 'user',
+          tenantHost: 'wonderville.com',
+          tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
+          tenantLifecycleStage: 'active',
+          tenantName: 'wonderville',
+          tenantOrganizationType: 'medium_city',
+        },
+        {
+          integrations: {
+            All: true,
+            Intercom: false,
+          }
         }
-      }
-    );
-    expect(groupMock).toBeCalledWith(
-      'c4b400e1-1786-5be2-af55-40730c6a843d',
-      {
-        name: 'wonderville',
-        website: 'https://www.wonder.ville',
-        avatar: 'http://fepe.et/fivacsok.jpg',
-        tenantLocales: ['en'],
-        tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
-        tenantName: 'wonderville',
-        tenantHost: 'wonderville.com',
-        tenantOrganizationType: 'medium_city',
-        tenantLifecycleStage: 'active'
-      },
-      {
-        integrations: {
-          All: true,
-          Intercom: false,
+      );
+      expect(groupMock).toBeCalledWith(
+        'c4b400e1-1786-5be2-af55-40730c6a843d',
+        {
+          name: 'wonderville',
+          website: 'https://www.wonder.ville',
+          avatar: 'http://fepe.et/fivacsok.jpg',
+          tenantLocales: ['en'],
+          tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
+          tenantName: 'wonderville',
+          tenantHost: 'wonderville.com',
+          tenantOrganizationType: 'medium_city',
+          tenantLifecycleStage: 'active'
+        },
+        {
+          integrations: {
+            Intercom: false,
+          }
         }
-      }
-    );
+      );
+    });
   });
 
 });
@@ -106,7 +106,6 @@ describe('trackEvent', () => {
       },
       {
         integrations: {
-          All: true,
           Intercom: false,
         }
       }
@@ -134,7 +133,6 @@ describe('trackPage', () => {
       },
       {
         integrations: {
-          All: true,
           Intercom: false,
         }
       }

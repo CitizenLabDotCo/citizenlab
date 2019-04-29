@@ -8,32 +8,32 @@ import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
 // resources
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 
-// styling
+// style
 import styled from 'styled-components';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
-const StyledOfficialFeedbackNew = styled(OfficialFeedbackNew)`
-  margin-bottom: 70px;
-`;
+const Container = styled.div``;
 
 interface InputProps {
   ideaId: string;
+  className?: string;
 }
 
 interface DataProps {
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
   permission: GetPermissionChildProps;
+  officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
 interface Props extends InputProps, DataProps {
   className?: string;
 }
 
-interface State {
-}
+interface State {}
 
 export class OfficialFeedback extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -43,20 +43,25 @@ export class OfficialFeedback extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, permission, className } = this.props;
+    const { ideaId, permission, officialFeedbacks, className } = this.props;
 
-    return (
-      <div className={className}>
-        {permission &&
-          <StyledOfficialFeedbackNew ideaId={ideaId} />
-        }
+    if (permission || (!isNilOrError(officialFeedbacks) && !isNilOrError(officialFeedbacks.officialFeedbacksList) && officialFeedbacks.officialFeedbacksList.data.length > 0)) {
+      return (
+        <Container className={className}>
+          {permission &&
+            <OfficialFeedbackNew ideaId={ideaId} />
+          }
 
-        <OfficialFeedbackFeed
-          ideaId={ideaId}
-          editingAllowed={permission}
-        />
-      </div>
-    );
+          <OfficialFeedbackFeed
+            ideaId={ideaId}
+            permission={permission}
+            editingAllowed={permission}
+          />
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
@@ -64,6 +69,7 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id} >{render}</GetProject> : null,
   permission: ({ project, render }) => !isNilOrError(project) ? <GetPermission item={project} action="moderate" >{render}</GetPermission> : null,
+  officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks ideaId={ideaId}>{render}</GetOfficialFeedbacks>
 });
 
 export default (inputProps: InputProps) => (

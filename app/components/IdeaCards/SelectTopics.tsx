@@ -70,12 +70,10 @@ export default class SelectTopic extends PureComponent<Props, State> {
 
   render() {
     const { currentTenant, locale, topics, selectedValues, titleKey } = this.state;
-    let options: any = [];
 
     if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
       const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-
-      options = topics.data.map((topic) => {
+      const options = topics.data.map((topic) => {
         return {
           text: getLocalized(topic.attributes.title_multiloc, locale, currentTenantLocales),
           value: topic.id

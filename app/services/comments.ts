@@ -1,16 +1,16 @@
 import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { IRelationship, Multiloc } from 'typings';
-import { ideaByIdStream } from 'services/ideas';
-import { first } from 'rxjs/operators';
 
 interface CommentAttributes {
   upvotes_count: number;
   downvotes_count: number;
   created_at: string;
   updated_at: string;
+  children_count: number;
 }
+
 interface IPresentComment extends CommentAttributes {
   body_multiloc: Multiloc;
   publication_status: 'published';
@@ -35,6 +35,9 @@ export interface ICommentData {
     parent: {
       data: IRelationship;
     };
+    user_vote: {
+      data: IRelationship | null;
+    }
   };
 }
 
@@ -67,36 +70,53 @@ export function commentStream(commentId: string) {
   return streams.get<IComment>({ apiEndpoint: `${API_PATH}/comments/${commentId}` });
 }
 
-export function commentsForIdeaStream(ideaId: string) {
-  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments` });
+export function childCommentsStream(commentId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/comments/${commentId}/children`, ...streamParams });
 }
 
-export async function addCommentToIdea(ideaId: string, authorId: string, body: { [key: string]: string }) {
-  const [idea, comment] = await Promise.all([
-    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
-    streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
-      comment: {
-        author_id: authorId,
-        body_multiloc: body
-      }
-    })
-  ]);
-  streams.fetchAllWith({ dataId: [ideaId, idea.data.relationships.project.data.id] });
+export function commentsForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IComments>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/comments`, ...streamParams });
+}
+
+export async function addCommentToIdea(ideaId: string,  projectId: string, authorId: string, body: { [key: string]: string }) {
+  const comment = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
+    comment: {
+      author_id: authorId,
+      body_multiloc: body
+    }
+  }, true);
+
+  streams.fetchAllWith({ dataId: [ideaId, projectId, comment.data.id] });
+
   return comment;
 }
 
-export async function addCommentToComment(ideaId: string, authorId: string, parentCommentId: string, body: { [key: string]: string }) {
-  const [idea, comment] = await Promise.all([
-    ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
-    streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
-      comment: {
-        author_id: authorId,
-        parent_id: parentCommentId,
-        body_multiloc: body
-      }
-    })
-  ]);
-  streams.fetchAllWith({ dataId: [ideaId, idea.data.relationships.project.data.id] });
+export async function addCommentToComment(
+  ideaId: string,
+  projectId: string,
+  authorId: string,
+  parentCommentId: string,
+  body: { [key: string]: string },
+  waitForChildCommentsRefetch = false
+) {
+  const comment = await streams.add<IComment>(`${API_PATH}/ideas/${ideaId}/comments`, {
+    comment: {
+      author_id: authorId,
+      parent_id: parentCommentId,
+      body_multiloc: body
+    }
+  }, true);
+
+  if (waitForChildCommentsRefetch) {
+    await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`] });
+    streams.fetchAllWith({ dataId: [ideaId, projectId, parentCommentId, comment.data.id] });
+  } else {
+    streams.fetchAllWith({
+      dataId: [ideaId, projectId, parentCommentId, comment.data.id],
+      apiEndpoint: [`${API_PATH}/comments/${parentCommentId}/children`]
+    });
+  }
+
   return comment;
 }
 
@@ -104,16 +124,9 @@ export function updateComment(commentId: string, object: IUpdatedComment) {
   return streams.update<IComment>(`${API_PATH}/comments/${commentId}`, commentId, { comment: object });
 }
 
-export async function markForDeletion(commentId: ICommentData['id'], reason?: DeleteReason) {
-  if (reason && reason.reason_code !== 'other') {
-    delete reason.other_reason;
-  }
-
-  const comment  = await commentStream(commentId).observable.pipe(first()).toPromise();
-  const [idea, response] = await Promise.all([
-    ideaByIdStream(comment.data.relationships.idea.data.id).observable.pipe(first()).toPromise(),
-    request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {})
-  ]);
-  streams.fetchAllWith({ dataId: [commentId, idea.data.relationships.project.data.id] });
+export async function markForDeletion(projectId: string, commentId: string, reason?: DeleteReason) {
+  if (reason && reason.reason_code !== 'other') { delete reason.other_reason; }
+  const response = await request(`${API_PATH}/comments/${commentId}/mark_as_deleted`, { comment: reason }, { method: 'POST' }, {});
+  streams.fetchAllWith({ dataId: [commentId, projectId] });
   return response;
 }

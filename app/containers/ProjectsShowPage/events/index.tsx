@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
-import Header from '../Header';
 import Event from './Event';
 import ContentContainer from 'components/ContentContainer';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -43,9 +42,9 @@ const Events = styled.div`
 `;
 
 const Title = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxl}px;
-  line-height: 35px;
+  line-height: normal;
   font-weight: 600;
   margin-bottom: 25px;
 `;
@@ -75,7 +74,6 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
   <Data {...inputProps}>
     {dataProps => {
       const className = inputProps['className'];
-      const { slug } = inputProps.params;
       const { project, events } = dataProps;
 
       if (project !== null && events !== null) {
@@ -91,8 +89,6 @@ export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps)
 
         return (
           <>
-            <Header projectSlug={slug} />
-
             {!isNilOrError(project) &&
               <>
                 <StyledProjectArchivedIndicator projectId={project.id} />

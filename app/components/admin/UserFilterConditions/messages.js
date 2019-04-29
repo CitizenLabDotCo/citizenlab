@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
     defaultMessage: 'Participated in project',
   },
+  field_participated_in_topic: {
+    id: 'app.components.admin.UserFilterConditions.field_topic',
+    defaultMessage: 'Contributed to topic',
+  },
+  field_participated_in_idea_status: {
+    id: 'app.components.admin.UserFilterConditions.field_idea_status',
+    defaultMessage: 'Contributed to idea(s) with status',
+  },
   predicate_is: {
     id: 'app.components.admin.UserFilterConditions.predicate_is',
     defaultMessage: 'is',

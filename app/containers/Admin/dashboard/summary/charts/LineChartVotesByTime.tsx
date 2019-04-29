@@ -223,7 +223,7 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
         <GraphCardInner>
           <GraphCardHeader>
             <GraphCardTitle>
-              <FormattedMessage {...messages.votesByTimeTitle} />
+              <FormattedMessage {...messages.ideaVotesByTimeTitle} />
             </GraphCardTitle>
             <GraphCardFigureContainer>
               <GraphCardFigure>

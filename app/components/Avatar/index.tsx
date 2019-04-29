@@ -19,11 +19,27 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styles
-import { darken, lighten } from 'polished';
+import { lighten } from 'polished';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
- export const AvatarContainer: any = styled.div`
+export const AvatarImage: any = styled.img`
+  width: ${(props: any) => props.size};
+  height: ${(props: any) => props.size};
+  border-radius: 50%;
+  background: #fff;
+  transition: all 100ms ease-out;
+`;
+
+const AvatarIcon: any = styled(Icon)`
+  flex: 0 0 ${(props: any) => props.size};
+  width: ${(props: any) => props.size};
+  height: ${(props: any) => props.size};
+  fill: ${(props: any) => props.fillColor};
+  transition: all 100ms ease-out;
+`;
+
+ export const Container: any = styled.div`
   flex: 0 0 ${(props: any) => props.size};
   width: ${(props: any) => props.size};
   height: ${(props: any) => props.size};
@@ -43,48 +59,31 @@ import { colors } from 'utils/styleUtils';
 
     &:hover {
       border-color: ${(props: any) => props.borderHoverColor};
+
+      ${AvatarIcon} {
+        fill: ${(props: any) => props.fillHoverColor};
+      }
     }
   }
 `;
 
-export const AvatarImage: any = styled.img`
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
-  border-radius: 50%;
-  background: #fff;
-  transition: all 100ms ease-out;
-`;
-
-const AvatarIcon: any = styled(Icon)`
-  flex: 0 0 ${(props: any) => props.size};
-  width: ${(props: any) => props.size};
-  height: ${(props: any) => props.size};
-  fill: ${(props: any) => props.fillColor};
-  transition: all 100ms ease-out;
-
-  &.hasHoverEffect {
-    &:hover {
-      fill: ${(props: any) => props.fillHoverColor}
-    }
-  }
-`;
-
-const ModeratorIconContainer: any = styled.div`
-  position: absolute;
-  right: -${(props: any) => props.size / 20}px;
-  bottom: -${(props: any) => props.size / 20}px;
-  background: white;
-  border-radius: 50%;
-  flex: 0 0 ${(props: any) => props.size / 2}px;
-  width: ${(props: any) => props.size / 2}px;
-  height: ${(props: any) => props.size / 2}px;
+const BadgeContainer: any = styled.div`
+  flex: 0 0 ${(props: any) => props.size / 2 + 5}px;
+  width: ${(props: any) => props.size / 2 + 5}px;
+  height: ${(props: any) => props.size / 2 + 5}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 2px;
+  position: absolute;
+  right: -${(props: any) => props.size / 19}px;
+  bottom: -${(props: any) => props.size / 19}px;
+  border-radius: 50%;
+  padding-top: 1px;
+  padding-left: 1px;
+  background: ${(props: any) => props.badgeBgColor};
 `;
 
-const ModeratorIcon: any = styled(Icon)`
+const BadgeIcon: any = styled(Icon)`
   color: ${colors.clRedError};
   fill: ${colors.clRedError};
   height: ${(props: any) => (props.size / 2) - 5}px;
@@ -102,6 +101,7 @@ interface InputProps {
   borderThickness?: string;
   borderColor?: string;
   borderHoverColor?: string;
+  badgeBgColor?: string;
   className?: string;
   moderator?: boolean | null;
 }
@@ -119,10 +119,11 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     hasHoverEffect: false,
     padding: '3px',
     fillColor: lighten(0.2, colors.label),
-    fillHoverColor: darken(0.1, colors.label),
+    fillHoverColor: colors.label,
     borderThickness: '1px',
     borderColor: 'transparent',
-    borderHoverColor: colors.label
+    borderHoverColor: colors.label,
+    badgeBgColor: '#fff'
   };
 
   handleOnClick = (event: FormEvent) => {
@@ -133,25 +134,25 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, moderator, className } = this.props;
+    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, badgeBgColor, moderator, className } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
       hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
       const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar[imageSize];
       const userName = getUserName(user);
-      const outerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
+      const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
       const numberSize = parseInt(size, 10);
 
       return (
-        <AvatarContainer
+        <Container
           className={`${className} ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
           onClick={this.handleOnClick}
-          size={outerSize}
-          padding={padding}
+          size={containerSize}
           borderThickness={borderThickness}
           borderColor={borderColor}
-          borderHoverColor={moderator ? colors.clRed : borderHoverColor}
+          borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
+          fillHoverColor={fillHoverColor}
         >
           {avatarSrc ? (
             <AvatarImage
@@ -171,11 +172,11 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
             />
           )}
           {moderator && (
-            <ModeratorIconContainer size={numberSize}>
-              <ModeratorIcon name="clLogo" size={numberSize} />
-            </ModeratorIconContainer>
+            <BadgeContainer size={numberSize} badgeBgColor={badgeBgColor}>
+              <BadgeIcon name="clLogo" size={numberSize} />
+            </BadgeContainer>
           )}
-        </AvatarContainer>
+        </Container>
       );
     }
 

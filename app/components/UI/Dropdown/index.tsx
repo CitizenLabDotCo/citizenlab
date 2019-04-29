@@ -9,7 +9,7 @@ const timeout = 200;
 const Container: any = styled(clickOutside)`
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
   z-index: 5;
@@ -97,9 +97,9 @@ export default class Dropdown extends PureComponent<Props, State> {
 
   static defaultProps = {
     width: '260px',
-    mobileWidth: '190px',
+    mobileWidth: '200px',
     maxHeight: '320px',
-    mobileMaxHeight: '320px',
+    mobileMaxHeight: '280px',
     top: 'auto',
     left: 'auto',
     mobileLeft: 'auto',
@@ -109,7 +109,7 @@ export default class Dropdown extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     if (this.dropdownElement) {
-      this.dropdownElement.removeEventListener('wheel', this.scrolling, false);
+      this.dropdownElement.removeEventListener('wheel', this.scrolling);
     }
   }
 
@@ -127,7 +127,7 @@ export default class Dropdown extends PureComponent<Props, State> {
       this.dropdownElement = element;
 
       if (this.dropdownElement) {
-        this.dropdownElement.addEventListener('wheel', this.scrolling, false);
+        this.dropdownElement.addEventListener('wheel', this.scrolling);
       }
     }
   }

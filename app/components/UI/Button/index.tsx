@@ -145,7 +145,7 @@ const Container: any = styled.div`
   a {
     align-items: center;
     border: ${(props: any) => props.borderThickness || '1px'} solid transparent;
-    border-radius: ${(props: any) => props.circularCorners ? '999em' : '5px'};
+    border-radius: ${(props: any) => props.circularCorners ? '999em' : props.theme.borderRadius};
     display: ${(props: any) => !props.width ? 'inline-flex' : 'flex'};
     height: ${(props: any) => props.height || 'auto'};
     justify-content: ${(props: any) => props.justify || 'center'};
@@ -288,7 +288,7 @@ export type Props = {
   theme?: object | undefined;
   minWidth?: string;
   width?: string;
-  type?: string;
+  type?: 'submit' | 'button' | 'reset';
   spinnerColor?: string;
   fullHeight?: boolean;
   ariaLabel?: string;
@@ -442,7 +442,16 @@ class Button extends PureComponent<Props, State> {
               </StyledLink>
             )
         ) : (
-            <StyledButton aria-label={ariaLabel} disabled={disabled} innerRef={this.props.setSubmitButtonRef} className={buttonClassnames} form={form} type={type ? type : 'submit'}>{childContent}</StyledButton>
+            <StyledButton
+              aria-label={ariaLabel}
+              disabled={disabled}
+              innerRef={this.props.setSubmitButtonRef}
+              className={buttonClassnames}
+              form={form}
+              type={type ? type : 'submit'}
+            >
+              {childContent}
+            </StyledButton>
           )}
       </Container>
     );

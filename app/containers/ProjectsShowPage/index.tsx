@@ -6,6 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import Meta from './Meta';
+import Header from './Header';
 import Footer from 'components/Footer';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
@@ -39,6 +40,13 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    background: ${colors.background};
+  `}
+
+  ${media.biggerThanMinTablet`
+    &.loaded {
+      min-height: 900px;
+    }
   `}
 `;
 
@@ -96,7 +104,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
     return (
       <>
         <Meta projectSlug={slug} />
-        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''}`}>
+        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''} ${!loading ? 'loaded' : 'loading'}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
@@ -113,6 +121,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                 </Loading>
               ) : (
                 <>
+                  <Header projectSlug={this.props.params.slug} />
                   <Content>{children}</Content>
                   <Footer showCityLogoSection={false} />
                 </>

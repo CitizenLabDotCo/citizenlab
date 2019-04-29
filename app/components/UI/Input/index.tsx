@@ -21,7 +21,7 @@ const Container: any = styled.div`
     line-height: 24px;
     font-weight: 400;
     padding: 12px;
-    border-radius: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px;
     border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);

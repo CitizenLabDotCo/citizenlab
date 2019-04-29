@@ -36,7 +36,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
   if (!isNilOrError(locale) && !isNilOrError(tenant)) {
     const { formatMessage } = intl;
     const tenantLocales = tenant.attributes.settings.core.locales;
-    const headerBg = tenant.attributes.header_bg.large || '';
+    const headerBg = tenant.attributes.header_bg && tenant.attributes.header_bg.large ? tenant.attributes.header_bg.large : '';
     const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
     const organizationName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
     const url = `https://${tenant.attributes.host}`;
