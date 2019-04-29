@@ -1,5 +1,6 @@
 import React from 'react';
 import { isString } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
@@ -79,7 +80,9 @@ export default class GetResourceFileObjects extends React.Component<Props, State
         })
       )
       .subscribe((files) => {
-        this.setState({ files });
+        this.setState({
+          files: files ? files.filter(file => !isNilOrError(file)) as UploadFile[] : null
+        });
       })
     ];
   }

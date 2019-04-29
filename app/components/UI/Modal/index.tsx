@@ -69,7 +69,7 @@ const ModalContainer: any = styled(clickOutside)`
   width: 100%;
   max-width: ${(props: any) => props.width};
   background: white;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   flex-direction: column;
   outline: none;
@@ -413,12 +413,7 @@ export default class Modal extends PureComponent<Props, State> {
     ) : undefined);
 
     return ReactDOM.createPortal(
-      <TransitionGroup
-        tabIndex="-1"
-        component="aside"
-      >
-        {element}
-      </TransitionGroup>,
+      <TransitionGroup tabIndex="-1" component="aside">{element}</TransitionGroup>,
       document.body
     );
   }

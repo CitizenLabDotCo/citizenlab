@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Header from '../Header';
 import EventsPreview from '../EventsPreview';
 import ContentContainer from 'components/ContentContainer';
 import IdeaCards from 'components/IdeaCards';
@@ -21,16 +20,21 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
+  background: ${colors.background};
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
   padding-top: 50px;
   padding-bottom: 100px;
   background: ${colors.background};
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const StyledPBExpenses = styled(PBExpenses)`
@@ -38,11 +42,15 @@ const StyledPBExpenses = styled(PBExpenses)`
 `;
 
 const IdeasTitle = styled.h1`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.xxxl}px;
-  line-height: 35px;
+  line-height: normal;
   font-weight: 600;
   margin-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 15px;
+  `}
 `;
 
 interface InputProps {
@@ -73,7 +81,6 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 
         return (
           <>
-            <Header projectSlug={params.slug} />
             <StyledProjectArchivedIndicator projectId={projectId} />
             <StyledContentContainer>
               {isPBProject &&

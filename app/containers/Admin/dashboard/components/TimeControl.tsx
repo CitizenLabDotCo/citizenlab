@@ -18,7 +18,7 @@ import { colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   align-items: center;
 `;
 
@@ -47,7 +47,7 @@ const DropdownListItem = styled.button`
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
 

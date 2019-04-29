@@ -36,7 +36,7 @@ const enterAnimation = keyframes`
 const Container = styled.div`
   background-color: #fff;
   position: relative;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
   margin-top: 0px;
   padding: 15px;

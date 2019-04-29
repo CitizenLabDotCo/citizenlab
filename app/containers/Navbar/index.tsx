@@ -1,9 +1,8 @@
 // libraries
-import React, { PureComponent } from 'react';
+import React, { PureComponent, MouseEvent, FormEvent } from 'react';
 import { get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
-import { trackEventByName } from 'utils/analytics';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -16,13 +15,14 @@ import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 
 // analytics
+import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -224,7 +224,7 @@ const ProjectsListItem = styled(Link)`
   padding: 10px;
   margin-bottom: 4px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   text-decoration: none;
 
   &.last {
@@ -249,7 +249,7 @@ const ProjectsListFooter = styled(Link)`
   padding: 15px 15px;
   cursor: pointer;
   background: ${({ theme }) => theme.colorMain};
-  border-radius: 3px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   transition: all 80ms ease-out;
@@ -281,7 +281,7 @@ const RightItem: any = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    margin-left: 25px;
+    margin-left: 30px;
   `}
 `;
 
@@ -297,6 +297,7 @@ const LogInLink = NavigationItem.extend`
 `;
 
 const SignUpLink = NavigationItem.extend`
+  height: calc(100% + 1px);
   color: #fff;
   background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
   border: none;
@@ -317,19 +318,19 @@ const SignUpLink = NavigationItem.extend`
 `;
 
 const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
-padding-left: 36px;
+  padding-left: 32px;
 
-&.notLoggedIn {
-  padding-left: 20px;
+  &.notLoggedIn {
+    padding-left: 20px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 10px;
+    `}
+  }
 
   ${media.smallerThanMinTablet`
-    padding-left: 10px;
+    padding-left: 20px;
   `}
-}
-
-${media.smallerThanMinTablet`
-  padding-left: 15px;
-`}
 `;
 
 interface InputProps {}
@@ -361,7 +362,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     }
   }
 
-  toggleProjectsDropdown = (event: React.FormEvent<any>) => {
+  toggleProjectsDropdown = (event: FormEvent<any>) => {
     event.preventDefault();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
@@ -370,7 +371,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     trackEventByName(tracks.clickSignUpLink.name);
   }
 
-  removeFocus = (event: React.MouseEvent) => {
+  removeFocus = (event: MouseEvent) => {
     event.preventDefault();
   }
 
@@ -528,11 +529,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
   }
 }
 
+const projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
+
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: <GetProjects pageSize={250} publicationStatuses={['published', 'archived']} sort="new" />
+  projects: <GetProjects pageSize={250} publicationStatuses={projectsPublicationStatuses} sort="new" />
 });
 
 const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));

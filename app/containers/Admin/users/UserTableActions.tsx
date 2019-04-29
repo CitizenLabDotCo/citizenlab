@@ -64,7 +64,7 @@ const ActionButton = styled.button`
   margin-right: 40px;
   position: relative;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -130,7 +130,7 @@ const DropdownListItem = styled.div`
   margin-bottom: 4px;
   padding: 10px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   outline: none;
   cursor: pointer;
   transition: all 80ms ease-out;

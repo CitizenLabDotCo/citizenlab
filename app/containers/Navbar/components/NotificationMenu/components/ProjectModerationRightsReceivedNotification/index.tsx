@@ -1,11 +1,17 @@
-import React from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import React, { memo } from 'react';
+import { isNilOrError, stopPropagation } from 'utils/helperUtils';
+
+// resources
 import { IProjectModerationRightsReceivedNotificationData } from 'services/notifications';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// i18n
 import messages from '../../messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import T from 'components/T';
+
+// components
 import NotificationWrapper from '../NotificationWrapper';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import Link from 'utils/cl-router/Link';
 
 interface InputProps {
@@ -18,42 +24,33 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-type State = {};
+const ProjectModerationRightsReceivedNotification = memo<Props>(props => {
+  const { notification, project } = props;
 
-class ProjectModerationRightsReceivedNotification extends React.PureComponent<Props, State> {
+  if (isNilOrError(project)) return null;
 
-  handleOnClickProject = (event) => {
-    event.stopPropagation();
-  }
-
-  render() {
-    const { notification, project } = this.props;
-
-    if (isNilOrError(project)) return null;
-
-    return (
-      <NotificationWrapper
-        linkTo={`/admin/projects/${project.id}/edit`}
-        timing={notification.attributes.created_at}
-        icon="admin"
-        isRead={!!notification.attributes.read_at}
-      >
-        <FormattedMessage
-          {...messages.projectModerationRightsReceived}
-          values={{
-            projectLink:
-              <Link
-                to={`/projects/${project.attributes.slug}`}
-                onClick={this.handleOnClickProject}
-              >
-                <T value={project.attributes.title_multiloc} />
-              </Link>,
-          }}
-        />
-      </NotificationWrapper>
-    );
-  }
-}
+  return (
+    <NotificationWrapper
+      linkTo={`/admin/projects/${project.id}/edit`}
+      timing={notification.attributes.created_at}
+      icon="admin"
+      isRead={!!notification.attributes.read_at}
+    >
+      <FormattedMessage
+        {...messages.projectModerationRightsReceived}
+        values={{
+          projectLink:
+            <Link
+              to={`/projects/${project.attributes.slug}`}
+              onClick={stopPropagation}
+            >
+              <T value={project.attributes.title_multiloc} />
+            </Link>,
+        }}
+      />
+    </NotificationWrapper>
+  );
+});
 
 export default (inputProps: InputProps) => {
   const { notification } = inputProps;

@@ -10,8 +10,8 @@ const Outer = styled.div`
   padding-right: 30px;
 
   ${media.smallerThanMinTablet`
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
   `}
 
   &:not(.ie) {

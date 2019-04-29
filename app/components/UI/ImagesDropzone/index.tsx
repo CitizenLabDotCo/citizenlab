@@ -83,7 +83,7 @@ const DropzoneContent = styled.div`
 
 const StyledDropzone = styled(Dropzone)`
   box-sizing: border-box;
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   border: 1px dashed ${colors.label};
   position: relative;
   cursor: pointer;
@@ -132,7 +132,7 @@ const Image: any = styled.div`
   background-image: url(${(props: any) => props.src});
   position: relative;
   box-sizing: border-box;
-  border-radius: ${(props: any) => props.imageRadius ? props.imageRadius : '5px'};
+  border-radius: ${(props: any) => props.imageRadius ? props.imageRadius : props.theme.borderRadius};
   border: solid 1px #ccc;
 `;
 
@@ -300,7 +300,11 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
     if (images && images.length > 0) {
       for (let i = 0; i < images.length; i += 1) {
         if (!images[i].base64) {
-          images[i].base64 = await getBase64FromFile(images[i]);
+          try {
+            images[i].base64 = await getBase64FromFile(images[i]);
+          } catch (error) {
+            console.log(error);
+          }
         }
 
         if (!images[i].url) {

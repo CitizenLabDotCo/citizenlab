@@ -1,7 +1,7 @@
 import { isNil, get } from 'lodash-es';
 import { ITenant } from 'services/tenant';
 import { css } from 'styled-components';
-import { darken } from 'polished';
+import { darken, transparentize } from 'polished';
 
 // Media
 export const viewportWidths = {
@@ -192,12 +192,15 @@ export const stylingConsts = {
   bannerWidth: 1340,
   pageWidth: 1150,
   textWidth: 720,
+  borderRadius: '3px'
 };
 
 // Reusable text styling
 export function quillEditedContent(
+  linkColor: string = colors.clBlueDark,
+  textColor: string = colors.text,
+  mentionColor: string = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
-  color: string = colors.text,
   fontWeight: 300 | 400 = 400
 ) {
   let lineHeight = 27;
@@ -212,7 +215,7 @@ export function quillEditedContent(
   }
 
   const defaultFontStyle = `
-    color: ${color};
+    color: ${textColor};
     font-size: ${fontSizes[fontSize]}px;
     font-weight: ${fontWeight};
     line-height: ${lineHeight}px;
@@ -234,7 +237,7 @@ export function quillEditedContent(
       clear: both;
     }
 
-    h1 {
+    h2 {
       font-size: ${fontSizes.xxxl - 2}px;
       line-height: 33px;
       font-weight: 500;
@@ -243,29 +246,11 @@ export function quillEditedContent(
       margin-bottom: 20px;
     }
 
-    h2 {
+    h3 {
       font-size: ${fontSizes.xxl - 2}px;
       line-height: 31px;
       font-weight: 500;
       padding: 0;
-      margin: 0;
-      margin-top: 5px;
-      margin-bottom: 15px;
-    }
-
-    h3 {
-      font-size: ${fontSizes.xl}px;
-      line-height: 26px;
-      font-weight: 500;
-      margin: 0;
-      margin-top: 5px;
-      margin-bottom: 15px;
-    }
-
-    h4 {
-      font-size: ${fontSizes.large}px;
-      line-height: 26px;
-      font-weight: 500;
       margin: 0;
       margin-top: 5px;
       margin-bottom: 15px;
@@ -280,7 +265,7 @@ export function quillEditedContent(
     }
 
     a {
-      color: ${colors.clBlueDark};
+      color: ${linkColor};
       text-decoration: underline;
       overflow-wrap: break-word;
       word-wrap: break-word;
@@ -289,7 +274,7 @@ export function quillEditedContent(
       hyphens: auto;
 
       &:hover {
-        color: ${darken(0.15, colors.clBlueDark)};
+        color: ${darken(0.15, linkColor)};
         text-decoration: underline;
       }
     }
@@ -317,6 +302,29 @@ export function quillEditedContent(
 
     strong {
       font-weight: 600;
+    }
+
+    .mention {
+      color: ${mentionColor};
+      font-weight: 400;
+      overflow-wrap: normal;
+      word-wrap: normal;
+      word-break: normal;
+      hyphens: auto;
+      text-decoration: none;
+      padding-left: 5px;
+      padding-right: 5px;
+      padding-top: 4px;
+      padding-bottom: 4px;
+      border-radius: 3px;
+      background: ${transparentize(0.9, mentionColor)};
+      transition: all 100ms ease;
+
+      &:hover {
+        color: ${darken(0.15, mentionColor)};
+        text-decoration: none;
+        background: ${transparentize(0.85, mentionColor)};
+      }
     }
 
     .ql-align-right {

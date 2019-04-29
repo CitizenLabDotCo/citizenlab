@@ -27,16 +27,20 @@ const Container = styled.div`
   `}
 `;
 
-const StyledContentContainer = styled(ContentContainer) `
+const StyledContentContainer = styled(ContentContainer)`
   flex: 1 1 auto;
   padding-top: 60px;
   padding-bottom: 100px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const PageTitle = styled.h1`
   color: ${colors.text};
   font-size: ${fontSizes.xxxxl}px;
-  line-height: 40px;
+  line-height: normal;
   font-weight: 500;
   text-align: center;
   margin: 0;
@@ -47,9 +51,13 @@ const PageTitle = styled.h1`
     text-align: left;
     margin-bottom: 20px;
   `}
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.xxxl}px;
+  `}
 `;
 
-export default () => (
+export default React.memo(() => (
   <>
     <ProjectsIndexMeta />
     <Container>
@@ -63,11 +71,10 @@ export default () => (
           sort="new"
           showTitle={false}
           showPublicationStatusFilter={true}
-          showSendFeedback={false}
           layout="threecolumns"
         />
       </StyledContentContainer>
       <Footer />
     </Container>
   </>
-);
+));

@@ -54,5 +54,6 @@ const ResolveTextVariablesWithHOCS = injectLocalize<InputProps & DataProps>(Reso
 
 export default (inputProps: InputProps) => (
   <GetTenant>
-    {(tenant) => <ResolveTextVariablesWithHOCS {...inputProps} tenant={tenant} />}
-</GetTenant>);
+    {tenant => <ResolveTextVariablesWithHOCS {...inputProps} tenant={tenant} />}
+  </GetTenant>
+);
