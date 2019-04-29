@@ -18,6 +18,10 @@ export default defineMessages({
     id: 'app.containers.UsersShowPage.commentsWithCount',
     defaultMessage: 'Comments({count})',
   },
+  seeIdea: {
+    id: 'app.containers.UsersShowPage.seeIdea',
+    defaultMessage: 'See idea',
+  },
   loadingUser: {
     id: 'app.containers.UsersShowPage.loadingUser',
     defaultMessage: 'Loading...',
