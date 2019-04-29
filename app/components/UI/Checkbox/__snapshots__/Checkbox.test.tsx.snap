@@ -184,10 +184,16 @@ exports[`Checkbox UI component renders correctly when checked 1`] = `
                 className="c2"
                 name="checkmark"
               >
-                <path
-                  d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
-                  fillRule="evenodd"
-                />
+                <svg
+                  className="c2"
+                  height="100%"
+                  viewBox="0 0 19 15"
+                >
+                  <path
+                    d="M6.05 11.467L1.533 6.95 0 8.482l6.05 6.05 13-13L17.517 0z"
+                    fillRule="evenodd"
+                  />
+                </svg>
               </Component>
             </Component>
           </div>
