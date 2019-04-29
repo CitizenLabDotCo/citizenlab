@@ -126,7 +126,7 @@ describe TenantTemplateService do
     end
   end
 
-  describe "tenant_to_template", slow_test: true do
+  describe "tenant_to_template" do
     it "Successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
       Apartment::Tenant.switch('localhost') do
