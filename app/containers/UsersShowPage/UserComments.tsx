@@ -18,26 +18,16 @@ import { media, colors } from 'utils/styleUtils';
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
 import { Link } from 'utils/cl-router/Link';
+import T from 'components/T';
+import IdeaCommentGroup from './IdeaCommentGroup';
+import CommentHeader from 'containers/IdeasShow/Comments/CommentHeader';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin: auto;
 
   max-width: 760px;
-`;
-
-const IdeaCommentGroup = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 20px 40px;
-  &:not(:last-child) {
-    margin-bottom: 20px;
-  }
-`;
-
-const IdeaLink = styled(Link)`
-  background: ${colors.adminBackground};
 `;
 
 interface InputProps {
@@ -50,11 +40,15 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const reducer = (acc: ICommentData[][], current: ICommentData) => {
+export const reducer = (acc: ICommentData[][], current: ICommentData) => {
   const accLen = acc.length;
-  const lastArray = acc[accLen];
+  const lastArray = acc[accLen - 1];
 
-  if (current.relationships.idea.data.id === lastArray[lastArray.length].relationships.idea.data.id) {
+  if (lastArray.length === 0) {
+    return [[current]];
+  }
+
+  if (current.relationships.idea.data.id === lastArray[lastArray.length - 1].relationships.idea.data.id) {
     lastArray.push(current);
     return acc;
   } else {
@@ -68,13 +62,19 @@ export class UsersComments extends PureComponent<Props> {
     const { comments } = this.props;
 
     if (!isNilOrError(comments) && comments.length > 0) {
-      console.log(comments);
 
-      comments.reduce((newArr));
-      return comments.map(comment =>
-        <span>{comment.attributes.body_multiloc}</span>
-      );
-    }
+      return (
+        <Container>
+          {comments.reduce(reducer, [[]]).map(commentForIdea => (
+            <IdeaCommentGroup
+              key={commentForIdea[0].relationships.idea.data.id}
+              ideaId={commentForIdea[0].relationships.idea.data.id}
+              commentsForIdea={commentForIdea}
+            />
+          ))}
+          </Container>
+        );
+      }
 
     return null;
   }

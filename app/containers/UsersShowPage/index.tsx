@@ -36,6 +36,7 @@ const StyledContentContainer = styled(ContentContainer)`
   padding-top: 70px;
   padding-bottom: 100px;
   background: ${colors.background};
+  align-items: center;
 
   ${media.phone`
     padding-top: 50px;

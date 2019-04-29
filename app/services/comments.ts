@@ -33,7 +33,7 @@ export interface ICommentData {
       data: IRelationship | null;
     };
     parent: {
-      data: IRelationship;
+      data: IRelationship | null;
     };
     user_vote: {
       data: IRelationship | null;
