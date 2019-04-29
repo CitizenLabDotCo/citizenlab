@@ -68,6 +68,7 @@ class TenantTemplateService
       @template['models']['custom_field']              = yml_custom_fields
       @template['models']['custom_field_option']       = yml_custom_field_options
       @template['models']['topic']                     = yml_topics
+      @template['models']['user']                      = yml_users
       @template['models']['project']                   = yml_projects
       @template['models']['project_file']              = yml_project_files
       @template['models']['project_image']             = yml_project_images
@@ -75,7 +76,6 @@ class TenantTemplateService
       @template['models']['phase']                     = yml_phases
       @template['models']['phase_file']                = yml_phase_files
       @template['models']['areas_project']             = yml_areas_projects
-      @template['models']['user']                      = yml_users
       @template['models']['email_campaigns/campaigns'] = yml_campaigns
       @template['models']['basket']                    = yml_baskets
       @template['models']['event']                     = yml_events
@@ -372,8 +372,7 @@ class TenantTemplateService
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
-        'ordering'                     => p.ordering,
-        'default_assignee_ref'         => lookup_ref(p.default_assignee_id, :user)
+        'ordering'                     => p.ordering
       })
       store_ref yml_project, p.id, :project
       yml_project
@@ -662,8 +661,7 @@ class TenantTemplateService
         'location_point_geojson' => i.location_point_geojson,
         'location_description'   => i.location_description,
         'idea_status_ref'        => lookup_ref(i.idea_status_id, :idea_status),
-        'budget'                 => i.budget,
-        'assignee_ref'           => lookup_ref(i.assignee_id, :user)
+        'budget'                 => i.budget
       }
       store_ref yml_idea, i.id, :idea
       yml_idea
